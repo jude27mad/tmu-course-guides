@@ -2,7 +2,7 @@
 import {gsap,Flip} from './vendor/gsap-3.15.0.mjs';
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 let paused=false,scenePaused=false,full=false;try{scenePaused=localStorage.getItem('guide-motion-paused')==='true';full=localStorage.getItem('guide-motion-level')==='full';}catch{}
-if(new URLSearchParams(location.search).get('motion')==='full'){full=true;try{localStorage.setItem('guide-motion-level','full')}catch{}}
+if(new URLSearchParams(location.search).get('motion')==='full'){full=true;scenePaused=false;try{localStorage.setItem('guide-motion-level','full');localStorage.setItem('guide-motion-paused','false')}catch{}}
 const forced=new URLSearchParams(location.search).get('motion')==='off';
 const tracks=new Map(), reflowOwner={};
 export const sceneMotionAllowed=()=>motionAllowed()&&!scenePaused;
@@ -75,7 +75,7 @@ export function dialogClose(el,done=()=>{},to){
  return play(el,tl=>tl.to(el,{x,y,scale:lab?scale:.96,opacity:.15,'--guide-backdrop':0,transformOrigin:'0 0',duration:.34,ease:'power2.in'}),()=>{clear(el);el.style.removeProperty('--guide-backdrop');el.dataset.closing='false';done();});
 }
 
-const pageOwner={},pressOwner={},depthOwner={};
+const pageOwner={},pressOwner={},depthOwner=pageOwner;let depthOpen=false;
 export function enterPage(el=document.querySelector('.wrap,.math-wrap')){
  if(!el)return;cancel(pageOwner);return play(pageOwner,tl=>tl.fromTo(el,{opacity:.15,x:120,z:-250,rotationY:13,scale:.9,filter:'blur(7px)',transformPerspective:1500,transformOrigin:'50% 35%'},{opacity:1,x:0,z:0,rotationY:0,scale:1,filter:'blur(0px)',duration:.95,ease:'power3.inOut'}),()=>clear(el));
 }
@@ -88,6 +88,7 @@ function reactPage(){
  play(pressOwner,tl=>tl.to(el,{scale:.975,rotationX:2,rotationY:-2,z:-35,transformPerspective:1500,duration:.16,ease:'power2.out'}).to(el,{scale:1,rotationX:0,rotationY:0,z:0,duration:.58,ease:'power3.out'}),()=>clear(el));
 }
 function pageDepth(open){
+ if(open===depthOpen)return;depthOpen=open;
  const el=document.querySelector('.wrap,.math-wrap');if(!el)return;cancel(pageOwner);
  play(depthOwner,tl=>tl.to(el,{scale:open?.94:1,z:open?-90:0,rotationY:open?-4:0,transformPerspective:1600,filter:open?'blur(3px)':'blur(0px)',duration:.65,ease:'power3.inOut'}),()=>{if(!open)clear(el);});
 }
