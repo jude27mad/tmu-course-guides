@@ -44,7 +44,9 @@ function mountWorkspace() {
   const searchButton = document.createElement('button'); searchButton.type = 'button'; searchButton.className = 'workspace-search';
   searchButton.textContent = 'Search'; searchButton.setAttribute('aria-expanded','false'); searchButton.setAttribute('aria-controls','workspace-search');
   const sectionButton = document.createElement('button'); sectionButton.type = 'button'; sectionButton.className = 'workspace-section';
-  actions.append(sectionButton,searchButton); heading.append(actions);
+  const toolsButton = document.createElement('button'); toolsButton.type = 'button'; toolsButton.className = 'workspace-tools';
+  toolsButton.textContent = 'Guide tools'; toolsButton.setAttribute('aria-expanded','false'); toolsButton.setAttribute('aria-controls',tools.id);
+  actions.append(sectionButton,searchButton,toolsButton); heading.append(actions);
   search.id = 'workspace-search'; search.hidden = true; heading.after(search);
 
   const panels = {};
@@ -121,31 +123,38 @@ function mountWorkspace() {
 
   let active = 'assignments', category = 'all', changing = false;
   function syncPanels(view) {
+    const previous=active;
+    if(previous!==view)window.CourseVisuals?.close(true);
+    window.GuideMotion?.cancel(main);
     active = view;
-    for (const [name,panel] of Object.entries(panels)) panel.hidden = name !== view;
+    for (const [name,panel] of Object.entries(panels)) panel.hidden = name !== view && !(previous!==view && name===previous && window.GuideMotion);
     for (const link of nav.querySelectorAll('a')) {
       if (link.dataset.workspaceView===view) link.setAttribute('aria-current','page'); else link.removeAttribute('aria-current');
     }
     if (isMath) {
-      $('#panel-assessments').hidden = view !== 'assignments';
-      $('#panel-topics').hidden = view !== 'study';
-      $('#panel-help').hidden = view !== 'info';
+      $('#panel-assessments').hidden = false;
+      $('#panel-topics').hidden = false;
+      $('#panel-help').hidden = false;
     } else {
-      $('#p-team').hidden = view !== 'assignments' || category === 'you';
-      $('#p-you').hidden = view !== 'assignments' || category === 'team';
-      $('#p-rules').hidden = view !== 'info';
+      $('#p-team').hidden = category === 'you';
+      $('#p-you').hidden = category === 'team';
+      $('#p-rules').hidden = false;
     }
+    // Incoming state is ready immediately; outgoing original nodes finish as an inert surface.
+    if(previous!==view && window.GuideMotion) {
+      const order=labels.map(([name])=>name);
+      window.GuideMotion.transitionPanel(panels[previous],panels[view],order.indexOf(view)>order.indexOf(previous)?1:-1);
+    }
+    toolsButton.setAttribute('aria-expanded',String(view==='info'&&tools.open&&tools.dataset.closing!=='true'));
     document.body.dataset.workspaceView = view;
     refresh();
     document.dispatchEvent(new CustomEvent('workspace-changed',{detail:view}));
   }
   function show(view, push = false) {
     if (!panels[view]) view = 'assignments';
-    const previous=active;
     changing = true;
     if (isMath) $('#tab-'+({assignments:'assessments',study:'topics',info:'help'}[view])).click();
     syncPanels(view); changing = false;
-    if(previous!==view)window.GuideMotion?.reveal(panels[view]);
     if (push) {
       history.pushState(null,'','#'+(view==='info'?'course-info':view));
       main.scrollIntoView({block:'start',behavior:'instant'});
@@ -183,6 +192,14 @@ function mountWorkspace() {
   },true);
   const toolObserver = new MutationObserver(()=>{if(tools.open && active!=='info') show('info');});
   toolObserver.observe(tools,{attributes:true,attributeFilter:['open']});
+  new MutationObserver(()=>toolsButton.setAttribute('aria-expanded',String(active==='info'&&tools.open&&tools.dataset.closing!=='true'))).observe(tools,{attributes:true,attributeFilter:['open']});
+  toolsButton.addEventListener('click',()=>{
+    const open=active!=='info'||!tools.open||tools.dataset.closing==='true';
+    if(active!=='info')show('info',true);
+    if(window.GuideMotion)window.GuideMotion.disclosure(tools,open);else tools.open=open;
+    toolsButton.setAttribute('aria-expanded',String(open));
+    if(open)tools.querySelector(':scope > summary').focus({preventScroll:true});
+  });
   sectionButton.addEventListener('click',()=>{
     show('info',true);
     if (!isMath) $('#profile-picker').open = true;

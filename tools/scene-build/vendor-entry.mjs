@@ -1,4 +1,4 @@
-export {Scene,Group,PerspectiveCamera,WebGPURenderer,Color,Vector3,Matrix4,Quaternion,Mesh,InstancedMesh,BufferGeometry,Float32BufferAttribute,BoxGeometry,PlaneGeometry,CylinderGeometry,SphereGeometry,TorusGeometry,TubeGeometry,CatmullRomCurve3,MeshStandardNodeMaterial,MeshBasicNodeMaterial,HemisphereLight,DirectionalLight,DoubleSide,SRGBColorSpace,ACESFilmicToneMapping,UnsignedByteType} from 'three/webgpu';
-export {uniform,uv,positionLocal,sin,float,mix,smoothstep,fract,abs,max} from 'three/tsl';
+export {Scene,Group,PerspectiveCamera,WebGLRenderer,Color,Vector3,Matrix4,Quaternion,Mesh,InstancedMesh,BufferGeometry,Float32BufferAttribute,BoxGeometry,PlaneGeometry,CylinderGeometry,SphereGeometry,TorusGeometry,TubeGeometry,CatmullRomCurve3,MeshPhysicalMaterial,MeshStandardMaterial,MeshBasicMaterial,HemisphereLight,DirectionalLight,DoubleSide,SRGBColorSpace,ACESFilmicToneMapping,PMREMGenerator,LineSegments,LineBasicMaterial,EdgesGeometry,AdditiveBlending} from 'three';
+export {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 export {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 export {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
