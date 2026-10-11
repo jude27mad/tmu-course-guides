@@ -27,7 +27,7 @@ export async function mountScene(art,course){
  function frame(now){raf=0;if(disposed||failed||document.hidden||!visible)return;const allowed=motionAllowed(),elapsed=last?(now-last):16.7;if(allowed&&quality<1&&elapsed<32){raf=requestAnimationFrame(frame);return;}last=now;const dt=Math.min(.05,elapsed/1000);if(allowed)time+=dt;
  if(allowed||dirty){update(time,dt,!allowed);try{renderer.render(scene,camera);for(const label of labelNodes){projected.copy(label.position).applyMatrix4(label.parent.matrixWorld).project(camera);label.node.style.transform=`translate(${(projected.x*.5+.5)*width+5}px,${(-projected.y*.5+.5)*height-15}px)`;}}catch{fallback();return;}dirty=false;if(art.dataset.sceneReady!=='true'){art.dataset.sceneReady='true';art.dataset.motionState=allowed?'running':'still';}
  if(allowed&&frames++>90){slow+=elapsed>25?1:0;if(frames>210){if(slow>65&&quality===1){quality=.78;size();art.dataset.quality='balanced';}frames=90;slow=0;}}}
- if(allowed)raf=requestAnimationFrame(frame);}
+ if(allowed&&!raf)raf=requestAnimationFrame(frame);}
  function wake(){if(ready&&!raf&&!failed&&!disposed&&!document.hidden&&visible){last=0;raf=requestAnimationFrame(frame);}}
  const resize=new ResizeObserver(size);resize.observe(art);
  const observer=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible){dirty=true;wake();}else{cancelAnimationFrame(raf);raf=0;}},{threshold:0});observer.observe(art);
