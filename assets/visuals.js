@@ -12,7 +12,7 @@ function open(node,trigger){if(!node||!sheet.showModal)return false;if(moved===n
 document.addEventListener('click',e=>{const h=e.target.closest('.head,details.assessment>summary');if(!h)return;if(sheet.contains(h)){e.preventDefault();e.stopImmediatePropagation();return;}if(open(h.closest('li'),h)){e.preventDefault();e.stopImmediatePropagation();}},true);
 document.addEventListener('change',()=>{queueMicrotask(()=>{if(moved?.hidden)close()})});
 const rail=document.createElement('section');rail.className='semester-rail';rail.setAttribute('aria-label','Semester timeline');rail.innerHTML='<div class="rail-heading"><div><h2>Semester at a glance</h2><p>Tap a week. Open a deadline without losing your place.</p></div></div><div class="rail-track"></div><div class="rail-summary"></div><div class="rail-events"></div>';
-(document.getElementById('board')||document.getElementById('quick-confirm')||document.querySelector('.quick-find')).after(rail);
+(document.querySelector('.cen-next-layout')||document.getElementById('board')||document.getElementById('quick-confirm')||document.querySelector('.quick-find')).after(rail);
 let events=[],selected='',signature='';const start='2026-09-07',weeks=Array.from({length:14},(_,i)=>add(start,i*7));
 function currentWeek(){const t=today();return [...weeks].reverse().find(w=>w<=t)||start;}
 function render(){const t=today(),now=currentWeek();if(!selected)selected=weeks.includes(now)?now:weeks[weeks.length-1];const sig=JSON.stringify([events,selected,t]);if(sig===signature)return;signature=sig;
@@ -26,12 +26,40 @@ document.dispatchEvent(new Event('course-visuals-ready'));
 const course=document.body.dataset.course;
 if(course==='mth140'||course==='mth141'){
 const bench=document.createElement('section');bench.className='math-workbench';bench.setAttribute('aria-label','Interactive math workbench');const calculus=course==='mth140';
-bench.innerHTML=`<h2>${calculus?'Explore a tangent':'Build a linear combination'}</h2><p>${calculus?'Move the point along y = x². Watch its tangent slope change.':'Change a and b to build w = a·u + b·v. Here u = (2, 1) and v = (−1, 2).'}</p><svg class="workbench-svg" viewBox="0 0 400 260" role="img" aria-label="${calculus?'Interactive parabola and tangent line':'Interactive vector linear combination'}"></svg><div class="workbench-legend"><span>${calculus?'Curve y = x²':'Basis vectors u and v'}</span><span>${calculus?'Tangent at the point':'Result w'}</span></div><label>${calculus?'Point position x':'Coefficient a'}<input type="range" min="-2" max="2" step="0.05" value="1" data-control="a"></label>${calculus?'':'<label>Coefficient b<input type="range" min="-2" max="2" step="0.05" value="1" data-control="b"></label>'}<output></output><p>${calculus?'Drag the pink point or use the slider. This illustrates the power rule for one example.':'These two independent basis vectors span the plane. The dashed path shows the two contributions.'}</p>`;
-rail.after(bench);const svg=bench.querySelector('svg'),output=bench.querySelector('output'),a=bench.querySelector('[data-control=a]'),b=bench.querySelector('[data-control=b]');const f=n=>Number(n).toFixed(2).replace(/\.00$/,'');
-function draw(){const av=+a.value,bv=b?+b.value:0,grid=Array.from({length:9},(_,i)=>`M${40+i*40} 10V250M20 ${10+i*30}H380`).join('');let picture=`<path class="grid" d="${grid}"/><path class="axis" d="M20 200H380M200 10V250"/>`;
-if(calculus){const X=x=>200+x*75,Y=y=>200-y*40;const points=Array.from({length:100},(_,i)=>{const x=-2.2+i*4.4/99;return `${X(x)},${Y(x*x)}`}).join(' ');picture+=`<polyline class="curve" points="${points}"/><path class="tangent" d="M${X(-2.3)} ${Y(2*av*(-2.3)-av*av)}L${X(2.3)} ${Y(2*av*2.3-av*av)}"/><circle data-point="true" cx="${X(av)}" cy="${Y(av*av)}" r="7"/>`;output.textContent=`x = ${f(av)} · y = ${f(av*av)} · slope = ${f(2*av)}`;
-}else{const X=x=>200+x*26,Y=y=>130-y*26,ux=2*av,uy=av,wx=ux-bv,wy=uy+2*bv;picture=`<path class="grid" d="${grid}"/><path class="axis" d="M20 130H380M200 10V250"/><path class="curve" d="M200 130L252 104M200 130L174 78"/><path d="M200 130L${X(ux)} ${Y(uy)}L${X(wx)} ${Y(wy)}" stroke="#078896" stroke-dasharray="5 4" fill="none"/><path class="tangent" d="M200 130L${X(wx)} ${Y(wy)}"/><circle cx="${X(wx)}" cy="${Y(wy)}" r="6"/>`;output.textContent=`w = ${f(av)}u + ${f(bv)}v = (${f(wx)}, ${f(wy)})`;}
-svg.innerHTML=picture;svg.setAttribute('aria-label',output.textContent);}
-a.addEventListener('input',draw);b?.addEventListener('input',draw);let dragging=false;svg.addEventListener('pointerdown',e=>{if(!calculus||!e.target.matches('[data-point]'))return;dragging=true;svg.setPointerCapture(e.pointerId)});svg.addEventListener('pointermove',e=>{if(!dragging)return;const rect=svg.getBoundingClientRect(),x=((e.clientX-rect.left)/rect.width*400-200)/75;a.value=Math.max(-2,Math.min(2,x));draw()});svg.addEventListener('pointerup',()=>dragging=false);svg.addEventListener('pointercancel',()=>dragging=false);draw();
+bench.innerHTML=`<div class="workbench-title"><div><span class="workbench-kicker">${calculus?'01 / Calculus lab':'02 / Vector lab'}</span><h2>${calculus?'Explore a tangent':'Build a linear combination'}</h2></div><span class="workbench-live">Interactive</span></div><div class="workbench-layout"><div class="workbench-plot"><svg class="workbench-svg" viewBox="0 0 400 300" role="img" aria-label="Interactive math plot"></svg><div class="workbench-legend"><span>${calculus?'Curve y = x²':'Basis vectors u and v'}</span><span>${calculus?'Tangent at the point':'Result w'}</span></div></div><div class="workbench-controls"><p class="workbench-equation">${calculus?'y = x²':'w = a·u + b·v'}</p><p>${calculus?'Move the point. See how the tangent changes as you travel along the curve.':'Combine two independent vectors. The dashed path shows how each contribution builds the result.'}</p>${calculus?'':'<p class="workbench-basis">u = (2, 1) &nbsp; v = (−1, 2)</p>'}<label>${calculus?'Point position x':'Coefficient a'}<input type="range" min="-2" max="2" step="0.05" value="1" data-control="a"></label>${calculus?'':'<label>Coefficient b<input type="range" min="-2" max="2" step="0.05" value="1" data-control="b"></label>'}<output aria-live="polite"></output><div class="workbench-footer"><span>${calculus?'Drag the point or use the slider.':'Adjust the sliders to explore the plane.'}</span><button type="button" class="workbench-reset">Reset</button></div></div></div>`;
+rail.after(bench);
+const svg=bench.querySelector('svg'),output=bench.querySelector('output'),a=bench.querySelector('[data-control=a]'),b=bench.querySelector('[data-control=b]');
+const f=n=>Number(n).toFixed(2).replace(/\.00$/,'');
+const scale=calculus?52:20,originY=calculus?238:150,X=x=>200+x*scale,Y=y=>originY-y*scale;
+function draw(){
+  const av=+a.value,bv=b?+b.value:0;
+  let grid='',ticks='';
+  const extent=calculus?3:8;
+  for(let n=-extent;n<=extent;n++){
+    if(X(n)>=20&&X(n)<=380)grid+=`M${X(n)} 20V280`;
+    if(Y(n)>=20&&Y(n)<=280)grid+=`M20 ${Y(n)}H380`;
+    if(n!==0&&(calculus||n%2===0)){
+      if(X(n)>25&&X(n)<375)ticks+=`<text x="${X(n)}" y="${originY+17}" text-anchor="middle">${n}</text>`;
+      if(Y(n)>28&&Y(n)<270)ticks+=`<text x="190" y="${Y(n)+4}" text-anchor="end">${n}</text>`;
+    }
+  }
+  let picture=`<defs><clipPath id="workbench-clip"><rect x="20" y="20" width="360" height="260" rx="4"/></clipPath><marker id="vector-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="context-stroke"/></marker></defs><path class="grid" d="${grid}"/><path class="axis" d="M20 ${originY}H380M200 20V280"/><g class="plot-labels">${ticks}<text x="382" y="${originY-8}">x</text><text x="209" y="19">y</text><text x="188" y="${originY+17}">0</text></g><g clip-path="url(#workbench-clip)">`;
+  if(calculus){
+    const points=Array.from({length:121},(_,i)=>{const x=-3.5+i*7/120;return `${X(x)},${Y(x*x)}`}).join(' ');
+    picture+=`<polyline class="curve" points="${points}"/><path class="tangent" d="M${X(-3.5)} ${Y(2*av*(-3.5)-av*av)}L${X(3.5)} ${Y(2*av*3.5-av*av)}"/><circle class="point-halo" cx="${X(av)}" cy="${Y(av*av)}" r="13"/><circle data-point="true" cx="${X(av)}" cy="${Y(av*av)}" r="7"/>`;
+    output.textContent=`x = ${f(av)} · y = ${f(av*av)} · slope = ${f(2*av)}`;
+  }else{
+    const ux=2*av,uy=av,wx=ux-bv,wy=uy+2*bv;
+    picture+=`<path class="curve basis-vector" marker-end="url(#vector-arrow)" d="M200 150L${X(2)} ${Y(1)}"/><path class="curve basis-vector" marker-end="url(#vector-arrow)" d="M200 150L${X(-1)} ${Y(2)}"/><path class="vector-path" d="M200 150L${X(ux)} ${Y(uy)}L${X(wx)} ${Y(wy)}"/><path class="tangent" marker-end="url(#vector-arrow)" d="M200 150L${X(wx)} ${Y(wy)}"/><circle class="point-halo" cx="${X(wx)}" cy="${Y(wy)}" r="11"/><circle cx="${X(wx)}" cy="${Y(wy)}" r="4"/>`;
+    output.textContent=`w = ${f(av)}u ${bv<0?'−':'+'} ${f(Math.abs(bv))}v = (${f(wx)}, ${f(wy)})`;
+  }
+  svg.innerHTML=picture+'</g>';svg.setAttribute('aria-label',output.textContent);
+}
+a.addEventListener('input',draw);b?.addEventListener('input',draw);
+bench.querySelector('.workbench-reset').addEventListener('click',()=>{a.value='1';if(b)b.value='1';draw()});
+let dragging=false;
+svg.addEventListener('pointerdown',e=>{if(!calculus||!e.target.matches('[data-point],.point-halo'))return;dragging=true;svg.setPointerCapture(e.pointerId)});
+svg.addEventListener('pointermove',e=>{if(!dragging)return;const matrix=svg.getScreenCTM();if(!matrix)return;const point=new DOMPoint(e.clientX,e.clientY).matrixTransform(matrix.inverse());a.value=Math.max(-2,Math.min(2,(point.x-200)/scale));draw()});
+svg.addEventListener('pointerup',()=>dragging=false);svg.addEventListener('pointercancel',()=>dragging=false);draw();
 }
 })();
