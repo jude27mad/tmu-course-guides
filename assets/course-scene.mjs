@@ -37,7 +37,7 @@ export async function mountScene(art,course){
   root.rotation.set((course==='cen100'?-.72:-.22)+py*.16+scroll*.13,(course==='cen100'?-.26:-.36)+px*.22+section,(course==='cen100'?-.31:-.16)+(1-entry)*.11);
   model.update(time,dt,{still});root.updateMatrixWorld(true);key.position.x=-3+px*4;
  }
- function frame(now){raf=0;if(disposed||document.hidden||!visible)return;const allowed=motionAllowed(),elapsed=last?now-last:16.7;if(allowed&&quality<1&&elapsed<30){raf=requestAnimationFrame(frame);return;}last=now;const dt=Math.min(.05,elapsed/1000);if(allowed)time+=dt;
+ function frame(now){raf=0;if(disposed||document.hidden||!visible)return;const allowed=motionAllowed(),elapsed=last?now-last:16.7;if(allowed&&quality<1&&last&&elapsed<30){raf=requestAnimationFrame(frame);return;}last=now;const dt=Math.min(.05,elapsed/1000);if(allowed)time+=dt;
   if(allowed||dirty){update(dt,!allowed);try{if(renderer)renderer.render(scene,camera);else drawSoftware();}catch{software();size();drawSoftware();}dirty=false;art.dataset.sceneReady='true';art.dataset.motionState=allowed?'running':'still';art.dataset.sceneFrame=String(++frames);if(frames%60===0){art.dataset.sceneTime=time.toFixed(2);art.dataset.drawCalls=String(renderer?.info.render.calls??model.sketch().length);}
    if(allowed&&frames>60){slow+=elapsed>27?1:0;if(frames%180===0){if(slow>70&&quality===1){quality=.72;art.dataset.quality='balanced';size();}slow=0;}}
   }if(allowed&&!raf)raf=requestAnimationFrame(frame);

@@ -13,9 +13,10 @@ test('scene fallback animates, pauses, sleeps offscreen, resumes, and disposes',
   w.HTMLCanvasElement.prototype.getContext=function(type){return type==='2d'?ctx:null};
   const art=w.document.querySelector('.header-art');art.getBoundingClientRect=()=>({width:1000,height:460,top:0,left:0});
   w.eval(script);const scene=await w.mountTestScene(art,course);let now=1000;
-  const tick=()=>{now+=17;const pending=[...callbacks.values()];callbacks.clear();for(const fn of pending)fn(now);};
+  const tick=(elapsed=34)=>{now+=elapsed;const pending=[...callbacks.values()];callbacks.clear();for(const fn of pending)fn(now);};
   tick();assert.equal(art.dataset.renderer,'canvas2d');assert.equal(art.dataset.sceneReady,'true');assert.ok(draws>0);
   const first=+art.dataset.sceneFrame;tick();assert.equal(+art.dataset.sceneFrame,first+1,'exactly one scene frame per tick');
+  for(let i=0;i<200;i++)tick(40);assert.equal(art.dataset.quality,'balanced');assert.ok(+art.dataset.sceneFrame>181,'adaptive resolution must keep rendering after its resize');
   w.GuideMotion.setPaused(true);tick();const paused=+art.dataset.sceneFrame;tick();assert.equal(+art.dataset.sceneFrame,paused,'paused scene sleeps');
   w.GuideMotion.setPaused(false);tick();assert.equal(+art.dataset.sceneFrame,paused+1);
   intersections.at(-1)([{isIntersecting:false}]);const sleeping=+art.dataset.sceneFrame;tick();assert.equal(+art.dataset.sceneFrame,sleeping);
