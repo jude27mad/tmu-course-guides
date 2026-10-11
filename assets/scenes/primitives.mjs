@@ -9,7 +9,7 @@ export function segments(group,lines,mat,radius=.012){const parts=[];for(const [
 export function rod(group,mat,radius=.025){return mesh(group,new T.CylinderGeometry(radius,radius,1,10),mat);}
 const delta=new T.Vector3(),middle=new T.Vector3(),up=new T.Vector3(0,1,0);
 export function setRod(m,a,b){delta.set(b[0]-a[0],b[1]-a[1],b[2]-a[2]);m.scale.y=delta.length();m.position.copy(middle.set((a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2));m.quaternion.setFromUnitVectors(up,delta.normalize());}
-export function arrow(group,mat){const g=new T.Group();group.add(g);const shaft=rod(g,mat,.022),tip=mesh(g,new T.CylinderGeometry(0,.085,.24,14),mat);return {set(a,b){setRod(shaft,a,b);tip.position.set(...b);tip.quaternion.copy(shaft.quaternion);},group:g};}
+export function arrow(group,mat){const g=new T.Group();group.add(g);const shaft=rod(g,mat,.022),tip=mesh(g,new T.CylinderGeometry(0,.085,.24,14),mat);return {set(a,b){setRod(shaft,a,b);tip.position.set(...b).addScaledVector(delta,-.12);tip.quaternion.copy(shaft.quaternion);},group:g};}
 export function plane(group,palette,bounds){
  const [x0,y0,x1,y1]=bounds,w=x1-x0,h=y1-y0;
  const mat=material(palette.surface,{transparent:true,opacity:.88,roughness:.3,metalness:.08});

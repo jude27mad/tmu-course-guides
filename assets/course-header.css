@@ -119,3 +119,4 @@ body.workspace .header-upgraded h1{font-size:clamp(2.5rem,4.8vw,4rem);line-heigh
 .scene-labels{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .45s;overflow:hidden}
 .scene-labels span{position:absolute;left:0;top:0;font:italic 12px Georgia,serif;color:var(--strong);white-space:nowrap;text-shadow:0 1px 3px var(--hub-bg)}
 .header-art[data-scene-ready=true] .scene-labels{opacity:1}
+:root[data-motion=off]::view-transition-group(*),:root[data-motion=off]::view-transition-old(*),:root[data-motion=off]::view-transition-new(*){animation-duration:0s!important}

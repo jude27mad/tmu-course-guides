@@ -12,7 +12,7 @@ export async function mountScene(art,course){
  const shadowMat=new T.MeshBasicNodeMaterial({transparent:true,depthWrite:false,color:palette.ink});shadowMat.opacityNode=T.float(1).sub(T.smoothstep(.08,.5,T.uv().sub(.5).length())).mul(.13);
  const shadow=new T.Mesh(new T.PlaneGeometry(7,5.4),shadowMat);shadow.position.set(0,-.2,-.53);root.add(shadow);
  const canvas=document.createElement('canvas');canvas.className='course-scene';canvas.setAttribute('aria-hidden','true');
- let renderer,disposed=false,failed=false,raf=0,visible=true,time=0,last=0,frames=0,slow=0,quality=1,dirty=true;
+ let renderer,ready=false,disposed=false,failed=false,raf=0,visible=true,time=0,last=0,frames=0,slow=0,quality=1,dirty=true;
  const small=matchMedia('(pointer: coarse)'),fine=matchMedia('(hover: hover) and (pointer: fine)');
  let width=1,height=1,px=0,py=0,tx=0,ty=0,scroll=0,section=0;
  function fallback(){if(failed)return;failed=true;cancelAnimationFrame(raf);raf=0;art.dataset.renderer='unavailable';art.dataset.sceneReady='false';canvas.remove();void renderer?.dispose().catch(()=>{});}
@@ -28,7 +28,7 @@ export async function mountScene(art,course){
  if(allowed||dirty){update(time,dt,!allowed);try{renderer.render(scene,camera);for(const label of labelNodes){projected.copy(label.position).applyMatrix4(label.parent.matrixWorld).project(camera);label.node.style.transform=`translate(${(projected.x*.5+.5)*width+5}px,${(-projected.y*.5+.5)*height-15}px)`;}}catch{fallback();return;}dirty=false;if(art.dataset.sceneReady!=='true'){art.dataset.sceneReady='true';art.dataset.motionState=allowed?'running':'still';}
  if(allowed&&frames++>90){slow+=elapsed>25?1:0;if(frames>210){if(slow>65&&quality===1){quality=.78;size();art.dataset.quality='balanced';}frames=90;slow=0;}}}
  if(allowed)raf=requestAnimationFrame(frame);}
- function wake(){if(!raf&&!failed&&!disposed&&!document.hidden&&visible){last=0;raf=requestAnimationFrame(frame);}}
+ function wake(){if(ready&&!raf&&!failed&&!disposed&&!document.hidden&&visible){last=0;raf=requestAnimationFrame(frame);}}
  const resize=new ResizeObserver(size);resize.observe(art);
  const observer=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible){dirty=true;wake();}else{cancelAnimationFrame(raf);raf=0;}},{threshold:0});observer.observe(art);
  const onVisibility=()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0;}else{dirty=true;wake();}};
@@ -44,5 +44,6 @@ export async function mountScene(art,course){
  art.addEventListener('pointermove',onPointer);art.addEventListener('pointerleave',onLeave);document.addEventListener('visibilitychange',onVisibility);document.addEventListener('guide-motion-change',onMotion);document.addEventListener('workspace-changed',onView);document.addEventListener('guide-completion',onComplete);window.addEventListener('scroll',onScroll,{passive:true});
  function dispose(){if(disposed)return;disposed=true;cancelAnimationFrame(raf);resize.disconnect();observer.disconnect();status.disconnect();themes.disconnect();model.dispose();shadow.geometry.dispose();shadowMat.dispose();renderer.dispose();colorScheme.removeEventListener('change',theme);art.removeEventListener('pointermove',onPointer);art.removeEventListener('pointerleave',onLeave);document.removeEventListener('visibilitychange',onVisibility);document.removeEventListener('guide-motion-change',onMotion);document.removeEventListener('workspace-changed',onView);document.removeEventListener('guide-completion',onComplete);window.removeEventListener('scroll',onScroll);}
  window.addEventListener('pagehide',e=>{if(!e.persisted)dispose();else{cancelAnimationFrame(raf);raf=0;}});window.addEventListener('pageshow',e=>{if(e.persisted){dirty=true;wake();}});
- theme();urgency();size();return{dispose};
+ theme();urgency();size();update(0,0,!motionAllowed());
+ try{await renderer.compileAsync(scene,camera);}catch{fallback();dispose();return null;}ready=true;wake();return{dispose};
 }
