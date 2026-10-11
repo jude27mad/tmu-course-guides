@@ -6,6 +6,7 @@
 <title>CEN100 | TMU Course Guides</title>
 <meta name="description" content="TMU Fall 2026 course guides: CEN100 assignment deadlines, requirements and contacts, plus MTH140 and MTH141 assessment and section guides.">
 <link rel="stylesheet" href="assets/hub.css">
+<link rel="stylesheet" href="assets/visuals.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
@@ -462,6 +463,7 @@ footer{margin-top:34px;display:flex;justify-content:space-between;gap:12px;flex-
   <details class="tool-section" id="guide-updates">
     <summary>What's changed? <span class="updates-badge" id="updates-badge" hidden>New updates</span></summary>
     <ul class="update-list">
+      <li><b>Oct 11, 2026 — Visual tools:</b> Added a semester timeline and assignment detail sheets. Completion records, checklists and notes use the same saved data. The circuit header follows your next unfinished deadline.</li>
       <li><b>Oct 9, 2026 — Fewer taps:</b> Search, this week's work, contacts and D2L are now within easy reach. Mark the next deadline done directly, with Undo, using your existing completion records. Guide tools sit below the cards and tab introductions are shorter.</li>
       <li><b>Oct 7, 2026 — Easier to scan:</b> Added short requirement previews to closed assignment and math assessment cards, visible opening arrows on upcoming deadlines, and a View requirements cue on the next deadline. Refined text weights, badges, borders and spacing across all three courses, with gentle opening transitions that respect reduced motion.</li>
       <li><b>Oct 7, 2026 — Three-course guide:</b> Added <a href="mth140/">MTH140: Calculus I</a> and <a href="mth141/">MTH141: Linear Algebra</a> alongside CEN100.
@@ -775,6 +777,7 @@ function renderTop(completed={}){
   const selected=Number(document.getElementById("contact-section").value);
   const up=upcomingSchedule(completed,selected);
   updateCircuitHead(up);
+  window.CourseVisuals?.update(SCHEDULE.filter(e=>!e.section||selected===e.section).map(e=>({date:e.date,title:e.title,target:e.item,completed:!!completed[e.id],note:e.calendar===false?'Reminder · confirm on D2L':e.time?clockLabel(e.time)+' Toronto time':'Check D2L for submission time'})));
   const ns=document.getElementById("nextsign"),bd=document.getElementById("board");
   const signature=up.slice(0,4).map(e=>e.id+":"+days(e.date)).join("|");
   if(ns.dataset.schedule===signature)return;ns.dataset.schedule=signature;
@@ -1100,7 +1103,7 @@ setupContactLookup();
     });
   }
 
-  const PLAN_KEY="cen100-personal-plan-v1", SEEN_KEY="cen100-last-seen-update-v1", GUIDE_VERSION="2026-10-09-easier-use";
+  const PLAN_KEY="cen100-personal-plan-v1", SEEN_KEY="cen100-last-seen-update-v1", GUIDE_VERSION="2026-10-11-visual-tools";
   function recordsFor(item){const dates=itemDeadlines(item.id);return dates.length?dates:[{id:"item:"+item.id,item:item.id,title:item.name}]}
   const completionKeys=new Set(allItems.flatMap(item=>recordsFor(item).map(e=>e.id)));
   function validDate(value){return typeof value==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&!Number.isNaN(Date.parse(value+"T12:00:00Z"))&&new Date(value+"T12:00:00Z").toISOString().slice(0,10)===value}
@@ -1161,6 +1164,7 @@ setupContactLookup();
     const tile=$("guide-item-"+id);
     if(tile.hidden){$("hide-completed").checked=false;writeSaved(FILTER_KEY,false);applyCompletedFilter()}
     $(TEAM.includes(item)?"t-team":"t-you").click();
+    if(window.CourseVisuals?.open(tile,document.activeElement))return;
     const head=tile.querySelector(".head");if(head.getAttribute("aria-expanded")!=="true")head.click();
     head.focus({preventScroll:true});tile.scrollIntoView({block:"start",behavior:"auto"});
   }
@@ -1272,10 +1276,14 @@ setupContactLookup();
     renderWork();readAssignmentLink();
   }
 
+  document.addEventListener('course-open-item',e=>openAssignment(e.detail));
+  document.addEventListener('course-visuals-ready',()=>renderTop(personal.completed));
   setupRememberedContacts();setupSources();setupCompletedFilter();setupSearch();setupCalendar();setupPersonalTools();setupBackups();setupWorkAndUpdates();
 })();
 </script>
 <script src="assets/hub.js"></script>
+<script src="assets/visuals.js"></script>
 <!-- Cloudflare Web Analytics temporarily paused on 2026-10-10; restore the beacon from Git history to resume. -->
 </body>
 </html>
+

@@ -8,6 +8,12 @@ One Fall 2026 course companion with a shared course switcher and light/dark appe
 | MTH140: Calculus I | [MTH140](https://jude27mad.github.io/tmu-course-guides/mth140/) | All 34 sections, instructors, TAs and lab rooms |
 | MTH141: Linear Algebra | [MTH141](https://jude27mad.github.io/tmu-course-guides/mth141/) | All 34 sections, instructors, Academic Assistants and lab rooms |
 
+## Visual tools — October 11, 2026
+
+The semester rail shows published deadlines by week, including section-derived math quiz dates with their certainty notes. Completion dots reflect manually recorded progress. Assignment and assessment cards open in native dialog sheets and preserve their existing checklists, notes and completion controls. Close or Escape returns to the original position. Calculus includes a draggable tangent example; Linear Algebra includes coefficient sliders for a fixed independent basis. Motion respects reduced-motion preferences.
+
+The legacy `/cen100-guide/` site is a forwarding-only repository; edit the course content in `tmu-course-guides`. Paths, query strings and assignment hashes are retained on forwarding.
+
 ## Getting started
 
 1. Choose **CEN100**, **MTH140**, or **MTH141** in the course bar. Each course remembers its own section and progress.
@@ -218,3 +224,4 @@ GitHub Pages serves the **main** branch from **/(root)** using **Deploy from a b
 Update CEN100 in `index.html` and math course information in `assets/course-data.mjs`. Verify new dates and coverage against official course documents or announcements, retain source notes, and keep unresolved details labelled pending. Keep CEN100’s short `preview` text consistent with the full requirements; math previews render from each assessment’s `scope`. For math source changes, update `docs/math-source-audit.md`.
 
 Update the relevant course's **What's changed?** entry and release version when publishing a release so returning visitors see the unread badge. CEN100's version lives in `index.html`; the math version lives in `assets/math-guide.mjs`. Run `node --test tests/schedule.test.mjs` for math date/data changes, preview affected pages over HTTP, and check the GitHub Pages deployment after publishing to `main`.
+
