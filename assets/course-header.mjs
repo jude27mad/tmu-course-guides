@@ -99,92 +99,22 @@ function algebraArt() {
 }
 
 async function mount() {
-  const header=document.querySelector('.course-heading,.circuit-head');
-  if(!header || !document.body.classList.contains('workspace') || header.classList.contains('header-upgraded')) return;
-  const course=document.body.dataset.course;
-  const art=document.createElement('div'); art.className='header-art';
-  art.setAttribute('role','img');
-  art.setAttribute('aria-label',course==='cen100'?'Layered circuit board. Its signal follows the next unfinished deadline.':course==='mth140'?'On y equals x squared, a secant approaches the tangent at one, one. The tangent slope is two.':'A unit square shears into a parallelogram. The horizontal basis stays fixed, the vertical basis becomes 0.65, 1, and area stays one.');
-  art.innerHTML=`<div class="art-aura"></div><div class="art-perspective"><div class="art-object">${course==='cen100'?circuitArt():course==='mth140'?calculusArt():algebraArt()}</div></div>`;
-  header.append(art);header.classList.add('header-upgraded');
-  // Static geometry is complete before the optional animation engine is loaded.
-  const object=art.querySelector('.art-object');
-  let lastSignal='',restartSignal=()=>{};
-  const status=()=>{
-    if(course!=='cen100')return;
-    const urgency=header.dataset.urgency||'calm';
-    art.dataset.urgency=urgency;
-    const summary=header.querySelector('.head-next')?.textContent;
-    if(summary)art.setAttribute('aria-label',`Circuit board. ${summary}.`);
-    const key=urgency+'|'+summary,changed=key!==lastSignal;lastSignal=key;return changed;
-  };status();
-  if(course==='cen100') new MutationObserver(()=>{if(status())restartSignal();}).observe(header,{attributes:true,attributeFilter:['data-urgency']});
-  art.dataset.motionState = still() ? 'still' : 'ready';
-  if(still()) return;
-  let animate;
-  try { ({animate}=await import('./vendor/motion-14.1.0.mjs')); } catch { return; }
-  let tracks=[], visible=true, entered=false, pointerTrack=null;
-  const finish=()=>{
-    if(course==='mth140')renderCalculus(1);
-    if(course==='mth141')renderAlgebra(1);
-    art.classList.remove('art-signalling');
-    art.dataset.motionState = still() ? 'still' : 'settled';
-  };
-  const stop=()=>{for(const t of tracks)t.stop();tracks=[];pointerTrack?.stop();object.style.transform='';object.style.opacity='1';art.classList.remove('art-entering');finish();};
-  const record=t=>{tracks.push(t);return t;};
-  function renderCalculus(t){
-    const s=secantState(t),p=CP(s.x,s.y,2);
-    art.querySelector('[data-art=secant]').setAttribute('d',path(s.line.map(p=>CP(...p,2))));
-    const dot=art.querySelector('[data-art=moving-point]');dot.setAttribute('cx',p[0]);dot.setAttribute('cy',p[1]);dot.style.opacity=String(1-t);
-  }
-  function renderAlgebra(t){
-    const s=shearState(t),o=AP(0,0,4),p=AP(...s.v,4);
-    art.querySelector('[data-art=square]').setAttribute('points',s.square.map(p=>point(AP(...p,3))).join(' '));
-    art.querySelector('[data-art=basis-v]').setAttribute('d',path([o,p]));
-    const temp=document.createElementNS(NS,'g');temp.innerHTML=arrowTip(o,p,'art-vector-v');
-    art.querySelector('[data-art=basis-v-tip]').setAttribute('d',temp.firstElementChild.getAttribute('d'));
-    const dot=art.querySelector('[data-art=vector-point]');dot.setAttribute('cx',p[0]);dot.setAttribute('cy',p[1]);
-    const text=art.querySelector('.art-vector-label');const labelAt=AP(s.shear,1.2,5);text.setAttribute('x',labelAt[0]);text.setAttribute('y',labelAt[1]);
-  }
-  function signal(){
-    if(still() || !visible || document.hidden)return;
-    art.classList.remove('art-signalling');
-    // Restart finite sequences only when the actual deadline signal changes.
-    void art.offsetWidth;art.classList.add('art-signalling');art.dataset.motionState='signalling';
-  }
-  function entrance(){
-    if(entered || still() || document.hidden || !visible)return;
-    entered=true;art.classList.add('art-entering');art.dataset.motionState='entering';
-    // One numeric track owns the entrance, so interruption cannot leave a queued
-    // DOM animation writing an old opacity after the static fallback is restored.
-    record(animate(0,1,{duration:.78,type:'spring',bounce:.12,onUpdate:t=>{
-      object.style.opacity=String(Math.max(0,Math.min(1,t)));
-      object.style.transform=`translateY(${(1-t)*12}px) rotateX(${(1-t)*9}deg) rotateY(${(1-t)*-7}deg) scale(${.96+.04*t})`;
-    },onComplete:()=>{object.style.opacity='1';object.style.transform='';art.classList.remove('art-entering');}}));
-    if(course==='cen100') signal();
-    else {
-      const draw=course==='mth140'?renderCalculus:renderAlgebra;draw(0);
-      record(animate(0,1,{delay:.28,duration:2.65,ease:[.22,.65,.22,1],onUpdate:draw,onComplete:finish}));
-    }
-  }
-  const observer=new IntersectionObserver(([entry])=>{
-    visible=entry.isIntersecting;
-    if(!visible)stop();else if(!entered)entrance();
-  },{threshold:.15});observer.observe(art);
-  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else if(!entered)entrance();});
-  reduced.addEventListener('change',()=>{if(still())stop();else if(!entered)entrance();});
-  restartSignal=signal;
-  // Desktop depth response has no bearing on touch navigation or the information shown.
-  art.addEventListener('pointermove',event=>{
-    if(still() || !precisePointer.matches || event.pointerType==='touch' || !entered || art.classList.contains('art-entering'))return;
-    const box=art.getBoundingClientRect(),x=(event.clientX-box.left)/box.width-.5,y=(event.clientY-box.top)/box.height-.5;
-    pointerTrack?.stop();pointerTrack=animate(object,{rotateX:-y*6,rotateY:x*8},{type:'spring',duration:.45,bounce:0});
-    art.style.setProperty('--light-x',`${50+x*25}%`);
-  });
-  art.addEventListener('pointerleave',()=>{if(!precisePointer.matches||still())return;pointerTrack?.stop();pointerTrack=animate(object,{rotateX:0,rotateY:0},{type:'spring',duration:.6,bounce:.1});});
-  art.addEventListener('animationend',event=>{if(event.animationName==='header-signal'&&event.target.style.getPropertyValue('--route')==='10'){art.classList.remove('art-signalling');art.dataset.motionState='settled';}});
-  window.addEventListener('pagehide',stop);
-  window.addEventListener('pageshow',event=>{if(event.persisted){stop();status();}});
-  if(still())finish(); else entrance();
+ const header=document.querySelector('.course-heading,.circuit-head');
+ if(!header||!document.body.classList.contains('workspace')||header.classList.contains('header-upgraded'))return;
+ const course=document.body.dataset.course,art=document.createElement('div');art.className='header-art';
+ const description=course==='cen100'?'Circuit board with signals following the next deadline.':course==='mth140'?'The curve y equals x squared, with a secant approaching its tangent.':'A unit square shears and rotates while its area stays one.';
+ art.setAttribute('role','img');art.setAttribute('aria-label',description);
+ art.innerHTML=`<div class="art-aura"></div><div class="art-perspective"><div class="art-object">${course==='cen100'?circuitArt():course==='mth140'?calculusArt():algebraArt()}</div></div>`;
+ header.append(art);header.classList.add('header-upgraded');
+ const meta=document.createElement('div');meta.className='scene-meta';
+ meta.innerHTML=`<span>${course==='cen100'?'ENGINEERING / LIVE CIRCUIT':course==='mth140'?'y = x² · SECANT → TANGENT':'SHEAR · ROTATE · AREA = 1'}</span><button class="scene-pause" type="button" aria-label="Pause animation" aria-pressed="false" title="Pause animation"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5v10M13 5v10"/></svg></button>`;
+ header.append(meta);
+ const {motionAllowed,setPaused,preference}=await import('./guide-motion.mjs');
+ const button=meta.querySelector('button');
+ function sync(){const on=motionAllowed();button.setAttribute('aria-pressed',String(!on));button.setAttribute('aria-label',on?'Pause animation':'Resume animation');button.title=on?'Pause animation':preference().reduced?'Motion follows your device setting':'Resume animation';button.disabled=preference().reduced||preference().forced;button.innerHTML=on?'<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5v10M13 5v10"/></svg>':'<svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 8 6-8 6z"/></svg>';art.dataset.motionState=on?'ready':'still';}
+ button.addEventListener('click',()=>setPaused(!preference().paused));document.addEventListener('guide-motion-change',sync);sync();
+ // The first useful guide render never waits for the GPU bundle or shader compilation.
+ const load=()=>import('./course-scene.mjs').then(m=>m.mountScene(art,course)).catch(()=>{art.dataset.renderer='unavailable';});
+ if(!forcedStill){if('requestIdleCallback'in window)requestIdleCallback(load,{timeout:1600});else setTimeout(load,150);}
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
