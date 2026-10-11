@@ -155,7 +155,12 @@ async function mount() {
   function entrance(){
     if(entered || still() || document.hidden || !visible)return;
     entered=true;art.classList.add('art-entering');art.dataset.motionState='entering';
-    record(animate(object,{opacity:[0,1],y:[12,0],rotateX:[9,0],rotateY:[-7,0],scale:[.96,1]},{duration:.78,type:'spring',bounce:.12,onComplete:()=>art.classList.remove('art-entering')}));
+    // One numeric track owns the entrance, so interruption cannot leave a queued
+    // DOM animation writing an old opacity after the static fallback is restored.
+    record(animate(0,1,{duration:.78,type:'spring',bounce:.12,onUpdate:t=>{
+      object.style.opacity=String(Math.max(0,Math.min(1,t)));
+      object.style.transform=`translateY(${(1-t)*12}px) rotateX(${(1-t)*9}deg) rotateY(${(1-t)*-7}deg) scale(${.96+.04*t})`;
+    },onComplete:()=>{object.style.opacity='1';object.style.transform='';art.classList.remove('art-entering');}}));
     if(course==='cen100') signal();
     else {
       const draw=course==='mth140'?renderCalculus:renderAlgebra;draw(0);
