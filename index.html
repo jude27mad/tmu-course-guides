@@ -754,7 +754,7 @@ function dateMarkup(item,timing){
 function deadlineBadge(item,timing){return timing.past?'<span class="donecheck">Date passed</span>':chip(item.who)}
 function upcomingSchedule(completed={},selected=0,now=new Date()){
   return SCHEDULE.filter(e=>{
-    if(eventPassed(e,now)||(e.section&&selected&&e.section!==selected)||completed[e.id])return false;
+    if(eventPassed(e,now)||(e.section&&e.section!==selected)||completed[e.id])return false;
     if(e.calendar===false){const records=itemDeadlines(e.item);if(records.length&&records.every(record=>completed[record.id]))return false}
     return true;
   }).slice().sort(sortEvents);

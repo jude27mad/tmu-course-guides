@@ -1,3 +1,4 @@
+body[data-course="mth140"],body[data-course="mth141"]{--tile:var(--hub-panel);--line:var(--hub-line);--ink:var(--hub-ink);--ink2:var(--hub-muted);--bg:var(--hub-bg);--navy:#10233A;--sign:var(--accent)}
 
 /* Useful motion: a date rail and accessible detail sheets. */
 .semester-rail{margin:22px 0;padding:20px;border:1px solid var(--line,#D7DFE9);border-radius:18px;background:var(--tile,#fff);color:var(--ink,#101B28)}
