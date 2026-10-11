@@ -1,6 +1,6 @@
-import * as T from '../vendor/three-0.186.1.mjs';
+import * as T from '../vendor/three-0.186.1.mjs?v=20261011-overhaul2';
 export {T};
-export function material(color,extra={}){return new T.MeshStandardNodeMaterial({color,roughness:.38,metalness:.18,...extra});}
+export function material(color,extra={}){return new T.MeshPhysicalMaterial({color,roughness:.28,metalness:.55,clearcoat:.6,clearcoatRoughness:.2,...extra});}
 export function mesh(group,geometry,mat,position=[0,0,0]){const m=new T.Mesh(geometry,mat);m.position.set(...position);group.add(m);return m;}
 export function box(group,size,position,mat,radius=.04){return mesh(group,new T.RoundedBoxGeometry(...size,2,radius),mat,position);}
 export function tubeGeometry(points,radius=.015){const curve=new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p)),false,'centripetal');return new T.TubeGeometry(curve,Math.max(8,points.length*5),radius,6,false);}

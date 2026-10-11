@@ -1,16 +1,17 @@
-import {T,material,mesh,plane,segments,arrow,rod,setRod,disposeScene} from './primitives.mjs';
+import {T,material,mesh,segments,arrow,disposeScene} from './primitives.mjs?v=20261011-overhaul2';
 import {algebraState} from './scene-math.mjs';
 export function createAlgebra(p){
- const root=new T.Group(),plot=new T.Group();root.add(plot);plot.position.set(-.7,-.55,0);plot.scale.setScalar(1.7);
- plane(plot,p,[-.65,-.45,2.1,1.75]);
- const base=[[0,0,.02],[1,0,.02],[1,1,.02],[0,1,.02]];
- segments(plot,base.map((a,i)=>[a,base[(i+1)%4]]),material(p.ink,{transparent:true,opacity:.25}),.007);
- const ink=material(p.ink,{roughness:.26,metalness:.42}),pink=material(p.signal,{emissive:p.signal,emissiveIntensity:.12,roughness:.28});
- const u=arrow(plot,ink),v=arrow(plot,pink),edges=Array.from({length:4},()=>rod(plot,material(p.ink,{transparent:true,opacity:.7}),.009));
- const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(new Float32Array(12),3));geo.setIndex([0,1,2,0,2,3]);
- const face=mesh(plot,geo,material(p.accent,{transparent:true,opacity:.44,side:T.DoubleSide,depthWrite:false,metalness:.12,roughness:.2}));
- const uLabel=new T.Vector3(),vLabel=new T.Vector3();
- const origin=mesh(plot,new T.SphereGeometry(.04,12,8),pink);
- return{root,caption:'Shear · rotate · area stays 1',bounds:[5.7,4.8],labels:[{text:'e₁',position:new T.Vector3(1,-.12,.1),parent:plot},{text:'e₂',position:new T.Vector3(-.12,1,.1),parent:plot},{text:'A e₁',position:uLabel,parent:plot},{text:'A e₂',position:vLabel,parent:plot}],
- update(t,dt,{still=false}={}){const s=algebraState(t,still);uLabel.set(s.u[0]+.08,s.u[1]+.1,.1);vLabel.set(s.v[0]+.08,s.v[1]+.1,.1);const points=s.square.map(([x,y])=>[x,y,.04]);u.set([0,0,.07],[...s.u,.07]);v.set([0,0,.07],[...s.v,.07]);for(let i=0;i<4;i++){geo.attributes.position.setXYZ(i,...points[i]);setRod(edges[i],points[i],points[(i+1)%4]);}geo.attributes.position.needsUpdate=true;geo.computeVertexNormals();geo.computeBoundingSphere();origin.position.z=.06;},dispose(){disposeScene(root);}};
+ const root=new T.Group(),lattice=new T.Group();root.add(lattice);lattice.matrixAutoUpdate=false;
+ const lines=[],size=1.7;
+ for(let z=-.75;z<=.75;z+=.375)for(let d=-size;d<=size+.01;d+=.34){lines.push([[-size,d,z],[size,d,z]],[[d,-size,z],[d,size,z]]);}
+ for(let x=-size;x<=size+.01;x+=.34)for(let y=-size;y<=size+.01;y+=.34)lines.push([[x,y,-.75],[x,y,.75]]);
+ segments(lattice,lines,material(p.accent,{transparent:true,opacity:.28,roughness:.15,metalness:.65}),.005);
+ const square=[[0,0,.79],[1,0,.79],[1,1,.79],[0,1,.79]],shape=new T.BufferGeometry();shape.setAttribute('position',new T.Float32BufferAttribute(square.flat(),3));shape.setIndex([0,1,2,0,2,3]);shape.computeVertexNormals();
+ mesh(lattice,shape,material(p.accent,{side:T.DoubleSide,transparent:true,opacity:.27,depthWrite:false}));segments(lattice,square.map((a,i)=>[a,square[(i+1)%4]]),material(p.accent,{emissive:p.accent,emissiveIntensity:.25}),.016);
+ const a=arrow(root,material('#ede4ff',{emissive:p.accent,emissiveIntensity:.3})),b=arrow(root,material(p.signal,{emissive:p.signal,emissiveIntensity:.35}));let s=algebraState(0);
+ function apply([x,y,z]){return[s.u[0]*x+s.v[0]*y,s.u[1]*x+s.v[1]*y,z];}
+ return{root,bounds:[6.6,5.6],caption:'2D TRANSFORM / det A = 1',
+ update(t,dt,{still=false}={}){s=algebraState(t,still);lattice.matrix.set(s.u[0],s.v[0],0,0,s.u[1],s.v[1],0,0,0,0,1,0,0,0,0,1);lattice.matrixWorldNeedsUpdate=true;a.set([0,0,.81],[...s.u,.81]);b.set([0,0,.81],[...s.v,.81]);},
+ sketch(){return [...lines.map(points=>({kind:'line',points:points.map(apply),stroke:p.accent,alpha:.24,width:.65})),{kind:'poly',points:square.map(apply),fill:p.accent,stroke:p.accent,alpha:.28,width:1.5},...square.map((q,i)=>({kind:'line',points:[apply(q),apply(square[(i+1)%4])],stroke:p.accent,width:1.5,glow:3})),{kind:'line',points:[[0,0,.81],[...s.u,.81]],stroke:'#eee4ff',width:3,glow:8},{kind:'line',points:[[0,0,.81],[...s.v,.81]],stroke:p.signal,width:3,glow:8}];},
+ dispose(){disposeScene(root);}};
 }
