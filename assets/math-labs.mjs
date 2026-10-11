@@ -43,7 +43,7 @@ function draw(){const svg=$('svg',host),r=$('.lab-readout',host),{X,Y,scale,xmin
  let readout='',description='';
  if(id==='transforms'){
   picture+=curve(x=>transformed(s.base,1,0,0,x),'curve lab-original')+curve(x=>transformed(s.base,s.a,s.h,s.k,x),'tangent')+point(s.h,s.k,'shift');
-  const baseNames={square:'(x − h)²',absolute:'|x − h|',sqrt:'√(x − h)',sine:'sin(x − h)'};
+  const inner=`x ${signed(-s.h)}`,baseNames={square:`(${inner})²`,absolute:`|${inner}|`,sqrt:`√(${inner})`,sine:`sin(${inner})`};
   $('.workbench-equation',host).textContent=`y = ${fmt(s.a)}·${baseNames[s.base]} ${signed(s.k)}`;
   readout=`<b>a = ${fmt(s.a)} &nbsp; h = ${fmt(s.h)} &nbsp; k = ${fmt(s.k)}</b><span>${s.a===0?'Vertical scale is zero; the output is k wherever the parent function is defined.':s.a<0?'Reflected across the x-axis before shifting.':'Positive vertical scale.'} ${s.base==='sqrt'?`Domain: x ≥ ${fmt(s.h)}.`:''}</span>`;description=`Transformed ${s.base} function; scale ${s.a}, horizontal shift ${s.h}, vertical shift ${s.k}.`;
  }else if(id==='limits'){
@@ -64,7 +64,7 @@ function draw(){const svg=$('svg',host),r=$('.lab-readout',host),{X,Y,scale,xmin
  }else if(id==='complex'){
   const {x,y,u,v}=s,[wx,wy]=multiply(x,y,u,v),radius=Math.hypot(x,y),mod=Math.hypot(u,v),angle=Math.atan2(v,u)*180/Math.PI;
   picture+=`<circle class="lab-orbit" cx="${X(0)}" cy="${Y(0)}" r="${radius*scale}"/>`+line(0,0,x,y,'curve','marker-end="url(#lab-arrow)"')+line(0,0,wx,wy,'tangent','marker-end="url(#lab-arrow)"')+point(x,y,'z',false,'lab-input-point')+point(wx,wy);
-  readout=`<b>z = ${complex(x,y)}<br>m = ${complex(u,v)}<br>w = ${complex(wx,wy)}</b><span>Scale factor: ${fmt(mod)} · ${mod===0?'Rotation undefined for zero multiplier':`Rotation: ${fmt(angle)}°`}<br>${radius===0?'z = 0 has no direction; its product stays at the origin.':'Positive angles turn counterclockwise.'}</span>`;description=`${complex(x,y)} times ${complex(u,v)} equals ${complex(wx,wy)}.`;
+  readout=`<b>z = ${complex(x,y)}<br>m = ${complex(u,v)}<br>w = ${complex(wx,wy)}</b><span>Scale factor: ${fmt(mod)} · ${mod===0?'Rotation undefined for zero multiplier':`Rotation: ${fmt(angle)}°`}<br>${radius===0?'z = 0 has no direction; its product stays at the origin.':'Positive angles turn counterclockwise.'} ${wx<xmin||wx>xmax||wy<ymin||wy>ymax?'Product is outside this view. Zoom out to see it.':''}</span>`;description=`${complex(x,y)} times ${complex(u,v)} equals ${complex(wx,wy)}.`;
  }else if(id==='matrix'){
   const m=matrixAt(s.a,s.b,s.c,s.d,s.t),det=determinant(...m),apply=(x,y)=>transformPoint(m,x,y);
   for(let n=-10;n<=10;n++)picture+=line(...apply(n,-10),...apply(n,10),'lab-transformed-grid')+line(...apply(-10,n),...apply(10,n),'lab-transformed-grid');
@@ -90,13 +90,13 @@ host.addEventListener('click',e=>{
  const tab=e.target.closest('[data-lab]');if(tab){select(tab.dataset.lab);return;}
  if(e.target.closest('.lab-expand')){toggleExpanded();return;}
  const preset=e.target.closest('[data-preset]');if(preset){set(defs[id].presets[+preset.dataset.preset][1]);return;}
- const z=e.target.closest('[data-zoom]');if(z){zoom=Math.max(.5,Math.min(3,zoom*(z.dataset.zoom==='in'?1.3:1/1.3)));draw();return;}
- if(e.target.closest('.workbench-reset')){zoom=1;set({...defs[id].defaults});$('.lab-question',host).hidden=true;return;}
+ const z=e.target.closest('[data-zoom]');if(z){zoom=Math.max(.3,Math.min(3,zoom*(z.dataset.zoom==='in'?1.3:1/1.3)));draw();return;}
+ if(e.target.closest('.workbench-reset')){zoom=1;set({...defs[id].defaults});$('.lab-question',host).hidden=true;$('.lab-readout',host).hidden=false;return;}
  if(e.target.closest('.lab-play')){play();return;}
  if(e.target.closest('.lab-start')){
-  set({...defs[id].defaults});zoom=1;draw();const d=defs[id],q=$('.lab-question',host);q.hidden=false;q.innerHTML=`<p><strong>${d.question}</strong></p><div class="lab-answers">${d.answers.map((a,i)=>`<button type="button" data-answer="${i}">${a}</button>`).join('')}</div><p class="lab-feedback" role="status"></p>`;return;
+  set({...defs[id].defaults});zoom=1;draw();const d=defs[id],q=$('.lab-question',host);q.hidden=false;$('.lab-readout',host).hidden=true;q.innerHTML=`<p><strong>${d.question}</strong></p><div class="lab-answers">${d.answers.map((a,i)=>`<button type="button" data-answer="${i}">${a}</button>`).join('')}</div><p class="lab-feedback" role="status"></p>`;return;
  }
- const answer=e.target.closest('[data-answer]');if(answer){const d=defs[id],correct=+answer.dataset.answer===d.correct;set(d.after);const f=$('.lab-feedback',host);f.textContent=(correct?'Correct. ':'Not quite. ')+d.explain;for(const b of host.querySelectorAll('[data-answer]')){b.disabled=true;b.classList.toggle('lab-correct',+b.dataset.answer===d.correct);}return;}
+ const answer=e.target.closest('[data-answer]');if(answer){const d=defs[id],correct=+answer.dataset.answer===d.correct;set(d.after);$('.lab-readout',host).hidden=false;const f=$('.lab-feedback',host);f.textContent=(correct?'Correct. ':'Not quite. ')+d.explain;for(const b of host.querySelectorAll('[data-answer]')){b.disabled=true;b.classList.toggle('lab-correct',+b.dataset.answer===d.correct);}return;}
 });
 function updateInput(input){const key=input.dataset.param||input.dataset.number,config=defs[id].controls.find(c=>c[0]===key);if(!config)return;const value=Number(input.value);if(input.value.trim()===''||!Number.isFinite(value)){sync();return;}set({[key]:Math.max(config[2],Math.min(config[3],Math.round(value/config[4])*config[4]))});}
 host.addEventListener('input',e=>{if(e.target.matches('[data-param]'))updateInput(e.target)});
