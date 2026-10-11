@@ -275,6 +275,7 @@ footer{margin-top:34px;display:flex;justify-content:space-between;gap:12px;flex-
 </style>
 <link rel="stylesheet" href="assets/editorial.css?v=20261011-editorial2">
 <link rel="stylesheet" href="assets/workspace.css?v=20261011-workspace2">
+<link rel="stylesheet" href="assets/course-header.css?v=20261011-motion1">
 </head>
 <body class="editorial" data-course="cen100">
 <div class="wrap">
@@ -466,6 +467,7 @@ footer{margin-top:34px;display:flex;justify-content:space-between;gap:12px;flex-
 
   <details class="tool-section" id="guide-updates">
     <summary>What's changed? <span class="updates-badge" id="updates-badge" hidden>New updates</span></summary>
+    <p><strong>October 11, 2026 — Course headers in motion</strong></p><ul><li>Dimensional circuit, calculus and linear algebra illustrations, with smooth course transitions. Motion respects device settings and settles after a short demonstration.</li><li>The existing course colours, content and saved progress stay the same.</li></ul>
     <p><strong>October 11, 2026 — An organised course workspace</strong></p><ul><li>Assignments open first. Study and Course info have their own navigation, with compact tabs on phones.</li><li>Original course colours, interactive maths, assignment details and saved progress are preserved. Past assignments remain available; calendar exports, contacts and grading are in Course info.</li></ul>
     <p><strong>October 11, 2026 — A new course guide design</strong></p><ul><li>Larger course titles, a shared layout across Engineering and both math courses, and a compact toolbar with direct search, calendar, grading and work shortcuts.</li><li>Clearer deadline rows and a revised circuit header. All existing course information and saved progress remain available.</li></ul>
     <ul class="update-list">
@@ -1110,7 +1112,7 @@ setupContactLookup();
     });
   }
 
-  const PLAN_KEY="cen100-personal-plan-v1", SEEN_KEY="cen100-last-seen-update-v1", GUIDE_VERSION="2026-10-11-workspace";
+  const PLAN_KEY="cen100-personal-plan-v1", SEEN_KEY="cen100-last-seen-update-v1", GUIDE_VERSION="2026-10-11-motion";
   function recordsFor(item){const dates=itemDeadlines(item.id);return dates.length?dates:[{id:"item:"+item.id,item:item.id,title:item.name}]}
   const completionKeys=new Set(allItems.flatMap(item=>recordsFor(item).map(e=>e.id)));
   function validDate(value){return typeof value==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&!Number.isNaN(Date.parse(value+"T12:00:00Z"))&&new Date(value+"T12:00:00Z").toISOString().slice(0,10)===value}
@@ -1293,6 +1295,7 @@ setupContactLookup();
 <!-- Cloudflare Web Analytics temporarily paused on 2026-10-10; restore the beacon from Git history to resume. -->
 <script type="module" src="assets/editorial.mjs?v=20261011-editorial2"></script>
 <script type="module" src="assets/workspace.mjs?v=20261011-workspace2"></script>
+<script type="module" src="assets/course-header.mjs?v=20261011-motion1"></script>
 </body>
 </html>
 
