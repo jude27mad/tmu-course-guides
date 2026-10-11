@@ -1,0 +1,23 @@
+/* Motion lives around useful content; reading surfaces settle completely. */
+.workspace-nav{position:relative;isolation:isolate}
+.workspace-nav a{position:relative;z-index:1;transition:color .2s,background .2s}
+.workspace-nav:has(.workspace-nav-marker) a[aria-current]{background:transparent;box-shadow:none}
+.workspace-nav-marker{position:absolute;top:0;left:0;z-index:0;pointer-events:none;background:var(--hub-soft);border-radius:6px;box-shadow:inset 2px 0 var(--strong)}
+.workspace button,.workspace a,.workspace summary{-webkit-tap-highlight-color:transparent}
+.workspace button:focus-visible,.workspace a:focus-visible,.workspace summary:focus-visible{outline:2px solid var(--strong);outline-offset:4px}
+.workspace button,.workspace .course-link,.workspace .tile .head,.workspace .assessment>summary{transition:background-color .18s,border-color .18s,color .18s,box-shadow .18s,translate .18s,scale .15s}
+.workspace button:active{scale:.975}
+.workspace input[type=checkbox]{transition:scale .18s,filter .18s}
+.workspace input[type=checkbox]:checked{animation:guide-check .24s ease-out}
+@keyframes guide-check{50%{scale:1.18}}
+.workspace details>summary:after{transition:transform .24s}
+.workspace details[open]>summary:after{transform:rotate(180deg)}
+.workspace .detail-sheet[open],.workspace .lab-dialog[open]{animation:none}
+.workspace dialog::backdrop{transition:background-color .2s,backdrop-filter .2s}
+.workspace dialog[data-closing=true]::backdrop{background-color:transparent;backdrop-filter:blur(0)}
+.workspace .quick-find{transform-origin:top}
+.workspace .next-assessment,.workspace .cen-next-layout .next{box-shadow:0 9px 28px -20px var(--strong);transition:box-shadow .25s}
+@media(hover:hover) and (pointer:fine){.workspace button:hover{translate:0 -1px}.workspace .course-link:hover{background:var(--hub-soft)}.workspace .tile .head:hover,.workspace .assessment>summary:hover{background:color-mix(in srgb,var(--accent) 9%,transparent)}.workspace .next-assessment:hover,.workspace .cen-next-layout .next:hover{box-shadow:0 12px 32px -18px var(--strong)}}
+@media(max-width:760px){.workspace-nav-marker{background:transparent;border-radius:0;box-shadow:inset 0 -2px var(--strong)}}
+@media(prefers-reduced-motion:reduce){.workspace *, .workspace *:before,.workspace *:after{animation-duration:0s!important;transition-duration:0s!important;scroll-behavior:auto!important}}
+:root[data-motion=off] .workspace *,:root[data-motion=off] .workspace *:before,:root[data-motion=off] .workspace *:after{animation-duration:0s!important;transition-duration:0s!important;scroll-behavior:auto!important}

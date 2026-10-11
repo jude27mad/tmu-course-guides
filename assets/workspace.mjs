@@ -137,12 +137,15 @@ function mountWorkspace() {
     }
     document.body.dataset.workspaceView = view;
     refresh();
+    document.dispatchEvent(new CustomEvent('workspace-changed',{detail:view}));
   }
   function show(view, push = false) {
     if (!panels[view]) view = 'assignments';
+    const previous=active;
     changing = true;
     if (isMath) $('#tab-'+({assignments:'assessments',study:'topics',info:'help'}[view])).click();
     syncPanels(view); changing = false;
+    if(previous!==view)window.GuideMotion?.reveal(panels[view]);
     if (push) {
       history.pushState(null,'','#'+(view==='info'?'course-info':view));
       main.scrollIntoView({block:'start',behavior:'instant'});
@@ -150,9 +153,11 @@ function mountWorkspace() {
   }
   function setCenFilter(id) {
     if (id==='t-rules') {show('info');return;}
+    const before=window.GuideMotion?.capture();
     category = id==='t-team'?'team':id==='t-you'?'you':'all';
     for (const button of document.querySelectorAll('[data-cen-filter]')) button.setAttribute('aria-pressed',String(button.dataset.cenFilter===category));
     syncPanels('assignments');
+    if(before)window.GuideMotion.reflow(before);
   }
   function refresh() {
     for (const list of document.querySelectorAll('#teamlist,#youlist,#assessment-list')) {
@@ -184,8 +189,9 @@ function mountWorkspace() {
     $(isMath?'#section-select':'#contact-section').focus({preventScroll:true});
   });
   searchButton.addEventListener('click',()=>{
-    search.hidden = !search.hidden; searchButton.setAttribute('aria-expanded',String(!search.hidden));
-    if(!search.hidden) $('#guide-search').focus({preventScroll:true});
+    const open=searchButton.getAttribute('aria-expanded')!=='true';searchButton.setAttribute('aria-expanded',String(open));
+    if(window.GuideMotion)window.GuideMotion.visibility(search,open);else search.hidden=!open;
+    if(open)$('#guide-search').focus({preventScroll:true});
     else {$('#guide-search').value='';$('#guide-search').dispatchEvent(new Event('input',{bubbles:true}));}
   });
   search.addEventListener('keydown',e=>{if(e.key==='Escape'){searchButton.click();searchButton.focus();}});

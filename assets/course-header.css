@@ -91,3 +91,31 @@ body.workspace .header-upgraded .workspace-actions{grid-column:1;grid-row:2;just
 :root[data-motion=off] .art-object{transform:none!important}
 :root[data-motion=off] .art-pulse{display:none}
 @media print{.header-art{display:none}body.workspace .header-upgraded{display:block;min-height:0;padding:10px 0}}
+/* Immersive composition: reserve the full scene before loading the renderer. */
+body.workspace .header-upgraded{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);grid-template-rows:1fr auto;min-height:390px;padding:30px 0 24px;gap:20px 0;overflow:clip}
+body.workspace .header-upgraded h1{font-size:clamp(2.5rem,4.8vw,4rem);line-height:1.02;letter-spacing:-.055em;font-weight:630}
+.header-upgraded .hero-copy{align-self:center;padding-block:24px;position:relative}
+.header-upgraded .hero-copy:before{content:'';display:block;width:30px;height:2px;background:var(--strong);margin-bottom:23px;opacity:.55}
+.header-art{grid-column:2;grid-row:1/3;height:100%;min-height:330px;aspect-ratio:auto;align-self:stretch;overflow:visible;contain:layout style}
+.art-perspective{position:absolute;inset:0;transition:opacity .45s}
+.art-object{display:grid;align-items:center;transform:none}
+.art-object>svg{height:auto;max-height:100%;filter:drop-shadow(0 16px 14px color-mix(in srgb,var(--accent-ink) 9%,transparent))}
+.art-aura{inset:-12% -18%;background:radial-gradient(ellipse at 53% 50%,color-mix(in srgb,var(--accent) 39%,transparent),transparent 66%)}
+.course-scene{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity .45s;pointer-events:none}
+.header-art[data-scene-ready=true] .course-scene{opacity:1}
+.header-art[data-scene-ready=true] .art-perspective{opacity:0;visibility:hidden;transition:opacity .45s,visibility 0s .45s}
+.header-art .art-readout{display:none}
+.scene-meta{grid-column:2;grid-row:2;align-self:end;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;pointer-events:none;padding-left:20px}
+.scene-meta>span{font:500 9px/1.4 ui-monospace,monospace;letter-spacing:.1em;color:var(--hub-muted)}
+.scene-pause{pointer-events:auto;display:grid;place-items:center;background:color-mix(in srgb,var(--hub-panel) 55%,transparent);border:1px solid color-mix(in srgb,var(--hub-line) 80%,transparent);border-radius:50%;width:40px;height:40px;cursor:pointer;color:var(--strong)}
+.scene-pause svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linejoin:round}
+.scene-pause:disabled{opacity:.45;cursor:default}
+@media(min-width:761px) and (max-width:1100px){body.workspace .header-upgraded{min-height:330px;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);padding-block:22px}.header-art{min-height:286px}body.workspace .header-upgraded h1{font-size:clamp(2.1rem,4.4vw,3rem)}.scene-meta{padding-left:4px}.scene-meta>span{font-size:8px;letter-spacing:.02em}}
+@media(max-width:760px){body.workspace .header-upgraded{grid-template-columns:minmax(0,1fr);grid-template-rows:auto 168px auto;min-height:0;padding:20px 0 14px;gap:4px}.header-upgraded .hero-copy{grid-column:1;grid-row:1;padding:0;align-self:start}.header-upgraded .hero-copy:before{display:none}body.workspace .header-upgraded h1{font-size:clamp(1.75rem,6.6vw,2.5rem);line-height:1.1;max-width:100%;text-wrap:balance}.header-art{grid-column:1;grid-row:2;min-height:0;height:168px;width:100%;margin:0}.art-object>svg{max-height:180px}.header-art .art-aura{inset:-25% -6%}body.workspace .header-upgraded .workspace-actions{grid-column:1;grid-row:3;max-width:none;gap:8px;margin-top:3px}.scene-meta{position:absolute;right:0;bottom:64px;grid-column:auto;grid-row:auto;padding:0}.scene-meta>span{display:none}.scene-pause{width:36px;height:36px}.art-object{justify-items:center}.art-object>svg{width:100%}}
+@media(max-width:760px) and (max-height:600px){body.workspace .header-upgraded{grid-template-rows:auto 110px auto}.header-art{height:110px}.art-object>svg{max-height:125px}}
+@media(prefers-reduced-motion:reduce){.course-scene,.art-perspective{transition:none}}
+:root[data-motion=off] .course-scene,:root[data-motion=off] .art-perspective{transition:none}
+@media print{.scene-meta{display:none}}
+.scene-labels{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .45s;overflow:hidden}
+.scene-labels span{position:absolute;left:0;top:0;font:italic 12px Georgia,serif;color:var(--strong);white-space:nowrap;text-shadow:0 1px 3px var(--hub-bg)}
+.header-art[data-scene-ready=true] .scene-labels{opacity:1}
