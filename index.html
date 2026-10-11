@@ -274,6 +274,7 @@ footer{margin-top:34px;display:flex;justify-content:space-between;gap:12px;flex-
 .updates-badge[hidden],.share-fallback[hidden]{display:none}
 </style>
 <link rel="stylesheet" href="assets/editorial.css?v=20261011-editorial2">
+<link rel="stylesheet" href="assets/workspace.css?v=20261011-workspace1">
 </head>
 <body class="editorial" data-course="cen100">
 <div class="wrap">
@@ -465,6 +466,7 @@ footer{margin-top:34px;display:flex;justify-content:space-between;gap:12px;flex-
 
   <details class="tool-section" id="guide-updates">
     <summary>What's changed? <span class="updates-badge" id="updates-badge" hidden>New updates</span></summary>
+    <p><strong>October 11, 2026 — An organised course workspace</strong></p><ul><li>Assignments open first. Study and Course info have their own navigation, with compact tabs on phones.</li><li>Original course colours, interactive maths, assignment details and saved progress are preserved. Past assignments remain available; calendar exports, contacts and grading are in Course info.</li></ul>
     <p><strong>October 11, 2026 — A new course guide design</strong></p><ul><li>Larger course titles, a shared layout across Engineering and both math courses, and a compact toolbar with direct search, calendar, grading and work shortcuts.</li><li>Clearer deadline rows and a revised circuit header. All existing course information and saved progress remain available.</li></ul>
     <ul class="update-list">
       <li><b>Oct 11, 2026 — Visual tools:</b> Added a semester timeline and assignment detail sheets. Completion records, checklists and notes use the same saved data. The circuit header follows your next unfinished deadline.</li>
@@ -801,7 +803,7 @@ function refreshDateDisplays(completed={}){
     for(const item of list){
       const timing=itemTiming(item),tile=document.getElementById("b-"+item.id).closest(".tile");
       const highlight=!found&&timing.upcoming;if(highlight)found=true;
-      tile.classList.toggle("past",timing.past);tile.classList.toggle("now",highlight);
+      tile.dataset.sortDate=timing.date||"9999";tile.classList.toggle("past",timing.past);tile.classList.toggle("now",highlight);
       tile.querySelector(".date").innerHTML=dateMarkup(item,timing);
       tile.querySelector(".deadline-state").innerHTML=deadlineBadge(item,timing);
     }
@@ -817,7 +819,7 @@ function renderList(list,elId){
     const facts=s.facts.length?`<div class="facts">${s.facts.map(f=>`<div class="fact">${I[f[0]]}<span>${esc(f[1])}</span></div>`).join("")}</div>`:"";
     const groups=s.groups.map((g,gi)=>`${g[0]?`<div class="grp">${esc(g[0])}</div>`:""}<ul class="checks">${g[1].map((t,i)=>{const k=`${s.id}-${gi}-${i}`;return `<li><label><input type="checkbox" data-k="${k}" data-s="${s.id}"${ticks[k]?" checked":""}><span>${esc(t)}</span></label></li>`}).join("")}</ul>`).join("");
     const traps=s.traps.length?`<div class="bar bad">${I.warn}Lose marks</div><ul class="traps">${s.traps.map(t=>`<li>${I.warn}<span>${esc(t)}</span></li>`).join("")}</ul>`:"";
-    return `<li class="tile ${st}">
+    return `<li class="tile ${st}" data-sort-date="${esc(timing.date||"9999")}">
      <button class="head" aria-expanded="false" aria-controls="b-${s.id}">
       <span class="date">${dateHTML}</span>
       <span class="info"><span class="title">${esc(s.name)}</span>
@@ -852,6 +854,7 @@ document.addEventListener("click",e=>{
   const h=e.target.closest(".head");
   if(h){const b=document.getElementById(h.getAttribute("aria-controls")),o=h.getAttribute("aria-expanded")==="true";h.setAttribute("aria-expanded",!o);b.hidden=o;return}
   const t=e.target.closest(".tab");
+  if(t&&window.CourseWorkspace){window.CourseWorkspace.setCenFilter(t.id);return}
   if(t)document.querySelectorAll(".tab").forEach(x=>{const on=x===t;x.setAttribute("aria-selected",on);document.getElementById(x.getAttribute("aria-controls")).hidden=!on});
 });
 document.addEventListener("change",e=>{if(e.target.matches("input[data-k]")){const k=e.target.dataset.k;e.target.checked?ticks[k]=1:delete ticks[k];save();counts()}});
@@ -980,7 +983,7 @@ setupContactLookup();
   function setupCompletedFilter(){
     for(const listId of ["teamlist","youlist"]){
       const note=document.createElement("p");note.id=listId+"-empty";note.className="guide-empty";note.hidden=true;
-      note.textContent="All items in this tab are fully checked. Turn off ‘Hide fully checked items’ above the tabs to see them.";
+      note.textContent="All items in this tab are fully checked. Turn off ‘Hide fully checked items’ to see them.";
       $(listId).after(note);
     }
     $("hide-completed").checked=readSaved(FILTER_KEY,false)===true;
@@ -1045,7 +1048,7 @@ setupContactLookup();
   function downloadFile(name,type,text){
     const blob=new Blob([text],{type}),url=URL.createObjectURL(blob),link=document.createElement("a");link.href=url;link.download=name;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
   }
-  function openCalendar(itemId){$("guide-tools").open=true;$("calendar-tools").open=true;$("calendar-item").value=itemId;$("calendar-status").textContent="";$("calendar-item").focus({preventScroll:true});$("calendar-tools").scrollIntoView({block:"start",behavior:"auto"})}
+  function openCalendar(itemId){window.CourseVisuals?.close();window.CourseWorkspace?.show("info");$("guide-tools").open=true;$("calendar-tools").open=true;$("calendar-item").value=itemId;$("calendar-status").textContent="";$("calendar-item").focus({preventScroll:true});$("calendar-tools").scrollIntoView({block:"start",behavior:"auto"})}
   function setupCalendar(){
     for(const item of allItems.filter(item=>CALENDAR_DATES.some(event=>event.item===item.id))){const option=document.createElement("option");option.value=item.id;option.textContent=item.name;$("calendar-item").append(option)}
     $("calendar-download").addEventListener("click",()=>{
@@ -1107,7 +1110,7 @@ setupContactLookup();
     });
   }
 
-  const PLAN_KEY="cen100-personal-plan-v1", SEEN_KEY="cen100-last-seen-update-v1", GUIDE_VERSION="2026-10-11-editorial";
+  const PLAN_KEY="cen100-personal-plan-v1", SEEN_KEY="cen100-last-seen-update-v1", GUIDE_VERSION="2026-10-11-workspace";
   function recordsFor(item){const dates=itemDeadlines(item.id);return dates.length?dates:[{id:"item:"+item.id,item:item.id,title:item.name}]}
   const completionKeys=new Set(allItems.flatMap(item=>recordsFor(item).map(e=>e.id)));
   function validDate(value){return typeof value==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&!Number.isNaN(Date.parse(value+"T12:00:00Z"))&&new Date(value+"T12:00:00Z").toISOString().slice(0,10)===value}
@@ -1289,6 +1292,7 @@ setupContactLookup();
 <script src="assets/visuals.js?v=20261011-labs2"></script>
 <!-- Cloudflare Web Analytics temporarily paused on 2026-10-10; restore the beacon from Git history to resume. -->
 <script type="module" src="assets/editorial.mjs?v=20261011-editorial2"></script>
+<script type="module" src="assets/workspace.mjs?v=20261011-workspace1"></script>
 </body>
 </html>
 
