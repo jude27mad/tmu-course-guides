@@ -1,4 +1,4 @@
-import { IDENTITY, OPERATIONS, compose, applyMatrix, matrixDet, compositionAt, sameMatrix } from './lab-composition-math.mjs';
+import { IDENTITY, OPERATIONS, compose, applyMatrix, matrixDet, compositionAt, sameMatrix, cameraScale } from './lab-composition-math.mjs?v=20261011-studio3';
 
 let instance = 0;
 const fmt = value => Number((Math.abs(value) < 1e-8 ? 0 : value).toFixed(2)).toString().replace('-', '−');
@@ -47,9 +47,7 @@ export function mountComposition(container) {
   function stop() { if(raf) cancelAnimationFrame(raf); raf=0;playing=false;host.querySelector('[data-action="play"]').innerHTML='<span aria-hidden="true">▶</span> Play steps'; }
   function basePlot() {
     // Both panels share one fixed camera through playback and after swapping order.
-    const candidates = [IDENTITY,OPERATIONS[first].matrix,OPERATIONS[second].matrix,compose(first,second),compose(second,first)];
-    const max = Math.max(2.65,...candidates.flatMap(m=>unit.map(p=>Math.hypot(...applyMatrix(m,p))))+.35);
-    scale = 143/max;
+    scale = cameraScale(first, second);
     const extentX = 205/scale, extentY=145/scale;
     let grid = '';
     for(let n=-Math.ceil(extentX);n<=extentX;n++) grid+=pathLine([n,-extentY],[n,extentY],n===0?'cmp-axis':'cmp-grid');

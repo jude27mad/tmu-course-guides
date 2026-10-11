@@ -1,5 +1,5 @@
 import {transformed,multiply,intersection,secant,limitValue,limitFacts} from './lab-math.mjs';
-import {mountComposition} from './lab-composition.mjs';
+import {mountComposition} from './lab-composition.mjs?v=20261011-studio3';
 import {mountChallenges} from './lab-challenges.mjs';
 const course=document.body.dataset.course;
 if(course==='mth140'||course==='mth141')init();

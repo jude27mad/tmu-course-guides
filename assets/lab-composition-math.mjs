@@ -25,3 +25,11 @@ export function compositionAt(first, second, step, progress) {
   return step < 2 ? operationAt(first, progress) : matrixMultiply(operationAt(second, progress), OPERATIONS[first].matrix);
 }
 export function sameMatrix(a, b) { return a.every((v, i) => Math.abs(v-b[i]) < 1e-9); }
+
+// One shared camera covers both operation orders and every playback stage.
+export function cameraScale(first, second) {
+  const corners = [[0,0],[1,0],[1,1],[0,1]];
+  const candidates = [IDENTITY, OPERATIONS[first].matrix, OPERATIONS[second].matrix, compose(first,second), compose(second,first)];
+  const radii = candidates.flatMap(m => corners.map(p => Math.hypot(...applyMatrix(m,p))));
+  return 143 / (Math.max(2.65, ...radii) + .35);
+}

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { IDENTITY,OPERATIONS,matrixMultiply,applyMatrix,matrixDet,compose,operationAt,compositionAt,sameMatrix } from '../assets/lab-composition-math.mjs';
+import { IDENTITY,OPERATIONS,matrixMultiply,applyMatrix,matrixDet,compose,operationAt,compositionAt,sameMatrix,cameraScale } from '../assets/lab-composition-math.mjs';
 const close=(actual,expected)=>actual.forEach((v,i)=>assert.ok(Math.abs(v-expected[i])<1e-10,`${v} differs from ${expected[i]}`));
 test('column-vector composition applies the rightmost matrix first',()=>{
   assert.deepEqual(compose('rotate','stretch'),[0,-2,1,0]);
@@ -36,4 +36,21 @@ test('collapse makes zero area, reflection reverses orientation, and commuting p
   assert.equal(sameMatrix(compose('reflect','stretch'),compose('stretch','reflect')),true);
   assert.equal(sameMatrix(compose('shear','collapse'),compose('collapse','shear')),false);
   assert.deepEqual(matrixMultiply(OPERATIONS.collapse.matrix,OPERATIONS.collapse.matrix),OPERATIONS.collapse.matrix);
+});
+
+test('shared camera stays finite and contains unit-square corners through all operation orders',()=>{
+  const corners=[[0,0],[1,0],[1,1],[0,1]];
+  for(const first of Object.keys(OPERATIONS))for(const second of Object.keys(OPERATIONS)){
+    const scale=cameraScale(first,second);
+    assert.ok(Number.isFinite(scale)&&scale>0, `${first}, ${second}: camera scale`);
+    for(const [a,b] of [[first,second],[second,first]])for(const step of [1,2])for(const progress of [0,.25,.5,.75,1]){
+      const m=compositionAt(a,b,step,progress);
+      for(const corner of corners){
+        const [x,y]=applyMatrix(m,corner);
+        const px=220+x*scale,py=165-y*scale;
+        assert.ok(Number.isFinite(px)&&Number.isFinite(py));
+        assert.ok(px>=14&&px<=426&&py>=14&&py<=314, `${a}, ${b}: corner outside plot`);
+      }
+    }
+  }
 });
