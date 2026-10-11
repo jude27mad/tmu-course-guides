@@ -67,6 +67,7 @@ body.workspace .circuit{width:48%;opacity:.38;pointer-events:none}
 .workspace #workspace-assignments .assessment-preview,.workspace #workspace-assignments .card-preview{display:none}
 .workspace .assessment>summary{padding:17px 0}
 .workspace .assessment-title{font-size:1.03rem}
+.workspace .pill.active{background:var(--accent);color:var(--accent-ink)}
 .workspace .assessment-meta{margin-top:5px;gap:5px}
 .workspace .tiles{gap:0;border-top:1px solid var(--hub-line)}
 .workspace .tile{border:0;border-bottom:1px solid var(--hub-line);border-radius:0;background:transparent;box-shadow:none}
