@@ -3,7 +3,7 @@
 .workspace .skip-link{position:fixed;top:8px;left:8px;z-index:10000;transform:translateY(-200%);padding:12px 16px;background:var(--hub-panel);color:var(--hub-ink);border:1px solid var(--hub-line);border-radius:5px}
 .workspace .skip-link:focus{transform:translateY(0)}
 .course-workspace{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:100dvh;max-width:1600px;margin:auto}
-body.workspace .hub-shell{position:sticky;top:0;align-self:start;min-height:100dvh;width:100%;padding:28px 16px 20px;border-right:1px solid var(--hub-line);background:var(--hub-panel);display:flex;flex-direction:column;gap:30px}
+body.workspace .hub-shell{margin:0;position:sticky;top:0;align-self:start;min-height:100dvh;width:100%;padding:28px 16px 20px;border-right:1px solid var(--hub-line);background:var(--hub-panel);display:flex;flex-direction:column;gap:30px}
 .workspace .hub-top{margin:0;display:block}
 .workspace .hub-brand{font-size:.86rem;gap:10px}
 .workspace .hub-brand small{margin-top:3px}
