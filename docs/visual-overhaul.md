@@ -42,3 +42,11 @@ Verification performed: 31 mathematical/data/geometry tests; scene lifecycle fal
 - [Three physical materials](https://threejs.org/docs/pages/MeshPhysicalMaterial.html) and [RoomEnvironment](https://threejs.org/docs/pages/RoomEnvironment.html): material response and image-based lighting.
 
 Analytics stays disabled. No course data or storage keys are changed by the rendering system.
+
+## Header cinema revision
+
+The subsequent user review rejected the wireframe aesthetic and requested large solid 3D artwork plus whole-page movement. The headers now use abstract kinetic sculpture: layered signal core, flowing metallic ribbon, and a 27-cell solid cluster. These are artistic course identities; exact calculus and algebra demonstrations remain in the unchanged study content. Header captions no longer claim that the sculpture is a y=x² plot or a determinant demonstration.
+
+Course changes use a GSAP departure/entrance of the whole content area with perspective rotation, depth, translation and blur. Section transitions turn and slide the content, and header camera/geometry respond to taps. Native course links remain usable with modifiers or reduced motion. The saved header pause setting affects only the scene; it no longer disables interface choreography. `?motion=full` is an explicit user override for full motion, remembered locally.
+
+Additional primary references evaluated: [parallel scene/page timelines](https://tympanus.net/codrops/2026/10/08/building-parallel-page-transitions-with-gsap-and-react-router/), [interactive extruded clusters](https://tympanus.net/codrops/2026/08/12/creating-an-interactive-3d-cluster-with-three-js-tsl-and-three-start/), and [glass/cube sculpture interaction](https://tympanus.net/codrops/2026/08/31/volatile-nexus-tinkering-with-glass-caustics-cubes-and-sound-in-three-js/). Implementation is original plain-JavaScript code, not a copied asset or a React migration.

@@ -16,7 +16,7 @@ const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
  w.HTMLDialogElement.prototype.close=function(){this.open=false};
  w.eval(result.outputFiles[0].text);
  const M=w.motion,$=id=>d.getElementById(id),dialog=d.querySelector('.detail-sheet');
- assert(M.motionAllowed());
+ assert(M.motionAllowed());M.setScenePaused(true);assert(M.motionAllowed(),'pausing the header must preserve interface motion');assert(!M.sceneMotionAllowed());M.setScenePaused(false);assert(M.sceneMotionAllowed());
  // Real timer playback: the first frame is visibly displaced, an intermediate frame advances,
  // and completion removes inline opacity/transform so reading remains stationary.
  const reveal=M.reveal($('one'));
@@ -25,15 +25,16 @@ const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
  await wait(100);assert(reveal.progress()>0&&reveal.progress()<1);
  assert(Number($('one').style.opacity)>.35);
  await wait(450);assert.equal($('one').style.transform,'');assert.equal($('one').style.opacity,'');
+ const page=M.enterPage($('panels'));assert.match($('panels').style.transform,/rotateY/,'the whole content has a real 3D entrance');await wait(110);assert(page.progress()>0&&page.progress()<1);M.cancel({});await wait(950);assert.equal($('panels').style.transform,'');
  const section=M.transitionPanel($('one'),$('two'));
- assert.equal(section.duration(),.52);assert(!$('two').hidden);assert($('one').inert);assert.equal($('one').style.pointerEvents,'none');
+ assert.ok(section.duration()>=.7);assert(!$('two').hidden);assert($('one').inert);assert.equal($('one').style.pointerEvents,'none');
  await wait(80);M.transitionPanel($('two'),$('three'),-1);
  assert($('one').hidden);assert(!$('three').hidden);assert($('two').inert);
- await wait(600);assert($('two').hidden);assert.equal($('three').style.transform,'');assert.equal($('two').style.position,'');
+ await wait(850);assert($('two').hidden);assert.equal($('three').style.transform,'');assert.equal($('two').style.position,'');
  M.visibility($('search'),true);assert(!$('search').hidden);await wait(70);M.visibility($('search'),false);await wait(400);assert($('search').hidden);
  M.visibility($('search'),true);M.setPaused(true);assert(!$('search').hidden);assert.equal($('search').style.height,'');assert(!M.motionAllowed());M.setPaused(false);
  M.disclosure($('tools'),true);await wait(70);M.disclosure($('tools'),false);M.disclosure($('tools'),true);await wait(400);assert($('tools').open);assert.equal($('tools').style.height,'');
- dialog.showModal();const input=dialog.querySelector('input'),open=M.dialogOpen(dialog,{left:80,top:90,width:120,height:60});assert.equal(open.duration(),.44);
+ dialog.showModal();const input=dialog.querySelector('input'),open=M.dialogOpen(dialog,{left:80,top:90,width:120,height:60});assert.ok(open.duration()>=.65);
  await wait(70);let closes=0;M.dialogClose(dialog,()=>{closes++;dialog.close()},{left:80,top:90,width:120,height:60});await wait(420);
  assert.equal(closes,1);assert(!dialog.open);assert.equal(dialog.querySelector('input'),input);assert.equal(input.value,'preserve');assert.equal(dialog.style.transform,'');
  dialog.showModal();M.dialogOpen(dialog);M.dialogClose(dialog,()=>{closes++;dialog.close()});media.matches=true;mediaChange();assert(!dialog.open);assert.equal(closes,2);assert.equal(dialog.style.opacity,'');media.matches=false;mediaChange();
