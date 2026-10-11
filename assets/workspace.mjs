@@ -20,6 +20,7 @@ function mountWorkspace() {
   document.body.classList.add('workspace');
   if (!main.id) main.id = 'course-main';
   main.setAttribute('role', 'main');
+  main.setAttribute('tabindex', '-1');
   if (!$('.skip-link')) {
     const skip = document.createElement('a');
     skip.className = 'skip-link'; skip.href = '#'+main.id; skip.textContent = 'Skip to course content';
