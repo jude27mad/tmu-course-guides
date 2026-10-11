@@ -33,3 +33,17 @@ The numerical suite covers function domains and shifts, secant limits, complex m
 5. No document or studio overflow at phone/tablet widths; no aspect-ratio letterboxing.
 
 Bump the relevant asset query versions when shipping changes, including changed ES module imports. GitHub Pages and browser caches can otherwise mix old and new modules.
+
+
+## Editorial design (October 11, 2026)
+
+`assets/editorial.css` supplies the shared page composition and the dark math studio. `assets/editorial.mjs` enhances the existing header, adds tool shortcuts, and moves the studio above the semester timeline. The original course scripts remain responsible for schedules, checks, storage and grading. The new toolbar opens those existing controls.
+
+- All three course shells share a 1240px maximum width and matching responsive gutters.
+- Hero diagrams show actual mathematical relationships: the tangent to x² at (1, 1), and multiplication of 1 + i by i.
+- New hero motion draws once and respects reduced motion. Interactive experiment motion remains action-driven.
+- Studio color variables are scoped to the studio so the plots remain legible in both page appearances.
+- The expanded studio has a sticky close/header region.
+- `/tests/editorial/` is a noindex responsive review fixture pointing to the live course pages. The isolated course snapshots used before release were removed after review.
+
+Before releasing: use the fixture to inspect all three pages at 320, 390, 820, 1024 and 1280px; check tool shortcuts, theme contrast, plot controls, matrix playback, mistake feedback and expanded-view close.
