@@ -21,3 +21,11 @@
 @media(prefers-reduced-motion:reduce){.workspace *, .workspace *:before,.workspace *:after{animation-duration:0s!important;transition-duration:0s!important;scroll-behavior:auto!important}}
 :root[data-motion=off] .workspace *,:root[data-motion=off] .workspace *:before,:root[data-motion=off] .workspace *:after{animation-duration:0s!important;transition-duration:0s!important;scroll-behavior:auto!important}
 body.workspace,.workspace .hub-shell,.workspace .workspace-disclosure,.workspace .quick-find{transition:background-color .22s,color .22s,border-color .22s}
+/* A perspective stage for every course and section transition. */
+.course-workspace{perspective:1800px;perspective-origin:60% 260px}
+body.workspace .wrap,body.workspace .math-wrap{transform-origin:50% 240px;backface-visibility:hidden}
+.workspace-panel{backface-visibility:hidden;transform-origin:50% 40px}
+.header-upgraded{transform-origin:50% 50%;backface-visibility:hidden}
+.workspace dialog{backface-visibility:hidden;transform-origin:50% 100%}
+@view-transition{navigation:none}
+body.workspace{overflow-x:clip}

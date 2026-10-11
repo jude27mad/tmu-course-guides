@@ -10,9 +10,9 @@ One Fall 2026 course companion with a shared course switcher and light/dark appe
 
 ## Visual overhaul — October 11, 2026
 
-Full-width graphite scenes use the original salmon, mint and lavender colours. Engineering has a layered circuit with deadline-driven signals; Calculus I has an extruded parabola with a secant-to-tangent demonstration; Linear Algebra shows an area-preserving 2D transformation inside an extruded lattice. Pointer and section changes move the camera. The same mathematical geometry also drives an animated Canvas2D fallback.
+Full-width graphite scenes use the original salmon, mint and lavender colours. Engineering has a layered circuit with deadline-driven signals; Calculus I has a flowing metallic ribbon; Linear Algebra has a kinetic solid cube cluster that separates and reassembles. These headers are abstract course artwork; exact teaching diagrams remain in the study studio. Pointer and section changes move the camera. The same mathematical geometry also drives an animated Canvas2D fallback.
 
-GSAP timelines and Flip coordinate section changes, assignment sheets, study expansion, search, tools, disclosure panels and completion reordering. Native scrolling remains. The header pause button and device reduced-motion preference apply to both scene and interface motion. Offscreen and hidden scenes stop rendering. Course dates, saved records and study interactions are preserved.
+GSAP timelines and Flip coordinate section changes, assignment sheets, study expansion, search, tools, disclosure panels and completion reordering. Native scrolling remains. The header pause button pauses the scene independently of interface transitions. Device reduced motion is respected by default; opening a link with `?motion=full` explicitly selects and remembers full motion. Offscreen and hidden scenes stop rendering. Course dates, saved records and study interactions are preserved.
 
 See [the rendering and motion notes](docs/visual-overhaul.md) for build commands, verification and the physical-device evidence boundary.
 
