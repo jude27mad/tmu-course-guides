@@ -1,0 +1,78 @@
+/* Shared editorial shell. Enhances the existing guide without replacing its data or state. */
+const course=document.body.dataset.course;
+const math=course==='mth140'||course==='mth141';
+const $=selector=>document.querySelector(selector);
+const heading=$('.course-heading,.circuit-head');
+const toolkit=$('#math-tools,#guide-tools');
+const search=$('#guide-search');
+
+if(heading&&toolkit){
+  document.body.classList.add('editorial');
+  const caption=document.createElement('p');caption.className='hero-caption';
+  caption.textContent=course==='mth140'?'The mathematics of change.':course==='mth141'?'A new way to see space.':'Ideas become engineering.';
+  const actions=document.createElement('div');actions.className='hero-actions';
+  actions.innerHTML=math?'<a class="hero-link" href="#math-lab">Explore the math <span aria-hidden="true">↗</span></a><a class="hero-secondary" href="#next-assessment">Upcoming assessments <span aria-hidden="true">↓</span></a>':'<a class="hero-link" href="#nextsign">Your next deadline <span aria-hidden="true">↗</span></a><a class="hero-secondary" href="#board">What’s coming up <span aria-hidden="true">↓</span></a>';
+  if(math){
+    const copy=heading.firstElementChild;
+    copy.classList.add('hero-copy');
+    copy.querySelector('h1').after(caption);
+    copy.append(actions);
+    const figure=$('#course-figure');figure.className='hero-figure';
+    figure.innerHTML=heroFigure(course);
+    $('#course-organization').classList.add('hero-organization');
+  }else{
+    const copy=document.createElement('div');copy.className='hero-copy';
+    for(const el of [...heading.children])if(!el.matches('svg'))copy.append(el);
+    heading.append(copy);
+    const title=copy.querySelector('h1');
+    title.innerHTML='<span class="hero-pretitle">Introduction to</span>Engineering';
+    title.after(caption);copy.append(actions);
+  }
+
+  // Explicit shortcuts use the original controls, listeners and local progress.
+  const calendar=$('#calendar-tools')||$('#calendar-download')?.closest('details');
+  if(calendar&&!calendar.id)calendar.id='calendar-tools';
+  const bar=document.createElement('nav');bar.className='guide-dock';bar.setAttribute('aria-label','Guide tools');
+  bar.innerHTML=`<button class="dock-all" type="button" aria-expanded="${toolkit.open}" aria-controls="${toolkit.id}"><span class="dock-symbol" aria-hidden="true">⌘</span>Guide tools<span class="dock-toggle" aria-hidden="true">+</span></button><div class="dock-shortcuts"><button type="button" data-dock="search"><svg aria-hidden="true" viewBox="0 0 20 20"><circle cx="8" cy="8" r="5"/><path d="m12 12 5 5"/></svg><span>Search</span></button><button type="button" data-dock="calendar"><svg aria-hidden="true" viewBox="0 0 20 20"><rect x="3" y="4" width="14" height="13" rx="2"/><path d="M3 8h14M6 2v4m8-4v4"/></svg><span>Calendar</span></button><button type="button" data-dock="grades"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 16V9m6 7V4m6 12v-5"/></svg><span>Grading</span></button><button type="button" data-dock="work"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="m3 6 2 2 3-4M10 6h7M3 13l2 2 3-4m2 2h7"/></svg><span>My work</span></button></div>`;
+  toolkit.before(bar);
+  toolkit.querySelector(':scope>summary').hidden=true;
+  const all=bar.querySelector('.dock-all');
+  function syncDock(){all.setAttribute('aria-expanded',String(toolkit.open));bar.querySelector('.dock-toggle').textContent=toolkit.open?'−':'+';}
+  toolkit.addEventListener('toggle',syncDock);
+  all.addEventListener('click',()=>{toolkit.open=!toolkit.open;syncDock();});
+  function openTool(target){
+    if(!target)return;
+    toolkit.open=true;target.open=true;syncDock();
+    requestAnimationFrame(()=>{target.scrollIntoView({block:'nearest',behavior:'instant'});target.querySelector('summary')?.focus({preventScroll:true});});
+  }
+  bar.addEventListener('click',event=>{
+    const action=event.target.closest('[data-dock]')?.dataset.dock;
+    if(action==='search'){search?.scrollIntoView({block:'center',behavior:'instant'});search?.focus({preventScroll:true});}
+    if(action==='calendar')openTool(calendar);
+    if(action==='grades')openTool($('#course-grading'));
+    if(action==='work')$('#quick-work')?.click();
+  });
+
+  const studio=$('#math-lab'),rail=$('.semester-rail');
+  if(studio&&rail){
+    rail.before(studio);
+    studio.querySelector('.workbench-kicker').textContent='01 / Interactive studio';
+    studio.querySelector('.workbench-title h2').innerHTML='See the idea.<br><span>Make it click.</span>';
+    studio.querySelector('.lab-subtitle').textContent='Choose a concept. Change one thing. See what follows.';
+    studio.tabIndex=-1;
+  }
+  if(rail){
+    const kicker=document.createElement('span');kicker.className='section-kicker';kicker.textContent=math?'02 / Your semester':'01 / Your semester';
+    rail.querySelector('.rail-heading>div')?.prepend(kicker);
+  }
+}
+
+function heroFigure(id){
+  const grid='<path class="hero-grid" d="M40 60H420M40 110H420M40 160H420M40 210H420M40 260H420M80 35V300M130 35V300M180 35V300M230 35V300M280 35V300M330 35V300M380 35V300"/>';
+  if(id==='mth140'){
+    const X=x=>230+x*67,Y=y=>265-y*44;
+    const points=Array.from({length:101},(_,i)=>{const x=-2.25+i*4.5/100;return `${X(x)},${Y(x*x)}`}).join(' ');
+    return `<div class="hero-figure-label"><span>FIG. 01 / THE DERIVATIVE</span><span aria-hidden="true">↗</span></div><svg viewBox="0 0 460 330" role="img" aria-label="The curve y equals x squared, with a tangent of slope two at one comma one">${grid}<path class="hero-axis" d="M40 265H420M230 305V30"/><polyline class="hero-curve" points="${points}"/><path class="hero-guide" d="M297 265V221H230"/><path class="hero-tangent" d="M246.75 287L410.9 71.4"/><circle class="hero-halo" cx="297" cy="221" r="16"/><circle class="hero-point" cx="297" cy="221" r="5"/><text class="hero-formula" x="78" y="74">f(x) = x²</text><text class="hero-note" x="307" y="247">(1, 1)</text><text class="hero-note" x="406" y="282">x</text><text class="hero-note" x="242" y="40">y</text></svg><div class="hero-figure-foot"><span>At x = 1</span><strong>f′(1) = 2</strong><span>Tangent slope</span></div>`;
+  }
+  return `<div class="hero-figure-label"><span>FIG. 01 / COMPLEX ROTATION</span><span aria-hidden="true">↗</span></div><svg viewBox="0 0 460 330" role="img" aria-label="Multiplying one plus i by i rotates it 90 degrees counterclockwise to minus one plus i">${grid}<path class="hero-axis" d="M40 220H420M230 305V30"/><circle class="hero-orbit" cx="230" cy="220" r="113.137"/><path class="hero-tangent" d="M230 220L150 140m0 13v-13h13"/><path class="hero-curve" d="M230 220L310 140m-13 0h13v13"/><path class="hero-arc" d="M278 172A67.88 67.88 0 0 0 182 172m2-12-2 12 12-2"/><circle class="hero-point" cx="150" cy="140" r="5"/><text class="hero-formula" x="58" y="70">z × i</text><text class="hero-note" x="315" y="129">1 + i</text><text class="hero-note" x="80" y="129">−1 + i</text><text class="hero-note" x="214" y="134">90°</text><text class="hero-note" x="405" y="239">Re</text><text class="hero-note" x="242" y="40">Im</text></svg><div class="hero-figure-foot"><span>Multiply by i</span><strong>↺ 90°</strong><span>Same magnitude</span></div>`;
+}
