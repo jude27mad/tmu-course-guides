@@ -29,7 +29,7 @@ function toggleExpanded(){if(expanded){closeExpanded();return;}focusBefore=docum
 // Exact inputs remain available on demand; the primary experience requires no dragging.
 const exactInput=([key,label,min,max,step])=>`<label class="lab-exact">${label}<input type="number" aria-label="${label} exact value" data-number="${key}" min="${min}" max="${max}" step="${step}" value="${s[key]}"></label>`;
 function stopAnimation(){cancelAnimationFrame(raf);if(animationTarget){Object.assign(s,animationTarget);animationTarget=null;}}
-function dispose(){stopAnimation();disposePanel?.();disposePanel=null;dragging=null;}
+function dispose(){stopAnimation();$('.lab-announcement',host).textContent='';disposePanel?.();disposePanel=null;dragging=null;}
 function showMode(next){if(next===mode)return;dispose();mode=next;for(const b of host.querySelectorAll('[data-mode]'))b.setAttribute('aria-pressed',String(b.dataset.mode===mode));$('.lab-tabs',host).hidden=mode!=='explore';if(mode==='mistakes'){disposePanel=mountChallenges($('.lab-content',host),course,challengeSession);}else select(id);}
 function select(key){if(!ids.includes(key))return;dispose();if(s&&id)memories[id]={...s};id=key;s={...(memories[id]||defs[id].defaults)};zoom=1;eqTerm='h';const d=defs[id];
  for(const tab of host.querySelectorAll('[data-lab]'))tab.setAttribute('aria-pressed',String(tab.dataset.lab===id));
