@@ -8,7 +8,7 @@ Three 0.186.1 uses WebGL2, physical materials, environment reflections and merge
 
 The current sculpture budgets are 11 meshes / 21,088 triangles for Engineering, 1 / 1,800 for Calculus, and 27 / 8,100 for Linear Algebra. Pixel ratio is capped at 1.5 for coarse pointers and 1.8 otherwise. Sustained slow frames lower resolution and target about 30 fps. A single frame owner pauses when the document is hidden, the header leaves the viewport, motion is paused or reduced motion is requested. Returning from back/forward cache resumes it.
 
-Canvas2D fallback projects the same geometry through the same camera. It preserves signal movement, camera response and the mathematical demonstration when WebGL2 cannot initialize or loses its context. Its material appearance is simpler than the GPU renderer. It is not evidence of GPU shader appearance or physical-device smoothness.
+Canvas2D fallback projects the same geometry through the same camera. It preserves signal movement, camera response and the kinetic sculpture when WebGL2 cannot initialize or loses its context. Its material appearance is simpler than the GPU renderer. It is not evidence of GPU shader appearance or physical-device smoothness.
 
 The current headers are abstract course artwork: a layered signal core, a continuous twisting ribbon, and a kinetic solid cube cluster. Exact mathematics remains in the unchanged study studio; the header captions no longer present the artwork as an instructional graph.
 
