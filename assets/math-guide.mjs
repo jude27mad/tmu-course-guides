@@ -6,7 +6,7 @@ const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;'
 const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}};
 const storageKey=courseId+'-progress-v1',sectionKey=courseId+'-section-v1';
 const forward='<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>';
-const GUIDE_VERSION='2026-10-11-immersive',seenKey=courseId+'-last-seen-update-v1';
+const GUIDE_VERSION='2026-10-11-overhaul2',seenKey=courseId+'-last-seen-update-v1';
 let section=Number(read(sectionKey,0));if(!course.labs.some(x=>x.section===section))section=0;
 const knownChecks=new Set(course.assessments.flatMap(a=>prep(a).map((_,i)=>a.id+'-'+i)));
 const knownTopics=new Set(course.topics.flatMap(t=>t.skills.map((_,i)=>t.id+'-'+i)));

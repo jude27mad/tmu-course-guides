@@ -8,9 +8,13 @@ One Fall 2026 course companion with a shared course switcher and light/dark appe
 | MTH140: Calculus I | [MTH140](https://jude27mad.github.io/tmu-course-guides/mth140/) | All 34 sections, instructors, TAs and lab rooms |
 | MTH141: Linear Algebra | [MTH141](https://jude27mad.github.io/tmu-course-guides/mth141/) | All 34 sections, instructors, Academic Assistants and lab rooms |
 
-## Visual tools — October 11, 2026
+## Visual overhaul — October 11, 2026
 
-The semester rail shows published deadlines by week, including section-derived math quiz dates with their certainty notes. Completion dots reflect manually recorded progress. Assignment and assessment cards open in native dialog sheets and preserve their existing checklists, notes and completion controls. Close or Escape returns to the original position. Calculus includes a draggable tangent example; Linear Algebra includes coefficient sliders for a fixed independent basis. Motion respects reduced-motion preferences.
+Full-width graphite scenes use the original salmon, mint and lavender colours. Engineering has a layered circuit with deadline-driven signals; Calculus I has an extruded parabola with a secant-to-tangent demonstration; Linear Algebra shows an area-preserving 2D transformation inside an extruded lattice. Pointer and section changes move the camera. The same mathematical geometry also drives an animated Canvas2D fallback.
+
+GSAP timelines and Flip coordinate section changes, assignment sheets, study expansion, search, tools, disclosure panels and completion reordering. Native scrolling remains. The header pause button and device reduced-motion preference apply to both scene and interface motion. Offscreen and hidden scenes stop rendering. Course dates, saved records and study interactions are preserved.
+
+See [the rendering and motion notes](docs/visual-overhaul.md) for build commands, verification and the physical-device evidence boundary.
 
 The legacy `/cen100-guide/` site is a forwarding-only repository; edit the course content in `tmu-course-guides`. Paths, query strings and assignment hashes are retained on forwarding.
 
@@ -19,7 +23,7 @@ The legacy `/cen100-guide/` site is a forwarding-only repository; edit the cours
 1. Choose **CEN100**, **MTH140**, or **MTH141** in the course bar. Each course remembers its own section and progress.
 2. Select your section at the top. CEN100 also asks for your Innovation Challenge group; the math guides use the section's lab timetable.
 3. Scan the short requirement or coverage preview on each card. Tap **View requirements** or an upcoming deadline to open its assignment or assessment, including dates, coverage, preparation, notes, and completion records. Math guides also have a **Topic map** for skills and recommended practice.
-4. Search above the tabs, or tap **This week's work**, **Contacts**, or **D2L**. Use **Mark done** on the next deadline to save that one completion record; **Undo** restores it. **Guide tools** below the cards contains grading, calendars, and backups. **What's changed?** sits immediately above the footer on every course page. Opening it clears that course's unread-update badge.
+4. Search above the tabs, or tap **This week's work**, **Contacts**, or **D2L**. Use **Mark done** on the next deadline to save that one completion record; **Undo** restores it. **Guide tools** beside Search opens grading, calendars, and backups in Course info. **What's changed?** sits immediately above the footer on every course page. Opening it clears that course's unread-update badge.
 5. Use **Auto theme**, **Dark theme**, or **Light theme** in the shared header. This appearance choice applies across all three courses.
 
 ## What's changed — October 9, 2026
@@ -182,7 +186,7 @@ This guide is an unofficial planning aid. Current official assignment instructio
 
 ## Usage analytics and privacy
 
-Cloudflare Web Analytics was added to CEN100 on **September 28, 2026** and to both math guides on **October 7, 2026**. Each live course page loads the existing beacon once, immediately before its closing `</body>` tag. The colour preview has no analytics beacon. Results are available to the maintainer through the private dashboard; there is no public visitor counter.
+Cloudflare Web Analytics was added to CEN100 on **September 28, 2026** and to both math guides on **October 7, 2026**. The beacon is currently disabled on all three course pages and remains disabled in this visual release. The historical information below describes the previous integration; this release does not enable measurement. There is no public visitor counter.
 
 Cloudflare measures page views, visits, and page performance, with breakdowns such as country, browser, device type, and referrer. It [states that its analytics does not use cookies, local storage, or fingerprinting to track individuals](https://blog.cloudflare.com/privacy-first-web-analytics/). The guide uses local storage separately to save your progress; it does not send your selected section/group, checklist ticks, completion records, notes, or target dates to analytics. The beacon still sends measurement requests to Cloudflare, so this is not a claim that no data leaves the browser.
 
@@ -215,7 +219,7 @@ Saved history has no automatic expiry in the archive. Continued collection depen
 | `README.md` | Three-course features, release notes, usage, data handling, and maintenance documentation. |
 | `colour-preview.html` | Separate palette comparison page with shareable colour selections and temporary progress. |
 
-The guide uses plain HTML, CSS, and JavaScript. No installation, package manager, build step, or application backend is required to serve it. Archivo is loaded through Google Fonts, with system-font fallbacks. Usage measurement loads Cloudflare’s external beacon; the daily archive runs separately in the private repository and is not part of the public site’s build.
+The guide uses plain HTML, CSS, and JavaScript. No installation, package manager, build step, or application backend is required to serve it. Archivo is loaded through Google Fonts, with system-font fallbacks. The prebuilt rendering and interaction bundles are checked in; rebuilding them is optional for serving the site. The historical analytics archive is separate from this public site; the public beacon remains disabled.
 
 GitHub Pages serves the **main** branch from **/(root)** using **Deploy from a branch**. To preview all three courses locally, clone or download this repository and serve it over HTTP.
 

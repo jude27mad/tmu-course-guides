@@ -56,5 +56,7 @@ export async function mountScene(art,course){
  function pagehide(e){if(e.persisted){cancelAnimationFrame(raf);raf=0;}else dispose();}function pageshow(e){if(e.persisted){dirty=true;wake();}}
  function dispose(){if(disposed)return;disposed=true;cancelAnimationFrame(raf);resize.disconnect();intersection.disconnect();status.disconnect();model.dispose();renderer?.dispose();environment?.dispose();art.removeEventListener('pointermove',onPointer);art.removeEventListener('pointerleave',onLeave);document.removeEventListener('visibilitychange',onVisibility);document.removeEventListener('guide-motion-change',onMotion);document.removeEventListener('workspace-changed',onView);document.removeEventListener('guide-completion',onComplete);window.removeEventListener('scroll',onScroll);window.removeEventListener('pagehide',pagehide);window.removeEventListener('pageshow',pageshow);}
  window.addEventListener('pagehide',pagehide);window.addEventListener('pageshow',pageshow);
- urgency();size();update(0,!motionAllowed());ready=true;wake();return{dispose};
+ urgency();size();update(0,!motionAllowed());
+ if(renderer){try{await renderer.compileAsync(scene,camera);}catch{if(!disposed){software();size();}}}
+ if(disposed)return{dispose};ready=true;wake();return{dispose};
 }

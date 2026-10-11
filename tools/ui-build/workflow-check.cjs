@@ -1,5 +1,5 @@
-const {JSDOM,requestInterceptor,VirtualConsole}=require('/workspace/scratch/workspace-dom-check/node_modules/jsdom');
-const esbuild=require('./node_modules/esbuild');
+const {JSDOM,requestInterceptor,VirtualConsole}=require('jsdom');
+const esbuild=require('esbuild');
 const fs=require('node:fs');
 const path=require('node:path');
 const assert=require('node:assert/strict');
@@ -34,7 +34,7 @@ async function check(route,course,motion='off'){
  const click=s=>{const el=d.querySelector(s);assert(el,course+' '+s+' exists');el.click()};
  const visible=s=>!d.querySelector(s).closest('[hidden]');
  const controlsBefore=[...d.querySelectorAll('input,select,textarea')].length;
- click('[data-workspace-view="info"]');assert(visible('#'+(course==='cen100'?'guide-tools':'math-tools')),'tools reachable');
+ click('.workspace-nav [data-workspace-view="info"]');assert(visible('#'+(course==='cen100'?'guide-tools':'math-tools')),'tools reachable');
  assert(visible(course==='cen100'?'#contact-section':'#section-select'),'section reachable');
  click('.workspace-tools');assert(d.querySelector(course==='cen100'?'#guide-tools':'#math-tools').open,'toolbar tools open');
  assert.equal(d.querySelector('.workspace-tools').getAttribute('aria-expanded'),'true','tools button announces expanded state');
@@ -42,7 +42,7 @@ async function check(route,course,motion='off'){
  const search=d.querySelector('#guide-search');search.value=course==='cen100'?'WHMIS':'quiz';search.dispatchEvent(new w.Event('input',{bubbles:true}));
  assert(d.querySelectorAll('#guide-search-results li').length>0,'search returns results');
  click('.workspace-search');assert.equal(search.value,'');
- click('[data-workspace-view="assignments"]');
+ click('.workspace-nav [data-workspace-view="assignments"]');
  if(course==='cen100'){
   assert(visible('#p-team')&&visible('#p-you'),'all categories visible');
   click('[data-cen-filter="you"]');assert(!visible('#p-team')&&visible('#p-you'),'category filter');
@@ -53,14 +53,14 @@ async function check(route,course,motion='off'){
  }else{
   assert.equal(d.querySelector('#section-select').value,'31','saved section restored');
   assert.equal(d.querySelector('[data-note="quiz-1"]').value,'Existing saved note','saved note retained');
-  click('[data-workspace-view="study"]');assert(visible('#math-lab')&&visible('#topic-grid'),'labs and topics reachable');
+  click('.workspace-nav [data-workspace-view="study"]');assert(visible('#math-lab')&&visible('#topic-grid'),'labs and topics reachable');
   const experiments=[...d.querySelectorAll('[data-lab]')];
   for(const experiment of experiments){experiment.click();assert(d.querySelector('#math-lab svg'),'plot exists for '+experiment.dataset.lab)}
   click('[data-mode="mistakes"]');assert(d.querySelector('.mistake-challenge'), 'challenge mode mounts');
   click('[data-mode="explore"]');
   click('.lab-expand');assert(d.querySelector('.lab-dialog').open,'lab expansion opens');
   click('.lab-expand');if(motion!=='off'){for(let i=0;i<30&&d.querySelector('.lab-dialog').open;i++)await new Promise(r=>setTimeout(r,100));}assert(!d.querySelector('.lab-dialog').open,'lab expansion closes: '+d.querySelector('.lab-dialog').getAttribute('style')+' / '+d.querySelector('.lab-dialog').dataset.closing+' / '+JSON.stringify(errors));
-  click('[data-workspace-view="assignments"]');
+  click('.workspace-nav [data-workspace-view="assignments"]');
   click('#assessment-quiz-1 > summary');assert(d.querySelector('.detail-sheet').open,'math drawer opens');
   click('.sheet-close');if(motion!=='off')await new Promise(r=>setTimeout(r,750));assert(!d.querySelector('.detail-sheet').open,'math drawer closes');
   click('#quick-contacts');assert.equal(d.body.dataset.workspaceView,'info','legacy contacts navigate');
@@ -69,12 +69,24 @@ async function check(route,course,motion='off'){
  click('#quick-work');await new Promise(r=>setTimeout(r,1));assert.equal(d.body.dataset.workspaceView,'info','work tool navigates');
  assert(d.querySelector('#work-tools').open,'work tool opens');
  if(motion!=='off'){
+  // A late tools disclosure must respect a newer section/history selection.
+  const tools=d.querySelector(course==='cen100'?'#guide-tools':'#math-tools');
+  w.GuideMotion.disclosure(tools,false);w.GuideMotion.cancel(tools);
+  click('.workspace-nav [data-workspace-view="assignments"]');click('.workspace-tools');
+  await new Promise(r=>setTimeout(r,60));click('.workspace-nav [data-workspace-view="assignments"]');
+  await new Promise(r=>setTimeout(r,600));
+  assert.equal(d.body.dataset.workspaceView,'assignments','tools completion cannot reverse newer navigation');
+  assert.equal(w.location.hash,'#assignments','tools completion keeps visible view aligned with history');
+  // Cover the same-turn race, before the opening mutation observer has run.
+  w.GuideMotion.disclosure(tools,false);w.GuideMotion.cancel(tools);
+  click('.workspace-tools');click('.workspace-nav [data-workspace-view="assignments"]');
+  await new Promise(r=>setTimeout(r,600));assert.equal(d.body.dataset.workspaceView,'assignments','queued tools mutation cannot reverse navigation');
   // Verify completion emits once and interruption leaves the latest view readable.
   let completions=0;d.addEventListener('guide-completion',()=>completions++);
   const checkbox=d.querySelector(course==='cen100'?'input[data-k]':'input[data-completed]');
   checkbox.checked=!checkbox.checked;checkbox.dispatchEvent(new w.Event('change',{bubbles:true}));
   await new Promise(r=>setTimeout(r,10));assert.equal(completions,1,'single completion event');
-  click('[data-workspace-view="assignments"]');click('[data-workspace-view="info"]');click('[data-workspace-view="assignments"]');
+  click('.workspace-nav [data-workspace-view="assignments"]');click('.workspace-nav [data-workspace-view="info"]');click('.workspace-nav [data-workspace-view="assignments"]');
   w.GuideMotion.cancel(d.querySelector('.math-wrap,.wrap'));
   assert.equal(d.body.dataset.workspaceView,'assignments');assert(visible('#workspace-assignments'),'latest destination is visible');
   assert(d.querySelector('#workspace-info').hidden,'interrupted outgoing panel is hidden');
@@ -85,8 +97,29 @@ async function check(route,course,motion='off'){
   d.querySelector('.detail-sheet').dispatchEvent(new w.Event('cancel',{cancelable:true}));
   w.GuideMotion.setPaused(true);assert(!d.querySelector('.detail-sheet').open,'pause settles Escape close');assert(source.isConnected,'source restored');
   w.GuideMotion.setPaused(false);
+  // The saved quiz used above is past; expose it through the real control before testing return focus.
+  const showPast=d.querySelector('#workspace-show-past');showPast.checked=true;showPast.dispatchEvent(new w.Event('change',{bubbles:true}));
+  assert.notEqual(w.getComputedStyle(source).display,'none','focus restoration source is rendered');
+  const trigger=source.querySelector('.head,summary');
+  w.CourseVisuals.open(source,trigger);w.CourseVisuals.close(true);
+  assert.equal(d.activeElement,trigger,'ordinary sheet close restores its visible trigger focus');
+  // Public and history-driven section changes close a sheet and focus visible navigation.
+  w.CourseVisuals.open(source,trigger);w.CourseWorkspace.show('info');
+  assert(!d.querySelector('.detail-sheet').open,'public section change closes sheet');
+  assert.equal(d.activeElement,d.querySelector('.workspace-nav [data-workspace-view="info"]'),'public section change focuses its visible destination');
+  click('.workspace-nav [data-workspace-view="info"]');click('.workspace-nav [data-workspace-view="assignments"]');
+  w.CourseVisuals.open(source,trigger);w.history.back();
+  await new Promise(r=>setTimeout(r,100));
+  assert.equal(d.body.dataset.workspaceView,'info','Back with a sheet restores the destination section');
+  assert(!d.querySelector('.detail-sheet').open,'Back closes the moved sheet');
+  assert.equal(d.activeElement,d.querySelector('.workspace-nav [data-workspace-view="info"]'),'Back sheet closure focuses visible destination');
+  assert(!d.activeElement.closest('[hidden],[inert]'),'route closure keeps focus outside outgoing hidden/inert content');
+  assert.equal(source.closest('.workspace-panel').id,'workspace-assignments','route closure restores original row to its source');
+  click('.workspace-nav [data-workspace-view="assignments"]');click('.workspace-nav [data-workspace-view="info"]');
+  w.history.back();await new Promise(r=>setTimeout(r,100));assert.equal(d.body.dataset.workspaceView,'assignments','Back restores section');
+  w.history.forward();await new Promise(r=>setTimeout(r,100));assert.equal(d.body.dataset.workspaceView,'info','Forward restores section');
   if(course!=='cen100'){
-   click('[data-workspace-view="study"]');click('[data-mode="explore"]');click('[data-lab="'+(course==='mth140'?'transforms':'complex')+'"]');
+   click('.workspace-nav [data-workspace-view="study"]');click('[data-mode="explore"]');click('[data-lab="'+(course==='mth140'?'transforms':'complex')+'"]');
    const param=d.querySelector('#math-lab [data-number]');param.value='2';param.dispatchEvent(new w.Event('change',{bubbles:true}));
    const value=param.value;click('.lab-expand');click('.lab-expand');w.GuideMotion.setPaused(true);
    assert.equal(d.querySelector('#math-lab [data-number]').value,value,'expanded lab retains parameter state');w.GuideMotion.setPaused(false);

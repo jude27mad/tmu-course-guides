@@ -43,7 +43,7 @@ export function disclosure(details,open){
  if(!details)return;cancel(details);const start=details.getBoundingClientRect().height,summary=details.querySelector(':scope > summary');
  details.open=true;details.style.height='auto';const end=open?details.getBoundingClientRect().height:summary.getBoundingClientRect().height;
  details.style.overflow='clip';details.dataset.closing=String(!open);
- return play(details,tl=>tl.fromTo(details,{height:start},{height:end,duration:.3}),()=>{details.open=open;clear(details,'height,overflow');delete details.dataset.closing;});
+ return play(details,tl=>tl.fromTo(details,{height:start},{height:end,duration:.3}),()=>{if(details.open!==open)details.open=open;clear(details,'height,overflow');delete details.dataset.closing;});
 }
 export function capture(root=document){cancel(reflowOwner);const nodes=[...root.querySelectorAll('#teamlist>.tile,#youlist>.tile,#assessment-list>li')].filter(el=>el.getClientRects().length&&!el.closest('dialog'));return Flip.getState(nodes);}
 export function reflow(before){

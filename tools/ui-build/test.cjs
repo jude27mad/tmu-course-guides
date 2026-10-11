@@ -1,4 +1,4 @@
-const {JSDOM}=require('/workspace/scratch/workspace-dom-check/node_modules/jsdom');
+const {JSDOM}=require('jsdom');
 const esbuild=require('esbuild');
 const assert=require('node:assert/strict');
 const path=require('node:path');

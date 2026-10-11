@@ -1,4 +1,4 @@
-import {T,material,mesh,segments,rod,setRod,disposeScene} from './primitives.mjs';
+import {T,material,mesh,segments,rod,setRod,disposeScene} from './primitives.mjs?v=20261011-overhaul2';
 import {calculusState} from './scene-math.mjs';
 export function createCalculus(p){
  const root=new T.Group(),plot=new T.Group();root.add(plot);plot.position.y=-1.65;

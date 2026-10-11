@@ -1,4 +1,4 @@
-import {T,material,mesh,box,segments,disposeScene} from './primitives.mjs';
+import {T,material,mesh,box,segments,disposeScene} from './primitives.mjs?v=20261011-overhaul2';
 import {routePoint} from './scene-math.mjs';
 // The routes, pulses and fallback share these physical coordinates.
 export function createCircuit(p){

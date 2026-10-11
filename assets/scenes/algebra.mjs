@@ -1,4 +1,4 @@
-import {T,material,mesh,segments,arrow,disposeScene} from './primitives.mjs';
+import {T,material,mesh,segments,arrow,disposeScene} from './primitives.mjs?v=20261011-overhaul2';
 import {algebraState} from './scene-math.mjs';
 export function createAlgebra(p){
  const root=new T.Group(),lattice=new T.Group();root.add(lattice);lattice.matrixAutoUpdate=false;

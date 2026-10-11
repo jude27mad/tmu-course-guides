@@ -124,6 +124,13 @@ function mountWorkspace() {
   let active = 'assignments', category = 'all', changing = false;
   function syncPanels(view) {
     const previous=active;
+    const routeClosedSheet=previous!==view&&document.body.classList.contains('sheet-open');
+    if(previous==='info'&&view!=='info'){
+      // Finish disclosure state while info is still current. Its queued attribute
+      // mutations must not reinterpret this newer navigation as a tools request.
+      window.GuideMotion?.cancel(tools);
+      toolObserver.takeRecords();
+    }
     if(previous!==view)window.CourseVisuals?.close(true);
     window.GuideMotion?.cancel(main);
     active = view;
@@ -149,6 +156,7 @@ function mountWorkspace() {
     document.body.dataset.workspaceView = view;
     refresh();
     document.dispatchEvent(new CustomEvent('workspace-changed',{detail:view}));
+    if(routeClosedSheet)nav.querySelector(`[data-workspace-view="${view}"]`)?.focus({preventScroll:true});
   }
   function show(view, push = false) {
     if (!panels[view]) view = 'assignments';
