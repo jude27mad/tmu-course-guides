@@ -8,7 +8,7 @@ body.workspace .hub-shell{margin:0;position:sticky;top:0;align-self:start;min-he
 .workspace .hub-brand{font-size:.86rem;gap:10px}
 .workspace .hub-brand small{margin-top:3px}
 .workspace .hub-mark{height:30px;width:30px;font-size:22px;flex:none}
-.workspace .course-switch{display:grid;border:0;gap:6px}
+.workspace .course-switch{display:grid;grid-template-columns:minmax(0,1fr);border:0;gap:6px}
 .workspace .course-link,.workspace .course-link+.course-link{padding:10px 12px;grid-template-columns:1fr;border:0;border-radius:6px;gap:2px}
 .workspace .course-link[aria-current]{background:var(--hub-soft)}
 .workspace .course-link[aria-current]:after{width:3px;height:auto;left:0;top:8px;bottom:8px;right:auto;border-radius:2px}

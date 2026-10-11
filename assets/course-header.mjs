@@ -109,13 +109,16 @@ async function mount() {
   header.append(art);header.classList.add('header-upgraded');
   // Static geometry is complete before the optional animation engine is loaded.
   const object=art.querySelector('.art-object');
+  let lastSignal='',restartSignal=()=>{};
   const status=()=>{
     if(course!=='cen100')return;
     const urgency=header.dataset.urgency||'calm';
     art.dataset.urgency=urgency;
     const summary=header.querySelector('.head-next')?.textContent;
     if(summary)art.setAttribute('aria-label',`Circuit board. ${summary}.`);
+    const key=urgency+'|'+summary,changed=key!==lastSignal;lastSignal=key;return changed;
   };status();
+  if(course==='cen100') new MutationObserver(()=>{if(status())restartSignal();}).observe(header,{attributes:true,attributeFilter:['data-urgency']});
   art.dataset.motionState = still() ? 'still' : 'ready';
   if(still()) return;
   let animate;
@@ -127,7 +130,7 @@ async function mount() {
     art.classList.remove('art-signalling');
     art.dataset.motionState = still() ? 'still' : 'settled';
   };
-  const stop=()=>{for(const t of tracks)t.stop();tracks=[];pointerTrack?.stop();object.style.transform='';art.classList.remove('art-entering');finish();};
+  const stop=()=>{for(const t of tracks)t.stop();tracks=[];pointerTrack?.stop();object.style.transform='';object.style.opacity='1';art.classList.remove('art-entering');finish();};
   const record=t=>{tracks.push(t);return t;};
   function renderCalculus(t){
     const s=secantState(t),p=CP(s.x,s.y,2);
@@ -165,7 +168,7 @@ async function mount() {
   },{threshold:.15});observer.observe(art);
   document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else if(!entered)entrance();});
   reduced.addEventListener('change',()=>{if(still())stop();else if(!entered)entrance();});
-  if(course==='cen100') new MutationObserver(()=>{status();signal();}).observe(header,{attributes:true,attributeFilter:['data-urgency']});
+  restartSignal=signal;
   // Desktop depth response has no bearing on touch navigation or the information shown.
   art.addEventListener('pointermove',event=>{
     if(still() || !precisePointer.matches || event.pointerType==='touch' || !entered || art.classList.contains('art-entering'))return;
