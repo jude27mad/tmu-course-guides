@@ -23,6 +23,8 @@ async function check(route,course,motion='off'){
    w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};
    w.HTMLDialogElement.prototype.showModal=function(){this.open=true};w.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new w.Event('close'))};
    w.localStorage.setItem(course==='cen100'?'cen100-contact-choice-v1':course+'-section-v1',JSON.stringify(course==='cen100'?{section:29,group:9}:31));
+   // Saved CEN progress from before the move to cen100/: storage keys are course-derived, so it must still load.
+   if(course==='cen100')w.localStorage.setItem('cen100-personal-plan-v1',JSON.stringify({completed:{integrity:1},notes:{y4:'Existing CEN note'},targets:{}}));
    if(course!=='cen100')w.localStorage.setItem(course+'-progress-v1',JSON.stringify({checks:{},completed:{'quiz-1':true},notes:{'quiz-1':'Existing saved note'},topics:{},targets:{}}));
  }});
  const w=dom.window,d=w.document;
@@ -46,6 +48,12 @@ async function check(route,course,motion='off'){
  click('.workspace-search');assert.equal(search.value,'');
  click('.workspace-nav [data-workspace-view="assignments"]');
  if(course==='cen100'){
+  assert.equal(d.querySelector('#contact-section').value,'29','saved section restored at cen100/');
+  assert(d.querySelector('input[data-completion="integrity"]').checked,'saved completion restored at cen100/');
+  assert.equal(d.querySelector('#note-y4').value,'Existing CEN note','saved CEN note retained');
+  assert.equal(JSON.parse(w.localStorage.getItem('cen100-personal-plan-v1')).completed.integrity,1,'saved completion not overwritten');
+  assert.equal(d.querySelector('.course-link[aria-current]').dataset.courseLink,'cen100','CEN marked current');
+  assert.equal(d.querySelector('.desk-link').href,'https://guide.test/','Desk link goes to the site base');
   assert(visible('#p-team')&&visible('#p-you'),'all categories visible');
   click('[data-cen-filter="you"]');assert(!visible('#p-team')&&visible('#p-you'),'category filter');
   click('[data-cen-filter="all"]');
@@ -131,4 +139,26 @@ async function check(route,course,motion='off'){
  console.log(course+' ('+motion+'): navigation, search, drawers, tools, section and state checks passed');
  dom.window.close();
 }
-(async()=>{await check('','cen100');await check('mth140/','mth140');await check('mth141/','mth141');await check('','cen100','on');await check('mth140/','mth140','on');await check('mth141/','mth141','on')})().catch(e=>{console.error(e);process.exit(1)});
+// The Desk (site root): course directory with no course identity; it reads saved sections but writes no course data.
+async function checkDesk(motion){
+ const errors=[];const log=new VirtualConsole();log.on('jsdomError',e=>{if(!e.message.includes('CSS'))errors.push(e.message)});
+ const saved={'cen100-contact-choice-v1':JSON.stringify({section:29,group:9}),'cen100-personal-plan-v1':JSON.stringify({completed:{integrity:1},notes:{},targets:{}}),'mth140-section-v1':'31'};
+ const dom=new JSDOM(fs.readFileSync(path.join(root,'index.html'),'utf8'),{url:'https://guide.test/?motion='+motion,resources,runScripts:'dangerously',pretendToBeVisual:true,virtualConsole:log,beforeParse(w){
+   w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}});for(const [k,v] of Object.entries(saved))w.localStorage.setItem(k,v);
+ }});
+ const w=dom.window,d=w.document;
+ await new Promise((resolve,reject)=>{w.addEventListener('load',resolve,{once:true});setTimeout(()=>reject(Error('Desk load timeout')),10000).unref()});
+ assert.deepEqual(errors,[],'desk runtime errors');
+ assert.equal(d.body.dataset.course,undefined,'Desk has no course identity');
+ assert.equal(d.querySelector('.course-link[aria-current]').dataset.courseLink,'desk','Desk, not CEN, is current');
+ assert.deepEqual([...d.querySelectorAll('.course-switch .course-link')].map(a=>a.href),['https://guide.test/','https://guide.test/cen100/','https://guide.test/mth140/','https://guide.test/mth141/'],'switcher routes');
+ assert.deepEqual([...d.querySelectorAll('.desk-course')].map(a=>a.href),['https://guide.test/cen100/','https://guide.test/mth140/','https://guide.test/mth141/'],'directory links');
+ assert.equal(d.querySelector('[data-saved-course="cen100"]').textContent,'Section 29','Desk reads the saved CEN section');
+ assert.equal(d.querySelector('[data-saved-course="mth140"]').textContent,'Section 31','Desk reads the saved MTH140 section');
+ assert.deepEqual(Object.fromEntries(Object.keys(saved).map(k=>[k,w.localStorage.getItem(k)])),saved,'Desk leaves saved course data untouched');
+ assert.equal(w.location.href,'https://guide.test/?motion='+motion,'generic query stays on the Desk');
+ assert.equal(w.TMULegacyRoute.decide('https://guide.test/?motion='+motion+'#assignment-y4','https://guide.test/'),'https://guide.test/cen100/?motion='+motion+'#assignment-y4','old CEN link forwards');
+ console.log('desk ('+motion+'): directory, switcher, saved sections and root forwarding checks passed');
+ dom.window.close();
+}
+(async()=>{await checkDesk('off');await checkDesk('on');await check('cen100/','cen100');await check('mth140/','mth140');await check('mth141/','mth141');await check('cen100/','cen100','on');await check('mth140/','mth140','on');await check('mth141/','mth141','on')})().catch(e=>{console.error(e);process.exit(1)});

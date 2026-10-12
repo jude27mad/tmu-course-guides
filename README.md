@@ -1,10 +1,10 @@
 # TMU Course Guides: CEN100, MTH140 and MTH141
 
-One Fall 2026 course companion with a shared course switcher and light/dark appearance. CEN100 keeps its complete assignment guide at the site root. The two math guides focus on assessments, announced coverage, topic progression, recommended practice, and section-specific labs.
+One Fall 2026 course companion with a shared course switcher and light/dark appearance. The site root is the Desk, a directory of all three guides; CEN100's complete assignment guide lives at `/cen100/`. The two math guides focus on assessments, announced coverage, topic progression, recommended practice, and section-specific labs.
 
 | Course | Open guide | Section support |
 | --- | --- | --- |
-| CEN100: Introduction to Engineering | [CEN100](https://jude27mad.github.io/tmu-course-guides/) | All 39 sections and 52 Innovation Challenge groups |
+| CEN100: Introduction to Engineering | [CEN100](https://jude27mad.github.io/tmu-course-guides/cen100/) | All 39 sections and 52 Innovation Challenge groups |
 | MTH140: Calculus I | [MTH140](https://jude27mad.github.io/tmu-course-guides/mth140/) | All 34 sections, lab timetables and rooms |
 | MTH141: Linear Algebra | [MTH141](https://jude27mad.github.io/tmu-course-guides/mth141/) | All 34 sections, lab timetables and rooms |
 
@@ -20,7 +20,7 @@ Privacy changes remove dormant analytics code and course-only staff names, serve
 
 Documentation: [header artwork and verification](docs/visual-overhaul.md), [motion architecture](docs/immersive-motion.md), [math studio](docs/math-studio.md), [privacy review](docs/privacy-audit.md), and [release history](CHANGELOG.md).
 
-The legacy `/cen100-guide/` site is a forwarding-only repository; edit the course content in `tmu-course-guides`. Paths, query strings and assignment hashes are retained on forwarding.
+The legacy `/cen100-guide/` site is a forwarding-only repository; edit the course content in `tmu-course-guides`. Paths, query strings and assignment hashes are retained on forwarding. Old root CEN100 links that carry a CEN100 hash (for example `#assignment-y4`) forward once from the Desk to `/cen100/` with the whole query and hash; see `assets/legacy-route.js` and `docs/qa/night-shift/forwarder.md`.
 
 ## Getting started
 
@@ -87,7 +87,7 @@ No build step is required. For local preview, serve the repository over HTTP, fo
 
 A course companion for **CEN100: Introduction to Engineering**, Fall 2026, at Toronto Metropolitan University. The guide brings deadlines, assignment requirements, checklists, course clarifications, and section/group contacts into one responsive page.
 
-**[Open the guide](https://jude27mad.github.io/tmu-course-guides/)**
+**[Open the guide](https://jude27mad.github.io/tmu-course-guides/cen100/)**
 
 ### What's included
 
@@ -202,7 +202,9 @@ GitHub Pages logs visitor IP addresses for hosting security. See [GitHub’s hos
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | CEN100 content, styles, JavaScript, course data, contact mappings, and full release history. |
+| `index.html` | The Desk: the site root and course directory. `assets/legacy-route.js` forwards old root CEN100 links to `cen100/`. |
+| `cen100/index.html` | CEN100 content, styles, JavaScript, contact mappings, and full release history. |
+| `assets/cen-schedule.js`, `assets/cen-schedule.mjs` | The one copy of the CEN100 schedule records, for the CEN guide's inline script (`window.CEN_SCHEDULE`) and for ES modules. |
 | `mth140/index.html`, `mth141/index.html` | Math page structures and course-specific release notes. |
 | `assets/hub.js`, `assets/hub.css` | Shared course navigation, saved-section labels, and appearance control. |
 | `assets/course-data.mjs` | Math assessments, section timetables, role-based contact guidance, topics, practice references, and sources. |
@@ -219,11 +221,11 @@ GitHub Pages logs visitor IP addresses for hosting security. See [GitHub’s hos
 
 The guide uses plain HTML, CSS, and JavaScript. No installation, package manager, build step, or application backend is required to serve it. Archivo is self-hosted under its SIL Open Font License, with system-font fallbacks; loading a page does not request fonts from Google. The prebuilt rendering and interaction bundles are checked in; rebuilding them is optional for serving the site. The historical analytics archive is separate from this public site; the public beacon remains disabled.
 
-GitHub Pages serves the **main** branch from **/(root)** using **Deploy from a branch**. To preview all three courses locally, clone or download this repository and serve it over HTTP.
+GitHub Pages serves the **main** branch from **/(root)** using **Deploy from a branch**. To preview all three courses locally, clone or download this repository and serve it over HTTP, for example with `node tools/preview-server.mjs --port 4173`. Add `--base /tmu-course-guides/` to reproduce the Pages project path.
 
 ### Maintaining course information
 
-Update CEN100 in `index.html` and math course information in `assets/course-data.mjs`. Verify new dates and coverage against official course documents or announcements, retain source notes, and keep unresolved details labelled pending. Keep CEN100’s short `preview` text consistent with the full requirements; math previews render from each assessment’s `scope`. For math source changes, update `docs/math-source-audit.md`.
+Update CEN100 in `cen100/index.html` (its dated schedule records are in `assets/cen-schedule.js`) and math course information in `assets/course-data.mjs`. Verify new dates and coverage against official course documents or announcements, retain source notes, and keep unresolved details labelled pending. Keep CEN100’s short `preview` text consistent with the full requirements; math previews render from each assessment’s `scope`. For math source changes, update `docs/math-source-audit.md`.
 
-Update the relevant course's **What's changed?** entry and release version when publishing a release so returning visitors see the unread badge. CEN100's version lives in `index.html`; the math version lives in `assets/math-guide.mjs`. Run `node --test tests/schedule.test.mjs` for math date/data changes, preview affected pages over HTTP, and check the GitHub Pages deployment after publishing to `main`.
+Update the relevant course's **What's changed?** entry and release version when publishing a release so returning visitors see the unread badge. CEN100's version lives in `cen100/index.html`; the math version lives in `assets/math-guide.mjs`. Run `node --test tests/schedule.test.mjs` for math date/data changes, preview affected pages over HTTP, and check the GitHub Pages deployment after publishing to `main`.
 

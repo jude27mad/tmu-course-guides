@@ -12,6 +12,8 @@ body[data-course="cen100"] .hub-shell{max-width:1100px}
 .course-switch{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,5.75rem),1fr));gap:8px}
 .course-link{--link-accent:#f69cc3;display:grid;gap:4px;align-content:start;text-decoration:none;background:var(--hub-panel);border:1px solid var(--hub-line);border-radius:12px;padding:12px 15px;color:var(--hub-ink);min-width:0;position:relative;transition:border-color .15s,background .15s}
 .course-link[data-course-link="mth140"]{--link-accent:#67e0f2}.course-link[data-course-link="mth141"]{--link-accent:#baa3ff}
+/* The Desk (site root) sits first in every course switcher; neutral, since it is not a course. */
+.course-link[data-course-link="desk"]{--link-accent:var(--hub-muted)}
 .course-link[aria-current]{border-color:var(--link-accent);box-shadow:inset 0 -2px var(--link-accent)}
 .course-code{font-weight:800;font-size:1.05rem;letter-spacing:.02em}.course-name{font-size:.875rem;line-height:1.2;color:var(--hub-muted);overflow-wrap:anywhere}
 .course-saved{font-size:.75rem;font-weight:550;color:var(--hub-muted);min-height:1rem}

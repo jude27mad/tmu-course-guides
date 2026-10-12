@@ -280,7 +280,7 @@ footer{margin-top:34px;display:flex;justify-content:space-between;gap:12px;flex-
         <button class="tool-btn palette-copy" id="palette-copy" type="button">Copy this look</button>
         <button class="tool-btn" id="palette-reset" type="button">Reset preview</button>
       </div>
-      <p class="palette-hint">Changes apply only to this preview. <a class="palette-live-link" href="./">Open the main guide</a></p>
+      <p class="palette-hint">Changes apply only to this preview. <a class="palette-live-link" href="cen100/">Open the main guide</a></p>
       <p id="palette-copy-status" role="status"></p>
       <input id="palette-share-link" type="text" readonly hidden aria-label="Link to this colour combination">
     </div>
@@ -416,6 +416,7 @@ footer{margin-top:34px;display:flex;justify-content:space-between;gap:12px;flex-
   <footer><span>From Fall 2026 CEN100 documents on D2L and confirmed course-team clarifications.</span><button class="reset" id="reset">Clear my ticks</button><span class="site-credit"><a href="privacy.html">Privacy</a></span></footer>
 </div>
 
+<script src="assets/cen-schedule.js?v=20261012-desk1"></script>
 <script>
 (function(localStorage){
 
@@ -580,32 +581,8 @@ const CONFIRMED=[
 const OPEN=[
  ["FMEA \u201cEnvironmental\u201d","Real-world conditions, or impact on the environment? Escalated to the Head GA. Official clarification pending."]
 ];
-const SCHEDULE=[
-    {id:"intro",item:"y1",date:"2026-09-16",title:"Personal Introduction due"},
-    {id:"entry",item:"y1",date:"2026-09-16",title:"Entry Survey due"},
-    {id:"syllabus",item:"y1",date:"2026-09-16",title:"Course Syllabus Quiz due"},
-    {id:"email",item:"y1",date:"2026-09-23",title:"Professional Email Assignment due"},
-    {id:"contract",item:"m1",date:"2026-09-23",title:"Team Contract + Task Outline due"},
-    {id:"outline",item:"m2",date:"2026-10-02",title:"Project Outline + User Research due",note:"Due by the end of the day. Check D2L for the exact submission time."},
-    {id:"matlab-1",item:"y2",date:"2026-10-07",title:"MATLAB Assignment 1 due"},
-    {id:"whmis",item:"y3",date:"2026-10-14",title:"WHMIS certification due"},
-    {id:"integrity",item:"y4",date:"2026-10-14",time:"15:00",title:"Academic Integrity Quiz due"},
-    {id:"failure",item:"m3",date:"2026-10-21",title:"Failure Analysis Labs: both parts due"},
-    {id:"reflection-1",item:"y5",date:"2026-10-28",title:"Personal Reflection 1 due",note:"Email directly to your assigned Project Manager; no D2L submission box."},
-    {id:"review",item:"m4",date:"2026-11-04",title:"Midterm Design Review",note:"In your assigned lab. Confirm your presentation time on D2L."},
-    {id:"notebook-1",item:"y6",date:"2026-11-04",time:"15:00",title:"Team design notebook PDF: checkpoint 1 due"},
-    {id:"matlab-2",item:"y2",date:"2026-11-04",title:"MATLAB Assignment 2 due"},
-    {id:"prototype",item:"m5",date:"2026-11-25",time:"15:00",title:"Low-Fidelity Prototype due"},
-    {id:"presentation-1",item:"m6",date:"2026-11-25",title:"First Final Presentation",note:"Confirm your assigned presentation time on D2L."},
-    {id:"presentation-2",item:"m6",date:"2026-12-02",title:"Final Presentation and Innovation Showcase",note:"Confirm your assigned presentation time on D2L."},
-    {id:"notebook-2",item:"y6",date:"2026-12-02",time:"15:00",title:"Team design notebook PDF: checkpoint 2 due"},
-    {id:"reflection-2",item:"y5",date:"2026-12-02",title:"Personal Reflection 2 due",note:"Email directly to your assigned Project Manager; no D2L submission box."},
-    {id:"exit",item:"y8",date:"2026-12-02",title:"Exit Survey due"},
-    {id:"peer",item:"m8",date:"2026-12-02",title:"Peer Evaluation due"},
-    {id:"report",item:"m7",date:"2026-12-02",time:"23:59",title:"Final Report due"},
-    {id:"failure-lab",item:"m3",date:"2026-10-14",title:"Failure Analysis Part 1 in lab (Section 29)",who:"sub",section:29,calendar:false},
-    {id:"showcase-signup",item:"m6",date:"2026-11-18",title:"Showcase sign-up (around now; check D2L)",calendar:false}
-];
+// Same unchanged records as the CEN guide (assets/cen-schedule.js); no second copy.
+const SCHEDULE=window.CEN_SCHEDULE;
 
 const KEY="cen100-g9-ticks";
 let ticks={};try{ticks=JSON.parse(localStorage.getItem(KEY)||"{}")||{}}catch(e){ticks={}}
