@@ -15,13 +15,23 @@ test('each course covers all 34 sections with one matching instructor and lab',(
   assert.equal(COURSES.mth140.labs[30].room,'VIC106');
   assert.equal(COURSES.mth141.labs[23].room,'SHE651');
 });
-test('quiz dates follow the chosen section, with a Thanksgiving exception',()=>{
+test('quiz dates follow the section and the announced Monday Thanksgiving make-up',()=>{
   const quiz=COURSES.mth140.assessments.find(a=>a.id==='quiz-2');
   assert.equal(resolveAssessment(COURSES.mth140,quiz,31).date,'2026-10-15');
   assert.equal(resolveAssessment(COURSES.mth140,quiz,7).date,'2026-10-13');
   const monday=resolveAssessment(COURSES.mth140,quiz,2);
-  assert.equal(monday.date,null);assert.equal(monday.holiday,true);
+  assert.equal(monday.date,'2026-10-19');assert.equal(monday.holiday,false);assert.equal(monday.rescheduled,true);
   assert.equal(resolveAssessment(COURSES.mth140,quiz,0).date,null);
+});
+test('confirmed scope, make-up day and exam-format privacy are represented in course data',()=>{
+  const quiz=COURSES.mth140.assessments.find(a=>a.id==='quiz-2');
+  assert.equal(quiz.scope,'Chapter 3: Sections 3.1–3.5.');
+  assert.equal(quiz.confirmed,true);
+  assert.equal(quiz.mondayMakeupDate,'2026-10-19');
+  const midterm=COURSES.mth141.assessments.find(a=>a.id==='midterm');
+  assert.match(midterm.scope,/3\.1\.1–3\.1\.3 and 3\.1\.5–3\.2\.2/);
+  assert.equal(Object.hasOwn(midterm,'format'),false);
+  assert.equal(COURSES.mth141.assessments.some(a=>Object.hasOwn(a,'format')),false);
 });
 test('next assessment respects the lab day and separate completion records',()=>{
   const now=new Date('2026-10-07T16:00:00Z');
@@ -43,8 +53,8 @@ test('calendar export avoids invented quiz times, missing final dates and holida
   const all=calendar(COURSES.mth140,31,{includeTentative:true,now});
   assert.equal(all.count,4);assert.match(all.text,/DTSTART;VALUE=DATE:20261015/);assert.match(all.text,/STATUS:TENTATIVE/);
   assert.doesNotMatch(all.text,/SUMMARY:.*Final/);
-  const holiday=calendar(COURSES.mth140,2,{includeTentative:true,now});
-  assert.equal(holiday.count,3);assert.doesNotMatch(holiday.text,/DTSTART.*20261012/);
+  const monday=calendar(COURSES.mth140,2,{includeTentative:true,now});
+  assert.equal(monday.count,4);assert.match(monday.text,/DTSTART;VALUE=DATE:20261019/);assert.doesNotMatch(monday.text,/DTSTART.*20261012/);
   assert.equal(calendar(COURSES.mth140,0,{includeTentative:true,now}).count,1);
   for(const line of all.text.split('\r\n'))assert.ok(Buffer.byteLength(line,'utf8')<=75);
 });

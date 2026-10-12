@@ -3,7 +3,7 @@ export const COURSES = {
     "code": "MTH140",
     "name": "Calculus I",
     "term": "Fall 2026",
-    "updated": "2026-10-07",
+    "updated": "2026-10-12",
     "labs": [
       {
         "section": 1,
@@ -686,9 +686,11 @@ export const COURSES = {
         "title": "Lab Quiz 2",
         "kind": "quiz",
         "week": "2026-10-12",
-        "scope": "Coverage awaits the course announcement on D2L.",
-        "source": "Course Management Form, p. 3: scheduled quiz week. Exact scope and any changes must be checked on D2L.",
-        "confirmed": false
+        "mondayMakeupDate": "2026-10-19",
+        "quizSecondHour": true,
+        "scope": "Chapter 3: Sections 3.1–3.5.",
+        "source": "“Lab 5 Questions and Quiz 2,” Dr. Majed Alqasas, D2L, October 8, 2026: scope, second-hour timing and Monday October 19 make-up.",
+        "confirmed": true
       },
       {
         "id": "quiz-3",
@@ -770,6 +772,10 @@ export const COURSES = {
       {
         "title": "Quiz 1 Important Information",
         "detail": "D2L announcement, September 22, 2026: September 28–October 2, Sections 2.2–2.4, second lab hour, paper and phone rules."
+      },
+      {
+        "title": "Lab 5 Questions and Quiz 2",
+        "detail": "D2L announcement, October 8, 2026: Chapter 3 Sections 3.1–3.5; second hour of the lab; Monday sections on October 19, other sections in their October 13–16 labs."
       }
     ]
   },
@@ -777,7 +783,7 @@ export const COURSES = {
     "code": "MTH141",
     "name": "Linear Algebra",
     "term": "Fall 2026",
-    "updated": "2026-10-07",
+    "updated": "2026-10-12",
     "labs": [
       {
         "section": 1,
@@ -1558,7 +1564,6 @@ export const COURSES = {
         "end": "20:30",
         "duration": "2 hours",
         "scope": "Complex numbers: 6.1–6.4; systems: 1.1–1.2.4; matrices: 2.1.1–2.1.8; determinants: 3.1.1–3.1.3 and 3.1.5–3.2.2.",
-        "format": "50 test marks: 18 multiple-choice questions and 2 long-answer questions. The test contributes 35% of the course grade.",
         "source": "Course Management Form V3, p. 3; “MTH 141 Midterm Test Instructions,” Dr. Saeid Samiezadeh, October 5, 2026, 10:22 AM.",
         "confirmed": true
       },
@@ -1568,8 +1573,7 @@ export const COURSES = {
         "kind": "final",
         "date": null,
         "scope": "The FAQ says post-midterm material unless otherwise announced. Check D2L for the exact final topic list, date, time and room.",
-        "source": "Course Management Form, p. 3: December examination period and final-exam weight. No exact final-exam date was provided.",
-        "format": "Multiple-choice and long-answer questions; confirm duration on D2L."
+        "source": "Course Management Form, p. 3: December examination period and final-exam weight. No exact final-exam date was provided."
       }
     ],
     "weights": [
@@ -1619,7 +1623,7 @@ export const COURSES = {
       },
       {
         "title": "MTH141 Midterm Test Instructions",
-        "detail": "D2L announcement, October 5: date, exact scope, 50-mark format, physical TMU ID, supporting work, pen/pencil, phone, room and Test Centre instructions."
+        "detail": "D2L announcement, October 5: date, exact scope and logistical requirements. Official assessment format and full cover-page instructions are available on D2L."
       }
     ]
   }

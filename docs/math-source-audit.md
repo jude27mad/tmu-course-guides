@@ -1,6 +1,6 @@
 # Fall 2026 math guide source audit
 
-Reviewed October 7, 2026. Dates and rules are transcribed or summarized from the supplied official course files and D2L announcements. The website publishes summaries and exercise references; it does not redistribute course PDFs, screenshots, restricted test questions or solutions.
+Reviewed October 12, 2026. Dates and rules are transcribed or summarized from the supplied official course files and D2L announcements. The website publishes coverage summaries and exercise references; it does not redistribute course PDFs, screenshots, test question formats, restricted test questions or solutions.
 
 ## MTH140
 
@@ -8,6 +8,7 @@ Reviewed October 7, 2026. Dates and rules are transcribed or summarized from the
 | --- | --- | --- |
 | Lab quizzes | Four quiz weeks: September 28, October 12, November 9, November 23. Quiz category 15%; lowest quiz dropped; no make-up. | Course Management Form F26, p. 3 and footnote. |
 | Quiz 1 scope | Sections 2.2–2.4. Quiz in the second hour of the assigned lab. | September 22 D2L announcement. |
+| Quiz 2 scope and timing | Chapter 3, Sections 3.1–3.5; after Lab 5 questions are reviewed. Tuesday–Friday sections: second hour of their October 13–16 lab. Monday sections: second hour of the October 19 lab due to Thanksgiving. | October 8 D2L “Lab 5 Questions and Quiz 2” announcement. |
 | Midterm | October 23, 2026, 6:30–8:30 PM Toronto time; 40%. Exact scope and room not supplied. | Course Management Form, p. 3; FAQ C.4 says scope is posted about one week before. |
 | Final | Three hours, December examination period, 45%. Exact date, time, room and scope not supplied. | Course Management Form, p. 3. |
 | Instructors | All six section ranges; current staff details are on D2L. | Course Management Form, p. 1. |
@@ -26,9 +27,9 @@ Staff names and office-hour details are omitted from the public guide; check cur
 | Lab quizzes | Five quiz weeks: September 21, October 5, November 2, November 16, November 30. Quiz category 20%; lowest dropped; no make-up. | Course Management Form V3, pp. 3 and 5. |
 | Quiz 1 scope | Sections 6.1–6.4. | September 17 D2L reminder. |
 | Quiz 2 scope | 1.2.2, 1.2.3, 1.2.4, 2.1.3, 2.1.4, 2.1.5, 2.1.6; 15 minutes. | October 1 D2L reminder. |
-| Midterm | October 16, 6:30–8:30 PM Toronto time; 35% of course. 50 test marks, 18 multiple-choice and 2 long-answer questions. | Outline V3 p. 3 and October 5, 10:22 AM D2L announcement. |
+| Midterm | October 16, 6:30–8:30 PM Toronto time; 35% of course. The official test format is available on D2L, not reproduced in this public guide. | Outline V3 p. 3 and October 5 D2L announcement. |
 | Midterm scope | 6.1–6.4; 1.1–1.2.4; 2.1.1–2.1.8; 3.1.1–3.1.3 and 3.1.5–3.2.2. Section 3.1.4 is not added. | October 5 announcement. |
-| Midterm instructions | Physical TMU ID displayed; section on cover; no aids; capital MC answer letters; sufficient supporting work; clear ordered long answers; pencil scripts not eligible for remarking; phones off and in bags; bags at front. | October 5 announcement and its continuation screenshots. |
+| Midterm logistics | Bring physical TMU ID and know your section; closed-book, no unauthorized aids; phones off and stored in bags. Follow the official D2L cover page for the remaining requirements. | October 5 D2L announcement. |
 | Test room / AAS | Rooms posted a few days before. AAS users must book through Test Centre by its applicable deadline; no deadline date supplied. | October 5 announcement. |
 | Sample test | D2L → Course Information → Midterm Test Materials, sample and solutions. No restricted questions published. | October 5 announcement. |
 | Final | December examination period, 45%; exact schedule and duration not supplied. FAQ says post-midterm content unless otherwise announced. | Outline V3 p. 3; FAQ 4.6. |
@@ -42,9 +43,9 @@ The V3 outline links Kuttler 2021.A, while its recommended-problem document cite
 
 Quiz weeks are authoritative at the granularity supplied. A visitor's lab day is combined with that week to calculate a **timetable-derived day**, explicitly labelled as such. The guide does not assume that a quiz begins at the beginning of the lab. Those events are opt-in, tentative, all-day calendar entries.
 
-MTH140's second quiz week begins on Thanksgiving, October 12. Monday sections receive a revised-date warning and no invented holiday quiz date. This unresolved occurrence remains visible while its announced week is current, and is excluded from calendar export.
+MTH140 Quiz 2's week begins on Thanksgiving, October 12. The October 8 D2L announcement confirms Monday sections instead write Quiz 2 during the second hour of the October 19 lab. The guide and optional tentative calendar export use October 19, not the holiday, for those Monday sections.
 
-Published midterm times are exported using UTC calculated from America/Toronto, including daylight-saving offsets. Unknown final dates are never exported. Completion records are self-reported and do not represent marks or verified D2L submissions.
+Published midterm times are exported using UTC calculated from America/Toronto, including daylight-saving offsets. Other sections' Quiz 2 dates are derived from their normal lab timetable and the confirmed week. Unknown final dates are never exported. Completion records are self-reported and do not represent marks or verified D2L submissions.
 
 ## Integration and maintenance
 

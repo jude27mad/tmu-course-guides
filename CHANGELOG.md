@@ -2,6 +2,12 @@
 
 Latest first. Course-specific student-facing notes remain under **What's changed?** above each course footer. Older entries record the behaviour at the time; later releases supersede them.
 
+## October 12, 2026 — Math assessment updates
+
+- Confirmed MTH140 Quiz 2 covers Chapter 3, Sections 3.1–3.5 and takes place in the second hour of the lab; Monday sections write on October 19 after Thanksgiving.
+- Kept MTH141 midterm coverage and published dates while removing public question-type breakdowns and other assessment-format details. Official format stays on D2L.
+- Updated quiz date handling, calendar export, course notes and assessment-data tests without changing student progress storage.
+
 ## October 12, 2026 — Subject headers and privacy
 
 - Replaced the abstract chrome/glass headers with a working planetary gearbox, mint Calculus ribbons and tangent, and a matrix-transformed sphere and basis.
