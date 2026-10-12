@@ -3,11 +3,23 @@ const esbuild=require('esbuild');
 const assert=require('node:assert/strict');
 const path=require('node:path');
 const root=path.resolve(__dirname,'../..');
-const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 (async()=>{
  const result=await esbuild.build({entryPoints:[path.join(root,'assets/guide-motion.mjs')],bundle:true,write:false,format:'iife',globalName:'motion',logLevel:'silent'});
  const dom=new JSDOM('<!doctype html><body><main id="panels" class="wrap"><section id="one"><h2>One</h2><button>Source</button></section><section id="two" hidden><h2>Two</h2><button>Destination</button></section><section id="three" hidden><h2>Three</h2></section></main><div id="search" hidden><input></div><details id="tools"><summary>Tools</summary><p>Content</p></details><dialog class="detail-sheet"><div class="sheet-toolbar"><h2>Details</h2></div><div class="sheet-content"><input value="preserve"></div></dialog><dialog class="lab-dialog"><h2>Lab</h2><div class="lab-content">Graph</div></dialog><ul id="assessment-list"><li id="a">A</li><li id="b">B</li></ul></body>',{url:'https://guide.test',runScripts:'dangerously',pretendToBeVisual:true});
  const w=dom.window,d=w.document;let mediaChange;
+ // Advance the real GSAP ticker on a shared 60 Hz clock. Synchronous jsdom CSS
+ // work must not consume playback time or trigger GSAP's wall-clock lag smoothing.
+ let frame=0,frameId=0;const frames=new Map(),frameDuration=1000/60;
+ w.Date.now=()=>frame*frameDuration;
+ w.requestAnimationFrame=callback=>{const id=++frameId;frames.set(id,callback);return id};
+ w.cancelAnimationFrame=id=>frames.delete(id);
+ const wait=async ms=>{
+  for(let n=0;n<Math.ceil(ms/frameDuration);n++){
+   frame++;const pending=[...frames];
+   for(const [id,callback]of pending)if(frames.delete(id))callback(w.Date.now());
+   await Promise.resolve();
+  }
+ };
  const media={matches:false,addEventListener(name,fn){mediaChange=fn}};
  w.matchMedia=()=>media;w.ResizeObserver=class{observe(){}};w.IntersectionObserver=class{observe(){}unobserve(){}};
  w.HTMLElement.prototype.getBoundingClientRect=function(){const hidden=this.hidden||this.closest('[hidden]');const row=this.tagName==='LI';const top=row?[...this.parentElement.children].indexOf(this)*80:20;return {x:20,y:top,left:20,top,right:620,bottom:top+300,width:hidden?0:600,height:hidden?0:300};};
@@ -18,7 +30,7 @@ const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
  w.eval(result.outputFiles[0].text);
  const M=w.motion,$=id=>d.getElementById(id),dialog=d.querySelector('.detail-sheet');
  assert(M.motionAllowed(),'an existing saved header pause must not suppress page transitions');M.setScenePaused(true);assert(M.motionAllowed(),'pausing the header must preserve interface motion');assert(!M.sceneMotionAllowed());M.setScenePaused(false);assert(M.sceneMotionAllowed());
- // Real timer playback: the first frame is visibly displaced, an intermediate frame advances,
+ // GSAP frame playback: the first frame is visibly displaced, an intermediate frame advances,
  // and completion removes inline opacity/transform so reading remains stationary.
  const reveal=M.reveal($('one'));
  assert.equal(reveal.duration(),.42);

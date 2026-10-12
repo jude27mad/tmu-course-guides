@@ -204,7 +204,10 @@ GitHub Pages logs visitor IP addresses for hosting security. See [GitHub’s hos
 | --- | --- |
 | `index.html` | The Desk: the site root and course directory. `assets/legacy-route.js` forwards old root CEN100 links to `cen100/`. |
 | `cen100/index.html` | CEN100 content, styles, JavaScript, contact mappings, and full release history. |
-| `assets/cen-schedule.js`, `assets/cen-schedule.mjs` | The one copy of the CEN100 schedule records, for the CEN guide's inline script (`window.CEN_SCHEDULE`) and for ES modules. |
+| `assets/cen-schedule.mjs`, `assets/cen-schedule.js` | Pure canonical CEN100 schedule records and a legacy classic-script compatibility loader. |
+| `assets/cen-guide.mjs` | CEN coursework, progress and actions, scoped to `mount(ctx)` / `unmount()`; exposes `window.CEN_SCHEDULE` only while mounted. |
+| `assets/app/route-boot.mjs`, `assets/app/router.mjs` | Ordered direct-load mounting and persistent navigation between the Desk and course guides. |
+| `assets/book/weeks.mjs`, `assets/book/page-bend-math.mjs` | Pure semester records and CPU/GLSL page curl reference for the book renderer. |
 | `assets/night/targets.mjs` | Data-level next-deadline resolver shared by the course card, dock, hero line and the Desk: the CEN100 and math rules over the unchanged records, read-only saved-state readers, and shared countdown formatting. |
 | `assets/night/desk.mjs`, `assets/night/desk.css` | The Desk directory: per-course and overall next deadlines without loading a course page. `[data-desk-stage]` is the empty mount point for the later 3D desk. |
 | `tests/targets.test.mjs` | Frozen-clock deadline fixtures, including a case-for-case comparison with the CEN100 guide's own rules. |
@@ -228,7 +231,7 @@ GitHub Pages serves the **main** branch from **/(root)** using **Deploy from a b
 
 ### Maintaining course information
 
-Update CEN100 in `cen100/index.html` (its dated schedule records are in `assets/cen-schedule.js`) and math course information in `assets/course-data.mjs`. Verify new dates and coverage against official course documents or announcements, retain source notes, and keep unresolved details labelled pending. Keep CEN100’s short `preview` text consistent with the full requirements; math previews render from each assessment’s `scope`. For math source changes, update `docs/math-source-audit.md`.
+Update CEN100 content in `assets/cen-guide.mjs` and its static markup in `cen100/index.html` (dated schedule records are in `assets/cen-schedule.mjs`); update math course information in `assets/course-data.mjs`. Verify new dates and coverage against official course documents or announcements, retain source notes, and keep unresolved details labelled pending. Keep CEN100’s short `preview` text consistent with the full requirements; math previews render from each assessment’s `scope`. For math source changes, update `docs/math-source-audit.md`.
 
-Update the relevant course's **What's changed?** entry and release version when publishing a release so returning visitors see the unread badge. CEN100's version lives in `cen100/index.html`; the math version lives in `assets/math-guide.mjs`. Run `node --test tests/schedule.test.mjs` for math date/data changes, preview affected pages over HTTP, and check the GitHub Pages deployment after publishing to `main`.
+Update the relevant course's **What's changed?** entry and release version when publishing a release so returning visitors see the unread badge. CEN100's version lives in `assets/cen-guide.mjs`; the math version lives in `assets/math-guide.mjs`. Run `node --test tests/schedule.test.mjs` for math date/data changes, preview affected pages over HTTP, and check the GitHub Pages deployment after publishing to `main`.
 
