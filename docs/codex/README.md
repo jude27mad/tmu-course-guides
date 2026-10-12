@@ -9,6 +9,9 @@ Coding-only work that runs in parallel with Claude's design work (books, Desk, m
 | [B — Math guide lifecycle](task-b-math-lifecycle.md) | `codex/ns-math-lifecycle` | after Stage 1 lands | Stage 1 |
 | [C — Shared guide lifecycle](task-c-shared-lifecycle.md) | `codex/ns-shared-lifecycle` | after Stage 1 lands | Stage 1 |
 | [D — Router](task-d-router.md) | `codex/ns-router` | after Stage 1 lands | Stage 1; integrates A–C through the contract below |
+| [F — ⌘K command palette](task-f-palette.md) | `codex/ns-palette` | now | A–E merged on `night-shift` |
+| [G — Verification and performance harness](task-g-qa-harness.md) | `codex/ns-qa-harness` | now | A–E merged on `night-shift` |
+| [H — Three.js addons, paper sounds, retire warp/backdrop](task-h-build-sound-cleanup.md) | `codex/ns-build-sound` | now | A–E merged on `night-shift` |
 
 Claude reviews and merges each branch into `night-shift`. Codex must not push to `main` or `night-shift`, and must not open pull requests unless asked.
 
