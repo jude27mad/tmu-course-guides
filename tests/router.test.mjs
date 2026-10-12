@@ -41,8 +41,9 @@ test('eligible links preserve native modified, external, download, targets and s
  const valid=(event={button:0},attrs={})=>{a.removeAttribute('target');a.removeAttribute('download');a.removeAttribute('rel');a.href='cen100/';for(const [key,value]of Object.entries(attrs))a.setAttribute(key,value);return isRouteLink(event,a,{base,currentURL});};
  assert.equal(valid(),true);
  for(const event of [{button:1},{button:2},{button:0,ctrlKey:true},{button:0,metaKey:true},{button:0,shiftKey:true},{button:0,altKey:true},{button:0,defaultPrevented:true}])assert.equal(valid(event),false);
- for(const attrs of [{target:'_blank'},{target:'named-frame'},{download:''},{rel:'noopener EXTERNAL'},{href:'https://outside.test/cen100/'},{href:'privacy.html'},{href:'./#courses'},{href:'index.html#courses'}])assert.equal(valid({button:0},attrs),false);
- assert.equal(valid({button:0},{target:'_self'}),true);dom.window.close();
+ for(const attrs of [{target:'_blank'},{target:'named-frame'},{download:''},{rel:'noopener EXTERNAL'},{href:'https://outside.test/cen100/'},{href:'privacy.html'},{href:'./#courses'}])assert.equal(valid({button:0},attrs),false);
+ assert.equal(valid({button:0},{target:'_self'}),true);
+ assert.equal(valid({button:0},{href:'index.html#courses'}),true);assert.equal(valid({button:0},{href:'./'}),true);dom.window.close();
 });
 
 test('navigation disposes in reverse order, aborts old handlers and preserves the shell',async()=>{
@@ -170,4 +171,65 @@ test('guide-created hash history entries keep distinct scroll positions',async()
  f.window.history.back();await changed;assert.equal(f.router.route,'desk');assert.equal(f.window.scrollY,420);
  const hash=new Promise(resolve=>f.window.addEventListener('hashchange',resolve,{once:true}));
  f.window.history.back();await hash;await new Promise(resolve=>setTimeout(resolve,0));assert.equal(f.window.scrollY,180);f.close();
+});
+
+test('canceling Back restores the outgoing history entry without adding or replacing an entry',{timeout:10000},async()=>{
+ const f=fixture();f.router.start();await f.router.navigate('cen100/');await f.router.navigate('../mth140/');
+ const main=f.window.document.querySelector('main'),state=f.window.history.state,href=f.window.location.href,length=f.window.history.length;
+ f.window.document.addEventListener('route-will-change',event=>event.preventDefault(),{once:true});
+ const restored=new Promise(resolve=>f.window.addEventListener('popstate',()=>{if(f.window.location.href===href)resolve();}));
+ f.window.history.back();await restored;
+ assert.equal(f.window.history.length,length);assert.deepEqual(f.window.history.state,state);assert.equal(f.window.location.href,href);
+ assert.equal(f.router.route,'mth140');assert.equal(f.window.document.body.dataset.course,'mth140');assert.equal(f.window.document.title,'mth140 title');assert.equal(f.window.document.querySelector('main'),main);
+ const changed=new Promise(resolve=>f.window.document.addEventListener('route-changed',resolve,{once:true}));f.window.history.back();await changed;
+ assert.equal(f.router.route,'cen100');assert.equal(f.window.location.pathname,'/tmu-course-guides/cen100/');f.close();
+});
+
+test('Back supersedes a pending push fetch so URL and mounted route finish on the traversed entry',async()=>{
+ let release,fetchStarted;const gate=new Promise(resolve=>{release=resolve;}),started=new Promise(resolve=>{fetchStarted=resolve;});
+ const f=fixture({fetch:async url=>{
+  const route=need().routeForURL(url,new URL('https://guide.test/tmu-course-guides/'));
+  if(route==='mth140'){fetchStarted();await gate;}
+  return {ok:true,url,text:async()=>html(route)};
+ }});
+ f.router.start();await f.router.navigate('cen100/');
+ const push=f.router.navigate('../mth140/');await started;
+ const popped=new Promise(resolve=>f.window.addEventListener('popstate',resolve,{once:true}));
+ f.window.history.back();await popped;
+ const changed=new Promise(resolve=>f.window.document.addEventListener('route-changed',resolve,{once:true}));release();
+ await push;await changed;
+ assert.equal(f.window.location.pathname,'/tmu-course-guides/');assert.equal(f.router.route,'desk');assert.equal(f.window.document.body.dataset.page,'desk');assert.equal(f.window.document.body.dataset.course,undefined);assert.equal(f.window.document.title,'desk title');assert.deepEqual(f.fallback,[]);f.close();
+});
+
+test('same-route Back preserves focus chosen by the guide hash handler',async()=>{
+ const f=fixture();f.router.start();const target=f.window.document.createElement('button');target.textContent='Course info';f.window.document.querySelector('main').append(target);
+ f.window.history.pushState(null,'','#course-info');f.window.history.pushState(null,'','#study');
+ f.window.addEventListener('hashchange',()=>target.focus());
+ const hash=new Promise(resolve=>f.window.addEventListener('hashchange',resolve,{once:true}));f.window.history.back();await hash;
+ assert.equal(f.window.document.activeElement,target);assert.equal(f.window.document.querySelector('[data-router-announcement]'),null);f.close();
+});
+
+test('canceling the latest of queued Back traversals restores the mounted entry', {timeout:10000},async()=>{
+ let block=false,release,startedResolve;const gate=new Promise(resolve=>{release=resolve;}),started=new Promise(resolve=>{startedResolve=resolve;});
+ const f=fixture({fetch:async url=>{
+  const route=need().routeForURL(url,new URL('https://guide.test/tmu-course-guides/'));
+  if(block&&route==='cen100'){startedResolve();await gate;}
+  return {ok:true,url,text:async()=>html(route)};
+ }});
+ f.router.start();await f.router.navigate('cen100/');await f.router.navigate('../mth140/');
+ for(let i=0;i<4;i++)await f.router.prefetch(`/tmu-course-guides/mth141/?variant=${i}`);
+ const href=f.window.location.href,state=f.window.history.state,length=f.window.history.length,main=f.window.document.querySelector('main');
+ block=true;f.window.document.addEventListener('route-will-change',event=>event.preventDefault(),{once:true});
+ const restored=new Promise(resolve=>f.window.addEventListener('popstate',()=>{if(f.window.location.href===href)resolve();}));
+ f.window.history.back();await started;f.window.history.back();await restored;release();
+ assert.equal(f.window.history.length,length);assert.deepEqual(f.window.history.state,state);assert.equal(f.window.location.href,href);assert.equal(f.router.route,'mth140');assert.equal(f.window.document.title,'mth140 title');assert.equal(f.window.document.body.dataset.course,'mth140');assert.equal(f.window.document.querySelector('main'),main);assert.deepEqual(f.fallback,[]);f.close();
+});
+
+test('same-route aliases and course roots preserve the shell without remounting',async()=>{
+ const f=fixture();f.router.start();await f.router.navigate('cen100/');const main=f.window.document.querySelector('main'),marker=f.window.document.documentElement.dataset.shellId,mountCount=f.calls.filter(c=>c[0]==='mount').length;
+ const hashes=[];f.window.addEventListener('hashchange',()=>hashes.push(f.window.location.hash));
+ await f.router.navigate('index.html#course-info');assert.equal(f.window.location.pathname,'/tmu-course-guides/cen100/index.html');assert.equal(f.window.location.hash,'#course-info');
+ await f.router.navigate('./');assert.equal(f.window.location.pathname,'/tmu-course-guides/cen100/');assert.equal(f.window.location.hash,'');
+ const length=f.window.history.length;await f.router.navigate('./');assert.equal(f.window.history.length,length);
+ assert.equal(f.window.document.querySelector('main'),main);assert.equal(f.window.document.documentElement.dataset.shellId,marker);assert.equal(f.calls.filter(c=>c[0]==='mount').length,mountCount);assert.deepEqual(hashes,['#course-info','']);assert.deepEqual(f.fallback,[]);f.close();
 });

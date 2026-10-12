@@ -2,6 +2,7 @@
    source of route markup, styles and ordered lifecycle modules. */
 const ROUTES=['desk','cen100','mth140','mth141'];
 const STATE_KEY='__tmuRouter';
+const CANCELED=Symbol('canceled navigation');
 const nativeImport=url=>import(url);
 export const deriveBase=(moduleURL=import.meta.url)=>new URL('../../',moduleURL);
 export const routeFromDocument=doc=>doc.body.dataset.page==='desk'?'desk':doc.body.dataset.course;
@@ -22,7 +23,7 @@ export function isRouteLink(event,anchor,{base=deriveBase(),currentURL=globalThi
  const target=anchor.getAttribute('target');if(target&&target.toLowerCase()!=='_self')return false;
  const destination=new URL(anchor.getAttribute('href'),currentURL),current=new URL(currentURL);
  const route=routeForURL(destination,base);
- return !!route&&!(route===routeForURL(current,base)&&destination.search===current.search);
+ return !!route&&!(route===routeForURL(current,base)&&destination.pathname===current.pathname&&destination.search===current.search&&destination.hash);
 }
 
 export async function loadRouteModules({document,url=document.URL,importModule=nativeImport}){
@@ -68,6 +69,7 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
  const originalPush=history.pushState,originalReplace=history.replaceState;
  const pushState=(...args)=>originalPush.apply(history,args),replaceState=(...args)=>originalReplace.apply(history,args);
  let route=routeFromDocument(document),modules=[],controller=new window.AbortController(),started=false,entryCounter=0,activeEntry,currentURL=window.location.href,queue=Promise.resolve(),idle=null,swapping=false,dispatchingHash=false;
+ let activeIndex=0,browserEntry,latestRequest,restoring=null,pendingPops=0;
  const listenerController=new window.AbortController();
  if(!document.documentElement.dataset.shellId)document.documentElement.dataset.shellId=window.crypto?.randomUUID?.()||`shell-${Date.now()}-${Math.random().toString(36).slice(2)}`;
  const oldRestoration=history.scrollRestoration;history.scrollRestoration='manual';
@@ -75,15 +77,15 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
  const scroll=()=>[window.scrollX||0,window.scrollY||0];
  function ensureEntry(state=history.state){
   if(!state?.[STATE_KEY]?.id){
-   state={...(state&&typeof state==='object'?state:{}),[STATE_KEY]:{id:marker(),scroll:scroll()}};
+   state={...(state&&typeof state==='object'?state:{}),[STATE_KEY]:{id:marker(),index:activeIndex,scroll:scroll()}};
    replaceState(state,'',window.location.href);
   }
   return state[STATE_KEY];
  }
- activeEntry=ensureEntry().id;positions.set(activeEntry,scroll());
+ browserEntry=ensureEntry();activeEntry=browserEntry.id;activeIndex=browserEntry.index||0;positions.set(activeEntry,scroll());
  function saveScroll(replace=true){
   const position=scroll();positions.set(activeEntry,position);
-  if(replace&&history.state?.[STATE_KEY]?.id===activeEntry)replaceState({...history.state,[STATE_KEY]:{id:activeEntry,scroll:position}},'',window.location.href);
+  if(replace&&history.state?.[STATE_KEY]?.id===activeEntry)replaceState({...history.state,[STATE_KEY]:{id:activeEntry,index:activeIndex,scroll:position}},'',window.location.href);
  }
  const fallback=url=>{assign(url.href);return false;};
  const canonical=input=>{const url=new URL(input,window.location.href),name=routeForURL(url,base);if(!name)return null;const result=new URL(name==='desk'?'':name+'/',base);result.search=url.search;return result;};
@@ -104,7 +106,7 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   request.catch(()=>{if(cache.get(key)===request)cache.delete(key);});
   return request;
  }
- async function prepareHead(incoming,url){
+ async function prepareHead(incoming,url,request){
   const selector='link[rel~="stylesheet"],style',existing=[...document.head.querySelectorAll(selector)].filter(el=>!el.hasAttribute('data-shell-style'));
   const key=(el,baseURL)=>el.tagName==='STYLE'?`style:${el.media}:${el.textContent}`:`link:${new URL(el.getAttribute('href'),baseURL).href}:${el.media||''}`;
   const byKey=new Map(existing.map(el=>[key(el,currentURL),el])),desired=[],pending=[];
@@ -117,7 +119,7 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
      node.href=new URL(source.getAttribute('href'),url).href;
      // Register load/error before insertion; a cached sheet can finish immediately.
      const ready=loadStylesheet?Promise.resolve().then(()=>loadStylesheet(node)):stylesheetReady(node,window);
-     document.head.append(node);pending.push(ready);
+     document.head.append(node);request.headAdditions.push(node);pending.push(ready);
     }
    }
    desired.push(node);
@@ -171,38 +173,61 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   dispatchingHash=true;
   try{window.dispatchEvent(new window.HashChangeEvent('hashchange',{oldURL,newURL:url.href}));}finally{dispatchingHash=false;}
  }
- async function performNavigation(url,{history:mode='push',state}={}){
+ async function awaitCurrent(promise,request){
+  const result=await Promise.race([promise,request.canceled]);
+  if(result===CANCELED||request!==latestRequest)throw CANCELED;
+  return result;
+ }
+ async function restoreCanceledPop(){
+  const delta=activeIndex-browserEntry?.index;
+  if(!Number.isFinite(delta)||!delta){if(window.location.href!==currentURL)assign(currentURL);return;}
+  await new Promise(resolve=>{restoring={id:activeEntry,index:activeIndex,resolve};history.go(delta);});
+ }
+ async function performNavigation(url,{history:mode='push',state,request}={}){
+  if(request!==latestRequest)return false;
   const nextRoute=routeForURL(url,base);if(!nextRoute)return fallback(url);
   const oldURL=currentURL,oldRoute=route;
   // Existing view/item hash routers retain ownership within a mounted route.
   if(nextRoute===route&&new URL(currentURL).search===url.search){
    if(mode==='pop'){
-    saveScroll(false);const entry=ensureEntry(state);activeEntry=entry.id;currentURL=url.href;
-    hashChanged(oldURL,url);restoreAndFocus(positions.get(entry.id)||entry.scroll,url.hash);
-   }else if(url.href!==window.location.href)window.location.assign(url.href);
+    saveScroll(false);const entry=ensureEntry(state);activeEntry=entry.id;activeIndex=entry.index??activeIndex;browserEntry=entry;currentURL=url.href;
+    hashChanged(oldURL,url);
+    const position=positions.get(entry.id)||entry.scroll;if(position)window.scrollTo(position[0],position[1]);
+   }else if(url.href!==window.location.href){
+    saveScroll();const entry={id:marker(),index:activeIndex+1,scroll:scroll()};
+    pushState({[STATE_KEY]:entry},'',url.href);
+    activeEntry=entry.id;activeIndex=entry.index;browserEntry=entry;currentURL=url.href;positions.set(activeEntry,entry.scroll);
+    hashChanged(oldURL,url);
+   }
    return true;
   }
   swapping=true;
   try{
    saveScroll(mode!=='pop');
-   const destination=await prefetch(url),incoming=destination.document;
-   const nextModules=await loadRouteModules({document:incoming,url:destination.url,importModule});
+   const destination=await awaitCurrent(prefetch(url),request),incoming=destination.document;
+   const nextModules=await awaitCurrent(loadRouteModules({document:incoming,url:destination.url,importModule}),request);
    if(modules.some(module=>module.reloadRequired===true))throw Error('Outgoing route requires reload');
    const waits=[];
    const event=new window.CustomEvent('route-will-change',{cancelable:true,detail:{route:nextRoute,from:route,url:url.href,waitUntil(promise){waits.push(Promise.resolve(promise));}}});
-   if(!document.dispatchEvent(event))return false;
-   await Promise.all(waits);
-   const commitHead=await prepareHead(incoming,destination.url);
+   if(!document.dispatchEvent(event)){
+    Promise.all(waits).catch(()=>{});
+    if(mode==='pop')await restoreCanceledPop();
+    return false;
+   }
+   await awaitCurrent(Promise.all(waits),request);
+   const commitHead=await awaitCurrent(prepareHead(incoming,destination.url,request),request);
+   request.phase='commit';
    await disposeRoute();
+   if(request!==latestRequest){for(const node of request.headAdditions)node.remove();return fallback(new URL(window.location.href));}
    const oldRoot=document.querySelector('main[data-route-region]');if(!oldRoot)throw Error('Outgoing route region missing');
    const newRoot=absoluteAttributes(document.importNode(incoming.querySelector('main[data-route-region]'),true),destination.url);
-   oldRoot.replaceWith(newRoot);commitHead();syncOutsideRegion(incoming,destination.url);
+   oldRoot.replaceWith(newRoot);commitHead();request.headAdditions=[];syncOutsideRegion(incoming,destination.url);
    document.body.className=incoming.body.className;
    for(const key of ['course','page'])if(incoming.body.dataset[key])document.body.dataset[key]=incoming.body.dataset[key];else delete document.body.dataset[key];
    let entry;
    if(mode==='pop')entry=ensureEntry(state);
-   else{entry={id:marker(),scroll:[0,0]};pushState({[STATE_KEY]:entry},'',url.href);}
-   activeEntry=entry.id;currentURL=url.href;route=nextRoute;
+   else{entry={id:marker(),index:activeIndex+1,scroll:[0,0]};pushState({[STATE_KEY]:entry},'',url.href);}
+   activeEntry=entry.id;activeIndex=entry.index??activeIndex;browserEntry=entry;currentURL=url.href;route=nextRoute;
    controller=new window.AbortController();
    // Keep partial mounts disposable if a later module fails.
    for(const module of nextModules){modules.push(module);await module.mount({root:newRoot,route,signal:controller.signal,direct:false});}
@@ -211,6 +236,8 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
    document.dispatchEvent(new window.CustomEvent('route-changed',{detail:{route,from:oldRoute}}));
    return true;
   }catch(error){
+   for(const node of request.headAdditions)node.remove();
+   if(error===CANCELED)return false;
    // A full document navigation is the recovery boundary for partial DOM/module work.
    try{await disposeRoute();}catch{}
    return fallback(url);
@@ -218,19 +245,22 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
  }
  function navigate(input,options){
   const url=new URL(input,window.location.href);
-  const result=queue.then(()=>performNavigation(url,options));queue=result.catch(()=>{});return result;
+  if(latestRequest?.phase==='prepare')latestRequest.cancel();
+  let cancel;const canceled=new Promise(resolve=>{cancel=()=>resolve(CANCELED);});
+  const request={canceled,cancel,phase:'prepare',headAdditions:[]};latestRequest=request;
+  const result=queue.then(()=>performNavigation(url,{...options,request}));queue=result.catch(()=>{});return result;
  }
  const linkFromEvent=event=>event.target?.closest?.('a[href]');
  // Existing guides create view/item entries with null state. Give those entries
  // the same scroll bookkeeping as cross-course entries without changing their URLs.
  const guidePush=function(state,title,url){
   saveScroll();
-  const entry={id:marker(),scroll:scroll()};
+  const entry={id:marker(),index:activeIndex+1,scroll:scroll()};
   pushState({...state,[STATE_KEY]:entry},title,url);
-  activeEntry=entry.id;positions.set(activeEntry,entry.scroll);currentURL=window.location.href;
+  activeEntry=entry.id;activeIndex=entry.index;browserEntry=entry;positions.set(activeEntry,entry.scroll);currentURL=window.location.href;
  };
  const guideReplace=function(state,title,url){
-  const entry={id:activeEntry,scroll:scroll()};
+  const entry={id:activeEntry,index:activeIndex,scroll:scroll()};
   replaceState({...state,[STATE_KEY]:entry},title,url);
   positions.set(activeEntry,entry.scroll);currentURL=window.location.href;
  };
@@ -241,14 +271,23 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   window.addEventListener('click',event=>{const a=linkFromEvent(event);if(isRouteLink(event,a,{base,currentURL:window.location.href})){event.preventDefault();navigate(a.href);}}, {capture:true,signal});
   const warm=event=>{const a=linkFromEvent(event);if(isRouteLink({button:0},a,{base,currentURL:window.location.href}))prefetch(a.href).catch(()=>{});};
   window.addEventListener('pointerenter',warm,{capture:true,signal});window.addEventListener('focus',warm,{capture:true,signal});
-  window.addEventListener('popstate',event=>{saveScroll(false);swapping=true;navigate(window.location.href,{history:'pop',state:event.state}).finally(()=>{swapping=false;});},{capture:true,signal});
+  window.addEventListener('popstate',event=>{
+   browserEntry=event.state?.[STATE_KEY];
+   if(restoring){
+    if(browserEntry?.id===restoring.id){const done=restoring.resolve;restoring=null;done();}
+    else{event.stopImmediatePropagation();const delta=restoring.index-browserEntry?.index;if(Number.isFinite(delta)&&delta)history.go(delta);else assign(currentURL);}
+    return;
+   }
+   saveScroll(false);swapping=true;pendingPops++;
+   navigate(window.location.href,{history:'pop',state:event.state}).finally(()=>{if(!--pendingPops)swapping=false;});
+  },{capture:true,signal});
   window.addEventListener('scroll',()=>{if(!swapping)saveScroll();},{passive:true,signal});
   window.addEventListener('hashchange',event=>{
    if(dispatchingHash)return;
    if(swapping){event.stopImmediatePropagation();return;}
    saveScroll(false);
-   if(history.state?.[STATE_KEY]?.id===activeEntry&&currentURL!==window.location.href)replaceState({...history.state,[STATE_KEY]:{id:marker(),scroll:scroll()}},'',window.location.href);
-   activeEntry=ensureEntry().id;currentURL=window.location.href;
+   if(history.state?.[STATE_KEY]?.id===activeEntry&&currentURL!==window.location.href)replaceState({...history.state,[STATE_KEY]:{id:marker(),index:activeIndex+1,scroll:scroll()}},'',window.location.href);
+   browserEntry=ensureEntry();activeEntry=browserEntry.id;activeIndex=browserEntry.index??activeIndex;currentURL=window.location.href;
   },{capture:true,signal});
   if(autoPrefetch){
    const warmRoutes=()=>{idle=null;for(const name of ROUTES)if(name!==route)prefetch(new URL(name==='desk'?'':name+'/',base)).catch(()=>{});};
