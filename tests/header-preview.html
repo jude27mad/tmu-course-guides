@@ -6,5 +6,6 @@
 const frame=document.querySelector('iframe'),course=document.getElementById('course'),width=document.getElementById('width'),result=document.getElementById('result'),pause=document.getElementById('pause');
 function navigate(){frame.src=new URL(course.value==='cen100'?'../index.html?motion=full':`../${course.value}/index.html?motion=full`,location.href).href;}
 course.onchange=navigate;width.onchange=()=>frame.style.width=width.value+'px';pause.onclick=()=>{const button=frame.contentDocument.querySelector('.scene-pause');button?.click();pause.setAttribute('aria-pressed',pause.getAttribute('aria-pressed')!=='true');};
+const query=new URLSearchParams(location.search);if(query.has("course"))course.value=query.get("course");if(query.has("width")){width.value=query.get("width");frame.style.width=width.value+"px";}
 setInterval(()=>{try{const doc=frame.contentDocument,art=doc.querySelector('.header-art');if(!art)return;const r=art.getBoundingClientRect();result.textContent=JSON.stringify({course:doc.body.dataset.course,width:frame.contentWindow.innerWidth,overflow:doc.documentElement.scrollWidth>frame.contentWindow.innerWidth,art:[Math.round(r.width),Math.round(r.height)],renderer:art.dataset.renderer,frame:art.dataset.sceneFrame,version:art.dataset.artRevision});}catch{}},500);navigate();
 </script></html>

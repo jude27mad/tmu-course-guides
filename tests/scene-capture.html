@@ -1,0 +1,10 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Actual course renderer capture</title>
+<style>body{margin:0;background:#151e22;color:#fff;font:14px system-ui}.header-art{width:900px;height:600px;position:relative;overflow:hidden}canvas{width:100%;height:100%}.scene-poster{display:none}img{max-width:100%}pre{white-space:pre-wrap}</style>
+<header><div class="header-art"></div></header><pre id="status">Loading actual renderer</pre><div id="captures"></div>
+<script type="module">
+// Dedicated capture fixture: retain actual GPU pixels; production buffers stay disposable.
+const getContext=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type,opts){return getContext.call(this,type,{...opts,preserveDrawingBuffer:true});};
+const q=new URLSearchParams(location.search),course=q.get('course')||'cen100',art=document.querySelector('.header-art');
+const {mountScene}=await import('../assets/course-scene.mjs?v=20261012-subject1');const handle=await mountScene(art,course);
+let count=0;const timer=setInterval(()=>{document.querySelector('#status').textContent=JSON.stringify(art.dataset);if(art.dataset.renderer!=='webgl2'){clearInterval(timer);return;}if(+art.dataset.sceneFrame<30)return;const img=new Image();img.alt='Actual rendered frame '+(++count);img.src=art.querySelector('canvas').toDataURL('image/png');document.querySelector('#captures').append(img);if(count===2){clearInterval(timer);handle.dispose();}},1500);
+</script>
