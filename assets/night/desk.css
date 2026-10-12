@@ -25,7 +25,8 @@ body[data-page=desk] .hub-shell{max-width:1440px;padding:20px var(--desk-gutter)
 body[data-page=desk] :is(.hub-brand,.hub-theme){min-height:44px}
 @media(max-width:460px){body[data-page=desk] .hub-shell{padding-top:16px}body[data-page=desk] .course-switch{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
-body[data-page=desk] .skip-link{position:absolute;top:8px;left:8px;z-index:100;padding:12px 16px;border:1px solid var(--hub-line);border-radius:8px;background:var(--hub-panel);color:var(--hub-ink);font-weight:650;transform:translateY(-200%)}
+/* The skip link is a control too: 44 px tall once focused (content-box padding alone left it at 43). */
+body[data-page=desk] .skip-link{position:absolute;top:8px;left:8px;z-index:100;display:inline-flex;align-items:center;box-sizing:border-box;min-height:44px;padding:12px 16px;border:1px solid var(--hub-line);border-radius:8px;background:var(--hub-panel);color:var(--hub-ink);font-weight:650;transform:translateY(-200%)}
 body[data-page=desk] .skip-link:focus{transform:none;outline:3px solid var(--hub-focus);outline-offset:2px}
 
 .desk{max-width:1440px;margin:0 auto;padding:clamp(28px,4vw,56px) var(--desk-gutter) clamp(48px,6vw,88px)}
