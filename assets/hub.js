@@ -1,5 +1,6 @@
 (() => {
   // base = the site root (the Desk), from this script's own URL. No course default: the Desk has none.
+  if(window.TMUHub){window.TMUHub.refresh();return;}
   const script=document.currentScript,base=new URL('../',script.src),course=document.body.dataset.course,desk=document.body.dataset.page==='desk';
   const courses=[['cen100','CEN100','Engineering'],['mth140','MTH140','Calculus I'],['mth141','MTH141','Linear Algebra']];
   const root=document.createElement('div');root.className='hub-shell';
@@ -11,5 +12,6 @@
   function applyTheme(){if(mode==='auto')delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme=mode;button.textContent=mode==='auto'?'Auto theme':mode==='dark'?'Dark theme':'Light theme';button.setAttribute('aria-label',`Appearance: ${mode==='auto'?'automatic':mode}. Change appearance.`);}
   applyTheme();button.addEventListener('click',()=>{mode=['auto','dark','light'][(['auto','dark','light'].indexOf(mode)+1)%3];applyTheme();try{localStorage.setItem('tmu-guide-theme-v1',mode)}catch{}});
   function refreshProfiles(){for(const [id] of courses){let profile;try{profile=JSON.parse(localStorage.getItem(id==='cen100'?'cen100-contact-choice-v1':id+'-section-v1')||'null')}catch{}const section=Number(id==='cen100'?profile?.section:profile);const target=root.querySelector(`[data-saved-course="${id}"]`);target.textContent=Number.isInteger(section)&&section>=1&&section<=(id==='cen100'?39:34)?`Section ${section}`:'';}}
-  refreshProfiles();document.addEventListener('change',refreshProfiles);window.addEventListener('storage',refreshProfiles);
+  function refresh(){const route=document.body.dataset.page==='desk'?'desk':document.body.dataset.course;const utilities=root.querySelector('.workspace-utilities');if(utilities){utilities.hidden=route==='desk';(route==='desk'?root.querySelector('.hub-top'):utilities).append(button);}for(const link of root.querySelectorAll('[data-course-link]')){if(link.dataset.courseLink===route)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');}refreshProfiles();}
+  window.TMUHub={refresh};refresh();document.addEventListener('change',refreshProfiles);window.addEventListener('storage',refreshProfiles);document.addEventListener('route-changed',refresh);
 })();

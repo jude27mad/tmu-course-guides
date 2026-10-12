@@ -1,4 +1,5 @@
 /* One GSAP timeline per surface. Application state always changes synchronously. */
+import {scope} from './route-lifecycle.mjs';
 import {gsap,Flip} from './vendor/gsap-3.15.0.mjs';
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 // The device's reduced-motion setting wins over any saved choice; ?motion=full applies to this page view only.
@@ -98,36 +99,40 @@ function pageDepth(open){
 function updatePreference(){document.documentElement.dataset.motion=motionAllowed()?'on':'off';if(!motionAllowed())for(const owner of [...tracks.keys()])cancel(owner);document.dispatchEvent(new CustomEvent('guide-motion-change',{detail:{enabled:motionAllowed()}}));}
 export function setPaused(value){paused=value;updatePreference();}
 export const preference=()=>({paused,scenePaused,full,reduced:reduced.matches&&!full,forced});
-window.GuideMotion={reveal,visibility,capture,reflow,dialogOpen,dialogClose,cancel,motionAllowed,transitionPanel,entrance,disclosure,setPaused,setScenePaused,sceneMotionAllowed,preference,enterPage,leavePage};
+window.GuideMotion={unbindRoute,bindRoute:mount,reveal,visibility,capture,reflow,dialogOpen,dialogClose,cancel,motionAllowed,transitionPanel,entrance,disclosure,setPaused,setScenePaused,sceneMotionAllowed,preference,enterPage,leavePage};
 reduced.addEventListener('change',updatePreference);window.addEventListener('storage',e=>{if(e.key==='guide-motion-paused'){scenePaused=e.newValue==='true';document.dispatchEvent(new Event('guide-motion-change'));}});updatePreference();
-let mounted=false;
+let routeLife=null;
+export function unbindRoute(){if(!routeLife)return;routeLife.dispose();routeLife=null;depthOpen=false;for(const owner of [...tracks.keys()])cancel(owner);document.querySelector('.workspace-nav-marker')?.remove();}
 function mount(){
- const nav=document.querySelector('.workspace-nav');if(!nav||mounted)return;mounted=true;
+ const nav=document.querySelector('.workspace-nav');if(!nav||nav.hidden||routeLife)return;const life=routeLife=scope();life.root=document.querySelector('.wrap,.math-wrap');
  const marker=document.createElement('span');marker.className='workspace-nav-marker';marker.setAttribute('aria-hidden','true');nav.prepend(marker);
  function indicator(){const active=nav.querySelector('[aria-current]');if(!active)return;const rect=active.getBoundingClientRect(),box=nav.getBoundingClientRect();cancel(marker);if(!motionAllowed()){gsap.set(marker,{x:rect.left-box.left,y:rect.top-box.top,width:rect.width,height:rect.height});return;}play(marker,tl=>tl.to(marker,{x:rect.left-box.left,y:rect.top-box.top,width:rect.width,height:rect.height,duration:.4}));}
- new ResizeObserver(indicator).observe(nav);document.addEventListener('workspace-changed',indicator);indicator();
+ life.observer(new ResizeObserver(indicator),nav);life.on(document,'workspace-changed',indicator);indicator();
  enterPage();
  entrance(document.querySelector('.workspace-panel:not([hidden])'));
  const seen=new WeakSet();const observer=new IntersectionObserver(entries=>{for(const {target,isIntersecting}of entries){if(!isIntersecting||target.closest('[hidden]')||seen.has(target))continue;seen.add(target);observer.unobserve(target);if(!tracks.has(target.closest('.workspace-panel')?.parentElement))reveal(target,36);}},{threshold:.15});
+ life.own(()=>observer.disconnect());
  document.querySelectorAll('.workspace-panel .workspace-disclosure,.workspace-panel .workspace-topic-title').forEach(el=>observer.observe(el));
- document.addEventListener('click',e=>{if(e.target.closest('button,summary,.workspace-nav a,.course-link,.hub-brand,.header-art,input[type=checkbox],.tile .head'))reactPage();},true);
- let navigating=false;document.addEventListener('click',e=>{const a=e.target.closest('.course-link,.hub-brand');if(!a||e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||a.target||!motionAllowed())return;const u=new URL(a.href,location.href);if(u.origin!==location.origin||u.pathname===location.pathname)return;e.preventDefault();if(navigating)return;navigating=true;const links=[...document.querySelectorAll('.course-link')],direction=links.indexOf(a)>=links.findIndex(x=>x.hasAttribute('aria-current'))?1:-1;leavePage(document.querySelector('.wrap,.math-wrap'),()=>location.assign(u.href),direction);});
- document.addEventListener('close',e=>{if(e.target.classList?.contains('detail-sheet'))pageDepth(false);},true);
- window.addEventListener('pageshow',e=>{if(e.persisted){navigating=false;clear(document.querySelector('.wrap,.math-wrap'));enterPage();}});
- document.addEventListener('pointerdown',e=>{const target=e.target.closest('button,.workspace-nav a');if(target&&motionAllowed())play(target,tl=>tl.to(target,{scale:.96,duration:.08,ease:'power2.out'}).to(target,{scale:1,duration:.08}),()=>clear(target,'transform'));},{passive:true});
- document.addEventListener('click',e=>{
+ life.on(document,'click',e=>{if(e.target.closest('button,summary,.workspace-nav a,.course-link,.hub-brand,.header-art,input[type=checkbox],.tile .head'))reactPage();},true);
+ let navigating=false;life.on(document,'click',e=>{const a=e.target.closest('.course-link,.hub-brand');if(window.TMURouter||!a||e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||a.target||!motionAllowed())return;const u=new URL(a.href,location.href);if(u.origin!==location.origin||u.pathname===location.pathname)return;e.preventDefault();if(navigating)return;navigating=true;const links=[...document.querySelectorAll('.course-link')],direction=links.indexOf(a)>=links.findIndex(x=>x.hasAttribute('aria-current'))?1:-1;leavePage(document.querySelector('.wrap,.math-wrap'),()=>location.assign(u.href),direction);});
+ life.on(document,'close',e=>{if(e.target.classList?.contains('detail-sheet'))pageDepth(false);},true);
+ life.on(window,'pageshow',e=>{if(e.persisted){navigating=false;clear(document.querySelector('.wrap,.math-wrap'));enterPage();}});
+ life.on(document,'pointerdown',e=>{const target=e.target.closest('button,.workspace-nav a');if(target&&motionAllowed())play(target,tl=>tl.to(target,{scale:.96,duration:.08,ease:'power2.out'}).to(target,{scale:1,duration:.08}),()=>clear(target,'transform'));},{passive:true});
+ life.on(document,'click',e=>{
   const summary=e.target.closest('summary');if(!summary||summary.closest('.assessment')||summary.closest('dialog')||e.defaultPrevented)return;
   const details=summary.parentElement;if(details.tagName!=='DETAILS'||!motionAllowed())return;
   e.preventDefault();disclosure(details,details.dataset.closing==='true'||!details.open);
  });
  let completionQueued=false;
- const complete=()=>{if(completionQueued)return;completionQueued=true;const before=capture();queueMicrotask(()=>{window.CourseWorkspace?.refresh();completionQueued=false;reflow(before);reveal(document.querySelector('.next-assessment,.cen-next-layout'),32);document.dispatchEvent(new Event('guide-completion'));});};
- document.addEventListener('click',e=>{if(e.target.closest('[data-quick-complete],#undo-complete'))complete();},true);
- document.addEventListener('change',e=>{if(e.target.matches('[data-check],[data-completed],[data-k],[data-completion],[data-topic]'))complete();else if(e.target.matches('#hide-completed,#workspace-show-past')){const before=capture();queueMicrotask(()=>reflow(before));}},true);
- document.addEventListener('click',e=>{if(e.target.closest('[data-lab],[data-mode],.challenge-navigation button'))queueMicrotask(()=>entrance(document.querySelector('.lab-content')));if(e.target.closest('[data-term]'))queueMicrotask(()=>reveal(document.querySelector('.lab-term-explanation'),30));});
- let hadQuery=false;document.addEventListener('input',e=>{if(e.target.id!=='guide-search')return;const hasQuery=!!e.target.value.trim();if(hasQuery&&!hadQuery)queueMicrotask(()=>entrance(document.querySelector('#guide-search-results')));hadQuery=hasQuery;});
- document.addEventListener('visibilitychange',()=>{if(document.hidden)for(const owner of [...tracks.keys()])cancel(owner);});
+ const complete=()=>{if(completionQueued)return;completionQueued=true;const before=capture();queueMicrotask(()=>{if(life.signal.aborted)return;window.CourseWorkspace?.refresh();completionQueued=false;reflow(before);reveal(document.querySelector('.next-assessment,.cen-next-layout'),32);document.dispatchEvent(new Event('guide-completion'));});};
+ life.on(document,'click',e=>{if(e.target.closest('[data-quick-complete],#undo-complete'))complete();},true);
+ life.on(document,'change',e=>{if(e.target.matches('[data-check],[data-completed],[data-k],[data-completion],[data-topic]'))complete();else if(e.target.matches('#hide-completed,#workspace-show-past')){const before=capture();queueMicrotask(()=>{if(!life.signal.aborted)reflow(before);});}},true);
+ life.on(document,'click',e=>{if(e.target.closest('[data-lab],[data-mode],.challenge-navigation button'))queueMicrotask(()=>entrance(document.querySelector('.lab-content')));if(e.target.closest('[data-term]'))queueMicrotask(()=>reveal(document.querySelector('.lab-term-explanation'),30));});
+ let hadQuery=false;life.on(document,'input',e=>{if(e.target.id!=='guide-search')return;const hasQuery=!!e.target.value.trim();if(hasQuery&&!hadQuery)queueMicrotask(()=>entrance(document.querySelector('#guide-search-results')));hadQuery=hasQuery;});
+ life.on(document,'visibilitychange',()=>{if(document.hidden)for(const owner of [...tracks.keys()])cancel(owner);});
 }
 // Workspace may be mounted by a later module in the same document turn.
 document.addEventListener('workspace-changed',mount);
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
+
+document.addEventListener('route-changed',()=>{if(routeLife?.root!==document.querySelector('.wrap,.math-wrap'))unbindRoute();mount();});

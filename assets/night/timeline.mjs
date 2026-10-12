@@ -1,12 +1,13 @@
 /* Semester timeline on Assignments. Data comes from the guides' own schedule feed.
    Each course draws the track in its own vocabulary (see layout.css [data-ns-course]). */
+import {scope} from '../route-lifecycle.mjs';
 import {META,$,escape,TERM,today,dateLabel,dayLabel,addDays,scheduleRows,onSchedule,openItem} from './core.mjs';
 
 const ms=d=>Date.parse(d+'T12:00:00Z');
 const span=ms(TERM.end)-ms(TERM.start);
 const pos=d=>Math.max(0,Math.min(1,(ms(d)-ms(TERM.start))/span));
 const pct=d=>(pos(d)*100).toFixed(3)+'%';
-let root,popover,lastSignature='';
+let root,popover,lastSignature='',life;
 
 function weeks(){const out=[];for(let d=TERM.start;d<=TERM.end;d=addDays(d,7))out.push(d);return out;}
 function months(){const out=[];for(const m of ['2026-09-01','2026-10-01','2026-11-01','2026-12-01']){const d=m<TERM.start?TERM.start:m;out.push([d,new Date(m+'T12:00:00Z').toLocaleDateString('en-CA',{month:'long',timeZone:'UTC'})]);}return out;}
@@ -56,19 +57,23 @@ function openGroup(node){
  root.append(popover);
  const box=root.getBoundingClientRect(),n=node.getBoundingClientRect();
  popover.style.left=Math.max(8,Math.min(box.width-popover.offsetWidth-8,n.left-box.left+n.width/2-popover.offsetWidth/2))+'px';
- popover.addEventListener('click',e=>{const b=e.target.closest('[data-i]');if(!b)return;const r=items[Number(b.dataset.i)];closePopover();openItem(r.target);});
- popover.addEventListener('keydown',e=>{if(e.key==='Escape'){closePopover();node.focus();}});
+ life.on(popover,'click',e=>{const b=e.target.closest('[data-i]');if(!b)return;const r=items[Number(b.dataset.i)];closePopover();openItem(r.target);});
+ life.on(popover,'keydown',e=>{if(e.key==='Escape'){closePopover();node.focus();}});
  popover.querySelector('button')?.focus();
 }
 
-export function mountTimeline(){
+export function mount(ctx={}){
+ unmount();life=scope(ctx);
  const panel=$('#workspace-assignments');if(!panel||$('.ns-timeline'))return;
  root=document.createElement('section');root.className='ns-timeline';root.setAttribute('aria-label','Semester timeline');
  root.innerHTML=`<header class="ns-tl-head"><p class="ns-kicker">Fall 2026 · Sep 8 – Dec 21</p><div class="ns-tl-stats"></div></header><div class="ns-tl-scroll"><div class="ns-tl-track"></div></div>`;
  const next=$('.next-layout,.cen-next-layout',panel);(next||panel.querySelector('.workspace-page-title')).after(root);
- root.addEventListener('click',e=>{const node=e.target.closest('.ns-tl-node');if(node)openGroup(node);});
- document.addEventListener('pointerdown',e=>{if(popover&&!popover.contains(e.target)&&!e.target.closest('.ns-tl-node'))closePopover();});
- onSchedule(render);render(scheduleRows());
- new ResizeObserver(()=>centerToday()).observe(root);
- setInterval(()=>render(scheduleRows()),60000);
+ life.on(root,'click',e=>{const node=e.target.closest('.ns-tl-node');if(node)openGroup(node);});
+ life.on(document,'pointerdown',e=>{if(popover&&!popover.contains(e.target)&&!e.target.closest('.ns-tl-node'))closePopover();});
+ life.own(onSchedule(render));render(scheduleRows());
+ life.observer(new ResizeObserver(()=>centerToday()),root);
+ life.interval(()=>render(scheduleRows()),60000);
 }
+
+export const mountTimeline=mount;
+export function unmount(){life?.dispose();life=null;closePopover();root?.remove();root=null;lastSignature='';}

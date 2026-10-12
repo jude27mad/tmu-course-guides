@@ -2,6 +2,7 @@
    reveals, velocity skew and parallax. Drama lives between sections; coursework holds still while it is read.
    Shared surface for other modules (this file is imported with a query string, so never import it):
    window.NightScroll = {refresh(), scrollTo(target,{immediate,offset}), lenis()}, or dispatch 'night-refresh'. */
+import {scope} from '../route-lifecycle.mjs';
 import {vendor,META,TERM,escape,$,$$,motionAllowed,ambientAllowed,onAmbient,hold,release,held,finePointer,atLeast,onTier,track,dispose,view,frames} from './core.mjs';
 
 const SCOPE='scroll';
@@ -16,10 +17,10 @@ const desktop=matchMedia('(min-width:1001px)');
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 const ease=(dt,tau)=>1-Math.exp(-dt/tau); // frame-rate independent smoothing
 const expoInOut=t=>t<=0?0:t>=1?1:t<.5?2**(20*t-10)/2:(2-2**(10-20*t))/2;
-const safe=fn=>(...args)=>{try{return fn(...args);}catch(error){console.warn('Night Shift scroll:',error);}};
-const fontsReady=()=>Promise.race([document.fonts?.ready??Promise.resolve(),new Promise(r=>setTimeout(r,1200))]);
+const safe=fn=>{const owner=life;return (...args)=>{if(owner?.signal.aborted)return;try{return fn(...args);}catch(error){console.warn('Night Shift scroll:',error);}};};
+const fontsReady=()=>Promise.race([document.fonts?.ready??Promise.resolve(),new Promise(r=>life.timeout(r,1200))]);
 
-let G=null,ST=null,Split=null,LenisClass=null,lenis=null,mounted=false,motionOn=motionAllowed();
+let G=null,ST=null,Split=null,LenisClass=null,lenis=null,mounted=false,motionOn=false,life=null;
 let scrollPos=0,maxScroll=1,lastProgress=-1,lastActive=0,awake=false;
 
 /* ---- Page progress: --ns-progress (0..1) on :root; layout.css draws the dock's 2 px bar from it.
@@ -41,10 +42,10 @@ function syncSheets(){
  if(open){flushWhere(el=>el.closest('dialog'));hold('sheet');}else release('sheet');
 }
 function watchSheets(){
- let queued=false;const queue=()=>{if(queued)return;queued=true;queueMicrotask(()=>{queued=false;safe(syncSheets)();});};
- new MutationObserver(queue).observe(document.body,{attributes:true,attributeFilter:['class']});
- new MutationObserver(queue).observe(document.body,{subtree:true,attributes:true,attributeFilter:['open']});
- document.addEventListener('close',queue,true);
+ let queued=false;const queue=()=>{if(queued)return;queued=true;queueMicrotask(()=>{queued=false;if(!life?.signal.aborted)safe(syncSheets)();});};
+ life.observer(new MutationObserver(queue),document.body,{attributes:true,attributeFilter:['class']});
+ life.observer(new MutationObserver(queue),document.body,{subtree:true,attributes:true,attributeFilter:['open']});
+ life.on(document,'close',queue,true);
  syncSheets();
 }
 
@@ -153,8 +154,8 @@ function mountMarquee(){
   else if(before<innerHeight&&motionAllowed())mq.classList.add('ns-mq-enter');
  }
  measureMarquee();
- if('ResizeObserver' in window)new ResizeObserver(safe(measureMarquee)).observe(mq);
- if('IntersectionObserver' in window)new IntersectionObserver(safe(([e])=>{mqVisible=e.isIntersecting;syncMarquee();}),{rootMargin:'160px 0px'}).observe(mq);
+ if('ResizeObserver' in window)life.observer(new ResizeObserver(safe(measureMarquee)),mq);
+ if('IntersectionObserver' in window)life.observer(new IntersectionObserver(safe(([e])=>{mqVisible=e.isIntersecting;syncMarquee();}),{rootMargin:'160px 0px'}),mq);
  else mqVisible=true;
  document.fonts?.ready.then(safe(measureMarquee));
 }
@@ -304,53 +305,56 @@ function onMotionChange(){
 
 /* ---- Mount: services that need no vendor first (sheet holds, progress, the static marquee), then the
    GSAP-driven layer. Idempotent; nothing here throws out of a handler. ---- */
-export async function mount(){
- if(mounted)return;mounted=true;
+export async function mount(ctx={}){
+ if(mounted)return;mounted=true;const owner=life=scope(ctx);motionOn=motionAllowed();
  window.NightScroll={refresh:()=>refreshSoon(.05),scrollTo:safe(scrollTo),lenis:()=>lenis};
  try{
   scrollPos=window.scrollY;awake=scrollPos>24;lastActive=performance.now();measure();progress();
   watchSheets();
-  addEventListener('scroll',safe(onScroll),{passive:true});
-  addEventListener('resize',safe(()=>{measure();progress();if(pending.size){clearTimeout(sweepTimer);sweepTimer=setTimeout(safe(sweep),200);}}),{passive:true});
+  life.on(window,'scroll',safe(onScroll),{passive:true});
+  life.on(window,'resize',safe(()=>{measure();progress();if(pending.size){clearTimeout(sweepTimer);sweepTimer=setTimeout(safe(sweep),200);}}),{passive:true});
   const activity=()=>{lastActive=performance.now();};
-  for(const type of ['pointermove','pointerdown','wheel','keydown','touchstart'])addEventListener(type,activity,{passive:true});
+  for(const type of ['pointermove','pointerdown','wheel','keydown','touchstart'])life.on(window,type,activity,{passive:true});
   for(const el of $$('.next-layout,.cen-next-layout'))if(!el.dataset.nightSpeed){el.dataset.nightSpeed='0.86';el.dataset.nightVar='--ns-glow-y';}
   mountMarquee();
  }catch(error){console.warn('Night Shift scroll:',error);}
  try{({gsap:G,ScrollTrigger:ST,SplitText:Split,Lenis:LenisClass}=await vendor());}
  catch(error){G=null;console.warn('Night Shift scroll: running without the motion vendor',error);return;}
+ if(life!==owner||owner.signal.aborted)return;
  try{start();}catch(error){console.warn('Night Shift scroll:',error);}
 }
 
 function start(){
  syncLenis();
- ST?.addEventListener?.('refresh',safe(()=>{measure();progress();}));
+ const onRefresh=safe(()=>{measure();progress();});ST?.addEventListener?.('refresh',onRefresh);life.own(()=>ST?.removeEventListener?.('refresh',onRefresh));
  const capture={capture:true,passive:true};
- addEventListener('pointerdown',safe(settle),capture);addEventListener('keydown',safe(settle),capture);
+ life.on(window,'pointerdown',safe(settle),capture);life.on(window,'keydown',safe(settle),capture);
  // Window capture runs before GuideMotion's Flip capture on document: reveals finish first, so Flip
  // records clean inline styles and never restores a half-faded row.
- addEventListener('click',safe(e=>{if(e.target.closest?.(COMPLETE))finishRunning();}),true);
- addEventListener('change',safe(e=>{if(e.target.matches?.(REFLOW))finishRunning();}),true);
- document.addEventListener('workspace-changed',safe(()=>{dispose(SCOPE);lenis?.reset();rebind();refreshSoon(.85);}));
- for(const type of ['hashchange','popstate'])addEventListener(type,safe(()=>lenis?.reset()));
- document.addEventListener('course-open-item',safe(()=>{lenis?.reset();flushWhere(()=>true);}));
- document.addEventListener('focusin',safe(e=>{for(const el of pending)if(el.contains(e.target)){play([el]);break;}}),true);
- document.addEventListener('night-hold',safe(()=>{syncLenis();syncMarquee();}));
- document.addEventListener('guide-motion-change',safe(onMotionChange));
- onAmbient(safe(syncMarquee));
- onTier(safe(()=>{syncLenis();if(!atLeast('high'))resetSkew();syncMarquee();}));
- finePointer.addEventListener?.('change',safe(()=>{syncLenis();rebindAll();}));
- desktop.addEventListener?.('change',safe(rebindAll));
- document.addEventListener('night-timeline-render',safe(()=>refreshSoon(.1)));
- document.addEventListener('guide-completion',safe(()=>refreshSoon(.5)));
- document.addEventListener('change',safe(e=>{if(e.target.matches?.('#hide-completed,#workspace-show-past'))refreshSoon(.5);}));
- document.addEventListener('night-refresh',safe(()=>refreshSoon(.05)));
- document.fonts?.addEventListener?.('loadingdone',safe(()=>{measureMarquee();refreshSoon(.1);}));
- addEventListener('pageshow',safe(()=>{lenis?.resize();refreshSoon(.05);}));
- addEventListener('beforeprint',safe(()=>{flushWhere(()=>true);finishRunning();}));
+ life.on(window,'click',safe(e=>{if(e.target.closest?.(COMPLETE))finishRunning();}),true);
+ life.on(window,'change',safe(e=>{if(e.target.matches?.(REFLOW))finishRunning();}),true);
+ life.on(document,'workspace-changed',safe(()=>{dispose(SCOPE);lenis?.reset();rebind();refreshSoon(.85);}));
+ for(const type of ['hashchange','popstate'])life.on(window,type,safe(()=>lenis?.reset()));
+ life.on(document,'course-open-item',safe(()=>{lenis?.reset();flushWhere(()=>true);}));
+ life.on(document,'focusin',safe(e=>{for(const el of pending)if(el.contains(e.target)){play([el]);break;}}),true);
+ life.on(document,'night-hold',safe(()=>{syncLenis();syncMarquee();}));
+ life.on(document,'guide-motion-change',safe(onMotionChange));
+ life.own(onAmbient(safe(syncMarquee)));
+ life.own(onTier(safe(()=>{syncLenis();if(!atLeast('high'))resetSkew();syncMarquee();})));
+ life.on(finePointer,'change',safe(()=>{syncLenis();rebindAll();}));
+ life.on(desktop,'change',safe(rebindAll));
+ life.on(document,'night-timeline-render',safe(()=>refreshSoon(.1)));
+ life.on(document,'guide-completion',safe(()=>refreshSoon(.5)));
+ life.on(document,'change',safe(e=>{if(e.target.matches?.('#hide-completed,#workspace-show-past'))refreshSoon(.5);}));
+ life.on(document,'night-refresh',safe(()=>refreshSoon(.05)));
+ life.on(document.fonts,'loadingdone',safe(()=>{measureMarquee();refreshSoon(.1);}));
+ life.on(window,'pageshow',safe(()=>{lenis?.resize();refreshSoon(.05);}));
+ life.on(window,'beforeprint',safe(()=>{flushWhere(()=>true);finishRunning();}));
  const main=$('.wrap,.math-wrap');let lastH=0;
- if(main&&'ResizeObserver' in window)new ResizeObserver(safe(([entry])=>{const h=entry.contentRect.height;if(Math.abs(h-lastH)<1)return;lastH=h;measure();progress();refreshSoon(.25);})).observe(main);
+ if(main&&'ResizeObserver' in window)life.observer(new ResizeObserver(safe(([entry])=>{const h=entry.contentRect.height;if(Math.abs(h-lastH)<1)return;lastH=h;measure();progress();refreshSoon(.25);})),main);
  syncMarquee();
  rebind(Promise.all([fontsReady(),frames(2)]));
  refreshSoon(.05);
 }
+
+export function unmount(){if(!mounted)return;life?.dispose();dispose(SCOPE);flushWhere(()=>true);finishRunning();resetSkew();sleep();G?.ticker.remove(lenisRaf);lenis?.destroy();lenis=null;refreshCall?.kill();refreshCall=null;clearTimeout(sweepTimer);release('sheet');sheetHeld=false;mq?.remove();mq=mqTrack=null;mqItem='';mqW=mqTravel=mqSpeed=mqLean=0;mqX=NaN;mqVisible=false;skewEls=[];delete window.NightScroll;document.documentElement.style.removeProperty('--ns-progress');mounted=false;life=null;lastProgress=-1;G=ST=Split=LenisClass=null;}
