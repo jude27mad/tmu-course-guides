@@ -216,6 +216,10 @@ body.workspace .workspace-disclosure,body.workspace #workspace-info .tools,body.
 .ns-dock-id i{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
 .ns-dock-id b{font:600 11px/1 var(--ns-mono);letter-spacing:.14em}
 .ns-dock-id span{font-weight:600;font-size:.95rem}
+/* The way back to the Desk: a quiet pill beside the course identity, kept on every width. */
+.ns-dock-desk{flex:none;display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid var(--hub-line);border-radius:999px;color:var(--hub-ink);text-decoration:none;font:500 11px/1 var(--ns-mono);letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
+@media(hover:hover){.ns-dock-desk:hover{border-color:var(--hub-ink)}}
+.ns-dock-id:focus-visible,.ns-dock-desk:focus-visible{outline:2px solid var(--hub-focus);outline-offset:2px}
 .ns-dock-next{display:flex;align-items:center;gap:10px;min-width:0;flex:1;padding-left:clamp(12px,2vw,28px);border-left:1px solid var(--hub-line)}
 .ns-dock-k{font:500 10px/1 var(--ns-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--hub-muted)}
 .ns-dock-title{font-weight:600;font-size:.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
@@ -250,8 +254,11 @@ body.workspace .workspace-disclosure,body.workspace #workspace-info .tools,body.
  .ns-dock-id span,.ns-dock-k,.ns-dock-section,.ns-dock-motion span,.ns-dock-search span,.ns-dock-search kbd{display:none!important}
  .ns-dock-search:before{content:'⌕';font-size:1.1rem}
  .ns-dock-actions button{padding:8px 12px}
+ .ns-dock-desk{padding:0 10px;letter-spacing:.08em}
  .ns-dock-next{padding-left:10px}
 }
 @media(max-width:420px){.ns-unit b{font-size:2rem}.ns-ring{width:48px}}
+/* Narrow phones: identity, Desk, chip and actions fill the bar, so the title is read out but not drawn. */
+@media(max-width:480px){.ns-dock-title{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}.ns-dock-next{justify-content:flex-start}}
 
 @media print{.ns-dock,.ns-timeline,.ns-hud,.ns-count{display:none!important}html.ns-warp-in::after{display:none}}

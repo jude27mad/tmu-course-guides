@@ -205,6 +205,9 @@ GitHub Pages logs visitor IP addresses for hosting security. See [GitHub’s hos
 | `index.html` | The Desk: the site root and course directory. `assets/legacy-route.js` forwards old root CEN100 links to `cen100/`. |
 | `cen100/index.html` | CEN100 content, styles, JavaScript, contact mappings, and full release history. |
 | `assets/cen-schedule.js`, `assets/cen-schedule.mjs` | The one copy of the CEN100 schedule records, for the CEN guide's inline script (`window.CEN_SCHEDULE`) and for ES modules. |
+| `assets/night/targets.mjs` | Data-level next-deadline resolver shared by the course card, dock, hero line and the Desk: the CEN100 and math rules over the unchanged records, read-only saved-state readers, and shared countdown formatting. |
+| `assets/night/desk.mjs`, `assets/night/desk.css` | The Desk directory: per-course and overall next deadlines without loading a course page. `[data-desk-stage]` is the empty mount point for the later 3D desk. |
+| `tests/targets.test.mjs` | Frozen-clock deadline fixtures, including a case-for-case comparison with the CEN100 guide's own rules. |
 | `mth140/index.html`, `mth141/index.html` | Math page structures and course-specific release notes. |
 | `assets/hub.js`, `assets/hub.css` | Shared course navigation, saved-section labels, and appearance control. |
 | `assets/course-data.mjs` | Math assessments, section timetables, role-based contact guidance, topics, practice references, and sources. |

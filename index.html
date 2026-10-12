@@ -11,45 +11,60 @@
 <meta name="description" content="TMU Fall 2026 course guides: CEN100 assignment deadlines, requirements and contacts, plus MTH140 and MTH141 assessment and section guides.">
 <link rel="stylesheet" href="assets/fonts/archivo.css?v=20261012-privacy1">
 <link rel="stylesheet" href="assets/hub.css?v=20261012-desk1">
-<link rel="stylesheet" href="assets/night/layout.css?v=20261012-night2">
-<style>
-/* The Desk: course directory. Plain links work without JavaScript, a scene or a course workspace. */
-body[data-page="desk"]{margin:0;min-height:100vh;background:var(--hub-bg);color:var(--hub-ink);font-family:Archivo,system-ui,sans-serif;-webkit-text-size-adjust:100%}
-.desk{max-width:1100px;margin:0 auto;padding:clamp(36px,6vw,80px) 20px clamp(40px,6vw,72px)}
-.desk-kicker{margin:0 0 16px;font:500 .75rem/1 var(--ns-mono,ui-monospace,monospace);letter-spacing:.2em;text-transform:uppercase;color:var(--hub-muted)}
-.desk h1{margin:0 0 18px;font-size:clamp(2.6rem,4.5vw,5.5rem);font-variation-settings:'wdth' 75;font-weight:600;letter-spacing:-.045em;line-height:.92}
-.desk-lede{max-width:68ch;margin:0 0 clamp(28px,4vw,48px);font-size:1.0625rem;line-height:1.55;color:var(--hub-muted)}
-.desk-courses{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px;margin:0;padding:0;list-style:none}
-.desk-course{display:grid;gap:8px;align-content:start;height:100%;box-sizing:border-box;padding:22px 22px 24px;border:1px solid var(--hub-line);border-top:3px solid var(--course);border-radius:14px;background:var(--hub-panel);color:inherit;text-decoration:none}
-.desk-code{font-size:clamp(1.8rem,2.6vw,2.4rem);font-variation-settings:'wdth' 75;font-weight:650;letter-spacing:-.02em;line-height:1;color:var(--course-ink)}
-.desk-name{font-size:1.125rem;font-weight:650}
-.desk-note{font-size:1rem;line-height:1.45;color:var(--hub-muted)}
-.desk-open{margin-top:8px;font-weight:650;color:var(--course-ink)}
-.desk-course:focus-visible,.desk-foot a:focus-visible{outline:3px solid var(--hub-focus);outline-offset:3px}
-@media(hover:hover){.desk-course:hover{border-color:var(--course)}}
-.desk-foot{max-width:1100px;margin:0 auto;padding:0 20px 40px;font-size:.9375rem;color:var(--hub-muted)}
-.desk-foot a{display:inline-block;padding:12px 0;color:inherit;text-underline-offset:4px}
-/* Course accents from COURSE_META; the light theme uses each course's readable ink. */
-[data-course-card="cen100"]{--course:#edbba7;--course-ink:#954424}
-[data-course-card="mth140"]{--course:#b9dfc9;--course-ink:#096450}
-[data-course-card="mth141"]{--course:#d3c3ee;--course-ink:#694392}
-:root[data-theme="dark"] [data-course-card]{--course-ink:var(--course)}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) [data-course-card]{--course-ink:var(--course)}}
-@media(max-width:460px){.desk{padding-inline:16px}.desk-foot{padding-inline:16px}body[data-page="desk"] .course-switch{grid-template-columns:repeat(2,minmax(0,1fr))}}
-</style>
+<link rel="stylesheet" href="assets/night/layout.css?v=20261012-desk2">
+<link rel="stylesheet" href="assets/night/desk.css?v=20261012-desk2">
+<!-- Desk mode: mounts the deadline directory only. No course workspace, scene or course identity. -->
+<script type="module" src="assets/night/boot.mjs?v=20261012-desk2"></script>
 </head>
 <body data-page="desk">
-<main class="desk" id="desk-main">
-  <p class="desk-kicker">TMU · Fall 2026</p>
-  <h1>Course guides</h1>
-  <p class="desk-lede">Deadlines, requirements, section details and your saved progress for each course. Progress stays in this browser.</p>
-  <ul class="desk-courses" aria-label="Courses">
-    <li><a class="desk-course" data-course-card="cen100" href="cen100/"><span class="desk-code">CEN100</span><span class="desk-name">Introduction to Engineering</span><span class="desk-note">Assignment deadlines, requirements, checklists and section/group contacts.</span><span class="desk-open" aria-hidden="true">Open guide →</span></a></li>
-    <li><a class="desk-course" data-course-card="mth140" href="mth140/"><span class="desk-code">MTH140</span><span class="desk-name">Calculus I</span><span class="desk-note">Assessment dates, section labs, announced coverage and practice.</span><span class="desk-open" aria-hidden="true">Open guide →</span></a></li>
-    <li><a class="desk-course" data-course-card="mth141" href="mth141/"><span class="desk-code">MTH141</span><span class="desk-name">Linear Algebra</span><span class="desk-note">Assessment dates, section labs, announced coverage and practice.</span><span class="desk-open" aria-hidden="true">Open guide →</span></a></li>
-  </ul>
+<a class="skip-link" href="#desk-main">Skip to courses</a>
+<main class="desk" id="desk-main" tabindex="-1">
+  <header class="desk-head">
+    <p class="desk-kicker"><span>TMU · Sep 8 – Dec 21</span><span data-desk-today hidden></span></p>
+    <h1 class="desk-title">TMU Course Guides <span>· Fall 2026</span></h1>
+    <p class="desk-lede">Deadlines, requirements, section details and your saved progress for each course. Progress stays in this browser.</p>
+  </header>
+
+  <section class="desk-hero" aria-labelledby="desk-next-heading">
+    <div class="desk-next" data-desk-overall>
+      <h2 class="desk-label" id="desk-next-heading">Next across your courses</h2>
+      <p class="desk-static" data-desk-static>Open a course guide below for every deadline, requirement and checklist.</p>
+      <div class="desk-next-body" data-desk-overall-body hidden></div>
+      <p class="desk-sr" aria-live="polite" data-desk-live></p>
+    </div>
+    <div class="desk-scene" aria-hidden="true">
+      <!-- A still, lit desk that reads as finished with motion paused. It stays as the fallback once the scene exists. -->
+      <div class="desk-still"><span class="desk-book" data-book="cen100"><b>CEN100</b></span><span class="desk-book" data-book="mth140"><b>MTH140</b></span><span class="desk-book" data-book="mth141"><b>MTH141</b></span></div>
+      <!-- STAGE 5 MOUNT POINT: the 3D desk (assets/book/desk.mjs) renders into this empty container. Keep it empty until then. -->
+      <div class="desk-stage" data-desk-stage></div>
+    </div>
+  </section>
+
+  <section class="desk-directory" aria-labelledby="desk-courses-heading">
+    <h2 class="desk-label" id="desk-courses-heading">Courses</h2>
+    <ul class="desk-courses">
+      <li class="desk-entry" data-course-card="cen100">
+        <a class="desk-course" href="cen100/"><span class="desk-index" aria-hidden="true">01</span><span class="desk-code">CEN100</span><span class="desk-name">Engineering</span></a>
+        <p class="desk-desc">Assignment deadlines, requirements, checklists and section/group contacts.</p>
+        <div class="desk-course-next" data-desk-next hidden></div>
+        <p class="desk-open" aria-hidden="true">Open guide <span>→</span></p>
+      </li>
+      <li class="desk-entry" data-course-card="mth140">
+        <a class="desk-course" href="mth140/"><span class="desk-index" aria-hidden="true">02</span><span class="desk-code">MTH140</span><span class="desk-name">Calculus I</span></a>
+        <p class="desk-desc">Assessment dates, section labs, announced coverage and practice.</p>
+        <div class="desk-course-next" data-desk-next hidden></div>
+        <p class="desk-open" aria-hidden="true">Open guide <span>→</span></p>
+      </li>
+      <li class="desk-entry" data-course-card="mth141">
+        <a class="desk-course" href="mth141/"><span class="desk-index" aria-hidden="true">03</span><span class="desk-code">MTH141</span><span class="desk-name">Linear Algebra</span></a>
+        <p class="desk-desc">Assessment dates, section labs, announced coverage and practice.</p>
+        <div class="desk-course-next" data-desk-next hidden></div>
+        <p class="desk-open" aria-hidden="true">Open guide <span>→</span></p>
+      </li>
+    </ul>
+  </section>
 </main>
-<footer class="desk-foot"><a href="privacy.html">Privacy</a></footer>
-<script src="assets/hub.js?v=20261012-desk1"></script>
+<footer class="desk-foot"><p>Sections, notes and completion records are saved only in this browser.</p><a href="privacy.html">Privacy</a></footer>
+<script src="assets/hub.js?v=20261012-desk2"></script>
 </body>
 </html>

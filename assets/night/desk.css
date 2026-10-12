@@ -1,0 +1,143 @@
+/* The Desk (index.html, body[data-page=desk]): the site's course directory. Static, eager layout only; desk.mjs
+   fills in deadlines. Tokens come from layout.css. Course accents mirror COURSE_META for the first paint and for
+   no-JS visits; desk.mjs re-applies them from COURSE_META. Nothing here animates on its own. */
+
+body[data-page=desk]{--desk-gutter:clamp(16px,3.6vw,64px);margin:0;min-height:100vh;background:var(--hub-bg);color:var(--hub-ink);font-family:Archivo,system-ui,sans-serif;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+ /* Daytime desk: warm surface, window light from the upper left. */
+ --desk-wood:#e6dfd1;--desk-wood-2:#d5cbb8;--desk-light:rgb(255 252 243 / .95);--desk-vignette:rgb(70 52 24 / .16);--desk-cover:100%;
+ --desk-book-shadow:0 26px 34px -20px rgb(70 52 24 / .5),0 3px 8px rgb(70 52 24 / .14)}
+/* Night desk: graphite, one warm lamp. */
+:root[data-theme=dark] body[data-page=desk]{--desk-wood:#162024;--desk-wood-2:#0b1113;--desk-light:rgb(255 196 138 / .2);--desk-vignette:rgb(0 0 0 / .62);--desk-cover:74%;
+ --desk-book-shadow:0 34px 44px -20px rgb(0 0 0 / .85),0 3px 10px rgb(0 0 0 / .5)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) body[data-page=desk]{--desk-wood:#162024;--desk-wood-2:#0b1113;--desk-light:rgb(255 196 138 / .2);--desk-vignette:rgb(0 0 0 / .62);--desk-cover:74%;
+ --desk-book-shadow:0 34px 44px -20px rgb(0 0 0 / .85),0 3px 10px rgb(0 0 0 / .5)}}
+
+/* Course accents (COURSE_META): --course is the editorial colour, --course-strong its readable light-theme ink. */
+[data-course-card=cen100],[data-book=cen100]{--course:#edbba7;--course-strong:#954424}
+[data-course-card=mth140],[data-book=mth140]{--course:#b9dfc9;--course-strong:#096450}
+[data-course-card=mth141],[data-book=mth141]{--course:#d3c3ee;--course-strong:#694392}
+body[data-page=desk] :is([data-course-card],.desk-next){--course-ink:var(--course-strong,var(--hub-muted))}
+:root[data-theme=dark] body[data-page=desk] :is([data-course-card],.desk-next){--course-ink:var(--course,var(--hub-muted))}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) body[data-page=desk] :is([data-course-card],.desk-next){--course-ink:var(--course,var(--hub-muted))}}
+
+/* Shared header aligns with the Desk's wider measure. */
+body[data-page=desk] .hub-shell{max-width:1440px;padding:20px var(--desk-gutter) 0}
+body[data-page=desk] :is(.hub-brand,.hub-theme){min-height:44px}
+@media(max-width:460px){body[data-page=desk] .hub-shell{padding-top:16px}body[data-page=desk] .course-switch{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+body[data-page=desk] .skip-link{position:absolute;top:8px;left:8px;z-index:100;padding:12px 16px;border:1px solid var(--hub-line);border-radius:8px;background:var(--hub-panel);color:var(--hub-ink);font-weight:650;transform:translateY(-200%)}
+body[data-page=desk] .skip-link:focus{transform:none;outline:3px solid var(--hub-focus);outline-offset:2px}
+
+.desk{max-width:1440px;margin:0 auto;padding:clamp(28px,4vw,56px) var(--desk-gutter) clamp(48px,6vw,88px)}
+.desk,.desk *,.desk *::before,.desk *::after,.desk-foot{box-sizing:border-box}
+.desk:focus{outline:none}
+.desk [hidden]{display:none!important} /* empty deadline slots stay out of the no-JS layout */
+.desk p{margin:0}
+
+/* ---------- Masthead ---------- */
+.desk-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto);gap:18px clamp(24px,4vw,64px);align-items:end;padding-bottom:clamp(22px,2.6vw,36px);margin-bottom:clamp(24px,3vw,40px);border-bottom:1px solid var(--hub-line)}
+.desk-kicker{grid-column:1 / -1;display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px;font:500 11px/1.4 var(--ns-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--hub-muted)}
+.desk-title{margin:0;font-size:clamp(2.6rem,4.5vw,5.5rem);font-variation-settings:'wdth' 75;font-weight:600;letter-spacing:-.045em;line-height:.92;text-wrap:balance}
+.desk-title span{color:var(--hub-muted);font-weight:500;white-space:nowrap}
+.desk-lede{max-width:40ch;font-size:1rem;line-height:1.55;color:var(--hub-muted)}
+.desk-label{margin:0;font:500 11px/1.4 var(--ns-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--hub-muted)}
+
+/* ---------- Overall next + stage ---------- */
+.desk-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:clamp(14px,1.8vw,24px);margin-bottom:clamp(40px,5vw,72px)}
+.desk-next{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;gap:18px;min-width:0;min-height:clamp(340px,32vw,460px);padding:clamp(22px,2.6vw,40px);border-radius:22px;
+ background:color-mix(in srgb,var(--course,var(--hub-soft)) 9%,var(--hub-panel));border:1px solid color-mix(in srgb,var(--course,var(--hub-line)) 34%,var(--hub-line));box-shadow:var(--ns-shadow)}
+.desk-next:before{content:'';position:absolute;inset:-40% -10% auto 45%;height:140%;z-index:-1;background:radial-gradient(closest-side,color-mix(in srgb,var(--course,transparent) 28%,transparent),transparent);opacity:.7;pointer-events:none}
+.desk-static{max-width:34ch;margin-top:auto!important;font-size:clamp(1.25rem,1.8vw,1.6rem);line-height:1.3;font-weight:560;color:var(--hub-ink)}
+.desk-next-body{display:flex;flex-direction:column;gap:14px;flex:1;min-width:0}
+.desk-next-course{display:flex;align-items:center;gap:10px;font-size:1rem;font-weight:600}
+.desk-next-course i{width:9px;height:9px;border-radius:50%;background:var(--course);box-shadow:0 0 0 4px color-mix(in srgb,var(--course) 24%,transparent)}
+.desk-next-course b{font:600 11px/1 var(--ns-mono);letter-spacing:.14em;color:var(--course-ink)}
+.desk-next-title{font-size:clamp(1.9rem,3.2vw,3.4rem);font-variation-settings:'wdth' 82;font-weight:600;letter-spacing:-.04em;line-height:1;text-wrap:balance;overflow-wrap:anywhere}
+/* The countdown block is the one glass surface on the Desk, as on the course card. */
+.desk-count{display:flex;flex-wrap:wrap;align-items:center;gap:16px clamp(16px,2vw,28px);margin-top:auto;padding:clamp(16px,1.8vw,24px);border-radius:16px;background:var(--ns-glass);border:1px solid var(--ns-glass-line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.desk-face{min-width:0}
+.desk-digits{display:flex;align-items:flex-start;gap:clamp(8px,1vw,14px)}
+.desk-unit{display:grid;gap:6px}
+.desk-unit b{font-size:clamp(2.4rem,3.6vw,3.8rem);font-weight:520;font-variation-settings:'wdth' 75;font-variant-numeric:tabular-nums;letter-spacing:-.04em;line-height:.9}
+.desk-unit+.desk-unit b:before{content:':';margin-right:clamp(8px,1vw,14px);color:color-mix(in srgb,var(--hub-ink) 28%,transparent);font-weight:400}
+.desk-unit i{font:500 10px/1 var(--ns-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--hub-muted);font-style:normal}
+.desk-unit+.desk-unit i{padding-left:calc(clamp(8px,1vw,14px) + .4em)}
+.desk-word{font-size:clamp(2rem,3.2vw,3.2rem);font-weight:560;font-variation-settings:'wdth' 78;letter-spacing:-.04em;line-height:.95}
+.desk-next[data-precision=pending] .desk-word,.desk-next[data-precision=empty] .desk-word{color:var(--hub-muted)}
+.desk-count-meta{display:grid;gap:6px;min-width:min(100%,16rem);flex:1}
+.desk-count-label{font:500 11px/1.4 var(--ns-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--course-ink)}
+.desk-count-when{font-size:1.05rem;font-weight:600;font-variant-numeric:tabular-nums}
+.desk-count-note{font-size:1rem;line-height:1.45;color:var(--hub-muted);max-width:44ch}
+/* The stronger state only for a confirmed time under six hours; day/week/pending never imply that precision. */
+.desk-next[data-precision=exact][data-state=hot] .desk-count-label{color:var(--ns-hot)}
+.desk-actions{display:flex;flex-wrap:wrap;gap:10px}
+.desk-action{display:inline-flex;align-items:center;gap:6px;min-height:48px;padding:12px 20px;border-radius:999px;background:var(--hub-ink);color:var(--hub-bg);border:1px solid var(--hub-ink);font:650 .95rem Archivo,system-ui,sans-serif;text-decoration:none}
+.desk-action-quiet{background:transparent;color:var(--hub-ink);border-color:color-mix(in srgb,var(--hub-ink) 30%,transparent)}
+.desk-action:focus-visible,.desk-cta:focus-visible,.desk-foot a:focus-visible{outline:3px solid var(--hub-focus);outline-offset:3px}
+.desk-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* Stage: a still, lit desk with the three books lying closed. The empty [data-desk-stage] above it is where the
+   Stage 5 scene mounts; until then the still is the whole composition, so it must read as finished. */
+.desk-scene{position:relative;overflow:hidden;min-height:clamp(340px,32vw,460px);border-radius:22px;border:1px solid var(--hub-line);
+ background:radial-gradient(75% 85% at 24% 16%,var(--desk-light),transparent 70%),radial-gradient(130% 110% at 50% 115%,var(--desk-vignette),transparent 62%),linear-gradient(170deg,var(--desk-wood),var(--desk-wood-2))}
+.desk-scene:after{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(176deg,transparent 0 22px,color-mix(in srgb,var(--desk-wood-2) 40%,transparent) 22px 23px);opacity:.35;mix-blend-mode:multiply}
+.desk-still,.desk-stage{position:absolute;inset:0}
+.desk-stage:empty{pointer-events:none}
+.desk-book{position:absolute;width:29%;aspect-ratio:.72;border-radius:5px 9px 9px 5px;transform:rotate(var(--turn));box-shadow:var(--desk-book-shadow);
+ --cover:color-mix(in srgb,var(--course) var(--desk-cover),#0f1619);
+ background:linear-gradient(140deg,rgb(255 255 255 / .22),transparent 38%,rgb(0 0 0 / .16)),var(--pattern,none),var(--cover)}
+/* Spine band and the page block's fore-edge. */
+.desk-book:before{content:'';position:absolute;inset:0 auto 0 0;width:12%;border-radius:5px 0 0 5px;background:linear-gradient(90deg,rgb(0 0 0 / .18),rgb(255 255 255 / .12) 60%,rgb(0 0 0 / .1));box-shadow:1px 0 0 rgb(0 0 0 / .12)}
+.desk-book:after{content:'';position:absolute;top:5px;bottom:5px;right:-6px;width:7px;border-radius:0 3px 3px 0;background:repeating-linear-gradient(180deg,#f6f1e6 0 2px,#ddd5c5 2px 3px);box-shadow:1px 1px 2px rgb(0 0 0 / .2)}
+.desk-book b{position:absolute;left:19%;top:9%;font:600 clamp(8px,.8vw,11px)/1 var(--ns-mono);letter-spacing:.16em;color:color-mix(in srgb,var(--course-strong) 85%,#000)}
+/* Identities: the manual's debossed schematic grid, the sketchbook's elastic band, the notebook's square grid. */
+.desk-book[data-book=cen100]{left:8%;top:15%;--turn:-8deg;--pattern:repeating-linear-gradient(0deg,transparent 0 13px,rgb(0 0 0 / .07) 13px 14px),repeating-linear-gradient(90deg,transparent 0 13px,rgb(0 0 0 / .07) 13px 14px)}
+.desk-book[data-book=mth140]{left:36%;top:27%;--turn:5deg;--pattern:linear-gradient(90deg,transparent 80%,color-mix(in srgb,var(--course-strong) 70%,#000) 80% 84.5%,transparent 84.5%)}
+.desk-book[data-book=mth141]{left:63%;top:11%;--turn:-3deg;--pattern:linear-gradient(rgb(0 0 0 / .08) 1px,transparent 1px) 0 0 / 10px 10px,linear-gradient(90deg,rgb(0 0 0 / .08) 1px,transparent 1px) 0 0 / 10px 10px}
+
+/* ---------- Directory ---------- */
+.desk-directory .desk-label{margin-bottom:16px}
+.desk-courses{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.6vw,20px)}
+.desk-entry{position:relative;display:flex;flex-direction:column;gap:14px;min-width:0;padding:clamp(20px,2vw,28px);border:1px solid var(--hub-line);border-radius:18px;background:var(--hub-panel);transition:border-color .2s}
+.desk-entry:before{content:'';position:absolute;top:-1px;left:clamp(20px,2vw,28px);width:56px;height:3px;border-radius:0 0 3px 3px;background:var(--course)}
+@media(hover:hover){.desk-entry:hover{border-color:color-mix(in srgb,var(--course) 70%,var(--hub-line))}}
+/* One link per course; its hit area stretches over the card so the whole card opens the guide natively. */
+.desk-course{display:grid;gap:6px;color:inherit;text-decoration:none}
+.desk-course:after{content:'';position:absolute;inset:0;border-radius:inherit}
+.desk-course:focus-visible{outline:none}
+.desk-course:focus-visible:after{outline:3px solid var(--hub-focus);outline-offset:3px}
+.desk-index{font:500 11px/1 var(--ns-mono);letter-spacing:.2em;color:var(--hub-muted)}
+.desk-code{margin-top:6px;font-size:clamp(2.2rem,3vw,3rem);font-variation-settings:'wdth' 75;font-weight:600;letter-spacing:-.035em;line-height:.9;color:var(--course-ink)}
+.desk-name{font-size:1.125rem;font-weight:650}
+.desk-desc{font-size:1rem;line-height:1.5;color:var(--hub-muted);max-width:44ch}
+.desk-course-next{display:grid;gap:6px;padding-top:16px;border-top:1px solid var(--hub-line)}
+.desk-k{font:500 10px/1.4 var(--ns-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--hub-muted)}
+.desk-course-title{font-size:clamp(1.15rem,1.4vw,1.35rem);font-weight:620;letter-spacing:-.02em;line-height:1.2;overflow-wrap:anywhere}
+.desk-course-when{font-size:1rem;font-weight:550;font-variant-numeric:tabular-nums}
+.desk-course-state{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:2px!important}
+.desk-chip{padding:6px 10px;border-radius:999px;background:color-mix(in srgb,var(--course) 24%,transparent);font:600 .8125rem/1 var(--ns-mono);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.desk-course-next[data-precision=exact][data-state=hot] .desk-chip{background:color-mix(in srgb,var(--ns-hot) 22%,transparent)}
+.desk-course-next[data-precision=pending] .desk-chip,.desk-course-next[data-precision=empty] .desk-chip{background:var(--hub-soft);color:var(--hub-muted)}
+.desk-course-label{font:500 10px/1.4 var(--ns-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--course-ink)}
+.desk-course-note,.desk-course-section{font-size:1rem;line-height:1.45;color:var(--hub-muted)}
+/* The section CTA sits above the stretched card link. */
+.desk-cta{position:relative;z-index:1;justify-self:start;display:inline-flex;align-items:center;min-height:44px;margin-top:4px;padding:10px 16px;border-radius:999px;border:1px solid var(--course-ink);color:var(--hub-ink);font:600 .9375rem Archivo,system-ui,sans-serif;text-decoration:none}
+.desk-open{margin-top:auto!important;padding-top:4px;font-weight:650;color:var(--course-ink)}
+.desk-open span{display:inline-block;transition:transform .2s var(--ns-ease)}
+@media(hover:hover) and (prefers-reduced-motion:no-preference){.desk-entry:hover .desk-open span{transform:translateX(4px)}}
+:root.ns-still .desk-open span{transition:none}
+
+.desk-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 16px;max-width:1440px;margin:0 auto;padding:16px var(--desk-gutter) 40px;border-top:1px solid var(--hub-line);font-size:1rem;color:var(--hub-muted)}
+.desk-foot p{margin:0}
+.desk-foot a{display:inline-flex;align-items:center;min-height:44px;color:inherit;text-underline-offset:4px}
+
+/* ---------- Tablet & phone ---------- */
+@media(max-width:1000px){.desk-head{grid-template-columns:1fr}.desk-lede{max-width:60ch}}
+@media(max-width:860px){
+ .desk-hero{grid-template-columns:1fr}
+ .desk-next{min-height:0}
+ .desk-scene{min-height:0;aspect-ratio:16 / 9}
+}
+@media(max-width:760px){.desk-courses{grid-template-columns:1fr}}
+@media(max-width:420px){.desk-unit b{font-size:2.2rem}.desk-next-title{font-size:1.85rem}.desk-scene{aspect-ratio:4 / 3}}
+@media print{.desk-scene,.skip-link{display:none!important}}

@@ -1,6 +1,7 @@
 /* Night Shift runtime: shared state for the layer that sits on top of the existing guide modules.
    Services start once; view-bound effects register disposers and are rebuilt per view. */
 export {timestamp,clock,dateLabel,dayLabel,today,addDays,resolveAssessment,timing} from '../schedule.mjs';
+import {loadData} from './targets.mjs';
 
 export const VERSION='20261012-night2';
 /* Resolve paths against this file. Dynamic imports built this way share module instances with the guide
@@ -16,7 +17,11 @@ export const setScenePaused=value=>GM()?.setScenePaused(value);
 /* "Pause motion": one saved control for the hero scene and every ambient loop in this layer. */
 export const toggleMotion=()=>setScenePaused(!preference().scenePaused);
 
-export const course=document.body.dataset.course||'cen100';
+/* Page mode is explicit. The Desk (site root, body[data-page=desk]) has no course identity, so nothing may fall
+   back to CEN100 there: course is 'desk' and META is null. Course pages keep their data-course. */
+export const isDesk=document.body.dataset.page==='desk';
+export const page=isDesk?'desk':'course';
+export const course=isDesk?'desk':document.body.dataset.course||'cen100';
 export const isMath=course==='mth140'||course==='mth141';
 export const $=(selector,root=document)=>root.querySelector(selector);
 export const $$=(selector,root=document)=>[...root.querySelectorAll(selector)];
@@ -31,10 +36,11 @@ export const COURSE_META={
  mth140:{code:'MTH140',name:'Calculus I',index:'02',accent:'#b9dfc9',strong:'#096450',motif:'flow'},
  mth141:{code:'MTH141',name:'Linear Algebra',index:'03',accent:'#d3c3ee',strong:'#694392',motif:'plane'}
 };
-export const META=COURSE_META[course];
+export const META=COURSE_META[course]??null;
 
+/* Same module URL as the math guide, so the page holds one copy of the course data. */
 let coursesPromise;
-export const courseData=()=>isMath?(coursesPromise??=import('../course-data.mjs?v=20261012-privacy1').then(m=>m.COURSES[course])):Promise.resolve(null);
+export const courseData=()=>isMath?(coursesPromise??=loadData(course)):Promise.resolve(null);
 
 /* Schedule rows come from the existing semester rail feed, so completion state stays the guides' own. */
 export function scheduleRows(){return window.CourseVisuals?.rows||[];}
@@ -42,7 +48,7 @@ export function onSchedule(fn){document.addEventListener('course-schedule',e=>fn
 
 /* One reliable path to an assessment, shared by the palette and the timeline. */
 export async function openItem(target){
- if(!target)return;
+ if(!target||isDesk)return; // The Desk links to items instead; there is no workspace to open them in.
  const workspace=window.CourseWorkspace;
  const id=isMath?String(target).replace(/^assessment-/,''):String(target);
  const node=isMath?document.getElementById('assessment-'+id):document.getElementById('guide-item-'+id);

@@ -1,66 +1,20 @@
 /* One resolved deadline feeds the next card, the dock chip and the hero line.
+   Resolution is targets.mjs (the same data-level rules the Desk uses); this file is the course-page adapter.
    A timer is shown only when the date and time are actually known. */
-import {course,isMath,META,$,escape,read,courseData,timestamp,clock,dateLabel,dayLabel,resolveAssessment,timing,ambientAllowed,preference,toggleMotion} from './core.mjs';
+import {course,isMath,META,$,escape,asset,courseData,ambientAllowed,preference,toggleMotion} from './core.mjs';
+import {loadData,readSaved,resolveTarget,parts,compact,sentence,GRACE} from './targets.mjs';
+export {parts,compact} from './targets.mjs';
 
-const WINDOW=14*86400000,GRACE=2*3600e3;
-let target=null,course$=null,tickTimer=0,lastMinute='';
+let target=null,data$=null,tickTimer=0,lastMinute='';
 const listeners=new Set();
 export const currentTarget=()=>target;
 export function onTarget(fn){listeners.add(fn);if(target)fn(target);return()=>listeners.delete(fn);}
 
-const short=d=>`${dayLabel(d).slice(0,3)} ${dateLabel(d)}`;
-function sectionNumber(){const v=Number(isMath?($('#section-select')?.value||read(course+'-section-v1',0)):0);return Number.isFinite(v)?v:0;}
-
-function resolveMath(data){
- const id=$('#next-assessment')?.dataset.nextId;const a=data.assessments.find(x=>x.id===id);
- if(!a)return null;
- const e=resolveAssessment(data,a,sectionNumber()),base={id:a.id,title:a.title,kind:a.kind,open:'assessment-'+a.id};
- if(e.holiday)return {...base,precision:'week',when:timing(e),label:'Quiz date needs confirmation'};
- if(a.kind==='quiz'&&e.date&&e.lab){
-  const start=timestamp(e.date,e.lab.start),end=timestamp(e.date,e.lab.end);
-  return {...base,precision:'exact',at:start,end,when:`${short(e.date)} · ${clock(e.lab.start)} · ${e.lab.room}`,label:'Your lab quiz starts'};
- }
- if(a.kind==='quiz')return {...base,precision:'week',range:`${dateLabel(e.week)}–${dateLabel(e.weekEnd).replace(/^[A-Za-z]+ /,'')}`,when:`${dateLabel(e.week)}–${dateLabel(e.weekEnd)} · during your assigned lab`,label:'Quiz week',cta:'Choose your section for your quiz time'};
- if(e.date&&e.time)return {...base,precision:'exact',at:timestamp(e.date,e.time),end:e.end?timestamp(e.date,e.end):null,when:`${short(e.date)} · ${clock(e.time)} Toronto`,label:a.kind==='midterm'?'Test starts':'Starts'};
- if(e.date)return {...base,precision:'day',date:e.date,when:short(e.date),label:'Time not posted'};
- return {...base,precision:'pending',when:'Date pending',label:'Awaiting the official schedule'};
-}
-function resolveCen(){
- const ns=$('#nextsign'),first=(ns?.dataset.schedule||'').split('|')[0].split(':')[0];
- const e=(window.CEN_SCHEDULE||[]).find(x=>x.id===first);if(!e)return null;
- const base={id:e.id,title:e.title.replace(/ due$/,''),kind:'assignment',open:e.item};
- if(e.time)return {...base,precision:'exact',at:timestamp(e.date,e.time),when:`${short(e.date)} · ${clock(e.time)} Toronto`,label:'Due'};
- return {...base,precision:'day',date:e.date,when:short(e.date),label:'Time not posted · check D2L'};
-}
-
-/* Pure formatting so every surface agrees. */
-export function parts(t,now=Date.now()){
- if(!t)return null;
- if(t.precision==='exact'){
-  const ms=t.at-now;
-  if(ms<=0)return {state:t.end&&now<t.end?'live':'passed',ms:0};
-  const s=Math.floor(ms/1000);
-  return {state:ms<6*3600e3?'hot':ms<48*3600e3?'soon':'ahead',ms,d:Math.floor(s/86400),h:Math.floor(s%86400/3600),m:Math.floor(s%3600/60),s:s%60,progress:Math.max(0,Math.min(1,ms/WINDOW))};
- }
- if(t.precision==='day'){
-  const todayUtc=Date.parse(new Intl.DateTimeFormat('en-CA',{timeZone:'America/Toronto'}).format(new Date(now))+'T12:00:00Z');
-  const days=Math.round((Date.parse(t.date+'T12:00:00Z')-todayUtc)/86400000);
-  return {state:days<0?'passed':days===0?'hot':days<=2?'soon':'ahead',days,progress:Math.max(0,Math.min(1,days*86400000/WINDOW))};
- }
- return {state:t.precision};
-}
-export function compact(t,now=Date.now()){
- const p=parts(t,now);if(!p)return '';
- if(t.precision==='exact'){if(p.state==='live')return 'Happening now';if(p.state==='passed')return 'Due time passed';return p.d?`${p.d}d ${p.h}h ${String(p.m).padStart(2,'0')}m`:`${p.h}h ${String(p.m).padStart(2,'0')}m`;}
- if(t.precision==='day')return p.days<0?'Date passed':p.days===0?'Today':p.days===1?'Tomorrow':`In ${p.days} days`;
- if(t.precision==='week')return 'Quiz week';
- return 'Date pending';
-}
-function sentence(t){
- const p=parts(t);if(!p)return '';
- if(t.precision==='exact'&&p.ms)return `${t.title}: ${p.d} days, ${p.h} hours and ${p.m} minutes left. ${t.when}.`;
- return `${t.title}: ${compact(t)}. ${t.when}.`;
-}
+/* The countdown sits inside the guide's own next card, so the card's item wins when it names one. The rules
+   are identical (tests/targets.test.mjs); the two can differ only until the guide's next minute refresh. */
+function shownId(){return isMath?$('#next-assessment')?.dataset.nextId||'':($('#nextsign')?.dataset.schedule||'').split('|')[0].split(':')[0];}
+/* The guide's live control reflects the section even when storage is blocked; storage is the fallback. */
+function liveSection(saved){const control=$(isMath?'#section-select':'#contact-section');return control?Number(control.value)||0:saved;}
 
 /* ---- Countdown ring, drawn in each course's vocabulary ----
    Engineering: a toothed ratchet that advances in steps. Calculus: a smooth arc carrying its tangent.
@@ -110,7 +64,11 @@ function mountBlock(){
  const card=isMath?$('#next-assessment'):$('#nextsign .next');
  if(!card||!target)return;
  let block=card.querySelector('.ns-count');
- if(!block){block=document.createElement('div');block.className='ns-count';(isMath?card.querySelector('.next-bottom'):card.querySelector('.next-open'))?.after(block);card.classList.add('ns-next');}
+ if(!block){
+  // The guide's "nothing dated ahead" card has no slot for a countdown; it keeps its own layout.
+  const slot=isMath?card.querySelector('.next-bottom'):card.querySelector('.next-open');if(!slot)return;
+  block=document.createElement('div');block.className='ns-count';slot.after(block);card.classList.add('ns-next');
+ }
  block.dataset.precision=target.precision;block.dataset.key=target.id+target.precision+(target.at||target.date||'');
  block.innerHTML=blockHTML(target);
  block.querySelector('.ns-sr').textContent=sentence(target);
@@ -137,8 +95,10 @@ function paint(){
 }
 
 export async function resolve(){
- course$??=await courseData();
- const next=isMath?resolveMath(course$):resolveCen();
+ data$??=await (isMath?courseData():loadData('cen100'));
+ if(!data$)return;
+ const saved=readSaved(course,data$);
+ const next=resolveTarget({course,data:data$,section:liveSection(saved.section),completed:saved.completed,now:Date.now(),id:shownId()||null});
  const changed=JSON.stringify(next)!==JSON.stringify(target);
  target=next;
  if(changed||!$('.ns-count'))mountBlock();
@@ -176,7 +136,7 @@ function motionLabel(button){
 export function mountDock(){
  const header=$('.header-upgraded');if(!header||$('.ns-dock'))return;
  const dock=document.createElement('div');dock.className='ns-dock';dock.setAttribute('role','region');dock.setAttribute('aria-label','Course quick bar');
- dock.innerHTML=`<div class="ns-dock-bar"><span class="ns-dock-progress" aria-hidden="true"></span><a class="ns-dock-id" href="#top" aria-label="Back to top of ${META.code}"><i aria-hidden="true"></i><b>${META.code}</b><span>${escape(META.name)}</span></a><div class="ns-dock-next"><span class="ns-dock-k">Next</span><span class="ns-dock-title" data-ns-title></span><span class="ns-dock-chip" data-ns-chip></span></div><div class="ns-dock-actions"><button type="button" class="ns-dock-section" data-ns-section></button><button type="button" class="ns-dock-motion" data-ns-motion aria-pressed="false"><i aria-hidden="true"></i><span>Pause motion</span></button><button type="button" class="ns-dock-search" data-ns-search aria-label="Search the guide"><span>Search</span><kbd>⌘K</kbd></button></div></div>`;
+ dock.innerHTML=`<div class="ns-dock-bar"><span class="ns-dock-progress" aria-hidden="true"></span><a class="ns-dock-id" href="#top" aria-label="Back to top of ${META.code}"><i aria-hidden="true"></i><b>${META.code}</b><span>${escape(META.name)}</span></a><a class="ns-dock-desk" href="${asset('../../')}" title="All courses">Desk</a><div class="ns-dock-next"><span class="ns-dock-k">Next</span><span class="ns-dock-title" data-ns-title></span><span class="ns-dock-chip" data-ns-chip></span></div><div class="ns-dock-actions"><button type="button" class="ns-dock-section" data-ns-section></button><button type="button" class="ns-dock-motion" data-ns-motion aria-pressed="false"><i aria-hidden="true"></i><span>Pause motion</span></button><button type="button" class="ns-dock-search" data-ns-search aria-label="Search the guide"><span>Search</span><kbd>⌘K</kbd></button></div></div>`;
  document.body.append(dock); // outside .course-workspace: its perspective would capture position:fixed
  dock.querySelector('.ns-dock-id').addEventListener('click',e=>{e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});});
  const sectionLabel=()=>{const b=$('.workspace-section');dock.querySelector('.ns-dock-section').textContent=b?.textContent||'Choose section';};

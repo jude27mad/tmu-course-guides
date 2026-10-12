@@ -76,6 +76,9 @@ async function check(route,course,motion='off'){
   click('#quick-contacts');assert.equal(d.body.dataset.workspaceView,'info','legacy contacts navigate');
  }
  assert.equal(d.querySelectorAll('input,select,textarea').length>=controlsBefore-10,true,'guide controls retained');
+ const dockDesk=d.querySelector('.ns-dock .ns-dock-id + .ns-dock-desk');
+ assert(dockDesk,course+' dock has a Desk link right after the course id');assert.equal(dockDesk.href,'https://guide.test/','dock Desk link goes to the site base');
+ assert(d.querySelector('.ns-dock [data-ns-title]').textContent.trim(),course+' deadline layer resolved a target from the shared resolver');
  click('#quick-work');await new Promise(r=>setTimeout(r,1));assert.equal(d.body.dataset.workspaceView,'info','work tool navigates');
  assert(d.querySelector('#work-tools').open,'work tool opens');
  if(motion!=='off'){
@@ -139,26 +142,80 @@ async function check(route,course,motion='off'){
  console.log(course+' ('+motion+'): navigation, search, drawers, tools, section and state checks passed');
  dom.window.close();
 }
-// The Desk (site root): course directory with no course identity; it reads saved sections but writes no course data.
-async function checkDesk(motion){
+// The Desk (site root): course directory with no course identity. Desk mode resolves every course's next deadline
+// from the shared data-level resolver against a frozen clock; it reads saved sections/completion and writes nothing.
+const NOON_OCT12=Date.parse('2026-10-12T16:00:00Z'); // 12:00 PM Toronto
+const SEEDS={
+ completed:{'cen100-contact-choice-v1':JSON.stringify({section:29,group:9}),'cen100-personal-plan-v1':JSON.stringify({completed:{integrity:1},notes:{},targets:{}}),'mth140-section-v1':'31'},
+ sections:{'cen100-contact-choice-v1':JSON.stringify({section:29,group:9}),'mth140-section-v1':'31'},
+ fresh:{}
+};
+async function checkDesk(motion,seed='completed'){
  const errors=[];const log=new VirtualConsole();log.on('jsdomError',e=>{if(!e.message.includes('CSS'))errors.push(e.message)});
- const saved={'cen100-contact-choice-v1':JSON.stringify({section:29,group:9}),'cen100-personal-plan-v1':JSON.stringify({completed:{integrity:1},notes:{},targets:{}}),'mth140-section-v1':'31'};
- const dom=new JSDOM(fs.readFileSync(path.join(root,'index.html'),'utf8'),{url:'https://guide.test/?motion='+motion,resources,runScripts:'dangerously',pretendToBeVisual:true,virtualConsole:log,beforeParse(w){
+ const saved=SEEDS[seed];
+ const dom=new JSDOM(fs.readFileSync(path.join(root,'index.html'),'utf8').replaceAll('type="module"','defer'),{url:'https://guide.test/?motion='+motion,resources,runScripts:'dangerously',pretendToBeVisual:true,virtualConsole:log,beforeParse(w){
    w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}});for(const [k,v] of Object.entries(saved))w.localStorage.setItem(k,v);
+   const Native=w.Date;w.Date=class extends Native{constructor(...a){super(...(a.length?a:[NOON_OCT12]))}static now(){return NOON_OCT12}};
  }});
  const w=dom.window,d=w.document;
  await new Promise((resolve,reject)=>{w.addEventListener('load',resolve,{once:true});setTimeout(()=>reject(Error('Desk load timeout')),10000).unref()});
+ for(let i=0;i<100&&d.querySelector('[data-desk-overall-body]').hidden;i++)await new Promise(r=>setTimeout(r,20));
  assert.deepEqual(errors,[],'desk runtime errors');
  assert.equal(d.body.dataset.course,undefined,'Desk has no course identity');
+ assert.equal(d.documentElement.dataset.nsPage,'desk','boot runs in Desk mode');
+ assert.equal(d.documentElement.dataset.nsFailed,undefined,'no Desk module failed');
+ assert(!d.querySelector('.ns-dock,.workspace-panel,.header-upgraded'),'no course workspace, dock or header on the Desk');
  assert.equal(d.querySelector('.course-link[aria-current]').dataset.courseLink,'desk','Desk, not CEN, is current');
+ assert.equal(d.querySelectorAll('.course-link[aria-current]').length,1,'only the Desk is current');
  assert.deepEqual([...d.querySelectorAll('.course-switch .course-link')].map(a=>a.href),['https://guide.test/','https://guide.test/cen100/','https://guide.test/mth140/','https://guide.test/mth141/'],'switcher routes');
  assert.deepEqual([...d.querySelectorAll('.desk-course')].map(a=>a.href),['https://guide.test/cen100/','https://guide.test/mth140/','https://guide.test/mth141/'],'directory links');
- assert.equal(d.querySelector('[data-saved-course="cen100"]').textContent,'Section 29','Desk reads the saved CEN section');
- assert.equal(d.querySelector('[data-saved-course="mth140"]').textContent,'Section 31','Desk reads the saved MTH140 section');
+ assert.equal(d.querySelector('a[href],button,input,select,textarea').className,'skip-link','Skip link is the first focusable element');
+ assert.equal(d.querySelector('[data-desk-stage]').childElementCount,0,'the Stage 5 mount point is empty');
+ const next=course=>{const slot=d.querySelector(`[data-course-card="${course}"] [data-desk-next]`);assert(!slot.hidden,course+' deadline shown');return slot;};
+ const text=(node,s)=>node.querySelector(s)?.textContent;
+ const overall=d.querySelector('[data-desk-overall]');
+ assert(d.querySelector('[data-desk-static]').hidden,'static intro replaced once deadlines resolve');
+ assert.equal(d.querySelector('[data-desk-today]').textContent,'Monday, Oct 12 · Toronto');
+ if(seed!=='fresh'){
+  assert.equal(d.querySelector('[data-saved-course="cen100"]').textContent,'Section 29','Desk reads the saved CEN section');
+  assert.equal(d.querySelector('[data-saved-course="mth140"]').textContent,'Section 31','Desk reads the saved MTH140 section');
+  assert.equal(text(next('mth140'),'.desk-course-title'),'Lab Quiz 2');
+  assert.equal(text(next('mth140'),'.desk-course-when'),'Thu Oct 15 · 4:00 PM · VIC106','saved section gives the exact lab slot');
+  assert.match(text(next('mth140'),'.desk-course-note'),/lab timetable/,'timetable caveat kept');
+  assert.equal(text(next('mth140'),'.desk-course-section'),'Section 31 · Thu 4:00 PM lab · VIC106');
+  assert.equal(text(next('mth141'),'.desk-course-title'),'Midterm Test');
+  assert.equal(text(next('mth141'),'.desk-chip'),'4d 6h 30m');
+  assert.equal(text(next('mth141'),'.desk-course-section'),'No section saved');
+ }
+ if(seed==='completed'){
+  // Integrity recorded done: CEN's next is the Section 29 lab reminder, a date without a time.
+  assert.equal(text(next('cen100'),'.desk-course-title'),'Failure Analysis Part 1 in lab (Section 29)');
+  assert.equal(text(next('cen100'),'.desk-chip'),'In 2 days');assert.equal(text(next('cen100'),'.desk-course-label'),'Time not posted · check D2L');
+  assert.equal(overall.dataset.deskCourse,'cen100');assert.equal(overall.dataset.precision,'day');
+  assert(!overall.querySelector('.desk-digits'),'no timer for a date without a time');
+  assert.equal(text(overall,'.desk-word'),'In 2 days');
+  assert.equal(overall.querySelector('.desk-action').href,'https://guide.test/cen100/#assignment-m3','overall links to the item in its guide');
+ }else if(seed==='sections'){
+  assert.equal(text(next('cen100'),'.desk-course-title'),'Academic Integrity Quiz');
+  assert.equal(overall.dataset.deskCourse,'cen100');assert.equal(overall.dataset.precision,'exact');
+  assert.deepEqual([...overall.querySelectorAll('.desk-unit b')].map(b=>b.textContent),['02','03','00'],'exact overall target counts down');
+  assert.equal(text(overall,'.desk-count-when'),'Wed Oct 14 · 3:00 PM Toronto','actual date and Toronto time beside the timer');
+  assert.equal(overall.querySelector('.desk-action').href,'https://guide.test/cen100/#assignment-y4');
+ }else{
+  // Nothing saved: MTH140's quiz week could fall on Monday, so it leads, with its section CTA and no timer.
+  assert.equal(overall.dataset.deskCourse,'mth140');assert.equal(overall.dataset.precision,'week');
+  assert(!overall.querySelector('.desk-digits'),'no timer for a quiz week');
+  assert.equal(text(overall,'.desk-word'),'Oct 12–16');
+  assert.equal(overall.querySelector('.desk-action-quiet').href,'https://guide.test/mth140/#course-info','section CTA opens the guide’s section picker');
+  assert.equal(next('mth140').querySelector('.desk-cta').href,'https://guide.test/mth140/#course-info');
+  assert.equal(text(next('cen100'),'.desk-chip'),'2d 3h 00m');
+ }
+ assert.match(d.querySelector('[data-desk-live]').textContent,/^Next across your courses/,'polite summary for assistive tech');
  assert.deepEqual(Object.fromEntries(Object.keys(saved).map(k=>[k,w.localStorage.getItem(k)])),saved,'Desk leaves saved course data untouched');
+ assert.equal(w.localStorage.length,Object.keys(saved).length,'Desk writes no new storage');
  assert.equal(w.location.href,'https://guide.test/?motion='+motion,'generic query stays on the Desk');
  assert.equal(w.TMULegacyRoute.decide('https://guide.test/?motion='+motion+'#assignment-y4','https://guide.test/'),'https://guide.test/cen100/?motion='+motion+'#assignment-y4','old CEN link forwards');
- console.log('desk ('+motion+'): directory, switcher, saved sections and root forwarding checks passed');
+ console.log('desk ('+motion+', '+seed+'): directory, deadlines, switcher, saved sections and root forwarding checks passed');
  dom.window.close();
 }
-(async()=>{await checkDesk('off');await checkDesk('on');await check('cen100/','cen100');await check('mth140/','mth140');await check('mth141/','mth141');await check('cen100/','cen100','on');await check('mth140/','mth140','on');await check('mth141/','mth141','on')})().catch(e=>{console.error(e);process.exit(1)});
+(async()=>{await checkDesk('off','completed');await checkDesk('on','sections');await checkDesk('off','fresh');await check('cen100/','cen100');await check('mth140/','mth140');await check('mth141/','mth141');await check('cen100/','cen100','on');await check('mth140/','mth140','on');await check('mth141/','mth141','on')})().catch(e=>{console.error(e);process.exit(1)});

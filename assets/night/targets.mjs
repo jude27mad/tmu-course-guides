@@ -41,14 +41,14 @@ export const readSaved=(course,data,storage=store())=>({section:readSection(cour
 
 /* ---- CEN100: cen100/index.html eventPassed, sortEvents, itemDeadlines and upcomingSchedule, unchanged ---- */
 // A timed row passes at its Toronto time; a date-only row stays eligible for its whole Toronto day.
-const cenPassed=(e,now)=>e.time?timestamp(e.date,e.time)<now:e.date<today(new Date(now));
+const cenPassed=(e,now,day)=>e.time?timestamp(e.date,e.time)<now:e.date<day;
 // "23:59" orders rows without a published time last in their day. A sort key only: it is never displayed.
 const cenSort=(a,b)=>(a.date+(a.time||'23:59')).localeCompare(b.date+(b.time||'23:59'))||a.id.localeCompare(b.id);
 export function cenUpcoming(schedule,completed={},section=0,now=Date.now()){
  now=ms(now);
- const rows=item=>schedule.filter(e=>e.item===item&&e.calendar!==false);
+ const day=today(new Date(now)),rows=item=>schedule.filter(e=>e.item===item&&e.calendar!==false);
  return schedule.filter(e=>{
-  if(cenPassed(e,now)||(e.section&&e.section!==section)||completed[e.id])return false;
+  if(cenPassed(e,now,day)||(e.section&&e.section!==section)||completed[e.id])return false;
   // A calendar:false reminder retires once every dated row of its item is recorded done.
   if(e.calendar===false){const own=rows(e.item);if(own.length&&own.every(r=>completed[r.id]))return false;}
   return true;

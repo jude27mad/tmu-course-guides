@@ -140,7 +140,9 @@ test('the CEN rules are the guide page’s own upcomingSchedule, case for case',
   const html=readFileSync(new URL('../cen100/index.html',import.meta.url),'utf8');
   const slice=(from,to)=>html.slice(html.indexOf(from),html.indexOf(to));
   const source=slice('function torontoToday(','function torontoUTC(')+slice('function eventPassed(','function clockLabel(')+slice('function upcomingSchedule(','function headUrgency(');
-  const page=vm.runInNewContext(source+';({upcomingSchedule})',{SCHEDULE,Intl,Date,Object,Number});
+  // Formatters are stateless; caching them only keeps the page's own functions fast across thousands of clocks.
+  const formats=new Map(),DateTimeFormat=function(locale,options){const k=JSON.stringify([locale,options]);if(!formats.has(k))formats.set(k,new Intl.DateTimeFormat(locale,options));return formats.get(k);};
+  const page=vm.runInNewContext(source+';({upcomingSchedule})',{SCHEDULE,Intl:{DateTimeFormat}});
   const completions=[{},{integrity:1},{integrity:1,failure:1},{whmis:1,'matlab-1':1,'failure-lab':1},Object.fromEntries(SCHEDULE.map(e=>[e.id,1]))];
   const clocks=[];
   for(let t=toronto('2026-09-08','00:00');t<toronto('2026-12-04','00:00');t+=23*3600e3+17*60e3)clocks.push(t);
@@ -194,4 +196,13 @@ test('the overall next deadline never manufactures a timer from an uncertain tar
   const ended={course:'mth140',precision:'exact',at:toronto('2026-10-15','16:00'),end:toronto('2026-10-15','18:00')},later={course:'mth141',precision:'exact',at:toronto('2026-10-16','18:30')};
   assert.equal(overall([ended,later],toronto('2026-10-15','19:00')),ended);
   assert.equal(overall([ended,later],toronto('2026-10-15','20:01')),later);
+});
+
+test('the Desk’s first-paint course accents mirror COURSE_META',()=>{
+  // core.mjs touches the DOM at import, so compare the source text: desk.css must not drift from COURSE_META.
+  const core=readFileSync(new URL('../assets/night/core.mjs',import.meta.url),'utf8'),css=readFileSync(new URL('../assets/night/desk.css',import.meta.url),'utf8');
+  for(const course of ['cen100','mth140','mth141']){
+    const [,accent,strong]=core.match(new RegExp(course+":\\{[^}]*accent:'(#[0-9a-f]{6})',strong:'(#[0-9a-f]{6})'"));
+    assert.match(css,new RegExp(`\\[data-course-card=${course}\\],\\[data-book=${course}\\]\\{--course:${accent};--course-strong:${strong}\\}`),course);
+  }
 });
