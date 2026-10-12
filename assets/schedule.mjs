@@ -28,9 +28,11 @@ export function timestamp(date, time) {
 export function resolveAssessment(course, assessment, section) {
   const lab=course.labs.find(x=>x.section===Number(section));
   if(assessment.kind!=='quiz') return {...assessment,lab:null,sortDate:assessment.date||'9999-12-31'};
-  const date=lab?addDays(assessment.week,lab.day-1):null;
-  const holiday=date==='2026-10-12';
-  return {...assessment,date:holiday?null:date,lab,holiday,weekEnd:addDays(assessment.week,4),sortDate:date||assessment.week};
+  const timetableDate=lab?addDays(assessment.week,lab.day-1):null;
+  const rescheduled=Boolean(timetableDate==='2026-10-12'&&assessment.mondayMakeupDate);
+  const date=rescheduled?assessment.mondayMakeupDate:timetableDate;
+  const holiday=timetableDate==='2026-10-12'&&!rescheduled;
+  return {...assessment,date:holiday?null:date,lab,holiday,rescheduled,weekEnd:addDays(assessment.week,4),sortDate:date||assessment.week};
 }
 export function assessmentPassed(event, now = new Date()) {
   if(event.date) return event.time?timestamp(event.date,event.end||event.time)<now.getTime():event.date<today(now);
@@ -44,7 +46,7 @@ export function upcoming(course, section, completed = {}, now = new Date()) {
 }
 export function timing(event) {
   if(event.holiday) return `Week of ${dateLabel(event.week)} · Monday lab falls on Thanksgiving; quiz date needs confirmation`;
-  if(event.date) return `${dayLabel(event.date)}, ${dateLabel(event.date)}${event.time?` · ${clock(event.time)}–${clock(event.end)} Toronto time`:event.lab?` · in your ${clock(event.lab.start)}–${clock(event.lab.end)} lab`:''}`;
+  if(event.date) return `${dayLabel(event.date)}, ${dateLabel(event.date)}${event.time?` · ${clock(event.time)}–${clock(event.end)} Toronto time`:event.lab?` · ${event.quizSecondHour?'second hour of':'in'} your ${clock(event.lab.start)}–${clock(event.lab.end)} lab`:''}`;
   if(event.week) return `${dateLabel(event.week)}–${dateLabel(event.weekEnd)} · during your assigned lab`;
   return 'December · exact date, time and room to be announced';
 }
