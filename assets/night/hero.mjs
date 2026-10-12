@@ -3,23 +3,25 @@
    to recede the art, fade the eyebrow, HUD and hint, and retract the course motif; the title lifts line by
    line behind SplitText masks. Characters lean toward a fine pointer. Rest (p = 0) is also the reduced look.
    The docked state stays deadline.mjs's dock (html.ns-docked); this module never builds another. */
+import {scope} from '../route-lifecycle.mjs';
 import {$,META,motionAllowed,sceneMotionAllowed,finePointer,atLeast,onTier,held,track,dispose,vendor} from './core.mjs';
 
 const SCOPE='hero',DRAGGED='night-dragged';
 const phone=matchMedia('(max-width:760px)');
 /* Decode glyphs are ASCII so the monospace eyebrow never changes width; each course adds its own marks. */
-const GLYPHS='ABCDEFGHKLMNPRSTUVXYZ0123456789'+({mechanism:'#=+[]',flow:'~^()/',plane:'[]|+-'}[META.motif]||'');
-let started=false,built=false,kit=null,header=null,art=null,title=null,kicker=null;
+let GLYPHS='';
+let started=false,built=false,kit=null,header=null,art=null,title=null,kicker=null,life=null;
 
-export async function mount(){
- if(started)return;started=true;
+export async function mount(ctx={}){
+ if(started)return;started=true;const owner=life=scope(ctx);
+ GLYPHS='ABCDEFGHKLMNPRSTUVXYZ0123456789'+({mechanism:'#=+[]',flow:'~^()/',plane:'[]|+-'}[META?.motif]||'');
  header=$('.header-upgraded');if(!header)return;
  art=$('.header-art',header);title=$('.hero-copy>h1',header);kicker=$('.hero-copy>.team,.hero-copy>.eyebrow',header);
  explore(); // independent of GSAP and of motion: the hint logic works everywhere
- try{kit=await vendor();}catch{return;}
+ try{kit=await vendor();}catch{return;}if(life!==owner||owner.signal.aborted)return;
  // Scrub and lean follow the interface-motion gate; reduced motion or ?motion=off tears them down cleanly.
  const sync=()=>{try{if(motionAllowed())build();else if(built){built=false;dispose(SCOPE);}}catch(error){console.warn('Night Shift hero:',error);}};
- document.addEventListener('guide-motion-change',sync);
+ life.on(document,'guide-motion-change',sync);
  sync();
  decode();
 }
@@ -123,9 +125,10 @@ function decode(){
  const draw=()=>{face.textContent=chars.map((c,i)=>keep.test(c)||state.t>=settle[i]?c:GLYPHS[Math.random()*GLYPHS.length|0]).join('');};
  const restore=()=>{if(face.isConnected)el.textContent=text;};
  draw();el.replaceChildren(sr,face);
- kit.gsap.to(state,{t:1,duration:.38,ease:'none',onComplete:restore,onInterrupt:restore,onUpdate(){
+ const decodeTween=kit.gsap.to(state,{t:1,duration:.38,ease:'none',onComplete:restore,onInterrupt:restore,onUpdate(){
   try{if(!motionAllowed()){this.kill();return;}if(frame++%2)return;draw();}catch{restore();} // ~30 Hz glyph changes stay legible
  }});
+ life.own(()=>{decodeTween.kill();restore();});
 }
 
 /* ---- "Drag to explore" stays until the visitor really drags the art (the scene accepted the drag and
@@ -146,5 +149,7 @@ function explore(){
   try{sessionStorage.setItem(DRAGGED,'1');}catch{}
   for(const [type,fn] of listeners)art.removeEventListener(type,fn);
  }
- for(const [type,fn] of listeners)art.addEventListener(type,fn,{passive:true});
+ for(const [type,fn] of listeners)life.on(art,type,fn,{passive:true});
 }
+
+export function unmount(){if(!started)return;life?.dispose();dispose(SCOPE);header?.classList.remove('ns-explored');life=null;started=built=false;kit=header=art=title=kicker=null;}

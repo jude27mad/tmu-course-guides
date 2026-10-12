@@ -2,19 +2,21 @@
    Resolution is targets.mjs (the same data-level rules the Desk uses); this file is the course-page adapter.
    A timer is shown only when the date and time are actually known. */
 import {course,isMath,META,$,escape,asset,courseData,ambientAllowed,preference,toggleMotion} from './core.mjs';
+import {scope} from '../route-lifecycle.mjs';
 import {loadData,readSaved,resolveTarget,parts,compact,sentence,GRACE} from './targets.mjs';
 export {parts,compact} from './targets.mjs';
 
-let target=null,data$=null,tickTimer=0,lastMinute='';
+let target=null,data$=null,tickTimer=0,lastMinute='',live=null;
+let dock=null,dockLife=null;
 const listeners=new Set();
 export const currentTarget=()=>target;
 export function onTarget(fn){listeners.add(fn);if(target)fn(target);return()=>listeners.delete(fn);}
 
 /* The countdown sits inside the guide's own next card, so the card's item wins when it names one. The rules
    are identical (tests/targets.test.mjs); the two can differ only until the guide's next minute refresh. */
-function shownId(){return isMath?$('#next-assessment')?.dataset.nextId||'':($('#nextsign')?.dataset.schedule||'').split('|')[0].split(':')[0];}
+function shownId(){return isMath()?$('#next-assessment')?.dataset.nextId||'':($('#nextsign')?.dataset.schedule||'').split('|')[0].split(':')[0];}
 /* The guide's live control reflects the section even when storage is blocked; storage is the fallback. */
-function liveSection(saved){const control=$(isMath?'#section-select':'#contact-section');return control?Number(control.value)||0:saved;}
+function liveSection(saved){const control=$(isMath()?'#section-select':'#contact-section');return control?Number(control.value)||0:saved;}
 
 /* ---- Countdown ring, drawn in each course's vocabulary ----
    Engineering: a toothed ratchet that advances in steps. Calculus: a smooth arc carrying its tangent.
@@ -61,12 +63,12 @@ function blockHTML(t){
  return `<div class="ns-count-face">${showRing?ring(p.progress??0):''}${face}</div><div class="ns-count-meta"><p class="ns-count-label">${escape(t.label)}</p><p class="ns-count-when">${escape(t.when)}</p>${t.cta?`<button type="button" class="ns-cta" data-ns-section>${escape(t.cta)}</button>`:''}</div><p class="ns-sr" aria-live="polite"></p>`;
 }
 function mountBlock(){
- const card=isMath?$('#next-assessment'):$('#nextsign .next');
+ const card=isMath()?$('#next-assessment'):$('#nextsign .next');
  if(!card||!target)return;
  let block=card.querySelector('.ns-count');
  if(!block){
   // The guide's "nothing dated ahead" card has no slot for a countdown; it keeps its own layout.
-  const slot=isMath?card.querySelector('.next-bottom'):card.querySelector('.next-open');if(!slot)return;
+  const slot=isMath()?card.querySelector('.next-bottom'):card.querySelector('.next-open');if(!slot)return;
   block=document.createElement('div');block.className='ns-count';slot.after(block);card.classList.add('ns-next');
  }
  block.dataset.precision=target.precision;block.dataset.key=target.id+target.precision+(target.at||target.date||'');
@@ -95,8 +97,9 @@ function paint(){
 }
 
 export async function resolve(){
- data$??=await (isMath?courseData():loadData('cen100'));
- if(!data$)return;
+ const state=live;if(!state)return;
+ const loaded=data$||await (isMath()?courseData():loadData('cen100'));
+ if(live!==state||state.life.signal.aborted||!loaded)return;data$=loaded;
  const saved=readSaved(course,data$);
  const next=resolveTarget({course,data:data$,section:liveSection(saved.section),completed:saved.completed,now:Date.now(),id:shownId()||null});
  const changed=JSON.stringify(next)!==JSON.stringify(target);
@@ -111,7 +114,7 @@ export async function resolve(){
    guide's own next-deadline logic moves on; a re-resolve 2 h later picks up whatever it chose. */
 function schedule(){
  clearTimeout(tickTimer);
- if(!target||document.hidden)return;
+ if(!live||!target||document.hidden)return;
  const p=parts(target),everySecond=target.precision==='exact'&&p.ms&&ambientAllowed();
  let wait=everySecond?1000-Date.now()%1000:60000-Date.now()%60000;
  if(target.precision==='exact'&&!p.ms)wait=Math.max(60000,Math.min(wait,target.at+GRACE-Date.now()));
@@ -134,33 +137,42 @@ function motionLabel(button){
  button.disabled=locked;button.title=locked?'Motion follows your device setting':paused?'Resume motion':'Pause all motion';
 }
 export function mountDock(){
- const header=$('.header-upgraded');if(!header||$('.ns-dock'))return;
- const dock=document.createElement('div');dock.className='ns-dock';dock.setAttribute('role','region');dock.setAttribute('aria-label','Course quick bar');
- dock.innerHTML=`<div class="ns-dock-bar"><span class="ns-dock-progress" aria-hidden="true"></span><a class="ns-dock-id" href="#top" aria-label="Back to top of ${META.code}"><i aria-hidden="true"></i><b>${META.code}</b><span>${escape(META.name)}</span></a><a class="ns-dock-desk" href="${asset('../../')}" title="All courses">Desk</a><div class="ns-dock-next"><span class="ns-dock-k">Next</span><span class="ns-dock-title" data-ns-title></span><span class="ns-dock-chip" data-ns-chip></span></div><div class="ns-dock-actions"><button type="button" class="ns-dock-section" data-ns-section></button><button type="button" class="ns-dock-motion" data-ns-motion aria-pressed="false"><i aria-hidden="true"></i><span>Pause motion</span></button><button type="button" class="ns-dock-search" data-ns-search aria-label="Search the guide"><span>Search</span><kbd>⌘K</kbd></button></div></div>`;
- document.body.append(dock); // outside .course-workspace: its perspective would capture position:fixed
- dock.querySelector('.ns-dock-id').addEventListener('click',e=>{e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});});
- const sectionLabel=()=>{const b=$('.workspace-section');dock.querySelector('.ns-dock-section').textContent=b?.textContent||'Choose section';};
- sectionLabel();document.addEventListener('change',()=>queueMicrotask(sectionLabel));
+ const header=$('.header-upgraded');if(!header||!live)return;
+ if(!dock){
+ dock=document.createElement('div');dock.className='ns-dock';dock.setAttribute('role','region');dock.setAttribute('aria-label','Course quick bar');
+ dock.innerHTML=`<div class="ns-dock-bar"><span class="ns-dock-progress" aria-hidden="true"></span><a class="ns-dock-id" href="#top"><i aria-hidden="true"></i><b></b><span></span></a><a class="ns-dock-desk" href="${asset('../../')}" title="All courses">Desk</a><div class="ns-dock-next"><span class="ns-dock-k">Next</span><span class="ns-dock-title" data-ns-title></span><span class="ns-dock-chip" data-ns-chip></span></div><div class="ns-dock-actions"><button type="button" class="ns-dock-section" data-ns-section></button><button type="button" class="ns-dock-motion" data-ns-motion aria-pressed="false"><i aria-hidden="true"></i><span>Pause motion</span></button><button type="button" class="ns-dock-search" data-ns-search aria-label="Search the guide"><span>Search</span><kbd>⌘K</kbd></button></div></div>`;
+ document.body.append(dock);
+ dockLife=scope();
+ dockLife.on(dock.querySelector('.ns-dock-id'),'click',e=>{e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});});
+ dockLife.on(document,'click',e=>{if(e.target.closest('[data-ns-section]'))$('.workspace-section')?.click();else if(e.target.closest('[data-ns-motion]'))toggleMotion();});
  const motion=dock.querySelector('[data-ns-motion]');motionLabel(motion);
- document.addEventListener('guide-motion-change',()=>motionLabel(motion));
+ dockLife.on(document,'guide-motion-change',()=>motionLabel(motion));
+ dockLife.on(document,'route-changed',e=>{if(e.detail?.route==='desk'){dock.hidden=true;dock.inert=true;document.documentElement.classList.remove('ns-docked');}});
+ }
+ dock.hidden=false;
+ const id=dock.querySelector('.ns-dock-id');id.setAttribute('aria-label','Back to top of '+META.code);id.querySelector('b').textContent=META.code;id.querySelector('span').textContent=META.name;
+ const {life}=live;
+ const sectionLabel=()=>{const b=$('.workspace-section');dock.querySelector('.ns-dock-section').textContent=b?.textContent||'Choose section';};
+ sectionLabel();life.on(document,'change',()=>queueMicrotask(()=>{if(!life.signal.aborted)sectionLabel();}));
  const bar=header.querySelector('.workspace-actions')||header;let docked=null,queued=false;
- const main=header.closest('.wrap,.math-wrap'),fit=()=>{const r=main.getBoundingClientRect();dock.style.setProperty('--ns-dock-left',r.left+'px');dock.style.setProperty('--ns-dock-width',r.width+'px');};
+ const main=header.closest('.wrap,.math-wrap'),fit=()=>{if(!main)return;const r=main.getBoundingClientRect();dock.style.setProperty('--ns-dock-left',r.left+'px');dock.style.setProperty('--ns-dock-width',r.width+'px');};
  const check=()=>{queued=false;fit();const next=bar.getBoundingClientRect().bottom<56;if(next===docked)return;docked=next;document.documentElement.classList.toggle('ns-docked',next);dock.inert=!next;};
- addEventListener('scroll',()=>{if(!queued){queued=true;requestAnimationFrame(check);}},{passive:true});addEventListener('resize',check);document.addEventListener('workspace-changed',()=>requestAnimationFrame(check));check();
+ life.on(window,'scroll',()=>{if(!queued){queued=true;life.frame(check);}},{passive:true});life.on(window,'resize',check);life.on(document,'workspace-changed',()=>life.frame(check));check();
 }
 
-export function mountDeadline(){
- const card=isMath?$('#next-assessment'):$('#nextsign');if(!card)return;
- new MutationObserver(()=>{if(!card.querySelector('.ns-count')||card.dataset.nextId!==card._nsId){card._nsId=card.dataset.nextId;resolve();}}).observe(card,{childList:true,subtree:false,attributes:true,attributeFilter:['data-next-id','data-schedule']});
+export function mount(ctx={}){
+ unmount();const life=scope(ctx);live={life};
+ const card=isMath()?$('#next-assessment'):$('#nextsign');if(!card){unmount();return;}
+ life.observer(new MutationObserver(()=>{if(!card.querySelector('.ns-count')||card.dataset.nextId!==card._nsId){card._nsId=card.dataset.nextId;resolve();}}),card,{childList:true,subtree:false,attributes:true,attributeFilter:['data-next-id','data-schedule']});
+ life.own(()=>delete card._nsId);
  card._nsId=card.dataset.nextId;
- document.addEventListener('click',e=>{
-  if(e.target.closest('[data-ns-section]')){$('.workspace-section')?.click();}
-  else if(e.target.closest('[data-ns-motion]'))toggleMotion();
- });
- for(const type of ['guide-completion','workspace-changed'])document.addEventListener(type,()=>queueMicrotask(resolve));
- document.addEventListener('change',e=>{if(e.target.matches('#section-select,#contact-section,#contact-group'))queueMicrotask(resolve);});
- document.addEventListener('visibilitychange',()=>{if(!document.hidden)resolve();else clearTimeout(tickTimer);});
- window.addEventListener('pageshow',()=>resolve());
- document.addEventListener('guide-motion-change',schedule);document.addEventListener('night-hold',schedule);
- mountDock();resolve();
+ for(const type of ['guide-completion','workspace-changed'])life.on(document,type,()=>queueMicrotask(()=>{if(!life.signal.aborted)resolve();}));
+ life.on(document,'change',e=>{if(e.target.matches('#section-select,#contact-section,#contact-group'))queueMicrotask(()=>{if(!life.signal.aborted)resolve();});});
+ life.on(document,'visibilitychange',()=>{if(!document.hidden)resolve();else clearTimeout(tickTimer);});
+ life.on(window,'pageshow',()=>resolve());
+ life.on(document,'guide-motion-change',schedule);life.on(document,'night-hold',schedule);
+ mountDock();return resolve();
 }
+
+export const mountDeadline=mount;
+export function unmount(){if(!live)return;const state=live;live=null;state.life.dispose();clearTimeout(tickTimer);tickTimer=0;target=data$=null;lastMinute='';document.querySelectorAll('.ns-count,.ns-hud').forEach(el=>el.remove());document.querySelectorAll('.ns-next').forEach(el=>el.classList.remove('ns-next'));delete document.documentElement.dataset.nsUrgency;if(dock){dock.hidden=true;dock.inert=true;}document.documentElement.classList.remove('ns-docked');}

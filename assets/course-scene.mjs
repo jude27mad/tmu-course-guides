@@ -2,7 +2,7 @@ import * as T from './vendor/three-0.186.1.mjs?v=20261012-subject1';
 import {createCircuit} from './scenes/circuit.mjs?v=20261012-subject1';
 import {createCalculus} from './scenes/calculus.mjs?v=20261012-subject1';
 import {createAlgebra} from './scenes/algebra.mjs?v=20261012-subject1';
-import {sceneMotionAllowed} from './guide-motion.mjs?v=20261012-night2';
+import {sceneMotionAllowed} from './guide-motion.mjs';
 import {createStudioEnvironment} from './scenes/future-look.mjs?v=20261012-subject1';
 import {framePose,posterPaths,rotationFitDistance} from './scenes/framing.mjs?v=20261012-subject1';
 import {disposeScene} from './scenes/primitives.mjs?v=20261012-subject1';
