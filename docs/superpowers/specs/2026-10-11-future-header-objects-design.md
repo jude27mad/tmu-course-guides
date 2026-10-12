@@ -4,7 +4,7 @@ Status: proposed design. This document plans the next artwork revision; it does 
 
 ## Intent
 
-Jude likes the current movement and whole-page transitions. The circuit, cube cluster and calculus ribbon still look dated or too simple. Replace those three objects with original, sophisticated sculptures that feel like instruments from a far-future laboratory. Keep the accepted interaction choreography and the existing course layout.
+The selected direction retains the current movement and whole-page transitions. The circuit, cube cluster and calculus ribbon still look dated or too simple. Replace those three objects with original, sophisticated sculptures that feel like instruments from a far-future laboratory. Keep the accepted interaction choreography and the existing course layout.
 
 The visual upgrade must be obvious in a paused frame. Motion should reveal the object's construction and materials, rather than carrying an otherwise weak design.
 

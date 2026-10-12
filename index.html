@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'none'; worker-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<link rel="stylesheet" href="assets/fonts/archivo.css?v=20261012-privacy1">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>CEN100 | TMU Course Guides</title>
 <meta name="description" content="TMU Fall 2026 course guides: CEN100 assignment deadlines, requirements and contacts, plus MTH140 and MTH141 assessment and section guides.">
 <link rel="stylesheet" href="assets/hub.css">
 <link rel="stylesheet" href="assets/visuals.css?v=20261011-labs2">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#E9EDF1; --tile:#FFFFFF; --ink:#101B28; --ink2:#4B596C; --line:#D7DFE9;
@@ -343,7 +343,7 @@ footer{margin-top:34px;display:flex;justify-content:space-between;gap:12px;flex-
     <input id="guide-search" type="search" placeholder="Try FMEA, citations or notebook" autocomplete="off" aria-controls="guide-search-results" aria-describedby="search-status">
     <p class="tool-status" id="search-status" role="status"></p>
     <ul class="search-results" id="guide-search-results" hidden></ul>
-    <div class="quick-links"><button class="quick-link" id="quick-work" type="button">This week's work</button><button class="quick-link" id="quick-contacts" type="button">Contacts</button><a class="quick-link" href="https://courses.torontomu.ca/" target="_blank" rel="noopener">D2L ↗</a></div>
+    <div class="quick-links"><button class="quick-link" id="quick-work" type="button">This week's work</button><button class="quick-link" id="quick-contacts" type="button">Contacts</button><a class="quick-link" href="https://courses.torontomu.ca/" target="_blank" rel="noopener noreferrer">D2L ↗</a></div>
     <label class="tool-check"><input type="checkbox" id="hide-completed">Hide fully checked items</label>
     <p class="tool-status" id="filter-status" role="status"></p>
   </section>
@@ -516,7 +516,7 @@ footer{margin-top:34px;display:flex;justify-content:space-between;gap:12px;flex-
     </ul>
   </details>
 
-  <footer><span>From Fall 2026 CEN100 documents on D2L and confirmed course-team clarifications.</span><button class="reset" id="reset">Clear my ticks</button><span class="site-credit">Created and maintained by Jude Ahmad.</span></footer>
+  <footer><span>From Fall 2026 CEN100 documents on D2L and confirmed course-team clarifications.</span><button class="reset" id="reset">Clear my ticks</button><span class="site-credit"><a href="privacy.html">Privacy</a></span></footer>
 </div>
 
 <script>
@@ -645,7 +645,7 @@ const YOU = [
   groups:[["",["Completed"]]], traps:[]},
  {id:"y5", date:"2026-10-28", date2:"Dec 2", name:"Personal Reflections", who:"you", pct:"4%",
   preview:"Two individual reflections, emailed to your Project Manager.",
-  what:"Your own writing about the project, two pieces. Email each Personal Reflection directly to your assigned Project Manager. Group 9: send to Sayed Nuhan.",
+  what:"Your own writing about the project, two pieces. Email each Personal Reflection directly to your assigned Project Manager.",
   facts:[["cal","Oct 28 and Dec 2"],["warn","Email directly to your Project Manager — no D2L submission box"]],
   groups:[["",["Project Manager confirmed","Reflection 1 emailed to PM","Reflection 2 emailed to PM"]]], traps:[]},
  {id:"y7", date:"2026-12-02", big:"LAB", small:"Weekly", name:"Tutorial attendance quizzes", who:"you", pct:"5%",
@@ -689,11 +689,11 @@ const CONFIRMED=[
  ["Notebook checkpoints","Two. Whole notebook as a PDF, Nov 4 and Dec 2, 3:00 PM."],
  ["Failure Analysis","Part 1: lit review + fishbone. Part 2: FMEA + paragraph, presented briefly. Both due Oct 21."],
  ["Headers","Team and section on every team submission. No signature needed."],
- ["Citations","IEEE. Sayed is double-checking with the GA."],
+ ["Citations","IEEE. Confirm the current guidance with your GA."],
  ["WHMIS","Due Oct 14. 80%+ on all 3 quizzes, then generate the certificate."],
  ["Academic Integrity Quiz","Due Oct 14, 3:00 PM."],
  ["Attendance quizzes","Section 29: Wednesday, 5:45 to 6:00 PM, one attempt. Other sections: check your assigned tutorial on D2L."],
- ["Personal Reflections","No D2L submission box. Email directly to your assigned Project Manager. Group 9: Sayed Nuhan."],
+ ["Personal Reflections","No D2L submission box. Email directly to your assigned Project Manager."],
  ["MATLAB assignments","Normally pairs. If the class size is odd, the unpaired student may work solo or join a group of 3."]
 ];
 const OPEN=[
@@ -869,19 +869,19 @@ document.addEventListener("change",e=>{if(e.target.matches("input[data-k]")){con
 document.getElementById("reset").addEventListener("click",()=>{if(!confirm("Clear all checklist ticks on this device? Your completion records, notes and target dates will stay saved."))return;ticks={};save();document.querySelectorAll("input[data-k]").forEach(b=>b.checked=false);counts()});
 
 const STAFFING=[
- {"sections":[1,14,27],"ga":"Mymonah Meraj","location":"KHE321B","groups":[[1,"Nitya Malik"],[2,"Kaung Min Khant"],[3,"Antonio Souza"],[4,"Doga Kaptanoglu"]]},
- {"sections":[2,15,28],"ga":"Ryan McNeice","location":"KHE323","groups":[[5,"Ragave Sharma"],[6,"Cami Rabia"],[7,"Shreyas Suresh"],[8,"Prisha Thakkar"]]},
- {"sections":[3,17,29],"ga":"Pouya Ranjbari","location":"KHS134","groups":[[9,"Sayed Nuhan"],[10,"David Onyia"],[11,"Rayyan Faisal"],[12,"Viktor Mitkovski"]]},
- {"sections":[4,16,30],"ga":"Navid Zarrabi","location":"VIC110","groups":[[13,"Harbani Wadhwa"],[14,"Ritesh Nallapareddy"],[15,"Zach Ahmed"],[16,"Musfirah Samad"]]},
- {"sections":[5,18,31],"ga":"Parham Jafary","location":"VIC206","groups":[[17,"Devanshi Rattan"],[18,"Hina Khan"],[19,"Thanesha Arulneswaran"],[20,"Samrudh Suryanarayan"]]},
- {"sections":[6,19,32],"ga":"Lasya Kagolanu","location":"VIC210","groups":[[21,"Rida-E Fatima"],[22,"Ronia Matthews"],[23,"Barakah Ahmed"],[24,"Jerome Arul Raj"]]},
- {"sections":[7,20,33],"ga":"Gelare Taherian","location":"VIC300","groups":[[25,"George Coppa"],[26,"Ayesha Irfana"],[27,"Anisha Das"],[28,"Matthew Antonio"]]},
- {"sections":[8,21,34],"ga":"Ijaz Qureshi","location":"VIC306","groups":[[29,"Justin Pope"],[30,"Muadh Ghori"],[31,"Anthony De Gregorio"],[32,"Ahmed Elshahed"]]},
- {"sections":[9,22,35],"ga":"Behzad Mahaseni","location":"VIC503","groups":[[33,"Hana Messih"],[34,"Samridhi Bhardwaj"],[35,"Tasnim Fatema"],[36,"Saad Khan"]]},
- {"sections":[10,23,36],"ga":"Haniyeh Altafi","location":"ILC100","groups":[[37,"Cian Enright"],[38,"Sofie Khan"],[39,"Sanya Baghla"],[40,"Zara Umer"]]},
- {"sections":[11,24,37],"ga":"Rana Danesh","location":"ILC102","groups":[[41,"Aashir Ahmed"],[42,"Amyn Jiwani"],[43,"Mahirah Mirza"],[44,"Ezel Toramanoglu"]]},
- {"sections":[12,25,38],"ga":"Yasmin Ahmadiadli","location":"VIC106","groups":[[45,"Maria Habib"],[46,"Tamhid Rashid"],[47,"Ayesha Faisal"],[48,"Srivaishnavi Batchu"]]},
- {"sections":[13,26,39],"ga":"Eslam Muhammed","location":"VIC200","groups":[[49,"Owen Webbe"],[50,"Amolika Srivastava"],[51,"Thirshan Varatharajah"],[52,"Hassan Iqbal"]]}
+ {"sections":[1,14,27],"ga":"See your section’s staff list on D2L","location":"KHE321B","groups":[[1,"See your group’s Project Manager on D2L"],[2,"See your group’s Project Manager on D2L"],[3,"See your group’s Project Manager on D2L"],[4,"See your group’s Project Manager on D2L"]]},
+ {"sections":[2,15,28],"ga":"See your section’s staff list on D2L","location":"KHE323","groups":[[5,"See your group’s Project Manager on D2L"],[6,"See your group’s Project Manager on D2L"],[7,"See your group’s Project Manager on D2L"],[8,"See your group’s Project Manager on D2L"]]},
+ {"sections":[3,17,29],"ga":"See your section’s staff list on D2L","location":"KHS134","groups":[[9,"See your group’s Project Manager on D2L"],[10,"See your group’s Project Manager on D2L"],[11,"See your group’s Project Manager on D2L"],[12,"See your group’s Project Manager on D2L"]]},
+ {"sections":[4,16,30],"ga":"See your section’s staff list on D2L","location":"VIC110","groups":[[13,"See your group’s Project Manager on D2L"],[14,"See your group’s Project Manager on D2L"],[15,"See your group’s Project Manager on D2L"],[16,"See your group’s Project Manager on D2L"]]},
+ {"sections":[5,18,31],"ga":"See your section’s staff list on D2L","location":"VIC206","groups":[[17,"See your group’s Project Manager on D2L"],[18,"See your group’s Project Manager on D2L"],[19,"See your group’s Project Manager on D2L"],[20,"See your group’s Project Manager on D2L"]]},
+ {"sections":[6,19,32],"ga":"See your section’s staff list on D2L","location":"VIC210","groups":[[21,"See your group’s Project Manager on D2L"],[22,"See your group’s Project Manager on D2L"],[23,"See your group’s Project Manager on D2L"],[24,"See your group’s Project Manager on D2L"]]},
+ {"sections":[7,20,33],"ga":"See your section’s staff list on D2L","location":"VIC300","groups":[[25,"See your group’s Project Manager on D2L"],[26,"See your group’s Project Manager on D2L"],[27,"See your group’s Project Manager on D2L"],[28,"See your group’s Project Manager on D2L"]]},
+ {"sections":[8,21,34],"ga":"See your section’s staff list on D2L","location":"VIC306","groups":[[29,"See your group’s Project Manager on D2L"],[30,"See your group’s Project Manager on D2L"],[31,"See your group’s Project Manager on D2L"],[32,"See your group’s Project Manager on D2L"]]},
+ {"sections":[9,22,35],"ga":"See your section’s staff list on D2L","location":"VIC503","groups":[[33,"See your group’s Project Manager on D2L"],[34,"See your group’s Project Manager on D2L"],[35,"See your group’s Project Manager on D2L"],[36,"See your group’s Project Manager on D2L"]]},
+ {"sections":[10,23,36],"ga":"See your section’s staff list on D2L","location":"ILC100","groups":[[37,"See your group’s Project Manager on D2L"],[38,"See your group’s Project Manager on D2L"],[39,"See your group’s Project Manager on D2L"],[40,"See your group’s Project Manager on D2L"]]},
+ {"sections":[11,24,37],"ga":"See your section’s staff list on D2L","location":"ILC102","groups":[[41,"See your group’s Project Manager on D2L"],[42,"See your group’s Project Manager on D2L"],[43,"See your group’s Project Manager on D2L"],[44,"See your group’s Project Manager on D2L"]]},
+ {"sections":[12,25,38],"ga":"See your section’s staff list on D2L","location":"VIC106","groups":[[45,"See your group’s Project Manager on D2L"],[46,"See your group’s Project Manager on D2L"],[47,"See your group’s Project Manager on D2L"],[48,"See your group’s Project Manager on D2L"]]},
+ {"sections":[13,26,39],"ga":"See your section’s staff list on D2L","location":"VIC200","groups":[[49,"See your group’s Project Manager on D2L"],[50,"See your group’s Project Manager on D2L"],[51,"See your group’s Project Manager on D2L"],[52,"See your group’s Project Manager on D2L"]]}
 ];
 function setupContactLookup(){
   const section=document.getElementById("contact-section"), group=document.getElementById("contact-group");
@@ -916,10 +916,10 @@ setupContactLookup();
   const CALENDAR_DATES=SCHEDULE.filter(event=>event.calendar!==false);
   const SOURCE_INFO={
     y1:["Course outline","Course outline, p. 9: assessment weights and individual September dates."],
-    y2:["Outline + clarification","Course outline, pp. 9–10: weight, dates and pair work. Confirmed clarification from Sayed Nuhan: the unpaired student in an odd-sized class may work solo or join a group of 3."],
+    y2:["Outline + clarification","Course outline, pp. 9–10: weight, dates and pair work. Confirmed course-team clarification: the unpaired student in an odd-sized class may work solo or join a group of 3."],
     y3:["Outline + clarification","Course outline, p. 9: weight, Oct 14 date and mandatory completion. Quiz requirements and certificate steps: course-team clarification recorded in this guide."],
     y4:["Outline + clarification","Course outline, p. 9: weight, Oct 14 date and mandatory completion. The 3 PM deadline and attempt limit: course-team clarification recorded in this guide."],
-    y5:["Outline + clarification","Course outline, p. 9: weight and dates. Confirmed clarification from Sayed Nuhan: email your assigned Project Manager; there is no D2L submission box. Group 9 sends to Sayed Nuhan."],
+    y5:["Outline + clarification","Course outline, p. 9: weight and dates. Confirmed course-team clarification: email your assigned Project Manager; there is no D2L submission box."],
     y6:["Outline + guide summary","Course outline, pp. 9–11: weight, checkpoint dates and shared notebook requirements. The PDF format and 3 PM deadline are recorded in the guide's Confirmed section."],
     y7:["Outline + clarification","Course outline, pp. 9–10: participation weight and in-person attendance. The Wednesday 5:45–6 PM quiz window and one attempt are confirmed for Section 29 only. Check D2L for other sections."],
     y9:["Course outline","Course outline, pp. 9 and 12: weight, two-hour in-person format and Dec 9–20 exam period. The exact date is pending the Registrar's schedule."],
@@ -1296,7 +1296,7 @@ setupContactLookup();
   setupRememberedContacts();setupSources();setupCompletedFilter();setupSearch();setupCalendar();setupPersonalTools();setupBackups();setupWorkAndUpdates();
 })();
 </script>
-<script src="assets/hub.js?v=20261012-subject1"></script>
+<script src="assets/hub.js?v=20261012-privacy1"></script>
 <script src="assets/visuals.js?v=20261011-cinema3"></script>
 <!-- Cloudflare Web Analytics temporarily paused on 2026-10-10; restore the beacon from Git history to resume. -->
 </body>

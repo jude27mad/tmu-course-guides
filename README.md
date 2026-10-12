@@ -178,31 +178,21 @@ Personal Reflections are emailed directly to the assigned Project Manager; there
 
 WHMIS is due October 14, with at least 80% on all three quizzes and a generated certificate. The Academic Integrity Quiz is due October 14 at 3 PM and allows ten attempts.
 
-Tutorial timing is identified by section where confirmed. Other sections are directed to D2L rather than assigned an assumed schedule. Reflection instructions show the selected group's Project Manager when available.
+Tutorial timing is identified by section where confirmed. Other sections are directed to D2L rather than assigned an assumed schedule. Reflection instructions identify the selected group; the current Project Manager name is obtained from D2L.
 
-The staffing document supplies section/group mappings, names, and lab locations only. **GA and Project Manager email addresses are not published or stored in the page's source code.** For contact details, check D2L or the official Section GAs and PMs document.
+The public guide retains section/group numbers and teaching-room information. Personal names and contact details from course-only staffing documents are omitted. For current GA, Project Manager, instructor, and assistant names, use D2L.
 
 This guide is an unofficial planning aid. Current official assignment instructions and course-team announcements remain the authority for requirements, submission methods, and deadlines.
 
-## Usage analytics and privacy
+## Privacy
 
-Cloudflare Web Analytics was added to CEN100 on **September 28, 2026** and to both math guides on **October 7, 2026**. The beacon is currently disabled on all three course pages and remains disabled in this visual release. The historical information below describes the previous integration; this release does not enable measurement. There is no public visitor counter.
+The current site contains no analytics SDK, beacon, tracking cookie or session recorder. Browser Content Security Policy blocks outbound reporting. Fonts, scripts and artwork are served with the site; external links do not receive a referrer.
 
-Cloudflare measures page views, visits, and page performance, with breakdowns such as country, browser, device type, and referrer. It [states that its analytics does not use cookies, local storage, or fingerprinting to track individuals](https://blog.cloudflare.com/privacy-first-web-analytics/). The guide uses local storage separately to save your progress; it does not send your selected section/group, checklist ticks, completion records, notes, or target dates to analytics. The beacon still sends measurement requests to Cloudflare, so this is not a claim that no data leaves the browser.
+Section/group choices, checklists, notes, target dates and appearance preferences stay in browser local storage. Backups are created locally only when exported; keep them private because they contain notes and progress. There are no accounts or automatic device synchronization.
 
-Visits are **not unique people**: repeat visits and the maintainer’s visits can count. Blockers and network failures can leave visits unrecorded, and sampling can make totals estimates. See Cloudflare’s [metric definitions](https://developers.cloudflare.com/web-analytics/data-metrics/high-level-metrics/), [reported dimensions](https://developers.cloudflare.com/web-analytics/data-metrics/dimensions/), and [collection limits](https://developers.cloudflare.com/web-analytics/faq/).
+The public pages omit the maintainer’s full name and names from course-only staff rosters. Old Git commits and the GitHub account/profile may still disclose previously published names or email metadata; updating current files does not erase history or cached copies. No history rewrite is performed by this change.
 
-### Long-term aggregate archive
-
-A separate private repository archives daily totals for the installed beacon and `jude27mad.github.io`, starting **September 28, 2026**. The first scheduled collection of a completed day succeeded on **September 29, 2026**.
-
-- Uses **America/Toronto** calendar days and excludes the current incomplete day.
-- Saves daily page views and visits, sampling information, and collection timestamps; it does not archive individual visitor records or students’ saved progress.
-- Provides saved all-time, monthly, and yearly totals, downloadable CSV/JSON files, and version history. All-time means the days successfully saved since installation; earlier traffic cannot be recovered.
-- Runs daily through GitHub Actions. Repeated runs replace a day’s totals rather than adding duplicates. Recent days are refreshed, and missing days are retried while available from Cloudflare. Failed or empty responses preserve saved totals, and unverified days remain visible as gaps.
-- Keeps the read-only API credentials in encrypted Actions secrets in the private repository. A separate daily health check alerts the maintainer to failed or stale collection and missing/unverified days.
-
-Saved history has no automatic expiry in the archive. Continued collection depends on the scheduled workflow, credentials, and services remaining available; Cloudflare’s own history window is separate from these saved files.
+GitHub Pages logs visitor IP addresses for hosting security. See [GitHub’s hosting documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection) and the visitor-facing [Privacy page](privacy.html). Historical aggregate analytics collected before the pause remain in a separate private archive; this release collects no new analytics.
 
 ## Files and hosting
 
@@ -219,7 +209,7 @@ Saved history has no automatic expiry in the archive. Continued collection depen
 | `README.md` | Three-course features, release notes, usage, data handling, and maintenance documentation. |
 | `colour-preview.html` | Separate palette comparison page with shareable colour selections and temporary progress. |
 
-The guide uses plain HTML, CSS, and JavaScript. No installation, package manager, build step, or application backend is required to serve it. Archivo is loaded through Google Fonts, with system-font fallbacks. The prebuilt rendering and interaction bundles are checked in; rebuilding them is optional for serving the site. The historical analytics archive is separate from this public site; the public beacon remains disabled.
+The guide uses plain HTML, CSS, and JavaScript. No installation, package manager, build step, or application backend is required to serve it. Archivo is self-hosted under its SIL Open Font License, with system-font fallbacks; loading a page does not request fonts from Google. The prebuilt rendering and interaction bundles are checked in; rebuilding them is optional for serving the site. The historical analytics archive is separate from this public site; the public beacon remains disabled.
 
 GitHub Pages serves the **main** branch from **/(root)** using **Deploy from a branch**. To preview all three courses locally, clone or download this repository and serve it over HTTP.
 

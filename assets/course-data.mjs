@@ -7,7 +7,7 @@ export const COURSES = {
     "labs": [
       {
         "section": 1,
-        "assistant": "Gelare Taherian",
+        "assistant": "Check the current staff list on D2L",
         "room": "POD367",
         "day": 4,
         "start": "16:00",
@@ -15,7 +15,7 @@ export const COURSES = {
       },
       {
         "section": 2,
-        "assistant": "Mahdis Zareie",
+        "assistant": "Check the current staff list on D2L",
         "room": "POD367",
         "day": 1,
         "start": "10:00",
@@ -23,7 +23,7 @@ export const COURSES = {
       },
       {
         "section": 3,
-        "assistant": "Ehsan Zamani Abyaneh",
+        "assistant": "Check the current staff list on D2L",
         "room": "VIC302",
         "day": 1,
         "start": "08:00",
@@ -31,7 +31,7 @@ export const COURSES = {
       },
       {
         "section": 4,
-        "assistant": "Armita Sabri Kadijani",
+        "assistant": "Check the current staff list on D2L",
         "room": "VIC106",
         "day": 4,
         "start": "12:00",
@@ -39,7 +39,7 @@ export const COURSES = {
       },
       {
         "section": 5,
-        "assistant": "Armita Sabri Kadijani",
+        "assistant": "Check the current staff list on D2L",
         "room": "EPH111",
         "day": 4,
         "start": "16:00",
@@ -47,7 +47,7 @@ export const COURSES = {
       },
       {
         "section": 6,
-        "assistant": "Kaposin Joey",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE549",
         "day": 1,
         "start": "12:00",
@@ -55,7 +55,7 @@ export const COURSES = {
       },
       {
         "section": 7,
-        "assistant": "Oyebisi Osuolale",
+        "assistant": "Check the current staff list on D2L",
         "room": "EPH111",
         "day": 2,
         "start": "16:00",
@@ -63,7 +63,7 @@ export const COURSES = {
       },
       {
         "section": 8,
-        "assistant": "Abdulwahed Fazeli",
+        "assistant": "Check the current staff list on D2L",
         "room": "POD367",
         "day": 5,
         "start": "14:00",
@@ -71,7 +71,7 @@ export const COURSES = {
       },
       {
         "section": 9,
-        "assistant": "Krupsky Liza",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE652",
         "day": 1,
         "start": "10:00",
@@ -79,7 +79,7 @@ export const COURSES = {
       },
       {
         "section": 10,
-        "assistant": "Ahmed Hinna",
+        "assistant": "Check the current staff list on D2L",
         "room": "VIC305",
         "day": 5,
         "start": "13:00",
@@ -87,7 +87,7 @@ export const COURSES = {
       },
       {
         "section": 11,
-        "assistant": "Masoud Khalili",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE651",
         "day": 5,
         "start": "14:00",
@@ -95,7 +95,7 @@ export const COURSES = {
       },
       {
         "section": 12,
-        "assistant": "Gelare Taherian",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE652",
         "day": 5,
         "start": "13:00",
@@ -103,7 +103,7 @@ export const COURSES = {
       },
       {
         "section": 13,
-        "assistant": "Niusha Sabri Kadijani",
+        "assistant": "Check the current staff list on D2L",
         "room": "VIC106",
         "day": 1,
         "start": "08:00",
@@ -111,7 +111,7 @@ export const COURSES = {
       },
       {
         "section": 14,
-        "assistant": "Balazovits Katrina",
+        "assistant": "Check the current staff list on D2L",
         "room": "POD367",
         "day": 1,
         "start": "12:00",
@@ -119,7 +119,7 @@ export const COURSES = {
       },
       {
         "section": 15,
-        "assistant": "Cat Xia",
+        "assistant": "Check the current staff list on D2L",
         "room": "VIC305",
         "day": 4,
         "start": "12:00",
@@ -127,7 +127,7 @@ export const COURSES = {
       },
       {
         "section": 16,
-        "assistant": "Niusha Sabri Kadijani",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE560",
         "day": 1,
         "start": "16:00",
@@ -135,7 +135,7 @@ export const COURSES = {
       },
       {
         "section": 17,
-        "assistant": "Masoud Khalili",
+        "assistant": "Check the current staff list on D2L",
         "room": "EPH112",
         "day": 4,
         "start": "16:00",
@@ -143,7 +143,7 @@ export const COURSES = {
       },
       {
         "section": 18,
-        "assistant": "Cat Xia",
+        "assistant": "Check the current staff list on D2L",
         "room": "VIC305",
         "day": 4,
         "start": "16:00",
@@ -151,7 +151,7 @@ export const COURSES = {
       },
       {
         "section": 19,
-        "assistant": "Esmaeili Shahm Parisa",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE598",
         "day": 1,
         "start": "12:00",
@@ -159,7 +159,7 @@ export const COURSES = {
       },
       {
         "section": 20,
-        "assistant": "Oyebisi Osuolale",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE549",
         "day": 4,
         "start": "15:00",
@@ -167,7 +167,7 @@ export const COURSES = {
       },
       {
         "section": 21,
-        "assistant": "Gordon Meghan",
+        "assistant": "Check the current staff list on D2L",
         "room": "EPH111",
         "day": 1,
         "start": "12:00",
@@ -175,7 +175,7 @@ export const COURSES = {
       },
       {
         "section": 22,
-        "assistant": "Ahmed Hinna",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE651",
         "day": 4,
         "start": "15:00",
@@ -183,7 +183,7 @@ export const COURSES = {
       },
       {
         "section": 23,
-        "assistant": "Ali Manzourolajdad",
+        "assistant": "Check the current staff list on D2L",
         "room": "TRS2164",
         "day": 4,
         "start": "16:00",
@@ -191,7 +191,7 @@ export const COURSES = {
       },
       {
         "section": 24,
-        "assistant": "Ali Manzourolajdad",
+        "assistant": "Check the current staff list on D2L",
         "room": "VIC305",
         "day": 2,
         "start": "16:00",
@@ -199,7 +199,7 @@ export const COURSES = {
       },
       {
         "section": 25,
-        "assistant": "Hoang Vera",
+        "assistant": "Check the current staff list on D2L",
         "room": "VIC305",
         "day": 1,
         "start": "12:00",
@@ -207,7 +207,7 @@ export const COURSES = {
       },
       {
         "section": 26,
-        "assistant": "Kaur Amtoj",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE652",
         "day": 1,
         "start": "12:00",
@@ -215,7 +215,7 @@ export const COURSES = {
       },
       {
         "section": 27,
-        "assistant": "Parisa Esmaeili Shahmira",
+        "assistant": "Check the current staff list on D2L",
         "room": "VIC106",
         "day": 2,
         "start": "10:00",
@@ -223,7 +223,7 @@ export const COURSES = {
       },
       {
         "section": 28,
-        "assistant": "Shangari Mahunthan",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE651",
         "day": 1,
         "start": "12:00",
@@ -231,7 +231,7 @@ export const COURSES = {
       },
       {
         "section": 29,
-        "assistant": "Jones Caleb",
+        "assistant": "Check the current staff list on D2L",
         "room": "VIC200",
         "day": 5,
         "start": "15:00",
@@ -239,7 +239,7 @@ export const COURSES = {
       },
       {
         "section": 30,
-        "assistant": "Armoogam Amanda",
+        "assistant": "Check the current staff list on D2L",
         "room": "KHE216",
         "day": 3,
         "start": "16:00",
@@ -247,7 +247,7 @@ export const COURSES = {
       },
       {
         "section": 31,
-        "assistant": "Mahdis Zareie",
+        "assistant": "Check the current staff list on D2L",
         "room": "VIC106",
         "day": 4,
         "start": "16:00",
@@ -255,7 +255,7 @@ export const COURSES = {
       },
       {
         "section": 32,
-        "assistant": "Abdulwahed Fazeli",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE652",
         "day": 1,
         "start": "08:00",
@@ -263,7 +263,7 @@ export const COURSES = {
       },
       {
         "section": 33,
-        "assistant": "Marjan FatehiJananloo",
+        "assistant": "Check the current staff list on D2L",
         "room": "POD367/AA2",
         "day": 1,
         "start": "08:00",
@@ -271,7 +271,7 @@ export const COURSES = {
       },
       {
         "section": 34,
-        "assistant": "Marjan FatehiJananloo",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE660/AA2",
         "day": 4,
         "start": "16:00",
@@ -288,9 +288,9 @@ export const COURSES = {
           5,
           6
         ],
-        "name": "Dr. Saeid Samiezadeh",
-        "office": "VIC 705",
-        "hours": "Wednesday 2:00–3:30 PM"
+        "name": "Check the current staff list on D2L",
+        "office": "Check D2L",
+        "hours": "Check D2L"
       },
       {
         "sections": [
@@ -301,9 +301,9 @@ export const COURSES = {
           11,
           12
         ],
-        "name": "Dr. Majed Alqasas",
-        "office": "VIC 703",
-        "hours": "Tuesday 10:00–11:30 PM as printed; confirm on D2L"
+        "name": "Check the current staff list on D2L",
+        "office": "Check D2L",
+        "hours": "Check D2L"
       },
       {
         "sections": [
@@ -314,9 +314,9 @@ export const COURSES = {
           17,
           18
         ],
-        "name": "Dr. Changping Wang",
-        "office": "VIC 703",
-        "hours": "Tuesday 2:00–3:30 PM"
+        "name": "Check the current staff list on D2L",
+        "office": "Check D2L",
+        "hours": "Check D2L"
       },
       {
         "sections": [
@@ -327,9 +327,9 @@ export const COURSES = {
           23,
           24
         ],
-        "name": "Dr. Alireza Sayyidmousavi",
-        "office": "VIC 705",
-        "hours": "Wednesday 1:00–2:00 PM"
+        "name": "Check the current staff list on D2L",
+        "office": "Check D2L",
+        "hours": "Check D2L"
       },
       {
         "sections": [
@@ -340,9 +340,9 @@ export const COURSES = {
           29,
           30
         ],
-        "name": "Dr. Majed Alqasas",
-        "office": "VIC 703",
-        "hours": "Tuesday 10:00–11:30 PM as printed; confirm on D2L"
+        "name": "Check the current staff list on D2L",
+        "office": "Check D2L",
+        "hours": "Check D2L"
       },
       {
         "sections": [
@@ -351,9 +351,9 @@ export const COURSES = {
           33,
           34
         ],
-        "name": "Dr. Sumaira Rehman",
-        "office": "VIC 705",
-        "hours": "Wednesday 12:00–2:00 PM"
+        "name": "Check the current staff list on D2L",
+        "office": "Check D2L",
+        "hours": "Check D2L"
       }
     ],
     "topics": [
@@ -735,7 +735,7 @@ export const COURSES = {
       40,
       45
     ],
-    "coordinator": "Dr. Majed Alqasas",
+    "coordinator": "the coordinator listed on D2L",
     "organization": "4 hours of lectures + 2 hours of lab each week",
     "quizPolicy": "Four lab quizzes share 15% of the course grade. The lowest quiz is dropped. No quiz make-ups.",
     "textbooks": [
@@ -781,7 +781,7 @@ export const COURSES = {
     "labs": [
       {
         "section": 1,
-        "assistant": "Katrina Balazsovits",
+        "assistant": "Check the current staff list on D2L",
         "room": "VIC305",
         "day": 4,
         "start": "09:00",
@@ -789,7 +789,7 @@ export const COURSES = {
       },
       {
         "section": 2,
-        "assistant": "Amtoj Kaur",
+        "assistant": "Check the current staff list on D2L",
         "room": "EPH111",
         "day": 4,
         "start": "10:00",
@@ -797,7 +797,7 @@ export const COURSES = {
       },
       {
         "section": 3,
-        "assistant": "Mohsen Ensafjoo",
+        "assistant": "Check the current staff list on D2L",
         "room": "POD367",
         "day": 3,
         "start": "15:00",
@@ -805,7 +805,7 @@ export const COURSES = {
       },
       {
         "section": 4,
-        "assistant": "Ketan Chaudhary",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE651",
         "day": 3,
         "start": "14:00",
@@ -813,7 +813,7 @@ export const COURSES = {
       },
       {
         "section": 5,
-        "assistant": "Mohsen Ensafjoo",
+        "assistant": "Check the current staff list on D2L",
         "room": "POD367",
         "day": 3,
         "start": "14:00",
@@ -821,7 +821,7 @@ export const COURSES = {
       },
       {
         "section": 6,
-        "assistant": "Masoud Khalili",
+        "assistant": "Check the current staff list on D2L",
         "room": "ENG101",
         "day": 3,
         "start": "14:00",
@@ -829,7 +829,7 @@ export const COURSES = {
       },
       {
         "section": 7,
-        "assistant": "Armita Sabri Kadijani",
+        "assistant": "Check the current staff list on D2L",
         "room": "KHE216",
         "day": 3,
         "start": "15:00",
@@ -837,7 +837,7 @@ export const COURSES = {
       },
       {
         "section": 8,
-        "assistant": "Abdulwahed Fazeli",
+        "assistant": "Check the current staff list on D2L",
         "room": "EPH111",
         "day": 4,
         "start": "12:00",
@@ -845,7 +845,7 @@ export const COURSES = {
       },
       {
         "section": 9,
-        "assistant": "Niusha Sabri Kadijani",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE651",
         "day": 5,
         "start": "09:00",
@@ -853,7 +853,7 @@ export const COURSES = {
       },
       {
         "section": 10,
-        "assistant": "Niusha Sabri Kadijani",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE651",
         "day": 5,
         "start": "12:00",
@@ -861,7 +861,7 @@ export const COURSES = {
       },
       {
         "section": 11,
-        "assistant": "Sima Naderi Mighan",
+        "assistant": "Check the current staff list on D2L",
         "room": "EPH111",
         "day": 4,
         "start": "09:00",
@@ -869,7 +869,7 @@ export const COURSES = {
       },
       {
         "section": 12,
-        "assistant": "Meghan Gordon",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE652",
         "day": 4,
         "start": "09:00",
@@ -877,7 +877,7 @@ export const COURSES = {
       },
       {
         "section": 13,
-        "assistant": "Liza Krupsky",
+        "assistant": "Check the current staff list on D2L",
         "room": "EPH111",
         "day": 1,
         "start": "14:00",
@@ -885,7 +885,7 @@ export const COURSES = {
       },
       {
         "section": 14,
-        "assistant": "Sam Christian",
+        "assistant": "Check the current staff list on D2L",
         "room": "VIC200",
         "day": 1,
         "start": "12:00",
@@ -893,7 +893,7 @@ export const COURSES = {
       },
       {
         "section": 15,
-        "assistant": "Sam Christian",
+        "assistant": "Check the current staff list on D2L",
         "room": "VIC106",
         "day": 1,
         "start": "14:00",
@@ -901,7 +901,7 @@ export const COURSES = {
       },
       {
         "section": 16,
-        "assistant": "Ali Manzourolajdad",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE549",
         "day": 1,
         "start": "14:00",
@@ -909,7 +909,7 @@ export const COURSES = {
       },
       {
         "section": 17,
-        "assistant": "Farnaz Razavi",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE598",
         "day": 5,
         "start": "14:00",
@@ -917,7 +917,7 @@ export const COURSES = {
       },
       {
         "section": 18,
-        "assistant": "Abdulwahed Fazeli",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE598",
         "day": 4,
         "start": "17:00",
@@ -925,7 +925,7 @@ export const COURSES = {
       },
       {
         "section": 19,
-        "assistant": "Sima Naderi Mighan",
+        "assistant": "Check the current staff list on D2L",
         "room": "VIC305",
         "day": 1,
         "start": "14:00",
@@ -933,7 +933,7 @@ export const COURSES = {
       },
       {
         "section": 20,
-        "assistant": "Marjan FatehiJananloo",
+        "assistant": "Check the current staff list on D2L",
         "room": "POD372",
         "day": 4,
         "start": "12:00",
@@ -941,7 +941,7 @@ export const COURSES = {
       },
       {
         "section": 21,
-        "assistant": "Ketan Chaudhary",
+        "assistant": "Check the current staff list on D2L",
         "room": "VIC200",
         "day": 2,
         "start": "13:00",
@@ -949,7 +949,7 @@ export const COURSES = {
       },
       {
         "section": 22,
-        "assistant": "Pedram Yazdani",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE549",
         "day": 2,
         "start": "10:00",
@@ -957,7 +957,7 @@ export const COURSES = {
       },
       {
         "section": 23,
-        "assistant": "Hinna Ahmed",
+        "assistant": "Check the current staff list on D2L",
         "room": "POD367",
         "day": 2,
         "start": "13:00",
@@ -965,7 +965,7 @@ export const COURSES = {
       },
       {
         "section": 24,
-        "assistant": "Hamed Mohammadkazemi",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE651",
         "day": 1,
         "start": "14:00",
@@ -973,7 +973,7 @@ export const COURSES = {
       },
       {
         "section": 25,
-        "assistant": "Kianoosh Naghib Zadeh",
+        "assistant": "Check the current staff list on D2L",
         "room": "EPH111",
         "day": 2,
         "start": "13:00",
@@ -981,7 +981,7 @@ export const COURSES = {
       },
       {
         "section": 26,
-        "assistant": "Pouya Ranjbari",
+        "assistant": "Check the current staff list on D2L",
         "room": "EPH204",
         "day": 4,
         "start": "12:00",
@@ -989,7 +989,7 @@ export const COURSES = {
       },
       {
         "section": 27,
-        "assistant": "Pedram Yazdani",
+        "assistant": "Check the current staff list on D2L",
         "room": "VIC200",
         "day": 1,
         "start": "14:00",
@@ -997,7 +997,7 @@ export const COURSES = {
       },
       {
         "section": 28,
-        "assistant": "Kianoosh Naghib Zadeh",
+        "assistant": "Check the current staff list on D2L",
         "room": "KHE125",
         "day": 1,
         "start": "12:00",
@@ -1005,7 +1005,7 @@ export const COURSES = {
       },
       {
         "section": 29,
-        "assistant": "Ehsan Zamani Abyaneh",
+        "assistant": "Check the current staff list on D2L",
         "room": "VIC200",
         "day": 2,
         "start": "10:00",
@@ -1013,7 +1013,7 @@ export const COURSES = {
       },
       {
         "section": 30,
-        "assistant": "Pouya Ranjbari",
+        "assistant": "Check the current staff list on D2L",
         "room": "VIC305",
         "day": 2,
         "start": "10:00",
@@ -1021,7 +1021,7 @@ export const COURSES = {
       },
       {
         "section": 31,
-        "assistant": "Shangavi Muhunthan",
+        "assistant": "Check the current staff list on D2L",
         "room": "POD367",
         "day": 4,
         "start": "10:00",
@@ -1029,7 +1029,7 @@ export const COURSES = {
       },
       {
         "section": 32,
-        "assistant": "Farnaz Razavi",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE652",
         "day": 4,
         "start": "17:00",
@@ -1037,7 +1037,7 @@ export const COURSES = {
       },
       {
         "section": 33,
-        "assistant": "Ehsan Zamani Abyaneh",
+        "assistant": "Check the current staff list on D2L",
         "room": "SHE651",
         "day": 2,
         "start": "13:00",
@@ -1045,7 +1045,7 @@ export const COURSES = {
       },
       {
         "section": 34,
-        "assistant": "Marjan FatehiJananloo",
+        "assistant": "Check the current staff list on D2L",
         "room": "EPH204",
         "day": 4,
         "start": "13:00",
@@ -1062,9 +1062,9 @@ export const COURSES = {
           5,
           6
         ],
-        "name": "Dr. Saeid Samiezadeh",
-        "office": "VIC 705",
-        "hours": "Wednesday 2:00–3:30 PM"
+        "name": "Check the current staff list on D2L",
+        "office": "Check D2L",
+        "hours": "Check D2L"
       },
       {
         "sections": [
@@ -1075,9 +1075,9 @@ export const COURSES = {
           11,
           12
         ],
-        "name": "Dr. Changping Wang",
-        "office": "VIC 703",
-        "hours": "Tuesday 2:00–3:30 PM"
+        "name": "Check the current staff list on D2L",
+        "office": "Check D2L",
+        "hours": "Check D2L"
       },
       {
         "sections": [
@@ -1088,9 +1088,9 @@ export const COURSES = {
           17,
           18
         ],
-        "name": "Dr. Alireza Sayyidmousavi",
-        "office": "VIC 705",
-        "hours": "Wednesday 11:00 AM–1:00 PM"
+        "name": "Check the current staff list on D2L",
+        "office": "Check D2L",
+        "hours": "Check D2L"
       },
       {
         "sections": [
@@ -1101,9 +1101,9 @@ export const COURSES = {
           23,
           24
         ],
-        "name": "Dr. Majed Alqasas",
-        "office": "VIC 703",
-        "hours": "Tuesday 10:00 AM–12:00 PM"
+        "name": "Check the current staff list on D2L",
+        "office": "Check D2L",
+        "hours": "Check D2L"
       },
       {
         "sections": [
@@ -1114,9 +1114,9 @@ export const COURSES = {
           29,
           30
         ],
-        "name": "Dr. Tatiana Hessami Pilehrood",
-        "office": "VIC 705",
-        "hours": "Wednesday 10:00 AM–12:00 PM"
+        "name": "Check the current staff list on D2L",
+        "office": "Check D2L",
+        "hours": "Check D2L"
       },
       {
         "sections": [
@@ -1125,9 +1125,9 @@ export const COURSES = {
           33,
           34
         ],
-        "name": "Dr. Alireza Sayyidmousavi",
-        "office": "VIC 705",
-        "hours": "Wednesday 11:00 AM–1:00 PM"
+        "name": "Check the current staff list on D2L",
+        "office": "Check D2L",
+        "hours": "Check D2L"
       }
     ],
     "topics": [
@@ -1577,7 +1577,7 @@ export const COURSES = {
       35,
       45
     ],
-    "coordinator": "Dr. Saeid Samiezadeh",
+    "coordinator": "the coordinator listed on D2L",
     "organization": "4 hours of lectures + 1 hour of lab each week",
     "quizPolicy": "Five lab quizzes share 20% of the course grade. The lowest quiz is dropped. No quiz make-ups.",
     "textbooks": [

@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="en">
 <head>
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'none'; worker-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<link rel="stylesheet" href="../assets/fonts/archivo.css?v=20261012-privacy1">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="MTH141 Fall 2026 at TMU: assessment dates, section labs, announced coverage, course rules and recommended practice.">
 <title>MTH141: Linear Algebra | TMU Course Guides</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/hub.css">
 <link rel="stylesheet" href="../assets/math.css">
 <link rel="stylesheet" href="../assets/visuals.css?v=20261011-labs2">
@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="../assets/course-header.css?v=20261012-subject1">
 <link rel="stylesheet" href="../assets/guide-motion.css?v=20261011-cinema3">
 <!-- Keep the first transition snapshot in the final course layout. -->
-<script type="module" src="../assets/math-guide.mjs?v=20261011-cinema3"></script>
+<script type="module" src="../assets/math-guide.mjs?v=20261012-privacy1"></script>
 <script type="module" src="../assets/math-labs.mjs?v=20261011-cinema3"></script>
 <script type="module" src="../assets/editorial.mjs?v=20261011-editorial2"></script>
 <script type="module" src="../assets/workspace.mjs?v=20261011-cinema3"></script>
@@ -44,7 +44,7 @@
   <section class="quick-find" aria-label="Find and do">
     <label for="guide-search">Search assessments and topics</label><input type="search" id="guide-search" placeholder="Try determinants or quiz" autocomplete="off" aria-controls="guide-search-results" aria-describedby="search-status">
     <p class="search-status" id="search-status" role="status"></p><ul class="search-results" id="guide-search-results" hidden></ul>
-    <div class="quick-links"><button class="quick-link" id="quick-work" type="button">This week's work</button><button class="quick-link" id="quick-contacts" type="button">Contacts</button><a class="quick-link" href="https://courses.torontomu.ca/" target="_blank" rel="noopener">D2L ↗</a></div>
+    <div class="quick-links"><button class="quick-link" id="quick-work" type="button">This week's work</button><button class="quick-link" id="quick-contacts" type="button">Contacts</button><a class="quick-link" href="https://courses.torontomu.ca/" target="_blank" rel="noopener noreferrer">D2L ↗</a></div>
     <label class="inline-check"><input type="checkbox" id="hide-completed">Hide completed assessments</label>
   </section>
   <nav class="math-tabs" role="tablist" aria-label="MTH141 guide views">
@@ -63,7 +63,7 @@
   <section class="math-panel" id="panel-help" role="tabpanel" aria-labelledby="tab-help" hidden>
     <div class="rule-grid" id="rule-cards"></div>
     <article class="rule-card" id="course-notice" style="margin-top:14px"></article>
-    <article class="rule-card" id="contact-card" tabindex="-1" style="margin-top:14px"><h2>Who to ask</h2><div class="contact-grid" id="section-contacts"></div><p>Course coordinator: <strong id="coordinator"></strong>.</p><p class="muted">Check D2L for contact details and timetable updates. Your lecture and lab codes end in 1 and 2: for example, 241 and 242 both mean Section 24.</p><div class="tool-actions"><a class="button" href="https://courses.torontomu.ca/" target="_blank" rel="noopener">Open D2L</a><a class="button" href="https://www.torontomu.ca/student-life-and-learning/learning-support/" target="_blank" rel="noopener">Learning support</a><a class="button" href="https://www.torontomu.ca/senate/academic_consideration_requests/" target="_blank" rel="noopener">Academic consideration</a></div></article>
+    <article class="rule-card" id="contact-card" tabindex="-1" style="margin-top:14px"><h2>Who to ask</h2><div class="contact-grid" id="section-contacts"></div><p>Course coordinator: <strong id="coordinator"></strong>.</p><p class="muted">Check D2L for contact details and timetable updates. Your lecture and lab codes end in 1 and 2: for example, 241 and 242 both mean Section 24.</p><div class="tool-actions"><a class="button" href="https://courses.torontomu.ca/" target="_blank" rel="noopener noreferrer">Open D2L</a><a class="button" href="https://www.torontomu.ca/student-life-and-learning/learning-support/" target="_blank" rel="noopener noreferrer">Learning support</a><a class="button" href="https://www.torontomu.ca/senate/academic_consideration_requests/" target="_blank" rel="noopener noreferrer">Academic consideration</a></div></article>
     <article class="rule-card" style="margin-top:14px"><h2>Free textbooks &amp; practice</h2><div id="textbook-list"></div><p class="muted">Use the Topic map for the exact exercise references. This guide lists references and study prompts; the official course files remain on D2L.</p></article>
     <details class="rule-card" style="margin-top:14px"><summary style="cursor:pointer;font-weight:800">Sources &amp; date checks</summary><p class="muted">Reviewed October 7, 2026. Course outlines and supplied D2L announcements provide the dates and rules. Newer official announcements take precedence.</p><ul class="sources-list" id="sources-list"></ul></details>
   </section>
@@ -111,10 +111,10 @@
       <li>Published the three-course README and added these release notes with an unread-update badge. Checked phone, desktop and enlarged-text layouts, progress restoration, backups and calendars.</li>
     </ul>
   </details>
-  <footer class="math-footer"><p>Unofficial TMU course companion · Fall 2026<br>Created and maintained by Jude Ahmad.</p><p><a href="https://courses.torontomu.ca/" target="_blank" rel="noopener">Check official updates on D2L</a></p></footer>
+  <footer class="math-footer"><p>Unofficial TMU course companion · Fall 2026 · <a href="../privacy.html">Privacy</a></p><p><a href="https://courses.torontomu.ca/" target="_blank" rel="noopener noreferrer">Check official updates on D2L</a></p></footer>
   <noscript><p>This guide needs JavaScript to display section-specific dates. Use the official course outline and announcements on D2L.</p></noscript>
 </main>
-<script src="../assets/hub.js?v=20261012-subject1"></script>
+<script src="../assets/hub.js?v=20261012-privacy1"></script>
 <!-- Cloudflare Web Analytics temporarily paused on 2026-10-10; restore the beacon from Git history to resume. -->
 <script src="../assets/visuals.js?v=20261011-cinema3"></script>
 </body>

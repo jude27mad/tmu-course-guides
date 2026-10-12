@@ -1,4 +1,4 @@
-import {COURSES} from './course-data.mjs';
+import {COURSES} from './course-data.mjs?v=20261012-privacy1';
 import {DAY_NAMES,today,daysUntil,dateLabel,clock,resolveAssessment,assessmentPassed,upcoming,timing,calendar,addDays} from './schedule.mjs';
 
 const courseId=document.body.dataset.course,course=COURSES[courseId],$=id=>document.getElementById(id);
@@ -46,10 +46,10 @@ function drawFigure(){
 function renderSection(){
   $('section-select').value=section||'';
   const lab=course.labs.find(x=>x.section===section);
-  $('section-brief').innerHTML=lab?`<strong>Section ${section}</strong> · ${escape(labSummary(lab))}<br>${escape(lab.assistant)}`:'Choose your section to see your lab, instructor and quiz dates.';
+  $('section-brief').innerHTML=lab?`<strong>Section ${section}</strong> · ${escape(labSummary(lab))}`:'Choose your section to see your lab, instructor and quiz dates.';
   document.title=`${course.code}${section?' · Section '+section:''}: ${course.name} | TMU Course Guides`;
   const instructor=course.instructors.find(x=>x.sections.includes(section));
-  $('section-contacts').innerHTML=lab?`<div><h3>Lecture instructor</h3><p><strong>${escape(instructor.name)}</strong><br>${escape(instructor.office)}<br>${escape(instructor.hours)}</p></div><div><h3>Lab / tutorial</h3><p><strong>${escape(lab.assistant)}</strong><br>${escape(labSummary(lab))}</p></div>`:'<p>Choose a section above to see your instructor and Academic Assistant.</p>';
+  $('section-contacts').innerHTML=lab?`<div><h3>Lecture instructor</h3><p><a href="https://courses.torontomu.ca/" target="_blank" rel="noopener noreferrer">Current staff and office hours on D2L</a></p></div><div><h3>Lab / tutorial</h3><p>${escape(labSummary(lab))}</p></div>`:'<p>Choose a section above to see your instructor and Academic Assistant.</p>';
 }
 let lastQuickCompletion=null;
 function setCompleted(id,done){
