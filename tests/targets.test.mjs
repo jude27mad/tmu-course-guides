@@ -136,9 +136,9 @@ test('Toronto/UTC date boundaries decide eligibility and day counts',()=>{
 });
 
 test('the CEN rules are the guide page’s own upcomingSchedule, case for case',()=>{
-  // Evaluate the guide's inline functions (cen100/index.html) against the same shared records.
-  const html=readFileSync(new URL('../cen100/index.html',import.meta.url),'utf8');
-  const slice=(from,to)=>html.slice(html.indexOf(from),html.indexOf(to));
+  // Evaluate the route guide's unchanged functions against the same shared records.
+  const guide=readFileSync(new URL('../assets/cen-guide.mjs',import.meta.url),'utf8');
+  const slice=(from,to)=>guide.slice(guide.indexOf(from),guide.indexOf(to));
   const source=slice('function torontoToday(','function torontoUTC(')+slice('function eventPassed(','function clockLabel(')+slice('function upcomingSchedule(','function headUrgency(');
   // Formatters are stateless; caching them only keeps the page's own functions fast across thousands of clocks.
   const formats=new Map(),DateTimeFormat=function(locale,options){const k=JSON.stringify([locale,options]);if(!formats.has(k))formats.set(k,new Intl.DateTimeFormat(locale,options));return formats.get(k);};

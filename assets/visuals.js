@@ -1,10 +1,13 @@
-(() => {
-'use strict';
-const $=s=>document.querySelector(s), esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+import {scope,rememberDOM} from './route-lifecycle.mjs';
+let live;
+export function mount(ctx={}){
+unmount();
+const life=scope(ctx),root=ctx.root||document,restoreDOM=rememberDOM(root);
+const $=s=>root.querySelector(s), esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const date=d=>new Date(d+'T12:00:00Z'), add=(d,n)=>{const x=date(d);x.setUTCDate(x.getUTCDate()+n);return x.toISOString().slice(0,10)}, label=d=>date(d).toLocaleDateString('en-CA',{month:'short',day:'numeric',timeZone:'UTC'});
 // Keep the existing toolkit and its saved state, close to the course heading.
-const toolkit=document.getElementById('guide-tools')||document.getElementById('math-tools');
-const heading=document.querySelector('.circuit-head,.course-heading');
+const toolkit=$('#guide-tools,#math-tools');
+const heading=$('.circuit-head,.course-heading');
 if(toolkit&&heading){
  heading.after(toolkit);toolkit.classList.add('top-toolkit');
  toolkit.querySelector(':scope > summary').innerHTML='<span class="toolkit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg></span><span class="toolkit-title">Guide tools<small>Your course toolkit</small></span><span class="toolkit-tags" aria-hidden="true"><span>Grading</span><span>Calendar</span><span>Progress</span></span>';
@@ -14,13 +17,13 @@ let moved=null,placeholder=null,returnFocus=null,oldScroll=0,sourceBounds=null;
 const sheet=document.createElement('dialog');sheet.className='detail-sheet';sheet.setAttribute('aria-labelledby','sheet-heading');sheet.innerHTML='<div class="sheet-toolbar"><h2 id="sheet-heading">Assignment details</h2><button class="sheet-close" type="button">Close ✕</button></div><div class="sheet-content"></div>';document.body.append(sheet);
 function close(immediate=false){const finish=()=>{if(sheet.open)sheet.close();if(moved)restore();};if(sheet.dataset.closing==='true'&&!immediate)return;if(immediate){window.GuideMotion?.cancel(sheet);finish();}else if(window.GuideMotion&&sheet.open)window.GuideMotion.dialogClose(sheet,finish,sourceBounds);else finish();}
 function restore(){if(moved&&placeholder?.isConnected){placeholder.replaceWith(moved);const h=moved.querySelector('.head');if(h){h.setAttribute('aria-expanded','false');moved.querySelector('.body').hidden=true;}const d=moved.querySelector('details.assessment');if(d)d.open=false;}document.body.classList.remove('sheet-open');window.scrollTo(0,oldScroll);const target=returnFocus?.isConnected?returnFocus:moved?.querySelector('.head,summary');moved=null;placeholder=null;target?.focus({preventScroll:true});}
-sheet.addEventListener('close',()=>{if(!sheet.open&&moved)restore()});sheet.querySelector('.sheet-close').addEventListener('click',()=>close());sheet.addEventListener('click',e=>{if(e.target===sheet)close()});
-sheet.addEventListener('cancel',e=>{e.preventDefault();close();});
+life.on(sheet,'close',()=>{if(!sheet.open&&moved)restore()});life.on(sheet.querySelector('.sheet-close'),'click',()=>close());life.on(sheet,'click',e=>{if(e.target===sheet)close()});
+life.on(sheet,'cancel',e=>{e.preventDefault();close();});
 function open(node,trigger){if(!node||!sheet.showModal)return false;if(moved===node&&sheet.open&&sheet.dataset.closing!=='true')return true;close(true);sourceBounds=(trigger||node).getBoundingClientRect();oldScroll=window.scrollY;returnFocus=trigger||document.activeElement;placeholder=document.createElement('li');placeholder.hidden=true;node.before(placeholder);moved=node;node.hidden=false;const h=node.querySelector('.head');if(h){h.setAttribute('aria-expanded','true');node.querySelector('.body').hidden=false;}const d=node.querySelector('details.assessment');if(d)d.open=true;sheet.querySelector('.sheet-content').append(node);sheet.querySelector('h2').textContent=document.body.dataset.course==='cen100'?'Assignment details':'Assessment details';document.body.classList.add('sheet-open');sheet.showModal();window.GuideMotion?.dialogOpen(sheet,sourceBounds);sheet.scrollTop=0;sheet.querySelector('.sheet-close').focus();return true;}
-document.addEventListener('click',e=>{const h=e.target.closest('.head,details.assessment>summary');if(!h)return;if(sheet.contains(h)){e.preventDefault();e.stopImmediatePropagation();return;}if(open(h.closest('li'),h)){e.preventDefault();e.stopImmediatePropagation();}},true);
-document.addEventListener('change',()=>{queueMicrotask(()=>{if(moved?.hidden)close()})});
+life.on(document,'click',e=>{const h=e.target.closest('.head,details.assessment>summary');if(!h)return;if(sheet.contains(h)){e.preventDefault();e.stopImmediatePropagation();return;}if(open(h.closest('li'),h)){e.preventDefault();e.stopImmediatePropagation();}},true);
+life.on(document,'change',()=>{queueMicrotask(()=>{if(!life.signal.aborted&&moved?.hidden)close()})});
 const rail=document.createElement('section');rail.className='semester-rail';rail.setAttribute('aria-label','Semester timeline');rail.innerHTML='<div class="rail-heading"><div><h2>Semester at a glance</h2><p>Tap a week. Open a deadline without losing your place.</p></div></div><div class="rail-track"></div><div class="rail-summary"></div><div class="rail-events"></div>';
-(document.querySelector('.cen-next-layout')||document.getElementById('board')||document.getElementById('quick-confirm')||document.querySelector('.quick-find')).after(rail);
+const anchor=$('.cen-next-layout,#board,#quick-confirm,.quick-find');if(anchor)anchor.after(rail);
 let events=[],selected='',signature='';const start='2026-09-07',weeks=Array.from({length:14},(_,i)=>add(start,i*7));
 function currentWeek(){const t=today();return [...weeks].reverse().find(w=>w<=t)||start;}
 function render(){const t=today(),now=currentWeek();if(!selected)selected=weeks.includes(now)?now:weeks[weeks.length-1];const sig=JSON.stringify([events,selected,t]);if(sig===signature)return;signature=sig;
@@ -28,7 +31,9 @@ rail.querySelector('.rail-track').innerHTML=weeks.map((w,i)=>{const rows=events.
 const rows=events.filter(e=>e.date>=selected&&e.date<add(selected,7));rail.querySelector('.rail-summary').innerHTML=`<span>${esc(label(selected))}–${esc(label(add(selected,6)))}</span><span>${rows.filter(e=>!e.completed).length} unrecorded · ${rows.filter(e=>e.completed).length} done</span>`;
 rail.querySelector('.rail-events').innerHTML=rows.map(e=>`<button type="button" class="rail-event" data-open="${esc(e.target)}"><time>${esc(label(e.date))}</time><span>${esc(e.title)}<small>${esc(e.note||'')}</small></span><span class="rail-status">${e.completed?'✓ Done':e.date<t?'Date passed':'↗'}</span></button>`).join('')||'<p class="rail-empty">No published deadlines in this week. Check D2L for updates.</p>';
 }
-rail.addEventListener('click',e=>{const w=e.target.closest('[data-week]');if(w){selected=w.dataset.week;const scroll=rail.querySelector('.rail-track').scrollLeft;render();rail.querySelector('.rail-track').scrollLeft=scroll;rail.querySelector(`[data-week="${selected}"]`).focus({preventScroll:true});}const b=e.target.closest('[data-open]');if(b)document.dispatchEvent(new CustomEvent('course-open-item',{detail:b.dataset.open}));});
+life.on(rail,'click',e=>{const w=e.target.closest('[data-week]');if(w){selected=w.dataset.week;const scroll=rail.querySelector('.rail-track').scrollLeft;render();rail.querySelector('.rail-track').scrollLeft=scroll;rail.querySelector(`[data-week="${selected}"]`).focus({preventScroll:true});}const b=e.target.closest('[data-open]');if(b)document.dispatchEvent(new CustomEvent('course-open-item',{detail:b.dataset.open}));});
 window.CourseVisuals={open,close,rows:[],update(rows){events=rows.slice().sort((a,b)=>a.date.localeCompare(b.date));window.CourseVisuals.rows=events;document.dispatchEvent(new CustomEvent('course-schedule',{detail:events}));render();if(!rail.dataset.initialized){rail.dataset.initialized='true';const selectedButton=rail.querySelector('[aria-pressed="true"]'),track=rail.querySelector('.rail-track');if(selectedButton)track.scrollLeft=selectedButton.offsetLeft-track.offsetLeft-track.clientWidth/2+selectedButton.clientWidth/2;}}};
+live={life,close,restoreDOM,sheet,rail};
 document.dispatchEvent(new Event('course-visuals-ready'));
-})();
+}
+export function unmount(){if(!live)return;const state=live;live=null;state.life.dispose();state.close(true);state.sheet.remove();state.rail.remove();state.restoreDOM();delete window.CourseVisuals;document.body.classList.remove('sheet-open');}

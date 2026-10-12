@@ -2,7 +2,7 @@ import * as T from './vendor/three-0.186.1.mjs?v=20261012-subject1';
 import {createCircuit} from './scenes/circuit.mjs?v=20261012-subject1';
 import {createCalculus} from './scenes/calculus.mjs?v=20261012-subject1';
 import {createAlgebra} from './scenes/algebra.mjs?v=20261012-subject1';
-import {sceneMotionAllowed} from './guide-motion.mjs?v=20261012-night2';
+import {sceneMotionAllowed} from './guide-motion.mjs';
 import {createStudioEnvironment} from './scenes/future-look.mjs?v=20261012-subject1';
 import {framePose,posterPaths,rotationFitDistance} from './scenes/framing.mjs?v=20261012-subject1';
 import {disposeScene} from './scenes/primitives.mjs?v=20261012-subject1';
@@ -10,7 +10,7 @@ import {createDragState} from './scenes/drag.mjs?v=20261012-subject1';
 // Night Shift holds (palette, sheets) rest the scene like the saved pause, without touching storage.
 const motionAllowed=()=>sceneMotionAllowed()&&!document.documentElement.classList.contains('ns-held');
 const palettes={cen100:{accent:'#edbba7',signal:'#ff7198'},mth140:{accent:'#b9dfc9',signal:'#ff8aa9'},mth141:{accent:'#d3c3ee',signal:'#ff8ab0'}};
-export async function mountScene(art,course){
+export async function mountScene(art,course,signal){
  const p=palettes[course],scene=new T.Scene(),camera=new T.PerspectiveCamera(33,1,.1,80),root=new T.Group();scene.add(root);
  const model=(course==='cen100'?createCircuit:course==='mth140'?createCalculus:createAlgebra)(p);root.add(model.root);
  const hemi=new T.HemisphereLight('#eff4ed','#1a1824',1.8),key=new T.DirectionalLight('#fff0e1',2.4),rim=new T.DirectionalLight(p.accent,1.4);key.position.set(-3,5,7);rim.position.set(4,-2,4);scene.add(hemi,key,rim);
@@ -67,8 +67,10 @@ export async function mountScene(art,course){
  const lost=e=>{e.preventDefault();software();dirty=true;wake();};canvas?.addEventListener('webglcontextlost',lost,{once:true});
  art.addEventListener('pointerdown',onDown);art.addEventListener('pointermove',onPointer);art.addEventListener('pointerup',onUp);art.addEventListener('pointercancel',onCancel);art.addEventListener('lostpointercapture',onCancel);art.addEventListener('keydown',onKey);art.addEventListener('pointerleave',onLeave);document.addEventListener('visibilitychange',onVisibility);document.addEventListener('guide-motion-change',onMotion);document.addEventListener('night-hold',onMotion);document.addEventListener('workspace-changed',onView);document.addEventListener('guide-completion',onComplete);document.addEventListener('guide-scene-impulse',onImpulse);window.addEventListener('scroll',onScroll,{passive:true});
  function pagehide(e){if(e.persisted){resetDrag();cancelAnimationFrame(raf);raf=0;art.dataset.awake='false';}else dispose();}function pageshow(e){if(e.persisted){dirty=true;wake();}}
- function dispose(){if(disposed)return;disposed=true;cancelAnimationFrame(raf);raf=0;art.dataset.awake='false';resize.disconnect();intersection.disconnect();status.disconnect();model.dispose();renderer?.dispose();environment?.dispose();canvas?.removeEventListener('webglcontextlost',lost);art.removeEventListener('pointerdown',onDown);art.removeEventListener('pointermove',onPointer);art.removeEventListener('pointerup',onUp);art.removeEventListener('pointercancel',onCancel);art.removeEventListener('lostpointercapture',onCancel);art.removeEventListener('keydown',onKey);art.removeEventListener('pointerleave',onLeave);document.removeEventListener('visibilitychange',onVisibility);document.removeEventListener('guide-motion-change',onMotion);document.removeEventListener('night-hold',onMotion);document.removeEventListener('workspace-changed',onView);document.removeEventListener('guide-completion',onComplete);document.removeEventListener('guide-scene-impulse',onImpulse);window.removeEventListener('scroll',onScroll);window.removeEventListener('pagehide',pagehide);window.removeEventListener('pageshow',pageshow);}
+ function dispose(){if(disposed)return;disposed=true;signal?.removeEventListener('abort',dispose);resetDrag();cancelAnimationFrame(raf);raf=0;art.dataset.awake='false';resize.disconnect();intersection.disconnect();status.disconnect();model.dispose();renderer?.dispose();environment?.dispose();canvas?.removeEventListener('webglcontextlost',lost);art.removeEventListener('pointerdown',onDown);art.removeEventListener('pointermove',onPointer);art.removeEventListener('pointerup',onUp);art.removeEventListener('pointercancel',onCancel);art.removeEventListener('lostpointercapture',onCancel);art.removeEventListener('keydown',onKey);art.removeEventListener('pointerleave',onLeave);document.removeEventListener('visibilitychange',onVisibility);document.removeEventListener('guide-motion-change',onMotion);document.removeEventListener('night-hold',onMotion);document.removeEventListener('workspace-changed',onView);document.removeEventListener('guide-completion',onComplete);document.removeEventListener('guide-scene-impulse',onImpulse);window.removeEventListener('scroll',onScroll);window.removeEventListener('pagehide',pagehide);window.removeEventListener('pageshow',pageshow);}
  window.addEventListener('pagehide',pagehide);window.addEventListener('pageshow',pageshow);
+ signal?.addEventListener('abort',dispose,{once:true});
+ if(signal?.aborted){dispose();return{dispose};}
  urgency();size();if(renderer)update(0,!motionAllowed());
  if(renderer){try{await renderer.compileAsync(scene,camera);if(shaderFailure&&!disposed)software();}catch{if(!disposed)software();}}
  if(disposed)return{dispose};ready=true;wake();return{dispose};

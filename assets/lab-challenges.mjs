@@ -43,7 +43,8 @@ function figure(challenge, uid) {
   return `<svg class="challenge-svg" viewBox="0 0 ${w} ${h}" role="img" aria-label="${escape(challenge.visualCaption)}"><defs><clipPath id="${uid}-clip"><rect x="28" y="20" width="384" height="256"/></clipPath>${['challenge-original','challenge-result'].map(cls=>`<marker id="${uid}-${cls}" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" class="${cls}-fill"/></marker>`).join('')}</defs><g clip-path="url(#${uid}-clip)">${grid}${drawing}</g><g class="challenge-labels">${annotations}</g></svg>`;
 }
 
-export function mountChallenges(container, course, session = {}) {
+export function mountChallenges(container, course, session = {}, {signal} = {}) {
+  let disposed=false;
   const challenges=challengeSets[course];
   if(!challenges)throw new Error(`No mistake challenges for ${course}`);
   const uid=`mistake-${++instanceCount}`;
@@ -90,6 +91,8 @@ export function mountChallenges(container, course, session = {}) {
     }
   }
   render();
-  container.addEventListener('click',onClick);
-  return ()=>{container.removeEventListener('click',onClick);container.classList.remove('challenge-mount');container.replaceChildren();};
+  container.addEventListener('click',onClick,{signal});
+  function cleanup(){if(disposed)return;disposed=true;signal?.removeEventListener('abort',cleanup);container.removeEventListener('click',onClick);container.classList.remove('challenge-mount');container.replaceChildren();}
+  signal?.addEventListener('abort',cleanup,{once:true});
+  return cleanup;
 }

@@ -1,40 +1,43 @@
 /* Navigation and placement only: existing guide nodes keep their data and listeners. */
-const $ = selector => document.querySelector(selector);
-const course = document.body.dataset.course;
-const isMath = course === 'mth140' || course === 'mth141';
-
-function mountWorkspace() {
-  const main = $('.math-wrap,.wrap'), hub = $('.hub-shell');
-  if (!main || !hub || document.body.classList.contains('workspace')) return;
+import {scope,rememberDOM} from './route-lifecycle.mjs';
+let live;
+export function mount(ctx={}) {
+  unmount();
+  const life=scope(ctx),$=selector=>(ctx.root||document).querySelector(selector);
+  const course=ctx.route||document.body.dataset.course,isMath=course==='mth140'||course==='mth141';
+  const main = ctx.root||$('.math-wrap,.wrap'), hub = document.querySelector('.hub-shell');
+  if (!main || !hub){life.dispose();return;}
   const heading = $('.course-heading,.circuit-head');
   const tools = $('#math-tools,#guide-tools');
   const search = $('.quick-find');
   const oldTabs = $('.math-tabs,.tabs');
   const lab = $('#math-lab');
-  if (!heading || !tools || !search || !oldTabs || (isMath && !lab)) return;
+  if (!heading || !tools || !search || !oldTabs || (isMath && !lab)){life.dispose();return;}
 
-  const shell = document.createElement('div');
-  shell.className = 'course-workspace';
-  hub.before(shell);
-  shell.append(hub, main);
+  const restore=rememberDOM(main);
+  live={life,restore};
+  let shell=document.querySelector('.course-workspace');
+  if(!shell){shell=document.createElement('div');shell.className='course-workspace';hub.before(shell);shell.append(hub);}
+  shell.append(main);
   document.body.classList.add('workspace');
   if (!main.id) main.id = 'course-main';
   main.setAttribute('role', 'main');
   main.setAttribute('tabindex', '-1');
-  if (!$('.skip-link')) {
+  if (!document.querySelector('.skip-link')) {
     const skip = document.createElement('a');
     skip.className = 'skip-link'; skip.href = '#'+main.id; skip.textContent = 'Skip to course content';
     document.body.prepend(skip);
   }
 
-  const nav = document.createElement('nav');
-  nav.className = 'workspace-nav'; nav.setAttribute('aria-label', 'Course sections');
+  let nav=hub.querySelector('.workspace-nav');
+  if(!nav){nav=document.createElement('nav');nav.className='workspace-nav';nav.setAttribute('aria-label','Course sections');hub.append(nav);}
+  nav.hidden=false;
   const labels = [['assignments','Assignments'], ...(isMath ? [['study','Study']] : []), ['info','Course info']];
   nav.innerHTML = labels.map(([view,label])=>`<a href="#${view==='info'?'course-info':view}" data-workspace-view="${view}" aria-controls="workspace-${view}">${label}</a>`).join('');
-  hub.append(nav);
-  const utilities = document.createElement('div'); utilities.className = 'workspace-utilities';
-  utilities.append($('.hub-theme'));
-  const d2l = $('.quick-links a'); if (d2l) utilities.append(d2l);
+  let utilities=hub.querySelector('.workspace-utilities');
+  if(!utilities){utilities=document.createElement('div');utilities.className='workspace-utilities';utilities.append(hub.querySelector('.hub-theme'));hub.append(utilities);}
+  utilities.hidden=false;
+  const d2l = $('.quick-links a'); if (d2l){utilities.append(d2l);life.own(()=>d2l.remove());}
   hub.append(utilities);
   oldTabs.hidden = true;
   $('.guide-dock')?.remove();
@@ -104,7 +107,7 @@ function mountWorkspace() {
   const pastLabel = document.createElement('label'); pastLabel.className = 'workspace-past-toggle';
   pastLabel.innerHTML = '<input type="checkbox" id="workspace-show-past"> Show past assignments';
   panels.assignments.append(pastLabel);
-  pastLabel.querySelector('input').addEventListener('change', e=>document.body.classList.toggle('workspace-show-past',e.target.checked));
+  life.on(pastLabel.querySelector('input'),'change', e=>document.body.classList.toggle('workspace-show-past',e.target.checked));
   const filterStatus = $('#filter-status'); if (filterStatus) filters.append(filterStatus);
   const rail = $('.semester-rail');
   if (rail) {
@@ -188,39 +191,39 @@ function mountWorkspace() {
     sectionButton.setAttribute('aria-label',section ? 'Change '+sectionButton.textContent.toLowerCase() : 'Choose your course section');
   }
   window.CourseWorkspace = {show,setCenFilter,refresh};
-  nav.addEventListener('click', e=>{const a=e.target.closest('[data-workspace-view]');if(a){e.preventDefault();show(a.dataset.workspaceView,true);}});
-  document.addEventListener('course-view-change', e=>{if(!changing) syncPanels({assessments:'assignments',topics:'study',help:'info'}[e.detail]||'assignments');});
-  document.addEventListener('click', e=>{
+  life.on(nav,'click', e=>{const a=e.target.closest('[data-workspace-view]');if(a){e.preventDefault();show(a.dataset.workspaceView,true);}});
+  life.on(document,'course-view-change', e=>{if(!changing) syncPanels({assessments:'assignments',topics:'study',help:'info'}[e.detail]||'assignments');});
+  life.on(document,'click', e=>{
     const categoryButton = e.target.closest('[data-cen-filter]');
     if (categoryButton) setCenFilter('t-'+categoryButton.dataset.cenFilter);
   });
   // Reveal destinations before legacy listeners focus or scroll to them.
-  document.addEventListener('click', e=>{
+  life.on(document,'click', e=>{
     if (e.target.closest('#quick-work,#quick-contacts,#change-profile,#profile-contacts,[data-calendar]')) show('info');
   },true);
   const toolObserver = new MutationObserver(()=>{if(tools.open && active!=='info') show('info');});
-  toolObserver.observe(tools,{attributes:true,attributeFilter:['open']});
-  new MutationObserver(()=>toolsButton.setAttribute('aria-expanded',String(active==='info'&&tools.open&&tools.dataset.closing!=='true'))).observe(tools,{attributes:true,attributeFilter:['open']});
-  toolsButton.addEventListener('click',()=>{
+  life.observer(toolObserver,tools,{attributes:true,attributeFilter:['open']});
+  life.observer(new MutationObserver(()=>toolsButton.setAttribute('aria-expanded',String(active==='info'&&tools.open&&tools.dataset.closing!=='true'))),tools,{attributes:true,attributeFilter:['open']});
+  life.on(toolsButton,'click',()=>{
     const open=active!=='info'||!tools.open||tools.dataset.closing==='true';
     if(active!=='info')show('info',true);
     if(window.GuideMotion)window.GuideMotion.disclosure(tools,open);else tools.open=open;
     toolsButton.setAttribute('aria-expanded',String(open));
     if(open)tools.querySelector(':scope > summary').focus({preventScroll:true});
   });
-  sectionButton.addEventListener('click',()=>{
+  life.on(sectionButton,'click',()=>{
     show('info',true);
     if (!isMath) $('#profile-picker').open = true;
     $(isMath?'#section-select':'#contact-section').focus({preventScroll:true});
   });
-  searchButton.addEventListener('click',()=>{
+  life.on(searchButton,'click',()=>{
     const open=searchButton.getAttribute('aria-expanded')!=='true';searchButton.setAttribute('aria-expanded',String(open));
     if(window.GuideMotion)window.GuideMotion.visibility(search,open);else search.hidden=!open;
     if(open)$('#guide-search').focus({preventScroll:true});
     else {$('#guide-search').value='';$('#guide-search').dispatchEvent(new Event('input',{bubbles:true}));}
   });
-  search.addEventListener('keydown',e=>{if(e.key==='Escape'){searchButton.click();searchButton.focus();}});
-  document.addEventListener('change',()=>queueMicrotask(refresh));
+  life.on(search,'keydown',e=>{if(e.key==='Escape'){searchButton.click();searchButton.focus();}});
+  life.on(document,'change',()=>queueMicrotask(()=>{if(!life.signal.aborted)refresh();}));
   function route() {
     const hash=location.hash;
     if(hash==='#math-lab'||hash==='#study'||hash.startsWith('#topic-')) show('study');
@@ -228,10 +231,9 @@ function mountWorkspace() {
     else if(hash==='#guide-search') {search.hidden=false;searchButton.setAttribute('aria-expanded','true');$('#guide-search').focus();}
     else if(hash==='#assignments'||hash.startsWith('#assignment-')||hash.startsWith('#assessment-')||!hash) show('assignments');
   }
-  window.addEventListener('hashchange',route); window.addEventListener('popstate',route);
+  life.on(window,'hashchange',route); life.on(window,'popstate',route);
   // Start with work; specific existing links still open their original destination.
   syncPanels('assignments'); route();
 }
 
-if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',mountWorkspace,{once:true});
-else mountWorkspace();
+export function unmount(){if(!live)return;const {life,restore}=live;live=null;life.dispose();window.GuideMotion?.unbindRoute?.();window.GuideMotion?.cancel(document.querySelector('.wrap,.math-wrap'));delete window.CourseWorkspace;restore();const nav=document.querySelector('.workspace-nav');if(nav){nav.replaceChildren();nav.hidden=true;}document.body.classList.remove('workspace','workspace-show-past');delete document.body.dataset.workspaceView;}

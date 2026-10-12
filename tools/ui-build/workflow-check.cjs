@@ -1,22 +1,11 @@
-const {JSDOM,requestInterceptor,VirtualConsole}=require('jsdom');
-const esbuild=require('esbuild');
-const fs=require('node:fs');
 const path=require('node:path');
 const assert=require('node:assert/strict');
-const root=require('node:path').resolve(__dirname,'../..');
-const resources={interceptors:[requestInterceptor(async(request)=>{
- const u=new URL(request.url);if(u.hostname!=='guide.test')return new Response('');
- const file=path.join(root,u.pathname);if(!fs.existsSync(file))return new Response('',{status:404});
- if(file.endsWith('.mjs')){const r=await esbuild.build({entryPoints:[file],bundle:true,write:false,format:'iife',logLevel:'silent',plugins:[{name:'preserve-native-module-url',setup(build){build.onLoad({filter:/\.mjs$/},async args=>({contents:fs.readFileSync(args.path,'utf8').replaceAll('import.meta.url',JSON.stringify('https://guide.test/'+path.relative(root,args.path).split(path.sep).join('/'))),loader:'js'}));}}]});return new Response(r.outputFiles[0].text,{headers:{'Content-Type':'application/javascript'}})}
- return new Response(fs.readFileSync(file),{headers:{'Content-Type':file.endsWith('.css')?'text/css':'application/javascript'}});
-})]};
+const {createGuide,until,pause}=require('./module-harness.cjs');
+const root=path.resolve(__dirname,'../..');
 // jsdom delays history traversal behind long synchronous work, so wait for popstate rather than a fixed delay.
 const traversed=w=>new Promise(r=>{const t=setTimeout(r,3000);w.addEventListener('popstate',()=>{clearTimeout(t);setTimeout(r,50);},{once:true});});
 async function check(route,course,motion='off'){
- const filename=path.join(root,route,'index.html');
- const html=fs.readFileSync(filename,'utf8').replaceAll('type="module"','defer');
- const errors=[];const log=new VirtualConsole();log.on('jsdomError',e=>{if(!e.message.includes('CSS'))errors.push(e.message)});
- const dom=new JSDOM(html,{url:'https://guide.test/'+route+'?motion='+motion,resources,runScripts:'dangerously',pretendToBeVisual:true,virtualConsole:log,beforeParse(w){
+ const {dom,errors}=await createGuide({root,route,motion,beforeParse(w){
    w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}});
    w.IntersectionObserver=class{observe(){} disconnect(){}};w.ResizeObserver=class{observe(){}disconnect(){}};
    w.HTMLCanvasElement.prototype.getContext=()=>null; // Exercise header fallback; jsdom provides no GPU.
@@ -28,8 +17,6 @@ async function check(route,course,motion='off'){
    if(course!=='cen100')w.localStorage.setItem(course+'-progress-v1',JSON.stringify({checks:{},completed:{'quiz-1':true},notes:{'quiz-1':'Existing saved note'},topics:{},targets:{}}));
  }});
  const w=dom.window,d=w.document;
- await new Promise((resolve,reject)=>{w.addEventListener('load',resolve,{once:true});setTimeout(()=>reject(Error('Load timeout')),10000).unref()});
- await new Promise(r=>setTimeout(r,20));
  assert.deepEqual(errors,[],course+' runtime errors');
  assert(d.body.classList.contains('workspace'),course+' workspace mounted');
  assert(d.querySelector('.header-upgraded .header-art canvas,.header-upgraded .header-art .scene-poster'),course+' dimensional header or matching poster mounted');
@@ -58,7 +45,7 @@ async function check(route,course,motion='off'){
   click('[data-cen-filter="you"]');assert(!visible('#p-team')&&visible('#p-you'),'category filter');
   click('[data-cen-filter="all"]');
   click('#guide-item-y4 .head');assert(d.querySelector('.detail-sheet').open,'CEN drawer opens');
-  click('.sheet-close');if(motion!=='off')await new Promise(r=>setTimeout(r,750));assert(!d.querySelector('.detail-sheet').open,'drawer closes');
+  click('.sheet-close');if(motion!=='off')await until(()=>!d.querySelector('.detail-sheet').open,'CEN drawer close did not finish',5000);assert(!d.querySelector('.detail-sheet').open,'drawer closes');
   click('#quick-contacts');assert.equal(d.body.dataset.workspaceView,'info','legacy contacts navigate');
  }else{
   assert.equal(d.querySelector('#section-select').value,'31','saved section restored');
@@ -72,7 +59,7 @@ async function check(route,course,motion='off'){
   click('.lab-expand');if(motion!=='off'){for(let i=0;i<30&&d.querySelector('.lab-dialog').open;i++)await new Promise(r=>setTimeout(r,100));}assert(!d.querySelector('.lab-dialog').open,'lab expansion closes: '+d.querySelector('.lab-dialog').getAttribute('style')+' / '+d.querySelector('.lab-dialog').dataset.closing+' / '+JSON.stringify(errors));
   click('.workspace-nav [data-workspace-view="assignments"]');
   click('#assessment-quiz-1 > summary');assert(d.querySelector('.detail-sheet').open,'math drawer opens');
-  click('.sheet-close');if(motion!=='off')await new Promise(r=>setTimeout(r,750));assert(!d.querySelector('.detail-sheet').open,'math drawer closes');
+  click('.sheet-close');if(motion!=='off')await until(()=>!d.querySelector('.detail-sheet').open,'Math drawer close did not finish',5000);assert(!d.querySelector('.detail-sheet').open,'math drawer closes');
   click('#quick-contacts');assert.equal(d.body.dataset.workspaceView,'info','legacy contacts navigate');
  }
  assert.equal(d.querySelectorAll('input,select,textarea').length>=controlsBefore-10,true,'guide controls retained');
@@ -151,14 +138,12 @@ const SEEDS={
  fresh:{}
 };
 async function checkDesk(motion,seed='completed'){
- const errors=[];const log=new VirtualConsole();log.on('jsdomError',e=>{if(!e.message.includes('CSS'))errors.push(e.message)});
  const saved=SEEDS[seed];
- const dom=new JSDOM(fs.readFileSync(path.join(root,'index.html'),'utf8').replaceAll('type="module"','defer'),{url:'https://guide.test/?motion='+motion,resources,runScripts:'dangerously',pretendToBeVisual:true,virtualConsole:log,beforeParse(w){
+ const {dom,errors}=await createGuide({root,motion,beforeParse(w){
    w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}});for(const [k,v] of Object.entries(saved))w.localStorage.setItem(k,v);
    const Native=w.Date;w.Date=class extends Native{constructor(...a){super(...(a.length?a:[NOON_OCT12]))}static now(){return NOON_OCT12}};
  }});
  const w=dom.window,d=w.document;
- await new Promise((resolve,reject)=>{w.addEventListener('load',resolve,{once:true});setTimeout(()=>reject(Error('Desk load timeout')),10000).unref()});
  for(let i=0;i<100&&d.querySelector('[data-desk-overall-body]').hidden;i++)await new Promise(r=>setTimeout(r,20));
  assert.deepEqual(errors,[],'desk runtime errors');
  assert.equal(d.body.dataset.course,undefined,'Desk has no course identity');
@@ -218,4 +203,68 @@ async function checkDesk(motion,seed='completed'){
  console.log('desk ('+motion+', '+seed+'): directory, deadlines, switcher, saved sections and root forwarding checks passed');
  dom.window.close();
 }
-(async()=>{await checkDesk('off','completed');await checkDesk('on','sections');await checkDesk('off','fresh');await check('cen100/','cen100');await check('mth140/','mth140');await check('mth141/','mth141');await check('cen100/','cen100','on');await check('mth140/','mth140','on');await check('mth141/','mth141','on')})().catch(e=>{console.error(e);process.exit(1)});
+async function checkRoutes(base='https://guide.test/'){
+ const seeds={...SEEDS.completed,'mth141-section-v1':'31',
+  'cen100-personal-plan-v1':JSON.stringify({completed:{integrity:1},notes:{y4:'Saved CEN'},targets:{}}),
+  'mth140-progress-v1':JSON.stringify({completed:{'quiz-1':true},checks:{},notes:{'quiz-1':'Saved calculus'},targets:{},topics:{}}),
+  'mth141-progress-v1':JSON.stringify({completed:{'quiz-1':true},checks:{},notes:{'quiz-1':'Saved algebra'},targets:{},topics:{}})};
+ const {dom,w,d,errors,fallbacks,counters}=await createGuide({root,base,instrumentCounts:true,beforeParse(w){
+  for(const [key,value] of Object.entries(seeds))w.localStorage.setItem(key,value);
+  const Native=w.Date;w.Date=class extends Native{constructor(...a){super(...(a.length?a:[NOON_OCT12]))}static now(){return NOON_OCT12}};
+ }});
+ try{
+  const marker=d.documentElement.dataset.shellId,router=w.TMURouter,hub=d.querySelector('.hub-shell'),motion=w.GuideMotion;
+  assert(marker,'one shell marker exists');assert(hub&&motion,'the actual sidebar and motion controller exist');assert.equal(router.route,'desk');
+  let completed=0;d.addEventListener('guide-completion',()=>completed++);
+  const assertRoute=route=>{
+   assert.equal(router.route,route);assert.equal(d.documentElement.dataset.shellId,marker,'document survives navigation');
+   assert.equal(w.GuideMotion,motion,'motion controller survives');assert.equal(d.querySelector('.hub-shell'),hub,'sidebar survives');
+   assert.equal(d.querySelector('.course-link[aria-current]').dataset.courseLink,route,'sidebar current course follows route');
+   assert.equal(new URL(w.location.href).pathname,new URL(route==='desk'?'':route+'/',base).pathname,'URL matches the mounted route');
+   assert.equal(d.querySelectorAll('main[data-route-region]').length,1,'one route region');
+   if(route!=='desk'){
+    assert.equal(d.body.dataset.course,route);assert.match(d.title,new RegExp(route,'i'));
+    assert.equal(w.__tmuModules[new URL('assets/night/core.mjs',base).pathname].route(),route,'core reads the current identity');
+    assert(d.querySelector('main[data-route-region]').contains(d.activeElement),'focus lands in the new route');
+    assert.equal(d.querySelector('[data-router-announcement]').textContent,route.toUpperCase()+' guide');
+   }else assert.equal(d.body.dataset.course,undefined);
+   assert.deepEqual(fallbacks,[],'normal route navigation needs no reload');assert.deepEqual(errors,[],'route swap has no runtime errors');
+  };
+  const move=async(route,hash='')=>{assert.equal(await router.navigate(new URL((route==='desk'?'':route+'/')+hash,base).href),true);assertRoute(route);};
+  // Exercise native click capture before programmatic navigation.
+  d.querySelector('.desk-course').click();await until(()=>router.route==='cen100','Desk link did not navigate');assertRoute('cen100');
+  const dock=d.querySelector('.ns-dock'),wrapper=d.querySelector('.course-workspace');
+  assert(d.querySelector('input[data-completion="integrity"]').checked,'CEN saved completion survives navigation');
+  assert.equal(d.querySelector('#note-y4').value,'Saved CEN','CEN note survives route entry');
+  await move('mth140','#assessment-quiz-1');
+  assert(d.querySelector('.detail-sheet').open,'destination hash opens its assessment');
+  assert.equal(d.querySelector('[data-note="quiz-1"]').value,'Saved calculus','math note survives route entry');
+  const checkbox=d.querySelector('input[data-completed="quiz-1"]');
+  checkbox.checked=false;checkbox.dispatchEvent(new w.Event('change',{bubbles:true}));await pause(1);assert.equal(completed,1,'one action emits one completion');
+  await move('mth141');assert.equal(d.querySelector('[data-note="quiz-1"]').value,'Saved algebra');
+  const changed=route=>new Promise((resolve,reject)=>{
+   const timer=setTimeout(()=>{d.removeEventListener('route-changed',onChange);reject(Error('History did not mount '+route+'; current '+router.route+' at '+w.location.href));},15000);
+   function onChange(event){if(event.detail.route===route){clearTimeout(timer);d.removeEventListener('route-changed',onChange);resolve();}}
+   d.addEventListener('route-changed',onChange);
+  });
+  {const back=changed('mth140');w.history.back();await back;assertRoute('mth140');}
+  {const forward=changed('mth141');w.history.forward();await forward;assertRoute('mth141');}
+  await move('desk');assert.equal(d.querySelector('.ns-dock'),dock,'dock survives returning to Desk');assert(dock.hidden,'course dock is hidden on Desk');
+  const counts=new Map(),rounds=new URL(base).pathname==='/'?20:1;
+  for(let round=0;round<rounds;round++){
+   for(const route of ['cen100','mth140','mth141','desk']){
+    await move(route);await pause(180);assert.equal(d.querySelector('.course-workspace'),wrapper,'workspace shell remains');assert.equal(d.querySelector('.ns-dock'),dock,'dock remains');
+    const current=counters.counts();
+    if(round===0)counts.set(route,current);else assert.deepEqual(current,counts.get(route),route+' live listener/observer counts remain flat at round '+round);
+    assert.equal(d.querySelectorAll('.detail-sheet').length,route==='desk'?0:1,'no duplicated detail sheets');
+    assert.equal(d.querySelectorAll('.lab-dialog').length,route.startsWith('mth')?1:0,'no stale lab dialogs');
+   }
+  }
+  assert.equal(JSON.parse(w.localStorage.getItem('cen100-personal-plan-v1')).completed.integrity,1);
+  assert.equal(JSON.parse(w.localStorage.getItem('mth140-progress-v1')).completed['quiz-1'],undefined,'undoing completion survives later mounts');
+  assert.equal(JSON.parse(w.localStorage.getItem('mth141-progress-v1')).completed['quiz-1'],true);
+  d.querySelector('.hub-theme').click();assert.equal(d.documentElement.dataset.theme,'dark','one theme action uses one surviving controller');
+  console.log('routes ('+new URL(base).pathname+'): one document, real modules, hashes, history, focus, saved state and '+rounds+' round trips passed');
+ }finally{dom.window.close();}
+}
+(async()=>{await checkDesk('off','completed');await checkDesk('on','sections');await checkDesk('off','fresh');await check('cen100/','cen100');await check('mth140/','mth140');await check('mth141/','mth141');await check('cen100/','cen100','on');await check('mth140/','mth140','on');await check('mth141/','mth141','on');await checkRoutes();await checkRoutes('https://guide.test/tmu-course-guides/')})().catch(e=>{console.error(e);process.exit(1)});

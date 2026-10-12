@@ -1,10 +1,32 @@
 import {transformed,multiply,intersection,secant,limitValue,limitFacts} from './lab-math.mjs';
 import {mountComposition} from './lab-composition.mjs?v=20261011-studio3';
 import {mountChallenges} from './lab-challenges.mjs';
-const course=document.body.dataset.course;
-if(course==='mth140'||course==='mth141')init();
-function init(){
-const $=(s,root=document)=>root.querySelector(s),fmt=n=>Math.abs(n)<1e-9?'0':Number(n.toFixed(3)).toString(),signed=n=>n<0?'− '+fmt(-n):'+ '+fmt(n),complex=(x,y)=>`${fmt(x)} ${signed(y)}i`;
+let activeCleanup=null;
+export function unmount(){const cleanup=activeCleanup;activeCleanup=null;cleanup?.();}
+export function mount(ctx={}){
+unmount();
+const root=ctx.root||((ctx.direct!==false)?document.querySelector('main'):null);
+const course=ctx.route||((ctx.direct!==false)?document.body.dataset.course:null);
+if(!root||!['mth140','mth141'].includes(course)||ctx.signal?.aborted)return;
+const controller=new AbortController(),signal=controller.signal;
+let disposed=false,topicObserver=null;
+const topicButtons=new Set();
+function listen(target,type,handler){target.addEventListener(type,handler,{signal});}
+function cleanup(){
+  if(disposed)return;disposed=true;
+  ctx.signal?.removeEventListener('abort',onAbort);controller.abort();
+  topicObserver?.disconnect();topicObserver=null;
+  window.GuideMotion?.cancel(modal);
+  dispose();
+  if(modal.open)modal.close();
+  placeholder?.replaceWith(host);placeholder=null;expanded=false;focusBefore=null;
+  document.body.classList.remove('lab-open');
+  for(const button of topicButtons)button.remove();topicButtons.clear();
+  host.remove();modal.remove();
+}
+function onAbort(){if(activeCleanup===cleanup)activeCleanup=null;cleanup();}
+
+const $=(s,parent=root)=>parent.querySelector(s),fmt=n=>Math.abs(n)<1e-9?'0':Number(n.toFixed(3)).toString(),signed=n=>n<0?'− '+fmt(-n):'+ '+fmt(n),complex=(x,y)=>`${fmt(x)} ${signed(y)}i`;
 const defs={
  transforms:{name:'Transformations',title:'Shape the function',equation:'y = a·f(x − h) + k',description:'Tap part of the equation. See exactly what it changes.',defaults:{base:'square',a:1,h:0,k:0},controls:[['a','Vertical scale a',-3,3,.1],['h','Horizontal shift h',-3,3,.1],['k','Vertical shift k',-3,3,.1]],select:['base','Parent function',[['square','Quadratic · x²'],['absolute','Absolute value · |x|'],['sqrt','Square root · √x'],['sine','Sine · sin x']]],presets:[['Shift right',{h:2}],['Reflect',{a:-1}],['Stretch',{a:2}],['Start over',{a:1,h:0,k:0}]],legend:['Original function','Transformed function']},
  limits:{name:'Limits',title:'Approach the missing point',equation:'x → 1',description:'Move closer from both sides. Does the approaching height match the value at the point?',defaults:{kind:'hole',gap:.5},controls:[['gap','Distance from 1',.001,1,.001]],select:['kind','Example',[['hole','Removable discontinuity'],['smooth','Continuous curve'],['jump','Jump discontinuity'],['pole','Vertical asymptote']]],presets:[['Move closer',{gap:.01}],['Show a jump',{kind:'jump',gap:.1}],['Show an asymptote',{kind:'pole',gap:.1}]],legend:['Function','Approaching points']},
@@ -18,25 +40,25 @@ const ids=course==='mth140'?['transforms','limits','derivative']:['complex','mat
 let id=ids[0],s=null,zoom=1,raf=0,dragging=null,expanded=false,placeholder=null,focusBefore=null;
 let mode='explore',disposePanel=null,eqTerm='h',animationTarget=null;
 const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
-document.addEventListener('guide-motion-change',()=>{if(window.GuideMotion?.motionAllowed()===false&&animationTarget){stopAnimation();sync();draw();}});
+listen(document,'guide-motion-change',()=>{if(window.GuideMotion?.motionAllowed()===false&&animationTarget){stopAnimation();sync();draw();}});
 const memories={},challengeSession={};
 const host=document.createElement('section');host.id='math-lab';host.className='math-workbench math-lab';host.setAttribute('aria-label','Interactive math lab');
 const rail=$('.semester-rail');(rail||$('.quick-find')).after(host);
 host.innerHTML=`<div class="workbench-title"><div><span class="workbench-kicker">${course==='mth140'?'Calculus':'Linear algebra'} / visual studio</span><h2>Math, made visible.</h2><p class="lab-subtitle">Explore an idea. Make a connection.</p></div><button class="lab-expand" type="button" aria-label="Expand math studio">Expand ↗</button></div><div class="lab-mode-switch" role="group" aria-label="Studio mode"><button type="button" data-mode="explore" aria-pressed="true">Explore concepts</button><button type="button" data-mode="mistakes" aria-pressed="false">Find the mistake</button></div><div class="lab-tabs" role="group" aria-label="Choose an experiment">${ids.map(key=>`<button type="button" data-lab="${key}" aria-pressed="false">${defs[key].name}</button>`).join('')}</div><div class="lab-content"></div><div class="lab-announcement" role="status" aria-live="polite"></div>`;
 const modal=document.createElement('dialog');modal.className='lab-dialog';modal.setAttribute('aria-label','Expanded math lab');document.body.append(modal);
-function restoreExpanded(){if(!expanded)return;expanded=false;if(modal.open)modal.close();placeholder.replaceWith(host);placeholder=null;document.body.classList.remove('lab-open');$('.lab-expand',host).textContent='Expand ↗';$('.lab-expand',host).setAttribute('aria-label','Expand math studio');focusBefore?.focus({preventScroll:true});}
+function restoreExpanded(){if(disposed||!expanded)return;expanded=false;if(modal.open)modal.close();placeholder.replaceWith(host);placeholder=null;document.body.classList.remove('lab-open');$('.lab-expand',host).textContent='Expand ↗';$('.lab-expand',host).setAttribute('aria-label','Expand math studio');focusBefore?.focus({preventScroll:true});}
 function closeExpanded(){if(!expanded||modal.dataset.closing==='true')return;const to=placeholder?.getBoundingClientRect();if(window.GuideMotion)window.GuideMotion.dialogClose(modal,restoreExpanded,to);else restoreExpanded();}
-modal.addEventListener('close',()=>{if(!modal.open)restoreExpanded();});
-modal.addEventListener('cancel',e=>{e.preventDefault();closeExpanded();});
+listen(modal,'close',()=>{if(!modal.open)restoreExpanded();});
+listen(modal,'cancel',e=>{e.preventDefault();closeExpanded();});
 function toggleExpanded(){if(expanded){closeExpanded();return;}const from=host.getBoundingClientRect();focusBefore=document.activeElement;placeholder=document.createElement('div');placeholder.style.height=host.offsetHeight+'px';host.before(placeholder);modal.append(host);expanded=true;document.body.classList.add('lab-open');$('.lab-expand',host).textContent='Close ✕';$('.lab-expand',host).setAttribute('aria-label','Close expanded math studio');modal.showModal();window.GuideMotion?.dialogOpen(modal,from);$('.lab-expand',host).focus();}
 // Exact inputs remain available on demand; the primary experience requires no dragging.
 const exactInput=([key,label,min,max,step])=>`<label class="lab-exact">${label}<input type="number" aria-label="${label} exact value" data-number="${key}" min="${min}" max="${max}" step="${step}" value="${s[key]}"></label>`;
-function stopAnimation(){cancelAnimationFrame(raf);if(animationTarget){Object.assign(s,animationTarget);animationTarget=null;}}
+function stopAnimation(){cancelAnimationFrame(raf);raf=0;if(animationTarget){Object.assign(s,animationTarget);animationTarget=null;}}
 function dispose(){stopAnimation();$('.lab-announcement',host).textContent='';disposePanel?.();disposePanel=null;dragging=null;}
-function showMode(next){if(next===mode)return;dispose();mode=next;for(const b of host.querySelectorAll('[data-mode]'))b.setAttribute('aria-pressed',String(b.dataset.mode===mode));$('.lab-tabs',host).hidden=mode!=='explore';if(mode==='mistakes'){disposePanel=mountChallenges($('.lab-content',host),course,challengeSession);}else select(id);}
+function showMode(next){if(next===mode)return;dispose();mode=next;for(const b of host.querySelectorAll('[data-mode]'))b.setAttribute('aria-pressed',String(b.dataset.mode===mode));$('.lab-tabs',host).hidden=mode!=='explore';if(mode==='mistakes'){disposePanel=mountChallenges($('.lab-content',host),course,challengeSession,{signal});}else select(id);}
 function select(key){if(!ids.includes(key))return;dispose();if(s&&id)memories[id]={...s};id=key;s={...(memories[id]||defs[id].defaults)};zoom=1;eqTerm='h';const d=defs[id];
  for(const tab of host.querySelectorAll('[data-lab]'))tab.setAttribute('aria-pressed',String(tab.dataset.lab===id));
- if(id==='matrix'){$('.lab-content',host).replaceChildren();disposePanel=mountComposition($('.lab-content',host));return;}
+ if(id==='matrix'){$('.lab-content',host).replaceChildren();disposePanel=mountComposition($('.lab-content',host),{signal});return;}
  const isEquation=id==='transforms';
  $('.lab-content',host).innerHTML=`<div class="lab-intro"><h3>${d.title}</h3><p>${d.description}</p></div><div class="workbench-layout"><div class="workbench-plot"><div class="lab-plot-tools"><span>${id==='complex'?'Complex plane':'Coordinate plane'}</span><div><button type="button" data-zoom="out" aria-label="Zoom out">−</button><button type="button" data-zoom="in" aria-label="Zoom in">+</button></div></div><svg class="workbench-svg" viewBox="0 0 480 360" role="img" aria-label="Interactive math plot"></svg><div class="workbench-legend"><span>${d.legend[0]}</span><span>${d.legend[1]}</span></div></div><div class="workbench-controls">${isEquation?`<span class="lab-eyebrow">The equation is your control</span><div class="lab-equation-touch" aria-label="Tap an equation term"><span>y = </span><button type="button" data-term="a" aria-label="Explore vertical scale a" aria-pressed="false"><span data-term-value="a">1</span><small>scale</small></button><span>· f(x</span><button type="button" data-term="h" aria-label="Explore horizontal shift h" aria-pressed="true"><span data-term-value="h">− 0</span><small>horizontal</small></button><span>)</span><button type="button" data-term="k" aria-label="Explore vertical shift k" aria-pressed="false"><span data-term-value="k">+ 0</span><small>vertical</small></button></div><div class="lab-term-explanation" role="status"></div><div class="lab-term-actions" role="group" aria-label="Change selected term"></div>`:''}<p class="workbench-equation" ${isEquation?'aria-label="Current equation"':''}>${d.equation}</p>${d.select?`<label class="lab-select">${d.select[1]}<select data-select="${d.select[0]}">${d.select[2].map(([v,n])=>`<option value="${v}" ${s[d.select[0]]===v?'selected':''}>${n}</option>`).join('')}</select></label>`:''}${isEquation?'':`<div class="lab-presets" role="group" aria-label="Choose an example">${d.presets.map(([label],i)=>`<button type="button" data-preset="${i}">${label}</button>`).join('')}${id==='limits'?'<button type="button" data-closer>Closer again →</button>':''}</div>`}<div class="lab-readout" role="status" aria-live="off"></div><div class="lab-footer"><details class="lab-customize"><summary>Use your own values</summary><div class="lab-exact-grid">${d.controls.map(exactInput).join('')}</div></details><button class="workbench-reset" type="button">Reset</button></div></div></div>`;
  if(isEquation)renderTerm();draw();
@@ -47,7 +69,7 @@ const termInfo={
  k:{title:'Move the graph vertically',text:'This adds the same amount to every output. Positive values move the graph up.',options:[['Down 2',-2],['Centre',0],['Up 2',2]]}
 };
 function renderTerm(){const info=termInfo[eqTerm];for(const b of host.querySelectorAll('[data-term]'))b.setAttribute('aria-pressed',String(b.dataset.term===eqTerm));$('.lab-term-explanation',host).innerHTML=`<b>${info.title}</b><p>${info.text}</p>`;$('.lab-term-actions',host).innerHTML=info.options.map(([label,value])=>`<button type="button" data-term-choice="${value}">${label}</button>`).join('');}
-function animateTo(values){stopAnimation();const from={...s};animationTarget={...values};for(const [key,value]of Object.entries(values))if(typeof value!=='number')s[key]=value;const start=performance.now();const frame=now=>{const p=(reducedMotion.matches||window.GuideMotion?.motionAllowed()===false)?1:Math.min(1,(now-start)/520),ease=1-(1-p)**3;for(const [key,value]of Object.entries(values))if(typeof value==='number')s[key]=from[key]+(value-from[key])*ease;sync();draw();if(p<1)raf=requestAnimationFrame(frame);else{Object.assign(s,values);animationTarget=null;sync();draw();announce();}};raf=requestAnimationFrame(frame);}
+function animateTo(values){stopAnimation();const from={...s};animationTarget={...values};for(const [key,value]of Object.entries(values))if(typeof value!=='number')s[key]=value;const start=performance.now();const frame=now=>{if(disposed)return;const p=(reducedMotion.matches||window.GuideMotion?.motionAllowed()===false)?1:Math.min(1,(now-start)/520),ease=1-(1-p)**3;for(const [key,value]of Object.entries(values))if(typeof value==='number')s[key]=from[key]+(value-from[key])*ease;sync();draw();if(p<1)raf=requestAnimationFrame(frame);else{Object.assign(s,values);animationTarget=null;sync();draw();announce();}};raf=requestAnimationFrame(frame);}
 
 function sync(){for(const input of host.querySelectorAll('[data-param],[data-number],[data-select]')){if(input===document.activeElement&&input.dataset.number)continue;const value=s[input.dataset.param||input.dataset.number||input.dataset.select];input.value=typeof value==='number'?Number(value.toFixed(4)):value;}}
 function announce(){const readout=$('.lab-readout',host);if(readout)$('.lab-announcement',host).textContent=readout.textContent;}
@@ -103,7 +125,7 @@ function draw(){const svg=$('svg',host),r=$('.lab-readout',host),{X,Y,scale,xmin
  }
  svg.innerHTML=picture+'</g>';svg.setAttribute('aria-label',description);r.innerHTML=readout;
 }
-host.addEventListener('click',e=>{
+listen(host,'click',e=>{
  const modeButton=e.target.closest('[data-mode]');if(modeButton){showMode(modeButton.dataset.mode);return;}
  if(e.target.closest('.lab-expand')){toggleExpanded();return;}
  const tab=e.target.closest('[data-lab]');if(tab){if(tab.dataset.lab!==id)select(tab.dataset.lab);return;}
@@ -116,15 +138,16 @@ host.addEventListener('click',e=>{
  if(e.target.closest('.workbench-reset')){zoom=1;set({...defs[id].defaults});return;}
 });
 // Multiplication by i follows an arc, so the motion shows rotation rather than shrinking through the plane.
-function animateComplex(values){stopAnimation();const from={r:Math.hypot(s.u,s.v),angle:Math.atan2(s.v,s.u)},to={r:Math.hypot(values.u,values.v),angle:Math.atan2(values.v,values.u)};let delta=to.angle-from.angle;if(delta>Math.PI)delta-=2*Math.PI;if(delta<-Math.PI)delta+=2*Math.PI;animationTarget={...values};const start=performance.now();function frame(now){const p=(reducedMotion.matches||window.GuideMotion?.motionAllowed()===false)?1:Math.min(1,(now-start)/650),t=1-(1-p)**3,r=from.r+(to.r-from.r)*t,a=from.angle+delta*t;s.u=r*Math.cos(a);s.v=r*Math.sin(a);sync();draw();if(p<1)raf=requestAnimationFrame(frame);else{Object.assign(s,values);animationTarget=null;sync();draw();announce();}}raf=requestAnimationFrame(frame);}
+function animateComplex(values){stopAnimation();const from={r:Math.hypot(s.u,s.v),angle:Math.atan2(s.v,s.u)},to={r:Math.hypot(values.u,values.v),angle:Math.atan2(values.v,values.u)};let delta=to.angle-from.angle;if(delta>Math.PI)delta-=2*Math.PI;if(delta<-Math.PI)delta+=2*Math.PI;animationTarget={...values};const start=performance.now();function frame(now){if(disposed)return;const p=(reducedMotion.matches||window.GuideMotion?.motionAllowed()===false)?1:Math.min(1,(now-start)/650),t=1-(1-p)**3,r=from.r+(to.r-from.r)*t,a=from.angle+delta*t;s.u=r*Math.cos(a);s.v=r*Math.sin(a);sync();draw();if(p<1)raf=requestAnimationFrame(frame);else{Object.assign(s,values);animationTarget=null;sync();draw();announce();}}raf=requestAnimationFrame(frame);}
 
 function updateInput(input){const key=input.dataset.param||input.dataset.number,config=defs[id].controls.find(c=>c[0]===key);if(!config)return;const value=Number(input.value);if(input.value.trim()===''||!Number.isFinite(value)){input.value=s[key];return;}const normalized=Math.max(config[2],Math.min(config[3],Math.round(value/config[4])*config[4]));set({[key]:normalized});input.value=Number(normalized.toFixed(6));}
-host.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('[data-number]')){updateInput(e.target);e.target.blur();}});
-host.addEventListener('change',e=>{if(e.target.matches('[data-number]'))updateInput(e.target);if(e.target.matches('[data-select]'))set({[e.target.dataset.select]:e.target.value});});
+listen(host,'keydown',e=>{if(e.key==='Enter'&&e.target.matches('[data-number]')){updateInput(e.target);e.target.blur();}});
+listen(host,'change',e=>{if(e.target.matches('[data-number]'))updateInput(e.target);if(e.target.matches('[data-select]'))set({[e.target.dataset.select]:e.target.value});});
 const topicMap=course==='mth140'?{functions:'transforms',limits:'limits','derivatives-1':'derivative'}:{complex:'complex',systems:'systems',matrices:'matrix',determinants:'matrix',rn:'vectors',transformations:'matrix'};
-function attachTopics(){for(const [topic,lab]of Object.entries(topicMap)){const body=$(`#topic-${topic} .topic-body`);if(!body||$('[data-open-lab]',body))continue;const b=document.createElement('button');b.type='button';b.className='button topic-lab-link';b.dataset.openLab=lab;b.textContent=`Open ${defs[lab].name.toLowerCase()} lab ↗`;body.prepend(b);}}
-const topics=$('#topic-grid');if(topics)new MutationObserver(attachTopics).observe(topics,{childList:true});attachTopics();
-document.addEventListener('click',e=>{const b=e.target.closest('[data-open-lab]');if(!b)return;if(mode!=='explore')showMode('explore');select(b.dataset.openLab);host.scrollIntoView({block:'start',behavior:'instant'});$(`[data-lab="${id}"]`,host).focus({preventScroll:true});});
+function attachTopics(){if(disposed)return;for(const [topic,lab]of Object.entries(topicMap)){const body=$(`#topic-${topic} .topic-body`);if(!body||$('[data-open-lab]',body))continue;const b=document.createElement('button');b.type='button';b.className='button topic-lab-link';b.dataset.openLab=lab;b.textContent=`Open ${defs[lab].name.toLowerCase()} lab ↗`;body.prepend(b);topicButtons.add(b);}}
+const topics=$('#topic-grid');if(topics){topicObserver=new MutationObserver(attachTopics);topicObserver.observe(topics,{childList:true});}attachTopics();
+listen(document,'click',e=>{const b=e.target.closest('[data-open-lab]');if(!b||!topicButtons.has(b))return;if(mode!=='explore')showMode('explore');select(b.dataset.openLab);host.scrollIntoView({block:'start',behavior:'instant'});$(`[data-lab="${id}"]`,host).focus({preventScroll:true});});
 // A stable anchor lets students return directly to the lab.
 select(id);
+activeCleanup=cleanup;ctx.signal?.addEventListener('abort',onAbort,{once:true});
 }
