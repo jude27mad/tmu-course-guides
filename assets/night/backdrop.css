@@ -1,0 +1,70 @@
+/* Night Shift backdrop: the living background behind coursework.
+   One fixed, inert layer at z-index:-1 in the root stacking context: it paints over the page colour and under every
+   in-flow block, so panels stay solid on top and text never sits on moving pixels. Back to front: the aurora (the
+   always-on static base and the low-tier fallback), the WebGL field (backdrop.mjs) and film grain.
+   .ns-bd[data-field]: off = no canvas, still = last frame kept, live = on the ticker, lost = GPU context lost.
+   [data-calm] marks a reading pause (no input for a few seconds). */
+.ns-bd{position:fixed;left:0;right:0;top:0;height:100vh;height:100lvh;z-index:-1;overflow:hidden;contain:strict;pointer-events:none;-webkit-user-select:none;user-select:none;
+ --bd-a:.24;--bd-b:.16;--bd-grain:.04;
+ animation:ns-bd-in 1.8s var(--ns-ease) both}
+/* Graphite: the accent glows faintly; paper: a pastel wash. Grain is a touch stronger on graphite, where it hides banding. */
+:root[data-theme=dark] .ns-bd{--bd-a:.13;--bd-b:.09;--bd-grain:.05}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .ns-bd{--bd-a:.13;--bd-b:.09;--bd-grain:.05}}
+@keyframes ns-bd-in{from{opacity:0}}
+
+/* ---------- Aurora: three soft accent pools. Stacked colour stops approximate a gaussian falloff, so there is
+   no blur filter to rasterise and no disc edge; --k sets each pool's strength. ---------- */
+.ns-bd-aurora{position:absolute;inset:0}
+.ns-bd-aurora i{--x:50%;--y:50%;--s:60vmax;--c:var(--accent);--k:var(--bd-a);--d:60s;--o:0s;
+ position:absolute;display:block;left:var(--x);top:var(--y);width:var(--s);height:var(--s);translate:-50% -50%;border-radius:50%;opacity:var(--k);
+ background:radial-gradient(closest-side,var(--c) 0%,color-mix(in srgb,var(--c) 64%,transparent) 28%,color-mix(in srgb,var(--c) 30%,transparent) 52%,color-mix(in srgb,var(--c) 9%,transparent) 76%,transparent 100%);
+ animation:ns-bd-drift var(--d) cubic-bezier(.37,0,.63,1) var(--o) infinite alternate}
+.ns-bd-aurora i:nth-child(1){--x:86%;--y:8%;--s:66vmax;--d:61s;--o:-14s}
+.ns-bd-aurora i:nth-child(2){--x:6%;--y:92%;--s:58vmax;--c:color-mix(in srgb,var(--accent) 62%,var(--strong));--k:var(--bd-b);--d:74s;--o:-37s;animation-direction:alternate-reverse}
+.ns-bd-aurora i:nth-child(3){--x:62%;--y:64%;--s:40vmax;--k:calc(var(--bd-b) * .8);--d:47s;--o:-9s}
+/* Each course composes its pools in its own vocabulary. Engineering: warmth gathers where the gear train turns. */
+html[data-ns-course=cen100] .ns-bd-aurora i:nth-child(1){--x:90%;--y:82%}
+html[data-ns-course=cen100] .ns-bd-aurora i:nth-child(2){--x:12%;--y:10%}
+html[data-ns-course=cen100] .ns-bd-aurora i:nth-child(3){--x:58%;--y:38%}
+/* Calculus: long currents across the page. */
+html[data-ns-course=mth140] .ns-bd-aurora i:nth-child(1){scale:1.55 .7;rotate:-14deg}
+html[data-ns-course=mth140] .ns-bd-aurora i:nth-child(3){--x:34%;--y:58%;scale:1.5 .58;rotate:-10deg}
+/* Linear Algebra: tilted planes sharing one axis. */
+html[data-ns-course=mth141] .ns-bd-aurora i:nth-child(1){scale:1.3 .78;rotate:24deg}
+html[data-ns-course=mth141] .ns-bd-aurora i:nth-child(2){scale:1.3 .78;rotate:24deg}
+html[data-ns-course=mth141] .ns-bd-aurora i:nth-child(3){scale:1.15 .7;rotate:24deg}
+@keyframes ns-bd-drift{
+ 0%{transform:translate3d(0,0,0) scale(1)}
+ 50%{transform:translate3d(4vmax,-3vmax,0) scale(1.1)}
+ 100%{transform:translate3d(-3vmax,4vmax,0) scale(.94)}}
+/* The aurora drifts only when it is the whole backdrop (no field, or a lost context). A running or resting field,
+   a still page and the low tier keep it where it is. */
+.ns-bd:is([data-field=live],[data-field=still]) .ns-bd-aurora i,html.ns-still .ns-bd-aurora i{animation-play-state:paused}
+html[data-ns-tier=low] .ns-bd-aurora i{animation:none}
+
+/* ---------- Field canvas: CSS-scaled from its capped buffer. It eases in once its first frame exists and eases
+   out to the aurora when it is removed or its context is lost. ---------- */
+.ns-bd-field{position:absolute;inset:0;display:block;width:100%;height:100%;opacity:0;transition:opacity .8s var(--ns-ease)}
+.ns-bd:is([data-field=live],[data-field=still]) .ns-bd-field{opacity:1;transition-duration:1.6s}
+
+/* ---------- Film grain: a tiled feTurbulence, mid-grey specks that lift graphite and deepen paper equally.
+   It shimmers (10 steps a second, compositor only) on the high tier while the field runs and the visitor is
+   active, and holds still while they read. ---------- */
+.ns-bd-grain{position:absolute;inset:-64px;opacity:var(--bd-grain);
+ background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 2.4 -.9'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E") 0 0/180px 180px repeat}
+html[data-ns-tier=high]:not(.ns-still) .ns-bd[data-field=live]:not([data-calm]) .ns-bd-grain{will-change:transform;animation:ns-bd-grain .8s steps(1,end) infinite}
+@keyframes ns-bd-grain{
+ 0%{transform:translate3d(0,0,0)}12.5%{transform:translate3d(-31px,17px,0)}25%{transform:translate3d(22px,-38px,0)}37.5%{transform:translate3d(-12px,41px,0)}
+ 50%{transform:translate3d(37px,9px,0)}62.5%{transform:translate3d(-44px,-21px,0)}75%{transform:translate3d(14px,29px,0)}87.5%{transform:translate3d(-26px,-7px,0)}100%{transform:translate3d(9px,-33px,0)}}
+
+/* ---------- Reduced motion and ?motion=off: the same composition, entirely still ---------- */
+@media(prefers-reduced-motion:reduce){
+ .ns-bd,.ns-bd-aurora i,.ns-bd-grain{animation:none!important}
+ .ns-bd-field{transition:none}
+}
+:root[data-motion=off] .ns-bd,:root[data-motion=off] .ns-bd-aurora i,:root[data-motion=off] .ns-bd-grain{animation:none!important}
+:root[data-motion=off] .ns-bd-field{transition:none}
+
+/* Decorative only: gone in print and when the system enforces its own colours. */
+@media print{.ns-bd{display:none!important}}
+@media(forced-colors:active){.ns-bd{display:none}}
