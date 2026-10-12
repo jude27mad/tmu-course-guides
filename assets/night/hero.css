@@ -1,0 +1,111 @@
+/* Night Shift hero: the arrival and the hero-to-dock hand-off.
+   hero.mjs scrubs --hero-p on the stage (0 at rest, 1 once it has scrolled away) and adds .ns-scrub while it
+   does. Every rule reads well at rest, which is also the reduced-motion, paused and no-script look.
+   The stage is graphite in both themes (layout.css --ns-stage), so stage details share one palette; the
+   hand-off rule on the paper/graphite action bar carries the theme variants. */
+@property --hero-p{syntax:'<number>';inherits:true;initial-value:0}
+
+/* ---------- Scrub coefficients: tablets and phones recede less ---------- */
+html.night body.workspace .header-upgraded{--hero-art-scale:.3;--hero-art-drift:9%;--hero-art-dim:.4;--hero-lift:-56px}
+@media(max-width:1000px){html.night body.workspace .header-upgraded{--hero-art-scale:.2;--hero-art-drift:6%;--hero-art-dim:.32;--hero-lift:-40px}}
+@media(max-width:760px){html.night body.workspace .header-upgraded{--hero-art-scale:.13;--hero-art-drift:4%;--hero-art-dim:.26;--hero-lift:-26px}}
+
+/* ---------- Art: shrinks toward its focal point (~0.7), drifts back behind the lifting title, dims ---------- */
+html.night body.workspace .header-upgraded.ns-scrub .header-art{
+ transform-origin:66% 42%;will-change:transform,opacity;
+ transform:translate3d(0,calc(var(--hero-p) * var(--hero-art-drift)),0) scale(calc(1 - var(--hero-p) * var(--hero-art-scale)));
+ opacity:calc(1 - var(--hero-p) * var(--hero-art-dim))}
+@media(max-width:1000px){html.night body.workspace .header-upgraded.ns-scrub .header-art{transform-origin:50% 36%}}
+
+/* ---------- Title: SplitText line masks ----------
+   The mask clip is widened with a negative inset (no layout change, no margin collapsing) so descenders,
+   the condensed caps and the cursor lean are never cut at rest; lines only vanish when they lift. */
+html.night body.workspace .header-upgraded .hero-copy>h1>.ns-title-line-mask{overflow:visible!important;clip-path:inset(-.08em -.18em -.22em -.18em)}
+html.night body.workspace .header-upgraded .hero-copy>h1 .ns-title-line{will-change:transform}
+
+/* ---------- Eyebrow and HUD: drift up and clear early, so the title owns the exit ---------- */
+html.night body.workspace .header-upgraded.ns-scrub .hero-copy>:is(.team,.eyebrow){
+ translate:0 calc(var(--hero-p) * var(--hero-lift));opacity:calc(1 - clamp(0,var(--hero-p) / .24,1))}
+html.night body.workspace .header-upgraded.ns-scrub .ns-hud{
+ translate:0 calc(var(--hero-p) * var(--hero-lift) * .75);opacity:calc(1 - clamp(0,(var(--hero-p) - .04) / .3,1))}
+
+/* Eyebrow: a hairline index tick hung in the gutter (wide screens only, so nothing reflows). */
+@media(min-width:1001px){
+ html.night body.workspace .header-upgraded .hero-copy>:is(.team,.eyebrow){position:relative}
+ html.night body.workspace .header-upgraded .hero-copy>:is(.team,.eyebrow)::before{content:'';position:absolute;right:calc(100% + 10px);top:50%;width:14px;height:1px;background:currentColor;opacity:.65;pointer-events:none}
+}
+
+/* HUD refinements without touching its geometry (it can arrive after first paint). */
+html.night body.workspace .header-upgraded .ns-hud [data-ns-chip]{font-variant-numeric:tabular-nums}
+html.night body.workspace .header-upgraded .ns-hud .ns-hud-k{background:color-mix(in srgb,var(--scene-accent) 9%,transparent)}
+/* Urgency is shown in colour only (the single ambient pulse belongs to the deadline surfaces). The stage is
+   graphite in both themes, so the stage-safe warm tone is used rather than the paper --ns-hot. */
+:root[data-ns-urgency=soon] body.workspace .header-upgraded .ns-hud [data-ns-chip]{color:#ffc9a3}
+:root:is([data-ns-urgency=hot],[data-ns-urgency=live]) body.workspace .header-upgraded .ns-hud [data-ns-chip]{color:#ff9a7c}
+:root:is([data-ns-urgency=hot],[data-ns-urgency=live]) body.workspace .header-upgraded .ns-hud .ns-hud-k{color:#ff9a7c;border-color:rgb(255 154 124 / .5);background:rgb(255 154 124 / .1)}
+:root[data-ns-urgency=passed] body.workspace .header-upgraded .ns-hud [data-ns-chip]{color:#a9b5b2}
+
+/* ---------- Course motif under the title (decorative pseudo, so nothing reflows) ----------
+   Sits .12em below the title box: clear of descenders at every size and above the HUD's 14–28 px gap. */
+html.night body.workspace .header-upgraded .hero-copy>h1{position:relative}
+html.night body.workspace .header-upgraded .hero-copy>h1::after{content:'';position:absolute;left:0;top:calc(100% + .12em);width:clamp(96px,9vw,150px);height:7px;color:var(--scene-accent);opacity:.92;pointer-events:none;transform-origin:0 100%}
+/* Engineering: a rack of gear teeth on its base line, fading out like a meshing edge. */
+html.night body.workspace[data-course=cen100] .header-upgraded .hero-copy>h1::after{
+ background:linear-gradient(currentColor,currentColor) 0 100%/100% 1px no-repeat,repeating-linear-gradient(90deg,currentColor 0 2px,transparent 2px 7px) 0 0/100% 5px no-repeat;
+ -webkit-mask:linear-gradient(90deg,#000 58%,transparent);mask:linear-gradient(90deg,#000 58%,transparent)}
+/* Calculus: one smooth wave with its tangent resting on the crest. */
+html.night body.workspace[data-course=mth140] .header-upgraded .hero-copy>h1::after{height:11px;background:currentColor;
+ -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 132 12' preserveAspectRatio='none'%3E%3Cpath d='M1 9C18 9 24 3 40 3S64 10 82 10S110 4 131 4' fill='none' stroke='%23000' stroke-width='1.4' stroke-linecap='round'/%3E%3Cpath d='M27 3H53' stroke='%23000' stroke-width='.9' stroke-linecap='round'/%3E%3Ccircle cx='40' cy='3' r='2'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+ mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 132 12' preserveAspectRatio='none'%3E%3Cpath d='M1 9C18 9 24 3 40 3S64 10 82 10S110 4 131 4' fill='none' stroke='%23000' stroke-width='1.4' stroke-linecap='round'/%3E%3Cpath d='M27 3H53' stroke='%23000' stroke-width='.9' stroke-linecap='round'/%3E%3Ccircle cx='40' cy='3' r='2'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat}
+/* Linear Algebra: a sheared lattice with its two basis vectors drawn solid. */
+html.night body.workspace[data-course=mth141] .header-upgraded .hero-copy>h1::after{height:10px;width:clamp(88px,8vw,132px);transform:skewX(-14deg);
+ background:linear-gradient(currentColor,currentColor) 0 0/1.5px 100% no-repeat,linear-gradient(currentColor,currentColor) 0 100%/38% 1.5px no-repeat,
+  linear-gradient(90deg,color-mix(in srgb,currentColor 40%,transparent) 1px,transparent 1px) 0 0/11px 100%,linear-gradient(color-mix(in srgb,currentColor 40%,transparent) 1px,transparent 1px) 0 0/100% 5px;
+ -webkit-mask:linear-gradient(90deg,#000 50%,transparent);mask:linear-gradient(90deg,#000 50%,transparent)}
+/* Phones: the HUD sits only 14 px below the title, so the motif gets shorter. */
+@media(max-width:760px){html.night body.workspace .header-upgraded .hero-copy>h1::after{width:96px;height:6px}html.night body.workspace[data-course=mth140] .header-upgraded .hero-copy>h1::after,html.night body.workspace[data-course=mth141] .header-upgraded .hero-copy>h1::after{height:8px}}
+
+/* Scrub: each motif leaves in its own vocabulary. */
+html.night body.workspace .header-upgraded.ns-scrub .hero-copy>h1::after{opacity:calc(.92 - clamp(0,(var(--hero-p) - .02) / .3,1) * .92)}
+/* Rack slides into a slot at its left edge (the clip window stays put while the teeth travel). */
+html.night body.workspace[data-course=cen100] .header-upgraded.ns-scrub .hero-copy>h1::after{transform:translateX(calc(var(--hero-p) * -49px));clip-path:inset(-1px 0 -1px calc(var(--hero-p) * 49px))}
+/* Where round() exists the rack advances one tooth at a time: a ratchet, like the countdown ring. */
+@supports (width:round(down,10px,3px)){
+ html.night body.workspace[data-course=cen100] .header-upgraded.ns-scrub .hero-copy>h1::after{transform:translateX(round(down,calc(var(--hero-p) * -49px),7px));clip-path:inset(-1px 0 -1px round(up,calc(var(--hero-p) * 49px),7px))}
+}
+/* The curve retracts from its open end. */
+html.night body.workspace[data-course=mth140] .header-upgraded.ns-scrub .hero-copy>h1::after{clip-path:inset(-2px calc(clamp(0,var(--hero-p) / .3,1) * 100%) -2px 0)}
+/* The plane shears further as it falls away. */
+html.night body.workspace[data-course=mth141] .header-upgraded.ns-scrub .hero-copy>h1::after{transform:skewX(calc(-14deg - var(--hero-p) * 46deg))}
+
+/* ---------- Hand-off rule: fills along the top of the action bar as the stage leaves, then the dock's own
+   2 px progress bar carries on (.workspace-actions is already position:relative in workspace.css).
+   --strong is ink-dark on paper and the accent on graphite. ---------- */
+html.night body.workspace .header-upgraded.ns-scrub .workspace-actions::before{content:'';position:absolute;left:0;right:0;top:0;height:2px;background:var(--strong);transform-origin:0 50%;transform:scaleX(var(--hero-p));opacity:calc(.35 + var(--hero-p) * .65);pointer-events:none}
+:root[data-theme=dark] body.workspace .header-upgraded.ns-scrub .workspace-actions::before{box-shadow:0 0 14px color-mix(in srgb,var(--strong) 55%,transparent)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) body.workspace .header-upgraded.ns-scrub .workspace-actions::before{box-shadow:0 0 14px color-mix(in srgb,var(--strong) 55%,transparent)}}
+
+/* ---------- "Drag to explore" ---------- */
+html.night body.workspace .scene-meta>span{font:500 10px/1.5 var(--ns-mono);letter-spacing:.16em;text-transform:uppercase;color:rgb(238 240 234 / .66)}
+@media(max-width:760px){html.night body.workspace .scene-meta>span{font-size:9px;letter-spacing:.14em}}
+html.night body.workspace .header-upgraded.ns-scrub:not(.ns-explored) .scene-meta>span{opacity:calc(1 - clamp(0,var(--hero-p) / .18,1))}
+/* After a real drag (or arrow key) the hint slides away and stays gone for the session. */
+html.night body.workspace .header-upgraded.ns-explored .scene-meta>span{opacity:0;visibility:hidden;translate:-8px 0;transition:opacity .45s var(--ns-ease),translate .7s var(--ns-ease),visibility 0s linear .7s}
+
+/* ---------- Arrival: the motif draws in once, after the title has risen ---------- */
+@media(prefers-reduced-motion:no-preference){
+ html.night:not([data-motion=off]) body.workspace .header-upgraded .hero-copy>h1::after{animation:ns-hero-motif 1.1s cubic-bezier(.16,1,.3,1) .3s backwards}
+}
+@keyframes ns-hero-motif{from{clip-path:inset(-2px 100% -2px 0)}to{clip-path:inset(-2px 0 -2px 0)}}
+
+/* ---------- Reduced motion: calm and static ---------- */
+@media(prefers-reduced-motion:reduce){
+ html.night body.workspace .header-upgraded .hero-copy>h1::after{animation:none}
+ html.night body.workspace .header-upgraded.ns-explored .scene-meta>span{transition:none;translate:none}
+}
+:root[data-motion=off] body.workspace .header-upgraded.ns-explored .scene-meta>span{transition:none}
+
+@media print{
+ html.night body.workspace .header-upgraded .hero-copy>h1::after,html.night body.workspace .header-upgraded .workspace-actions::before,html.night body.workspace .header-upgraded .hero-copy>:is(.team,.eyebrow)::before{display:none}
+ html.night body.workspace .header-upgraded .hero-copy>h1>.ns-title-line-mask{clip-path:none}
+}
