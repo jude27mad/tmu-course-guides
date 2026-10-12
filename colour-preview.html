@@ -416,8 +416,8 @@ footer{margin-top:34px;display:flex;justify-content:space-between;gap:12px;flex-
   <footer><span>From Fall 2026 CEN100 documents on D2L and confirmed course-team clarifications.</span><button class="reset" id="reset">Clear my ticks</button><span class="site-credit"><a href="privacy.html">Privacy</a></span></footer>
 </div>
 
-<script src="assets/cen-schedule.js?v=20261012-desk1"></script>
-<script>
+<script type="module">
+import {SCHEDULE} from './assets/cen-schedule.mjs?v=20261012-desk1';
 (function(localStorage){
 
 const I={
@@ -581,8 +581,8 @@ const CONFIRMED=[
 const OPEN=[
  ["FMEA \u201cEnvironmental\u201d","Real-world conditions, or impact on the environment? Escalated to the Head GA. Official clarification pending."]
 ];
-// Same unchanged records as the CEN guide (assets/cen-schedule.js); no second copy.
-const SCHEDULE=window.CEN_SCHEDULE;
+// Same canonical schedule as the CEN guide; no second copy.
+
 
 const KEY="cen100-g9-ticks";
 let ticks={};try{ticks=JSON.parse(localStorage.getItem(KEY)||"{}")||{}}catch(e){ticks={}}
@@ -1115,9 +1115,8 @@ setupContactLookup();
     clear: () => values.clear()
   };
 })());
-</script>
 
-<script>
+
 (() => {
   const palettes = {
     gold:   {name:"Original gold", colour:"#F5BE0B", light:"#FFF4CF", dark:"#352B08"},

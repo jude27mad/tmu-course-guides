@@ -26,23 +26,27 @@ test('extracted records deep-equal the array in the pre-move root guide',t=>{
   assert.deepEqual(plain(SCHEDULE),plain(vm.runInNewContext('('+literal+')')));
 });
 
-test('one copy: the classic script feeds both window.CEN_SCHEDULE and the module export',()=>{
-  const context=vm.createContext({});context.window=context;
-  vm.runInContext(read('assets/cen-schedule.js'),context);
+test('one copy: pure module records also feed the asynchronous classic compatibility script',async()=>{
+  assert.equal(globalThis.CEN_SCHEDULE,undefined,'importing data does not create a route global');
+  const context=vm.createContext({moduleSchedule:SCHEDULE});context.window=context;
+  // The legacy classic shim imports the canonical module asynchronously.
+  const classic=read('assets/cen-schedule.js').replace(/import\(['"][^'"]+['"]\)/g,'Promise.resolve({SCHEDULE:moduleSchedule})');
+  await vm.runInContext(classic,context);
   assert.deepEqual(plain(context.CEN_SCHEDULE),plain(SCHEDULE));
   // Already loaded by the CEN page: a second evaluation keeps the page's array instead of replacing it.
-  const first=context.CEN_SCHEDULE;vm.runInContext(read('assets/cen-schedule.js'),context);assert.equal(context.CEN_SCHEDULE,first);
-  assert.equal(globalThis.CEN_SCHEDULE,SCHEDULE);
+  const first=context.CEN_SCHEDULE;await vm.runInContext(classic,context);assert.equal(context.CEN_SCHEDULE,first);
   assert.doesNotMatch(read('assets/cen-schedule.js'),/^\s*(import|export)\s/m,'classic script');
-  assert.equal((read('assets/cen-schedule.mjs').match(/\bdate:"\d{4}/g)||[]).length,0,'module holds no second copy');
+  assert.equal((read('assets/cen-schedule.js').match(/\bdate:"\d{4}/g)||[]).length,0,'classic shim holds no second copy');
 });
 
-test('the CEN page loads the shared schedule before its inline script and keeps no copy of its own',()=>{
+test('the CEN page mounts its guide first and keeps schedule/calendar code in the route module',()=>{
   const html=read('cen100/index.html');
-  const shared=html.search(/<script src="\.\.\/assets\/cen-schedule\.js\?v=[\w-]+"><\/script>/),inline=html.indexOf('const SCHEDULE=window.CEN_SCHEDULE');
-  assert.ok(shared>0&&inline>shared,'classic schedule script precedes the inline guide script');
+  const scripts=[...html.matchAll(/<script\b[^>]*data-route-module[^>]*src="([^"]+)"[^>]*>/g)].map(match=>match[1]);
+  assert.match(scripts[0]||'',/\/cen-guide\.mjs/,'CEN guide mounts before its enhancements');
+  assert.doesNotMatch(html,/const SCHEDULE=window\.CEN_SCHEDULE|<script[^>]*src="[^\"]*cen-schedule\.js/,'no classic route script');
   assert.equal((html.match(/\{id:"integrity"/g)||[]).length,0,'no embedded schedule records');
-  assert.match(html,/UID:cen100-f26-\$\{event\.id\}-jude27mad-github-io/,'calendar UIDs unchanged');
-  assert.match(html,/URL:https:\/\/jude27mad\.github\.io\/tmu-course-guides\/cen100\//,'calendar URL points at /cen100/');
+  const guide=read('assets/cen-guide.mjs');
+  assert.match(guide,/UID:cen100-f26-\$\{event\.id\}-jude27mad-github-io/,'calendar UIDs unchanged');
+  assert.match(guide,/URL:https:\/\/jude27mad\.github\.io\/tmu-course-guides\/cen100\//,'calendar URL points at /cen100/');
   assert.match(html,/<body[^>]*data-course="cen100"/,'storage keys stay course-derived');
 });
