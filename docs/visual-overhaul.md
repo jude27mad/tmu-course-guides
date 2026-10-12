@@ -14,7 +14,7 @@ These counts include instances and are geometry measurements, not GPU frame-rate
 
 Three 0.186.1/WebGL2 uses original studio-light geometry converted through PMREM once, physical transmission, controlled iridescence, shaped highlights and a reusable 128 × 128 surface field. Calculus flow and its corrected surface normals are shader-driven; its geometry is not rebuilt each frame. Compatible shell/panel geometry is instanced. No recurring shadow, full-screen fluid simulation or extra full-resolution blur pass is required.
 
-The vendor module is 575,531 bytes / 144,056 gzip, 1,033 compressed bytes larger than the prior module. The six WebP posters together are 303,558 bytes; each is below 64 KiB. Each course initially loads its corresponding poster, not all six. The artwork modules remain native ES modules and require no GitHub Pages build pipeline.
+The vendor module is 575,531 bytes / 144,056 gzip, 1,033 compressed bytes larger than the prior module. The six WebP posters together are 301,152 bytes; each is below 64 KiB. Each course initially loads its corresponding poster, not all six. The artwork modules remain native ES modules and require no GitHub Pages build pipeline.
 
 The single scene frame owner pauses offscreen, when the document is hidden, and when the header is paused; it resumes after Back/Forward restoration. Sustained slow frames lower resolution and disable dispersion. Pointer and section changes retain the accepted camera response. Context loss, thrown rendering errors and nonthrowing shader-link errors all return safely to the matching poster and stop the GPU loop. Shader callbacks record a failure; renderer disposal happens after the active rendering operation.
 
