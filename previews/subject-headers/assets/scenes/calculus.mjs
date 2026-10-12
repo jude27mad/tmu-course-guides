@@ -16,5 +16,5 @@ export function createCalculus(p){
  const dot=mesh(root,new T.SphereGeometry(.045,16,12),new T.MeshBasicMaterial({color:'#e5fff0'}));
  const tangent=mesh(root,new T.CylinderGeometry(.009,.009,1.1,6),new T.MeshBasicMaterial({color:'#f0ffe8',transparent:true,opacity:.65}));
  const up=new T.Vector3(0,1,0),direction=new T.Vector3();let disposed=false;
- return{root,bounds:[6.1,3.6],caption:'Continuous change',setQuality(){},react(){},update(t,dt,{still=false}={}){t=still?3:t;uniforms.time.value=t;const x=1.6*Math.sin(t*.27),y=.72*Math.sin(1.18*x+t*.23)+.18*Math.sin(t*.28)+.08*x,slope=.72*1.18*Math.cos(1.18*x+t*.23)+.08;dot.position.set(x,y+.045,0);tangent.position.copy(dot.position);tangent.quaternion.setFromUnitVectors(up,direction.set(1,slope,0).normalize());},dispose(){if(!disposed){disposed=true;disposeScene(root);}}};
+ return{root,bounds:[6.1,3.6],caption:'Continuous change',setQuality(){},react(){},update(t,dt,{still=false}={}){uniforms.time.value=t;const x=1.6*Math.sin(t*.27),y=.72*Math.sin(1.18*x+t*.23)+.18*Math.sin(t*.28)+.08*x,slope=.72*1.18*Math.cos(1.18*x+t*.23)+.08;dot.position.set(x,y+.045,0);tangent.position.copy(dot.position);tangent.quaternion.setFromUnitVectors(up,direction.set(1,slope,0).normalize());},dispose(){if(!disposed){disposed=true;disposeScene(root);}}};
 }

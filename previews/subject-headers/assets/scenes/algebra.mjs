@@ -16,7 +16,7 @@ export function createAlgebra(p){
  const lines=new T.BufferGeometry();lines.setAttribute('position',new T.Float32BufferAttribute(tracks,3));volume.add(new T.LineSegments(lines,new T.LineBasicMaterial({color:'#c9b5ee',transparent:true,opacity:.22,depthWrite:false})));
  const axes=['#efc7fd','#a1c6ee','#fff1cf'].map(c=>arrow(root,new T.MeshBasicMaterial({color:c}))),basis=[[1.75,0,0],[0,1.75,0],[0,0,1.75]];
  let disposed=false;
- return{root,bounds:[4.5,4.5],caption:'Linear transformations',setQuality(mode){dots.setDrawRange(0,mode==='balanced'?3000:count);},react(){},
- update(t,dt,{still=false}={}){const m=sphereTransform(still?7:t);surface.visible=m[8]>.08;volume.matrix.set(m[0],m[1],m[2],0,m[3],m[4],m[5],0,m[6],m[7],m[8],0,0,0,0,1);volume.matrixWorldNeedsUpdate=true;for(let i=0;i<3;i++){const b=basis[i],v=[m[0]*b[0]+m[1]*b[1]+m[2]*b[2],m[3]*b[0]+m[4]*b[1]+m[5]*b[2],m[6]*b[0]+m[7]*b[1]+m[8]*b[2]];axes[i].group.visible=Math.hypot(...v)>.08;if(axes[i].group.visible)axes[i].set([0,0,0],v);}},
+ return{root,bounds:[4.5,4.5],caption:'Linear transformations',setQuality(){},react(){},
+ update(t,dt,{still=false}={}){const m=sphereTransform(t);surface.visible=m[8]>.08;volume.matrix.set(m[0],m[1],m[2],0,m[3],m[4],m[5],0,m[6],m[7],m[8],0,0,0,0,1);volume.matrixWorldNeedsUpdate=true;for(let i=0;i<3;i++){const b=basis[i],v=[m[0]*b[0]+m[1]*b[1]+m[2]*b[2],m[3]*b[0]+m[4]*b[1]+m[5]*b[2],m[6]*b[0]+m[7]*b[1]+m[8]*b[2]];axes[i].group.visible=Math.hypot(...v)>.08;if(axes[i].group.visible)axes[i].set([0,0,0],v);}},
  dispose(){if(!disposed){disposed=true;disposeScene(root);}}};
 }

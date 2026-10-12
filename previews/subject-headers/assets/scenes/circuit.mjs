@@ -9,7 +9,7 @@ function toothOutline(teeth,module,internal=false){
  for(let n=0;n<teeth;n++){
   const center=n*2*Math.PI/teeth;
   const flank=r=>Math.PI/(2*teeth)+(internal?1:-1)*(involute(Math.max(base,r))-atPitch);
-  const radii=[foot,Math.max(base,Math.min(foot,tip)),(foot+tip)/2,tip];
+  const radii=internal?[foot,(foot+tip)/2,tip]:[foot,Math.max(base,foot),(Math.max(base,foot)+tip)/2,tip];
   for(const r of radii)points.push([r*Math.cos(center-flank(r)),r*Math.sin(center-flank(r))]);
   for(const r of [...radii].reverse())points.push([r*Math.cos(center+flank(r)),r*Math.sin(center+flank(r))]);
  }
@@ -46,6 +46,6 @@ export function createCircuit(p){
  const indicator=mesh(root,new T.TorusGeometry(2.38,.014,6,144,Math.PI*.34),light,[0,0,.02]);indicator.name='signal-stream';
  let speed=1,clock=0,disposed=false;
  return{root,bounds:[5.2,5.2],caption:'Planetary motion',setQuality(){},urgency(state){speed=state==='close'?1.35:state==='soon'?1.15:1;light.color.set(state==='close'?p.signal:p.accent);},react(){},
- update(t,dt,{still=false}={}){if(!still)clock+=dt*speed;const s=planetaryState(still?0:clock);sun.rotation.z=s.sun;carrier.rotation.z=s.carrier;planets.forEach(g=>g.rotation.z=s.planet-s.carrier+Math.PI/18);indicator.rotation.z=-.6+(still?0:clock*.18);},
+ update(t,dt,{still=false}={}){if(!still)clock+=dt*speed;const s=planetaryState(clock);sun.rotation.z=s.sun;carrier.rotation.z=s.carrier;planets.forEach(g=>g.rotation.z=s.planet-s.carrier+Math.PI/18);indicator.rotation.z=-.6+clock*.18;},
  dispose(){if(!disposed){disposed=true;disposeScene(root);}}};
 }
