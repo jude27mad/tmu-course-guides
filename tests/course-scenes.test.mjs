@@ -20,3 +20,29 @@ for(const [name,create]of [['circuit',createCircuit],['calculus',createCalculus]
  scene.root.traverse(o=>{if(o.geometry){calls++;triangles+=(o.geometry.index?.count||o.geometry.attributes.position.count)/3*(o.count||1);}});
  assert.ok(calls<50,`${calls} draw calls`);assert.ok(triangles<100000,`${triangles} triangles`);console.log(`${name}: ${calls} meshes, ${Math.round(triangles)} triangles`);scene.dispose();
 });
+test('Engineering optics and signals stay bounded through repeated interaction and all deadline states',()=>{
+ const scene=createCircuit({accent:'#edbba7',signal:'#ff7198'});
+ assert.equal(typeof scene.setQuality,'function','new sculpture supports adaptive optics');
+ const geometry=new Set(),materials=new Set();
+ scene.root.traverse(o=>{if(o.geometry)geometry.add(o.geometry);if(o.material)materials.add(o.material);});
+ for(const mode of ['full','balanced','software'])for(const urgency of ['calm','soon','close']){
+  scene.setQuality(mode);scene.urgency(urgency);
+  for(let i=0;i<100;i++){scene.react();scene.update(i*.1,.016,{still:i===99,impulse:1});scene.root.updateMatrixWorld(true);
+   scene.root.traverse(o=>{if(o.geometry){assert.ok(geometry.has(o.geometry));assert.ok(materials.has(o.material));}assert.ok(o.matrixWorld.elements.every(Number.isFinite));});
+  }
+ }
+ let triangles=0,calls=0;scene.root.traverse(o=>{if(o.geometry){calls++;triangles+=(o.geometry.index?.count||o.geometry.attributes.position.count)/3*(o.count||1);}});
+ assert.ok(calls<=10,`${calls} meshes would exceed the two-pass draw budget`);assert.ok(triangles<=50000);
+ assert.ok(scene.root.getObjectByName('signal-stream'),'signals are an integrated part of the sculpture');scene.dispose();
+});
+for(const [name,create]of [['liquid vortex',createCalculus],['optical crystal',createAlgebra]])test(`${name} reuses finite geometry through maximum impulses and quality changes`,()=>{
+ const scene=create({accent:'#b9dfc9',signal:'#ff8aa9'});assert.equal(typeof scene.setQuality,'function');
+ const geometry=new Set(),materials=new Set();scene.root.traverse(o=>{if(o.geometry)geometry.add(o.geometry);if(o.material)materials.add(o.material);});
+ for(const mode of ['full','balanced','software']){
+  scene.setQuality(mode);for(let i=0;i<100;i++){scene.react();scene.update(i*.23,.016,{still:i===99,impulse:1});scene.root.updateMatrixWorld(true);
+   scene.root.traverse(o=>{assert.ok(o.matrixWorld.elements.every(Number.isFinite));if(o.geometry){assert.ok(geometry.has(o.geometry));assert.ok(materials.has(o.material));assert.ok([...o.geometry.attributes.position.array].every(Number.isFinite));assert.ok([...o.geometry.attributes.normal.array].every(Number.isFinite));}});
+  }
+ }
+ let calls=0,triangles=0;scene.root.traverse(o=>{if(o.geometry){calls++;triangles+=(o.geometry.index?.count||o.geometry.attributes.position.count)/3*(o.count||1);}});
+ assert.ok(calls<=10);assert.ok(triangles<=50000);scene.dispose();
+});

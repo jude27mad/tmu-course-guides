@@ -2,3 +2,4 @@ export {Scene,Group,PerspectiveCamera,WebGLRenderer,Color,Vector3,Matrix4,Quater
 export {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 export {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 export {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
+export {DataTexture,RepeatWrapping,RGBAFormat,UnsignedByteType,IcosahedronGeometry,OctahedronGeometry} from 'three';

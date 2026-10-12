@@ -10,7 +10,7 @@ One Fall 2026 course companion with a shared course switcher and light/dark appe
 
 ## Visual overhaul — October 11, 2026
 
-Full-width graphite scenes use the original salmon, mint and lavender colours. Engineering has a layered circuit with deadline-driven signals; Calculus I has a flowing metallic ribbon; Linear Algebra has a kinetic solid cube cluster that separates and reassembles. These headers are abstract course artwork; exact teaching diagrams remain in the study studio. Pointer and section changes move the camera. The same mathematical geometry also drives an animated Canvas2D fallback.
+Full-width graphite scenes use the original salmon, mint and lavender colours. Engineering has a suspended signal engine with deadline-driven light; Calculus I has a folded liquid-metal vortex; Linear Algebra has a faceted optical crystal that opens around intersecting planes. Physical glass, studio reflections and controlled iridescence give the objects depth. These headers are abstract course artwork; exact teaching diagrams remain in the study studio. Pointer and section changes move the camera. Matching offline renders provide first paint and unsupported-device fallback.
 
 GSAP timelines and Flip coordinate section changes, assignment sheets, study expansion, search, tools, disclosure panels and completion reordering. Native scrolling remains. The header pause button pauses the scene independently of interface transitions. Device reduced motion is respected by default; opening a link with `?motion=full` explicitly selects and remembers full motion. Offscreen and hidden scenes stop rendering. Course dates, saved records and study interactions are preserved.
 

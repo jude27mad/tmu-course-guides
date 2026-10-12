@@ -1,52 +1,61 @@
-# Course scenes and interface motion
+# Course header artwork and interface motion
 
-The October 11 overhaul follows the agreed full-width graphite art direction, keeping salmon/mint/lavender accents and the existing course workspace.
+The current headers use original optical sculptures on a graphite stage, with the existing salmon, mint and lavender course identities.
 
-## Rendering
+| Course | Artwork | Visible geometry | Meshes |
+| --- | --- | ---: | ---: |
+| CEN100 | Suspended ceramic/chrome signal engine, optical core and deadline-driven channels | 45,436 triangles | 8 |
+| MTH140 | Folded liquid-metal vortex, optical lens and mint flow | 34,416 triangles | 4 |
+| MTH141 | Twenty bevelled crystal panels, chrome core and intersecting planes | 1,338 triangles | 5 |
 
-Three 0.186.1 uses WebGL2, physical materials, environment reflections and merged geometry. The renderer is deliberately narrower than the previous WebGPU/TSL bundle: 572,577 bytes before compression versus approximately 1.08 MB previously. This is a transfer-size result, not a claim that WebGL is inherently faster. RoomEnvironment is generated once and disposed after PMREM conversion. No recurring shadow or full-screen bloom pass is required.
+These counts include instances and are geometry measurements, not GPU frame-rate results. The scene owner exposes actual render-pass calls and triangles in the header's diagnostic data attributes when WebGL runs. `renderer.info.autoReset` is disabled so the frame measurement includes transmission passes.
 
-The current sculpture budgets are 11 meshes / 21,088 triangles for Engineering, 1 / 1,800 for Calculus, and 27 / 8,100 for Linear Algebra. Pixel ratio is capped at 1.5 for coarse pointers and 1.8 otherwise. Sustained slow frames lower resolution and target about 30 fps. A single frame owner pauses when the document is hidden, the header leaves the viewport, motion is paused or reduced motion is requested. Returning from back/forward cache resumes it.
+## Rendering and material quality
 
-Canvas2D fallback projects the same geometry through the same camera. It preserves signal movement, camera response and the kinetic sculpture when WebGL2 cannot initialize or loses its context. Its material appearance is simpler than the GPU renderer. It is not evidence of GPU shader appearance or physical-device smoothness.
+Three 0.186.1/WebGL2 uses original studio-light geometry converted through PMREM once, physical transmission, controlled iridescence, shaped highlights and a reusable 128 × 128 surface field. Calculus flow and its corrected surface normals are shader-driven; its geometry is not rebuilt each frame. Compatible shell/panel geometry is instanced. No recurring shadow, full-screen fluid simulation or extra full-resolution blur pass is required.
 
-The current headers are abstract course artwork: a layered signal core, a continuous twisting ribbon, and a kinetic solid cube cluster. Exact mathematics remains in the unchanged study studio; the header captions no longer present the artwork as an instructional graph.
+The vendor module is 575,531 bytes / 144,056 gzip, 1,033 compressed bytes larger than the prior module. The six WebP posters together are 303,558 bytes; each is below 64 KiB. Each course initially loads its corresponding poster, not all six. The artwork modules remain native ES modules and require no GitHub Pages build pipeline.
 
-## Interaction choreography
+The single scene frame owner pauses offscreen, when the document is hidden, and when the header is paused; it resumes after Back/Forward restoration. Sustained slow frames lower resolution and disable dispersion. Pointer and section changes retain the accepted camera response. Context loss, thrown rendering errors and nonthrowing shader-link errors all return safely to the matching poster and stop the GPU loop. Shader callbacks record a failure; renderer disposal happens after the active rendering operation.
 
-GSAP 3.15.0 and Flip are locally bundled. Course departure runs for 500 ms and the whole-page perspective entrance for 950 ms. Sections turn/slide for 720 ms; assignment opening runs for 700 ms and closing 340 ms. The unchanged studio expansion is 520 ms, disclosure/search 300 ms, and reordering 400 ms. Original DOM nodes retain saved input, event listeners and focus handling. The outgoing section is inert during the overlap. Interrupting a timeline settles its callbacks before the next owner takes over.
+## First paint and unsupported rendering
 
-Native scroll is retained. Locomotive Scroll is not included because discrete transitions and camera progress do not need a second scroll engine. The documented ideas used here are coordinated timelines, camera interpolation, merged scene geometry, visibility-driven rendering and adaptive quality, not a copied portfolio interface.
+Landscape and portrait posters are path-traced offline from the production geometry, shared camera poses and original lighting arrangement. They use Mitsuba's material approximations rather than the live Three shader pipeline; they are not browser/GPU screenshots. The initial poster fades only after a successful WebGL render. Unsupported devices retain the polished image, with a restrained compositor float controlled by the same pause, reduced-motion and visibility state. The previous striped Canvas2D approximation is no longer the user-facing fallback.
 
-## Build and verify
+No new header inputs or visible explanatory copy were added. The sculptures are abstract course identities; exact instructional mathematics remains in the unchanged study tools.
+
+## Accepted interface motion
+
+The existing GSAP 3.15.0/Flip implementation is retained. Whole-content course departure is 500 ms and entrance 950 ms; sections turn/slide for 720 ms; assignment opening is 700 ms and closing 340 ms. Search/disclosure and completion motions are unchanged. Native scrolling, DOM identity, saved input and focus handling are preserved. Header pause remains independent from interface motion. Device reduced motion is respected by default; `?motion=full` explicitly selects and remembers full motion.
+
+## Build and verification
 
 ```sh
 npm ci --prefix tools/scene-build
 npm run build --prefix tools/scene-build
 npm ci --prefix tools/ui-build
-npm run build --prefix tools/ui-build
-node --test tests/*.test.mjs tests/scene-lifecycle.cjs
+node --test tests/*.test.mjs tests/scene-lifecycle.cjs tests/scene-rendering.cjs
 npm test --prefix tools/ui-build
 ```
 
-The static files are already built and GitHub Pages needs no build pipeline. Dependency versions and license files are checked in.
+Reproduce the offline poster assets with a Python environment containing `tools/scene-build/requirements-posters.txt`, then:
 
-Verification performed: 31 mathematical/data/geometry tests; scene lifecycle fallback tests; real timed GSAP playback/interruption tests; six course workflows with motion on/off, preserved notes/sections, Back/Forward, close/reopen, completion event count and studio state. Browser layout checks cover 320, 360, 390, 412, 600, 768, 820, 1024, 1180, 1366 and 1920 widths for all three pages. They are viewport tests, not physical-device certification. The cloud browser has no WebGL context, so browser visual verification covers the live Canvas2D path. Physical iPad/Android GPU appearance and sustained frame rate remain unmeasured.
+```sh
+node tools/scene-build/export-posters.mjs /tmp/course-header-geometry
+python tools/scene-build/render-posters.py /tmp/course-header-geometry assets/scenes/posters --samples 768
+```
+
+Fresh verification: 41 Node tests cover course data/math, finite geometry, repeated impulses, material/resource ownership, poster fallback, shader failure, quality downgrade and scene lifecycle. The GPU renderer used in lifecycle tests is deliberately a stub; those tests do not establish actual GPU shading. Real timed GSAP playback and all six course/motion workflows pass, preserving notes, sections, search, drawers, tools, Back/Forward and study state.
+
+CPU-only model update samples on this host averaged 0.018 ms for Engineering and 0.004 ms for Algebra; Calculus updates were below 0.001 ms. These are JavaScript update measurements only, not GPU FPS claims. Exact live GPU shading/glass sorting and sustained physical iPad/Android/desktop frame rate remain unmeasured in this environment. Target frame rates are 60 fps on representative desktop and 30 fps sustained on supported mobile hardware, with adaptive quality; these are targets, not certification.
+
+Analytics remains disabled. Course information, progress/storage keys and study interactions are unchanged.
 
 ## Primary references
 
-- [Active Theory founder interview](https://www.commarts.com/webpicks/active-theory-2): coordinated interaction, navigation and polish.
-- [Bruno Simon's public portfolio source](https://github.com/brunosimon/folio-2025): rendering, quality, camera and reveal systems.
-- [Locomotive Scroll documentation](https://scroll.locomotive.ca/docs/): scroll lifecycle and shared ticker integration, evaluated but not added.
-- [GSAP timelines](https://gsap.com/docs/v3/GSAP/Timeline/) and [Flip](https://gsap.com/docs/v3/Plugins/Flip/): interruption and layout continuity.
-- [Three physical materials](https://threejs.org/docs/pages/MeshPhysicalMaterial.html) and [RoomEnvironment](https://threejs.org/docs/pages/RoomEnvironment.html): material response and image-based lighting.
-
-Analytics stays disabled. No course data or storage keys are changed by the rendering system.
-
-## Header cinema revision
-
-The subsequent user review rejected the wireframe aesthetic and requested large solid 3D artwork plus whole-page movement. The headers now use abstract kinetic sculpture: layered signal core, flowing metallic ribbon, and a 27-cell solid cluster. These are artistic course identities; exact calculus and algebra demonstrations remain in the unchanged study content. Header captions no longer claim that the sculpture is a y=x² plot or a determinant demonstration.
-
-Course changes use a GSAP departure/entrance of the whole content area with perspective rotation, depth, translation and blur. Section transitions turn and slide the content, and header camera/geometry respond to taps. Native course links remain usable with modifiers or reduced motion. The saved header pause setting affects only the scene; it no longer disables interface choreography. `?motion=full` is an explicit user override for full motion, remembered locally.
-
-Additional primary references evaluated: [parallel scene/page timelines](https://tympanus.net/codrops/2026/10/08/building-parallel-page-transitions-with-gsap-and-react-router/), [interactive extruded clusters](https://tympanus.net/codrops/2026/08/12/creating-an-interactive-3d-cluster-with-three-js-tsl-and-three-start/), and [glass/cube sculpture interaction](https://tympanus.net/codrops/2026/08/31/volatile-nexus-tinkering-with-glass-caustics-cubes-and-sound-in-three-js/). Implementation is original plain-JavaScript code, not a copied asset or a React migration.
+- [Glass, refraction and bounded interaction](https://tympanus.net/codrops/2026/08/31/volatile-nexus-tinkering-with-glass-caustics-cubes-and-sound-in-three-js/).
+- [Procedural vortex composition and baked-flow optimization](https://tympanus.net/codrops/2025/03/10/rendering-a-procedural-vortex-inside-a-glass-sphere-with-three-js-and-tsl/).
+- [Face-oriented geometry and coordinated panel movement](https://tympanus.net/codrops/2026/08/12/creating-an-interactive-3d-cluster-with-three-js-tsl-and-three-start/).
+- [Three physical materials](https://threejs.org/docs/pages/MeshPhysicalMaterial.html).
+- [Mitsuba surface scattering models](https://mitsuba.readthedocs.io/en/stable/src/generated/plugins_bsdfs.html).
+- [Bruno Simon's public portfolio source](https://github.com/brunosimon/folio-2025), [Active Theory's documented approach](https://www.commarts.com/webpicks/active-theory-2), [Locomotive Scroll documentation](https://scroll.locomotive.ca/docs/), and [GSAP timelines](https://gsap.com/docs/v3/GSAP/Timeline/): previously implemented interaction choreography, lifecycle and camera direction.

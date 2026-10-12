@@ -1,30 +1,49 @@
-import {T,material,mesh,box,segments,disposeScene} from './primitives.mjs?v=20261011-cinema3';
+import {T,mesh,tubes,disposeScene} from './primitives.mjs?v=20261012-future1';
+import {surface,sketchMeshes} from './future-geometry.mjs?v=20261012-future1';
+import {createFutureLook} from './future-look.mjs?v=20261012-future1';
 import {routePoint} from './scene-math.mjs';
-// The routes, pulses and fallback share these physical coordinates.
+
 export function createCircuit(p){
- const root=new T.Group(),routes=[],outlines=[],plates=[],plateMeshes=[];
- const surface=material('#202a2b',{roughness:.24,metalness:.8,clearcoat:1}),glass=material('#384443',{transparent:true,opacity:.42,depthWrite:false,roughness:.15,metalness:.55});
- const copper=material('#b27666',{metalness:.9,roughness:.23}),edge=material(p.accent,{emissive:p.accent,emissiveIntensity:.15,metalness:.8});
- function plate(w,h,z,mat,fill){plateMeshes.push(box(root,[w,h,.14],[0,0,z],mat,.06));plates.push({kind:'poly',points:[[-w/2,-h/2,z+.05],[w/2,-h/2,z+.05],[w/2,h/2,z+.05],[-w/2,h/2,z+.05]],fill,stroke:'#8c9a95',alpha:.9});outlines.push([[-w/2,-h/2,z+.05],[w/2,-h/2,z+.05]],[[w/2,-h/2,z+.05],[w/2,h/2,z+.05]],[[w/2,h/2,z+.05],[-w/2,h/2,z+.05]]);}
- plate(6.7,5.7,-.9,surface,'#26363b');plate(6.25,5.25,-.4,glass,'#34494e');plate(5.9,4.9,.08,surface,'#293b41');
- // Four banks of finely spaced traces, with 45-degree fan-out.
- for(let side=0;side<4;side++)for(let i=0;i<13;i++){
-  const d=(i-6)*.139,spread=d*1.9,angle=side*Math.PI/2,c=Math.cos(angle),s=Math.sin(angle);
-  const base=[[.77,d,.15],[1.18+Math.abs(d)*.12,d,.15],[1.7+Math.abs(d)*.15,spread,.15],[side%2?2.4:2.87,spread,.15]];
-  routes.push(base.map(([x,y,z])=>[c*x-s*y,s*x+c*y,z]));
- }
- const routeLines=routes.flatMap(r=>r.slice(1).map((b,i)=>[r[i],b]));segments(root,routeLines,copper,.012);segments(root,outlines,edge,.008);
- plate(1.57,1.57,.19,material('#182324',{roughness:.17,metalness:.75}),'#263536');
- plate(1.39,1.39,.55,glass,'#567277');plate(1.14,1.14,.75,material(p.signal,{emissive:p.signal,emissiveIntensity:.5,metalness:.7}),'#ba7284');
- const coreLines=[];for(const d of [.51,.59])coreLines.push([[-d,-d,.33],[d,-d,.33]],[[d,-d,.33],[d,d,.33]],[[d,d,.33],[-d,d,.33]],[[-d,d,.33],[-d,-d,.33]]);
- segments(root,coreLines,edge,.009);
- const ticks=[];for(let i=0;i<24;i++){let x=-2.7+i*.23;ticks.push([[x,-2.36,.15],[x,-2.28,.15]]);}segments(root,ticks,copper,.006);
- const glowMat=new T.MeshBasicMaterial({color:p.accent}),pulses=new T.InstancedMesh(new T.SphereGeometry(.026,8,6),glowMat,26*7);root.add(pulses);
- const m=new T.Matrix4(),v=new T.Vector3(),point=[0,0,0],signals=[];let speed=.095,signal=p.accent,phase=0,boost=0;
- return{root,bounds:[7.4,6.3],caption:'SIGNAL / LIVE',
- urgency(level){speed=level==='close'?.29:level==='soon'?.17:.095;signal=level==='calm'?p.accent:'#ff6492';glowMat.color.set(signal);},react(){boost=1;},
- update(t,dt,{still=false,impulse=0}={}){for(let i=0;i<plateMeshes.length;i++){const extra=still?0:(Math.sin(t*.7)*.08+impulse*.5)*(i<3?i-2:i-2);plateMeshes[i].position.z=plates[i].points[0][2]-.05+extra;}phase=still?.43:phase+dt*speed*(1+boost);boost=Math.max(0,boost-dt*.7);signals.length=0;
-  for(let i=0;i<26;i++){const r=routes[i*2],progress=(phase+i*.137)%1;for(let k=0;k<7;k++){let pos=(progress-k*.009+1)%1;routePoint(r,pos,point);m.makeScale(1-k*.105,1-k*.105,1-k*.105);m.setPosition(v.set(...point).setZ(.185));pulses.setMatrixAt(i*7+k,m);}signals.push({route:r,t:progress});}pulses.instanceMatrix.needsUpdate=true;},
- sketch(){return [...plates.map((shape,i)=>({...shape,metal:true,points:shape.points.map(([x,y,z])=>[x,y,z+(plateMeshes[i].position.z-(shape.points[0][2]-.05))])})),...outlines.map(points=>({kind:'line',points,stroke:'#a29185',alpha:.55,width:.6})),...routes.map(points=>({kind:'line',points,stroke:'#bd8a77',alpha:.6,width:1})),...coreLines.map(points=>({kind:'line',points,stroke:p.accent,alpha:.65,width:.7})),...signals.map(({route,t})=>({kind:'line',points:Array.from({length:9},(_,i)=>routePoint(route,Math.max(0,t-i*.007),[0,0,.18])),stroke:signal,width:2,glow:9,alpha:1}))];},
- dispose(){disposeScene(root);}};
+ const root=new T.Group(),look=createFutureLook(p),mat=look.materials,poses=[],routes=[];
+ const shellSample=(u,v)=>{
+  const a=-.91+u*1.82,t=v*Math.PI*2,taper=.7+.3*Math.sin(u*Math.PI),r=1.98+.11*Math.sin(u*Math.PI);
+  const round=x=>Math.sign(x)*Math.pow(Math.abs(x),.55);
+  const radial=r+.34*taper*round(Math.cos(t));return[radial*Math.cos(a),radial*Math.sin(a),.33*taper*round(Math.sin(t))+.06*Math.sin(a*2)];
+ };
+ const shell=new T.InstancedMesh(surface(56,20,shellSample,{caps:true}),mat.ceramic,3);root.add(shell);
+ const trim=new T.InstancedMesh(surface(56,8,(u,v)=>{const a=-.91+u*1.82,t=v*Math.PI*2,r=2.01+.11*Math.sin(u*Math.PI)+.29+.024*Math.cos(t);return[r*Math.cos(a),r*Math.sin(a),.27+.024*Math.sin(t)];},{caps:true}),mat.metal,3);root.add(trim);
+ const copper=mat.metal.clone();copper.color.set('#bd806c');copper.roughness=.25;
+ const baseRoutes=[];for(let j=0;j<3;j++)baseRoutes.push(Array.from({length:30},(_,i)=>{const u=i/29,a=-.84+u*1.68,r=1.82+j*.072+.11*Math.sin(u*Math.PI);return[r*Math.cos(a),r*Math.sin(a),.34+.035*j];}));
+ const temporary=new T.Group(),track=tubes(temporary,baseRoutes,copper,.012),channels=new T.InstancedMesh(track.geometry,copper,3);root.add(channels);
+ const ribs=new T.InstancedMesh(new T.RoundedBoxGeometry(.055,.29,.08,2,.02),mat.metal,21);root.add(ribs);
+ const core=mesh(root,new T.IcosahedronGeometry(.64,1),mat.metal);core.name='signal-core';
+ const interior=Array.from({length:3},(_,j)=>Array.from({length:40},(_,i)=>{const t=i/39*Math.PI*2,a=t+j*Math.PI*2/3;return[.96*Math.cos(a),.96*Math.sin(a),.17*Math.sin(t*2+j)];}));
+ tubes(root,interior,mat.light,.014);
+ const lens=mesh(root,new T.SphereGeometry(1.25,40,22,.35,Math.PI*1.35,.25,Math.PI*.8),mat.glass);lens.rotation.set(.2,-.2,.6);
+ const spark=new T.InstancedMesh(new T.SphereGeometry(.025,8,6),new T.MeshBasicMaterial({color:p.accent}),9*6);spark.name='signal-stream';root.add(spark);
+ const m=new T.Matrix4(),q=new T.Quaternion(),e=new T.Vector3(),scale=new T.Vector3(1,1,1),position=new T.Vector3(),point=[0,0,0],ribMatrix=new T.Matrix4(),orientation=root.rotation.clone();
+ let phase=0,speed=.095,burst=0,disposed=false;
+ for(let i=0;i<3;i++){poses.push(new T.Matrix4());for(const path of baseRoutes)routes.push(path.map(p=>[...p]));}
+ const model={root,bounds:[5.7,5.7],caption:'SIGNAL / LIVE',setQuality:mode=>look.setQuality(mode),
+  urgency(level){speed=level==='close'?.29:level==='soon'?.17:.095;spark.material.color.set(level==='calm'?p.accent:p.signal);mat.light.color.copy(spark.material.color);},
+  react(){burst=1;},
+  update(t,dt,{still=false,impulse=0}={}){
+   burst=Math.max(0,burst-dt*.65);const reaction=still?0:Math.max(burst,impulse),open=.045+(still?0:Math.sin(t*.55)*.035)+reaction*.32;
+   look.update(t,reaction,still);
+   for(let i=0;i<3;i++){
+    const a=i*Math.PI*2/3,tilt=(i-1)*.28+reaction*.07;
+    q.setFromEuler(orientation.set(tilt,-tilt*.65,a));position.set(Math.cos(a)*open,Math.sin(a)*open,(i-1)*.24);
+    poses[i].compose(position,q,scale);shell.setMatrixAt(i,poses[i]);trim.setMatrixAt(i,poses[i]);channels.setMatrixAt(i,poses[i]);
+    for(let j=0;j<baseRoutes.length;j++)for(let k=0;k<baseRoutes[j].length;k++){e.set(...baseRoutes[j][k]).applyMatrix4(poses[i]);const target=routes[i*3+j][k];target[0]=e.x;target[1]=e.y;target[2]=e.z;}
+    for(let j=0;j<7;j++){const angle=-.7+j*.23,r=2.08;position.set(r*Math.cos(angle),r*Math.sin(angle),.375);q.setFromAxisAngle(e.set(0,0,1),angle-Math.PI/2);ribMatrix.compose(position,q,scale).premultiply(poses[i]);ribs.setMatrixAt(i*7+j,ribMatrix);}
+   }
+   for(const o of [shell,trim,channels,ribs])o.instanceMatrix.needsUpdate=true;
+   phase=still?.3:(phase+dt*speed*(1+reaction*.5))%1;
+   for(let i=0;i<routes.length;i++)for(let j=0;j<6;j++){routePoint(routes[i],(phase+i*.117-j*.012+1)%1,point);m.makeScale(1-j*.13,1-j*.13,1-j*.13);m.setPosition(...point);spark.setMatrixAt(i*6+j,m);}spark.instanceMatrix.needsUpdate=true;
+   core.rotation.set(still?.2:t*.15,.3+(still?0:Math.sin(t*.23)*.2),.15);lens.rotation.z=.6+(still?0:Math.sin(t*.16)*.07);
+  },
+  sketch(){return sketchMeshes(root,'#9dafba');},
+  dispose(){if(!disposed){disposed=true;disposeScene(root);look.disposeTextures();}}
+ };
+ model.update(0,0,{still:true});return model;
 }

@@ -1,19 +1,39 @@
-import {T,material,mesh,box,disposeScene} from './primitives.mjs?v=20261011-cinema3';
-// Abstract kinetic sculpture for the header; instructional maths stays in the studio.
+import {T,mesh,tubes,disposeScene} from './primitives.mjs?v=20261012-future1';
+import {triangularPanel,sketchMeshes} from './future-geometry.mjs?v=20261012-future1';
+import {createFutureLook} from './future-look.mjs?v=20261012-future1';
+
 export function createAlgebra(p){
- const root=new T.Group(),cells=[],faces=[[0,1,2,3],[4,7,6,5],[0,4,5,1],[3,2,6,7],[1,5,6,2],[0,3,7,4]],corners=[[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1],[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1]];
- const glass=material('#aaa2d1',{metalness:.48,roughness:.14,clearcoat:1,iridescence:.28,iridescenceIOR:1.3}),dark=material('#4c4968',{metalness:.72,roughness:.22,clearcoat:1});
- for(let x=-1;x<=1;x++)for(let y=-1;y<=1;y++)for(let z=-1;z<=1;z++){
-  if(x===0&&y===0&&z===0)continue;
-  const m=box(root,[.71,.71,.71],[x*.82,y*.82,z*.82],(x+y+z)%3===0?dark:glass,.065);cells.push({m,xyz:[x,y,z]});
+ const root=new T.Group(),look=createFutureLook(p),mat=look.materials,faces=[];
+ mat.metal.color.lerp(new T.Color(p.accent),.22);mat.metal.roughness=.17;mat.metal.iridescence=.4;
+ const base=new T.IcosahedronGeometry(1.72,0),positions=base.attributes.position;
+ const a=new T.Vector3(),b=new T.Vector3(),c=new T.Vector3(),center=new T.Vector3(),normal=new T.Vector3(),x=new T.Vector3(),y=new T.Vector3(),basis=new T.Matrix4();
+ let glassCount=0,metalCount=0,radius=0;
+ for(let i=0;i<positions.count;i+=3){
+  a.fromBufferAttribute(positions,i);b.fromBufferAttribute(positions,i+1);c.fromBufferAttribute(positions,i+2);center.copy(a).add(b).add(c).multiplyScalar(1/3);normal.copy(center).normalize();y.copy(a).sub(center).normalize();x.crossVectors(y,normal).normalize();basis.makeBasis(x,y,normal);radius=a.distanceTo(center)*.96;
+  const glass=normal.z>.25;faces.push({center:center.clone(),normal:normal.clone(),q:new T.Quaternion().setFromRotationMatrix(basis),glass,index:glass?glassCount++:metalCount++});
  }
- const core=box(root,[.57,.57,.57],[0,0,0],material(p.signal,{emissive:p.signal,emissiveIntensity:1.8,metalness:.5,roughness:.16}),.05);
- let burst=0,phase=0;
- return{root,bounds:[5.2,5.0],caption:'KINETIC / SPACE',react(){burst=1;},
- update(t,dt,{still=false,impulse=0}={}){phase=still?1.5:t;burst=Math.max(0,burst-dt*.65);const open=still?.12:.22+.33*(.5+.5*Math.sin(t*.8))+Math.max(burst,impulse)*.65;
-  for(const {m,xyz:[x,y,z]}of cells){const wave=still?0:Math.sin(t*.65+y*.75)*.19;m.position.set(x*(.84+open)+wave*y,y*(.84+open),z*(.84+open));m.rotation.set(z*open*.4,x*open*.4,y*open*.25);m.updateMatrix();}
-  core.rotation.set(phase*.3,phase*.42,phase*.13);},
- sketch(){const v=new T.Vector3(),objects=[];
-  for(const {m,xyz}of [...cells,{m:core,xyz:[0,0,0]}]){const luminous=m===core,half=luminous?.285:.355;const pts=corners.map(c=>v.set(c[0]*half,c[1]*half,c[2]*half).applyMatrix4(m.matrix).toArray());for(let i=0;i<faces.length;i++)objects.push({kind:'poly',points:faces[i].map(j=>pts[j]),fill:luminous?'#ff8ab6':i===0?'#cfc4f0':i===4?'#6a648d':'#9185b4',stroke:luminous?'#ffe2ef':'#ddd3ff',alpha:1,width:.5,metal:true,glow:luminous?10:0});}
-  return objects;},dispose(){disposeScene(root);}};
+ base.dispose();
+ const geometry=triangularPanel(radius,.17,.044),metal=new T.InstancedMesh(geometry,mat.metal,metalCount),glass=new T.InstancedMesh(geometry,mat.glass,glassCount);metal.frustumCulled=glass.frustumCulled=false;root.add(metal,glass);
+ const core=mesh(root,new T.OctahedronGeometry(.66,1),mat.metal);core.name='optical-core';
+ const planeMat=new T.MeshBasicMaterial({color:p.accent,transparent:true,opacity:.10,depthWrite:false,side:T.DoubleSide}),planes=[];
+ for(let i=0;i<3;i++){const g=new T.PlaneGeometry(1.55,1.55);g.rotateX(i===1?Math.PI/2:0);g.rotateY(i===2?Math.PI/2:0);planes.push(g);}
+ const planeGeometry=T.mergeGeometries(planes);planes.forEach(g=>g.dispose());mesh(root,planeGeometry,planeMat);
+ const framePaths=[];for(let i=0;i<3;i++){
+  const points=[[-.78,-.78,0],[.78,-.78,0],[.78,.78,0],[-.78,.78,0],[-.78,-.78,0]];
+  framePaths.push(points.map(([x,y,z])=>i===1?[x,z,y]:i===2?[z,y,x]:[x,y,z]));
+ }
+ tubes(root,framePaths,mat.light,.014);
+ const m=new T.Matrix4(),q=new T.Quaternion(),hinge=new T.Quaternion(),localX=new T.Vector3(1,0,0),pos=new T.Vector3(),scale=new T.Vector3(1,1,1);
+ let burst=0,disposed=false;
+ const model={root,bounds:[5.5,5.5],caption:'KINETIC / SPACE',setQuality:mode=>look.setQuality(mode),react(){burst=1;},
+  update(t,dt,{still=false,impulse=0}={}){
+   burst=Math.max(0,burst-dt*.65);const response=still?0:Math.max(burst,impulse);look.update(t,response,still);
+   for(let i=0;i<faces.length;i++){
+    const f=faces[i],wave=still?0:(.5+.5*Math.sin(t*.55+i*.38)),open=.12+wave*.18+response*.27;
+    pos.copy(f.center).addScaledVector(f.normal,open);hinge.setFromAxisAngle(localX,(wave*.14+response*.30)*(i%2?1:-1));q.copy(f.q).multiply(hinge);m.compose(pos,q,scale);(f.glass?glass:metal).setMatrixAt(f.index,m);
+   }
+   metal.instanceMatrix.needsUpdate=glass.instanceMatrix.needsUpdate=true;core.rotation.set(.2,still?.3:t*.12,-.15);
+  },
+  sketch(){return sketchMeshes(root,'#c0b8d4');},dispose(){if(!disposed){disposed=true;disposeScene(root);look.disposeTextures();}}
+ };model.update(0,0,{still:true});return model;
 }
