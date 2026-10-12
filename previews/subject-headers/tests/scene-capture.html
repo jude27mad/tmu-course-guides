@@ -6,5 +6,5 @@
 const getContext=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type,opts){return getContext.call(this,type,{...opts,preserveDrawingBuffer:true});};
 const q=new URLSearchParams(location.search),course=q.get('course')||'cen100',art=document.querySelector('.header-art');
 const {mountScene}=await import('../assets/course-scene.mjs?v=20261012-subject1');const handle=await mountScene(art,course);
-let count=0;const timer=setInterval(()=>{document.querySelector('#status').textContent=JSON.stringify(art.dataset);if(art.dataset.renderer!=='webgl2'){clearInterval(timer);return;}if(+art.dataset.sceneFrame<30)return;const img=new Image();img.alt='Actual rendered frame '+(++count);img.src=art.querySelector('canvas').toDataURL('image/png');document.querySelector('#captures').append(img);if(count===2){clearInterval(timer);handle.dispose();}},1500);
+setInterval(()=>{document.querySelector('#status').textContent=JSON.stringify(art.dataset);},500);
 </script>

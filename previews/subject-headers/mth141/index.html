@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="MTH141 Fall 2026 at TMU: assessment dates, section labs, announced coverage, course rules and recommended practice.">
+<title>MTH141: Linear Algebra | TMU Course Guides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/hub.css">
+<link rel="stylesheet" href="../assets/math.css">
+<link rel="stylesheet" href="../assets/visuals.css?v=20261011-labs2">
+<link rel="stylesheet" href="../assets/math-studio.css?v=20261011-studio3">
+<link rel="stylesheet" href="../assets/lab-composition.css?v=20261011-studio3">
+<link rel="stylesheet" href="../assets/lab-challenges.css?v=20261011-studio3">
+<link rel="stylesheet" href="../assets/editorial.css?v=20261011-editorial2">
+<link rel="stylesheet" href="../assets/workspace.css?v=20261011-cinema3">
+<link rel="stylesheet" href="../assets/course-header.css?v=20261012-subject1">
+<link rel="stylesheet" href="../assets/guide-motion.css?v=20261011-cinema3">
+<!-- Keep the first transition snapshot in the final course layout. -->
+<script type="module" src="../assets/math-guide.mjs?v=20261011-cinema3"></script>
+<script type="module" src="../assets/math-labs.mjs?v=20261011-cinema3"></script>
+<script type="module" src="../assets/editorial.mjs?v=20261011-editorial2"></script>
+<script type="module" src="../assets/workspace.mjs?v=20261011-cinema3"></script>
+<script type="module" src="../assets/course-header.mjs?v=20261012-subject1"></script>
+</head>
+<body class="editorial" data-course="mth141">
+<a class="skip-link" href="#math-main">Skip to course content</a>
+<main class="math-wrap" id="math-main">
+  <header class="course-heading">
+    <div><p class="eyebrow"><span id="course-code">MTH141</span> · Fall 2026</p><h1 id="course-title">Linear Algebra</h1><p class="subline" id="course-organization"></p></div>
+    <div id="course-figure"></div>
+  </header>
+  <div class="section-panel">
+    <div class="section-control"><label for="section-select">My section</label><select id="section-select"><option value="">Choose section</option></select></div>
+    <p class="section-brief" id="section-brief" aria-live="polite"></p>
+  </div>
+  <section class="next-layout" aria-label="Upcoming assessments">
+    <div class="next-assessment" id="next-assessment"></div>
+    <aside class="after-next"><h2>After that</h2><ul class="after-list" id="after-list"></ul></aside>
+  </section>
+  <div class="quick-confirm" id="quick-confirm" hidden><p id="quick-message" role="status"></p><button class="quick-link" id="undo-complete" type="button">Undo</button></div>
+  <section class="quick-find" aria-label="Find and do">
+    <label for="guide-search">Search assessments and topics</label><input type="search" id="guide-search" placeholder="Try determinants or quiz" autocomplete="off" aria-controls="guide-search-results" aria-describedby="search-status">
+    <p class="search-status" id="search-status" role="status"></p><ul class="search-results" id="guide-search-results" hidden></ul>
+    <div class="quick-links"><button class="quick-link" id="quick-work" type="button">This week's work</button><button class="quick-link" id="quick-contacts" type="button">Contacts</button><a class="quick-link" href="https://courses.torontomu.ca/" target="_blank" rel="noopener">D2L ↗</a></div>
+    <label class="inline-check"><input type="checkbox" id="hide-completed">Hide completed assessments</label>
+  </section>
+  <nav class="math-tabs" role="tablist" aria-label="MTH141 guide views">
+    <button type="button" id="tab-assessments" role="tab" aria-controls="panel-assessments" aria-selected="true" data-view="assessments">Assessments</button>
+    <button type="button" id="tab-topics" role="tab" aria-controls="panel-topics" aria-selected="false" tabindex="-1" data-view="topics">Topic map</button>
+    <button type="button" id="tab-help" role="tab" aria-controls="panel-help" aria-selected="false" tabindex="-1" data-view="help">Rules &amp; help</button>
+  </nav>
+  <section class="math-panel" id="panel-assessments" role="tabpanel" aria-labelledby="tab-assessments">
+    <div class="panel-intro"><p>Dates, coverage and preparation in one place.</p><span id="assessment-count"></span></div>
+    <ol class="assessment-list" id="assessment-list"></ol><p class="no-results" id="assessment-empty" hidden>No assessments match these filters.</p>
+  </section>
+  <section class="math-panel" id="panel-topics" role="tabpanel" aria-labelledby="tab-topics" hidden>
+    <div class="review-progress"><label for="review-bar"><span>My skill review</span><span id="review-count"></span></label><progress id="review-bar" value="0" max="1"></progress><p class="muted">Self-reported checks. Topic order and approximate lecture hours follow the course outline; they do not estimate your personal study time.</p></div>
+    <div class="topic-grid" id="topic-grid"></div><p class="no-results" id="topic-empty" hidden>No topics match this search.</p>
+  </section>
+  <section class="math-panel" id="panel-help" role="tabpanel" aria-labelledby="tab-help" hidden>
+    <div class="rule-grid" id="rule-cards"></div>
+    <article class="rule-card" id="course-notice" style="margin-top:14px"></article>
+    <article class="rule-card" id="contact-card" tabindex="-1" style="margin-top:14px"><h2>Who to ask</h2><div class="contact-grid" id="section-contacts"></div><p>Course coordinator: <strong id="coordinator"></strong>.</p><p class="muted">Check D2L for contact details and timetable updates. Your lecture and lab codes end in 1 and 2: for example, 241 and 242 both mean Section 24.</p><div class="tool-actions"><a class="button" href="https://courses.torontomu.ca/" target="_blank" rel="noopener">Open D2L</a><a class="button" href="https://www.torontomu.ca/student-life-and-learning/learning-support/" target="_blank" rel="noopener">Learning support</a><a class="button" href="https://www.torontomu.ca/senate/academic_consideration_requests/" target="_blank" rel="noopener">Academic consideration</a></div></article>
+    <article class="rule-card" style="margin-top:14px"><h2>Free textbooks &amp; practice</h2><div id="textbook-list"></div><p class="muted">Use the Topic map for the exact exercise references. This guide lists references and study prompts; the official course files remain on D2L.</p></article>
+    <details class="rule-card" style="margin-top:14px"><summary style="cursor:pointer;font-weight:800">Sources &amp; date checks</summary><p class="muted">Reviewed October 7, 2026. Course outlines and supplied D2L announcements provide the dates and rules. Newer official announcements take precedence.</p><ul class="sources-list" id="sources-list"></ul></details>
+  </section>
+  <details class="tools" id="math-tools">
+    <summary>Guide tools</summary>
+    <div class="tools-body">
+      <details id="course-grading"><summary>Course grading</summary>
+  <section class="grading" aria-label="Course grading">
+    <div class="grading-header"><h2>Course grading</h2><span>50% overall to pass</span></div>
+    <div class="grade-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="grade-labels"><div><strong id="quiz-weight"></strong><span>Lab quizzes</span></div><div><strong id="midterm-weight"></strong><span>Midterm test</span></div><div><strong id="final-weight"></strong><span>Final exam</span></div></div>
+    <p class="grade-note" id="quiz-policy"></p>
+  </section>
+      </details>
+      <details id="work-tools"><summary>What should I work on?</summary><label for="work-range">Unrecorded assessments and my study targets</label><select id="work-range"><option value="week">Next 7 days</option><option value="all">All unfinished</option></select><p class="tool-note">Uses your completion records and personal target dates. Preparation checklists are tracked separately.</p><ul class="work-list" id="work-list"></ul></details>
+      <details><summary>Add assessments to my calendar</summary><label class="inline-check"><input type="checkbox" id="calendar-upcoming" checked>Upcoming dates only</label><label class="inline-check"><input type="checkbox" id="calendar-labs">Include lab dates from my section timetable</label><p class="tool-note">The midterm uses its published Toronto time. Lab quizzes export as tentative all-day events because the quiz start time is not confirmed. Choose a section to include them. The Thanksgiving conflict and unscheduled final are excluded.</p><div class="tool-actions"><button class="button" type="button" id="calendar-download">Download calendar (.ics)</button></div><p class="status" id="calendar-status" role="status"></p></details>
+      <details><summary>Move or back up my progress</summary><p class="tool-note">Includes this course’s preparation checks, assessment completion, topic skill checks, notes and study targets. Import adds progress and fills empty notes and targets; existing conflicting entries stay as they are.</p><div class="tool-actions"><button class="button" type="button" id="backup-export">Export my progress</button></div><label for="backup-import">Import a MTH141 backup</label><input type="file" id="backup-import" accept=".json,application/json"><p class="status" id="backup-status" role="status"></p></details>
+      <p class="tool-note">Your choices and progress stay in this browser. There is no account or automatic device sync.</p><p class="status" id="guide-status" role="status"></p>
+    </div>
+  </details>
+  <details class="rule-card release-notes" id="guide-updates">
+    <summary>What's changed? <span class="pill active" id="updates-badge" hidden>New updates</span></summary>
+    <p><strong>October 11, 2026 — Larger scenes, connected motion</strong></p><ul><li>Full-width circuit, calculus ribbon and transformation lattice. Pause motion from the header.</li><li>Animated assignments, search, tools, study panels and completion. Guide tools are beside Search.</li></ul>
+    <p><strong>October 11, 2026 — Course headers in motion</strong></p><ul><li>Dimensional circuit, calculus and linear algebra illustrations, with smooth course transitions. Motion respects device settings and settles after a short demonstration.</li><li>The existing course colours, content and saved progress stay the same.</li></ul>
+    <p><strong>October 11, 2026 — An organised course workspace</strong></p><ul><li>Assignments open first. Study and Course info have their own navigation, with compact tabs on phones.</li><li>Original course colours, interactive maths, assignment details and saved progress are preserved. Past assignments remain available; calendar exports, contacts and grading are in Course info.</li></ul>
+    <p><strong>October 11, 2026 — A new visual identity</strong></p><ul><li>Larger course titles and mathematical header diagrams, a shared editorial layout, and direct tool shortcuts at the top.</li><li>A dark interactive studio with clearer plots, followed by a quieter semester timeline and assessment list. Phone, tablet and desktop layouts share the same visual system.</li></ul>
+    <p><strong>October 11, 2026 — Math, made visible</strong></p><ul><li>Build two matrix transformations, reverse their order and compare the results. Default interactions use taps, with exact values available on demand.</li><li>Find the first incorrect step in four worked examples per course, then see the correction and a visual explanation.</li></ul>
+    <p><strong>October 11, 2026 — Interactive math labs</strong></p><ul><li>Switch between course experiments, try prediction questions, and expand the lab on a tablet. Open relevant labs from the Topic map.</li><li>Guide tools are back at the top: grading, work planning, calendars and progress backups.</li></ul>
+    <p><strong>October 11, 2026 — Visual tools</strong></p><ul><li>Tap a week on the semester timeline and open assessments in a detail sheet.</li><li>Explore a tangent or vector linear combination with interactive controls.</li></ul>
+    <p><strong>October 9, 2026 — Fewer taps</strong></p>
+    <ul><li>Visible search opens matching assessments and topics across tabs. This week's work, contacts and D2L are one tap away.</li><li>Mark the next assessment done with Undo, using your existing completion record. Grading, calendars and backups are below the cards in Guide tools.</li></ul>
+    <p><strong>October 7, 2026 — Easier to scan</strong></p>
+    <ul>
+      <li>Added coverage previews to closed assessment cards and visible arrows on upcoming assessments, with a View requirements cue on the next assessment.</li>
+      <li>Refined text weights, borders, badges and spacing across all three courses. Card contents open with a gentle transition; reduced-motion preferences are respected.</li>
+    </ul>
+    <p><strong>October 7, 2026 — Three-course guide</strong></p>
+    <ul>
+      <li>Added course switching between CEN100, MTH140 and MTH141, independent saved sections and progress, and shared Auto, Dark and Light appearance.</li>
+      <li>Added all 34 Linear Algebra sections, with lab times, rooms, Academic Assistants and lecture instructors.</li>
+      <li>Added five quiz weeks, the October 16 midterm, a pending final-exam card, grading weights of 20% / 35% / 45%, and announced Quiz 1, Quiz 2 and midterm coverage.</li>
+      <li>Added the midterm format and preparation rules, eight outline topic blocks and all 40 recommended-practice rows, with skill-review checks and violet vector-transformation visuals.</li>
+      <li>Explained the textbook-edition mismatch and the V3 Thanksgiving-week teaching schedule. Later quiz coverage, the midterm room and the final schedule remain pending.</li>
+      <li>Added preparation checklists, separate completion records, private notes, study targets, direct assessment links, search, unfinished-work planning, calendar exports and course-specific progress backups.</li>
+      <li>Published the three-course README and added these release notes with an unread-update badge. Checked phone, desktop and enlarged-text layouts, progress restoration, backups and calendars.</li>
+    </ul>
+  </details>
+  <footer class="math-footer"><p>Unofficial TMU course companion · Fall 2026<br>Created and maintained by Jude Ahmad.</p><p><a href="https://courses.torontomu.ca/" target="_blank" rel="noopener">Check official updates on D2L</a></p></footer>
+  <noscript><p>This guide needs JavaScript to display section-specific dates. Use the official course outline and announcements on D2L.</p></noscript>
+</main>
+<script src="../assets/hub.js"></script>
+<!-- Cloudflare Web Analytics temporarily paused on 2026-10-10; restore the beacon from Git history to resume. -->
+<script src="../assets/visuals.js?v=20261011-cinema3"></script>
+</body>
+</html>
+
