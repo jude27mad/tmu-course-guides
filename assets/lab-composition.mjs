@@ -6,7 +6,7 @@ const coord = point => `(${point.map(fmt).join(', ')})`;
 const matrixHTML = matrix => `<span class="cmp-matrix" role="img" aria-label="Matrix: row one ${fmt(matrix[0])}, ${fmt(matrix[1])}; row two ${fmt(matrix[2])}, ${fmt(matrix[3])}">${matrix.map(v=>`<span aria-hidden="true">${fmt(v)}</span>`).join('')}</span>`;
 
 /** Mount an independent experiment. Cleanup cancels playback and event listeners. */
-export function mountComposition(container) {
+export function mountComposition(container, {signal} = {}) {
   const uid = `composition-${++instance}`;
   let first = 'rotate', second = 'stretch', selectedSlot = 0;
   let raf = 0, disposed = false, playing = false;
@@ -125,8 +125,10 @@ export function mountComposition(container) {
     if(btn.dataset.action==='play')play();
   }
   function motionChange(){if(reduceMotion.matches&&playing)configure();}
-  host.addEventListener('click',onClick);
-  reduceMotion.addEventListener('change',motionChange);
+  host.addEventListener('click',onClick,{signal});
+  reduceMotion.addEventListener('change',motionChange,{signal});
   configure();
-  return function cleanup(){disposed=true;stop();host.removeEventListener('click',onClick);reduceMotion.removeEventListener('change',motionChange);host.remove();};
+  function cleanup(){if(disposed)return;disposed=true;signal?.removeEventListener('abort',cleanup);stop();host.removeEventListener('click',onClick);reduceMotion.removeEventListener('change',motionChange);host.remove();}
+  signal?.addEventListener('abort',cleanup,{once:true});
+  return cleanup;
 }
