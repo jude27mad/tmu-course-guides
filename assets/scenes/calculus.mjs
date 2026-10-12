@@ -1,27 +1,20 @@
-import {T,mesh,tubes,disposeScene} from './primitives.mjs?v=20261012-future1';
-import {surface,sketchMeshes} from './future-geometry.mjs?v=20261012-future1';
-import {createFutureLook} from './future-look.mjs?v=20261012-future1';
-
-export function vortexPoint(u,v){
- const a=u*Math.PI*2,b=v*Math.PI*2+a*2,major=1.48+.19*Math.sin(a*3)-.08*Math.cos(a*5);
- const tube=.51+.13*Math.cos(a*3)+.07*Math.cos(b*2-a*5),r=major+tube*Math.cos(b);
- return[r*Math.cos(a),r*Math.sin(a),tube*.82*Math.sin(b)+.32*Math.sin(a*3+Math.sin(b)*.7)];
-}
+import {T,mesh,disposeScene} from './primitives.mjs?v=20261012-subject1';
+// Many strands sample a moving family of smooth curves. Position and slope share one function.
+const functionGLSL=`float wave(float x,float z,float t){return 1.55*sin(1.18*x+1.5*z+t*.23)+.18*sin(z*2.1+t*.28)+.08*x;}`;
 export function createCalculus(p){
- const root=new T.Group(),look=createFutureLook(p),mat=look.materials;
- const liquid=mesh(root,surface(180,32,vortexPoint),mat.flow);liquid.frustumCulled=false;liquid.name='liquid-surface';
- const paths=Array.from({length:2},(_,j)=>Array.from({length:100},(_,i)=>{const a=i/99*Math.PI*2,r=.87+.10*Math.sin(a*3+j);return[r*Math.cos(a),r*Math.sin(a),.14*Math.sin(a*3+j)];}));
- const inner=tubes(root,paths,mat.light,.013);
- const lens=mesh(root,new T.SphereGeometry(2.34,48,26,.13,Math.PI*.88,.45,Math.PI*.68),mat.glass);lens.rotation.set(.62,.3,-.3);
- const rimPaths=Array.from({length:2},(_,j)=>Array.from({length:70},(_,i)=>{const a=.13+i/69*Math.PI*.88,b=j?.45+Math.PI*.68:.45;return[2.34*Math.sin(b)*Math.cos(a),2.34*Math.cos(b),-2.34*Math.sin(b)*Math.sin(a)];}));
- const rim=tubes(root,rimPaths,mat.metal,.009);rim.rotation.copy(lens.rotation);
- let burst=0,disposed=false;
- const model={root,bounds:[5.8,5.8],caption:'CONTINUOUS / CHANGE',setQuality:mode=>look.setQuality(mode),react(){burst=1;},
-  update(t,dt,{still=false,impulse=0}={}){
-   burst=Math.max(0,burst-dt*.65);look.update(still?1.4:t,still?0:Math.max(burst,impulse),still);
-   inner.rotation.z=still?.2:t*.085;liquid.rotation.z=still?-.2:Math.sin(t*.18)*.12-.2;
-   lens.rotation.z=-.3+(still?0:Math.sin(t*.12)*.035);rim.rotation.copy(lens.rotation);
-  },
-  sketch(){return sketchMeshes(root,'#b9d4ca');},dispose(){if(!disposed){disposed=true;disposeScene(root);look.disposeTextures();}}
- };model.update(0,0,{still:true});return model;
+ const root=new T.Group();root.name='calculus-ribbons';
+ const positions=[],uvs=[],indices=[],strands=80,steps=144;
+ for(let j=0;j<strands;j++){const z=-1.4+2.8*j/(strands-1);for(let i=0;i<=steps;i++){const x=-2.15+4.3*i/steps;for(const side of [-1,1]){positions.push(x,side*.014,z);uvs.push(i/steps,j/(strands-1));}if(i<steps){const a=(j*(steps+1)+i)*2;indices.push(a,a+1,a+2,a+1,a+3,a+2);}}}
+ const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(positions,3));geo.setAttribute('uv',new T.Float32BufferAttribute(uvs,2));geo.setIndex(indices);
+ const uniforms={time:{value:0},color:{value:new T.Color(p.accent)}};
+ const mat=new T.ShaderMaterial({uniforms,side:T.DoubleSide,transparent:true,depthWrite:false,
+ vertexShader:`uniform float time;varying vec2 vUv;${functionGLSL}void main(){vUv=uv;vec3 p=position;p.y+=wave(p.x,p.z,time);gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}`,
+ fragmentShader:'uniform float time;uniform vec3 color;varying vec2 vUv;void main(){float edge=smoothstep(0.,.1,vUv.x)*(1.-smoothstep(.85,1.,vUv.x));float pulse=pow(.5+.5*sin(vUv.x*7.-time*.65+vUv.y*2.),6.);float band=.45+.55*sin(vUv.y*3.14159);gl_FragColor=vec4(mix(color,vec3(.9,1.,.95),pulse*.25),edge*band*(.82+pulse*.18));}'});
+ mesh(root,geo,mat);
+ const tracePoints=[];for(let i=0;i<=160;i++)tracePoints.push(-2.15+4.3*i/160,0,0);
+ const trace=new T.BufferGeometry();trace.setAttribute('position',new T.Float32BufferAttribute(tracePoints,3));const traceMat=new T.ShaderMaterial({uniforms,transparent:true,vertexShader:`uniform float time;${functionGLSL}void main(){vec3 p=position;p.y=wave(p.x,0.,time)+.025;gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}`,fragmentShader:'void main(){gl_FragColor=vec4(.8,1.,.89,.85);}'});root.add(new T.Line(trace,traceMat));
+ const dot=mesh(root,new T.SphereGeometry(.045,16,12),new T.MeshBasicMaterial({color:'#e5fff0'}));
+ const tangent=mesh(root,new T.CylinderGeometry(.009,.009,1.1,6),new T.MeshBasicMaterial({color:'#f0ffe8',transparent:true,opacity:.65}));
+ const up=new T.Vector3(0,1,0),direction=new T.Vector3();let disposed=false;
+ return{root,bounds:[6.1,3.6],caption:'Continuous change',setQuality(){},react(){},update(t,dt,{still=false}={}){uniforms.time.value=t;const x=1.6*Math.sin(t*.27),y=1.55*Math.sin(1.18*x+t*.23)+.18*Math.sin(t*.28)+.08*x,slope=1.55*1.18*Math.cos(1.18*x+t*.23)+.08;dot.position.set(x,y+.045,0);tangent.position.copy(dot.position);tangent.quaternion.setFromUnitVectors(up,direction.set(1,slope,0).normalize());},dispose(){if(!disposed){disposed=true;disposeScene(root);}}};
 }

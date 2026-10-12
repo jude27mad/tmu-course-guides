@@ -19,3 +19,10 @@ export function routePoint(points,t,out=[0,0,0]){
  let metric=routeMetrics.get(points);if(!metric){const lengths=points.slice(1).map((p,i)=>Math.hypot(...p.map((v,j)=>v-points[i][j])));metric={lengths,total:lengths.reduce((a,b)=>a+b,0)};routeMetrics.set(points,metric);}const {lengths,total}=metric;let d=clamp(t)*total;
  for(let i=0;i<lengths.length;i++){if(d<=lengths[i]||i===lengths.length-1){const q=lengths[i]?d/lengths[i]:0;for(let j=0;j<3;j++)out[j]=points[i][j]+(points[i+1][j]-points[i][j])*q;break;}d-=lengths[i];}return out;
 }
+
+// Fixed annulus: Ns(ws-wc) + Np(wp-wc) = 0, Np(wp-wc) = -Nr*wc.
+export function planetaryState(t){const sun=t*.55,carrier=sun*24/84;return{sun,carrier,planet:carrier*(1-60/18)};}
+export function sphereTransform(time){
+ const states=[[1,0,0,0,1,0,0,0,1],[1.5,0,0,0,.8,0,0,0,.8],[1,.7,0,0,1,0,0,0,1],[1.25,.35,0,0,1,0,0,0,0],[1,0,0,0,1,0,0,0,1]];
+ const phase=((time%24)+24)%24/6,i=Math.floor(phase),u=phase-i,s=u*u*(3-2*u);return states[i].map((v,j)=>v+(states[i+1][j]-v)*s);
+}

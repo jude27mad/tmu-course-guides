@@ -24,3 +24,9 @@ Run `node --test tests/*.test.mjs`. Scene tests cover secant/tangent correctness
 Initial geometry: circuit 17 meshes / 11,028 triangles; calculus 9 / 7,684; algebra 14 / 1,150. Shared renderer is approximately 282 KB gzip; this is a build-size measurement, not a network or frame-rate claim.
 
 Actual WebGPU/WebGL2 appearance and sustained frame rate must be checked on GPU-capable devices. The cloud review browser has no working graphics context, so it exercises the complete fallback and interface rather than proving GPU rendering. Keep that distinction when reporting verification. Analytics remain disabled.
+
+
+## Subject-specific headers (October 12, 2026)
+Engineering now uses a 24/18/60-tooth fixed-ring planetary mechanism with involute teeth. Calculus samples smooth curves in mint ribbons and tracks an exact analytic tangent. Linear Algebra applies continuous 3×3 maps to a sphere and its basis, including a rank-two projection. Dragging controls the 3D orientation directly and release decays exponentially. Paused/offscreen scenes sleep; paused artwork permits page scrolling. Arrow keys rotate; Home resets. Reduced motion and independent pause remain supported.
+
+Visual references: Bartosz Ciechanowski’s Mechanical Watch/Gears, 3Blue1Brown’s Linear Transformations, and the selected Luminous Current Calculus concept. New folded-page logo is an original vector interpretation of the selected guide mark.
