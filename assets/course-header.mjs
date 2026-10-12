@@ -8,7 +8,7 @@ function mount(){
  art.setAttribute('role','img');art.setAttribute('aria-label',course==='cen100'?'A suspended signal engine with curved ceramic shells, optical glass and deadline-driven light.':course==='mth140'?'A folded liquid-metal vortex with mint light behind an optical lens.':'An optical crystal whose bevelled facets open around intersecting planes.');
  art.innerHTML='<div class="scene-atmosphere"></div>';
  header.prepend(art);header.classList.add('header-upgraded');
- const poster=document.createElement('img');poster.className='scene-poster';poster.alt='';poster.decoding='async';poster.fetchPriority='high';Object.assign(poster.dataset,posterPaths(course));poster.src=header.clientWidth<680?poster.dataset.tall:poster.dataset.wide;art.append(poster);
+ const poster=document.createElement('img');poster.className='scene-poster';poster.alt='';poster.decoding='async';poster.fetchPriority='high';Object.assign(poster.dataset,posterPaths(course));art.dataset.portrait=String(header.clientWidth<680);poster.src=header.clientWidth<680?poster.dataset.tall:poster.dataset.wide;art.append(poster);
  const copy=header.querySelector('.hero-copy');if(copy){const kicker=copy.querySelector('.team,.eyebrow');if(kicker)kicker.textContent=info[0];const h1=copy.querySelector('h1');if(course==='cen100'&&h1)h1.innerHTML='Intro to<br>Engineering';}
  const meta=document.createElement('div');meta.className='scene-meta';meta.innerHTML=`<span><i></i>${info[1]}</span><button class="scene-pause" type="button" aria-label="Pause animation" aria-pressed="false"></button>`;header.append(meta);
  const button=meta.querySelector('button');

@@ -47,6 +47,8 @@ python tools/scene-build/render-posters.py /tmp/course-header-geometry assets/sc
 
 Fresh verification: 41 Node tests cover course data/math, finite geometry, repeated impulses, material/resource ownership, poster fallback, shader failure, quality downgrade and scene lifecycle. The GPU renderer used in lifecycle tests is deliberately a stub; those tests do not establish actual GPU shading. Real timed GSAP playback and all six course/motion workflows pass, preserving notes, sections, search, drawers, tools, Back/Forward and study state.
 
+Native browser layout checks cover all three courses at viewport widths 320, 390, 412, 600, 768, 820, 1024, 1366 and 1920 pixels: 27 cases, with no horizontal overflow and all poster assets loaded. The review browser cannot create a WebGL context, so these checks establish responsive layout and fallback rendering only. Compact framing and Engineering title contrast follow the artwork's actual content width, including tablet layouts with the navigation sidebar.
+
 CPU-only model update samples on this host averaged 0.018 ms for Engineering and 0.004 ms for Algebra; Calculus updates were below 0.001 ms. These are JavaScript update measurements only, not GPU FPS claims. Exact live GPU shading/glass sorting and sustained physical iPad/Android/desktop frame rate remain unmeasured in this environment. Target frame rates are 60 fps on representative desktop and 30 fps sustained on supported mobile hardware, with adaptive quality; these are targets, not certification.
 
 Analytics remains disabled. Course information, progress/storage keys and study interactions are unchanged.

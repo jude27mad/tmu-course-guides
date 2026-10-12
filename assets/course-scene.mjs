@@ -26,7 +26,7 @@ export async function mountScene(art,course){
  }catch{software();}
  function size(){
   const r=art.getBoundingClientRect();width=Math.max(1,art.clientWidth||r.width);height=Math.max(1,art.clientHeight||r.height);camera.aspect=width/height;camera.updateProjectionMatrix();
-  const src=width<680?poster.dataset.tall:poster.dataset.wide;if(src&&poster.getAttribute('src')!==src)poster.src=src;
+  art.dataset.portrait=String(width<680);const src=width<680?poster.dataset.tall:poster.dataset.wide;if(src&&poster.getAttribute('src')!==src)poster.src=src;
   const dpr=Math.min(devicePixelRatio||1,coarse.matches?1.5:1.8)*quality;if(renderer){renderer.setPixelRatio(dpr);renderer.setSize(width,height,false);}dirty=true;wake();
  }
  function update(dt,still){
