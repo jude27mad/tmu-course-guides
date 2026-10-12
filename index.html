@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="assets/fonts/archivo.css?v=20261012-privacy1">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* Course-switch arrival: cover before first paint; assets/night/warp.mjs lifts it. */try{const raw=sessionStorage.getItem('night-warp');if(raw){sessionStorage.removeItem('night-warp');const w=JSON.parse(raw),root=document.documentElement;if(w&&Date.now()-w.t<5000&&/^#[0-9a-f]{6}$/i.test(w.color)){root.classList.add('ns-warp-in');root.style.setProperty('--ns-warp-color',w.color);root.dataset.nsWarp=raw;}}}catch{}</script>
 <title>CEN100 | TMU Course Guides</title>
 <meta name="description" content="TMU Fall 2026 course guides: CEN100 assignment deadlines, requirements and contacts, plus MTH140 and MTH141 assessment and section guides.">
 <link rel="stylesheet" href="assets/hub.css">
@@ -280,7 +281,9 @@ footer{margin-top:34px;display:flex;justify-content:space-between;gap:12px;flex-
 <!-- Keep the first transition snapshot in the final course layout. -->
 <script type="module" src="assets/editorial.mjs?v=20261011-editorial2"></script>
 <script type="module" src="assets/workspace.mjs?v=20261011-cinema3"></script>
-<script type="module" src="assets/course-header.mjs?v=20261012-subject1"></script>
+<script type="module" src="assets/course-header.mjs?v=20261012-night2"></script>
+<script type="module" src="assets/night/boot.mjs?v=20261012-night2"></script>
+<link rel="stylesheet" href="assets/night/layout.css?v=20261012-night2">
 </head>
 <body class="editorial" data-course="cen100">
 <div class="wrap">
@@ -728,6 +731,7 @@ const SCHEDULE=[
     {id:"failure-lab",item:"m3",date:"2026-10-14",title:"Failure Analysis Part 1 in lab (Section 29)",who:"sub",section:29,calendar:false},
     {id:"showcase-signup",item:"m6",date:"2026-11-18",title:"Showcase sign-up (around now; check D2L)",calendar:false}
 ];
+window.CEN_SCHEDULE=SCHEDULE;
 
 const KEY="cen100-g9-ticks";
 let ticks={};try{ticks=JSON.parse(localStorage.getItem(KEY)||"{}")||{}}catch(e){ticks={}}
@@ -1300,7 +1304,7 @@ setupContactLookup();
 })();
 </script>
 <script src="assets/hub.js?v=20261012-privacy1"></script>
-<script src="assets/visuals.js?v=20261011-cinema3"></script>
+<script src="assets/visuals.js?v=20261012-night2"></script>
 <!-- Cloudflare Web Analytics temporarily paused on 2026-10-10; restore the beacon from Git history to resume. -->
 </body>
 </html>

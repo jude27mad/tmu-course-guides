@@ -1,8 +1,9 @@
 /* One GSAP timeline per surface. Application state always changes synchronously. */
 import {gsap,Flip} from './vendor/gsap-3.15.0.mjs';
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-let paused=false,scenePaused=false,full=false;try{scenePaused=localStorage.getItem('guide-motion-paused')==='true';full=localStorage.getItem('guide-motion-level')==='full';}catch{}
-if(new URLSearchParams(location.search).get('motion')==='full'){full=true;scenePaused=false;try{localStorage.setItem('guide-motion-level','full');localStorage.setItem('guide-motion-paused','false')}catch{}}
+// The device's reduced-motion setting wins over any saved choice; ?motion=full applies to this page view only.
+let paused=false,scenePaused=false,full=false;try{scenePaused=localStorage.getItem('guide-motion-paused')==='true';localStorage.removeItem('guide-motion-level');}catch{}
+if(new URLSearchParams(location.search).get('motion')==='full'){full=true;scenePaused=false;}
 const forced=new URLSearchParams(location.search).get('motion')==='off';
 const tracks=new Map(), reflowOwner={};
 export const sceneMotionAllowed=()=>motionAllowed()&&!scenePaused;
@@ -76,8 +77,9 @@ export function dialogClose(el,done=()=>{},to){
 }
 
 const pageOwner={},pressOwner={},depthOwner=pageOwner;let depthOpen=false;
+// Content is readable from the first frame: a short rise, never a blur or a cover.
 export function enterPage(el=document.querySelector('.wrap,.math-wrap')){
- if(!el)return;cancel(pageOwner);return play(pageOwner,tl=>tl.fromTo(el,{opacity:.15,x:120,z:-250,rotationY:13,scale:.9,filter:'blur(7px)',transformPerspective:1500,transformOrigin:'50% 240px'},{opacity:1,x:0,z:0,rotationY:0,scale:1,filter:'blur(0px)',duration:.95,ease:'power3.inOut'}),()=>clear(el));
+ if(!el)return;cancel(pageOwner);return play(pageOwner,tl=>tl.fromTo(el,{opacity:.85,y:12},{opacity:1,y:0,duration:.35,ease:'power2.out'}),()=>clear(el));
 }
 export function leavePage(el,done=()=>{},direction=1){
  if(!el){done();return;}cancel(pageOwner);return play(pageOwner,tl=>tl.set(el,{transformPerspective:1500,transformOrigin:'50% 240px'}).to(el,{opacity:0,x:-160*direction,z:-300,rotationY:-16*direction,scale:.88,filter:'blur(8px)',duration:.5,ease:'power2.inOut'}),done);

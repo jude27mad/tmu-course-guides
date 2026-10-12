@@ -26,7 +26,7 @@ const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
  await wait(100);assert(reveal.progress()>0&&reveal.progress()<1);
  assert(Number($('one').style.opacity)>.35);
  await wait(450);assert.equal($('one').style.transform,'');assert.equal($('one').style.opacity,'');
- const page=M.enterPage($('panels'));assert.match($('panels').style.transform,/rotateY/,'the whole content has a real 3D entrance');await wait(110);assert(page.progress()>0&&page.progress()<1);await wait(950);assert.equal($('panels').style.transform,'');
+ const page=M.enterPage($('panels'));assert.match($('panels').style.transform,/translate/,'the content rises in');assert.doesNotMatch($('panels').style.filter||'',/blur\([1-9]/,'content is never blurred on entry');assert(Number($('panels').style.opacity)>=.85,'content starts readable');await wait(110);assert(page.progress()>0&&page.progress()<1);await wait(400);assert.equal($('panels').style.transform,'');
  const section=M.transitionPanel($('one'),$('two'));
  assert.ok(section.duration()>=.7);assert(!$('two').hidden);assert($('one').inert);assert.equal($('one').style.pointerEvents,'none');
  await wait(80);M.transitionPanel($('two'),$('three'),-1);

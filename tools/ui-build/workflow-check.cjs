@@ -10,6 +10,8 @@ const resources={interceptors:[requestInterceptor(async(request)=>{
  if(file.endsWith('.mjs')){const r=await esbuild.build({entryPoints:[file],bundle:true,write:false,format:'iife',logLevel:'silent',plugins:[{name:'preserve-native-module-url',setup(build){build.onLoad({filter:/\.mjs$/},async args=>({contents:fs.readFileSync(args.path,'utf8').replaceAll('import.meta.url',JSON.stringify('https://guide.test/'+path.relative(root,args.path).split(path.sep).join('/'))),loader:'js'}));}}]});return new Response(r.outputFiles[0].text,{headers:{'Content-Type':'application/javascript'}})}
  return new Response(fs.readFileSync(file),{headers:{'Content-Type':file.endsWith('.css')?'text/css':'application/javascript'}});
 })]};
+// jsdom delays history traversal behind long synchronous work, so wait for popstate rather than a fixed delay.
+const traversed=w=>new Promise(r=>{const t=setTimeout(r,3000);w.addEventListener('popstate',()=>{clearTimeout(t);setTimeout(r,50);},{once:true});});
 async function check(route,course,motion='off'){
  const filename=path.join(root,route,'index.html');
  const html=fs.readFileSync(filename,'utf8').replaceAll('type="module"','defer');
@@ -108,16 +110,16 @@ async function check(route,course,motion='off'){
   assert(!d.querySelector('.detail-sheet').open,'public section change closes sheet');
   assert.equal(d.activeElement,d.querySelector('.workspace-nav [data-workspace-view="info"]'),'public section change focuses its visible destination');
   click('.workspace-nav [data-workspace-view="info"]');click('.workspace-nav [data-workspace-view="assignments"]');
-  w.CourseVisuals.open(source,trigger);w.history.back();
-  await new Promise(r=>setTimeout(r,100));
+  w.CourseVisuals.open(source,trigger);const back=traversed(w);w.history.back();
+  await back;
   assert.equal(d.body.dataset.workspaceView,'info','Back with a sheet restores the destination section');
   assert(!d.querySelector('.detail-sheet').open,'Back closes the moved sheet');
   assert.equal(d.activeElement,d.querySelector('.workspace-nav [data-workspace-view="info"]'),'Back sheet closure focuses visible destination');
   assert(!d.activeElement.closest('[hidden],[inert]'),'route closure keeps focus outside outgoing hidden/inert content');
   assert.equal(source.closest('.workspace-panel').id,'workspace-assignments','route closure restores original row to its source');
   click('.workspace-nav [data-workspace-view="assignments"]');click('.workspace-nav [data-workspace-view="info"]');
-  w.history.back();await new Promise(r=>setTimeout(r,100));assert.equal(d.body.dataset.workspaceView,'assignments','Back restores section');
-  w.history.forward();await new Promise(r=>setTimeout(r,100));assert.equal(d.body.dataset.workspaceView,'info','Forward restores section');
+  {const p=traversed(w);w.history.back();await p;}assert.equal(d.body.dataset.workspaceView,'assignments','Back restores section');
+  {const p=traversed(w);w.history.forward();await p;}assert.equal(d.body.dataset.workspaceView,'info','Forward restores section');
   if(course!=='cen100'){
    click('.workspace-nav [data-workspace-view="study"]');click('[data-mode="explore"]');click('[data-lab="'+(course==='mth140'?'transforms':'complex')+'"]');
    const param=d.querySelector('#math-lab [data-number]');param.value='2';param.dispatchEvent(new w.Event('change',{bubbles:true}));

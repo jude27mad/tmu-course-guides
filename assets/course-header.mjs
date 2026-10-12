@@ -1,4 +1,4 @@
-import {sceneMotionAllowed as motionAllowed,setScenePaused as setPaused,preference} from './guide-motion.mjs?v=20261011-cinema3';
+import {sceneMotionAllowed as motionAllowed,setScenePaused as setPaused,preference} from './guide-motion.mjs?v=20261012-night2';
 import {posterPaths} from './scenes/framing.mjs?v=20261012-subject1';
 function mount(){
  const header=document.querySelector('.course-heading,.circuit-head');
@@ -17,6 +17,6 @@ function mount(){
  button.addEventListener('click',()=>setPaused(!preference().scenePaused));document.addEventListener('guide-motion-change',sync);sync();
  function staticArt(){if(art.dataset.renderer!=='poster')return;art.removeAttribute('tabindex');art.setAttribute('role','img');art.removeAttribute('aria-roledescription');art.setAttribute('aria-label',art.dataset.description);meta.hidden=true;}
  const fallbackObserver=new MutationObserver(staticArt);fallbackObserver.observe(art,{attributes:true,attributeFilter:['data-renderer']});
- import('./course-scene.mjs?v=20261012-subject1').then(m=>m.mountScene(art,course)).catch(()=>{art.dataset.renderer='poster';art.dataset.sceneReady='true';art.dataset.awake='true';staticArt();});
+ import('./course-scene.mjs?v=20261012-night2').then(m=>m.mountScene(art,course)).catch(()=>{art.dataset.renderer='poster';art.dataset.sceneReady='true';art.dataset.awake='true';staticArt();});
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
