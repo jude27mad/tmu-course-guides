@@ -36,7 +36,7 @@ export async function mountScene(art,course){
   if(!still)drag.step(dt);const blend=still?1:1-Math.exp(-dt*5);impulseGoal=Math.max(0,impulseGoal-dt*.65);impulse+=(impulseGoal-impulse)*blend;px+=(tx-px)*blend;py+=(ty-py)*blend;section+=(sectionGoal-section)*blend;entrance=still?1:Math.min(1,entrance+dt*.65);
   const entry=1-(1-entrance)**3,pose=framePose(course,width,height);camera.position.set(0,0,pose.distance*(1+(1-entry)*.2));camera.lookAt(0,0,0);camera.updateMatrixWorld();root.position.set(...pose.position);
   root.rotation.set(pose.rotation[0]+drag.pitch+py*.06,pose.rotation[1]+drag.yaw+px*.08+section*.3+Math.sin(time*.24)*.14,pose.rotation[2]+(1-entry)*.18);
-  camera.position.z=Math.max(camera.position.z,rotationFitDistance(course,width/height,[root.rotation.x,root.rotation.y,root.rotation.z]));camera.updateMatrixWorld();model.update(time,still?0:dt,{still,impulse});art.dataset.rotation=`${drag.yaw.toFixed(3)},${drag.pitch.toFixed(3)}`;root.updateMatrixWorld(true);key.position.x=-3+px*4;
+  camera.position.z=Math.max(camera.position.z,rotationFitDistance(course,width/height,[root.rotation.x,root.rotation.y,root.rotation.z],time));camera.updateMatrixWorld();model.update(time,still?0:dt,{still,impulse});art.dataset.rotation=`${drag.yaw.toFixed(3)},${drag.pitch.toFixed(3)}`;root.updateMatrixWorld(true);key.position.x=-3+px*4;
  }
  function frame(now){
   raf=0;if(disposed||document.hidden||!visible)return;const allowed=motionAllowed(),elapsed=last?now-last:16.7;
