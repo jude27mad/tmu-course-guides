@@ -5,7 +5,7 @@ import {readFile} from 'node:fs/promises';
 const require=createRequire(new URL('../tools/ui-build/package.json',import.meta.url));
 const {JSDOM}=require('jsdom'),{build}=require('esbuild');
 const root=new URL('..',import.meta.url).pathname;
-test('header teardown releases a scene while shader compilation is still pending',async()=>{
+async function fixture(){
  const shim=`export * from '${root}tools/scene-build/node_modules/three/build/three.module.js';
  import {Texture} from '${root}tools/scene-build/node_modules/three/build/three.module.js';
  export class WebGLRenderer{constructor(){this.debug={};this.info={render:{calls:0,triangles:0},reset(){}};}setPixelRatio(){}setSize(){}render(){}dispose(){window.rendererDisposals++;}compileAsync(){window.notifyCompile();return new Promise(r=>window.finishCompile=r);}}
@@ -20,10 +20,29 @@ test('header teardown releases a scene while shader compilation is still pending
  for(const name of ['MutationObserver','ResizeObserver','IntersectionObserver'])w[name]=class{observe(){observers++;this.active=true;}disconnect(){if(this.active){observers--;this.active=false;}}};
  w.HTMLCanvasElement.prototype.getContext=type=>type==='webgl2'?{}:null;
  const captured=new Set();w.HTMLElement.prototype.setPointerCapture=id=>captured.add(id);w.HTMLElement.prototype.hasPointerCapture=id=>captured.has(id);w.HTMLElement.prototype.releasePointerCapture=id=>captured.delete(id);
+ w.eval(script);
+ const started=new Promise(r=>w.notifyCompile=r),controller=new w.AbortController();
+ const ctx={root:w.document.querySelector('main'),route:'cen100',signal:controller.signal,direct:false};
+ return {w,dom,started,controller,ctx,captured,observers:()=>observers,close(){controller.abort();w.header.unmount();w.finishCompile?.();dom.window.close();}};
+}
+
+test('header mount lets later route modules run before shader compilation resolves',async()=>{
+ const f=await fixture();let routeContinued=false;
  try{
- w.eval(script);const started=new Promise(r=>w.notifyCompile=r),controller=new w.AbortController();const pending=w.header.mount({root:w.document.querySelector('main'),route:'cen100',signal:controller.signal,direct:false});await started;
+ const routeMount=(async()=>{await f.w.header.mount(f.ctx);routeContinued=true;})();
+ await f.started;await Promise.resolve();
+ assert(f.w.document.querySelector('.header-art .scene-poster'),'synchronous header DOM stays available');
+ assert.equal(routeContinued,true,'later route modules do not wait for shader compilation');
+ f.w.finishCompile();await routeMount;
+ }finally{f.close();}
+});
+
+test('header teardown releases a scene while shader compilation is still pending',async()=>{
+ const f=await fixture(),{w,captured}=f;
+ try{
+ const pending=w.header.mount(f.ctx);await f.started;
  const art=w.document.querySelector('.header-art'),press=new w.Event('pointerdown');Object.assign(press,{pointerId:12,clientX:10,clientY:10,button:0});art.dispatchEvent(press);assert(captured.has(12));
- controller.abort();w.header.unmount();assert.equal(observers,0,'no scene observers survive pending compile');assert.equal(w.rendererDisposals,1);assert.equal(w.environmentDisposals,1);assert.equal(captured.size,0,'teardown releases pointer capture');
- w.finishCompile();await pending;assert.equal(w.rendererDisposals,1,'late completion does not dispose twice');
- }finally{dom.window.close();}
+ f.controller.abort();w.header.unmount();assert.equal(f.observers(),0,'no scene observers survive pending compile');assert.equal(w.rendererDisposals,1);assert.equal(w.environmentDisposals,1);assert.equal(captured.size,0,'teardown releases pointer capture');
+ w.finishCompile();await pending;await Promise.resolve();await Promise.resolve();assert.equal(w.rendererDisposals,1,'late completion does not dispose twice');
+ }finally{f.close();}
 });
