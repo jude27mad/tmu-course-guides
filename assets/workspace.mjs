@@ -6,13 +6,13 @@ export function mount(ctx={}) {
   const life=scope(ctx),$=selector=>(ctx.root||document).querySelector(selector);
   const course=ctx.route||document.body.dataset.course,isMath=course==='mth140'||course==='mth141';
   const main = ctx.root||$('.math-wrap,.wrap'), hub = document.querySelector('.hub-shell');
-  if (!main || !hub) return;
+  if (!main || !hub){life.dispose();return;}
   const heading = $('.course-heading,.circuit-head');
   const tools = $('#math-tools,#guide-tools');
   const search = $('.quick-find');
   const oldTabs = $('.math-tabs,.tabs');
   const lab = $('#math-lab');
-  if (!heading || !tools || !search || !oldTabs || (isMath && !lab)) return;
+  if (!heading || !tools || !search || !oldTabs || (isMath && !lab)){life.dispose();return;}
 
   const restore=rememberDOM(main);
   live={life,restore};

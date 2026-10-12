@@ -104,7 +104,7 @@ reduced.addEventListener('change',updatePreference);window.addEventListener('sto
 let routeLife=null;
 export function unbindRoute(){if(!routeLife)return;routeLife.dispose();routeLife=null;depthOpen=false;for(const owner of [...tracks.keys()])cancel(owner);document.querySelector('.workspace-nav-marker')?.remove();}
 function mount(){
- const nav=document.querySelector('.workspace-nav');if(!nav||nav.hidden||routeLife)return;const life=routeLife=scope();life.root=document.querySelector('.wrap,.math-wrap');
+ const nav=document.querySelector('.workspace-nav');if(!nav||nav.hidden||routeLife)return;const life=routeLife=scope();life.root=document.querySelector('.wrap,.math-wrap');const queue=fn=>queueMicrotask(()=>{if(!life.signal.aborted)fn();});
  const marker=document.createElement('span');marker.className='workspace-nav-marker';marker.setAttribute('aria-hidden','true');nav.prepend(marker);
  function indicator(){const active=nav.querySelector('[aria-current]');if(!active)return;const rect=active.getBoundingClientRect(),box=nav.getBoundingClientRect();cancel(marker);if(!motionAllowed()){gsap.set(marker,{x:rect.left-box.left,y:rect.top-box.top,width:rect.width,height:rect.height});return;}play(marker,tl=>tl.to(marker,{x:rect.left-box.left,y:rect.top-box.top,width:rect.width,height:rect.height,duration:.4}));}
  life.observer(new ResizeObserver(indicator),nav);life.on(document,'workspace-changed',indicator);indicator();
@@ -124,11 +124,11 @@ function mount(){
   e.preventDefault();disclosure(details,details.dataset.closing==='true'||!details.open);
  });
  let completionQueued=false;
- const complete=()=>{if(completionQueued)return;completionQueued=true;const before=capture();queueMicrotask(()=>{if(life.signal.aborted)return;window.CourseWorkspace?.refresh();completionQueued=false;reflow(before);reveal(document.querySelector('.next-assessment,.cen-next-layout'),32);document.dispatchEvent(new Event('guide-completion'));});};
+ const complete=()=>{if(completionQueued)return;completionQueued=true;const before=capture();queue(()=>{if(life.signal.aborted)return;window.CourseWorkspace?.refresh();completionQueued=false;reflow(before);reveal(document.querySelector('.next-assessment,.cen-next-layout'),32);document.dispatchEvent(new Event('guide-completion'));});};
  life.on(document,'click',e=>{if(e.target.closest('[data-quick-complete],#undo-complete'))complete();},true);
- life.on(document,'change',e=>{if(e.target.matches('[data-check],[data-completed],[data-k],[data-completion],[data-topic]'))complete();else if(e.target.matches('#hide-completed,#workspace-show-past')){const before=capture();queueMicrotask(()=>{if(!life.signal.aborted)reflow(before);});}},true);
- life.on(document,'click',e=>{if(e.target.closest('[data-lab],[data-mode],.challenge-navigation button'))queueMicrotask(()=>entrance(document.querySelector('.lab-content')));if(e.target.closest('[data-term]'))queueMicrotask(()=>reveal(document.querySelector('.lab-term-explanation'),30));});
- let hadQuery=false;life.on(document,'input',e=>{if(e.target.id!=='guide-search')return;const hasQuery=!!e.target.value.trim();if(hasQuery&&!hadQuery)queueMicrotask(()=>entrance(document.querySelector('#guide-search-results')));hadQuery=hasQuery;});
+ life.on(document,'change',e=>{if(e.target.matches('[data-check],[data-completed],[data-k],[data-completion],[data-topic]'))complete();else if(e.target.matches('#hide-completed,#workspace-show-past')){const before=capture();queue(()=>{if(!life.signal.aborted)reflow(before);});}},true);
+ life.on(document,'click',e=>{if(e.target.closest('[data-lab],[data-mode],.challenge-navigation button'))queue(()=>entrance(document.querySelector('.lab-content')));if(e.target.closest('[data-term]'))queue(()=>reveal(document.querySelector('.lab-term-explanation'),30));});
+ let hadQuery=false;life.on(document,'input',e=>{if(e.target.id!=='guide-search')return;const hasQuery=!!e.target.value.trim();if(hasQuery&&!hadQuery)queue(()=>entrance(document.querySelector('#guide-search-results')));hadQuery=hasQuery;});
  life.on(document,'visibilitychange',()=>{if(document.hidden)for(const owner of [...tracks.keys()])cancel(owner);});
 }
 // Workspace may be mounted by a later module in the same document turn.
