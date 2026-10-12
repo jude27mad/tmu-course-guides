@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'none'; worker-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <link rel="stylesheet" href="../assets/fonts/archivo.css?v=20261012-privacy1">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -278,15 +278,20 @@ footer{margin-top:34px;display:flex;justify-content:space-between;gap:12px;flex-
 <link rel="stylesheet" href="../assets/workspace.css?v=20261012-desk1">
 <link rel="stylesheet" href="../assets/course-header.css?v=20261012-subject1">
 <link rel="stylesheet" href="../assets/guide-motion.css?v=20261011-cinema3">
-<!-- Keep the first transition snapshot in the final course layout. -->
-<script type="module" src="../assets/editorial.mjs?v=20261011-editorial2"></script>
-<script type="module" src="../assets/workspace.mjs?v=20261011-cinema3"></script>
-<script type="module" src="../assets/course-header.mjs?v=20261012-night2"></script>
-<script type="module" src="../assets/night/boot.mjs?v=20261012-desk2"></script>
+<!-- Render CEN coursework before mounting the shared route enhancements. -->
+<script type="module" data-route-module src="../assets/cen-guide.mjs?v=20261012-route1"></script>
+<script type="module" data-route-module src="../assets/visuals.js?v=20261012-night2"></script>
+<script type="module" data-route-module src="../assets/editorial.mjs?v=20261011-editorial2"></script>
+<script type="module" data-route-module src="../assets/workspace.mjs?v=20261011-cinema3"></script>
+<script type="module" data-route-module src="../assets/course-header.mjs?v=20261012-night2"></script>
+<script type="module" data-route-module src="../assets/night/boot.mjs?v=20261012-desk2"></script>
 <link rel="stylesheet" href="../assets/night/layout.css?v=20261012-desk2">
+<script type="module" data-shell-module src="../assets/guide-motion.mjs"></script>
+<script type="module" data-shell-module src="../assets/night/core.mjs"></script>
+<script type="module" src="../assets/app/route-boot.mjs"></script>
 </head>
 <body class="editorial" data-course="cen100">
-<div class="wrap">
+<main class="wrap" data-route-region>
   <header class="circuit-head" id="circuit-head" data-urgency="calm">
     <svg class="circuit" viewBox="0 0 400 150" preserveAspectRatio="xMaxYMid slice" aria-hidden="true" focusable="false">
       <g class="traces">
@@ -523,7 +528,7 @@ footer{margin-top:34px;display:flex;justify-content:space-between;gap:12px;flex-
   </details>
 
   <footer><span>From Fall 2026 CEN100 documents on D2L and confirmed course-team clarifications.</span><button class="reset" id="reset">Clear my ticks</button><span class="site-credit"><a href="../privacy.html">Privacy</a></span></footer>
-</div>
+</main>
 
 <script src="../assets/cen-schedule.js?v=20261012-desk1"></script>
 <script>
@@ -1280,7 +1285,6 @@ setupContactLookup();
 })();
 </script>
 <script src="../assets/hub.js?v=20261012-desk2"></script>
-<script src="../assets/visuals.js?v=20261012-night2"></script>
 <!-- Cloudflare Web Analytics temporarily paused on 2026-10-10; restore the beacon from Git history to resume. -->
 </body>
 </html>

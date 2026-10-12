@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'none'; worker-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <link rel="stylesheet" href="../assets/fonts/archivo.css?v=20261012-privacy1">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -20,17 +20,21 @@
 <link rel="stylesheet" href="../assets/course-header.css?v=20261012-subject1">
 <link rel="stylesheet" href="../assets/guide-motion.css?v=20261011-cinema3">
 <!-- Keep the first transition snapshot in the final course layout. -->
-<script type="module" src="../assets/math-guide.mjs?v=20261012-assessments2"></script>
-<script type="module" src="../assets/math-labs.mjs?v=20261011-cinema3"></script>
-<script type="module" src="../assets/editorial.mjs?v=20261011-editorial2"></script>
-<script type="module" src="../assets/workspace.mjs?v=20261011-cinema3"></script>
-<script type="module" src="../assets/course-header.mjs?v=20261012-night2"></script>
-<script type="module" src="../assets/night/boot.mjs?v=20261012-desk2"></script>
+<script type="module" data-route-module src="../assets/math-guide.mjs?v=20261012-assessments2"></script>
+<script type="module" data-route-module src="../assets/math-labs.mjs?v=20261011-cinema3"></script>
+<script type="module" data-route-module src="../assets/visuals.js?v=20261012-night2"></script>
+<script type="module" data-route-module src="../assets/editorial.mjs?v=20261011-editorial2"></script>
+<script type="module" data-route-module src="../assets/workspace.mjs?v=20261011-cinema3"></script>
+<script type="module" data-route-module src="../assets/course-header.mjs?v=20261012-night2"></script>
+<script type="module" data-route-module src="../assets/night/boot.mjs?v=20261012-desk2"></script>
 <link rel="stylesheet" href="../assets/night/layout.css?v=20261012-desk2">
+<script type="module" data-shell-module src="../assets/guide-motion.mjs"></script>
+<script type="module" data-shell-module src="../assets/night/core.mjs"></script>
+<script type="module" src="../assets/app/route-boot.mjs"></script>
 </head>
 <body class="editorial" data-course="mth141">
 <a class="skip-link" href="#math-main">Skip to course content</a>
-<main class="math-wrap" id="math-main">
+<main data-route-region class="math-wrap" id="math-main">
   <header class="course-heading">
     <div><p class="eyebrow"><span id="course-code">MTH141</span> · Fall 2026</p><h1 id="course-title">Linear Algebra</h1><p class="subline" id="course-organization"></p></div>
     <div id="course-figure"></div>
@@ -123,7 +127,6 @@
 </main>
 <script src="../assets/hub.js?v=20261012-desk2"></script>
 <!-- Cloudflare Web Analytics temporarily paused on 2026-10-10; restore the beacon from Git history to resume. -->
-<script src="../assets/visuals.js?v=20261012-night2"></script>
 </body>
 </html>
 
