@@ -38,3 +38,14 @@ test('adaptive GPU frame scheduling keeps advancing after downgrade and sleeps w
  f.intersections.at(-1)([{isIntersecting:true}]);f.tick();assert.equal(+f.art.dataset.sceneFrame,paused+2);
  f.scene.dispose();const stopped=+f.art.dataset.sceneFrame;f.tick();assert.equal(+f.art.dataset.sceneFrame,stopped);f.dom.window.close();
 });
+test('touch drag rotates through movement, releases with inertia, and pointer cancellation clears it',async()=>{
+ const f=await fixture();f.art.setPointerCapture=()=>{};f.tick();
+ const pointer=(type,x,y,id=7)=>{const e=new f.w.Event(type);Object.assign(e,{pointerId:id,pointerType:'touch',clientX:x,clientY:y,button:0});f.art.dispatchEvent(e);};
+ pointer('pointerdown',100,100);pointer('pointermove',230,120);f.tick();assert.equal(f.art.dataset.dragging,'true');const first=+f.art.dataset.rotation.split(',')[0];assert.ok(first>.3);
+ pointer('pointerup',230,120);pointer('lostpointercapture',230,120);f.tick();assert.ok(+f.art.dataset.rotation.split(',')[0]>first,'normal capture release retains inertia');
+ pointer('pointerdown',100,100);pointer('pointermove',200,100);pointer('pointercancel',200,100);f.tick();const stopped=f.art.dataset.rotation;f.tick();assert.equal(f.art.dataset.rotation,stopped);
+ f.scene.dispose();f.dom.window.close();
+});
+test('pausing mid-drag releases the gesture so a later touch can start',async()=>{
+ const f=await fixture();f.art.setPointerCapture=()=>{};f.tick();const down=id=>{const e=new f.w.Event('pointerdown');Object.assign(e,{pointerId:id,pointerType:'touch',clientX:10,clientY:10,button:0});f.art.dispatchEvent(e);};down(1);f.w.GuideMotion.setPaused(true);f.tick();f.w.GuideMotion.setPaused(false);f.tick();down(2);assert.equal(f.art.dataset.dragging,'true');f.scene.dispose();f.dom.window.close();
+});

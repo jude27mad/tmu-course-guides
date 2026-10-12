@@ -1,0 +1,5 @@
+// Development preview only; GitHub Pages still serves the unbuilt static files.
+import http from 'node:http';import {readFile,stat} from 'node:fs/promises';import path from 'node:path';
+const args=process.argv.slice(2),port=Number(args[args.indexOf('--port')+1])||4173,root=process.cwd();
+const mime={'.html':'text/html','.mjs':'text/javascript','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.webp':'image/webp','.png':'image/png','.woff2':'font/woff2','.json':'application/json'};
+http.createServer(async(req,res)=>{try{let p=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://preview').pathname));if(p!==root&&!p.startsWith(root+path.sep))throw Error();if((await stat(p)).isDirectory())p=path.join(p,'index.html');res.setHeader('Content-Type',mime[path.extname(p)]||'application/octet-stream');res.setHeader('Cache-Control','no-store');res.end(await readFile(p));}catch{res.writeHead(404);res.end('Not found');}}).listen(port,'0.0.0.0',()=>console.log('Preview ready on '+port));

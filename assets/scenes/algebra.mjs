@@ -1,39 +1,22 @@
-import {T,mesh,tubes,disposeScene} from './primitives.mjs?v=20261012-future1';
-import {triangularPanel,sketchMeshes} from './future-geometry.mjs?v=20261012-future1';
-import {createFutureLook} from './future-look.mjs?v=20261012-future1';
-
+import {T,mesh,arrow,disposeScene} from './primitives.mjs?v=20261012-subject1';
+import {sphereTransform} from './scene-math.mjs?v=20261012-subject1';
 export function createAlgebra(p){
- const root=new T.Group(),look=createFutureLook(p),mat=look.materials,faces=[];
- mat.metal.color.lerp(new T.Color(p.accent),.22);mat.metal.roughness=.17;mat.metal.iridescence=.4;
- const base=new T.IcosahedronGeometry(1.72,0),positions=base.attributes.position;
- const a=new T.Vector3(),b=new T.Vector3(),c=new T.Vector3(),center=new T.Vector3(),normal=new T.Vector3(),x=new T.Vector3(),y=new T.Vector3(),basis=new T.Matrix4();
- let glassCount=0,metalCount=0,radius=0;
- for(let i=0;i<positions.count;i+=3){
-  a.fromBufferAttribute(positions,i);b.fromBufferAttribute(positions,i+1);c.fromBufferAttribute(positions,i+2);center.copy(a).add(b).add(c).multiplyScalar(1/3);normal.copy(center).normalize();y.copy(a).sub(center).normalize();x.crossVectors(y,normal).normalize();basis.makeBasis(x,y,normal);radius=a.distanceTo(center)*.96;
-  const glass=normal.z>.25;faces.push({center:center.clone(),normal:normal.clone(),q:new T.Quaternion().setFromRotationMatrix(basis),glass,index:glass?glassCount++:metalCount++});
- }
- base.dispose();
- const geometry=triangularPanel(radius,.17,.044),metal=new T.InstancedMesh(geometry,mat.metal,metalCount),glass=new T.InstancedMesh(geometry,mat.glass,glassCount);metal.frustumCulled=glass.frustumCulled=false;root.add(metal,glass);
- const core=mesh(root,new T.OctahedronGeometry(.66,1),mat.metal);core.name='optical-core';
- const planeMat=new T.MeshBasicMaterial({color:p.accent,transparent:true,opacity:.10,depthWrite:false,side:T.DoubleSide}),planes=[];
- for(let i=0;i<3;i++){const g=new T.PlaneGeometry(1.55,1.55);g.rotateX(i===1?Math.PI/2:0);g.rotateY(i===2?Math.PI/2:0);planes.push(g);}
- const planeGeometry=T.mergeGeometries(planes);planes.forEach(g=>g.dispose());mesh(root,planeGeometry,planeMat);
- const framePaths=[];for(let i=0;i<3;i++){
-  const points=[[-.78,-.78,0],[.78,-.78,0],[.78,.78,0],[-.78,.78,0],[-.78,-.78,0]];
-  framePaths.push(points.map(([x,y,z])=>i===1?[x,z,y]:i===2?[z,y,x]:[x,y,z]));
- }
- tubes(root,framePaths,mat.light,.014);
- const m=new T.Matrix4(),q=new T.Quaternion(),hinge=new T.Quaternion(),localX=new T.Vector3(1,0,0),pos=new T.Vector3(),scale=new T.Vector3(1,1,1);
- let burst=0,disposed=false;
- const model={root,bounds:[5.5,5.5],caption:'KINETIC / SPACE',setQuality:mode=>look.setQuality(mode),react(){burst=1;},
-  update(t,dt,{still=false,impulse=0}={}){
-   burst=Math.max(0,burst-dt*.65);const response=still?0:Math.max(burst,impulse);look.update(t,response,still);
-   for(let i=0;i<faces.length;i++){
-    const f=faces[i],wave=still?0:(.5+.5*Math.sin(t*.55+i*.38)),open=.12+wave*.18+response*.27;
-    pos.copy(f.center).addScaledVector(f.normal,open);hinge.setFromAxisAngle(localX,(wave*.14+response*.30)*(i%2?1:-1));q.copy(f.q).multiply(hinge);m.compose(pos,q,scale);(f.glass?glass:metal).setMatrixAt(f.index,m);
-   }
-   metal.instanceMatrix.needsUpdate=glass.instanceMatrix.needsUpdate=true;core.rotation.set(.2,still?.3:t*.12,-.15);
-  },
-  sketch(){return sketchMeshes(root,'#c0b8d4');},dispose(){if(!disposed){disposed=true;disposeScene(root);look.disposeTextures();}}
- };model.update(0,0,{still:true});return model;
+ const root=new T.Group(),volume=new T.Group();root.add(volume);root.name='linear-transformation';volume.matrixAutoUpdate=false;
+ const positions=[],count=4800,golden=Math.PI*(3-Math.sqrt(5));
+ for(let i=0;i<count;i++){const y=1-2*(i+.5)/count,r=Math.sqrt(1-y*y),a=i*golden;positions.push(1.3*r*Math.cos(a),1.3*y,1.3*r*Math.sin(a));}
+ const dots=new T.BufferGeometry();dots.setAttribute('position',new T.Float32BufferAttribute(positions,3));
+ const pointMaterial=new T.ShaderMaterial({transparent:true,depthWrite:false,blending:T.AdditiveBlending,uniforms:{color:{value:new T.Color(p.accent)},pixelRatio:{value:1.5}},
+ vertexShader:'uniform float pixelRatio; varying float depth; void main(){vec4 mv=modelViewMatrix*vec4(position,1.);depth=clamp((mv.z+12.)/10.,.2,1.);gl_PointSize=clamp(22.*pixelRatio/-mv.z,1.,5.);gl_Position=projectionMatrix*mv;}',
+ fragmentShader:'uniform vec3 color; varying float depth; void main(){float r=length(gl_PointCoord-.5);float a=1.-smoothstep(.15,.5,r);gl_FragColor=vec4(color,a*depth*.85);}' });
+ volume.add(new T.Points(dots,pointMaterial));
+ const shell=new T.ShaderMaterial({transparent:true,depthWrite:false,side:T.DoubleSide,uniforms:{color:{value:new T.Color('#9e78d1')}},vertexShader:'varying vec3 n;varying vec3 v;void main(){vec4 p=modelViewMatrix*vec4(position,1.);n=normalize(normalMatrix*normal);v=normalize(-p.xyz);gl_Position=projectionMatrix*p;}',fragmentShader:'uniform vec3 color;varying vec3 n;varying vec3 v;void main(){float f=pow(1.-abs(dot(normalize(n),normalize(v))),2.8);gl_FragColor=vec4(color,.025+f*.23);}'});
+ const surface=mesh(volume,new T.SphereGeometry(1.30,64,40),shell);
+ const tracks=[];for(let j=1;j<8;j++){const lat=-Math.PI/2+j*Math.PI/8;for(let i=0;i<128;i++){for(const a of [i*2*Math.PI/128,(i+1)*2*Math.PI/128])tracks.push(1.305*Math.cos(lat)*Math.cos(a),1.305*Math.sin(lat),1.305*Math.cos(lat)*Math.sin(a));}}
+ for(let j=0;j<8;j++){const lon=j*Math.PI/8;for(let i=0;i<128;i++){for(const a of [i*2*Math.PI/128,(i+1)*2*Math.PI/128])tracks.push(1.305*Math.cos(a)*Math.cos(lon),1.305*Math.sin(a),1.305*Math.cos(a)*Math.sin(lon));}}
+ const lines=new T.BufferGeometry();lines.setAttribute('position',new T.Float32BufferAttribute(tracks,3));volume.add(new T.LineSegments(lines,new T.LineBasicMaterial({color:'#c9b5ee',transparent:true,opacity:.22,depthWrite:false})));
+ const axes=['#efc7fd','#a1c6ee','#fff1cf'].map(c=>arrow(root,new T.MeshBasicMaterial({color:c}))),basis=[[1.75,0,0],[0,1.75,0],[0,0,1.75]];
+ let disposed=false;
+ return{root,bounds:[4.5,4.5],caption:'Linear transformations',setQuality(){},react(){},
+ update(t,dt,{still=false}={}){const m=sphereTransform(t);surface.visible=m[8]>.08;volume.matrix.set(m[0],m[1],m[2],0,m[3],m[4],m[5],0,m[6],m[7],m[8],0,0,0,0,1);volume.matrixWorldNeedsUpdate=true;for(let i=0;i<3;i++){const b=basis[i],v=[m[0]*b[0]+m[1]*b[1]+m[2]*b[2],m[3]*b[0]+m[4]*b[1]+m[5]*b[2],m[6]*b[0]+m[7]*b[1]+m[8]*b[2]];axes[i].group.visible=Math.hypot(...v)>.08;if(axes[i].group.visible)axes[i].set([0,0,0],v);}},
+ dispose(){if(!disposed){disposed=true;disposeScene(root);}}};
 }
