@@ -55,7 +55,7 @@ export function onSchedule(fn){const on=e=>fn(e.detail);document.addEventListene
 /* One reliable path to an assessment, shared by the palette and the timeline. */
 export async function openItem(target){
  if(!target||isDesk)return; // The Desk links to items instead; there is no workspace to open them in.
- const workspace=window.CourseWorkspace;
+ const activeCourse=course,workspace=window.CourseWorkspace;
  const id=isMath()?String(target).replace(/^assessment-/,''):String(target);
  const node=isMath()?document.getElementById('assessment-'+id):document.getElementById('guide-item-'+id);
  const sheet=$('.detail-sheet');
@@ -65,10 +65,11 @@ export async function openItem(target){
  if(hide?.checked&&node&&!node.getClientRects().length){hide.checked=false;hide.dispatchEvent(new Event('change',{bubbles:true}));}
  if(node?.closest('.past')&&!document.body.classList.contains('workspace-show-past')){const past=$('#workspace-show-past');if(past){past.checked=true;past.dispatchEvent(new Event('change',{bubbles:true}));}}
  await frames(2);
+ if(course!==activeCourse||window.CourseWorkspace!==workspace)return;
  window.GuideMotion?.cancel(document.querySelector('.wrap,.math-wrap'));
  document.dispatchEvent(new CustomEvent('course-open-item',{detail:isMath()?'assessment-'+id:id}));
 }
-export const frames=(n=1)=>new Promise(resolve=>{const step=k=>k?requestAnimationFrame(()=>step(k-1)):resolve();step(n);});
+export const frames=(n=1,signal)=>new Promise(resolve=>{let raf=0;const done=()=>{cancelAnimationFrame(raf);signal?.removeEventListener('abort',done);resolve();};const step=k=>{if(signal?.aborted||!k){done();return;}raf=requestAnimationFrame(()=>step(k-1));};signal?.addEventListener('abort',done,{once:true});step(n);});
 
 /* Temporary holds pause ambient motion without touching the saved preference. */
 const holds=new Set();

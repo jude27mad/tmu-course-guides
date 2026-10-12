@@ -73,7 +73,7 @@ if(heading&&toolkit){
     const kicker=document.createElement('span');kicker.className='section-kicker';kicker.textContent=math?'02 / Your semester':'01 / Your semester';
     rail.querySelector('.rail-heading>div')?.prepend(kicker);
   }
-}
+}else life.dispose();
 
 }
 export function unmount(){if(!live)return;const {life,restore}=live;live=null;life.dispose();restore();document.body.classList.remove('editorial');}

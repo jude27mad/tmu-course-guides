@@ -42,7 +42,7 @@ function syncSheets(){
  if(open){flushWhere(el=>el.closest('dialog'));hold('sheet');}else release('sheet');
 }
 function watchSheets(){
- let queued=false;const queue=()=>{if(queued)return;queued=true;queueMicrotask(()=>{queued=false;if(!life?.signal.aborted)safe(syncSheets)();});};
+ const owner=life;let queued=false;const queue=()=>{if(queued||owner.signal.aborted)return;queued=true;queueMicrotask(()=>{queued=false;if(!owner.signal.aborted)syncSheets();});};
  life.observer(new MutationObserver(queue),document.body,{attributes:true,attributeFilter:['class']});
  life.observer(new MutationObserver(queue),document.body,{subtree:true,attributes:true,attributeFilter:['open']});
  life.on(document,'close',queue,true);
@@ -222,7 +222,7 @@ function bindView(){
   pending.add(el);el.dataset.nsReveal=kind;observer.observe(el);
  }
 }
-function rebind(ready=frames(2)){const token=++bindToken;ready.then(safe(()=>{if(token===bindToken)bindView();}));}
+function rebind(ready=frames(2,life?.signal)){const token=++bindToken;ready.then(safe(()=>{if(token===bindToken)bindView();}));}
 const rebindAll=()=>{dispose(SCOPE);rebind();};
 function onEnter(entries){play(entries.filter(e=>e.isIntersecting&&pending.has(e.target)).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top).map(e=>e.target));}
 /* After a scroll settles, anything left pending inside the view (the bottom margin band) plays too. */
@@ -318,9 +318,10 @@ export async function mount(ctx={}){
   for(const el of $$('.next-layout,.cen-next-layout'))if(!el.dataset.nightSpeed){el.dataset.nightSpeed='0.86';el.dataset.nightVar='--ns-glow-y';}
   mountMarquee();
  }catch(error){console.warn('Night Shift scroll:',error);}
- try{({gsap:G,ScrollTrigger:ST,SplitText:Split,Lenis:LenisClass}=await vendor());}
- catch(error){G=null;console.warn('Night Shift scroll: running without the motion vendor',error);return;}
+ let kit;try{kit=await vendor();}
+ catch(error){if(life===owner){G=null;console.warn('Night Shift scroll: running without the motion vendor',error);}return;}
  if(life!==owner||owner.signal.aborted)return;
+ ({gsap:G,ScrollTrigger:ST,SplitText:Split,Lenis:LenisClass}=kit);
  try{start();}catch(error){console.warn('Night Shift scroll:',error);}
 }
 
@@ -353,7 +354,7 @@ function start(){
  const main=$('.wrap,.math-wrap');let lastH=0;
  if(main&&'ResizeObserver' in window)life.observer(new ResizeObserver(safe(([entry])=>{const h=entry.contentRect.height;if(Math.abs(h-lastH)<1)return;lastH=h;measure();progress();refreshSoon(.25);})),main);
  syncMarquee();
- rebind(Promise.all([fontsReady(),frames(2)]));
+ rebind(Promise.all([fontsReady(),frames(2,life.signal)]));
  refreshSoon(.05);
 }
 
