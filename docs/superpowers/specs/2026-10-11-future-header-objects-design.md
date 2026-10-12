@@ -1,3 +1,5 @@
+> Historical design: superseded by the October 12 subject-specific headers. See [current artwork documentation](../../visual-overhaul.md).
+
 # Futuristic course header objects
 
 Status: proposed design. This document plans the next artwork revision; it does not describe a deployed change.

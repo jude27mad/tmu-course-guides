@@ -5,16 +5,20 @@ One Fall 2026 course companion with a shared course switcher and light/dark appe
 | Course | Open guide | Section support |
 | --- | --- | --- |
 | CEN100: Introduction to Engineering | [CEN100](https://jude27mad.github.io/tmu-course-guides/) | All 39 sections and 52 Innovation Challenge groups |
-| MTH140: Calculus I | [MTH140](https://jude27mad.github.io/tmu-course-guides/mth140/) | All 34 sections, instructors, TAs and lab rooms |
-| MTH141: Linear Algebra | [MTH141](https://jude27mad.github.io/tmu-course-guides/mth141/) | All 34 sections, instructors, Academic Assistants and lab rooms |
+| MTH140: Calculus I | [MTH140](https://jude27mad.github.io/tmu-course-guides/mth140/) | All 34 sections, lab timetables and rooms |
+| MTH141: Linear Algebra | [MTH141](https://jude27mad.github.io/tmu-course-guides/mth141/) | All 34 sections, lab timetables and rooms |
 
-## Visual overhaul — October 11, 2026
+## Current release — October 12, 2026
 
-Full-width graphite scenes use the original salmon, mint and lavender colours. Engineering has a suspended signal engine with deadline-driven light; Calculus I has a folded liquid-metal vortex; Linear Algebra has a faceted optical crystal that opens around intersecting planes. Physical glass, studio reflections and controlled iridescence give the objects depth. These headers are abstract course artwork; exact teaching diagrams remain in the study studio. Pointer and section changes move the camera. Matching offline renders provide first paint and unsupported-device fallback.
+Subject-specific 3D headers replace the earlier abstract chrome/glass artwork. **Engineering** shows a working planetary gearbox; **Calculus I** shows flowing mint function ribbons with an analytic tangent; **Linear Algebra** transforms a sphere and its basis with actual matrix maps, including a planar projection. A folded-page vector mark replaces the Sigma logo.
 
-GSAP timelines and Flip coordinate section changes, assignment sheets, study expansion, search, tools, disclosure panels and completion reordering. Native scrolling remains. The header pause button pauses the scene independently of interface transitions. Device reduced motion is respected by default; opening a link with `?motion=full` explicitly selects and remembers full motion. Offscreen and hidden scenes stop rendering. Course dates, saved records and study interactions are preserved.
+The scenes move continuously when motion is enabled. Drag with a mouse or touch to rotate, then release for inertia. Focus the artwork and use arrow keys to rotate or Home to reset. Pause and reduced-motion preferences are supported; paused artwork allows normal page scrolling. Offscreen and hidden scenes stop rendering, with matching posters when WebGL2 is unavailable.
 
-See [the rendering and motion notes](docs/visual-overhaul.md) for build commands, verification and the physical-device evidence boundary.
+GSAP and Flip coordinate course and section changes, assignment sheets, search, guide tools, study expansion and completion. The shared responsive layout keeps the original salmon, mint and lavender course colours. Assignments, Study (math courses) and Course info organize the workspace; Search and Guide tools sit together above the content. Study experiments use focused button actions, optional exact values, matrix composition and Find the mistake exercises.
+
+Privacy changes remove dormant analytics code and course-only staff names, serve Archivo fonts locally with their license, suppress external-link referrers and block outbound reporting with Content Security Policy. Progress and notes remain in browser storage. See [Privacy](privacy.html).
+
+Documentation: [header artwork and verification](docs/visual-overhaul.md), [motion architecture](docs/immersive-motion.md), [math studio](docs/math-studio.md), [privacy review](docs/privacy-audit.md), and [release history](CHANGELOG.md).
 
 The legacy `/cen100-guide/` site is a forwarding-only repository; edit the course content in `tmu-course-guides`. Paths, query strings and assignment hashes are retained on forwarding.
 
@@ -47,7 +51,7 @@ Visible search, one-tap weekly work and contacts, and **Mark done** with **Undo*
 ## Math guides
 
 - **Coverage previews** on closed assessment cards, plus **View requirements** and arrows on upcoming assessments, make it easier to scan and open the right details.
-- **Next assessment** and an assessment-weight strip replace the team/individual split. Each math guide has **Assessments**, **Topic map**, and **Rules & help** views.
+- **Next assessment** and an assessment-weight strip replace the team/individual split. Each math guide has **Assignments**, **Study**, and **Course info** views.
 - **Section-aware quiz dates:** official quiz weeks combine with the selected lab timetable. These calculated days are labelled as timetable-derived; quiz start times are not invented. Monday MTH140 sections see a confirmation warning for Thanksgiving week.
 - **Announced coverage:** MTH141 Quiz 1, Quiz 2 and October 16 midterm, plus MTH140 Quiz 1. Unprovided future scopes and final dates are marked pending.
 - **Eight topic blocks per course**, in outline order, with self-reported skill-review checks and all 77 recommended-practice rows across the two math courses. The MTH141 textbook-edition mismatch is visible beside the free textbook links.
@@ -69,7 +73,7 @@ All times are Toronto time. Each course requires at least 50% overall to pass. Q
 
 ### Using the math guides
 
-**Assessments** contains quiz, midterm, and final cards. Preparation checks do not mark an assessment completed; use **My plan & completion** for your own completion record, notes, and study target. **Topic map** follows the outline order and provides skill-review prompts and official exercise references. **Rules & help** contains assessment policies, selected-section contacts, free textbook links, pending details, and source checks.
+**Assignments** contains quiz, midterm, and final cards. Preparation checks do not mark an assessment completed; use **My plan & completion** for your own completion record, notes, and study target. **Study** includes the topic map, which follows the outline order and provides skill-review prompts and official exercise references. **Course info** contains assessment policies, selected-section contacts, free textbook links, pending details, and source checks.
 
 Math calendars include the published midterm by default. Including section lab dates is optional and produces tentative all-day quiz entries. Math progress backups include topic checks and only import into the matching course. Section choices, theme, and unread-update preferences are not included in a progress backup.
 
@@ -87,12 +91,12 @@ A course companion for **CEN100: Introduction to Engineering**, Fall 2026, at To
 
 ### What's included
 
-- **Team, Individual + pairs, and Rules tabs** with expandable assignment cards. Team contains full/sub-team work (42%); Individual + pairs contains individual work (48%) and MATLAB pair work (10%). The shared notebook is under Team, and peer evaluation is under Individual + pairs.
+- **Assignments and Course info navigation** with assignment detail sheets. Team work contains full/sub-team work (42%); Individual + pairs contains individual work (48%) and MATLAB pair work (10%). The shared notebook is under Team, and peer evaluation is under Individual + pairs.
 - **Complete course grading breakdown** under Guide tools, listing all 20 graded items and totalling 100%, with a separate explanation of the official 41% Innovation Challenge Project category and the 52% of course marks for work normally completed in teams or pairs. See the grading table below.
 - **Requirement previews** on closed assignment cards and visible opening cues on upcoming deadlines.
 - **Deadline tracking** shared by the upcoming-deadline banner, assignment date displays, work planner, and calendar exports. Tap a banner deadline to open its assignment. The banner skips dates marked submitted/completed while retaining later unrecorded deadlines.
 - **Section and group selection** at the top of the page, covering all 39 sections and 52 Innovation Challenge groups in the staffing sheet.
-- **Who to ask** results showing the assigned GA, lab/location, and Project Manager.
+- **Who to ask** guidance showing roles, lab/location and D2L references for current staff contacts.
 - **Checklists and separate completion records** for tracking preparation and recording submitted or completed work.
 - **What should I work on?** with Next 7 days and All unfinished views.
 - **Private notes and personal target dates** inside each assignment card.
@@ -102,7 +106,7 @@ A course companion for **CEN100: Introduction to Engineering**, Fall 2026, at To
 - **Calendar exports and progress backups** for use outside the current browser.
 - **Rose deadline highlights and shared Auto/Dark/Light appearance**. Auto follows the device setting. The Rules tab’s **Still open** icons keep their original yellow, independently of the rose accent.
 - **Separate colour preview** for comparing eight accents against dark navy or light backgrounds without changing the main guide.
-- **Private usage reporting** through Cloudflare Web Analytics, with a separate daily archive for saved all-time, monthly, and yearly totals.
+- **Local progress storage** with no active analytics, tracking cookies or session recording.
 
 ### Grading: course category and working arrangements
 
@@ -127,7 +131,7 @@ The **Team** tab contains 42%. **Individual + pairs** contains the remaining 58%
 ### Using CEN100
 
 1. Optionally choose a section and Innovation Challenge group below the main heading. Group choices are filtered by section, and selections save immediately. The page heading follows the selection, with a neutral course label before selection. The selected section’s lab location appears beside the section and group at the top. Use **Done** to collapse the picker or **View contacts** to open Who to ask.
-2. Select **Team**, **Individual + pairs**, or **Rules**. Open an assignment card to review its requirements, checklist, source notes, and tools.
+2. Open **Assignments** for requirements, checklists, source notes and completion records, or **Course info** for rules and support.
 3. Open **Guide tools** for the complete course grading breakdown, search, Hide fully checked items, the work planner, calendar exports, and backups. Find **What’s changed** at the bottom of the page, just above the footer.
 4. Returning visits restore the saved section/group selection. Use **Change** at the top or **Change section/group** in Who to ask to edit it.
 
@@ -190,7 +194,7 @@ The current site contains no analytics SDK, beacon, tracking cookie or session r
 
 Section/group choices, checklists, notes, target dates and appearance preferences stay in browser local storage. Backups are created locally only when exported; keep them private because they contain notes and progress. There are no accounts or automatic device synchronization.
 
-The public pages omit the maintainer’s full name and names from course-only staff rosters. Old Git commits and the GitHub account/profile may still disclose previously published names or email metadata; updating current files does not erase history or cached copies. No history rewrite is performed by this change.
+The public pages omit personal credits and names from course-only staff rosters. Current staff contacts are available through D2L.
 
 GitHub Pages logs visitor IP addresses for hosting security. See [GitHub’s hosting documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection) and the visitor-facing [Privacy page](privacy.html). Historical aggregate analytics collected before the pause remain in a separate private archive; this release collects no new analytics.
 
@@ -201,11 +205,15 @@ GitHub Pages logs visitor IP addresses for hosting security. See [GitHub’s hos
 | `index.html` | CEN100 content, styles, JavaScript, course data, contact mappings, and full release history. |
 | `mth140/index.html`, `mth141/index.html` | Math page structures and course-specific release notes. |
 | `assets/hub.js`, `assets/hub.css` | Shared course navigation, saved-section labels, and appearance control. |
-| `assets/course-data.mjs` | Math assessments, section timetables, instructors, topics, practice references, and sources. |
+| `assets/course-data.mjs` | Math assessments, section timetables, role-based contact guidance, topics, practice references, and sources. |
 | `assets/schedule.mjs` | Math date resolution, Toronto time handling, upcoming assessments, and calendar exports. |
 | `assets/math-guide.mjs`, `assets/math.css` | Math rendering, progress, guide tools, unread-update handling, and responsive design. |
 | `docs/math-source-audit.md` | Math source audit, conflicts, unknowns, and date derivation rules. |
 | `tests/schedule.test.mjs` | Section, deadline, timezone, calendar, and source-data checks. |
+| `assets/course-header.mjs`, `assets/course-scene.mjs`, `assets/scenes/` | Responsive subject artwork, WebGL2 lifecycle, drag interaction and fallback posters. |
+| `assets/guide-motion.mjs`, `assets/vendor/` | Interface motion and self-hosted rendering/animation dependencies. |
+| `assets/fonts/`, `privacy.html` | Licensed local fonts and visitor privacy information. |
+| `CHANGELOG.md`, `docs/` | Release history, architecture, source audits and verification boundaries. |
 | `README.md` | Three-course features, release notes, usage, data handling, and maintenance documentation. |
 | `colour-preview.html` | Separate palette comparison page with shareable colour selections and temporary progress. |
 

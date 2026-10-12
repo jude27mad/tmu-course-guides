@@ -472,6 +472,9 @@ footer{margin-top:34px;display:flex;justify-content:space-between;gap:12px;flex-
 
   <details class="tool-section" id="guide-updates">
     <summary>What's changed? <span class="updates-badge" id="updates-badge" hidden>New updates</span></summary>
+    <p><strong>October 12, 2026 — Subject headers and privacy</strong></p>
+    <ul><li>New moving subject artwork: Engineering gears, Calculus curves and a matrix-transformed sphere for Linear Algebra. Drag to rotate; pause at any time.</li><li>New folded-page logo, responsive artwork framing and fallback images. Course colours and saved progress are preserved.</li><li>Fonts now load locally. Removed analytics code and course-only staff names; current contacts are on D2L. Added a Privacy page.</li></ul>
+
     <p><strong>October 11, 2026 — Larger scenes, connected motion</strong></p><ul><li>Full-width circuit, calculus ribbon and transformation lattice. Pause motion from the header.</li><li>Animated assignments, search, tools, study panels and completion. Guide tools are beside Search.</li></ul>
     <p><strong>October 11, 2026 — Course headers in motion</strong></p><ul><li>Dimensional circuit, calculus and linear algebra illustrations, with smooth course transitions. Motion respects device settings and settles after a short demonstration.</li><li>The existing course colours, content and saved progress stay the same.</li></ul>
     <p><strong>October 11, 2026 — An organised course workspace</strong></p><ul><li>Assignments open first. Study and Course info have their own navigation, with compact tabs on phones.</li><li>Original course colours, interactive maths, assignment details and saved progress are preserved. Past assignments remain available; calendar exports, contacts and grading are in Course info.</li></ul>
@@ -1118,7 +1121,7 @@ setupContactLookup();
     });
   }
 
-  const PLAN_KEY="cen100-personal-plan-v1", SEEN_KEY="cen100-last-seen-update-v1", GUIDE_VERSION="2026-10-11-overhaul2";
+  const PLAN_KEY="cen100-personal-plan-v1", SEEN_KEY="cen100-last-seen-update-v1", GUIDE_VERSION="2026-10-12-subject-privacy";
   function recordsFor(item){const dates=itemDeadlines(item.id);return dates.length?dates:[{id:"item:"+item.id,item:item.id,title:item.name}]}
   const completionKeys=new Set(allItems.flatMap(item=>recordsFor(item).map(e=>e.id)));
   function validDate(value){return typeof value==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&!Number.isNaN(Date.parse(value+"T12:00:00Z"))&&new Date(value+"T12:00:00Z").toISOString().slice(0,10)===value}

@@ -1,32 +1,25 @@
-# Course scenes and motion
+# Course scenes and interface motion
 
-The guide remains static HTML served by GitHub Pages. Course data, progress storage and native navigation stay in their existing modules.
+Current architecture — October 12, 2026. Static HTML and native ES modules are served directly by GitHub Pages. Prebuilt vendor bundles are committed.
 
-## Rebuild the vendor file
+## Responsibilities
 
-Run `npm ci --prefix tools/scene-build` then `npm run build --prefix tools/scene-build`. Three.js 0.186.1 and esbuild 0.27.4 are pinned in the committed lockfile. The output and MIT licence are committed so Pages needs no build step. Motion 14.1.0 remains the shared interface animation dependency.
+- `assets/course-header.mjs` and its stylesheet create the responsive title/artwork stage and pause control.
+- `assets/course-scene.mjs` owns the WebGL2 renderer, camera, lifecycle, quality adaptation and poster fallback. It uses Three.js, not WebGPU.
+- `assets/scenes/circuit.mjs`, `calculus.mjs` and `algebra.mjs` create the subject scenes. The historical filename `circuit.mjs` now contains the planetary gearbox.
+- `assets/scenes/drag.mjs` owns pointer rotation and decaying release velocity. `framing.mjs` owns course camera framing and portrait/landscape poster selection.
+- `assets/guide-motion.mjs` and its stylesheet coordinate GSAP/Flip interface transitions. GSAP is bundled locally; Motion is not the current interface engine.
 
-## Architecture
+Course changes animate departure and entrance. Section changes move the content; assignment sheets, search, tools, study expansion, disclosures and completion updates have coordinated transitions. Native scrolling, DOM state and focus handling remain part of the guide. Header pause is independent of interface motion.
 
-- `course-header.mjs/css` reserves a large responsive composition and renders an immediate SVG fallback.
-- `course-scene.mjs` is loaded after the guide is usable. One renderer uses WebGPU where available, with Three's WebGL2 fallback. The SVG remains visible until the first GPU render succeeds. Context loss restores it.
-- `scenes/` contains procedural geometry, actual mathematical state and small materials shared between courses. The circuit uses a TSL emissive material and a procedural contact shadow. No models, videos or textures are downloaded.
-- `guide-motion.mjs/css` owns interruptible interface animations. State and keyboard focus are updated immediately. Dialog exits restore the original nodes and their listeners.
-- Pointer movement and native scroll gently change the scene camera. Touch never requires dragging.
-- Pause is remembered across courses. Reduced-motion and the fixture's `?motion=off` override disable motion. Hidden/offscreen scenes stop rendering. The renderer reduces resolution and targets 30 fps after a sustained slow frame sample.
+## Motion lifecycle
 
-## Validation
+Idle animation runs without a click when motion is enabled. Dragging the artwork rotates it directly; releasing continues with inertia. Arrow keys rotate and Home resets focused artwork. Paused artwork allows page scrolling. Device reduced motion is respected; `?motion=full` explicitly selects and remembers full motion and `?motion=off` selects the static mode.
 
-Run `node --test tests/*.test.mjs`. Scene tests cover secant/tangent correctness, continuous area-preserving transforms, finite geometry, signal routes and geometry budgets.
+Hidden and offscreen scenes stop rendering. Back/Forward restoration wakes eligible scenes. GPU context loss, render exceptions or shader failure restore the corresponding poster. Adaptive quality lowers rendering cost after sustained slow frames. Interaction cleanup releases pointer capture and removes listeners.
 
-`tests/editorial/` provides 11 responsive viewport sizes for all three guides, with study/info/search views and a static-motion override. This fixture changes layout dimensions; it does not impersonate a physical device or another browser engine.
+## Maintenance
 
-Initial geometry: circuit 17 meshes / 11,028 triangles; calculus 9 / 7,684; algebra 14 / 1,150. Shared renderer is approximately 282 KB gzip; this is a build-size measurement, not a network or frame-rate claim.
+Build commands and evidence limitations are in [visual-overhaul.md](visual-overhaul.md). The [UI bundle README](../tools/ui-build/README.md) describes GSAP playback and workflow checks. Test both enabled and reduced motion, rapid repeated opening, keyboard focus, Back/Forward and saved inputs when changing transitions. Use real GPU browser review for scene changes; DOM tests cannot validate their appearance.
 
-Actual WebGPU/WebGL2 appearance and sustained frame rate must be checked on GPU-capable devices. The cloud review browser has no working graphics context, so it exercises the complete fallback and interface rather than proving GPU rendering. Keep that distinction when reporting verification. Analytics remain disabled.
-
-
-## Subject-specific headers (October 12, 2026)
-Engineering now uses a 24/18/60-tooth fixed-ring planetary mechanism with involute teeth. Calculus samples smooth curves in mint ribbons and tracks an exact analytic tangent. Linear Algebra applies continuous 3×3 maps to a sphere and its basis, including a rank-two projection. Dragging controls the 3D orientation directly and release decays exponentially. Paused/offscreen scenes sleep; paused artwork permits page scrolling. Arrow keys rotate; Home resets. Reduced motion and independent pause remain supported.
-
-Visual references: Bartosz Ciechanowski’s Mechanical Watch/Gears, 3Blue1Brown’s Linear Transformations, and the selected Luminous Current Calculus concept. New folded-page logo is an original vector interpretation of the selected guide mark.
+No analytics or external rendering service is used. See [privacy-audit.md](privacy-audit.md).

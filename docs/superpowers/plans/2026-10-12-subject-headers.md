@@ -10,3 +10,7 @@ User approved working planetary gearbox, matrix-transforming sphere and the sele
 Rulings: the selected Calculus reference guides art direction; later subject-specific user instructions supersede the rejected Engineering/Algebra generated images. These are interactive native 3D scenes, not raster image substitutes. Existing static HTML site must remain; no new app/template. Logo is a native vector based on selected brand concept. UI UX plugin advertising is unrelated to this task and is not included.
 
 QA: desktop, phone and tablet layout; real renderer screenshot inspection; touch/pointer state tests; continuous idle and no scene RAF while paused/offscreen; original workflow tests. No claim of physical device performance from emulation.
+
+## Completion
+
+Implemented and integrated in PR #9 (`88980df`). Subject-header visuals and interaction checks completed; see `docs/visual-overhaul.md` for evidence and limits. The subsequent October 12 privacy release is documented separately in `docs/privacy-audit.md` and `CHANGELOG.md`.

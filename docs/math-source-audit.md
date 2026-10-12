@@ -7,24 +7,24 @@ Reviewed October 7, 2026. Dates and rules are transcribed or summarized from the
 | Item | Result | Source |
 | --- | --- | --- |
 | Lab quizzes | Four quiz weeks: September 28, October 12, November 9, November 23. Quiz category 15%; lowest quiz dropped; no make-up. | Course Management Form F26, p. 3 and footnote. |
-| Quiz 1 scope | Sections 2.2–2.4. Quiz in the second hour of the assigned lab. | September 22 D2L announcement by Dr. Majed Alqasas. |
+| Quiz 1 scope | Sections 2.2–2.4. Quiz in the second hour of the assigned lab. | September 22 D2L announcement. |
 | Midterm | October 23, 2026, 6:30–8:30 PM Toronto time; 40%. Exact scope and room not supplied. | Course Management Form, p. 3; FAQ C.4 says scope is posted about one week before. |
 | Final | Three hours, December examination period, 45%. Exact date, time, room and scope not supplied. | Course Management Form, p. 3. |
-| Instructors | All six section ranges, including Majed Alqasas for 7–12 and 25–30. | Course Management Form, p. 1. |
-| Labs | All 34 section mappings, TA names, lab days, windows and rooms. | MTH140 TAs F26 spreadsheet. |
+| Instructors | All six section ranges; current staff details are on D2L. | Course Management Form, p. 1. |
+| Labs | All 34 section mappings, lab days, windows and rooms. | MTH140 TAs F26 spreadsheet. |
 | Course progression | Eight outline blocks, in its published order, including the alternating derivative/integration blocks. | Course Management Form, p. 5. |
 | Practice | 37 section rows, all exact exercise ranges. Ungraded. | Recommended Problems MTH140 F2026, pp. 1–3. |
 
 The FAQ's statement that two of ten quizzes are dropped conflicts with the four-quiz, one-drop outline and the September 22 announcement. The guide uses the outline and announcement, and exposes the conflict in Rules & Help.
 
-The outline prints Dr. Alqasas's office hours as Tuesday 10:00–11:30 PM. The guide retains that wording with a confirmation note, rather than silently converting it to AM. Daytime lab entries ending at “12am” in the staffing spreadsheet are normalized to noon; this normalization is disclosed in the website source notes.
+Staff names and office-hour details are omitted from the public guide; check current D2L listings. Daytime lab entries ending at “12am” in the staffing spreadsheet are normalized to noon; this normalization is disclosed in source notes.
 
 ## MTH141
 
 | Item | Result | Source |
 | --- | --- | --- |
 | Lab quizzes | Five quiz weeks: September 21, October 5, November 2, November 16, November 30. Quiz category 20%; lowest dropped; no make-up. | Course Management Form V3, pp. 3 and 5. |
-| Quiz 1 scope | Sections 6.1–6.4. | September 17 D2L reminder by Dr. Saeid Samiezadeh. |
+| Quiz 1 scope | Sections 6.1–6.4. | September 17 D2L reminder. |
 | Quiz 2 scope | 1.2.2, 1.2.3, 1.2.4, 2.1.3, 2.1.4, 2.1.5, 2.1.6; 15 minutes. | October 1 D2L reminder. |
 | Midterm | October 16, 6:30–8:30 PM Toronto time; 35% of course. 50 test marks, 18 multiple-choice and 2 long-answer questions. | Outline V3 p. 3 and October 5, 10:22 AM D2L announcement. |
 | Midterm scope | 6.1–6.4; 1.1–1.2.4; 2.1.1–2.1.8; 3.1.1–3.1.3 and 3.1.5–3.2.2. Section 3.1.4 is not added. | October 5 announcement. |
@@ -56,6 +56,6 @@ Published midterm times are exported using UTC calculated from America/Toronto, 
 - Math progress and section choices use independent keys. Theme is shared; notes and student choices are never sent to analytics.
 - Math skill checks are clearly labelled as guide-created study prompts, not official rubrics or a mastery score.
 - Staff contact emails are not copied into the public math data. Users obtain current contact details from D2L.
-- All three live course pages use the existing Cloudflare beacon once per page. The separate colour-preview snapshot stays isolated and has no beacon.
+- October 12 privacy update: no active analytics beacon or SDK. Fonts are self-hosted and Content Security Policy blocks outbound reporting. Course-only staff names are omitted from public data and documentation.
 
 Run `node --test tests/schedule.test.mjs` for deadline, timezone, section, calendar and source-data checks. Serve this static repository over HTTP for browser testing; ES modules are used by the math pages. No package installation or build is required to host it.
