@@ -52,11 +52,11 @@ Visible search, one-tap weekly work and contacts, and **Mark done** with **Undo*
 
 - **Coverage previews** on closed assessment cards, plus **View requirements** and arrows on upcoming assessments, make it easier to scan and open the right details.
 - **Next assessment** and an assessment-weight strip replace the team/individual split. Each math guide has **Assignments**, **Study**, and **Course info** views.
-- **Section-aware quiz dates:** official quiz weeks combine with the selected lab timetable. These calculated days are labelled as timetable-derived; quiz start times are not invented. Monday MTH140 sections see a confirmation warning for Thanksgiving week.
-- **Announced coverage:** MTH141 Quiz 1, Quiz 2 and October 16 midterm, plus MTH140 Quiz 1. Unprovided future scopes and final dates are marked pending.
+- **Section-aware quiz dates:** official quiz weeks combine with the selected lab timetable. These calculated days are labelled as timetable-derived, except the confirmed Monday MTH140 Quiz 2 make-up on October 19. Quiz start times are not inferred when unannounced.
+- **Announced coverage:** MTH141 Quiz 1, Quiz 2 and October 16 midterm, plus MTH140 Quiz 1 and Quiz 2 (Chapter 3, Sections 3.1–3.5). Unprovided future scopes and final dates are marked pending. Public pages omit assessment question-type breakdowns.
 - **Eight topic blocks per course**, in outline order, with self-reported skill-review checks and all 77 recommended-practice rows across the two math courses. The MTH141 textbook-edition mismatch is visible beside the free textbook links.
 - **Preparation and completion** are separate. Each assessment has a preparation checklist, completion record, private notes, a personal study target, and a shareable link.
-- **Calendar export** includes published midterm times and optionally tentative all-day lab dates. It excludes unknown finals and unresolved Thanksgiving dates. Calendar imports do not update automatically.
+- **Calendar export** includes published midterm times and optionally tentative all-day lab dates. It excludes unknown finals and uses the confirmed October 19 Monday make-up for MTH140 Quiz 2. Calendar imports do not update automatically.
 - **Search, unfinished-work planning, backups and restore** follow the same approach as CEN100. Math backups are course-specific and include topic checks; conflicting existing notes and targets survive import.
 - **Independent saved sections and progress** across all three courses; one shared appearance setting. Existing CEN100 local data and direct assignment links continue to work.
 - **Distinct mathematics visuals:** a curve and tangent for Calculus I, vector transformation geometry for Linear Algebra, with cyan and violet course accents.
@@ -77,7 +77,7 @@ All times are Toronto time. Each course requires at least 50% overall to pass. Q
 
 Math calendars include the published midterm by default. Including section lab dates is optional and produces tentative all-day quiz entries. Math progress backups include topic checks and only import into the matching course. Section choices, theme, and unread-update preferences are not included in a progress backup.
 
-Dates and requirements were reviewed October 7, 2026 against official supplied course files and announcements. See [the math source audit](docs/math-source-audit.md) for sources, conflicts, derived dates and maintenance instructions.
+Dates and requirements were reviewed October 12, 2026 against supplied official course files and announcements. See [the math source audit](docs/math-source-audit.md) for sources, conflicts, derived dates and maintenance instructions.
 
 The public site summarizes course requirements and lists exercise references. It does not publish uploaded PDFs, announcement screenshots, sample exams or restricted solutions. Contact details stay on D2L.
 
