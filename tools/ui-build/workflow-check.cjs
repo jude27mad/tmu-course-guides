@@ -7,7 +7,7 @@ const root=require('node:path').resolve(__dirname,'../..');
 const resources={interceptors:[requestInterceptor(async(request)=>{
  const u=new URL(request.url);if(u.hostname!=='guide.test')return new Response('');
  const file=path.join(root,u.pathname);if(!fs.existsSync(file))return new Response('',{status:404});
- if(file.endsWith('.mjs')){const r=await esbuild.build({entryPoints:[file],bundle:true,write:false,format:'iife',logLevel:'silent'});return new Response(r.outputFiles[0].text,{headers:{'Content-Type':'application/javascript'}})}
+ if(file.endsWith('.mjs')){const r=await esbuild.build({entryPoints:[file],bundle:true,write:false,format:'iife',logLevel:'silent',plugins:[{name:'preserve-native-module-url',setup(build){build.onLoad({filter:/\.mjs$/},async args=>({contents:fs.readFileSync(args.path,'utf8').replaceAll('import.meta.url',JSON.stringify('https://guide.test/'+path.relative(root,args.path).split(path.sep).join('/'))),loader:'js'}));}}]});return new Response(r.outputFiles[0].text,{headers:{'Content-Type':'application/javascript'}})}
  return new Response(fs.readFileSync(file),{headers:{'Content-Type':file.endsWith('.css')?'text/css':'application/javascript'}});
 })]};
 async function check(route,course,motion='off'){
@@ -28,7 +28,7 @@ async function check(route,course,motion='off'){
  await new Promise(r=>setTimeout(r,20));
  assert.deepEqual(errors,[],course+' runtime errors');
  assert(d.body.classList.contains('workspace'),course+' workspace mounted');
- assert(d.querySelector('.header-upgraded .header-art svg,.header-upgraded .header-art canvas'),course+' dimensional header mounted');
+ assert(d.querySelector('.header-upgraded .header-art canvas,.header-upgraded .header-art .scene-poster'),course+' dimensional header or matching poster mounted');
  if(motion==='off')assert.equal(d.querySelector('.header-art').dataset.motionState,'still');
  assert.equal(d.body.dataset.workspaceView,'assignments');
  const click=s=>{const el=d.querySelector(s);assert(el,course+' '+s+' exists');el.click()};

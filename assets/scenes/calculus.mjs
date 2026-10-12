@@ -1,13 +1,27 @@
-import {T,material,mesh,disposeScene} from './primitives.mjs?v=20261011-cinema3';
+import {T,mesh,tubes,disposeScene} from './primitives.mjs?v=20261012-future1';
+import {surface,sketchMeshes} from './future-geometry.mjs?v=20261012-future1';
+import {createFutureLook} from './future-look.mjs?v=20261012-future1';
+
+export function vortexPoint(u,v){
+ const a=u*Math.PI*2,b=v*Math.PI*2+a*2,major=1.48+.19*Math.sin(a*3)-.08*Math.cos(a*5);
+ const tube=.51+.13*Math.cos(a*3)+.07*Math.cos(b*2-a*5),r=major+tube*Math.cos(b);
+ return[r*Math.cos(a),r*Math.sin(a),tube*.82*Math.sin(b)+.32*Math.sin(a*3+Math.sin(b)*.7)];
+}
 export function createCalculus(p){
- const root=new T.Group(),n=150,across=6,geometry=new T.BufferGeometry(),positions=new Float32Array((n+1)*(across+1)*3),indices=[];
- for(let i=0;i<n;i++)for(let j=0;j<across;j++){const a=i*(across+1)+j,b=a+across+1;indices.push(a,b,a+1,a+1,b,b+1);}
- geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));geometry.setIndex(indices);
- mesh(root,geometry,material('#b9dfc9',{side:T.DoubleSide,metalness:.83,roughness:.17,clearcoat:1,iridescence:.22}));
- let phase=0,burst=0,quads=[];
- function point(u,v){const twist=u*1.5+Math.sin(phase*.6)*.35,r=1.52+v*Math.cos(twist);return[r*Math.cos(u),r*Math.sin(u)*1.08,v*Math.sin(twist)+.36*Math.sin(2*u+phase*.45)];}
- return{root,bounds:[5.3,5.1],caption:'CONTINUOUS / CHANGE',react(){burst=1;},
- update(t,dt,{still=false,impulse=0}={}){phase=still?1:t;burst=Math.max(0,burst-dt*.5);const amplitude=1+Math.max(burst,impulse)*.12;quads=[];for(let i=0;i<=n;i++)for(let j=0;j<=across;j++){const pnt=point(i/n*Math.PI*2,(j/across-.5)*.95);geometry.attributes.position.setXYZ(i*(across+1)+j,pnt[0]*amplitude,pnt[1]*amplitude,pnt[2]);}geometry.attributes.position.needsUpdate=true;geometry.computeVertexNormals();geometry.computeBoundingSphere();
-  for(let i=0;i<n;i++){const a=i*(across+1),b=(i+1)*(across+1),pos=geometry.attributes.position;const read=k=>[pos.getX(k),pos.getY(k),pos.getZ(k)];quads.push([read(a),read(b),read(b+across),read(a+across)]);}},
- sketch(){return quads.map((points,i)=>({kind:'poly',points,fill:i<65?'#c5f8d9':i<115?'#559985':'#afd8ca',stroke:'#ceffe5',alpha:1,width:.2,metal:true}));},dispose(){disposeScene(root);}};
+ const root=new T.Group(),look=createFutureLook(p),mat=look.materials;
+ const liquid=mesh(root,surface(180,32,vortexPoint),mat.flow);liquid.frustumCulled=false;liquid.name='liquid-surface';
+ const paths=Array.from({length:2},(_,j)=>Array.from({length:100},(_,i)=>{const a=i/99*Math.PI*2,r=.87+.10*Math.sin(a*3+j);return[r*Math.cos(a),r*Math.sin(a),.14*Math.sin(a*3+j)];}));
+ const inner=tubes(root,paths,mat.light,.013);
+ const lens=mesh(root,new T.SphereGeometry(2.34,48,26,.13,Math.PI*.88,.45,Math.PI*.68),mat.glass);lens.rotation.set(.62,.3,-.3);
+ const rimPaths=Array.from({length:2},(_,j)=>Array.from({length:70},(_,i)=>{const a=.13+i/69*Math.PI*.88,b=j?.45+Math.PI*.68:.45;return[2.34*Math.sin(b)*Math.cos(a),2.34*Math.cos(b),-2.34*Math.sin(b)*Math.sin(a)];}));
+ const rim=tubes(root,rimPaths,mat.metal,.009);rim.rotation.copy(lens.rotation);
+ let burst=0,disposed=false;
+ const model={root,bounds:[5.8,5.8],caption:'CONTINUOUS / CHANGE',setQuality:mode=>look.setQuality(mode),react(){burst=1;},
+  update(t,dt,{still=false,impulse=0}={}){
+   burst=Math.max(0,burst-dt*.65);look.update(still?1.4:t,still?0:Math.max(burst,impulse),still);
+   inner.rotation.z=still?.2:t*.085;liquid.rotation.z=still?-.2:Math.sin(t*.18)*.12-.2;
+   lens.rotation.z=-.3+(still?0:Math.sin(t*.12)*.035);rim.rotation.copy(lens.rotation);
+  },
+  sketch(){return sketchMeshes(root,'#b9d4ca');},dispose(){if(!disposed){disposed=true;disposeScene(root);look.disposeTextures();}}
+ };model.update(0,0,{still:true});return model;
 }
