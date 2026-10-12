@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="../assets/course-header.css?v=20261012-subject1">
 <link rel="stylesheet" href="../assets/guide-motion.css?v=20261011-cinema3">
 <!-- Keep the first transition snapshot in the final course layout. -->
-<script type="module" src="../assets/math-guide.mjs?v=20261012-privacy1"></script>
+<script type="module" src="../assets/math-guide.mjs?v=20261012-assessments1"></script>
 <script type="module" src="../assets/math-labs.mjs?v=20261011-cinema3"></script>
 <script type="module" src="../assets/editorial.mjs?v=20261011-editorial2"></script>
 <script type="module" src="../assets/workspace.mjs?v=20261011-cinema3"></script>
@@ -79,13 +79,14 @@
   </section>
       </details>
       <details id="work-tools"><summary>What should I work on?</summary><label for="work-range">Unrecorded assessments and my study targets</label><select id="work-range"><option value="week">Next 7 days</option><option value="all">All unfinished</option></select><p class="tool-note">Uses your completion records and personal target dates. Preparation checklists are tracked separately.</p><ul class="work-list" id="work-list"></ul></details>
-      <details><summary>Add assessments to my calendar</summary><label class="inline-check"><input type="checkbox" id="calendar-upcoming" checked>Upcoming dates only</label><label class="inline-check"><input type="checkbox" id="calendar-labs">Include lab dates from my section timetable</label><p class="tool-note">The midterm uses its published Toronto time. Lab quizzes export as tentative all-day events because the quiz start time is not confirmed. Choose a section to include them. The Thanksgiving conflict and unscheduled final are excluded.</p><div class="tool-actions"><button class="button" type="button" id="calendar-download">Download calendar (.ics)</button></div><p class="status" id="calendar-status" role="status"></p></details>
+      <details><summary>Add assessments to my calendar</summary><label class="inline-check"><input type="checkbox" id="calendar-upcoming" checked>Upcoming dates only</label><label class="inline-check"><input type="checkbox" id="calendar-labs">Include lab dates from my section timetable</label><p class="tool-note">The midterm uses its published Toronto time. Lab quizzes export as tentative all-day events because the quiz start time is not confirmed. Choose a section to include them. The unscheduled final is excluded.</p><div class="tool-actions"><button class="button" type="button" id="calendar-download">Download calendar (.ics)</button></div><p class="status" id="calendar-status" role="status"></p></details>
       <details><summary>Move or back up my progress</summary><p class="tool-note">Includes this course’s preparation checks, assessment completion, topic skill checks, notes and study targets. Import adds progress and fills empty notes and targets; existing conflicting entries stay as they are.</p><div class="tool-actions"><button class="button" type="button" id="backup-export">Export my progress</button></div><label for="backup-import">Import a MTH141 backup</label><input type="file" id="backup-import" accept=".json,application/json"><p class="status" id="backup-status" role="status"></p></details>
       <p class="tool-note">Your choices and progress stay in this browser. There is no account or automatic device sync.</p><p class="status" id="guide-status" role="status"></p>
     </div>
   </details>
   <details class="rule-card release-notes" id="guide-updates">
     <summary>What's changed? <span class="pill active" id="updates-badge" hidden>New updates</span></summary>
+    <p><strong>October 12, 2026 — Midterm scope and public privacy</strong></p><ul><li>The exact midterm topic coverage, published date and time remain available. Question-type breakdowns and format details are left to D2L.</li></ul>
     <p><strong>October 12, 2026 — Subject headers and privacy</strong></p>
     <ul><li>New moving subject artwork: Engineering gears, Calculus curves and a matrix-transformed sphere for Linear Algebra. Drag to rotate; pause at any time.</li><li>New folded-page logo, responsive artwork framing and fallback images. Course colours and saved progress are preserved.</li><li>Fonts now load locally. Removed analytics code and course-only staff names; current contacts are on D2L. Added a Privacy page.</li></ul>
 
@@ -108,7 +109,7 @@
       <li>Added course switching between CEN100, MTH140 and MTH141, independent saved sections and progress, and shared Auto, Dark and Light appearance.</li>
       <li>Added all 34 Linear Algebra sections, with lab times, rooms, Academic Assistants and lecture instructors.</li>
       <li>Added five quiz weeks, the October 16 midterm, a pending final-exam card, grading weights of 20% / 35% / 45%, and announced Quiz 1, Quiz 2 and midterm coverage.</li>
-      <li>Added the midterm format and preparation rules, eight outline topic blocks and all 40 recommended-practice rows, with skill-review checks and violet vector-transformation visuals.</li>
+      <li>Added midterm coverage and preparation guidance, eight outline topic blocks and all 40 recommended-practice rows, with skill-review checks and violet vector-transformation visuals.</li>
       <li>Explained the textbook-edition mismatch and the V3 Thanksgiving-week teaching schedule. Later quiz coverage, the midterm room and the final schedule remain pending.</li>
       <li>Added preparation checklists, separate completion records, private notes, study targets, direct assessment links, search, unfinished-work planning, calendar exports and course-specific progress backups.</li>
       <li>Published the three-course README and added these release notes with an unread-update badge. Checked phone, desktop and enlarged-text layouts, progress restoration, backups and calendars.</li>
