@@ -335,9 +335,9 @@ All paths below describe future implementation work, not changes authorized by t
 - [ ] Build the real MTH140 book with geometry, curl, labels and pop-ups from the existing data, opening to the current week.
 - [ ] Integrate bounded fine-pointer scrubbing, corner drag, keys, horizontal touch swipes, week controls, immediate dock/Skip access and the DOM mirror/fallback timeline.
 - [ ] Integrate existing deadline, completion/Undo and Pause motion behavior. Confirm the paused composition before polishing movement.
-- [ ] Capture **dark and light × 1440 and 390 px × current-week hero and docked/coursework state**. Label phone dock screenshots accurately: the phone hero is not pinned.
+- [ ] Internally verify **dark and light × 1440 and 390 px × current-week hero and docked/coursework state** (agent-side captures only; they are not sent to the user). The phone hero is not pinned.
 
-**MANDATORY CHECKPOINT: send these screenshots to the user and STOP. Wait for explicit approval before Stage 3 or any later stage. This is the integrated MTH140 route on `night-shift`, not an isolated prototype.**
+**MANDATORY CHECKPOINT (revised 12 Oct, see Section 12): merge the integrated MTH140 route to `main` so the user can open the live site themselves, tell them it is ready, and STOP. Do not send screenshots to the user. Wait for explicit approval before Stage 3 or any later stage.**
 
 ### Stage 3 — Profile and set tiers
 
@@ -421,3 +421,40 @@ All paths below describe future implementation work, not changes authorized by t
 - The previous environment reported Chromium only under `/opt/pw-browsers` and no WebKit. Reconfirm available tools during execution, but do not claim Safari/iPhone/iPad coverage from a narrow Chromium viewport.
 - State plainly that **WebKit and real-device smoothness remain unverified** unless those exact checks have actually been performed. A real-GPU desktop screenshot alone does not verify phone GPU pacing or Safari interaction.
 - Implementation reports separate files written, behaviors tested, screenshots reviewed and checks not performed. The documentation-only commit of this plan makes no build, test, performance or implementation-completion claim.
+
+## 12. Revision 2 (12 October 2026) — One persistent world, no page reloads
+
+**Decision (user-approved):** navigating between the Desk and the three courses must not reload the page. The site follows the Unseen Studio model (unseen.co; Awwwards Site of the Month, February 2023): the main pages exist as areas of one WebGL world, and moving between them is camera travel through that space rather than a page load. This revision supersedes the cross-document session handoff in Section 4 and the multi-page navigation assumptions in Sections 3, 7 and 10 where they conflict. Everything else stands.
+
+### What stays
+
+- Every route remains a real HTML document at a real URL (`/`, `/cen100/`, `/mth140/`, `/mth141/` under the deployment base). Direct loads, deep links, hashes, bookmarks, the legacy forwarder and no-JavaScript reading all keep working, and each document can still boot on its own.
+- Course data, storage keys, saved progress, completion semantics, the deadline resolver, Skip to coursework, the no-loading-screen rule, reduced motion, Pause motion, tiers and the DOM-first accessibility rules are unchanged.
+- No entry gate, loader or "Enter" screen: unlike Unseen's showcase, coursework is readable the moment any route opens.
+
+### Architecture
+
+- **Persistent shell.** The hub sidebar, dock, palette, sound service, Night Shift clock and **one** 3D stage (a single WebGL renderer and canvas) live in the shell and survive navigation. The Desk and each course book are scenes/areas inside that one world; the dive from Desk to book and the return are continuous camera moves in the same renderer, not a handoff between documents.
+- **Router** (`assets/app/router.mjs`): intercepts same-origin primary clicks on links to the four routes (respecting modified clicks, `target`, downloads and external links), fetches the destination document (prefetched on hover/focus/idle and cached), swaps the route region and route-specific head assets (stylesheets added/removed without flashes of unstyled content), updates `document.title`, metadata and `body` data attributes, and uses `history.pushState`/`popstate` with scroll restoration. Focus moves to the new route's main heading or Skip target; a polite live region announces the route. Hash targets on the destination still open their item. Same-document View Transitions may crossfade DOM regions as progressive enhancement while the camera moves.
+- **Route lifecycle.** Every route-specific module exposes `mount(root)` / `unmount()` and keeps no one-shot module-level state: `math-guide.mjs`, `math-labs.mjs`, `editorial.mjs`, `workspace.mjs`, `course-header.mjs`, `visuals.js`, `guide-motion.mjs` page hooks, the CEN100 guide script (moved from the inline script into an ES module with unchanged behaviour), and the Night Shift deadline/timeline/scroll layers. Unmount removes every listener, observer, timer, tween, ScrollTrigger and DOM node it created and resets globals (`CourseWorkspace`, `CourseVisuals`, `CEN_SCHEDULE`) so the next course binds cleanly. Services that belong to the shell initialise once.
+- **Fallback.** If the router is unavailable, fails to fetch, or meets an unexpected document, it performs a normal full navigation. A failed scene keeps the DOM route working with posters.
+
+### Verification additions
+
+- Navigating Desk → each course → another course → back/forward never reloads the document (assert a shell-lifetime marker survives), lands on the right route, title, view and focus, and preserves saved state.
+- Repeated route round trips (20×) keep listener/observer/ScrollTrigger/rAF/GPU resource counts flat; the previous route's handlers never fire after unmount.
+- Direct loads of each route and no-JS reading still work; `tools/ui-build` workflows cover both direct loads and in-app navigation.
+
+### Revised stage order
+
+1. **Stage 1** (in progress): CEN100 at `/cen100/`, shared schedule, legacy forwarding, data-level resolver, Desk DOM directory.
+2. **Stage 1b — Persistent shell and router:** route lifecycle refactor (mount/unmount everywhere, CEN guide as a module), router, prefetch, history/focus/scroll, shell-owned services, and the single stage host the books and Desk will render into. Merge to `main` when verified so the user can try reload-free switching.
+3. **Stage 2 — MTH140 book** built inside the persistent stage, then the checkpoint above (live merge, user opens it, stop for approval).
+4. Stages 3–7 as written, with Stage 5's dive and return implemented as in-world camera travel.
+
+### Working agreements recorded 12 October
+
+- The user reviews by opening the live site; do not send screenshots.
+- Verified stages are merged directly to `main` (no pull request).
+- Keep usage proportionate: verify what the plan requires, without exploratory capture loops.
+
