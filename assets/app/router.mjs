@@ -61,6 +61,15 @@ export async function revealFragment(document,hash,{focus=false}={}){
  if(opened)await Promise.resolve();
  if(target.closest('[hidden]'))return false;
  target.scrollIntoView?.();
+ // Late layout above the target (header art, docking, fonts) must not carry it away: keep it where the
+ // browser put it for about a second, unless the reader scrolls first.
+ const window=document.defaultView;
+ if(window?.requestAnimationFrame&&target.getBoundingClientRect){
+  const inputs=['wheel','touchstart','keydown','pointerdown'],started=Date.now();let top=target.getBoundingClientRect().top,frame=0;
+  const stop=()=>{window.cancelAnimationFrame(frame);for(const type of inputs)window.removeEventListener(type,stop,true);};
+  const step=()=>{if(!target.isConnected||target.closest('[hidden]')||Date.now()-started>1000){stop();return;}const now=target.getBoundingClientRect().top;if(Math.abs(now-top)>2){target.scrollIntoView();top=target.getBoundingClientRect().top;}frame=window.requestAnimationFrame(step);};
+  for(const type of inputs)window.addEventListener(type,stop,{capture:true,passive:true});frame=window.requestAnimationFrame(step);
+ }
  if(focus&&target.matches('a[href],area[href],button:not([disabled]),input:not([disabled]):not([type="hidden"]),select:not([disabled]),textarea:not([disabled]),summary,[tabindex],[contenteditable]:not([contenteditable="false"])'))target.focus({preventScroll:true});
  return true;
 }
@@ -88,10 +97,10 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
  const originalPush=history.pushState,originalReplace=history.replaceState;
  const pushState=(...args)=>originalPush.apply(history,args),replaceState=(...args)=>originalReplace.apply(history,args);
  let route=routeFromDocument(document),modules=[],controller=new window.AbortController(),started=false,entryCounter=0,activeEntry,currentURL=window.location.href,queue=Promise.resolve(),idle=null,swapping=false,dispatchingHash=false;
- let activeIndex=0,browserEntry,latestRequest,restoring=null,pendingPops=0,persistTimer=null,settle=null,popHash=null,suppressHash=null;
+ let activeIndex=0,browserEntry,latestRequest,restoring=null,pendingPops=0,persistTimer=null,lastPersist=0,settle=null,popHash=null,suppressHash=null;
  // Relative head URLs in the original markup resolve against the URL this document was loaded from,
  // not against later history entries.
- const documentURL=window.location.href,shell=shellSignature(document,documentURL);
+ const documentURL=window.location.href,shell=shellSignature(document,documentURL),authoredMedia=new WeakMap();
  const listenerController=new window.AbortController();
  if(!document.documentElement.dataset.shellId)document.documentElement.dataset.shellId=window.crypto?.randomUUID?.()||`shell-${Date.now()}-${Math.random().toString(36).slice(2)}`;
  const oldRestoration=history.scrollRestoration;history.scrollRestoration='manual';
@@ -108,10 +117,11 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
  // A reload or a Back/Forward document load lands on an entry that already carries its saved position.
  const initialScroll=Array.isArray(browserEntry.scroll)?browserEntry.scroll:null;
  positions.set(activeEntry,scroll());
- // Scrolling only updates memory. History is written before navigations, on a quiet timer and when the page
- // is hidden: browsers throttle (Chromium) or reject (WebKit) frequent replaceState calls.
+ // Scrolling only updates memory. History is written before navigations, at most once a second while
+ // scrolling (a reload keeps that), and when the page is hidden: browsers throttle (Chromium, 200 per 10 s) or
+ // reject (WebKit, 100 per 30 s) frequent pushState/replaceState calls, which would strand later navigations.
  function persistScroll(){
-  window.clearTimeout(persistTimer);persistTimer=null;
+  window.clearTimeout(persistTimer);persistTimer=null;lastPersist=Date.now();
   const position=positions.get(activeEntry)||scroll();
   if(history.state?.[STATE_KEY]?.id===activeEntry)replaceState({...history.state,[STATE_KEY]:{id:activeEntry,index:activeIndex,scroll:position}},'',window.location.href);
  }
@@ -157,7 +167,8 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
  // apply at commit, together with removing the outgoing ones.
  async function prepareHead(incoming,url,request){
   const selector='link[rel~="stylesheet"],style',existing=[...document.head.querySelectorAll(selector)].filter(el=>!el.hasAttribute('data-shell-style'));
-  const key=(el,baseURL)=>el.tagName==='STYLE'?`style:${el.media}:${el.textContent}`:`link:${new URL(el.getAttribute('href'),baseURL).href}:${el.media||''}`;
+  const media=el=>authoredMedia.has(el)?authoredMedia.get(el):el.getAttribute('media')||'';
+  const key=(el,baseURL)=>el.tagName==='STYLE'?`style:${media(el)}:${el.textContent}`:`link:${new URL(el.getAttribute('href'),baseURL).href}:${media(el)}`;
   const byKey=new Map(existing.map(el=>[key(el,documentURL),el])),desired=[],pending=[],inert=[];
   let previous=null;
   for(const source of incoming.head.querySelectorAll(selector)){
@@ -168,7 +179,7 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
    if(!node){
     node=document.importNode(source,true);
     if(node.tagName==='LINK')node.setAttribute('href',new URL(source.getAttribute('href'),url).href);
-    inert.push([node,node.getAttribute('media')]);node.setAttribute('media','not all');
+    authoredMedia.set(node,source.getAttribute('media')||'');inert.push(node);node.setAttribute('media','not all');
     // Register load/error before insertion; a cached sheet can finish immediately.
     const ready=node.tagName!=='LINK'?null:loadStylesheet?Promise.resolve().then(()=>loadStylesheet(node)):stylesheetReady(node,window);
     if(previous)previous.after(node);else if(existing[0])existing[0].before(node);else document.head.append(node);
@@ -179,7 +190,9 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   await Promise.all(pending);
   return ()=>{
    for(const node of existing)if(!desired.includes(node))node.remove();
-   for(const [node,media] of inert)if(media===null)node.removeAttribute('media');else node.setAttribute('media',media);
+   // Activate through the CSSOM: changing the media attribute makes Chromium re-process the link and drop
+   // the sheet for a frame. The attribute keeps saying "not all"; the authored media is remembered.
+   for(const node of inert){if(node.sheet)node.sheet.media.mediaText=authoredMedia.get(node);else if(authoredMedia.get(node))node.setAttribute('media',authoredMedia.get(node));else node.removeAttribute('media');}
    document.title=incoming.title;
    const description=incoming.querySelector('meta[name="description"]'),old=document.querySelector('meta[name="description"]');
    if(description){const target=old||document.head.appendChild(document.createElement('meta'));target.name='description';target.content=description.content;}else old?.remove();
@@ -205,7 +218,7 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   if(!live){live=document.createElement('div');live.dataset.routerAnnouncement='';live.setAttribute('aria-live','polite');live.setAttribute('aria-atomic','true');live.style.cssText='position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';document.body.append(live);}
   live.textContent=route==='desk'?'TMU Course Guides':`${route.toUpperCase()} guide`;
  }
- async function restoreAndFocus(position,hash){
+ function restoreAndFocus(position){
   const root=document.querySelector('main[data-route-region]'),skip=document.querySelector('body > .skip-link');
   let target;
   try{const id=skip&&new URL(skip.href).hash.slice(1);target=id&&document.getElementById(decodeURIComponent(id));}catch{}
@@ -214,7 +227,6 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   target.focus({preventScroll:true});
   announce();
   if(position)applyScroll(position);
-  else if(!await revealFragment(document,hash).catch(()=>false)&&!document.querySelector('dialog[open]'))window.scrollTo(0,0);
  }
  function hashChanged(oldURL,url){
   if(!url.hash&&!new URL(oldURL).hash)return;
@@ -284,8 +296,11 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
    // Keep partial mounts disposable if a later module fails. Modules read the destination hash at mount,
    // as on a direct load, so no hashchange follows a route swap.
    for(const module of nextModules){modules.push(module);await module.mount({root:newRoot,route,signal:controller.signal,direct:false});}
-   await restoreAndFocus(mode==='pop'?(positions.get(entry.id)||entry.scroll):null,url.hash);
+   restoreAndFocus(mode==='pop'?(positions.get(entry.id)||entry.scroll):null);
    document.dispatchEvent(new window.CustomEvent('route-changed',{detail:{route,from:oldRoute}}));
+   // As on a direct load: the page started at the top before mounting, a module may have scrolled to its
+   // own item, and a fragment the modules rendered is revealed last.
+   if(mode!=='pop'&&url.hash)await revealFragment(document,url.hash).catch(()=>false);
    return true;
   }catch(error){
    for(const node of request.headAdditions)node.remove();
@@ -314,7 +329,7 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   activeEntry=entry.id;activeIndex=entry.index;browserEntry=entry;positions.set(activeEntry,entry.scroll);currentURL=window.location.href;
  };
  const guideReplace=function(state,title,url){
-  window.clearTimeout(persistTimer);persistTimer=null;
+  window.clearTimeout(persistTimer);persistTimer=null;lastPersist=Date.now();
   const entry={id:activeEntry,index:activeIndex,scroll:scroll()};
   replaceState({...state,[STATE_KEY]:entry},title,url);
   positions.set(activeEntry,entry.scroll);currentURL=window.location.href;
@@ -348,7 +363,7 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   window.addEventListener('scroll',()=>{
    if(swapping||settle)return;
    positions.set(activeEntry,scroll());
-   window.clearTimeout(persistTimer);persistTimer=window.setTimeout(persistScroll,400);
+   persistTimer??=window.setTimeout(persistScroll,Math.max(250,1000-(Date.now()-lastPersist)));
   },{passive:true,signal});
   const hide=()=>{if(!swapping&&!settle)positions.set(activeEntry,scroll());persistScroll();};
   window.addEventListener('pagehide',hide,{signal});

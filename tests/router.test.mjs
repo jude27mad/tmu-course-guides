@@ -309,7 +309,7 @@ test('head sync never moves a loaded sheet, keeps incoming sheets inert until co
  router.stop();window.close();
 });
 
-test('scrolling keeps positions in memory and writes history only after scrolling settles or when the page is hidden',async()=>{
+test('scrolling keeps positions in memory and writes history at most once a second or when the page is hidden',async()=>{
  const dom=new JSDOM(html(),{url:'https://guide.test/tmu-course-guides/',pretendToBeVisual:true}),{window}=dom;let y=0,writes=0;
  Object.defineProperty(window,'scrollY',{get:()=>y});window.scrollTo=(a,b)=>{y=b;};
  const replace=window.history.replaceState;window.history.replaceState=function(...args){writes++;return replace.apply(this,args);};
@@ -317,11 +317,15 @@ test('scrolling keeps positions in memory and writes history only after scrollin
  router.start();writes=0;
  for(let i=1;i<=300;i++){y=i*10;window.dispatchEvent(new window.Event('scroll'));}
  assert.equal(writes,0,'no history write per scroll event');
- await new Promise(resolve=>setTimeout(resolve,500));
- assert.equal(writes,1,'one write once scrolling settles');assert.deepEqual(window.history.state.__tmuRouter.scroll,[0,3000]);
- y=1234;window.dispatchEvent(new window.Event('scroll'));window.dispatchEvent(new window.Event('pagehide'));
- assert.equal(writes,2);assert.deepEqual(window.history.state.__tmuRouter.scroll,[0,1234],'pagehide stores the position for a reload or a later Back');
- await new Promise(resolve=>setTimeout(resolve,500));assert.equal(writes,2,'the pending timer was replaced, not repeated');
+ await new Promise(resolve=>setTimeout(resolve,400));
+ assert.equal(writes,1,'one write shortly after scrolling');assert.deepEqual(window.history.state.__tmuRouter.scroll,[0,3000]);
+ // Continuous scrolling for 2.5 s: one write per second at most, and the last position is always stored.
+ const started=Date.now();while(Date.now()-started<2500){y+=7;window.dispatchEvent(new window.Event('scroll'));await new Promise(resolve=>setTimeout(resolve,16));}
+ await new Promise(resolve=>setTimeout(resolve,1100));
+ assert.ok(writes>=3&&writes<=4,'about one write per second while scrolling, got '+writes);assert.deepEqual(window.history.state.__tmuRouter.scroll,[0,y],'final position stored');
+ const before=writes;y=1234;window.dispatchEvent(new window.Event('scroll'));window.dispatchEvent(new window.Event('pagehide'));
+ assert.equal(writes,before+1);assert.deepEqual(window.history.state.__tmuRouter.scroll,[0,1234],'pagehide stores the position for a later Back');
+ await new Promise(resolve=>setTimeout(resolve,1100));assert.equal(writes,before+1,'the pending timer was absorbed by the pagehide write');
  router.stop();window.close();
 });
 
