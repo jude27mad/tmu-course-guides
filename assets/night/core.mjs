@@ -76,7 +76,7 @@ const holds=new Set();
 export function hold(reason){holds.add(reason);document.dispatchEvent(new CustomEvent('night-hold',{detail:held()}));}
 export function release(reason){holds.delete(reason);document.dispatchEvent(new CustomEvent('night-hold',{detail:held()}));}
 export const held=()=>holds.size>0;
-/* Ambient = loops that run on their own (backdrop, marquee, pulses). Pause motion stops them all. */
+/* Ambient = loops that run on their own (marquee, pulses). Pause motion stops them all. */
 export const ambientAllowed=()=>sceneMotionAllowed()&&!held()&&!document.hidden;
 /* CSS hooks: html.ns-still stops CSS-driven ambient loops; html.ns-held tells the hero scene to rest
    while a palette or sheet is open (course-scene.mjs reads it; the saved pause is untouched). */
@@ -109,8 +109,8 @@ export function whenWorkspace(fn){
 }
 
 /* ---- Quality tiers ----
-   high: everything, full frame rate. mid: 30 fps backdrop at reduced resolution, no skew or cursor trail.
-   low: static CSS aurora, no canvas, no smooth scroll or custom cursor.
+   high: full effects. mid: no skew or cursor trail.
+   low: no smooth scroll or custom cursor.
    deviceMemory is a hint only when present; a missing value never counts as weak hardware. */
 const coarse=matchMedia('(pointer:coarse)').matches;
 const cores=navigator.hardwareConcurrency||4,memory=navigator.deviceMemory;

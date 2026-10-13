@@ -16,11 +16,6 @@ body.workspace{--ns-accent:var(--accent);--ns-tint:color-mix(in srgb,var(--accen
 :root[data-theme=dark] body.workspace[data-course]{--strong:var(--accent)}
 @media(prefers-color-scheme:dark){:root:not([data-theme=light]) body.workspace[data-course]{--strong:var(--accent)}}
 
-/* ---------- Course-switch arrival cover (warp.mjs lifts it; the fail-safe clears it regardless) ---------- */
-html.ns-warp-in::after{content:'';position:fixed;inset:0;z-index:2147483000;background:var(--ns-warp-color,#0f1619);pointer-events:none;animation:ns-warp-failsafe .3s linear 1.6s forwards}
-@keyframes ns-warp-failsafe{to{opacity:0;visibility:hidden}}
-@media(prefers-reduced-motion:reduce){html.ns-warp-in::after{animation-delay:.15s}}
-
 /* ---------- Frame ---------- */
 .course-workspace{max-width:1840px}
 @media(min-width:1001px){
@@ -261,4 +256,4 @@ body.workspace .workspace-disclosure,body.workspace #workspace-info .tools,body.
 /* Narrow phones: identity, Desk, chip and actions fill the bar, so the title is read out but not drawn. */
 @media(max-width:480px){.ns-dock-title{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}.ns-dock-next{justify-content:flex-start}}
 
-@media print{.ns-dock,.ns-timeline,.ns-hud,.ns-count{display:none!important}html.ns-warp-in::after{display:none}}
+@media print{.ns-dock,.ns-timeline,.ns-hud,.ns-count{display:none!important}}

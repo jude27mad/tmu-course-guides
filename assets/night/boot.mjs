@@ -21,7 +21,7 @@ async function load(name,state){
 export async function mount(ctx={}){
  unmount();setRoute(ctx.route);
  const life=scope(ctx),state=live={life,ctx:{...ctx,signal:life.signal},modules:[]};
- const root=document.documentElement;delete root.dataset.nsFailed;root.dataset.nsTier=tier();root.classList.remove('ns-warp-in');
+ const root=document.documentElement;delete root.dataset.nsFailed;root.dataset.nsTier=tier();
  if(isDesk){
  root.dataset.nsPage='desk';root.classList.remove('night');delete root.dataset.nsCourse;
  try{const module=await import('./desk.mjs?v=20261012-desk2');if(live!==state)return;state.modules.push(module);await module.mount(state.ctx);}catch(error){if(live===state)failed('desk',error);}
