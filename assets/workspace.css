@@ -5,7 +5,7 @@
 .course-workspace{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:100dvh;max-width:1600px;margin:auto}
 body.workspace .hub-shell{margin:0;position:sticky;top:0;align-self:start;min-height:100dvh;width:100%;padding:28px 16px 20px;border-right:1px solid var(--hub-line);background:var(--hub-panel);display:flex;flex-direction:column;gap:30px}
 .workspace .hub-top{margin:0;display:block}
-.workspace .hub-brand{font-size:.86rem;gap:10px}
+.workspace .hub-brand{font-size:.86rem;gap:10px;min-width:44px;min-height:44px}
 .workspace .hub-brand small{margin-top:3px}
 .workspace .hub-mark{height:30px;width:30px;font-size:22px;flex:none}
 .workspace .course-switch{display:grid;grid-template-columns:minmax(0,1fr);border:0;gap:6px}
@@ -98,6 +98,9 @@ body.workspace .circuit{width:48%;opacity:.38;pointer-events:none}
 .workspace .review-progress{margin-bottom:18px}
 .workspace .course-illustration .hero-figure{max-width:500px;margin:0 auto 16px}
 .workspace .math-footer,.workspace footer{margin-top:32px;padding-top:20px;border-top:1px solid var(--hub-line);font-size:.72rem}
+/* Preserve compact type while giving footer links and reset a full hit target. */
+.workspace footer a{display:inline-flex;align-items:center;min-width:44px;min-height:44px}
+.workspace footer .reset{min-width:44px;min-height:44px}
 .workspace .detail-sheet .tile .head{padding:14px 0}
 .workspace .detail-sheet .tile .body{padding:12px 0}
 @media(min-width:1500px){.course-workspace{grid-template-columns:240px minmax(0,1fr)}}
