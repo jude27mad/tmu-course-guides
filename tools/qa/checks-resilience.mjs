@@ -153,6 +153,8 @@ export async function webkit(env) {
     out.skipped.push({ feature: 'Playwright WebKit routes, deadlines and layout', reason: 'WebKit could not launch; install its browser and OS dependencies. ' + error.message });
     return out;
   }
+  const interrupt = () => { void browser.close().catch(() => {}); };
+  process.once('SIGINT', interrupt); process.once('SIGTERM', interrupt);
   try {
     for (const descriptor of [{ name: 'iPhone 390px touch DPR3', options: { ...env.playwright.devices['iPhone 13'], ...IPHONE } }, { name: 'desktop 1440px', options: { viewport: { width: 1440, height: 900 } } }]) {
       // Preserve the original route/deadline assertions and change only their browser/context.
@@ -172,7 +174,7 @@ export async function webkit(env) {
     out.observations.cases.push({ name: 'WebKit existing layout matrix (390 touch DPR3; 1024 and 1440 desktop)', ...report.observations });
     out.skipped.push(...report.skipped);
     out.observations.browser = { name: 'WebKit', version: browser.version(), iphone: IPHONE };
-  } finally { await browser.close(); }
+  } finally { process.off('SIGINT', interrupt); process.off('SIGTERM', interrupt); await browser.close(); }
   return out;
 }
 
@@ -187,9 +189,10 @@ export async function nojs(env) {
         for (let parent = el.closest('details:not([open])'); parent; parent = parent.parentElement?.closest('details:not([open])')) if (!parent.querySelector(':scope > summary')?.contains(el)) return true;
         return false;
       };
-      const visible = el => { if (nativeHidden(el)) return false; for (let node = el; node; node = node.parentElement) { const s = getComputedStyle(node); if (s.display === 'none' || s.visibility === 'hidden' || Number(s.opacity) === 0) return false; } return el.getClientRects().length > 0; };
+      const styleHidden = el => { for (let node = el; node; node = node.parentElement) { const s = getComputedStyle(node); if (s.display === 'none' || s.visibility === 'hidden' || Number(s.opacity) === 0) return true; } return false; };
+      const visible = el => !nativeHidden(el) && !styleHidden(el) && (el.getClientRects().length > 0 || el.matches('option:checked') && el.closest('select')?.getClientRects().length > 0);
       const walker = document.createTreeWalker(main, NodeFilter.SHOW_TEXT), readable = [], hidden = new Set();
-      while (walker.nextNode()) { const node = walker.currentNode, parent = node.parentElement; if (!node.textContent.trim() || parent.closest('script,style')) continue; if (visible(parent)) readable.push(node.textContent.trim()); else if (!nativeHidden(parent)) hidden.add(parent); }
+      while (walker.nextNode()) { const node = walker.currentNode, parent = node.parentElement; if (!node.textContent.trim() || parent.closest('script,style')) continue; if (visible(parent)) readable.push(node.textContent.trim()); else if (!nativeHidden(parent) && styleHidden(parent)) hidden.add(parent); }
       const readableText = readable.join(' ');
       const hiddenContent = [...hidden].map(el => ({ tag: el.tagName, id: el.id, class: el.className, text: el.textContent.trim().slice(0,100) }));
       const leafText = element => { const reader = document.createTreeWalker(element, NodeFilter.SHOW_TEXT), text = []; while (reader.nextNode()) if (visible(reader.currentNode.parentElement)) text.push(reader.currentNode.textContent.trim()); return text.join(' '); };
@@ -294,8 +297,8 @@ export async function failures(env) {
 export async function clock(env) {
   const out = result();
   const fixtures = [
-    { name: 'Toronto midnight / CEN end-of-day expiry', course: 'cen100', unfinished: ['whmis', 'failure'], section: 1, before: '2026-10-15T03:59:30Z', after: '2026-10-15T04:00:30Z' },
-    { name: 'Nov 1 Toronto DST fall-back', course: 'mth140', unfinished: ['quiz-3', 'quiz-4'], section: 31, before: '2026-11-01T05:59:30Z', after: '2026-11-01T06:00:30Z' },
+    { name: 'Toronto midnight / CEN end-of-day expiry', course: 'cen100', unfinished: ['whmis', 'failure'], section: 1, before: '2026-10-15T03:59:30Z', after: '2026-10-15T04:00:00Z' },
+    { name: 'Nov 1 Toronto DST fall-back', course: 'mth140', unfinished: ['quiz-3', 'quiz-4'], section: 31, before: '2026-11-01T05:59:30Z', after: '2026-11-01T06:00:00Z' },
     { name: 'one backwards wall-clock jump', course: 'cen100', unfinished: ['integrity', 'whmis'], section: 1, before: '2026-10-14T18:30:00Z', after: '2026-10-14T17:30:00Z' }
   ];
   for (const fixture of fixtures) for (const route of ['desk', fixture.course]) {
@@ -304,7 +307,7 @@ export async function clock(env) {
       await page.goto(url(env, route, '?motion=off')); await ready(page, route);
       // Pause after mount so assertions observe exact simulated instants instead of
       // real execution time slipping across a minute display boundary.
-      await page.clock.pauseAt(new Date(await page.evaluate(() => Date.now()) + 10));
+      await page.clock.pauseAt(new Date(fixture.before));
       observation.before = await snapshot(page, fixture.course);
       checkSurfaces(out, fixture.name + ' before ' + route, observation.before, fixture.course, seed, await page.evaluate(() => Date.now()));
       await page.clock.setSystemTime(new Date(fixture.after));
@@ -317,7 +320,7 @@ export async function clock(env) {
         const toronto = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto', month: 'short', day: 'numeric' }).format(new Date(now));
         assertion(out, fixture.name + ': Desk Toronto day current', observation.after.desk.today?.includes(toronto), observation.after.desk.today, toronto);
       }
-    }, { seed, clock: fixture.before });
+    }, { seed, clock: new Date(+new Date(fixture.before) - 120_000).toISOString() });
   }
   return out;
 }
