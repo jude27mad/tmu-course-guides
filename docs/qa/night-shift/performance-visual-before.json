@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "label": "before",
-  "capturedAt": "2026-10-13T20:30:58.922Z",
+  "capturedAt": "2026-10-13T22:20:42.236Z",
   "fixedTime": "2026-10-13T16:00:00.000Z",
-  "revision": "672326669b770c314b2ca518187516efe735f308",
-  "productSourceSha256": "42488250314342bb29f00592f80c055d329224a8fa0b2d1f309ccd3baf46d4ef",
-  "protectedSourceSha256": "3fb8dcc44d67a8edb4da249ac4ed960e829344cfb2a8352dc006f2e999a00539",
+  "revision": "4dc356882c4dfcc4349ce84fce660dd1b35b9f68",
+  "productSourceSha256": "0b91e7a2c77d4b19babe56a2af9d2cc9d2eddd69b1a61029be1ee03cf904552f",
+  "protectedSourceSha256": "12f7d7b20b727ab2bbd2da6ae61835def99dde85e32bd74f04735bed7c86cbab",
   "recipe": {
     "fullPage": false,
     "deviceScaleFactor": 1,
@@ -25,7 +25,8 @@
     "noWebGL": false,
     "compositorStagesBeforeDraw": true,
     "gpuRasterization": false,
-    "chromiumScreenshotSurface": "legacy"
+    "chromiumScreenshotSurface": "legacy",
+    "nativeLayerInvalidation": "setNeedsDisplayOnAllLayers after DOM settlement, before final visibilitychange static scene redraw"
   },
   "execution": {
     "captureConcurrency": 1,
@@ -39,7 +40,8 @@
       "--enable-unsafe-swiftshader",
       "--ignore-gpu-blocklist",
       "--run-all-compositor-stages-before-draw",
-      "--disable-gpu-rasterization"
+      "--disable-gpu-rasterization",
+      "--enable-gpu-benchmarking"
     ],
     "playwrightLegacyScreenshot": true,
     "chromiumCommandLine": [
@@ -95,7 +97,8 @@
       "--ignore-gpu-blocklist",
       "--run-all-compositor-stages-before-draw",
       "--disable-gpu-rasterization",
-      "--user-data-dir=/tmp/playwright_chromiumdev_profile-1rkOw6",
+      "--enable-gpu-benchmarking",
+      "--user-data-dir=/tmp/playwright_chromiumdev_profile-XY9KPY",
       "--remote-debugging-pipe",
       "--no-startup-window",
       "--noerrdialogs",
@@ -129,7 +132,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-desk-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-desk-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -247,13 +250,17 @@
         ],
         "renderersAtCapture": []
       },
+      "nativeLayerRedraw": {
+        "before": [],
+        "after": []
+      },
       "preCaptureScene": [],
       "png": {
         "width": 1440,
         "height": 900,
         "bytes": 391533,
-        "sha256": "8f82f07d2526bb1c8ae3546805b823436fa54f398ab716559b6be98ce1c544e7",
-        "pixelSha256": "0c3c61f7723796fd2a358b995d21d594d3159e9422a82c4fe7086f2aeef4e255"
+        "sha256": "49dea04119bd182bc133f8b4bae3ae2a65dfe0752ba8f869388296a85c629c09",
+        "pixelSha256": "7dfc43649e406d884d8e5b5b18ebc6f0cd517f6eeba13186f5d0b517b89d24c8"
       },
       "status": "captured",
       "fontRequests": [
@@ -276,7 +283,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-desk-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-desk-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -393,6 +400,10 @@
           "/assets/night/palette.css"
         ],
         "renderersAtCapture": []
+      },
+      "nativeLayerRedraw": {
+        "before": [],
+        "after": []
       },
       "preCaptureScene": [],
       "png": {
@@ -423,7 +434,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-desk-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-desk-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -541,6 +552,10 @@
         ],
         "renderersAtCapture": []
       },
+      "nativeLayerRedraw": {
+        "before": [],
+        "after": []
+      },
       "preCaptureScene": [],
       "png": {
         "width": 390,
@@ -570,7 +585,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-desk-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-desk-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -688,6 +703,10 @@
         ],
         "renderersAtCapture": []
       },
+      "nativeLayerRedraw": {
+        "before": [],
+        "after": []
+      },
       "preCaptureScene": [],
       "png": {
         "width": 390,
@@ -717,7 +736,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-cen100-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-cen100-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -891,6 +910,32 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
             "motionState": "still",
             "x": 724.796875,
             "y": 24,
@@ -939,7 +984,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-cen100-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-cen100-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -1121,6 +1166,32 @@
           }
         ]
       },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ]
+      },
       "preCaptureScene": [
         {
           "renderer": "webgl2",
@@ -1161,7 +1232,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-cen100-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-cen100-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -1335,6 +1406,32 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "4",
+            "motionState": "still",
+            "x": 8,
+            "y": 357.890625,
+            "width": 374,
+            "height": 303
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 357.890625,
+            "width": 374,
+            "height": 303
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
             "motionState": "still",
             "x": 8,
             "y": 357.890625,
@@ -1383,7 +1480,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-cen100-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-cen100-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -1565,6 +1662,32 @@
           }
         ]
       },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 357.890625,
+            "width": 374,
+            "height": 303
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 357.890625,
+            "width": 374,
+            "height": 303
+          }
+        ]
+      },
       "preCaptureScene": [
         {
           "renderer": "webgl2",
@@ -1605,7 +1728,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-mth140-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-mth140-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -1618,7 +1741,7 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "2",
+            "frame": "3",
             "motionState": "still",
             "x": 724.796875,
             "y": 24,
@@ -1630,7 +1753,7 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "2",
+            "frame": "3",
             "motionState": "still",
             "x": 724.796875,
             "y": 24,
@@ -1736,7 +1859,7 @@
             "renderer": "webgl2",
             "sceneReady": "true",
             "motionState": "still",
-            "sceneFrame": "2",
+            "sceneFrame": "3",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -1781,6 +1904,32 @@
           {
             "renderer": "webgl2",
             "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
             "frame": "3",
             "motionState": "still",
             "x": 724.796875,
@@ -1794,7 +1943,7 @@
         {
           "renderer": "webgl2",
           "ready": "true",
-          "frame": "3",
+          "frame": "4",
           "motionState": "still",
           "x": 724.796875,
           "y": 24,
@@ -1830,7 +1979,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-mth140-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-mth140-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -2007,6 +2156,32 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
             "motionState": "still",
             "x": 724.796875,
             "y": 24,
@@ -2055,7 +2230,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-mth140-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-mth140-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -2232,6 +2407,32 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "4",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
             "motionState": "still",
             "x": 8,
             "y": 325.40625,
@@ -2280,7 +2481,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-mth140-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-mth140-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -2465,6 +2666,32 @@
           }
         ]
       },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
+        ]
+      },
       "preCaptureScene": [
         {
           "renderer": "webgl2",
@@ -2505,7 +2732,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-mth141-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-mth141-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -2682,6 +2909,32 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
             "motionState": "still",
             "x": 724.796875,
             "y": 24,
@@ -2730,7 +2983,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-mth141-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-mth141-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -2915,6 +3168,32 @@
           }
         ]
       },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ]
+      },
       "preCaptureScene": [
         {
           "renderer": "webgl2",
@@ -2955,7 +3234,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-mth141-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-mth141-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3132,6 +3411,32 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "4",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
             "motionState": "still",
             "x": 8,
             "y": 325.40625,
@@ -3180,7 +3485,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-mth141-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-mth141-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3365,6 +3670,32 @@
           }
         ]
       },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
+        ]
+      },
       "preCaptureScene": [
         {
           "renderer": "webgl2",
@@ -3405,7 +3736,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-desk-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-desk-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3523,13 +3854,17 @@
         ],
         "renderersAtCapture": []
       },
+      "nativeLayerRedraw": {
+        "before": [],
+        "after": []
+      },
       "preCaptureScene": [],
       "png": {
         "width": 1440,
         "height": 900,
         "bytes": 391533,
-        "sha256": "8f82f07d2526bb1c8ae3546805b823436fa54f398ab716559b6be98ce1c544e7",
-        "pixelSha256": "0c3c61f7723796fd2a358b995d21d594d3159e9422a82c4fe7086f2aeef4e255"
+        "sha256": "49dea04119bd182bc133f8b4bae3ae2a65dfe0752ba8f869388296a85c629c09",
+        "pixelSha256": "7dfc43649e406d884d8e5b5b18ebc6f0cd517f6eeba13186f5d0b517b89d24c8"
       },
       "status": "captured",
       "fontRequests": [
@@ -3552,7 +3887,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-desk-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-desk-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3670,13 +4005,17 @@
         ],
         "renderersAtCapture": []
       },
+      "nativeLayerRedraw": {
+        "before": [],
+        "after": []
+      },
       "preCaptureScene": [],
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 415413,
-        "sha256": "6b65119bbb4187f06886ff0509b38663ef3e9c20f8b79136046bb12abd4c94e8",
-        "pixelSha256": "20a2d7d2197098c39d9cbead2c6697285f16c4c3b171582c827bb9a9b8abdf54"
+        "bytes": 415461,
+        "sha256": "63d39e082ee1a1344586c51db208a748f311fa597502e624bdbc7bc7102bdf91",
+        "pixelSha256": "5fac260701b474cf39430ce15e5eda9be4eb5a9f4d7b6b7d669d9a638d3f9c43"
       },
       "status": "captured",
       "fontRequests": [
@@ -3699,7 +4038,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-desk-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-desk-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3817,13 +4156,17 @@
         ],
         "renderersAtCapture": []
       },
+      "nativeLayerRedraw": {
+        "before": [],
+        "after": []
+      },
       "preCaptureScene": [],
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 82933,
-        "sha256": "2d0c9f9a80f6c2f1f159bf21f51f3cb19839bc8c71df9b4a9bf87e65eaddc243",
-        "pixelSha256": "d9cfbf183912e79b1251944ece4a0c9ea8203ae5a49e157c4e4809c38fd66e0c"
+        "bytes": 82935,
+        "sha256": "5da004a50403c716990b36e1ed72a893d61ec39866cae859334ff65fd8f8ed5e",
+        "pixelSha256": "2a114b91482c5469b67ecef44984b831b5b22136ba544c36de0f7c95caa17c7b"
       },
       "status": "captured",
       "fontRequests": [
@@ -3846,7 +4189,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-desk-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-desk-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3963,6 +4306,10 @@
           "/tmu-course-guides/assets/night/palette.css"
         ],
         "renderersAtCapture": []
+      },
+      "nativeLayerRedraw": {
+        "before": [],
+        "after": []
       },
       "preCaptureScene": [],
       "png": {
@@ -3993,7 +4340,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-cen100-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-cen100-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -4167,6 +4514,32 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
             "motionState": "still",
             "x": 724.796875,
             "y": 24,
@@ -4215,7 +4588,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-cen100-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-cen100-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -4397,6 +4770,32 @@
           }
         ]
       },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ]
+      },
       "preCaptureScene": [
         {
           "renderer": "webgl2",
@@ -4437,7 +4836,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-cen100-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-cen100-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -4611,6 +5010,32 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "4",
+            "motionState": "still",
+            "x": 8,
+            "y": 357.890625,
+            "width": 374,
+            "height": 303
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 357.890625,
+            "width": 374,
+            "height": 303
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
             "motionState": "still",
             "x": 8,
             "y": 357.890625,
@@ -4659,7 +5084,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-cen100-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-cen100-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -4841,6 +5266,32 @@
           }
         ]
       },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 357.890625,
+            "width": 374,
+            "height": 303
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 357.890625,
+            "width": 374,
+            "height": 303
+          }
+        ]
+      },
       "preCaptureScene": [
         {
           "renderer": "webgl2",
@@ -4881,7 +5332,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-mth140-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-mth140-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -5058,6 +5509,32 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
             "motionState": "still",
             "x": 724.796875,
             "y": 24,
@@ -5106,7 +5583,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-mth140-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-mth140-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -5291,6 +5768,32 @@
           }
         ]
       },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ]
+      },
       "preCaptureScene": [
         {
           "renderer": "webgl2",
@@ -5331,7 +5834,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-mth140-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-mth140-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -5508,6 +6011,32 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "4",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
             "motionState": "still",
             "x": 8,
             "y": 325.40625,
@@ -5556,7 +6085,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-mth140-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-mth140-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -5741,6 +6270,32 @@
           }
         ]
       },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
+        ]
+      },
       "preCaptureScene": [
         {
           "renderer": "webgl2",
@@ -5781,7 +6336,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-mth141-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-mth141-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -5958,6 +6513,32 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
             "motionState": "still",
             "x": 724.796875,
             "y": 24,
@@ -6006,7 +6587,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-mth141-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-mth141-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -6191,6 +6772,32 @@
           }
         ]
       },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ]
+      },
       "preCaptureScene": [
         {
           "renderer": "webgl2",
@@ -6231,7 +6838,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-mth141-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-mth141-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -6416,6 +7023,32 @@
           }
         ]
       },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
+        ]
+      },
       "preCaptureScene": [
         {
           "renderer": "webgl2",
@@ -6456,7 +7089,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-mth141-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-mth141-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -6633,6 +7266,32 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "4",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
             "motionState": "still",
             "x": 8,
             "y": 325.40625,
@@ -6684,7 +7343,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/repeat/root-cen100-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/repeat/root-cen100-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -6858,6 +7517,32 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
             "motionState": "still",
             "x": 724.796875,
             "y": 24,
@@ -6913,12 +7598,12 @@
       "pixelIdentical": true,
       "beforeSha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
       "afterSha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
-      "diff": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/repeat/root-cen100-1440x900-dark-diff.png"
+      "diff": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/repeat/root-cen100-1440x900-dark-diff.png"
     }
   },
-  "productSourceSha256After": "42488250314342bb29f00592f80c055d329224a8fa0b2d1f309ccd3baf46d4ef",
+  "productSourceSha256After": "0b91e7a2c77d4b19babe56a2af9d2cc9d2eddd69b1a61029be1ee03cf904552f",
   "sourceUnchanged": true,
-  "protectedSourceSha256After": "3fb8dcc44d67a8edb4da249ac4ed960e829344cfb2a8352dc006f2e999a00539",
+  "protectedSourceSha256After": "12f7d7b20b727ab2bbd2da6ae61835def99dde85e32bd74f04735bed7c86cbab",
   "protectedSourceUnchanged": true,
   "summary": {
     "requested": 32,
@@ -6928,338 +7613,5 @@
     "naturalSettlementFailures": 0,
     "errors": 0,
     "repeatPixelIdentical": true
-  },
-  "auxiliaryCrossBaseComparison": {
-    "pairCount": 16,
-    "pixelIdentical": 15,
-    "changedPixels": 1,
-    "meaning": "Different URL contexts; ancillary stability observation, not the optimizer before/after comparison",
-    "cases": [
-      {
-        "root": "root-desk-1440x900-dark",
-        "project": "project-desk-1440x900-dark",
-        "beforeDimensions": {
-          "width": 1440,
-          "height": 900
-        },
-        "afterDimensions": {
-          "width": 1440,
-          "height": 900
-        },
-        "equalDimensions": true,
-        "changedPixels": 0,
-        "totalPixels": 1296000,
-        "changedPixelShare": 0,
-        "totalAbsoluteChannelDifference": 0,
-        "maxChannelDifference": 0,
-        "differenceBounds": null,
-        "pixelIdentical": true
-      },
-      {
-        "root": "root-desk-1440x900-light",
-        "project": "project-desk-1440x900-light",
-        "beforeDimensions": {
-          "width": 1440,
-          "height": 900
-        },
-        "afterDimensions": {
-          "width": 1440,
-          "height": 900
-        },
-        "equalDimensions": true,
-        "changedPixels": 0,
-        "totalPixels": 1296000,
-        "changedPixelShare": 0,
-        "totalAbsoluteChannelDifference": 0,
-        "maxChannelDifference": 0,
-        "differenceBounds": null,
-        "pixelIdentical": true
-      },
-      {
-        "root": "root-desk-390x844-dark",
-        "project": "project-desk-390x844-dark",
-        "beforeDimensions": {
-          "width": 390,
-          "height": 844
-        },
-        "afterDimensions": {
-          "width": 390,
-          "height": 844
-        },
-        "equalDimensions": true,
-        "changedPixels": 1,
-        "totalPixels": 329160,
-        "changedPixelShare": 3.0380362133916637e-06,
-        "totalAbsoluteChannelDifference": 3,
-        "maxChannelDifference": 1,
-        "differenceBounds": {
-          "left": 35,
-          "top": 614,
-          "right": 35,
-          "bottom": 614
-        },
-        "pixelIdentical": false
-      },
-      {
-        "root": "root-desk-390x844-light",
-        "project": "project-desk-390x844-light",
-        "beforeDimensions": {
-          "width": 390,
-          "height": 844
-        },
-        "afterDimensions": {
-          "width": 390,
-          "height": 844
-        },
-        "equalDimensions": true,
-        "changedPixels": 0,
-        "totalPixels": 329160,
-        "changedPixelShare": 0,
-        "totalAbsoluteChannelDifference": 0,
-        "maxChannelDifference": 0,
-        "differenceBounds": null,
-        "pixelIdentical": true
-      },
-      {
-        "root": "root-cen100-1440x900-dark",
-        "project": "project-cen100-1440x900-dark",
-        "beforeDimensions": {
-          "width": 1440,
-          "height": 900
-        },
-        "afterDimensions": {
-          "width": 1440,
-          "height": 900
-        },
-        "equalDimensions": true,
-        "changedPixels": 0,
-        "totalPixels": 1296000,
-        "changedPixelShare": 0,
-        "totalAbsoluteChannelDifference": 0,
-        "maxChannelDifference": 0,
-        "differenceBounds": null,
-        "pixelIdentical": true
-      },
-      {
-        "root": "root-cen100-1440x900-light",
-        "project": "project-cen100-1440x900-light",
-        "beforeDimensions": {
-          "width": 1440,
-          "height": 900
-        },
-        "afterDimensions": {
-          "width": 1440,
-          "height": 900
-        },
-        "equalDimensions": true,
-        "changedPixels": 0,
-        "totalPixels": 1296000,
-        "changedPixelShare": 0,
-        "totalAbsoluteChannelDifference": 0,
-        "maxChannelDifference": 0,
-        "differenceBounds": null,
-        "pixelIdentical": true
-      },
-      {
-        "root": "root-cen100-390x844-dark",
-        "project": "project-cen100-390x844-dark",
-        "beforeDimensions": {
-          "width": 390,
-          "height": 844
-        },
-        "afterDimensions": {
-          "width": 390,
-          "height": 844
-        },
-        "equalDimensions": true,
-        "changedPixels": 0,
-        "totalPixels": 329160,
-        "changedPixelShare": 0,
-        "totalAbsoluteChannelDifference": 0,
-        "maxChannelDifference": 0,
-        "differenceBounds": null,
-        "pixelIdentical": true
-      },
-      {
-        "root": "root-cen100-390x844-light",
-        "project": "project-cen100-390x844-light",
-        "beforeDimensions": {
-          "width": 390,
-          "height": 844
-        },
-        "afterDimensions": {
-          "width": 390,
-          "height": 844
-        },
-        "equalDimensions": true,
-        "changedPixels": 0,
-        "totalPixels": 329160,
-        "changedPixelShare": 0,
-        "totalAbsoluteChannelDifference": 0,
-        "maxChannelDifference": 0,
-        "differenceBounds": null,
-        "pixelIdentical": true
-      },
-      {
-        "root": "root-mth140-1440x900-dark",
-        "project": "project-mth140-1440x900-dark",
-        "beforeDimensions": {
-          "width": 1440,
-          "height": 900
-        },
-        "afterDimensions": {
-          "width": 1440,
-          "height": 900
-        },
-        "equalDimensions": true,
-        "changedPixels": 0,
-        "totalPixels": 1296000,
-        "changedPixelShare": 0,
-        "totalAbsoluteChannelDifference": 0,
-        "maxChannelDifference": 0,
-        "differenceBounds": null,
-        "pixelIdentical": true
-      },
-      {
-        "root": "root-mth140-1440x900-light",
-        "project": "project-mth140-1440x900-light",
-        "beforeDimensions": {
-          "width": 1440,
-          "height": 900
-        },
-        "afterDimensions": {
-          "width": 1440,
-          "height": 900
-        },
-        "equalDimensions": true,
-        "changedPixels": 0,
-        "totalPixels": 1296000,
-        "changedPixelShare": 0,
-        "totalAbsoluteChannelDifference": 0,
-        "maxChannelDifference": 0,
-        "differenceBounds": null,
-        "pixelIdentical": true
-      },
-      {
-        "root": "root-mth140-390x844-dark",
-        "project": "project-mth140-390x844-dark",
-        "beforeDimensions": {
-          "width": 390,
-          "height": 844
-        },
-        "afterDimensions": {
-          "width": 390,
-          "height": 844
-        },
-        "equalDimensions": true,
-        "changedPixels": 0,
-        "totalPixels": 329160,
-        "changedPixelShare": 0,
-        "totalAbsoluteChannelDifference": 0,
-        "maxChannelDifference": 0,
-        "differenceBounds": null,
-        "pixelIdentical": true
-      },
-      {
-        "root": "root-mth140-390x844-light",
-        "project": "project-mth140-390x844-light",
-        "beforeDimensions": {
-          "width": 390,
-          "height": 844
-        },
-        "afterDimensions": {
-          "width": 390,
-          "height": 844
-        },
-        "equalDimensions": true,
-        "changedPixels": 0,
-        "totalPixels": 329160,
-        "changedPixelShare": 0,
-        "totalAbsoluteChannelDifference": 0,
-        "maxChannelDifference": 0,
-        "differenceBounds": null,
-        "pixelIdentical": true
-      },
-      {
-        "root": "root-mth141-1440x900-dark",
-        "project": "project-mth141-1440x900-dark",
-        "beforeDimensions": {
-          "width": 1440,
-          "height": 900
-        },
-        "afterDimensions": {
-          "width": 1440,
-          "height": 900
-        },
-        "equalDimensions": true,
-        "changedPixels": 0,
-        "totalPixels": 1296000,
-        "changedPixelShare": 0,
-        "totalAbsoluteChannelDifference": 0,
-        "maxChannelDifference": 0,
-        "differenceBounds": null,
-        "pixelIdentical": true
-      },
-      {
-        "root": "root-mth141-1440x900-light",
-        "project": "project-mth141-1440x900-light",
-        "beforeDimensions": {
-          "width": 1440,
-          "height": 900
-        },
-        "afterDimensions": {
-          "width": 1440,
-          "height": 900
-        },
-        "equalDimensions": true,
-        "changedPixels": 0,
-        "totalPixels": 1296000,
-        "changedPixelShare": 0,
-        "totalAbsoluteChannelDifference": 0,
-        "maxChannelDifference": 0,
-        "differenceBounds": null,
-        "pixelIdentical": true
-      },
-      {
-        "root": "root-mth141-390x844-dark",
-        "project": "project-mth141-390x844-dark",
-        "beforeDimensions": {
-          "width": 390,
-          "height": 844
-        },
-        "afterDimensions": {
-          "width": 390,
-          "height": 844
-        },
-        "equalDimensions": true,
-        "changedPixels": 0,
-        "totalPixels": 329160,
-        "changedPixelShare": 0,
-        "totalAbsoluteChannelDifference": 0,
-        "maxChannelDifference": 0,
-        "differenceBounds": null,
-        "pixelIdentical": true
-      },
-      {
-        "root": "root-mth141-390x844-light",
-        "project": "project-mth141-390x844-light",
-        "beforeDimensions": {
-          "width": 390,
-          "height": 844
-        },
-        "afterDimensions": {
-          "width": 390,
-          "height": 844
-        },
-        "equalDimensions": true,
-        "changedPixels": 0,
-        "totalPixels": 329160,
-        "changedPixelShare": 0,
-        "totalAbsoluteChannelDifference": 0,
-        "maxChannelDifference": 0,
-        "differenceBounds": null,
-        "pixelIdentical": true
-      }
-    ]
   }
 }

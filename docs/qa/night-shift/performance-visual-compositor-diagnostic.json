@@ -27753,5 +27753,38 @@
         "webnn": "disabled_off"
       }
     ]
+  },
+  "softwareCompositorUpstreamInterruptedReference": {
+    "status": "interrupted by upstream refresh; not a complete matrix",
+    "manifest": "docs/qa/night-shift/performance-visual-before-software-interrupted-4dc3568.json",
+    "revision": "4dc356882c4dfcc4349ce84fce660dd1b35b9f68",
+    "interrupted": {
+      "signal": "SIGTERM",
+      "at": "2026-10-13T23:20:47.428Z"
+    },
+    "captured": 24,
+    "failed": 1,
+    "repeat": {
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 1296000,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "80959b55fa854553195e25afdb4842e57c4d28fba6a81cc1ed072e641233134d",
+      "afterSha256": "80959b55fa854553195e25afdb4842e57c4d28fba6a81cc1ed072e641233134d",
+      "diff": "tools/qa/reports/perf-visuals/before-software-compositor-interrupted-4dc3568/repeat/root-cen100-1440x900-dark-diff.png"
+    },
+    "courseCapturesWithLiveSwiftShaderEvidence": 16
   }
 }
