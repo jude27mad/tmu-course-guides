@@ -27387,5 +27387,371 @@
         }
       }
     ]
+  },
+  "nativeFullMatrixRepeatFailure": {
+    "status": "failed; stopped after repeat failure",
+    "beforeManifest": "docs/qa/night-shift/performance-visual-before-native-repeat-failure.json",
+    "afterManifest": "docs/qa/night-shift/performance-visual-after-native-repeat-failure.json",
+    "comparisonManifest": "docs/qa/night-shift/performance-visual-comparison-native-repeat-failure.json",
+    "summary": {
+      "expected": 32,
+      "compared": 22,
+      "pixelIdentical": 22,
+      "different": 0,
+      "failed": 10,
+      "changedPixels": 0,
+      "browserErrors": 0,
+      "naturalSettlementFailures": 0,
+      "repeatFailures": 1,
+      "evidenceFailures": 5,
+      "protectedSourceMatches": true
+    },
+    "repeatValidation": {
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "equalDimensions": true,
+      "changedPixels": 51619,
+      "totalPixels": 1296000,
+      "changedPixelShare": 0.039829475308641976,
+      "totalAbsoluteChannelDifference": 57714,
+      "maxChannelDifference": 1,
+      "differenceBounds": {
+        "left": 248,
+        "top": 510,
+        "right": 1439,
+        "bottom": 647
+      },
+      "pixelIdentical": false,
+      "beforeSha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
+      "afterSha256": "5a031b17488f7464db20d9d6c74b39c16e5a318e3aad0a835fdc3418efb6f3ad",
+      "originalHashMatches": true,
+      "repeatHashMatches": true,
+      "pass": false
+    }
+  },
+  "softwareCompositorCenHistoryProbe": {
+    "status": "focused exact repeat and three paired route probes passed; full matrix remains pending",
+    "comparisons": [
+      {
+        "id": "root-cen100-1440x900-dark",
+        "beforeDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "afterDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      },
+      {
+        "id": "root-mth140-1440x900-dark",
+        "beforeDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "afterDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      },
+      {
+        "id": "root-mth141-1440x900-dark",
+        "beforeDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "afterDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      }
+    ],
+    "manifests": [
+      "tools/qa/reports/perf-visuals/before-software-compositor-cen-history-4dc3568/manifest.json",
+      "tools/qa/reports/perf-visuals/after-software-compositor-cen-history-889acba/manifest.json"
+    ],
+    "gpuFeatureStatus": [
+      {
+        "2d_canvas": "enabled",
+        "direct_rendering_display_compositor": "disabled_off_ok",
+        "gpu_compositing": "disabled_software",
+        "multiple_raster_threads": "enabled_on",
+        "opengl": "enabled_on",
+        "rasterization": "disabled_software",
+        "raw_draw": "disabled_off_ok",
+        "skia_graphite": "disabled_off",
+        "trees_in_viz": "disabled_off",
+        "video_decode": "enabled",
+        "video_encode": "disabled_software",
+        "vulkan": "disabled_off",
+        "webgl": "enabled_readback",
+        "webgpu": "unavailable_software",
+        "webgpu_on_vk_via_gl_interop": "disabled_off",
+        "webnn": "disabled_off"
+      },
+      {
+        "2d_canvas": "enabled",
+        "direct_rendering_display_compositor": "disabled_off_ok",
+        "gpu_compositing": "disabled_software",
+        "multiple_raster_threads": "enabled_on",
+        "opengl": "enabled_on",
+        "rasterization": "disabled_software",
+        "raw_draw": "disabled_off_ok",
+        "skia_graphite": "disabled_off",
+        "trees_in_viz": "disabled_off",
+        "video_decode": "enabled",
+        "video_encode": "disabled_software",
+        "vulkan": "disabled_off",
+        "webgl": "enabled_readback",
+        "webgpu": "unavailable_software",
+        "webgpu_on_vk_via_gl_interop": "disabled_off",
+        "webnn": "disabled_off"
+      }
+    ],
+    "actualWebGLContexts": [
+      [
+        {
+          "id": "root-cen100-1440x900-dark",
+          "contexts": [
+            {
+              "width": 691,
+              "height": 550,
+              "contextLost": false,
+              "drawingBufferWidth": 691,
+              "drawingBufferHeight": 550,
+              "renderer": "WebKit WebGL",
+              "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+            }
+          ]
+        },
+        {
+          "id": "root-mth140-1440x900-dark",
+          "contexts": [
+            {
+              "width": 691,
+              "height": 550,
+              "contextLost": false,
+              "drawingBufferWidth": 691,
+              "drawingBufferHeight": 550,
+              "renderer": "WebKit WebGL",
+              "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+            }
+          ]
+        },
+        {
+          "id": "root-mth141-1440x900-dark",
+          "contexts": [
+            {
+              "width": 691,
+              "height": 550,
+              "contextLost": false,
+              "drawingBufferWidth": 691,
+              "drawingBufferHeight": 550,
+              "renderer": "WebKit WebGL",
+              "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+            }
+          ]
+        }
+      ],
+      [
+        {
+          "id": "root-cen100-1440x900-dark",
+          "contexts": [
+            {
+              "width": 691,
+              "height": 550,
+              "contextLost": false,
+              "drawingBufferWidth": 691,
+              "drawingBufferHeight": 550,
+              "renderer": "WebKit WebGL",
+              "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+            }
+          ]
+        },
+        {
+          "id": "root-mth140-1440x900-dark",
+          "contexts": [
+            {
+              "width": 691,
+              "height": 550,
+              "contextLost": false,
+              "drawingBufferWidth": 691,
+              "drawingBufferHeight": 550,
+              "renderer": "WebKit WebGL",
+              "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+            }
+          ]
+        },
+        {
+          "id": "root-mth141-1440x900-dark",
+          "contexts": [
+            {
+              "width": 691,
+              "height": 550,
+              "contextLost": false,
+              "drawingBufferWidth": 691,
+              "drawingBufferHeight": 550,
+              "renderer": "WebKit WebGL",
+              "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+            }
+          ]
+        }
+      ]
+    ],
+    "visibleSceneEvidence": {
+      "case": "root-cen100-1440x900-dark",
+      "sceneROI": {
+        "left": 724,
+        "top": 24,
+        "right": 1416,
+        "bottom": 574
+      },
+      "uniqueRGBA": 13278,
+      "vsPriorGpuCompositor": {
+        "changedPixels": 801,
+        "maxChannelDifference": 1
+      },
+      "observed": "Rendered 3D gear model visible in captured PNG; prior-backend comparison is diagnostic and not optimizer parity",
+      "observed3DModels": [
+        "CEN100 gears",
+        "MTH140 wave",
+        "MTH141 sphere"
+      ]
+    }
+  },
+  "softwareCompositorDeskProbe": {
+    "status": "bare final-recipe same-source and cross-source exact probes passed; full matrix pending",
+    "comparisons": [
+      {
+        "comparison": "control repeat",
+        "beforeDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "afterDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      },
+      {
+        "comparison": "cross-source original",
+        "beforeDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "afterDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      },
+      {
+        "comparison": "cross-source repeat",
+        "beforeDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "afterDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      }
+    ],
+    "manifests": [
+      "tools/qa/reports/perf-visuals/before-software-compositor-desk-4dc3568/manifest.json",
+      "tools/qa/reports/perf-visuals/after-software-compositor-desk-889acba/manifest.json"
+    ],
+    "evidenceProblems": [],
+    "gpuFeatureStatus": [
+      {
+        "2d_canvas": "enabled",
+        "direct_rendering_display_compositor": "disabled_off_ok",
+        "gpu_compositing": "disabled_software",
+        "multiple_raster_threads": "enabled_on",
+        "opengl": "enabled_on",
+        "rasterization": "disabled_software",
+        "raw_draw": "disabled_off_ok",
+        "skia_graphite": "disabled_off",
+        "trees_in_viz": "disabled_off",
+        "video_decode": "enabled",
+        "video_encode": "disabled_software",
+        "vulkan": "disabled_off",
+        "webgl": "enabled_readback",
+        "webgpu": "unavailable_software",
+        "webgpu_on_vk_via_gl_interop": "disabled_off",
+        "webnn": "disabled_off"
+      },
+      {
+        "2d_canvas": "enabled",
+        "direct_rendering_display_compositor": "disabled_off_ok",
+        "gpu_compositing": "disabled_software",
+        "multiple_raster_threads": "enabled_on",
+        "opengl": "enabled_on",
+        "rasterization": "disabled_software",
+        "raw_draw": "disabled_off_ok",
+        "skia_graphite": "disabled_off",
+        "trees_in_viz": "disabled_off",
+        "video_decode": "enabled",
+        "video_encode": "disabled_software",
+        "vulkan": "disabled_off",
+        "webgl": "enabled_readback",
+        "webgpu": "unavailable_software",
+        "webgpu_on_vk_via_gl_interop": "disabled_off",
+        "webnn": "disabled_off"
+      }
+    ]
   }
 }

@@ -98,7 +98,7 @@ test('compositor stabilization changes only the recorded Chromium environment co
   assert.deepEqual(Object.keys(stabilized).filter(key=>JSON.stringify(stabilized[key])!==JSON.stringify(original[key])),['compositorStagesBeforeDraw']);
   assert.equal(stabilized.fullPage,false);assert.equal(stabilized.masking,false);assert.equal(stabilized.cssInjection,false);
   assert.deepEqual(parseCaptureOptions(['--compositor-drain','--serial']),{compositorDrain:true,serial:true});
-  for(const [option,key,field] of [['--disable-partial-raster','disablePartialRaster','partialRaster'],['--disable-gpu-rasterization','disableGpuRasterization','gpuRasterization']]) {
+  for(const [option,key,field] of [['--disable-partial-raster','disablePartialRaster','partialRaster'],['--disable-gpu-rasterization','disableGpuRasterization','gpuRasterization'],['--disable-gpu-compositing','disableGpuCompositing','gpuCompositing']]) {
     assert.deepEqual(parseCaptureOptions([option]),{[key]:true});
     assert.deepEqual(visualCaptureRecipe({[key]:true}),{...original,[field]:false});
   }
@@ -138,6 +138,32 @@ test('--only scopes resumed captures and retries to the requested case and deplo
   assert.deepEqual(project.selected.map(record=>record.id),[target.id]);
   assert.deepEqual(project.retries.map(record=>record.id),[target.id]);
   assert.equal(root.selected.length,0);assert.equal(root.retries.length,0);assert.equal(root.needsPreview,false);
+});
+
+test('software compositor requires native readback and live SwiftShader evidence in captures and repeats',()=>{
+  const records=capturedRecords().filter(record=>record.route==='cen100'),manifest=completedManifest(records);
+  const live={contextLost:false,drawingBufferWidth:691,drawingBufferHeight:550,unmaskedRenderer:'ANGLE Vulkan SwiftShader'};
+  manifest.recipe={gpuCompositing:false,noWebGL:false};
+  manifest.environment={gpuInfo:{featureStatus:{gpu_compositing:'disabled_software',webgl:'enabled_readback'},auxAttributes:{glRenderer:'ANGLE Vulkan SwiftShader'}}};
+  for(const record of records)record.actualWebGLContexts=[{...live}];
+  const original=records[0];original.png={sha256:'original'};
+  manifest.repeatCheck={case:original.id,capture:{...original,png:{sha256:'repeated'},actualWebGLContexts:[{...live}]},comparison:{pixelIdentical:true,beforeSha256:'original',afterSha256:'repeated'}};
+  assert.deepEqual(captureEvidenceProblems(manifest),[]);
+  for(const invalid of [undefined,[],[{...live,contextLost:true}],[{...live,drawingBufferWidth:0}],[{...live,drawingBufferHeight:0}],[{...live,unmaskedRenderer:'llvmpipe'}]]) {
+    original.actualWebGLContexts=invalid;manifest.repeatCheck.capture.actualWebGLContexts=invalid;
+    assert.ok(captureEvidenceProblems(manifest).some(problem=>problem.scope==='case'&&problem.reason.includes('WebGL2 capture')));
+    assert.ok(captureEvidenceProblems(manifest).some(problem=>problem.scope==='repeat'&&problem.reason.includes('WebGL2 repeat')));
+  }
+  original.actualWebGLContexts=[live];manifest.repeatCheck.capture.actualWebGLContexts=[live];
+  for(const invalid of [undefined,{featureStatus:{gpu_compositing:'enabled',webgl:'enabled_readback'},auxAttributes:{glRenderer:'SwiftShader'}},{featureStatus:{gpu_compositing:'disabled_software',webgl:'disabled_off'},auxAttributes:{glRenderer:'SwiftShader'}},{featureStatus:{gpu_compositing:'disabled_software',webgl:'enabled_readback'},auxAttributes:{glRenderer:'llvmpipe'}}]) {
+    manifest.environment.gpuInfo=invalid;
+    assert.ok(captureEvidenceProblems(manifest).some(problem=>problem.scope==='manifest'&&/compositor|readback/.test(problem.reason)));
+  }
+});
+
+test('software compositor rejects the separate no-WebGL poster recipe before launch',()=>{
+  assert.throws(()=>parseCaptureOptions(['--no-webgl','--disable-gpu-compositing']),/requires live WebGL/);
+  assert.deepEqual(parseCaptureOptions(['--no-webgl']),{noWebGL:true});
 });
 
 test('capture evidence rejects browser errors, natural settlement failures and unsuccessful captures',()=>{

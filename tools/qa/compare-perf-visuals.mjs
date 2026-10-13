@@ -45,12 +45,12 @@ export function cases({noWebGL=false}={}) {
   })))));
 }
 
-export function visualCaptureRecipe({fullPage=false,nativeClock=false,noWebGL=false,compositorDrain=false,disablePartialRaster=false,disableGpuRasterization=false,settledDelayMs=1500,observeCompositor=false,legacyScreenshot=false,nativeLayerRedraw=false}={}) {
+export function visualCaptureRecipe({fullPage=false,nativeClock=false,noWebGL=false,compositorDrain=false,disablePartialRaster=false,disableGpuRasterization=false,disableGpuCompositing=false,settledDelayMs=1500,observeCompositor=false,legacyScreenshot=false,nativeLayerRedraw=false}={}) {
   return {fullPage,deviceScaleFactor:1,timezone:'America/Toronto',locale:'en-CA',initialSavedScenePause:true,entryAnimations:'normal',settledDelayMs,
     random:'FNV-1a route seed with a 32-bit LCG; seeded before product scripts',initialClock:nativeClock?'native Date (diagnostic)':'moving Date offset',
     freeze:'freeze after settlement, pause through GuideMotion and dispatch workspace-changed/visibilitychange; final visibilitychange redraw immediately before capture',
     sceneReadyGate:true,sceneFrameAndBoundsStableMs:100,screenshotAnimations:'disabled',masking:false,cssInjection:false,noWebGL,
-    ...(compositorDrain?{compositorStagesBeforeDraw:true}:{}),...(disablePartialRaster?{partialRaster:false}:{}),...(disableGpuRasterization?{gpuRasterization:false}:{}),...(observeCompositor?{compositorObserver:true}:{}),...(legacyScreenshot?{chromiumScreenshotSurface:'legacy'}:{}),...(nativeLayerRedraw?{nativeLayerInvalidation:NATIVE_LAYER_PHASES}:{})};
+    ...(compositorDrain?{compositorStagesBeforeDraw:true}:{}),...(disablePartialRaster?{partialRaster:false}:{}),...(disableGpuRasterization?{gpuRasterization:false}:{}),...(disableGpuCompositing?{gpuCompositing:false}:{}),...(observeCompositor?{compositorObserver:true}:{}),...(legacyScreenshot?{chromiumScreenshotSurface:'legacy'}:{}),...(nativeLayerRedraw?{nativeLayerInvalidation:NATIVE_LAYER_PHASES}:{})};
 }
 
 export async function requestNativeLayerRedraw(page) {
@@ -91,6 +91,12 @@ export function captureWork(base,{only,historyCases=[],noWebGL=false,resume=fals
 
 export function captureEvidenceProblems(manifest) {
   const problems=[],seen=new Set(),canonical=new Map(cases({noWebGL:manifest.recipe?.noWebGL??false}).map(entry=>[entry.id,entry]));
+  const needsLiveWebGL=manifest.recipe?.gpuCompositing===false&&!manifest.recipe.noWebGL;
+  if(manifest.recipe?.gpuCompositing===false) {
+    const gpu=manifest.environment?.gpuInfo;
+    if(gpu?.featureStatus?.gpu_compositing!=='disabled_software')problems.push({scope:'manifest',reason:'Software compositor evidence is missing or invalid',detail:gpu?.featureStatus??null});
+    if(needsLiveWebGL&&(gpu?.featureStatus?.webgl!=='enabled_readback'||!/SwiftShader/i.test(gpu?.auxAttributes?.glRenderer??'')))problems.push({scope:'manifest',reason:'SwiftShader WebGL readback evidence is missing or invalid',detail:{webgl:gpu?.featureStatus?.webgl,renderer:gpu?.auxAttributes?.glRenderer}});
+  }
   if(![1,2].includes(manifest.execution?.captureConcurrency))problems.push({scope:'manifest',reason:'Capture concurrency evidence is missing or invalid'});
   if(manifest.interrupted)problems.push({scope:'manifest',reason:'Capture interrupted',detail:manifest.interrupted});
   for(const [flag,start,end,label] of [['sourceUnchanged','productSourceSha256','productSourceSha256After','Product'],['protectedSourceUnchanged','protectedSourceSha256','protectedSourceSha256After','Protected']]) {
@@ -106,6 +112,7 @@ export function captureEvidenceProblems(manifest) {
     if(record.status!=='captured')problems.push({scope:'case',id:record.id,reason:'Capture was not successful',detail:record.failure??record.status});
     if(!Array.isArray(record.errors)||record.errors.length)problems.push({scope:'case',id:record.id,reason:'Browser error evidence is missing or nonempty',detail:record.errors??null});
     if(record.naturalSettlementFailure)problems.push({scope:'case',id:record.id,reason:'Natural wrapper settlement failed',detail:record.naturalSettlementFailure});
+    if(needsLiveWebGL&&record.route!=='desk'&&!hasLiveSwiftShaderContexts(record))problems.push({scope:'case',id:record.id,reason:'Live SwiftShader WebGL2 capture evidence is missing or invalid',detail:record.actualWebGLContexts??null});
   }
   if(manifest.repeatCheck) {
     const repeat=manifest.repeatCheck;
@@ -116,8 +123,14 @@ export function captureEvidenceProblems(manifest) {
     if(repeat.capture?.status!=='captured'||repeat.comparison?.pixelIdentical!==true)problems.push({scope:'repeat',id:repeat.case,reason:'Requested repeat did not capture identical pixels',detail:{status:repeat.capture?.status,failure:repeat.capture?.failure,comparison:repeat.comparison??null}});
     if(!Array.isArray(repeat.capture?.errors)||repeat.capture.errors.length)problems.push({scope:'repeat',id:repeat.case,reason:'Repeat browser error evidence is missing or nonempty',detail:repeat.capture?.errors??null});
     if(repeat.capture?.naturalSettlementFailure)problems.push({scope:'repeat',id:repeat.case,reason:'Repeat natural wrapper settlement failed',detail:repeat.capture.naturalSettlementFailure});
+    if(needsLiveWebGL&&repeat.capture?.route!=='desk'&&!hasLiveSwiftShaderContexts(repeat.capture))problems.push({scope:'repeat',id:repeat.case,reason:'Live SwiftShader WebGL2 repeat evidence is missing or invalid',detail:repeat.capture?.actualWebGLContexts??null});
   }
   return problems;
+}
+
+function hasLiveSwiftShaderContexts(record) {
+  const contexts=record?.actualWebGLContexts;
+  return Array.isArray(contexts)&&contexts.length>0&&contexts.every(gl=>gl.contextLost===false&&gl.drawingBufferWidth>0&&gl.drawingBufferHeight>0&&/SwiftShader/i.test(gl.unmaskedRenderer??''));
 }
 
 export function assertCaptureCompatibility(first,second) {
@@ -304,6 +317,16 @@ async function captureCase(browser,server,entry,directory) {
     }
     const bytes=await page.screenshot({path:path.join(directory,entry.id+'.png'),fullPage:entry.fullPage??false,animations:'disabled'});
     const png=PNG.sync.read(bytes);
+    if(entry.disableGpuCompositing&&entry.route!=='desk') {
+      // Inspect the existing product context only after pixels are captured.
+      record.actualWebGLContexts=await page.evaluate(()=>[...document.querySelectorAll('[data-renderer="webgl2"] canvas')].map(canvas=>{
+        const gl=canvas.getContext('webgl2'),extension=gl?.getExtension('WEBGL_debug_renderer_info');
+        return {width:canvas.width,height:canvas.height,contextLost:gl?.isContextLost()??true,
+          drawingBufferWidth:gl?.drawingBufferWidth,drawingBufferHeight:gl?.drawingBufferHeight,
+          renderer:gl?.getParameter(gl.RENDERER),unmaskedRenderer:extension&&gl.getParameter(extension.UNMASKED_RENDERER_WEBGL)};
+      }));
+      if(!hasLiveSwiftShaderContexts(record))throw Error('Software compositor did not retain a live SwiftShader WebGL2 product context.');
+    }
     record.png={width:png.width,height:png.height,bytes:bytes.length,sha256:hash(bytes),pixelSha256:hash(png.data)};
     if(entry.diagnostic) {
       record.consecutive=[];let previous=png;
@@ -333,8 +356,9 @@ async function compareFiles(beforePath,afterPath,diffPath) {
   return {...metrics,beforeSha256:hash(beforeBytes),afterSha256:hash(afterBytes),diff:relative(diffPath)};
 }
 
-export async function capture(label,{only,historyCases=[],noWebGL=false,repeatCheck=false,repeatCase,resume=false,fullPage=false,nativeClock=false,serial=false,compositorDrain=false,disablePartialRaster=false,disableGpuRasterization=false,settledDelayMs=1500,observeCompositor=false,nativeLayerRedraw=false,paintDiagnostic=false,diagnostic=false}={}) {
+export async function capture(label,{only,historyCases=[],noWebGL=false,repeatCheck=false,repeatCase,resume=false,fullPage=false,nativeClock=false,serial=false,compositorDrain=false,disablePartialRaster=false,disableGpuRasterization=false,disableGpuCompositing=false,settledDelayMs=1500,observeCompositor=false,nativeLayerRedraw=false,paintDiagnostic=false,diagnostic=false}={}) {
   if(!['before','after'].includes(label))throw Error('Capture label must be before or after.');
+  if(noWebGL&&disableGpuCompositing)throw Error('--disable-gpu-compositing requires live WebGL; omit --no-webgl.');
   const directory=path.join(REPORTS,label+(nativeClock?'-native-clock':''));await mkdir(directory,{recursive:true});
   const legacyScreenshot=Boolean(process.env.PLAYWRIGHT_LEGACY_SCREENSHOT);
   const {playwright,modulePath}=resolvePlaywright(),launch=resolveLaunchOptions(playwright,{gpu:false});
@@ -342,6 +366,7 @@ export async function capture(label,{only,historyCases=[],noWebGL=false,repeatCh
   if(compositorDrain)launch.options.args.push('--run-all-compositor-stages-before-draw');
   if(disablePartialRaster)launch.options.args.push('--disable-partial-raster');
   if(disableGpuRasterization)launch.options.args.push('--disable-gpu-rasterization');
+  if(disableGpuCompositing)launch.options.args.push('--disable-gpu-compositing');
   if(nativeLayerRedraw)launch.options.args.push('--enable-gpu-benchmarking');
   const browser=await playwright.chromium.launch(launch.options);
   let interrupted=null;
@@ -354,7 +379,7 @@ export async function capture(label,{only,historyCases=[],noWebGL=false,repeatCh
   let chromiumCommandLine;
   try {({arguments:chromiumCommandLine}=await browserSession.send('Browser.getBrowserCommandLine'));}finally{await browserSession.detach();}
   manifest={schemaVersion:1,label,capturedAt:new Date().toISOString(),fixedTime:FIXED_TIME,revision:execFileSync('git',['rev-parse','HEAD'],{cwd:ROOT,encoding:'utf8'}).trim(),productSourceSha256:await productSourceFingerprint(),protectedSourceSha256:await productSourceFingerprint({protectedOnly:true}),
-    recipe:visualCaptureRecipe({fullPage,nativeClock,noWebGL,compositorDrain,disablePartialRaster,disableGpuRasterization,settledDelayMs,observeCompositor,legacyScreenshot,nativeLayerRedraw}),
+    recipe:visualCaptureRecipe({fullPage,nativeClock,noWebGL,compositorDrain,disablePartialRaster,disableGpuRasterization,disableGpuCompositing,settledDelayMs,observeCompositor,legacyScreenshot,nativeLayerRedraw}),
     execution:{captureConcurrency:serial?1:2,diagnostic,...(paintDiagnostic?{paintDiagnostic:true}:{}),...(historyCases.length?{probeHistoryCases:historyCases}:{})},
     environment:{playwrightPath:modulePath,executablePath:launch.options.executablePath,args:launch.options.args,playwrightLegacyScreenshot:legacyScreenshot,chromiumCommandLine,...await inspectBrowserEnvironment(browser,{gpu:false})},cases:[]};
   if(resume) {
@@ -368,7 +393,7 @@ export async function capture(label,{only,historyCases=[],noWebGL=false,repeatCh
   }
     for(const base of BASES) {
       const options={only,historyCases,noWebGL,resume,repeatCheck,repeatCase,fullPage,nativeClock};
-      const work=captureWork(base,options,manifest.cases),selected=work.selected.map(entry=>({...entry,diagnostic,observeCompositor,settledDelayMs,nativeLayerRedraw,paintDiagnostic})),needsPreview=work.needsPreview;
+      const work=captureWork(base,options,manifest.cases),selected=work.selected.map(entry=>({...entry,diagnostic,observeCompositor,settledDelayMs,nativeLayerRedraw,paintDiagnostic,disableGpuCompositing})),needsPreview=work.needsPreview;
       if(!needsPreview)continue;
       const server=await startPreview({base});
       try {
@@ -384,7 +409,7 @@ export async function capture(label,{only,historyCases=[],noWebGL=false,repeatCh
           await writeFile(path.join(directory,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');
         }
         for(const failed of captureWork(base,options,manifest.cases).retries) {
-          const retried=await captureCase(browser,server,{...failed,diagnostic,observeCompositor,settledDelayMs,nativeLayerRedraw,paintDiagnostic},directory);
+          const retried=await captureCase(browser,server,{...failed,diagnostic,observeCompositor,settledDelayMs,nativeLayerRedraw,paintDiagnostic,disableGpuCompositing},directory);
           retried.initialAttempt={failure:failed.failure,errors:failed.errors};
           manifest.cases[manifest.cases.indexOf(failed)]=retried;
           console.log(`retry: ${retried.id}: ${retried.status}${retried.failure?' '+retried.failure.message:''}`);
@@ -394,13 +419,18 @@ export async function capture(label,{only,historyCases=[],noWebGL=false,repeatCh
           const first=captureWork(base,options,manifest.cases).repeat;
           if(first) {
             const repeatDir=path.join(directory,'repeat');await mkdir(repeatDir,{recursive:true});
-            const repeated=await captureCase(browser,server,{...first,diagnostic,observeCompositor,settledDelayMs,nativeLayerRedraw,paintDiagnostic},repeatDir);
+            const repeated=await captureCase(browser,server,{...first,diagnostic,observeCompositor,settledDelayMs,nativeLayerRedraw,paintDiagnostic,disableGpuCompositing},repeatDir);
             manifest.repeatCheck={case:first.id,capture:repeated};
             if(repeated.status==='captured')manifest.repeatCheck.comparison=await compareFiles(path.join(ROOT,first.screenshot),path.join(ROOT,repeated.screenshot),path.join(repeatDir,first.id+'-diff.png'));
             console.log(`repeat: ${first.id}: ${JSON.stringify(manifest.repeatCheck.comparison||repeated.failure)}`);
           }
         }
       } finally {await server.stop();}
+    }
+    if(disableGpuCompositing) {
+      const gpuSession=await browser.newBrowserCDPSession();
+      try {const {gpu}=await gpuSession.send('SystemInfo.getInfo');manifest.environment.gpuInfo={devices:gpu.devices,featureStatus:gpu.featureStatus,auxAttributes:gpu.auxAttributes};}
+      finally {await gpuSession.detach();}
     }
   } finally {
     process.off('SIGINT',sigint);process.off('SIGTERM',sigterm);
@@ -418,6 +448,7 @@ export async function capture(label,{only,historyCases=[],noWebGL=false,repeatCh
     initialAttemptFailures:manifest.cases.filter(record=>record.initialAttempt?.failure).length,
     naturalSettlementFailures:manifest.cases.filter(record=>record.naturalSettlementFailure).length,errors:manifest.cases.reduce((sum,record)=>sum+record.errors.length,0),
     ...(manifest.repeatCheck?{repeatPixelIdentical:manifest.repeatCheck.comparison?.pixelIdentical===true}:{})};
+  manifest.summary.evidenceFailures=captureEvidenceProblems(manifest).length;
   await writeFile(path.join(directory,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');
   return manifest;
 }
@@ -458,7 +489,8 @@ export async function compare() {
 
 export function parseCaptureOptions(options) {
   const parsed={};
-  for(let i=0;i<options.length;i++) {if(options[i]==='--repeat-check')parsed.repeatCheck=true;else if(options[i]==='--no-webgl')parsed.noWebGL=true;else if(options[i]==='--resume')parsed.resume=true;else if(options[i]==='--full-page')parsed.fullPage=true;else if(options[i]==='--native-clock')parsed.nativeClock=true;else if(options[i]==='--serial')parsed.serial=true;else if(options[i]==='--compositor-drain')parsed.compositorDrain=true;else if(options[i]==='--disable-partial-raster')parsed.disablePartialRaster=true;else if(options[i]==='--disable-gpu-rasterization')parsed.disableGpuRasterization=true;else if(options[i]==='--probe-history'){const value=options[++i];if(!value||value.startsWith('-'))throw Error('--probe-history requires a case ID.');(parsed.historyCases??=[]).push(value);}else if(options[i]==='--paint-diagnostic')parsed.paintDiagnostic=true;else if(options[i]==='--native-layer-redraw')parsed.nativeLayerRedraw=true;else if(options[i]==='--observe-compositor')parsed.observeCompositor=true;else if(options[i]==='--settled-delay-ms'){const value=options[++i];if(!value||!/^\d+$/.test(value)||Number(value)<1500)throw Error('--settled-delay-ms requires an integer of at least1500.');parsed.settledDelayMs=Number(value);}else if(options[i]==='--diagnostic')parsed.diagnostic=true;else if(options[i]==='--only'||options[i]==='--repeat-case'){const option=options[i],value=options[++i];if(!value||value.startsWith('-'))throw Error(option+' requires a case ID.');parsed[option==='--only'?'only':'repeatCase']=value;}else throw Error('Unknown option: '+options[i]);}
+  for(let i=0;i<options.length;i++) {if(options[i]==='--repeat-check')parsed.repeatCheck=true;else if(options[i]==='--no-webgl')parsed.noWebGL=true;else if(options[i]==='--resume')parsed.resume=true;else if(options[i]==='--full-page')parsed.fullPage=true;else if(options[i]==='--native-clock')parsed.nativeClock=true;else if(options[i]==='--serial')parsed.serial=true;else if(options[i]==='--compositor-drain')parsed.compositorDrain=true;else if(options[i]==='--disable-partial-raster')parsed.disablePartialRaster=true;else if(options[i]==='--disable-gpu-rasterization')parsed.disableGpuRasterization=true;else if(options[i]==='--disable-gpu-compositing')parsed.disableGpuCompositing=true;else if(options[i]==='--probe-history'){const value=options[++i];if(!value||value.startsWith('-'))throw Error('--probe-history requires a case ID.');(parsed.historyCases??=[]).push(value);}else if(options[i]==='--paint-diagnostic')parsed.paintDiagnostic=true;else if(options[i]==='--native-layer-redraw')parsed.nativeLayerRedraw=true;else if(options[i]==='--observe-compositor')parsed.observeCompositor=true;else if(options[i]==='--settled-delay-ms'){const value=options[++i];if(!value||!/^\d+$/.test(value)||Number(value)<1500)throw Error('--settled-delay-ms requires an integer of at least1500.');parsed.settledDelayMs=Number(value);}else if(options[i]==='--diagnostic')parsed.diagnostic=true;else if(options[i]==='--only'||options[i]==='--repeat-case'){const option=options[i],value=options[++i];if(!value||value.startsWith('-'))throw Error(option+' requires a case ID.');parsed[option==='--only'?'only':'repeatCase']=value;}else throw Error('Unknown option: '+options[i]);}
+  if(parsed.noWebGL&&parsed.disableGpuCompositing)throw Error('--disable-gpu-compositing requires live WebGL; omit --no-webgl.');
   if(parsed.only&&!cases(parsed).some(entry=>entry.id===parsed.only))throw Error('Unknown case: '+parsed.only);
   if(parsed.repeatCase&&!cases(parsed).some(entry=>entry.id===parsed.repeatCase))throw Error('Unknown repeat case: '+parsed.repeatCase);
   if(parsed.only&&parsed.repeatCase&&parsed.only!==parsed.repeatCase)throw Error('--only and --repeat-case must select the same case.');
@@ -476,7 +508,7 @@ async function main(argv) {
   if(command==='compare') {const result=await compare();console.log(JSON.stringify(result.summary));process.exitCode=!result.summary.protectedSourceMatches||result.summary.different||result.summary.failed||result.summary.browserErrors||result.summary.naturalSettlementFailures||result.summary.repeatFailures||result.summary.evidenceFailures||result.summary.compared!==result.summary.expected?1:0;return;}
   if(command!=='capture'||!['before','after'].includes(label))throw Error('Usage: node tools/qa/compare-perf-visuals.mjs capture before|after [--repeat-check] [--no-webgl] [--only CASE_ID]; or compare');
   const parsed=parseCaptureOptions(options);
-  const result=await capture(label,parsed);console.log(JSON.stringify(result.summary));process.exitCode=!result.sourceUnchanged||result.summary.failed||result.summary.errors||result.summary.naturalSettlementFailures||result.summary.repeatPixelIdentical===false?1:0;
+  const result=await capture(label,parsed);console.log(JSON.stringify(result.summary));process.exitCode=!result.sourceUnchanged||result.summary.failed||result.summary.errors||result.summary.naturalSettlementFailures||result.summary.evidenceFailures||result.summary.repeatPixelIdentical===false?1:0;
 }
 
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url))main(process.argv.slice(2)).catch(error=>{console.error(error.stack||error);if(!process.exitCode)process.exitCode=2;});
