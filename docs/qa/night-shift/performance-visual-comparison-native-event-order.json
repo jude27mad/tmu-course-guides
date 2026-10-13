@@ -1,0 +1,989 @@
+{
+  "schemaVersion": 1,
+  "comparedAt": "2026-10-13T22:38:41.232Z",
+  "beforeCapturedAt": "2026-10-13T22:20:42.236Z",
+  "afterCapturedAt": "2026-10-13T22:29:24.929Z",
+  "beforeProductSourceSha256": "0b91e7a2c77d4b19babe56a2af9d2cc9d2eddd69b1a61029be1ee03cf904552f",
+  "afterProductSourceSha256": "71856dc89dad71c8edeeae55f92b1cce9a37f24f86ae2063a9b113067eb6a45a",
+  "beforeProtectedSourceSha256": "12f7d7b20b727ab2bbd2da6ae61835def99dde85e32bd74f04735bed7c86cbab",
+  "afterProtectedSourceSha256": "12f7d7b20b727ab2bbd2da6ae61835def99dde85e32bd74f04735bed7c86cbab",
+  "beforeRepeat": {
+    "beforeDimensions": {
+      "width": 1440,
+      "height": 900
+    },
+    "afterDimensions": {
+      "width": 1440,
+      "height": 900
+    },
+    "equalDimensions": true,
+    "changedPixels": 0,
+    "totalPixels": 1296000,
+    "changedPixelShare": 0,
+    "totalAbsoluteChannelDifference": 0,
+    "maxChannelDifference": 0,
+    "differenceBounds": null,
+    "pixelIdentical": true,
+    "beforeSha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
+    "afterSha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
+    "diff": "tools/qa/reports/perf-visuals/before/repeat/root-cen100-1440x900-dark-diff.png"
+  },
+  "afterRepeat": {
+    "beforeDimensions": {
+      "width": 1440,
+      "height": 900
+    },
+    "afterDimensions": {
+      "width": 1440,
+      "height": 900
+    },
+    "equalDimensions": true,
+    "changedPixels": 0,
+    "totalPixels": 1296000,
+    "changedPixelShare": 0,
+    "totalAbsoluteChannelDifference": 0,
+    "maxChannelDifference": 0,
+    "differenceBounds": null,
+    "pixelIdentical": true,
+    "beforeSha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
+    "afterSha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
+    "diff": "tools/qa/reports/perf-visuals/after/repeat/root-cen100-1440x900-dark-diff.png"
+  },
+  "beforeEvidenceProblems": [],
+  "afterEvidenceProblems": [],
+  "beforeRepeatValidation": {
+    "beforeDimensions": {
+      "width": 1440,
+      "height": 900
+    },
+    "afterDimensions": {
+      "width": 1440,
+      "height": 900
+    },
+    "equalDimensions": true,
+    "changedPixels": 0,
+    "totalPixels": 1296000,
+    "changedPixelShare": 0,
+    "totalAbsoluteChannelDifference": 0,
+    "maxChannelDifference": 0,
+    "differenceBounds": null,
+    "pixelIdentical": true,
+    "beforeSha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
+    "afterSha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
+    "originalHashMatches": true,
+    "repeatHashMatches": true,
+    "pass": true
+  },
+  "afterRepeatValidation": {
+    "beforeDimensions": {
+      "width": 1440,
+      "height": 900
+    },
+    "afterDimensions": {
+      "width": 1440,
+      "height": 900
+    },
+    "equalDimensions": true,
+    "changedPixels": 0,
+    "totalPixels": 1296000,
+    "changedPixelShare": 0,
+    "totalAbsoluteChannelDifference": 0,
+    "maxChannelDifference": 0,
+    "differenceBounds": null,
+    "pixelIdentical": true,
+    "beforeSha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
+    "afterSha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
+    "originalHashMatches": true,
+    "repeatHashMatches": true,
+    "pass": true
+  },
+  "cases": [
+    {
+      "id": "root-desk-1440x900-dark",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 1296000,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "49dea04119bd182bc133f8b4bae3ae2a65dfe0752ba8f869388296a85c629c09",
+      "afterSha256": "49dea04119bd182bc133f8b4bae3ae2a65dfe0752ba8f869388296a85c629c09",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/root-desk-1440x900-dark-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "root-desk-1440x900-light",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "equalDimensions": true,
+      "changedPixels": 1,
+      "totalPixels": 1296000,
+      "changedPixelShare": 7.716049382716049e-7,
+      "totalAbsoluteChannelDifference": 2,
+      "maxChannelDifference": 1,
+      "differenceBounds": {
+        "left": 86,
+        "top": 488,
+        "right": 86,
+        "bottom": 488
+      },
+      "pixelIdentical": false,
+      "beforeSha256": "6b65119bbb4187f06886ff0509b38663ef3e9c20f8b79136046bb12abd4c94e8",
+      "afterSha256": "4beaa424f78c6ebfb7b748b96a4c4f2cba2b25be006628687b7705d2399bd630",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/root-desk-1440x900-light-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "root-desk-390x844-dark",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "afterDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 329160,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "5da004a50403c716990b36e1ed72a893d61ec39866cae859334ff65fd8f8ed5e",
+      "afterSha256": "5da004a50403c716990b36e1ed72a893d61ec39866cae859334ff65fd8f8ed5e",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/root-desk-390x844-dark-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "root-desk-390x844-light",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "afterDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 329160,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "fce1b9cc18350fca335a7c0b1c79a63162fbbaf40530fdbf78417666066321d9",
+      "afterSha256": "fce1b9cc18350fca335a7c0b1c79a63162fbbaf40530fdbf78417666066321d9",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/root-desk-390x844-light-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "root-cen100-1440x900-dark",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 1296000,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
+      "afterSha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/root-cen100-1440x900-dark-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "root-cen100-1440x900-light",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 1296000,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "408bd9e1251fe6a3eec3c689ae2fa98ddf3066b639326e15d6e30165f29edbb9",
+      "afterSha256": "408bd9e1251fe6a3eec3c689ae2fa98ddf3066b639326e15d6e30165f29edbb9",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/root-cen100-1440x900-light-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "root-cen100-390x844-dark",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "afterDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 329160,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "06c63aeafdd259c071626f7bd218905cb77800cf3922f73b8532175ebd0d3369",
+      "afterSha256": "06c63aeafdd259c071626f7bd218905cb77800cf3922f73b8532175ebd0d3369",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/root-cen100-390x844-dark-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "root-cen100-390x844-light",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "afterDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 329160,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "eb4690524953b82a480a999485fbb5ab562216ab56527ac914389ffc7af9de97",
+      "afterSha256": "eb4690524953b82a480a999485fbb5ab562216ab56527ac914389ffc7af9de97",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/root-cen100-390x844-light-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "root-mth140-1440x900-dark",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 1296000,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "02960507297fe07f658df640c2fded6d18fc6b8836f26113b50b41f146d69cfb",
+      "afterSha256": "02960507297fe07f658df640c2fded6d18fc6b8836f26113b50b41f146d69cfb",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/root-mth140-1440x900-dark-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "root-mth140-1440x900-light",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 1296000,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "b88e48b09ebcdb976af2a2bcec5477773f5231bd3d59c075fe844f77db1626e3",
+      "afterSha256": "b88e48b09ebcdb976af2a2bcec5477773f5231bd3d59c075fe844f77db1626e3",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/root-mth140-1440x900-light-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "root-mth140-390x844-dark",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "afterDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 329160,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "e3f744f0a3ab80d06b5f2e02710d104ba4b38954d5eee537d94f2d174edcfc39",
+      "afterSha256": "e3f744f0a3ab80d06b5f2e02710d104ba4b38954d5eee537d94f2d174edcfc39",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/root-mth140-390x844-dark-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "root-mth140-390x844-light",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "afterDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 329160,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "5cfbf6c971ae5a7c1ccedccca9025b113cd4f45190a2f656163e8db6cb90a8ff",
+      "afterSha256": "5cfbf6c971ae5a7c1ccedccca9025b113cd4f45190a2f656163e8db6cb90a8ff",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/root-mth140-390x844-light-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "root-mth141-1440x900-dark",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 1296000,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "47470d808b8999f1b2f9e7949c0b4bb97a0674a093c7e108cf3b9773923d07d7",
+      "afterSha256": "47470d808b8999f1b2f9e7949c0b4bb97a0674a093c7e108cf3b9773923d07d7",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/root-mth141-1440x900-dark-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "root-mth141-1440x900-light",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 1296000,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "a1443487989122a172d96390ded13a6aa04d10e0feebd8e0bf196dc5f2e1e5a0",
+      "afterSha256": "a1443487989122a172d96390ded13a6aa04d10e0feebd8e0bf196dc5f2e1e5a0",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/root-mth141-1440x900-light-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "root-mth141-390x844-dark",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "afterDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 329160,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "41d12045a6b8ef1850c146a8595d8522367ccd60f2e73e60249ad6adbe4f415a",
+      "afterSha256": "41d12045a6b8ef1850c146a8595d8522367ccd60f2e73e60249ad6adbe4f415a",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/root-mth141-390x844-dark-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "root-mth141-390x844-light",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "afterDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 329160,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "409c960caf8a141ea008e50b415f2478a6aabb4e8dc081674d6371f008d7860d",
+      "afterSha256": "409c960caf8a141ea008e50b415f2478a6aabb4e8dc081674d6371f008d7860d",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/root-mth141-390x844-light-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "project-desk-1440x900-dark",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 1296000,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "49dea04119bd182bc133f8b4bae3ae2a65dfe0752ba8f869388296a85c629c09",
+      "afterSha256": "49dea04119bd182bc133f8b4bae3ae2a65dfe0752ba8f869388296a85c629c09",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/project-desk-1440x900-dark-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "project-desk-1440x900-light",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "equalDimensions": true,
+      "changedPixels": 205,
+      "totalPixels": 1296000,
+      "changedPixelShare": 0.00015817901234567902,
+      "totalAbsoluteChannelDifference": 347,
+      "maxChannelDifference": 2,
+      "differenceBounds": {
+        "left": 257,
+        "top": 782,
+        "right": 505,
+        "bottom": 829
+      },
+      "pixelIdentical": false,
+      "beforeSha256": "63d39e082ee1a1344586c51db208a748f311fa597502e624bdbc7bc7102bdf91",
+      "afterSha256": "4beaa424f78c6ebfb7b748b96a4c4f2cba2b25be006628687b7705d2399bd630",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/project-desk-1440x900-light-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "project-desk-390x844-dark",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "afterDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 329160,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "5da004a50403c716990b36e1ed72a893d61ec39866cae859334ff65fd8f8ed5e",
+      "afterSha256": "5da004a50403c716990b36e1ed72a893d61ec39866cae859334ff65fd8f8ed5e",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/project-desk-390x844-dark-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "project-desk-390x844-light",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "afterDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 329160,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "fce1b9cc18350fca335a7c0b1c79a63162fbbaf40530fdbf78417666066321d9",
+      "afterSha256": "fce1b9cc18350fca335a7c0b1c79a63162fbbaf40530fdbf78417666066321d9",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/project-desk-390x844-light-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "project-cen100-1440x900-dark",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 1296000,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
+      "afterSha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/project-cen100-1440x900-dark-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "project-cen100-1440x900-light",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 1296000,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "408bd9e1251fe6a3eec3c689ae2fa98ddf3066b639326e15d6e30165f29edbb9",
+      "afterSha256": "408bd9e1251fe6a3eec3c689ae2fa98ddf3066b639326e15d6e30165f29edbb9",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/project-cen100-1440x900-light-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "project-cen100-390x844-dark",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "afterDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 329160,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "06c63aeafdd259c071626f7bd218905cb77800cf3922f73b8532175ebd0d3369",
+      "afterSha256": "06c63aeafdd259c071626f7bd218905cb77800cf3922f73b8532175ebd0d3369",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/project-cen100-390x844-dark-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "project-cen100-390x844-light",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "afterDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 329160,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "eb4690524953b82a480a999485fbb5ab562216ab56527ac914389ffc7af9de97",
+      "afterSha256": "eb4690524953b82a480a999485fbb5ab562216ab56527ac914389ffc7af9de97",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/project-cen100-390x844-light-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "project-mth140-1440x900-dark",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 1296000,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "02960507297fe07f658df640c2fded6d18fc6b8836f26113b50b41f146d69cfb",
+      "afterSha256": "02960507297fe07f658df640c2fded6d18fc6b8836f26113b50b41f146d69cfb",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/project-mth140-1440x900-dark-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "project-mth140-1440x900-light",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 1296000,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "b88e48b09ebcdb976af2a2bcec5477773f5231bd3d59c075fe844f77db1626e3",
+      "afterSha256": "b88e48b09ebcdb976af2a2bcec5477773f5231bd3d59c075fe844f77db1626e3",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/project-mth140-1440x900-light-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "project-mth140-390x844-dark",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "afterDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 329160,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "e3f744f0a3ab80d06b5f2e02710d104ba4b38954d5eee537d94f2d174edcfc39",
+      "afterSha256": "e3f744f0a3ab80d06b5f2e02710d104ba4b38954d5eee537d94f2d174edcfc39",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/project-mth140-390x844-dark-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "project-mth140-390x844-light",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "afterDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 329160,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "5cfbf6c971ae5a7c1ccedccca9025b113cd4f45190a2f656163e8db6cb90a8ff",
+      "afterSha256": "5cfbf6c971ae5a7c1ccedccca9025b113cd4f45190a2f656163e8db6cb90a8ff",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/project-mth140-390x844-light-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "project-mth141-1440x900-dark",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 1296000,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "47470d808b8999f1b2f9e7949c0b4bb97a0674a093c7e108cf3b9773923d07d7",
+      "afterSha256": "47470d808b8999f1b2f9e7949c0b4bb97a0674a093c7e108cf3b9773923d07d7",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/project-mth141-1440x900-dark-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "project-mth141-1440x900-light",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 1296000,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "a1443487989122a172d96390ded13a6aa04d10e0feebd8e0bf196dc5f2e1e5a0",
+      "afterSha256": "a1443487989122a172d96390ded13a6aa04d10e0feebd8e0bf196dc5f2e1e5a0",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/project-mth141-1440x900-light-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "project-mth141-390x844-dark",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "afterDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 329160,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "41d12045a6b8ef1850c146a8595d8522367ccd60f2e73e60249ad6adbe4f415a",
+      "afterSha256": "41d12045a6b8ef1850c146a8595d8522367ccd60f2e73e60249ad6adbe4f415a",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/project-mth141-390x844-dark-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    },
+    {
+      "id": "project-mth141-390x844-light",
+      "status": "compared",
+      "beforeDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "afterDimensions": {
+        "width": 390,
+        "height": 844
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 329160,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "409c960caf8a141ea008e50b415f2478a6aabb4e8dc081674d6371f008d7860d",
+      "afterSha256": "409c960caf8a141ea008e50b415f2478a6aabb4e8dc081674d6371f008d7860d",
+      "diff": "tools/qa/reports/perf-visuals/compare-native-before-desk-final-event/project-mth141-390x844-light-diff.png",
+      "beforeErrors": [],
+      "afterErrors": [],
+      "beforeNaturalSettlementFailure": null,
+      "afterNaturalSettlementFailure": null
+    }
+  ],
+  "summary": {
+    "expected": 32,
+    "compared": 32,
+    "pixelIdentical": 30,
+    "different": 2,
+    "failed": 0,
+    "changedPixels": 206,
+    "browserErrors": 0,
+    "naturalSettlementFailures": 0,
+    "repeatFailures": 0,
+    "evidenceFailures": 0,
+    "protectedSourceMatches": true
+  }
+}

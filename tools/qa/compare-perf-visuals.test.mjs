@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {createHash} from 'node:crypto';
 import {createRequire} from 'node:module';
-import {assertCaptureCompatibility,assertResumeSourceEvidence,cases,captureWork,captureEvidenceProblems,comparePixels,parseCaptureOptions,requestNativeLayerRedraw,validateRepeatPixels,visualCaptureRecipe} from './compare-perf-visuals.mjs';
+import {assertCaptureCompatibility,assertResumeSourceEvidence,cases,captureWork,captureEvidenceProblems,comparePixels,nativeLayerRedrawPhase,parseCaptureOptions,requestNativeLayerRedraw,validateRepeatPixels,visualCaptureRecipe} from './compare-perf-visuals.mjs';
 const require=createRequire(import.meta.url);
 const {PNG}=require(process.env.PNGJS_PATH||'/opt/codex/cua_node/lib/node_modules/pngjs');
 
@@ -105,11 +105,17 @@ test('compositor stabilization changes only the recorded Chromium environment co
   assert.deepEqual(visualCaptureRecipe({settledDelayMs:5000}),{...original,settledDelayMs:5000});
   assert.deepEqual(visualCaptureRecipe({observeCompositor:true}),{...original,compositorObserver:true});
   assert.deepEqual(visualCaptureRecipe({legacyScreenshot:true}),{...original,chromiumScreenshotSurface:'legacy'});
-  assert.deepEqual(visualCaptureRecipe({nativeLayerRedraw:true}),{...original,nativeLayerInvalidation:'setNeedsDisplayOnAllLayers after DOM settlement, before final visibilitychange static scene redraw'});
+  assert.deepEqual(visualCaptureRecipe({nativeLayerRedraw:true}),{...original,nativeLayerInvalidation:{desk:'after final visibilitychange DOM reconstruction',course:'before final visibilitychange static scene redraw'}});
   assert.deepEqual(parseCaptureOptions(['--native-layer-redraw']),{nativeLayerRedraw:true});
   assert.deepEqual(parseCaptureOptions(['--settled-delay-ms','5000','--observe-compositor']),{settledDelayMs:5000,observeCompositor:true});
   assert.throws(()=>parseCaptureOptions(['--settled-delay-ms','1400']),/at least1500/);
   assert.throws(()=>parseCaptureOptions(['--settled-delay-ms']),/at least1500/);
+});
+
+test('Desk repaint follows final DOM reconstruction while course repaint precedes WebGL refresh',()=>{
+  assert.equal(nativeLayerRedrawPhase('desk'),'after final visibilitychange DOM reconstruction');
+  for(const route of ['cen100','mth140','mth141'])assert.equal(nativeLayerRedrawPhase(route),'before final visibilitychange static scene redraw');
+  assert.deepEqual(parseCaptureOptions(['--paint-diagnostic']),{paintDiagnostic:true});
 });
 
 test('native layer invalidation requires the real browser API and waits two frames',async()=>{

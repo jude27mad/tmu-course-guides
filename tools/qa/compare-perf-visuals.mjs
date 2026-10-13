@@ -18,6 +18,8 @@ const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 const slash=value=>value.split(path.sep).join('/');
 const relative=value=>slash(path.relative(ROOT,value));
+const NATIVE_LAYER_PHASES={desk:'after final visibilitychange DOM reconstruction',course:'before final visibilitychange static scene redraw'};
+export const nativeLayerRedrawPhase=route=>NATIVE_LAYER_PHASES[route==='desk'?'desk':'course'];
 
 async function productSourceFingerprint({protectedOnly=false}={}) {
   const files=execFileSync('git',['ls-files','--cached','--others','--exclude-standard','-z','--','assets','*.html','cen100','mth140','mth141'],{cwd:ROOT,encoding:'utf8'}).split('\0').filter(Boolean);
@@ -48,7 +50,7 @@ export function visualCaptureRecipe({fullPage=false,nativeClock=false,noWebGL=fa
     random:'FNV-1a route seed with a 32-bit LCG; seeded before product scripts',initialClock:nativeClock?'native Date (diagnostic)':'moving Date offset',
     freeze:'freeze after settlement, pause through GuideMotion and dispatch workspace-changed/visibilitychange; final visibilitychange redraw immediately before capture',
     sceneReadyGate:true,sceneFrameAndBoundsStableMs:100,screenshotAnimations:'disabled',masking:false,cssInjection:false,noWebGL,
-    ...(compositorDrain?{compositorStagesBeforeDraw:true}:{}),...(disablePartialRaster?{partialRaster:false}:{}),...(disableGpuRasterization?{gpuRasterization:false}:{}),...(observeCompositor?{compositorObserver:true}:{}),...(legacyScreenshot?{chromiumScreenshotSurface:'legacy'}:{}),...(nativeLayerRedraw?{nativeLayerInvalidation:'setNeedsDisplayOnAllLayers after DOM settlement, before final visibilitychange static scene redraw'}:{})};
+    ...(compositorDrain?{compositorStagesBeforeDraw:true}:{}),...(disablePartialRaster?{partialRaster:false}:{}),...(disableGpuRasterization?{gpuRasterization:false}:{}),...(observeCompositor?{compositorObserver:true}:{}),...(legacyScreenshot?{chromiumScreenshotSurface:'legacy'}:{}),...(nativeLayerRedraw?{nativeLayerInvalidation:NATIVE_LAYER_PHASES}:{})};
 }
 
 export async function requestNativeLayerRedraw(page) {
@@ -57,6 +59,21 @@ export async function requestNativeLayerRedraw(page) {
     if(typeof gpu?.setNeedsDisplayOnAllLayers!=='function')throw Error('Required native all-layer invalidation API is unavailable.');
     gpu.setNeedsDisplayOnAllLayers();
     return new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+  });
+}
+
+async function deskPaintEvidence(page) {
+  return page.evaluate(()=>{
+    const identities=window.__perfVisualPaintIdentities??={nodes:new WeakMap(),next:1};
+    const props=['transform','translate','rotate','scale','perspective','filter','backdrop-filter','opacity','overflow','overflow-x','overflow-y','clip-path','background-color','background-image','border-radius','border-width','border-color','box-shadow','will-change','contain','isolation'];
+    return ['[data-desk-overall] .desk-next-course > i','[data-desk-overall] .desk-action','[data-desk-overall] .desk-action-quiet'].map(selector=>{
+      const target=document.querySelector(selector);if(!target)return {selector,missing:true};
+      if(!identities.nodes.has(target))identities.nodes.set(target,identities.next++);
+      const ancestors=[];
+      for(let node=target;node;node=node.parentElement){const style=getComputedStyle(node),r=node.getBoundingClientRect(),transform=style.transform==='none'?new DOMMatrixReadOnly():new DOMMatrixReadOnly(style.transform);
+        ancestors.push({tag:node.tagName,id:node.id,class:node.className,box:{x:r.x,y:r.y,width:r.width,height:r.height},matrix:Array.from(transform.toFloat64Array()),computed:Object.fromEntries(props.map(prop=>[prop,style.getPropertyValue(prop)]))});}
+      return {selector,nodeIdentity:identities.nodes.get(target),connected:target.isConnected,ancestors};
+    });
   });
 }
 
@@ -257,15 +274,22 @@ async function captureCase(browser,server,entry,directory) {
         fonts:[...document.fonts].map(font=>({family:font.family,weight:font.weight,status:font.status})),
         stylesheets:[...document.styleSheets].map(sheet=>sheet.href&&new URL(sheet.href).pathname)};
     });
-    if(entry.nativeLayerRedraw) {
-      record.nativeLayerRedraw={before:await sceneSnapshot()};
+    const nativeRedraw=async()=>{
+      record.nativeLayerRedraw={phase:nativeLayerRedrawPhase(entry.route),before:await sceneSnapshot()};
       await requestNativeLayerRedraw(page);
       record.nativeLayerRedraw.after=await sceneSnapshot();
       if(JSON.stringify(record.nativeLayerRedraw.before)!==JSON.stringify(record.nativeLayerRedraw.after))throw Error('Native layer invalidation changed the paused scene dimensions or state.');
-    }
-    // A final native resume event asks the paused renderer for its real static
-    // frame immediately before capture. No content or style is replaced.
+    };
+    if(entry.nativeLayerRedraw&&entry.route!=='desk')await nativeRedraw();
+    if(entry.paintDiagnostic&&entry.route==='desk')record.deskPaintEvidence={beforeFinalVisibility:await deskPaintEvidence(page)};
+    // Product resume handlers refresh their normal DOM and paused static frame
+    // immediately before capture.
     await page.evaluate(()=>{document.dispatchEvent(new Event('visibilitychange'));return new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));});
+    if(entry.paintDiagnostic&&entry.route==='desk')record.deskPaintEvidence.afterFinalVisibility=await deskPaintEvidence(page);
+    // Desk's real visibility handler recreates its next-card controls. Repaint
+    // those final nodes; courses instead redraw their actual WebGL buffer last.
+    if(entry.nativeLayerRedraw&&entry.route==='desk')await nativeRedraw();
+    if(entry.paintDiagnostic&&entry.route==='desk')record.deskPaintEvidence.afterNativeRedraw=await deskPaintEvidence(page);
     record.preCaptureScene=await sceneSnapshot();
     record.dom.renderersAtCapture=record.preCaptureScene;
     if(entry.observeCompositor)record.compositorLayers=lastLayers;
@@ -309,7 +333,7 @@ async function compareFiles(beforePath,afterPath,diffPath) {
   return {...metrics,beforeSha256:hash(beforeBytes),afterSha256:hash(afterBytes),diff:relative(diffPath)};
 }
 
-export async function capture(label,{only,historyCases=[],noWebGL=false,repeatCheck=false,repeatCase,resume=false,fullPage=false,nativeClock=false,serial=false,compositorDrain=false,disablePartialRaster=false,disableGpuRasterization=false,settledDelayMs=1500,observeCompositor=false,nativeLayerRedraw=false,diagnostic=false}={}) {
+export async function capture(label,{only,historyCases=[],noWebGL=false,repeatCheck=false,repeatCase,resume=false,fullPage=false,nativeClock=false,serial=false,compositorDrain=false,disablePartialRaster=false,disableGpuRasterization=false,settledDelayMs=1500,observeCompositor=false,nativeLayerRedraw=false,paintDiagnostic=false,diagnostic=false}={}) {
   if(!['before','after'].includes(label))throw Error('Capture label must be before or after.');
   const directory=path.join(REPORTS,label+(nativeClock?'-native-clock':''));await mkdir(directory,{recursive:true});
   const legacyScreenshot=Boolean(process.env.PLAYWRIGHT_LEGACY_SCREENSHOT);
@@ -331,7 +355,7 @@ export async function capture(label,{only,historyCases=[],noWebGL=false,repeatCh
   try {({arguments:chromiumCommandLine}=await browserSession.send('Browser.getBrowserCommandLine'));}finally{await browserSession.detach();}
   manifest={schemaVersion:1,label,capturedAt:new Date().toISOString(),fixedTime:FIXED_TIME,revision:execFileSync('git',['rev-parse','HEAD'],{cwd:ROOT,encoding:'utf8'}).trim(),productSourceSha256:await productSourceFingerprint(),protectedSourceSha256:await productSourceFingerprint({protectedOnly:true}),
     recipe:visualCaptureRecipe({fullPage,nativeClock,noWebGL,compositorDrain,disablePartialRaster,disableGpuRasterization,settledDelayMs,observeCompositor,legacyScreenshot,nativeLayerRedraw}),
-    execution:{captureConcurrency:serial?1:2,diagnostic,...(historyCases.length?{probeHistoryCases:historyCases}:{})},
+    execution:{captureConcurrency:serial?1:2,diagnostic,...(paintDiagnostic?{paintDiagnostic:true}:{}),...(historyCases.length?{probeHistoryCases:historyCases}:{})},
     environment:{playwrightPath:modulePath,executablePath:launch.options.executablePath,args:launch.options.args,playwrightLegacyScreenshot:legacyScreenshot,chromiumCommandLine,...await inspectBrowserEnvironment(browser,{gpu:false})},cases:[]};
   if(resume) {
     const previous=JSON.parse(await readFile(path.join(directory,'manifest.json'),'utf8'));
@@ -344,7 +368,7 @@ export async function capture(label,{only,historyCases=[],noWebGL=false,repeatCh
   }
     for(const base of BASES) {
       const options={only,historyCases,noWebGL,resume,repeatCheck,repeatCase,fullPage,nativeClock};
-      const work=captureWork(base,options,manifest.cases),selected=work.selected.map(entry=>({...entry,diagnostic,observeCompositor,settledDelayMs,nativeLayerRedraw})),needsPreview=work.needsPreview;
+      const work=captureWork(base,options,manifest.cases),selected=work.selected.map(entry=>({...entry,diagnostic,observeCompositor,settledDelayMs,nativeLayerRedraw,paintDiagnostic})),needsPreview=work.needsPreview;
       if(!needsPreview)continue;
       const server=await startPreview({base});
       try {
@@ -360,7 +384,7 @@ export async function capture(label,{only,historyCases=[],noWebGL=false,repeatCh
           await writeFile(path.join(directory,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');
         }
         for(const failed of captureWork(base,options,manifest.cases).retries) {
-          const retried=await captureCase(browser,server,{...failed,diagnostic,observeCompositor,settledDelayMs,nativeLayerRedraw},directory);
+          const retried=await captureCase(browser,server,{...failed,diagnostic,observeCompositor,settledDelayMs,nativeLayerRedraw,paintDiagnostic},directory);
           retried.initialAttempt={failure:failed.failure,errors:failed.errors};
           manifest.cases[manifest.cases.indexOf(failed)]=retried;
           console.log(`retry: ${retried.id}: ${retried.status}${retried.failure?' '+retried.failure.message:''}`);
@@ -370,7 +394,7 @@ export async function capture(label,{only,historyCases=[],noWebGL=false,repeatCh
           const first=captureWork(base,options,manifest.cases).repeat;
           if(first) {
             const repeatDir=path.join(directory,'repeat');await mkdir(repeatDir,{recursive:true});
-            const repeated=await captureCase(browser,server,{...first,diagnostic,observeCompositor,settledDelayMs,nativeLayerRedraw},repeatDir);
+            const repeated=await captureCase(browser,server,{...first,diagnostic,observeCompositor,settledDelayMs,nativeLayerRedraw,paintDiagnostic},repeatDir);
             manifest.repeatCheck={case:first.id,capture:repeated};
             if(repeated.status==='captured')manifest.repeatCheck.comparison=await compareFiles(path.join(ROOT,first.screenshot),path.join(ROOT,repeated.screenshot),path.join(repeatDir,first.id+'-diff.png'));
             console.log(`repeat: ${first.id}: ${JSON.stringify(manifest.repeatCheck.comparison||repeated.failure)}`);
@@ -434,7 +458,7 @@ export async function compare() {
 
 export function parseCaptureOptions(options) {
   const parsed={};
-  for(let i=0;i<options.length;i++) {if(options[i]==='--repeat-check')parsed.repeatCheck=true;else if(options[i]==='--no-webgl')parsed.noWebGL=true;else if(options[i]==='--resume')parsed.resume=true;else if(options[i]==='--full-page')parsed.fullPage=true;else if(options[i]==='--native-clock')parsed.nativeClock=true;else if(options[i]==='--serial')parsed.serial=true;else if(options[i]==='--compositor-drain')parsed.compositorDrain=true;else if(options[i]==='--disable-partial-raster')parsed.disablePartialRaster=true;else if(options[i]==='--disable-gpu-rasterization')parsed.disableGpuRasterization=true;else if(options[i]==='--probe-history'){const value=options[++i];if(!value||value.startsWith('-'))throw Error('--probe-history requires a case ID.');(parsed.historyCases??=[]).push(value);}else if(options[i]==='--native-layer-redraw')parsed.nativeLayerRedraw=true;else if(options[i]==='--observe-compositor')parsed.observeCompositor=true;else if(options[i]==='--settled-delay-ms'){const value=options[++i];if(!value||!/^\d+$/.test(value)||Number(value)<1500)throw Error('--settled-delay-ms requires an integer of at least1500.');parsed.settledDelayMs=Number(value);}else if(options[i]==='--diagnostic')parsed.diagnostic=true;else if(options[i]==='--only'||options[i]==='--repeat-case'){const option=options[i],value=options[++i];if(!value||value.startsWith('-'))throw Error(option+' requires a case ID.');parsed[option==='--only'?'only':'repeatCase']=value;}else throw Error('Unknown option: '+options[i]);}
+  for(let i=0;i<options.length;i++) {if(options[i]==='--repeat-check')parsed.repeatCheck=true;else if(options[i]==='--no-webgl')parsed.noWebGL=true;else if(options[i]==='--resume')parsed.resume=true;else if(options[i]==='--full-page')parsed.fullPage=true;else if(options[i]==='--native-clock')parsed.nativeClock=true;else if(options[i]==='--serial')parsed.serial=true;else if(options[i]==='--compositor-drain')parsed.compositorDrain=true;else if(options[i]==='--disable-partial-raster')parsed.disablePartialRaster=true;else if(options[i]==='--disable-gpu-rasterization')parsed.disableGpuRasterization=true;else if(options[i]==='--probe-history'){const value=options[++i];if(!value||value.startsWith('-'))throw Error('--probe-history requires a case ID.');(parsed.historyCases??=[]).push(value);}else if(options[i]==='--paint-diagnostic')parsed.paintDiagnostic=true;else if(options[i]==='--native-layer-redraw')parsed.nativeLayerRedraw=true;else if(options[i]==='--observe-compositor')parsed.observeCompositor=true;else if(options[i]==='--settled-delay-ms'){const value=options[++i];if(!value||!/^\d+$/.test(value)||Number(value)<1500)throw Error('--settled-delay-ms requires an integer of at least1500.');parsed.settledDelayMs=Number(value);}else if(options[i]==='--diagnostic')parsed.diagnostic=true;else if(options[i]==='--only'||options[i]==='--repeat-case'){const option=options[i],value=options[++i];if(!value||value.startsWith('-'))throw Error(option+' requires a case ID.');parsed[option==='--only'?'only':'repeatCase']=value;}else throw Error('Unknown option: '+options[i]);}
   if(parsed.only&&!cases(parsed).some(entry=>entry.id===parsed.only))throw Error('Unknown case: '+parsed.only);
   if(parsed.repeatCase&&!cases(parsed).some(entry=>entry.id===parsed.repeatCase))throw Error('Unknown repeat case: '+parsed.repeatCase);
   if(parsed.only&&parsed.repeatCase&&parsed.only!==parsed.repeatCase)throw Error('--only and --repeat-case must select the same case.');
