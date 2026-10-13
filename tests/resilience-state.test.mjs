@@ -75,3 +75,26 @@ for(const course of ['cen100','mth140','mth141'])test(`${course} refreshes its c
   assert.equal(f.d.querySelectorAll(course==='cen100'?'#nextsign':'#next-assessment').length,1);
  }finally{f.close();}
 });
+
+test('Desk refreshes its visible deadline within one minute after a backwards clock jump at an exact minute',async()=>{
+ const {createGuide,until}=require('./module-harness.cjs');
+ let now=Date.parse('2026-10-14T18:30:00Z'),elapsed=0;
+ const timers=new Map();
+ const {dom,errors}=await createGuide({root:fileURLToPath(new URL('..',import.meta.url)),motion:'off',beforeParse(w){
+  const NativeDate=w.Date,setTimeout=w.setTimeout.bind(w),clearTimeout=w.clearTimeout.bind(w);
+  w.Date=class extends NativeDate{constructor(...args){super(...(args.length?args:[now]));}static now(){return now;}};
+  w.setTimeout=(fn,delay,...args)=>{
+   if(delay<60000)return setTimeout(fn,delay,...args);
+   const handle={};timers.set(handle,{fn:()=>fn(...args),at:elapsed+delay});return handle;
+  };
+  w.clearTimeout=handle=>{if(!timers.delete(handle))clearTimeout(handle);};
+ }});
+ try{
+  const chip=()=>dom.window.document.querySelector('[data-course-card="cen100"] .desk-chip')?.textContent;
+  await until(()=>Boolean(chip()),'Desk did not paint its deadline');assert.deepEqual(errors,[]);assert.equal(chip(),'30m left');
+  const scheduled=[...timers.values()].map(timer=>timer.at);
+  now-=3600000;now+=60000;elapsed=60000;
+  for(const [handle,timer] of [...timers])if(timer.at<=elapsed){timers.delete(handle);timer.fn();}
+  assert.equal(chip(),'1h 29m left',`the semantic refresh must fire within 60000ms; scheduled delays: ${scheduled}`);
+ }finally{dom.window.close();}
+});
