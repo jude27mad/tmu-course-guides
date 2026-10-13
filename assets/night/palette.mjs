@@ -1,7 +1,7 @@
 /* The command palette is a shell service. Its data helpers stay pure for the Desk
    and tests; browser services are imported only when mount() initialises it. */
-import {SCHEDULE} from '../cen-schedule.mjs';
-import {resolveTarget,readSaved} from './targets.mjs';
+import {SCHEDULE} from '../cen-schedule.mjs?v=20261013-shift1';
+import {resolveTarget,readSaved} from './targets.mjs?v=20261013-shift1';
 import {recordsForCourse,semesterWeeks,findWeek} from '../book/weeks.mjs';
 
 /** Best case-insensitive subsequence, favouring prefixes, words and runs. */
@@ -80,7 +80,7 @@ let service=null,starting=null;
 /** Initialises once, deliberately independent of a route AbortSignal. */
 export function mount(){
  if(service)return Promise.resolve(service);
- return starting??=import('./core.mjs').then(core=>{
+ return starting??=import('./core.mjs?v=20261013-shift2').then(core=>{
   service=createService(core);return service.reindex().then(()=>service);
  }).catch(error=>{starting=null;throw error;});
 }

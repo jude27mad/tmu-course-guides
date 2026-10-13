@@ -1,7 +1,7 @@
 /* Semester timeline on Assignments. Data comes from the guides' own schedule feed.
    Each course draws the track in its own vocabulary (see layout.css [data-ns-course]). */
 import {scope} from '../route-lifecycle.mjs';
-import {META,$,escape,TERM,today,dateLabel,dayLabel,addDays,scheduleRows,onSchedule,openItem} from './core.mjs?v=20261013-shift1';
+import {META,$,escape,TERM,today,dateLabel,dayLabel,addDays,scheduleRows,onSchedule,openItem} from './core.mjs?v=20261013-shift2';
 
 const ms=d=>Date.parse(d+'T12:00:00Z');
 const span=ms(TERM.end)-ms(TERM.start);

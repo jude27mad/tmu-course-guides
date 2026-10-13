@@ -4,7 +4,7 @@
    line behind SplitText masks. Characters lean toward a fine pointer. Rest (p = 0) is also the reduced look.
    The docked state stays deadline.mjs's dock (html.ns-docked); this module never builds another. */
 import {scope} from '../route-lifecycle.mjs';
-import {$,META,motionAllowed,sceneMotionAllowed,finePointer,atLeast,onTier,held,track,dispose,vendor} from './core.mjs?v=20261013-shift1';
+import {$,META,motionAllowed,sceneMotionAllowed,finePointer,atLeast,onTier,held,track,dispose,vendor} from './core.mjs?v=20261013-shift2';
 
 const SCOPE='hero',DRAGGED='night-dragged';
 const phone=matchMedia('(max-width:760px)');

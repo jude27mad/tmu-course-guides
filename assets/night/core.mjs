@@ -3,7 +3,7 @@
 export {timestamp,clock,dateLabel,dayLabel,today,addDays,resolveAssessment,timing} from '../schedule.mjs';
 import {loadData} from './targets.mjs?v=20261013-shift1';
 
-export const VERSION='20261013-shift1';
+export const VERSION='20261013-shift2';
 /* Resolve paths against this file. Dynamic imports built this way share module instances with the guide
    (gsap-3.15.0.mjs resolves to the same URL guide-motion.mjs imports), so there is only one GSAP core. */
 export const asset=path=>new URL(path,import.meta.url).href;

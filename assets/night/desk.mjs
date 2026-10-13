@@ -5,7 +5,7 @@
    Calm by design: no entrance animation, and the clock repaints once a minute (no seconds ticker).
    Route module (plan §12 contract): no import-time side effects; mount(ctx)/unmount() own every timer and
    listener, and all state lives in the current mount so a later router swap rebinds cleanly. */
-import {COURSE_META,$,escape,today,dayLabel,dateLabel,clock} from './core.mjs?v=20261013-shift1';
+import {COURSE_META,$,escape,today,dayLabel,dateLabel,clock} from './core.mjs?v=20261013-shift2';
 import {COURSE_IDS,keys,loadData,readSaved,resolveTarget,overall,parts,compact,sentence} from './targets.mjs?v=20261013-shift1';
 import {DAY_NAMES} from '../schedule.mjs';
 

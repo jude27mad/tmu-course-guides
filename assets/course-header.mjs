@@ -23,6 +23,6 @@ export function mount(ctx={}){
  function staticArt(){if(art.dataset.renderer!=='poster')return;art.removeAttribute('tabindex');art.setAttribute('role','img');art.removeAttribute('aria-roledescription');art.setAttribute('aria-label',art.dataset.description);meta.hidden=true;}
  const fallbackObserver=new MutationObserver(staticArt);life.observer(fallbackObserver,art,{attributes:true,attributeFilter:['data-renderer']});
  // Coursework and router capture are ready independently of scene import or shader compilation.
- void (async()=>{try{const m=await import('./course-scene.mjs?v=20261013-shift1');if(live!==state||life.signal.aborted)return;const scene=await m.mountScene(art,course,life.signal);if(live!==state||life.signal.aborted)scene?.dispose();else state.scene=scene;}catch{if(live===state){art.dataset.renderer='poster';art.dataset.sceneReady='true';art.dataset.awake='true';staticArt();}}})();
+ void (async()=>{try{const m=await import('./course-scene.mjs?v=20261013-shift2');if(live!==state||life.signal.aborted)return;const scene=await m.mountScene(art,course,life.signal);if(live!==state||life.signal.aborted)scene?.dispose();else state.scene=scene;}catch{if(live===state){art.dataset.renderer='poster';art.dataset.sceneReady='true';art.dataset.awake='true';staticArt();}}})();
 }
 export function unmount(){if(!live)return;const state=live;live=null;state.life.dispose();state.scene?.dispose();state.restore();}
