@@ -15,6 +15,7 @@ Read each note against its recorded revision and environment. Earlier passes do 
 | [Codex tasks A–E](codex-tasks.md) | Lifecycle/router integration and week/bend-math results, including repeated-route checks at the reported checkpoint. |
 | [Stage 1b review](stage1b.md) | Reproduced router/lifecycle defects, fixes and final Chromium re-verification at both bases, with open issues and separate deadline-review scope. |
 | [Codex tasks F–H merge](fgh.md) | Palette, QA harness, Three.js addons, paper sounds and warp/backdrop removal merged onto `f4c8342`: shared module URLs, `shift2` cache tokens, palette interface copy, favicon, harness deadline alignment, and browser and QA results at both bases. |
+| [Resilience](resilience.md) | WebKit availability, no-JavaScript reading, Back/forward cache, failures/offline/storage denial, cross-tab state, clock jumps and legacy forwarding; functional fixes and protected-file patch proposals. |
 | [Legacy forwarder](forwarder.md) | Proposed change to the separate `cen100-guide` repository; explicitly not applied in this evidence. |
 
 ## Related references

@@ -1,0 +1,42 @@
+diff --git a/index.html b/index.html
+--- a/index.html
++++ b/index.html
+@@ -72,3 +72,3 @@
+ <footer class="desk-foot" data-route-content><p>Sections, notes and completion records are saved only in this browser.</p><a href="privacy.html">Privacy</a></footer>
+-<script data-shell-module src="assets/hub.js?v=20261013-shift1"></script>
++<script data-shell-module src="assets/hub.js?v=20261013-resilience1"></script>
+ </body>
+diff --git a/cen100/index.html b/cen100/index.html
+--- a/cen100/index.html
++++ b/cen100/index.html
+@@ -570,3 +570,3 @@
+ 
+-<script data-shell-module src="../assets/hub.js?v=20261013-shift1"></script>
++<script data-shell-module src="../assets/hub.js?v=20261013-resilience1"></script>
+ <!-- Cloudflare Web Analytics temporarily paused on 2026-10-10; restore the beacon from Git history to resume. -->
+diff --git a/mth140/index.html b/mth140/index.html
+--- a/mth140/index.html
++++ b/mth140/index.html
+@@ -25,3 +25,3 @@
+ <script type="module" data-route-module src="../assets/visuals.js?v=20261013-shift1"></script>
+-<script type="module" data-route-module src="../assets/math-guide.mjs?v=20261013-shift1"></script>
++<script type="module" data-route-module src="../assets/math-guide.mjs?v=20261013-resilience1"></script>
+ <script type="module" data-route-module src="../assets/math-labs.mjs?v=20261013-shift1"></script>
+@@ -129,3 +129,3 @@
+ </main>
+-<script data-shell-module src="../assets/hub.js?v=20261013-shift1"></script>
++<script data-shell-module src="../assets/hub.js?v=20261013-resilience1"></script>
+ <!-- Cloudflare Web Analytics temporarily paused on 2026-10-10; restore the beacon from Git history to resume. -->
+diff --git a/mth141/index.html b/mth141/index.html
+--- a/mth141/index.html
++++ b/mth141/index.html
+@@ -25,3 +25,3 @@
+ <script type="module" data-route-module src="../assets/visuals.js?v=20261013-shift1"></script>
+-<script type="module" data-route-module src="../assets/math-guide.mjs?v=20261013-shift1"></script>
++<script type="module" data-route-module src="../assets/math-guide.mjs?v=20261013-resilience1"></script>
+ <script type="module" data-route-module src="../assets/math-labs.mjs?v=20261013-shift1"></script>
+@@ -144,3 +144,3 @@
+ </main>
+-<script data-shell-module src="../assets/hub.js?v=20261013-shift1"></script>
++<script data-shell-module src="../assets/hub.js?v=20261013-resilience1"></script>
+ <!-- Cloudflare Web Analytics temporarily paused on 2026-10-10; restore the beacon from Git history to resume. -->
