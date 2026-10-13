@@ -9,7 +9,7 @@ node tools/qa/run.mjs stability --base /tmu-course-guides/
 node tools/qa/run.mjs frames --gpu
 ```
 
-The default runs all six checks at both `/` and `/tmu-course-guides/`. `--base` selects one deployment path. The harness chooses a free local port, starts `tools/preview-server.mjs`, and closes its server, pages, contexts and browsers when it finishes or receives SIGINT/SIGTERM. It serves the existing static site; it does not build or modify product code.
+The default runs all thirteen checks at both `/` and `/tmu-course-guides/`. `--base` selects one deployment path. The harness chooses a free local port, starts `tools/preview-server.mjs`, and closes its server, pages, contexts and browsers when it finishes or receives SIGINT/SIGTERM. It serves the existing static site; it does not build or modify product code.
 
 Playwright is the only QA dependency. Resolution first tries `PLAYWRIGHT_PATH`, defaulting to `/opt/node-tools/node_modules/playwright`, then Node's `require('playwright')`. Set `PLAYWRIGHT_PATH` to an installed package directory or its entry file. Chromium uses the Playwright browser when installed, with `/usr/bin/chromium` as a fallback. `QA_CHROMIUM_PATH` selects another executable.
 
@@ -32,6 +32,13 @@ Each run writes `<check>.json`, `<check>.md`, `summary.json` and `summary.md` to
 | `deadlines` | Seeded existing storage keys, Toronto browser timezone and `page.clock.install`. CEN Academic Integrity Quiz at Oct 14 3 PM Toronto, MTH140 midterm at Oct 23 6:30 PM Toronto, and a quiz week without a section. Checks target identity/time, Desk overall and course summary, course card, dock and hero. Tests Mark done, Undo, and recomputation after a one-hour wall-clock jump during a visibility hold. |
 | `modes` | Every route with forced-off, OS reduce, OS reduce plus saved legacy `full`, and saved `full` with normal OS settings. Restricted modes require static transforms, no running transform animations, no canvas drawing, cursor, particles or dust. A separate browser with `--disable-webgl` checks authored course posters, full DOM content and no WebGL rendering loop. |
 | `layout` | Every route at 1440, 1024 and 390 px in dark/light themes. Checks horizontal overflow, 44 px controls, Skip first and a visible indicator on the first five tab stops. Native checkbox/radio labels count as their clickable target when at least 44×44 px. Inline links and footer links remain checked. |
+| `webkit` | Reuses the route and deadline checks on Playwright WebKit at 1440 px and with an iPhone descriptor (390 px, touch, DPR 3). Reuses the full layout matrix with the same iPhone descriptor at 390 px. An unavailable binary or system dependency is an explicit skip with its launch error, never a passed WebKit assertion. |
+| `nojs` | Every authored route with `javaScriptEnabled:false`: readable heading, complete coursework/course list, published dates, plain course hrefs and no `html.ns-held`, opacity-zero or visibility-hidden reading content. Visible `noscript` coursework counts; unrelated release-note lists do not. |
+| `bfcache` | Every route leaves to the real privacy document and returns with browser Back. Native `pageshow.persisted` gates shell retention, singleton counts, deadline recomputation after changed completion/clock and subsequent routing. Unsupported native restoration is explicitly skipped. A separate, labelled synthetic persisted-event case exercises handlers on every route. |
+| `failures` | Injects only the router's destination fetch: HTTP500, 10-second timeout, AbortError and HTML without a route region. Requires exactly one normal navigation with query/hash retained. Also checks every route with throwing local/session storage getters and methods, real offline navigation after warming all routes, and a native HTTP404 for a misspelt path. |
+| `crosstab` | Exactly two real pages in one context for each course. Native Mark done/Undo and section UI actions must update the other page's Desk summaries and course card/dock via trusted browser storage events, retaining its shell. |
+| `clock` | `page.clock` on Desk/course surfaces across Toronto midnight (including end-of-day expiry), Nov 1 DST fall-back and one backwards jump. Canonical target/date/chip/digits must agree with the current absolute clock within one minute and never become negative. |
+| `forward` | Root and `index.html` historical CEN hashes forward once, carrying full query/hash data to `/cen100/`. Generic query-only options stay Desk. The actual inventory has no CEN-specific query keys. |
 
 Telemetry records every console error, uncaught error, failed request and HTTP error as a failing assertion for each case. Optional unavailable product features are not broadly ignored. The command palette alone can be explicitly skipped when its dialog is absent, as Task G permits.
 
@@ -50,3 +57,12 @@ QA_CHROMIUM_PATH=/usr/bin/chromium node --test tools/qa/instrument.test.mjs
 ```
 
 Browser instrumentation tests intentionally fail when Playwright/Chromium is missing; they do not report a false pass through an implicit skip.
+
+Run resilience checks or their helper tests separately:
+
+```sh
+node tools/qa/run.mjs nojs bfcache failures crosstab clock forward webkit
+node --test tools/qa/resilience.test.mjs
+```
+
+WebKit uses its Playwright-installed executable and dependencies, without falling back to Chromium. Set `PLAYWRIGHT_BROWSERS_PATH` if those browsers were installed in a custom directory. Native BFCache fixtures use the public `TMU_BOOT_OPTIONS.autoPrefetch=false`: the preview server's `Cache-Control:no-store` prefetched HTML can otherwise exclude Chromium's cache. They use an advancing native Date offset and observe actual persisted events; the separate synthetic-handler phase uses `page.clock`. Clock fixtures also disable optional prefetch so virtual fetch-timeout timers do not race real network requests while time advances. Offline coverage warms every route and module first, so it does not promise cold, unvisited content offline. The repository has no custom 404 document: the local preview's readable HTTP404 response is covered; GitHub Pages' hosted 404 presentation needs a hosted run. See [resilience findings](../../docs/qa/night-shift/resilience.md) for protected-file defects and proposed patches.

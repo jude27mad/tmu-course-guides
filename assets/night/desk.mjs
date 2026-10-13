@@ -75,7 +75,7 @@ function render(){
  const day=$('[data-desk-today]',root),date=today(new Date(now));
  if(day){day.textContent=`${dayLabel(date)}, ${dateLabel(date)} · Toronto`;day.hidden=false;}
  // Wall-clock minute boundaries, never accumulated ticks; nothing runs while the tab is hidden.
- if(!document.hidden)live.timer=setTimeout(render,60000-now%60000+50);
+ if(!document.hidden)live.timer=setTimeout(render,Math.min(60000,60000-now%60000+50));
 }
 
 /* ctx: {root, route, signal, direct}. root defaults to the Desk's <main>; an aborted ctx.signal unmounts. */
