@@ -1,0 +1,38 @@
+name: Task I verification
+on:
+  push:
+    branches: [codex/ns-transition]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            tools/ui-build/package-lock.json
+            tools/scene-build/package-lock.json
+      - run: npm ci --prefix tools/ui-build && npm ci --prefix tools/scene-build
+      - name: Export test workspace
+        run: |
+          mkdir -p /tmp/task-i-workspace
+          git archive HEAD | tar -x -C /tmp/task-i-workspace
+          cp -a tools/ui-build/node_modules /tmp/task-i-workspace/tools/ui-build/
+          cp -a tools/scene-build/node_modules /tmp/task-i-workspace/tools/scene-build/
+          tar -czf /tmp/task-i-workspace.tar.gz -C /tmp/task-i-workspace .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: task-i-workspace
+          path: /tmp/task-i-workspace.tar.gz
+          retention-days: 1
+      - name: Root tests
+        run: node --test tests/*.test.mjs tests/scene-*.cjs
+      - name: UI vendor build
+        run: npm run build --prefix tools/ui-build && git diff --exit-code -- assets/vendor
+      - name: UI workflows
+        run: npm test --prefix tools/ui-build
