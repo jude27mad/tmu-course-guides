@@ -1,0 +1,89 @@
+name: Task L verification
+
+on:
+  push:
+    branches: [codex/ns-qa-fixes]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: task-l-qa-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            tools/ui-build/package-lock.json
+            tools/scene-build/package-lock.json
+      - name: Install test tools
+        run: |
+          npm ci --prefix tools/ui-build
+          npm ci --prefix tools/scene-build
+          npm install --prefix "$RUNNER_TEMP/qa-browser" --no-save playwright
+          "$RUNNER_TEMP/qa-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "PLAYWRIGHT_PATH=$RUNNER_TEMP/qa-browser/node_modules/playwright" >> "$GITHUB_ENV"
+      - name: Export exact source and test dependencies
+        run: |
+          mkdir -p "$RUNNER_TEMP/task-l-artifacts"
+          git archive --format=tar HEAD > "$RUNNER_TEMP/task-l-artifacts/source.tar"
+          tar -rf "$RUNNER_TEMP/task-l-artifacts/source.tar" tools/ui-build/node_modules tools/scene-build/node_modules
+          gzip "$RUNNER_TEMP/task-l-artifacts/source.tar"
+          git rev-parse HEAD > "$RUNNER_TEMP/task-l-artifacts/commit.txt"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: task-l-source-${{ github.sha }}
+          path: ${{ runner.temp }}/task-l-artifacts/
+          retention-days: 3
+      - name: Root regression tests
+        id: root
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          node --test tests/*.test.mjs tests/scene-*.cjs | tee "$RUNNER_TEMP/root-tests.log"
+      - name: UI build and workflows
+        id: ui
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          (cd tools/ui-build && npm run build && npm test) | tee "$RUNNER_TEMP/ui-tests.log"
+          git diff --exit-code -- assets/vendor
+      - name: QA harness self-tests
+        id: self
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          node --test tools/qa/checks.test.mjs tools/qa/runtime.test.mjs tools/qa/instrument.test.mjs | tee "$RUNNER_TEMP/qa-self-tests.log"
+      - name: Full browser QA at both deployment bases
+        id: browser
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          node tools/qa/run.mjs | tee "$RUNNER_TEMP/browser-tests.log"
+      - name: Upload verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: task-l-results-${{ github.sha }}
+          path: |
+            tools/qa/reports/
+            ${{ runner.temp }}/*-tests.log
+          retention-days: 7
+      - name: Preserve actual verification outcome
+        if: always()
+        env:
+          ROOT: ${{ steps.root.outcome }}
+          UI: ${{ steps.ui.outcome }}
+          SELF: ${{ steps.self.outcome }}
+          BROWSER: ${{ steps.browser.outcome }}
+        run: |
+          printf 'root=%s ui=%s self=%s browser=%s\n' "$ROOT" "$UI" "$SELF" "$BROWSER"
+          test "$ROOT" = success && test "$UI" = success && test "$SELF" = success && test "$BROWSER" = success
