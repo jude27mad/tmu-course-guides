@@ -16,6 +16,8 @@ Read each note against its recorded revision and environment. Earlier passes do 
 | [Stage 1b review](stage1b.md) | Reproduced router/lifecycle defects, fixes and final Chromium re-verification at both bases, with open issues and separate deadline-review scope. |
 | [Codex tasks F–H merge](fgh.md) | Palette, QA harness, Three.js addons, paper sounds and warp/backdrop removal merged onto `f4c8342`: shared module URLs, `shift2` cache tokens, palette interface copy, favicon, harness deadline alignment, and browser and QA results at both bases. |
 | [Performance](performance.md) | Cold-load timing, request/byte/import budgets and exact before/after screenshot evidence for the performance branch. |
+| [Task L QA fixes](task-l-qa-fixes.md) | Completed branch verification of Skip order, 44 px targets, bounded arrival cleanup and polling-boundary fixes, before the release-candidate integration. |
+| [Release candidate](release-candidate.md) | Task L and CI merge commits, final merged-head suites and all six browser checks at both deployment bases, comparison with F–H and Task L, and release gains. |
 | [Legacy forwarder](forwarder.md) | Proposed change to the separate `cen100-guide` repository; explicitly not applied in this evidence. |
 
 ## Related references
