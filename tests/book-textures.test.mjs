@@ -214,9 +214,14 @@ test('the bucket follows the on-screen page and the tier; compact below 260 css 
   const sig=m.tx.signature('L5');
   assert.equal(m.tx.setScreen(180,2),true);
   assert.equal(m.tx.stats().compact,true);
-  const old=m.tx.face('L5');
-  while(m.tx.pump());
+  const old=m.tx.face('L5');let disposedOld=false;old.addEventListener('dispose',()=>{disposedOld=true;});
+  assert.equal(m.tx.pump(),true,'one busy frame repaints L5 at the new size');
   assert.notEqual(m.tx.face('L5'),old,'a new size is a new texture');
+  assert.equal(disposedOld,false,'the replaced texture stays valid while it may still be bound');
+  assert.ok(old.image.width>0,'and keeps its own image');
+  m.tx.pump();assert.equal(disposedOld,false);
+  m.tx.pump();assert.equal(disposedOld,true,'retired two busy frames later');
+  while(m.tx.pump());
   assert.equal(m.tx.face('L5').image.width,512);
   assert.notEqual(m.tx.signature('L5'),sig);
   const painted=m.tx.stats().paints;

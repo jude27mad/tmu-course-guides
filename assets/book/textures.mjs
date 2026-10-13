@@ -585,10 +585,12 @@ export function paintLabel(ctx,entry,rect,{aspect=2.5}={}){
  ctx.setTransform(s,0,0,s,x0,rect.y);
  const W=inner/s,pad=30,max=W-pad*2;
  const chip=CHIP_TEXT[entry.chip];
- let chipW=0;
- if(chip)chipW=text(ctx,rec,chip,W-pad,54,{size:22,weight:600,caps:true,tracking:.18,channel:'B',align:'right',role:'label'});
- const titleSize=fitSize(ctx,entry.title,{size:60,weight:600,condensed:true},max-(chip?0:0),44);
+ if(chip)text(ctx,rec,chip,W-pad,54,{size:22,weight:600,caps:true,tracking:.18,channel:'B',align:'right',role:'label'});
+ // Quiz and lab tags carry the tangent motif in accent ink (§5.3: printed, not modelled), right of the title.
+ const quiz=entry.kind==='quiz'||entry.kind==='lab',motifW=quiz?96:0;
+ const titleSize=fitSize(ctx,entry.title,{size:60,weight:600,condensed:true},max-motifW,44);
  text(ctx,rec,entry.title,pad,chip?118:104,{size:titleSize,weight:600,condensed:true,channel:'G'});
+ if(quiz)tangentMark(ctx,W-pad-84,chip?70:40,84,50,hashString(String(entry.id)));
  const second=entry.passed&&!entry.completed&&entry.status?entry.status:entry.when;
  if(second){
   const f=fitLines(ctx,second,{size:40,weight:500},max,MIN_INFO_PX);
@@ -596,8 +598,15 @@ export function paintLabel(ctx,entry,rect,{aspect=2.5}={}){
   f.lines.forEach((l,k)=>text(ctx,rec,l,pad,y+k*(f.size+8),{size:f.size,weight:500,channel:'G',coverage:.75}));
  }
  ctx.setTransform(1,0,0,1,0,0);
- void chipW;
  return rec;
+}
+/* A small curve with its tangent at the crest, in accent ink, for quiz tags. */
+function tangentMark(ctx,x,y,w,h,seed){
+ const f=u=>y+h*(.78-.62*Math.sin(u*Math.PI*.95+.12));
+ pencil(ctx,curve(px=>f((px-x)/w),x,x+w,32),{width:3,coverage:.9,ch:'B',seed,taper:6,passes:1});
+ let cx=x,cy=Infinity;for(let px=x;px<=x+w;px+=1){const py=f((px-x)/w);if(py<cy){cy=py;cx=px;}}
+ pencil(ctx,line(cx-w*.34,cy,cx+w*.34,cy,3),{width:2.2,coverage:.8,ch:'B',seed:seed+1,taper:4,passes:1});
+ dot(ctx,cx,cy,3.6,'B');
 }
 /* The DONE stamp: a double ring and a check, inked unevenly; coverage in R. */
 export function paintStamp(ctx,size=256){
@@ -750,13 +759,16 @@ const defaultIdle=(fn,timeout=300)=>{
    }
    BookTextures = {
      ready: Promise                      fonts loaded (§5.4); paint after it for the first frame
-     face(id) → CanvasTexture            stable texture for a face at the current bucket (painted if needed)
+     face(id) → CanvasTexture            the face's texture (painted if needed). Re-read it after onChange: a
+                                         size change (setScreen/setTier) replaces it; the old one stays valid
+                                         for two more pump() calls
      paint(id) → CanvasTexture           paint now if its signature changed (first frame, cut mode)
      want(ids, { prefetch })             the live set: queue changed faces; prefetch ones go to idle time
      pump() → boolean                    call once per busy frame: paints at most one queued face
      refresh(indexes?)                   data changed: re-read views; repaint only changed signatures
      setScreen(pageCssPx, dpr)           picks the bucket and the compact variant; repaints lazily
-     setTier(tier)
+     setTier(tier)                       faces follow the new tier (bucket cap, LRU, anisotropy); the atlas,
+                                         stamp and maps already bound by materials stay as they are
      labelSlot(entry, { aspect }) → { texture, rect: [u0, v0, u1, v1], aspect }   tag label (atlas)
      stamp() → CanvasTexture             the DONE stamp mask (R)
      paper() → { normal }                tooth normal map, RepeatWrapping (6 tiles per page)
@@ -770,7 +782,7 @@ const defaultIdle=(fn,timeout=300)=>{
 export function createBookTextures({getView,tier='high',renderer=null,poster=false,style=MTH140_STYLE,onChange=()=>{},
  createCanvas=defaultCanvas,idle=defaultIdle,fonts=(typeof document!=='undefined'?document.fonts:null)}={}){
  let level=TIER[tier]?tier:'mid',bucket=Math.min(1024,TIER[level].maxBucket),compact=false,fontsGen=0,disposed=false;
- const faces=new Map(),pool=[],queue={urgent:new Set(),idle:new Set()},labels=new Map(),uploads=new Set();
+ const faces=new Map(),pool=[],queue={urgent:new Set(),idle:new Set()},labels=new Map(),uploads=new Set(),retired=[];
  const maps={};
  let atlas=null,stampTex=null,live=new Set(),cancelIdle=null,paints=0,labelPaints=0,clock=0;
 
@@ -817,25 +829,25 @@ export function createBookTextures({getView,tier='high',renderer=null,poster=fal
   return f;
  }
  function newFaceTexture(f,canvas){
-  const t=maskTexture(canvas);t.name=`book-face-${f.id}`;t.onUpdate=()=>releaseAfterUpload(f,t);return t;
+  const t=maskTexture(canvas);t.name=`book-face-${f.id}`;return t;
  }
- function releaseAfterUpload(f,t){
-  // The GPU copy is all the face needs until its next repaint; return the canvas to the pool.
-  if(!renderer||disposed||f.texture!==t||!f.canvas||t.image!==f.canvas)return;
-  const c=f.canvas;f.canvas=null;f.ctx=null;
-  t.image={width:c.width,height:c.height};
-  giveCanvas(c);
+ /* A replaced texture may still be bound for a frame or two until the engine re-reads face(id): it keeps its
+    own canvas (so a late upload is still the right image) and is disposed two busy frames later. */
+ function retire(texture,canvas){retired.push({texture,canvas,frames:2});}
+ function sweep(){
+  for(let i=retired.length-1;i>=0;i--){
+   const r=retired[i];if(--r.frames>0)continue;
+   retired.splice(i,1);r.texture.dispose();if(r.canvas)giveCanvas(r.canvas);
+  }
  }
  function paintFace(f,view){
   const [w,h]=size();
   if(f.bucket!==bucket){
-   // A new size needs a new texture (immutable storage). The old one stays bound until this one is painted.
-   if(f.canvas){giveCanvas(f.canvas);f.canvas=null;f.ctx=null;}
-   const canvas=takeCanvas(w,h),old=f.texture;
+   // A new size needs a new texture (immutable storage). The old one stays valid until it is retired.
+   retire(f.texture,f.canvas);
+   const canvas=takeCanvas(w,h);
    f.canvas=canvas;f.ctx=canvas.getContext('2d',{alpha:false});f.bucket=bucket;f.texture=newFaceTexture(f,canvas);
-   old.dispose();
   }
-  if(!f.canvas){f.canvas=takeCanvas(w,h);f.ctx=f.canvas.getContext('2d',{alpha:false});f.texture.image=f.canvas;}
   const o={width:w,height:h,compact,poster,style};
   let rec;
   if(f.side==='riffle')rec=paintRiffle(f.ctx,o);
@@ -873,7 +885,7 @@ export function createBookTextures({getView,tier='high',renderer=null,poster=fal
    cancelIdle=null;
    // One item per idle slice: an upload (renderer.initTexture, so no frame pays for it), else a prefetch paint.
    const up=uploads.values().next().value;
-   if(up){uploads.delete(up);const f=faces.get(up);if(f&&f.canvas&&f.texture.image===f.canvas){try{renderer.initTexture(f.texture);}catch{}}}
+   if(up){uploads.delete(up);const f=faces.get(up);if(f){try{renderer.initTexture(f.texture);}catch{}}}
    else{
     const next=queue.idle.values().next().value;
     if(next){queue.idle.delete(next);const f=faces.get(next)||record(next),view=viewFor(f);if(stale(f,view)){paintFace(f,view);onChange();}}
@@ -943,6 +955,7 @@ export function createBookTextures({getView,tier='high',renderer=null,poster=fal
    evict();schedule();
   },
   pump(){
+   sweep();
    const next=queue.urgent.values().next().value;
    if(!next)return false;
    queue.urgent.delete(next);
@@ -972,8 +985,7 @@ export function createBookTextures({getView,tier='high',renderer=null,poster=fal
    level=next;bucket=Math.min(bucket,TIER[level].maxBucket);
    for(const f of faces.values())f.texture.anisotropy=anisotropy();
    for(const id of live)queue.urgent.add(id);
-   if(atlas){atlas.texture.dispose();atlas.canvas.width=0;atlas.canvas.height=0;atlas=null;labels.clear();}
-   for(const key of Object.keys(maps)){for(const t of Object.values(maps[key]||{}))t?.dispose?.();delete maps[key];}
+   // The label atlas, stamp and detail maps stay: materials hold them, and they are small next to the faces.
    evict();onChange();
   },
   labelSlot,
@@ -1017,6 +1029,7 @@ export function createBookTextures({getView,tier='high',renderer=null,poster=fal
    cancelIdle?.();cancelIdle=null;
    fonts?.removeEventListener?.('loadingdone',onFonts);
    for(const f of [...faces.values()]){f.texture.dispose();if(f.canvas){f.canvas.width=0;f.canvas.height=0;}}
+   for(const r of retired.splice(0)){r.texture.dispose();if(r.canvas){r.canvas.width=0;r.canvas.height=0;}}
    faces.clear();
    for(const c of pool){c.width=0;c.height=0;}pool.length=0;
    if(atlas){atlas.texture.dispose();atlas.canvas.width=0;atlas.canvas.height=0;atlas=null;}

@@ -316,14 +316,17 @@ export function createBand(style,material){
  return {group,layout,dispose(){for(const m of meshes)m.geometry.dispose();group.removeFromParent();}};
 }
 
-/** The spine: a half-round shell under the gutter, 16 mm closed. Visible from the head and tail only while
-    the book closes and docks; hidden at rest. */
+/** The spine: a half-round shell bridging the boards along y, bulging toward −x (the closed book's spine
+    edge). Built for unit thickness; layout(thickness, centreZ) scales it to the shut book. Visible only
+    while the book closes and docks. */
 export function createSpine(style,material){
- const {H,board,spine}=style.dims,r=spine/2;
- const geometry=new T.CylinderGeometry(r,r,H+2*board.overhang,20,1,true,Math.PI/2,Math.PI);
- geometry.rotateX(Math.PI/2);geometry.rotateZ(Math.PI);geometry.translate(0,H/2,-board.thickness+r*.15);
- const mesh=new T.Mesh(geometry,material);mesh.name='spine';mesh.visible=false;mesh.raycast=()=>{};
- return {mesh,dispose(){geometry.dispose();mesh.removeFromParent();}};
+ const {H,board}=style.dims,o=board.overhang;
+ const geometry=new T.CylinderGeometry(.5,.5,H+2*o,24,1,true,Math.PI,Math.PI);
+ geometry.translate(0,H/2,0);
+ const mesh=new T.Mesh(geometry,material);mesh.name='spine';mesh.visible=false;mesh.raycast=()=>{};mesh.receiveShadow=true;
+ return {mesh,
+  layout(thickness,centreZ,bulge=1){mesh.scale.set(Math.max(.001,thickness*.62*bulge),1,thickness);mesh.position.set(0,0,centreZ);},
+  dispose(){geometry.dispose();mesh.removeFromParent();}};
 }
 
 /* ---------------------------------------------------------------- framing (§5.7) ------------------------- */

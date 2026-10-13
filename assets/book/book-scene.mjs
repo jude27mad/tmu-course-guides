@@ -65,6 +65,22 @@ export function turnPlan(from,to,elapsed,{tier='high'}={}){
  return {kind:'riffle',dir,n,m,total,stagger,local,done:elapsed>=total};
 }
 
+/* Named poses (§5.8 Stage 5 hooks). fold: the front half over the spine (0 open, 1 shut); travel: the way to
+   the dock (0 on the desk, 1 at the dock's course mark); scale of the book. 'closed-on-desk' is defined for
+   the Stage 5 Desk and unused here. */
+export const POSES=Object.freeze({
+ 'open-hero':Object.freeze({fold:0,travel:0,scale:1}),
+ 'closed-on-desk':Object.freeze({fold:1,travel:0,scale:1}),
+ docked:Object.freeze({fold:1,travel:1,scale:.16})
+});
+/** The scroll handoff p ∈ [0, 1] as a blend of the named poses: open-hero → shut by p = 0.55 (the band snaps
+    there) → docked at p = 1, the canvas fading over p 0.82–1. Pure. */
+export function handoffPose(p){
+ const v=clamp(Number(p)||0,0,1),fold=smooth(0,.55,v),k=ease('power2.inOut')(smooth(.55,1,v));
+ const a=POSES['open-hero'],b=POSES.docked;
+ return {fold:lerp(a.fold,b.fold,fold),travel:k,scale:lerp(a.scale,b.scale,k),opacity:1-smooth(.82,1,v),shut:v>=.55};
+}
+
 /* ---------------------------------------------------------------- mountBook ------------------------------ */
 
 export async function mountBook(slot,options={}){
@@ -199,7 +215,7 @@ async function createEngine(slot,options){
  const linen=makeCloth(tierName,{normalMap:linenNormal,roughnessMap:linenRough,normalScale:style.themes[theme].linen.normalScale});linen.name='linen';
  const cover=makeCloth(tierName,{});cover.name='cover';
  const ribbonMaterial=makeCloth(tierName,{});ribbonMaterial.name='ribbon';
- const bandMaterial=makeCloth(tierName,{});bandMaterial.name='band';
+ const bandMaterial=makeCloth(tierName,{});bandMaterial.name='band';bandMaterial.side=T.DoubleSide;
  const felt=tooth?.clone?.()??null;if(felt){felt.repeat.set(26,18);felt.needsUpdate=true;}
  const blotterMaterial=makeCloth(tierName,{normalMap:felt,normalScale:.6});blotterMaterial.name='blotter';
  const spineMaterial=makeCloth(tierName,{normalMap:linenNormal,normalScale:.3});spineMaterial.name='spine';
@@ -671,7 +687,7 @@ async function createEngine(slot,options){
   if(Math.abs(page.width-pageCss)>.5){pageCss=page.width;try{if(textures.setScreen(pageCss,size.dpr))busy=true;}catch{}}
   // The canvas fades over the poster on arrival and out at the end of the handoff.
   const canvas=stage.canvas;
-  if(canvas&&readyAt!==null){const value=String(+(canvasAlpha*(1-smooth(.82,1,handoff))).toFixed(3));if(canvas.style.opacity!==value)canvas.style.opacity=value;}
+  if(canvas&&readyAt!==null){const value=String(+(canvasAlpha*handoffPose(handoff).opacity).toFixed(3));if(canvas.style.opacity!==value)canvas.style.opacity=value;}
   data.turn=Number(s.turn).toFixed(2);
   if(busy)return true;
   if(drift.amount>0)return 30;
@@ -748,7 +764,7 @@ async function createEngine(slot,options){
  /* ---- handoff and close (§5.8) ---- */
  function foldAmount(){
   const c=closing?ease('power2.inOut')(clamp((clock-closing.start)/Math.max(1e-3,closing.duration),0,1)):0;
-  return Math.max(smooth(0,.55,handoff),c);
+  return Math.max(handoffPose(handoff).fold,c);
  }
  const dockWorld=new T.Vector3(),toDock=new T.Vector3();
  function handoffPose(still,zL,zR){
@@ -758,11 +774,13 @@ async function createEngine(slot,options){
   // 2° board flex mid-swing.
   frontPivot.position.z=h;frontHalf.position.z=-h;
   frontPivot.rotation.y=fold*Math.PI+Math.sin(fold*Math.PI)*2*DEG;
-  spine.mesh.visible=fold>.02;
+  // The spine rounds out as the boards meet; the contact shadow follows the footprint to the recto.
+  spine.mesh.visible=fold>.35;spine.layout(zL+zR+2*t,(zL+zR)/2-t/2+t/2,smooth(.35,1,fold));
+  contact.mesh.scale.x=1-.5*fold;contact.mesh.position.x=.5*fold*(W+o);
   const coverOn=fold>0&&!!cover.normalMap;if((boards.left.material!==linen)!==coverOn)boards.left.material=coverOn?[linen,linen,cover]:linen;
   ribbon.mesh.visible=fold<.35;
   // The band snaps round the closed book at p = 0.55 (550 ms elastic.out) and lets go when p falls back.
-  const shut=handoff>=.55||(!!closing&&fold>=.999);
+  const shut=pose.shut||(!!closing&&fold>=.999);
   if(band&&shut!==bandClosed){bandClosed=shut;bandSnap={start:clock,from:bandSnap?.value??(shut?0:1),to:shut?1:0,value:shut?0:1};}
   if(band&&bandSnap){
    const k=still?1:clamp((clock-bandSnap.start)/TIMING.band,0,1),e=bandSnap.to?ease('elastic.out(1, 0.5)')(k):ease('power2.out')(k);
@@ -771,7 +789,9 @@ async function createEngine(slot,options){
    if(k>=1)bandSnap=null;else busy=true;
   }
   // p 0.55–1: the closed book shrinks to 0.16 along an arc to the dock's course mark; the spine glows.
-  const shrink=smooth(.55,1,handoff);
+  const pose=handoffPose(handoff),shrink=smooth(.55,1,handoff);
+  // A book in flight casts no lamp shadow on the desk it left.
+  const casting=shrink===0;if(boards.left.castShadow!==casting)for(const m of [boards.left,boards.right,blocks.left.mesh,blocks.right.mesh])m.castShadow=casting;
   if(shrink>0){
    const target=dockTarget?.();
    if(target&&target.width>=0){
@@ -780,9 +800,9 @@ async function createEngine(slot,options){
     toDock.copy(dockWorld).sub(camera.position).normalize();
     dockWorld.copy(camera.position).addScaledVector(toDock,camera.position.length()*.7);
    }else dockWorld.set(0,.3,0);
-   const k=ease('power2.inOut')(shrink),lift=Math.sin(Math.PI*k)*.05;
+   const k=pose.travel,lift=Math.sin(Math.PI*k)*.05;
    carrier.position.set(dockWorld.x*k,dockWorld.y*k+lift,dockWorld.z*k);
-   carrier.scale.setScalar(lerp(1,.16,k));
+   carrier.scale.setScalar(pose.scale);
    carrier.rotation.set(lerp(0,18*DEG,k),lerp(0,-10*DEG,k),0);
   }else{carrier.position.set(0,0,0);carrier.scale.setScalar(1);carrier.rotation.set(0,0,0);}
   const glow=theme==='dark'&&tierName==='high'?smooth(.55,.8,handoff)*look.spineGain:0;
