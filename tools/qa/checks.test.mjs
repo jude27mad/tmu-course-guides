@@ -35,8 +35,13 @@ test('stability catches retained disconnected observer instances after GC even w
 
 test('deadline countdown fixtures use absolute Toronto instants and recompute after a clock jump',()=>{
   // Oct 14 3 PM and Oct 23 6:30 PM Toronto are still EDT (UTC-4).
-  assert.equal(compactExact('2026-10-14T19:00:00.000Z','2026-10-13T16:00:00.000Z'),'1d 3h 00m');
-  assert.equal(compactExact('2026-10-14T19:00:00.000Z','2026-10-13T17:00:00.000Z'),'1d 2h 00m');
-  assert.equal(compactExact('2026-10-23T22:30:00.000Z','2026-10-20T16:00:00.000Z'),'3d 6h 30m');
+  // Format from docs/copy/interface-copy.md ("Countdown format").
+  assert.equal(compactExact('2026-10-14T19:00:00.000Z','2026-10-13T16:00:00.000Z'),'1d 3h');
+  assert.equal(compactExact('2026-10-14T19:00:00.000Z','2026-10-13T17:00:00.000Z'),'1d 2h');
+  assert.equal(compactExact('2026-10-23T22:30:00.000Z','2026-10-20T16:00:00.000Z'),'3d 6h');
+  assert.equal(compactExact('2026-10-14T19:00:00.000Z','2026-10-12T07:00:00.000Z'),'2d 12h');
+  assert.equal(compactExact('2026-10-14T19:00:00.000Z','2026-10-14T13:53:00.000Z'),'5h 07m');
+  assert.equal(compactExact('2026-10-14T19:00:00.000Z','2026-10-14T18:31:00.000Z'),'29m');
+  assert.equal(compactExact('2026-10-14T19:00:00.000Z','2026-10-14T19:00:00.000Z'),'Happening now');
   assert.equal(compactExact('2026-10-14T19:00:00.000Z','2026-10-14T20:00:00.000Z'),'Due time passed');
 });
