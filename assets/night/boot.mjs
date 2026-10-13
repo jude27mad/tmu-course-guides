@@ -31,7 +31,7 @@ export async function mount(ctx={}){
  const life=scope(ctx),state=live={life,ctx:{...ctx,signal:life.signal},modules:[]};
  const root=document.documentElement;delete root.dataset.nsFailed;
  for(const name of FEATURES)if(SHELL_FEATURES.has(name))loadShell(name);
- root.dataset.nsTier=tier();root.classList.remove('ns-warp-in');
+ root.dataset.nsTier=tier();
  if(isDesk){
  root.dataset.nsPage='desk';root.classList.remove('night');delete root.dataset.nsCourse;
  try{const module=await import('./desk.mjs?v=20261013-shift1');if(live!==state)return;state.modules.push(module);await module.mount(state.ctx);}catch(error){if(live===state)failed('desk',error);}
