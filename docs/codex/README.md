@@ -12,6 +12,10 @@ Coding-only work that runs in parallel with Claude's design work (books, Desk, m
 | [F — ⌘K command palette](task-f-palette.md) | `codex/ns-palette` | now | A–E merged on `night-shift` |
 | [G — Verification and performance harness](task-g-qa-harness.md) | `codex/ns-qa-harness` | now | A–E merged on `night-shift` |
 | [H — Three.js addons, paper sounds, retire warp/backdrop](task-h-build-sound-cleanup.md) | `codex/ns-build-sound` | now | A–E merged on `night-shift` |
+| [I — In-world transition controller](task-i-transition-controller.md) | `codex/ns-transition` | after the router review lands | router |
+| [K — Desk data adapter](task-k-desk-data.md) | `codex/ns-desk-data` | now | — |
+| [L — Fix what the QA harness found](task-l-qa-fixes.md) | `codex/ns-qa-fixes` | after the router review lands | G |
+| [M — Documentation (ChatGPT)](task-m-docs-chatgpt.md) | `chatgpt/ns-docs` | now | — |
 
 Claude reviews and merges each branch into `night-shift`. Codex must not push to `main` or `night-shift`, and must not open pull requests unless asked.
 
