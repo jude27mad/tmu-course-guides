@@ -14,6 +14,7 @@ Read each note against its recorded revision and environment. Earlier passes do 
 | [Stage 1 gate](stage1.md) | Routing, saved-state and deadline agreement checks, the Desk skip-link fix and remaining limitations. |
 | [Codex tasks A–E](codex-tasks.md) | Lifecycle/router integration and week/bend-math results, including repeated-route checks at the reported checkpoint. |
 | [Stage 1b review](stage1b.md) | Reproduced router/lifecycle defects, fixes and final Chromium re-verification at both bases, with open issues and separate deadline-review scope. |
+| [Codex tasks F–H merge](fgh.md) | Palette, QA harness, Three.js addons, paper sounds and warp/backdrop removal merged onto `f4c8342`: shared module URLs, `shift2` cache tokens, palette interface copy, favicon, harness deadline alignment, and browser and QA results at both bases. |
 | [Legacy forwarder](forwarder.md) | Proposed change to the separate `cen100-guide` repository; explicitly not applied in this evidence. |
 
 ## Related references
