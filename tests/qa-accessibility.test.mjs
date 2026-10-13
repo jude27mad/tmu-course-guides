@@ -31,9 +31,9 @@ for (const base of ['/', '/tmu-course-guides/']) {
 
 // Real stylesheet cascade, not font-size arithmetic: the browser harness also
 // measures the rendered boxes at three widths in both themes.
-for (const selector of ['.hub-brand', 'footer a', 'footer .reset']) {
+for (const selector of ['.hub-brand', 'footer a', 'footer .reset', '.workspace-categories button']) {
   test(`course chrome gives ${selector} a 44px target independent of text metrics`, () => {
-    const dom = new JSDOM('<!doctype html><body class="editorial workspace" data-course="cen100"><a class="hub-brand" href="/">TMU Course Guides</a><footer><a href="/privacy.html">Privacy</a><button class="reset">Clear my ticks</button></footer></body>');
+    const dom = new JSDOM('<!doctype html><body class="editorial workspace" data-course="cen100"><a class="hub-brand" href="/">TMU Course Guides</a><footer><a href="/privacy.html">Privacy</a><button class="reset">Clear my ticks</button></footer><div class="workspace-categories"><button>All</button></div></body>');
     try {
       for (const file of ['hub.css', 'editorial.css', 'workspace.css', 'night/layout.css']) {
         const style = dom.window.document.createElement('style');

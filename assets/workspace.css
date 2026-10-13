@@ -57,7 +57,7 @@ body.workspace .circuit{width:48%;opacity:.38;pointer-events:none}
 .workspace-filters input,.workspace-past-toggle input{accent-color:var(--strong);width:17px;height:17px}
 .workspace-filters #filter-status{width:100%;margin:0}
 .workspace-categories{display:flex;flex-wrap:wrap;gap:5px}
-.workspace-categories button{font:600 .74rem Archivo,system-ui,sans-serif;color:var(--hub-muted);border:1px solid transparent;background:transparent;padding:10px 12px;min-height:44px;border-radius:5px;cursor:pointer}
+.workspace-categories button{min-width:44px;font:600 .74rem Archivo,system-ui,sans-serif;color:var(--hub-muted);border:1px solid transparent;background:transparent;padding:10px 12px;min-height:44px;border-radius:5px;cursor:pointer}
 .workspace-categories button[aria-pressed=true]{background:var(--hub-soft);color:var(--strong);border-color:var(--hub-line)}
 .workspace .panel-intro{justify-content:flex-end;margin:0 0 10px}
 .workspace .panel-intro>p{display:none}
