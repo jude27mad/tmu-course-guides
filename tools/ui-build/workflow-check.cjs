@@ -219,6 +219,18 @@ async function checkRoutes(base='https://guide.test/',motionMode='off'){
   const marker=d.documentElement.dataset.shellId,router=w.TMURouter,hub=d.querySelector('.hub-shell'),motion=w.GuideMotion;
   assert(marker,'one shell marker exists');assert(hub&&motion,'the actual sidebar and motion controller exist');assert.equal(router.route,'desk');
   let completed=0;d.addEventListener('guide-completion',()=>completed++);
+  const transitionCalls=[],arrivals=[];
+  const transitions=w.__tmuModules[new URL('assets/app/transition.mjs',base).pathname];
+  assert(transitions?.registerTransition,'the real singleton transition module is available');
+  const unregister=transitions.registerTransition({name:'workflow-round-trip',from:'*',to:'*',run(ctx){
+   transitionCalls.push(ctx);
+   return Promise.resolve({pose:{from:ctx.from,to:ctx.to,serial:transitionCalls.length}});
+  }});
+  d.addEventListener('route-changed',event=>{
+   const {route,from,transition}=event.detail;arrivals.push(transition);
+   assert.equal(typeof transition.continuing,'boolean','every arrival has an explicit continuation state');
+   if(transition.continuing){assert.equal(transition.pose.from,from);assert.equal(transition.pose.to,route);assert.equal(transition.pose.serial,transitionCalls.length,'no stale or duplicated pose');}
+  });
   const assertRoute=route=>{
    assert.equal(router.route,route);assert.equal(d.documentElement.dataset.shellId,marker,'document survives navigation');
    assert.equal(w.GuideMotion,motion,'motion controller survives');assert.equal(d.querySelector('.hub-shell'),hub,'sidebar survives');
@@ -236,6 +248,9 @@ async function checkRoutes(base='https://guide.test/',motionMode='off'){
   const move=async(route,hash='')=>{assert.equal(await router.navigate(new URL((route==='desk'?'':route+'/')+hash,base).href),true);assertRoute(route);};
   // Exercise native click capture before programmatic navigation.
   d.querySelector('.desk-course').click();await until(()=>router.route==='cen100','Desk link did not navigate');assertRoute('cen100');
+  assert.equal(transitionCalls.length,motionMode==='off'?0:1,'off bypasses the stub; full runs it exactly once');
+  assert.equal(arrivals[0].continuing,motionMode!=='off','first Desk dive hands off only when motion is allowed');
+  if(motionMode!=='off'){assert.equal(transitionCalls[0].from,'desk');assert.equal(transitionCalls[0].to,'cen100');assert.equal(transitionCalls[0].policy,'full');}
   const dock=d.querySelector('.ns-dock'),wrapper=d.querySelector('.course-workspace');
   assert(d.querySelector('input[data-completion="integrity"]').checked,'CEN saved completion survives navigation');
   assert.equal(d.querySelector('#note-y4').value,'Saved CEN','CEN note survives route entry');
@@ -265,6 +280,10 @@ async function checkRoutes(base='https://guide.test/',motionMode='off'){
   assert.equal(d.querySelector('.detail-sheet').open,false,'no extra hashchange opens the CEN item a second time as a sheet');
   await click('.hub-brand','desk');
   assert.deepEqual(snapshot(),saved,'sidebar, dock and deep-link navigation leave saved data byte-identical');
+  // Traverse Desk <-> CEN with the scene stub, in addition to the course-to-course
+  // history checks above. The router still owns focus and the destination hash.
+  {const back=changed('cen100');w.history.back();await back;assertRoute('cen100');}
+  {const forward=changed('desk');w.history.forward();await forward;assertRoute('desk');}
   const counts=new Map(),rounds=new URL(base).pathname==='/'?20:1;
   for(let round=0;round<rounds;round++){
    for(const route of ['cen100','mth140','mth141','desk']){
@@ -280,6 +299,17 @@ async function checkRoutes(base='https://guide.test/',motionMode='off'){
   assert.equal(JSON.parse(w.localStorage.getItem('mth140-progress-v1')).completed['quiz-1'],undefined,'undoing completion survives later mounts');
   assert.equal(JSON.parse(w.localStorage.getItem('mth141-progress-v1')).completed['quiz-1'],true);
   d.querySelector('.hub-theme').click();assert.equal(d.documentElement.dataset.theme,'dark','one theme action uses one surviving controller');
+  if(motionMode==='off'){
+   assert.equal(transitionCalls.length,0,'off skips every registered animation on round trips and history');
+   assert(arrivals.every(arrival=>!arrival.continuing),'cut never replays an entrance');
+  }else{
+   assert(transitionCalls.some(call=>call.from==='desk'&&call.to==='cen100'),'Desk dive registered');
+   assert(transitionCalls.some(call=>call.from==='cen100'&&call.to==='desk'),'reverse Desk return registered');
+   assert(transitionCalls.some(call=>call.history==='pop'&&call.to==='desk'),'history return uses the same controller');
+   assert(arrivals.some(arrival=>arrival.continuing),'incoming shell receives scene poses');
+  }
+  unregister();
+  console.log('transition stub ('+new URL(base).pathname+', motion '+motionMode+'): '+transitionCalls.length+' calls, one-shot arrivals and history passed');
   console.log('routes ('+new URL(base).pathname+', motion '+motionMode+'): one document, real modules, hashes, history, focus, saved state and '+rounds+' round trips passed');
  }finally{dom.window.close();}
 }

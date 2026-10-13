@@ -1,5 +1,6 @@
 /* Native document routes inside one persistent shell. The documents remain the
    source of route markup, styles and ordered lifecycle modules. */
+import {getTransitionController,transitionOrigin} from './transition.mjs';
 const ROUTES=['desk','cen100','mth140','mth141'];
 const STATE_KEY='__tmuRouter';
 const CANCELED=Symbol('canceled navigation');
@@ -37,12 +38,12 @@ export async function loadRouteModules({document,url=document.URL,importModule=n
  return modules;
 }
 
-export async function mountRouteModules({document,root=document.querySelector('[data-route-region]'),route=routeFromDocument(document),signal,direct=false,url=document.URL,importModule=nativeImport,modules}){
+export async function mountRouteModules({document,root=document.querySelector('[data-route-region]'),route=routeFromDocument(document),signal,direct=false,url=document.URL,importModule=nativeImport,modules,transition={continuing:false}}){
  if(!root||!ROUTES.includes(route))throw Error('Missing route region or identity');
  modules??=await loadRouteModules({document,url,importModule});
  const attempted=[];
  try{
-  for(const module of modules){attempted.push(module);await module.mount({root,route,signal,direct});}
+  for(const module of modules){attempted.push(module);await module.mount({root,route,signal,direct,transition:direct?{continuing:false}:transition});}
   return modules;
  }catch(error){
   for(const module of attempted.reverse())try{await module.unmount();}catch{}
@@ -101,7 +102,7 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
  // Relative head URLs in the original markup resolve against the URL this document was loaded from,
  // not against later history entries.
  const documentURL=window.location.href,shell=shellSignature(document,documentURL),authoredMedia=new WeakMap();
- const listenerController=new window.AbortController();
+ const listenerController=new window.AbortController(),transitions=getTransitionController(window);
  if(!document.documentElement.dataset.shellId)document.documentElement.dataset.shellId=window.crypto?.randomUUID?.()||`shell-${Date.now()}-${Math.random().toString(36).slice(2)}`;
  const oldRestoration=history.scrollRestoration;history.scrollRestoration='manual';
  const marker=()=>`${document.documentElement.dataset.shellId}:${++entryCounter}`;
@@ -243,7 +244,7 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   if(!Number.isFinite(delta)||!delta){if(window.location.href!==currentURL)assign(currentURL);return;}
   await new Promise(resolve=>{restoring={id:activeEntry,index:activeIndex,resolve};history.go(delta);});
  }
- async function performNavigation(url,{history:mode='push',state,request,nativeHash=true}={}){
+ async function performNavigation(url,{history:mode='push',state,request,nativeHash=true,origin}={}){
   if(request!==latestRequest)return false;
   const nextRoute=routeForURL(url,base);if(!nextRoute)return fallback(url);
   const oldURL=currentURL,oldRoute=route;
@@ -266,18 +267,23 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   swapping=true;
   try{
    saveScroll(mode!=='pop');
-   const destination=await awaitCurrent(prefetch(url),request),incoming=destination.document;
-   const nextModules=await awaitCurrent(loadRouteModules({document:incoming,url:destination.url,importModule}),request);
-   if(modules.some(module=>module.reloadRequired===true))throw Error('Outgoing route requires reload');
    const waits=[];
-   const event=new window.CustomEvent('route-will-change',{cancelable:true,detail:{route:nextRoute,from:route,url:url.href,waitUntil(promise){waits.push(Promise.resolve(promise));}}});
+   const event=new window.CustomEvent('route-will-change',{cancelable:true,detail:{route:nextRoute,from:route,url:url.href,fromURL:oldURL,history:mode,origin:transitionOrigin(window,origin),signal:request.controller.signal,waitUntil(promise){waits.push(Promise.resolve(promise));}}});
    if(!document.dispatchEvent(event)){
-    Promise.all(waits).catch(()=>{});
+    request.cancel();Promise.all(waits).catch(()=>{});
     if(mode==='pop')await restoreCanceledPop();
     return false;
    }
-   await awaitCurrent(Promise.all(waits),request);
-   const commitHead=await awaitCurrent(prepareHead(incoming,destination.url,request),request);
+   // Scene work and destination preparation overlap. Only the scene's wait is
+   // capped by the transition controller; existing navigation guards keep their contract.
+   const preparing=(async()=>{
+    const destination=await awaitCurrent(prefetch(url),request),incoming=destination.document;
+    const nextModules=await awaitCurrent(loadRouteModules({document:incoming,url:destination.url,importModule}),request);
+    if(modules.some(module=>module.reloadRequired===true))throw Error('Outgoing route requires reload');
+    const commitHead=await awaitCurrent(prepareHead(incoming,destination.url,request),request);
+    return {destination,incoming,nextModules,commitHead};
+   })();
+   const [{destination,incoming,nextModules,commitHead}]=await awaitCurrent(Promise.all([preparing,Promise.all(waits)]),request);
    request.phase='commit';
    await disposeRoute();
    if(request!==latestRequest){for(const node of request.headAdditions)node.remove();return fallback(new URL(window.location.href));}
@@ -295,14 +301,16 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
    if(mode!=='pop')window.scrollTo(0,0);
    // Keep partial mounts disposable if a later module fails. Modules read the destination hash at mount,
    // as on a direct load, so no hashchange follows a route swap.
-   for(const module of nextModules){modules.push(module);await module.mount({root:newRoot,route,signal:controller.signal,direct:false});}
+   const transition=transitions.consumeArrival({url:url.href,signal:request.controller.signal});
+   for(const module of nextModules){modules.push(module);await module.mount({root:newRoot,route,signal:controller.signal,direct:false,transition});}
    restoreAndFocus(mode==='pop'?(positions.get(entry.id)||entry.scroll):null);
-   document.dispatchEvent(new window.CustomEvent('route-changed',{detail:{route,from:oldRoute}}));
+   document.dispatchEvent(new window.CustomEvent('route-changed',{detail:{route,from:oldRoute,transition}}));
    // As on a direct load: the page started at the top before mounting, a module may have scrolled to its
    // own item, and a fragment the modules rendered is revealed last.
    if(mode!=='pop'&&url.hash)await revealFragment(document,url.hash).catch(()=>false);
    return true;
   }catch(error){
+   request.cancel();
    for(const node of request.headAdditions)node.remove();
    if(error===CANCELED)return false;
    // A full document navigation is the recovery boundary for partial DOM/module work.
@@ -314,9 +322,10 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   let url;try{url=new URL(input,window.location.href);}catch{return Promise.resolve(false);}
   // The public API only moves between the four routes; any other URL is left to the caller.
   if(options.history!=='pop'&&!routeForURL(url,base))return Promise.resolve(false);
-  if(latestRequest?.phase==='prepare')latestRequest.cancel();
-  let cancel;const canceled=new Promise(resolve=>{cancel=()=>resolve(CANCELED);});
-  const request={canceled,cancel,phase:'prepare',headAdditions:[]};latestRequest=request;
+  if(latestRequest?.phase==='prepare')latestRequest.cancel();else latestRequest?.controller.abort();
+  const navigationController=new window.AbortController();
+  let cancel;const canceled=new Promise(resolve=>{cancel=()=>{navigationController.abort();resolve(CANCELED);};});
+  const request={canceled,cancel,controller:navigationController,phase:'prepare',headAdditions:[]};latestRequest=request;
   const result=queue.then(()=>performNavigation(url,{...options,request}));queue=result.catch(()=>{});return result;
  }
  const linkFromEvent=event=>event.target?.closest?.('a[href]');
@@ -338,7 +347,7 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   if(started)return;started=true;
   history.pushState=guidePush;history.replaceState=guideReplace;
   const signal=listenerController.signal;
-  window.addEventListener('click',event=>{const a=linkFromEvent(event);if(isRouteLink(event,a,{base,currentURL:window.location.href})){event.preventDefault();navigate(a.href);}}, {capture:true,signal});
+  window.addEventListener('click',event=>{const a=linkFromEvent(event);if(isRouteLink(event,a,{base,currentURL:window.location.href})){event.preventDefault();navigate(a.href,{origin:transitionOrigin(window,event.detail>0?a:null)});}}, {capture:true,signal});
   const warm=event=>{const a=linkFromEvent(event);if(isRouteLink({button:0},a,{base,currentURL:window.location.href}))prefetch(a.href).catch(()=>{});};
   window.addEventListener('pointerenter',warm,{capture:true,signal});window.addEventListener('focus',warm,{capture:true,signal});
   window.addEventListener('popstate',event=>{
@@ -366,7 +375,7 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
    persistTimer??=window.setTimeout(persistScroll,Math.max(250,1000-(Date.now()-lastPersist)));
   },{passive:true,signal});
   const hide=()=>{if(!swapping&&!settle)positions.set(activeEntry,scroll());persistScroll();};
-  window.addEventListener('pagehide',hide,{signal});
+  window.addEventListener('pagehide',()=>{latestRequest?.cancel();hide();},{signal});
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')hide();},{signal});
   window.addEventListener('hashchange',event=>{
    if(dispatchingHash)return;
@@ -390,7 +399,7 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   if((type==='reload'||type==='back_forward')&&initialScroll){positions.set(activeEntry,initialScroll);applyScroll(initialScroll);return;}
   if(window.location.hash)await revealFragment(document,window.location.hash,{focus:true});
  }
- function stop(){settle?.();window.clearTimeout(persistTimer);listenerController.abort();if(history.pushState===guidePush)history.pushState=originalPush;if(history.replaceState===guideReplace)history.replaceState=originalReplace;if(idle!==null){if(window.cancelIdleCallback)window.cancelIdleCallback(idle);else window.clearTimeout(idle);}history.scrollRestoration=oldRestoration;}
+ function stop(){latestRequest?.cancel();transitions.dispose();settle?.();window.clearTimeout(persistTimer);listenerController.abort();if(history.pushState===guidePush)history.pushState=originalPush;if(history.replaceState===guideReplace)history.replaceState=originalReplace;if(idle!==null){if(window.cancelIdleCallback)window.cancelIdleCallback(idle);else window.clearTimeout(idle);}history.scrollRestoration=oldRestoration;}
  // routeFor lets a mounted guide tell its own history entries from another route's during Back/Forward.
  const publicRouter={navigate,prefetch,routeFor:input=>{try{return routeForURL(new URL(input,window.location.href),base);}catch{return null;}},get route(){return route;}};
  window.TMURouter=publicRouter;

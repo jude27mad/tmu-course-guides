@@ -60,7 +60,7 @@ test('navigation disposes in reverse order, aborts old handlers and preserves th
  assert.equal(f.window.document.title,'cen100 title');assert.equal(f.window.document.body.dataset.page,undefined);assert.equal(f.window.document.body.dataset.course,'cen100');
  assert.equal(f.window.document.body.className,'cen100-class');assert.equal(f.window.document.activeElement.id,'cen100-main');
  assert.equal(f.window.document.querySelector('[data-router-announcement]').textContent,'CEN100 guide');
- assert.deepEqual(f.events,[{route:'cen100',from:'desk'}]);assert.ok(f.calls.findIndex(c=>c[0]==='transition')<f.calls.findIndex(c=>c[0]==='dispose'));
+ assert.deepEqual(f.events,[{route:'cen100',from:'desk',transition:{continuing:false}}]);assert.ok(f.calls.findIndex(c=>c[0]==='transition')<f.calls.findIndex(c=>c[0]==='dispose'));
  f.close();
 });
 
@@ -264,9 +264,13 @@ test('canceling the latest of queued Back traversals restores the mounted entry'
  f.router.start();await f.router.navigate('cen100/');await f.router.navigate('../mth140/');
  for(let i=0;i<4;i++)await f.router.prefetch(`/tmu-course-guides/mth141/?variant=${i}`);
  const href=f.window.location.href,state=f.window.history.state,length=f.window.history.length,main=f.window.document.querySelector('main');
- block=true;f.window.document.addEventListener('route-will-change',event=>event.preventDefault(),{once:true});
+ block=true;
  const restored=new Promise(resolve=>f.window.addEventListener('popstate',()=>{if(f.window.location.href===href)resolve();}));
- f.window.history.back();await started;f.window.history.back();await restored;release();
+ f.window.history.back();await started;
+ // route-will-change now starts alongside fetch; install the veto at the boundary
+ // where the second (latest) traversal starts, not before the first one.
+ f.window.document.addEventListener('route-will-change',event=>event.preventDefault(),{once:true});
+ f.window.history.back();await restored;release();
  assert.equal(f.window.history.length,length);assert.deepEqual(f.window.history.state,state);assert.equal(f.window.location.href,href);assert.equal(f.router.route,'mth140');assert.equal(f.window.document.title,'mth140 title');assert.equal(f.window.document.body.dataset.course,'mth140');assert.equal(f.window.document.querySelector('main'),main);assert.deepEqual(f.fallback,[]);f.close();
 });
 

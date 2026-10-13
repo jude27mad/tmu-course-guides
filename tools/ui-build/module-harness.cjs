@@ -13,7 +13,7 @@ const entries=[
  'assets/night/palette.mjs','assets/night/desk.mjs','assets/night/hero.mjs','assets/night/scroll.mjs',
  'assets/course-data.mjs','assets/cen-schedule.mjs','assets/course-scene.mjs',
  'assets/vendor/gsap-3.15.0.mjs','assets/vendor/night-vendor.mjs',
- 'assets/app/route-boot.mjs',
+ 'assets/app/route-boot.mjs','assets/app/transition.mjs',
 ];
 const bundleCache=new Map();
 async function moduleBundle(root,base='https://guide.test/'){
