@@ -58,9 +58,10 @@ export async function generateRoutePreloads({rootDir,documentPath,baseURL='https
   let after=end+END.length;if(html[after]==='\n')after++;
   generated=html.slice(0,begin)+block+html.slice(after);
  }else{
-  const script=extractDocumentModuleScripts(html,graph.documentURL,{includeOffsets:true}).find(script=>script.kind==='route');
+  const entries=extractDocumentModuleScripts(html,graph.documentURL,{includeOffsets:true}).filter(script=>script.kind==='entry'&&new URL(script.url).pathname.endsWith('/assets/app/route-boot.mjs'));
+  const script=entries.length===1?entries[0]:null;
   const headEnd=html.match(/<\/head\s*>/i)?.index;
-  if(!script||headEnd===undefined||script.offset>headEnd)throw Error('The route has no head module insertion point');
+  if(!script||headEnd===undefined||script.offset>headEnd)throw Error('The route requires one head route-boot entry insertion point');
   generated=html.slice(0,script.offset)+block+html.slice(script.offset);
  }
  return {html:generated,block,graph};
