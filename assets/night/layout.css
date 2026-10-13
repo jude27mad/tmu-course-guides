@@ -305,7 +305,7 @@ html[data-book] body.workspace .header-upgraded::after{z-index:2;background:url(
 html[data-book] body.workspace .header-upgraded>.header-art{grid-row:1;grid-column:1;align-self:stretch;justify-self:stretch;position:relative;inset:auto;z-index:1;width:auto;height:auto;min-height:0;
  border-radius:0;touch-action:pan-y;cursor:default;user-select:none;-webkit-user-select:none;contain:layout paint;overflow:hidden}
 /* The vignette sits over the canvas too, inside the slot (spec decision 9). */
-html[data-book] body.workspace .header-upgraded>.header-art::after{content:'';display:block;position:absolute;inset:0;z-index:1;pointer-events:none;box-shadow:inset 0 0 160px var(--ns-desk-vignette)}
+html[data-book] body.workspace .header-upgraded>.header-art::after{content:'';display:block;position:absolute;inset:0;z-index:1;pointer-events:none;background:none;box-shadow:inset 0 0 160px var(--ns-desk-vignette)}
 html[data-book] .header-art[data-cursor=open]{cursor:pointer}
 html[data-book] .header-art[data-cursor=turn]{cursor:grab}
 html[data-book] .header-art[data-cursor=drag],html[data-book] .header-art[data-dragging=true]{cursor:grabbing}
@@ -346,9 +346,9 @@ html[data-book] .ns-book-pause{margin-left:auto;border-color:color-mix(in srgb,v
 
 /* ---------- The rail: caption for the selected spread and the week controls (§6.3) ---------- */
 .ns-spread{grid-row:2;grid-column:1;position:relative;z-index:3;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"caption jump" "weeks weeks";
- column-gap:clamp(20px,3vw,40px);row-gap:12px;align-items:center;padding:16px var(--page-gutter) 14px;
+ column-gap:clamp(20px,3vw,40px);row-gap:18px;align-items:center;padding:16px var(--page-gutter) 14px;
  background:var(--hub-bg);border-top:1px solid var(--hub-line);color:var(--hub-ink)}
-.ns-spread-caption{grid-area:caption;display:flex;align-items:center;gap:clamp(16px,2vw,28px);min-width:0;min-height:48px}
+.ns-spread-caption{grid-area:caption;display:flex;align-items:center;gap:clamp(16px,1.6vw,22px);min-width:0;min-height:48px}
 .ns-spread-head{flex:none;display:grid;gap:5px}
 .ns-spread-kicker{margin:0;font:500 11px/1.25 var(--ns-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--strong);white-space:nowrap}
 .ns-spread-kicker b{font-weight:500;color:var(--hub-ink)}
@@ -356,14 +356,14 @@ html[data-book] .ns-book-pause{margin-left:auto;border-color:color-mix(in srgb,v
 .ns-spread-dates time{white-space:nowrap}
 .ns-spread-dates .ns-dash{color:var(--hub-muted);font-weight:400}
 .ns-spread-note{margin-left:.5em;font:500 .8rem/1 Archivo,system-ui,sans-serif;letter-spacing:0;color:var(--hub-muted);white-space:nowrap}
-.ns-spread-body{flex:1;min-width:0;align-self:stretch;display:flex;align-items:center;padding-left:clamp(16px,2vw,28px);border-left:1px solid var(--hub-line)}
+.ns-spread-body{flex:1;min-width:0;align-self:stretch;display:flex;align-items:center;padding-left:clamp(16px,1.6vw,22px);border-left:1px solid var(--hub-line)}
 .ns-spread-items{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;align-items:center;gap:4px 22px;min-width:0}
 .ns-spread-item{display:flex;align-items:center;gap:10px 14px;min-width:0;border-radius:12px}
 .ns-spread-open{display:grid;align-content:center;row-gap:3px;min-height:48px;min-width:44px;padding:4px 10px 4px 0;margin:0;border:0;background:none;color:var(--hub-ink);font:inherit;text-align:left;cursor:pointer;border-radius:10px}
 .ns-item-line{display:flex;align-items:baseline;gap:10px;min-width:0}
 .ns-item-kind{font:500 10px/1 var(--ns-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--strong)}
 .ns-item-title{position:relative;font:650 1rem/1.2 Archivo,system-ui,sans-serif;letter-spacing:-.01em}
-.ns-item-when{font:450 1rem/1.2 Archivo,system-ui,sans-serif;color:var(--hub-muted)}
+.ns-item-when{font:450 1rem/1.2 Archivo,system-ui,sans-serif;color:var(--hub-muted);white-space:nowrap}
 .ns-spread-item:is([data-chip=NEXT],[data-chip=SOON],[data-chip=NOW]) .ns-item-title{padding-right:14px}
 .ns-spread-item:is([data-chip=NEXT],[data-chip=SOON],[data-chip=NOW]) .ns-item-title::after{content:'';position:absolute;right:0;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:var(--strong)}
 .ns-spread-item[data-urgency=soon] .ns-item-title::after{background:var(--ns-stage-soon)}
@@ -375,7 +375,7 @@ html[data-book] .ns-book-pause{margin-left:auto;border-color:color-mix(in srgb,v
 @media(hover:hover){.ns-spread-open:hover .ns-item-title{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}}
 .ns-spread-item[data-hover] .ns-item-title{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
 .ns-spread-open:focus-visible{outline:2px solid var(--hub-focus);outline-offset:2px}
-.ns-spread .ns-spread-cta{margin:0;min-height:44px;padding:0 16px;font-size:.8rem;white-space:nowrap}
+.ns-spread .ns-spread-cta{margin:0;min-height:44px;padding:0 15px;font-size:.78rem;white-space:nowrap}
 .ns-spread-empty{margin:0;font:450 1rem/1.3 Archivo,system-ui,sans-serif;color:var(--hub-muted)}
 .ns-spread-more{position:relative}
 .ns-spread-more>summary{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border-radius:999px;cursor:pointer;font:500 11px/1 var(--ns-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--hub-muted);list-style:none}
@@ -383,8 +383,8 @@ html[data-book] .ns-book-pause{margin-left:auto;border-color:color-mix(in srgb,v
 .ns-spread-more[open]>.ns-spread-items{position:absolute;z-index:6;left:0;top:100%;display:grid;min-width:280px;padding:8px 12px;border-radius:14px;background:var(--hub-panel);border:1px solid var(--hub-line);box-shadow:0 24px 50px -24px rgb(0 0 0 / .45)}
 
 /* Today and Next assessment */
-.ns-spread-jump{grid-area:jump;display:flex;align-items:center;justify-content:flex-end;gap:10px}
-.ns-spread-jump button,.ns-week-step{display:inline-flex;align-items:center;gap:8px;min-height:44px;min-width:44px;padding:0 16px;border-radius:999px;border:1px solid var(--hub-line);background:var(--hub-panel);color:var(--hub-ink);font:600 .82rem/1.1 Archivo,system-ui,sans-serif;white-space:nowrap;cursor:pointer}
+.ns-spread-jump{grid-area:jump;display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.ns-spread-jump button,.ns-week-step{display:inline-flex;align-items:center;gap:8px;min-height:44px;min-width:44px;padding:0 15px;border-radius:999px;border:1px solid var(--hub-line);background:var(--hub-panel);color:var(--hub-ink);font:600 .82rem/1.1 Archivo,system-ui,sans-serif;white-space:nowrap;cursor:pointer}
 .ns-week-today i{width:7px;height:7px;border-radius:50%;box-shadow:0 0 0 1.5px var(--strong);background:transparent}
 .ns-week-today[aria-disabled=true]{color:var(--hub-muted);cursor:default}
 .ns-week-today[aria-disabled=true] i{background:var(--strong)}
@@ -393,8 +393,7 @@ html[data-book] .ns-book-pause{margin-left:auto;border-color:color-mix(in srgb,v
 .ns-week-next-k{flex:none;font:500 10px/1 var(--ns-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--strong)}
 .ns-week-next-t{min-width:0;overflow:hidden;text-overflow:ellipsis}
 .ns-week-next b{font-weight:500;color:var(--hub-muted)}
-.ns-week-next[data-mode=open]{background:var(--hub-ink);color:var(--hub-bg);border-color:var(--hub-ink)}
-.ns-week-next[data-mode=open] .ns-week-next-k,.ns-week-next[data-mode=open] b{color:color-mix(in srgb,var(--hub-bg) 75%,transparent)}
+.ns-week-next[data-mode=open]{background:color-mix(in srgb,var(--accent) 26%,var(--hub-panel));border-color:color-mix(in srgb,var(--strong) 40%,transparent)}
 .ns-week-step b{font-weight:400;font-size:1.05rem;line-height:1;color:var(--hub-muted)}
 .ns-week-step[aria-disabled=true]{opacity:.45;cursor:default}
 .ns-spread-jump button:focus-visible,.ns-week-step:focus-visible{outline:2px solid var(--hub-focus);outline-offset:2px}
@@ -440,26 +439,29 @@ html[data-book] .ns-book-pause{margin-left:auto;border-color:color-mix(in srgb,v
 }
 /* Phone: copy above the stage on the same desk, then the rail and the action bar. */
 @media(max-width:760px){
- html[data-book] body.workspace .header-upgraded{--book-stage:300px;--book-pool:50% 68%;grid-template-rows:auto var(--book-stage) auto auto}
- html[data-book] body.workspace .header-upgraded::before,html[data-book] body.workspace .header-upgraded::after{grid-row:1 / 3}
- html[data-book] body.workspace .header-upgraded>.header-art{grid-row:2}
+ html[data-book] body.workspace .header-upgraded{--book-stage:300px;--book-pool:50% 70%;grid-template-rows:auto auto var(--book-stage) auto auto}
+ html[data-book] body.workspace .header-upgraded::before,html[data-book] body.workspace .header-upgraded::after{grid-row:1 / 4}
+ html[data-book] body.workspace .header-upgraded>.header-art{grid-row:3}
  /* One vignette for copy and stage together, under the canvas, so the seam between them never darkens. */
  html[data-book] body.workspace .header-upgraded>.header-art::after{box-shadow:none}
  html[data-book] body.workspace .header-upgraded::before{background:radial-gradient(130% 90% at 50% 55%,transparent 55%,var(--ns-desk-vignette)),radial-gradient(60% 60% at var(--book-pool),var(--ns-desk-light),transparent 70%),linear-gradient(160deg,var(--ns-desk),var(--ns-desk-2))}
  html[data-book] .header-art .scene-poster{object-position:50% 53%}
  html[data-book] body.workspace .header-upgraded>.hero-copy{grid-row:1;align-self:start;max-width:none;min-height:0;padding:24px var(--page-gutter) 4px}
- html[data-book] body.workspace .header-upgraded>.ns-book-meta{grid-row:2;padding:0 var(--page-gutter) 12px}
- html[data-book] body.workspace .header-upgraded>.workspace-actions{grid-row:4}
- .ns-spread{grid-row:3;grid-template-columns:minmax(0,1fr);grid-template-areas:"caption" "weeks" "jump";row-gap:10px;padding:16px var(--page-gutter) 16px}
- .ns-spread-caption{display:grid;gap:10px;min-height:0}
+ /* The hint and the pause control get their own line between the copy and the book, on the same desk. */
+ html[data-book] body.workspace .header-upgraded>.ns-book-meta{grid-row:2;align-self:center;align-items:center;min-height:44px;padding:0 var(--page-gutter)}
+ html[data-book] body.workspace .header-upgraded>.workspace-actions{grid-row:5}
+ .ns-spread{grid-row:4;grid-template-columns:minmax(0,1fr);grid-template-areas:"caption" "weeks" "jump";row-gap:14px;padding:18px var(--page-gutter) 16px}
+ .ns-spread-caption{display:grid;gap:8px;min-height:0}
  .ns-spread-body{padding:0;border:0}
  .ns-spread-items{display:grid;gap:0;width:100%}
- .ns-spread-item{border-top:1px solid var(--hub-line);border-radius:0}
+ .ns-spread-item{flex-wrap:wrap;gap:4px 12px;padding:2px 0 10px;border-top:1px solid var(--hub-line);border-radius:0}
  .ns-spread-item:first-child{border-top:0}
- .ns-spread-open{flex:1}
+ .ns-spread-open{flex:1 1 100%}
+ .ns-item-when{white-space:normal}
  .ns-spread-dates{font-size:1.15rem}
  .ns-weeks{display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"ticks ticks" "prev next";gap:10px 8px}
- .ns-week-scroll{grid-area:ticks;margin-inline:calc(var(--page-gutter) * -1);padding-inline:var(--page-gutter);scroll-padding-inline:var(--page-gutter)}
+ .ns-week-scroll{grid-area:ticks;margin-inline:calc(var(--page-gutter) * -1);padding-inline:var(--page-gutter);scroll-padding-inline:var(--page-gutter);
+  -webkit-mask:linear-gradient(90deg,transparent,#000 var(--page-gutter),#000 calc(100% - var(--page-gutter)),transparent);mask:linear-gradient(90deg,transparent,#000 var(--page-gutter),#000 calc(100% - var(--page-gutter)),transparent)}
  .ns-weeks .ns-week-step[data-step="-1"]{grid-area:prev}
  .ns-weeks .ns-week-step[data-step="1"]{grid-area:next;justify-content:flex-end}
  .ns-week-step{justify-content:flex-start}
