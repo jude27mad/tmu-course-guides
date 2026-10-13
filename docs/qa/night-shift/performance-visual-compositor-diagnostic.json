@@ -27646,7 +27646,77 @@
         "CEN100 gears",
         "MTH140 wave",
         "MTH141 sphere"
-      ]
+      ],
+      "allCourseROI": {
+        "sameRevision": "4dc356882c4dfcc4349ce84fce660dd1b35b9f68",
+        "sameProductAndProtectedSource": true,
+        "roi": [
+          724,
+          24,
+          1416,
+          574
+        ],
+        "roiPixels": 380600,
+        "cases": [
+          {
+            "route": "cen100",
+            "softwareUniqueRGBA": 13278,
+            "priorUniqueRGBA": 13288,
+            "changedPixels": 801,
+            "maxChannelDifference": 1,
+            "absoluteRGB": [
+              801,
+              0,
+              0
+            ],
+            "differenceBounds": [
+              843,
+              57,
+              1316,
+              497
+            ]
+          },
+          {
+            "route": "mth140",
+            "softwareUniqueRGBA": 4076,
+            "priorUniqueRGBA": 4089,
+            "changedPixels": 74452,
+            "maxChannelDifference": 1,
+            "absoluteRGB": [
+              42148,
+              40639,
+              36134
+            ],
+            "differenceBounds": [
+              800,
+              113,
+              1319,
+              541
+            ]
+          },
+          {
+            "route": "mth141",
+            "softwareUniqueRGBA": 11953,
+            "priorUniqueRGBA": 12094,
+            "changedPixels": 86613,
+            "maxChannelDifference": 1,
+            "absoluteRGB": [
+              49540,
+              44115,
+              34819
+            ],
+            "differenceBounds": [
+              724,
+              61,
+              1303,
+              477
+            ]
+          }
+        ],
+        "alphaUnchanged": true,
+        "rendererRecordEqual": true,
+        "note": "Different native capture backends on identical product; diagnostic only. All changed channel values are0 or-1 in software minus prior. Cross-source pairs under identical software recipe have0 differences. PNGs are unchanged."
+      }
     }
   },
   "softwareCompositorDeskProbe": {
