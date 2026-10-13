@@ -8,6 +8,9 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v4
         with:
@@ -27,7 +30,7 @@ jobs:
           (directory / 'transport-blob.json').write_text(json.dumps(blob))
           encoded = ''.join(blob['content'].split())
           encoded = encoded.replace('VWUCb3Sp83fLKXkCU', 'VWUCb3Sp83zLXkCU')
-          compressed = base64.b64decode(encoded)
+          compressed = base64.b64decode(encoded + '===')
           (directory / 'candidate.patch.gz').write_bytes(compressed)
           patch = gzip.decompress(compressed)
           assert hashlib.sha256(patch).hexdigest() == 'a13b32b8f49150fb8d2a8837263641aff5591b37cfd142dc07bb92bb148a34e2', 'Tested patch integrity check failed'
@@ -68,7 +71,7 @@ jobs:
           git push origin HEAD:refs/heads/codex/ns-transition
           git rev-parse HEAD > /tmp/task-i-evidence/verified-commit.txt
           git rev-parse HEAD^{tree} > /tmp/task-i-evidence/verified-tree.txt
-          git bundle create /tmp/task-i-evidence/verified-repository.bundle --all
+          git bundle create /tmp/task-i-evidence/verified-repository.bundle --all HEAD
       - name: Preserve verification evidence
         if: always()
         uses: actions/upload-artifact@v4
