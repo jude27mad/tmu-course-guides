@@ -2,6 +2,19 @@
 
 Latest first. Course-specific student-facing notes remain under **What's changed?** above each course footer. Older entries record the behaviour at the time; later releases supersede them.
 
+## October 12, 2026 — Night Shift foundation
+
+Branch snapshot: `night-shift` at `f4c8342`. This records integrated foundation work. The [Stage 1b report](docs/qa/night-shift/stage1b.md) re-verifies the earlier router-review snapshots in Chromium; Safari/iOS review and the book stages remain pending.
+
+- Added the editorial course layout, live deadline card, semester timeline and dock with course identity, Desk, countdown, section, Search and Pause motion controls.
+- Made the site root the Desk directory, with three course links, saved-section summaries and the next deadline across courses. CEN100 lives at `/cen100/`; old CEN-specific root hashes forward once with their query and hash preserved. Generic root links stay on Desk. Existing progress keys are unchanged.
+- Centralized Toronto deadline resolution and display states across the Desk and course deadline surfaces, including exact instants, date-only items, unresolved quiz weeks and pending dates. Lab-start countdowns retain their lab wording rather than claiming an exact quiz start.
+- Applied the owner's end-of-day rule to dated CEN100 submissions without posted times: count down to the following Toronto midnight, display “Due by end of day” / “by 11:59 PM Toronto”, and keep the whole final minute open. Untimed in-class events remain date-only. Official course records were not changed.
+- Integrated the persistent shell, route-module mount/unmount lifecycle and no-reload switching between Desk and the three course routes, with direct-load and normal-navigation fallbacks. The final review records fixes for stylesheet/history restoration, stale caches, route boot failures, deep links and the CEN100 WebGL-context leak.
+- Added shared semester-week and page-bend logic for the future books. Toronto term-week labels remain separate from the book's clamped spread index; dated exam records can extend book spreads without inventing an official term week or final-exam date.
+- Stopped loading the old animated backdrop and course-switch warp/wipe from Night Shift boot. Backdrop files and dormant wipe remnants remain for the separate cleanup task; they have not all been deleted.
+- Added deadline boundary fixtures, corrected the cross-time-zone test adapter and applied the adopted countdown, empty-state and accessibility copy. See the [deadline results and correction](docs/qa/toronto-deadline-results.md) and [QA index](docs/qa/night-shift/README.md) for the exact checkpoints tested.
+
 ## October 12, 2026 — Math assessment updates
 
 - Confirmed MTH140 Quiz 2 covers Chapter 3, Sections 3.1–3.5 and takes place in the second hour of the lab; Monday sections write on October 19 after Thanksgiving.
