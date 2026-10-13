@@ -2,6 +2,7 @@
 import {createRouter,mountRouteModules,routeFromDocument} from './router.mjs';
 export {mountRouteModules};
 const boots=new WeakMap();
+const ROUTES=['desk','cen100','mth140','mth141'];
 export function bootDocument(options={}){
  const window=options.window||globalThis.window;
  if(boots.has(window.document))return boots.get(window.document);
@@ -9,20 +10,29 @@ export function bootDocument(options={}){
   const {document}=window;
   if(document.readyState==='loading')await new Promise(resolve=>document.addEventListener('DOMContentLoaded',resolve,{once:true}));
   const importModule=options.importModule||(url=>import(url));
+  const root=document.querySelector('[data-route-region]'),route=routeFromDocument(document);
+  if(!root||!ROUTES.includes(route))throw Error('Missing route region or identity');
   const router=createRouter({...options,window});
-  const controller=new window.AbortController();
-  let modules=[];
-  try{
-   for(const script of document.querySelectorAll('script[type="module"][data-shell-module][src]'))await importModule(new URL(script.getAttribute('src'),window.location.href).href);
-   modules=await mountRouteModules({document,url:window.location.href,route:routeFromDocument(document),signal:controller.signal,direct:true,importModule});
-   router.adoptRoute({modules,controller});router.start();
-   document.dispatchEvent(new window.CustomEvent('route-changed',{detail:{route:router.route,from:null}}));
-   return router;
-  }catch(error){
-   for(const module of [...modules].reverse())try{await module.unmount();}catch{}
-   controller.abort();router.stop();delete window.TMURouter;
-   throw error;
+  const controller=new window.AbortController(),modules=[];
+  // A direct load keeps every module independent, as the separate page scripts were: one that fails to
+  // load or mount is reported and skipped, and never takes the guide or the other modules down with it.
+  for(const script of document.querySelectorAll('script[type="module"][data-shell-module][src]')){
+   try{await importModule(new URL(script.getAttribute('src'),window.location.href).href);}
+   catch(error){console.warn('Shell module unavailable',script.getAttribute('src'),error);}
   }
+  for(const script of document.querySelectorAll('script[type="module"][data-route-module][src]')){
+   let module;
+   try{
+    module=await importModule(new URL(script.getAttribute('src'),window.location.href).href);
+    if(typeof module.mount!=='function'||typeof module.unmount!=='function')throw Error('Route module lacks mount/unmount');
+   }catch(error){console.warn('Route module unavailable',script.getAttribute('src'),error);continue;}
+   try{await module.mount({root,route,signal:controller.signal,direct:true});modules.push(module);}
+   catch(error){console.warn('Route module failed to mount',script.getAttribute('src'),error);try{await module.unmount();}catch{}}
+  }
+  router.adoptRoute({modules,controller});router.start();
+  document.dispatchEvent(new window.CustomEvent('route-changed',{detail:{route:router.route,from:null}}));
+  await router.restoreDirect();
+  return router;
  })();
  boots.set(window.document,promise);return promise;
 }

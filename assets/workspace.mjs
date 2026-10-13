@@ -231,7 +231,9 @@ export function mount(ctx={}) {
     else if(hash==='#guide-search') {search.hidden=false;searchButton.setAttribute('aria-expanded','true');$('#guide-search').focus();}
     else if(hash==='#assignments'||hash.startsWith('#assignment-')||hash.startsWith('#assessment-')||!hash) show('assignments');
   }
-  life.on(window,'hashchange',route); life.on(window,'popstate',route);
+  // Back/Forward to another route is the router's: this outgoing view must not react to that URL.
+  const ownEntry=()=>!window.TMURouter?.routeFor||window.TMURouter.routeFor(location.href)===course;
+  life.on(window,'hashchange',route); life.on(window,'popstate',()=>{if(ownEntry())route();});
   // Start with work; specific existing links still open their original destination.
   syncPanels('assignments'); route();
 }

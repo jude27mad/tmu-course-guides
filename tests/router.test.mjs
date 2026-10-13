@@ -16,7 +16,7 @@ function fixture(options={}){
  window.scrollTo=(a,b)=>{if(typeof a==='object'){x=a.left||0;y=a.top||0;}else{x=a;y=b;}calls.push(['scroll',x,y]);};
  const documents=new Map(['desk','cen100','mth140','mth141'].map(route=>[route,html(route)]));
  const imported=[];
- const importModule=async url=>{imported.push(url);const name=new URL(url).pathname.split('/').at(-1).replace('.mjs','');return {mount(ctx){calls.push(['mount',name,ctx.route,ctx.direct,ctx.signal]);},unmount(){calls.push(['unmount',name]);}};};
+ const importModule=async url=>{imported.push(url);const name=new URL(url).pathname.split('/').at(-1).replace('.mjs','');return {mount(ctx){calls.push(['mount',name,ctx.route,ctx.direct,ctx.signal,window.location.hash]);},unmount(){calls.push(['unmount',name]);}};};
  const fetch=async(url,init)=>{calls.push(['fetch',url,init.credentials]);const route=need().routeForURL(url,new URL('https://guide.test/tmu-course-guides/'));return {ok:true,url,text:async()=>documents.get(route)};};
  const router=need().createRouter({window,fetch,importModule,assign:url=>fallback.push(url),moduleURL:'https://guide.test/tmu-course-guides/assets/app/router.mjs',autoPrefetch:false,loadStylesheet:async link=>calls.push(['style',link.href]),...options});
  window.document.addEventListener('route-changed',event=>events.push(event.detail));
@@ -94,14 +94,18 @@ test('fetch, region, reload-required, transition and mount errors fall back to f
  }
 });
 
-test('back and forward restore each entry scroll and destination hashes fire after mounts',async()=>{
+test('back and forward restore each entry scroll and destination hashes are read at mount as on a direct load',async()=>{
  const f=fixture(),hashes=[];f.router.start();f.window.addEventListener('hashchange',()=>hashes.push([f.router.route,f.window.location.hash]));
  f.window.scrollTo(0,180);await f.router.navigate('cen100/#course-info');f.window.scrollTo(0,420);await f.router.navigate('../mth140/#assessment-quiz-1');f.window.scrollTo(0,750);
  const waitChange=()=>new Promise(resolve=>f.window.document.addEventListener('route-changed',resolve,{once:true}));
  let done=waitChange();f.window.history.back();await done;assert.equal(f.router.route,'cen100');assert.equal(f.window.scrollY,420);
  done=waitChange();f.window.history.back();await done;assert.equal(f.router.route,'desk');assert.equal(f.window.scrollY,180);
  done=waitChange();f.window.history.forward();await done;assert.equal(f.router.route,'cen100');assert.equal(f.window.scrollY,420);
- assert.ok(hashes.some(([route,hash])=>route==='mth140'&&hash==='#assessment-quiz-1'));assert.equal(f.window.history.scrollRestoration,'manual');f.close();
+ // A direct load dispatches no hashchange: the destination reads #assessment-quiz-1 while mounting, and neither
+ // a swap nor the browser's own hashchange for a cross-route traversal makes it handle the hash a second time.
+ assert.ok(f.calls.some(c=>c[0]==='mount'&&c[2]==='mth140'&&c[5]==='#assessment-quiz-1'),'destination hash is in place at mount');
+ assert.deepEqual(hashes,[],'route swaps and cross-route Back/Forward deliver no extra hashchange');
+ assert.equal(f.window.history.scrollRestoration,'manual');f.close();
 });
 
 test('capture interception prevents the old departure handler before document bubbling',async()=>{
@@ -144,12 +148,52 @@ test('canceling a route transition retains the outgoing module and document',asy
  assert.equal(await f.router.navigate('cen100/'),false);assert.equal(disposed,0);assert.equal(f.window.document.querySelector('main'),main);assert.deepEqual(f.fallback,[]);f.close();
 });
 
-test('a failed direct mount releases already mounted modules and their signal',async()=>{
+test('a failed direct-load module is reported and skipped; the guide and the other modules stay mounted',async()=>{
  const {bootDocument}=await import('../assets/app/route-boot.mjs');
- const dom=new JSDOM(html(),{url:'https://guide.test/'}),{window}=dom,calls=[];let signal;
- await assert.rejects(bootDocument({window,moduleURL:'https://guide.test/assets/app/router.mjs',autoPrefetch:false,importModule:async url=>({mount(ctx){signal=ctx.signal;calls.push(['mount',url]);if(url.includes('second'))throw Error('broken');},unmount(){calls.push(['unmount',url]);}})}),/broken/);
- assert.deepEqual(calls.filter(c=>c[0]==='unmount').map(c=>c[1].split('/').at(-1)),['second.mjs','first.mjs']);
- assert.equal(signal.aborted,true);assert.equal(window.TMURouter,undefined);window.close();
+ const warnings=[],warn=console.warn;console.warn=(...args)=>warnings.push(args.map(String).join(' '));
+ try{
+  for(const failure of ['mount','import','contract']){
+   const dom=new JSDOM(html('cen100',{modules:['first','second','third']}),{url:'https://guide.test/cen100/'}),{window}=dom,calls=[];let signal;
+   const router=await bootDocument({window,moduleURL:'https://guide.test/assets/app/router.mjs',autoPrefetch:false,importModule:async url=>{
+    if(url.includes('second')&&failure==='import')throw Error('broken import');
+    if(url.includes('second')&&failure==='contract')return {};
+    return {mount(ctx){signal=ctx.signal;calls.push(['mount',url.split('/').at(-1)]);if(url.includes('second'))throw Error('broken mount');},unmount(){calls.push(['unmount',url.split('/').at(-1)]);}};
+   }});
+   const expected=failure==='mount'?[['mount','first.mjs'],['mount','second.mjs'],['unmount','second.mjs'],['mount','third.mjs']]:[['mount','first.mjs'],['mount','third.mjs']];
+   assert.deepEqual(calls,expected,failure);
+   assert.equal(signal.aborted,false,failure+': surviving modules keep their signal');
+   assert.equal(window.TMURouter.route,'cen100',failure+': the shell still starts');
+   assert.ok(warnings.some(w=>w.includes('second.mjs')),failure+': the failure is reported');
+   // Leaving the route unmounts only what is mounted, in reverse order.
+   calls.length=0;await router.navigate('../');
+   assert.deepEqual(calls.filter(c=>c[0]==='unmount').map(c=>c[1]),['third.mjs','first.mjs'],failure);
+   router.stop();window.close();warnings.length=0;
+  }
+ }finally{console.warn=warn;}
+});
+
+test('a reload or Back/Forward document load returns to the saved position; a new load reveals a mounted fragment',async()=>{
+ const {bootDocument}=await import('../assets/app/route-boot.mjs');
+ const setup=(url,type,state)=>{
+  const dom=new JSDOM(html('cen100'),{url,pretendToBeVisual:true}),{window}=dom;let y=0;const scrolled=[];
+  Object.defineProperty(window,'scrollY',{get:()=>y});window.scrollTo=(a,b)=>{y=typeof a==='object'?a.top:b;scrolled.push(y);};
+  window.HTMLElement.prototype.scrollIntoView=function(){scrolled.push(this.id);};
+  Object.defineProperty(window.performance,'getEntriesByType',{value:()=>[{type}],configurable:true});
+  if(state)window.history.replaceState(state,'',url);
+  const importModule=async url=>({mount(ctx){if(url.includes('first'))ctx.root.insertAdjacentHTML('beforeend','<details id="tools"><summary>Tools</summary><button id="late">Late</button></details>');},unmount(){}});
+  return {window,scrolled,boot:()=>bootDocument({window,moduleURL:'https://guide.test/assets/app/router.mjs',autoPrefetch:false,assign:()=>{},importModule})};
+ };
+ for(const type of ['reload','back_forward']){
+  const t=setup('https://guide.test/cen100/#late',type,{__tmuRouter:{id:'old:1',index:0,scroll:[0,640]}});
+  const router=await t.boot();
+  assert.equal(t.window.scrollY,640,type);assert.equal(t.window.document.getElementById('tools').open,false,type+': saved position wins over the fragment');
+  router.stop();t.window.close();
+ }
+ const t=setup('https://guide.test/cen100/#late','navigate',null),router=await t.boot();
+ assert.equal(t.window.document.getElementById('tools').open,true,'closed details around the target open');
+ assert.deepEqual(t.scrolled,['late'],'the mounted target scrolls into view');
+ assert.equal(t.window.document.activeElement.id,'late','a focusable target takes focus');
+ router.stop();t.window.close();
 });
 
 test('twenty route round trips leave one shell and only current signal active',async()=>{
@@ -232,4 +276,93 @@ test('same-route aliases and course roots preserve the shell without remounting'
  await f.router.navigate('./');assert.equal(f.window.location.pathname,'/tmu-course-guides/cen100/');assert.equal(f.window.location.hash,'');
  const length=f.window.history.length;await f.router.navigate('./');assert.equal(f.window.history.length,length);
  assert.equal(f.window.document.querySelector('main'),main);assert.equal(f.window.document.documentElement.dataset.shellId,marker);assert.equal(f.calls.filter(c=>c[0]==='mount').length,mountCount);assert.deepEqual(hashes,['#course-info','']);assert.deepEqual(f.fallback,[]);f.close();
+});
+
+test('head sync never moves a loaded sheet, keeps incoming sheets inert until commit and survives a reload followed by Back/Forward',async()=>{
+ // The document was loaded at cen100/ (a reload), with an earlier same-document entry for the Desk.
+ const page=route=>html(route,{styles:route==='desk'?['assets/fonts.css','assets/hub.css','assets/desk.css']:['../assets/fonts.css','../assets/hub.css','../assets/cen.css']});
+ const dom=new JSDOM(page('cen100'),{url:'https://guide.test/tmu-course-guides/cen100/',pretendToBeVisual:true}),{window}=dom;
+ window.history.replaceState(null,'','/tmu-course-guides/');window.history.pushState(null,'','/tmu-course-guides/cen100/');
+ let release;const gate=()=>new Promise(resolve=>{release=resolve;});let loading=gate();
+ const router=need().createRouter({window,moduleURL:'https://guide.test/tmu-course-guides/assets/app/router.mjs',autoPrefetch:false,assign:url=>{throw Error('unexpected reload '+url);},
+  importModule:async()=>({mount(){},unmount(){}}),loadStylesheet:()=>loading,
+  fetch:async url=>({ok:true,url,text:async()=>page(need().routeForURL(url,new URL('https://guide.test/tmu-course-guides/')))})});
+ router.start();
+ const head=window.document.head,[fonts,hub]=head.querySelectorAll('link'),moved=[];
+ new window.MutationObserver(records=>{for(const r of records)for(const node of [...r.removedNodes,...r.addedNodes])if(node===fonts||node===hub)moved.push(node);}).observe(head,{childList:true});
+ const resolved=()=>[...head.querySelectorAll('link[rel="stylesheet"]')].map(link=>new URL(link.getAttribute('href'),link===fonts||link===hub?'https://guide.test/tmu-course-guides/cen100/':window.location.href).pathname);
+ let changed=new Promise(resolve=>window.document.addEventListener('route-changed',resolve,{once:true}));
+ window.history.back();await new Promise(resolve=>setTimeout(resolve,0));
+ const incoming=head.querySelector('link[href$="desk.css"]');
+ assert.equal(incoming.getAttribute('media'),'not all','incoming sheet loads without restyling the outgoing route');
+ assert.equal(incoming.getAttribute('href'),'https://guide.test/tmu-course-guides/assets/desk.css','incoming href is absolute');
+ assert.ok(head.querySelector('link[href="../assets/cen.css"]'),'outgoing sheet stays until incoming sheets load');
+ release();await changed;
+ assert.equal(router.route,'desk');assert.equal(incoming.hasAttribute('media'),false,'incoming sheet applies at commit');
+ assert.deepEqual(resolved(),['/tmu-course-guides/assets/fonts.css','/tmu-course-guides/assets/hub.css','/tmu-course-guides/assets/desk.css']);
+ loading=gate();changed=new Promise(resolve=>window.document.addEventListener('route-changed',resolve,{once:true}));
+ window.history.forward();await new Promise(resolve=>setTimeout(resolve,0));release();await changed;
+ assert.equal(router.route,'cen100');
+ assert.deepEqual(resolved(),['/tmu-course-guides/assets/fonts.css','/tmu-course-guides/assets/hub.css','/tmu-course-guides/assets/cen.css']);
+ assert.equal(fonts.isConnected&&hub.isConnected,true);assert.deepEqual(moved,[],'shared sheets were never removed or re-inserted');
+ router.stop();window.close();
+});
+
+test('scrolling keeps positions in memory and writes history only after scrolling settles or when the page is hidden',async()=>{
+ const dom=new JSDOM(html(),{url:'https://guide.test/tmu-course-guides/',pretendToBeVisual:true}),{window}=dom;let y=0,writes=0;
+ Object.defineProperty(window,'scrollY',{get:()=>y});window.scrollTo=(a,b)=>{y=b;};
+ const replace=window.history.replaceState;window.history.replaceState=function(...args){writes++;return replace.apply(this,args);};
+ const router=need().createRouter({window,moduleURL:'https://guide.test/tmu-course-guides/assets/app/router.mjs',autoPrefetch:false,assign:()=>{},fetch:async()=>{throw Error('offline');}});
+ router.start();writes=0;
+ for(let i=1;i<=300;i++){y=i*10;window.dispatchEvent(new window.Event('scroll'));}
+ assert.equal(writes,0,'no history write per scroll event');
+ await new Promise(resolve=>setTimeout(resolve,500));
+ assert.equal(writes,1,'one write once scrolling settles');assert.deepEqual(window.history.state.__tmuRouter.scroll,[0,3000]);
+ y=1234;window.dispatchEvent(new window.Event('scroll'));window.dispatchEvent(new window.Event('pagehide'));
+ assert.equal(writes,2);assert.deepEqual(window.history.state.__tmuRouter.scroll,[0,1234],'pagehide stores the position for a reload or a later Back');
+ await new Promise(resolve=>setTimeout(resolve,500));assert.equal(writes,2,'the pending timer was replaced, not repeated');
+ router.stop();window.close();
+});
+
+test('Back/Forward restore waits for the destination layout to grow instead of clamping',async()=>{
+ const f=fixture();let max=10000;
+ f.window.scrollTo=(a,b)=>{f.calls.push(['scroll',0,b]);setY(Math.min(b,max));};
+ let y=0;const setY=v=>{y=v;};Object.defineProperty(f.window,'scrollY',{get:()=>y,configurable:true});
+ f.router.start();await f.router.navigate('cen100/');setY(900);f.window.dispatchEvent(new f.window.Event('scroll'));
+ await f.router.navigate('../mth140/');
+ max=300;const changed=new Promise(resolve=>f.window.document.addEventListener('route-changed',resolve,{once:true}));
+ f.window.history.back();await changed;assert.equal(f.window.scrollY,300,'first attempt is clamped by the short layout');
+ f.window.dispatchEvent(new f.window.Event('scroll'));
+ max=10000;await new Promise(resolve=>setTimeout(resolve,100));
+ assert.equal(f.window.scrollY,900,'the saved position is re-applied once the layout fits');f.close();
+});
+
+test('same-route Back reaches the guide once; a cross-route Back leaves the outgoing guide alone',async()=>{
+ const f=fixture();f.router.start();const seen=[];
+ f.window.addEventListener('popstate',()=>seen.push(['popstate',f.window.TMURouter.routeFor(f.window.location.href),f.window.location.hash]));
+ f.window.addEventListener('hashchange',()=>seen.push(['hashchange',f.router.route,f.window.location.hash]));
+ await f.router.navigate('cen100/');
+ f.window.history.pushState(null,'','#course-info');f.window.history.pushState(null,'','#assignments');
+ f.window.history.back();await new Promise(resolve=>setTimeout(resolve,0));
+ assert.deepEqual(seen,[['popstate','cen100','#course-info'],['hashchange','cen100','#course-info']],'one popstate and one hashchange');
+ seen.length=0;await f.router.navigate('../mth140/#study');
+ const changed=new Promise(resolve=>f.window.document.addEventListener('route-changed',resolve,{once:true}));
+ f.window.history.back();await changed;
+ assert.deepEqual(seen,[['popstate','cen100','#course-info']],'popstate still bubbles, routeFor names the destination, and no hashchange follows the swap');
+ assert.equal(f.window.TMURouter.routeFor('https://guide.test/tmu-course-guides/mth141/'),'mth141');f.close();
+});
+
+test('the public navigate() only moves between the four routes',async()=>{
+ const f=fixture();
+ for(const url of ['https://example.com/','javascript:alert(1)','data:text/html,x','../privacy.html','https://guide.test/tmu-course-guides/cen100/items/'])assert.equal(await f.router.navigate(url),false,url);
+ assert.deepEqual(f.fallback,[]);assert.equal(f.calls.filter(c=>c[0]==='fetch').length,0);f.close();
+});
+
+test('a destination from another deploy (different shell modules) gets a real document load',async()=>{
+ const f=fixture();f.window.document.head.insertAdjacentHTML('beforeend','<script type="module" data-shell-module src="assets/core.mjs?v=1"></script>');
+ f.documents.set('cen100',html('cen100').replace('</head>','<script type="module" data-shell-module src="../assets/core.mjs?v=2"></script></head>'));
+ assert.equal(await f.router.navigate('cen100/'),false);assert.deepEqual(f.fallback,['https://guide.test/tmu-course-guides/cen100/']);f.close();
+ const g=fixture();g.window.document.head.insertAdjacentHTML('beforeend','<script type="module" data-shell-module src="assets/core.mjs?v=1"></script>');
+ g.documents.set('cen100',html('cen100').replace('</head>','<script type="module" data-shell-module src="../assets/core.mjs?v=1"></script></head>'));
+ assert.equal(await g.router.navigate('cen100/'),true,'the same shell swaps in place');g.close();
 });

@@ -50,6 +50,25 @@ export async function mountRouteModules({document,root=document.querySelector('[
  }
 }
 
+// Fragment navigation as the browser does it after parsing: open closed <details> ancestors (their
+// observers run first), then scroll, and focus a focusable target. Content mounted after the browser's own
+// fragment scroll (direct loads) and swapped routes both use this.
+export async function revealFragment(document,hash,{focus=false}={}){
+ let target;try{const id=decodeURIComponent(String(hash||'').slice(1));target=id&&(document.getElementById(id)||document.getElementsByName(id)[0]);}catch{}
+ if(!target||document.querySelector('dialog[open]'))return false;
+ let opened=false;
+ for(let details=target.parentElement?.closest('details:not([open])');details;details=details.parentElement?.closest('details:not([open])')){details.open=true;opened=true;}
+ if(opened)await Promise.resolve();
+ if(target.closest('[hidden]'))return false;
+ target.scrollIntoView?.();
+ if(focus&&target.matches('a[href],area[href],button:not([disabled]),input:not([disabled]):not([type="hidden"]),select:not([disabled]),textarea:not([disabled]),summary,[tabindex],[contenteditable]:not([contenteditable="false"])'))target.focus({preventScroll:true});
+ return true;
+}
+// Shell modules load once per document. A route document that names different shell URLs belongs to
+// another deploy, so it gets a real document load instead of new route modules on an old shell.
+const SHELL_SCRIPTS='script[data-shell-module][src],script[type="module"][src]:not([data-route-module])';
+export const shellSignature=(doc,url)=>[...doc.querySelectorAll(SHELL_SCRIPTS)].map(script=>new URL(script.getAttribute('src'),url).href).sort().join('\n');
+
 function stylesheetReady(link,window){
  return new Promise((resolve,reject)=>{
   const timer=window.setTimeout(()=>finish(Error('Stylesheet timed out')),10000);
@@ -69,7 +88,10 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
  const originalPush=history.pushState,originalReplace=history.replaceState;
  const pushState=(...args)=>originalPush.apply(history,args),replaceState=(...args)=>originalReplace.apply(history,args);
  let route=routeFromDocument(document),modules=[],controller=new window.AbortController(),started=false,entryCounter=0,activeEntry,currentURL=window.location.href,queue=Promise.resolve(),idle=null,swapping=false,dispatchingHash=false;
- let activeIndex=0,browserEntry,latestRequest,restoring=null,pendingPops=0;
+ let activeIndex=0,browserEntry,latestRequest,restoring=null,pendingPops=0,persistTimer=null,settle=null,popHash=null,suppressHash=null;
+ // Relative head URLs in the original markup resolve against the URL this document was loaded from,
+ // not against later history entries.
+ const documentURL=window.location.href,shell=shellSignature(document,documentURL);
  const listenerController=new window.AbortController();
  if(!document.documentElement.dataset.shellId)document.documentElement.dataset.shellId=window.crypto?.randomUUID?.()||`shell-${Date.now()}-${Math.random().toString(36).slice(2)}`;
  const oldRestoration=history.scrollRestoration;history.scrollRestoration='manual';
@@ -82,12 +104,35 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   }
   return state[STATE_KEY];
  }
- browserEntry=ensureEntry();activeEntry=browserEntry.id;activeIndex=browserEntry.index||0;positions.set(activeEntry,scroll());
- function saveScroll(replace=true){
-  const position=scroll();positions.set(activeEntry,position);
-  if(replace&&history.state?.[STATE_KEY]?.id===activeEntry)replaceState({...history.state,[STATE_KEY]:{id:activeEntry,index:activeIndex,scroll:position}},'',window.location.href);
+ browserEntry=ensureEntry();activeEntry=browserEntry.id;activeIndex=browserEntry.index||0;
+ // A reload or a Back/Forward document load lands on an entry that already carries its saved position.
+ const initialScroll=Array.isArray(browserEntry.scroll)?browserEntry.scroll:null;
+ positions.set(activeEntry,scroll());
+ // Scrolling only updates memory. History is written before navigations, on a quiet timer and when the page
+ // is hidden: browsers throttle (Chromium) or reject (WebKit) frequent replaceState calls.
+ function persistScroll(){
+  window.clearTimeout(persistTimer);persistTimer=null;
+  const position=positions.get(activeEntry)||scroll();
+  if(history.state?.[STATE_KEY]?.id===activeEntry)replaceState({...history.state,[STATE_KEY]:{id:activeEntry,index:activeIndex,scroll:position}},'',window.location.href);
  }
- const fallback=url=>{assign(url.href);return false;};
+ function saveScroll(replace=true){
+  if(!settle)positions.set(activeEntry,scroll());
+  if(replace)persistScroll();
+ }
+ // Layout keeps growing after a mount (fonts, async renders). Re-apply a saved position until it fits, the
+ // reader takes over, or about a second passes; the restore itself never overwrites the saved position.
+ function applyScroll(position){
+  settle?.();if(!position)return;
+  const [x,y]=position,reached=()=>Math.abs((window.scrollX||0)-x)<2&&Math.abs((window.scrollY||0)-y)<2;
+  window.scrollTo(x,y);if(reached()||!window.requestAnimationFrame)return;
+  const inputs=['wheel','touchstart','keydown','pointerdown'],started=Date.now();let frame=0;
+  const stop=()=>{if(settle!==stop)return;settle=null;window.cancelAnimationFrame(frame);for(const type of inputs)window.removeEventListener(type,stop,true);};
+  const step=()=>{window.scrollTo(x,y);if(reached()||Date.now()-started>1200)stop();else frame=window.requestAnimationFrame(step);};
+  settle=stop;for(const type of inputs)window.addEventListener(type,stop,{capture:true,passive:true});
+  frame=window.requestAnimationFrame(step);
+ }
+ const sameOrigin=url=>url.origin===base.origin&&/^https?:$/.test(url.protocol);
+ const fallback=url=>{if(sameOrigin(url))assign(url.href);return false;};
  const canonical=input=>{const url=new URL(input,window.location.href),name=routeForURL(url,base);if(!name)return null;const result=new URL(name==='desk'?'':name+'/',base);result.search=url.search;return result;};
  async function prefetch(input){
   const url=canonical(input);if(!url)return null;
@@ -100,35 +145,41 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
    if(routeForURL(responseURL,base)!==routeForURL(key,base))throw Error('Unexpected document redirect');
    const parsed=new window.DOMParser().parseFromString(await response.text(),'text/html');
    if(!parsed.querySelector('main[data-route-region]')||routeFromDocument(parsed)!==routeForURL(key,base))throw Error('Destination lacks its route region');
+   if(shellSignature(parsed,responseURL)!==shell)throw Error('Destination expects a different shell');
    return {document:parsed,url:responseURL};
   });
   cache.set(key,request);while(cache.size>4)cache.delete(cache.keys().next().value);
   request.catch(()=>{if(cache.get(key)===request)cache.delete(key);});
   return request;
  }
+ // Loaded sheets are never moved or re-inserted: a moved <link> reloads (unstyled frames) and re-resolves a
+ // relative href against the current history URL. Incoming sheets load inert at their final position and
+ // apply at commit, together with removing the outgoing ones.
  async function prepareHead(incoming,url,request){
   const selector='link[rel~="stylesheet"],style',existing=[...document.head.querySelectorAll(selector)].filter(el=>!el.hasAttribute('data-shell-style'));
   const key=(el,baseURL)=>el.tagName==='STYLE'?`style:${el.media}:${el.textContent}`:`link:${new URL(el.getAttribute('href'),baseURL).href}:${el.media||''}`;
-  const byKey=new Map(existing.map(el=>[key(el,currentURL),el])),desired=[],pending=[];
+  const byKey=new Map(existing.map(el=>[key(el,documentURL),el])),desired=[],pending=[],inert=[];
+  let previous=null;
   for(const source of incoming.head.querySelectorAll(selector)){
    if(source.hasAttribute('data-shell-style'))continue;
    let node=byKey.get(key(source,url));
+   // A kept node must already follow the previous desired node; otherwise load a fresh copy in order.
+   if(node&&(desired.includes(node)||previous&&!(previous.compareDocumentPosition(node)&4)))node=null;
    if(!node){
     node=document.importNode(source,true);
-    if(node.tagName==='LINK'){
-     node.href=new URL(source.getAttribute('href'),url).href;
-     // Register load/error before insertion; a cached sheet can finish immediately.
-     const ready=loadStylesheet?Promise.resolve().then(()=>loadStylesheet(node)):stylesheetReady(node,window);
-     document.head.append(node);request.headAdditions.push(node);pending.push(ready);
-    }
+    if(node.tagName==='LINK')node.setAttribute('href',new URL(source.getAttribute('href'),url).href);
+    inert.push([node,node.getAttribute('media')]);node.setAttribute('media','not all');
+    // Register load/error before insertion; a cached sheet can finish immediately.
+    const ready=node.tagName!=='LINK'?null:loadStylesheet?Promise.resolve().then(()=>loadStylesheet(node)):stylesheetReady(node,window);
+    if(previous)previous.after(node);else if(existing[0])existing[0].before(node);else document.head.append(node);
+    request.headAdditions.push(node);if(ready)pending.push(ready);
    }
-   desired.push(node);
+   desired.push(node);previous=node;
   }
   await Promise.all(pending);
   return ()=>{
    for(const node of existing)if(!desired.includes(node))node.remove();
-   // Moving loaded nodes reproduces the source cascade, including CEN's inline CSS.
-   for(const node of desired)document.head.append(node);
+   for(const [node,media] of inert)if(media===null)node.removeAttribute('media');else node.setAttribute('media',media);
    document.title=incoming.title;
    const description=incoming.querySelector('meta[name="description"]'),old=document.querySelector('meta[name="description"]');
    if(description){const target=old||document.head.appendChild(document.createElement('meta'));target.name='description';target.content=description.content;}else old?.remove();
@@ -154,19 +205,16 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   if(!live){live=document.createElement('div');live.dataset.routerAnnouncement='';live.setAttribute('aria-live','polite');live.setAttribute('aria-atomic','true');live.style.cssText='position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';document.body.append(live);}
   live.textContent=route==='desk'?'TMU Course Guides':`${route.toUpperCase()} guide`;
  }
- function restoreAndFocus(position,hash){
+ async function restoreAndFocus(position,hash){
   const root=document.querySelector('main[data-route-region]'),skip=document.querySelector('body > .skip-link');
   let target;
   try{const id=skip&&new URL(skip.href).hash.slice(1);target=id&&document.getElementById(decodeURIComponent(id));}catch{}
   target=target&&root.contains(target)?target:root.querySelector('h1')||root;
   if(!target.hasAttribute('tabindex'))target.setAttribute('tabindex','-1');
   target.focus({preventScroll:true});
-  if(position)window.scrollTo(position[0],position[1]);
-  else{
-   let destination;try{destination=hash&&document.getElementById(decodeURIComponent(hash.slice(1)));}catch{}
-   if(destination&&!destination.closest('[hidden]'))destination.scrollIntoView?.();else window.scrollTo(0,0);
-  }
   announce();
+  if(position)applyScroll(position);
+  else if(!await revealFragment(document,hash).catch(()=>false)&&!document.querySelector('dialog[open]'))window.scrollTo(0,0);
  }
  function hashChanged(oldURL,url){
   if(!url.hash&&!new URL(oldURL).hash)return;
@@ -183,7 +231,7 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   if(!Number.isFinite(delta)||!delta){if(window.location.href!==currentURL)assign(currentURL);return;}
   await new Promise(resolve=>{restoring={id:activeEntry,index:activeIndex,resolve};history.go(delta);});
  }
- async function performNavigation(url,{history:mode='push',state,request}={}){
+ async function performNavigation(url,{history:mode='push',state,request,nativeHash=true}={}){
   if(request!==latestRequest)return false;
   const nextRoute=routeForURL(url,base);if(!nextRoute)return fallback(url);
   const oldURL=currentURL,oldRoute=route;
@@ -191,8 +239,10 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   if(nextRoute===route&&new URL(currentURL).search===url.search){
    if(mode==='pop'){
     saveScroll(false);const entry=ensureEntry(state);activeEntry=entry.id;activeIndex=entry.index??activeIndex;browserEntry=entry;currentURL=url.href;
-    hashChanged(oldURL,url);
-    const position=positions.get(entry.id)||entry.scroll;if(position)window.scrollTo(position[0],position[1]);
+    // The browser fires its own hashchange for this traversal unless it was held back for a route swap.
+    if(!nativeHash)hashChanged(oldURL,url);
+    // Same layout, so one restore; a guide's own hash scroll may follow it.
+    settle?.();const position=positions.get(entry.id)||entry.scroll;if(position)window.scrollTo(position[0],position[1]);
    }else if(url.href!==window.location.href){
     saveScroll();const entry={id:marker(),index:activeIndex+1,scroll:scroll()};
     pushState({[STATE_KEY]:entry},'',url.href);
@@ -221,7 +271,7 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
    if(request!==latestRequest){for(const node of request.headAdditions)node.remove();return fallback(new URL(window.location.href));}
    const oldRoot=document.querySelector('main[data-route-region]');if(!oldRoot)throw Error('Outgoing route region missing');
    const newRoot=absoluteAttributes(document.importNode(incoming.querySelector('main[data-route-region]'),true),destination.url);
-   oldRoot.replaceWith(newRoot);commitHead();request.headAdditions=[];syncOutsideRegion(incoming,destination.url);
+   settle?.();oldRoot.replaceWith(newRoot);commitHead();request.headAdditions=[];syncOutsideRegion(incoming,destination.url);
    document.body.className=incoming.body.className;
    for(const key of ['course','page'])if(incoming.body.dataset[key])document.body.dataset[key]=incoming.body.dataset[key];else delete document.body.dataset[key];
    let entry;
@@ -229,10 +279,12 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
    else{entry={id:marker(),index:activeIndex+1,scroll:[0,0]};pushState({[STATE_KEY]:entry},'',url.href);}
    activeEntry=entry.id;activeIndex=entry.index??activeIndex;browserEntry=entry;currentURL=url.href;route=nextRoute;
    controller=new window.AbortController();
-   // Keep partial mounts disposable if a later module fails.
+   // A new page starts at the top, as on a direct load; Back/Forward restore after mounting.
+   if(mode!=='pop')window.scrollTo(0,0);
+   // Keep partial mounts disposable if a later module fails. Modules read the destination hash at mount,
+   // as on a direct load, so no hashchange follows a route swap.
    for(const module of nextModules){modules.push(module);await module.mount({root:newRoot,route,signal:controller.signal,direct:false});}
-   hashChanged(oldURL,url);
-   restoreAndFocus(mode==='pop'?(positions.get(entry.id)||entry.scroll):null,url.hash);
+   await restoreAndFocus(mode==='pop'?(positions.get(entry.id)||entry.scroll):null,url.hash);
    document.dispatchEvent(new window.CustomEvent('route-changed',{detail:{route,from:oldRoute}}));
    return true;
   }catch(error){
@@ -243,8 +295,10 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
    return fallback(url);
   }finally{swapping=false;}
  }
- function navigate(input,options){
-  const url=new URL(input,window.location.href);
+ function navigate(input,options={}){
+  let url;try{url=new URL(input,window.location.href);}catch{return Promise.resolve(false);}
+  // The public API only moves between the four routes; any other URL is left to the caller.
+  if(options.history!=='pop'&&!routeForURL(url,base))return Promise.resolve(false);
   if(latestRequest?.phase==='prepare')latestRequest.cancel();
   let cancel;const canceled=new Promise(resolve=>{cancel=()=>resolve(CANCELED);});
   const request={canceled,cancel,phase:'prepare',headAdditions:[]};latestRequest=request;
@@ -260,6 +314,7 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   activeEntry=entry.id;activeIndex=entry.index;browserEntry=entry;positions.set(activeEntry,entry.scroll);currentURL=window.location.href;
  };
  const guideReplace=function(state,title,url){
+  window.clearTimeout(persistTimer);persistTimer=null;
   const entry={id:activeEntry,index:activeIndex,scroll:scroll()};
   replaceState({...state,[STATE_KEY]:entry},title,url);
   positions.set(activeEntry,entry.scroll);currentURL=window.location.href;
@@ -278,13 +333,32 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
     else{event.stopImmediatePropagation();const delta=restoring.index-browserEntry?.index;if(Number.isFinite(delta)&&delta)history.go(delta);else assign(currentURL);}
     return;
    }
-   saveScroll(false);swapping=true;pendingPops++;
-   navigate(window.location.href,{history:'pop',state:event.state}).finally(()=>{if(!--pendingPops)swapping=false;});
+   const href=window.location.href,next=new URL(href),hashMoves=next.hash!==new URL(currentURL).hash;
+   const sameRoute=!pendingPops&&!swapping&&routeForURL(next,base)===route&&next.search===new URL(currentURL).search;
+   saveScroll(false);popHash=suppressHash=null;pendingPops++;
+   if(sameRoute){
+    // The mounted guide owns this traversal: its popstate and the browser's hashchange reach it once.
+    if(hashMoves)popHash=href;
+   }else{
+    // The incoming route reads the destination hash at mount; the browser's hashchange is held back.
+    swapping=true;if(hashMoves)suppressHash=href;
+   }
+   navigate(href,{history:'pop',state:event.state,nativeHash:sameRoute}).finally(()=>{if(!--pendingPops)swapping=false;});
   },{capture:true,signal});
-  window.addEventListener('scroll',()=>{if(!swapping)saveScroll();},{passive:true,signal});
+  window.addEventListener('scroll',()=>{
+   if(swapping||settle)return;
+   positions.set(activeEntry,scroll());
+   window.clearTimeout(persistTimer);persistTimer=window.setTimeout(persistScroll,400);
+  },{passive:true,signal});
+  const hide=()=>{if(!swapping&&!settle)positions.set(activeEntry,scroll());persistScroll();};
+  window.addEventListener('pagehide',hide,{signal});
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')hide();},{signal});
   window.addEventListener('hashchange',event=>{
    if(dispatchingHash)return;
+   if(suppressHash!==null&&event.newURL===suppressHash){suppressHash=null;event.stopImmediatePropagation();return;}
    if(swapping){event.stopImmediatePropagation();return;}
+   // Bookkeeping for a traversal belongs to its popstate; the guides still receive this event.
+   if(popHash!==null&&event.newURL===popHash){popHash=null;return;}
    saveScroll(false);
    if(history.state?.[STATE_KEY]?.id===activeEntry&&currentURL!==window.location.href)replaceState({...history.state,[STATE_KEY]:{id:marker(),index:activeIndex+1,scroll:scroll()}},'',window.location.href);
    browserEntry=ensureEntry();activeEntry=browserEntry.id;activeIndex=browserEntry.index??activeIndex;currentURL=window.location.href;
@@ -294,8 +368,16 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
    idle=window.requestIdleCallback?window.requestIdleCallback(warmRoutes,{timeout:1500}):window.setTimeout(warmRoutes,150);
   }
  }
- function stop(){listenerController.abort();if(history.pushState===guidePush)history.pushState=originalPush;if(history.replaceState===guideReplace)history.replaceState=originalReplace;if(idle!==null){if(window.cancelIdleCallback)window.cancelIdleCallback(idle);else window.clearTimeout(idle);}history.scrollRestoration=oldRestoration;}
- const publicRouter={navigate,prefetch,get route(){return route;}};
+ // Direct loads: a reload or cross-document Back/Forward returns to the saved position; otherwise a
+ // fragment rendered by the route modules is revealed as the browser would have.
+ async function restoreDirect(){
+  const type=window.performance?.getEntriesByType?.('navigation')?.[0]?.type;
+  if((type==='reload'||type==='back_forward')&&initialScroll){positions.set(activeEntry,initialScroll);applyScroll(initialScroll);return;}
+  if(window.location.hash)await revealFragment(document,window.location.hash,{focus:true});
+ }
+ function stop(){settle?.();window.clearTimeout(persistTimer);listenerController.abort();if(history.pushState===guidePush)history.pushState=originalPush;if(history.replaceState===guideReplace)history.replaceState=originalReplace;if(idle!==null){if(window.cancelIdleCallback)window.cancelIdleCallback(idle);else window.clearTimeout(idle);}history.scrollRestoration=oldRestoration;}
+ // routeFor lets a mounted guide tell its own history entries from another route's during Back/Forward.
+ const publicRouter={navigate,prefetch,routeFor:input=>{try{return routeForURL(new URL(input,window.location.href),base);}catch{return null;}},get route(){return route;}};
  window.TMURouter=publicRouter;
- return {...publicRouter,get route(){return route;},start,stop,adoptRoute({modules:initialModules,controller:initialController}){modules=initialModules;controller=initialController;}};
+ return {...publicRouter,get route(){return route;},start,stop,restoreDirect,adoptRoute({modules:initialModules,controller:initialController}){modules=initialModules;controller=initialController;}};
 }
