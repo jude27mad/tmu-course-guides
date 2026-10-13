@@ -1,0 +1,18 @@
+/* Plain shell palette; uses the guide's existing surface and type tokens. */
+.ns-palette{box-sizing:border-box;width:min(42rem,calc(100% - 2rem));max-height:calc(100dvh - 2rem);padding:1rem;border:1px solid var(--ns-glass-line,var(--hub-line));border-radius:.5rem;background:var(--ns-glass,var(--hub-panel));color:var(--hub-ink);font:inherit}
+.ns-palette::backdrop{background:var(--hub-soft)}
+.ns-palette header{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.ns-palette h2{font-size:1.25rem;margin:0}
+.ns-palette button,.ns-palette input{box-sizing:border-box;min-height:44px;border:1px solid var(--hub-line);border-radius:.25rem;background:var(--hub-panel);color:var(--hub-ink);font:inherit}
+.ns-palette button{padding:.5rem .75rem;cursor:pointer}
+.ns-palette-label{display:block;margin:1rem 0 .5rem;color:var(--hub-muted)}
+.ns-palette input{width:100%;padding:.75rem}
+.ns-palette :focus-visible{outline:2px solid var(--hub-focus);outline-offset:2px}
+#ns-palette-results{max-height:55dvh;overflow-y:auto;margin-top:.75rem}
+.ns-palette-group{padding:.75rem .5rem .25rem;color:var(--hub-muted);font-family:var(--ns-mono,monospace);font-size:.8rem}
+.ns-palette [role=option]{min-height:44px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:.25rem;padding:.6rem;border:1px solid transparent;border-radius:.25rem;cursor:pointer;overflow-wrap:anywhere}
+.ns-palette [aria-selected=true]{background:var(--hub-soft);border-color:var(--hub-focus)}
+.ns-palette [aria-disabled=true]{color:var(--hub-muted);cursor:default}
+.ns-palette small,.ns-palette-status{color:var(--hub-muted);font-size:.85rem}
+.ns-palette mark{color:var(--strong,var(--hub-ink));background:var(--hub-soft);font-weight:700}
+.ns-palette-status{margin:.75rem 0 0}

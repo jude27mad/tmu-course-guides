@@ -29,10 +29,13 @@ async function check(route,course,motion='off'){
  assert(visible(course==='cen100'?'#contact-section':'#section-select'),'section reachable');
  click('.workspace-tools');assert(d.querySelector(course==='cen100'?'#guide-tools':'#math-tools').open,'toolbar tools open');
  assert.equal(d.querySelector('.workspace-tools').getAttribute('aria-expanded'),'true','tools button announces expanded state');
- click('.workspace-search');assert(visible('#guide-search'),'search reachable');
+ click('.workspace-search');assert(d.querySelector('.ns-palette').open,'header search opens command palette');
+ d.querySelector('#ns-palette-input').value=course==='cen100'?'WHMIS':'quiz';d.querySelector('#ns-palette-input').dispatchEvent(new w.Event('input',{bubbles:true}));
+ d.querySelector('#ns-palette-input').dispatchEvent(new w.KeyboardEvent('keydown',{key:'End',bubbles:true}));d.querySelector('#ns-palette-input').dispatchEvent(new w.KeyboardEvent('keydown',{key:'Enter',bubbles:true}));
+ assert(visible('#guide-search'),'search reachable');
  const search=d.querySelector('#guide-search');search.value=course==='cen100'?'WHMIS':'quiz';search.dispatchEvent(new w.Event('input',{bubbles:true}));
  assert(d.querySelectorAll('#guide-search-results li').length>0,'search returns results');
- click('.workspace-search');assert.equal(search.value,'');
+ search.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));assert.equal(search.value,'');
  click('.workspace-nav [data-workspace-view="assignments"]');
  if(course==='cen100'){
   assert.equal(d.querySelector('#contact-section').value,'29','saved section restored at cen100/');
@@ -267,4 +270,68 @@ async function checkRoutes(base='https://guide.test/'){
   console.log('routes ('+new URL(base).pathname+'): one document, real modules, hashes, history, focus, saved state and '+rounds+' round trips passed');
  }finally{dom.window.close();}
 }
-(async()=>{await checkDesk('off','completed');await checkDesk('on','sections');await checkDesk('off','fresh');await check('cen100/','cen100');await check('mth140/','mth140');await check('mth141/','mth141');await check('cen100/','cen100','on');await check('mth140/','mth140','on');await check('mth141/','mth141','on');await checkRoutes();await checkRoutes('https://guide.test/tmu-course-guides/')})().catch(e=>{console.error(e);process.exit(1)});
+async function checkPalette(){
+ const {dom,w,d,errors,counters}=await createGuide({root,route:'mth140/',instrumentCounts:true,beforeParse(w){
+  const Native=w.Date;w.Date=class extends Native{constructor(...a){super(...(a.length?a:[NOON_OCT12]))}static now(){return NOON_OCT12}};
+  w.localStorage.setItem('mth140-section-v1','31');
+  w.localStorage.setItem('mth140-progress-v1',JSON.stringify({completed:{midterm:true},checks:{},notes:{},topics:{},targets:{}}));
+ }});
+ try{
+  await until(()=>d.querySelector('.ns-palette'),'palette shell did not mount');
+  const palette=d.querySelector('.ns-palette'),input=palette.querySelector('input'),core=w.__tmuModules['/assets/night/core.mjs'];
+  const key=(key,extra={},target=input)=>target.dispatchEvent(new w.KeyboardEvent('keydown',{key,bubbles:true,cancelable:true,...extra}));
+  const open=async(target=d.querySelector('.workspace-search'))=>{target.focus();key('k',{ctrlKey:true},target);await until(()=>palette.open,'Ctrl+K did not open palette');await pause(20);};
+  const query=text=>{input.value=text;input.dispatchEvent(new w.Event('input',{bubbles:true}));};
+  const active=()=>d.getElementById(input.getAttribute('aria-activedescendant'));
+  const launcher=d.querySelector('.workspace-search');await open(launcher);assert(core.held(),'open palette holds ambient motion');
+  assert.equal(input.getAttribute('role'),'combobox');assert.equal(input.getAttribute('aria-expanded'),'true');assert(active());
+  key('End');assert.match(active().textContent,/Search the guide/);key('Home');assert.match(active().textContent,/Lab Quiz 2/);
+  key('ArrowDown');assert.equal(active().getAttribute('aria-selected'),'true');
+  key('Escape');await pause(20);assert.equal(d.activeElement,launcher,'Escape restores launcher');assert(!core.held(),'Escape releases hold');
+  // Ordinary typing has no bare-character shortcut; modified K works inside a field.
+  const search=d.querySelector('#guide-search');key('k',{},search);assert(!palette.open,'bare k remains ordinary typing');
+  search.closest('#workspace-search').hidden=false;await open(search);assert.equal(d.activeElement,input,'modified K opens inside a field');key('Escape');await pause(20);assert(!palette.open);assert.equal(d.activeElement,search,'field focus restores after Escape');search.closest('#workspace-search').hidden=true;
+  launcher.focus();key('k',{metaKey:true},launcher);await pause(20);assert(palette.open,'Command+K opens palette');key('Escape');
+  d.querySelector('[data-ns-search]').click();await pause(20);assert(palette.open,'dock search opens palette');key('Escape');await pause(20);
+  await open(launcher);const closeControl=palette.querySelector('[data-palette-close]');closeControl.focus();
+  const closeNavigation=new w.KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true,cancelable:true});closeControl.dispatchEvent(closeNavigation);assert.equal(closeNavigation.defaultPrevented,false,'Close button retains native keyboard behavior');
+  const closeEnter=new w.KeyboardEvent('keydown',{key:'Enter',bubbles:true,cancelable:true});closeControl.dispatchEvent(closeEnter);assert.equal(closeEnter.defaultPrevented,false,'Close button Enter is not a combobox command');assert(palette.open);closeControl.click();await pause(20);assert(!palette.open);assert(!core.held(),'Close button releases palette hold');assert.equal(d.body.dataset.workspaceView,'assignments','Close button runs no selected command');
+  const listenerBaseline=counters.counts(),savedPause=w.localStorage.getItem('guide-motion-paused');
+  for(let i=0;i<20;i++){await open(launcher);key('Escape');await pause(5);}
+  assert.deepEqual(counters.counts(),listenerBaseline,'20 palette cycles leave listener and observer counts flat');assert.equal(w.localStorage.getItem('guide-motion-paused'),savedPause,'temporary palette hold never writes saved pause');
+  const quizDone=d.querySelector('[data-completed="quiz-2"]');quizDone.checked=true;quizDone.dispatchEvent(new w.Event('change',{bubbles:true}));await open(launcher);assert.match(active().textContent,/Lab Quiz 3/,'completion rebuilds next default');key('Escape');quizDone.checked=false;quizDone.dispatchEvent(new w.Event('change',{bubbles:true}));
+  const section=d.querySelector('#section-select');section.value='2';section.dispatchEvent(new w.Event('change',{bubbles:true}));await open(launcher);query('Lab Quiz 2');assert.match(active().textContent,/Mon Oct 19/,'section change rebuilds quiz precision and date');key('Escape');section.value='31';section.dispatchEvent(new w.Event('change',{bubbles:true}));
+  core.hold('external-test');await open(launcher);key('Escape');await pause(20);assert(core.held(),'palette close preserves another hold');core.release('external-test');
+  // Completed item hidden by a real filter and in another view must still open.
+  const hide=d.querySelector('#hide-completed');hide.checked=true;hide.dispatchEvent(new w.Event('change',{bubbles:true}));
+  w.CourseWorkspace.show('study',true);await open(launcher);query('midterm');assert.match(active().textContent,/Midterm Test/);assert(active().querySelector('mark'),'matching characters highlighted');
+  key('Enter');await until(()=>d.querySelector('.detail-sheet').open,'midterm did not open detail sheet');await pause(80);
+  assert.equal(d.body.dataset.workspaceView,'assignments');assert.equal(hide.checked,false,'opening clears Hide completed when needed');
+  assert(d.querySelector('.sheet-content #assessment-midterm'),'correct real midterm is in sheet');assert.equal(d.activeElement,d.querySelector('.sheet-close'),'sheet receives focus');
+  assert(!palette.open);assert.equal(input.getAttribute('aria-expanded'),'false');
+  d.querySelector('.sheet-close').click();await pause(40);assert(!core.held(),'all modal holds release after handoff closes');assert.notEqual(d.activeElement,launcher,'closing sheet does not bounce to old palette launcher');
+  // Cancelable book event hands control to a listener, otherwise timeline fallback works.
+  let selected=null;const book=event=>{selected=event.detail.index;event.preventDefault();};d.addEventListener('book-open-week',book);
+  await open(launcher);query('w9');key('Enter');await pause(40);assert.equal(selected,8,'week alias routes to zero-based book index');d.removeEventListener('book-open-week',book);
+  w.CourseWorkspace.show('info',true);await open(launcher);query('oct 13');key('Enter');await until(()=>d.activeElement.dataset.date==='2026-10-15','week fallback did not focus the selected item');
+  assert.equal(d.body.dataset.workspaceView,'assignments');assert.equal(d.activeElement.closest('.ns-timeline'),d.querySelector('.ns-timeline'),'unhandled week focuses timeline');assert.equal(d.activeElement.dataset.date,'2026-10-15','fallback focuses first item in selected week');
+  const timeline=d.querySelector('.ns-timeline'),rail=timeline.querySelector('.ns-tl-scroll'),track=timeline.querySelector('.ns-tl-track');
+  Object.defineProperty(track,'scrollWidth',{configurable:true,value:1000});Object.defineProperty(rail,'clientWidth',{configurable:true,value:200});rail.scrollLeft=0;
+  await open(launcher);query('week 9');key('Enter');await until(()=>d.activeElement===timeline,'empty week fallback did not focus timeline');
+  assert.equal(d.activeElement,timeline,'empty week fallback focuses timeline');assert(rail.scrollLeft>400,'empty week scrolls rail to selected week instead of Today');
+  await open(launcher);query('quiz');key('End');query('midterm');assert.match(active().textContent,/Midterm Test/,'new query selects the best result');query('quiz');key('End');key('Enter');await pause(20);assert.equal(search.value,'quiz');assert.equal(d.activeElement,search,'fallback search receives focus');assert(!d.querySelector('#workspace-search').hidden);assert(d.querySelectorAll('#guide-search-results li').length);
+  assert(d.querySelector('#topic-functions').hidden,'inline query actually hides unrelated topic');
+  await open(launcher);query('Functions & graphs');key('Enter');await until(()=>d.activeElement===d.querySelector('#topic-functions > summary'),'topic did not receive focus');
+  assert.equal(d.body.dataset.workspaceView,'study');assert(d.querySelector('#topic-functions').open);assert(!d.querySelector('#topic-functions').hidden,'topic action reveals an earlier search-filtered topic');
+  await open(launcher);query('Export calendar');const calendarResult=active();calendarResult.dispatchEvent(new w.MouseEvent('pointermove',{bubbles:true}));assert.equal(calendarResult.getAttribute('aria-selected'),'true');calendarResult.click();await pause(20);
+  assert.equal(d.body.dataset.workspaceView,'info');assert(d.querySelector('#calendar-tools').open);assert(d.querySelector('#math-tools').open);assert.equal(d.activeElement,d.querySelector('#calendar-tools > summary'),'calendar disclosure receives focus');
+  // The dialog and shell CSS survive the real router, including project-base URLs.
+  const css=d.querySelector('link[data-night="palette"]');assert(css?.hasAttribute('data-shell-style'),'palette CSS belongs to persistent shell');
+  await w.TMURouter.navigate('https://guide.test/mth141/');await pause(180);assert.equal(d.querySelector('.ns-palette'),palette);assert.equal(d.querySelector('link[data-night="palette"]'),css);
+  await open();query('midterm');assert.match(active().textContent,/Fri Oct 16/,'route change indexes destination deadlines');key('Escape');await pause(20);
+  await w.TMURouter.navigate('https://guide.test/');await pause(100);await open(d.querySelector('.hub-theme'));query('week 9');assert(palette.querySelector('[aria-disabled="true"]'),'Desk week results disabled');key('Escape');
+  assert.deepEqual(errors,[],'palette runtime errors');
+  console.log('palette: shortcuts, focus handoffs, filter opening, holds, weeks, fallback search, 20 cycles and route reindex passed');
+ }finally{dom.window.close();}
+}
+(async()=>{await checkPalette();await checkDesk('off','completed');await checkDesk('on','sections');await checkDesk('off','fresh');await check('cen100/','cen100');await check('mth140/','mth140');await check('mth141/','mth141');await check('cen100/','cen100','on');await check('mth140/','mth140','on');await check('mth141/','mth141','on');await checkRoutes();await checkRoutes('https://guide.test/tmu-course-guides/')})().catch(e=>{console.error(e);process.exit(1)});
