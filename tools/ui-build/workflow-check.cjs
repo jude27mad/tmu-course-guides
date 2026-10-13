@@ -203,12 +203,12 @@ async function checkDesk(motion,seed='completed'){
  console.log('desk ('+motion+', '+seed+'): directory, deadlines, switcher, saved sections and root forwarding checks passed');
  dom.window.close();
 }
-async function checkRoutes(base='https://guide.test/'){
+async function checkRoutes(base='https://guide.test/',motionMode='off'){
  const seeds={...SEEDS.completed,'mth141-section-v1':'31',
   'cen100-personal-plan-v1':JSON.stringify({completed:{integrity:1},notes:{y4:'Saved CEN'},targets:{}}),
   'mth140-progress-v1':JSON.stringify({completed:{'quiz-1':true},checks:{},notes:{'quiz-1':'Saved calculus'},targets:{},topics:{}}),
   'mth141-progress-v1':JSON.stringify({completed:{'quiz-1':true},checks:{},notes:{'quiz-1':'Saved algebra'},targets:{},topics:{}})};
- const {dom,w,d,errors,fallbacks,counters}=await createGuide({root,base,instrumentCounts:true,beforeParse(w){
+ const {dom,w,d,errors,fallbacks,counters}=await createGuide({root,base,motion:motionMode,instrumentCounts:true,beforeParse(w){
   for(const [key,value] of Object.entries(seeds))w.localStorage.setItem(key,value);
   const Native=w.Date;w.Date=class extends Native{constructor(...a){super(...(a.length?a:[NOON_OCT12]))}static now(){return NOON_OCT12}};
  }});
@@ -277,7 +277,7 @@ async function checkRoutes(base='https://guide.test/'){
   assert.equal(JSON.parse(w.localStorage.getItem('mth140-progress-v1')).completed['quiz-1'],undefined,'undoing completion survives later mounts');
   assert.equal(JSON.parse(w.localStorage.getItem('mth141-progress-v1')).completed['quiz-1'],true);
   d.querySelector('.hub-theme').click();assert.equal(d.documentElement.dataset.theme,'dark','one theme action uses one surviving controller');
-  console.log('routes ('+new URL(base).pathname+'): one document, real modules, hashes, history, focus, saved state and '+rounds+' round trips passed');
+  console.log('routes ('+new URL(base).pathname+', motion '+motionMode+'): one document, real modules, hashes, history, focus, saved state and '+rounds+' round trips passed');
  }finally{dom.window.close();}
 }
-(async()=>{await checkDesk('off','completed');await checkDesk('on','sections');await checkDesk('off','fresh');await check('cen100/','cen100');await check('mth140/','mth140');await check('mth141/','mth141');await check('cen100/','cen100','on');await check('mth140/','mth140','on');await check('mth141/','mth141','on');await checkRoutes();await checkRoutes('https://guide.test/tmu-course-guides/')})().catch(e=>{console.error(e);process.exit(1)});
+(async()=>{await checkDesk('off','completed');await checkDesk('on','sections');await checkDesk('off','fresh');await check('cen100/','cen100');await check('mth140/','mth140');await check('mth141/','mth141');await check('cen100/','cen100','on');await check('mth140/','mth140','on');await check('mth141/','mth141','on');await checkRoutes();await checkRoutes('https://guide.test/tmu-course-guides/');await checkRoutes('https://guide.test/tmu-course-guides/','on')})().catch(e=>{console.error(e);process.exit(1)});
