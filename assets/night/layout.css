@@ -55,6 +55,9 @@ body.workspace .header-upgraded .team,body.workspace .header-upgraded .eyebrow{l
  html.night body.workspace .header-upgraded h1{animation:ns-title-rise .9s var(--ns-ease) backwards}
  html.night body.workspace .header-upgraded .hero-copy>:not(h1){animation:ns-fade-up .7s var(--ns-ease) .18s backwards}
 }
+/* The arrival plays once. The pin later re-parents the header into its spacer, which would restart these
+   animations and hide a title the reader is already looking at; course-header marks the header arrived. */
+html.night body.workspace .header-upgraded.ns-arrived :is(h1,.hero-copy>*){animation:none}
 @keyframes ns-title-rise{from{clip-path:inset(0 0 100% 0);transform:translateY(.35em)}to{clip-path:inset(0 0 -20% 0);transform:none}}
 @keyframes ns-fade-up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .ns-hud{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:28px 0 0;font:500 11px/1.4 var(--ns-mono);letter-spacing:.1em;text-transform:uppercase;color:#c9d2cf}
@@ -489,3 +492,7 @@ html[data-book] .ns-book-pause{margin-left:auto;border-color:color-mix(in srgb,v
 .ns-weekview .ns-tl-today>span{display:none}
 .ns-weekview .ns-tl-today>i{top:27px}
 @media print{html[data-book] .header-upgraded::before,html[data-book] .header-upgraded::after,.ns-spread .ns-weeks,.ns-spread-jump{display:none!important}}
+
+/* The book pin (pinType transform) leaves the header in flow inside its spacer. GSAP copies the header's
+   width without its full-bleed margins, which would leave a strip on the right; let it fill the spacer. */
+html[data-book] body.workspace .pin-spacer>.course-heading.ns-scrub{width:auto!important;max-width:none!important}

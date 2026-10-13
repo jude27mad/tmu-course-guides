@@ -49,7 +49,7 @@ test('book-state is pure: no document, storage, timers or Three', async()=>{
   const source=readFileSync(new URL('../assets/book/book-state.mjs',import.meta.url),'utf8').replace(/\/\*[\s\S]*?\*\//g,'');
   for(const banned of [/localStorage|sessionStorage|indexedDB/,/\bset(?:Timeout|Interval)\b|requestAnimationFrame|requestIdleCallback/,/three|vendor\//i,/\bwindow\./,/(?<!globalThis\.)\bdocument\./])
     assert.doesNotMatch(source,banned);
-  const imports=[...source.matchAll(/from\s*'([^']+)'/g)].map(m=>m[1]).sort();
+  const imports=[...source.matchAll(/from\s*'([^']+)'/g)].map(m=>m[1].split('?')[0]).sort();
   assert.deepEqual(imports,['../night/targets.mjs','../schedule.mjs','./weeks.mjs']);
 });
 

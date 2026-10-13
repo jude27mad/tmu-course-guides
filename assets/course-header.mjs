@@ -65,6 +65,9 @@ function mountBook(ctx,life,header,course){
  art.setAttribute('aria-hidden','true');art.dataset.book=course;art.dataset.renderer='pending';art.dataset.motionState='still';
  const poster=document.createElement('img');poster.className='scene-poster';poster.alt='';poster.decoding='async';poster.fetchPriority='high';poster.draggable=false;
  art.append(poster);header.prepend(art);header.classList.add('header-upgraded');
+ // The CSS arrival (layout.css) plays once; after it, re-parenting by the pin must not replay it.
+ const arrived=setTimeout(()=>header.classList.add('ns-arrived'),1400);
+ life.own(()=>{clearTimeout(arrived);header.classList.remove('ns-arrived');});
  const phone=matchMedia('(max-width:760px)');
  const paintPoster=()=>{const paths=bookPosterPaths(course,currentTheme()),src=phone.matches?paths.tall:paths.wide;if(poster.getAttribute('src')!==src)poster.src=src;};
  paintPoster();
