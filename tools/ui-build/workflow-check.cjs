@@ -298,7 +298,22 @@ async function checkPalette(){
   const active=()=>d.getElementById(input.getAttribute('aria-activedescendant'));
   const launcher=d.querySelector('.workspace-search');await open(launcher);assert(core.held(),'open palette holds ambient motion');
   assert.equal(input.getAttribute('role'),'combobox');assert.equal(input.getAttribute('aria-expanded'),'true');assert(active());
-  key('End');assert.match(active().textContent,/Search the guide/);key('Home');assert.match(active().textContent,/Lab Quiz 2/);
+  // Wording from docs/copy/interface-copy.md (Command palette).
+  const options=()=>[...palette.querySelectorAll('[role="option"]')],groups=()=>[...palette.querySelectorAll('[role="group"]')].map(g=>[g.querySelector('.ns-palette-group').textContent,g.getAttribute('aria-label')]);
+  const clear=palette.querySelector('[data-palette-clear]'),empty=palette.querySelector('[data-palette-empty]'),live=palette.querySelector('[aria-live]');
+  assert.equal(input.placeholder,'Search courses, weeks, topics…');assert.equal(d.querySelector('label[for="ns-palette-input"]').textContent,'Search courses, assessments, weeks, and topics');
+  assert.deepEqual(groups(),[['Assessments','Assessments'],['Courses','Courses'],['Actions','Actions']],'curated default groups use the copy headings');
+  assert(!options().some(o=>/Search the guide/.test(o.textContent)),'no guide-search suggestion before a query');assert(clear.hidden,'Clear appears only with a query');
+  key('End');assert.match(active().textContent,/Open D2L/);key('Home');assert.match(active().textContent,/Lab Quiz 2/);
+  query('quiz');key('End');assert.equal(active().textContent,'Search the guide for "quiz"');assert.equal(active().getAttribute('aria-label'),'Search the guide for quiz');assert.equal(live.textContent,(options().length-1)+' results');
+  assert(!clear.hidden);assert.deepEqual([clear.textContent,clear.getAttribute('aria-label')],['Clear','Clear search']);
+  const close=palette.querySelector('[data-palette-close]');assert.deepEqual([close.textContent,close.getAttribute('aria-label')],['Close','Close search']);
+  query('qqzzxx');assert(!empty.hidden);assert.equal(empty.textContent,'No results for "qqzzxx"');assert.equal(live.textContent,'No results for qqzzxx. Try another search');
+  assert.deepEqual(options().map(o=>o.textContent),['Search the guide for "qqzzxx"'],'an empty search still offers the guide search');
+  clear.click();assert.equal(input.value,'');assert.equal(d.activeElement,input,'Clear returns focus to the search field');assert(clear.hidden&&empty.hidden);assert.equal(live.textContent,'');
+  query('week 9');assert.deepEqual(active().closest('[role="group"]').getAttribute('aria-label'),'Semester weeks');assert.equal(active().closest('[role="group"]').querySelector('.ns-palette-group').textContent,'Weeks');
+  query('limits');assert(groups().some(([visible,label])=>visible==='Topics'&&label==='Study topics'),'topic group heading');
+  query('');key('Home');assert.match(active().textContent,/Lab Quiz 2/);
   key('ArrowDown');assert.equal(active().getAttribute('aria-selected'),'true');
   key('Escape');await pause(20);assert.equal(d.activeElement,launcher,'Escape restores launcher');assert(!core.held(),'Escape releases hold');
   // Ordinary typing has no bare-character shortcut; modified K works inside a field.
@@ -315,6 +330,11 @@ async function checkPalette(){
   const quizDone=d.querySelector('[data-completed="quiz-2"]');quizDone.checked=true;quizDone.dispatchEvent(new w.Event('change',{bubbles:true}));await open(launcher);assert.match(active().textContent,/Lab Quiz 3/,'completion rebuilds next default');key('Escape');quizDone.checked=false;quizDone.dispatchEvent(new w.Event('change',{bubbles:true}));
   const section=d.querySelector('#section-select');section.value='2';section.dispatchEvent(new w.Event('change',{bubbles:true}));await open(launcher);query('Lab Quiz 2');assert.match(active().textContent,/Mon Oct 19/,'section change rebuilds quiz precision and date');key('Escape');section.value='31';section.dispatchEvent(new w.Event('change',{bubbles:true}));
   core.hold('external-test');await open(launcher);key('Escape');await pause(20);assert(core.held(),'palette close preserves another hold');core.release('external-test');
+  assert.equal(core.soundEnabled(),false,'sound is off by default');assert.equal(w.localStorage.getItem('tmu-guide-sound-v1'),null);
+  await open(launcher);query('sound on');assert.equal(active().querySelector('span').textContent,'Sound off');assert.equal(active().getAttribute('aria-label'),'Sound off. Turn sound on');key('Enter');await pause(20);
+  assert.equal(core.soundEnabled(),true,'palette turns sound on');assert.equal(w.localStorage.getItem('tmu-guide-sound-v1'),'true');assert(!core.held());
+  await open(launcher);query('sound');assert.equal(active().getAttribute('aria-label'),'Sound on. Turn sound off','label follows the saved state');key('Enter');await pause(20);
+  assert.equal(core.soundEnabled(),false,'palette turns sound off');assert.equal(w.localStorage.getItem('tmu-guide-sound-v1'),'false');w.localStorage.removeItem('tmu-guide-sound-v1');
   // Completed item hidden by a real filter and in another view must still open.
   const hide=d.querySelector('#hide-completed');hide.checked=true;hide.dispatchEvent(new w.Event('change',{bubbles:true}));
   w.CourseWorkspace.show('study',true);await open(launcher);query('midterm');assert.match(active().textContent,/Midterm Test/);assert(active().querySelector('mark'),'matching characters highlighted');
@@ -342,7 +362,7 @@ async function checkPalette(){
   const css=d.querySelector('link[data-night="palette"]');assert(css?.hasAttribute('data-shell-style'),'palette CSS belongs to persistent shell');
   await w.TMURouter.navigate('https://guide.test/mth141/');await pause(180);assert.equal(d.querySelector('.ns-palette'),palette);assert.equal(d.querySelector('link[data-night="palette"]'),css);
   await open();query('midterm');assert.match(active().textContent,/Fri Oct 16/,'route change indexes destination deadlines');key('Escape');await pause(20);
-  await w.TMURouter.navigate('https://guide.test/');await pause(100);await open(d.querySelector('.hub-theme'));query('week 9');assert(palette.querySelector('[aria-disabled="true"]'),'Desk week results disabled');key('Escape');
+  await w.TMURouter.navigate('https://guide.test/');await pause(100);await open(d.querySelector('.hub-theme'));query('week 9');assert(palette.querySelector('[aria-disabled="true"]'),'Desk week results disabled');assert(!options().some(o=>/Search the guide/.test(o.textContent)),'no guide search on the Desk');key('Enter');await pause(20);assert(palette.open,'a disabled Desk week runs nothing');key('Escape');
   assert.deepEqual(errors,[],'palette runtime errors');
   console.log('palette: shortcuts, focus handoffs, filter opening, holds, weeks, fallback search, 20 cycles and route reindex passed');
  }finally{dom.window.close();}

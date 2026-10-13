@@ -22,8 +22,8 @@ test('math index preserves real IDs and shared deadline precision without filter
  assert.match(midterm.hint,/Fri Oct 23.*6:30 PM Toronto/);
  assert.equal(index.entries.filter(e=>e.group==='Assessments').length,COURSES.mth140.assessments.length);
  assert.equal(index.entries.find(e=>e.id==='assessment-final').precision,'pending');
- assert(index.entries.some(e=>e.id==='view-study'));
- assert.deepEqual(index.entries.filter(e=>e.group==='Math topics').map(e=>e.target),COURSES.mth140.topics.map(t=>'topic-'+t.id));
+ assert.equal(index.entries.find(e=>e.id==='view-study').group,'Courses','course views sit with the course places');
+ assert.deepEqual(index.entries.filter(e=>e.group==='Topics').map(e=>e.target),COURSES.mth140.topics.map(t=>'topic-'+t.id));
  const defaultRows=palette.searchIndex(index,'');
  assert.equal(defaultRows[0].id,'assessment-quiz-2','real next deadline leads the curated default');
  assert(!defaultRows.some(e=>e.id==='assessment-midterm'),'completed assessments remain searchable without crowding default');
@@ -47,12 +47,35 @@ test('week query aliases route through the shared week model before fuzzy result
 });
 test('Desk has router places, disabled weeks and only available actions',()=>{
  const index=palette.buildIndex({course:'desk',exists:selector=>selector==='.hub-theme',base:'https://guide.test/tmu-course-guides/',now});
- assert.deepEqual(index.entries.filter(e=>e.group==='Places').map(e=>e.url),['https://guide.test/tmu-course-guides/','https://guide.test/tmu-course-guides/cen100/','https://guide.test/tmu-course-guides/mth140/','https://guide.test/tmu-course-guides/mth141/']);
- assert(!index.entries.some(e=>e.group==='Assessments'||e.group==='Views'||e.id==='action-calendar'));
+ assert.deepEqual(index.entries.filter(e=>e.type==='place').map(e=>e.url),['https://guide.test/tmu-course-guides/','https://guide.test/tmu-course-guides/cen100/','https://guide.test/tmu-course-guides/mth140/','https://guide.test/tmu-course-guides/mth141/']);
+ assert(index.entries.filter(e=>e.type==='place').every(e=>e.group==='Courses'));
+ assert(!index.entries.some(e=>e.group==='Assessments'||e.type==='view'||e.id==='action-calendar'));
  assert.equal(palette.searchIndex(index,'week 9')[0].disabled,true);
  assert(index.entries.some(e=>e.id==='action-motion'));
  const reduced=palette.buildIndex({course:'desk',motionForced:true,sound:true,theme:'light'});
  assert.equal(reduced.entries.find(e=>e.id==='action-motion').disabled,true);
- assert.equal(reduced.entries.find(e=>e.id==='action-sound').label,'Sound off');
+ const soundOn=reduced.entries.find(e=>e.id==='action-sound'),soundOff=index.entries.find(e=>e.id==='action-sound');
+ assert.deepEqual([soundOn.label,soundOn.ariaLabel],['Sound on','Sound on. Turn sound off'],'sound reads as its state, with the action for screen readers');
+ assert.deepEqual([soundOff.label,soundOff.ariaLabel],['Sound off','Sound off. Turn sound on']);
+ assert.equal(palette.searchIndex(index,'sound on')[0].id,'action-sound','the action words still find the control');
  assert.match(reduced.entries.find(e=>e.id==='action-theme').label,/light/i);
+});
+
+test('palette wording matches the interface copy document',async()=>{
+ const {readFileSync}=await import('node:fs');
+ const doc=readFileSync(new URL('../docs/copy/interface-copy.md',import.meta.url),'utf8');
+ const table=doc.split('## Command palette')[1].split('\n## ')[0];
+ const rows=Object.fromEntries(table.split('\n').filter(line=>/^\| [A-Z]/.test(line)&&!line.startsWith('| Element')).map(line=>{const [element,visible,label]=line.split('|').slice(1,4).map(cell=>cell.trim());return [element,{visible,label}];}));
+ const {COPY,GROUPS}=palette,q='{query}';
+ assert.deepEqual(Object.keys(rows),['Search placeholder','Group headings','Search suggestion','Empty results','Clear search','Close palette']);
+ assert.deepEqual([COPY.placeholder,COPY.label],[rows['Search placeholder'].visible,rows['Search placeholder'].label]);
+ assert.deepEqual([Object.keys(GROUPS).join(' · '),Object.values(GROUPS).join(' · ')],[rows['Group headings'].visible,rows['Group headings'].label]);
+ assert.deepEqual([COPY.suggestion(q),COPY.suggestionLabel(q)],[rows['Search suggestion'].visible,rows['Search suggestion'].label]);
+ assert.deepEqual([COPY.empty(q),COPY.emptyLabel(q)],[rows['Empty results'].visible,rows['Empty results'].label]);
+ assert.deepEqual([COPY.clear,COPY.clearLabel],[rows['Clear search'].visible,rows['Clear search'].label]);
+ assert.deepEqual([COPY.close,COPY.closeLabel],[rows['Close palette'].visible,rows['Close palette'].label]);
+ // Every group the index produces has a heading from the copy.
+ const groups=new Set();
+ for(const [course,data] of [['mth140',COURSES.mth140],['mth141',COURSES.mth141],['cen100',SCHEDULE],['desk',null]])for(const e of palette.buildIndex({course,data,section:course==='cen100'?29:31,itemTitles:{y9:'Final exam'},now}).entries)groups.add(e.group);
+ assert.deepEqual([...groups].filter(group=>!Object.hasOwn(GROUPS,group)),[],'no group heading outside the copy');
 });
