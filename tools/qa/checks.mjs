@@ -7,6 +7,11 @@ const routeURL = (env, route, query='') => env.origin + env.base + (route === 'd
 const equal = (a,b) => JSON.stringify(a) === JSON.stringify(b);
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const result = () => ({assertions:[], observations:{cases:[]}, skipped:[]});
+const physicalClickTimeouts=new WeakMap();
+// SwiftShader clicks approached nine seconds in a settled, error-free document.
+// Allow renderer/driver actionability overhead; semantic readiness keeps its own limits.
+export const clickTimeoutMs=({gpu,browserName}={})=>gpu===false&&browserName==='chromium'?30000:10000;
+const physicalClickOptions=page=>({timeout:physicalClickTimeouts.get(page)??10000});
 function assert(out, name, pass, actual, expected, detail) {
   out.assertions.push({name,pass:!!pass,...(actual===undefined?{}:{actual}),...(expected===undefined?{}:{expected}),...(detail?{detail}:{})});
 }
@@ -67,6 +72,9 @@ async function runCase(env, out, name, fn, {storage={},contextOptions={},browser
     await context.addInitScript(seed => {try{for(const [key,value] of Object.entries(seed)) localStorage.setItem(key, typeof value==='string'?value:JSON.stringify(value));}catch{}}, storage);
     page = await context.newPage();
     page.setDefaultTimeout(10000);
+    const physicalClickTimeoutMs=clickTimeoutMs({gpu:env.gpu,browserName:browser.browserType?.().name?.()});
+    physicalClickTimeouts.set(page,physicalClickTimeoutMs);
+    observation.physicalClickTimeoutMs=physicalClickTimeoutMs;
     const errors = telemetry(page);
     observation.telemetry = errors;
     if(process.env.QA_NAV_DIAGNOSTICS==='1') {
@@ -138,7 +146,7 @@ async function settle(page,out) {
 }
 
 async function navigate(page, route) {
-  await page.locator(`[data-course-link="${route}"]`).click();
+  await page.locator(`[data-course-link="${route}"]`).click(physicalClickOptions(page));
   await ready(page,route);
 }
 
@@ -211,11 +219,11 @@ export function countGrowth(before,after) {
 
 async function completionCycle(page,out,label) {
   const before=await page.locator('[data-quick-complete]').first().getAttribute('data-quick-complete');
-  await page.locator('[data-quick-complete]').first().click();
+  await page.locator('[data-quick-complete]').first().click(physicalClickOptions(page));
   await page.locator('#undo-complete').waitFor({state:'visible'});
   const advanced=await page.locator('[data-quick-complete]').first().getAttribute('data-quick-complete');
   assert(out,`${label}: Mark done advances target`,advanced!==before,{before,advanced},'different target');
-  await page.locator('#undo-complete').click();
+  await page.locator('#undo-complete').click(physicalClickOptions(page));
   await until(()=>page.evaluate(id=>document.querySelector('[data-quick-complete]')?.dataset.quickComplete===id,before),'Undo restores target');
   assert(out,`${label}: Undo restores target`,await page.locator('[data-quick-complete]').first().getAttribute('data-quick-complete')===before,before,before);
 }
@@ -236,7 +244,7 @@ export async function stability(env) {
     // Desk state. Warm-up counts are reported rather than excluded silently.
     for(const route of ['cen100','mth140','mth141','desk']) {await navigate(page,route);await settle(page,out);}
     await navigate(page,'mth140');
-    for(const view of ['study','info','assignments']) await page.locator(`[data-workspace-view="${view}"]`).click();
+    for(const view of ['study','info','assignments']) await page.locator(`[data-workspace-view="${view}"]`).click(physicalClickOptions(page));
     await navigate(page,'cen100'); await completionCycle(page,out,'warm-up');
     const palette=await page.locator('dialog.ns-palette,dialog#ns-palette,dialog[data-command-palette]').count();
     if(palette) await paletteCycle(page);
@@ -250,7 +258,7 @@ export async function stability(env) {
     await navigate(page,'mth140');
     for(let i=0;i<20;i++) {
       const view=['study','info','assignments'][i%3];
-      await page.locator(`[data-workspace-view="${view}"]`).click();
+      await page.locator(`[data-workspace-view="${view}"]`).click(physicalClickOptions(page));
       await until(()=>page.evaluate(view=>document.body.dataset.workspaceView===view,view),'workspace view change');
     }
     if(palette) for(let i=0;i<20;i++) await paletteCycle(page);

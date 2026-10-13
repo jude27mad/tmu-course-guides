@@ -1,6 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {CHECKS,compactExact,countGrowth,summarizeFrames,until} from './checks.mjs';
+import * as checks from './checks.mjs';
+
+test('only the explicit SwiftShader launch receives a longer physical-click budget',()=>{
+  const {clickTimeoutMs}=checks;
+  assert.equal(typeof clickTimeoutMs,'function');
+  assert.equal(clickTimeoutMs({gpu:false,browserName:'chromium'}),30000);
+  for(const options of [{gpu:true,browserName:'chromium'},{gpu:false,browserName:'webkit'},{gpu:false,browserName:'firefox'},{gpu:false},{gpu:undefined,browserName:'chromium'},{}])assert.equal(clickTimeoutMs(options),10000);
+});
 
 test('all six required checks are independently runnable',()=>{
   assert.deepEqual(Object.keys(CHECKS),['routes','stability','frames','deadlines','modes','layout']);
