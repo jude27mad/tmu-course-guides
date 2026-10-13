@@ -18,7 +18,7 @@
  *   - an empty week reads "Nothing scheduled"; a completed entry is announced as "marked complete in this
  *     browser".
  */
-import {resolveTarget,parts,compact} from '../night/targets.mjs';
+import {resolveTarget,parts,compact} from '../night/targets.mjs?v=20261013-shift1';
 import {popupRank} from './weeks.mjs';
 import {today as torontoDay,addDays,dateLabel,dayLabel} from '../schedule.mjs';
 

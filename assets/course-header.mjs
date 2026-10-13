@@ -5,10 +5,10 @@ import {BOOK_COURSES,bookPosterPaths,currentTheme,onTheme} from './book/course-s
 import {createBookState,attachBookState,detachBookState,describeSpread,setBookHost} from './book/book-state.mjs';
 import {recordsForCourse,semesterWeeks,currentWeekIndex} from './book/weeks.mjs';
 import {COURSES} from './course-data.mjs?v=20261012-assessments2';
-import {held,openItem,today as torontoToday,addDays,timestamp} from './night/core.mjs?v=20261013-shift1';
+import {held,openItem,today as torontoToday,addDays,timestamp} from './night/core.mjs?v=20261013-shift2';
 import {readSaved} from './night/targets.mjs?v=20261013-shift1';
-import {currentTarget} from './night/deadline.mjs?v=20261013-shift1';
-import {mountRail} from './night/timeline.mjs?v=20261013-shift1';
+import {currentTarget} from './night/deadline.mjs?v=20261013-shift2';
+import {mountRail} from './night/timeline.mjs?v=20261013-shift2';
 let live;
 export function mount(ctx={}){
  unmount();
