@@ -8,14 +8,14 @@ const root=new URL('..',import.meta.url).pathname;
 async function fixture(){
  const shim=`export * from '${root}tools/scene-build/node_modules/three/build/three.module.js';
  import {Texture} from '${root}tools/scene-build/node_modules/three/build/three.module.js';
- export class WebGLRenderer{constructor(){this.debug={};this.info={render:{calls:0,triangles:0},reset(){}};}setPixelRatio(){}setSize(){}render(){}dispose(){window.rendererDisposals++;}compileAsync(){window.notifyCompile();return new Promise(r=>window.finishCompile=r);}}
+ export class WebGLRenderer{constructor(){this.debug={};this.info={render:{calls:0,triangles:0},reset(){}};this.properties={get:()=>({uniforms:{dfgLUT:{value:window.sharedLUT}}})};}setPixelRatio(){}setSize(){}render(){}dispose(){window.rendererDisposals++;}forceContextLoss(){window.contextLosses++;}compileAsync(){window.notifyCompile();return new Promise(r=>window.finishCompile=r);}}
  export class PMREMGenerator{fromScene(){return{texture:new Texture(),dispose(){window.environmentDisposals++;}}}dispose(){}}
  export {RoundedBoxGeometry} from '${root}tools/scene-build/node_modules/three/examples/jsm/geometries/RoundedBoxGeometry.js';
  export {mergeGeometries} from '${root}tools/scene-build/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js';`;
  const plugin={name:'pending-shader',setup(b){b.onResolve({filter:/vendor\/three-0\.186\.1/},()=>({path:'renderer',namespace:'renderer'}));b.onLoad({filter:/.*/,namespace:'renderer'},()=>({contents:shim,resolveDir:root}));b.onLoad({filter:/\.mjs$/,namespace:'file'},async a=>({contents:(await readFile(a.path,'utf8')).replaceAll('import.meta.url',JSON.stringify('https://guide.test/assets/'+a.path.split('/assets/')[1])),loader:'js'}));}};
  const script=(await build({stdin:{contents:"import * as header from './assets/course-header.mjs';window.header=header;",resolveDir:root},bundle:true,format:'iife',write:false,logLevel:'silent',plugins:[plugin]})).outputFiles[0].text;
  const dom=new JSDOM('<body class="workspace" data-course="cen100"><main><header class="circuit-head"><div class="hero-copy"><p class="team">Fall 2026</p><h1>Engineering</h1></div></header></main></body>',{url:'https://guide.test/cen100/',runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window;
- let observers=0;w.rendererDisposals=w.environmentDisposals=0;
+ let observers=0;w.rendererDisposals=w.environmentDisposals=w.contextLosses=w.lutDisposals=0;w.sharedLUT={dispose(){w.lutDisposals++;}};
  w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}});
  for(const name of ['MutationObserver','ResizeObserver','IntersectionObserver'])w[name]=class{observe(){observers++;this.active=true;}disconnect(){if(this.active){observers--;this.active=false;}}};
  w.HTMLCanvasElement.prototype.getContext=type=>type==='webgl2'?{}:null;
@@ -42,7 +42,9 @@ test('header teardown releases a scene while shader compilation is still pending
  try{
  const pending=w.header.mount(f.ctx);await f.started;
  const art=w.document.querySelector('.header-art'),press=new w.Event('pointerdown');Object.assign(press,{pointerId:12,clientX:10,clientY:10,button:0});art.dispatchEvent(press);assert(captured.has(12));
- f.controller.abort();w.header.unmount();assert.equal(f.observers(),0,'no scene observers survive pending compile');assert.equal(w.rendererDisposals,1);assert.equal(w.environmentDisposals,1);assert.equal(captured.size,0,'teardown releases pointer capture');
- w.finishCompile();await pending;await Promise.resolve();await Promise.resolve();assert.equal(w.rendererDisposals,1,'late completion does not dispose twice');
+ f.controller.abort();w.header.unmount();assert.equal(f.observers(),0,'no scene observers survive pending compile');assert.equal(w.rendererDisposals,1);assert.equal(w.environmentDisposals,1);
+ // The GPU context is released with the scene, and the page-wide BRDF lookup texture drops its hold on this renderer.
+ assert.equal(w.contextLosses,1,'teardown releases the WebGL context');assert.equal(w.lutDisposals,1,'shared lookup texture lets go of the old renderer');assert.equal(captured.size,0,'teardown releases pointer capture');
+ w.finishCompile();await pending;await Promise.resolve();await Promise.resolve();assert.equal(w.rendererDisposals,1,'late completion does not dispose twice');assert.equal(w.contextLosses,1,'late completion does not release twice');
  }finally{f.close();}
 });

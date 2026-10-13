@@ -1,5 +1,5 @@
 import {COURSES} from './course-data.mjs?v=20261012-assessments2';
-import {DAY_NAMES,today,daysUntil,dateLabel,clock,resolveAssessment,assessmentPassed,upcoming,timing,calendar,addDays} from './schedule.mjs?v=20261012-assessments1';
+import {DAY_NAMES,today,daysUntil,dateLabel,clock,resolveAssessment,assessmentPassed,upcoming,timing,calendar,addDays} from './schedule.mjs';
 
 let activeCleanup=null;
 export function unmount(){const cleanup=activeCleanup;activeCleanup=null;cleanup?.();}

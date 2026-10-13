@@ -3,7 +3,7 @@
    Shared surface for other modules (this file is imported with a query string, so never import it):
    window.NightScroll = {refresh(), scrollTo(target,{immediate,offset}), lenis()}, or dispatch 'night-refresh'. */
 import {scope} from '../route-lifecycle.mjs';
-import {vendor,META,TERM,escape,$,$$,motionAllowed,ambientAllowed,onAmbient,hold,release,held,finePointer,atLeast,onTier,track,dispose,view,frames} from './core.mjs';
+import {vendor,META,TERM,escape,$,$$,motionAllowed,ambientAllowed,onAmbient,hold,release,held,finePointer,atLeast,onTier,track,dispose,view,frames} from './core.mjs?v=20261013-shift1';
 
 const SCOPE='scroll';
 const ROWS='#assessment-list>li,#teamlist>.tile,#youlist>.tile';

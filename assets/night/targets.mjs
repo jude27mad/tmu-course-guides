@@ -13,7 +13,7 @@ const isRecord=v=>!!v&&typeof v==='object'&&!Array.isArray(v);
 /* Shared records. The CEN guide already holds the one schedule array, so reuse it there. course-data uses the
    math guide's own URL so a math page keeps a single module instance. */
 export function loadData(course){
- if(course==='cen100')return globalThis.CEN_SCHEDULE?Promise.resolve(globalThis.CEN_SCHEDULE):import('../cen-schedule.mjs?v=20261012-desk1').then(m=>m.SCHEDULE);
+ if(course==='cen100')return globalThis.CEN_SCHEDULE?Promise.resolve(globalThis.CEN_SCHEDULE):import('../cen-schedule.mjs?v=20261013-shift1').then(m=>m.SCHEDULE);
  return import('../course-data.mjs?v=20261012-assessments2').then(m=>m.COURSES[course]);
 }
 

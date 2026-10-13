@@ -66,7 +66,7 @@ export async function revealFragment(document,hash,{focus=false}={}){
 }
 // Shell modules load once per document. A route document that names different shell URLs belongs to
 // another deploy, so it gets a real document load instead of new route modules on an old shell.
-const SHELL_SCRIPTS='script[data-shell-module][src],script[type="module"][src]:not([data-route-module])';
+const SHELL_SCRIPTS='script[data-shell-module][src],script[src*="app/route-boot.mjs"]';
 export const shellSignature=(doc,url)=>[...doc.querySelectorAll(SHELL_SCRIPTS)].map(script=>new URL(script.getAttribute('src'),url).href).sort().join('\n');
 
 function stylesheetReady(link,window){

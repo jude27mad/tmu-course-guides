@@ -5,7 +5,7 @@
    The field is quiet on purpose: low contrast, calmer through the reading column, near-still while the visitor
    reads, and at rest while the hero leads, while a palette or sheet holds the page, when motion is paused or
    reduced and when the tab is hidden. At rest it keeps its last frame. Pointer and scroll only ever nudge it. */
-import {META,finePointer,ambientAllowed,onAmbient,motionAllowed,held,tier,atLeast,onTier,vendor} from './core.mjs';
+import {META,finePointer,ambientAllowed,onAmbient,motionAllowed,held,tier,atLeast,onTier,vendor} from './core.mjs?v=20261013-shift1';
 
 const MOTIF={mechanism:0,flow:1,plane:2}[META.motif]??0;
 // Drawing-buffer caps in pixels. The canvas is CSS-scaled up, which a soft field never shows.

@@ -250,6 +250,18 @@ async function checkRoutes(base='https://guide.test/'){
   {const back=changed('mth140');w.history.back();await back;assertRoute('mth140');}
   {const forward=changed('mth141');w.history.forward();await forward;assertRoute('mth141');}
   await move('desk');assert.equal(d.querySelector('.ns-dock'),dock,'dock survives returning to Desk');assert(dock.hidden,'course dock is hidden on Desk');
+  const snapshot=()=>Object.fromEntries(Array.from({length:w.localStorage.length},(_,i)=>w.localStorage.key(i)).sort().map(key=>[key,w.localStorage.getItem(key)]));
+  const saved=snapshot();
+  // Real clicks on the sidebar and the dock's Desk link, not only router.navigate().
+  const click=async(selector,route)=>{d.querySelector(selector).click();await until(()=>router.route===route,selector+' did not navigate');await pause(1);assertRoute(route);};
+  await click('.course-link[data-course-link="mth140"]','mth140');
+  await click('.ns-dock-desk','desk');
+  // A CEN item link behaves as on a direct load: the tile opens in place (cen-guide mounts before visuals.js), no sheet.
+  await move('cen100','#assignment-y4');
+  assert.equal(d.querySelector('#guide-item-y4 .head').getAttribute('aria-expanded'),'true','destination CEN item opens');
+  assert.equal(d.querySelector('.detail-sheet').open,false,'no extra hashchange opens the CEN item a second time as a sheet');
+  await click('.hub-brand','desk');
+  assert.deepEqual(snapshot(),saved,'sidebar, dock and deep-link navigation leave saved data byte-identical');
   const counts=new Map(),rounds=new URL(base).pathname==='/'?20:1;
   for(let round=0;round<rounds;round++){
    for(const route of ['cen100','mth140','mth141','desk']){
@@ -260,6 +272,7 @@ async function checkRoutes(base='https://guide.test/'){
     assert.equal(d.querySelectorAll('.lab-dialog').length,route.startsWith('mth')?1:0,'no stale lab dialogs');
    }
   }
+  assert.deepEqual(snapshot(),saved,'round trips leave every saved key and value unchanged');
   assert.equal(JSON.parse(w.localStorage.getItem('cen100-personal-plan-v1')).completed.integrity,1);
   assert.equal(JSON.parse(w.localStorage.getItem('mth140-progress-v1')).completed['quiz-1'],undefined,'undoing completion survives later mounts');
   assert.equal(JSON.parse(w.localStorage.getItem('mth141-progress-v1')).completed['quiz-1'],true);

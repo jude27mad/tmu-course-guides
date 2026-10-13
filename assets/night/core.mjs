@@ -1,9 +1,9 @@
 /* Night Shift runtime: shared state for the layer that sits on top of the existing guide modules.
    Services start once; view-bound effects register disposers and are rebuilt per view. */
 export {timestamp,clock,dateLabel,dayLabel,today,addDays,resolveAssessment,timing} from '../schedule.mjs';
-import {loadData} from './targets.mjs';
+import {loadData} from './targets.mjs?v=20261013-shift1';
 
-export const VERSION='20261012-night2';
+export const VERSION='20261013-shift1';
 /* Resolve paths against this file. Dynamic imports built this way share module instances with the guide
    (gsap-3.15.0.mjs resolves to the same URL guide-motion.mjs imports), so there is only one GSAP core. */
 export const asset=path=>new URL(path,import.meta.url).href;
@@ -20,6 +20,8 @@ export const toggleMotion=()=>setScenePaused(!preference().scenePaused);
 /* Page mode is explicit. The Desk (site root, body[data-page=desk]) has no course identity, so nothing may fall
    back to CEN100 there: course is 'desk' and META is null. Course pages keep their data-course. */
 // Legacy course, META, page and isDesk exports are live bindings. isMathCourse is the legacy boolean.
+// isMath changed from a boolean (f620a7e) to an accessor because the route changes in place: call isMath().
+// A bare `if(isMath)` is always true; every in-repo caller uses the call form.
 export let isDesk=document.body.dataset.page==='desk';
 export let page=isDesk?'desk':'course';
 export let course=isDesk?'desk':document.body.dataset.course||'cen100';

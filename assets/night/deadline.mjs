@@ -1,10 +1,10 @@
 /* One resolved deadline feeds the next card, the dock chip and the hero line.
    Resolution is targets.mjs (the same data-level rules the Desk uses); this file is the course-page adapter.
    A timer is shown only when the date and time are actually known. */
-import {course,isMath,META,$,escape,asset,courseData,ambientAllowed,preference,toggleMotion} from './core.mjs';
+import {course,isMath,META,$,escape,asset,courseData,ambientAllowed,preference,toggleMotion} from './core.mjs?v=20261013-shift1';
 import {scope} from '../route-lifecycle.mjs';
-import {loadData,readSaved,resolveTarget,parts,compact,sentence,GRACE} from './targets.mjs';
-export {parts,compact} from './targets.mjs';
+import {loadData,readSaved,resolveTarget,parts,compact,sentence,GRACE} from './targets.mjs?v=20261013-shift1';
+export {parts,compact} from './targets.mjs?v=20261013-shift1';
 
 let target=null,data$=null,tickTimer=0,lastMinute='',live=null;
 let dock=null,dockLife=null;

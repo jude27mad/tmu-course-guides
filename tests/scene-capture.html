@@ -5,6 +5,6 @@
 // Dedicated capture fixture: retain actual GPU pixels; production buffers stay disposable.
 const getContext=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type,opts){return getContext.call(this,type,{...opts,preserveDrawingBuffer:true});};
 const q=new URLSearchParams(location.search),course=q.get('course')||'cen100',art=document.querySelector('.header-art');
-const {mountScene}=await import('../assets/course-scene.mjs?v=20261012-night2');const handle=await mountScene(art,course);
+const {mountScene}=await import('../assets/course-scene.mjs?v=20261013-shift1');const handle=await mountScene(art,course);
 setInterval(()=>{document.querySelector('#status').textContent=JSON.stringify(art.dataset);},500);
 </script>

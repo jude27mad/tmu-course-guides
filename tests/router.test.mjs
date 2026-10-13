@@ -8,8 +8,9 @@ let routerModule;
 try{routerModule=await import('../assets/app/router.mjs');}catch(error){if(error.code!=='ERR_MODULE_NOT_FOUND')throw error;}
 const need=()=>{assert.ok(routerModule,'The route router exists');return routerModule;};
 const html=(route='desk',{modules=['first','second'],styles=['common.css'],inline='',region=true}={})=>`<!doctype html><html><head><title>${route} title</title><meta name="description" content="${route} description">${styles.map(href=>`<link rel="stylesheet" href="${href}">`).join('')}${inline?`<style>${inline}</style>`:''}${modules.map(name=>`<script type="module" data-route-module src="modules/${name}.mjs"></script>`).join('')}</head><body class="${route}-class" ${route==='desk'?'data-page="desk"':`data-course="${route}"`}><a class="skip-link" href="#${route}-main">Skip</a>${region?`<main data-route-region id="${route}-main"><h1>${route} heading</h1><a href="../mth140/">Course</a></main>`:''}${route==='desk'?'<footer data-route-content>Desk footer</footer>':''}</body></html>`;
-function fixture(options={}){
- const dom=new JSDOM(html(),{url:'https://guide.test/tmu-course-guides/',pretendToBeVisual:true});
+const until=async(predicate,message,timeout=3000)=>{const start=Date.now();while(!predicate()){if(Date.now()-start>timeout)throw Error(message);await new Promise(resolve=>setTimeout(resolve,5));}};
+function fixture({page,...options}={}){
+ const dom=new JSDOM(page||html(),{url:'https://guide.test/tmu-course-guides/',pretendToBeVisual:true});
  const {window}=dom,events=[],calls=[],fallback=[];
  let x=0,y=0;
  Object.defineProperties(window,{scrollX:{get:()=>x},scrollY:{get:()=>y}});
@@ -292,7 +293,7 @@ test('head sync never moves a loaded sheet, keeps incoming sheets inert until co
  new window.MutationObserver(records=>{for(const r of records)for(const node of [...r.removedNodes,...r.addedNodes])if(node===fonts||node===hub)moved.push(node);}).observe(head,{childList:true});
  const resolved=()=>[...head.querySelectorAll('link[rel="stylesheet"]')].map(link=>new URL(link.getAttribute('href'),link===fonts||link===hub?'https://guide.test/tmu-course-guides/cen100/':window.location.href).pathname);
  let changed=new Promise(resolve=>window.document.addEventListener('route-changed',resolve,{once:true}));
- window.history.back();await new Promise(resolve=>setTimeout(resolve,0));
+ window.history.back();await until(()=>head.querySelector('link[href$="desk.css"]'),'incoming sheet was not prepared');
  const incoming=head.querySelector('link[href$="desk.css"]');
  assert.equal(incoming.getAttribute('media'),'not all','incoming sheet loads without restyling the outgoing route');
  assert.equal(incoming.getAttribute('href'),'https://guide.test/tmu-course-guides/assets/desk.css','incoming href is absolute');
@@ -301,7 +302,7 @@ test('head sync never moves a loaded sheet, keeps incoming sheets inert until co
  assert.equal(router.route,'desk');assert.equal(incoming.hasAttribute('media'),false,'incoming sheet applies at commit');
  assert.deepEqual(resolved(),['/tmu-course-guides/assets/fonts.css','/tmu-course-guides/assets/hub.css','/tmu-course-guides/assets/desk.css']);
  loading=gate();changed=new Promise(resolve=>window.document.addEventListener('route-changed',resolve,{once:true}));
- window.history.forward();await new Promise(resolve=>setTimeout(resolve,0));release();await changed;
+ window.history.forward();await until(()=>head.querySelector('link[href$="cen.css"]'),'incoming sheet was not prepared');release();await changed;
  assert.equal(router.route,'cen100');
  assert.deepEqual(resolved(),['/tmu-course-guides/assets/fonts.css','/tmu-course-guides/assets/hub.css','/tmu-course-guides/assets/cen.css']);
  assert.equal(fonts.isConnected&&hub.isConnected,true);assert.deepEqual(moved,[],'shared sheets were never removed or re-inserted');
@@ -343,7 +344,7 @@ test('same-route Back reaches the guide once; a cross-route Back leaves the outg
  f.window.addEventListener('hashchange',()=>seen.push(['hashchange',f.router.route,f.window.location.hash]));
  await f.router.navigate('cen100/');
  f.window.history.pushState(null,'','#course-info');f.window.history.pushState(null,'','#assignments');
- f.window.history.back();await new Promise(resolve=>setTimeout(resolve,0));
+ f.window.history.back();await until(()=>seen.length>=2,'Back did not reach the guide');await new Promise(resolve=>setTimeout(resolve,50));
  assert.deepEqual(seen,[['popstate','cen100','#course-info'],['hashchange','cen100','#course-info']],'one popstate and one hashchange');
  seen.length=0;await f.router.navigate('../mth140/#study');
  const changed=new Promise(resolve=>f.window.document.addEventListener('route-changed',resolve,{once:true}));
@@ -359,10 +360,9 @@ test('the public navigate() only moves between the four routes',async()=>{
 });
 
 test('a destination from another deploy (different shell modules) gets a real document load',async()=>{
- const f=fixture();f.window.document.head.insertAdjacentHTML('beforeend','<script type="module" data-shell-module src="assets/core.mjs?v=1"></script>');
- f.documents.set('cen100',html('cen100').replace('</head>','<script type="module" data-shell-module src="../assets/core.mjs?v=2"></script></head>'));
+ const shell=(route,version)=>html(route).replace('</head>',`<script type="module" data-shell-module src="${route==='desk'?'':'../'}assets/core.mjs?v=${version}"></script></head>`);
+ const f=fixture({page:shell('desk',1)});f.documents.set('cen100',shell('cen100',2));
  assert.equal(await f.router.navigate('cen100/'),false);assert.deepEqual(f.fallback,['https://guide.test/tmu-course-guides/cen100/']);f.close();
- const g=fixture();g.window.document.head.insertAdjacentHTML('beforeend','<script type="module" data-shell-module src="assets/core.mjs?v=1"></script>');
- g.documents.set('cen100',html('cen100').replace('</head>','<script type="module" data-shell-module src="../assets/core.mjs?v=1"></script></head>'));
+ const g=fixture({page:shell('desk',1)});g.documents.set('cen100',shell('cen100',1));
  assert.equal(await g.router.navigate('cen100/'),true,'the same shell swaps in place');g.close();
 });

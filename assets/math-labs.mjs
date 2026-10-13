@@ -1,6 +1,6 @@
 import {transformed,multiply,intersection,secant,limitValue,limitFacts} from './lab-math.mjs';
-import {mountComposition} from './lab-composition.mjs?v=20261011-studio3';
-import {mountChallenges} from './lab-challenges.mjs';
+import {mountComposition} from './lab-composition.mjs?v=20261013-shift1';
+import {mountChallenges} from './lab-challenges.mjs?v=20261013-shift1';
 let activeCleanup=null;
 export function unmount(){const cleanup=activeCleanup;activeCleanup=null;cleanup?.();}
 export function mount(ctx={}){
