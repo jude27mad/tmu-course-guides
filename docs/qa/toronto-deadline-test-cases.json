@@ -1,0 +1,639 @@
+[
+  {
+    "id": "T01",
+    "now": "2026-09-07T23:59:00-04:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-09-08T00:00:00-04:00"
+    },
+    "expected": {
+      "nowWeek": null,
+      "deadlineWeek": 1,
+      "countdown": {
+        "days": 0,
+        "hours": 0,
+        "minutes": 1
+      }
+    }
+  },
+  {
+    "id": "T02",
+    "now": "2026-09-08T00:00:00-04:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-09-08T00:00:00-04:00"
+    },
+    "expected": {
+      "nowWeek": 1,
+      "deadlineWeek": 1,
+      "label": "Happening now"
+    }
+  },
+  {
+    "id": "T03",
+    "now": "2026-09-08T00:01:00-04:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-09-08T00:00:00-04:00"
+    },
+    "expected": {
+      "nowWeek": 1,
+      "deadlineWeek": 1,
+      "label": "Due time passed"
+    }
+  },
+  {
+    "id": "T04",
+    "now": "2026-09-08T01:00:00-04:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-09-13T23:00:00-04:00"
+    },
+    "expected": {
+      "nowWeek": 1,
+      "deadlineWeek": 1,
+      "countdown": {
+        "days": 5,
+        "hours": 22,
+        "minutes": 0
+      }
+    }
+  },
+  {
+    "id": "T05",
+    "now": "2026-09-13T23:59:00-04:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-09-14T00:00:00-04:00"
+    },
+    "expected": {
+      "nowWeek": 1,
+      "deadlineWeek": 2,
+      "countdown": {
+        "days": 0,
+        "hours": 0,
+        "minutes": 1
+      }
+    }
+  },
+  {
+    "id": "T06",
+    "now": "2026-09-14T00:00:00-04:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-09-14T00:00:00-04:00"
+    },
+    "expected": {
+      "nowWeek": 2,
+      "deadlineWeek": 2,
+      "label": "Happening now"
+    }
+  },
+  {
+    "id": "T07",
+    "now": "2026-09-09T23:30:00-04:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-09-10T03:45:00Z"
+    },
+    "expected": {
+      "nowWeek": 1,
+      "deadlineWeek": 1,
+      "countdown": {
+        "days": 0,
+        "hours": 0,
+        "minutes": 15
+      }
+    }
+  },
+  {
+    "id": "T08",
+    "now": "2026-09-13T23:00:00-04:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-09-14T03:30:00Z"
+    },
+    "expected": {
+      "nowWeek": 1,
+      "deadlineWeek": 1,
+      "countdown": {
+        "days": 0,
+        "hours": 0,
+        "minutes": 30
+      }
+    }
+  },
+  {
+    "id": "T09",
+    "now": "2026-09-13T23:30:00-04:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-09-14T04:30:00Z"
+    },
+    "expected": {
+      "nowWeek": 1,
+      "deadlineWeek": 2,
+      "countdown": {
+        "days": 0,
+        "hours": 1,
+        "minutes": 0
+      }
+    }
+  },
+  {
+    "id": "T10",
+    "now": "2026-09-14T00:30:00-04:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-09-14T03:45:00Z"
+    },
+    "expected": {
+      "nowWeek": 2,
+      "deadlineWeek": 1,
+      "label": "Due time passed"
+    }
+  },
+  {
+    "id": "T11",
+    "now": "2026-10-11T23:59:00-04:00",
+    "deadline": {
+      "type": "date_only",
+      "date": "2026-10-12"
+    },
+    "expected": {
+      "nowWeek": 5,
+      "deadlineWeek": 6,
+      "label": "Time not posted"
+    }
+  },
+  {
+    "id": "T12",
+    "now": "2026-10-12T00:00:00-04:00",
+    "deadline": {
+      "type": "date_only",
+      "date": "2026-10-12"
+    },
+    "expected": {
+      "nowWeek": 6,
+      "deadlineWeek": 6,
+      "label": "Time not posted"
+    }
+  },
+  {
+    "id": "T13",
+    "now": "2026-10-12T23:59:00-04:00",
+    "deadline": {
+      "type": "date_only",
+      "date": "2026-10-12"
+    },
+    "expected": {
+      "nowWeek": 6,
+      "deadlineWeek": 6,
+      "label": "Time not posted"
+    }
+  },
+  {
+    "id": "T14",
+    "now": "2026-10-13T00:00:00-04:00",
+    "deadline": {
+      "type": "date_only",
+      "date": "2026-10-12"
+    },
+    "expected": {
+      "nowWeek": 6,
+      "deadlineWeek": 6,
+      "label": "Date passed (time not posted)"
+    }
+  },
+  {
+    "id": "T15",
+    "now": "2026-10-11T12:00:00-04:00",
+    "deadline": {
+      "type": "quiz_week",
+      "week": 6,
+      "section": null
+    },
+    "expected": {
+      "nowWeek": 5,
+      "deadlineWeek": null,
+      "label": "Select lab section"
+    }
+  },
+  {
+    "id": "T16",
+    "now": "2026-10-12T12:00:00-04:00",
+    "deadline": {
+      "type": "quiz_week",
+      "week": 6,
+      "section": {
+        "id": "MON-LAB",
+        "weekday": "Monday"
+      }
+    },
+    "expected": {
+      "nowWeek": 6,
+      "deadlineWeek": null,
+      "label": "Holiday schedule unconfirmed"
+    }
+  },
+  {
+    "id": "T17",
+    "now": "2026-10-12T12:00:00-04:00",
+    "deadline": {
+      "type": "quiz_week",
+      "week": 6,
+      "section": {
+        "id": "MON-LAB",
+        "weekday": "Monday"
+      },
+      "overrideDate": "2026-10-19"
+    },
+    "expected": {
+      "nowWeek": 6,
+      "deadlineWeek": 7,
+      "resolvedDate": "2026-10-19",
+      "label": "Time not posted"
+    }
+  },
+  {
+    "id": "T18",
+    "now": "2026-10-18T23:59:00-04:00",
+    "deadline": {
+      "type": "quiz_week",
+      "week": 6,
+      "section": {
+        "id": "MON-LAB",
+        "weekday": "Monday"
+      },
+      "overrideDate": "2026-10-19",
+      "postedTime": "09:00"
+    },
+    "expected": {
+      "nowWeek": 6,
+      "deadlineWeek": 7,
+      "resolvedDate": "2026-10-19",
+      "countdown": {
+        "days": 0,
+        "hours": 9,
+        "minutes": 1
+      }
+    }
+  },
+  {
+    "id": "T19",
+    "now": "2026-10-15T12:00:00-04:00",
+    "deadline": {
+      "type": "quiz_week",
+      "week": 6,
+      "section": {
+        "id": "THU-LAB",
+        "weekday": "Thursday"
+      },
+      "postedTime": "17:45"
+    },
+    "expected": {
+      "nowWeek": 6,
+      "deadlineWeek": 6,
+      "resolvedDate": "2026-10-15",
+      "countdown": {
+        "days": 0,
+        "hours": 5,
+        "minutes": 45
+      }
+    }
+  },
+  {
+    "id": "T20",
+    "now": "2026-10-15T18:00:00-04:00",
+    "deadline": {
+      "type": "quiz_week",
+      "week": 6,
+      "section": {
+        "id": "THU-LAB",
+        "weekday": "Thursday"
+      }
+    },
+    "expected": {
+      "nowWeek": 6,
+      "deadlineWeek": 6,
+      "resolvedDate": "2026-10-15",
+      "label": "Time not posted"
+    }
+  },
+  {
+    "id": "T21",
+    "now": "2026-10-16T00:01:00-04:00",
+    "deadline": {
+      "type": "quiz_week",
+      "week": 6,
+      "section": {
+        "id": "THU-LAB",
+        "weekday": "Thursday"
+      }
+    },
+    "expected": {
+      "nowWeek": 6,
+      "deadlineWeek": 6,
+      "resolvedDate": "2026-10-15",
+      "label": "Date passed (time not posted)"
+    }
+  },
+  {
+    "id": "T22",
+    "now": "2026-10-31T23:30:00-04:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-11-01T02:30:00-05:00"
+    },
+    "expected": {
+      "nowWeek": 8,
+      "deadlineWeek": 8,
+      "countdown": {
+        "days": 0,
+        "hours": 4,
+        "minutes": 0
+      }
+    }
+  },
+  {
+    "id": "T23",
+    "now": "2026-11-01T00:45:00-04:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-11-01T01:15:00-04:00"
+    },
+    "expected": {
+      "nowWeek": 8,
+      "deadlineWeek": 8,
+      "countdown": {
+        "days": 0,
+        "hours": 0,
+        "minutes": 30
+      }
+    }
+  },
+  {
+    "id": "T24",
+    "now": "2026-11-01T00:45:00-04:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-11-01T01:15:00-05:00"
+    },
+    "expected": {
+      "nowWeek": 8,
+      "deadlineWeek": 8,
+      "countdown": {
+        "days": 0,
+        "hours": 1,
+        "minutes": 30
+      }
+    }
+  },
+  {
+    "id": "T25",
+    "now": "2026-11-01T01:45:00-04:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-11-01T01:15:00-05:00"
+    },
+    "expected": {
+      "nowWeek": 8,
+      "deadlineWeek": 8,
+      "countdown": {
+        "days": 0,
+        "hours": 0,
+        "minutes": 30
+      }
+    }
+  },
+  {
+    "id": "T26",
+    "now": "2026-11-01T01:15:00-05:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-11-01T01:45:00-04:00"
+    },
+    "expected": {
+      "nowWeek": 8,
+      "deadlineWeek": 8,
+      "label": "Due time passed"
+    }
+  },
+  {
+    "id": "T27",
+    "now": "2026-11-01T01:10:00-04:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-11-01T01:10:00-05:00"
+    },
+    "expected": {
+      "nowWeek": 8,
+      "deadlineWeek": 8,
+      "countdown": {
+        "days": 0,
+        "hours": 1,
+        "minutes": 0
+      }
+    }
+  },
+  {
+    "id": "T28",
+    "now": "2026-11-01T01:59:00-04:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-11-01T01:00:00-05:00"
+    },
+    "expected": {
+      "nowWeek": 8,
+      "deadlineWeek": 8,
+      "countdown": {
+        "days": 0,
+        "hours": 0,
+        "minutes": 1
+      }
+    }
+  },
+  {
+    "id": "T29",
+    "now": "2026-11-01T01:59:00-05:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-11-01T02:00:00-05:00"
+    },
+    "expected": {
+      "nowWeek": 8,
+      "deadlineWeek": 8,
+      "countdown": {
+        "days": 0,
+        "hours": 0,
+        "minutes": 1
+      }
+    }
+  },
+  {
+    "id": "T30",
+    "now": "2026-11-01T23:59:00-05:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-11-02T00:00:00-05:00"
+    },
+    "expected": {
+      "nowWeek": 8,
+      "deadlineWeek": 9,
+      "countdown": {
+        "days": 0,
+        "hours": 0,
+        "minutes": 1
+      }
+    }
+  },
+  {
+    "id": "T31",
+    "now": "2026-10-31T12:00:00-04:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-11-02T12:00:00-05:00"
+    },
+    "expected": {
+      "nowWeek": 8,
+      "deadlineWeek": 9,
+      "countdown": {
+        "days": 2,
+        "hours": 1,
+        "minutes": 0
+      }
+    }
+  },
+  {
+    "id": "T32",
+    "now": "2026-11-02T00:01:00-05:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-11-01T23:59:00-05:00"
+    },
+    "expected": {
+      "nowWeek": 9,
+      "deadlineWeek": 8,
+      "label": "Due time passed"
+    }
+  },
+  {
+    "id": "T33",
+    "now": "2026-11-02T00:00:00-05:00",
+    "deadline": {
+      "type": "pending"
+    },
+    "expected": {
+      "nowWeek": 9,
+      "deadlineWeek": null,
+      "label": "Date pending"
+    }
+  },
+  {
+    "id": "T34",
+    "now": "2026-12-20T23:59:00-05:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-12-21T00:00:00-05:00"
+    },
+    "expected": {
+      "nowWeek": 15,
+      "deadlineWeek": 16,
+      "countdown": {
+        "days": 0,
+        "hours": 0,
+        "minutes": 1
+      }
+    }
+  },
+  {
+    "id": "T35",
+    "now": "2026-12-21T00:00:00-05:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-12-21T00:00:00-05:00"
+    },
+    "expected": {
+      "nowWeek": 16,
+      "deadlineWeek": 16,
+      "label": "Happening now"
+    }
+  },
+  {
+    "id": "T36",
+    "now": "2026-12-21T23:59:00-05:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-12-22T00:00:00-05:00"
+    },
+    "expected": {
+      "nowWeek": 16,
+      "deadlineWeek": null,
+      "countdown": {
+        "days": 0,
+        "hours": 0,
+        "minutes": 1
+      }
+    }
+  },
+  {
+    "id": "T37",
+    "now": "2026-12-22T00:00:00-05:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-12-22T00:00:00-05:00"
+    },
+    "expected": {
+      "nowWeek": null,
+      "deadlineWeek": null,
+      "label": "Happening now"
+    }
+  },
+  {
+    "id": "T38",
+    "now": "2026-12-21T20:00:00-05:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-12-22T02:00:00Z"
+    },
+    "expected": {
+      "nowWeek": 16,
+      "deadlineWeek": 16,
+      "countdown": {
+        "days": 0,
+        "hours": 1,
+        "minutes": 0
+      }
+    }
+  },
+  {
+    "id": "T39",
+    "now": "2026-12-21T20:00:00-05:00",
+    "deadline": {
+      "type": "exact",
+      "at": "2026-12-22T05:00:00Z"
+    },
+    "expected": {
+      "nowWeek": 16,
+      "deadlineWeek": null,
+      "countdown": {
+        "days": 0,
+        "hours": 4,
+        "minutes": 0
+      }
+    }
+  },
+  {
+    "id": "T40",
+    "now": "2026-12-23T08:00:00-05:00",
+    "deadline": {
+      "type": "date_only",
+      "date": "2027-01-04"
+    },
+    "expected": {
+      "nowWeek": null,
+      "deadlineWeek": null,
+      "label": "Time not posted"
+    }
+  }
+]
