@@ -5,7 +5,7 @@
   const courses=[['cen100','CEN100','Engineering'],['mth140','MTH140','Calculus I'],['mth141','MTH141','Linear Algebra']];
   const root=document.createElement('div');root.className='hub-shell';
   root.innerHTML=`<div class="hub-top"><a class="hub-brand" href="${base.href}"><span class="hub-mark" aria-hidden="true"><img src="${new URL('assets/guide-mark.svg',base).href}" width="34" height="34" alt=""></span><span>TMU Course Guides<small>Fall 2026</small></span></a><button class="hub-theme" type="button" aria-label="Appearance: automatic">Auto theme</button></div><nav class="course-switch" aria-label="Choose a course"><a class="course-link desk-link" data-course-link="desk" href="${base.href}" ${desk?'aria-current="page"':''}><span class="course-code">Desk</span><span class="course-name">All courses</span><span class="course-saved"></span></a>${courses.map(([id,code,name])=>`<a class="course-link" data-course-link="${id}" href="${new URL(id+'/',base).href}" ${course===id?'aria-current="page"':''}><span class="course-code">${code}</span><span class="course-name">${name}</span><span class="course-saved" data-saved-course="${id}"></span></a>`).join('')}</nav>`;
-  // Keep an existing Skip link first on direct Desk and course loads.
+  // Keep every authored Skip link ahead of shell navigation, including direct course loads.
   const skip=document.querySelector('body>.skip-link');if(skip)skip.after(root);else document.body.prepend(root);
   let mode='auto';try{const saved=localStorage.getItem('tmu-guide-theme-v1');if(['auto','light','dark'].includes(saved))mode=saved;}catch{}
   const button=root.querySelector('.hub-theme');

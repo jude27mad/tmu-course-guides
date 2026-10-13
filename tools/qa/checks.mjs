@@ -53,9 +53,12 @@ async function runCase(env, out, name, fn, {storage={},contextOptions={},browser
   }
 }
 
-async function until(fn,label,timeout=10000) {
+export async function until(fn,label,timeout=10000) {
   const end=Date.now()+timeout;
   while(Date.now()<end) {if(await fn()) return;await sleep(50);}
+  // A slow async reply may be stale when it exhausts the polling budget. Always
+  // make one current observation at the deadline; a still-false predicate fails.
+  if(await fn()) return;
   throw new Error(`Timed out waiting for ${label}`);
 }
 

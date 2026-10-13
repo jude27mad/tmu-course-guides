@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {CHECKS,compactExact,countGrowth,summarizeFrames} from './checks.mjs';
+import {CHECKS,compactExact,countGrowth,summarizeFrames,until} from './checks.mjs';
 
 test('all six required checks are independently runnable',()=>{
   assert.deepEqual(Object.keys(CHECKS),['routes','stability','frames','deadlines','modes','layout']);
@@ -44,4 +44,35 @@ test('deadline countdown fixtures use absolute Toronto instants and recompute af
   assert.equal(compactExact('2026-10-14T19:00:00.000Z','2026-10-14T18:31:00.000Z'),'29m');
   assert.equal(compactExact('2026-10-14T19:00:00.000Z','2026-10-14T19:00:00.000Z'),'Happening now');
   assert.equal(compactExact('2026-10-14T19:00:00.000Z','2026-10-14T20:00:00.000Z'),'Due time passed');
+});
+
+test('an already-ready condition is sampled even at the polling deadline', async()=>{
+  let calls=0;
+  await until(()=>{calls++;return true;},'ready wrapper',0);
+  assert.equal(calls,1);
+});
+
+test('an unsettled condition still fails after its final deadline sample', async()=>{
+  let calls=0;
+  await assert.rejects(until(()=>{calls++;return false;},'stuck wrapper',0),/Timed out waiting for stuck wrapper/);
+  assert.equal(calls,1);
+});
+
+test('a late false reply is followed by a fresh deadline sample, not assumed current', async()=>{
+  let calls=0;
+  await until(async()=>{
+    if(++calls===1){await new Promise(resolve=>setTimeout(resolve,30));return false;}
+    return true;
+  },'settled wrapper after slow reply',10);
+  assert.equal(calls,2);
+});
+
+
+test('a late false reply still fails when the fresh sample is also false', async()=>{
+  let calls=0;
+  await assert.rejects(until(async()=>{
+    if(++calls===1)await new Promise(resolve=>setTimeout(resolve,30));
+    return false;
+  },'persistent transform after slow reply',10),/Timed out waiting for persistent transform/);
+  assert.equal(calls,2);
 });

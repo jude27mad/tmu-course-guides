@@ -1,0 +1,143 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - night-shift
+      - main
+      - 'codex/**'
+      - 'chatgpt/**'
+  pull_request:
+    branches:
+      - night-shift
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  CI: true
+  npm_config_audit: false
+  npm_config_fund: false
+
+jobs:
+  root-tests:
+    name: Root tests (Node 22)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          # Existing tests compare with origin/main and a historical baseline.
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            tools/scene-build/package-lock.json
+            tools/ui-build/package-lock.json
+      - name: Install test dependencies
+        run: |
+          npm ci --prefix tools/scene-build
+          npm ci --prefix tools/ui-build
+      - name: Run root tests
+        run: node --test tests/*.test.mjs tests/scene-*.cjs
+
+  ui-build:
+    name: UI build and tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: tools/ui-build
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: tools/ui-build/package-lock.json
+      - name: Install dependencies and rebuild vendors
+        run: npm ci && npm run build
+      - name: Check committed vendor output
+        run: |
+          # Include modified, deleted, staged and newly generated vendor files.
+          changes="$(git -C ../.. status --porcelain --untracked-files=all -- assets/vendor/)"
+          if [[ -n "$changes" ]]; then
+            printf '%s\n' "$changes"
+            git -C ../.. diff --stat -- assets/vendor/
+            echo '::error::Vendor output is out of date. Rebuild tools/ui-build and commit the generated assets/vendor files.'
+            exit 1
+          fi
+      - name: Run UI tests
+        run: npm test
+
+  browser-qa:
+    name: Browser QA (${{ matrix.check }}, ${{ matrix.base }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        check: [routes, stability, frames, deadlines, modes, layout]
+        base: [/, /tmu-course-guides/]
+        include:
+          - base: /
+            artifact: root
+          - base: /tmu-course-guides/
+            artifact: github-pages
+    env:
+      PLAYWRIGHT_VERSION: '1.64.0'
+      QA_BASE: ${{ matrix.base }}
+      QA_CHECK: ${{ matrix.check }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+          # QA has no package manifest; this file contains its pinned dependency.
+          cache-dependency-path: .github/workflows/ci.yml
+      - name: Install Playwright and Chromium
+        run: |
+          # Keep QA-only dependencies outside the checkout and site manifests.
+          npm install --prefix "$RUNNER_TEMP/qa-playwright" --no-save --package-lock=false "playwright@$PLAYWRIGHT_VERSION"
+          node "$RUNNER_TEMP/qa-playwright/node_modules/playwright/cli.js" install --with-deps chromium
+      - name: Run browser QA
+        run: |
+          export PLAYWRIGHT_PATH="$RUNNER_TEMP/qa-playwright/node_modules/playwright"
+          node tools/qa/run.mjs "$QA_CHECK" --base "$QA_BASE"
+      - name: Summarize browser reports
+        if: always()
+        run: |
+          shopt -s nullglob
+          for report in tools/qa/reports/*/summary.md; do
+            cat "$report" >> "$GITHUB_STEP_SUMMARY"
+          done
+          for report in tools/qa/reports/*/*.md; do
+            echo "::group::$report"
+            cat "$report"
+            echo '::endgroup::'
+          done
+      - name: Upload browser reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-qa-${{ matrix.check }}-${{ matrix.artifact }}
+          path: tools/qa/reports/
+          if-no-files-found: warn
+          retention-days: 7
