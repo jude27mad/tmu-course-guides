@@ -65,15 +65,18 @@ test('Thanksgiving: the announced Monday make-up is exact; without one the date 
   assert.match(t.when,/Thanksgiving; quiz date needs confirmation/);assert.equal(t.at,undefined);
 });
 
-test('a date without a time is day precision, "Time not posted", and never shows a 23:59 fallback',()=>{
+// Owner's rule (13 Oct 2026): a CEN submission with a date and no posted time is due by the end of that Toronto day.
+test('a dated submission without a time counts down to 11:59 PM Toronto; a dated in-class event keeps its date only',()=>{
   const t=cen(NOON_OCT12,0,{integrity:1});
-  assert.equal(t.id,'whmis');assert.equal(t.precision,'day');assert.equal(t.date,'2026-10-14');
-  assert.equal(t.when,'Wed Oct 14');assert.equal(t.label,'Time not posted · check D2L');assert.equal(t.at,undefined);
-  assert.equal(compact(t,NOON_OCT12),'In 2 days');
+  assert.equal(t.id,'whmis');assert.equal(t.precision,'exact');assert.equal(t.at,toronto('2026-10-14','23:59'));assert.equal(t.at,at('2026-10-15T03:59:00Z'));
+  assert.equal(t.when,'Wed Oct 14 · by 11:59 PM Toronto');assert.equal(t.label,'Due by end of day');
+  assert.equal(compact(t,NOON_OCT12),'2d 11h 59m');
   for(const e of SCHEDULE){
     const d=resolveTarget({course:'cen100',data:SCHEDULE,id:e.id,now:NOON_OCT12});
     if(e.time)assert.equal(d.precision,'exact',e.id);
-    else{assert.equal(d.precision,'day',e.id);assert.doesNotMatch(d.when+d.label,/\d:\d\d|11:59/,e.id);}
+    else if(/ due$/.test(e.title)){assert.equal(d.precision,'exact',e.id);assert.equal(d.at,toronto(e.date,'23:59'),e.id);assert.equal(d.label,'Due by end of day',e.id);}
+    // Presentations, reviews and lab reminders happen in class: no invented time.
+    else{assert.equal(d.precision,'day',e.id);assert.equal(d.label,'Time not posted · check D2L',e.id);assert.doesNotMatch(d.when+d.label,/\d:\d\d|11:59/,e.id);}
   }
   // The one published 23:59 deadline is real data and keeps its time.
   assert.equal(resolveTarget({course:'cen100',data:SCHEDULE,id:'report',now:NOON_OCT12}).when,'Wed Dec 2 · 11:59 PM Toronto');
@@ -121,15 +124,16 @@ test('an event in progress is never skipped just because two hours passed',()=>{
 });
 
 test('Toronto/UTC date boundaries decide eligibility and day counts',()=>{
-  // 11:30 PM Toronto on Oct 14 is already Oct 15 in UTC: the date-only WHMIS row is still due today.
+  // 11:30 PM Toronto on Oct 14 is already Oct 15 in UTC: the dated WHMIS submission is still due, by 11:59 PM Toronto.
   const late=at('2026-10-15T03:30:00Z'),t=cen(late);
-  assert.equal(t.id,'whmis');assert.equal(compact(t,late),'Today');
+  assert.equal(t.id,'whmis');assert.equal(compact(t,late),'0h 29m');
   assert.equal(cen(at('2026-10-15T04:00:00Z')).id,'failure','midnight Toronto ends the day');
   // A week-only quiz is open through Friday in Toronto.
   assert.equal(math('mth140',at('2026-10-17T03:59:00Z')).id,'quiz-2');
   assert.equal(math('mth140',at('2026-10-17T04:00:00Z')).id,'midterm');
-  // Day counts use Toronto calendar days: 10 PM Oct 12 Toronto is Oct 13 UTC, still two days before Oct 14.
-  assert.equal(compact(cen(NOON_OCT12,0,{integrity:1}),at('2026-10-13T02:00:00Z')),'In 2 days');
+  // Day counts use Toronto calendar days: 10 PM Nov 1 Toronto is Nov 2 UTC, still three days before the Nov 4 review.
+  const review=resolveTarget({course:'cen100',data:SCHEDULE,id:'review',now:at('2026-11-02T03:00:00Z')});
+  assert.equal(review.precision,'day');assert.equal(compact(review,at('2026-11-02T03:00:00Z')),'In 3 days');
   // Timed CEN rows pass at their Toronto time with no grace.
   assert.equal(cen(toronto('2026-10-14','14:59')).id,'integrity');
   assert.equal(cen(toronto('2026-10-14','15:00')+1).id,'whmis');

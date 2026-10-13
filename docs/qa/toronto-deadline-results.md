@@ -48,8 +48,17 @@ The remaining 23 cases (exact countdowns, UTC/Toronto date flips and every DST f
 4. **`targetDate(target)`:** the Toronto date a target falls on, or `null` while unresolved.
 5. **`termWeek(date)`:** the 1-based term week (Monday-anchored, partial Week 1 from Sep 8), `null` before Sep 8 or after Dec 21. The book keeps `weekIndexFor()`, which still clamps to a spread.
 
+## Owner's rule: dated submissions are due by end of day (added 13 October 2026)
+
+After the fixture run, the owner set the rule for CEN100 submissions that have a date but no posted time: they are due **by the end of that Toronto day**. `resolveTarget()` now gives every CEN100 schedule row titled "… due" without a time an exact target at **11:59 PM Toronto**, labelled "Due by end of day" (shown as "Wed Oct 21 · by 11:59 PM Toronto"), with the normal countdown. Dated in-class events without a time (Midterm Design Review, First Final Presentation, Final Presentation and Innovation Showcase, and the lab and sign-up reminders) keep their date only with "Time not posted · check D2L". Course records are unchanged; the rule lives in the resolver. The synthetic `date_only` fixtures still describe records without that rule and still pass.
+
+Two existing assertions encoded the old rule and were updated for the new requirement, not to pass: `tests/targets.test.mjs` "a dated submission without a time counts down to 11:59 PM Toronto; a dated in-class event keeps its date only" (formerly "a date without a time is day precision…"), and in "Toronto/UTC date boundaries decide eligibility and day counts", WHMIS at 11:30 PM Toronto now shows `0h 29m` instead of `Today`, and the Toronto day-count check uses the dated Midterm Design Review.
+
+After this change: root suite 201/201; the deadline fixtures and resolver tests pass under America/Toronto, UTC and America/Los_Angeles (55/55 each); all 12 `tools/ui-build` workflows pass on a clean checkout of this commit.
+
 ## Visible changes on the site
 
 - At the exact deadline minute the countdown says "Happening now" instead of "Due time passed".
 - A past date without a posted time reads "Date passed (time not posted)" instead of "Date passed".
 - The Thanksgiving quiz-week chip reads "Holiday schedule unconfirmed" instead of "Quiz week"; its existing confirmation warning text is unchanged.
+- CEN100 submissions with a date and no posted time count down to 11:59 PM Toronto, labelled "Due by end of day".

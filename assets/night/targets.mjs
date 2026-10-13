@@ -57,6 +57,9 @@ export function cenUpcoming(schedule,completed={},section=0,now=Date.now()){
 function describeCen(e){
  const base={course:'cen100',id:e.id,title:e.title.replace(/ due$/,''),kind:'assignment',open:e.item};
  if(e.time)return {...base,precision:'exact',at:timestamp(e.date,e.time),when:`${short(e.date)} · ${clock(e.time)} Toronto`,label:'Due'};
+ // A submission with a date and no posted time is due by the end of its Toronto day (the owner's rule, 13 Oct 2026),
+ // so it counts down to 11:59 PM. Dated in-class events (presentations, reviews) keep their date only.
+ if(/ due$/.test(e.title))return {...base,precision:'exact',endOfDay:true,at:timestamp(e.date,'23:59'),when:`${short(e.date)} · by 11:59 PM Toronto`,label:'Due by end of day'};
  return {...base,precision:'day',date:e.date,when:short(e.date),label:'Time not posted · check D2L'};
 }
 
