@@ -58,6 +58,17 @@ export function weekIndexFor(date,weeks){
 }
 export function currentWeekIndex(weeks,now=new Date()){return weekIndexFor(today(now),weeks);}
 
+/** The 1-based term week of a Toronto date, for labels and deadline contracts: Monday-anchored weeks of the term
+ * (Week 1 is the partial Sep 8-13), null before Sep 8 or after Dec 21. Unlike weekIndexFor(), which clamps to a
+ * book spread, this never extends for exams. Fixtures: docs/qa/toronto-deadline-test-cases.md. */
+const TERM_WEEKS=new Map();
+export function termWeek(date,{start='2026-09-08',end='2026-12-21'}={}){
+  if(!calendarDate(date)||date<start||date>end)return null;
+  const key=start+end;
+  if(!TERM_WEEKS.has(key))TERM_WEEKS.set(key,semesterWeeks({start,end}));
+  return weekIndexFor(date,TERM_WEEKS.get(key))+1;
+}
+
 // Kind follows the existing CEN item mapping, not the schedule id's DOM prefix.
 const CEN_KINDS={m3:'lab',y2:'lab',m4:'midterm',m6:'final',m7:'final',y4:'quiz',y9:'final'};
 function flags(completed){

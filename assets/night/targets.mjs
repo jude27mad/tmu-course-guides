@@ -64,12 +64,16 @@ function describeCen(e){
 function describeMath(course,data,a,section){
  const e=resolveAssessment(data,a,section),base={course,id:a.id,title:a.title,kind:a.kind,open:'assessment-'+a.id};
  // Thanksgiving with no announced make-up: keep the warning; the normal lab slot is not a confirmed quiz time.
- if(e.holiday)return {...base,precision:'week',week:e.week,weekEnd:e.weekEnd,when:timing(e),label:'Quiz date needs confirmation'};
- if(a.kind==='quiz'&&e.date&&e.lab)return {...base,precision:'exact',at:timestamp(e.date,e.lab.start),end:timestamp(e.date,e.lab.end),
-  when:`${short(e.date)} · ${clock(e.lab.start)} · ${e.lab.room}`,
-  // A second-hour quiz counts down to the lab and says so, rather than inventing a quiz start time.
-  label:a.quizSecondHour?'Your lab starts · quiz in its second hour':'Your lab quiz starts',
-  note:e.rescheduled?`Monday make-up date confirmed for ${dateLabel(e.date)} on D2L. Check for changes.`:'Quiz day follows your section’s lab timetable. Check D2L for changes.'};
+ if(e.holiday)return {...base,precision:'week',holiday:true,week:e.week,weekEnd:e.weekEnd,when:timing(e),label:'Quiz date needs confirmation'};
+ if(a.kind==='quiz'&&e.date&&e.lab){
+  const note=e.rescheduled?`Monday make-up date confirmed for ${dateLabel(e.date)} on D2L. Check for changes.`:'Quiz day follows your section’s lab timetable. Check D2L for changes.';
+  // The weekday alone is not a start time: without a published lab start the quiz has a day, never a countdown.
+  if(!e.lab.start)return {...base,precision:'day',date:e.date,when:`${short(e.date)}${e.lab.room?` · ${e.lab.room}`:''}`,label:'Time not posted',note};
+  return {...base,precision:'exact',at:timestamp(e.date,e.lab.start),end:e.lab.end?timestamp(e.date,e.lab.end):null,
+   when:`${short(e.date)} · ${clock(e.lab.start)}${e.lab.room?` · ${e.lab.room}`:''}`,
+   // A second-hour quiz counts down to the lab and says so, rather than inventing a quiz start time.
+   label:a.quizSecondHour?'Your lab starts · quiz in its second hour':'Your lab quiz starts',note};
+ }
  if(a.kind==='quiz'){
   const end=dateLabel(e.weekEnd),sameMonth=e.week.slice(0,7)===e.weekEnd.slice(0,7);
   return {...base,precision:'week',week:e.week,weekEnd:e.weekEnd,range:`${dateLabel(e.week)}–${sameMonth?end.replace(/^\S+ /,''):end}`,when:`${dateLabel(e.week)}–${end} · during your assigned lab`,label:'Quiz week',cta:'Choose your section for your quiz time'};
@@ -124,7 +128,8 @@ export function parts(t,now=Date.now()){
  now=ms(now);
  if(t.precision==='exact'){
   const left=t.at-now;
-  if(left<=0)return {state:t.end&&now<t.end?'live':'passed',ms:0};
+  // The exact instant itself is "happening"; after it, only a known start/end window keeps an event live.
+  if(left<=0)return {state:left===0||(t.end&&now<t.end)?'live':'passed',ms:0};
   const s=Math.floor(left/1000);
   return {state:left<6*3600e3?'hot':left<48*3600e3?'soon':'ahead',ms:left,d:Math.floor(s/86400),h:Math.floor(s%86400/3600),m:Math.floor(s%3600/60),s:s%60,progress:Math.max(0,Math.min(1,left/WINDOW))};
  }
@@ -137,10 +142,30 @@ export function parts(t,now=Date.now()){
 export function compact(t,now=Date.now()){
  const p=parts(t,now);if(!p)return '';
  if(t.precision==='exact'){if(p.state==='live')return 'Happening now';if(p.state==='passed')return 'Due time passed';return p.d?`${p.d}d ${p.h}h ${String(p.m).padStart(2,'0')}m`:`${p.h}h ${String(p.m).padStart(2,'0')}m`;}
- if(t.precision==='day')return p.days<0?'Date passed':p.days===0?'Today':p.days===1?'Tomorrow':`In ${p.days} days`;
- if(t.precision==='week')return 'Quiz week';
+ if(t.precision==='day')return p.days<0?status(t,now):p.days===0?'Today':p.days===1?'Tomorrow':`In ${p.days} days`;
+ if(t.precision==='week')return t.holiday?status(t,now):'Quiz week';
  if(t.precision==='empty')return 'Nothing scheduled';
  return 'Date pending';
+}
+/* The status label for every state without a running countdown, null while one runs. Contract and fixtures:
+   docs/qa/toronto-deadline-test-cases.md. Exact: the instant itself is "Happening now", then "Due time passed"
+   (a known end keeps it live until then). A date without a time is "Time not posted" through its Toronto day and
+   "Date passed (time not posted)" from the next Toronto midnight; no time is ever invented. A quiz week waits for
+   a lab section, or for a holiday make-up announcement. compact() shows these where a chip has no better words. */
+export function status(t,now=Date.now()){
+ if(!t)return null;
+ now=ms(now);
+ if(t.precision==='exact'){const left=t.at-now;return left>0?null:left===0||(t.end&&now<t.end)?'Happening now':'Due time passed';}
+ if(t.precision==='day')return daysUntil(t.date,new Date(now))<0?'Date passed (time not posted)':'Time not posted';
+ if(t.precision==='week')return t.holiday?'Holiday schedule unconfirmed':'Select lab section';
+ if(t.precision==='empty')return 'Nothing scheduled';
+ return 'Date pending';
+}
+/* The Toronto calendar date a target falls on, or null while it is unresolved (quiz week, pending, empty). */
+export function targetDate(t){
+ if(!t)return null;
+ if(t.precision==='exact')return today(new Date(t.at));
+ return t.precision==='day'?t.date:null;
 }
 /* One sentence for a polite live region (updated at most once a minute by its owner). */
 export function sentence(t,now=Date.now()){
