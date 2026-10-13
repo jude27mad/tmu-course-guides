@@ -11,13 +11,20 @@
      BEND_KEY                     program cache key shared by every bent material
      sheetRadius(t, v, W)         R(t, v) of §5.2
      gutterDip(x, depth)          the static gutter valley; dipWeight(t) its fade on a turning sheet
+     stackMix(x, t, r, W)         0 → 1 across the curl: the stack height a flat point carries (the shader's
+                                  pageStackMix), so the run still lying on a stack never sinks into it
      applyBend(material, uniforms)   idempotent onBeforeCompile + customProgramCacheKey
      createPageUniforms(theme)    shared theme uniforms (one object per book, tweened on theme change)
      createPageMaterial(shared, {side, mirror, tier, toothMap})  → {material, uniforms}
      pagePlane(W, H, segX, segY, {gutter})                       → BufferGeometry in flat coordinates
      createSheet({W, H, shared, tier, toothMap})                 → Sheet
-   Sheet = {group, front, back, set({turn, radius, stackZ, dip}), anchor(x, y), hingeDir(a, y), hit(ray),
-            setFaces(front, back), setSegments(n), segments, params, visible, dispose()} */
+   Sheet = {group, front, back, set({turn, radius, stackZ, dip}), anchor(x, y), stackAt(x), hingeDir(a, y),
+            hit(ray), setFaces(front, back), setSegments(n), segments, params, visible, dispose()}
+
+   Deviation from §5.2, deliberate: the stack offset is mix(stackZ.x, stackZ.y, stackMix(x)) per vertex rather
+   than mix(…, turn) for the whole sheet. With unequal halves the literal form sank the flat run below the
+   static page it lies on (z-fighting, the next recto showing through) for most of the first half of a turn.
+   Sheet.hit therefore walks the drawn chords itself (bendPoint + per-column height), the bendHit method. */
 import * as T from '../app/three.mjs?v=20261013-stage1';
 import {bendPoint,bendBounds,bendHit,MIN_RADIUS_RATIO,PAGE_BEND_GLSL} from './page-bend-math.mjs';
 

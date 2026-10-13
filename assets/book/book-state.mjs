@@ -29,11 +29,15 @@ const report=error=>{try{(globalThis.reportError||console.error)(error);}catch{}
 /* ------------------------------------------------------------------ state ------------------------------ */
 
 /**
- * @param {{course:string, weeks:object[], today:number, policy:()=>('full'|'fade'|'cut')}} options
+ * @param {{course:string, weeks:object[], today:number, policy:()=>('full'|'fade'|'cut'),
+ *          describe?:(spread:object, index:number)=>object}} options
  *   weeks: Spread[] from semesterWeeks(); today: currentWeekIndex(weeks, now); policy: §4.1, injected.
  *   A missing or throwing policy reads as 'cut', the calm default.
+ *   describe: the route's describeSpread bound to its live context (data, section, completion, clock,
+ *   target). Injected like policy, so the state stays pure; view(i) memoises it until the next `weeks`
+ *   change, which is how every data refresh reaches the views (§6.10).
  */
-export function createBookState({course=null,weeks=[],today=0,policy=()=>'cut'}={}){
+export function createBookState({course=null,weeks=[],today=0,policy=()=>'cut',describe=null}={}){
  let list=Array.isArray(weeks)?weeks:[];
  const last=()=>Math.max(0,list.length-1);
  const clampIndex=value=>Math.min(last(),Math.max(0,Math.round(value)));
@@ -43,7 +47,7 @@ export function createBookState({course=null,weeks=[],today=0,policy=()=>'cut'}=
  let todayIndex=clampIndex(Number.isFinite(today)?today:0);
  let index=todayIndex,turn=index,settled=true,source='init',lock=null,mode=readPolicy(),version=0;
  let anchorDirty=false,animator=null,run=null,ticket=0,disposed=false,cached=null;
- const subscribers=new Set();
+ const subscribers=new Set(),views=new Map();
 
  const bump=()=>{version++;cached=null;};
  const snapshot=()=>cached??=Object.freeze({course,count:list.length,today:todayIndex,index,turn,settled,source,lock,mode,version});
@@ -198,7 +202,19 @@ export function createBookState({course=null,weeks=[],today=0,policy=()=>'cut'}=
    if(GESTURES.has(lock))lock=null;
    index=Math.min(index,max);turn=index;settled=true;
   }
+  views.clear();
   emit('weeks','data',reason);
+ }
+
+ /* The words for spread i, from the injected describe(); memoised until the next `weeks` change.
+    fresh: compute without reading or filling the memo (the minute check compares signatures). */
+ function view(i,{fresh=false}={}){
+  if(typeof describe!=='function'||!Number.isInteger(i)||i<0||i>=list.length)return null;
+  if(!fresh&&views.has(i))return views.get(i);
+  let value=null;
+  try{value=describe(list[i],i)??null;}catch(error){report(error);value=null;}
+  if(!fresh&&value)views.set(i,value);
+  return value;
  }
 
  function setAnimator(next){
@@ -222,11 +238,11 @@ export function createBookState({course=null,weeks=[],today=0,policy=()=>'cut'}=
   course,
   get weeks(){return list;},
   get today(){return todayIndex;},
-  snapshot,openWeek,step,grab,scrub,release,setWeeks,setAnimator,subscribe,consumeAnchorDirty,
+  snapshot,openWeek,step,grab,scrub,release,setWeeks,setAnimator,subscribe,consumeAnchorDirty,view,
   dispose(){
    if(disposed)return;
    stopRun();lock=null;
-   disposed=true;subscribers.clear();animator=null;
+   disposed=true;subscribers.clear();animator=null;views.clear();
    if(current===state)detachBookState(state);
   }
  };
@@ -268,12 +284,27 @@ export function detachBookState(state){
  if(!state||state!==current)return;
  const {doc,onOpenWeek,unsubscribe}=wiring||{};
  current=null;wiring=null;
+ if(host)setBookHost(null);
  try{unsubscribe?.();}catch(error){report(error);}
  if(doc){doc.removeEventListener('book-open-week',onOpenWeek);dispatch(doc,'book-state',{state:null});}
 }
 
 /** The mounted book's state, or null on the Desk and non-book routes. */
 export function currentBookState(){return current;}
+
+/* The mounted book's stage, for Side B's DOM modules (rail, scroll scrub, swipe, dock). The course header
+   publishes it in two steps: {state, header, slot, controller:null} as soon as the stage DOM exists, then
+   again with the controller once mountBook() resolves (or the poster stands in). Each change fires
+   `book-host` on the document with the frozen record (null on unmount). Nothing here touches the DOM. */
+let host=null;
+export function setBookHost(next){
+ if(next&&(!next.state||next.state!==current))return host;
+ host=next?Object.freeze({...next}):null;
+ const doc=globalThis.document;
+ if(doc)dispatch(doc,'book-host',host);
+ return host;
+}
+export function currentBookHost(){return host;}
 
 /* ------------------------------------------------------------------ words (§3.2) ---------------------- */
 

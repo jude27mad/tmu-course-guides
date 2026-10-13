@@ -12,7 +12,13 @@
    The engine renders `state.turn` (the paper) and never decides which week is selected: commands go through
    the state, which calls the animator registered here. Everything time-based runs on the stage clock (the dt
    the stage hands to update), with GSAP eases from gsap.parseEase; there is no second ticker. Words come only
-   from getView (B's describeSpread) through textures.mjs; pop-ups are popup.mjs sets posed on the paper. */
+   from getView (B's describeSpread) through textures.mjs; pop-ups are popup.mjs sets posed on the paper.
+
+   Also exported (pure, for tests, posters and Stage 5): motionMode(), ease(name), TIMING, turnPlan(from, to,
+   elapsed, {tier}), POSES ('open-hero' | 'closed-on-desk' | 'docked'), handoffPose(p), and the framing helpers
+   re-exported from book-geometry.mjs. Slot dataset written here: renderer, rendererReason, sceneReady, awake,
+   motionState, quality, tier, post, sceneFrame, drawCalls, triangles, week, turn, dragging, cursor. Events on
+   the slot: book-ready, book-fallback, book-hover {id}, book-turn {phase, from, to}. */
 import * as T from '../app/three.mjs?v=20261013-stage1';
 import {probe,getStage} from '../app/stage.mjs?v=20261013-stage1';
 import {tier as currentTier,onTier,held,preference,sceneMotionAllowed} from '../night/core.mjs?v=20261013-shift1';
@@ -660,7 +666,7 @@ async function createEngine(slot,options){
   curlShadow();
   // Pop-ups on the paper, then the handoff and close poses (§5.8).
   busy=updatePopups(p,dt,still,zL,zR)||busy;
-  busy=handoffPose(still,zL,zR)||busy;
+  busy=poseBook(still,zL,zR)||busy;
   // Drift and parallax: high tier, fine pointer, ambient allowed, ≥ 50% visible, full mode, 2 s after input.
   const driftOn=!poster&&tierName==='high'&&finePointer()&&gates.ambient&&(gates.ratio??1)>=.5&&mode==='full'&&clock-lastInput>2&&!drag&&handoff===0&&!closing&&!motion.run&&s.settled;
   drift.amount=still?0:clamp(drift.amount+(driftOn?dt:-dt)/.25,0,1);
@@ -767,8 +773,9 @@ async function createEngine(slot,options){
   return Math.max(handoffPose(handoff).fold,c);
  }
  const dockWorld=new T.Vector3(),toDock=new T.Vector3();
- function handoffPose(still,zL,zR){
+ function poseBook(still,zL,zR){
   let busy=false;
+  const pose=handoffPose(handoff);
   const fold=foldAmount(),h=(zL+zR)/2;
   // The front half pivots over the spine at the mean block height, so the verso lands on the recto, with a
   // 2° board flex mid-swing.
@@ -789,7 +796,7 @@ async function createEngine(slot,options){
    if(k>=1)bandSnap=null;else busy=true;
   }
   // p 0.55–1: the closed book shrinks to 0.16 along an arc to the dock's course mark; the spine glows.
-  const pose=handoffPose(handoff),shrink=smooth(.55,1,handoff);
+  const shrink=smooth(.55,1,handoff);
   // A book in flight casts no lamp shadow on the desk it left.
   const casting=shrink===0;if(boards.left.castShadow!==casting)for(const m of [boards.left,boards.right,blocks.left.mesh,blocks.right.mesh])m.castShadow=casting;
   if(shrink>0){

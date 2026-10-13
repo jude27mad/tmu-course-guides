@@ -45,11 +45,11 @@ const plugin={name:'stage-renderer-fixture',setup(build){
 let bundle;
 async function script(){
  bundle??=(await esbuild.build({stdin:{contents:`import {probe,getStage} from '${STAGE}';
-  import {mountBook,spreadLayout,framingFor,OPEN_HERO,turnPlan,motionMode} from './assets/book/book-scene.mjs';
+  import {mountBook,spreadLayout,framingFor,OPEN_HERO,turnPlan,motionMode,handoffPose,POSES} from './assets/book/book-scene.mjs';
   import * as T from '${THREE}';
   import * as core from '${CORE}';
   import * as books from './tests/fixtures/book-state-stub.mjs';
-  window.book={probe,getStage,mountBook,spreadLayout,framingFor,OPEN_HERO,turnPlan,motionMode,core,books,T};`,resolveDir:root},
+  window.book={probe,getStage,mountBook,spreadLayout,framingFor,OPEN_HERO,turnPlan,motionMode,handoffPose,POSES,core,books,T};`,resolveDir:root},
   plugins:[plugin],bundle:true,format:'iife',write:false,logLevel:'silent'})).outputFiles[0].text;
  return bundle;
 }
@@ -173,6 +173,13 @@ test('mountBook builds the engine: ready is webgl2 after the first rendered fram
   assert.ok(log.includes('paint:L5')&&log.includes('paint:R5'),'today\'s faces are painted before the first frame');
   assert.ok(f.w.counts.sceneRenders>=1);
   const stats=controller.stats();assert.equal(stats.renderer,'webgl2');assert.equal(stats.popups[0].index,5);assert.equal(stats.popups[0].visible,true);
+  // A tier drop keeps the week: high → mid swaps segments, textures and post; mid → low hands over to the poster.
+  await state.openWeek(7,{animate:false});await settle(f,2);
+  f.book.core.downgrade('test');await settle(f,2);
+  assert.equal(controller.stats().tier,'mid');assert.equal(f.slot.dataset.post,'off');assert.ok(log.includes('tier:mid'));assert.equal(f.slot.dataset.week,'7');
+  f.book.core.downgrade('test');await settle(f,3);
+  assert.equal(f.slot.dataset.renderer,'poster');assert.equal(f.slot.dataset.rendererReason,'tier-low');assert.equal(state.snapshot().index,7);
+  assert.ok(events.some(e=>e[0]==='fallback'&&e[1]==='tier-low'));assert.equal(f.pending(),0);
   controller.dispose();
  }finally{f.close();}
 });
@@ -215,6 +222,35 @@ test('full mode: the animator turns on the stage clock, emits book-turn, lands a
   const plan=f.book.turnPlan(6,15,.3,{tier:'high'});assert.equal(plan.kind,'riffle');assert.equal(plan.m,4);assert.ok(plan.total<=.9);
   assert.equal(f.book.turnPlan(6,9,0,{tier:'mid'}).stagger>=.23,true,'mid tier: two sheets in the air at most');
   controller.dispose();
+ }finally{f.close();}
+});
+
+test('handoff: the book shuts by p = 0.55, docks at 1 and fades; picking stops; close() waits only in full motion',async()=>{
+ const f=await fixture();
+ try{
+  const hp=f.book.handoffPose;
+  assert.deepEqual(JSON.parse(JSON.stringify(hp(0))),{fold:0,travel:0,scale:1,opacity:1,shut:false});
+  assert.equal(hp(.55).fold,1);assert.equal(hp(.55).shut,true);assert.equal(hp(.55).travel,0);
+  assert.equal(hp(1).travel,1);assert.ok(Math.abs(hp(1).scale-f.book.POSES.docked.scale)<1e-12);assert.equal(hp(1).opacity,0);
+  for(let i=0;i<=100;i++){const a=hp(i/100),b=hp((i+1)/100);assert.ok(b.fold>=a.fold&&b.travel>=a.travel&&b.opacity<=a.opacity,'monotone');}
+  assert.deepEqual(Object.keys(f.book.POSES).sort(),['closed-on-desk','docked','open-hero']);
+  const {state,controller}=await mounted(f,{policy:'full'});
+  await settle(f,4);
+  controller.setHandoff(.3);await settle(f,2);
+  const r=f.slot.getBoundingClientRect(),hits=[];for(let x=200;x<1400;x+=40)for(let y=100;y<600;y+=40){const h=controller.pick(x,y);if(h?.kind==='item')hits.push(h);}
+  assert.equal(hits.length,0,'no items while handing off');
+  controller.setHandoff(1);await settle(f,2);assert.equal(f.book.getStage().canvas.style.opacity,'0','faded into the dock');
+  controller.setHandoff(0);for(let i=0;i<12;i++){f.tick(50);await f.flush();}assert.equal(f.book.getStage().canvas.style.opacity,'1','back on the desk once the arrival fade is done');
+  let closed=false;controller.close({ms:350}).then(()=>{closed=true;});
+  await settle(f,2);assert.equal(closed,false,'full motion: the cover closes first');
+  for(let i=0;i<12;i++){f.tick(50);await f.flush();}
+  assert.equal(closed,true,'resolved after ~350 ms of stage time');
+  controller.dispose();
+  // Cut mode resolves at once.
+  f.w.GuideMotion={motionAllowed:()=>false,sceneMotionAllowed:()=>false,preference:()=>({forced:true})};
+  const again=await mounted(f,{policy:'cut'});await settle(f,3);
+  let done=false;again.controller.close().then(()=>{done=true;});await f.flush();assert.equal(done,true);
+  again.controller.dispose();
  }finally{f.close();}
 });
 

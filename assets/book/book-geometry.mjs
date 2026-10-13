@@ -13,7 +13,13 @@
      createRibbon(style, material)       ribbon strip; .layout({mode, z, tail}) rebuilds its path
      createBand(style, material)         elastic closure; .layout({open}) rebuilds both visible wraps
      createSpine(style, material)        rounded spine shell (visible during close and dock)
-     createEdgeMaterial(theme)           the block edge shader (page lines, signature gaps, fwidth fade) */
+     createEdgeMaterial(theme)           the block edge shader (page lines, signature gaps, fwidth fade)
+   Framing and picking (pure, shared by the scene, tests and posters):
+     OPEN_HERO, framingFor(vw), spreadLayout(w, h, vw)   breakpoint poses and the camera-free spread rect
+     bookToWorld(p), worldToBook(p)      the book group's transform (rotation.x = −π/2, spread centre at 0)
+     fitCamera(camera, w, h, vw, points, {distance, dolly, yaw, pitch})   §5.7 fit + lens shift
+     projectRect(camera, w, h, points), containFactor(camera, w, h, vw, points)
+     pickPaper(ray, {sheets, statics}), faceUV(hit), isCorner(hit), canDrag(hit)   §5.10 */
 import * as T from '../app/three.mjs?v=20261013-stage1';
 import {gutterDip,dipDepth,GUTTER} from './page-bend.mjs?v=20261013-book1';
 
