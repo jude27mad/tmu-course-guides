@@ -1,0 +1,5096 @@
+{
+  "schemaVersion": 1,
+  "label": "before-full-page-exploratory",
+  "capturedAt": "2026-10-13T18:34:53.546Z",
+  "fixedTime": "2026-10-13T16:00:00.000Z",
+  "revision": "aa41914ea33dd9172559f52cc2f2c7505733a32a",
+  "recipe": {
+    "fullPage": true,
+    "deviceScaleFactor": 1,
+    "timezone": "America/Toronto",
+    "locale": "en-CA",
+    "initialSavedScenePause": true,
+    "entryAnimations": "normal",
+    "settledDelayMs": 1500,
+    "freeze": "moving Date offset during entrance; freeze after settlement, pause through GuideMotion and dispatch visibilitychange",
+    "screenshotAnimations": "disabled",
+    "masking": false,
+    "cssInjection": false,
+    "noWebGL": false
+  },
+  "environment": {
+    "playwrightPath": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "executablePath": "/usr/bin/chromium",
+    "args": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ],
+    "requestedMode": "SwiftShader",
+    "chromiumVersion": "154.0.8037.57",
+    "webgl": {
+      "available": true,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "vendor": "Google Inc. (Google)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+    },
+    "actualMode": "SwiftShader",
+    "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+  },
+  "cases": [
+    {
+      "id": "root-desk-1440x900-dark",
+      "base": "/",
+      "route": "desk",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/root-desk-1440x900-dark.png",
+      "status": "failed",
+      "failure": {
+        "message": "page.goto: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:38793/\", waiting until \"load\"\u001b[22m\n",
+        "stack": "page.goto: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:38793/\", waiting until \"load\"\u001b[22m\n\n    at captureCase (/workspace/tmu-course-guides/tools/qa/compare-perf-visuals.mjs:105:16)\n    at async capture (/workspace/tmu-course-guides/tools/qa/compare-perf-visuals.mjs:174:23)\n    at async main (/workspace/tmu-course-guides/tools/qa/compare-perf-visuals.mjs:224:16)"
+      },
+      "fontRequests": [],
+      "errors": []
+    },
+    {
+      "id": "root-desk-1440x900-light",
+      "base": "/",
+      "route": "desk",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/root-desk-1440x900-light.png",
+      "status": "failed",
+      "failure": {
+        "message": "page.goto: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:38793/\", waiting until \"load\"\u001b[22m\n",
+        "stack": "page.goto: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:38793/\", waiting until \"load\"\u001b[22m\n\n    at captureCase (/workspace/tmu-course-guides/tools/qa/compare-perf-visuals.mjs:105:16)\n    at async capture (/workspace/tmu-course-guides/tools/qa/compare-perf-visuals.mjs:174:23)\n    at async main (/workspace/tmu-course-guides/tools/qa/compare-perf-visuals.mjs:224:16)"
+      },
+      "fontRequests": [],
+      "errors": []
+    },
+    {
+      "id": "root-desk-390x844-dark",
+      "base": "/",
+      "route": "desk",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/root-desk-390x844-dark.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": null
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 28
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": []
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 45
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "TMU Course Guides | Fall 2026",
+        "heading": "TMU Course Guides \u00b7 Fall 2026",
+        "route": "desk",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 390,
+          "height": 2690
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 251.1875,
+          "width": 390,
+          "height": 2299.984375,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 19,
+            "y": 21,
+            "width": 34,
+            "height": 34,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/night/layout.css",
+          "/assets/night/desk.css",
+          "/assets/night/palette.css"
+        ]
+      },
+      "png": {
+        "width": 390,
+        "height": 2690,
+        "bytes": 258300,
+        "sha256": "23f481ed48737442dd3689fbae705233df9be82727cb90b75fd7b853dedcb797",
+        "pixelSha256": "67e7c644ad441611c9ce3ddefc88eaa4fa72a43c9727d58ba36167d1347e466c"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-desk-390x844-light",
+      "base": "/",
+      "route": "desk",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/root-desk-390x844-light.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": null
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 28
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": []
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 45
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "TMU Course Guides | Fall 2026",
+        "heading": "TMU Course Guides \u00b7 Fall 2026",
+        "route": "desk",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 390,
+          "height": 2690
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 251.1875,
+          "width": 390,
+          "height": 2299.984375,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 19,
+            "y": 21,
+            "width": 34,
+            "height": 34,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/night/layout.css",
+          "/assets/night/desk.css",
+          "/assets/night/palette.css"
+        ]
+      },
+      "png": {
+        "width": 390,
+        "height": 2690,
+        "bytes": 268714,
+        "sha256": "1782dadcc11c4adca347e58252134f5038c0b069cef502de2c9f557b98dacdaf",
+        "pixelSha256": "bf422572d630cef0ffb0c31cd69efe5a1b5c961ea73f287f260767d5f9c626cf"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-cen100-1440x900-dark",
+      "base": "/",
+      "route": "cen100",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/root-cen100-1440x900-dark.png",
+      "naturalWrapper": {
+        "opacity": "0.8886",
+        "filter": "none",
+        "transform": "matrix(1, 0, 0, 1, 0, 8.9157)",
+        "style": "translate: none; rotate: none; scale: none; transform: translate3d(0px, 8.9157px, 0px); opacity: 0.8886;"
+      },
+      "naturalSettlementFailure": "Timed out waiting for wrapper opacity 1, no filter and identity transform",
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 19
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": []
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 16
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "CEN100 | TMU Course Guides",
+        "heading": "Intro to\nEngineering",
+        "route": "cen100",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 1440,
+          "height": 4284
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 4283.578125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 28.296875,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/scenes/posters/cen100-wide.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "1",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/visuals.css",
+          null,
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 1440,
+        "height": 4284,
+        "bytes": 465963,
+        "sha256": "08d0b8812d4c87f7165e3d49c3ef63afc5fdb33c603fa09d4e3f36a75f1ef0ce",
+        "pixelSha256": "89484f903ced91457bfc4dd707a015c89a60a1a2e222825b67e87c2d5dedbe50"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-cen100-1440x900-light",
+      "base": "/",
+      "route": "cen100",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/root-cen100-1440x900-light.png",
+      "naturalWrapper": {
+        "opacity": "0.9199",
+        "filter": "none",
+        "transform": "matrix(1, 0, 0, 1, 0, 6.4111)",
+        "style": "translate: none; rotate: none; scale: none; transform: translate3d(0px, 6.4111px, 0px); opacity: 0.9199;"
+      },
+      "naturalSettlementFailure": "Timed out waiting for wrapper opacity 1, no filter and identity transform",
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 19
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": []
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 16
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "CEN100 | TMU Course Guides",
+        "heading": "Intro to\nEngineering",
+        "route": "cen100",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 1440,
+          "height": 4284
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 4283.578125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 28.296875,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/scenes/posters/cen100-wide.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "1",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/visuals.css",
+          null,
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 1440,
+        "height": 4284,
+        "bytes": 448610,
+        "sha256": "d478a52f471af4a1205ac0e46315e5072ccd0c444d038251e587dcf64367f9a4",
+        "pixelSha256": "9273b63078316af225edfccda03b529f18d3cdf52c216f882028015f54853562"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-cen100-390x844-dark",
+      "base": "/",
+      "route": "cen100",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/root-cen100-390x844-dark.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 19
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 17
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 16
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "CEN100 | TMU Course Guides",
+        "heading": "Intro to\nEngineering",
+        "route": "cen100",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 390,
+          "height": 4034
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 183.890625,
+          "width": 390,
+          "height": 3849.625,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 18,
+            "y": 16,
+            "width": 25,
+            "height": 25,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/scenes/posters/cen100-tall.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 8,
+            "y": 338.890625,
+            "width": 374,
+            "height": 303,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "3",
+            "x": 8,
+            "y": 338.890625,
+            "width": 374,
+            "height": 303
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/visuals.css",
+          null,
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 390,
+        "height": 4034,
+        "bytes": 244839,
+        "sha256": "b323a2a6d08bdbd76b9aad443fb0d6b4d2616800ec26d58825bf17b73756ae3c",
+        "pixelSha256": "ee3c2198c0d36b45119323e3e4fd6079f01014ee56e78cd38baf5b9adc00ee44"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-cen100-390x844-light",
+      "base": "/",
+      "route": "cen100",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/root-cen100-390x844-light.png",
+      "naturalWrapper": {
+        "opacity": "0.9447",
+        "filter": "none",
+        "transform": "matrix(1, 0, 0, 1, 0, 4.4259)",
+        "style": "translate: none; rotate: none; scale: none; transform: translate3d(0px, 4.4259px, 0px); opacity: 0.9447;"
+      },
+      "naturalSettlementFailure": "Timed out waiting for wrapper opacity 1, no filter and identity transform",
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 19
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 17
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 16
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "CEN100 | TMU Course Guides",
+        "heading": "Intro to\nEngineering",
+        "route": "cen100",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 390,
+          "height": 4034
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 183.890625,
+          "width": 390,
+          "height": 3849.625,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 18,
+            "y": 16,
+            "width": 25,
+            "height": 25,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/scenes/posters/cen100-tall.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 8,
+            "y": 338.890625,
+            "width": 374,
+            "height": 303,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "1",
+            "x": 8,
+            "y": 338.890625,
+            "width": 374,
+            "height": 303
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/visuals.css",
+          null,
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 390,
+        "height": 4034,
+        "bytes": 287963,
+        "sha256": "f82821b3f979cb83c5ff19e313d96fd6fc3ce528b3fd5f52210dee3a39c6a044",
+        "pixelSha256": "62ac783a76b043c8150c4f1371a5496a097e83a08ce5025392b9b3f9f06e456f"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-mth140-1440x900-dark",
+      "base": "/",
+      "route": "mth140",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/root-mth140-1440x900-dark.png",
+      "naturalWrapper": {
+        "opacity": "0.9938",
+        "filter": "none",
+        "transform": "matrix(1, 0, 0, 1, 0, 0.4958)",
+        "style": "translate: none; rotate: none; scale: none; transform: translate3d(0px, 0.4958px, 0px); opacity: 0.9938;"
+      },
+      "naturalSettlementFailure": "Timed out waiting for wrapper opacity 1, no filter and identity transform",
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 10
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": []
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 13
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH140: Calculus I | TMU Course Guides",
+        "heading": "Calculus I",
+        "route": "mth140",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 1440,
+          "height": 2591
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 2590.53125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 28.296875,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/scenes/posters/mth140-wide.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "1",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/math.css",
+          "/assets/visuals.css",
+          "/assets/math-studio.css",
+          "/assets/lab-composition.css",
+          "/assets/lab-challenges.css",
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 1440,
+        "height": 2591,
+        "bytes": 481789,
+        "sha256": "91a976577bfdddefb24f7deb291a27f79ddae1a1da97e611787b037b741370f4",
+        "pixelSha256": "898f3b9fb7ede72aa222d34cee1baa8c194d4da3cee1634f2bd4ade9e91c5353"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-mth140-1440x900-light",
+      "base": "/",
+      "route": "mth140",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/root-mth140-1440x900-light.png",
+      "naturalWrapper": {
+        "opacity": "0.9296",
+        "filter": "none",
+        "transform": "matrix(1, 0, 0, 1, 0, 5.6323)",
+        "style": "translate: none; rotate: none; scale: none; transform: translate3d(0px, 5.6323px, 0px); opacity: 0.9296;"
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 10
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": []
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 13
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH140: Calculus I | TMU Course Guides",
+        "heading": "Calculus I",
+        "route": "mth140",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 1440,
+          "height": 2591
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 2590.53125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 28.296875,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/scenes/posters/mth140-wide.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "3",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/math.css",
+          "/assets/visuals.css",
+          "/assets/math-studio.css",
+          "/assets/lab-composition.css",
+          "/assets/lab-challenges.css",
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 1440,
+        "height": 2591,
+        "bytes": 469032,
+        "sha256": "e84453f7f0c212dadaf375dd15d1f04610e53324f935b200b04497f54b5046cc",
+        "pixelSha256": "bbf2484716f378a54240005b7b90c570d310ab677742d24804aa8925f23feb1a"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-mth140-390x844-dark",
+      "base": "/",
+      "route": "mth140",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/root-mth140-390x844-dark.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 10
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 17
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 13
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH140: Calculus I | TMU Course Guides",
+        "heading": "Calculus I",
+        "route": "mth140",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 390,
+          "height": 2558
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 184.40625,
+          "width": 390,
+          "height": 2374.03125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 18,
+            "y": 16,
+            "width": 25,
+            "height": 25,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/scenes/posters/mth140-tall.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 8,
+            "y": 306.40625,
+            "width": 374,
+            "height": 336,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "1",
+            "x": 8,
+            "y": 306.40625,
+            "width": 374,
+            "height": 336
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/math.css",
+          "/assets/visuals.css",
+          "/assets/math-studio.css",
+          "/assets/lab-composition.css",
+          "/assets/lab-challenges.css",
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 390,
+        "height": 2558,
+        "bytes": 262387,
+        "sha256": "de100a798ea9caf05224768997ad760a4e103013fc6bc58246c59aa5b6685563",
+        "pixelSha256": "21a3fd193160f6cd145115770c4a5c3d87cc55e69c31a0277b4bd2f687dc63de"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-mth140-390x844-light",
+      "base": "/",
+      "route": "mth140",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/root-mth140-390x844-light.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 10
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 17
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 13
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH140: Calculus I | TMU Course Guides",
+        "heading": "Calculus I",
+        "route": "mth140",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 390,
+          "height": 2558
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 184.40625,
+          "width": 390,
+          "height": 2374.03125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 18,
+            "y": 16,
+            "width": 25,
+            "height": 25,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/scenes/posters/mth140-tall.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 8,
+            "y": 306.40625,
+            "width": 374,
+            "height": 336,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "1",
+            "x": 8,
+            "y": 306.40625,
+            "width": 374,
+            "height": 336
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/math.css",
+          "/assets/visuals.css",
+          "/assets/math-studio.css",
+          "/assets/lab-composition.css",
+          "/assets/lab-challenges.css",
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 390,
+        "height": 2558,
+        "bytes": 260825,
+        "sha256": "86c214ffda6f7e3bdb81c721fad6617c6d30b3080a28a28bb90f8a5eeb9dc236",
+        "pixelSha256": "02405d1eebf7a668646b9324e73ebc491ddf41c57825a093d4bac3291c49a858"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-mth141-1440x900-dark",
+      "base": "/",
+      "route": "mth141",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/root-mth141-1440x900-dark.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 14
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": []
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 19
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH141: Linear Algebra | TMU Course Guides",
+        "heading": "Linear Algebra",
+        "route": "mth141",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 1440,
+          "height": 2558
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 2558.03125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 28.296875,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/scenes/posters/mth141-wide.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "3",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/math.css",
+          "/assets/visuals.css",
+          "/assets/math-studio.css",
+          "/assets/lab-composition.css",
+          "/assets/lab-challenges.css",
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 1440,
+        "height": 2558,
+        "bytes": 447742,
+        "sha256": "52a39d0fb393a64b6aa2c3b4d006114cbefe0ad3aa8f0e6c0cb3d442c057898e",
+        "pixelSha256": "fc52b90677b6cce85df8de669ad41e4b4ec4def0dacddf27c1a488ecce0dc2f3"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-mth141-1440x900-light",
+      "base": "/",
+      "route": "mth141",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/root-mth141-1440x900-light.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 14
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": []
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 19
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH141: Linear Algebra | TMU Course Guides",
+        "heading": "Linear Algebra",
+        "route": "mth141",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 1440,
+          "height": 2558
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 2558.03125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 28.296875,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/scenes/posters/mth141-wide.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "3",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/math.css",
+          "/assets/visuals.css",
+          "/assets/math-studio.css",
+          "/assets/lab-composition.css",
+          "/assets/lab-challenges.css",
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 1440,
+        "height": 2558,
+        "bytes": 428295,
+        "sha256": "8dfddcffb540579012d6fd50bc8209e655dfeba424e6753fda44a4042f9b589f",
+        "pixelSha256": "c7ad3c82840c626fc39a8404c89ef9e293c9f55577dfc7c56d0164493c9f4c64"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-mth141-390x844-dark",
+      "base": "/",
+      "route": "mth141",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/root-mth141-390x844-dark.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 14
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 17
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 19
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH141: Linear Algebra | TMU Course Guides",
+        "heading": "Linear Algebra",
+        "route": "mth141",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 390,
+          "height": 2549
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 184.40625,
+          "width": 390,
+          "height": 2364.5625,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 18,
+            "y": 16,
+            "width": 25,
+            "height": 25,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/scenes/posters/mth141-tall.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 8,
+            "y": 306.40625,
+            "width": 374,
+            "height": 336,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "2",
+            "x": 8,
+            "y": 306.40625,
+            "width": 374,
+            "height": 336
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/math.css",
+          "/assets/visuals.css",
+          "/assets/math-studio.css",
+          "/assets/lab-composition.css",
+          "/assets/lab-challenges.css",
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 390,
+        "height": 2549,
+        "bytes": 264250,
+        "sha256": "a5d32e8063604c6abc631b449b54d0dcb55c27290d04eabb81f96688faaf9c32",
+        "pixelSha256": "64142412ab817cd55103a870447306d07e9172b4ceb1e138de2cf23da21ae10c"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-mth141-390x844-light",
+      "base": "/",
+      "route": "mth141",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/root-mth141-390x844-light.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 14
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 17
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 19
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH141: Linear Algebra | TMU Course Guides",
+        "heading": "Linear Algebra",
+        "route": "mth141",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 390,
+          "height": 2549
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 184.40625,
+          "width": 390,
+          "height": 2364.5625,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 18,
+            "y": 16,
+            "width": 25,
+            "height": 25,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/scenes/posters/mth141-tall.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 8,
+            "y": 306.40625,
+            "width": 374,
+            "height": 336,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "3",
+            "x": 8,
+            "y": 306.40625,
+            "width": 374,
+            "height": 336
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/math.css",
+          "/assets/visuals.css",
+          "/assets/math-studio.css",
+          "/assets/lab-composition.css",
+          "/assets/lab-challenges.css",
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 390,
+        "height": 2549,
+        "bytes": 259022,
+        "sha256": "4146d99b47f55d6271d66402f4a7997309028eb5437af6053d12834242168f87",
+        "pixelSha256": "9693c94ba0fe9fb2bd5ee99f320ecb996bc41f3b6b6bf8af4aa2e53fbe8beb40"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-desk-1440x900-dark",
+      "base": "/tmu-course-guides/",
+      "route": "desk",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/project-desk-1440x900-dark.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": null
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 29
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": []
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 45
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "TMU Course Guides | Fall 2026",
+        "heading": "TMU Course Guides \u00b7 Fall 2026",
+        "route": "desk",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 1440,
+          "height": 1588
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 167.796875,
+          "width": 1440,
+          "height": 1319.625,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 54.828125,
+            "y": 25,
+            "width": 34,
+            "height": 34,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/desk.css",
+          "/tmu-course-guides/assets/night/palette.css"
+        ]
+      },
+      "png": {
+        "width": 1440,
+        "height": 1588,
+        "bytes": 451884,
+        "sha256": "ebe2bbf41c9bb0852f60618109d6d52ce0700051c4c2dba473cb7e84965291c3",
+        "pixelSha256": "d5c195aa715cf6fc94c78bb4f62bd12687e2d6a24267464ccb03afd784489ac1"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-desk-1440x900-light",
+      "base": "/tmu-course-guides/",
+      "route": "desk",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/project-desk-1440x900-light.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": null
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 29
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": []
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 45
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "TMU Course Guides | Fall 2026",
+        "heading": "TMU Course Guides \u00b7 Fall 2026",
+        "route": "desk",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 1440,
+          "height": 1588
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 167.796875,
+          "width": 1440,
+          "height": 1319.625,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 54.828125,
+            "y": 25,
+            "width": 34,
+            "height": 34,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/desk.css",
+          "/tmu-course-guides/assets/night/palette.css"
+        ]
+      },
+      "png": {
+        "width": 1440,
+        "height": 1588,
+        "bytes": 480531,
+        "sha256": "5d656dfc185ee900834b11e20992ff8a5bc5f61bacc0e7f0964bbd45a68a1816",
+        "pixelSha256": "e315836abdb75732dc6b9d3908bd240a53003847a9d683877974d7763275cd46"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-desk-390x844-dark",
+      "base": "/tmu-course-guides/",
+      "route": "desk",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/project-desk-390x844-dark.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": null
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 28
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": []
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 45
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "TMU Course Guides | Fall 2026",
+        "heading": "TMU Course Guides \u00b7 Fall 2026",
+        "route": "desk",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 390,
+          "height": 2690
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 251.1875,
+          "width": 390,
+          "height": 2299.984375,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 19,
+            "y": 21,
+            "width": 34,
+            "height": 34,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/desk.css",
+          "/tmu-course-guides/assets/night/palette.css"
+        ]
+      },
+      "png": {
+        "width": 390,
+        "height": 2690,
+        "bytes": 258300,
+        "sha256": "23f481ed48737442dd3689fbae705233df9be82727cb90b75fd7b853dedcb797",
+        "pixelSha256": "67e7c644ad441611c9ce3ddefc88eaa4fa72a43c9727d58ba36167d1347e466c"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-desk-390x844-light",
+      "base": "/tmu-course-guides/",
+      "route": "desk",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/project-desk-390x844-light.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": null
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 28
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": []
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 45
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "TMU Course Guides | Fall 2026",
+        "heading": "TMU Course Guides \u00b7 Fall 2026",
+        "route": "desk",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 390,
+          "height": 2690
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 251.1875,
+          "width": 390,
+          "height": 2299.984375,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 19,
+            "y": 21,
+            "width": 34,
+            "height": 34,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/desk.css",
+          "/tmu-course-guides/assets/night/palette.css"
+        ]
+      },
+      "png": {
+        "width": 390,
+        "height": 2690,
+        "bytes": 268712,
+        "sha256": "659ad1a2836aaff335b7f2de97e77c3daf7738f7fa624df7e14773fec18a35d6",
+        "pixelSha256": "75eec5a836d3f1c9361f651fa4772551200363a6fa12e1d54bc1f04b20f8124c"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-cen100-1440x900-dark",
+      "base": "/tmu-course-guides/",
+      "route": "cen100",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/project-cen100-1440x900-dark.png",
+      "naturalWrapper": {
+        "opacity": "0.9638",
+        "filter": "none",
+        "transform": "matrix(1, 0, 0, 1, 0, 2.8997)",
+        "style": "translate: none; rotate: none; scale: none; transform: translate3d(0px, 2.8997px, 0px); opacity: 0.9638;"
+      },
+      "naturalSettlementFailure": "Timed out waiting for wrapper opacity 1, no filter and identity transform",
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 19
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": []
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 16
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "CEN100 | TMU Course Guides",
+        "heading": "Intro to\nEngineering",
+        "route": "cen100",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 1440,
+          "height": 4284
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 4283.578125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 28.296875,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/tmu-course-guides/assets/scenes/posters/cen100-wide.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "3",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/visuals.css",
+          null,
+          "/tmu-course-guides/assets/editorial.css",
+          "/tmu-course-guides/assets/workspace.css",
+          "/tmu-course-guides/assets/course-header.css",
+          "/tmu-course-guides/assets/guide-motion.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/palette.css",
+          "/tmu-course-guides/assets/night/hero.css",
+          "/tmu-course-guides/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 1440,
+        "height": 4284,
+        "bytes": 465945,
+        "sha256": "174cd04a00e1b0b1a9cff26f812045613310ba3f5b3b8c899a7581aa8f617c5d",
+        "pixelSha256": "ccbb4121027c646536e4e94852360efbb6ceb8a2a6ad0819cfe0d0792c941ced"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-cen100-1440x900-light",
+      "base": "/tmu-course-guides/",
+      "route": "cen100",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/project-cen100-1440x900-light.png",
+      "naturalWrapper": {
+        "opacity": "0.9447",
+        "filter": "none",
+        "transform": "matrix(1, 0, 0, 1, 0, 4.4259)",
+        "style": "translate: none; rotate: none; scale: none; transform: translate3d(0px, 4.4259px, 0px); opacity: 0.9447;"
+      },
+      "naturalSettlementFailure": "Timed out waiting for wrapper opacity 1, no filter and identity transform",
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 19
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": []
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 16
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "CEN100 | TMU Course Guides",
+        "heading": "Intro to\nEngineering",
+        "route": "cen100",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 1440,
+          "height": 4284
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 4283.578125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 28.296875,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/tmu-course-guides/assets/scenes/posters/cen100-wide.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "3",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/visuals.css",
+          null,
+          "/tmu-course-guides/assets/editorial.css",
+          "/tmu-course-guides/assets/workspace.css",
+          "/tmu-course-guides/assets/course-header.css",
+          "/tmu-course-guides/assets/guide-motion.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/palette.css",
+          "/tmu-course-guides/assets/night/hero.css",
+          "/tmu-course-guides/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 1440,
+        "height": 4284,
+        "bytes": 448619,
+        "sha256": "c1ab99bc6ea8542feddf714bf6d4e5638aa62cbe8046cc48cf4138106e72a79b",
+        "pixelSha256": "3a60d8c8132f5a5f88f8136904225fedb230bb8341e4cc37a7502af98906001f"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-cen100-390x844-dark",
+      "base": "/tmu-course-guides/",
+      "route": "cen100",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/project-cen100-390x844-dark.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 19
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 17
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 16
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "CEN100 | TMU Course Guides",
+        "heading": "Intro to\nEngineering",
+        "route": "cen100",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 390,
+          "height": 4034
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 183.890625,
+          "width": 390,
+          "height": 3849.625,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 18,
+            "y": 16,
+            "width": 25,
+            "height": 25,
+            "aboveFold": true
+          },
+          {
+            "src": "/tmu-course-guides/assets/scenes/posters/cen100-tall.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 8,
+            "y": 338.890625,
+            "width": 374,
+            "height": 303,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "1",
+            "x": 8,
+            "y": 338.890625,
+            "width": 374,
+            "height": 303
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/visuals.css",
+          null,
+          "/tmu-course-guides/assets/editorial.css",
+          "/tmu-course-guides/assets/workspace.css",
+          "/tmu-course-guides/assets/course-header.css",
+          "/tmu-course-guides/assets/guide-motion.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/palette.css",
+          "/tmu-course-guides/assets/night/hero.css",
+          "/tmu-course-guides/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 390,
+        "height": 4034,
+        "bytes": 293455,
+        "sha256": "a6affae932877c9d17d84c01faea10aad853c3aadcfa40b82a9b492c5560815a",
+        "pixelSha256": "da41b516b19288adb9434d9e4887fcadb41ed2e3e9ed7cbc5ce7173ffcedb056"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-cen100-390x844-light",
+      "base": "/tmu-course-guides/",
+      "route": "cen100",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/project-cen100-390x844-light.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 19
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 17
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 16
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "CEN100 | TMU Course Guides",
+        "heading": "Intro to\nEngineering",
+        "route": "cen100",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 390,
+          "height": 4034
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 183.890625,
+          "width": 390,
+          "height": 3849.625,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 18,
+            "y": 16,
+            "width": 25,
+            "height": 25,
+            "aboveFold": true
+          },
+          {
+            "src": "/tmu-course-guides/assets/scenes/posters/cen100-tall.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 8,
+            "y": 338.890625,
+            "width": 374,
+            "height": 303,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "3",
+            "x": 8,
+            "y": 338.890625,
+            "width": 374,
+            "height": 303
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/visuals.css",
+          null,
+          "/tmu-course-guides/assets/editorial.css",
+          "/tmu-course-guides/assets/workspace.css",
+          "/tmu-course-guides/assets/course-header.css",
+          "/tmu-course-guides/assets/guide-motion.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/palette.css",
+          "/tmu-course-guides/assets/night/hero.css",
+          "/tmu-course-guides/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 390,
+        "height": 4034,
+        "bytes": 288223,
+        "sha256": "4f05d8a5979e2a14a323dfbec53a6326f7ad24daccd63722ace77bd99038e572",
+        "pixelSha256": "ba81f5a62c243972059b88be1b134b1e8e81a053f2a1bfba0a152672b1805709"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-mth140-1440x900-dark",
+      "base": "/tmu-course-guides/",
+      "route": "mth140",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/project-mth140-1440x900-dark.png",
+      "naturalWrapper": {
+        "opacity": "0.9786",
+        "filter": "none",
+        "transform": "matrix(1, 0, 0, 1, 0, 1.7153)",
+        "style": "translate: none; rotate: none; scale: none; transform: translate3d(0px, 1.7153px, 0px); opacity: 0.9786;"
+      },
+      "naturalSettlementFailure": "Timed out waiting for wrapper opacity 1, no filter and identity transform",
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 10
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": []
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 13
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH140: Calculus I | TMU Course Guides",
+        "heading": "Calculus I",
+        "route": "mth140",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 1440,
+          "height": 2591
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 2590.53125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 28.296875,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/tmu-course-guides/assets/scenes/posters/mth140-wide.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "3",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/math.css",
+          "/tmu-course-guides/assets/visuals.css",
+          "/tmu-course-guides/assets/math-studio.css",
+          "/tmu-course-guides/assets/lab-composition.css",
+          "/tmu-course-guides/assets/lab-challenges.css",
+          "/tmu-course-guides/assets/editorial.css",
+          "/tmu-course-guides/assets/workspace.css",
+          "/tmu-course-guides/assets/course-header.css",
+          "/tmu-course-guides/assets/guide-motion.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/palette.css",
+          "/tmu-course-guides/assets/night/hero.css",
+          "/tmu-course-guides/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 1440,
+        "height": 2591,
+        "bytes": 244905,
+        "sha256": "6c1b7002813db214bc011381eeb51c4b312f12659a2a53f8aee9e09231112260",
+        "pixelSha256": "a98e36dfa950da5c7c4733b75adbfd723b281d8e025a546198c10ce72f5c3d41"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-mth140-1440x900-light",
+      "base": "/tmu-course-guides/",
+      "route": "mth140",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/project-mth140-1440x900-light.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 10
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": []
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 13
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH140: Calculus I | TMU Course Guides",
+        "heading": "Calculus I",
+        "route": "mth140",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 1440,
+          "height": 2591
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 2590.53125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 28.296875,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/tmu-course-guides/assets/scenes/posters/mth140-wide.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "3",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/math.css",
+          "/tmu-course-guides/assets/visuals.css",
+          "/tmu-course-guides/assets/math-studio.css",
+          "/tmu-course-guides/assets/lab-composition.css",
+          "/tmu-course-guides/assets/lab-challenges.css",
+          "/tmu-course-guides/assets/editorial.css",
+          "/tmu-course-guides/assets/workspace.css",
+          "/tmu-course-guides/assets/course-header.css",
+          "/tmu-course-guides/assets/guide-motion.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/palette.css",
+          "/tmu-course-guides/assets/night/hero.css",
+          "/tmu-course-guides/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 1440,
+        "height": 2591,
+        "bytes": 469032,
+        "sha256": "e84453f7f0c212dadaf375dd15d1f04610e53324f935b200b04497f54b5046cc",
+        "pixelSha256": "bbf2484716f378a54240005b7b90c570d310ab677742d24804aa8925f23feb1a"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-mth140-390x844-dark",
+      "base": "/tmu-course-guides/",
+      "route": "mth140",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/project-mth140-390x844-dark.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 10
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 17
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 13
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH140: Calculus I | TMU Course Guides",
+        "heading": "Calculus I",
+        "route": "mth140",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 390,
+          "height": 2558
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 184.40625,
+          "width": 390,
+          "height": 2374.03125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 18,
+            "y": 16,
+            "width": 25,
+            "height": 25,
+            "aboveFold": true
+          },
+          {
+            "src": "/tmu-course-guides/assets/scenes/posters/mth140-tall.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 8,
+            "y": 306.40625,
+            "width": 374,
+            "height": 336,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "1",
+            "x": 8,
+            "y": 306.40625,
+            "width": 374,
+            "height": 336
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/math.css",
+          "/tmu-course-guides/assets/visuals.css",
+          "/tmu-course-guides/assets/math-studio.css",
+          "/tmu-course-guides/assets/lab-composition.css",
+          "/tmu-course-guides/assets/lab-challenges.css",
+          "/tmu-course-guides/assets/editorial.css",
+          "/tmu-course-guides/assets/workspace.css",
+          "/tmu-course-guides/assets/course-header.css",
+          "/tmu-course-guides/assets/guide-motion.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/palette.css",
+          "/tmu-course-guides/assets/night/hero.css",
+          "/tmu-course-guides/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 390,
+        "height": 2558,
+        "bytes": 262659,
+        "sha256": "ea1793e10b8fb821a55f94b35d7c222a1453af724f55e9e76edde224f5f83c8a",
+        "pixelSha256": "31872dfb8b8f67119575b5eb43d32534bbfea352d4d1d5a8f3cf1675a1b5ce2e"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-mth140-390x844-light",
+      "base": "/tmu-course-guides/",
+      "route": "mth140",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/project-mth140-390x844-light.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 10
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 17
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 13
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH140: Calculus I | TMU Course Guides",
+        "heading": "Calculus I",
+        "route": "mth140",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 390,
+          "height": 2558
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 184.40625,
+          "width": 390,
+          "height": 2374.03125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 18,
+            "y": 16,
+            "width": 25,
+            "height": 25,
+            "aboveFold": true
+          },
+          {
+            "src": "/tmu-course-guides/assets/scenes/posters/mth140-tall.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 8,
+            "y": 306.40625,
+            "width": 374,
+            "height": 336,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "3",
+            "x": 8,
+            "y": 306.40625,
+            "width": 374,
+            "height": 336
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/math.css",
+          "/tmu-course-guides/assets/visuals.css",
+          "/tmu-course-guides/assets/math-studio.css",
+          "/tmu-course-guides/assets/lab-composition.css",
+          "/tmu-course-guides/assets/lab-challenges.css",
+          "/tmu-course-guides/assets/editorial.css",
+          "/tmu-course-guides/assets/workspace.css",
+          "/tmu-course-guides/assets/course-header.css",
+          "/tmu-course-guides/assets/guide-motion.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/palette.css",
+          "/tmu-course-guides/assets/night/hero.css",
+          "/tmu-course-guides/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 390,
+        "height": 2558,
+        "bytes": 260825,
+        "sha256": "86c214ffda6f7e3bdb81c721fad6617c6d30b3080a28a28bb90f8a5eeb9dc236",
+        "pixelSha256": "02405d1eebf7a668646b9324e73ebc491ddf41c57825a093d4bac3291c49a858"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-mth141-1440x900-dark",
+      "base": "/tmu-course-guides/",
+      "route": "mth141",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/project-mth141-1440x900-dark.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 14
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": []
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 19
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH141: Linear Algebra | TMU Course Guides",
+        "heading": "Linear Algebra",
+        "route": "mth141",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 1440,
+          "height": 2558
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 2558.03125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 28.296875,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/tmu-course-guides/assets/scenes/posters/mth141-wide.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "3",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/math.css",
+          "/tmu-course-guides/assets/visuals.css",
+          "/tmu-course-guides/assets/math-studio.css",
+          "/tmu-course-guides/assets/lab-composition.css",
+          "/tmu-course-guides/assets/lab-challenges.css",
+          "/tmu-course-guides/assets/editorial.css",
+          "/tmu-course-guides/assets/workspace.css",
+          "/tmu-course-guides/assets/course-header.css",
+          "/tmu-course-guides/assets/guide-motion.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/palette.css",
+          "/tmu-course-guides/assets/night/hero.css",
+          "/tmu-course-guides/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 1440,
+        "height": 2558,
+        "bytes": 447742,
+        "sha256": "52a39d0fb393a64b6aa2c3b4d006114cbefe0ad3aa8f0e6c0cb3d442c057898e",
+        "pixelSha256": "fc52b90677b6cce85df8de669ad41e4b4ec4def0dacddf27c1a488ecce0dc2f3"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-mth141-1440x900-light",
+      "base": "/tmu-course-guides/",
+      "route": "mth141",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/project-mth141-1440x900-light.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 14
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": []
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 19
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH141: Linear Algebra | TMU Course Guides",
+        "heading": "Linear Algebra",
+        "route": "mth141",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 1440,
+          "height": 2558
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 2558.03125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 28.296875,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/tmu-course-guides/assets/scenes/posters/mth141-wide.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "3",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/math.css",
+          "/tmu-course-guides/assets/visuals.css",
+          "/tmu-course-guides/assets/math-studio.css",
+          "/tmu-course-guides/assets/lab-composition.css",
+          "/tmu-course-guides/assets/lab-challenges.css",
+          "/tmu-course-guides/assets/editorial.css",
+          "/tmu-course-guides/assets/workspace.css",
+          "/tmu-course-guides/assets/course-header.css",
+          "/tmu-course-guides/assets/guide-motion.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/palette.css",
+          "/tmu-course-guides/assets/night/hero.css",
+          "/tmu-course-guides/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 1440,
+        "height": 2558,
+        "bytes": 428567,
+        "sha256": "21b113bf7edef3fe5a7bff7c0581358c66c8cdadbcf802ebecf356c69bba9ad0",
+        "pixelSha256": "97a61a667a129580cfe2ae7ee90d6c02dab12a187873274cf5a3b0186780cb5c"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-mth141-390x844-dark",
+      "base": "/tmu-course-guides/",
+      "route": "mth141",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/project-mth141-390x844-dark.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 14
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 17
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 19
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH141: Linear Algebra | TMU Course Guides",
+        "heading": "Linear Algebra",
+        "route": "mth141",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 390,
+          "height": 2549
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 184.40625,
+          "width": 390,
+          "height": 2364.5625,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 18,
+            "y": 16,
+            "width": 25,
+            "height": 25,
+            "aboveFold": true
+          },
+          {
+            "src": "/tmu-course-guides/assets/scenes/posters/mth141-tall.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 8,
+            "y": 306.40625,
+            "width": 374,
+            "height": 336,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "1",
+            "x": 8,
+            "y": 306.40625,
+            "width": 374,
+            "height": 336
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/math.css",
+          "/tmu-course-guides/assets/visuals.css",
+          "/tmu-course-guides/assets/math-studio.css",
+          "/tmu-course-guides/assets/lab-composition.css",
+          "/tmu-course-guides/assets/lab-challenges.css",
+          "/tmu-course-guides/assets/editorial.css",
+          "/tmu-course-guides/assets/workspace.css",
+          "/tmu-course-guides/assets/course-header.css",
+          "/tmu-course-guides/assets/guide-motion.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/palette.css",
+          "/tmu-course-guides/assets/night/hero.css",
+          "/tmu-course-guides/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 390,
+        "height": 2549,
+        "bytes": 264250,
+        "sha256": "a5d32e8063604c6abc631b449b54d0dcb55c27290d04eabb81f96688faaf9c32",
+        "pixelSha256": "64142412ab817cd55103a870447306d07e9172b4ceb1e138de2cf23da21ae10c"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-mth141-390x844-light",
+      "base": "/tmu-course-guides/",
+      "route": "mth141",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/project-mth141-390x844-light.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 14
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 17
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 19
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH141: Linear Algebra | TMU Course Guides",
+        "heading": "Linear Algebra",
+        "route": "mth141",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 390,
+          "height": 2549
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 184.40625,
+          "width": 390,
+          "height": 2364.5625,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 18,
+            "y": 16,
+            "width": 25,
+            "height": 25,
+            "aboveFold": true
+          },
+          {
+            "src": "/tmu-course-guides/assets/scenes/posters/mth141-tall.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 8,
+            "y": 306.40625,
+            "width": 374,
+            "height": 336,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "2",
+            "x": 8,
+            "y": 306.40625,
+            "width": 374,
+            "height": 336
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/math.css",
+          "/tmu-course-guides/assets/visuals.css",
+          "/tmu-course-guides/assets/math-studio.css",
+          "/tmu-course-guides/assets/lab-composition.css",
+          "/tmu-course-guides/assets/lab-challenges.css",
+          "/tmu-course-guides/assets/editorial.css",
+          "/tmu-course-guides/assets/workspace.css",
+          "/tmu-course-guides/assets/course-header.css",
+          "/tmu-course-guides/assets/guide-motion.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/palette.css",
+          "/tmu-course-guides/assets/night/hero.css",
+          "/tmu-course-guides/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 390,
+        "height": 2549,
+        "bytes": 162336,
+        "sha256": "fdd394de76c2135ede5cf464c6cb9ab0e6e63985b11a6c47f788ee4635680ec7",
+        "pixelSha256": "2c69353ce02b4380927f479ed6a5e7e2d33e0aa1495473fcb0267fb753e7b404"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "repeatCheck": {
+    "case": "root-mth140-1440x900-dark",
+    "capture": {
+      "id": "root-mth140-1440x900-dark",
+      "base": "/",
+      "route": "mth140",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "screenshot": "tools/qa/reports/perf-visuals/before-full-page-exploratory/repeat/root-mth140-1440x900-dark.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "naturalSettlementFailure": "Timed out waiting for wrapper opacity 1, no filter and identity transform",
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 10
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".hub-brand,.hub-nav,.hub-sidebar",
+          "fonts": []
+        },
+        {
+          "label": "body",
+          "selector": "main p",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 13
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH140: Calculus I | TMU Course Guides",
+        "heading": "Calculus I",
+        "route": "mth140",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 1440,
+          "height": 2591
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 2590.53125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 28.296875,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/scenes/posters/mth140-wide.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "3",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/math.css",
+          "/assets/visuals.css",
+          "/assets/math-studio.css",
+          "/assets/lab-composition.css",
+          "/assets/lab-challenges.css",
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ]
+      },
+      "png": {
+        "width": 1440,
+        "height": 2591,
+        "bytes": 244877,
+        "sha256": "4e39dff706b0e13660192314163c0c542a6187badf143c8943077779d6a060a7",
+        "pixelSha256": "cc2c3c3b07bef8abca783c8ded69dce1e6d86abc5d294fc34f658f975f3ccf83"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    "comparison": {
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 2591
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 2591
+      },
+      "equalDimensions": true,
+      "changedPixels": 133120,
+      "totalPixels": 3731040,
+      "changedPixelShare": 0.035679059993996315,
+      "totalAbsoluteChannelDifference": 17788023,
+      "maxChannelDifference": 218,
+      "differenceBounds": {
+        "left": 15,
+        "top": 113,
+        "right": 1439,
+        "bottom": 2253
+      },
+      "pixelIdentical": false,
+      "beforeSha256": "91a976577bfdddefb24f7deb291a27f79ddae1a1da97e611787b037b741370f4",
+      "afterSha256": "4e39dff706b0e13660192314163c0c542a6187badf143c8943077779d6a060a7",
+      "diff": "tools/qa/reports/perf-visuals/before-full-page-exploratory/repeat/root-mth140-1440x900-dark-diff.png"
+    }
+  },
+  "summary": {
+    "requested": 32,
+    "captured": 30,
+    "failed": 2,
+    "naturalSettlementFailures": 7,
+    "errors": 0
+  },
+  "classification": "Exploratory full-page capture: paused canvas was blank in representative repeat; not a reproducible raw-pixel baseline."
+}

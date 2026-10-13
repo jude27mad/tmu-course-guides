@@ -1,6 +1,7 @@
 import { CHECKS } from './checks.mjs';
 import { instrument } from './instrument.mjs';
 import { runHarness } from './runtime.mjs';
+import { perf } from './checks-perf.mjs'; CHECKS.perf = perf;
 
 try {
   const result = await runHarness({ checks: CHECKS, instrument });

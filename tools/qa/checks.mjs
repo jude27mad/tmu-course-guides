@@ -138,7 +138,9 @@ async function gsapMetrics(page, env) {
     const core=await import(base+'assets/vendor/gsap-3.15.0.mjs');
     // Import only the already-present optional bundle. Registration/animation is
     // product-owned; this hook merely observes the shared instance.
-    const services=await import(base+'assets/night/core.mjs');
+    const coreURL=document.querySelector('script[data-shell-module][src*="assets/night/core.mjs"]')?.src;
+    if(!coreURL)throw Error('Loaded Night Shift core URL unavailable');
+    const services=await import(coreURL);
     const extra=await import(base+'assets/vendor/night-vendor.mjs?v='+services.VERSION);
     window.__qaMetrics.installGsap(core.gsap,extra.ScrollTrigger);
   }, env.origin+env.base);
