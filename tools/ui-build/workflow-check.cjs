@@ -311,7 +311,7 @@ async function checkPalette(){
   query('qqzzxx');assert(!empty.hidden);assert.equal(empty.textContent,'No results for "qqzzxx"');assert.equal(live.textContent,'No results for qqzzxx. Try another search');
   assert.deepEqual(options().map(o=>o.textContent),['Search the guide for "qqzzxx"'],'an empty search still offers the guide search');
   clear.click();assert.equal(input.value,'');assert.equal(d.activeElement,input,'Clear returns focus to the search field');assert(clear.hidden&&empty.hidden);assert.equal(live.textContent,'');
-  query('week 9');assert.deepEqual(active().closest('[role="group"]').getAttribute('aria-label'),'Semester weeks');assert.equal(active().closest('[role="group"]').querySelector('.ns-palette-group').textContent,'Weeks');
+  query('week 9');assert.deepEqual([active().querySelector('span').textContent,active().getAttribute('aria-label')],['Week 9 · Nov 2–8','Week 9, November 2 to 8'],'week wording from the copy');assert.deepEqual(active().closest('[role="group"]').getAttribute('aria-label'),'Semester weeks');assert.equal(active().closest('[role="group"]').querySelector('.ns-palette-group').textContent,'Weeks');
   query('limits');assert(groups().some(([visible,label])=>visible==='Topics'&&label==='Study topics'),'topic group heading');
   query('');key('Home');assert.match(active().textContent,/Lab Quiz 2/);
   key('ArrowDown');assert.equal(active().getAttribute('aria-selected'),'true');

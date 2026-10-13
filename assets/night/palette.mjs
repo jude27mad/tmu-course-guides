@@ -37,6 +37,19 @@ export function fuzzyMatch(label,query){
  return previous.reduce((best,value)=>value&&(!best||value.score>best.score)?value:best,null);
 }
 
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+/** Week wording from the copy's Course book table: "Week 9 · Nov 2–8", read as "Week 9, November 2 to 8";
+    the partial first week and the final day keep their own wording. Dates are Toronto calendar strings. */
+export function weekCopy(week){
+ const n=week.index+1;if(!week.start)return {label:week.label||`Week ${n}`,ariaLabel:null}; // e.g. "Exam · Date pending"
+ const [,sm,sd]=week.start.split('-').map(Number),[,em,ed]=(week.end||week.start).split('-').map(Number),short=m=>MONTHS[m-1].slice(0,3);
+ const single=week.start===(week.end||week.start),same=sm===em;
+ const range=single?`${short(sm)} ${sd}`:same?`${short(sm)} ${sd}–${ed}`:`${short(sm)} ${sd}–${short(em)} ${ed}`;
+ const spoken=single?`${MONTHS[sm-1]} ${sd}`:same?`${MONTHS[sm-1]} ${sd} to ${ed}`:`${MONTHS[sm-1]} ${sd} to ${MONTHS[em-1]} ${ed}`;
+ const note=!week.partial?'':week.index===0?'. Partial first week':single?'. Final day of the semester':'';
+ return {label:`Week ${n} · ${range}`,ariaLabel:`Week ${n}, ${spoken}${note}`};
+}
+
 /** Build commands from unchanged course records; target is the guide's handle. */
 export function buildIndex({course='desk',data=null,section=0,completed={},itemTitles={},now=Date.now(),base=null,exists=()=>true,theme='auto',motionPaused=false,motionForced=false,sound=false}={}){
  const entries=[],math=course==='mth140'||course==='mth141',desk=course==='desk';
@@ -53,7 +66,7 @@ export function buildIndex({course='desk',data=null,section=0,completed={},itemT
  }
  const records=desk?[]:recordsForCourse(course,{courseData:data,cenSchedule:data||[],section,completed});
  const weeks=semesterWeeks({records});
- for(const week of weeks)add('week-'+week.index,'Weeks',week.label,'week',{index:week.index,disabled:desk,hint:desk?'Open a course to choose a week':week.start?`${week.start} – ${week.end}`:'Date pending'});
+ for(const week of weeks){const copy=weekCopy(week);add('week-'+week.index,'Weeks',copy.label,'week',{index:week.index,disabled:desk,ariaLabel:copy.ariaLabel,hint:desk?'Open a course to choose a week':week.start||/pending/i.test(copy.label)?'':'Date pending'});}
  // The current course's views sit with the course places: both move between pages of the guide.
  if(!desk){
   add('view-assignments','Courses','Assignments','view',{target:'assignments',default:true});
