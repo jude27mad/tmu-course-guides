@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Help | TMU Course Guides</title>
+<meta name="description" content="How to use the Course Desk, sections, deadlines, semester book, search, progress, calendar exports and backups.">
+<link rel="stylesheet" href="assets/fonts/archivo.css?v=20261012-privacy1">
+<link rel="stylesheet" href="assets/hub.css?v=20261012-desk1">
+<link rel="stylesheet" href="assets/night/layout.css?v=20261013-shift1">
+<script>
+// Use the same saved appearance as the course guides, before the first paint.
+try {
+  const theme = localStorage.getItem('tmu-guide-theme-v1');
+  if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+} catch {}
+</script>
+<style>
+  /* Page layout only. Colours and type come from the shared guide styles. */
+  .help-page, .help-page *, .help-page *::before, .help-page *::after { box-sizing: border-box; }
+  .help-page {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--hub-bg);
+    color: var(--hub-ink);
+    font: 400 1rem/1.65 Archivo, system-ui, sans-serif;
+    -webkit-text-size-adjust: 100%;
+    --help-gutter: clamp(18px, 4vw, 48px);
+  }
+  .help-page [hidden] { display: none !important; }
+  .help-page a { color: inherit; text-underline-offset: .22em; }
+  .help-page :is(a, button, summary) { min-width: 44px; min-height: 44px; }
+  .help-page :is(a, button, summary):focus-visible { outline: 3px solid var(--hub-focus); outline-offset: 4px; }
+  .help-page :is(h1, h2, h3, p, ul, ol, dl) { margin-top: 0; }
+  .help-page :is(p, li, dd) { overflow-wrap: anywhere; }
+  .help-page strong { font-weight: 650; }
+  .help-page kbd, .help-page code { font: .9em/1.4 var(--ns-mono); }
+  .help-page kbd {
+    display: inline-block;
+    padding: 2px 6px;
+    border: 1px solid var(--hub-line);
+    border-radius: 5px;
+    background: var(--hub-panel);
+  }
+  .help-page :is(header, main, footer).help-frame {
+    width: 100%;
+    max-width: 1160px;
+    margin-inline: auto;
+    padding-inline: max(var(--help-gutter), env(safe-area-inset-left)) max(var(--help-gutter), env(safe-area-inset-right));
+  }
+  .help-page .skip-link {
+    position: fixed;
+    z-index: 100;
+    top: 8px;
+    left: 8px;
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 16px;
+    border: 1px solid var(--hub-line);
+    border-radius: 8px;
+    background: var(--hub-panel);
+    transform: translateY(-200%);
+  }
+  .help-page .skip-link:focus { transform: none; }
+  .help-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px 24px;
+    padding-block: 22px;
+  }
+  .help-brand { display: inline-flex; flex-direction: column; justify-content: center; text-decoration: none; font-weight: 650; line-height: 1.3; }
+  .help-brand small { margin-top: 4px; color: var(--hub-muted); font-size: .875rem; font-weight: 400; }
+  .help-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .help-actions .quick-link, .help-actions .hub-theme { font-size: .875rem; min-height: 44px; padding: 9px 14px; }
+  .help-main { padding-bottom: 56px; }
+  .help-main:focus { outline: none; }
+  .help-intro { padding-block: clamp(28px, 5vw, 60px) 32px; border-block: 1px solid var(--hub-line); }
+  .help-intro h1 { margin-block: 12px 18px; font-size: clamp(3.25rem, 8vw, 6rem); font-variation-settings: 'wdth' 75; font-weight: 600; letter-spacing: -.045em; line-height: .95; }
+  .help-intro > p:last-child { max-width: 52ch; margin-bottom: 0; color: var(--hub-muted); font-size: 1.125rem; }
+  .help-layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); align-items: start; gap: clamp(32px, 5vw, 72px); padding-top: 36px; }
+  .help-contents { position: sticky; top: 20px; }
+  .help-contents h2 { margin-bottom: 12px; font-size: .875rem; font-weight: 650; color: var(--hub-muted); }
+  .help-contents ol { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  .help-contents a { display: flex; align-items: center; padding: 8px 12px; border: 1px solid var(--hub-line); border-radius: 8px; background: var(--hub-panel); text-decoration: none; font-size: .9375rem; line-height: 1.4; }
+  .help-content { min-width: 0; }
+  .help-section { scroll-margin-top: 24px; }
+  .help-section + .help-section { margin-top: 36px; padding-top: 36px; border-top: 1px solid var(--hub-line); }
+  .help-section h2 { margin-bottom: 18px; font-size: clamp(1.6rem, 3vw, 2rem); font-weight: 600; letter-spacing: -.025em; line-height: 1.2; text-wrap: balance; }
+  .help-section h3 { margin-block: 24px 10px; font-size: 1.125rem; font-weight: 650; line-height: 1.4; }
+  .help-section :is(p, ul, ol) { margin-bottom: 16px; }
+  .help-section :is(ul, ol) { padding-left: 1.4em; }
+  .help-section li + li { margin-top: 10px; }
+  .help-section > :last-child { margin-bottom: 0; }
+  .help-note { padding: 14px 18px; border-left: 3px solid var(--hub-focus); background: var(--hub-soft); border-radius: 0 8px 8px 0; }
+  .help-statuses { margin-bottom: 0; }
+  .help-statuses > div { padding-block: 18px; border-bottom: 1px solid var(--hub-line); }
+  .help-statuses > div:first-child { padding-top: 4px; }
+  .help-statuses > div:last-child { border-bottom: 0; padding-bottom: 0; }
+  .help-statuses dt { margin-bottom: 6px; font-weight: 650; }
+  .help-statuses dd { margin: 0; }
+  .help-example { display: inline-block; padding: 4px 9px; border: 1px solid var(--hub-line); border-radius: 6px; background: var(--hub-panel); font-variant-numeric: tabular-nums; }
+  .help-trouble { padding-block: 4px; border-bottom: 1px solid var(--hub-line); }
+  .help-trouble:last-child { border-bottom: 0; }
+  .help-trouble summary { padding: 12px 6px; font-weight: 600; cursor: pointer; line-height: 1.5; }
+  .help-trouble p { margin: 4px 6px 18px; }
+  .help-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; padding-block: 20px max(28px, env(safe-area-inset-bottom)); border-top: 1px solid var(--hub-line); color: var(--hub-muted); }
+  .help-footer p { margin: 0; font-size: .9375rem; }
+  .help-footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+  .help-footer a { display: inline-flex; align-items: center; }
+  @media (hover: hover) { .help-contents a:hover { border-color: var(--hub-ink); } }
+  @media (max-width: 760px) {
+    .help-layout { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-top: 26px; }
+    .help-contents { position: static; }
+    .help-contents ol { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .help-contents a { height: 100%; overflow-wrap: anywhere; }
+    .help-intro { padding-top: 32px; }
+  }
+  @media (max-height: 650px) { .help-contents { position: static; } }
+  @media (prefers-reduced-motion: reduce) { .help-page *, .help-page *::before, .help-page *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+  @media print {
+    .help-page { background: white; color: black; }
+    .help-page .skip-link, .help-actions, .help-contents, .help-footer nav { display: none; }
+    .help-layout { display: block; }
+    .help-section, .help-trouble { break-inside: avoid; }
+  }
+</style>
+</head>
+<body class="help-page" id="top">
+<a class="skip-link" href="#help-main">Skip to help</a>
+<header class="help-frame help-header">
+  <a class="help-brand" href="./">TMU Course Guides<small>Fall 2026</small></a>
+  <nav class="help-actions" aria-label="Guide navigation and appearance">
+    <a class="quick-link" href="./" aria-label="Go to Course Desk">Desk</a>
+    <button class="hub-theme" type="button" data-help-theme hidden>Auto theme</button>
+  </nav>
+</header>
+<main class="help-frame help-main" id="help-main" tabindex="-1">
+  <div class="help-intro">
+    <p class="ns-kicker">Using the guide</p>
+    <h1>Help</h1>
+    <p>Find a deadline, choose your section and keep track of your coursework.</p>
+  </div>
+  <div class="help-layout">
+    <nav class="help-contents" aria-labelledby="help-contents-heading">
+      <h2 id="help-contents-heading">On this page</h2>
+      <ol>
+        <li><a href="#desk">Desk</a></li>
+        <li><a href="#sections">Sections</a></li>
+        <li><a href="#deadlines">Deadlines</a></li>
+        <li><a href="#semester-book">Semester book</a></li>
+        <li><a href="#search">Search</a></li>
+        <li><a href="#mark-done">Mark done and Undo</a></li>
+        <li><a href="#exports">Calendar and backups</a></li>
+        <li><a href="#motion-sound">Motion and sound</a></li>
+        <li><a href="#privacy">Privacy</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+      </ol>
+    </nav>
+    <div class="help-content">
+      <section class="help-section" id="desk" aria-labelledby="desk-heading">
+        <h2 id="desk-heading">Start at the Desk</h2>
+        <p>The <strong>Desk</strong> brings CEN100, MTH140 and MTH141 together. <strong>Next across your courses</strong> shows the next upcoming item from the guide, using your saved sections and completion records.</p>
+        <p>Open a course to read its deadlines, requirements and checklists. Use <strong>Desk</strong> in the course navigation or docked top bar to return.</p>
+        <p><strong>No upcoming deadlines</strong> means there are no upcoming items to show from the guide’s current records. Check the course assessment list for completed items and dates still pending.</p>
+      </section>
+
+      <section class="help-section" id="sections" aria-labelledby="sections-heading">
+        <h2 id="sections-heading">Choose your section</h2>
+        <ol>
+          <li>Open your course and select <strong>Choose section</strong>.</li>
+          <li>Choose your section from your timetable. For math courses, use your lab section. For CEN100, also choose your group where requested.</li>
+          <li>To change it later, select <strong>Section</strong> followed by your section number.</li>
+        </ol>
+        <p>Each course keeps its own selection in this browser. Your math lab section determines the day of a quiz within its quiz week. Check your timetable if you are unsure which section to choose.</p>
+      </section>
+
+      <section class="help-section" id="deadlines" aria-labelledby="deadlines-heading">
+        <h2 id="deadlines-heading">Read a deadline</h2>
+        <p class="help-note">All deadline dates and times use <strong>Toronto time</strong>. Check the current course announcement or D2L if a deadline changes.</p>
+        <dl class="help-statuses">
+          <div>
+            <dt><span class="help-example">2d 11h left</span> · Countdown</dt>
+            <dd>A countdown appears when the time is known, or when the CEN100 end-of-day rule below applies. <code>d</code> means days, <code>h</code> hours and <code>m</code> minutes. Under a day you may see <code>5h 07m</code>; under an hour, <code>29m</code>. Open the assessment for its date and time.</dd>
+          </div>
+          <div>
+            <dt>Time not posted</dt>
+            <dd>The date is known, but the exact time has not been posted. There is no precise countdown and no assumed midnight deadline. After that date, <strong>Date passed (time not posted)</strong> still does not establish an exact due time.</dd>
+          </div>
+          <div>
+            <dt>Due by end of day</dt>
+            <dd>A dated <strong>CEN100 submission</strong> with no posted time is due by <strong>11:59 PM Toronto time</strong> on that date. It counts down to the end of that day and may show the date followed by <strong>by 11:59 PM</strong>. This rule does not apply to other courses or to events such as an exam.</dd>
+          </div>
+          <div>
+            <dt>Choose section for quiz date</dt>
+            <dd>A quiz week is a range of possible lab dates. Choose your lab section to see your quiz date. <strong>Select lab section</strong> asks for the same selection. If a countdown says <strong>Your lab starts · quiz in its second hour</strong>, it counts to the start of your lab, not an exact quiz start time. For <strong>Holiday schedule unconfirmed</strong>, check the instructor’s announcement; a replacement lab date has not been confirmed.</dd>
+          </div>
+          <div>
+            <dt>Date pending</dt>
+            <dd>The assessment date has not been announced. It has no countdown. Check the assessment details and course announcements for an update.</dd>
+          </div>
+          <div>
+            <dt>Happening now · Due time passed</dt>
+            <dd><strong>Happening now</strong> means a timed assessment is within its scheduled window. <strong>Due time passed</strong> means its known due time has passed. Neither label checks whether you submitted your work.</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="help-section" id="semester-book" aria-labelledby="semester-book-heading">
+        <h2 id="semester-book-heading">Browse the semester book</h2>
+        <p>When the book view is available, browse the semester one week at a time. The first page is <strong>Week 1 · Sep 8–13</strong>, a partial first week. The last is <strong>Week 16 · Dec 21</strong>, the final day of the semester.</p>
+        <ul>
+          <li>Use <strong>Previous week</strong> and <strong>Next week</strong>, or select a numbered week tick to jump to that week.</li>
+          <li><strong>Drag or swipe to turn</strong> pages when the interactive book is available. The week buttons offer the same navigation.</li>
+          <li><strong>Today</strong> marks the current date. Select <strong>Go to today</strong> to return to the week containing today.</li>
+          <li>Open an assessment pop-up to read its details. <strong>Next assessment</strong> identifies the upcoming item; <strong>Nothing scheduled</strong> means no assessments are listed for that week.</li>
+        </ul>
+        <p>If you see <strong>Book view unavailable</strong>, use <strong>Week view</strong> and the week controls to browse. If those controls are not present, use the course’s assessment list.</p>
+      </section>
+
+      <section class="help-section" id="search" aria-labelledby="search-heading">
+        <h2 id="search-heading">Find a course, week or assessment</h2>
+        <p>Open <strong>Search</strong> beside the section control in a course guide. Where the search palette is available, you can also press <kbd>⌘K</kbd> (Command K) on Mac or <kbd>Ctrl+K</kbd> on Windows and Linux.</p>
+        <p>In <strong>Search courses, weeks, topics…</strong>, try a course code, an assessment name or <strong>week 9</strong>. Results are grouped under <strong>Courses</strong>, <strong>Assessments</strong>, <strong>Weeks</strong>, <strong>Topics</strong> and <strong>Actions</strong>. Choose the Week 9 result to open that week.</p>
+        <p>Use the arrow keys to move through palette results, <kbd>Enter</kbd> to open one and <kbd>Esc</kbd> or <strong>Close</strong> to leave. <strong>Search the guide for "week 9"</strong> passes the words to the guide’s text search.</p>
+        <p>If you see <strong>No results for "week 9"</strong>, try an assessment name or a shorter phrase. If Search opens the course’s text field instead of the palette, search the current guide by assessment name.</p>
+      </section>
+
+      <section class="help-section" id="mark-done" aria-labelledby="mark-done-heading">
+        <h2 id="mark-done-heading">Mark done and Undo</h2>
+        <p>Select <strong>Mark done</strong> for the next assessment you have finished. The guide saves that completion in this browser and updates the next item. Select <strong>Undo</strong> in the confirmation to reverse the most recent quick completion.</p>
+        <p>You can also reopen the assessment and clear its completion checkbox. Individual checklist steps are separate from marking the whole assessment done.</p>
+        <p class="help-note"><strong>Completed</strong> means you recorded the item as complete. It does not submit anything to D2L or verify that your work was received.</p>
+      </section>
+
+      <section class="help-section" id="exports" aria-labelledby="exports-heading">
+        <h2 id="exports-heading">Calendar export and backups</h2>
+        <h3>Put deadlines in your calendar</h3>
+        <ol>
+          <li>Choose your course section first so section-based quiz dates can be included.</li>
+          <li>Open <strong>Guide tools</strong> in <strong>Course info</strong>, then <strong>Export deadlines</strong>.</li>
+          <li>Select <strong>Download calendar (.ics)</strong> and import the file into your calendar app.</li>
+        </ol>
+        <p>The file is a snapshot. It will not update when the guide changes. Pending dates are left out; entries without an exact time may appear as all-day or tentative reminders. A CEN100 calendar reminder may be all-day even when the guide shows <strong>Due by end of day</strong>. Read the guide for the deadline’s meaning.</p>
+        <p>After a date or section change, export again and replace the earlier imported entries to avoid duplicates.</p>
+        <h3>Save or move your progress</h3>
+        <p>In <strong>Guide tools</strong>, open <strong>Move or back up my progress</strong> and select <strong>Export my progress</strong>. Keep the downloaded <code>.json</code> file somewhere you can find it.</p>
+        <p>To restore it, open the same course in the destination browser. Choose <strong>Import a progress backup (.json)</strong> in CEN100, <strong>Import a MTH140 backup</strong> or <strong>Import a MTH141 backup</strong>. Import adds saved progress and fills empty notes and targets while keeping your existing notes and targets. A calendar file cannot restore progress.</p>
+        <p>Back up each course separately. Progress backups include that course’s saved progress and notes, but not your section, group or appearance preferences. Choose your section again after moving browsers. Keep backups private if they contain personal notes.</p>
+      </section>
+
+      <section class="help-section" id="motion-sound" aria-labelledby="motion-sound-heading">
+        <h2 id="motion-sound-heading">Motion, appearance and sound</h2>
+        <p>Select <strong>Pause motion</strong> in the docked top bar to stop decorative motion. <strong>Play motion</strong> resumes it when your device settings allow it. Pausing keeps navigation, assessment details and deadline updates available.</p>
+        <p>Your device’s <strong>reduced motion</strong> setting takes priority. You can still use buttons and week controls without animated page turns. Use <strong>Skip to coursework</strong> on a course page or <strong>Skip to courses</strong> on the Desk to move straight to the content.</p>
+        <p>The appearance control cycles through <strong>Auto theme</strong>, <strong>Dark theme</strong> and <strong>Light theme</strong>. Auto follows your device. This Help page follows the same saved choice and remains readable with JavaScript disabled.</p>
+        <p>Sound is <strong>off by default</strong>. Where the sound control is available, select <strong>Sound off</strong> to turn it on; select <strong>Sound on</strong> to turn it off. The choice stays in this browser. No information requires sound.</p>
+      </section>
+
+      <section class="help-section" id="privacy" aria-labelledby="privacy-heading">
+        <h2 id="privacy-heading">Your records stay in your browser</h2>
+        <p>Your section, group, notes, completion records and preferences are saved locally in this browser. The guide does not upload these records or sync them between devices. Another browser or device starts with its own records.</p>
+        <p>There are no site analytics, tracking cookies or session recordings. Fonts and other site assets load from this site. Downloads create files on your device; sharing a backup or importing a calendar into another service is your choice.</p>
+        <p>Clearing site data can erase your records, and private browsing may discard them when the session ends. Export a progress backup before clearing data or moving browsers. The <strong>Privacy</strong> page explains hosting details.</p>
+      </section>
+
+      <section class="help-section" id="troubleshooting" aria-labelledby="troubleshooting-heading">
+        <h2 id="troubleshooting-heading">Troubleshooting</h2>
+        <details class="help-trouble">
+          <summary>My quiz date is missing or looks wrong</summary>
+          <p>Check the saved section in that course against your lab timetable. A quiz week needs your lab section to resolve its date. If you see <strong>Holiday schedule unconfirmed</strong>, check D2L for the instructor’s replacement schedule.</p>
+        </details>
+        <details class="help-trouble">
+          <summary>There is no countdown</summary>
+          <p>Read the status beside the assessment. <strong>Time not posted</strong>, a quiz week without a section and <strong>Date pending</strong> do not have an exact countdown. A dated CEN100 submission uses the end-of-day rule. If a timed countdown looks wrong, check your device’s date and time, reload, and compare the posted Toronto time.</p>
+        </details>
+        <details class="help-trouble">
+          <summary>The book does not load, or a control is missing</summary>
+          <p>For <strong>Book view unavailable</strong>, use the week controls to browse; select <strong>Try again</strong> if offered. Some views may not yet include the book, full search palette or sound control. Open the course from <strong>Desk</strong> and use its assessment list, text search and <strong>Guide tools</strong>. These remain the way to read deadlines and manage progress.</p>
+        </details>
+        <details class="help-trouble">
+          <summary>Search does not find “week 9”</summary>
+          <p>Week results belong to the search palette. If Search opens only a text field, try the assessment name instead. In the palette, use <strong>Clear</strong> and try a shorter phrase, or browse with the week controls.</p>
+        </details>
+        <details class="help-trouble">
+          <summary>My progress is missing or will not stay saved</summary>
+          <p>Return to the same browser and device. Check whether you used private browsing or cleared site data. If browser storage is blocked, export a backup while your progress is still visible, then allow this site to save data and try again. Import a matching course backup if you have one. Without a backup, the guide cannot recover erased local records.</p>
+        </details>
+        <details class="help-trouble">
+          <summary>I cannot find an older assignment</summary>
+          <p>Open <strong>Assignments</strong>, clear any search and enable <strong>Show past assignments</strong>. The next-deadline card does not list every assessment.</p>
+        </details>
+        <details class="help-trouble">
+          <summary>A backup will not import</summary>
+          <p>Choose the original <code>.json</code> progress backup for the course you have open. A file for another course, an edited file or a calendar <code>.ics</code> file is not a matching progress backup. Keep your existing records and try the correct export.</p>
+        </details>
+        <details class="help-trouble">
+          <summary>My calendar has old or duplicate dates</summary>
+          <p>Calendar imports do not update automatically. Check your course section, download a fresh calendar and replace the earlier imported entries in your calendar app. Check D2L for the current deadline.</p>
+        </details>
+        <details class="help-trouble">
+          <summary>Motion stays paused or I cannot hear sound</summary>
+          <p>Check your device’s reduced-motion setting first; <strong>Play motion</strong> cannot override it. Sound starts off and may remain silent while motion is paused or reduced. If a sound control is available, check <strong>Sound on</strong> and your device volume. Every task still works without sound.</p>
+        </details>
+      </section>
+    </div>
+  </div>
+</main>
+<footer class="help-frame help-footer">
+  <p>Sections, notes and completion records stay in this browser.</p>
+  <nav aria-label="Footer">
+    <a href="./" aria-label="Go to Course Desk">Desk</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="#top">Back to top</a>
+  </nav>
+</footer>
+<script>
+// The page is static; this optional control only changes the shared appearance preference.
+(() => {
+  const button = document.querySelector('[data-help-theme]');
+  let mode = document.documentElement.dataset.theme || 'auto';
+  const applyTheme = () => {
+    if (mode === 'auto') delete document.documentElement.dataset.theme;
+    else document.documentElement.dataset.theme = mode;
+    button.textContent = mode === 'auto' ? 'Auto theme' : mode === 'dark' ? 'Dark theme' : 'Light theme';
+    button.setAttribute('aria-label', `${button.textContent}. Change appearance.`);
+  };
+  applyTheme();
+  button.hidden = false;
+  button.addEventListener('click', () => {
+    mode = mode === 'auto' ? 'dark' : mode === 'dark' ? 'light' : 'auto';
+    applyTheme();
+    try { localStorage.setItem('tmu-guide-theme-v1', mode); } catch {}
+  });
+})();
+</script>
+</body>
+</html>
