@@ -169,7 +169,7 @@ async function checkDesk(motion,seed='completed'){
   assert.match(text(next('mth140'),'.desk-course-note'),/lab timetable/,'timetable caveat kept');
   assert.equal(text(next('mth140'),'.desk-course-section'),'Section 31 · Thu 4:00 PM lab · VIC106');
   assert.equal(text(next('mth141'),'.desk-course-title'),'Midterm Test');
-  assert.equal(text(next('mth141'),'.desk-chip'),'4d 6h 30m');
+  assert.equal(text(next('mth141'),'.desk-chip'),'4d 6h left');
   assert.equal(text(next('mth141'),'.desk-course-section'),'No section saved');
  }
  if(seed==='completed'){
@@ -193,7 +193,7 @@ async function checkDesk(motion,seed='completed'){
   assert.equal(text(overall,'.desk-word'),'Oct 12–16');
   assert.equal(overall.querySelector('.desk-action-quiet').href,'https://guide.test/mth140/#course-info','section CTA opens the guide’s section picker');
   assert.equal(next('mth140').querySelector('.desk-cta').href,'https://guide.test/mth140/#course-info');
-  assert.equal(text(next('cen100'),'.desk-chip'),'2d 3h 00m');
+  assert.equal(text(next('cen100'),'.desk-chip'),'2d 3h left');
  }
  assert.match(d.querySelector('[data-desk-live]').textContent,/^Next across your courses/,'polite summary for assistive tech');
  assert.deepEqual(Object.fromEntries(Object.keys(saved).map(k=>[k,w.localStorage.getItem(k)])),saved,'Desk leaves saved course data untouched');

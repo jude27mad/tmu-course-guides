@@ -254,6 +254,8 @@ body.workspace .workspace-disclosure,body.workspace #workspace-info .tools,body.
  .ns-dock-id span,.ns-dock-k,.ns-dock-section,.ns-dock-motion span,.ns-dock-search span,.ns-dock-search kbd{display:none!important}
  .ns-dock-search:before{content:'⌕';font-size:1.1rem}
  .ns-dock-actions button{padding:8px 12px}
+ /* Long status chips ("Date passed (time not posted)") shrink with an ellipsis instead of covering the buttons. */
+ .ns-dock-chip{flex:0 1 auto;min-width:0;max-width:42vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
  .ns-dock-desk{padding:0 10px;letter-spacing:.08em}
  .ns-dock-next{padding-left:10px}
 }

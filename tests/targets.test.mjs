@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {SCHEDULE} from '../assets/cen-schedule.mjs';
 import {COURSES} from '../assets/course-data.mjs';
-import {timestamp} from '../assets/schedule.mjs';
+import {timestamp,addDays} from '../assets/schedule.mjs';
 import {resolveTarget,cenUpcoming,cenCompleted,readSection,readCompleted,readSaved,keys,parts,compact,overall,GRACE} from '../assets/night/targets.mjs';
 
 /* Frozen clocks only: every case passes an explicit `now`. Records are the real ones; the two derived record
@@ -21,7 +21,7 @@ test('CEN Academic Integrity quiz resolves to Oct 14, 3:00 PM Toronto, exact',()
   assert.equal(t.id,'integrity');assert.equal(t.open,'y4');assert.equal(t.title,'Academic Integrity Quiz');
   assert.equal(t.precision,'exact');assert.equal(t.at,at('2026-10-14T19:00:00Z'));assert.equal(t.at,toronto('2026-10-14','15:00'));
   assert.equal(t.when,'Wed Oct 14 · 3:00 PM Toronto');assert.equal(t.label,'Due');
-  assert.equal(compact(t,NOON_OCT12),'2d 3h 00m');
+  assert.equal(compact(t,NOON_OCT12),'2d 3h');
 });
 
 test('MTH140 midterm resolves to Oct 23, 6:30 PM Toronto, with its end',()=>{
@@ -34,7 +34,7 @@ test('MTH140 midterm resolves to Oct 23, 6:30 PM Toronto, with its end',()=>{
 test('a quiz week without a section: week precision, the section CTA and no timer',()=>{
   const t=math('mth140',NOON_OCT12);
   assert.equal(t.id,'quiz-2');assert.equal(t.precision,'week');
-  assert.equal(t.cta,'Choose your section for your quiz time');assert.equal(t.label,'Quiz week');
+  assert.equal(t.cta,'Choose section for quiz date');assert.equal(t.label,'Quiz week');
   assert.equal(t.range,'Oct 12–16');assert.equal(t.week,'2026-10-12');assert.equal(t.weekEnd,'2026-10-16');
   assert.equal(t.at,undefined);assert.equal(parts(t,NOON_OCT12).ms,undefined);assert.equal(compact(t,NOON_OCT12),'Quiz week');
   // A week that crosses a month keeps both month names.
@@ -68,13 +68,13 @@ test('Thanksgiving: the announced Monday make-up is exact; without one the date 
 // Owner's rule (13 Oct 2026): a CEN submission with a date and no posted time is due by the end of that Toronto day.
 test('a dated submission without a time counts down to 11:59 PM Toronto; a dated in-class event keeps its date only',()=>{
   const t=cen(NOON_OCT12,0,{integrity:1});
-  assert.equal(t.id,'whmis');assert.equal(t.precision,'exact');assert.equal(t.at,toronto('2026-10-14','23:59'));assert.equal(t.at,at('2026-10-15T03:59:00Z'));
+  assert.equal(t.id,'whmis');assert.equal(t.precision,'exact');assert.equal(t.at,toronto('2026-10-15','00:00'));assert.equal(t.at,at('2026-10-15T04:00:00Z'));
   assert.equal(t.when,'Wed Oct 14 · by 11:59 PM Toronto');assert.equal(t.label,'Due by end of day');
-  assert.equal(compact(t,NOON_OCT12),'2d 11h 59m');
+  assert.equal(compact(t,NOON_OCT12),'2d 12h');
   for(const e of SCHEDULE){
     const d=resolveTarget({course:'cen100',data:SCHEDULE,id:e.id,now:NOON_OCT12});
     if(e.time)assert.equal(d.precision,'exact',e.id);
-    else if(/ due$/.test(e.title)){assert.equal(d.precision,'exact',e.id);assert.equal(d.at,toronto(e.date,'23:59'),e.id);assert.equal(d.label,'Due by end of day',e.id);}
+    else if(/ due$/.test(e.title)){assert.equal(d.precision,'exact',e.id);assert.equal(d.at,toronto(addDays(e.date,1),'00:00'),e.id);assert.equal(d.label,'Due by end of day',e.id);assert.equal(d.when.endsWith('by 11:59 PM Toronto'),true,e.id);}
     // Presentations, reviews and lab reminders happen in class: no invented time.
     else{assert.equal(d.precision,'day',e.id);assert.equal(d.label,'Time not posted · check D2L',e.id);assert.doesNotMatch(d.when+d.label,/\d:\d\d|11:59/,e.id);}
   }
@@ -126,7 +126,7 @@ test('an event in progress is never skipped just because two hours passed',()=>{
 test('Toronto/UTC date boundaries decide eligibility and day counts',()=>{
   // 11:30 PM Toronto on Oct 14 is already Oct 15 in UTC: the dated WHMIS submission is still due, by 11:59 PM Toronto.
   const late=at('2026-10-15T03:30:00Z'),t=cen(late);
-  assert.equal(t.id,'whmis');assert.equal(compact(t,late),'0h 29m');
+  assert.equal(t.id,'whmis');assert.equal(compact(t,late),'30m');
   assert.equal(cen(at('2026-10-15T04:00:00Z')).id,'failure','midnight Toronto ends the day');
   // A week-only quiz is open through Friday in Toronto.
   assert.equal(math('mth140',at('2026-10-17T03:59:00Z')).id,'quiz-2');

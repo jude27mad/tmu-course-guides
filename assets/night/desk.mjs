@@ -31,7 +31,7 @@ function paintCourse(entry,t,section,now){
  const p=parts(t,now),chip=compact(t,now);
  slot.dataset.precision=t.precision;slot.dataset.state=p.state;
  slot.innerHTML=`<p class="desk-k">Next</p><p class="desk-course-title">${escape(t.title)}</p><p class="desk-course-when">${escape(t.when)}</p>`+
-  `<p class="desk-course-state"><span class="desk-chip">${escape(chip)}</span>${t.label!==chip?`<span class="desk-course-label">${escape(t.label)}</span>`:''}</p>`+
+  `<p class="desk-course-state"><span class="desk-chip">${escape(t.precision==='exact'&&p.ms>0?chip+' left':chip)}</span>${t.label!==chip?`<span class="desk-course-label">${escape(t.label)}</span>`:''}</p>`+
   (t.note?`<p class="desk-course-note">${escape(t.note)}</p>`:'')+
   (t.cta?`<a class="desk-cta" href="${sectionHref(t.course)}">${escape(t.cta)}</a>`:`<p class="desk-course-section">${escape(section||'No section saved')}</p>`);
  slot.hidden=false;
@@ -44,8 +44,8 @@ function paintOverall(t,now){
  card.querySelector('[data-desk-static]').hidden=true;body.hidden=false;
  if(!t){
   card.dataset.precision='empty';card.style.removeProperty('--course');card.style.removeProperty('--course-strong');
-  body.innerHTML='<p class="desk-next-title">Nothing dated ahead</p><p class="desk-count-when">No course has a dated deadline left in your records.</p>';
-  return say('No course has a dated deadline left in your records.');
+  body.innerHTML='<p class="desk-next-title">No upcoming deadlines</p><p class="desk-count-when">No course has a dated deadline left in your records.</p>';
+  return say('No upcoming deadlines to show.');
  }
  const meta=COURSE_META[t.course],p=parts(t,now);
  tone(card,t.course);card.dataset.precision=t.precision;card.dataset.state=p.state;card.dataset.deskCourse=t.course;

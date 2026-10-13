@@ -2,7 +2,7 @@
    Pure functions over the unchanged course records (CEN100 SCHEDULE, COURSES[course]), a saved section,
    completion records and an explicit clock: no DOM and no storage writes, so the Desk resolves all three
    courses without loading a course page or workspace. Toronto conversion comes from schedule.mjs only. */
-import {timestamp,clock,dateLabel,dayLabel,today,daysUntil,resolveAssessment,upcoming,timing} from '../schedule.mjs';
+import {timestamp,clock,dateLabel,dayLabel,today,daysUntil,resolveAssessment,upcoming,timing,addDays} from '../schedule.mjs';
 
 export const COURSE_IDS=['cen100','mth140','mth141'];
 export const GRACE=2*3600e3,WINDOW=14*86400000;
@@ -58,8 +58,9 @@ function describeCen(e){
  const base={course:'cen100',id:e.id,title:e.title.replace(/ due$/,''),kind:'assignment',open:e.item};
  if(e.time)return {...base,precision:'exact',at:timestamp(e.date,e.time),when:`${short(e.date)} · ${clock(e.time)} Toronto`,label:'Due'};
  // A submission with a date and no posted time is due by the end of its Toronto day (the owner's rule, 13 Oct 2026),
- // so it counts down to 11:59 PM. Dated in-class events (presentations, reviews) keep their date only.
- if(/ due$/.test(e.title))return {...base,precision:'exact',endOfDay:true,at:timestamp(e.date,'23:59'),when:`${short(e.date)} · by 11:59 PM Toronto`,label:'Due by end of day'};
+ // so it counts down to the end of that day: Toronto midnight, which keeps the whole 11:59 PM minute open.
+ // Dated in-class events (presentations, reviews) keep their date only.
+ if(/ due$/.test(e.title))return {...base,precision:'exact',endOfDay:true,at:timestamp(addDays(e.date,1),'00:00'),when:`${short(e.date)} · by 11:59 PM Toronto`,label:'Due by end of day'};
  return {...base,precision:'day',date:e.date,when:short(e.date),label:'Time not posted · check D2L'};
 }
 
@@ -79,7 +80,7 @@ function describeMath(course,data,a,section){
  }
  if(a.kind==='quiz'){
   const end=dateLabel(e.weekEnd),sameMonth=e.week.slice(0,7)===e.weekEnd.slice(0,7);
-  return {...base,precision:'week',week:e.week,weekEnd:e.weekEnd,range:`${dateLabel(e.week)}–${sameMonth?end.replace(/^\S+ /,''):end}`,when:`${dateLabel(e.week)}–${end} · during your assigned lab`,label:'Quiz week',cta:'Choose your section for your quiz time'};
+  return {...base,precision:'week',week:e.week,weekEnd:e.weekEnd,range:`${dateLabel(e.week)}–${sameMonth?end.replace(/^\S+ /,''):end}`,when:`${dateLabel(e.week)}–${end} · during your assigned lab`,label:'Quiz week',cta:'Choose section for quiz date'};
  }
  if(e.date&&e.time)return {...base,precision:'exact',at:timestamp(e.date,e.time),end:e.end?timestamp(e.date,e.end):null,when:`${short(e.date)} · ${clock(e.time)} Toronto`,label:a.kind==='midterm'?'Test starts':'Starts'};
  if(e.date)return {...base,precision:'day',date:e.date,when:short(e.date),label:'Time not posted'};
@@ -144,7 +145,7 @@ export function parts(t,now=Date.now()){
 }
 export function compact(t,now=Date.now()){
  const p=parts(t,now);if(!p)return '';
- if(t.precision==='exact'){if(p.state==='live')return 'Happening now';if(p.state==='passed')return 'Due time passed';return p.d?`${p.d}d ${p.h}h ${String(p.m).padStart(2,'0')}m`:`${p.h}h ${String(p.m).padStart(2,'0')}m`;}
+ if(t.precision==='exact'){if(p.state==='live')return 'Happening now';if(p.state==='passed')return 'Due time passed';return p.d?`${p.d}d ${p.h}h`:p.h?`${p.h}h ${String(p.m).padStart(2,'0')}m`:`${p.m}m`;}
  if(t.precision==='day')return p.days<0?status(t,now):p.days===0?'Today':p.days===1?'Tomorrow':`In ${p.days} days`;
  if(t.precision==='week')return t.holiday?status(t,now):'Quiz week';
  if(t.precision==='empty')return 'Nothing scheduled';
@@ -173,6 +174,6 @@ export function targetDate(t){
 /* One sentence for a polite live region (updated at most once a minute by its owner). */
 export function sentence(t,now=Date.now()){
  const p=parts(t,now);if(!p)return '';
- if(t.precision==='exact'&&p.ms)return `${t.title}: ${p.d} days, ${p.h} hours and ${p.m} minutes left. ${t.when}.`;
+ if(t.precision==='exact'&&p.ms)return `${p.d?`${p.d} days and ${p.h} hours`:`${p.h} hours and ${p.m} minutes`} remaining until ${t.title}. ${t.when}.`;
  return `${t.title}: ${compact(t,now)}. ${t.when}.`;
 }
