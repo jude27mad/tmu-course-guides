@@ -74,10 +74,33 @@ test('head sync keeps outgoing styles until incoming sheets load and follows des
  await new Promise(resolve=>setTimeout(resolve,0));
  assert.ok(f.window.document.querySelector('link[href="desk-only.css"]'));assert.match(f.window.document.head.textContent,/\.old/);
  resolveStyle();await navigation;
- assert.equal(f.window.document.querySelector('link[href="desk-only.css"]'),null);assert.doesNotMatch(f.window.document.head.textContent,/\.old/);
- const assets=[...f.window.document.head.querySelectorAll('link[rel="stylesheet"],style')];
+ assert.equal(f.window.document.querySelector('link[href="desk-only.css"]').getAttribute('media'),'not all','outgoing sheet is inert in its cache');assert.doesNotMatch(f.window.document.head.textContent,/\.old/);
+ const assets=[...f.window.document.head.querySelectorAll('link[rel="stylesheet"],style')].filter(node=>(node.sheet?.media.mediaText??node.getAttribute('media')??'')!=='not all');
  assert.deepEqual(assets.map(node=>node.tagName==='STYLE'?node.textContent:new URL(node.href).pathname.split('/').at(-1)),['common.css','cen-only.css','.cen{color:blue}']);
  assert.equal(f.window.document.querySelector('meta[name="description"]').content,'cen100 description');f.close();
+});
+
+test('warmed routes reuse loaded stylesheet nodes when the browser goes offline',async()=>{
+ let online=true,loads=0;
+ const styles=route=>['/tmu-course-guides/assets/common.css',`/tmu-course-guides/assets/${route}.css`];
+ const f=fixture({page:html('desk',{styles:styles('desk')}),loadStylesheet:async()=>{
+  assert.equal(online,true,'offline routes cannot load a stylesheet again');loads++;
+ }});
+ try{
+  for(const route of ['desk','cen100','mth140','mth141'])f.documents.set(route,html(route,{styles:styles(route)}));
+  for(const route of ['cen100','mth140','mth141','desk'])assert.equal(await f.router.navigate(`/tmu-course-guides/${route==='desk'?'':route+'/'}`),true);
+  const cached=[...f.window.document.head.querySelectorAll('link[rel="stylesheet"]')],loaded=loads;
+  online=false;
+  for(let round=0;round<3;round++)for(const route of ['cen100','mth140','mth141','desk']){
+   assert.equal(await f.router.navigate(`/tmu-course-guides/${route==='desk'?'':route+'/'}`),true,'offline '+route);
+   assert.equal(f.router.route,route);
+   const sheets=[...f.window.document.head.querySelectorAll('link[rel="stylesheet"]')];
+   assert.deepEqual(sheets,cached,'retained sheets never move, disappear or grow');
+   const active=sheets.filter(link=>(link.sheet?.media.mediaText??link.getAttribute('media')??'')!=='not all');
+   assert.deepEqual(active.map(link=>new URL(link.href).pathname),styles(route),'only the authored sheets apply, in order');
+  }
+  assert.equal(loads,loaded);assert.deepEqual(f.fallback,[]);
+ }finally{f.close();}
 });
 
 test('prefetch deduplicates requests and bounds parsed document cache',async()=>{
@@ -169,6 +192,45 @@ test('fetch, region, reload-required, transition and mount errors fall back to f
   if(cause==='region')f.documents.set('cen100',html('cen100',{region:false}));
   if(cause==='transition')f.window.document.addEventListener('route-will-change',event=>event.detail.waitUntil(Promise.reject(Error('transition failed'))));
   await f.router.navigate('cen100/');assert.deepEqual(f.fallback,['https://guide.test/tmu-course-guides/cen100/'],cause);f.close();
+ }
+});
+
+for(const stalled of ['fetch','body'])test(`a stalled document ${stalled} falls back once with the whole destination URL`,async()=>{
+ let release,signal;
+ const pending=new Promise(resolve=>{release=resolve;});
+ const destination='https://guide.test/tmu-course-guides/cen100/?motion=off#course-info';
+ const f=fixture({fetch:async(url,init)=>{
+  signal=init.signal;
+  if(stalled==='fetch')await pending;
+  return {ok:true,url,text:async()=>{if(stalled==='body')await pending;return html('cen100');}};
+ }});
+ // Advance browser timers without waiting ten real seconds. The fetch itself deliberately
+ // ignores its signal, as a service worker or non-cooperating network adapter can do.
+ const setTimer=f.window.setTimeout.bind(f.window);
+ f.window.setTimeout=(callback,delay,...args)=>setTimer(callback,Math.min(delay,20),...args);
+ try{
+  const navigation=f.router.navigate(destination);
+  const result=await Promise.race([navigation,new Promise(resolve=>setTimeout(()=>resolve('pending'),150))]);
+  assert.equal(result,false,'a hung document request must reach normal navigation');
+  assert.equal(signal.aborted,true,'the timed-out request is aborted');
+  assert.deepEqual(f.fallback,[destination]);
+  release();await new Promise(resolve=>setTimeout(resolve,30));
+  assert.deepEqual(f.fallback,[destination],'late completion cannot navigate a second time');
+  assert.equal(f.router.route,'desk','late completion cannot commit the destination');
+ }finally{release();f.close();}
+});
+
+test('HTTP 500 and aborted requests each navigate normally once with query and hash',async()=>{
+ for(const failure of ['500','abort']){
+  const f=fixture({fetch:async()=>{
+   if(failure==='abort')throw new DOMException('Request aborted','AbortError');
+   return {ok:false,status:500};
+  }});
+  try{
+   const destination='https://guide.test/tmu-course-guides/cen100/?motion=off#course-info';
+   assert.equal(await f.router.navigate(destination),false);
+   assert.deepEqual(f.fallback,[destination],failure);
+  }finally{f.close();}
  }
 });
 
@@ -372,7 +434,7 @@ test('head sync never moves a loaded sheet, keeps incoming sheets inert until co
  router.start();
  const head=window.document.head,[fonts,hub]=head.querySelectorAll('link'),moved=[];
  new window.MutationObserver(records=>{for(const r of records)for(const node of [...r.removedNodes,...r.addedNodes])if(node===fonts||node===hub)moved.push(node);}).observe(head,{childList:true});
- const resolved=()=>[...head.querySelectorAll('link[rel="stylesheet"]')].map(link=>new URL(link.getAttribute('href'),link===fonts||link===hub?'https://guide.test/tmu-course-guides/cen100/':window.location.href).pathname);
+ const resolved=()=>[...head.querySelectorAll('link[rel="stylesheet"]')].filter(link=>(link.sheet?.media.mediaText??link.getAttribute('media')??'')!=='not all').map(link=>new URL(link.getAttribute('href'),link===fonts||link===hub?'https://guide.test/tmu-course-guides/cen100/':window.location.href).pathname);
  let changed=new Promise(resolve=>window.document.addEventListener('route-changed',resolve,{once:true}));
  window.history.back();await until(()=>head.querySelector('link[href$="desk.css"]'),'incoming sheet was not prepared');
  const incoming=head.querySelector('link[href$="desk.css"]');

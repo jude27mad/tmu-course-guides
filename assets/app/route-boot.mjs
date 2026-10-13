@@ -1,5 +1,5 @@
 /* Direct loads and router swaps use the same lifecycle and document order. */
-import {createRouter,mountRouteModules,routeFromDocument} from './router.mjs?v=20261013-perf1';
+import {createRouter,mountRouteModules,routeFromDocument} from './router.mjs?v=20261013-perf2';
 export {mountRouteModules};
 const boots=new WeakMap();
 const ROUTES=['desk','cen100','mth140','mth141'];

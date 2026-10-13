@@ -153,14 +153,23 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   const key=url.href;
   if(cache.has(key)){const value=cache.get(key);cache.delete(key);cache.set(key,value);return value;}
   const request=Promise.resolve().then(async()=>{
-   if(!fetch)throw Error('Document fetch unavailable');
-   const response=await fetch(key,{credentials:'same-origin'});if(!response.ok)throw Error('Document fetch failed');
-   const responseURL=response.url||key;
-   if(routeForURL(responseURL,base)!==routeForURL(key,base))throw Error('Unexpected document redirect');
-   const parsed=new window.DOMParser().parseFromString(await response.text(),'text/html');
-   if(!parsed.querySelector('main[data-route-region]')||routeFromDocument(parsed)!==routeForURL(key,base))throw Error('Destination lacks its route region');
-   if(shellSignature(parsed,responseURL)!==shell)throw Error('Destination expects a different shell');
-   return {document:parsed,url:responseURL};
+   const control=new window.AbortController();let timer;
+   // Bound the whole document read, including a response whose body stalls. Race as well as
+   // abort: a service worker or fetch adapter may ignore the signal and finish much later.
+   const timeout=new Promise((resolve,reject)=>{timer=window.setTimeout(()=>{control.abort();reject(Error('Document fetch timed out'));},10000);});
+   try{
+    const loaded=(async()=>{
+     if(!fetch)throw Error('Document fetch unavailable');
+     const response=await fetch(key,{credentials:'same-origin',signal:control.signal});if(!response.ok)throw Error('Document fetch failed');
+     const responseURL=response.url||key;
+     if(routeForURL(responseURL,base)!==routeForURL(key,base))throw Error('Unexpected document redirect');
+     const parsed=new window.DOMParser().parseFromString(await response.text(),'text/html');
+     if(!parsed.querySelector('main[data-route-region]')||routeFromDocument(parsed)!==routeForURL(key,base))throw Error('Destination lacks its route region');
+     if(shellSignature(parsed,responseURL)!==shell)throw Error('Destination expects a different shell');
+     return {document:parsed,url:responseURL};
+    })();
+    return await Promise.race([loaded,timeout]);
+   }finally{window.clearTimeout(timer);}
   });
   cache.set(key,request);while(cache.size>4)cache.delete(cache.keys().next().value);
   request.catch(()=>{if(cache.get(key)===request)cache.delete(key);});
@@ -168,22 +177,23 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
  }
  // Loaded sheets are never moved or re-inserted: a moved <link> reloads (unstyled frames) and re-resolves a
  // relative href against the current history URL. Incoming sheets load inert at their final position and
- // apply at commit, together with removing the outgoing ones.
+ // apply at commit. Keep outgoing links inert there, so warmed routes also work offline.
  async function prepareHead(incoming,url,request){
   const selector='link[rel~="stylesheet"],style',existing=[...document.head.querySelectorAll(selector)].filter(el=>!el.hasAttribute('data-shell-style'));
   const media=el=>authoredMedia.has(el)?authoredMedia.get(el):el.getAttribute('media')||'';
   const key=(el,baseURL)=>el.tagName==='STYLE'?`style:${media(el)}:${el.textContent}`:`link:${new URL(el.getAttribute('href'),baseURL).href}:${media(el)}`;
-  const byKey=new Map(existing.map(el=>[key(el,documentURL),el])),desired=[],pending=[],inert=[];
+  const byKey=new Map(),desired=[],pending=[];
+  for(const node of existing){const id=key(node,documentURL);if(!byKey.has(id))byKey.set(id,[]);byKey.get(id).push(node);authoredMedia.set(node,media(node));}
+  const setMedia=(node,value)=>{if(node.sheet)node.sheet.media.mediaText=value;else if(value)node.setAttribute('media',value);else node.removeAttribute('media');};
   let previous=null;
   for(const source of incoming.head.querySelectorAll(selector)){
    if(source.hasAttribute('data-shell-style'))continue;
-   let node=byKey.get(key(source,url));
    // A kept node must already follow the previous desired node; otherwise load a fresh copy in order.
-   if(node&&(desired.includes(node)||previous&&!(previous.compareDocumentPosition(node)&4)))node=null;
+   let node=byKey.get(key(source,url))?.find(node=>!desired.includes(node)&&(!previous||previous.compareDocumentPosition(node)&4));
    if(!node){
     node=document.importNode(source,true);
     if(node.tagName==='LINK')node.setAttribute('href',new URL(source.getAttribute('href'),url).href);
-    authoredMedia.set(node,source.getAttribute('media')||'');inert.push(node);node.setAttribute('media','not all');
+    authoredMedia.set(node,source.getAttribute('media')||'');node.setAttribute('media','not all');
     // Register load/error before insertion; a cached sheet can finish immediately.
     const ready=node.tagName!=='LINK'?null:loadStylesheet?Promise.resolve().then(()=>loadStylesheet(node)):stylesheetReady(node,window);
     if(previous)previous.after(node);else if(existing[0])existing[0].before(node);else document.head.append(node);
@@ -193,10 +203,15 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   }
   await Promise.all(pending);
   return ()=>{
-   for(const node of existing)if(!desired.includes(node))node.remove();
+   const desiredKeys=new Set(desired.map(node=>key(node,documentURL)));
+   for(const node of existing)if(!desired.includes(node)){
+    // Retire an old copy when authored ordering required a new one. The cache stays bounded
+    // by the route asset union instead of accumulating a duplicate on every round trip.
+    if(node.tagName==='LINK'&&!desiredKeys.has(key(node,documentURL)))setMedia(node,'not all');else node.remove();
+   }
    // Activate through the CSSOM: changing the media attribute makes Chromium re-process the link and drop
    // the sheet for a frame. The attribute keeps saying "not all"; the authored media is remembered.
-   for(const node of inert){if(node.sheet)node.sheet.media.mediaText=authoredMedia.get(node);else if(authoredMedia.get(node))node.setAttribute('media',authoredMedia.get(node));else node.removeAttribute('media');}
+   for(const node of desired)setMedia(node,authoredMedia.get(node));
    document.title=incoming.title;
    const description=incoming.querySelector('meta[name="description"]'),old=document.querySelector('meta[name="description"]');
    if(description){const target=old||document.head.appendChild(document.createElement('meta'));target.name='description';target.content=description.content;}else old?.remove();

@@ -31,7 +31,7 @@ const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))??fa
 const storageKey=courseId+'-progress-v1',sectionKey=courseId+'-section-v1';
 const forward='<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>';
 const GUIDE_VERSION='2026-10-12-assessments2',seenKey=courseId+'-last-seen-update-v1';
-let section=Number(read(sectionKey,0));if(!course.labs.some(x=>x.section===section))section=0;
+let section=Number(read(sectionKey,0)),syncingStorage=false;if(!course.labs.some(x=>x.section===section))section=0;
 const knownChecks=new Set(course.assessments.flatMap(a=>prep(a).map((_,i)=>a.id+'-'+i)));
 const knownTopics=new Set(course.topics.flatMap(t=>t.skills.map((_,i)=>t.id+'-'+i)));
 function cleanProgress(value) {
@@ -148,7 +148,25 @@ drawFigure();renderRules();renderSection();renderAssessments();renderTopics();re
 const releaseNotes=$('guide-updates'),updateBadge=$('updates-badge');
 updateBadge.hidden=read(seenKey,'')===GUIDE_VERSION;
 listen(releaseNotes,'toggle',()=>{if(releaseNotes.open){updateBadge.hidden=true;try{localStorage.setItem(seenKey,JSON.stringify(GUIDE_VERSION))}catch{}}});
-listen($('section-select'),'change',()=>{section=Number($('section-select').value);try{localStorage.setItem(sectionKey,JSON.stringify(section))}catch{}renderSection();renderNext();});
+listen($('section-select'),'change',()=>{section=Number($('section-select').value);if(!syncingStorage)try{localStorage.setItem(sectionKey,JSON.stringify(section))}catch{}renderSection();renderNext();});
+listen(window,'storage',e=>{
+  if(e.key!==null&&e.key!==sectionKey&&e.key!==storageKey)return;
+  if(e.key===null||e.key===storageKey){
+    progress=cleanProgress(read(storageKey,{}));lastQuickCompletion=null;$('quick-confirm').hidden=true;
+    for(const card of ownedAssessments)for(const input of card.querySelectorAll('[data-check],[data-completed],[data-note],[data-target]')){
+      if(input.dataset.check)input.checked=!!progress.checks[input.dataset.check];
+      if(input.dataset.completed)input.checked=!!progress.completed[input.dataset.completed];
+      if(input.dataset.note)input.value=progress.notes[input.dataset.note]||'';
+      if(input.dataset.target)input.value=progress.targets[input.dataset.target]||'';
+    }
+    for(const input of root.querySelectorAll('[data-topic]'))input.checked=!!progress.topics[input.dataset.topic];
+    updateTopicCounts();renderNext();document.dispatchEvent(new CustomEvent('guide-completion'));
+  }
+  if(e.key===null||e.key===sectionKey){
+    const saved=Number(read(sectionKey,0));section=course.labs.some(x=>x.section===saved)?saved:0;$('section-select').value=section||'';
+    syncingStorage=true;try{$('section-select').dispatchEvent(new Event('change',{bubbles:true}));}finally{syncingStorage=false;}
+  }
+});
 listen(document,'click',e=>{if(!owns(e.target))return;const tab=e.target.closest('[data-view]');if(tab)showTab(tab.dataset.view);const open=e.target.closest('[data-open-assessment]');if(open){const id='assessment-'+open.dataset.openAssessment;history.replaceState(null,'','#'+id);openItem(id);}const result=e.target.closest('[data-open-item]');if(result){history.replaceState(null,'','#'+result.dataset.openItem);openItem(result.dataset.openItem);}const quick=e.target.closest('[data-quick-complete]');if(quick){const id=quick.dataset.quickComplete,a=course.assessments.find(a=>a.id===id);if(a&&!progress.completed[id]){const saved=setCompleted(id,true);lastQuickCompletion=id;$('quick-message').textContent='Marked done: '+a.title+(saved?'. Saved on this device.':'. Local saving is blocked; export a backup to keep it.');$('quick-confirm').hidden=false;$('undo-complete').focus({preventScroll:true});}}const copy=e.target.closest('[data-share]');if(copy)share(copy.dataset.share,copy);});
 listen(document,'change',e=>{if(!owns(e.target))return;const el=e.target;for(const [attr,key] of [['check','checks'],['topic','topics'],['completed','completed']])if(el.dataset[attr]){if(key==='completed'){lastQuickCompletion=null;$('quick-confirm').hidden=true;setCompleted(el.dataset[attr],el.checked);continue;}if(el.checked)progress[key][el.dataset[attr]]=true;else delete progress[key][el.dataset[attr]];save();if(key==='topics')updateTopicCounts();else updateAssessmentCounts();}if(el.dataset.target){if(el.value&&validDate(el.value))progress.targets[el.dataset.target]=el.value;else delete progress.targets[el.dataset.target];save();renderWork();}});
 listen(document,'input',e=>{if(!owns(e.target))return;const id=e.target.dataset.note;if(id){progress.notes[id]=e.target.value.slice(0,2000);save();}});
@@ -160,7 +178,7 @@ listen(root.querySelector('.math-tabs'),'keydown',e=>{if(!['ArrowLeft','ArrowRig
 listen($('calendar-download'),'click',()=>{const includeTentative=$('calendar-labs').checked;if(includeTentative&&!section){$('calendar-status').textContent='Choose your section first to include lab quiz dates.';return;}const result=calendar(course,section,{includeTentative,onlyUpcoming:$('calendar-upcoming').checked});if(!result.count){$('calendar-status').textContent='No dated assessments match those choices.';return;}download(result.text,courseId+'-fall-2026.ics','text/calendar;charset=utf-8');$('calendar-status').textContent=`${result.count} assessment${result.count===1?'':'s'} exported. Imported calendars do not update automatically.`;});
 listen($('backup-export'),'click',()=>{download(JSON.stringify({format:'tmu-math-guide',version:1,course:courseId,exported:new Date().toISOString(),progress},null,2),courseId+'-progress.json','application/json');$('backup-status').textContent='Backup exported for this course.';});
 listen($('backup-import'),'change',async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>300000)throw new Error('This file is too large for a course-progress backup.');const text=await file.text();if(disposed)return;const raw=JSON.parse(text);if(raw.format!=='tmu-math-guide'||raw.version!==1||raw.course!==courseId||!raw.progress||typeof raw.progress!=='object')throw new Error('Choose a valid progress backup for '+course.code+'.');const imported=cleanProgress(raw.progress);let conflicts=0;for(const key of ['checks','completed','topics'])Object.assign(progress[key],imported[key]);for(const key of ['notes','targets'])for(const [id,value]of Object.entries(imported[key])){if(!progress[key][id])progress[key][id]=value;else if(progress[key][id]!==value)conflicts++;}save();renderAssessments();renderTopics();renderNext();$('backup-status').textContent='Progress imported.'+(conflicts?' Existing conflicting notes or target dates were kept.':'');}catch(error){if(disposed)return;$('backup-status').textContent=error.message;}if(!disposed)e.target.value='';});
-listen(window,'hashchange',routeHash);listen(document,'visibilitychange',()=>{if(!document.hidden)renderNext();});minuteTimer=setInterval(()=>{if(!document.hidden)renderNext();},60000);
+listen(window,'hashchange',routeHash);listen(window,'pageshow',e=>{if(e.persisted)renderNext();});listen(document,'visibilitychange',()=>{if(!document.hidden)renderNext();});minuteTimer=setInterval(()=>{if(!document.hidden)renderNext();},60000);
 
 
 listen(document,'course-open-item',e=>openItem(e.detail));
