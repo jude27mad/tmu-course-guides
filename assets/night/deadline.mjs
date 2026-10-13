@@ -4,6 +4,7 @@
 import {course,isMath,META,$,escape,asset,courseData,ambientAllowed,preference,toggleMotion} from './core.mjs?v=20261013-shift1';
 import {scope} from '../route-lifecycle.mjs';
 import {loadData,readSaved,resolveTarget,parts,compact,sentence,GRACE} from './targets.mjs?v=20261013-shift1';
+import {currentBookState} from '../book/book-state.mjs';
 export {parts,compact} from './targets.mjs?v=20261013-shift1';
 
 let target=null,data$=null,tickTimer=0,lastMinute='',live=null;
@@ -107,6 +108,8 @@ export async function resolve(){
  if(changed||!$('.ns-count'))mountBlock();
  hud();dockSync();
  for(const fn of listeners)fn(target);
+ // The book's chips and the rail's Next control follow the target (semester-book spec §6.7, §6.10).
+ if(changed){const book=currentBookState();book?.setWeeks(book.weeks,{reason:'target'});}
  schedule();
 }
 /* Recompute from the wall clock each tick, never from accumulated counts. Seconds tick only while
@@ -154,10 +157,27 @@ export function mountDock(){
  const {life}=live;
  const sectionLabel=()=>{const b=$('.workspace-section');dock.querySelector('.ns-dock-section').textContent=b?.textContent||'Choose section';};
  sectionLabel();life.on(document,'change',()=>queueMicrotask(()=>{if(!life.signal.aborted)sectionLabel();}));
- const bar=header.querySelector('.workspace-actions')||header;let docked=null,queued=false;
+ const bar=header.querySelector('.workspace-actions')||header;let docked=null,open=null,queued=false;
  const main=header.closest('.wrap,.math-wrap'),fit=()=>{if(!main)return;const r=main.getBoundingClientRect();dock.style.setProperty('--ns-dock-left',r.left+'px');dock.style.setProperty('--ns-dock-width',r.width+'px');};
- const check=()=>{queued=false;fit();const next=bar.getBoundingClientRect().bottom<56;if(next===docked)return;docked=next;document.documentElement.classList.toggle('ns-docked',next);dock.inert=!next;};
- life.on(window,'scroll',()=>{if(!queued){queued=true;life.frame(check);}},{passive:true});life.on(window,'resize',check);life.on(document,'workspace-changed',()=>life.frame(check));check();
+ // On a book route the dock stays actionable from arrival (semester-book spec §6.7): never inert, it waits
+ // just above the viewport and comes down when one of its controls takes focus (layout.css). Elsewhere it
+ // arrives once the action bar scrolls away.
+ const always=()=>!!document.documentElement.dataset.book;
+ const check=()=>{queued=false;fit();const next=bar.getBoundingClientRect().bottom<56,usable=next||always();
+  if(next!==docked){docked=next;document.documentElement.classList.toggle('ns-docked',next);}
+  if(usable!==open){open=usable;dock.inert=!usable;}};
+ life.on(window,'scroll',()=>{if(!queued){queued=true;life.frame(check);}},{passive:true});life.on(window,'resize',check);life.on(document,'workspace-changed',()=>life.frame(check));
+ life.on(document,'book-state',()=>life.frame(check));check();
+ /* The book's hand-off (scroll.mjs): the dock comes down as the cover closes, and the closed book lands in
+    the course dot with a static 400 ms glow. */
+ let received=0,last=0;const root=document.documentElement;
+ life.on(document,'night-handoff',event=>{
+  const p=Number(event.detail)||0;
+  root.classList.toggle('ns-dock-show',p>=.3);
+  if(p>=1&&last<1&&ambientAllowed()){root.classList.add('ns-dock-received');clearTimeout(received);received=setTimeout(()=>root.classList.remove('ns-dock-received'),400);}
+  last=p;
+ });
+ life.own(()=>{clearTimeout(received);root.classList.remove('ns-dock-received','ns-dock-show');});
 }
 
 export function mount(ctx={}){

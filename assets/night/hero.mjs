@@ -2,7 +2,10 @@
    One ScrollTrigger scrubs --hero-p on the stage (0 at rest, 1 once it has scrolled away). hero.css reads it
    to recede the art, fade the eyebrow, HUD and hint, and retract the course motif; the title lifts line by
    line behind SplitText masks. Characters lean toward a fine pointer. Rest (p = 0) is also the reduced look.
-   The docked state stays deadline.mjs's dock (html.ns-docked); this module never builds another. */
+   The docked state stays deadline.mjs's dock (html.ns-docked); this module never builds another.
+   On a semester book route the book's pin (scroll.mjs, html[data-book-pin=on]) owns --hero-p: it is the
+   book's hand-off into the dock. This trigger stands down while the pin exists, and the title lift follows
+   the hand-off instead (night-handoff). The art never recedes under CSS there; the engine closes the book. */
 import {scope} from '../route-lifecycle.mjs';
 import {$,META,motionAllowed,sceneMotionAllowed,finePointer,atLeast,onTier,held,track,dispose,vendor} from './core.mjs?v=20261013-shift1';
 
@@ -17,7 +20,8 @@ export async function mount(ctx={}){
  GLYPHS='ABCDEFGHKLMNPRSTUVXYZ0123456789'+({mechanism:'#=+[]',flow:'~^()/',plane:'[]|+-'}[META?.motif]||'');
  header=$('.header-upgraded');if(!header)return;
  art=$('.header-art',header);title=$('.hero-copy>h1',header);kicker=$('.hero-copy>.team,.hero-copy>.eyebrow',header);
- explore(); // independent of GSAP and of motion: the hint logic works everywhere
+ // The book's hint clears on a real page turn (course-header.mjs); other courses use the drag hint here.
+ if(!document.documentElement.dataset.book)explore(); // independent of GSAP and of motion
  try{kit=await vendor();}catch{return;}if(life!==owner||owner.signal.aborted)return;
  // Scrub and lean follow the interface-motion gate; reduced motion or ?motion=off tears them down cleanly.
  const sync=()=>{try{if(motionAllowed())build();else if(built){built=false;dispose(SCOPE);}}catch(error){console.warn('Night Shift hero:',error);}};
@@ -47,9 +51,20 @@ function build(){
   track(SCOPE,()=>{lift=null;split.revert();});
  }
  let last=-1;
- const paint=()=>{const p=Math.round(state.p*1e4)/1e4;if(p===last)return;last=p;header.style.setProperty('--hero-p',String(p));lift?.progress(p);};
+ const pinned=()=>document.documentElement.dataset.bookPin==='on';
+ const paint=()=>{if(pinned())return;const p=Math.round(state.p*1e4)/1e4;if(p===last)return;last=p;header.style.setProperty('--hero-p',String(p));lift?.progress(p);};
  const scrub=gsap.to(state,{p:1,ease:'none',onUpdate:paint,scrollTrigger:{trigger:header,start:'top top',end:'bottom top',scrub:finePointer.matches?.55:true}});
  track(SCOPE,()=>{scrub.scrollTrigger?.kill();scrub.kill();});
+ // The book's pin owns --hero-p while it exists; this trigger rests and the lift follows the hand-off.
+ const standDown=()=>{
+  const st=scrub.scrollTrigger;if(!st)return;
+  if(pinned()){st.disable(false);last=-1;}
+  else if(!st.enabled){st.enable(false);st.refresh();state.p=st.progress;paint();}
+ };
+ const follow=event=>{if(pinned())lift?.progress(Math.max(0,Math.min(1,Number(event.detail)||0)));};
+ document.addEventListener('night-book-pin',standDown);document.addEventListener('night-handoff',follow);
+ track(SCOPE,()=>{document.removeEventListener('night-book-pin',standDown);document.removeEventListener('night-handoff',follow);});
+ standDown();
 }
 
 /* Lines peel upward from the top line down and accelerate out of their masks (power3.in reads as lift-off);

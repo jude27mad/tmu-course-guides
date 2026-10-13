@@ -1,4 +1,4 @@
-/* Night Shift scroll: Lenis hooks, reveal states, the course marquee and the next-card glow parallax.
+/* Night Shift scroll: Lenis hooks, reveal states and the next-card glow parallax.
    Pending states exist only on elements that were below the fold when a view bound (scroll.mjs); every
    rule here reads well static, which is also the reduced-motion, paused and print look. */
 
@@ -22,54 +22,6 @@ html.night body.workspace .workspace-page-title.ns-title-in::before{animation:ns
 @keyframes ns-rule-draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @keyframes ns-label-in{from{opacity:0;transform:translate3d(0,.8em,0)}to{opacity:1;transform:none}}
 
-/* ---------- Marquee ----------
-   Condensed Archivo at its narrowest, outlined in the course colour: the readable ink on paper, the accent
-   on graphite. Bleeds to the column edges and fades out at both ends. Decorative: aria-hidden, inert. */
-html.night .ns-marquee{
- --mq-stroke:color-mix(in srgb,var(--strong) 56%,transparent);--mq-w:1.4px;--mq-bleed:var(--page-gutter,36px);
- position:relative;z-index:0;overflow:hidden;contain:layout paint;
- margin:clamp(22px,3.4vw,56px) calc(var(--mq-bleed) * -1) 0;padding:.08em 0 .1em;
- border-block:1px solid color-mix(in srgb,var(--hub-line) 85%,transparent);
- font:780 clamp(3.4rem,10.6vw,11.25rem)/.9 Archivo,system-ui,sans-serif;font-stretch:62%;font-variation-settings:'wdth' 62;
- letter-spacing:0;text-transform:uppercase;white-space:nowrap;color:var(--mq-stroke);
- pointer-events:none;user-select:none;-webkit-user-select:none;
- -webkit-mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
-html.night[data-theme=dark] .ns-marquee{--mq-stroke:color-mix(in srgb,var(--accent) 60%,transparent)}
-@media(prefers-color-scheme:dark){html.night:not([data-theme=light]) .ns-marquee{--mq-stroke:color-mix(in srgb,var(--accent) 60%,transparent)}}
-html.night .ns-mq-track{display:flex;width:max-content}
-html.night .ns-marquee.is-live .ns-mq-track{will-change:transform}
-html.night .ns-mq-item{display:flex;flex:none;align-items:center;gap:.22em;padding-right:.22em}
-html.night .ns-mq-item>:is(b,i,span:not(.ns-mq-sep)){font:inherit;font-style:normal;color:transparent;-webkit-text-stroke:var(--mq-w) var(--mq-stroke)}
-/* The course code carries a faint fill so the line has a lead word; the dashes recede. */
-html.night .ns-mq-item>b.ns-mq-code{color:color-mix(in srgb,var(--mq-stroke) 18%,transparent)}
-html.night .ns-mq-item>i{opacity:.55}
-@supports not (-webkit-text-stroke:1px #000){html.night .ns-mq-item>:is(b,i,span:not(.ns-mq-sep)){color:color-mix(in srgb,var(--mq-stroke) 45%,transparent)}}
-
-/* Separators: one per copy, drawn in each course's vocabulary. Strokes stay hairline at any size. */
-html.night .ns-mq-sep{position:relative;top:-.02em;flex:none;height:.7em;color:var(--mq-stroke)}
-html.night .ns-mq-sep svg{position:absolute;overflow:visible}
-html.night .ns-mq-sep :is(path,circle){fill:none;stroke:currentColor;stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}
-html.night .ns-mq-sep .ns-dot{fill:currentColor}
-html.night .ns-marquee.is-live .ns-mq-sep svg{will-change:transform}
-/* CEN100: 12- and 7-tooth gears in mesh; --mq-turn is the big gear's rolling angle (ratio 12:7). */
-html.night .ns-mq-gears{width:1.0563em}
-html.night .ns-gear{top:0;left:0;width:.7em;height:.7em;transform-origin:50% 50%;transform:rotate(calc(var(--mq-turn,0) * 1deg))}
-html.night .ns-gear-b{top:.1255em;left:.6074em;width:.4489em;height:.4489em;transform:rotate(calc(var(--mq-turn,0) * -1.7143deg))}
-/* MTH140: the curve slides beneath a point that rides it and carries its tangent. */
-html.night .ns-mq-flow{width:1.05em;height:.9em;overflow:hidden;
- -webkit-mask:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent);mask:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent)}
-html.night .ns-mq-wave{top:.1em;left:0;width:2.1em;height:.7em;transform:translate(calc(var(--mq-wave,0) * -.7em),0)}
-html.night .ns-mq-tan{top:.1em;left:.175em;width:.7em;height:.7em;transform:translate(0,calc(var(--mq-ty,0) * .007em)) rotate(calc(var(--mq-ta,0) * 1deg))}
-/* MTH141: a basis grid under shear. */
-html.night .ns-mq-plane{width:.84em}
-html.night .ns-mq-grid{top:0;left:.07em;width:.7em;height:.7em;transform-origin:50% 50%;transform:skewX(calc(var(--mq-shear,0) * 1deg))}
-html.night .ns-mq-grid .ns-mq-g{opacity:.4}
-/* When the band lands in view it opens from its centre line instead of popping in. */
-@media(prefers-reduced-motion:no-preference){html.night .ns-marquee.ns-mq-enter{animation:ns-mq-open 1.2s cubic-bezier(.19,1,.22,1) both}}
-@keyframes ns-mq-open{from{clip-path:inset(50% 0 50% 0);opacity:0}to{clip-path:inset(0 0 0 0);opacity:1}}
-@media(max-width:1000px){html.night .ns-marquee{--mq-bleed:24px}}
-@media(max-width:760px){html.night .ns-marquee{--mq-bleed:18px;--mq-w:1px;margin-top:20px;font-size:clamp(3rem,16vw,5.2rem)}}
-
 /* ---------- Parallax: the next card's glow rides --ns-glow-y (desktop fine pointer, set by scroll.mjs).
    No fallback on purpose: without the variable the declaration is invalid, so the glow keeps no layer. ---------- */
 html.night body.workspace .ns-next:before{transform:translate3d(0,var(--ns-glow-y),0)}
@@ -77,8 +29,8 @@ html.night body.workspace .ns-next:before{transform:translate3d(0,var(--ns-glow-
 /* ---------- Reduced motion, motion off, print: everything visible and still ---------- */
 @media(prefers-reduced-motion:reduce){
  html.night [data-ns-reveal]{clip-path:none!important;opacity:1!important}
- html.night .ns-title-in::before,html.night .ns-title-in::after,html.night .ns-marquee{animation:none!important}
+ html.night .ns-title-in::before,html.night .ns-title-in::after{animation:none!important}
 }
 html.night[data-motion=off] [data-ns-reveal]{clip-path:none!important;opacity:1!important}
-html.night[data-motion=off] .ns-title-in::before,html.night[data-motion=off] .ns-title-in::after,html.night[data-motion=off] .ns-marquee{animation:none!important}
-@media print{html.night .ns-marquee{display:none!important}html.night [data-ns-reveal]{clip-path:none!important;opacity:1!important}}
+html.night[data-motion=off] .ns-title-in::before,html.night[data-motion=off] .ns-title-in::after{animation:none!important}
+@media print{html.night [data-ns-reveal]{clip-path:none!important;opacity:1!important}}

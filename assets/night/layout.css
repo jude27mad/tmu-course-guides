@@ -8,6 +8,14 @@
  --ns-glass:rgb(21 31 35 / .66);--ns-glass-line:rgb(238 240 234 / .08);--ns-shadow:0 1px 0 rgb(255 255 255 / .05) inset,0 30px 70px -40px rgb(0 0 0 / .8);--ns-hot:#ff7a59}
 @media(prefers-color-scheme:dark){:root:not([data-theme=light]){--hub-bg:#0f1619;--hub-panel:#151f23;--hub-ink:#eef0ea;--hub-muted:#a1b0ae;--hub-line:#24333a;--hub-soft:#1b282d;--hub-focus:#c6e6d6;
  --ns-glass:rgb(21 31 35 / .66);--ns-glass-line:rgb(238 240 234 / .08);--ns-shadow:0 1px 0 rgb(255 255 255 / .05) inset,0 30px 70px -40px rgb(0 0 0 / .8);--ns-hot:#ff7a59}}
+/* Desk and stage (semester-book spec §6.2): the desk the course book lies on, and the type that sits on it.
+   Light is a daylit desk, dark a lamp-lit one; posters are transparent over this same CSS desk. */
+:root{--ns-desk:#e6dfd1;--ns-desk-2:#d5cbb8;--ns-desk-light:rgb(255 252 243 / .9);--ns-desk-vignette:rgb(70 52 24 / .14);
+ --ns-stage-ink:#151c1f;--ns-stage-muted:#4e5855;--ns-stage-soon:#8a4f12;--ns-stage-hot:#9a3a20;--ns-grain:.015;--ns-dock-h:64px}
+:root[data-theme=dark]{--ns-desk:#162024;--ns-desk-2:#0b1113;--ns-desk-light:rgb(255 196 138 / .16);--ns-desk-vignette:rgb(0 0 0 / .55);
+ --ns-stage-ink:#eef0ea;--ns-stage-muted:#a1b0ae;--ns-stage-soon:#ffc9a3;--ns-stage-hot:#ff9a7c;--ns-grain:.025}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--ns-desk:#162024;--ns-desk-2:#0b1113;--ns-desk-light:rgb(255 196 138 / .16);--ns-desk-vignette:rgb(0 0 0 / .55);
+ --ns-stage-ink:#eef0ea;--ns-stage-muted:#a1b0ae;--ns-stage-soon:#ffc9a3;--ns-stage-hot:#ff9a7c;--ns-grain:.025}}
 /* CEN's legacy tokens follow the shared ones. */
 body.editorial[data-course]{--bg:var(--hub-bg);--tile:var(--hub-panel);--ink:var(--hub-ink);--ink2:var(--hub-muted);--line:var(--hub-line)}
 body.workspace{--ns-accent:var(--accent);--ns-tint:color-mix(in srgb,var(--accent) 9%,var(--hub-panel));
@@ -259,3 +267,223 @@ body.workspace .workspace-disclosure,body.workspace #workspace-info .tools,body.
 @media(max-width:480px){.ns-dock-title{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}.ns-dock-next{justify-content:flex-start}}
 
 @media print{.ns-dock,.ns-timeline,.ns-hud,.ns-count{display:none!important}}
+
+/* =====================================================================================================
+   The semester book (spec §6): MTH140's hero is the open sketchbook on a desk. html[data-book] is set by
+   course-header.mjs while a book route is mounted. Everything here reads finished with motion paused:
+   the stage, the rail (caption and week controls) and the action bar are the paused composition.
+   ===================================================================================================== */
+
+/* ---------- Skip to coursework: first tab stop, Desk styling ---------- */
+html[data-book] body.workspace>.skip-link{position:fixed;top:10px;left:10px;z-index:10001;display:inline-flex;align-items:center;box-sizing:border-box;min-height:44px;padding:12px 18px;border:1px solid var(--hub-line);border-radius:999px;background:var(--hub-panel);color:var(--hub-ink);font:650 .9rem Archivo,system-ui,sans-serif;text-decoration:none;box-shadow:0 18px 40px -22px rgb(0 0 0 / .5);transform:translateY(-200%)}
+html[data-book] body.workspace>.skip-link:focus{transform:none;outline:3px solid var(--hub-focus);outline-offset:2px}
+
+/* ---------- The dock: actionable from arrival, shown when it has a job ----------
+   On a book route the dock is never inert (deadline.mjs). At arrival it waits just above the viewport, in
+   the tab order: focusing any of its controls brings it down. It also arrives when the action bar scrolls
+   away (ns-docked) and while the closing book is handed to it (ns-dock-show), so the book lands in its dot. */
+html[data-book] .ns-dock-bar{visibility:visible}
+html[data-book] .ns-dock-bar:focus-within,:root[data-book].ns-dock-show .ns-dock-bar{transform:none;opacity:1;transition:transform .45s var(--ns-ease),opacity .3s}
+html[data-book]{scroll-padding-top:calc(var(--ns-dock-h) + 16px)}
+html[data-book][data-motion=off] .ns-dock-bar{transition:none}
+/* The closed book lands in the dock's course dot: one static glow, then rest (deadline.mjs). */
+html[data-book] .ns-dock-id i{transition:box-shadow .4s var(--ns-ease),transform .4s var(--ns-ease)}
+html[data-book].ns-dock-received .ns-dock-id i{box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 30%,transparent),0 0 22px var(--accent);transform:scale(1.25)}
+html[data-book][data-motion=off] .ns-dock-id i{transition:none}
+
+/* ---------- Stage, rail and action bar ---------- */
+html[data-book] body.workspace .header-upgraded{
+ --book-stage:clamp(520px,66vh,640px);--book-pool:62% 42%;
+ grid-template-columns:minmax(0,1fr);grid-template-rows:var(--book-stage) auto auto;
+ background:var(--hub-bg);overflow:clip;isolation:isolate}
+/* The desk under the canvas (posters are transparent over it), then grain and vignette over both. */
+html[data-book] body.workspace .header-upgraded::before,html[data-book] body.workspace .header-upgraded::after{content:'';grid-row:1;grid-column:1;align-self:stretch;justify-self:stretch;pointer-events:none}
+html[data-book] body.workspace .header-upgraded::before{z-index:0;
+ background:radial-gradient(60% 70% at var(--book-pool),var(--ns-desk-light),transparent 70%),linear-gradient(160deg,var(--ns-desk),var(--ns-desk-2))}
+/* Static blue-noise grain over desk and book alike; never animated. */
+html[data-book] body.workspace .header-upgraded::after{z-index:2;background:url(grain.png) 0 0/256px 256px repeat;opacity:var(--ns-grain)}
+html[data-book] body.workspace .header-upgraded>.header-art{grid-row:1;grid-column:1;align-self:stretch;justify-self:stretch;position:relative;inset:auto;z-index:1;width:auto;height:auto;min-height:0;
+ border-radius:0;touch-action:pan-y;cursor:default;user-select:none;-webkit-user-select:none;contain:layout paint;overflow:hidden}
+/* The vignette sits over the canvas too, inside the slot (spec decision 9). */
+html[data-book] body.workspace .header-upgraded>.header-art::after{content:'';display:block;position:absolute;inset:0;z-index:1;pointer-events:none;box-shadow:inset 0 0 160px var(--ns-desk-vignette)}
+html[data-book] .header-art[data-cursor=open]{cursor:pointer}
+html[data-book] .header-art[data-cursor=turn]{cursor:grab}
+html[data-book] .header-art[data-cursor=drag],html[data-book] .header-art[data-dragging=true]{cursor:grabbing}
+html[data-book] .header-art .scene-poster{object-fit:cover;object-position:var(--book-pool);animation:none!important;transform:none!important;transition:opacity .2s linear .3s}
+html[data-book] .header-art[data-renderer=poster] .scene-poster{opacity:1}
+html[data-book][data-motion=off] .header-art .scene-poster{transition:none}
+html[data-book] body.workspace .header-upgraded>.hero-copy{grid-row:1;grid-column:1;z-index:3;align-self:center;justify-self:start;
+ max-width:31%;padding:0 0 calc(var(--book-stage) * .1) var(--page-gutter);margin:0;box-sizing:content-box;pointer-events:none}
+html[data-book] body.workspace .header-upgraded>.hero-copy a,html[data-book] body.workspace .header-upgraded>.hero-copy button{pointer-events:auto}
+html[data-book] body.workspace .header-upgraded h1{color:var(--ns-stage-ink)}
+html[data-book] body.workspace .header-upgraded .hero-copy :is(.team,.eyebrow){color:var(--strong)}
+html[data-book] body.workspace .header-upgraded .hero-copy :is(.subline,.hero-organization){display:none}
+html[data-book] .ns-hud{color:var(--ns-stage-muted)}
+html[data-book] .ns-hud [data-ns-title]{color:var(--ns-stage-ink)}
+html[data-book] .ns-hud .ns-hud-k,html[data-book] .ns-hud [data-ns-chip]{color:var(--strong)}
+html[data-book] .ns-hud .ns-hud-k{border-color:color-mix(in srgb,var(--strong) 45%,transparent)}
+html[data-book] body.workspace .header-upgraded>.workspace-actions{grid-row:3;grid-column:1;position:relative;z-index:3}
+/* Hidden feeds: visuals.js keeps CourseVisuals.rows for the palette; its strip never shows beside a book. */
+html[data-book] .semester-rail{display:none!important}
+
+/* Hint, fallback notice and the phone pause control, at the foot of the stage. */
+html[data-book] body.workspace .header-upgraded>.ns-book-meta{grid-row:1;grid-column:1;z-index:3;position:relative;inset:auto;align-self:end;
+ display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding:0 var(--page-gutter) 22px;pointer-events:none}
+.ns-book-meta>*{pointer-events:auto}
+.ns-book-hint{display:none;align-items:center;gap:9px;margin:0;font:500 10px/1.5 var(--ns-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ns-stage-muted)}
+.ns-book-hint i{width:5px;height:5px;border-radius:50%;background:var(--strong)}
+html[data-book] .header-upgraded[data-book-view=webgl2] .ns-book-hint{display:inline-flex}
+html[data-book] .header-upgraded.ns-explored .ns-book-hint{display:none}
+.ns-book-fallback{display:grid;gap:4px;max-width:min(360px,100%);padding:14px 16px;border-radius:14px;background:var(--ns-glass);border:1px solid var(--ns-glass-line);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:var(--ns-stage-ink)}
+.ns-book-fallback[hidden]{display:none}
+.ns-book-fallback-title{margin:0;font:600 .95rem/1.3 Archivo,system-ui,sans-serif}
+.ns-book-fallback-text{margin:0;font:450 .9rem/1.4 Archivo,system-ui,sans-serif;color:var(--ns-stage-muted)}
+.ns-book-retry{justify-self:start;margin-top:8px;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid color-mix(in srgb,var(--ns-stage-ink) 30%,transparent);background:transparent;color:var(--ns-stage-ink);font:600 .82rem Archivo,system-ui,sans-serif;cursor:pointer}
+.ns-book-retry[hidden]{display:none}
+.ns-book-retry:focus-visible{outline:2px solid var(--hub-focus);outline-offset:3px}
+html[data-book] .ns-book-pause{margin-left:auto;border-color:color-mix(in srgb,var(--ns-stage-ink) 22%,transparent);background:color-mix(in srgb,var(--ns-desk) 55%,transparent);color:var(--ns-stage-ink)}
+@media(min-width:761px){html[data-book] .ns-book-pause{display:none}}
+
+/* ---------- The rail: caption for the selected spread and the week controls (§6.3) ---------- */
+.ns-spread{grid-row:2;grid-column:1;position:relative;z-index:3;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"caption jump" "weeks weeks";
+ column-gap:clamp(20px,3vw,40px);row-gap:12px;align-items:center;padding:16px var(--page-gutter) 14px;
+ background:var(--hub-bg);border-top:1px solid var(--hub-line);color:var(--hub-ink)}
+.ns-spread-caption{grid-area:caption;display:flex;align-items:center;gap:clamp(16px,2vw,28px);min-width:0;min-height:48px}
+.ns-spread-head{flex:none;display:grid;gap:5px}
+.ns-spread-kicker{margin:0;font:500 11px/1.25 var(--ns-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--strong);white-space:nowrap}
+.ns-spread-kicker b{font-weight:500;color:var(--hub-ink)}
+.ns-spread-dates{margin:0;display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.35em;font:600 1.25rem/1.15 Archivo,system-ui,sans-serif;letter-spacing:-.012em;font-variant-numeric:tabular-nums;color:var(--hub-ink)}
+.ns-spread-dates time{white-space:nowrap}
+.ns-spread-dates .ns-dash{color:var(--hub-muted);font-weight:400}
+.ns-spread-note{margin-left:.5em;font:500 .8rem/1 Archivo,system-ui,sans-serif;letter-spacing:0;color:var(--hub-muted);white-space:nowrap}
+.ns-spread-body{flex:1;min-width:0;align-self:stretch;display:flex;align-items:center;padding-left:clamp(16px,2vw,28px);border-left:1px solid var(--hub-line)}
+.ns-spread-items{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;align-items:center;gap:4px 22px;min-width:0}
+.ns-spread-item{display:flex;align-items:center;gap:10px 14px;min-width:0;border-radius:12px}
+.ns-spread-open{display:grid;align-content:center;row-gap:3px;min-height:48px;min-width:44px;padding:4px 10px 4px 0;margin:0;border:0;background:none;color:var(--hub-ink);font:inherit;text-align:left;cursor:pointer;border-radius:10px}
+.ns-item-line{display:flex;align-items:baseline;gap:10px;min-width:0}
+.ns-item-kind{font:500 10px/1 var(--ns-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--strong)}
+.ns-item-title{position:relative;font:650 1rem/1.2 Archivo,system-ui,sans-serif;letter-spacing:-.01em}
+.ns-item-when{font:450 1rem/1.2 Archivo,system-ui,sans-serif;color:var(--hub-muted)}
+.ns-spread-item:is([data-chip=NEXT],[data-chip=SOON],[data-chip=NOW]) .ns-item-title{padding-right:14px}
+.ns-spread-item:is([data-chip=NEXT],[data-chip=SOON],[data-chip=NOW]) .ns-item-title::after{content:'';position:absolute;right:0;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:var(--strong)}
+.ns-spread-item[data-urgency=soon] .ns-item-title::after{background:var(--ns-stage-soon)}
+.ns-spread-item[data-urgency=hot] .ns-item-title::after{background:var(--ns-hot)}
+.ns-item-status{align-self:center;padding:4px 8px;border-radius:999px;font:500 10px/1 var(--ns-mono);letter-spacing:.12em;text-transform:uppercase;background:color-mix(in srgb,var(--accent) 24%,transparent);color:var(--hub-ink);white-space:nowrap}
+.ns-spread-item[data-urgency=hot] .ns-item-status{background:color-mix(in srgb,var(--ns-hot) 24%,transparent)}
+.ns-spread-item[data-done] .ns-item-title{text-decoration:line-through;text-decoration-thickness:1px;text-decoration-color:color-mix(in srgb,var(--hub-ink) 45%,transparent)}
+.ns-spread-item[data-done] .ns-item-status,.ns-spread-item[data-passed] .ns-item-status{background:var(--hub-soft);color:var(--hub-muted)}
+@media(hover:hover){.ns-spread-open:hover .ns-item-title{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}}
+.ns-spread-item[data-hover] .ns-item-title{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.ns-spread-open:focus-visible{outline:2px solid var(--hub-focus);outline-offset:2px}
+.ns-spread .ns-spread-cta{margin:0;min-height:44px;padding:0 16px;font-size:.8rem;white-space:nowrap}
+.ns-spread-empty{margin:0;font:450 1rem/1.3 Archivo,system-ui,sans-serif;color:var(--hub-muted)}
+.ns-spread-more{position:relative}
+.ns-spread-more>summary{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border-radius:999px;cursor:pointer;font:500 11px/1 var(--ns-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--hub-muted);list-style:none}
+.ns-spread-more>summary::-webkit-details-marker{display:none}
+.ns-spread-more[open]>.ns-spread-items{position:absolute;z-index:6;left:0;top:100%;display:grid;min-width:280px;padding:8px 12px;border-radius:14px;background:var(--hub-panel);border:1px solid var(--hub-line);box-shadow:0 24px 50px -24px rgb(0 0 0 / .45)}
+
+/* Today and Next assessment */
+.ns-spread-jump{grid-area:jump;display:flex;align-items:center;justify-content:flex-end;gap:10px}
+.ns-spread-jump button,.ns-week-step{display:inline-flex;align-items:center;gap:8px;min-height:44px;min-width:44px;padding:0 16px;border-radius:999px;border:1px solid var(--hub-line);background:var(--hub-panel);color:var(--hub-ink);font:600 .82rem/1.1 Archivo,system-ui,sans-serif;white-space:nowrap;cursor:pointer}
+.ns-week-today i{width:7px;height:7px;border-radius:50%;box-shadow:0 0 0 1.5px var(--strong);background:transparent}
+.ns-week-today[aria-disabled=true]{color:var(--hub-muted);cursor:default}
+.ns-week-today[aria-disabled=true] i{background:var(--strong)}
+.ns-week-next{max-width:min(380px,40vw)}
+.ns-week-next[hidden]{display:none}
+.ns-week-next-k{flex:none;font:500 10px/1 var(--ns-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--strong)}
+.ns-week-next-t{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.ns-week-next b{font-weight:500;color:var(--hub-muted)}
+.ns-week-next[data-mode=open]{background:var(--hub-ink);color:var(--hub-bg);border-color:var(--hub-ink)}
+.ns-week-next[data-mode=open] .ns-week-next-k,.ns-week-next[data-mode=open] b{color:color-mix(in srgb,var(--hub-bg) 75%,transparent)}
+.ns-week-step b{font-weight:400;font-size:1.05rem;line-height:1;color:var(--hub-muted)}
+.ns-week-step[aria-disabled=true]{opacity:.45;cursor:default}
+.ns-spread-jump button:focus-visible,.ns-week-step:focus-visible{outline:2px solid var(--hub-focus);outline-offset:2px}
+@media(hover:hover){.ns-spread-jump button:not([aria-disabled=true]):hover,.ns-week-step:not([aria-disabled=true]):hover{border-color:color-mix(in srgb,var(--hub-ink) 45%,transparent)}.ns-week-next[data-mode=open]:hover{border-color:var(--hub-ink)}}
+
+/* Week ticks: a semester ruler. Each mark rises with the spread's tallest pop-up (final > midterm > quiz >
+   minor; a hairline when empty, an open bracket for the dateless exam spread). The ruler's line is filled up to
+   today; today's number wears the accent ring, the selected week a 2 px underline. */
+.ns-weeks{grid-area:weeks;display:flex;align-items:center;gap:8px;min-width:0}
+.ns-week-scroll{flex:1;min-width:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;scroll-snap-type:x proximity;padding-top:14px;margin-top:-14px;overscroll-behavior-x:contain}
+.ns-week-scroll::-webkit-scrollbar{display:none}
+.ns-week-ticks{--elapsed:0%;position:relative;display:flex;width:100%;min-width:max-content}
+.ns-week-ticks::before,.ns-week-ticks::after{content:'';position:absolute;left:22px;top:21px;height:1px;pointer-events:none}
+.ns-week-ticks::before{right:22px;background:var(--hub-line)}
+.ns-week-ticks::after{width:calc(var(--elapsed) - 22px);height:2px;top:20px;border-radius:2px;background:var(--strong)}
+.ns-tick{--mark:3px;position:relative;flex:1 0 44px;min-width:44px;height:44px;padding:0;margin:0;border:0;background:none;color:var(--hub-muted);cursor:pointer;scroll-snap-align:center;font:inherit;border-radius:8px}
+.ns-tick-bar{position:absolute;left:50%;bottom:23px;width:4px;height:var(--mark);margin-left:-2px;border-radius:2px 2px 0 0;background:color-mix(in srgb,var(--hub-ink) 30%,transparent)}
+.ns-tick[data-kind=minor] .ns-tick-bar{--mark:6px}
+.ns-tick:is([data-kind=quiz],[data-kind=lab]) .ns-tick-bar{--mark:9px}
+.ns-tick[data-kind=midterm] .ns-tick-bar{--mark:13px}
+.ns-tick[data-kind=final] .ns-tick-bar{--mark:18px}
+.ns-tick[data-kind=none] .ns-tick-bar{width:1px;margin-left:0;border-radius:0;background:color-mix(in srgb,var(--hub-ink) 22%,transparent)}
+.ns-tick[data-past] .ns-tick-bar{background:var(--strong)}
+.ns-tick[data-past][data-kind=none] .ns-tick-bar{background:color-mix(in srgb,var(--strong) 70%,transparent)}
+.ns-tick-pending .ns-tick-bar{width:12px;margin-left:-6px;--mark:12px;background:none!important;border:1.5px solid color-mix(in srgb,var(--hub-ink) 42%,transparent);border-bottom:0;border-radius:3px 3px 0 0}
+.ns-tick[data-done] .ns-tick-bar::after{content:'';position:absolute;left:50%;bottom:calc(100% + 4px);width:7px;height:3.5px;margin-left:-4px;border-left:1.5px solid var(--strong);border-bottom:1.5px solid var(--strong);transform:rotate(-45deg)}
+.ns-tick-n{position:absolute;left:0;right:0;top:24px;font:500 11px/14px var(--ns-mono);letter-spacing:.02em;text-align:center;font-variant-numeric:tabular-nums}
+.ns-tick[data-today] .ns-tick-n{color:var(--hub-ink)}
+.ns-tick[data-today] .ns-tick-n::before{content:'';position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;box-shadow:0 0 0 1.5px var(--strong)}
+.ns-tick[data-today]::before{content:'Today';position:absolute;left:50%;top:-12px;transform:translateX(-50%);font:600 9px/1 var(--ns-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--strong);white-space:nowrap}
+.ns-tick[aria-checked=true]{color:var(--hub-ink)}
+.ns-tick[aria-checked=true] .ns-tick-n{font-weight:700}
+.ns-tick[aria-checked=true]::after{content:'';position:absolute;left:50%;width:18px;margin-left:-9px;bottom:0;height:2px;border-radius:2px;background:var(--hub-ink)}
+@media(hover:hover){.ns-tick:hover{background:color-mix(in srgb,var(--hub-ink) 5%,transparent)}}
+.ns-tick:focus-visible{outline:2px solid var(--hub-focus);outline-offset:-2px}
+
+/* Desktop wide enough for the whole ruler: it spans the rail. */
+@media(min-width:761px) and (max-width:1000px){
+ html[data-book] body.workspace .header-upgraded{--book-stage:clamp(480px,62vh,580px);--book-pool:50% 60%}
+ html[data-book] body.workspace .header-upgraded>.hero-copy{align-self:start;max-width:none;padding:28px var(--page-gutter) 0}
+ .ns-spread{grid-template-columns:minmax(0,1fr);grid-template-areas:"caption" "jump" "weeks"}
+ .ns-spread-jump{justify-content:flex-start}
+}
+/* Phone: copy above the stage on the same desk, then the rail and the action bar. */
+@media(max-width:760px){
+ html[data-book] body.workspace .header-upgraded{--book-stage:300px;--book-pool:50% 68%;grid-template-rows:auto var(--book-stage) auto auto}
+ html[data-book] body.workspace .header-upgraded::before,html[data-book] body.workspace .header-upgraded::after{grid-row:1 / 3}
+ html[data-book] body.workspace .header-upgraded>.header-art{grid-row:2}
+ /* One vignette for copy and stage together, under the canvas, so the seam between them never darkens. */
+ html[data-book] body.workspace .header-upgraded>.header-art::after{box-shadow:none}
+ html[data-book] body.workspace .header-upgraded::before{background:radial-gradient(130% 90% at 50% 55%,transparent 55%,var(--ns-desk-vignette)),radial-gradient(60% 60% at var(--book-pool),var(--ns-desk-light),transparent 70%),linear-gradient(160deg,var(--ns-desk),var(--ns-desk-2))}
+ html[data-book] .header-art .scene-poster{object-position:50% 53%}
+ html[data-book] body.workspace .header-upgraded>.hero-copy{grid-row:1;align-self:start;max-width:none;min-height:0;padding:24px var(--page-gutter) 4px}
+ html[data-book] body.workspace .header-upgraded>.ns-book-meta{grid-row:2;padding:0 var(--page-gutter) 12px}
+ html[data-book] body.workspace .header-upgraded>.workspace-actions{grid-row:4}
+ .ns-spread{grid-row:3;grid-template-columns:minmax(0,1fr);grid-template-areas:"caption" "weeks" "jump";row-gap:10px;padding:16px var(--page-gutter) 16px}
+ .ns-spread-caption{display:grid;gap:10px;min-height:0}
+ .ns-spread-body{padding:0;border:0}
+ .ns-spread-items{display:grid;gap:0;width:100%}
+ .ns-spread-item{border-top:1px solid var(--hub-line);border-radius:0}
+ .ns-spread-item:first-child{border-top:0}
+ .ns-spread-open{flex:1}
+ .ns-spread-dates{font-size:1.15rem}
+ .ns-weeks{display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"ticks ticks" "prev next";gap:10px 8px}
+ .ns-week-scroll{grid-area:ticks;margin-inline:calc(var(--page-gutter) * -1);padding-inline:var(--page-gutter);scroll-padding-inline:var(--page-gutter)}
+ .ns-weeks .ns-week-step[data-step="-1"]{grid-area:prev}
+ .ns-weeks .ns-week-step[data-step="1"]{grid-area:next;justify-content:flex-end}
+ .ns-week-step{justify-content:flex-start}
+ .ns-spread-jump{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px}
+ .ns-week-next{max-width:none;justify-content:space-between}
+}
+
+/* ---------- §6.8 the fallback week view (poster or low tier only) ---------- */
+.ns-weekview[hidden]{display:none}
+.ns-weekview .ns-tl-head h2{margin:0}
+.ns-wv-track{height:132px}
+.ns-wv-week{position:absolute;top:0;height:44px;min-width:44px;padding:0;border:0;background:none;color:var(--hub-muted);font:500 11px/1 var(--ns-mono);font-variant-numeric:tabular-nums;cursor:pointer;border-radius:8px}
+.ns-wv-week>span{position:absolute;left:50%;top:14px;transform:translateX(-50%)}
+.ns-wv-week.is-today{color:var(--strong);font-weight:700}
+.ns-wv-week[data-selected]{color:var(--hub-ink);font-weight:700}
+.ns-wv-week[data-selected]::after{content:'';position:absolute;left:30%;right:30%;bottom:4px;height:2px;border-radius:2px;background:var(--hub-ink)}
+@media(hover:hover){.ns-wv-week:hover{background:color-mix(in srgb,var(--hub-ink) 5%,transparent)}}
+.ns-wv-week:focus-visible{outline:2px solid var(--hub-focus);outline-offset:-2px}
+.ns-wv-band{position:absolute;top:46px;bottom:28px;left:var(--selected,0);width:var(--slot,0);border-radius:10px;background:color-mix(in srgb,var(--accent) 14%,transparent);pointer-events:none}
+.ns-weekview .ns-tl-rail{top:76px}
+.ns-weekview .ns-tl-node{top:77px}
+.ns-weekview .ns-tl-node.is-week>i{border-style:dashed}
+.ns-weekview .ns-tl-month{top:108px}
+.ns-weekview .ns-tl-today{top:44px;bottom:30px}
+.ns-weekview .ns-tl-today>span{display:none}
+.ns-weekview .ns-tl-today>i{top:27px}
+@media print{html[data-book] .header-upgraded::before,html[data-book] .header-upgraded::after,.ns-spread .ns-weeks,.ns-spread-jump{display:none!important}}

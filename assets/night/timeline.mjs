@@ -90,7 +90,7 @@ export function unmount(){life?.dispose();life=null;closePopover();root?.remove(
 /* ======================================================================= the semester book ============== */
 
 const KIND_ORDER={final:4,midterm:3,quiz:2,lab:2,reading:1,minor:1};
-const STATUS={NEXT:'Next',SOON:'Next',NOW:'Happening now',DONE:'Completed'};
+const STATUS={NOW:'Happening now',DONE:'Completed'};
 const SPOKEN_MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const longDate=date=>`${dayLabel(date)}, ${SPOKEN_MONTHS[Number(date.slice(5,7))-1]} ${Number(date.slice(8,10))}`;
 const shortDay=date=>`${dayLabel(date).slice(0,3)} ${dateLabel(date)}`;
@@ -161,6 +161,8 @@ export function mountRail(header,state,{signal,setFocus=()=>{},slot=null}={}){
   });
   const spread=list[s.today];
   todayNote.textContent=spread?.start?`Today, ${longDate(today())}. Semester week ${s.today+1}`:'';
+  // The ruler's elapsed line runs to the middle of today's week.
+  ticks.style.setProperty('--elapsed',((s.today+.5)/Math.max(1,list.length)*100).toFixed(3)+'%');
   select(s.index);
  }
  function select(index){
@@ -191,8 +193,8 @@ export function mountRail(header,state,{signal,setFocus=()=>{},slot=null}={}){
    const status=entry.completed?STATUS.DONE:entry.passed?entry.status:STATUS[entry.chip]||'';
    const describe=entry.cta?` aria-describedby="${id('cta')}"`:'';
    return `<li class="ns-spread-item" data-id="${escape(entry.id)}" data-urgency="${entry.urgency}"${entry.chip?` data-chip="${entry.chip}"`:''}${entry.completed?' data-done':''}${entry.passed?' data-passed':''}>`+
-    `<button type="button" class="ns-spread-open" data-open="${escape(entry.open||'')}"><span class="ns-item-kind">${escape(entry.kindLabel)}</span><span class="ns-item-title">${escape(entry.title)}</span>`+
-    `<span class="ns-item-when">${escape(entry.when||'')}</span>${status?`<span class="ns-item-status">${escape(status)}</span>`:''}</button>`+
+    `<button type="button" class="ns-spread-open" data-open="${escape(entry.open||'')}"><span class="ns-item-line"><span class="ns-item-kind">${escape(entry.kindLabel)}</span><span class="ns-item-title">${escape(entry.title)}</span>`+
+    `${status?`<span class="ns-item-status">${escape(status)}</span>`:''}</span><span class="ns-item-when">${escape(entry.when||'')}</span></button>`+
     (entry.cta&&!entry.completed?`<button type="button" class="ns-cta ns-spread-cta" data-ns-section${describe}>${escape(entry.cta)}</button>`:'')+`</li>`;
   };
   const shown=view.entries.slice(0,3),rest=view.entries.slice(3);

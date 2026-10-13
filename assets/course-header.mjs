@@ -213,8 +213,8 @@ function skipTarget(){
  const view=document.getElementById('workspace-assignments');
  return view?.querySelector(':scope > .workspace-page-title')||document.getElementById('panel-assessments');
 }
-/* The dock bar is fixed over the column while a book is open: land the heading just below it. */
+/* Below the header the dock comes down over the column: land the heading just under it. */
 function skipOffset(){
- const bar=document.querySelector('.ns-dock-bar');if(!bar)return 16;
- const r=bar.getBoundingClientRect();return r.bottom>0&&getComputedStyle(bar).visibility!=='hidden'?r.bottom+16:16;
+ const bar=document.querySelector('.ns-dock-bar');
+ return (bar?.offsetHeight||64)+16;
 }
