@@ -1,0 +1,21 @@
+diff --git a/assets/workspace.css b/assets/workspace.css
+index f6c3a64..34bc8a1 100644
+--- a/assets/workspace.css
++++ b/assets/workspace.css
+@@ -59,3 +59,3 @@ body.workspace .circuit{width:48%;opacity:.38;pointer-events:none}
+ .workspace-categories{display:flex;flex-wrap:wrap;gap:5px}
+-.workspace-categories button{font:600 .74rem Archivo,system-ui,sans-serif;color:var(--hub-muted);border:1px solid transparent;background:transparent;padding:10px 12px;min-height:44px;border-radius:5px;cursor:pointer}
++.workspace-categories button{min-width:44px;font:600 .74rem Archivo,system-ui,sans-serif;color:var(--hub-muted);border:1px solid transparent;background:transparent;padding:10px 12px;min-height:44px;border-radius:5px;cursor:pointer}
+ .workspace-categories button[aria-pressed=true]{background:var(--hub-soft);color:var(--strong);border-color:var(--hub-line)}
+diff --git a/tests/qa-accessibility.test.mjs b/tests/qa-accessibility.test.mjs
+index d2b69df..28be596 100644
+--- a/tests/qa-accessibility.test.mjs
++++ b/tests/qa-accessibility.test.mjs
+@@ -33,5 +33,5 @@ for (const base of ['/', '/tmu-course-guides/']) {
+ // measures the rendered boxes at three widths in both themes.
+-for (const selector of ['.hub-brand', 'footer a', 'footer .reset']) {
++for (const selector of ['.hub-brand', 'footer a', 'footer .reset', '.workspace-categories button']) {
+   test(`course chrome gives ${selector} a 44px target independent of text metrics`, () => {
+-    const dom = new JSDOM('<!doctype html><body class="editorial workspace" data-course="cen100"><a class="hub-brand" href="/">TMU Course Guides</a><footer><a href="/privacy.html">Privacy</a><button class="reset">Clear my ticks</button></footer></body>');
++    const dom = new JSDOM('<!doctype html><body class="editorial workspace" data-course="cen100"><a class="hub-brand" href="/">TMU Course Guides</a><footer><a href="/privacy.html">Privacy</a><button class="reset">Clear my ticks</button></footer><div class="workspace-categories"><button>All</button></div></body>');
+     try {

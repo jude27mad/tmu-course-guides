@@ -20,28 +20,36 @@ jobs:
       sha: ${{ steps.source.outputs.sha }}
     steps:
       - uses: actions/checkout@v4
-      - name: Apply the reviewed Task L patch on its branch only
+      - name: Apply verified Task L fixes on the task branch only
         id: source
         env:
           EXPECTED_HEAD: ${{ github.sha }}
         run: |
           test "$GITHUB_REF" = refs/heads/codex/ns-qa-fixes
-          if test -f tools/qa/task-l.patch; then
-            git apply --check --index tools/qa/task-l.patch
-            git apply --index tools/qa/task-l.patch
-            python3 - <<'PY'
-          import subprocess
-          allowed = {'assets/hub.js', 'assets/workspace.css', 'index.html', 'cen100/index.html', 'mth140/index.html', 'mth141/index.html', 'tests/qa-accessibility.test.mjs'}
-          changed = set(subprocess.check_output(['git', 'diff', '--cached', '--name-only'], text=True).splitlines())
-          assert changed == allowed, f'Unexpected patch paths: {changed ^ allowed}'
-          PY
-            git rm tools/qa/task-l.patch
-            git diff --cached --check
-            git -c user.name=Jude -c user.email=229519885+jude27mad@users.noreply.github.com commit -m "Keep Skip first and enlarge undersized course controls" -m "Use minimal hit-target CSS without changing typography or colours. Refresh only the changed asset URLs and add nine focused regression checks."
-            test "$(git ls-remote origin refs/heads/codex/ns-qa-fixes | cut -f1)" = "$EXPECTED_HEAD"
-            git push origin HEAD:refs/heads/codex/ns-qa-fixes
-          fi
-          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          python3 - <<'PYTHON'
+          import os, pathlib, subprocess
+          def git(*args):
+              return subprocess.check_output(['git', *args], text=True).strip()
+          changes = [
+              ('tools/qa/task-l-accessibility.patch', {'assets/workspace.css', 'tests/qa-accessibility.test.mjs'}, 'Give the CEN filter a full-width touch target', 'Keep the existing layout and typography while enforcing the required 44px minimum width. Add a focused regression test.'),
+              ('tools/qa/task-l-arrival.patch', {'assets/guide-motion.mjs', 'assets/course-header.mjs', 'assets/course-scene.mjs', 'index.html', 'cen100/index.html', 'mth140/index.html', 'mth141/index.html', 'tests/qa-arrival.test.mjs', 'tests/shared-lifecycle.test.mjs'}, 'Settle page arrivals when the animation clock stalls', 'Keep the authored .35-second duration and easing. Bound cleanup without changing the GSAP clock, cancel stale deadlines, refresh the single motion URL, and retain every lifecycle assertion.')
+          ]
+          for patch, allowed, title, reason in changes:
+              if not pathlib.Path(patch).exists():
+                  continue
+              git('apply', '--check', '--index', patch)
+              git('apply', '--index', patch)
+              changed = set(git('diff', '--cached', '--name-only').splitlines())
+              assert changed == allowed, f'Unexpected patch paths: {changed ^ allowed}'
+              git('rm', patch)
+              git('diff', '--cached', '--check')
+              print(git('-c', 'user.name=Jude', '-c', 'user.email=229519885+jude27mad@users.noreply.github.com', 'commit', '-m', title, '-m', reason))
+          remote = git('ls-remote', 'origin', 'refs/heads/codex/ns-qa-fixes').split()[0]
+          assert remote == os.environ['EXPECTED_HEAD'], 'Task branch moved; refusing to overwrite work'
+          git('push', 'origin', 'HEAD:refs/heads/codex/ns-qa-fixes')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('sha=' + git('rev-parse', 'HEAD') + '\n')
+          PYTHON
 
   node:
     needs: prepare
@@ -91,7 +99,7 @@ jobs:
     timeout-minutes: 20
     strategy:
       fail-fast: false
-      max-parallel: 3
+      max-parallel: 6
       matrix:
         check: [layout, routes, modes, deadlines, stability, frames]
     steps:
