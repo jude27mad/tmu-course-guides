@@ -320,7 +320,7 @@ export async function clock(env) {
         const toronto = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto', month: 'short', day: 'numeric' }).format(new Date(now));
         assertion(out, fixture.name + ': Desk Toronto day current', observation.after.desk.today?.includes(toronto), observation.after.desk.today, toronto);
       }
-    }, { seed, clock: new Date(+new Date(fixture.before) - 120_000).toISOString() });
+    }, { seed, clock: new Date(+new Date(fixture.before) - 120_000).toISOString(), init: { fn: () => { window.TMU_BOOT_OPTIONS = { autoPrefetch: false }; } } });
   }
   return out;
 }
