@@ -93,7 +93,6 @@ jobs:
             artifact: github-pages
     env:
       PLAYWRIGHT_VERSION: '1.64.0'
-      PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
       QA_BASE: ${{ matrix.base }}
     steps:
       - uses: actions/checkout@v6
@@ -109,9 +108,11 @@ jobs:
         run: |
           # Keep QA-only dependencies outside the checkout and site manifests.
           npm install --prefix "$RUNNER_TEMP/qa-playwright" --no-save --package-lock=false "playwright@$PLAYWRIGHT_VERSION"
-          node "$PLAYWRIGHT_PATH/cli.js" install --with-deps chromium
+          node "$RUNNER_TEMP/qa-playwright/node_modules/playwright/cli.js" install --with-deps chromium
       - name: Run browser QA
-        run: node tools/qa/run.mjs routes modes layout --base "$QA_BASE"
+        run: |
+          export PLAYWRIGHT_PATH="$RUNNER_TEMP/qa-playwright/node_modules/playwright"
+          node tools/qa/run.mjs routes modes layout --base "$QA_BASE"
       - name: Summarize browser reports
         if: always()
         run: |
