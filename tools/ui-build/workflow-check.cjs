@@ -246,8 +246,15 @@ async function checkRoutes(base='https://guide.test/',motionMode='off'){
    assert.deepEqual(fallbacks,[],'normal route navigation needs no reload');assert.deepEqual(errors,[],'route swap has no runtime errors');
   };
   const move=async(route,hash='')=>{assert.equal(await router.navigate(new URL((route==='desk'?'':route+'/')+hash,base).href),true);assertRoute(route);};
+  // Route identity changes before awaited mounts and focus finish. Subscribe
+  // before each native click and assert only after the completed arrival.
+  const changed=route=>new Promise((resolve,reject)=>{
+   const timer=setTimeout(()=>{d.removeEventListener('route-changed',onChange);reject(Error('Route did not mount '+route+'; current '+router.route+' at '+w.location.href));},15000);
+   function onChange(event){if(event.detail.route===route){clearTimeout(timer);d.removeEventListener('route-changed',onChange);resolve();}}
+   d.addEventListener('route-changed',onChange);
+  });
   // Exercise native click capture before programmatic navigation.
-  d.querySelector('.desk-course').click();await until(()=>router.route==='cen100','Desk link did not navigate');assertRoute('cen100');
+  {const arrival=changed('cen100');d.querySelector('.desk-course').click();await arrival;assertRoute('cen100');}
   assert.equal(transitionCalls.length,motionMode==='off'?0:1,'off bypasses the stub; full runs it exactly once');
   assert.equal(arrivals[0].continuing,motionMode!=='off','first Desk dive hands off only when motion is allowed');
   if(motionMode!=='off'){assert.equal(transitionCalls[0].from,'desk');assert.equal(transitionCalls[0].to,'cen100');assert.equal(transitionCalls[0].policy,'full');}
@@ -260,18 +267,13 @@ async function checkRoutes(base='https://guide.test/',motionMode='off'){
   const checkbox=d.querySelector('input[data-completed="quiz-1"]');
   checkbox.checked=false;checkbox.dispatchEvent(new w.Event('change',{bubbles:true}));await pause(1);assert.equal(completed,1,'one action emits one completion');
   await move('mth141');assert.equal(d.querySelector('[data-note="quiz-1"]').value,'Saved algebra');
-  const changed=route=>new Promise((resolve,reject)=>{
-   const timer=setTimeout(()=>{d.removeEventListener('route-changed',onChange);reject(Error('History did not mount '+route+'; current '+router.route+' at '+w.location.href));},15000);
-   function onChange(event){if(event.detail.route===route){clearTimeout(timer);d.removeEventListener('route-changed',onChange);resolve();}}
-   d.addEventListener('route-changed',onChange);
-  });
   {const back=changed('mth140');w.history.back();await back;assertRoute('mth140');}
   {const forward=changed('mth141');w.history.forward();await forward;assertRoute('mth141');}
   await move('desk');assert.equal(d.querySelector('.ns-dock'),dock,'dock survives returning to Desk');assert(dock.hidden,'course dock is hidden on Desk');
   const snapshot=()=>Object.fromEntries(Array.from({length:w.localStorage.length},(_,i)=>w.localStorage.key(i)).sort().map(key=>[key,w.localStorage.getItem(key)]));
   const saved=snapshot();
   // Real clicks on the sidebar and the dock's Desk link, not only router.navigate().
-  const click=async(selector,route)=>{d.querySelector(selector).click();await until(()=>router.route===route,selector+' did not navigate');await pause(1);assertRoute(route);};
+  const click=async(selector,route)=>{const arrival=changed(route);d.querySelector(selector).click();await arrival;assertRoute(route);};
   await click('.course-link[data-course-link="mth140"]','mth140');
   await click('.ns-dock-desk','desk');
   // A CEN item link behaves as on a direct load: the tile opens in place (cen-guide mounts before visuals.js), no sheet.

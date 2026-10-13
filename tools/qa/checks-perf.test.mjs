@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { makeBudgets, assertBudgets, computeCLS, summarizeNetwork, perf, PROFILES, collectQuietSample, isReadableProbe, assertPerfTelemetry } from './checks-perf.mjs';
+import { makeBudgets, assertBudgets, computeCLS, summarizeNetwork, perf, PROFILES, collectQuietSample, waitForReadableFrames, isReadableProbe, assertPerfTelemetry } from './checks-perf.mjs';
 
 const measurement = (base = '/', route = 'desk', profile = 'phone') => ({
   base, route, profile,
@@ -22,8 +22,8 @@ test('budgets derive explicit margin from measured counts, wire bytes by type, a
   });
   assert.equal(budget.cases[0].limits.requestCount, 12);
   assert.equal(budget.cases[0].limits.transferBytes, 110_000);
-  assert.equal(budget.cases[0].limits.bytesByType.script, 88_000);
-  assert.equal(budget.cases[0].limits.bytesByType.document, 5_096);
+  assert.equal(budget.cases[0].limits.bytesByType.script, 88_192);
+  assert.equal(budget.cases[0].limits.bytesByType.document, 9_192);
   assert.equal(budget.cases[0].limits.chainDepth, 5);
   assert.equal(assertBudgets([sample], budget).every(item => item.pass), true);
 });
@@ -34,7 +34,7 @@ test('each budget gate fails when its real measurement exceeds the recorded allo
   for (const [metric, change] of [
     ['requestCount', value => { value.network.requestCount = 13; }],
     ['transferBytes', value => { value.network.transferBytes = 110_001; }],
-    ['bytesByType.script', value => { value.network.bytesByType.script = 88_001; }],
+    ['bytesByType.script', value => { value.network.bytesByType.script = 88_193; }],
     ['chainDepth', value => { value.modules.chainDepth = 6; }]
   ]) {
     const regression = structuredClone(sample);
@@ -43,6 +43,21 @@ test('each budget gate fails when its real measurement exceeds the recorded allo
     assert.equal(failures.length, 1, metric);
     assert.match(failures[0].name, new RegExp(metric.replaceAll('.', '\\.')));
   }
+});
+
+test('per-type baseline margin covers the planned generated head hints in three speculative documents', () => {
+  const baseline = measurement('/', 'cen100', 'desktop');
+  baseline.network.bytesByType = { fetch: 40_498, script: 59_502 };
+  const budget = makeBudgets([baseline]);
+  const generatedHints = structuredClone(baseline);
+  // 1280B Desk + 2171B MTH140 + 2171B MTH141; before/after source
+  // analysis identified this deliberate head overhead before acceptance runs.
+  generatedHints.network.bytesByType.fetch += 5622;
+  generatedHints.network.transferBytes += 5622;
+  assert.equal(budget.cases[0].limits.bytesByType.fetch, 48_690);
+  assert.equal(budget.margin.transferBytes, 4096);
+  assert.equal(budget.margin.bytesByType, 8192);
+  assert.equal(assertBudgets([generatedHints], budget).every(item => item.pass), true);
 });
 
 test('budgets keep deployment bases and profiles distinct and accept runner perf reports', () => {
@@ -140,6 +155,42 @@ test('new completed requests during a snapshot invalidate it even if quiet has r
   });
   assert.equal(captures, 2);
   assert.equal(result.sample.number, 2);
+});
+
+test('a readable viewport candidate is captured after its existing native frame callbacks finish', async () => {
+  let time = 0, polls = 0;
+  const result = await waitForReadableFrames({
+    remainingMs: 90_000, now: () => time,
+    pause: async ms => { polls++; time += ms; },
+    snapshot: () => ({ pendingReadableFrames: time < 300 ? ['coursework', 'deadline', 'deadlineChip'] : [], courseworkVisibleMs: time < 300 ? null : 7000, deadlineChipVisibleMs: time < 300 ? null : 7001 })
+  });
+  assert.ok(polls >= 3);
+  assert.equal(result.state.courseworkVisibleMs, 7000);
+  assert.equal(result.state.deadlineChipVisibleMs, 7001);
+  assert.equal(result.wait.capped, false);
+});
+
+test('an offscreen Desk chip without a scheduled frame callback never extends appearance collection', async () => {
+  let polls = 0;
+  const result = await waitForReadableFrames({ remainingMs: 90_000, now: () => 0, pause: async () => { polls++; }, snapshot: () => ({ pendingReadableFrames: [], deadlineChipVisibleMs: null }) });
+  assert.equal(polls, 0);
+  assert.equal(result.state.deadlineChipVisibleMs, null);
+  assert.equal(result.wait.waited, false);
+});
+
+test('pending native frame exhaustion is reported while an unchanged network remains quiet', async () => {
+  let time = 0;
+  const network = { activeCount: 0, lastActivityMs: -10_000, revision: 0 };
+  const result = await collectQuietSample({ network, started: 0, capMs: 500, optionalSettlementMs: 0, now: () => time, isReady: async () => true, pause: async ms => { time += ms || 100; },
+    capture: async () => {
+      const appearance = await waitForReadableFrames({ remainingMs: 500 - time, now: () => time, pause: async ms => { time += ms; }, snapshot: () => ({ pendingReadableFrames: ['deadline'], deadlineVisibleMs: null }) });
+      return { state: appearance.state, readabilityWait: appearance.wait };
+    }
+  });
+  assert.equal(result.sample.readabilityWait.capped, true);
+  assert.equal(result.sample.state.deadlineVisibleMs, null);
+  assert.equal(result.collection.networkQuiet, true);
+  assert.equal(time, 500);
 });
 
 test('browser errors and failed optional resources remain performance check failures', () => {

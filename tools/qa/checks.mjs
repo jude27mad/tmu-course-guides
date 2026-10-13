@@ -20,8 +20,34 @@ function telemetry(page) {
   return errors;
 }
 
+function installNavigationDiagnostics() {
+  const state=window.__qaNavDiagnostics={routes:[],clicks:[]};
+  const append=(rows,row)=>{rows.push(row);if(rows.length>500)rows.shift();};
+  document.addEventListener('route-changed',event=>append(state.routes,{time:performance.now(),route:event.detail?.route,from:event.detail?.from,url:location.href,shell:document.documentElement.dataset.shellId}));
+  document.addEventListener('click',event=>{
+    const target=event.target?.closest?.('a,button,input');
+    const row={time:performance.now(),tag:target?.tagName,id:target?.id,route:target?.dataset.courseLink,completion:target?.dataset.quickComplete,view:target?.dataset.workspaceView,href:target?.getAttribute('href'),url:location.href,defaultPrevented:event.defaultPrevented};
+    append(state.clicks,row);
+    queueMicrotask(()=>{row.defaultPrevented=event.defaultPrevented;row.urlAfterDispatch=location.href;});
+  },true);
+}
+
+async function navigationDiagnosticSnapshot(page) {
+  return page.evaluate(()=>{
+    const main=document.querySelector('main[data-route-region]'),active=document.activeElement;
+    const css=main&&getComputedStyle(main);
+    return {url:location.href,shell:document.documentElement.dataset.shellId,route:window.TMURouter?.route,completedRoute:window.__qaRouteCompleted,body:{course:document.body.dataset.course,page:document.body.dataset.page},content:main?.textContent.trim().length,deadline:document.querySelector('[data-desk-overall-body]:not([hidden]),.ns-count')?.textContent.trim().slice(0,180),focus:{tag:active?.tagName,id:active?.id,inside:!!main?.contains(active)},wrapper:css&&{opacity:css.opacity,filter:css.filter,transform:css.transform},events:window.__qaNavDiagnostics};
+  });
+}
+
+async function boundedNavigationDiagnosticSnapshot(page) {
+  let timer;
+  try {return await Promise.race([navigationDiagnosticSnapshot(page),new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('Navigation snapshot exceeded 5000 ms')),5000);})]);}
+  finally {clearTimeout(timer);}
+}
+
 async function runCase(env, out, name, fn, {storage={},contextOptions={},browser=env.browser,clock,linearClock}={}) {
-  let context;
+  let context,page,diagnosticSession;
   const observation = {name};
   out.observations.cases.push(observation);
   try {
@@ -39,15 +65,34 @@ async function runCase(env, out, name, fn, {storage={},contextOptions={},browser
     },linearClock);
     await context.addInitScript(()=>{document.addEventListener('route-changed',event=>{window.__qaRouteCompleted=event.detail?.route;});});
     await context.addInitScript(seed => {try{for(const [key,value] of Object.entries(seed)) localStorage.setItem(key, typeof value==='string'?value:JSON.stringify(value));}catch{}}, storage);
-    const page = await context.newPage();
+    page = await context.newPage();
     page.setDefaultTimeout(10000);
     const errors = telemetry(page);
     observation.telemetry = errors;
+    if(process.env.QA_NAV_DIAGNOSTICS==='1') {
+      const diagnostic=observation.navigationDiagnostics={documentRequests:[],frameNavigations:[],pageEvents:[]};
+      await context.addInitScript(installNavigationDiagnostics);
+      page.on('request',request=>{if(request.isNavigationRequest()&&request.frame()===page.mainFrame())diagnostic.documentRequests.push({time:Date.now(),url:request.url(),method:request.method()});});
+      page.on('framenavigated',frame=>{if(frame===page.mainFrame())diagnostic.frameNavigations.push({time:Date.now(),url:frame.url()});});
+      diagnosticSession=await context.newCDPSession(page);
+      for(const type of ['Page.frameRequestedNavigation','Page.frameScheduledNavigation','Page.frameClearedScheduledNavigation','Page.frameNavigated','Page.navigatedWithinDocument'])diagnosticSession.on(type,event=>diagnostic.pageEvents.push({time:Date.now(),type,frameId:event.frameId??event.frame?.id,parentId:event.frame?.parentId,loaderId:event.frame?.loaderId,url:event.url??event.frame?.url,reason:event.reason,disposition:event.disposition}));
+      await diagnosticSession.send('Page.enable');
+    }
     if(clock) await page.clock.install({time:new Date(clock)});
     await fn(page, observation);
   } catch(error) {
     assert(out, `${name}: execution`, false, error.stack || String(error), 'case completes');
+    if(observation.navigationDiagnostics&&page) {
+      observation.navigationDiagnostics.failure={time:Date.now(),pageURL:page.url(),error:error.message};
+      try {observation.navigationDiagnostics.failure.state=await boundedNavigationDiagnosticSnapshot(page);}
+      catch(snapshotError){observation.navigationDiagnostics.failure.snapshotError=snapshotError.message;}
+    }
   } finally {
+    if(observation.navigationDiagnostics&&page&&!observation.navigationDiagnostics.failure) {
+      try {observation.navigationDiagnostics.finalState=await boundedNavigationDiagnosticSnapshot(page);}
+      catch(snapshotError){observation.navigationDiagnostics.snapshotError=snapshotError.message;}
+    }
+    await diagnosticSession?.detach().catch(()=>{});
     if(observation.telemetry) for(const [type,items] of Object.entries(observation.telemetry)) assert(out,`${name}: ${type}`,items.length===0,items,[]);
     await context?.close();
   }

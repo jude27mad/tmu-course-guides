@@ -1,10 +1,11 @@
 {
   "schemaVersion": 1,
   "label": "before",
-  "capturedAt": "2026-10-13T18:53:12.224Z",
+  "capturedAt": "2026-10-13T20:30:58.922Z",
   "fixedTime": "2026-10-13T16:00:00.000Z",
-  "revision": "aa41914ea33dd9172559f52cc2f2c7505733a32a",
-  "productSourceSha256": "573f46a3941da5a8c6870ec67aa40d01be3719885292fa74cd58dab89d76578e",
+  "revision": "672326669b770c314b2ca518187516efe735f308",
+  "productSourceSha256": "42488250314342bb29f00592f80c055d329224a8fa0b2d1f309ccd3baf46d4ef",
+  "protectedSourceSha256": "3fb8dcc44d67a8edb4da249ac4ed960e829344cfb2a8352dc006f2e999a00539",
   "recipe": {
     "fullPage": false,
     "deviceScaleFactor": 1,
@@ -21,7 +22,14 @@
     "screenshotAnimations": "disabled",
     "masking": false,
     "cssInjection": false,
-    "noWebGL": false
+    "noWebGL": false,
+    "compositorStagesBeforeDraw": true,
+    "gpuRasterization": false,
+    "chromiumScreenshotSurface": "legacy"
+  },
+  "execution": {
+    "captureConcurrency": 1,
+    "diagnostic": false
   },
   "environment": {
     "playwrightPath": "/opt/codex/cua_node/lib/node_modules/playwright",
@@ -29,7 +37,73 @@
     "args": [
       "--use-angle=swiftshader",
       "--enable-unsafe-swiftshader",
-      "--ignore-gpu-blocklist"
+      "--ignore-gpu-blocklist",
+      "--run-all-compositor-stages-before-draw",
+      "--disable-gpu-rasterization"
+    ],
+    "playwrightLegacyScreenshot": true,
+    "chromiumCommandLine": [
+      "/usr/lib/chromium/chromium",
+      "--show-component-extension-options",
+      "--enable-gpu-rasterization",
+      "--no-default-browser-check",
+      "--disable-pings",
+      "--media-router=0",
+      "--enable-remote-extensions",
+      "--load-extension",
+      "--disable-field-trial-config",
+      "--disable-background-networking",
+      "--disable-background-timer-throttling",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-back-forward-cache",
+      "--disable-breakpad",
+      "--disable-client-side-phishing-detection",
+      "--disable-component-extensions-with-background-pages",
+      "--disable-component-update",
+      "--no-default-browser-check",
+      "--disable-default-apps",
+      "--disable-dev-shm-usage",
+      "--disable-extensions",
+      "--disable-features=AcceptCHFrame,AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints",
+      "--allow-pre-commit-input",
+      "--disable-hang-monitor",
+      "--disable-ipc-flooding-protection",
+      "--disable-popup-blocking",
+      "--disable-prompt-on-repost",
+      "--disable-renderer-backgrounding",
+      "--force-color-profile=srgb",
+      "--metrics-recording-only",
+      "--no-first-run",
+      "--password-store=basic",
+      "--use-mock-keychain",
+      "--no-service-autorun",
+      "--export-tagged-pdf",
+      "--disable-search-engine-choice-screen",
+      "--unsafely-disable-devtools-self-xss-warnings",
+      "--edge-skip-compat-layer-relaunch",
+      "--enable-automation",
+      "--disable-infobars",
+      "--disable-search-engine-choice-screen",
+      "--disable-sync",
+      "--headless",
+      "--hide-scrollbars",
+      "--mute-audio",
+      "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+      "--no-sandbox",
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist",
+      "--run-all-compositor-stages-before-draw",
+      "--disable-gpu-rasterization",
+      "--user-data-dir=/tmp/playwright_chromiumdev_profile-1rkOw6",
+      "--remote-debugging-pipe",
+      "--no-startup-window",
+      "--noerrdialogs",
+      "--ozone-platform=headless",
+      "--ozone-override-screen-size=800,600",
+      "--flag-switches-begin",
+      "--flag-switches-end",
+      "--enable-unsafe-swiftshader"
     ],
     "requestedMode": "SwiftShader",
     "chromiumVersion": "154.0.8037.57",
@@ -55,7 +129,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/root-desk-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-desk-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -170,15 +244,16 @@
           "/assets/night/layout.css",
           "/assets/night/desk.css",
           "/assets/night/palette.css"
-        ]
+        ],
+        "renderersAtCapture": []
       },
       "preCaptureScene": [],
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 374385,
-        "sha256": "407f043c389b8b943d067cdd3246b4c452bd0e2aab70f0a4a166d1fd0e031a06",
-        "pixelSha256": "bd85783ccf6804f62f8f3b654954de2177971adffba81af05fd39abb5baec453"
+        "bytes": 391533,
+        "sha256": "8f82f07d2526bb1c8ae3546805b823436fa54f398ab716559b6be98ce1c544e7",
+        "pixelSha256": "0c3c61f7723796fd2a358b995d21d594d3159e9422a82c4fe7086f2aeef4e255"
       },
       "status": "captured",
       "fontRequests": [
@@ -201,7 +276,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/root-desk-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-desk-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -316,15 +391,16 @@
           "/assets/night/layout.css",
           "/assets/night/desk.css",
           "/assets/night/palette.css"
-        ]
+        ],
+        "renderersAtCapture": []
       },
       "preCaptureScene": [],
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 402004,
-        "sha256": "c88d018598f1690b72c2aff9785e77a75f7bc13c38b029b0439d6401e58d32ef",
-        "pixelSha256": "3332eb4fd515d44e3d6609435c87e78fdf2d9b306fb4825bda2c020222ede8a8"
+        "bytes": 415413,
+        "sha256": "6b65119bbb4187f06886ff0509b38663ef3e9c20f8b79136046bb12abd4c94e8",
+        "pixelSha256": "20a2d7d2197098c39d9cbead2c6697285f16c4c3b171582c827bb9a9b8abdf54"
       },
       "status": "captured",
       "fontRequests": [
@@ -347,7 +423,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/root-desk-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-desk-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -462,15 +538,16 @@
           "/assets/night/layout.css",
           "/assets/night/desk.css",
           "/assets/night/palette.css"
-        ]
+        ],
+        "renderersAtCapture": []
       },
       "preCaptureScene": [],
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 78902,
-        "sha256": "ea5d0751219510ea61453df42134d71723bfc7190b0d8837793ec68294e1328a",
-        "pixelSha256": "e7d5e63dde12003a4f0fd13a08f32e59b8655d7e9357d6e2746a60f553d06cea"
+        "bytes": 82935,
+        "sha256": "5da004a50403c716990b36e1ed72a893d61ec39866cae859334ff65fd8f8ed5e",
+        "pixelSha256": "2a114b91482c5469b67ecef44984b831b5b22136ba544c36de0f7c95caa17c7b"
       },
       "status": "captured",
       "fontRequests": [
@@ -493,7 +570,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/root-desk-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-desk-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -608,15 +685,16 @@
           "/assets/night/layout.css",
           "/assets/night/desk.css",
           "/assets/night/palette.css"
-        ]
+        ],
+        "renderersAtCapture": []
       },
       "preCaptureScene": [],
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 79995,
-        "sha256": "e82da6d15a8fae7cd3339f69eca31a1c2c12e1ad13b6148471fd03992f5c4b8c",
-        "pixelSha256": "ae21c5c0af741eb3abf0764db95304d1b935b33bf507a51442a8bdda2a7ff173"
+        "bytes": 82874,
+        "sha256": "fce1b9cc18350fca335a7c0b1c79a63162fbbaf40530fdbf78417666066321d9",
+        "pixelSha256": "d84cc421785f8b32abac67340bdb3f4fc72a4ad7d2c452d0cfde77a2fff866c4"
       },
       "status": "captured",
       "fontRequests": [
@@ -639,7 +717,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/root-cen100-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-cen100-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -653,6 +731,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -664,6 +743,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -717,13 +797,13 @@
         "theme": "dark",
         "document": {
           "width": 1440,
-          "height": 4284
+          "height": 4334
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 4283.578125,
+          "height": 4334.015625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -744,7 +824,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 16,
-            "y": 28.296875,
+            "y": 35,
             "width": 30,
             "height": 30,
             "aboveFold": true
@@ -805,6 +885,18 @@
           "/assets/night/palette.css",
           "/assets/night/hero.css",
           "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
         ]
       },
       "preCaptureScene": [
@@ -812,6 +904,7 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 724.796875,
           "y": 24,
           "width": 691.203125,
@@ -821,9 +914,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 183646,
-        "sha256": "f500520fe90417c938ae676969842231cc7bd23309768aa6869653d334706602",
-        "pixelSha256": "d403d96948c4d1775570f29794f3b9f3335af53b7bb398c83b310edcfacd2068"
+        "bytes": 185883,
+        "sha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
+        "pixelSha256": "ab0c078fa64a6bb7f2534f59fdaae9448574f04d695730051fe542577e4ae56c"
       },
       "status": "captured",
       "fontRequests": [
@@ -846,7 +939,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/root-cen100-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-cen100-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -860,6 +953,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -871,6 +965,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -924,13 +1019,13 @@
         "theme": "light",
         "document": {
           "width": 1440,
-          "height": 4284
+          "height": 4334
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 4283.578125,
+          "height": 4334.015625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -951,7 +1046,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 16,
-            "y": 28.296875,
+            "y": 35,
             "width": 30,
             "height": 30,
             "aboveFold": true
@@ -1012,6 +1107,18 @@
           "/assets/night/palette.css",
           "/assets/night/hero.css",
           "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
         ]
       },
       "preCaptureScene": [
@@ -1019,6 +1126,7 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 724.796875,
           "y": 24,
           "width": 691.203125,
@@ -1028,9 +1136,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 180927,
-        "sha256": "b2828d07ad902da60035bed5c55b0a7836a044a53ee05ed2fb28730b41564439",
-        "pixelSha256": "a6d59cfca20a1d96daf065f90b72fc0f473f55539d023d98cf1ddb1778170f42"
+        "bytes": 183555,
+        "sha256": "408bd9e1251fe6a3eec3c689ae2fa98ddf3066b639326e15d6e30165f29edbb9",
+        "pixelSha256": "dc7be1b4d62b74b432377ead5bc8ee29c8498dae7bf620bbb5451d0309875cf2"
       },
       "status": "captured",
       "fontRequests": [
@@ -1053,7 +1161,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/root-cen100-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-cen100-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -1067,8 +1175,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 338.890625,
+            "y": 357.890625,
             "width": 374,
             "height": 303
           }
@@ -1078,8 +1187,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 338.890625,
+            "y": 357.890625,
             "width": 374,
             "height": 303
           }
@@ -1131,13 +1241,13 @@
         "theme": "dark",
         "document": {
           "width": 390,
-          "height": 4034
+          "height": 4103
         },
         "wrapper": {
           "x": 0,
-          "y": 183.890625,
+          "y": 202.890625,
           "width": 390,
-          "height": 3849.625,
+          "height": 3900.0625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -1158,7 +1268,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 18,
-            "y": 16,
+            "y": 25.5,
             "width": 25,
             "height": 25,
             "aboveFold": true
@@ -1171,7 +1281,7 @@
             "loading": "auto",
             "decoding": "async",
             "x": 8,
-            "y": 338.890625,
+            "y": 357.890625,
             "width": 374,
             "height": 303,
             "aboveFold": true
@@ -1184,7 +1294,7 @@
             "motionState": "still",
             "sceneFrame": "3",
             "x": 8,
-            "y": 338.890625,
+            "y": 357.890625,
             "width": 374,
             "height": 303
           }
@@ -1219,6 +1329,18 @@
           "/assets/night/palette.css",
           "/assets/night/hero.css",
           "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 8,
+            "y": 357.890625,
+            "width": 374,
+            "height": 303
+          }
         ]
       },
       "preCaptureScene": [
@@ -1226,8 +1348,9 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 8,
-          "y": 338.890625,
+          "y": 357.890625,
           "width": 374,
           "height": 303
         }
@@ -1235,9 +1358,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 91292,
-        "sha256": "65b03e83fda89d5757d9cf60b92ba27de865117d5cb06942e5f03517f5cd2c4f",
-        "pixelSha256": "fa4c3fa8b5ab267877fd241e7e938ae81a23ef9da33859913233e07052350dca"
+        "bytes": 90803,
+        "sha256": "06c63aeafdd259c071626f7bd218905cb77800cf3922f73b8532175ebd0d3369",
+        "pixelSha256": "46f6a93c920182029df72f0bdbfd1b55b5ae00362aeaf671ae89832ddd14c879"
       },
       "status": "captured",
       "fontRequests": [
@@ -1260,7 +1383,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/root-cen100-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-cen100-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -1274,8 +1397,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 338.890625,
+            "y": 357.890625,
             "width": 374,
             "height": 303
           }
@@ -1285,8 +1409,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 338.890625,
+            "y": 357.890625,
             "width": 374,
             "height": 303
           }
@@ -1338,13 +1463,13 @@
         "theme": "light",
         "document": {
           "width": 390,
-          "height": 4034
+          "height": 4103
         },
         "wrapper": {
           "x": 0,
-          "y": 183.890625,
+          "y": 202.890625,
           "width": 390,
-          "height": 3849.625,
+          "height": 3900.0625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -1365,7 +1490,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 18,
-            "y": 16,
+            "y": 25.5,
             "width": 25,
             "height": 25,
             "aboveFold": true
@@ -1378,7 +1503,7 @@
             "loading": "auto",
             "decoding": "async",
             "x": 8,
-            "y": 338.890625,
+            "y": 357.890625,
             "width": 374,
             "height": 303,
             "aboveFold": true
@@ -1391,7 +1516,7 @@
             "motionState": "still",
             "sceneFrame": "3",
             "x": 8,
-            "y": 338.890625,
+            "y": 357.890625,
             "width": 374,
             "height": 303
           }
@@ -1426,6 +1551,18 @@
           "/assets/night/palette.css",
           "/assets/night/hero.css",
           "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 8,
+            "y": 357.890625,
+            "width": 374,
+            "height": 303
+          }
         ]
       },
       "preCaptureScene": [
@@ -1433,8 +1570,9 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 8,
-          "y": 338.890625,
+          "y": 357.890625,
           "width": 374,
           "height": 303
         }
@@ -1442,9 +1580,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 89788,
-        "sha256": "1329d7d290620ea6dd8419779dd6c3035485cbcba3dd8e72babe3e1daac8721a",
-        "pixelSha256": "ecdd73eb9cc78e46602d0cfc9fded055b17924b58b95a774488d957957b7d316"
+        "bytes": 89760,
+        "sha256": "eb4690524953b82a480a999485fbb5ab562216ab56527ac914389ffc7af9de97",
+        "pixelSha256": "579880d1af206e22535c47cc867e7867e0bd673fe26348dc7b5b239eddb41f81"
       },
       "status": "captured",
       "fontRequests": [
@@ -1467,7 +1605,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/root-mth140-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-mth140-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -1480,7 +1618,8 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "2",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -1491,7 +1630,8 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "2",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -1545,13 +1685,13 @@
         "theme": "dark",
         "document": {
           "width": 1440,
-          "height": 2591
+          "height": 2617
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 2590.53125,
+          "height": 2617.265625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -1572,7 +1712,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 16,
-            "y": 28.296875,
+            "y": 35,
             "width": 30,
             "height": 30,
             "aboveFold": true
@@ -1596,7 +1736,7 @@
             "renderer": "webgl2",
             "sceneReady": "true",
             "motionState": "still",
-            "sceneFrame": "3",
+            "sceneFrame": "2",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -1636,13 +1776,26 @@
           "/assets/night/palette.css",
           "/assets/night/hero.css",
           "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
         ]
       },
       "preCaptureScene": [
         {
           "renderer": "webgl2",
           "ready": "true",
-          "frame": "4",
+          "frame": "3",
+          "motionState": "still",
           "x": 724.796875,
           "y": 24,
           "width": 691.203125,
@@ -1652,9 +1805,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 311880,
-        "sha256": "7736ea3e0e4ce30b40a0d558a10ee82ba3165ac6b2b36e55796082d882722668",
-        "pixelSha256": "8c72f14ff989453ac6788b24ddb796e7acaa3e2774a65215421c95f841e3347f"
+        "bytes": 315180,
+        "sha256": "02960507297fe07f658df640c2fded6d18fc6b8836f26113b50b41f146d69cfb",
+        "pixelSha256": "0c1801b4afdc371cfd6a682d0bf873ba041dca4a3cf0a761d173dc8d0d73e7c9"
       },
       "status": "captured",
       "fontRequests": [
@@ -1677,7 +1830,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/root-mth140-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-mth140-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -1691,6 +1844,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -1702,6 +1856,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -1755,13 +1910,13 @@
         "theme": "light",
         "document": {
           "width": 1440,
-          "height": 2591
+          "height": 2617
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 2590.53125,
+          "height": 2617.265625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -1782,7 +1937,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 16,
-            "y": 28.296875,
+            "y": 35,
             "width": 30,
             "height": 30,
             "aboveFold": true
@@ -1846,6 +2001,18 @@
           "/assets/night/palette.css",
           "/assets/night/hero.css",
           "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
         ]
       },
       "preCaptureScene": [
@@ -1853,6 +2020,7 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 724.796875,
           "y": 24,
           "width": 691.203125,
@@ -1862,9 +2030,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 308587,
-        "sha256": "2cf6929dec5faabb9a3de11c9a08ff87470a54a973b888c91908e5cb8dd1cf38",
-        "pixelSha256": "f1f9a1046f3a90c0c85f2e70c5b4f9c68bfec4368686272cbc403c054a524a55"
+        "bytes": 311601,
+        "sha256": "b88e48b09ebcdb976af2a2bcec5477773f5231bd3d59c075fe844f77db1626e3",
+        "pixelSha256": "bfd223cc32eb1df31880b50d5b1c3e3bf7f6aafed0187e42d7c9b1e2d497c82b"
       },
       "status": "captured",
       "fontRequests": [
@@ -1887,7 +2055,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/root-mth140-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-mth140-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -1901,8 +2069,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -1912,8 +2081,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -1965,13 +2135,13 @@
         "theme": "dark",
         "document": {
           "width": 390,
-          "height": 2558
+          "height": 2631
         },
         "wrapper": {
           "x": 0,
-          "y": 184.40625,
+          "y": 203.40625,
           "width": 390,
-          "height": 2374.03125,
+          "height": 2427.5,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -1992,7 +2162,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 18,
-            "y": 16,
+            "y": 25.5,
             "width": 25,
             "height": 25,
             "aboveFold": true
@@ -2005,7 +2175,7 @@
             "loading": "auto",
             "decoding": "async",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336,
             "aboveFold": true
@@ -2018,7 +2188,7 @@
             "motionState": "still",
             "sceneFrame": "3",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -2056,6 +2226,18 @@
           "/assets/night/palette.css",
           "/assets/night/hero.css",
           "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
         ]
       },
       "preCaptureScene": [
@@ -2063,8 +2245,9 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 8,
-          "y": 306.40625,
+          "y": 325.40625,
           "width": 374,
           "height": 336
         }
@@ -2072,9 +2255,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 140025,
-        "sha256": "f60c95dcdd0631793c69fc9209de8ed69f20d1aeee39e3e3a042d5cad533fa38",
-        "pixelSha256": "edbed8ab95736cb140253cd48a8cceb28bf04f502b3702102c7adad753bdac25"
+        "bytes": 138767,
+        "sha256": "e3f744f0a3ab80d06b5f2e02710d104ba4b38954d5eee537d94f2d174edcfc39",
+        "pixelSha256": "198f7ae054ebcc0b0bf626a226c85ede6451da4e78e5b0dd2762d5812e992dfc"
       },
       "status": "captured",
       "fontRequests": [
@@ -2097,7 +2280,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/root-mth140-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-mth140-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -2111,8 +2294,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -2122,8 +2306,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -2175,13 +2360,13 @@
         "theme": "light",
         "document": {
           "width": 390,
-          "height": 2558
+          "height": 2631
         },
         "wrapper": {
           "x": 0,
-          "y": 184.40625,
+          "y": 203.40625,
           "width": 390,
-          "height": 2374.03125,
+          "height": 2427.5,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -2202,7 +2387,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 18,
-            "y": 16,
+            "y": 25.5,
             "width": 25,
             "height": 25,
             "aboveFold": true
@@ -2215,7 +2400,7 @@
             "loading": "auto",
             "decoding": "async",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336,
             "aboveFold": true
@@ -2228,7 +2413,7 @@
             "motionState": "still",
             "sceneFrame": "3",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -2266,6 +2451,18 @@
           "/assets/night/palette.css",
           "/assets/night/hero.css",
           "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
         ]
       },
       "preCaptureScene": [
@@ -2273,8 +2470,9 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 8,
-          "y": 306.40625,
+          "y": 325.40625,
           "width": 374,
           "height": 336
         }
@@ -2282,9 +2480,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 137736,
-        "sha256": "4eed8afcde2abb7418eae24ddc8c12da851186c89aa632c6baf9a460fddc2007",
-        "pixelSha256": "86758e869e7273706fd4d94786e32f9ad96e5bc7e8588605055fa0893c14cb05"
+        "bytes": 136986,
+        "sha256": "5cfbf6c971ae5a7c1ccedccca9025b113cd4f45190a2f656163e8db6cb90a8ff",
+        "pixelSha256": "ce7c71adeec4694120b3fad2fa796b22c974b0b21c0deeaf9d7a8f7fe8c7fcd1"
       },
       "status": "captured",
       "fontRequests": [
@@ -2307,7 +2505,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/root-mth141-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-mth141-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -2321,6 +2519,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -2332,6 +2531,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -2385,13 +2585,13 @@
         "theme": "dark",
         "document": {
           "width": 1440,
-          "height": 2558
+          "height": 2585
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 2558.03125,
+          "height": 2584.765625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -2412,7 +2612,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 16,
-            "y": 28.296875,
+            "y": 35,
             "width": 30,
             "height": 30,
             "aboveFold": true
@@ -2476,6 +2676,18 @@
           "/assets/night/palette.css",
           "/assets/night/hero.css",
           "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
         ]
       },
       "preCaptureScene": [
@@ -2483,6 +2695,7 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 724.796875,
           "y": 24,
           "width": 691.203125,
@@ -2492,9 +2705,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 275417,
-        "sha256": "7a40b26d4a4632172ffcf31d271b70dde2c07e528a5f3b2414f33e66da68ec44",
-        "pixelSha256": "8e340b48cbc5b14d95478e137661814e3b765a7683d26a22508f77fb38684fcd"
+        "bytes": 277462,
+        "sha256": "47470d808b8999f1b2f9e7949c0b4bb97a0674a093c7e108cf3b9773923d07d7",
+        "pixelSha256": "af5a95f4ee980453492aa232db781f86c1f911c3c84aca2e0a6f19d0cdf60324"
       },
       "status": "captured",
       "fontRequests": [
@@ -2517,7 +2730,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/root-mth141-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-mth141-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -2531,6 +2744,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -2542,6 +2756,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -2595,13 +2810,13 @@
         "theme": "light",
         "document": {
           "width": 1440,
-          "height": 2558
+          "height": 2585
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 2558.03125,
+          "height": 2584.765625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -2622,7 +2837,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 16,
-            "y": 28.296875,
+            "y": 35,
             "width": 30,
             "height": 30,
             "aboveFold": true
@@ -2686,6 +2901,18 @@
           "/assets/night/palette.css",
           "/assets/night/hero.css",
           "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
         ]
       },
       "preCaptureScene": [
@@ -2693,6 +2920,7 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 724.796875,
           "y": 24,
           "width": 691.203125,
@@ -2702,9 +2930,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 272483,
-        "sha256": "d8b30511e6a1cd6a38e229cd709a5dd3556f725fc044cf929ee39a5fb98a2d6d",
-        "pixelSha256": "2f3db41e3a451f633502d764ee0ef03d937ba28fa7ed0ef89692c398946886e5"
+        "bytes": 274771,
+        "sha256": "a1443487989122a172d96390ded13a6aa04d10e0feebd8e0bf196dc5f2e1e5a0",
+        "pixelSha256": "5d1aafaabf7c39a6b84e9145215fc5977c33bc8b90e07e10dc9adbdfaf9d3a15"
       },
       "status": "captured",
       "fontRequests": [
@@ -2727,7 +2955,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/root-mth141-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-mth141-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -2741,8 +2969,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -2752,8 +2981,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -2805,13 +3035,13 @@
         "theme": "dark",
         "document": {
           "width": 390,
-          "height": 2549
+          "height": 2621
         },
         "wrapper": {
           "x": 0,
-          "y": 184.40625,
+          "y": 203.40625,
           "width": 390,
-          "height": 2364.5625,
+          "height": 2418.03125,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -2832,7 +3062,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 18,
-            "y": 16,
+            "y": 25.5,
             "width": 25,
             "height": 25,
             "aboveFold": true
@@ -2845,7 +3075,7 @@
             "loading": "auto",
             "decoding": "async",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336,
             "aboveFold": true
@@ -2858,7 +3088,7 @@
             "motionState": "still",
             "sceneFrame": "3",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -2896,6 +3126,18 @@
           "/assets/night/palette.css",
           "/assets/night/hero.css",
           "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
         ]
       },
       "preCaptureScene": [
@@ -2903,8 +3145,9 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 8,
-          "y": 306.40625,
+          "y": 325.40625,
           "width": 374,
           "height": 336
         }
@@ -2912,9 +3155,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 140011,
-        "sha256": "a17f1e1812db91afa5d5ab02e0a7c0e963b80a14d6e74395340c3d973d372308",
-        "pixelSha256": "842301844aadf993e4cb46e9fd270de9a5958db5f3498b02f6af01ae9c06037c"
+        "bytes": 139557,
+        "sha256": "41d12045a6b8ef1850c146a8595d8522367ccd60f2e73e60249ad6adbe4f415a",
+        "pixelSha256": "4935b20b37b23c52e5bbdee9ca65355ee3891c7e44197714ea547dd377701665"
       },
       "status": "captured",
       "fontRequests": [
@@ -2937,7 +3180,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/root-mth141-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/root-mth141-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -2951,8 +3194,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -2962,8 +3206,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -3015,13 +3260,13 @@
         "theme": "light",
         "document": {
           "width": 390,
-          "height": 2549
+          "height": 2621
         },
         "wrapper": {
           "x": 0,
-          "y": 184.40625,
+          "y": 203.40625,
           "width": 390,
-          "height": 2364.5625,
+          "height": 2418.03125,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -3042,7 +3287,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 18,
-            "y": 16,
+            "y": 25.5,
             "width": 25,
             "height": 25,
             "aboveFold": true
@@ -3055,7 +3300,7 @@
             "loading": "auto",
             "decoding": "async",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336,
             "aboveFold": true
@@ -3068,7 +3313,7 @@
             "motionState": "still",
             "sceneFrame": "3",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -3106,6 +3351,18 @@
           "/assets/night/palette.css",
           "/assets/night/hero.css",
           "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
         ]
       },
       "preCaptureScene": [
@@ -3113,8 +3370,9 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 8,
-          "y": 306.40625,
+          "y": 325.40625,
           "width": 374,
           "height": 336
         }
@@ -3122,9 +3380,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 137545,
-        "sha256": "1052b081194028ecca990560811af5439af15d5b1f319bf8616269e9ec0b7169",
-        "pixelSha256": "4c25c76ff45e9bac3e7e1f47174dd6e02d3a70f3930210be949836ad7b5b4b00"
+        "bytes": 137116,
+        "sha256": "409c960caf8a141ea008e50b415f2478a6aabb4e8dc081674d6371f008d7860d",
+        "pixelSha256": "17fe13774ad73b7cf2039eaecf8fa61068b0ae6862eb6f1f549a0351f791b804"
       },
       "status": "captured",
       "fontRequests": [
@@ -3147,7 +3405,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/project-desk-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-desk-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3262,15 +3520,16 @@
           "/tmu-course-guides/assets/night/layout.css",
           "/tmu-course-guides/assets/night/desk.css",
           "/tmu-course-guides/assets/night/palette.css"
-        ]
+        ],
+        "renderersAtCapture": []
       },
       "preCaptureScene": [],
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 374385,
-        "sha256": "407f043c389b8b943d067cdd3246b4c452bd0e2aab70f0a4a166d1fd0e031a06",
-        "pixelSha256": "bd85783ccf6804f62f8f3b654954de2177971adffba81af05fd39abb5baec453"
+        "bytes": 391533,
+        "sha256": "8f82f07d2526bb1c8ae3546805b823436fa54f398ab716559b6be98ce1c544e7",
+        "pixelSha256": "0c3c61f7723796fd2a358b995d21d594d3159e9422a82c4fe7086f2aeef4e255"
       },
       "status": "captured",
       "fontRequests": [
@@ -3293,7 +3552,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/project-desk-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-desk-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3408,15 +3667,16 @@
           "/tmu-course-guides/assets/night/layout.css",
           "/tmu-course-guides/assets/night/desk.css",
           "/tmu-course-guides/assets/night/palette.css"
-        ]
+        ],
+        "renderersAtCapture": []
       },
       "preCaptureScene": [],
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 402004,
-        "sha256": "c88d018598f1690b72c2aff9785e77a75f7bc13c38b029b0439d6401e58d32ef",
-        "pixelSha256": "3332eb4fd515d44e3d6609435c87e78fdf2d9b306fb4825bda2c020222ede8a8"
+        "bytes": 415413,
+        "sha256": "6b65119bbb4187f06886ff0509b38663ef3e9c20f8b79136046bb12abd4c94e8",
+        "pixelSha256": "20a2d7d2197098c39d9cbead2c6697285f16c4c3b171582c827bb9a9b8abdf54"
       },
       "status": "captured",
       "fontRequests": [
@@ -3439,7 +3699,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/project-desk-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-desk-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3554,15 +3814,16 @@
           "/tmu-course-guides/assets/night/layout.css",
           "/tmu-course-guides/assets/night/desk.css",
           "/tmu-course-guides/assets/night/palette.css"
-        ]
+        ],
+        "renderersAtCapture": []
       },
       "preCaptureScene": [],
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 78902,
-        "sha256": "ea5d0751219510ea61453df42134d71723bfc7190b0d8837793ec68294e1328a",
-        "pixelSha256": "e7d5e63dde12003a4f0fd13a08f32e59b8655d7e9357d6e2746a60f553d06cea"
+        "bytes": 82933,
+        "sha256": "2d0c9f9a80f6c2f1f159bf21f51f3cb19839bc8c71df9b4a9bf87e65eaddc243",
+        "pixelSha256": "d9cfbf183912e79b1251944ece4a0c9ea8203ae5a49e157c4e4809c38fd66e0c"
       },
       "status": "captured",
       "fontRequests": [
@@ -3585,7 +3846,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/project-desk-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-desk-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3700,15 +3961,16 @@
           "/tmu-course-guides/assets/night/layout.css",
           "/tmu-course-guides/assets/night/desk.css",
           "/tmu-course-guides/assets/night/palette.css"
-        ]
+        ],
+        "renderersAtCapture": []
       },
       "preCaptureScene": [],
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 79995,
-        "sha256": "e82da6d15a8fae7cd3339f69eca31a1c2c12e1ad13b6148471fd03992f5c4b8c",
-        "pixelSha256": "ae21c5c0af741eb3abf0764db95304d1b935b33bf507a51442a8bdda2a7ff173"
+        "bytes": 82874,
+        "sha256": "fce1b9cc18350fca335a7c0b1c79a63162fbbaf40530fdbf78417666066321d9",
+        "pixelSha256": "d84cc421785f8b32abac67340bdb3f4fc72a4ad7d2c452d0cfde77a2fff866c4"
       },
       "status": "captured",
       "fontRequests": [
@@ -3731,7 +3993,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/project-cen100-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-cen100-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3745,6 +4007,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -3756,6 +4019,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -3809,13 +4073,13 @@
         "theme": "dark",
         "document": {
           "width": 1440,
-          "height": 4284
+          "height": 4334
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 4283.578125,
+          "height": 4334.015625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -3836,7 +4100,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 16,
-            "y": 28.296875,
+            "y": 35,
             "width": 30,
             "height": 30,
             "aboveFold": true
@@ -3897,6 +4161,18 @@
           "/tmu-course-guides/assets/night/palette.css",
           "/tmu-course-guides/assets/night/hero.css",
           "/tmu-course-guides/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
         ]
       },
       "preCaptureScene": [
@@ -3904,6 +4180,7 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 724.796875,
           "y": 24,
           "width": 691.203125,
@@ -3913,9 +4190,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 183646,
-        "sha256": "f500520fe90417c938ae676969842231cc7bd23309768aa6869653d334706602",
-        "pixelSha256": "d403d96948c4d1775570f29794f3b9f3335af53b7bb398c83b310edcfacd2068"
+        "bytes": 185883,
+        "sha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
+        "pixelSha256": "ab0c078fa64a6bb7f2534f59fdaae9448574f04d695730051fe542577e4ae56c"
       },
       "status": "captured",
       "fontRequests": [
@@ -3938,7 +4215,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/project-cen100-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-cen100-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3952,6 +4229,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -3963,6 +4241,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -4016,13 +4295,13 @@
         "theme": "light",
         "document": {
           "width": 1440,
-          "height": 4284
+          "height": 4334
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 4283.578125,
+          "height": 4334.015625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -4043,7 +4322,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 16,
-            "y": 28.296875,
+            "y": 35,
             "width": 30,
             "height": 30,
             "aboveFold": true
@@ -4104,6 +4383,18 @@
           "/tmu-course-guides/assets/night/palette.css",
           "/tmu-course-guides/assets/night/hero.css",
           "/tmu-course-guides/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
         ]
       },
       "preCaptureScene": [
@@ -4111,6 +4402,7 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 724.796875,
           "y": 24,
           "width": 691.203125,
@@ -4120,9 +4412,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 180927,
-        "sha256": "b2828d07ad902da60035bed5c55b0a7836a044a53ee05ed2fb28730b41564439",
-        "pixelSha256": "a6d59cfca20a1d96daf065f90b72fc0f473f55539d023d98cf1ddb1778170f42"
+        "bytes": 183555,
+        "sha256": "408bd9e1251fe6a3eec3c689ae2fa98ddf3066b639326e15d6e30165f29edbb9",
+        "pixelSha256": "dc7be1b4d62b74b432377ead5bc8ee29c8498dae7bf620bbb5451d0309875cf2"
       },
       "status": "captured",
       "fontRequests": [
@@ -4145,7 +4437,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/project-cen100-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-cen100-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -4159,8 +4451,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 338.890625,
+            "y": 357.890625,
             "width": 374,
             "height": 303
           }
@@ -4170,8 +4463,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 338.890625,
+            "y": 357.890625,
             "width": 374,
             "height": 303
           }
@@ -4223,13 +4517,13 @@
         "theme": "dark",
         "document": {
           "width": 390,
-          "height": 4034
+          "height": 4103
         },
         "wrapper": {
           "x": 0,
-          "y": 183.890625,
+          "y": 202.890625,
           "width": 390,
-          "height": 3849.625,
+          "height": 3900.0625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -4250,7 +4544,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 18,
-            "y": 16,
+            "y": 25.5,
             "width": 25,
             "height": 25,
             "aboveFold": true
@@ -4263,7 +4557,7 @@
             "loading": "auto",
             "decoding": "async",
             "x": 8,
-            "y": 338.890625,
+            "y": 357.890625,
             "width": 374,
             "height": 303,
             "aboveFold": true
@@ -4276,7 +4570,7 @@
             "motionState": "still",
             "sceneFrame": "3",
             "x": 8,
-            "y": 338.890625,
+            "y": 357.890625,
             "width": 374,
             "height": 303
           }
@@ -4311,6 +4605,18 @@
           "/tmu-course-guides/assets/night/palette.css",
           "/tmu-course-guides/assets/night/hero.css",
           "/tmu-course-guides/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 8,
+            "y": 357.890625,
+            "width": 374,
+            "height": 303
+          }
         ]
       },
       "preCaptureScene": [
@@ -4318,8 +4624,9 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 8,
-          "y": 338.890625,
+          "y": 357.890625,
           "width": 374,
           "height": 303
         }
@@ -4327,9 +4634,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 91292,
-        "sha256": "65b03e83fda89d5757d9cf60b92ba27de865117d5cb06942e5f03517f5cd2c4f",
-        "pixelSha256": "fa4c3fa8b5ab267877fd241e7e938ae81a23ef9da33859913233e07052350dca"
+        "bytes": 90803,
+        "sha256": "06c63aeafdd259c071626f7bd218905cb77800cf3922f73b8532175ebd0d3369",
+        "pixelSha256": "46f6a93c920182029df72f0bdbfd1b55b5ae00362aeaf671ae89832ddd14c879"
       },
       "status": "captured",
       "fontRequests": [
@@ -4352,7 +4659,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/project-cen100-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-cen100-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -4366,8 +4673,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 338.890625,
+            "y": 357.890625,
             "width": 374,
             "height": 303
           }
@@ -4377,8 +4685,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 338.890625,
+            "y": 357.890625,
             "width": 374,
             "height": 303
           }
@@ -4430,13 +4739,13 @@
         "theme": "light",
         "document": {
           "width": 390,
-          "height": 4034
+          "height": 4103
         },
         "wrapper": {
           "x": 0,
-          "y": 183.890625,
+          "y": 202.890625,
           "width": 390,
-          "height": 3849.625,
+          "height": 3900.0625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -4457,7 +4766,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 18,
-            "y": 16,
+            "y": 25.5,
             "width": 25,
             "height": 25,
             "aboveFold": true
@@ -4470,7 +4779,7 @@
             "loading": "auto",
             "decoding": "async",
             "x": 8,
-            "y": 338.890625,
+            "y": 357.890625,
             "width": 374,
             "height": 303,
             "aboveFold": true
@@ -4483,7 +4792,7 @@
             "motionState": "still",
             "sceneFrame": "3",
             "x": 8,
-            "y": 338.890625,
+            "y": 357.890625,
             "width": 374,
             "height": 303
           }
@@ -4518,6 +4827,18 @@
           "/tmu-course-guides/assets/night/palette.css",
           "/tmu-course-guides/assets/night/hero.css",
           "/tmu-course-guides/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 8,
+            "y": 357.890625,
+            "width": 374,
+            "height": 303
+          }
         ]
       },
       "preCaptureScene": [
@@ -4525,8 +4846,9 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 8,
-          "y": 338.890625,
+          "y": 357.890625,
           "width": 374,
           "height": 303
         }
@@ -4534,9 +4856,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 89788,
-        "sha256": "1329d7d290620ea6dd8419779dd6c3035485cbcba3dd8e72babe3e1daac8721a",
-        "pixelSha256": "ecdd73eb9cc78e46602d0cfc9fded055b17924b58b95a774488d957957b7d316"
+        "bytes": 89760,
+        "sha256": "eb4690524953b82a480a999485fbb5ab562216ab56527ac914389ffc7af9de97",
+        "pixelSha256": "579880d1af206e22535c47cc867e7867e0bd673fe26348dc7b5b239eddb41f81"
       },
       "status": "captured",
       "fontRequests": [
@@ -4559,7 +4881,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/project-mth140-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-mth140-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -4573,6 +4895,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -4584,6 +4907,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -4637,13 +4961,13 @@
         "theme": "dark",
         "document": {
           "width": 1440,
-          "height": 2591
+          "height": 2617
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 2590.53125,
+          "height": 2617.265625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -4664,7 +4988,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 16,
-            "y": 28.296875,
+            "y": 35,
             "width": 30,
             "height": 30,
             "aboveFold": true
@@ -4728,6 +5052,18 @@
           "/tmu-course-guides/assets/night/palette.css",
           "/tmu-course-guides/assets/night/hero.css",
           "/tmu-course-guides/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
         ]
       },
       "preCaptureScene": [
@@ -4735,6 +5071,7 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 724.796875,
           "y": 24,
           "width": 691.203125,
@@ -4744,9 +5081,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 311880,
-        "sha256": "7736ea3e0e4ce30b40a0d558a10ee82ba3165ac6b2b36e55796082d882722668",
-        "pixelSha256": "8c72f14ff989453ac6788b24ddb796e7acaa3e2774a65215421c95f841e3347f"
+        "bytes": 315180,
+        "sha256": "02960507297fe07f658df640c2fded6d18fc6b8836f26113b50b41f146d69cfb",
+        "pixelSha256": "0c1801b4afdc371cfd6a682d0bf873ba041dca4a3cf0a761d173dc8d0d73e7c9"
       },
       "status": "captured",
       "fontRequests": [
@@ -4769,7 +5106,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/project-mth140-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-mth140-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -4783,6 +5120,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -4794,6 +5132,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -4847,13 +5186,13 @@
         "theme": "light",
         "document": {
           "width": 1440,
-          "height": 2591
+          "height": 2617
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 2590.53125,
+          "height": 2617.265625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -4874,7 +5213,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 16,
-            "y": 28.296875,
+            "y": 35,
             "width": 30,
             "height": 30,
             "aboveFold": true
@@ -4938,6 +5277,18 @@
           "/tmu-course-guides/assets/night/palette.css",
           "/tmu-course-guides/assets/night/hero.css",
           "/tmu-course-guides/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
         ]
       },
       "preCaptureScene": [
@@ -4945,6 +5296,7 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 724.796875,
           "y": 24,
           "width": 691.203125,
@@ -4954,9 +5306,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 308587,
-        "sha256": "2cf6929dec5faabb9a3de11c9a08ff87470a54a973b888c91908e5cb8dd1cf38",
-        "pixelSha256": "f1f9a1046f3a90c0c85f2e70c5b4f9c68bfec4368686272cbc403c054a524a55"
+        "bytes": 311601,
+        "sha256": "b88e48b09ebcdb976af2a2bcec5477773f5231bd3d59c075fe844f77db1626e3",
+        "pixelSha256": "bfd223cc32eb1df31880b50d5b1c3e3bf7f6aafed0187e42d7c9b1e2d497c82b"
       },
       "status": "captured",
       "fontRequests": [
@@ -4979,7 +5331,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/project-mth140-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-mth140-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -4993,8 +5345,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -5004,8 +5357,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -5057,13 +5411,13 @@
         "theme": "dark",
         "document": {
           "width": 390,
-          "height": 2558
+          "height": 2631
         },
         "wrapper": {
           "x": 0,
-          "y": 184.40625,
+          "y": 203.40625,
           "width": 390,
-          "height": 2374.03125,
+          "height": 2427.5,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -5084,7 +5438,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 18,
-            "y": 16,
+            "y": 25.5,
             "width": 25,
             "height": 25,
             "aboveFold": true
@@ -5097,7 +5451,7 @@
             "loading": "auto",
             "decoding": "async",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336,
             "aboveFold": true
@@ -5110,7 +5464,7 @@
             "motionState": "still",
             "sceneFrame": "3",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -5148,6 +5502,18 @@
           "/tmu-course-guides/assets/night/palette.css",
           "/tmu-course-guides/assets/night/hero.css",
           "/tmu-course-guides/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
         ]
       },
       "preCaptureScene": [
@@ -5155,8 +5521,9 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 8,
-          "y": 306.40625,
+          "y": 325.40625,
           "width": 374,
           "height": 336
         }
@@ -5164,9 +5531,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 140025,
-        "sha256": "f60c95dcdd0631793c69fc9209de8ed69f20d1aeee39e3e3a042d5cad533fa38",
-        "pixelSha256": "edbed8ab95736cb140253cd48a8cceb28bf04f502b3702102c7adad753bdac25"
+        "bytes": 138767,
+        "sha256": "e3f744f0a3ab80d06b5f2e02710d104ba4b38954d5eee537d94f2d174edcfc39",
+        "pixelSha256": "198f7ae054ebcc0b0bf626a226c85ede6451da4e78e5b0dd2762d5812e992dfc"
       },
       "status": "captured",
       "fontRequests": [
@@ -5189,7 +5556,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/project-mth140-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-mth140-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -5203,8 +5570,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -5214,8 +5582,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -5267,13 +5636,13 @@
         "theme": "light",
         "document": {
           "width": 390,
-          "height": 2558
+          "height": 2631
         },
         "wrapper": {
           "x": 0,
-          "y": 184.40625,
+          "y": 203.40625,
           "width": 390,
-          "height": 2374.03125,
+          "height": 2427.5,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -5294,7 +5663,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 18,
-            "y": 16,
+            "y": 25.5,
             "width": 25,
             "height": 25,
             "aboveFold": true
@@ -5307,7 +5676,7 @@
             "loading": "auto",
             "decoding": "async",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336,
             "aboveFold": true
@@ -5320,7 +5689,7 @@
             "motionState": "still",
             "sceneFrame": "3",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -5358,6 +5727,18 @@
           "/tmu-course-guides/assets/night/palette.css",
           "/tmu-course-guides/assets/night/hero.css",
           "/tmu-course-guides/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
         ]
       },
       "preCaptureScene": [
@@ -5365,8 +5746,9 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 8,
-          "y": 306.40625,
+          "y": 325.40625,
           "width": 374,
           "height": 336
         }
@@ -5374,9 +5756,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 137736,
-        "sha256": "4eed8afcde2abb7418eae24ddc8c12da851186c89aa632c6baf9a460fddc2007",
-        "pixelSha256": "86758e869e7273706fd4d94786e32f9ad96e5bc7e8588605055fa0893c14cb05"
+        "bytes": 136986,
+        "sha256": "5cfbf6c971ae5a7c1ccedccca9025b113cd4f45190a2f656163e8db6cb90a8ff",
+        "pixelSha256": "ce7c71adeec4694120b3fad2fa796b22c974b0b21c0deeaf9d7a8f7fe8c7fcd1"
       },
       "status": "captured",
       "fontRequests": [
@@ -5399,7 +5781,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/project-mth141-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-mth141-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -5413,6 +5795,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -5424,6 +5807,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -5477,13 +5861,13 @@
         "theme": "dark",
         "document": {
           "width": 1440,
-          "height": 2558
+          "height": 2585
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 2558.03125,
+          "height": 2584.765625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -5504,7 +5888,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 16,
-            "y": 28.296875,
+            "y": 35,
             "width": 30,
             "height": 30,
             "aboveFold": true
@@ -5568,6 +5952,18 @@
           "/tmu-course-guides/assets/night/palette.css",
           "/tmu-course-guides/assets/night/hero.css",
           "/tmu-course-guides/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
         ]
       },
       "preCaptureScene": [
@@ -5575,6 +5971,7 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 724.796875,
           "y": 24,
           "width": 691.203125,
@@ -5584,9 +5981,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 275417,
-        "sha256": "7a40b26d4a4632172ffcf31d271b70dde2c07e528a5f3b2414f33e66da68ec44",
-        "pixelSha256": "8e340b48cbc5b14d95478e137661814e3b765a7683d26a22508f77fb38684fcd"
+        "bytes": 277462,
+        "sha256": "47470d808b8999f1b2f9e7949c0b4bb97a0674a093c7e108cf3b9773923d07d7",
+        "pixelSha256": "af5a95f4ee980453492aa232db781f86c1f911c3c84aca2e0a6f19d0cdf60324"
       },
       "status": "captured",
       "fontRequests": [
@@ -5609,7 +6006,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/project-mth141-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-mth141-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -5623,6 +6020,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -5634,6 +6032,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -5687,13 +6086,13 @@
         "theme": "light",
         "document": {
           "width": 1440,
-          "height": 2558
+          "height": 2585
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 2558.03125,
+          "height": 2584.765625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -5714,7 +6113,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 16,
-            "y": 28.296875,
+            "y": 35,
             "width": 30,
             "height": 30,
             "aboveFold": true
@@ -5778,6 +6177,18 @@
           "/tmu-course-guides/assets/night/palette.css",
           "/tmu-course-guides/assets/night/hero.css",
           "/tmu-course-guides/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
         ]
       },
       "preCaptureScene": [
@@ -5785,6 +6196,7 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 724.796875,
           "y": 24,
           "width": 691.203125,
@@ -5794,9 +6206,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 272483,
-        "sha256": "d8b30511e6a1cd6a38e229cd709a5dd3556f725fc044cf929ee39a5fb98a2d6d",
-        "pixelSha256": "2f3db41e3a451f633502d764ee0ef03d937ba28fa7ed0ef89692c398946886e5"
+        "bytes": 274771,
+        "sha256": "a1443487989122a172d96390ded13a6aa04d10e0feebd8e0bf196dc5f2e1e5a0",
+        "pixelSha256": "5d1aafaabf7c39a6b84e9145215fc5977c33bc8b90e07e10dc9adbdfaf9d3a15"
       },
       "status": "captured",
       "fontRequests": [
@@ -5819,7 +6231,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/project-mth141-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-mth141-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -5833,8 +6245,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -5844,8 +6257,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -5897,13 +6311,13 @@
         "theme": "dark",
         "document": {
           "width": 390,
-          "height": 2549
+          "height": 2621
         },
         "wrapper": {
           "x": 0,
-          "y": 184.40625,
+          "y": 203.40625,
           "width": 390,
-          "height": 2364.5625,
+          "height": 2418.03125,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -5924,7 +6338,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 18,
-            "y": 16,
+            "y": 25.5,
             "width": 25,
             "height": 25,
             "aboveFold": true
@@ -5937,7 +6351,7 @@
             "loading": "auto",
             "decoding": "async",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336,
             "aboveFold": true
@@ -5950,7 +6364,7 @@
             "motionState": "still",
             "sceneFrame": "3",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -5988,6 +6402,18 @@
           "/tmu-course-guides/assets/night/palette.css",
           "/tmu-course-guides/assets/night/hero.css",
           "/tmu-course-guides/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
         ]
       },
       "preCaptureScene": [
@@ -5995,8 +6421,9 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 8,
-          "y": 306.40625,
+          "y": 325.40625,
           "width": 374,
           "height": 336
         }
@@ -6004,9 +6431,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 140011,
-        "sha256": "a17f1e1812db91afa5d5ab02e0a7c0e963b80a14d6e74395340c3d973d372308",
-        "pixelSha256": "842301844aadf993e4cb46e9fd270de9a5958db5f3498b02f6af01ae9c06037c"
+        "bytes": 139557,
+        "sha256": "41d12045a6b8ef1850c146a8595d8522367ccd60f2e73e60249ad6adbe4f415a",
+        "pixelSha256": "4935b20b37b23c52e5bbdee9ca65355ee3891c7e44197714ea547dd377701665"
       },
       "status": "captured",
       "fontRequests": [
@@ -6029,7 +6456,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/project-mth141-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/project-mth141-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -6043,8 +6470,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -6054,8 +6482,9 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -6107,13 +6536,13 @@
         "theme": "light",
         "document": {
           "width": 390,
-          "height": 2549
+          "height": 2621
         },
         "wrapper": {
           "x": 0,
-          "y": 184.40625,
+          "y": 203.40625,
           "width": 390,
-          "height": 2364.5625,
+          "height": 2418.03125,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -6134,7 +6563,7 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 18,
-            "y": 16,
+            "y": 25.5,
             "width": 25,
             "height": 25,
             "aboveFold": true
@@ -6147,7 +6576,7 @@
             "loading": "auto",
             "decoding": "async",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336,
             "aboveFold": true
@@ -6160,7 +6589,7 @@
             "motionState": "still",
             "sceneFrame": "3",
             "x": 8,
-            "y": 306.40625,
+            "y": 325.40625,
             "width": 374,
             "height": 336
           }
@@ -6198,6 +6627,18 @@
           "/tmu-course-guides/assets/night/palette.css",
           "/tmu-course-guides/assets/night/hero.css",
           "/tmu-course-guides/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 8,
+            "y": 325.40625,
+            "width": 374,
+            "height": 336
+          }
         ]
       },
       "preCaptureScene": [
@@ -6205,8 +6646,9 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 8,
-          "y": 306.40625,
+          "y": 325.40625,
           "width": 374,
           "height": 336
         }
@@ -6214,9 +6656,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 137545,
-        "sha256": "1052b081194028ecca990560811af5439af15d5b1f319bf8616269e9ec0b7169",
-        "pixelSha256": "4c25c76ff45e9bac3e7e1f47174dd6e02d3a70f3930210be949836ad7b5b4b00"
+        "bytes": 137116,
+        "sha256": "409c960caf8a141ea008e50b415f2478a6aabb4e8dc081674d6371f008d7860d",
+        "pixelSha256": "17fe13774ad73b7cf2039eaecf8fa61068b0ae6862eb6f1f549a0351f791b804"
       },
       "status": "captured",
       "fontRequests": [
@@ -6229,11 +6671,11 @@
     }
   ],
   "repeatCheck": {
-    "case": "root-mth140-1440x900-dark",
+    "case": "root-cen100-1440x900-dark",
     "capture": {
-      "id": "root-mth140-1440x900-dark",
+      "id": "root-cen100-1440x900-dark",
       "base": "/",
-      "route": "mth140",
+      "route": "cen100",
       "viewport": {
         "width": 1440,
         "height": 900
@@ -6242,7 +6684,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before/repeat/root-mth140-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/repeat/root-cen100-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -6256,6 +6698,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -6267,6 +6710,7 @@
             "renderer": "webgl2",
             "ready": "true",
             "frame": "3",
+            "motionState": "still",
             "x": 724.796875,
             "y": 24,
             "width": 691.203125,
@@ -6283,7 +6727,7 @@
               "familyName": "Archivo SemiBold",
               "postScriptName": "Archivo-SemiBold",
               "isCustomFont": true,
-              "glyphCount": 10
+              "glyphCount": 19
             }
           ]
         },
@@ -6304,29 +6748,29 @@
           "selector": "main .desk-lede,main .subline,main .workspace-panel:not([hidden]) p:not(.team):not(.eyebrow)",
           "fonts": [
             {
-              "familyName": "Archivo SemiBold",
-              "postScriptName": "Archivo-SemiBold",
-              "isCustomFont": true,
-              "glyphCount": 40
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 3
             }
           ]
         }
       ],
       "dom": {
-        "title": "MTH140: Calculus I | TMU Course Guides",
-        "heading": "Calculus I",
-        "route": "mth140",
+        "title": "CEN100 | TMU Course Guides",
+        "heading": "Intro to\nEngineering",
+        "route": "cen100",
         "now": "2026-10-13T16:00:00.000Z",
         "theme": "dark",
         "document": {
           "width": 1440,
-          "height": 2591
+          "height": 4334
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 2590.53125,
+          "height": 4334.015625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -6347,13 +6791,13 @@
             "loading": "auto",
             "decoding": "auto",
             "x": 16,
-            "y": 28.296875,
+            "y": 35,
             "width": 30,
             "height": 30,
             "aboveFold": true
           },
           {
-            "src": "/assets/scenes/posters/mth140-wide.webp",
+            "src": "/assets/scenes/posters/cen100-wide.webp",
             "naturalWidth": 900,
             "naturalHeight": 600,
             "complete": true,
@@ -6398,11 +6842,8 @@
         "stylesheets": [
           "/assets/fonts/archivo.css",
           "/assets/hub.css",
-          "/assets/math.css",
           "/assets/visuals.css",
-          "/assets/math-studio.css",
-          "/assets/lab-composition.css",
-          "/assets/lab-challenges.css",
+          null,
           "/assets/editorial.css",
           "/assets/workspace.css",
           "/assets/course-header.css",
@@ -6411,6 +6852,18 @@
           "/assets/night/palette.css",
           "/assets/night/hero.css",
           "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
         ]
       },
       "preCaptureScene": [
@@ -6418,6 +6871,7 @@
           "renderer": "webgl2",
           "ready": "true",
           "frame": "4",
+          "motionState": "still",
           "x": 724.796875,
           "y": 24,
           "width": 691.203125,
@@ -6427,9 +6881,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 311880,
-        "sha256": "7736ea3e0e4ce30b40a0d558a10ee82ba3165ac6b2b36e55796082d882722668",
-        "pixelSha256": "8c72f14ff989453ac6788b24ddb796e7acaa3e2774a65215421c95f841e3347f"
+        "bytes": 185883,
+        "sha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
+        "pixelSha256": "ab0c078fa64a6bb7f2534f59fdaae9448574f04d695730051fe542577e4ae56c"
       },
       "status": "captured",
       "fontRequests": [
@@ -6457,11 +6911,15 @@
       "maxChannelDifference": 0,
       "differenceBounds": null,
       "pixelIdentical": true,
-      "beforeSha256": "7736ea3e0e4ce30b40a0d558a10ee82ba3165ac6b2b36e55796082d882722668",
-      "afterSha256": "7736ea3e0e4ce30b40a0d558a10ee82ba3165ac6b2b36e55796082d882722668",
-      "diff": "tools/qa/reports/perf-visuals/before/repeat/root-mth140-1440x900-dark-diff.png"
+      "beforeSha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
+      "afterSha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
+      "diff": "tools/qa/reports/perf-visuals/before-legacy-shadow-reference/repeat/root-cen100-1440x900-dark-diff.png"
     }
   },
+  "productSourceSha256After": "42488250314342bb29f00592f80c055d329224a8fa0b2d1f309ccd3baf46d4ef",
+  "sourceUnchanged": true,
+  "protectedSourceSha256After": "3fb8dcc44d67a8edb4da249ac4ed960e829344cfb2a8352dc006f2e999a00539",
+  "protectedSourceUnchanged": true,
   "summary": {
     "requested": 32,
     "captured": 32,
@@ -6470,5 +6928,338 @@
     "naturalSettlementFailures": 0,
     "errors": 0,
     "repeatPixelIdentical": true
+  },
+  "auxiliaryCrossBaseComparison": {
+    "pairCount": 16,
+    "pixelIdentical": 15,
+    "changedPixels": 1,
+    "meaning": "Different URL contexts; ancillary stability observation, not the optimizer before/after comparison",
+    "cases": [
+      {
+        "root": "root-desk-1440x900-dark",
+        "project": "project-desk-1440x900-dark",
+        "beforeDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "afterDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      },
+      {
+        "root": "root-desk-1440x900-light",
+        "project": "project-desk-1440x900-light",
+        "beforeDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "afterDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      },
+      {
+        "root": "root-desk-390x844-dark",
+        "project": "project-desk-390x844-dark",
+        "beforeDimensions": {
+          "width": 390,
+          "height": 844
+        },
+        "afterDimensions": {
+          "width": 390,
+          "height": 844
+        },
+        "equalDimensions": true,
+        "changedPixels": 1,
+        "totalPixels": 329160,
+        "changedPixelShare": 3.0380362133916637e-06,
+        "totalAbsoluteChannelDifference": 3,
+        "maxChannelDifference": 1,
+        "differenceBounds": {
+          "left": 35,
+          "top": 614,
+          "right": 35,
+          "bottom": 614
+        },
+        "pixelIdentical": false
+      },
+      {
+        "root": "root-desk-390x844-light",
+        "project": "project-desk-390x844-light",
+        "beforeDimensions": {
+          "width": 390,
+          "height": 844
+        },
+        "afterDimensions": {
+          "width": 390,
+          "height": 844
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 329160,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      },
+      {
+        "root": "root-cen100-1440x900-dark",
+        "project": "project-cen100-1440x900-dark",
+        "beforeDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "afterDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      },
+      {
+        "root": "root-cen100-1440x900-light",
+        "project": "project-cen100-1440x900-light",
+        "beforeDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "afterDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      },
+      {
+        "root": "root-cen100-390x844-dark",
+        "project": "project-cen100-390x844-dark",
+        "beforeDimensions": {
+          "width": 390,
+          "height": 844
+        },
+        "afterDimensions": {
+          "width": 390,
+          "height": 844
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 329160,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      },
+      {
+        "root": "root-cen100-390x844-light",
+        "project": "project-cen100-390x844-light",
+        "beforeDimensions": {
+          "width": 390,
+          "height": 844
+        },
+        "afterDimensions": {
+          "width": 390,
+          "height": 844
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 329160,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      },
+      {
+        "root": "root-mth140-1440x900-dark",
+        "project": "project-mth140-1440x900-dark",
+        "beforeDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "afterDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      },
+      {
+        "root": "root-mth140-1440x900-light",
+        "project": "project-mth140-1440x900-light",
+        "beforeDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "afterDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      },
+      {
+        "root": "root-mth140-390x844-dark",
+        "project": "project-mth140-390x844-dark",
+        "beforeDimensions": {
+          "width": 390,
+          "height": 844
+        },
+        "afterDimensions": {
+          "width": 390,
+          "height": 844
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 329160,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      },
+      {
+        "root": "root-mth140-390x844-light",
+        "project": "project-mth140-390x844-light",
+        "beforeDimensions": {
+          "width": 390,
+          "height": 844
+        },
+        "afterDimensions": {
+          "width": 390,
+          "height": 844
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 329160,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      },
+      {
+        "root": "root-mth141-1440x900-dark",
+        "project": "project-mth141-1440x900-dark",
+        "beforeDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "afterDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      },
+      {
+        "root": "root-mth141-1440x900-light",
+        "project": "project-mth141-1440x900-light",
+        "beforeDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "afterDimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      },
+      {
+        "root": "root-mth141-390x844-dark",
+        "project": "project-mth141-390x844-dark",
+        "beforeDimensions": {
+          "width": 390,
+          "height": 844
+        },
+        "afterDimensions": {
+          "width": 390,
+          "height": 844
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 329160,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      },
+      {
+        "root": "root-mth141-390x844-light",
+        "project": "project-mth141-390x844-light",
+        "beforeDimensions": {
+          "width": 390,
+          "height": 844
+        },
+        "afterDimensions": {
+          "width": 390,
+          "height": 844
+        },
+        "equalDimensions": true,
+        "changedPixels": 0,
+        "totalPixels": 329160,
+        "changedPixelShare": 0,
+        "totalAbsoluteChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "differenceBounds": null,
+        "pixelIdentical": true
+      }
+    ]
   }
 }

@@ -1,0 +1,1379 @@
+{
+  "schemaVersion": 1,
+  "label": "after",
+  "capturedAt": "2026-10-13T20:40:05.388Z",
+  "fixedTime": "2026-10-13T16:00:00.000Z",
+  "revision": "2a456f8a49a1c3ed543fc7485a0a1e72f24c0223",
+  "productSourceSha256": "d0b6cd1da2b70e657605072d8f1ff95f6011a4c94492cc533bf284936e32aaf5",
+  "protectedSourceSha256": "3fb8dcc44d67a8edb4da249ac4ed960e829344cfb2a8352dc006f2e999a00539",
+  "recipe": {
+    "fullPage": false,
+    "deviceScaleFactor": 1,
+    "timezone": "America/Toronto",
+    "locale": "en-CA",
+    "initialSavedScenePause": true,
+    "entryAnimations": "normal",
+    "settledDelayMs": 1500,
+    "random": "FNV-1a route seed with a 32-bit LCG; seeded before product scripts",
+    "initialClock": "moving Date offset",
+    "freeze": "freeze after settlement, pause through GuideMotion and dispatch workspace-changed/visibilitychange; final visibilitychange redraw immediately before capture",
+    "sceneReadyGate": true,
+    "sceneFrameAndBoundsStableMs": 100,
+    "screenshotAnimations": "disabled",
+    "masking": false,
+    "cssInjection": false,
+    "noWebGL": false,
+    "compositorStagesBeforeDraw": true,
+    "gpuRasterization": false,
+    "chromiumScreenshotSurface": "legacy"
+  },
+  "execution": {
+    "captureConcurrency": 1,
+    "diagnostic": false
+  },
+  "environment": {
+    "playwrightPath": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "executablePath": "/usr/bin/chromium",
+    "args": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist",
+      "--run-all-compositor-stages-before-draw",
+      "--disable-gpu-rasterization"
+    ],
+    "playwrightLegacyScreenshot": true,
+    "chromiumCommandLine": [
+      "/usr/lib/chromium/chromium",
+      "--show-component-extension-options",
+      "--enable-gpu-rasterization",
+      "--no-default-browser-check",
+      "--disable-pings",
+      "--media-router=0",
+      "--enable-remote-extensions",
+      "--load-extension",
+      "--disable-field-trial-config",
+      "--disable-background-networking",
+      "--disable-background-timer-throttling",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-back-forward-cache",
+      "--disable-breakpad",
+      "--disable-client-side-phishing-detection",
+      "--disable-component-extensions-with-background-pages",
+      "--disable-component-update",
+      "--no-default-browser-check",
+      "--disable-default-apps",
+      "--disable-dev-shm-usage",
+      "--disable-extensions",
+      "--disable-features=AcceptCHFrame,AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints",
+      "--allow-pre-commit-input",
+      "--disable-hang-monitor",
+      "--disable-ipc-flooding-protection",
+      "--disable-popup-blocking",
+      "--disable-prompt-on-repost",
+      "--disable-renderer-backgrounding",
+      "--force-color-profile=srgb",
+      "--metrics-recording-only",
+      "--no-first-run",
+      "--password-store=basic",
+      "--use-mock-keychain",
+      "--no-service-autorun",
+      "--export-tagged-pdf",
+      "--disable-search-engine-choice-screen",
+      "--unsafely-disable-devtools-self-xss-warnings",
+      "--edge-skip-compat-layer-relaunch",
+      "--enable-automation",
+      "--disable-infobars",
+      "--disable-search-engine-choice-screen",
+      "--disable-sync",
+      "--headless",
+      "--hide-scrollbars",
+      "--mute-audio",
+      "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+      "--no-sandbox",
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist",
+      "--run-all-compositor-stages-before-draw",
+      "--disable-gpu-rasterization",
+      "--user-data-dir=/tmp/playwright_chromiumdev_profile-i2dqwU",
+      "--remote-debugging-pipe",
+      "--no-startup-window",
+      "--noerrdialogs",
+      "--ozone-platform=headless",
+      "--ozone-override-screen-size=800,600",
+      "--flag-switches-begin",
+      "--flag-switches-end",
+      "--enable-unsafe-swiftshader"
+    ],
+    "requestedMode": "SwiftShader",
+    "chromiumVersion": "154.0.8037.57",
+    "webgl": {
+      "available": true,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "vendor": "Google Inc. (Google)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+    },
+    "actualMode": "SwiftShader",
+    "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+  },
+  "cases": [
+    {
+      "id": "root-desk-1440x900-dark",
+      "base": "/",
+      "route": "desk",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "fullPage": false,
+      "nativeClock": false,
+      "screenshot": "tools/qa/reports/perf-visuals/after-legacy-shadow-variation/root-desk-1440x900-dark.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": null
+      },
+      "sceneStability": {
+        "intervalMs": 100,
+        "before": [],
+        "after": []
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 29
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".course-code",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 4
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main .desk-lede,main .subline,main .workspace-panel:not([hidden]) p:not(.team):not(.eyebrow)",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 111
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "TMU Course Guides | Fall 2026",
+        "heading": "TMU Course Guides \u00b7 Fall 2026",
+        "route": "desk",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 1440,
+          "height": 1588
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 167.796875,
+          "width": 1440,
+          "height": 1319.625,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 54.828125,
+            "y": 25,
+            "width": 34,
+            "height": 34,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/night/layout.css",
+          "/assets/night/desk.css",
+          "/assets/night/palette.css"
+        ],
+        "renderersAtCapture": []
+      },
+      "preCaptureScene": [],
+      "png": {
+        "width": 1440,
+        "height": 900,
+        "bytes": 391533,
+        "sha256": "8f82f07d2526bb1c8ae3546805b823436fa54f398ab716559b6be98ce1c544e7",
+        "pixelSha256": "0c3c61f7723796fd2a358b995d21d594d3159e9422a82c4fe7086f2aeef4e255"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-desk-1440x900-light",
+      "base": "/",
+      "route": "desk",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "fullPage": false,
+      "nativeClock": false,
+      "screenshot": "tools/qa/reports/perf-visuals/after-legacy-shadow-variation/root-desk-1440x900-light.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": null
+      },
+      "sceneStability": {
+        "intervalMs": 100,
+        "before": [],
+        "after": []
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 29
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".course-code",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 4
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main .desk-lede,main .subline,main .workspace-panel:not([hidden]) p:not(.team):not(.eyebrow)",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 111
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "TMU Course Guides | Fall 2026",
+        "heading": "TMU Course Guides \u00b7 Fall 2026",
+        "route": "desk",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 1440,
+          "height": 1588
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 167.796875,
+          "width": 1440,
+          "height": 1319.625,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 54.828125,
+            "y": 25,
+            "width": 34,
+            "height": 34,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/night/layout.css",
+          "/assets/night/desk.css",
+          "/assets/night/palette.css"
+        ],
+        "renderersAtCapture": []
+      },
+      "preCaptureScene": [],
+      "png": {
+        "width": 1440,
+        "height": 900,
+        "bytes": 415413,
+        "sha256": "6b65119bbb4187f06886ff0509b38663ef3e9c20f8b79136046bb12abd4c94e8",
+        "pixelSha256": "20a2d7d2197098c39d9cbead2c6697285f16c4c3b171582c827bb9a9b8abdf54"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-desk-390x844-dark",
+      "base": "/",
+      "route": "desk",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "fullPage": false,
+      "nativeClock": false,
+      "screenshot": "tools/qa/reports/perf-visuals/after-legacy-shadow-variation/root-desk-390x844-dark.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": null
+      },
+      "sceneStability": {
+        "intervalMs": 100,
+        "before": [],
+        "after": []
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 28
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".course-code",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 4
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main .desk-lede,main .subline,main .workspace-panel:not([hidden]) p:not(.team):not(.eyebrow)",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 111
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "TMU Course Guides | Fall 2026",
+        "heading": "TMU Course Guides \u00b7 Fall 2026",
+        "route": "desk",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 390,
+          "height": 2690
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 251.1875,
+          "width": 390,
+          "height": 2299.984375,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 19,
+            "y": 21,
+            "width": 34,
+            "height": 34,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/night/layout.css",
+          "/assets/night/desk.css",
+          "/assets/night/palette.css"
+        ],
+        "renderersAtCapture": []
+      },
+      "preCaptureScene": [],
+      "png": {
+        "width": 390,
+        "height": 844,
+        "bytes": 82933,
+        "sha256": "2d0c9f9a80f6c2f1f159bf21f51f3cb19839bc8c71df9b4a9bf87e65eaddc243",
+        "pixelSha256": "d9cfbf183912e79b1251944ece4a0c9ea8203ae5a49e157c4e4809c38fd66e0c"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-desk-390x844-light",
+      "base": "/",
+      "route": "desk",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "fullPage": false,
+      "nativeClock": false,
+      "screenshot": "tools/qa/reports/perf-visuals/after-legacy-shadow-variation/root-desk-390x844-light.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": null
+      },
+      "sceneStability": {
+        "intervalMs": 100,
+        "before": [],
+        "after": []
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 28
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".course-code",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 4
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main .desk-lede,main .subline,main .workspace-panel:not([hidden]) p:not(.team):not(.eyebrow)",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 111
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "TMU Course Guides | Fall 2026",
+        "heading": "TMU Course Guides \u00b7 Fall 2026",
+        "route": "desk",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 390,
+          "height": 2690
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 251.1875,
+          "width": 390,
+          "height": 2299.984375,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 19,
+            "y": 21,
+            "width": 34,
+            "height": 34,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/night/layout.css",
+          "/assets/night/desk.css",
+          "/assets/night/palette.css"
+        ],
+        "renderersAtCapture": []
+      },
+      "preCaptureScene": [],
+      "png": {
+        "width": 390,
+        "height": 844,
+        "bytes": 82842,
+        "sha256": "21b7d151452342505807922dc793ce8c33ff0201182a45e33984bb700b2b03ed",
+        "pixelSha256": "dff4ccc7a4712ba2a64b6b755b85a5f5df3e3d5392f45ff02c917ef3fde8bf12"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-cen100-1440x900-dark",
+      "base": "/",
+      "route": "cen100",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "fullPage": false,
+      "nativeClock": false,
+      "screenshot": "tools/qa/reports/perf-visuals/after-legacy-shadow-variation/root-cen100-1440x900-dark.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "sceneStability": {
+        "intervalMs": 100,
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ]
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 19
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".course-code",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 4
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main .desk-lede,main .subline,main .workspace-panel:not([hidden]) p:not(.team):not(.eyebrow)",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 3
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "CEN100 | TMU Course Guides",
+        "heading": "Intro to\nEngineering",
+        "route": "cen100",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 1440,
+          "height": 4334
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 4334.015625,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 35,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/scenes/posters/cen100-wide.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "3",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/visuals.css",
+          null,
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ]
+      },
+      "preCaptureScene": [
+        {
+          "renderer": "webgl2",
+          "ready": "true",
+          "frame": "4",
+          "motionState": "still",
+          "x": 724.796875,
+          "y": 24,
+          "width": 691.203125,
+          "height": 550
+        }
+      ],
+      "png": {
+        "width": 1440,
+        "height": 900,
+        "bytes": 185883,
+        "sha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
+        "pixelSha256": "ab0c078fa64a6bb7f2534f59fdaae9448574f04d695730051fe542577e4ae56c"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-cen100-1440x900-light",
+      "base": "/",
+      "route": "cen100",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "fullPage": false,
+      "nativeClock": false,
+      "screenshot": "tools/qa/reports/perf-visuals/after-legacy-shadow-variation/root-cen100-1440x900-light.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "sceneStability": {
+        "intervalMs": 100,
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ]
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 19
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".course-code",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 4
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main .desk-lede,main .subline,main .workspace-panel:not([hidden]) p:not(.team):not(.eyebrow)",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 3
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "CEN100 | TMU Course Guides",
+        "heading": "Intro to\nEngineering",
+        "route": "cen100",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 1440,
+          "height": 4334
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 4334.015625,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 35,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/scenes/posters/cen100-wide.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "3",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/visuals.css",
+          null,
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 724.796875,
+            "y": 24,
+            "width": 691.203125,
+            "height": 550
+          }
+        ]
+      },
+      "preCaptureScene": [
+        {
+          "renderer": "webgl2",
+          "ready": "true",
+          "frame": "4",
+          "motionState": "still",
+          "x": 724.796875,
+          "y": 24,
+          "width": 691.203125,
+          "height": 550
+        }
+      ],
+      "png": {
+        "width": 1440,
+        "height": 900,
+        "bytes": 183555,
+        "sha256": "408bd9e1251fe6a3eec3c689ae2fa98ddf3066b639326e15d6e30165f29edbb9",
+        "pixelSha256": "dc7be1b4d62b74b432377ead5bc8ee29c8498dae7bf620bbb5451d0309875cf2"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-cen100-390x844-dark",
+      "base": "/",
+      "route": "cen100",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "fullPage": false,
+      "nativeClock": false,
+      "screenshot": "tools/qa/reports/perf-visuals/after-legacy-shadow-variation/root-cen100-390x844-dark.png",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "sceneStability": {
+        "intervalMs": 100,
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 357.890625,
+            "width": 374,
+            "height": 303
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "3",
+            "motionState": "still",
+            "x": 8,
+            "y": 357.890625,
+            "width": 374,
+            "height": 303
+          }
+        ]
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 19
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".course-code",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 4
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main .desk-lede,main .subline,main .workspace-panel:not([hidden]) p:not(.team):not(.eyebrow)",
+          "fonts": [
+            {
+              "familyName": "DejaVu Sans Mono",
+              "postScriptName": "DejaVuSansMono",
+              "isCustomFont": false,
+              "glyphCount": 3
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "CEN100 | TMU Course Guides",
+        "heading": "Intro to\nEngineering",
+        "route": "cen100",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 390,
+          "height": 4103
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 202.890625,
+          "width": 390,
+          "height": 3900.0625,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 18,
+            "y": 25.5,
+            "width": 25,
+            "height": 25,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/scenes/posters/cen100-tall.webp",
+            "naturalWidth": 900,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 8,
+            "y": 357.890625,
+            "width": 374,
+            "height": 303,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "3",
+            "x": 8,
+            "y": 357.890625,
+            "width": 374,
+            "height": 303
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/visuals.css",
+          null,
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 8,
+            "y": 357.890625,
+            "width": 374,
+            "height": 303
+          }
+        ]
+      },
+      "preCaptureScene": [
+        {
+          "renderer": "webgl2",
+          "ready": "true",
+          "frame": "4",
+          "motionState": "still",
+          "x": 8,
+          "y": 357.890625,
+          "width": 374,
+          "height": 303
+        }
+      ],
+      "png": {
+        "width": 390,
+        "height": 844,
+        "bytes": 90803,
+        "sha256": "06c63aeafdd259c071626f7bd218905cb77800cf3922f73b8532175ebd0d3369",
+        "pixelSha256": "46f6a93c920182029df72f0bdbfd1b55b5ae00362aeaf671ae89832ddd14c879"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "interrupted": {
+    "signal": "SIGTERM",
+    "at": "2026-10-13T20:41:46.694Z"
+  }
+}

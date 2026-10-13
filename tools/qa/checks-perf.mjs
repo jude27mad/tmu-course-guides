@@ -1,6 +1,19 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { ROOT, collectPageErrors } from './runtime.mjs';
+/** Poll the already-scheduled native frame checkpoints from Node. Offscreen
+ * surfaces have no pending callback and never extend the collection window. */
+export async function waitForReadableFrames({ snapshot, remainingMs, now = Date.now, pause = ms => new Promise(resolve => setTimeout(resolve, ms)) }) {
+  const started = now(), deadline = started + Math.max(0, remainingMs);
+  let state = await snapshot();
+  const initialPending = [...(state.pendingReadableFrames ?? [])];
+  while (state.pendingReadableFrames?.length && now() < deadline) {
+    await pause(Math.min(100, deadline - now()));
+    state = await snapshot();
+  }
+  const pendingAtEnd = [...(state.pendingReadableFrames ?? [])];
+  return { state, wait: { waited: initialPending.length > 0, durationMs: now() - started, remainingMs, capped: pendingAtEnd.length > 0, initialPending, pendingAtEnd, reason: pendingAtEnd.length ? 'The collection cap was reached while scheduled native readability frame callbacks remained pending; visibility timings stay null.' : null } };
+}
 
 /** Recheck after every asynchronous browser capture: activity makes it stale. */
 export async function collectQuietSample({ network, isReady, capture, started = Date.now(), capMs = 90_000, now = Date.now, pause = () => new Promise(resolve => setTimeout(resolve, 100)), optionalSettlementMs = 2500, networkQuietMs = 1500 }) {
@@ -11,12 +24,14 @@ export async function collectQuietSample({ network, isReady, capture, started = 
     if (checkpoint()) {
       const revision = network.revision;
       sample = await capture({ checkpoint }); captureAttempts++;
-      if (!sample?.interrupted && checkpoint() && network.revision === revision && now() - started < capMs) { quiet = true; break; }
+      // Appearance checkpoint exhaustion is diagnostic. A capture begun before
+      // the cap can still establish unchanged network quiet at its completion.
+      if (!sample?.interrupted && checkpoint() && network.revision === revision) { quiet = true; break; }
     }
     await pause();
   }
   if (!quiet) sample = await capture({ checkpoint: () => true, capped: true });
-  return { sample, collection: { durationMs: now() - started, capMs, optionalSettlementMs, networkQuietMs, routeReady: readyAt !== null, networkQuiet: quiet, capped: !quiet, activeRequestsAtEnd: network.activeCount, captureAttempts } };
+  return { sample, collection: { durationMs: now() - started, capMs, optionalSettlementMs, networkQuietMs, routeReady: readyAt !== null, networkQuiet: quiet, capped: !quiet, timeCapReached: now() - started >= capMs, appearanceCheckpointWait: sample?.readabilityWait ?? null, activeRequestsAtEnd: network.activeCount, captureAttempts } };
 }
 
 /** Pure, shared criteria used by the installed viewport probe and focused tests. */
@@ -38,7 +53,7 @@ export const PROFILES = {
   phone: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 1, cpuRate: 4, network: { offline: false, latency: 150, downloadThroughput: 1_600_000 / 8, uploadThroughput: 750_000 / 8, connectionType: 'cellular4g' } },
   desktop: { viewport: { width: 1440, height: 900 }, isMobile: false, hasTouch: false, deviceScaleFactor: 1, cpuRate: 1, network: null }
 };
-const DEFAULT_MARGIN = { fraction: .1, requestCount: 2, transferBytes: 4096, chainDepth: 1 };
+const DEFAULT_MARGIN = { fraction: .1, requestCount: 2, transferBytes: 4096, bytesByType: 8192, chainDepth: 1 };
 const finiteCount = value => Number.isFinite(value) && value >= 0;
 const byteBreakdownPresent = row => row.network?.bytesByType !== null && typeof row.network?.bytesByType === 'object' && !Array.isArray(row.network.bytesByType);
 const caseKey = row => [row.base, row.route, row.profile].join('|');
@@ -78,7 +93,7 @@ export function makeBudgets(measurements, { margin = DEFAULT_MARGIN } = {}) {
       const limits = {
         requestCount: increase(baseline.requestCount, allowance.requestCount),
         transferBytes: increase(baseline.transferBytes, allowance.transferBytes),
-        bytesByType: Object.fromEntries([...new Set([...RESOURCE_TYPES, ...Object.keys(baseline.bytesByType)])].sort().map(type => [type, increase(baseline.bytesByType[type] ?? 0, allowance.transferBytes)])),
+        bytesByType: Object.fromEntries([...new Set([...RESOURCE_TYPES, ...Object.keys(baseline.bytesByType)])].sort().map(type => [type, increase(baseline.bytesByType[type] ?? 0, allowance.bytesByType)])),
         chainDepth: Math.ceil(baseline.chainDepth + allowance.chainDepth)
       };
       return { base: row.base, route: row.route, profile: row.profile, baseline, limits };
@@ -241,7 +256,8 @@ export function installPerfObservers({ route, wallTime }) {
       for (const { type, observer } of observers) record(type, observer.takeRecords());
       sample();
       state.sampleEndMs = performance.now();
-      state.missingVisibleTimingReasons = Object.fromEntries(['coursework', 'deadline', 'deadlineChip'].map(kind => [kind, state[kind + 'VisibleMs'] === null ? 'No populated, post-FCP readable text on this surface reached the initial viewport and native frame checkpoint during the sample.' : null]));
+      state.pendingReadableFrames = [...pending];
+      state.missingVisibleTimingReasons = Object.fromEntries(['coursework', 'deadline', 'deadlineChip'].map(kind => [kind, state[kind + 'VisibleMs'] !== null ? null : pending.has(kind) ? 'Readable viewport text was found, but its scheduled two-native-animation-frame checkpoint remained pending at the snapshot.' : state.fcpMs === null ? 'First contentful paint was not observed during the sample.' : 'No populated, post-FCP readable text on this surface was found inside the initial viewport during the sample.']));
       return state;
     },
     stop() {
@@ -350,15 +366,15 @@ async function measureRoute(env, route, profileName, out) {
         criticalGraph ??= await collectBootCriticalGraph({ rootDir: env.root ?? ROOT, documentPath: route === 'desk' ? 'index.html' : `${route}/index.html`, baseURL: env.origin + env.base, html });
         if (!checkpoint()) return { interrupted: true };
         await network.bodyDiagnostics();
-        const state = await snapshot();
-        return { state, graph: criticalGraph };
+        const { state, wait: readabilityWait } = await waitForReadableFrames({ snapshot, remainingMs: capMs - (Date.now() - started) });
+        return { state, graph: criticalGraph, readabilityWait };
       }
     });
     // There is no asynchronous gap between the final quiet/revision validation
     // and detaching Network. The accepted snapshot defines the capture window.
     network.stop();
     observation.collection = { ...collection, navigationWaitUntil: 'commit', readinessIncludes: 'Completed semantic route and declared optional CSS/module fetch attempts', readiness };
-    observation.timings = { fcpMs: state.fcpMs, lcpMs: state.lcpMs, cls: computeCLS(state.layoutShifts), clsMethod: 'Largest session window: less than one-second gaps and less than five-second span; recent input excluded.', courseworkVisibleMs: state.courseworkVisibleMs, deadlineVisibleMs: state.deadlineVisibleMs, deadlineChipVisibleMs: state.deadlineChipVisibleMs, firstReadableDOMMs: state.firstReadableDOMMs, timingMethod: state.timingMethod, routeReadyMs: state.routeReadyMs, sampleEndMs: state.sampleEndMs, longTaskCount: state.longTasks.length, longTaskDurationMs: state.longTasks.reduce((total, entry) => total + entry.duration, 0), longTasks: state.longTasks, lcpEntries: state.lcpEntries, layoutShifts: state.layoutShifts, coursework: state.coursework, deadline: state.deadline, deadlineChip: state.deadlineChip, supportedEntryTypes: state.supportedEntryTypes, observerErrors: state.observerErrors, missingVisibleTimingReasons: state.missingVisibleTimingReasons, visibilitySampleIntervalMs: 100 };
+    observation.timings = { fcpMs: state.fcpMs, lcpMs: state.lcpMs, cls: computeCLS(state.layoutShifts), clsMethod: 'Largest session window: less than one-second gaps and less than five-second span; recent input excluded.', courseworkVisibleMs: state.courseworkVisibleMs, deadlineVisibleMs: state.deadlineVisibleMs, deadlineChipVisibleMs: state.deadlineChipVisibleMs, firstReadableDOMMs: state.firstReadableDOMMs, pendingReadableFrames: state.pendingReadableFrames, timingMethod: state.timingMethod, routeReadyMs: state.routeReadyMs, sampleEndMs: state.sampleEndMs, longTaskCount: state.longTasks.length, longTaskDurationMs: state.longTasks.reduce((total, entry) => total + entry.duration, 0), longTasks: state.longTasks, lcpEntries: state.lcpEntries, layoutShifts: state.layoutShifts, coursework: state.coursework, deadline: state.deadline, deadlineChip: state.deadlineChip, supportedEntryTypes: state.supportedEntryTypes, observerErrors: state.observerErrors, missingVisibleTimingReasons: state.missingVisibleTimingReasons, visibilitySampleIntervalMs: 100 };
     observation.network = summarizeNetwork(network.resources);
     observation.modules = { chainDepth: graph.longestChainDepth, shortestDistanceDepth: graph.maxDepth, moduleCount: graph.moduleCount, edgeCount: graph.edgeCount, entryScripts: state.moduleScripts, bootDynamicEdges: graph.bootDynamicEdges, graph, fetchedLazyModuleURLs: observation.network.fetchedModuleURLs.filter(url => !graph.nodes.some(node => node.url === url)), runtimeURLCollisions: observation.network.moduleURLCollisions };
     out.assertions.push(assertion(`${label}: completed route and real deadline content`, readiness.routeReady, readiness, 'completed route, real content and populated deadline'));

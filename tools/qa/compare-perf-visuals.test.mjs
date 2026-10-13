@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {cases,comparePixels,parseCaptureOptions} from './compare-perf-visuals.mjs';
+import {createHash} from 'node:crypto';
+import {createRequire} from 'node:module';
+import {assertCaptureCompatibility,assertResumeSourceEvidence,cases,captureWork,captureEvidenceProblems,comparePixels,parseCaptureOptions,requestNativeLayerRedraw,validateRepeatPixels,visualCaptureRecipe} from './compare-perf-visuals.mjs';
+const require=createRequire(import.meta.url);
+const {PNG}=require(process.env.PNGJS_PATH||'/opt/codex/cua_node/lib/node_modules/pngjs');
 
 test('visual capture matrix covers four routes, two deployment bases, two viewports and two themes',()=>{
   const matrix=cases();
@@ -38,4 +42,137 @@ test('a missing --only value fails before any browser capture can start',()=>{
   assert.throws(()=>parseCaptureOptions(['--only']),/--only requires a case ID/);
   assert.throws(()=>parseCaptureOptions(['--only','--repeat-check']),/--only requires a case ID/);
   assert.deepEqual(parseCaptureOptions(['--only','root-mth140-1440x900-dark','--resume']),{only:'root-mth140-1440x900-dark',resume:true});
+});
+
+const capturedRecords=()=>cases().map(record=>({...record,status:'captured',errors:[]}));
+const completedManifest=records=>({recipe:{noWebGL:false},execution:{captureConcurrency:1},sourceUnchanged:true,productSourceSha256:'product',productSourceSha256After:'product',protectedSourceUnchanged:true,protectedSourceSha256:'protected',protectedSourceSha256After:'protected',cases:records??capturedRecords()});
+
+test('resume still performs a requested repeat when all matrix captures already exist',()=>{
+  const records=capturedRecords(),work=captureWork('/',{resume:true,repeatCheck:true},records);
+  assert.equal(work.selected.length,0);
+  assert.equal(work.needsPreview,true);
+  assert.equal(work.repeat.id,'root-mth140-1440x900-dark');
+});
+
+test('an explicit repeat case validates CEN without changing the 32-case matrix',()=>{
+  const parsed=parseCaptureOptions(['--repeat-case','root-cen100-1440x900-dark']);
+  assert.deepEqual(parsed,{repeatCase:'root-cen100-1440x900-dark',repeatCheck:true});
+  const work=captureWork('/',parsed,capturedRecords());
+  assert.equal(work.selected.length,16);
+  assert.equal(work.repeat.id,'root-cen100-1440x900-dark');
+  assert.throws(()=>parseCaptureOptions(['--repeat-case']),/requires a case ID/);
+  assert.throws(()=>parseCaptureOptions(['--only','root-desk-1440x900-dark','--repeat-case','root-cen100-1440x900-dark']),/must select the same case/);
+});
+
+test('mixed-history probe captures the original, selected other routes, then repeats the original',()=>{
+  const parsed=parseCaptureOptions(['--only','root-cen100-1440x900-dark','--probe-history','root-mth140-1440x900-dark','--probe-history','root-mth141-1440x900-dark']);
+  const work=captureWork('/',parsed);
+  assert.deepEqual(work.selected.map(record=>record.id),['root-cen100-1440x900-dark','root-mth140-1440x900-dark','root-mth141-1440x900-dark']);
+  assert.equal(parsed.repeatCheck,true);
+  assert.equal(captureWork('/',parsed,capturedRecords()).repeat.id,parsed.only);
+  assert.throws(()=>parseCaptureOptions(['--probe-history','root-mth140-1440x900-dark']),/requires --only/);
+});
+
+test('resume and comparison cannot mix capture concurrency or incomplete source evidence',()=>{
+  const manifest=completedManifest();
+  assert.doesNotThrow(()=>assertCaptureCompatibility(manifest,completedManifest()));
+  assert.throws(()=>assertCaptureCompatibility(manifest,{...manifest,execution:{captureConcurrency:2}}),/concurrency differs/);
+  assert.deepEqual(captureEvidenceProblems(manifest),[]);
+  delete manifest.productSourceSha256After;
+  assert.ok(captureEvidenceProblems(manifest).some(problem=>problem.reason.includes('completion evidence')));
+  manifest.productSourceSha256After='product';delete manifest.protectedSourceUnchanged;
+  assert.ok(captureEvidenceProblems(manifest).some(problem=>problem.reason.includes('Protected source completion')));
+});
+
+test('resume preserves invalid run provenance while allowing a completed failed-case retry',()=>{
+  const manifest=completedManifest();manifest.cases[0].status='failed';
+  assert.doesNotThrow(()=>assertResumeSourceEvidence(manifest));
+  assert.throws(()=>assertResumeSourceEvidence({...manifest,sourceUnchanged:false}),/provenance is incomplete or invalid/);
+  assert.throws(()=>assertResumeSourceEvidence({...manifest,interrupted:{signal:'SIGTERM'}}),/Capture interrupted/);
+  delete manifest.productSourceSha256After;
+  assert.throws(()=>assertResumeSourceEvidence(manifest),/completion evidence/);
+});
+
+test('compositor stabilization changes only the recorded Chromium environment condition',()=>{
+  const original=visualCaptureRecipe(),stabilized=visualCaptureRecipe({compositorDrain:true});
+  assert.deepEqual(Object.keys(stabilized).filter(key=>JSON.stringify(stabilized[key])!==JSON.stringify(original[key])),['compositorStagesBeforeDraw']);
+  assert.equal(stabilized.fullPage,false);assert.equal(stabilized.masking,false);assert.equal(stabilized.cssInjection,false);
+  assert.deepEqual(parseCaptureOptions(['--compositor-drain','--serial']),{compositorDrain:true,serial:true});
+  for(const [option,key,field] of [['--disable-partial-raster','disablePartialRaster','partialRaster'],['--disable-gpu-rasterization','disableGpuRasterization','gpuRasterization']]) {
+    assert.deepEqual(parseCaptureOptions([option]),{[key]:true});
+    assert.deepEqual(visualCaptureRecipe({[key]:true}),{...original,[field]:false});
+  }
+  assert.deepEqual(visualCaptureRecipe({settledDelayMs:5000}),{...original,settledDelayMs:5000});
+  assert.deepEqual(visualCaptureRecipe({observeCompositor:true}),{...original,compositorObserver:true});
+  assert.deepEqual(visualCaptureRecipe({legacyScreenshot:true}),{...original,chromiumScreenshotSurface:'legacy'});
+  assert.deepEqual(visualCaptureRecipe({nativeLayerRedraw:true}),{...original,nativeLayerInvalidation:'setNeedsDisplayOnAllLayers after DOM settlement, before final visibilitychange static scene redraw'});
+  assert.deepEqual(parseCaptureOptions(['--native-layer-redraw']),{nativeLayerRedraw:true});
+  assert.deepEqual(parseCaptureOptions(['--settled-delay-ms','5000','--observe-compositor']),{settledDelayMs:5000,observeCompositor:true});
+  assert.throws(()=>parseCaptureOptions(['--settled-delay-ms','1400']),/at least1500/);
+  assert.throws(()=>parseCaptureOptions(['--settled-delay-ms']),/at least1500/);
+});
+
+test('native layer invalidation requires the real browser API and waits two frames',async()=>{
+  const previousChrome=globalThis.chrome,previousRAF=globalThis.requestAnimationFrame,events=[];
+  try {
+    globalThis.chrome={gpuBenchmarking:{setNeedsDisplayOnAllLayers(){events.push('native-invalidation');}}};
+    globalThis.requestAnimationFrame=callback=>{events.push('frame');callback();};
+    await requestNativeLayerRedraw({evaluate:fn=>fn()});
+    assert.deepEqual(events,['native-invalidation','frame','frame']);
+    delete globalThis.chrome;
+    await assert.rejects(requestNativeLayerRedraw({evaluate:fn=>fn()}),/API is unavailable/);
+  }finally{if(previousChrome===undefined)delete globalThis.chrome;else globalThis.chrome=previousChrome;if(previousRAF===undefined)delete globalThis.requestAnimationFrame;else globalThis.requestAnimationFrame=previousRAF;}
+});
+
+test('--only scopes resumed captures and retries to the requested case and deployment base',()=>{
+  const records=capturedRecords(),target=records.find(record=>record.id==='project-mth140-1440x900-dark');
+  target.status='failed';records[0].status='failed';
+  const options={resume:true,only:target.id};
+  const project=captureWork('/tmu-course-guides/',options,records),root=captureWork('/',options,records);
+  assert.deepEqual(project.selected.map(record=>record.id),[target.id]);
+  assert.deepEqual(project.retries.map(record=>record.id),[target.id]);
+  assert.equal(root.selected.length,0);assert.equal(root.retries.length,0);assert.equal(root.needsPreview,false);
+});
+
+test('capture evidence rejects browser errors, natural settlement failures and unsuccessful captures',()=>{
+  const manifest=completedManifest();
+  assert.deepEqual(captureEvidenceProblems(manifest),[]);
+  manifest.cases[0].errors=[{type:'pageerror',message:'Visible product failure'}];
+  manifest.cases[1].naturalSettlementFailure='Wrapper remained translated';
+  manifest.cases[2].status='failed';
+  const reasons=captureEvidenceProblems(manifest).map(problem=>problem.reason);
+  assert.ok(reasons.includes('Browser error evidence is missing or nonempty'));
+  assert.ok(reasons.includes('Natural wrapper settlement failed'));
+  assert.ok(reasons.includes('Capture was not successful'));
+});
+
+test('capture evidence rejects arbitrary IDs and mismatched canonical viewport metadata',()=>{
+  const manifest=completedManifest();
+  manifest.cases[0].id='invented-case';manifest.cases[1].viewport={width:1,height:1};
+  const problems=captureEvidenceProblems(manifest);
+  assert.equal(problems.filter(problem=>problem.reason.includes('canonical matrix')).length,2);
+});
+
+test('identical stored repeat metrics cannot override repeat browser or settlement failures',()=>{
+  const record={...capturedRecords()[0],png:{sha256:'original'}},repeated={...record,png:{sha256:'repeated'},errors:[{type:'pageerror',message:'Repeat failed'}],naturalSettlementFailure:'Repeat wrapper did not settle'};
+  const manifest={...completedManifest([record]),repeatCheck:{case:record.id,capture:repeated,comparison:{pixelIdentical:true,beforeSha256:'original',afterSha256:'repeated'}}};
+  const problems=captureEvidenceProblems(manifest);
+  assert.ok(problems.some(problem=>problem.reason==='Repeat browser error evidence is missing or nonempty'));
+  assert.ok(problems.some(problem=>problem.reason==='Repeat natural wrapper settlement failed'));
+  manifest.repeatCheck.comparison.beforeSha256='unrelated';
+  assert.ok(captureEvidenceProblems(manifest).some(problem=>problem.reason.includes('provenance')));
+});
+
+test('repeat validation decodes actual PNGs and rejects changed, tampered or missing repeat bytes',async()=>{
+  const makeBytes=red=>{const png=new PNG({width:1,height:1});png.data.set([red,2,3,255]);return PNG.sync.write(png);};
+  const originalBytes=makeBytes(1),repeatedBytes=makeBytes(2),sha=bytes=>createHash('sha256').update(bytes).digest('hex');
+  const original={...capturedRecords()[0],screenshot:'original.png',png:{sha256:sha(originalBytes)}},repeated={...original,screenshot:'repeated.png',png:{sha256:sha(repeatedBytes)}};
+  const manifest={cases:[original],repeatCheck:{case:original.id,capture:repeated,comparison:{pixelIdentical:true}}};
+  const readBytes=async filename=>filename.endsWith('/original.png')?originalBytes:repeatedBytes;
+  const changed=await validateRepeatPixels(manifest,{readBytes});
+  assert.equal(changed.changedPixels,1);assert.equal(changed.pass,false);
+  repeated.png.sha256=sha(originalBytes);
+  assert.equal((await validateRepeatPixels(manifest,{readBytes})).repeatHashMatches,false);
+  const missing=await validateRepeatPixels(manifest,{readBytes:async()=>{throw Error('ENOENT missing repeat');}});
+  assert.equal(missing.pass,false);assert.match(missing.failure,/ENOENT/);
 });
