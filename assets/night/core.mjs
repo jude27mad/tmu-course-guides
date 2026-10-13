@@ -78,7 +78,7 @@ const holds=new Set();
 export function hold(reason){holds.add(reason);document.dispatchEvent(new CustomEvent('night-hold',{detail:held()}));}
 export function release(reason){holds.delete(reason);document.dispatchEvent(new CustomEvent('night-hold',{detail:held()}));}
 export const held=()=>holds.size>0;
-/* Ambient = loops that run on their own (backdrop, marquee, pulses). Pause motion stops them all. */
+/* Ambient = loops that run on their own (marquee, pulses). Pause motion stops them all. */
 export const ambientAllowed=()=>sceneMotionAllowed()&&!held()&&!document.hidden;
 /* CSS hooks: html.ns-still stops CSS-driven ambient loops; html.ns-held tells the hero scene to rest
    while a palette or sheet is open (course-scene.mjs reads it; the saved pause is untouched). */
@@ -111,8 +111,8 @@ export function whenWorkspace(fn){
 }
 
 /* ---- Quality tiers ----
-   high: everything, full frame rate. mid: 30 fps backdrop at reduced resolution, no skew or cursor trail.
-   low: static CSS aurora, no canvas, no smooth scroll or custom cursor.
+   high: full effects. mid: no skew or cursor trail.
+   low: no smooth scroll or custom cursor.
    deviceMemory is a hint only when present; a missing value never counts as weak hardware. */
 const coarse=matchMedia('(pointer:coarse)').matches;
 const cores=navigator.hardwareConcurrency||4,memory=navigator.deviceMemory;
@@ -160,23 +160,54 @@ export function loadCSS(name){
  return new Promise(resolve=>{const link=document.createElement('link');link.rel='stylesheet';link.href=href;link.dataset.night=name;link.onload=link.onerror=()=>resolve(link);document.head.append(link);});
 }
 
-/* Small synthesised sound + haptics service, opt-in (tmu-guide-sound-v1). Shared so every feature
-   uses one AudioContext. */
+/* Paper sound + haptics service, opt-in (tmu-guide-sound-v1). One lazy AudioContext for the shell.
+   play('page-turn', {intensity:.7, spread:weekIndex}) reports whether a sound was scheduled.
+   Supply a stable spread id when scrubbing: repeated calls for that spread stay silent, and
+   changed spreads share a 120 ms limit. Calls without a spread still obey the time limit. */
 const SOUND_KEY='tmu-guide-sound-v1';
-let soundOn=read(SOUND_KEY,false)===true,audio=null;
+const PAPER_SOUNDS={
+ 'page-turn':{duration:.18,frequency:1400,end:2600,noise:.07,thump:180,body:.012},
+ 'cover-open':{duration:.28,frequency:650,end:1500,noise:.06,thump:120,body:.035},
+ 'cover-close':{duration:.16,frequency:1100,end:450,noise:.05,thump:150,body:.09},
+ 'book-set-down':{duration:.2,frequency:500,end:260,noise:.035,thump:90,body:.12},
+ 'popup-unfold':{duration:.1,frequency:2200,end:3400,noise:.045,thump:420,body:.018}
+};
+let soundOn=read(SOUND_KEY,false)===true,audio=null,noiseBuffer=null,userGesture=false,lastTurn=-Infinity,lastSpread;
+const noteGesture=e=>{if(e.isTrusted)userGesture=true;};
+for(const type of ['pointerdown','keydown','click','touchend'])document.addEventListener(type,noteGesture,{capture:true,passive:true});
 export const soundEnabled=()=>soundOn;
-export function setSound(on){soundOn=!!on;write(SOUND_KEY,soundOn);document.dispatchEvent(new CustomEvent('night-sound',{detail:soundOn}));if(soundOn)play('tick');}
-export function play(name){
- if(!soundOn||!motionAllowed())return;
+export function setSound(on){soundOn=!!on;write(SOUND_KEY,soundOn);document.dispatchEvent(new CustomEvent('night-sound',{detail:soundOn}));}
+export function play(name,{intensity=1,spread}={}){
+ const volume=Number.isFinite(intensity)?Math.max(0,Math.min(1,intensity)):1;
+ if(!Object.hasOwn(PAPER_SOUNDS,name)||!volume||!soundOn||!motionAllowed()||!sceneMotionAllowed()||
+    matchMedia('(prefers-reduced-motion: reduce)').matches||new URLSearchParams(location.search).get('motion')==='off'||
+    !(userGesture||navigator.userActivation?.hasBeenActive||navigator.userActivation?.isActive))return false;
+ const now=performance.now(),spreadId=spread===undefined?undefined:course+':'+spread;
+ if(name==='page-turn'&&(now-lastTurn<120||spreadId!==undefined&&spreadId===lastSpread))return false;
  try{
-  audio??=new (window.AudioContext||window.webkitAudioContext)();
-  if(audio.state==='suspended')audio.resume();
-  const t=audio.currentTime,out=audio.createGain();out.connect(audio.destination);
-  const tone=(type,f0,f1,dur,peak,at=0)=>{const o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(f0,t+at);o.frequency.exponentialRampToValueAtTime(f1,t+at+dur);g.gain.setValueAtTime(0,t+at);g.gain.linearRampToValueAtTime(peak,t+at+.008);g.gain.exponentialRampToValueAtTime(.0001,t+at+dur);o.connect(g).connect(out);o.start(t+at);o.stop(t+at+dur+.02);};
-  if(name==='tick')tone('square',2400,1800,.025,.035);
-  else if(name==='pop')tone('sine',520,980,.11,.16);
-  else if(name==='chime'){tone('sine',880,880,.5,.09);tone('sine',1318.5,1318.5,.6,.07,.07);tone('sine',1760,1760,.7,.05,.14);}
-  else if(name==='whoosh'){const len=Math.floor(audio.sampleRate*.45),buf=audio.createBuffer(1,len,audio.sampleRate),d=buf.getChannelData(0);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.sin(Math.PI*i/len);const src=audio.createBufferSource(),f=audio.createBiquadFilter(),g=audio.createGain();src.buffer=buf;f.type='bandpass';f.Q.value=.9;f.frequency.setValueAtTime(300,t);f.frequency.exponentialRampToValueAtTime(3200,t+.4);g.gain.value=.12;src.connect(f).connect(g).connect(out);src.start(t);}
- }catch{}
+  const Context=window.AudioContext||window.webkitAudioContext;
+  if(!audio){if(!Context)return false;audio=new Context();}
+  if(audio.state==='closed')return false;
+  if(audio.state==='suspended')audio.resume()?.catch(()=>{});
+  if(!noiseBuffer){
+   noiseBuffer=audio.createBuffer(1,Math.ceil(audio.sampleRate*.4),audio.sampleRate);
+   const data=noiseBuffer.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
+  }
+  const recipe=PAPER_SOUNDS[name],t=audio.currentTime,out=audio.createGain();out.gain.value=volume;out.connect(audio.destination);
+  let playing=2;
+  const end=nodes=>()=>{for(const node of nodes)node.disconnect();if(!--playing)out.disconnect();};
+  const envelope=(gain,peak,duration)=>{gain.setValueAtTime(0,t);gain.linearRampToValueAtTime(peak,t+.008);gain.exponentialRampToValueAtTime(.0001,t+duration);};
+  const paper=audio.createBufferSource(),filter=audio.createBiquadFilter(),paperGain=audio.createGain();
+  paper.buffer=noiseBuffer;filter.type='bandpass';filter.Q.value=.7;
+  filter.frequency.setValueAtTime(recipe.frequency,t);filter.frequency.exponentialRampToValueAtTime(recipe.end,t+recipe.duration);
+  envelope(paperGain.gain,recipe.noise,recipe.duration);
+  paper.connect(filter).connect(paperGain).connect(out);paper.onended=end([paper,filter,paperGain]);paper.start(t);paper.stop(t+recipe.duration+.02);
+  const body=audio.createOscillator(),bodyGain=audio.createGain();body.type='sine';
+  body.frequency.setValueAtTime(recipe.thump,t);body.frequency.exponentialRampToValueAtTime(recipe.thump*.45,t+recipe.duration);
+  envelope(bodyGain.gain,recipe.body,recipe.duration);
+  body.connect(bodyGain).connect(out);body.onended=end([body,bodyGain]);body.start(t);body.stop(t+recipe.duration+.02);
+  if(name==='page-turn'){lastTurn=now;lastSpread=spreadId;}
+  return true;
+ }catch{return false;}
 }
 export function haptic(pattern=12){if(!motionAllowed())return;try{navigator.vibrate?.(pattern);}catch{}}

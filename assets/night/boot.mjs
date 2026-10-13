@@ -7,7 +7,15 @@ import * as deadline from './deadline.mjs?v=20261013-shift1';
 import * as timeline from './timeline.mjs?v=20261013-shift1';
 import {scope} from '../route-lifecycle.mjs';
 
-const FEATURES=['hero','scroll'];
+const FEATURES=['palette','hero','scroll'];
+const SHELL_FEATURES=new Set(['palette']),shellLoads=new Map();
+function loadShell(name){
+ if(!shellLoads.has(name)){
+  loadCSS(name);document.querySelector(`link[data-night="${name}"]`)?.setAttribute('data-shell-style','');
+  shellLoads.set(name,import('./palette.mjs').then(module=>module.mount()).catch(error=>{shellLoads.delete(name);failed(name,error);}));
+ }
+ return shellLoads.get(name);
+}
 let live=null;
 function labelPages(){
  if(!META)return;
@@ -21,14 +29,16 @@ async function load(name,state){
 export async function mount(ctx={}){
  unmount();setRoute(ctx.route);
  const life=scope(ctx),state=live={life,ctx:{...ctx,signal:life.signal},modules:[]};
- const root=document.documentElement;delete root.dataset.nsFailed;root.dataset.nsTier=tier();root.classList.remove('ns-warp-in');
+ const root=document.documentElement;delete root.dataset.nsFailed;
+ for(const name of FEATURES)if(SHELL_FEATURES.has(name))loadShell(name);
+ root.dataset.nsTier=tier();
  if(isDesk){
  root.dataset.nsPage='desk';root.classList.remove('night');delete root.dataset.nsCourse;
  try{const module=await import('./desk.mjs?v=20261013-shift1');if(live!==state)return;state.modules.push(module);await module.mount(state.ctx);}catch(error){if(live===state)failed('desk',error);}
  }else{
  root.classList.add('night');delete root.dataset.nsPage;root.dataset.nsCourse=course;labelPages();
  await deadline.mount(state.ctx);if(live!==state)return;timeline.mount(state.ctx);
- const run=()=>{for(const name of FEATURES)load(name,state);};
+ const run=()=>{for(const name of FEATURES)if(!SHELL_FEATURES.has(name))load(name,state);};
  if(window.requestIdleCallback){const id=window.requestIdleCallback(run,{timeout:900});life.own(()=>window.cancelIdleCallback?.(id));}else life.timeout(run,120);
  }
 }
