@@ -4,7 +4,7 @@ diff --git a/mth140/index.html b/mth140/index.html
 @@ -127,3 +127,17 @@
    <footer class="math-footer"><p>Unofficial TMU course companion · Fall 2026 · <a href="../privacy.html">Privacy</a></p><p><a href="https://courses.torontomu.ca/" target="_blank" rel="noopener noreferrer">Check official updates on D2L</a></p></footer>
 -  <noscript><p>This guide needs JavaScript to display section-specific dates. Use the official course outline and announcements on D2L.</p></noscript>
-+    <noscript>
++      <noscript>
 +    <section aria-label="MTH140 coursework and assessment dates">
 +      <h2>Coursework and assessment dates</h2>
 +      <p>Published dates and quiz weeks are listed below. Check D2L for your section's lab day and time and any announcements. Progress and section tools require JavaScript.</p>
