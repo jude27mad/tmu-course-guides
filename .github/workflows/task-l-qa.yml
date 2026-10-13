@@ -1,137 +1,59 @@
-name: Task L verification
+name: Task L settlement diagnostic
 
 on:
   push:
     branches: [codex/ns-qa-fixes]
+    paths: [.github/workflows/task-l-qa.yml]
 
 permissions:
   contents: read
 
-concurrency:
-  group: task-l-parallel-${{ github.ref }}
-  cancel-in-progress: false
-
 jobs:
-  prepare:
+  modes:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    outputs:
-      sha: ${{ steps.source.outputs.sha }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Apply verified Task L fixes on the task branch only
-        id: source
-        env:
-          EXPECTED_HEAD: ${{ github.sha }}
-        run: |
-          test "$GITHUB_REF" = refs/heads/codex/ns-qa-fixes
-          python3 - <<'PYTHON'
-          import os, pathlib, subprocess
-          def git(*args):
-              return subprocess.check_output(['git', *args], text=True).strip()
-          changes = [
-              ('tools/qa/task-l-accessibility.patch', {'assets/workspace.css', 'tests/qa-accessibility.test.mjs'}, 'Give the CEN filter a full-width touch target', 'Keep the existing layout and typography while enforcing the required 44px minimum width. Add a focused regression test.'),
-              ('tools/qa/task-l-arrival.patch', {'assets/guide-motion.mjs', 'assets/course-header.mjs', 'assets/course-scene.mjs', 'index.html', 'cen100/index.html', 'mth140/index.html', 'mth141/index.html', 'tests/qa-arrival.test.mjs', 'tests/shared-lifecycle.test.mjs'}, 'Settle page arrivals when the animation clock stalls', 'Keep the authored .35-second duration and easing. Bound cleanup without changing the GSAP clock, cancel stale deadlines, refresh the single motion URL, and retain every lifecycle assertion.')
-          ]
-          for patch, allowed, title, reason in changes:
-              if not pathlib.Path(patch).exists():
-                  continue
-              git('apply', '--check', '--index', patch)
-              git('apply', '--index', patch)
-              changed = set(git('diff', '--cached', '--name-only').splitlines())
-              assert changed == allowed, f'Unexpected patch paths: {changed ^ allowed}'
-              git('rm', patch)
-              git('diff', '--cached', '--check')
-              print(git('-c', 'user.name=Jude', '-c', 'user.email=229519885+jude27mad@users.noreply.github.com', 'commit', '-m', title, '-m', reason))
-          remote = git('ls-remote', 'origin', 'refs/heads/codex/ns-qa-fixes').split()[0]
-          assert remote == os.environ['EXPECTED_HEAD'], 'Task branch moved; refusing to overwrite work'
-          git('push', 'origin', 'HEAD:refs/heads/codex/ns-qa-fixes')
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
-              output.write('sha=' + git('rev-parse', 'HEAD') + '\n')
-          PYTHON
-
-  node:
-    needs: prepare
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    strategy:
-      fail-fast: false
-      matrix:
-        suite: [root, ui]
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ needs.prepare.outputs.sha }}
+          fetch-depth: 2
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: |
-            tools/ui-build/package-lock.json
-            tools/scene-build/package-lock.json
-      - run: npm ci --prefix tools/ui-build && npm ci --prefix tools/scene-build
-      - name: Verify the selected Node suite
-        env:
-          SUITE: ${{ matrix.suite }}
+      - name: Verify unchanged product and assertion sources
         run: |
-          set -o pipefail
+          git diff --exit-code 83404b42b9d9e4c2bfdc12424d3749b904bf94d3 HEAD -- assets tests tools index.html cen100/index.html mth140/index.html mth141/index.html
           git rev-parse HEAD > "$RUNNER_TEMP/verified-commit.txt"
-          if test "$SUITE" = root; then
-            node --test tests/*.test.mjs tests/scene-*.cjs | tee "$RUNNER_TEMP/qa-root.log"
-          else
-            (cd tools/ui-build && npm run build) | tee "$RUNNER_TEMP/qa-build.log"
-            git diff --exit-code -- assets/vendor
-            (cd tools/ui-build && npm test) | tee "$RUNNER_TEMP/qa-ui.log"
-          fi
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: task-l-${{ matrix.suite }}-${{ github.run_id }}
-          path: |
-            ${{ runner.temp }}/qa-*.log
-            ${{ runner.temp }}/verified-commit.txt
-          retention-days: 7
-
-  browser:
-    needs: prepare
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    strategy:
-      fail-fast: false
-      max-parallel: 6
-      matrix:
-        check: [layout, routes, modes, deadlines, stability, frames]
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.prepare.outputs.sha }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Install the browser test tool
+          printf '%s\n' 83404b42b9d9e4c2bfdc12424d3749b904bf94d3 > "$RUNNER_TEMP/product-commit.txt"
+      - name: Install browser test tool
         run: |
           npm install --prefix "$RUNNER_TEMP/qa-browser" --no-save playwright
           "$RUNNER_TEMP/qa-browser/node_modules/.bin/playwright" install --with-deps chromium
           echo "PLAYWRIGHT_PATH=$RUNNER_TEMP/qa-browser/node_modules/playwright" >> "$GITHUB_ENV"
-      - name: Verify instrumentation independently
-        if: matrix.check == 'routes'
+      - name: Record probe latency without changing checks or deadlines
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('tools/qa/checks.mjs')
+          source = p.read_text()
+          old = 'if(await fn()) return;'
+          new = "const started=Date.now(),ok=await fn();if(label==='route wrapper settlement')console.log('settlement-probe',JSON.stringify({ok,probeMs:Date.now()-started,remainingMs:end-Date.now()}));if(ok)return;"
+          assert source.count(old) == 1
+          p.write_text(source.replace(old, new))
+          PY
+          git diff -- tools/qa/checks.mjs > "$RUNNER_TEMP/diagnostic-only.patch"
+      - name: Repeat the unchanged modes gates at both bases
         run: |
           set -o pipefail
-          node --test tools/qa/checks.test.mjs tools/qa/runtime.test.mjs tools/qa/instrument.test.mjs | tee "$RUNNER_TEMP/qa-self.log"
-      - name: Run the selected browser check at both bases
-        env:
-          CHECK: ${{ matrix.check }}
-        run: |
-          set -o pipefail
-          git rev-parse HEAD > "$RUNNER_TEMP/verified-commit.txt"
-          node tools/qa/run.mjs "$CHECK" | tee "$RUNNER_TEMP/qa-browser.log"
+          node tools/qa/run.mjs modes | tee "$RUNNER_TEMP/modes-probe.log"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: task-l-${{ matrix.check }}-${{ github.run_id }}
+          name: task-l-modes-probe-${{ github.run_id }}
           path: |
             tools/qa/reports/
-            ${{ runner.temp }}/qa-*.log
+            ${{ runner.temp }}/modes-probe.log
+            ${{ runner.temp }}/diagnostic-only.patch
             ${{ runner.temp }}/verified-commit.txt
+            ${{ runner.temp }}/product-commit.txt
           retention-days: 7
