@@ -1,4 +1,5 @@
 import { CHECKS } from './checks.mjs';
+import './checks-resilience.mjs';
 import { instrument } from './instrument.mjs';
 import { runHarness } from './runtime.mjs';
 

@@ -448,7 +448,9 @@ setupContactLookup();
     $("profile-label").textContent=profile?`Section ${profile.section}${profile.group?` · Group ${profile.group}`:" · Choose your group"}${staff?` · Lab: ${staff.location}`:""}`:"Choose your section & group";
     updatePickerAction();updateSectionContent(profile);
   }
+  let syncingProfile=false;
   function rememberProfile(){
+    if(syncingProfile)return; // Remote changes refresh native controls without echoing another storage write.
     const profile=validProfile({section:$("contact-section").value,group:$("contact-group").value});
     updateCourseContext(profile);writeSaved(PROFILE_KEY,profile);
   }
@@ -787,6 +789,7 @@ setupContactLookup();
     listen(history,"toggle",()=>{if(history.open){badge.hidden=true;writeSaved(SEEN_KEY,GUIDE_VERSION)}});
     const refresh=()=>{refreshDateDisplays(personal.completed);renderWork()};
     listen(document,"visibilitychange",()=>{if(!document.hidden)refresh()});
+    listen(window,"pageshow",e=>{if(e.persisted)refresh()});
     listen(window,"focus",refresh);repeat(()=>{if(!document.hidden)refresh()},60000);
     renderWork();readAssignmentLink();
   }
@@ -794,6 +797,22 @@ setupContactLookup();
   listen(document,'course-open-item',e=>openAssignment(e.detail));
   listen(document,'course-visuals-ready',()=>renderTop(personal.completed));
   setupRememberedContacts();setupSources();setupCompletedFilter();setupSearch();setupCalendar();setupPersonalTools();setupBackups();setupWorkAndUpdates();
+  listen(window,"storage",e=>{
+    if(e.key!==null&&e.key!==PROFILE_KEY&&e.key!==PLAN_KEY)return;
+    if(e.key===null||e.key===PLAN_KEY){
+      personal=cleanPlan(readSaved(PLAN_KEY,{}));lastQuickCompletion=null;$("quick-confirm").hidden=true;
+      for(const item of allItems){$("note-"+item.id).value=personal.notes[item.id]||"";$("target-"+item.id).value=personal.targets[item.id]||"";}
+      syncCompletionCounts();renderWork();document.dispatchEvent(new window.CustomEvent("guide-completion"));
+    }
+    if(e.key===null||e.key===PROFILE_KEY){
+      const profile=validProfile(readSaved(PROFILE_KEY,null));syncingProfile=true;
+      try{
+        $("contact-section").value=profile?.section||"";$("contact-section").dispatchEvent(new Event("change",{bubbles:true}));
+        $("contact-group").value=profile?.group||"";$("contact-group").dispatchEvent(new Event("change",{bubbles:true}));
+      }finally{syncingProfile=false;}
+      updateCourseContext(profile);window.CourseWorkspace?.refresh();
+    }
+  });
 })();
 
   }catch(error){unmount();throw error}

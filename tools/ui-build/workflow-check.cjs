@@ -206,12 +206,12 @@ async function checkDesk(motion,seed='completed'){
  console.log('desk ('+motion+', '+seed+'): directory, deadlines, switcher, saved sections and root forwarding checks passed');
  dom.window.close();
 }
-async function checkRoutes(base='https://guide.test/'){
+async function checkRoutes(base='https://guide.test/',motionMode='off'){
  const seeds={...SEEDS.completed,'mth141-section-v1':'31',
   'cen100-personal-plan-v1':JSON.stringify({completed:{integrity:1},notes:{y4:'Saved CEN'},targets:{}}),
   'mth140-progress-v1':JSON.stringify({completed:{'quiz-1':true},checks:{},notes:{'quiz-1':'Saved calculus'},targets:{},topics:{}}),
   'mth141-progress-v1':JSON.stringify({completed:{'quiz-1':true},checks:{},notes:{'quiz-1':'Saved algebra'},targets:{},topics:{}})};
- const {dom,w,d,errors,fallbacks,counters}=await createGuide({root,base,instrumentCounts:true,beforeParse(w){
+ const {dom,w,d,errors,fallbacks,counters}=await createGuide({root,base,motion:motionMode,instrumentCounts:true,beforeParse(w){
   for(const [key,value] of Object.entries(seeds))w.localStorage.setItem(key,value);
   const Native=w.Date;w.Date=class extends Native{constructor(...a){super(...(a.length?a:[NOON_OCT12]))}static now(){return NOON_OCT12}};
  }});
@@ -219,6 +219,18 @@ async function checkRoutes(base='https://guide.test/'){
   const marker=d.documentElement.dataset.shellId,router=w.TMURouter,hub=d.querySelector('.hub-shell'),motion=w.GuideMotion;
   assert(marker,'one shell marker exists');assert(hub&&motion,'the actual sidebar and motion controller exist');assert.equal(router.route,'desk');
   let completed=0;d.addEventListener('guide-completion',()=>completed++);
+  const transitionCalls=[],arrivals=[];
+  const transitions=w.__tmuModules[new URL('assets/app/transition.mjs',base).pathname];
+  assert(transitions?.registerTransition,'the real singleton transition module is available');
+  const unregister=transitions.registerTransition({name:'workflow-round-trip',from:'*',to:'*',run(ctx){
+   transitionCalls.push(ctx);
+   return Promise.resolve({pose:{from:ctx.from,to:ctx.to,serial:transitionCalls.length}});
+  }});
+  d.addEventListener('route-changed',event=>{
+   const {route,from,transition}=event.detail;arrivals.push(transition);
+   assert.equal(typeof transition.continuing,'boolean','every arrival has an explicit continuation state');
+   if(transition.continuing){assert.equal(transition.pose.from,from);assert.equal(transition.pose.to,route);assert.equal(transition.pose.serial,transitionCalls.length,'no stale or duplicated pose');}
+  });
   const assertRoute=route=>{
    assert.equal(router.route,route);assert.equal(d.documentElement.dataset.shellId,marker,'document survives navigation');
    assert.equal(w.GuideMotion,motion,'motion controller survives');assert.equal(d.querySelector('.hub-shell'),hub,'sidebar survives');
@@ -236,6 +248,9 @@ async function checkRoutes(base='https://guide.test/'){
   const move=async(route,hash='')=>{assert.equal(await router.navigate(new URL((route==='desk'?'':route+'/')+hash,base).href),true);assertRoute(route);};
   // Exercise native click capture before programmatic navigation.
   d.querySelector('.desk-course').click();await until(()=>router.route==='cen100','Desk link did not navigate');assertRoute('cen100');
+  assert.equal(transitionCalls.length,motionMode==='off'?0:1,'off bypasses the stub; full runs it exactly once');
+  assert.equal(arrivals[0].continuing,motionMode!=='off','first Desk dive hands off only when motion is allowed');
+  if(motionMode!=='off'){assert.equal(transitionCalls[0].from,'desk');assert.equal(transitionCalls[0].to,'cen100');assert.equal(transitionCalls[0].policy,'full');}
   const dock=d.querySelector('.ns-dock'),wrapper=d.querySelector('.course-workspace');
   assert(d.querySelector('input[data-completion="integrity"]').checked,'CEN saved completion survives navigation');
   assert.equal(d.querySelector('#note-y4').value,'Saved CEN','CEN note survives route entry');
@@ -265,6 +280,10 @@ async function checkRoutes(base='https://guide.test/'){
   assert.equal(d.querySelector('.detail-sheet').open,false,'no extra hashchange opens the CEN item a second time as a sheet');
   await click('.hub-brand','desk');
   assert.deepEqual(snapshot(),saved,'sidebar, dock and deep-link navigation leave saved data byte-identical');
+  // Traverse Desk <-> CEN with the scene stub, in addition to the course-to-course
+  // history checks above. The router still owns focus and the destination hash.
+  {const back=changed('cen100');w.history.back();await back;assertRoute('cen100');}
+  {const forward=changed('desk');w.history.forward();await forward;assertRoute('desk');}
   const counts=new Map(),rounds=new URL(base).pathname==='/'?20:1;
   for(let round=0;round<rounds;round++){
    for(const route of ['cen100','mth140','mth141','desk']){
@@ -280,7 +299,18 @@ async function checkRoutes(base='https://guide.test/'){
   assert.equal(JSON.parse(w.localStorage.getItem('mth140-progress-v1')).completed['quiz-1'],undefined,'undoing completion survives later mounts');
   assert.equal(JSON.parse(w.localStorage.getItem('mth141-progress-v1')).completed['quiz-1'],true);
   d.querySelector('.hub-theme').click();assert.equal(d.documentElement.dataset.theme,'dark','one theme action uses one surviving controller');
-  console.log('routes ('+new URL(base).pathname+'): one document, real modules, hashes, history, focus, saved state and '+rounds+' round trips passed');
+  if(motionMode==='off'){
+   assert.equal(transitionCalls.length,0,'off skips every registered animation on round trips and history');
+   assert(arrivals.every(arrival=>!arrival.continuing),'cut never replays an entrance');
+  }else{
+   assert(transitionCalls.some(call=>call.from==='desk'&&call.to==='cen100'),'Desk dive registered');
+   assert(transitionCalls.some(call=>call.from==='cen100'&&call.to==='desk'),'reverse Desk return registered');
+   assert(transitionCalls.some(call=>call.history==='pop'&&call.to==='desk'),'history return uses the same controller');
+   assert(arrivals.some(arrival=>arrival.continuing),'incoming shell receives scene poses');
+  }
+  unregister();
+  console.log('transition stub ('+new URL(base).pathname+', motion '+motionMode+'): '+transitionCalls.length+' calls, one-shot arrivals and history passed');
+  console.log('routes ('+new URL(base).pathname+', motion '+motionMode+'): one document, real modules, hashes, history, focus, saved state and '+rounds+' round trips passed');
  }finally{dom.window.close();}
 }
 async function checkPalette(){
@@ -298,7 +328,22 @@ async function checkPalette(){
   const active=()=>d.getElementById(input.getAttribute('aria-activedescendant'));
   const launcher=d.querySelector('.workspace-search');await open(launcher);assert(core.held(),'open palette holds ambient motion');
   assert.equal(input.getAttribute('role'),'combobox');assert.equal(input.getAttribute('aria-expanded'),'true');assert(active());
-  key('End');assert.match(active().textContent,/Search the guide/);key('Home');assert.match(active().textContent,/Lab Quiz 2/);
+  // Wording from docs/copy/interface-copy.md (Command palette).
+  const options=()=>[...palette.querySelectorAll('[role="option"]')],groups=()=>[...palette.querySelectorAll('[role="group"]')].map(g=>[g.querySelector('.ns-palette-group').textContent,g.getAttribute('aria-label')]);
+  const clear=palette.querySelector('[data-palette-clear]'),empty=palette.querySelector('[data-palette-empty]'),live=palette.querySelector('[aria-live]');
+  assert.equal(input.placeholder,'Search courses, weeks, topics…');assert.equal(d.querySelector('label[for="ns-palette-input"]').textContent,'Search courses, assessments, weeks, and topics');
+  assert.deepEqual(groups(),[['Assessments','Assessments'],['Courses','Courses'],['Actions','Actions']],'curated default groups use the copy headings');
+  assert(!options().some(o=>/Search the guide/.test(o.textContent)),'no guide-search suggestion before a query');assert(clear.hidden,'Clear appears only with a query');
+  key('End');assert.match(active().textContent,/Open D2L/);key('Home');assert.match(active().textContent,/Lab Quiz 2/);
+  query('quiz');key('End');assert.equal(active().textContent,'Search the guide for "quiz"');assert.equal(active().getAttribute('aria-label'),'Search the guide for quiz');assert.equal(live.textContent,(options().length-1)+' results');
+  assert(!clear.hidden);assert.deepEqual([clear.textContent,clear.getAttribute('aria-label')],['Clear','Clear search']);
+  const close=palette.querySelector('[data-palette-close]');assert.deepEqual([close.textContent,close.getAttribute('aria-label')],['Close','Close search']);
+  query('qqzzxx');assert(!empty.hidden);assert.equal(empty.textContent,'No results for "qqzzxx"');assert.equal(live.textContent,'No results for qqzzxx. Try another search');
+  assert.deepEqual(options().map(o=>o.textContent),['Search the guide for "qqzzxx"'],'an empty search still offers the guide search');
+  clear.click();assert.equal(input.value,'');assert.equal(d.activeElement,input,'Clear returns focus to the search field');assert(clear.hidden&&empty.hidden);assert.equal(live.textContent,'');
+  query('week 9');assert.deepEqual([active().querySelector('span').textContent,active().getAttribute('aria-label')],['Week 9 · Nov 2–8','Week 9, November 2 to 8'],'week wording from the copy');assert.deepEqual(active().closest('[role="group"]').getAttribute('aria-label'),'Semester weeks');assert.equal(active().closest('[role="group"]').querySelector('.ns-palette-group').textContent,'Weeks');
+  query('limits');assert(groups().some(([visible,label])=>visible==='Topics'&&label==='Study topics'),'topic group heading');
+  query('');key('Home');assert.match(active().textContent,/Lab Quiz 2/);
   key('ArrowDown');assert.equal(active().getAttribute('aria-selected'),'true');
   key('Escape');await pause(20);assert.equal(d.activeElement,launcher,'Escape restores launcher');assert(!core.held(),'Escape releases hold');
   // Ordinary typing has no bare-character shortcut; modified K works inside a field.
@@ -315,6 +360,11 @@ async function checkPalette(){
   const quizDone=d.querySelector('[data-completed="quiz-2"]');quizDone.checked=true;quizDone.dispatchEvent(new w.Event('change',{bubbles:true}));await open(launcher);assert.match(active().textContent,/Lab Quiz 3/,'completion rebuilds next default');key('Escape');quizDone.checked=false;quizDone.dispatchEvent(new w.Event('change',{bubbles:true}));
   const section=d.querySelector('#section-select');section.value='2';section.dispatchEvent(new w.Event('change',{bubbles:true}));await open(launcher);query('Lab Quiz 2');assert.match(active().textContent,/Mon Oct 19/,'section change rebuilds quiz precision and date');key('Escape');section.value='31';section.dispatchEvent(new w.Event('change',{bubbles:true}));
   core.hold('external-test');await open(launcher);key('Escape');await pause(20);assert(core.held(),'palette close preserves another hold');core.release('external-test');
+  assert.equal(core.soundEnabled(),false,'sound is off by default');assert.equal(w.localStorage.getItem('tmu-guide-sound-v1'),null);
+  await open(launcher);query('sound on');assert.equal(active().querySelector('span').textContent,'Sound off');assert.equal(active().getAttribute('aria-label'),'Sound off. Turn sound on');key('Enter');await pause(20);
+  assert.equal(core.soundEnabled(),true,'palette turns sound on');assert.equal(w.localStorage.getItem('tmu-guide-sound-v1'),'true');assert(!core.held());
+  await open(launcher);query('sound');assert.equal(active().getAttribute('aria-label'),'Sound on. Turn sound off','label follows the saved state');key('Enter');await pause(20);
+  assert.equal(core.soundEnabled(),false,'palette turns sound off');assert.equal(w.localStorage.getItem('tmu-guide-sound-v1'),'false');w.localStorage.removeItem('tmu-guide-sound-v1');
   // Completed item hidden by a real filter and in another view must still open.
   const hide=d.querySelector('#hide-completed');hide.checked=true;hide.dispatchEvent(new w.Event('change',{bubbles:true}));
   w.CourseWorkspace.show('study',true);await open(launcher);query('midterm');assert.match(active().textContent,/Midterm Test/);assert(active().querySelector('mark'),'matching characters highlighted');
@@ -342,9 +392,9 @@ async function checkPalette(){
   const css=d.querySelector('link[data-night="palette"]');assert(css?.hasAttribute('data-shell-style'),'palette CSS belongs to persistent shell');
   await w.TMURouter.navigate('https://guide.test/mth141/');await pause(180);assert.equal(d.querySelector('.ns-palette'),palette);assert.equal(d.querySelector('link[data-night="palette"]'),css);
   await open();query('midterm');assert.match(active().textContent,/Fri Oct 16/,'route change indexes destination deadlines');key('Escape');await pause(20);
-  await w.TMURouter.navigate('https://guide.test/');await pause(100);await open(d.querySelector('.hub-theme'));query('week 9');assert(palette.querySelector('[aria-disabled="true"]'),'Desk week results disabled');key('Escape');
+  await w.TMURouter.navigate('https://guide.test/');await pause(100);await open(d.querySelector('.hub-theme'));query('week 9');assert(palette.querySelector('[aria-disabled="true"]'),'Desk week results disabled');assert(!options().some(o=>/Search the guide/.test(o.textContent)),'no guide search on the Desk');key('Enter');await pause(20);assert(palette.open,'a disabled Desk week runs nothing');key('Escape');
   assert.deepEqual(errors,[],'palette runtime errors');
   console.log('palette: shortcuts, focus handoffs, filter opening, holds, weeks, fallback search, 20 cycles and route reindex passed');
  }finally{dom.window.close();}
 }
-(async()=>{await checkPalette();await checkDesk('off','completed');await checkDesk('on','sections');await checkDesk('off','fresh');await check('cen100/','cen100');await check('mth140/','mth140');await check('mth141/','mth141');await check('cen100/','cen100','on');await check('mth140/','mth140','on');await check('mth141/','mth141','on');await checkRoutes();await checkRoutes('https://guide.test/tmu-course-guides/')})().catch(e=>{console.error(e);process.exit(1)});
+(async()=>{await checkPalette();await checkDesk('off','completed');await checkDesk('on','sections');await checkDesk('off','fresh');await check('cen100/','cen100');await check('mth140/','mth140');await check('mth141/','mth141');await check('cen100/','cen100','on');await check('mth140/','mth140','on');await check('mth141/','mth141','on');await checkRoutes();await checkRoutes('https://guide.test/tmu-course-guides/');await checkRoutes('https://guide.test/tmu-course-guides/','on')})().catch(e=>{console.error(e);process.exit(1)});

@@ -6,6 +6,8 @@
 <link rel="stylesheet" href="../assets/fonts/archivo.css?v=20261012-privacy1">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- The guide mark, inline: a /favicon.ico request would leave the project base on GitHub Pages. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='3' fill='%23102a2d'/%3E%3Cpath d='M8 15 17 10v21l-9 5zm12-1 12-6v21l-12 6zm-9-6 9-5 4 4-9 5z' fill='%23f5e5d4'/%3E%3C/svg%3E">
 <title>CEN100 | TMU Course Guides</title>
 <meta name="description" content="CEN100 Fall 2026 at TMU: assignment deadlines, requirements, checklists, course clarifications and section/group contacts.">
 <link rel="stylesheet" href="../assets/hub.css?v=20261012-desk1">
@@ -274,20 +276,20 @@ footer{margin-top:34px;display:flex;justify-content:space-between;gap:12px;flex-
 .updates-badge[hidden],.share-fallback[hidden]{display:none}
 </style>
 <link rel="stylesheet" href="../assets/editorial.css?v=20261011-editorial2">
-<link rel="stylesheet" href="../assets/workspace.css?v=20261012-desk1">
+<link rel="stylesheet" href="../assets/workspace.css?v=20261013-qa1">
 <link rel="stylesheet" href="../assets/course-header.css?v=20261012-subject1">
 <link rel="stylesheet" href="../assets/guide-motion.css?v=20261011-cinema3">
 <!-- Render CEN coursework before mounting the shared route enhancements. -->
-<script type="module" data-route-module src="../assets/cen-guide.mjs?v=20261012-route1"></script>
+<script type="module" data-route-module src="../assets/cen-guide.mjs?v=20261013-resilience1"></script>
 <script type="module" data-route-module src="../assets/visuals.js?v=20261013-shift1"></script>
 <script type="module" data-route-module src="../assets/editorial.mjs?v=20261013-shift1"></script>
 <script type="module" data-route-module src="../assets/workspace.mjs?v=20261013-shift1"></script>
-<script type="module" data-route-module src="../assets/course-header.mjs?v=20261013-shift1"></script>
-<script type="module" data-route-module src="../assets/night/boot.mjs?v=20261013-shift1"></script>
-<link rel="stylesheet" href="../assets/night/layout.css?v=20261013-shift1">
-<script type="module" data-shell-module src="../assets/guide-motion.mjs"></script>
-<script type="module" data-shell-module src="../assets/night/core.mjs?v=20261013-shift1"></script>
-<script type="module" src="../assets/app/route-boot.mjs"></script>
+<script type="module" data-route-module src="../assets/course-header.mjs?v=20261013-qa1"></script>
+<script type="module" data-route-module src="../assets/night/boot.mjs?v=20261013-shift2"></script>
+<link rel="stylesheet" href="../assets/night/layout.css?v=20261013-shift2">
+<script type="module" data-shell-module src="../assets/guide-motion.mjs?v=20261013-qa1"></script>
+<script type="module" data-shell-module src="../assets/night/core.mjs?v=20261013-shift2"></script>
+<script type="module" src="../assets/app/route-boot.mjs?v=20261013-transition1"></script>
 </head>
 <body class="editorial" data-course="cen100">
 <main class="wrap" data-route-region>
@@ -354,6 +356,42 @@ footer{margin-top:34px;display:flex;justify-content:space-between;gap:12px;flex-
     <label class="tool-check"><input type="checkbox" id="hide-completed">Hide fully checked items</label>
     <p class="tool-status" id="filter-status" role="status"></p>
   </section>
+
+  <noscript>
+    <section aria-label="CEN100 coursework and assessment dates">
+      <h2>Coursework and assessment dates</h2>
+      <p>Published dates are listed below. Check D2L for submission details, your assigned lab times and any announcements. Progress and section tools require JavaScript.</p>
+      <ol data-nojs-coursework>
+        <li data-nojs-assessment="intro"><strong>Personal Introduction due</strong> — <time datetime="2026-09-16">Wed, Sep 16, 2026</time>; Time not posted.</li>
+        <li data-nojs-assessment="entry"><strong>Entry Survey due</strong> — <time datetime="2026-09-16">Wed, Sep 16, 2026</time>; Time not posted.</li>
+        <li data-nojs-assessment="syllabus"><strong>Course Syllabus Quiz due</strong> — <time datetime="2026-09-16">Wed, Sep 16, 2026</time>; Time not posted.</li>
+        <li data-nojs-assessment="email"><strong>Professional Email Assignment due</strong> — <time datetime="2026-09-23">Wed, Sep 23, 2026</time>; Time not posted.</li>
+        <li data-nojs-assessment="contract"><strong>Team Contract + Task Outline due</strong> — <time datetime="2026-09-23">Wed, Sep 23, 2026</time>; Time not posted.</li>
+        <li data-nojs-assessment="outline"><strong>Project Outline + User Research due</strong> — <time datetime="2026-10-02">Fri, Oct 2, 2026</time>; Time not posted. Due by the end of the day. Check D2L for the exact submission time.</li>
+        <li data-nojs-assessment="matlab-1"><strong>MATLAB Assignment 1 due</strong> — <time datetime="2026-10-07">Wed, Oct 7, 2026</time>; Time not posted.</li>
+        <li data-nojs-assessment="whmis"><strong>WHMIS certification due</strong> — <time datetime="2026-10-14">Wed, Oct 14, 2026</time>; Time not posted.</li>
+        <li data-nojs-assessment="integrity"><strong>Academic Integrity Quiz due</strong> — <time datetime="2026-10-14">Wed, Oct 14, 2026</time> at 3:00 PM Toronto.</li>
+        <li data-nojs-assessment="failure"><strong>Failure Analysis Labs: both parts due</strong> — <time datetime="2026-10-21">Wed, Oct 21, 2026</time>; Time not posted.</li>
+        <li data-nojs-assessment="reflection-1"><strong>Personal Reflection 1 due</strong> — <time datetime="2026-10-28">Wed, Oct 28, 2026</time>; Time not posted. Email directly to your assigned Project Manager; no D2L submission box.</li>
+        <li data-nojs-assessment="review"><strong>Midterm Design Review</strong> — <time datetime="2026-11-04">Wed, Nov 4, 2026</time>; Time not posted. In your assigned lab. Confirm your presentation time on D2L.</li>
+        <li data-nojs-assessment="notebook-1"><strong>Team design notebook PDF: checkpoint 1 due</strong> — <time datetime="2026-11-04">Wed, Nov 4, 2026</time> at 3:00 PM Toronto.</li>
+        <li data-nojs-assessment="matlab-2"><strong>MATLAB Assignment 2 due</strong> — <time datetime="2026-11-04">Wed, Nov 4, 2026</time>; Time not posted.</li>
+        <li data-nojs-assessment="prototype"><strong>Low-Fidelity Prototype due</strong> — <time datetime="2026-11-25">Wed, Nov 25, 2026</time> at 3:00 PM Toronto.</li>
+        <li data-nojs-assessment="presentation-1"><strong>First Final Presentation</strong> — <time datetime="2026-11-25">Wed, Nov 25, 2026</time>; Time not posted. Confirm your assigned presentation time on D2L.</li>
+        <li data-nojs-assessment="presentation-2"><strong>Final Presentation and Innovation Showcase</strong> — <time datetime="2026-12-02">Wed, Dec 2, 2026</time>; Time not posted. Confirm your assigned presentation time on D2L.</li>
+        <li data-nojs-assessment="notebook-2"><strong>Team design notebook PDF: checkpoint 2 due</strong> — <time datetime="2026-12-02">Wed, Dec 2, 2026</time> at 3:00 PM Toronto.</li>
+        <li data-nojs-assessment="reflection-2"><strong>Personal Reflection 2 due</strong> — <time datetime="2026-12-02">Wed, Dec 2, 2026</time>; Time not posted. Email directly to your assigned Project Manager; no D2L submission box.</li>
+        <li data-nojs-assessment="exit"><strong>Exit Survey due</strong> — <time datetime="2026-12-02">Wed, Dec 2, 2026</time>; Time not posted.</li>
+        <li data-nojs-assessment="peer"><strong>Peer Evaluation due</strong> — <time datetime="2026-12-02">Wed, Dec 2, 2026</time>; Time not posted.</li>
+        <li data-nojs-assessment="report"><strong>Final Report due</strong> — <time datetime="2026-12-02">Wed, Dec 2, 2026</time> at 11:59 PM Toronto.</li>
+        <li data-nojs-assessment="failure-lab"><strong>Failure Analysis Part 1 in lab (Section 29)</strong> — <time datetime="2026-10-14">Wed, Oct 14, 2026</time>; Time not posted.</li>
+        <li data-nojs-assessment="showcase-signup"><strong>Showcase sign-up (around now; check D2L)</strong> — <time datetime="2026-11-18">Wed, Nov 18, 2026</time>; Time not posted.</li>
+        <li data-nojs-assessment="attendance"><strong>Tutorial attendance quizzes</strong> — during your assigned tutorial. Section 29: Wednesday, 5:45–6:00 PM Toronto; other sections: check D2L.</li>
+        <li data-nojs-assessment="final"><strong>Final exam</strong> — Date pending. Two hours in person; check the Registrar and D2L for the official schedule.</li>
+      </ol>
+      <nav aria-label="Course guides"><a href="../">Desk</a> · <a href="../cen100/">CEN100</a> · <a href="../mth140/">MTH140</a> · <a href="../mth141/">MTH141</a></nav>
+    </section>
+  </noscript>
 
   <nav class="tabs" role="tablist" aria-label="Sections">
     <button class="tab" role="tab" aria-selected="true" aria-controls="p-team" id="t-team"><span data-i="team"></span>Team</button>
@@ -530,7 +568,7 @@ footer{margin-top:34px;display:flex;justify-content:space-between;gap:12px;flex-
 </main>
 
 
-<script data-shell-module src="../assets/hub.js?v=20261013-shift1"></script>
+<script data-shell-module src="../assets/hub.js?v=20261013-qa1"></script>
 <!-- Cloudflare Web Analytics temporarily paused on 2026-10-10; restore the beacon from Git history to resume. -->
 </body>
 </html>

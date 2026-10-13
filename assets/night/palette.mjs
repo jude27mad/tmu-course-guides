@@ -1,8 +1,20 @@
 /* The command palette is a shell service. Its data helpers stay pure for the Desk
    and tests; browser services are imported only when mount() initialises it. */
-import {SCHEDULE} from '../cen-schedule.mjs';
-import {resolveTarget,readSaved} from './targets.mjs';
+import {SCHEDULE} from '../cen-schedule.mjs?v=20261013-shift1';
+import {resolveTarget,readSaved} from './targets.mjs?v=20261013-shift1';
 import {recordsForCourse,semesterWeeks,findWeek} from '../book/weeks.mjs';
+
+/* Visible text and screen-reader labels from docs/copy/interface-copy.md ("Command palette"). */
+export const COPY={
+ title:'Search',
+ placeholder:'Search courses, weeks, topics…',label:'Search courses, assessments, weeks, and topics',
+ suggestion:query=>`Search the guide for "${query}"`,suggestionLabel:query=>`Search the guide for ${query}`,
+ empty:query=>`No results for "${query}"`,emptyLabel:query=>`No results for ${query}. Try another search`,
+ clear:'Clear',clearLabel:'Clear search',close:'Close',closeLabel:'Close search',
+ results:count=>count===1?'1 result':`${count} results`
+};
+/** Group headings in display order of the copy: visible heading -> screen-reader label. */
+export const GROUPS={Courses:'Courses',Assessments:'Assessments',Weeks:'Semester weeks',Topics:'Study topics',Actions:'Actions'};
 
 /** Best case-insensitive subsequence, favouring prefixes, words and runs. */
 export function fuzzyMatch(label,query){
@@ -25,6 +37,19 @@ export function fuzzyMatch(label,query){
  return previous.reduce((best,value)=>value&&(!best||value.score>best.score)?value:best,null);
 }
 
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+/** Week wording from the copy's Course book table: "Week 9 · Nov 2–8", read as "Week 9, November 2 to 8";
+    the partial first week and the final day keep their own wording. Dates are Toronto calendar strings. */
+export function weekCopy(week){
+ const n=week.index+1;if(!week.start)return {label:week.label||`Week ${n}`,ariaLabel:null}; // e.g. "Exam · Date pending"
+ const [,sm,sd]=week.start.split('-').map(Number),[,em,ed]=(week.end||week.start).split('-').map(Number),short=m=>MONTHS[m-1].slice(0,3);
+ const single=week.start===(week.end||week.start),same=sm===em;
+ const range=single?`${short(sm)} ${sd}`:same?`${short(sm)} ${sd}–${ed}`:`${short(sm)} ${sd}–${short(em)} ${ed}`;
+ const spoken=single?`${MONTHS[sm-1]} ${sd}`:same?`${MONTHS[sm-1]} ${sd} to ${ed}`:`${MONTHS[sm-1]} ${sd} to ${MONTHS[em-1]} ${ed}`;
+ const note=!week.partial?'':week.index===0?'. Partial first week':single?'. Final day of the semester':'';
+ return {label:`Week ${n} · ${range}`,ariaLabel:`Week ${n}, ${spoken}${note}`};
+}
+
 /** Build commands from unchanged course records; target is the guide's handle. */
 export function buildIndex({course='desk',data=null,section=0,completed={},itemTitles={},now=Date.now(),base=null,exists=()=>true,theme='auto',motionPaused=false,motionForced=false,sound=false}={}){
  const entries=[],math=course==='mth140'||course==='mth141',desk=course==='desk';
@@ -41,19 +66,22 @@ export function buildIndex({course='desk',data=null,section=0,completed={},itemT
  }
  const records=desk?[]:recordsForCourse(course,{courseData:data,cenSchedule:data||[],section,completed});
  const weeks=semesterWeeks({records});
- for(const week of weeks)add('week-'+week.index,'Weeks',week.label,'week',{index:week.index,disabled:desk,hint:desk?'Open a course to choose a week':week.start?`${week.start} – ${week.end}`:'Date pending'});
+ for(const week of weeks){const copy=weekCopy(week);add('week-'+week.index,'Weeks',copy.label,'week',{index:week.index,disabled:desk,ariaLabel:copy.ariaLabel,hint:desk?'Open a course to choose a week':week.start||/pending/i.test(copy.label)?'':'Date pending'});}
+ // The current course's views sit with the course places: both move between pages of the guide.
  if(!desk){
-  add('view-assignments','Views','Assignments','view',{target:'assignments',default:true});
-  if(math)add('view-study','Views','Study','view',{target:'study',default:true});
-  add('view-info','Views','Course info','view',{target:'info',default:true});
+  add('view-assignments','Courses','Assignments','view',{target:'assignments',default:true});
+  if(math)add('view-study','Courses','Study','view',{target:'study',default:true});
+  add('view-info','Courses','Course info','view',{target:'info',default:true});
  }
- for(const [id,label] of [['desk','Desk'],['cen100','CEN100 · Engineering'],['mth140','MTH140 · Calculus I'],['mth141','MTH141 · Linear Algebra']])add('place-'+id,'Places',label,'place',{url:base?new URL(id==='desk'?'':id+'/',base).href:id==='desk'?'/':'/'+id+'/',default:true});
- if(math&&data)for(const topic of data.topics)add('topic-'+topic.id,'Math topics',topic.title,'topic',{target:'topic-'+topic.id,hint:topic.sections,keywords:topic.description});
+ for(const [id,label] of [['desk','Desk'],['cen100','CEN100 · Engineering'],['mth140','MTH140 · Calculus I'],['mth141','MTH141 · Linear Algebra']])add('place-'+id,'Courses',label,'place',{url:base?new URL(id==='desk'?'':id+'/',base).href:id==='desk'?'/':'/'+id+'/',default:true});
+ if(math&&data)for(const topic of data.topics)add('topic-'+topic.id,'Topics',topic.title,'topic',{target:'topic-'+topic.id,hint:topic.sections,keywords:topic.description});
  for(const [id,label,selector] of [['work',"This week's work",'#quick-work'],['contacts','Contacts','#quick-contacts'],['tools','Guide tools','.workspace-tools']])if(exists(selector))add('action-'+id,'Actions',label,'click',{target:selector,default:true});
  if(!desk&&exists('#calendar-tools'))add('action-calendar','Actions','Export calendar','calendar',{default:true});
  if(exists('.hub-theme'))add('action-theme','Actions',`Theme · ${theme}`,'click',{target:'.hub-theme',default:true});
  add('action-motion','Actions',motionPaused?'Play motion':'Pause motion','motion',{disabled:motionForced,hint:motionForced?'Reduced motion is enabled by your device or page setting':'',default:true});
- add('action-sound','Actions',sound?'Sound off':'Sound on','sound',{default:true});
+ // Sound reads as its state, with the action alongside ("Sound off. Turn sound on").
+ {const turn=sound?'Turn sound off':'Turn sound on',state=sound?'Sound on':'Sound off';
+  add('action-sound','Actions',state,'sound',{hint:turn,keywords:turn,ariaLabel:`${state}. ${turn}`,default:true});}
  add('action-d2l','Actions','Open D2L','external',{url:'https://courses.torontomu.ca/',default:true});
  return {course,entries,weeks};
 }
@@ -80,15 +108,18 @@ let service=null,starting=null;
 /** Initialises once, deliberately independent of a route AbortSignal. */
 export function mount(){
  if(service)return Promise.resolve(service);
- return starting??=import('./core.mjs').then(core=>{
+ return starting??=import('./core.mjs?v=20261013-shift2').then(core=>{
   service=createService(core);return service.reindex().then(()=>service);
  }).catch(error=>{starting=null;throw error;});
 }
 function createService(core){
  const dialog=document.createElement('dialog');dialog.className='ns-palette';dialog.id='ns-palette';dialog.setAttribute('aria-labelledby','ns-palette-title');
- dialog.innerHTML='<header><h2 id="ns-palette-title">Go to…</h2><button type="button" data-palette-close aria-label="Close command palette">Close</button></header><label class="ns-palette-label" for="ns-palette-input">Search commands and course work</label><input id="ns-palette-input" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ns-palette-results" autocomplete="off"><div id="ns-palette-results" role="listbox" aria-label="Commands"></div><p class="ns-palette-status" aria-live="polite"></p>';
+ dialog.innerHTML='<header><h2 id="ns-palette-title"></h2><button type="button" data-palette-close></button></header><div class="ns-palette-field"><label class="ns-palette-label" for="ns-palette-input"></label><input id="ns-palette-input" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ns-palette-results" autocomplete="off" spellcheck="false"><button type="button" data-palette-clear hidden></button></div><p class="ns-palette-empty" data-palette-empty aria-hidden="true" hidden></p><div id="ns-palette-results" role="listbox"></div><p class="ns-palette-status" aria-live="polite"></p>';
  document.body.append(dialog);
  const input=dialog.querySelector('input'),list=dialog.querySelector('[role="listbox"]'),status=dialog.querySelector('[aria-live]');
+ const closeButton=dialog.querySelector('[data-palette-close]'),clearButton=dialog.querySelector('[data-palette-clear]'),empty=dialog.querySelector('[data-palette-empty]');
+ dialog.querySelector('h2').textContent=COPY.title;dialog.querySelector('label').textContent=COPY.label;input.placeholder=COPY.placeholder;list.setAttribute('aria-labelledby','ns-palette-title');
+ closeButton.textContent=COPY.close;closeButton.setAttribute('aria-label',COPY.closeLabel);clearButton.textContent=COPY.clear;clearButton.setAttribute('aria-label',COPY.clearLabel);
  let index={entries:[],weeks:[]},results=[],active=-1,opener=null,restore=true,bypass=false,version=0,holding=false;
  const release=()=>{if(holding){holding=false;core.release('palette');}};
  const select=position=>{
@@ -104,12 +135,19 @@ function createService(core){
   select(edge?(direction>0?enabled.at(-1):enabled[0]):enabled[(at+direction+enabled.length)%enabled.length]);
  };
  const render=(preserve=false)=>{
-  const previous=preserve===true?results[active]?.id:null;
-  results=[...searchIndex(index,input.value),{id:'guide-search',group:'Search the guide',label:`Search the guide for "${input.value}"`,type:'search',disabled:!document.querySelector('#guide-search'),match:{indices:[]}}];
-  list.replaceChildren();let group=null,parent;
+  const previous=preserve===true?results[active]?.id:null,query=input.value.trim(),found=searchIndex(index,input.value);
+  // The guide-search suggestion closes every non-empty query on a course page; it has no group heading.
+  results=[...found];
+  if(query&&document.querySelector('#guide-search'))results.push({id:'guide-search',group:null,label:COPY.suggestion(query),ariaLabel:COPY.suggestionLabel(query),type:'search',match:{indices:[]}});
+  clearButton.hidden=!input.value;
+  empty.hidden=!(query&&!found.length);empty.textContent=empty.hidden?'':COPY.empty(query);
+  list.replaceChildren();let group,parent=list;
   results.forEach((entry,i)=>{
-   if(group!==entry.group){group=entry.group;parent=document.createElement('div');parent.setAttribute('role','group');const label=document.createElement('div');label.className='ns-palette-group';label.id='ns-palette-group-'+i;label.textContent=group;parent.setAttribute('aria-labelledby',label.id);parent.append(label);list.append(parent);}
-   const option=document.createElement('div');option.id='ns-palette-option-'+i;option.dataset.result=i;option.setAttribute('role','option');option.setAttribute('aria-selected','false');if(entry.disabled)option.setAttribute('aria-disabled','true');
+   if(group!==entry.group){
+    group=entry.group;parent=list;
+    if(group){parent=document.createElement('div');parent.setAttribute('role','group');parent.setAttribute('aria-label',GROUPS[group]||group);const label=document.createElement('div');label.className='ns-palette-group';label.setAttribute('aria-hidden','true');label.textContent=group;parent.append(label);list.append(parent);}
+   }
+   const option=document.createElement('div');option.id='ns-palette-option-'+i;option.dataset.result=i;option.setAttribute('role','option');option.setAttribute('aria-selected','false');if(entry.disabled)option.setAttribute('aria-disabled','true');if(entry.ariaLabel)option.setAttribute('aria-label',entry.ariaLabel);
    const title=document.createElement('span'),matched=new Set(entry.match?.indices||[]);let mark=null;
    for(const [position,char] of [...entry.label].entries()){
     if(matched.has(position)){if(!mark){mark=document.createElement('mark');title.append(mark);}mark.append(char);}else{mark=null;title.append(char);}
@@ -117,7 +155,8 @@ function createService(core){
    option.append(title);if(entry.hint){const hint=document.createElement('small');hint.textContent=entry.hint;option.append(hint);}parent.append(option);
   });
   const remembered=results.findIndex(e=>e.id===previous&&!e.disabled);select(remembered>=0?remembered:results.findIndex(e=>!e.disabled));
-  status.textContent=`${results.filter(e=>!e.disabled).length} commands. Use arrow keys to choose and Enter to open.`;
+  // Search results announce their count; the suggested defaults on open are not a search.
+  status.textContent=!query?'':found.length?COPY.results(found.length):COPY.emptyLabel(query);
  };
  const reindex=async()=>{
   const ticket=++version,course=core.route(),data=core.isMath()?await core.courseData():course==='cen100'?SCHEDULE:null;
@@ -213,7 +252,8 @@ function createService(core){
  list.addEventListener('pointermove',event=>{const option=event.target.closest('[data-result]');if(option&&!results[Number(option.dataset.result)]?.disabled)select(Number(option.dataset.result));});
  list.addEventListener('pointerdown',event=>event.preventDefault());
  list.addEventListener('click',event=>{const option=event.target.closest('[data-result]');if(option)run(Number(option.dataset.result));});
- dialog.querySelector('[data-palette-close]').addEventListener('click',()=>close());
+ closeButton.addEventListener('click',()=>close());
+ clearButton.addEventListener('click',()=>{input.value='';render();input.focus();});
  dialog.addEventListener('cancel',event=>{event.preventDefault();close();});
  dialog.addEventListener('close',()=>{if(!dialog.open&&opener)finish();});
  dialog.addEventListener('click',event=>{if(event.target===dialog){const box=dialog.getBoundingClientRect();if(event.clientX<box.left||event.clientX>box.right||event.clientY<box.top||event.clientY>box.bottom)close();}});

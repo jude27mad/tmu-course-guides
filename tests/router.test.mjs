@@ -60,7 +60,7 @@ test('navigation disposes in reverse order, aborts old handlers and preserves th
  assert.equal(f.window.document.title,'cen100 title');assert.equal(f.window.document.body.dataset.page,undefined);assert.equal(f.window.document.body.dataset.course,'cen100');
  assert.equal(f.window.document.body.className,'cen100-class');assert.equal(f.window.document.activeElement.id,'cen100-main');
  assert.equal(f.window.document.querySelector('[data-router-announcement]').textContent,'CEN100 guide');
- assert.deepEqual(f.events,[{route:'cen100',from:'desk'}]);assert.ok(f.calls.findIndex(c=>c[0]==='transition')<f.calls.findIndex(c=>c[0]==='dispose'));
+ assert.deepEqual(f.events,[{route:'cen100',from:'desk',transition:{continuing:false}}]);assert.ok(f.calls.findIndex(c=>c[0]==='transition')<f.calls.findIndex(c=>c[0]==='dispose'));
  f.close();
 });
 
@@ -73,10 +73,33 @@ test('head sync keeps outgoing styles until incoming sheets load and follows des
  await new Promise(resolve=>setTimeout(resolve,0));
  assert.ok(f.window.document.querySelector('link[href="desk-only.css"]'));assert.match(f.window.document.head.textContent,/\.old/);
  resolveStyle();await navigation;
- assert.equal(f.window.document.querySelector('link[href="desk-only.css"]'),null);assert.doesNotMatch(f.window.document.head.textContent,/\.old/);
- const assets=[...f.window.document.head.querySelectorAll('link[rel="stylesheet"],style')];
+ assert.equal(f.window.document.querySelector('link[href="desk-only.css"]').getAttribute('media'),'not all','outgoing sheet is inert in its cache');assert.doesNotMatch(f.window.document.head.textContent,/\.old/);
+ const assets=[...f.window.document.head.querySelectorAll('link[rel="stylesheet"],style')].filter(node=>(node.sheet?.media.mediaText??node.getAttribute('media')??'')!=='not all');
  assert.deepEqual(assets.map(node=>node.tagName==='STYLE'?node.textContent:new URL(node.href).pathname.split('/').at(-1)),['common.css','cen-only.css','.cen{color:blue}']);
  assert.equal(f.window.document.querySelector('meta[name="description"]').content,'cen100 description');f.close();
+});
+
+test('warmed routes reuse loaded stylesheet nodes when the browser goes offline',async()=>{
+ let online=true,loads=0;
+ const styles=route=>['/tmu-course-guides/assets/common.css',`/tmu-course-guides/assets/${route}.css`];
+ const f=fixture({page:html('desk',{styles:styles('desk')}),loadStylesheet:async()=>{
+  assert.equal(online,true,'offline routes cannot load a stylesheet again');loads++;
+ }});
+ try{
+  for(const route of ['desk','cen100','mth140','mth141'])f.documents.set(route,html(route,{styles:styles(route)}));
+  for(const route of ['cen100','mth140','mth141','desk'])assert.equal(await f.router.navigate(`/tmu-course-guides/${route==='desk'?'':route+'/'}`),true);
+  const cached=[...f.window.document.head.querySelectorAll('link[rel="stylesheet"]')],loaded=loads;
+  online=false;
+  for(let round=0;round<3;round++)for(const route of ['cen100','mth140','mth141','desk']){
+   assert.equal(await f.router.navigate(`/tmu-course-guides/${route==='desk'?'':route+'/'}`),true,'offline '+route);
+   assert.equal(f.router.route,route);
+   const sheets=[...f.window.document.head.querySelectorAll('link[rel="stylesheet"]')];
+   assert.deepEqual(sheets,cached,'retained sheets never move, disappear or grow');
+   const active=sheets.filter(link=>(link.sheet?.media.mediaText??link.getAttribute('media')??'')!=='not all');
+   assert.deepEqual(active.map(link=>new URL(link.href).pathname),styles(route),'only the authored sheets apply, in order');
+  }
+  assert.equal(loads,loaded);assert.deepEqual(f.fallback,[]);
+ }finally{f.close();}
 });
 
 test('prefetch deduplicates requests and bounds parsed document cache',async()=>{
@@ -92,6 +115,45 @@ test('fetch, region, reload-required, transition and mount errors fall back to f
   if(cause==='region')f.documents.set('cen100',html('cen100',{region:false}));
   if(cause==='transition')f.window.document.addEventListener('route-will-change',event=>event.detail.waitUntil(Promise.reject(Error('transition failed'))));
   await f.router.navigate('cen100/');assert.deepEqual(f.fallback,['https://guide.test/tmu-course-guides/cen100/'],cause);f.close();
+ }
+});
+
+for(const stalled of ['fetch','body'])test(`a stalled document ${stalled} falls back once with the whole destination URL`,async()=>{
+ let release,signal;
+ const pending=new Promise(resolve=>{release=resolve;});
+ const destination='https://guide.test/tmu-course-guides/cen100/?motion=off#course-info';
+ const f=fixture({fetch:async(url,init)=>{
+  signal=init.signal;
+  if(stalled==='fetch')await pending;
+  return {ok:true,url,text:async()=>{if(stalled==='body')await pending;return html('cen100');}};
+ }});
+ // Advance browser timers without waiting ten real seconds. The fetch itself deliberately
+ // ignores its signal, as a service worker or non-cooperating network adapter can do.
+ const setTimer=f.window.setTimeout.bind(f.window);
+ f.window.setTimeout=(callback,delay,...args)=>setTimer(callback,Math.min(delay,20),...args);
+ try{
+  const navigation=f.router.navigate(destination);
+  const result=await Promise.race([navigation,new Promise(resolve=>setTimeout(()=>resolve('pending'),150))]);
+  assert.equal(result,false,'a hung document request must reach normal navigation');
+  assert.equal(signal.aborted,true,'the timed-out request is aborted');
+  assert.deepEqual(f.fallback,[destination]);
+  release();await new Promise(resolve=>setTimeout(resolve,30));
+  assert.deepEqual(f.fallback,[destination],'late completion cannot navigate a second time');
+  assert.equal(f.router.route,'desk','late completion cannot commit the destination');
+ }finally{release();f.close();}
+});
+
+test('HTTP 500 and aborted requests each navigate normally once with query and hash',async()=>{
+ for(const failure of ['500','abort']){
+  const f=fixture({fetch:async()=>{
+   if(failure==='abort')throw new DOMException('Request aborted','AbortError');
+   return {ok:false,status:500};
+  }});
+  try{
+   const destination='https://guide.test/tmu-course-guides/cen100/?motion=off#course-info';
+   assert.equal(await f.router.navigate(destination),false);
+   assert.deepEqual(f.fallback,[destination],failure);
+  }finally{f.close();}
  }
 });
 
@@ -264,9 +326,13 @@ test('canceling the latest of queued Back traversals restores the mounted entry'
  f.router.start();await f.router.navigate('cen100/');await f.router.navigate('../mth140/');
  for(let i=0;i<4;i++)await f.router.prefetch(`/tmu-course-guides/mth141/?variant=${i}`);
  const href=f.window.location.href,state=f.window.history.state,length=f.window.history.length,main=f.window.document.querySelector('main');
- block=true;f.window.document.addEventListener('route-will-change',event=>event.preventDefault(),{once:true});
+ block=true;
  const restored=new Promise(resolve=>f.window.addEventListener('popstate',()=>{if(f.window.location.href===href)resolve();}));
- f.window.history.back();await started;f.window.history.back();await restored;release();
+ f.window.history.back();await started;
+ // route-will-change now starts alongside fetch; install the veto at the boundary
+ // where the second (latest) traversal starts, not before the first one.
+ f.window.document.addEventListener('route-will-change',event=>event.preventDefault(),{once:true});
+ f.window.history.back();await restored;release();
  assert.equal(f.window.history.length,length);assert.deepEqual(f.window.history.state,state);assert.equal(f.window.location.href,href);assert.equal(f.router.route,'mth140');assert.equal(f.window.document.title,'mth140 title');assert.equal(f.window.document.body.dataset.course,'mth140');assert.equal(f.window.document.querySelector('main'),main);assert.deepEqual(f.fallback,[]);f.close();
 });
 
@@ -291,7 +357,7 @@ test('head sync never moves a loaded sheet, keeps incoming sheets inert until co
  router.start();
  const head=window.document.head,[fonts,hub]=head.querySelectorAll('link'),moved=[];
  new window.MutationObserver(records=>{for(const r of records)for(const node of [...r.removedNodes,...r.addedNodes])if(node===fonts||node===hub)moved.push(node);}).observe(head,{childList:true});
- const resolved=()=>[...head.querySelectorAll('link[rel="stylesheet"]')].map(link=>new URL(link.getAttribute('href'),link===fonts||link===hub?'https://guide.test/tmu-course-guides/cen100/':window.location.href).pathname);
+ const resolved=()=>[...head.querySelectorAll('link[rel="stylesheet"]')].filter(link=>(link.sheet?.media.mediaText??link.getAttribute('media')??'')!=='not all').map(link=>new URL(link.getAttribute('href'),link===fonts||link===hub?'https://guide.test/tmu-course-guides/cen100/':window.location.href).pathname);
  let changed=new Promise(resolve=>window.document.addEventListener('route-changed',resolve,{once:true}));
  window.history.back();await until(()=>head.querySelector('link[href$="desk.css"]'),'incoming sheet was not prepared');
  const incoming=head.querySelector('link[href$="desk.css"]');
@@ -309,7 +375,7 @@ test('head sync never moves a loaded sheet, keeps incoming sheets inert until co
  router.stop();window.close();
 });
 
-test('scrolling keeps positions in memory and writes history only after scrolling settles or when the page is hidden',async()=>{
+test('scrolling keeps positions in memory and writes history at most once a second or when the page is hidden',async()=>{
  const dom=new JSDOM(html(),{url:'https://guide.test/tmu-course-guides/',pretendToBeVisual:true}),{window}=dom;let y=0,writes=0;
  Object.defineProperty(window,'scrollY',{get:()=>y});window.scrollTo=(a,b)=>{y=b;};
  const replace=window.history.replaceState;window.history.replaceState=function(...args){writes++;return replace.apply(this,args);};
@@ -317,11 +383,15 @@ test('scrolling keeps positions in memory and writes history only after scrollin
  router.start();writes=0;
  for(let i=1;i<=300;i++){y=i*10;window.dispatchEvent(new window.Event('scroll'));}
  assert.equal(writes,0,'no history write per scroll event');
- await new Promise(resolve=>setTimeout(resolve,500));
- assert.equal(writes,1,'one write once scrolling settles');assert.deepEqual(window.history.state.__tmuRouter.scroll,[0,3000]);
- y=1234;window.dispatchEvent(new window.Event('scroll'));window.dispatchEvent(new window.Event('pagehide'));
- assert.equal(writes,2);assert.deepEqual(window.history.state.__tmuRouter.scroll,[0,1234],'pagehide stores the position for a reload or a later Back');
- await new Promise(resolve=>setTimeout(resolve,500));assert.equal(writes,2,'the pending timer was replaced, not repeated');
+ await new Promise(resolve=>setTimeout(resolve,400));
+ assert.equal(writes,1,'one write shortly after scrolling');assert.deepEqual(window.history.state.__tmuRouter.scroll,[0,3000]);
+ // Continuous scrolling for 2.5 s: one write per second at most, and the last position is always stored.
+ const started=Date.now();while(Date.now()-started<2500){y+=7;window.dispatchEvent(new window.Event('scroll'));await new Promise(resolve=>setTimeout(resolve,16));}
+ await new Promise(resolve=>setTimeout(resolve,1100));
+ assert.ok(writes>=3&&writes<=4,'about one write per second while scrolling, got '+writes);assert.deepEqual(window.history.state.__tmuRouter.scroll,[0,y],'final position stored');
+ const before=writes;y=1234;window.dispatchEvent(new window.Event('scroll'));window.dispatchEvent(new window.Event('pagehide'));
+ assert.equal(writes,before+1);assert.deepEqual(window.history.state.__tmuRouter.scroll,[0,1234],'pagehide stores the position for a later Back');
+ await new Promise(resolve=>setTimeout(resolve,1100));assert.equal(writes,before+1,'the pending timer was absorbed by the pagehide write');
  router.stop();window.close();
 });
 

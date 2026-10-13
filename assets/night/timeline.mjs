@@ -5,7 +5,7 @@
    caption for the selected spread plus the week controls), and the flat timeline becomes the fallback week
    view, built from the same BookState weeks, shown only when the book cannot render. */
 import {scope} from '../route-lifecycle.mjs';
-import {META,$,escape,TERM,today,dateLabel,dayLabel,addDays,scheduleRows,onSchedule,openItem,atLeast,onTier,motionAllowed} from './core.mjs?v=20261013-shift1';
+import {META,$,escape,TERM,today,dateLabel,dayLabel,addDays,scheduleRows,onSchedule,openItem,atLeast,onTier,motionAllowed} from './core.mjs?v=20261013-shift2';
 import {currentBookState,currentBookHost} from '../book/book-state.mjs';
 import {weekIndexFor} from '../book/weeks.mjs';
 import {currentTarget,onTarget} from './deadline.mjs?v=20261013-shift1';

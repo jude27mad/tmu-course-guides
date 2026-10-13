@@ -5,7 +5,7 @@
    Calm by design: no entrance animation, and the clock repaints once a minute (no seconds ticker).
    Route module (plan §12 contract): no import-time side effects; mount(ctx)/unmount() own every timer and
    listener, and all state lives in the current mount so a later router swap rebinds cleanly. */
-import {COURSE_META,$,escape,today,dayLabel,dateLabel,clock} from './core.mjs?v=20261013-shift1';
+import {COURSE_META,$,escape,today,dayLabel,dateLabel,clock} from './core.mjs?v=20261013-shift2';
 import {COURSE_IDS,keys,loadData,readSaved,resolveTarget,overall,parts,compact,sentence} from './targets.mjs?v=20261013-shift1';
 import {DAY_NAMES} from '../schedule.mjs';
 
@@ -75,7 +75,7 @@ function render(){
  const day=$('[data-desk-today]',root),date=today(new Date(now));
  if(day){day.textContent=`${dayLabel(date)}, ${dateLabel(date)} · Toronto`;day.hidden=false;}
  // Wall-clock minute boundaries, never accumulated ticks; nothing runs while the tab is hidden.
- if(!document.hidden)live.timer=setTimeout(render,60000-now%60000+50);
+ if(!document.hidden)live.timer=setTimeout(render,Math.min(60000,60000-now%60000+50));
 }
 
 /* ctx: {root, route, signal, direct}. root defaults to the Desk's <main>; an aborted ctx.signal unmounts. */

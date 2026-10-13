@@ -3,7 +3,7 @@
 export {timestamp,clock,dateLabel,dayLabel,today,addDays,resolveAssessment,timing} from '../schedule.mjs';
 import {loadData} from './targets.mjs?v=20261013-shift1';
 
-export const VERSION='20261013-shift1';
+export const VERSION='20261013-shift2';
 /* Resolve paths against this file. Dynamic imports built this way share module instances with the guide
    (gsap-3.15.0.mjs resolves to the same URL guide-motion.mjs imports), so there is only one GSAP core. */
 export const asset=path=>new URL(path,import.meta.url).href;
@@ -156,7 +156,13 @@ function startWatchdog(gsap){
 /* Feature stylesheets load next to their modules. Resolves when the sheet applies (or fails). */
 export function loadCSS(name){
  const href=asset(`./${name}.css?v=${VERSION}`);
- const existing=document.querySelector(`link[data-night="${name}"]`);if(existing)return Promise.resolve(existing);
+ const existing=document.querySelector(`link[data-night="${name}"]`);
+ if(existing){
+  // The router keeps warmed route sheets inert in place for offline reuse. A remounted
+  // feature owns this sheet again; change its CSSOM media without restarting its request.
+  if(existing.sheet)existing.sheet.media.mediaText='';else existing.removeAttribute('media');
+  return Promise.resolve(existing);
+ }
  return new Promise(resolve=>{const link=document.createElement('link');link.rel='stylesheet';link.href=href;link.dataset.night=name;link.onload=link.onerror=()=>resolve(link);document.head.append(link);});
 }
 

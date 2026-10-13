@@ -53,9 +53,12 @@ async function runCase(env, out, name, fn, {storage={},contextOptions={},browser
   }
 }
 
-async function until(fn,label,timeout=10000) {
+export async function until(fn,label,timeout=10000) {
   const end=Date.now()+timeout;
   while(Date.now()<end) {if(await fn()) return;await sleep(50);}
+  // A slow async reply may be stale when it exhausts the polling budget. Always
+  // make one current observation at the deadline; a still-false predicate fails.
+  if(await fn()) return;
   throw new Error(`Timed out waiting for ${label}`);
 }
 
@@ -262,18 +265,27 @@ function deadlineStorage(course,uncompleted,section) {
   return storage;
 }
 
+// Countdown format from docs/copy/interface-copy.md: one day or more `{d}d {h}h`, under a day
+// `{h}h {mm}m`, under an hour `{m}m`. The Desk adds "left"; the exact instant is "Happening now".
 export function compactExact(at,now) {
-  const ms=Math.max(0,+new Date(at)-+new Date(now));
-  if(!ms) return 'Due time passed';
-  const d=Math.floor(ms/86400000),h=Math.floor(ms/3600000)%24,m=Math.floor(ms/60000)%60;
-  return d?`${d}d ${h}h ${String(m).padStart(2,'0')}m`:`${h}h ${String(m).padStart(2,'0')}m`;
+  const ms=+new Date(at)-+new Date(now);
+  if(ms===0) return 'Happening now';
+  if(ms<0) return 'Due time passed';
+  const s=Math.floor(ms/1000),d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60);
+  return d?`${d}d ${h}h`:h?`${h}h ${String(m).padStart(2,'0')}m`:`${m}m`;
 }
 
 async function surfaces(page,env,course) {
   return page.evaluate(async({base,course})=>{
     const text=s=>document.querySelector(s)?.textContent.trim()??null;
     if(document.body.dataset.page==='desk') return {kind:'desk',overall:{title:text('[data-desk-overall] .desk-next-title'),when:text('[data-desk-overall] .desk-count-when'),timer:!!document.querySelector('[data-desk-overall] .desk-digits'),precision:document.querySelector('[data-desk-overall]')?.dataset.precision,course:document.querySelector('[data-desk-overall]')?.dataset.deskCourse},course:{title:text(`[data-course-card="${course}"] .desk-course-title`),when:text(`[data-course-card="${course}"] .desk-course-when`),chip:text(`[data-course-card="${course}"] .desk-chip`),cta:text(`[data-course-card="${course}"] .desk-cta`),precision:document.querySelector(`[data-course-card="${course}"] [data-desk-next]`)?.dataset.precision}};
-    const module=await import(base+'assets/night/deadline.mjs');
+    // Read the page's own module instance: the guide imports deadline.mjs under its ?v= cache token,
+    // and a bare URL would evaluate a second, never-mounted copy. Follow boot.mjs's own import
+    // (the installed clock replaces performance, so resource timing is not available here).
+    let url=new URL('assets/night/deadline.mjs',base).href;
+    const boot=document.querySelector('script[src*="assets/night/boot.mjs"]')?.src;
+    if(boot){const spec=(await (await fetch(boot)).text()).match(/from\s*['"](\.\/deadline\.mjs[^'"]*)['"]/)?.[1];if(spec)url=new URL(spec,boot).href;}
+    const module=await import(url);
     return {kind:'course',target:module.currentTarget(),card:{title:text(course==='cen100'?'#nextsign .next-open .t':'#next-assessment h2'),id:document.querySelector('[data-quick-complete]')?.dataset.quickComplete,when:text('.ns-count-when'),precision:document.querySelector('.ns-count')?.dataset.precision,cta:text('.ns-count [data-ns-section]'),timer:!!document.querySelector('.ns-count .ns-digits'),key:document.querySelector('.ns-count')?.dataset.key},dock:{title:text('.ns-dock [data-ns-title]'),chip:text('.ns-dock [data-ns-chip]')},hero:{title:text('.ns-hud [data-ns-title]'),chip:text('.ns-hud [data-ns-chip]')}};
   },{base:env.origin+env.base,course});
 }
@@ -286,9 +298,9 @@ function assertSurfaces(out,label,state,fixture,now) {
       assert(out,`${label}: Desk ${name} date/time`,when.every(part=>state[name].when?.includes(part)),state[name].when,when);
       assert(out,`${label}: Desk ${name} precision`,state[name].precision===precision,state[name].precision,precision);
     }
-    if(at) assert(out,`${label}: Desk countdown`,state.course.chip===compactExact(at,now),state.course.chip,compactExact(at,now));
+    if(at) assert(out,`${label}: Desk countdown`,state.course.chip===`${compactExact(at,now)} left`,state.course.chip,`${compactExact(at,now)} left`);
     else {
-      assert(out,`${label}: Desk section CTA`,state.course.cta==='Choose your section for your quiz time',state.course.cta,'Choose your section for your quiz time');
+      assert(out,`${label}: Desk section CTA`,state.course.cta==='Choose section for quiz date',state.course.cta,'Choose section for quiz date');
       assert(out,`${label}: no Desk timer for quiz week`,!state.overall.timer,state.overall.timer,false);
     }
     return;
@@ -303,7 +315,7 @@ function assertSurfaces(out,label,state,fixture,now) {
   }
   if(at) assert(out,`${label}: card timer matches target`,state.card.timer&&state.card.key?.includes(String(+new Date(at))),state.card,`timer for ${at}`);
   else {
-    assert(out,`${label}: course section CTA`,state.card.cta==='Choose your section for your quiz time',state.card.cta,'Choose your section for your quiz time');
+    assert(out,`${label}: course section CTA`,state.card.cta==='Choose section for quiz date',state.card.cta,'Choose section for quiz date');
     assert(out,`${label}: no timer for quiz week`,!state.card.timer,state.card.timer,false);
   }
 }

@@ -1,5 +1,5 @@
 /* Direct loads and router swaps use the same lifecycle and document order. */
-import {createRouter,mountRouteModules,routeFromDocument} from './router.mjs';
+import {createRouter,mountRouteModules,routeFromDocument} from './router.mjs?v=20261013-transition1';
 export {mountRouteModules};
 const boots=new WeakMap();
 const ROUTES=['desk','cen100','mth140','mth141'];
@@ -26,11 +26,11 @@ export function bootDocument(options={}){
     module=await importModule(new URL(script.getAttribute('src'),window.location.href).href);
     if(typeof module.mount!=='function'||typeof module.unmount!=='function')throw Error('Route module lacks mount/unmount');
    }catch(error){console.warn('Route module unavailable',script.getAttribute('src'),error);continue;}
-   try{await module.mount({root,route,signal:controller.signal,direct:true});modules.push(module);}
+   try{await module.mount({root,route,signal:controller.signal,direct:true,transition:{continuing:false}});modules.push(module);}
    catch(error){console.warn('Route module failed to mount',script.getAttribute('src'),error);try{await module.unmount();}catch{}}
   }
   router.adoptRoute({modules,controller});router.start();
-  document.dispatchEvent(new window.CustomEvent('route-changed',{detail:{route:router.route,from:null}}));
+  document.dispatchEvent(new window.CustomEvent('route-changed',{detail:{route:router.route,from:null,transition:{continuing:false}}}));
   await router.restoreDirect();
   return router;
  })();

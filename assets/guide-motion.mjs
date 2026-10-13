@@ -80,7 +80,13 @@ export function dialogClose(el,done=()=>{},to){
 const pageOwner={},pressOwner={},depthOwner=pageOwner;let depthOpen=false;
 // Content is readable from the first frame: a short rise, never a blur or a cover.
 export function enterPage(el=document.querySelector('.wrap,.math-wrap')){
- if(!el)return;cancel(pageOwner);return play(pageOwner,tl=>tl.fromTo(el,{opacity:.85,y:12},{opacity:1,y:0,duration:.35,ease:'power2.out'}),()=>clear(el));
+ if(!el)return;
+ const duration=.35;let deadline;
+ const timeline=play(pageOwner,tl=>tl.fromTo(el,{opacity:.85,y:12},{opacity:1,y:0,duration,ease:'power2.out'}),()=>{clearTimeout(deadline);clear(el);});
+ // A stalled animation clock must not prolong the readable-page arrival. Keep its
+ // authored duration, complete the public timeline, and never settle a newer owner.
+ if(timeline)deadline=setTimeout(()=>{if(tracks.get(pageOwner)?.timeline===timeline)timeline.progress(1);},duration*1000);
+ return timeline;
 }
 export function leavePage(el,done=()=>{},direction=1){
  if(!el){done();return;}cancel(pageOwner);return play(pageOwner,tl=>tl.set(el,{transformPerspective:1500,transformOrigin:'50% 240px'}).to(el,{opacity:0,x:-160*direction,z:-300,rotationY:-16*direction,scale:.88,filter:'blur(8px)',duration:.5,ease:'power2.inOut'}),done);

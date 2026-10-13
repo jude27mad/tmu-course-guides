@@ -5,7 +5,9 @@ import {createRequire} from 'node:module';
 const require=createRequire(new URL('../tools/ui-build/package.json',import.meta.url));
 const {JSDOM}=require('jsdom'),{build}=require('esbuild');
 const names=['workspace','editorial','course-header','visuals','night/boot','night/deadline','night/timeline','night/core','guide-motion','night/hero','night/scroll'];
-const source=names.map((name,i)=>`import * as m${i} from './assets/${name}.${name==='visuals'?'js':'mjs'}';`).join('\n')+`\nwindow.shared=[${names.map((_,i)=>'m'+i)}];`;
+// Match the document's exact shell URL, rather than bundling a second unversioned motion service.
+const motionURL=(await readFile(new URL('../index.html',import.meta.url),'utf8')).match(/src="(assets\/guide-motion\.mjs[^"]*)"/)[1];
+const source=names.map((name,i)=>`import * as m${i} from './${name==='guide-motion'?motionURL:`assets/${name}.${name==='visuals'?'js':'mjs'}`}';`).join('\n')+`\nwindow.shared=[${names.map((_,i)=>'m'+i)}];`;
 let code;
 async function environment(motion="off"){
  code??=(await build({stdin:{contents:source,resolveDir:new URL('..',import.meta.url).pathname,sourcefile:'shared-test.mjs'},bundle:true,write:false,format:'iife',logLevel:'silent',plugins:[{name:'module-url',setup(b){b.onLoad({filter:/\.mjs$/},async a=>({contents:(await readFile(a.path,'utf8')).replaceAll('import.meta.url',JSON.stringify('https://guide.test/assets/'+a.path.split('/assets/')[1])).replace("import(asset('../vendor/gsap-3.15.0.mjs'))","import('../vendor/gsap-3.15.0.mjs')").replace("import(asset('../vendor/night-vendor.mjs?v='+VERSION))","import('../vendor/night-vendor.mjs')"),loader:'js'}));}}]})).outputFiles[0].text;
