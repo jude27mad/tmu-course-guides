@@ -69,6 +69,17 @@ async function ready(page, route) {
   await page.evaluate(() => document.fonts.ready);
 }
 
+// Header scenes (course-scene and the MTH140 book) draw their first frames on their own schedule. A drawing
+// sample must start after that first frame, or a one-time paint on a slow renderer reads as a loop.
+async function sceneSettled(page) {
+  await until(()=>page.evaluate(()=>{
+    const art=document.querySelector('.header-art[data-renderer]');if(!art)return true;
+    const renderer=art.dataset.renderer;if(renderer==='pending')return false;
+    return renderer!=='webgl2'||art.dataset.sceneReady==='true';
+  }),'header scene first frame',30000);
+  await page.evaluate(()=>new Promise(done=>requestAnimationFrame(()=>requestAnimationFrame(done))));
+}
+
 async function activateClocked(page,selector) {
   // Native button activation tests deadline semantics with a simulated clock.
   // Pointer hit testing and tab navigation are tested with real timers elsewhere.
@@ -387,7 +398,7 @@ export async function modes(env) {
     {name:'saved full on normal OS',query:'',reduce:'no-preference',storage:{'guide-motion-level':'full'},locked:false}
   ];
   for(const variant of variants) for(const route of ROUTES) await runCase(env,out,`${route}: ${variant.name}`,async(page,observation)=>{
-    await page.goto(routeURL(env,route,variant.query));await ready(page,route);await settle(page,out);
+    await page.goto(routeURL(env,route,variant.query));await ready(page,route);await settle(page,out);await sceneSettled(page);
     observation.before=await motionState(page);await page.waitForTimeout(450);observation.after=await motionState(page);
     assert(out,`${route} ${variant.name}: coursework usable`,observation.after.content>20&&observation.after.coursework,observation.after.content,'visible coursework');
     assertCoursework(out,`${route} ${variant.name}`,observation.after,route);
