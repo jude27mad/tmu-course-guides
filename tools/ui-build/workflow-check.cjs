@@ -2,8 +2,16 @@ const path=require('node:path');
 const assert=require('node:assert/strict');
 const {createGuide,until,pause}=require('./module-harness.cjs');
 const root=path.resolve(__dirname,'../..');
-// jsdom delays history traversal behind long synchronous work, so wait for popstate rather than a fixed delay.
-const traversed=w=>new Promise(r=>{const t=setTimeout(r,3000);w.addEventListener('popstate',()=>{clearTimeout(t);setTimeout(r,50);},{once:true});});
+// jsdom can delay native history delivery behind synchronous rendering. Require
+// popstate and its destination after the course handlers; a timeout must reject.
+const traversed=(w,view)=>new Promise((resolve,reject)=>{
+ const d=w.document,hash='#'+(view==='info'?'course-info':view);let popped=false,queued=false;
+ const cleanup=()=>{clearTimeout(timer);w.removeEventListener('popstate',onPop);w.removeEventListener('hashchange',check);d.removeEventListener('course-view-change',check);d.removeEventListener('workspace-changed',check);};
+ const check=()=>{if(!popped||queued||w.location.hash!==hash||d.body.dataset.workspaceView!==view)return;queued=true;queueMicrotask(()=>{queued=false;if(w.location.hash===hash&&d.body.dataset.workspaceView===view){cleanup();resolve();}});};
+ const onPop=()=>{popped=true;check();};
+ const timer=setTimeout(()=>{cleanup();reject(Error('History traversal did not restore '+view+' at '+hash));},15000);
+ w.addEventListener('popstate',onPop);w.addEventListener('hashchange',check);d.addEventListener('course-view-change',check);d.addEventListener('workspace-changed',check);
+});
 async function check(route,course,motion='off'){
  const {dom,errors}=await createGuide({root,route,motion,beforeParse(w){
    w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}});
@@ -111,7 +119,7 @@ async function check(route,course,motion='off'){
   assert(!d.querySelector('.detail-sheet').open,'public section change closes sheet');
   assert.equal(d.activeElement,d.querySelector('.workspace-nav [data-workspace-view="info"]'),'public section change focuses its visible destination');
   click('.workspace-nav [data-workspace-view="info"]');click('.workspace-nav [data-workspace-view="assignments"]');
-  w.CourseVisuals.open(source,trigger);const back=traversed(w);w.history.back();
+  w.CourseVisuals.open(source,trigger);const back=traversed(w,'info');w.history.back();
   await back;
   assert.equal(d.body.dataset.workspaceView,'info','Back with a sheet restores the destination section');
   assert(!d.querySelector('.detail-sheet').open,'Back closes the moved sheet');
@@ -119,8 +127,8 @@ async function check(route,course,motion='off'){
   assert(!d.activeElement.closest('[hidden],[inert]'),'route closure keeps focus outside outgoing hidden/inert content');
   assert.equal(source.closest('.workspace-panel').id,'workspace-assignments','route closure restores original row to its source');
   click('.workspace-nav [data-workspace-view="assignments"]');click('.workspace-nav [data-workspace-view="info"]');
-  {const p=traversed(w);w.history.back();await p;}assert.equal(d.body.dataset.workspaceView,'assignments','Back restores section');
-  {const p=traversed(w);w.history.forward();await p;}assert.equal(d.body.dataset.workspaceView,'info','Forward restores section');
+  {const p=traversed(w,'assignments');w.history.back();await p;}assert.equal(d.body.dataset.workspaceView,'assignments','Back restores section');
+  {const p=traversed(w,'info');w.history.forward();await p;}assert.equal(d.body.dataset.workspaceView,'info','Forward restores section');
   if(course!=='cen100'){
    click('.workspace-nav [data-workspace-view="study"]');click('[data-mode="explore"]');click('[data-lab="'+(course==='mth140'?'transforms':'complex')+'"]');
    const param=d.querySelector('#math-lab [data-number]');param.value='2';param.dispatchEvent(new w.Event('change',{bubbles:true}));
