@@ -29,7 +29,8 @@ for (const route of ['mth140','mth141']) test(`direct ${route} keeps Skip before
       firstTabStop(document).focus();
       assert.equal(document.activeElement,skip,'the first focusable element is the Skip link');
       assert.equal(skip.nextElementSibling,document.querySelector('.hub-shell'));
-      assert.equal(new URL(skip.href).hash,'#math-main');
+      // MTH140's book hero skips straight to its assessments panel (semester-book spec §6.6).
+      assert.equal(new URL(skip.href).hash,route==='mth140'?'#panel-assessments':'#math-main');
       assert.ok(document.querySelector(new URL(skip.href).hash),'Skip has its native course-content destination');
     } finally {dom.window.close();}
   }

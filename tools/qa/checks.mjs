@@ -122,6 +122,17 @@ async function ready(page, route) {
   await page.evaluate(() => document.fonts.ready);
 }
 
+// Header scenes (course-scene and the MTH140 book) draw their first frames on their own schedule. A drawing
+// sample must start after that first frame, or a one-time paint on a slow renderer reads as a loop.
+async function sceneSettled(page) {
+  await until(()=>page.evaluate(()=>{
+    const art=document.querySelector('.header-art[data-renderer]');if(!art)return true;
+    const renderer=art.dataset.renderer;if(renderer==='pending')return false;
+    return renderer!=='webgl2'||art.dataset.sceneReady==='true';
+  }),'header scene first frame',30000);
+  await page.evaluate(()=>new Promise(done=>requestAnimationFrame(()=>requestAnimationFrame(done))));
+}
+
 async function activateClocked(page,selector) {
   // Native button activation tests deadline semantics with a simulated clock.
   // Pointer hit testing and tab navigation are tested with real timers elsewhere.
@@ -154,8 +165,9 @@ async function routeSnapshot(page) {
   return page.evaluate(() => {
     const main=document.querySelector('main[data-route-region]'), active=document.activeElement;
     const skip=document.querySelector('body>.skip-link');
-    const skipId=skip?new URL(skip.href).hash.slice(1):null;
-    return {url:location.href,shell:document.documentElement.dataset.shellId,title:document.title,course:document.body.dataset.course??null,page:document.body.dataset.page??null,content:main?.innerText.trim().length??0,heading:main?.querySelector('h1')?.textContent.trim()??'',focus:{id:active?.id,tag:active?.tagName,inside:!!main?.contains(active),skipId}};
+    // The router focuses the Skip destination only when it is the route region itself; otherwise the heading.
+    const skipRaw=skip?new URL(skip.href).hash.slice(1):null,skipId=skipRaw&&document.getElementById(skipRaw)===main?skipRaw:null;
+    return {url:location.href,shell:document.documentElement.dataset.shellId,title:document.title,course:document.body.dataset.course??null,page:document.body.dataset.page??null,content:main?.innerText.trim().length??0,heading:main?.querySelector('h1')?.textContent.trim()??'',focus:{id:active?.id,tag:active?.tagName,inside:!!main?.contains(active),skipId,heading:!!active&&active===main?.querySelector('h1')}};
   });
 }
 
@@ -175,7 +187,7 @@ export async function routes(env) {
       assert(out,`${label}: title`,state.title===TITLES[route],state.title,TITLES[route]);
       assert(out,`${label}: body identity`,state.course===(route==='desk'?null:route)&&state.page===(route==='desk'?'desk':null),{course:state.course,page:state.page},{course:route==='desk'?null:route,page:route==='desk'?'desk':null});
       assert(out,`${label}: coursework rendered`,state.content>20&&!!state.heading,{characters:state.content,heading:state.heading},'visible route heading and content');
-      assert(out,`${label}: focus target`,state.focus.inside&&(!state.focus.skipId||state.focus.id===state.focus.skipId),state.focus,'route Skip destination, or heading within main');
+      assert(out,`${label}: focus target`,state.focus.inside&&(state.focus.skipId?state.focus.id===state.focus.skipId:state.focus.heading||state.focus.tag==='MAIN'),state.focus,'route Skip destination when it is the region, otherwise the route heading');
     };
     for(const route of ['cen100','mth140','mth141','desk']) {await navigate(page,route);await inspect(route,`open ${route}`);}
     for(const [direction,sequence] of [['back',['mth141','mth140','cen100']],['forward',['mth140','mth141']]]) {
@@ -462,9 +474,8 @@ export async function modes(env) {
     {name:'saved full on normal OS',query:'',reduce:'no-preference',storage:{'guide-motion-level':'full'},locked:false}
   ];
   for(const variant of variants) for(const route of ROUTES) await runCase(env,out,`${route}: ${variant.name}`,async(page,observation)=>{
-    await page.goto(routeURL(env,route,variant.query));await ready(page,route);await settle(page,out);
-    // Renderer construction precedes shader completion and the first static
-    // frame. Sample locked motion after that frame, preserving the 450-ms gate.
+    await page.goto(routeURL(env,route,variant.query));await ready(page,route);await settle(page,out);await sceneSettled(page);
+    // Preserve the locked-scene observation before the unchanged450-ms sample.
     if(variant.locked&&route!=='desk')observation.sceneInitialization=await waitForInitialStaticScene(page,route);
     observation.before=await motionState(page);await page.waitForTimeout(450);observation.after=await motionState(page);
     assert(out,`${route} ${variant.name}: coursework usable`,observation.after.content>20&&observation.after.coursework,observation.after.content,'visible coursework');

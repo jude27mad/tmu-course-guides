@@ -1,7 +1,7 @@
 /* The command palette is a shell service. Its data helpers stay pure for the Desk
    and tests; browser services are imported only when mount() initialises it. */
 import {SCHEDULE} from '../cen-schedule.mjs?v=20261013-shift1';
-import {resolveTarget,readSaved} from './targets.mjs?v=20261013-shift1';
+import {resolveTarget,readSaved} from './targets.mjs?v=20261014-book1';
 import {recordsForCourse,semesterWeeks,findWeek} from '../book/weeks.mjs';
 
 /* Visible text and screen-reader labels from docs/copy/interface-copy.md ("Command palette"). */
@@ -108,7 +108,7 @@ let service=null,starting=null;
 /** Initialises once, deliberately independent of a route AbortSignal. */
 export function mount(){
  if(service)return Promise.resolve(service);
- return starting??=import('./core.mjs?v=20261013-shift2').then(core=>{
+ return starting??=import('./core.mjs?v=20261014-book1').then(core=>{
   service=createService(core);return service.reindex().then(()=>service);
  }).catch(error=>{starting=null;throw error;});
 }
@@ -186,6 +186,10 @@ function createService(core){
  };
  const openWeek=async entry=>{
   const route=core.route(),week=index.weeks[entry.index];
+  // The palette has released its own hold, but the page's hold for an open modal (scroll.mjs) lets go in a
+  // microtask after the dialog closes. Yield one task first, so the book's policy() is no longer held and
+  // the week turns in full motion instead of cutting (semester-book spec §6.9).
+  await new Promise(resolve=>setTimeout(resolve,0));if(core.route()!==route)return;
   const event=new CustomEvent('book-open-week',{detail:{index:entry.index},cancelable:true});document.dispatchEvent(event);if(event.defaultPrevented||core.route()!==route)return;
   window.CourseWorkspace?.show('assignments',true);await core.frames(2);if(core.route()!==route)return;
   const timeline=document.querySelector('.ns-timeline');if(!timeline)return;

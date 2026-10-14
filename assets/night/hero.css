@@ -105,6 +105,21 @@ html.night body.workspace .header-upgraded.ns-explored .scene-meta>span{opacity:
 }
 :root[data-motion=off] body.workspace .header-upgraded.ns-explored .scene-meta>span{transition:none}
 
+/* ---------- The semester book (html[data-book]) ----------
+   The stage is the desk, daylit or lamp-lit, so stage colours come from the stage tokens instead of the
+   graphite-only values above. The engine closes the book into the dock; CSS never recedes the art. */
+html[data-book] body.workspace .header-upgraded.ns-scrub .header-art{transform:none;opacity:1;will-change:auto}
+html[data-book] body.workspace .header-upgraded .ns-hud .ns-hud-k{background:color-mix(in srgb,var(--strong) 8%,transparent)}
+html[data-book][data-ns-urgency=soon] body.workspace .header-upgraded .ns-hud [data-ns-chip]{color:var(--ns-stage-soon)}
+html[data-book]:is([data-ns-urgency=hot],[data-ns-urgency=live]) body.workspace .header-upgraded .ns-hud [data-ns-chip]{color:var(--ns-stage-hot)}
+html[data-book]:is([data-ns-urgency=hot],[data-ns-urgency=live]) body.workspace .header-upgraded .ns-hud .ns-hud-k{color:var(--ns-stage-hot);border-color:color-mix(in srgb,var(--ns-stage-hot) 50%,transparent);background:color-mix(in srgb,var(--ns-stage-hot) 10%,transparent)}
+html[data-book][data-ns-urgency=passed] body.workspace .header-upgraded .ns-hud [data-ns-chip]{color:var(--ns-stage-muted)}
+html[data-book] body.workspace .header-upgraded .hero-copy>h1::after{color:var(--strong)}
+html[data-book] body.workspace .header-upgraded.ns-scrub .ns-book-meta{opacity:calc(1 - clamp(0,var(--hero-p) / .2,1))}
+/* The hand-off rule fills along the top of the rail, the edge the closing book leaves from. */
+html[data-book] body.workspace .header-upgraded.ns-scrub .workspace-actions::before{display:none}
+html[data-book] body.workspace .header-upgraded.ns-scrub .ns-spread::before{content:'';position:absolute;left:0;right:0;top:-1px;height:2px;background:var(--strong);transform-origin:0 50%;transform:scaleX(var(--hero-p));opacity:calc(.35 + var(--hero-p) * .65);pointer-events:none}
+
 @media print{
  html.night body.workspace .header-upgraded .hero-copy>h1::after,html.night body.workspace .header-upgraded .workspace-actions::before,html.night body.workspace .header-upgraded .hero-copy>:is(.team,.eyebrow)::before{display:none}
  html.night body.workspace .header-upgraded .hero-copy>h1>.ns-title-line-mask{clip-path:none}
