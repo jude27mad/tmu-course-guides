@@ -142,3 +142,75 @@ jobs:
           path: tools/qa/reports/
           if-no-files-found: warn
           retention-days: 7
+
+  webkit-qa:
+    name: WebKit QA (${{ matrix.base }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        base: [/, /tmu-course-guides/]
+        include:
+          - base: /
+            artifact: root
+          - base: /tmu-course-guides/
+            artifact: github-pages
+    env:
+      PLAYWRIGHT_VERSION: '1.64.0'
+      QA_BASE: ${{ matrix.base }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: .github/workflows/ci.yml
+      - name: Install pinned Playwright and browser dependencies
+        run: |
+          npm install --prefix "$RUNNER_TEMP/qa-playwright" --no-save --package-lock=false "playwright@$PLAYWRIGHT_VERSION"
+          # The QA runner also uses Chromium for its setup/environment probe.
+          cd "$RUNNER_TEMP/qa-playwright"
+          npx --no-install playwright install --with-deps chromium webkit
+      - name: Run WebKit QA and require executed assertions
+        run: |
+          export PLAYWRIGHT_PATH="$RUNNER_TEMP/qa-playwright/node_modules/playwright"
+          node tools/qa/run.mjs webkit --base "$QA_BASE"
+          # Local dependency skips are honest, but must fail this dedicated CI job.
+          node --input-type=module <<'NODE'
+          import { readdirSync, readFileSync } from 'node:fs';
+          import { join } from 'node:path';
+          const directories = readdirSync('tools/qa/reports', { withFileTypes: true }).filter(entry => entry.isDirectory());
+          if (directories.length !== 1) throw new Error('Expected one fresh WebKit report directory');
+          const report = JSON.parse(readFileSync(join('tools/qa/reports', directories[0].name, 'webkit.json'), 'utf8'));
+          const record = report.cases?.[0];
+          if (report.check !== 'webkit' || report.status !== 'passed' || report.failures !== 0 || report.cases.length !== 1 ||
+              record.base !== process.env.QA_BASE || record.status !== 'passed' || record.skipped.length !== 0 ||
+              !record.assertions.length || !record.assertions.every(assertion => assertion.pass === true) ||
+              record.observations?.browser?.name !== 'WebKit') {
+            throw new Error('WebKit must execute nonempty passing assertions at the requested base with no skips');
+          }
+          console.log(`WebKit executed ${record.assertions.length} assertions at ${record.base}; no skips.`);
+          NODE
+      - name: Summarize WebKit reports
+        if: always()
+        run: |
+          shopt -s nullglob
+          for report in tools/qa/reports/*/summary.md; do
+            cat "$report" >> "$GITHUB_STEP_SUMMARY"
+          done
+          for report in tools/qa/reports/*/*.md; do
+            echo "::group::$report"
+            cat "$report"
+            echo '::endgroup::'
+          done
+      - name: Upload WebKit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-qa-webkit-${{ matrix.artifact }}
+          path: tools/qa/reports/
+          if-no-files-found: warn
+          retention-days: 7
