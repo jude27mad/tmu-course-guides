@@ -1,0 +1,729 @@
+{
+  "schemaVersion": 1,
+  "archivedAt": "2026-10-14T02:49:54.722Z",
+  "runDirectory": "tools/qa/reports/2026-10-14T01-40-01-387Z-96502",
+  "executionSession": 39957,
+  "processId": 96502,
+  "startedAt": "2026-10-14T01:40:01.387Z",
+  "completedAt": "2026-10-14T02:46:02.658Z",
+  "status": "failed",
+  "exitCode": 1,
+  "failures": 7,
+  "runErrors": [],
+  "selection": {
+    "checks": [
+      "perf",
+      "routes",
+      "stability",
+      "frames",
+      "deadlines",
+      "modes",
+      "layout",
+      "webkit",
+      "nojs",
+      "bfcache",
+      "failures",
+      "crosstab",
+      "clock",
+      "forward"
+    ],
+    "bases": [
+      "/",
+      "/tmu-course-guides/"
+    ],
+    "gpu": false,
+    "help": false
+  },
+  "environment": {
+    "node": "v24.19.0",
+    "platform": "linux",
+    "architecture": "x64",
+    "deployments": [
+      {
+        "base": "/",
+        "origin": "http://127.0.0.1:36275",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "154.0.8037.57",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      },
+      {
+        "base": "/tmu-course-guides/",
+        "origin": "http://127.0.0.1:41363",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "154.0.8037.57",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      }
+    ],
+    "requestedMode": "SwiftShader",
+    "playwrightPath": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "playwrightSource": "PLAYWRIGHT_PATH",
+    "chromiumPath": "/usr/bin/chromium",
+    "chromiumSource": "QA_CHROMIUM_PATH",
+    "launchArgs": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "checkCount": 14,
+  "baseCount": 2,
+  "checkBaseRecords": 28,
+  "assertionCount": 2878,
+  "skipCount": 5,
+  "records": [
+    {
+      "check": "perf",
+      "base": "/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 304,
+      "skipCount": 0
+    },
+    {
+      "check": "perf",
+      "base": "/tmu-course-guides/",
+      "status": "failed",
+      "failures": 3,
+      "assertionCount": 304,
+      "skipCount": 0
+    },
+    {
+      "check": "routes",
+      "base": "/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 60,
+      "skipCount": 0
+    },
+    {
+      "check": "routes",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 60,
+      "skipCount": 0
+    },
+    {
+      "check": "stability",
+      "base": "/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 45,
+      "skipCount": 0
+    },
+    {
+      "check": "stability",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 45,
+      "skipCount": 0
+    },
+    {
+      "check": "frames",
+      "base": "/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 24,
+      "skipCount": 0
+    },
+    {
+      "check": "frames",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 24,
+      "skipCount": 0
+    },
+    {
+      "check": "deadlines",
+      "base": "/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 128,
+      "skipCount": 0
+    },
+    {
+      "check": "deadlines",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 128,
+      "skipCount": 0
+    },
+    {
+      "check": "modes",
+      "base": "/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 188,
+      "skipCount": 0
+    },
+    {
+      "check": "modes",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 188,
+      "skipCount": 0
+    },
+    {
+      "check": "layout",
+      "base": "/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 288,
+      "skipCount": 0
+    },
+    {
+      "check": "layout",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 288,
+      "skipCount": 0
+    },
+    {
+      "check": "webkit",
+      "base": "/",
+      "status": "skipped",
+      "failures": 0,
+      "assertionCount": 0,
+      "skipCount": 1
+    },
+    {
+      "check": "webkit",
+      "base": "/tmu-course-guides/",
+      "status": "skipped",
+      "failures": 0,
+      "assertionCount": 0,
+      "skipCount": 1
+    },
+    {
+      "check": "nojs",
+      "base": "/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 41,
+      "skipCount": 0
+    },
+    {
+      "check": "nojs",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 41,
+      "skipCount": 0
+    },
+    {
+      "check": "bfcache",
+      "base": "/",
+      "status": "failed",
+      "failures": 1,
+      "assertionCount": 47,
+      "skipCount": 2
+    },
+    {
+      "check": "bfcache",
+      "base": "/tmu-course-guides/",
+      "status": "failed",
+      "failures": 2,
+      "assertionCount": 47,
+      "skipCount": 1
+    },
+    {
+      "check": "failures",
+      "base": "/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 43,
+      "skipCount": 0
+    },
+    {
+      "check": "failures",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 43,
+      "skipCount": 0
+    },
+    {
+      "check": "crosstab",
+      "base": "/",
+      "status": "failed",
+      "failures": 1,
+      "assertionCount": 86,
+      "skipCount": 0
+    },
+    {
+      "check": "crosstab",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 126,
+      "skipCount": 0
+    },
+    {
+      "check": "clock",
+      "base": "/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 75,
+      "skipCount": 0
+    },
+    {
+      "check": "clock",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 75,
+      "skipCount": 0
+    },
+    {
+      "check": "forward",
+      "base": "/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 90,
+      "skipCount": 0
+    },
+    {
+      "check": "forward",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "failures": 0,
+      "assertionCount": 90,
+      "skipCount": 0
+    }
+  ],
+  "failedAssertions": [
+    {
+      "check": "perf",
+      "base": "/tmu-course-guides/",
+      "name": "cen100 phone: completed route and real deadline content",
+      "pass": false,
+      "actual": {
+        "perfObserverReady": true,
+        "routeReady": false,
+        "optionalStyles": [
+          {
+            "name": "palette",
+            "href": null
+          },
+          {
+            "name": "hero",
+            "href": null
+          },
+          {
+            "name": "scroll",
+            "href": null
+          }
+        ],
+        "optionalFeatures": [
+          {
+            "name": "palette",
+            "href": null,
+            "requests": []
+          },
+          {
+            "name": "hero",
+            "href": null,
+            "requests": []
+          },
+          {
+            "name": "scroll",
+            "href": null,
+            "requests": []
+          }
+        ],
+        "optionalFeaturesAttempted": false
+      },
+      "expected": "completed route, real content and populated deadline"
+    },
+    {
+      "check": "perf",
+      "base": "/tmu-course-guides/",
+      "name": "cen100 phone: declared optional feature fetches attempted",
+      "pass": false,
+      "actual": [
+        {
+          "name": "palette",
+          "href": null,
+          "requests": []
+        },
+        {
+          "name": "hero",
+          "href": null,
+          "requests": []
+        },
+        {
+          "name": "scroll",
+          "href": null,
+          "requests": []
+        }
+      ],
+      "expected": [
+        "palette",
+        "hero",
+        "scroll"
+      ],
+      "detail": "Observe normal product loading; QA never imports optional vendors."
+    },
+    {
+      "check": "perf",
+      "base": "/tmu-course-guides/",
+      "name": "cen100 phone: network sample reaches quiet boundary",
+      "pass": false,
+      "actual": {
+        "durationMs": 90382,
+        "capMs": 90000,
+        "optionalSettlementMs": 2500,
+        "networkQuietMs": 1500,
+        "routeReady": false,
+        "networkQuiet": false,
+        "capped": true,
+        "timeCapReached": true,
+        "appearanceCheckpointWait": {
+          "waited": false,
+          "durationMs": 30,
+          "remainingMs": -352,
+          "capped": false,
+          "initialPending": [],
+          "pendingAtEnd": [],
+          "reason": null
+        },
+        "activeRequestsAtEnd": 27,
+        "captureAttempts": 0,
+        "navigationWaitUntil": "commit",
+        "readinessIncludes": "Completed semantic route and declared optional CSS/module fetch attempts",
+        "readiness": {
+          "perfObserverReady": true,
+          "routeReady": false,
+          "optionalStyles": [
+            {
+              "name": "palette",
+              "href": null
+            },
+            {
+              "name": "hero",
+              "href": null
+            },
+            {
+              "name": "scroll",
+              "href": null
+            }
+          ],
+          "optionalFeatures": [
+            {
+              "name": "palette",
+              "href": null,
+              "requests": []
+            },
+            {
+              "name": "hero",
+              "href": null,
+              "requests": []
+            },
+            {
+              "name": "scroll",
+              "href": null,
+              "requests": []
+            }
+          ],
+          "optionalFeaturesAttempted": false
+        }
+      },
+      "expected": "complete readiness + 2500 ms optional settlement + 1500 ms no active requests, unchanged during browser capture"
+    },
+    {
+      "check": "bfcache",
+      "base": "/",
+      "name": "cen100: native document Back / BFCache: execution",
+      "pass": false,
+      "actual": "page.goto: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:36275/privacy.html\", waiting until \"load\"\u001b[22m\n\n    at runCase.browser (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:520:18)\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:175:5)\n    at async Object.bfcache (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:516:7)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+      "expected": "case completes"
+    },
+    {
+      "check": "bfcache",
+      "base": "/tmu-course-guides/",
+      "name": "cen100: native document Back / BFCache: execution",
+      "pass": false,
+      "actual": "page.goto: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:41363/tmu-course-guides/privacy.html\", waiting until \"load\"\u001b[22m\n\n    at runCase.browser (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:520:18)\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:175:5)\n    at async Object.bfcache (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:516:7)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+      "expected": "case completes"
+    },
+    {
+      "check": "bfcache",
+      "base": "/tmu-course-guides/",
+      "name": "mth140: native document Back / BFCache: execution",
+      "pass": false,
+      "actual": "page.goto: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:41363/tmu-course-guides/privacy.html\", waiting until \"load\"\u001b[22m\n\n    at runCase.browser (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:520:18)\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:175:5)\n    at async Object.bfcache (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:516:7)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+      "expected": "case completes"
+    },
+    {
+      "check": "crosstab",
+      "base": "/",
+      "name": "mth140: native cross-tab completion, Undo and section changes: execution",
+      "pass": false,
+      "actual": "locator.evaluate: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-quick-complete]').first()\u001b[22m\n\n    at mark (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:468:86)\n    at runCase.seed.seed (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:479:11)\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:175:5)\n    at async Object.crosstab (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:463:3)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+      "expected": "case completes"
+    }
+  ],
+  "skips": [
+    {
+      "check": "webkit",
+      "base": "/",
+      "feature": "Playwright WebKit routes, deadlines and layout",
+      "reason": "WebKit could not launch; install its browser and OS dependencies. browserType.launch: Executable doesn't exist at /home/agent/.cache/ms-playwright/webkit-2227/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+    },
+    {
+      "check": "webkit",
+      "base": "/tmu-course-guides/",
+      "feature": "Playwright WebKit routes, deadlines and layout",
+      "reason": "WebKit could not launch; install its browser and OS dependencies. browserType.launch: Executable doesn't exist at /home/agent/.cache/ms-playwright/webkit-2227/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+    },
+    {
+      "check": "bfcache",
+      "base": "/",
+      "feature": "mth140: native persisted BFCache restoration",
+      "reason": "The browser performed a document Back without pageshow.persisted. Shell retention/resume cannot be claimed.",
+      "navigation": [
+        {
+          "type": "back_forward",
+          "notRestoredReasons": {
+            "src": null,
+            "id": null,
+            "url": "http://127.0.0.1:36275/mth140/?motion=off",
+            "name": null,
+            "reasons": [
+              {
+                "reason": "masked"
+              }
+            ],
+            "children": []
+          }
+        }
+      ]
+    },
+    {
+      "check": "bfcache",
+      "base": "/",
+      "feature": "mth141: native persisted BFCache restoration",
+      "reason": "The browser performed a document Back without pageshow.persisted. Shell retention/resume cannot be claimed.",
+      "navigation": [
+        {
+          "type": "back_forward",
+          "notRestoredReasons": {
+            "src": null,
+            "id": null,
+            "url": "http://127.0.0.1:36275/mth141/?motion=off",
+            "name": null,
+            "reasons": [
+              {
+                "reason": "masked"
+              }
+            ],
+            "children": []
+          }
+        }
+      ]
+    },
+    {
+      "check": "bfcache",
+      "base": "/tmu-course-guides/",
+      "feature": "mth141: native persisted BFCache restoration",
+      "reason": "The browser performed a document Back without pageshow.persisted. Shell retention/resume cannot be claimed.",
+      "navigation": [
+        {
+          "type": "back_forward",
+          "notRestoredReasons": {
+            "src": null,
+            "id": null,
+            "url": "http://127.0.0.1:41363/tmu-course-guides/mth141/?motion=off",
+            "name": null,
+            "reasons": [
+              {
+                "reason": "masked"
+              }
+            ],
+            "children": []
+          }
+        }
+      ]
+    }
+  ],
+  "summaryReport": {
+    "path": "tools/qa/reports/2026-10-14T01-40-01-387Z-96502/summary.json",
+    "sha256": "dc2ed458c5db452072b2d974e4d78e17e2b7855e151b46baf9f8cd5b0314e695"
+  },
+  "rawReportReferences": [
+    {
+      "check": "perf",
+      "path": "tools/qa/reports/2026-10-14T01-40-01-387Z-96502/perf.json",
+      "sha256": "1c805aca3e6bbabd3797340be092b9e34fb43af1ae28318514b9fad2318f2b71",
+      "status": "failed",
+      "failures": 3,
+      "checkBaseRecords": 2
+    },
+    {
+      "check": "routes",
+      "path": "tools/qa/reports/2026-10-14T01-40-01-387Z-96502/routes.json",
+      "sha256": "7537807e85f26cf43cf8058ae8c17eeed2ae93b64b20a1c9fb571b2322c734b0",
+      "status": "passed",
+      "failures": 0,
+      "checkBaseRecords": 2
+    },
+    {
+      "check": "stability",
+      "path": "tools/qa/reports/2026-10-14T01-40-01-387Z-96502/stability.json",
+      "sha256": "cf32da680297d3ef530865ae9c2cdaa4a378568c9cbd4b19914950b61236fc40",
+      "status": "passed",
+      "failures": 0,
+      "checkBaseRecords": 2
+    },
+    {
+      "check": "frames",
+      "path": "tools/qa/reports/2026-10-14T01-40-01-387Z-96502/frames.json",
+      "sha256": "3e0f07a5e0cc789571ff0ee2e3a88a8354c2e2fdb4ca9ff55abbb14a418fd0bb",
+      "status": "passed",
+      "failures": 0,
+      "checkBaseRecords": 2
+    },
+    {
+      "check": "deadlines",
+      "path": "tools/qa/reports/2026-10-14T01-40-01-387Z-96502/deadlines.json",
+      "sha256": "60a023029245f26ab4d3d8c87f73434865e51b65fcade9bbafdd257773a010ad",
+      "status": "passed",
+      "failures": 0,
+      "checkBaseRecords": 2
+    },
+    {
+      "check": "modes",
+      "path": "tools/qa/reports/2026-10-14T01-40-01-387Z-96502/modes.json",
+      "sha256": "0407fe3e3f128d641db0f67bbd5ccb50f146c90f2917dde2801155dc55d7b09b",
+      "status": "passed",
+      "failures": 0,
+      "checkBaseRecords": 2
+    },
+    {
+      "check": "layout",
+      "path": "tools/qa/reports/2026-10-14T01-40-01-387Z-96502/layout.json",
+      "sha256": "7e44f1303e10af44f944527576dbe0379e4a1111a8e9c6c77dbe10dbdd9707a8",
+      "status": "passed",
+      "failures": 0,
+      "checkBaseRecords": 2
+    },
+    {
+      "check": "webkit",
+      "path": "tools/qa/reports/2026-10-14T01-40-01-387Z-96502/webkit.json",
+      "sha256": "27b26869fdd40089ae92727e27d4461b20600c29f9dd0033b5e60978f59c3b14",
+      "status": "skipped",
+      "failures": 0,
+      "checkBaseRecords": 2
+    },
+    {
+      "check": "nojs",
+      "path": "tools/qa/reports/2026-10-14T01-40-01-387Z-96502/nojs.json",
+      "sha256": "a46f9b4631bb0123571f44cd10ac22f1e53bc5b4b5faddf40cce12acbd2c25ad",
+      "status": "passed",
+      "failures": 0,
+      "checkBaseRecords": 2
+    },
+    {
+      "check": "bfcache",
+      "path": "tools/qa/reports/2026-10-14T01-40-01-387Z-96502/bfcache.json",
+      "sha256": "f2b979fcc92fd3f54db264c49390c7932c4f552c34dd82b7a6b2118fa24e0a83",
+      "status": "failed",
+      "failures": 3,
+      "checkBaseRecords": 2
+    },
+    {
+      "check": "failures",
+      "path": "tools/qa/reports/2026-10-14T01-40-01-387Z-96502/failures.json",
+      "sha256": "7f0b533654130dba2421f79804b915bf599a47388ab8ca9466ef3fdf52b51bd4",
+      "status": "passed",
+      "failures": 0,
+      "checkBaseRecords": 2
+    },
+    {
+      "check": "crosstab",
+      "path": "tools/qa/reports/2026-10-14T01-40-01-387Z-96502/crosstab.json",
+      "sha256": "8815c641d9099e34aaf1a830920d23821ee77d26ae4187ccb52dc7033d07db28",
+      "status": "failed",
+      "failures": 1,
+      "checkBaseRecords": 2
+    },
+    {
+      "check": "clock",
+      "path": "tools/qa/reports/2026-10-14T01-40-01-387Z-96502/clock.json",
+      "sha256": "27242cf4ea2136b1df43bb4119c040198eb6cb75aad32bcf506133d99cd1bd34",
+      "status": "passed",
+      "failures": 0,
+      "checkBaseRecords": 2
+    },
+    {
+      "check": "forward",
+      "path": "tools/qa/reports/2026-10-14T01-40-01-387Z-96502/forward.json",
+      "sha256": "f151bf455da833299e0a5171c20a5c70b768007436ddbfe787593fc2d7272d2e",
+      "status": "passed",
+      "failures": 0,
+      "checkBaseRecords": 2
+    }
+  ],
+  "source": {
+    "runtimeRepositoryCommit": "3d14973ef56e8dcf5be036793cae391bd392699c",
+    "currentRepositoryCommit": "3d14973ef56e8dcf5be036793cae391bd392699c",
+    "upstreamReference": "66049a17117ff085a99413066b326bb599f7b2c8",
+    "productFingerprint": "14aab876ca16efa6dc335eb663dd7817bde3948628ce48613c18deaa00234e32",
+    "protectedFingerprint": "1b773fabf9affdc543ba245a8822642aab9167f28bc1990b5f4f293d4deab653",
+    "frozenManifest": {
+      "path": "performance-original-full-source.json",
+      "sha256": "f733b4a825a1b1f9cfa55b32d1705e6d04b6264d861c0fc04fea41c308eb089a",
+      "recordedAt": "2026-10-14T02:08:59.650Z",
+      "note": "Recorded while full96502 was running, before any BF round-trip helper edits. No QA source changed since full run launch; HEAD verified separately."
+    }
+  },
+  "closure": {
+    "checkedAt": "2026-10-14T02:49:54.745Z",
+    "pidInactive": true,
+    "activeChromiumProcesses": 0,
+    "browserResourcesClosed": true,
+    "evidence": "Independent ps snapshot and root closure confirmation; runtime awaits resource cleanup before completedAt is written."
+  },
+  "failureReportCopies": [
+    {
+      "path": "docs/qa/night-shift/performance-full-run-perf-failure.json",
+      "sha256": "1c805aca3e6bbabd3797340be092b9e34fb43af1ae28318514b9fad2318f2b71",
+      "byteIdenticalToRaw": true
+    },
+    {
+      "path": "docs/qa/night-shift/performance-full-run-bfcache-failure.json",
+      "sha256": "f2b979fcc92fd3f54db264c49390c7932c4f552c34dd82b7a6b2118fa24e0a83",
+      "byteIdenticalToRaw": true
+    },
+    {
+      "path": "docs/qa/night-shift/performance-full-run-crosstab-failure.json",
+      "sha256": "8815c641d9099e34aaf1a830920d23821ee77d26ae4187ccb52dc7033d07db28",
+      "byteIdenticalToRaw": true
+    }
+  ],
+  "webkitAvailability": {
+    "path": "performance-webkit-availability.json",
+    "sha256": "06ee1acbe65b3e45dbe692d0332782b97548047d13b4544d3bf9ad37c81db9b2",
+    "scope": "Supplementary offline package/OS metadata; original WebKit skips retain their exact runtime paths and no actual ELF-resolution/launch claim is made."
+  },
+  "interpretation": "Completed original full run is FAILED. All failed assertions, skips and raw provenance remain intact. It is excluded from canonical AFTER; any later focused or composite verification must identify its separate provenance and cannot retroactively pass this run. Specific original triggers remain unresolved unless separately demonstrated."
+}

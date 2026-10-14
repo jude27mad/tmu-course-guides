@@ -48,14 +48,97 @@ export function expectedFailureEvent(event, { target, mode, offlineURLs = new Se
   return false; // Synthetic fetch responses/rejections should produce no browser errors.
 }
 
+function cspAllowsSelfScript(policy) {
+  if (typeof policy !== 'string') return false;
+  if (policy.includes(',')) return policy.split(',').every(cspAllowsSelfScript);
+  const directives = new Map();
+  for (const directive of policy.split(';')) {
+    const [name, ...sources] = directive.trim().toLowerCase().split(/\s+/);
+    if (name && !directives.has(name)) directives.set(name, sources);
+  }
+  // Sandbox may introduce script or opaque-origin restrictions; none is authored here.
+  if (directives.has('sandbox')) return false;
+  const sources = directives.get('script-src-elem') ?? directives.get('script-src') ?? directives.get('default-src');
+  return !sources || sources.includes("'self'") && !sources.includes("'none'") && !sources.includes("'strict-dynamic'");
+}
+
+/** Chromium also reports its explicit script-disabled policy as exact `csp`.
+ * Bind that diagnostic to authored hints and observed Script requests; actual
+ * CSP restrictions and every enabled-JavaScript case remain unexpected. */
+export function expectedNoScriptPreloadEvent(event, { javaScriptEnabled, documentURL, declaredPreloads, requests, cspPolicies } = {}) {
+  if (javaScriptEnabled !== false || event?.type !== 'requestfailed' || event.method !== 'GET' || event.message !== 'csp' || typeof event.requestUrl !== 'string') return false;
+  if (!Array.isArray(declaredPreloads) || !Array.isArray(requests) || !Array.isArray(cspPolicies) || !cspPolicies.every(cspAllowsSelfScript) || !declaredPreloads.includes(event.requestUrl)) return false;
+  if (!requests.some(request => request?.url === event.requestUrl && request.method === 'GET' && request.resourceType === 'script')) return false;
+  try {
+    const target = new URL(event.requestUrl), document = new URL(documentURL);
+    return /^https?:$/.test(target.protocol) && target.origin === document.origin && !target.hash && /\.(?:mjs|js)$/i.test(target.pathname);
+  } catch { return false; }
+}
+
 async function until(fn, label, timeout = 10_000) {
   const end = Date.now() + timeout;
   do { if (await fn()) return; await sleep(50); } while (Date.now() < end);
   throw Error('Timed out waiting for ' + label);
 }
 
+export const resilienceReadyTimeout = ({ browserName, gpu } = {}) => browserName === 'chromium' && gpu === false ? 30_000 : 10_000;
+const contextReadiness = new WeakMap(), pageReadiness = new WeakMap();
+const defaultReadiness = Object.freeze({ browserName: null, gpu: null, timeoutMs: 10_000 });
+export function registerResilienceReadinessScope(context, { browser, gpu, observation, telemetry = () => [] }) {
+  let browserName = null;
+  try { browserName = browser.browserType?.()?.name?.() ?? null; } catch {}
+  const policy = Object.freeze({ browserName, gpu: gpu ?? null, timeoutMs: resilienceReadyTimeout({ browserName, gpu }) });
+  observation.readinessPolicy = policy;observation.readiness = [];observation.routeActions = [];
+  const pendingByPage = new WeakMap();
+  const scope = { policy, waits: observation.readiness, actions: observation.routeActions, telemetry, pending(page) { return [...(pendingByPage.get(page)?.values() ?? [])]; }, registerPage(page) {
+    if (pageReadiness.has(page)) return;
+    pageReadiness.set(page, scope);const pending = new Map();pendingByPage.set(page, pending);
+    page.on?.('request', request => pending.set(request, { url: request.url(), method: request.method(), resourceType: request.resourceType(), startedAt: Date.now() }));
+    page.on?.('requestfinished', request => pending.delete(request));page.on?.('requestfailed', request => pending.delete(request));
+  } };
+  contextReadiness.set(context, scope);
+  return scope;
+}
+function readinessScope(page) {
+  const scope = pageReadiness.get(page);if (scope) return scope;
+  try { const contextScope = contextReadiness.get(page.context?.());contextScope?.registerPage(page);return contextScope; } catch { return undefined; }
+}
+export const resilienceReadinessForPage = page => readinessScope(page)?.policy ?? defaultReadiness;
+
+/** The poll budget bounds scheduling; an in-flight native browser reply may
+ * overrun it. Preserve do-first/true-result behavior and record that overhead. */
+export async function waitForResilienceReady({ sample, label, timeoutMs = 10_000, observation = {}, now = Date.now, pause = sleep }) {
+  const started = now(), end = started + timeoutMs;
+  Object.assign(observation, { label, timeoutMs, status: 'running', sampleCount: 0, maxBrowserReplyMs: 0, firstSample: null, lastSample: null });
+  try {
+    do {
+      const requested = now();let state, replied;
+      try { state = await sample(); }
+      finally { replied = now();observation.sampleCount++;observation.maxBrowserReplyMs = Math.max(observation.maxBrowserReplyMs, replied - requested); }
+      const replyMs = replied - requested;
+      const recorded = { elapsedMs: replied - started, replyMs, state };
+      observation.firstSample ??= recorded;observation.lastSample = recorded;
+      if (state.ready) { observation.status = 'ready';return observation; }
+      if (replied >= end) break;
+      await pause(Math.min(50, end - replied));
+    } while (now() < end);
+    observation.status = 'timeout';throw Error('Timed out waiting for ' + label);
+  } catch (error) {
+    if (observation.status !== 'timeout') observation.status = 'error';
+    observation.error = error.message;throw error;
+  } finally { observation.elapsedMs = now() - started; }
+}
+
 async function ready(page, route) {
-  await until(() => page.evaluate(route => (document.body.dataset.page || document.body.dataset.course) === route && window.TMURouter?.route === route && window.__qaRouteCompleted === route && document.querySelector('main[data-route-region]')?.innerText.trim().length > 20 && Boolean(route === 'desk' ? document.querySelector('[data-course-card="cen100"] [data-desk-next]:not([hidden])') : document.querySelector('.ns-count')), route), route + ' mounted route and deadlines');
+  const scope = readinessScope(page), policy = scope?.policy ?? defaultReadiness, observation = { route, policy };
+  scope?.waits.push(observation);
+  await waitForResilienceReady({ label: route + ' mounted route and deadlines', timeoutMs: policy.timeoutMs, observation, sample: () => page.evaluate(route => {
+    const bodyRoute = document.body.dataset.page || document.body.dataset.course, routerRoute = window.TMURouter?.route, completedRoute = window.__qaRouteCompleted;
+    const mainTextLength = document.querySelector('main[data-route-region]')?.innerText.trim().length ?? 0;
+    const deadlineNode = Boolean(route === 'desk' ? document.querySelector('[data-course-card="cen100"] [data-desk-next]:not([hidden])') : document.querySelector('.ns-count'));
+    const components = { bodyIdentity: bodyRoute === route, routerIdentity: routerRoute === route, completedMarker: completedRoute === route, renderedMainText: mainTextLength > 20, deadlineNode };
+    return { ready: Object.values(components).every(Boolean), components, actual: { bodyRoute, routerRoute, completedRoute, mainTextLength, deadlineNode } };
+  }, route) });
 }
 
 async function initialize(context, env, seed = {}) {
@@ -77,10 +160,12 @@ async function runCase(env, out, name, fn, { seed, options, browser = env.browse
   const collectors = [];
   try {
     context = await browser.newContext({ viewport: { width: 1440, height: 900 }, timezoneId: 'America/Toronto', ...options });
+    const readiness = registerResilienceReadinessScope(context, { browser, gpu: env.gpu, observation, telemetry: () => collectors.flatMap(collector => collector.events) });
     await initialize(context, env, seed);
     if (init) await context.addInitScript(init.fn, init.arg);
     const newPage = async () => {
       const page = await context.newPage();
+      readiness.registerPage(page);
       page.setDefaultTimeout(10_000);
       collectors.push(collectPageErrors(page, { expected }));
       if (fixedTime) await page.clock.setFixedTime(new Date(fixedTime));
@@ -92,14 +177,43 @@ async function runCase(env, out, name, fn, { seed, options, browser = env.browse
     assertion(out, name + ': execution', false, error.stack || String(error), 'case completes');
   } finally {
     observation.telemetry = collectors.flatMap(collector => collector.events);
+    // Disabled-script requests precede DOM inspection of their declared hints.
+    if (options?.javaScriptEnabled === false) for (const event of observation.telemetry) event.expected = Boolean(expected(event));
     assertion(out, name + ': unexpected browser errors', observation.telemetry.every(event => event.expected), observation.telemetry.filter(event => !event.expected), []);
     for (const collector of collectors) collector.detach();
     await context?.close();
   }
 }
 
+async function routeActionFailureSnapshot(page, route, scope) {
+  let timer;
+  try {
+    const state = await Promise.race([page.evaluate(route => {
+      const main = document.querySelector('main[data-route-region]'), style = main && getComputedStyle(main);
+      const target = document.querySelector(`[data-course-link="${route}"]`), courseLinks = [...document.querySelectorAll('[data-course-link]')].map(anchor => ({ course: anchor.dataset.courseLink, href: anchor.href, connected: anchor.isConnected }));
+      return { url: location.href, bodyRoute: document.body.dataset.page || document.body.dataset.course, routerRoute: window.TMURouter?.route, completedRoute: window.__qaRouteCompleted, targetPresent: Boolean(target), targetCount: document.querySelectorAll(`[data-course-link="${route}"]`).length, target: target && { href: target.href, connected: target.isConnected, html: target.outerHTML }, courseLinkCount: courseLinks.length, courseLinks, mainTextLength: main?.innerText.trim().length ?? 0, wrapper: style && { opacity: style.opacity, display: style.display, visibility: style.visibility, transform: style.transform, filter: style.filter } };
+    }, route), new Promise((_, reject) => { timer = setTimeout(() => reject(Error('Passive route-action snapshot exceeded 5000ms')), 5000); })]);
+    return { ...state, pendingRequests: scope?.pending(page) ?? [], telemetry: scope?.telemetry() ?? [] };
+  } finally { clearTimeout(timer); }
+}
+
+export async function activateResilienceRoute(page, route, { now = Date.now, snapshot = routeActionFailureSnapshot } = {}) {
+  const scope = readinessScope(page), policy = scope?.policy ?? defaultReadiness, started = now();
+  const trace = { route, selector: `[data-course-link="${route}"]`, policy, timeoutMs: policy.timeoutMs, status: 'running' };scope?.actions.push(trace);
+  try {
+    await page.locator(trace.selector).first().evaluate(anchor => anchor.click(), undefined, { timeout: policy.timeoutMs });
+    trace.elapsedMs = now() - started;trace.status = 'activated';return trace;
+  } catch (error) {
+    trace.elapsedMs = now() - started;trace.status = 'error';trace.error = error.message;
+    trace.failureNetwork = { pendingRequests: scope?.pending(page) ?? [], telemetry: scope?.telemetry() ?? [] };
+    const diagnosticStarted = now();
+    try { trace.failureSnapshot = await snapshot(page, route, scope); } catch (diagnosticError) { trace.snapshotError = diagnosticError.message; }
+    trace.diagnosticElapsedMs = now() - diagnosticStarted;throw error;
+  }
+}
+
 async function clickRoute(page, route) {
-  await page.locator(`[data-course-link="${route}"]`).first().evaluate(anchor => anchor.click());
+  await activateResilienceRoute(page, route);
   await ready(page, route);
 }
 
@@ -180,8 +294,23 @@ export async function webkit(env) {
 
 export async function nojs(env) {
   const out = result();
-  for (const route of ROUTES) await runCase(env, out, route + ': no JavaScript', async (page, observation) => {
-    await page.goto(url(env, route));
+  for (const route of ROUTES) {
+  const scriptPolicy = { javaScriptEnabled: false, documentURL: url(env, route), declaredPreloads: [], cspPolicies: [], requests: [], failures: [], completedScripts: [], executedMarkers: [] };
+  await runCase(env, out, route + ': no JavaScript', async (page, observation) => {
+    observation.scriptPolicy = scriptPolicy;
+    const requestInfo = request => ({ url: request.url(), method: request.method(), resourceType: request.resourceType() });
+    page.on('request', request => { if (request.resourceType() === 'script') scriptPolicy.requests.push(requestInfo(request)); });
+    page.on('requestfailed', request => { if (request.resourceType() === 'script') scriptPolicy.failures.push({ ...requestInfo(request), message: request.failure()?.errorText }); });
+    page.on('requestfinished', request => { if (request.resourceType() === 'script') scriptPolicy.completedScripts.push(request.url()); });
+    const response = await page.goto(url(env, route));
+    const declared = await page.evaluate(() => ({ documentURL: location.href, declaredPreloads: [...document.querySelectorAll('link[rel~="modulepreload"][href]')].map(link => link.href), cspPolicies: [...document.querySelectorAll('meta[http-equiv]')].filter(meta => meta.httpEquiv.toLowerCase() === 'content-security-policy').map(meta => meta.content), executedMarkers: ['TMURouter', 'TMUHub', 'GuideMotion', 'CourseWorkspace', '__qaRouteCompleted'].filter(name => Object.hasOwn(window, name)) }));
+    Object.assign(scriptPolicy, declared);
+    const headerPolicy = (await response.allHeaders())['content-security-policy'];
+    if (headerPolicy) scriptPolicy.cspPolicies.push(headerPolicy);
+    const blockedURLs = [...new Set(scriptPolicy.failures.map(request => request.url))].sort(), declaredURLs = [...new Set(scriptPolicy.declaredPreloads)].sort();
+    assertion(out, route + ': disabled scripts block exactly declared modulepreload URLs', JSON.stringify(blockedURLs) === JSON.stringify(declaredURLs) && scriptPolicy.failures.every(request => expectedNoScriptPreloadEvent({ type: 'requestfailed', requestUrl: request.url, method: request.method, message: request.message }, scriptPolicy)), { blockedURLs, failures: scriptPolicy.failures }, declaredURLs);
+    const pendingScriptCount = scriptPolicy.requests.length - scriptPolicy.failures.length - scriptPolicy.completedScripts.length;
+    assertion(out, route + ': no application script completes, remains pending or sets an application marker', scriptPolicy.completedScripts.length === 0 && pendingScriptCount === 0 && scriptPolicy.executedMarkers.length === 0, { completedScripts: scriptPolicy.completedScripts, pendingScriptCount, executedMarkers: scriptPolicy.executedMarkers }, { completedScripts: [], pendingScriptCount: 0, executedMarkers: [] });
     observation.reading = await page.evaluate(() => {
       const main = document.querySelector('main[data-route-region]');
       const nativeHidden = el => {
@@ -219,7 +348,8 @@ export async function nojs(env) {
       assertion(out, route + ': published assessment dates readable', !missingDates.length, { missingDates, readableTimes: state.readableTimes }, dates);
       if (records.some(row => !row.date && !row.week)) assertion(out, route + ': unresolved dates remain honest', /Date pending|not (?:yet )?(?:posted|announced)|await/i.test(state.readableText), state.readableText.slice(-1500), 'pending date wording');
     }
-  }, { options: { javaScriptEnabled: false } });
+  }, { options: { javaScriptEnabled: false }, expected: event => expectedNoScriptPreloadEvent(event, scriptPolicy) });
+  }
   return out;
 }
 

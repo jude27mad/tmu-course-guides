@@ -1,0 +1,4625 @@
+{
+  "schemaVersion": 1,
+  "scope": "QA-only resilience readiness and native route-anchor timing allowance. Product source, predicates, existing functional/lifetime/telemetry assertions, page/navigation defaults, router fetch timeout and physical-click policy unchanged.",
+  "policy": {
+    "softwareChromium": {
+      "requires": "actual browserName === 'chromium' && env.gpu === false",
+      "readinessMs": 30000,
+      "nativeAnchorEvaluateMs": 30000
+    },
+    "otherModes": {
+      "readinessMs": 10000,
+      "nativeAnchorEvaluateMs": 10000
+    },
+    "failureDiagnosticsMs": 5000,
+    "nativeReplies": "Do-first/true-result semantics retained; budget bounds additional polls and records in-flight reply overruns."
+  },
+  "tests": {
+    "command": "node --test tools/qa/resilience.test.mjs tools/qa/runtime.test.mjs tools/qa/checks.test.mjs",
+    "rawLog": "/tmp/ns-resilience-final-policy-tests.log",
+    "passed": 50,
+    "failed": 0,
+    "skipped": 0,
+    "virtualRegressionCases": [
+      "false native reply at14000ms then ready at14100ms passes30s;10s rejects after firstfalse reply",
+      "never-ready rejects30s",
+      "GPU/WebKit/Firefox/unknown10s; explicitfalse software Chromium30s",
+      "native anchor forwards exact {timeout}; absent link stillrejects originalerror",
+      "rejected native replies retain durations; blocked passive snapshot retains Node evidence"
+    ]
+  },
+  "nativeProof": {
+    "report": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T01-31-46-689Z-94121/failures.json",
+    "completedAt": "2026-10-14T01:37:52.991Z",
+    "status": "passed",
+    "failures": 0,
+    "bases": [
+      {
+        "base": "/",
+        "status": "passed",
+        "assertions": 43,
+        "failures": 0,
+        "policyCases": [
+          {
+            "case": "fetch 500",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "fetch timeout",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "fetch aborted",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "fetch missing-region",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "desk: denied localStorage and sessionStorage getters",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "cen100: denied localStorage and sessionStorage getters",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "mth140: denied localStorage and sessionStorage getters",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "mth141: denied localStorage and sessionStorage getters",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "desk: denied localStorage and sessionStorage methods",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "cen100: denied localStorage and sessionStorage methods",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "mth140: denied localStorage and sessionStorage methods",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "mth141: denied localStorage and sessionStorage methods",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "offline after warm load",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "misspelt route",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          }
+        ],
+        "waitCount": 34,
+        "actionCount": 16,
+        "maxWaitMs": 11208,
+        "maxBrowserReplyMs": 11208,
+        "maxActionMs": 8545,
+        "waits": [
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 192,
+            "firstSample": {
+              "elapsedMs": 192,
+              "replyMs": 192,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 192,
+              "replyMs": 192,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 193,
+            "case": "fetch 500"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 6,
+            "maxBrowserReplyMs": 7945,
+            "firstSample": {
+              "elapsedMs": 212,
+              "replyMs": 212,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "mainTextLength": 359,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 9100,
+              "replyMs": 7945,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1016,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 9100,
+            "case": "fetch 500"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 339,
+            "firstSample": {
+              "elapsedMs": 339,
+              "replyMs": 339,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 339,
+              "replyMs": 339,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 339,
+            "case": "fetch timeout"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 7,
+            "maxBrowserReplyMs": 359,
+            "firstSample": {
+              "elapsedMs": 136,
+              "replyMs": 135,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "mainTextLength": 359,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1421,
+              "replyMs": 73,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1016,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1421,
+            "case": "fetch timeout"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 217,
+            "firstSample": {
+              "elapsedMs": 217,
+              "replyMs": 217,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 217,
+              "replyMs": 217,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 217,
+            "case": "fetch aborted"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 7,
+            "maxBrowserReplyMs": 383,
+            "firstSample": {
+              "elapsedMs": 308,
+              "replyMs": 308,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "mainTextLength": 359,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1327,
+              "replyMs": 24,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1016,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1327,
+            "case": "fetch aborted"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 235,
+            "firstSample": {
+              "elapsedMs": 235,
+              "replyMs": 235,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 235,
+              "replyMs": 235,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 235,
+            "case": "fetch missing-region"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 8,
+            "maxBrowserReplyMs": 376,
+            "firstSample": {
+              "elapsedMs": 272,
+              "replyMs": 272,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "mainTextLength": 359,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1747,
+              "replyMs": 61,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1016,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1747,
+            "case": "fetch missing-region"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 123,
+            "firstSample": {
+              "elapsedMs": 124,
+              "replyMs": 123,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 124,
+              "replyMs": 123,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 124,
+            "case": "desk: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 5,
+            "maxBrowserReplyMs": 558,
+            "firstSample": {
+              "elapsedMs": 44,
+              "replyMs": 44,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 897,
+              "replyMs": 79,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 900,
+            "case": "desk: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "cen100",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "cen100 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 4,
+            "maxBrowserReplyMs": 449,
+            "firstSample": {
+              "elapsedMs": 449,
+              "replyMs": 449,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "mainTextLength": 2444,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1124,
+              "replyMs": 277,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 1766,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1124,
+            "case": "cen100: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 4,
+            "maxBrowserReplyMs": 2764,
+            "firstSample": {
+              "elapsedMs": 6,
+              "replyMs": 6,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 1832,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 4553,
+              "replyMs": 1558,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 4553,
+            "case": "cen100: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "mth140",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth140 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 7,
+            "maxBrowserReplyMs": 2852,
+            "firstSample": {
+              "elapsedMs": 268,
+              "replyMs": 268,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth140",
+                  "routerRoute": "mth140",
+                  "mainTextLength": 2622,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 4351,
+              "replyMs": 2852,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth140",
+                  "routerRoute": "mth140",
+                  "completedRoute": "mth140",
+                  "mainTextLength": 1040,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 4351,
+            "case": "mth140: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 2,
+            "maxBrowserReplyMs": 7159,
+            "firstSample": {
+              "elapsedMs": 7159,
+              "replyMs": 7159,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth140",
+                  "mainTextLength": 687,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 7280,
+              "replyMs": 71,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 7280,
+            "case": "mth140: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 7,
+            "maxBrowserReplyMs": 909,
+            "firstSample": {
+              "elapsedMs": 607,
+              "replyMs": 607,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "mainTextLength": 2854,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 2297,
+              "replyMs": 909,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 2297,
+            "case": "mth141: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 3,
+            "maxBrowserReplyMs": 637,
+            "firstSample": {
+              "elapsedMs": 9,
+              "replyMs": 9,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1145,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 773,
+              "replyMs": 26,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 773,
+            "case": "mth141: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 233,
+            "firstSample": {
+              "elapsedMs": 233,
+              "replyMs": 233,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 233,
+              "replyMs": 233,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 233,
+            "case": "desk: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 7,
+            "maxBrowserReplyMs": 923,
+            "firstSample": {
+              "elapsedMs": 27,
+              "replyMs": 27,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1505,
+              "replyMs": 116,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1505,
+            "case": "desk: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "cen100",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "cen100 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 7,
+            "maxBrowserReplyMs": 584,
+            "firstSample": {
+              "elapsedMs": 31,
+              "replyMs": 31,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "mainTextLength": 594,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1643,
+              "replyMs": 346,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 1766,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1643,
+            "case": "cen100: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 4,
+            "maxBrowserReplyMs": 2807,
+            "firstSample": {
+              "elapsedMs": 19,
+              "replyMs": 19,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 1832,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 3333,
+              "replyMs": 346,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 3333,
+            "case": "cen100: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "mth140",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth140 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 7,
+            "maxBrowserReplyMs": 442,
+            "firstSample": {
+              "elapsedMs": 442,
+              "replyMs": 442,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth140",
+                  "routerRoute": "mth140",
+                  "mainTextLength": 2622,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1177,
+              "replyMs": 6,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth140",
+                  "routerRoute": "mth140",
+                  "completedRoute": "mth140",
+                  "mainTextLength": 1040,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1177,
+            "case": "mth140: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 3,
+            "maxBrowserReplyMs": 626,
+            "firstSample": {
+              "elapsedMs": 14,
+              "replyMs": 14,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth140",
+                  "routerRoute": "mth140",
+                  "completedRoute": "mth140",
+                  "mainTextLength": 1104,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 952,
+              "replyMs": 207,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 952,
+            "case": "mth140: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 7,
+            "maxBrowserReplyMs": 744,
+            "firstSample": {
+              "elapsedMs": 586,
+              "replyMs": 586,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "mainTextLength": 2854,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 2385,
+              "replyMs": 744,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 2385,
+            "case": "mth141: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 2,
+            "maxBrowserReplyMs": 240,
+            "firstSample": {
+              "elapsedMs": 240,
+              "replyMs": 240,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 616,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 379,
+              "replyMs": 87,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 379,
+            "case": "mth141: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 259,
+            "firstSample": {
+              "elapsedMs": 259,
+              "replyMs": 259,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 259,
+              "replyMs": 259,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 259,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "cen100",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "cen100 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 5,
+            "maxBrowserReplyMs": 800,
+            "firstSample": {
+              "elapsedMs": 53,
+              "replyMs": 53,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1160,
+              "replyMs": 800,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 1766,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1160,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "mth140",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth140 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 5,
+            "maxBrowserReplyMs": 6937,
+            "firstSample": {
+              "elapsedMs": 928,
+              "replyMs": 928,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 1766,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 9005,
+              "replyMs": 294,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth140",
+                  "routerRoute": "mth140",
+                  "completedRoute": "mth140",
+                  "mainTextLength": 1040,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 9005,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 2,
+            "maxBrowserReplyMs": 5183,
+            "firstSample": {
+              "elapsedMs": 5183,
+              "replyMs": 5183,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth140",
+                  "mainTextLength": 687,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 5292,
+              "replyMs": 60,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 5292,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 3,
+            "maxBrowserReplyMs": 5076,
+            "firstSample": {
+              "elapsedMs": 29,
+              "replyMs": 29,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1145,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 5216,
+              "replyMs": 9,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 5216,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "cen100",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "cen100 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 819,
+            "firstSample": {
+              "elapsedMs": 819,
+              "replyMs": 819,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 1766,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 819,
+              "replyMs": 819,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 1766,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 819,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "mth140",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth140 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 3558,
+            "firstSample": {
+              "elapsedMs": 3558,
+              "replyMs": 3558,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth140",
+                  "routerRoute": "mth140",
+                  "completedRoute": "mth140",
+                  "mainTextLength": 1040,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 3558,
+              "replyMs": 3558,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth140",
+                  "routerRoute": "mth140",
+                  "completedRoute": "mth140",
+                  "mainTextLength": 1040,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 3558,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 11208,
+            "firstSample": {
+              "elapsedMs": 11208,
+              "replyMs": 11208,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 11208,
+              "replyMs": 11208,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 11208,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 2,
+            "maxBrowserReplyMs": 5406,
+            "firstSample": {
+              "elapsedMs": 5406,
+              "replyMs": 5406,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 616,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 5477,
+              "replyMs": 22,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 5477,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 899,
+            "firstSample": {
+              "elapsedMs": 899,
+              "replyMs": 899,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 899,
+              "replyMs": 899,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 899,
+            "case": "misspelt route"
+          }
+        ],
+        "actions": [
+          {
+            "route": "mth141",
+            "selector": "[data-course-link=\"mth141\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 189,
+            "case": "desk: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "mth141",
+            "selector": "[data-course-link=\"mth141\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 8545,
+            "case": "cen100: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "mth141",
+            "selector": "[data-course-link=\"mth141\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 666,
+            "case": "mth140: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "desk",
+            "selector": "[data-course-link=\"desk\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 535,
+            "case": "mth141: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "mth141",
+            "selector": "[data-course-link=\"mth141\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 566,
+            "case": "desk: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "mth141",
+            "selector": "[data-course-link=\"mth141\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 7009,
+            "case": "cen100: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "mth141",
+            "selector": "[data-course-link=\"mth141\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 6751,
+            "case": "mth140: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "desk",
+            "selector": "[data-course-link=\"desk\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 440,
+            "case": "mth141: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "cen100",
+            "selector": "[data-course-link=\"cen100\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 215,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "mth140",
+            "selector": "[data-course-link=\"mth140\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 137,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "mth141",
+            "selector": "[data-course-link=\"mth141\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 1618,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "desk",
+            "selector": "[data-course-link=\"desk\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 1399,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "cen100",
+            "selector": "[data-course-link=\"cen100\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 42,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "mth140",
+            "selector": "[data-course-link=\"mth140\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 7984,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "mth141",
+            "selector": "[data-course-link=\"mth141\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 1021,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "desk",
+            "selector": "[data-course-link=\"desk\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 2318,
+            "case": "offline after warm load"
+          }
+        ]
+      },
+      {
+        "base": "/tmu-course-guides/",
+        "status": "passed",
+        "assertions": 43,
+        "failures": 0,
+        "policyCases": [
+          {
+            "case": "fetch 500",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "fetch timeout",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "fetch aborted",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "fetch missing-region",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "desk: denied localStorage and sessionStorage getters",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "cen100: denied localStorage and sessionStorage getters",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "mth140: denied localStorage and sessionStorage getters",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "mth141: denied localStorage and sessionStorage getters",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "desk: denied localStorage and sessionStorage methods",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "cen100: denied localStorage and sessionStorage methods",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "mth140: denied localStorage and sessionStorage methods",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "mth141: denied localStorage and sessionStorage methods",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "offline after warm load",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          {
+            "case": "misspelt route",
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          }
+        ],
+        "waitCount": 34,
+        "actionCount": 16,
+        "maxWaitMs": 12830,
+        "maxBrowserReplyMs": 8193,
+        "maxActionMs": 12469,
+        "waits": [
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 132,
+            "firstSample": {
+              "elapsedMs": 132,
+              "replyMs": 132,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 132,
+              "replyMs": 132,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 132,
+            "case": "fetch 500"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 8,
+            "maxBrowserReplyMs": 270,
+            "firstSample": {
+              "elapsedMs": 79,
+              "replyMs": 79,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "mainTextLength": 358,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1240,
+              "replyMs": 77,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1016,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1240,
+            "case": "fetch 500"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 182,
+            "firstSample": {
+              "elapsedMs": 182,
+              "replyMs": 182,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 182,
+              "replyMs": 182,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 182,
+            "case": "fetch timeout"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 6,
+            "maxBrowserReplyMs": 362,
+            "firstSample": {
+              "elapsedMs": 254,
+              "replyMs": 254,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "mainTextLength": 359,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1071,
+              "replyMs": 23,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1016,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1071,
+            "case": "fetch timeout"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 141,
+            "firstSample": {
+              "elapsedMs": 141,
+              "replyMs": 141,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 141,
+              "replyMs": 141,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 141,
+            "case": "fetch aborted"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 6,
+            "maxBrowserReplyMs": 261,
+            "firstSample": {
+              "elapsedMs": 261,
+              "replyMs": 261,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "mainTextLength": 359,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1100,
+              "replyMs": 66,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1016,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1100,
+            "case": "fetch aborted"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 126,
+            "firstSample": {
+              "elapsedMs": 126,
+              "replyMs": 126,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 126,
+              "replyMs": 126,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 126,
+            "case": "fetch missing-region"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 8,
+            "maxBrowserReplyMs": 476,
+            "firstSample": {
+              "elapsedMs": 127,
+              "replyMs": 127,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "mainTextLength": 358,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1742,
+              "replyMs": 53,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1016,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1742,
+            "case": "fetch missing-region"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 174,
+            "firstSample": {
+              "elapsedMs": 174,
+              "replyMs": 174,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 174,
+              "replyMs": 174,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 174,
+            "case": "desk: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 6,
+            "maxBrowserReplyMs": 555,
+            "firstSample": {
+              "elapsedMs": 14,
+              "replyMs": 14,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1016,
+              "replyMs": 113,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1016,
+            "case": "desk: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "cen100",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "cen100 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 4,
+            "maxBrowserReplyMs": 602,
+            "firstSample": {
+              "elapsedMs": 602,
+              "replyMs": 602,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "mainTextLength": 2444,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1118,
+              "replyMs": 184,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 1766,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1118,
+            "case": "cen100: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 4,
+            "maxBrowserReplyMs": 2244,
+            "firstSample": {
+              "elapsedMs": 10,
+              "replyMs": 10,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 1832,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 2607,
+              "replyMs": 192,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 2607,
+            "case": "cen100: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "mth140",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth140 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 7,
+            "maxBrowserReplyMs": 428,
+            "firstSample": {
+              "elapsedMs": 428,
+              "replyMs": 428,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth140",
+                  "routerRoute": "mth140",
+                  "mainTextLength": 2622,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1114,
+              "replyMs": 55,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth140",
+                  "routerRoute": "mth140",
+                  "completedRoute": "mth140",
+                  "mainTextLength": 1040,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1114,
+            "case": "mth140: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 2,
+            "maxBrowserReplyMs": 5682,
+            "firstSample": {
+              "elapsedMs": 5682,
+              "replyMs": 5682,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth140",
+                  "mainTextLength": 687,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 5834,
+              "replyMs": 101,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 5834,
+            "case": "mth140: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 6,
+            "maxBrowserReplyMs": 435,
+            "firstSample": {
+              "elapsedMs": 435,
+              "replyMs": 435,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "mainTextLength": 2854,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1089,
+              "replyMs": 67,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1089,
+            "case": "mth141: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 3,
+            "maxBrowserReplyMs": 5093,
+            "firstSample": {
+              "elapsedMs": 75,
+              "replyMs": 75,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1145,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 5335,
+              "replyMs": 66,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 5335,
+            "case": "mth141: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 319,
+            "firstSample": {
+              "elapsedMs": 319,
+              "replyMs": 319,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 319,
+              "replyMs": 319,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 319,
+            "case": "desk: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 7,
+            "maxBrowserReplyMs": 572,
+            "firstSample": {
+              "elapsedMs": 8,
+              "replyMs": 8,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 993,
+              "replyMs": 55,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 993,
+            "case": "desk: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "cen100",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "cen100 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 5,
+            "maxBrowserReplyMs": 414,
+            "firstSample": {
+              "elapsedMs": 414,
+              "replyMs": 414,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "mainTextLength": 2148,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1528,
+              "replyMs": 393,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 1766,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1528,
+            "case": "cen100: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 3,
+            "maxBrowserReplyMs": 1831,
+            "firstSample": {
+              "elapsedMs": 10,
+              "replyMs": 10,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 1832,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 2246,
+              "replyMs": 301,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 2246,
+            "case": "cen100: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "mth140",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth140 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 6,
+            "maxBrowserReplyMs": 383,
+            "firstSample": {
+              "elapsedMs": 384,
+              "replyMs": 383,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth140",
+                  "routerRoute": "mth140",
+                  "mainTextLength": 2622,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1067,
+              "replyMs": 23,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth140",
+                  "routerRoute": "mth140",
+                  "completedRoute": "mth140",
+                  "mainTextLength": 1040,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1067,
+            "case": "mth140: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 2,
+            "maxBrowserReplyMs": 931,
+            "firstSample": {
+              "elapsedMs": 931,
+              "replyMs": 931,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth140",
+                  "mainTextLength": 687,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1201,
+              "replyMs": 219,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1201,
+            "case": "mth140: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 6,
+            "maxBrowserReplyMs": 943,
+            "firstSample": {
+              "elapsedMs": 481,
+              "replyMs": 481,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "mainTextLength": 2854,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 2257,
+              "replyMs": 943,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 2257,
+            "case": "mth141: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 2,
+            "maxBrowserReplyMs": 256,
+            "firstSample": {
+              "elapsedMs": 256,
+              "replyMs": 256,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 616,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 354,
+              "replyMs": 34,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 354,
+            "case": "mth141: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 182,
+            "firstSample": {
+              "elapsedMs": 182,
+              "replyMs": 182,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 182,
+              "replyMs": 182,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 182,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "cen100",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "cen100 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 3,
+            "maxBrowserReplyMs": 683,
+            "firstSample": {
+              "elapsedMs": 10,
+              "replyMs": 10,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 820,
+              "replyMs": 683,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 1766,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 820,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "mth140",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth140 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 5,
+            "maxBrowserReplyMs": 7158,
+            "firstSample": {
+              "elapsedMs": 88,
+              "replyMs": 88,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 1832,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 12830,
+              "replyMs": 419,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth140",
+                  "routerRoute": "mth140",
+                  "completedRoute": "mth140",
+                  "mainTextLength": 1040,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 12830,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 2,
+            "maxBrowserReplyMs": 1677,
+            "firstSample": {
+              "elapsedMs": 1677,
+              "replyMs": 1677,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth140",
+                  "mainTextLength": 687,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 2873,
+              "replyMs": 1146,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 2873,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 2,
+            "maxBrowserReplyMs": 6907,
+            "firstSample": {
+              "elapsedMs": 6907,
+              "replyMs": 6907,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 616,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 6962,
+              "replyMs": 6,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 6962,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "cen100",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "cen100 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 1137,
+            "firstSample": {
+              "elapsedMs": 1137,
+              "replyMs": 1137,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 1766,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1137,
+              "replyMs": 1137,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 1766,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1137,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "mth140",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth140 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 8193,
+            "firstSample": {
+              "elapsedMs": 8193,
+              "replyMs": 8193,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth140",
+                  "routerRoute": "mth140",
+                  "completedRoute": "mth140",
+                  "mainTextLength": 1040,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 8193,
+              "replyMs": 8193,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth140",
+                  "routerRoute": "mth140",
+                  "completedRoute": "mth140",
+                  "mainTextLength": 1040,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 8193,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 1002,
+            "firstSample": {
+              "elapsedMs": 1002,
+              "replyMs": 1002,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1002,
+              "replyMs": 1002,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1073,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1002,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 2,
+            "maxBrowserReplyMs": 347,
+            "firstSample": {
+              "elapsedMs": 347,
+              "replyMs": 347,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 616,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 445,
+              "replyMs": 47,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 445,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 1,
+            "maxBrowserReplyMs": 168,
+            "firstSample": {
+              "elapsedMs": 168,
+              "replyMs": 168,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 168,
+              "replyMs": 168,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1101,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 168,
+            "case": "misspelt route"
+          }
+        ],
+        "actions": [
+          {
+            "route": "mth141",
+            "selector": "[data-course-link=\"mth141\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 203,
+            "case": "desk: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "mth141",
+            "selector": "[data-course-link=\"mth141\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 8293,
+            "case": "cen100: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "mth141",
+            "selector": "[data-course-link=\"mth141\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 1760,
+            "case": "mth140: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "desk",
+            "selector": "[data-course-link=\"desk\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 1490,
+            "case": "mth141: denied localStorage and sessionStorage getters"
+          },
+          {
+            "route": "mth141",
+            "selector": "[data-course-link=\"mth141\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 169,
+            "case": "desk: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "mth141",
+            "selector": "[data-course-link=\"mth141\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 6322,
+            "case": "cen100: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "mth141",
+            "selector": "[data-course-link=\"mth141\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 6020,
+            "case": "mth140: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "desk",
+            "selector": "[data-course-link=\"desk\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 327,
+            "case": "mth141: denied localStorage and sessionStorage methods"
+          },
+          {
+            "route": "cen100",
+            "selector": "[data-course-link=\"cen100\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 168,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "mth140",
+            "selector": "[data-course-link=\"mth140\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 126,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "mth141",
+            "selector": "[data-course-link=\"mth141\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 12469,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "desk",
+            "selector": "[data-course-link=\"desk\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 951,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "cen100",
+            "selector": "[data-course-link=\"cen100\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 78,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "mth140",
+            "selector": "[data-course-link=\"mth140\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 1202,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "mth141",
+            "selector": "[data-course-link=\"mth141\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 8558,
+            "case": "offline after warm load"
+          },
+          {
+            "route": "desk",
+            "selector": "[data-course-link=\"desk\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 6950,
+            "case": "offline after warm load"
+          }
+        ]
+      }
+    ]
+  },
+  "preservedReadinessOnlyRun": {
+    "report": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T01-18-47-902Z-92393/failures.json",
+    "status": "failed",
+    "completedAt": "2026-10-14T01:26:04.790Z",
+    "failedAssertions": [
+      {
+        "base": "/",
+        "name": "offline after warm load: execution",
+        "actual": "locator.evaluate: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-course-link=\"mth141\"]').first()\u001b[22m\n\n    at clickRoute (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:183:63)\n    at runCase.expected.expectedFailureEvent.mode (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:364:61)\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:169:5)\n    at async Object.failures (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:361:3)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18"
+      }
+    ]
+  },
+  "causeLimits": "Initial topic online MTH140 readiness timeout, later denied-storage readiness timeout and readiness-only native locator timeout retain their raw evidence. Passing reruns and the host allowance do not establish those cases exact causes.",
+  "protectedSources": {
+    "head": "3d14973ef56e8dcf5be036793cae391bd392699c",
+    "allUnchanged": true,
+    "hashes": [
+      {
+        "path": "assets/book/page-bend-math.mjs",
+        "headSha256": "0932b6ea62f740def7d2b5990f2447e729bc4e294f6ed3bf61256574deddef17",
+        "currentSha256": "0932b6ea62f740def7d2b5990f2447e729bc4e294f6ed3bf61256574deddef17"
+      },
+      {
+        "path": "assets/book/weeks.mjs",
+        "headSha256": "0b34ccd3f2e0af48233636234a8271f97f0a1ddb3f40fdabee3f87c0fe3fdb91",
+        "currentSha256": "0b34ccd3f2e0af48233636234a8271f97f0a1ddb3f40fdabee3f87c0fe3fdb91"
+      },
+      {
+        "path": "assets/course-header.mjs",
+        "headSha256": "211e9da620f3427fb4a8ad43e40a6fe71787c286af0538beae8c4ba43e24fece",
+        "currentSha256": "211e9da620f3427fb4a8ad43e40a6fe71787c286af0538beae8c4ba43e24fece"
+      },
+      {
+        "path": "assets/course-scene.mjs",
+        "headSha256": "6193fb23735dcb4f0ac588893f134b956f22aa9ed0670db315f60f57fd2505a2",
+        "currentSha256": "6193fb23735dcb4f0ac588893f134b956f22aa9ed0670db315f60f57fd2505a2"
+      },
+      {
+        "path": "assets/night/deadline.mjs",
+        "headSha256": "ea48b3d4e2d875f4d884ca3e38072cd8733c0bdefcf272a6bcf62fb866ce5e37",
+        "currentSha256": "ea48b3d4e2d875f4d884ca3e38072cd8733c0bdefcf272a6bcf62fb866ce5e37"
+      },
+      {
+        "path": "assets/night/hero.css",
+        "headSha256": "2ca145fa77d797ef3bc2c47f7410d8c64f76d652d6744ce199b72dfc83b05d9f",
+        "currentSha256": "2ca145fa77d797ef3bc2c47f7410d8c64f76d652d6744ce199b72dfc83b05d9f"
+      },
+      {
+        "path": "assets/night/hero.mjs",
+        "headSha256": "56a582d513a85c962f49f6d042f9636e07b6538b55c5b90f035f31fd3b54bbc8",
+        "currentSha256": "56a582d513a85c962f49f6d042f9636e07b6538b55c5b90f035f31fd3b54bbc8"
+      },
+      {
+        "path": "assets/night/layout.css",
+        "headSha256": "07ec212a86472d267259cedb25484279001c6e4b6b2e7630242b6a5693d19435",
+        "currentSha256": "07ec212a86472d267259cedb25484279001c6e4b6b2e7630242b6a5693d19435"
+      },
+      {
+        "path": "assets/night/scroll.css",
+        "headSha256": "f0c06b70681f7973d219fb0c527d6f3e17c46c95440cdb99ef4b192ba2bc03e2",
+        "currentSha256": "f0c06b70681f7973d219fb0c527d6f3e17c46c95440cdb99ef4b192ba2bc03e2"
+      },
+      {
+        "path": "assets/night/scroll.mjs",
+        "headSha256": "bf8890c8c09b4333563bbe30432932b9c51c00d987faacfe469a8c949970d658",
+        "currentSha256": "bf8890c8c09b4333563bbe30432932b9c51c00d987faacfe469a8c949970d658"
+      },
+      {
+        "path": "assets/night/timeline.mjs",
+        "headSha256": "f8d51ce5323020b6e931fa1241c200e4fb8e7591a2f2262b3d1139989c49f401",
+        "currentSha256": "f8d51ce5323020b6e931fa1241c200e4fb8e7591a2f2262b3d1139989c49f401"
+      },
+      {
+        "path": "assets/scenes/algebra.mjs",
+        "headSha256": "36fae0d99a9c2fbc06760236e6607d78a21911263b89692928c7e3494ed1ef8b",
+        "currentSha256": "36fae0d99a9c2fbc06760236e6607d78a21911263b89692928c7e3494ed1ef8b"
+      },
+      {
+        "path": "assets/scenes/calculus.mjs",
+        "headSha256": "cddfa5a78857773c80e51aa89afafea7843b7aa48913d0b72fa5c8cec6dea2c3",
+        "currentSha256": "cddfa5a78857773c80e51aa89afafea7843b7aa48913d0b72fa5c8cec6dea2c3"
+      },
+      {
+        "path": "assets/scenes/circuit.mjs",
+        "headSha256": "f03872b8dc8edb2bcdc06236d18c90b0c1e65be1ce0e9ac06734cbe2ef4302b1",
+        "currentSha256": "f03872b8dc8edb2bcdc06236d18c90b0c1e65be1ce0e9ac06734cbe2ef4302b1"
+      },
+      {
+        "path": "assets/scenes/drag.mjs",
+        "headSha256": "98e15e7b89bec442c2a2c142dbdb3ef7c8b0a719d90efe019d66fbc31061c326",
+        "currentSha256": "98e15e7b89bec442c2a2c142dbdb3ef7c8b0a719d90efe019d66fbc31061c326"
+      },
+      {
+        "path": "assets/scenes/framing.mjs",
+        "headSha256": "3f57a99bfc2c5bec11142a70e09f9dbd61891c0d6add8b2c817295c2051a301f",
+        "currentSha256": "3f57a99bfc2c5bec11142a70e09f9dbd61891c0d6add8b2c817295c2051a301f"
+      },
+      {
+        "path": "assets/scenes/future-geometry.mjs",
+        "headSha256": "b4510a942b2936c1f9861dc672d8a412b21bbe0901904a7e40a76667a20aed90",
+        "currentSha256": "b4510a942b2936c1f9861dc672d8a412b21bbe0901904a7e40a76667a20aed90"
+      },
+      {
+        "path": "assets/scenes/future-look.mjs",
+        "headSha256": "d1d1e2de239bf03cce840e584c59885cdc229587d30fe75bd21ea6f61ee2eb0d",
+        "currentSha256": "d1d1e2de239bf03cce840e584c59885cdc229587d30fe75bd21ea6f61ee2eb0d"
+      },
+      {
+        "path": "assets/scenes/primitives.mjs",
+        "headSha256": "6c3556f6aefffd403e84db4b9c924621af308bcd6a9374b12327ae2e04067fbf",
+        "currentSha256": "6c3556f6aefffd403e84db4b9c924621af308bcd6a9374b12327ae2e04067fbf"
+      },
+      {
+        "path": "assets/scenes/scene-math.mjs",
+        "headSha256": "9b154ed7459dcf3e9ec4d08301fc8a38b4592410b1c660827ce430078bcbc8c8",
+        "currentSha256": "9b154ed7459dcf3e9ec4d08301fc8a38b4592410b1c660827ce430078bcbc8c8"
+      }
+    ]
+  },
+  "ownedResourcesClosed": true
+}

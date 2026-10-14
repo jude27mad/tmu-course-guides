@@ -4,6 +4,7 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { makeBudgets, assertBudgets, computeCLS, summarizeNetwork, perf, PROFILES, collectQuietSample, waitForReadableFrames, isReadableProbe, assertPerfTelemetry } from './checks-perf.mjs';
+import * as perfTools from './checks-perf.mjs';
 
 const measurement = (base = '/', route = 'desk', profile = 'phone') => ({
   base, route, profile,
@@ -33,8 +34,8 @@ test('each budget gate fails when its real measurement exceeds the recorded allo
   const budget = makeBudgets([sample]);
   for (const [metric, change] of [
     ['requestCount', value => { value.network.requestCount = 13; }],
-    ['transferBytes', value => { value.network.transferBytes = 110_001; }],
-    ['bytesByType.script', value => { value.network.bytesByType.script = 88_193; }],
+    ['transferBytes', value => { value.network.transferBytes = 110_001; value.network.bytesByType.document += 5001; value.network.bytesByType.font += 5000; }],
+    ['bytesByType.script', value => { value.network.bytesByType.script = 88_193; value.network.transferBytes += 8193; }],
     ['chainDepth', value => { value.modules.chainDepth = 6; }]
   ]) {
     const regression = structuredClone(sample);
@@ -77,6 +78,7 @@ test('unknown resource types and invalid measurements cannot silently pass budge
   const budget = makeBudgets([sample]);
   const unknown = structuredClone(sample);
   unknown.network.bytesByType.newtype = 1;
+  unknown.network.transferBytes += 1;
   assert.equal(assertBudgets([unknown], budget).some(item => !item.pass && item.name.includes('bytesByType.newtype')), true);
   const invalid = structuredClone(sample);
   invalid.network.transferBytes = null;
@@ -102,6 +104,20 @@ test('a missing transfer-byte breakdown cannot be accepted as zero traffic', () 
     const malformed = measurement();
     malformed.network.bytesByType.script = invalid;
     assert.equal(assertBudgets([malformed], budget).some(item => !item.pass && item.name.includes('bytesByType.script')), true);
+  }
+});
+
+test('empty or inconsistent wire-byte breakdowns cannot become valid budgets', () => {
+  const valid = measurement(), budget = makeBudgets([valid]);
+  const assertionCount = assertBudgets([valid], budget).length;
+  for (const [bytesByType, total] of [[{}, 100_000], [{ script: 0 }, 100_000], [{ script: 100_001 }, 100_000], [{}, 0]]) {
+    const invalid = measurement();
+    invalid.network.bytesByType = bytesByType;
+    invalid.network.transferBytes = total;
+    assert.throws(() => makeBudgets([invalid]), /bytesByType/);
+    const assertions = assertBudgets([invalid], budget);
+    assert.equal(assertions.length, assertionCount);
+    assert.equal(assertions.find(item => item.name.includes('transfer byte breakdown available')).pass, false);
   }
 });
 
@@ -263,4 +279,28 @@ test('network totals use CDP wire bytes while retaining body-length diagnostics 
   ] }]);
   assert.deepEqual(report.unfinishedURLs, ['http://localhost/assets/poster.webp']);
   assert.equal(report.resources[0].bodyBytes, 80);
+});
+
+test('finished resources with unknown or invalid wire bytes fail sample completeness', () => {
+  for (const unknown of [null, undefined, NaN, Infinity, -1, '100']) {
+    const resources = [
+      { url: 'http://localhost/known.mjs', type: 'Script', transferBytes: 40, finished: true },
+      { url: 'http://localhost/unknown.mjs', type: 'Script', transferBytes: unknown, finished: true },
+      { url: 'http://localhost/site.css', type: 'Stylesheet', transferBytes: 10, finished: true }
+    ];
+    const summary = summarizeNetwork(resources);
+    assert.deepEqual(summary.invalidTransferByteURLs, ['http://localhost/unknown.mjs']);
+    assert.equal(summary.transferBytes, null);
+    assert.equal(summary.bytesByType.script, null);
+    assert.equal(summary.bytesByType.stylesheet, 10);
+    assert.deepEqual(summary.unfinishedURLs, []);
+    assert.equal(perfTools.completeNetworkSample({ networkQuiet: true }, summary), false);
+    assert.throws(() => makeBudgets([{ ...measurement(), network: summary }]), /transferBytes/);
+  }
+  const valid = summarizeNetwork([{ url: 'http://localhost/empty.mjs', type: 'Script', transferBytes: 0, finished: true }]);
+  assert.deepEqual(valid.invalidTransferByteURLs, []);
+  assert.equal(perfTools.completeNetworkSample({ networkQuiet: true }, valid), true);
+  assert.equal(perfTools.completeNetworkSample({ networkQuiet: false }, valid), false);
+  const pending = summarizeNetwork([{ url: 'http://localhost/pending.mjs', type: 'Script', transferBytes: null, finished: false }]);
+  assert.equal(perfTools.completeNetworkSample({ networkQuiet: true }, pending), false);
 });

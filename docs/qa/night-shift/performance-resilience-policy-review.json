@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-14T01:36:07.832Z",
+  "status": "clean",
+  "materialFindings": [],
+  "reviewType": "Independent read-only source/evidence review; no tests or browsers executed by reviewer.",
+  "sourceHashes": {
+    "tools/qa/checks-resilience.mjs": "43acc2217eea6f289dd760de67f0f4f9d805289a311c4277e363bd57e024b579",
+    "tools/qa/resilience.test.mjs": "97b8a007a07b68593df390f4dfe69fb1201c11ab22bd6c64bf805bd13b855706",
+    "tools/qa/README.md": "67565a06c0f95abe2a4b4860d5a0755cea2027f64536dba9acf72942ba7cbf82"
+  },
+  "scope": {
+    "qaOnly": true,
+    "productReference": "3d14973ef56e8dcf5be036793cae391bd392699c",
+    "protectedReference": "66049a17117ff085a99413066b326bb599f7b2c8",
+    "productGitDiffExitCode": 0,
+    "protectedGitDiffExitCode": 0,
+    "sourceOrDocEditsByReviewer": false
+  },
+  "timeoutPolicy": {
+    "allowanceMs": 30000,
+    "requires": "browserName === 'chromium' && gpu === false",
+    "strictMs": 10000,
+    "strictCases": [
+      "Chromium GPU",
+      "WebKit",
+      "Firefox",
+      "unknown/unavailable browser identity",
+      "unknown/unregistered page/context",
+      "gpu null/undefined/0/string"
+    ],
+    "appliesOnlyTo": [
+      "mounted-route/deadline ready() polls",
+      "existing native course-anchor locator.evaluate resolution"
+    ],
+    "unchanged": [
+      "default page timeout 10000",
+      "generic until() default 10000",
+      "existing special fetch-fallback wait14000",
+      "other locator/navigation waits",
+      "product router fetch timeout10000",
+      "physical-click policy",
+      "all functional/lifetime/telemetry assertions"
+    ]
+  },
+  "readinessSemantics": {
+    "predicateComponents": [
+      "bodyIdentity",
+      "routerIdentity",
+      "completedMarker",
+      "renderedMainText",
+      "deadlineNode"
+    ],
+    "allOriginalPredicatesRetained": true,
+    "doFirstAndTrueReplyBehaviorRetained": true,
+    "inFlightNativeReplyMayOverrunPollingBudget": true,
+    "neverReadyStillRejects": true,
+    "originalSampleErrorStillRejects": true,
+    "trace": [
+      "policy",
+      "elapsedMs",
+      "sampleCount",
+      "maxBrowserReplyMs",
+      "firstSample",
+      "lastSample",
+      "status",
+      "error"
+    ]
+  },
+  "nativeAction": {
+    "originalSelectorAndAnchorClickRetained": true,
+    "readyStillFollowsActivation": true,
+    "selectedTimeoutForwardedExplicitly": true,
+    "actionFailureRejectsOriginalError": true,
+    "passivePostErrorSnapshotBudgetMs": 5000,
+    "passiveFields": [
+      "URL/body/router/completion",
+      "target presence/count/href/connected/outerHTML",
+      "all course links",
+      "main content length",
+      "wrapper display/visibility/opacity/filter/transform"
+    ],
+    "nodePendingRequestsAndTelemetryRetainedBeforeSnapshot": true,
+    "blockedSnapshotCannotEraseOriginalErrorOrNodeEvidence": true
+  },
+  "metadata": {
+    "immutablePolicy": true,
+    "contextAndPageWeakMaps": true,
+    "actualSelectedBrowserIdentityUsed": true,
+    "proxyAndAuxiliaryPageRegistrationCovered": true,
+    "crossTabPagesRegisteredBeforeNavigation": true,
+    "unknownMetadataDefaultsTo10000": true
+  },
+  "tests": {
+    "reviewedResiliencePureTestCases": 18,
+    "newPolicyRegressions": 8,
+    "coverage": [
+      "strict browser/gpu boundaries and unknown metadata",
+      "browser proxies and auxiliary pages",
+      "late false native reply succeeds30/fails10",
+      "never ready rejects30",
+      "native error duration and identity",
+      "exact native timeout forwarding and activation",
+      "absent anchor rejects with passive evidence",
+      "blocked browser snapshot retains Node request/error evidence"
+    ],
+    "existingLog": "/tmp/ns-resilience-final-policy-tests.log",
+    "existingHelperLogCounts": {
+      "tests": 50,
+      "pass": 50,
+      "fail": 0
+    },
+    "existingLogContains50Pass": true,
+    "reviewerDidNotRerunTests": true
+  },
+  "driverEvidence": {
+    "raw": "/tmp/ns-offline-warm-results.json",
+    "control": "66049a1",
+    "phase": "offline cached desk",
+    "firstFalseReplyElapsedMs": 13489,
+    "firstFalseComponents": {
+      "bodyIdentity": true,
+      "routerIdentity": true,
+      "completedMarker": false,
+      "renderedMainText": true,
+      "deadlineNode": false
+    },
+    "routeWillChangeToChangedMs": 13574.60000000149,
+    "followingSnapshotComponents": {
+      "bodyIdentity": true,
+      "routerIdentity": true,
+      "completedMarker": true,
+      "renderedMainText": true,
+      "deadlineNode": true
+    },
+    "originalArchivedCaseCausesNotInferred": true
+  },
+  "failureArchives": [
+    {
+      "file": "performance-failures-initial-failure.json",
+      "rawPath": "tools/qa/reports/2026-10-13T23-57-02-861Z-75641/failures.json",
+      "sha256": "7ffcb60df4f7be607c322bad845947f0204462727385f292765595e6c3cd862c",
+      "byteIdenticalToRaw": true,
+      "status": "failed",
+      "failures": 1,
+      "baseStatuses": [
+        {
+          "base": "/",
+          "status": "failed",
+          "failures": 1
+        }
+      ],
+      "originalFailure": [
+        {
+          "base": "/",
+          "name": "offline after warm load: execution",
+          "error": "Error: Timed out waiting for mth140 mounted route and deadlines"
+        }
+      ]
+    },
+    {
+      "file": "performance-failures-storage-denial-timeout.json",
+      "rawPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T00-43-55-585Z-86009/failures.json",
+      "sha256": "1dbc9bc214874182b3c094b52b549ee93a34cd235ad4c84674c8d81821e2f65f",
+      "byteIdenticalToRaw": true,
+      "status": "failed",
+      "failures": 1,
+      "baseStatuses": [
+        {
+          "base": "/",
+          "status": "failed",
+          "failures": 1
+        }
+      ],
+      "originalFailure": [
+        {
+          "base": "/",
+          "name": "mth140: denied localStorage and sessionStorage methods: execution",
+          "error": "Error: Timed out waiting for mth141 mounted route and deadlines"
+        }
+      ]
+    },
+    {
+      "file": "performance-failures-readiness-only.json",
+      "rawPath": "tools/qa/reports/2026-10-14T01-18-47-902Z-92393/failures.json",
+      "sha256": "4b49c158a73a89bdc572575f505baf65696b6cb81a1aadb9ff10b4c4aaf12876",
+      "byteIdenticalToRaw": true,
+      "status": "failed",
+      "failures": 1,
+      "baseStatuses": [
+        {
+          "base": "/",
+          "status": "failed",
+          "failures": 1
+        },
+        {
+          "base": "/tmu-course-guides/",
+          "status": "passed",
+          "failures": 0
+        }
+      ],
+      "originalFailure": [
+        {
+          "base": "/",
+          "name": "offline after warm load: execution",
+          "error": "locator.evaluate: Timeout 10000ms exceeded."
+        }
+      ]
+    }
+  ],
+  "hardenedSummaryHashMatches": true,
+  "documentation": {
+    "file": "tools/qa/README.md",
+    "matchesImplementation": true,
+    "preservesUnknownSpecificTimeoutCauses": true,
+    "noBroadWaiverOrSuppressedErrors": true
+  },
+  "peerReview": {
+    "agent": "/root/graph_audit/graph_review",
+    "conclusion": "Clean; no material defects. Scope/defaults/predicates/WeakMap metadata/diagnostics/tests and README independently reviewed."
+  },
+  "finalFocusedFailures": "Safe agent owns the fresh browser run; this offline review does not claim its pending result."
+}

@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "label": "before",
-  "capturedAt": "2026-10-13T22:20:42.236Z",
+  "capturedAt": "2026-10-13T23:41:42.769Z",
   "fixedTime": "2026-10-13T16:00:00.000Z",
-  "revision": "4dc356882c4dfcc4349ce84fce660dd1b35b9f68",
-  "productSourceSha256": "0b91e7a2c77d4b19babe56a2af9d2cc9d2eddd69b1a61029be1ee03cf904552f",
-  "protectedSourceSha256": "12f7d7b20b727ab2bbd2da6ae61835def99dde85e32bd74f04735bed7c86cbab",
+  "revision": "66049a17117ff085a99413066b326bb599f7b2c8",
+  "productSourceSha256": "88f6d0479c5b29933b352827c04ef3ef6974d7847017ac6e64383333802aa102",
+  "protectedSourceSha256": "1b773fabf9affdc543ba245a8822642aab9167f28bc1990b5f4f293d4deab653",
   "recipe": {
     "fullPage": false,
     "deviceScaleFactor": 1,
@@ -25,8 +25,12 @@
     "noWebGL": false,
     "compositorStagesBeforeDraw": true,
     "gpuRasterization": false,
+    "gpuCompositing": false,
     "chromiumScreenshotSurface": "legacy",
-    "nativeLayerInvalidation": "setNeedsDisplayOnAllLayers after DOM settlement, before final visibilitychange static scene redraw"
+    "nativeLayerInvalidation": {
+      "desk": "after final visibilitychange DOM reconstruction",
+      "course": "before final visibilitychange static scene redraw"
+    }
   },
   "execution": {
     "captureConcurrency": 1,
@@ -41,6 +45,7 @@
       "--ignore-gpu-blocklist",
       "--run-all-compositor-stages-before-draw",
       "--disable-gpu-rasterization",
+      "--disable-gpu-compositing",
       "--enable-gpu-benchmarking"
     ],
     "playwrightLegacyScreenshot": true,
@@ -97,8 +102,9 @@
       "--ignore-gpu-blocklist",
       "--run-all-compositor-stages-before-draw",
       "--disable-gpu-rasterization",
+      "--disable-gpu-compositing",
       "--enable-gpu-benchmarking",
-      "--user-data-dir=/tmp/playwright_chromiumdev_profile-XY9KPY",
+      "--user-data-dir=/tmp/playwright_chromiumdev_profile-8yqAak",
       "--remote-debugging-pipe",
       "--no-startup-window",
       "--noerrdialogs",
@@ -117,7 +123,69 @@
       "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
     },
     "actualMode": "SwiftShader",
-    "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+    "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness.",
+    "gpuInfo": {
+      "devices": [
+        {
+          "vendorId": 65535,
+          "deviceId": 65535,
+          "vendorString": "Google Inc. (Google)",
+          "deviceString": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver-5.0.0)",
+          "driverVendor": "SwANGLE",
+          "driverVersion": "5.0.0"
+        }
+      ],
+      "featureStatus": {
+        "2d_canvas": "enabled",
+        "direct_rendering_display_compositor": "disabled_off_ok",
+        "gpu_compositing": "disabled_software",
+        "multiple_raster_threads": "enabled_on",
+        "opengl": "enabled_on",
+        "rasterization": "disabled_software",
+        "raw_draw": "disabled_off_ok",
+        "skia_graphite": "disabled_off",
+        "trees_in_viz": "disabled_off",
+        "video_decode": "enabled",
+        "video_encode": "disabled_software",
+        "vulkan": "disabled_off",
+        "webgl": "enabled_readback",
+        "webgpu": "unavailable_software",
+        "webgpu_on_vk_via_gl_interop": "disabled_off",
+        "webnn": "disabled_off"
+      },
+      "auxAttributes": {
+        "amdSwitchable": false,
+        "canSupportThreadedTextureMailbox": false,
+        "directRenderingVersion": "",
+        "displayType": "ANGLE_SWIFTSHADER",
+        "glExtensions": "GL_AMD_performance_monitor GL_ANGLE_base_vertex_base_instance_shader_builtin GL_ANGLE_blob_cache GL_ANGLE_client_arrays GL_ANGLE_clip_cull_distance GL_ANGLE_compressed_texture_etc GL_ANGLE_copy_texture_3d GL_ANGLE_depth_texture GL_ANGLE_framebuffer_blit GL_ANGLE_framebuffer_multisample GL_ANGLE_get_image GL_ANGLE_get_serialized_context_string GL_ANGLE_get_tex_level_parameter GL_ANGLE_instanced_arrays GL_ANGLE_memory_object_flags GL_ANGLE_memory_size GL_ANGLE_multi_draw GL_ANGLE_pack_reverse_row_order GL_ANGLE_polygon_mode GL_ANGLE_program_binary_readiness_query GL_ANGLE_program_cache_control GL_ANGLE_read_only_depth_stencil_feedback_loops GL_ANGLE_relaxed_vertex_attribute_type GL_ANGLE_renderability_validation GL_ANGLE_request_extension GL_ANGLE_rgbx_internal_format GL_ANGLE_robust_client_memory GL_ANGLE_robust_fragment_shader_output GL_ANGLE_robust_resource_initialization GL_ANGLE_shader_pixel_local_storage GL_ANGLE_shader_pixel_local_storage_coherent GL_ANGLE_stencil_texturing GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_ANGLE_texture_multisample GL_ANGLE_texture_usage GL_ANGLE_translated_shader_source GL_ANGLE_vulkan_image GL_ANGLE_yuv_internal_format GL_APPLE_clip_distance GL_ARM_rgba8 GL_ARM_shader_framebuffer_fetch GL_CHROMIUM_bind_generates_resource GL_CHROMIUM_bind_uniform_location GL_CHROMIUM_copy_compressed_texture GL_CHROMIUM_copy_texture GL_CHROMIUM_lose_context GL_EXT_EGL_image_array GL_EXT_EGL_image_external_wrap_modes GL_EXT_EGL_image_storage GL_EXT_base_instance GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_debug_marker GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_read_format_bgra GL_EXT_robustness GL_EXT_sRGB GL_EXT_sRGB_write_control GL_EXT_semaphore GL_EXT_semaphore_fd GL_EXT_separate_shader_objects GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_non_constant_global_initializers GL_EXT_shader_texture_lod GL_EXT_shadow_samplers GL_EXT_texture_border_clamp GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_filter_anisotropic GL_EXT_texture_format_BGRA8888 GL_EXT_texture_lod_bias GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_type_2_10_10_10_REV GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_debug GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_NV_fence GL_NV_framebuffer_blit GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_polygon_mode GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_compressed_paletted_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth32 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_get_program_binary GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_surfaceless_context GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_vertex_type_10_10_10_2 GL_OVR_multiview GL_OVR_multiview2 GL_QCOM_texture_lod_bias ",
+        "glImplementationParts": "(gl=egl-angle,angle=swiftshader)",
+        "glRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver-5.0.0)",
+        "glResetNotificationStrategy": 33362,
+        "glVendor": "Google Inc. (Google)",
+        "glVersion": "OpenGL ES 3.0 (ANGLE 2.1 git hash: unknown hash)",
+        "glWsExtensions": "EGL_EXT_create_context_robustness EGL_ANGLE_surface_orientation EGL_KHR_create_context EGL_KHR_image EGL_KHR_image_base EGL_EXT_image_gl_colorspace EGL_KHR_gl_colorspace EGL_KHR_gl_texture_2D_image EGL_KHR_gl_texture_cubemap_image EGL_KHR_gl_renderbuffer_image EGL_KHR_get_all_proc_addresses EGL_KHR_fence_sync EGL_KHR_wait_sync EGL_ANGLE_create_context_webgl_compatibility EGL_CHROMIUM_create_context_bind_generates_resource EGL_KHR_swap_buffers_with_damage EGL_EXT_pixel_format_float EGL_KHR_surfaceless_context EGL_ANGLE_display_texture_share_group EGL_ANGLE_display_semaphore_share_group EGL_ANGLE_create_context_client_arrays EGL_ANGLE_program_cache_control EGL_ANGLE_robust_resource_initialization EGL_ANGLE_create_context_extensions_enabled EGL_ANDROID_blob_cache EGL_ANDROID_recordable EGL_ANGLE_create_context_backwards_compatible EGL_KHR_no_config_context EGL_IMG_context_priority EGL_KHR_create_context_no_error EGL_KHR_reusable_sync EGL_EXT_buffer_age EGL_ANGLE_create_surface_swap_interval EGL_ANGLE_vulkan_image EGL_KHR_partial_update EGL_ANGLE_global_fence_sync EGL_ANGLE_memory_usage_report ",
+        "glWsVendor": "Google Inc. (Google)",
+        "glWsVersion": "1.5 (ANGLE 2.1 git hash: unknown hash)",
+        "hardwareSupportsVulkan": false,
+        "inProcessGpu": false,
+        "initializationTime": 0.038502,
+        "isAsan": false,
+        "isClangCoverage": false,
+        "jpegDecodeAcceleratorSupported": false,
+        "maxMsaaSamples": "4",
+        "optimus": false,
+        "passthroughCmdDecoder": true,
+        "pixelShaderVersion": "3.00",
+        "processCrashCount": 0,
+        "sandboxed": false,
+        "skiaBackendType": "GaneshGL",
+        "subpixelFontRendering": true,
+        "targetCpuBits": 64,
+        "vertexShaderVersion": "3.00",
+        "visibilityCallbackCallCount": 0
+      }
+    }
   },
   "cases": [
     {
@@ -132,7 +200,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-desk-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/root-desk-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -184,7 +252,7 @@
       ],
       "dom": {
         "title": "TMU Course Guides | Fall 2026",
-        "heading": "TMU Course Guides \u00b7 Fall 2026",
+        "heading": "TMU Course Guides · Fall 2026",
         "route": "desk",
         "now": "2026-10-13T16:00:00.000Z",
         "theme": "dark",
@@ -251,6 +319,7 @@
         "renderersAtCapture": []
       },
       "nativeLayerRedraw": {
+        "phase": "after final visibilitychange DOM reconstruction",
         "before": [],
         "after": []
       },
@@ -258,9 +327,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 391533,
-        "sha256": "49dea04119bd182bc133f8b4bae3ae2a65dfe0752ba8f869388296a85c629c09",
-        "pixelSha256": "7dfc43649e406d884d8e5b5b18ebc6f0cd517f6eeba13186f5d0b517b89d24c8"
+        "bytes": 391425,
+        "sha256": "395de936e7417ecdb76f015139d0a8c60112c60f1f033796106c55e5e7263b36",
+        "pixelSha256": "591e7c832e554f7bde61bd3b881076c37b74a3fcb59fdfc5bf0835f43435b359"
       },
       "status": "captured",
       "fontRequests": [
@@ -283,7 +352,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-desk-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/root-desk-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -335,7 +404,7 @@
       ],
       "dom": {
         "title": "TMU Course Guides | Fall 2026",
-        "heading": "TMU Course Guides \u00b7 Fall 2026",
+        "heading": "TMU Course Guides · Fall 2026",
         "route": "desk",
         "now": "2026-10-13T16:00:00.000Z",
         "theme": "light",
@@ -402,6 +471,7 @@
         "renderersAtCapture": []
       },
       "nativeLayerRedraw": {
+        "phase": "after final visibilitychange DOM reconstruction",
         "before": [],
         "after": []
       },
@@ -409,9 +479,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 415413,
-        "sha256": "6b65119bbb4187f06886ff0509b38663ef3e9c20f8b79136046bb12abd4c94e8",
-        "pixelSha256": "20a2d7d2197098c39d9cbead2c6697285f16c4c3b171582c827bb9a9b8abdf54"
+        "bytes": 414097,
+        "sha256": "996cc3334c437d223a010812cfdd3bda684f7c53ebdcc04248b998867300cf50",
+        "pixelSha256": "5d4d2d3a0f992338aad9d3f49ed0f9c897f5ec711550e2dc3294f34ab8196f0a"
       },
       "status": "captured",
       "fontRequests": [
@@ -434,7 +504,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-desk-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/root-desk-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -486,7 +556,7 @@
       ],
       "dom": {
         "title": "TMU Course Guides | Fall 2026",
-        "heading": "TMU Course Guides \u00b7 Fall 2026",
+        "heading": "TMU Course Guides · Fall 2026",
         "route": "desk",
         "now": "2026-10-13T16:00:00.000Z",
         "theme": "dark",
@@ -553,6 +623,7 @@
         "renderersAtCapture": []
       },
       "nativeLayerRedraw": {
+        "phase": "after final visibilitychange DOM reconstruction",
         "before": [],
         "after": []
       },
@@ -560,9 +631,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 82935,
-        "sha256": "5da004a50403c716990b36e1ed72a893d61ec39866cae859334ff65fd8f8ed5e",
-        "pixelSha256": "2a114b91482c5469b67ecef44984b831b5b22136ba544c36de0f7c95caa17c7b"
+        "bytes": 83564,
+        "sha256": "1b2c9089545552c00544cbcbf266ebe33526d73e811ff8afd44bc46b28f20b7e",
+        "pixelSha256": "92343206f68af0588f41b9681db5e373e87f1424a9ada0607f226a9cf5e22831"
       },
       "status": "captured",
       "fontRequests": [
@@ -585,7 +656,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-desk-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/root-desk-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -637,7 +708,7 @@
       ],
       "dom": {
         "title": "TMU Course Guides | Fall 2026",
-        "heading": "TMU Course Guides \u00b7 Fall 2026",
+        "heading": "TMU Course Guides · Fall 2026",
         "route": "desk",
         "now": "2026-10-13T16:00:00.000Z",
         "theme": "light",
@@ -704,6 +775,7 @@
         "renderersAtCapture": []
       },
       "nativeLayerRedraw": {
+        "phase": "after final visibilitychange DOM reconstruction",
         "before": [],
         "after": []
       },
@@ -711,9 +783,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 82874,
-        "sha256": "fce1b9cc18350fca335a7c0b1c79a63162fbbaf40530fdbf78417666066321d9",
-        "pixelSha256": "d84cc421785f8b32abac67340bdb3f4fc72a4ad7d2c452d0cfde77a2fff866c4"
+        "bytes": 82971,
+        "sha256": "2fc2cb7a40bc51e057d38e0b5b93b22ee305a8bf2420a05f91e40446ca680241",
+        "pixelSha256": "b899ff372e6e31fea1b9c2d2ae3a1ff8b573cd8b831370df3a6f60a6a4269fc1"
       },
       "status": "captured",
       "fontRequests": [
@@ -736,7 +808,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-cen100-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/root-cen100-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -919,6 +991,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -956,12 +1029,23 @@
           "height": 550
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 691,
+          "height": 550,
+          "contextLost": false,
+          "drawingBufferWidth": 691,
+          "drawingBufferHeight": 550,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 185883,
-        "sha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
-        "pixelSha256": "ab0c078fa64a6bb7f2534f59fdaae9448574f04d695730051fe542577e4ae56c"
+        "bytes": 185812,
+        "sha256": "80959b55fa854553195e25afdb4842e57c4d28fba6a81cc1ed072e641233134d",
+        "pixelSha256": "67728df90763ad4e96c210080596caaccf0caebd1943be0bd70b66ebfbe753f6"
       },
       "status": "captured",
       "fontRequests": [
@@ -984,7 +1068,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-cen100-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/root-cen100-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -1167,6 +1251,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -1204,12 +1289,23 @@
           "height": 550
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 691,
+          "height": 550,
+          "contextLost": false,
+          "drawingBufferWidth": 691,
+          "drawingBufferHeight": 550,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 183555,
-        "sha256": "408bd9e1251fe6a3eec3c689ae2fa98ddf3066b639326e15d6e30165f29edbb9",
-        "pixelSha256": "dc7be1b4d62b74b432377ead5bc8ee29c8498dae7bf620bbb5451d0309875cf2"
+        "bytes": 183573,
+        "sha256": "db19c6f418ad54194a193f6cfaa1056d55efa4c1cb0193deb942d0e023faad4c",
+        "pixelSha256": "69ff495333667f6ae284f572043a73c992c349d8c51baee2e30bdac12e3dcdbc"
       },
       "status": "captured",
       "fontRequests": [
@@ -1232,7 +1328,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-cen100-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/root-cen100-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -1415,6 +1511,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -1452,12 +1549,23 @@
           "height": 303
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 374,
+          "height": 303,
+          "contextLost": false,
+          "drawingBufferWidth": 374,
+          "drawingBufferHeight": 303,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 90803,
-        "sha256": "06c63aeafdd259c071626f7bd218905cb77800cf3922f73b8532175ebd0d3369",
-        "pixelSha256": "46f6a93c920182029df72f0bdbfd1b55b5ae00362aeaf671ae89832ddd14c879"
+        "bytes": 90852,
+        "sha256": "241c4244a5fc463e228c1fc00bbc803076af443deb6e5d4ecc3d33a956fc28a6",
+        "pixelSha256": "d7792f17a4968034ea697bb6d9efeaa4bede5de6ebf128352386a7f783c4ff5a"
       },
       "status": "captured",
       "fontRequests": [
@@ -1480,7 +1588,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-cen100-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/root-cen100-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -1663,6 +1771,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -1700,12 +1809,23 @@
           "height": 303
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 374,
+          "height": 303,
+          "contextLost": false,
+          "drawingBufferWidth": 374,
+          "drawingBufferHeight": 303,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 89760,
-        "sha256": "eb4690524953b82a480a999485fbb5ab562216ab56527ac914389ffc7af9de97",
-        "pixelSha256": "579880d1af206e22535c47cc867e7867e0bd673fe26348dc7b5b239eddb41f81"
+        "bytes": 89026,
+        "sha256": "4e19ff5f4d2d957892adb2028eeee951d22293245550913c29648caf57c5cfcc",
+        "pixelSha256": "c4db75029616dbdc0e806d42dda83e65ca966f7dfd31869de898f53f109517b8"
       },
       "status": "captured",
       "fontRequests": [
@@ -1728,7 +1848,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-mth140-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/root-mth140-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -1914,6 +2034,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -1951,12 +2072,23 @@
           "height": 550
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 691,
+          "height": 550,
+          "contextLost": false,
+          "drawingBufferWidth": 691,
+          "drawingBufferHeight": 550,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 315180,
-        "sha256": "02960507297fe07f658df640c2fded6d18fc6b8836f26113b50b41f146d69cfb",
-        "pixelSha256": "0c1801b4afdc371cfd6a682d0bf873ba041dca4a3cf0a761d173dc8d0d73e7c9"
+        "bytes": 315125,
+        "sha256": "981077869bf801bdd009ad8cd4ea1debd76ef8f838fe37d57a6ebe88dbce53dd",
+        "pixelSha256": "efbb1fd3c5ef98dd1d8e953e58addcf06a29c0a11f835f2e76a47d365f7831b6"
       },
       "status": "captured",
       "fontRequests": [
@@ -1979,7 +2111,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-mth140-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/root-mth140-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -2165,6 +2297,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -2202,12 +2335,23 @@
           "height": 550
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 691,
+          "height": 550,
+          "contextLost": false,
+          "drawingBufferWidth": 691,
+          "drawingBufferHeight": 550,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 311601,
-        "sha256": "b88e48b09ebcdb976af2a2bcec5477773f5231bd3d59c075fe844f77db1626e3",
-        "pixelSha256": "bfd223cc32eb1df31880b50d5b1c3e3bf7f6aafed0187e42d7c9b1e2d497c82b"
+        "bytes": 311554,
+        "sha256": "7369465a09e46d87b29573e7348cbca4222038fbabd47638227d878b897435ac",
+        "pixelSha256": "80fee8928340afd86e4146e5e95895e1e317629d16fa61bf1a56838e6ddb4633"
       },
       "status": "captured",
       "fontRequests": [
@@ -2230,7 +2374,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-mth140-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/root-mth140-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -2416,6 +2560,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -2453,12 +2598,23 @@
           "height": 336
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 374,
+          "height": 336,
+          "contextLost": false,
+          "drawingBufferWidth": 374,
+          "drawingBufferHeight": 336,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 138767,
-        "sha256": "e3f744f0a3ab80d06b5f2e02710d104ba4b38954d5eee537d94f2d174edcfc39",
-        "pixelSha256": "198f7ae054ebcc0b0bf626a226c85ede6451da4e78e5b0dd2762d5812e992dfc"
+        "bytes": 138764,
+        "sha256": "fe1ce3068f554995f762dff0c45d21416747ce15b5b5f88058e1d2e87c1d78ec",
+        "pixelSha256": "d0aba723c7ac9c9779efd95fce000b1dec6b56bd275e4fb7115a7bb9ceafd98c"
       },
       "status": "captured",
       "fontRequests": [
@@ -2481,7 +2637,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-mth140-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/root-mth140-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -2667,6 +2823,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -2704,12 +2861,23 @@
           "height": 336
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 374,
+          "height": 336,
+          "contextLost": false,
+          "drawingBufferWidth": 374,
+          "drawingBufferHeight": 336,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 136986,
-        "sha256": "5cfbf6c971ae5a7c1ccedccca9025b113cd4f45190a2f656163e8db6cb90a8ff",
-        "pixelSha256": "ce7c71adeec4694120b3fad2fa796b22c974b0b21c0deeaf9d7a8f7fe8c7fcd1"
+        "bytes": 136739,
+        "sha256": "03469bde9e9c98fa9ca21b2ee8afd9080e7fa34a804705b3ee4c3dd8a8198dc4",
+        "pixelSha256": "0559b4814b2a0ca2b7093322ab7c476ff9fcb554d1d5ff0fe4842fd1a64b7727"
       },
       "status": "captured",
       "fontRequests": [
@@ -2732,7 +2900,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-mth141-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/root-mth141-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -2918,6 +3086,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -2955,12 +3124,23 @@
           "height": 550
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 691,
+          "height": 550,
+          "contextLost": false,
+          "drawingBufferWidth": 691,
+          "drawingBufferHeight": 550,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 277462,
-        "sha256": "47470d808b8999f1b2f9e7949c0b4bb97a0674a093c7e108cf3b9773923d07d7",
-        "pixelSha256": "af5a95f4ee980453492aa232db781f86c1f911c3c84aca2e0a6f19d0cdf60324"
+        "bytes": 277245,
+        "sha256": "3a10b5d3fe6611c217cdddf312dcdf8a9711962628fd17b0f20af10e66086304",
+        "pixelSha256": "7a056b91d2dc12812b1bf2ab1a31e18246e5ac2802c0f434717edc8976467170"
       },
       "status": "captured",
       "fontRequests": [
@@ -2983,7 +3163,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-mth141-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/root-mth141-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3169,6 +3349,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -3206,12 +3387,23 @@
           "height": 550
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 691,
+          "height": 550,
+          "contextLost": false,
+          "drawingBufferWidth": 691,
+          "drawingBufferHeight": 550,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 274771,
-        "sha256": "a1443487989122a172d96390ded13a6aa04d10e0feebd8e0bf196dc5f2e1e5a0",
-        "pixelSha256": "5d1aafaabf7c39a6b84e9145215fc5977c33bc8b90e07e10dc9adbdfaf9d3a15"
+        "bytes": 274521,
+        "sha256": "8081f9567c1ef0c8656a124269933cc1df2446e08ca0bbadf9a74130fbf9b16f",
+        "pixelSha256": "45485ff1b129f5890f30d111755a61b0ed66153ebb9bd39664cab7382c83ae77"
       },
       "status": "captured",
       "fontRequests": [
@@ -3234,7 +3426,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-mth141-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/root-mth141-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3420,6 +3612,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -3457,12 +3650,23 @@
           "height": 336
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 374,
+          "height": 336,
+          "contextLost": false,
+          "drawingBufferWidth": 374,
+          "drawingBufferHeight": 336,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 139557,
-        "sha256": "41d12045a6b8ef1850c146a8595d8522367ccd60f2e73e60249ad6adbe4f415a",
-        "pixelSha256": "4935b20b37b23c52e5bbdee9ca65355ee3891c7e44197714ea547dd377701665"
+        "bytes": 139439,
+        "sha256": "275285669a13cc30a990083588d0bd8e3edbc10aaf47d4a83313483875eb4753",
+        "pixelSha256": "50c9942ce65b49ab9abe28ed414bbd1f87f19b0cd8fd111d85fa3d13280331be"
       },
       "status": "captured",
       "fontRequests": [
@@ -3485,7 +3689,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/root-mth141-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/root-mth141-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3671,6 +3875,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -3708,12 +3913,23 @@
           "height": 336
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 374,
+          "height": 336,
+          "contextLost": false,
+          "drawingBufferWidth": 374,
+          "drawingBufferHeight": 336,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 137116,
-        "sha256": "409c960caf8a141ea008e50b415f2478a6aabb4e8dc081674d6371f008d7860d",
-        "pixelSha256": "17fe13774ad73b7cf2039eaecf8fa61068b0ae6862eb6f1f549a0351f791b804"
+        "bytes": 136986,
+        "sha256": "4e92bf53de6127cf94572c6b04b963ffbd1d1b2fd23f2449983cb5a66529f0df",
+        "pixelSha256": "3b5afaaf27b4e27dd31b9db00aa4fb7beb80471fc1f405541f740ff4b1e2c893"
       },
       "status": "captured",
       "fontRequests": [
@@ -3736,7 +3952,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-desk-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/project-desk-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3788,7 +4004,7 @@
       ],
       "dom": {
         "title": "TMU Course Guides | Fall 2026",
-        "heading": "TMU Course Guides \u00b7 Fall 2026",
+        "heading": "TMU Course Guides · Fall 2026",
         "route": "desk",
         "now": "2026-10-13T16:00:00.000Z",
         "theme": "dark",
@@ -3855,6 +4071,7 @@
         "renderersAtCapture": []
       },
       "nativeLayerRedraw": {
+        "phase": "after final visibilitychange DOM reconstruction",
         "before": [],
         "after": []
       },
@@ -3862,9 +4079,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 391533,
-        "sha256": "49dea04119bd182bc133f8b4bae3ae2a65dfe0752ba8f869388296a85c629c09",
-        "pixelSha256": "7dfc43649e406d884d8e5b5b18ebc6f0cd517f6eeba13186f5d0b517b89d24c8"
+        "bytes": 391425,
+        "sha256": "395de936e7417ecdb76f015139d0a8c60112c60f1f033796106c55e5e7263b36",
+        "pixelSha256": "591e7c832e554f7bde61bd3b881076c37b74a3fcb59fdfc5bf0835f43435b359"
       },
       "status": "captured",
       "fontRequests": [
@@ -3887,7 +4104,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-desk-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/project-desk-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3939,7 +4156,7 @@
       ],
       "dom": {
         "title": "TMU Course Guides | Fall 2026",
-        "heading": "TMU Course Guides \u00b7 Fall 2026",
+        "heading": "TMU Course Guides · Fall 2026",
         "route": "desk",
         "now": "2026-10-13T16:00:00.000Z",
         "theme": "light",
@@ -4006,6 +4223,7 @@
         "renderersAtCapture": []
       },
       "nativeLayerRedraw": {
+        "phase": "after final visibilitychange DOM reconstruction",
         "before": [],
         "after": []
       },
@@ -4013,9 +4231,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 415461,
-        "sha256": "63d39e082ee1a1344586c51db208a748f311fa597502e624bdbc7bc7102bdf91",
-        "pixelSha256": "5fac260701b474cf39430ce15e5eda9be4eb5a9f4d7b6b7d669d9a638d3f9c43"
+        "bytes": 414097,
+        "sha256": "996cc3334c437d223a010812cfdd3bda684f7c53ebdcc04248b998867300cf50",
+        "pixelSha256": "5d4d2d3a0f992338aad9d3f49ed0f9c897f5ec711550e2dc3294f34ab8196f0a"
       },
       "status": "captured",
       "fontRequests": [
@@ -4038,7 +4256,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-desk-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/project-desk-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -4090,7 +4308,7 @@
       ],
       "dom": {
         "title": "TMU Course Guides | Fall 2026",
-        "heading": "TMU Course Guides \u00b7 Fall 2026",
+        "heading": "TMU Course Guides · Fall 2026",
         "route": "desk",
         "now": "2026-10-13T16:00:00.000Z",
         "theme": "dark",
@@ -4157,6 +4375,7 @@
         "renderersAtCapture": []
       },
       "nativeLayerRedraw": {
+        "phase": "after final visibilitychange DOM reconstruction",
         "before": [],
         "after": []
       },
@@ -4164,9 +4383,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 82935,
-        "sha256": "5da004a50403c716990b36e1ed72a893d61ec39866cae859334ff65fd8f8ed5e",
-        "pixelSha256": "2a114b91482c5469b67ecef44984b831b5b22136ba544c36de0f7c95caa17c7b"
+        "bytes": 83564,
+        "sha256": "1b2c9089545552c00544cbcbf266ebe33526d73e811ff8afd44bc46b28f20b7e",
+        "pixelSha256": "92343206f68af0588f41b9681db5e373e87f1424a9ada0607f226a9cf5e22831"
       },
       "status": "captured",
       "fontRequests": [
@@ -4189,7 +4408,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-desk-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/project-desk-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -4241,7 +4460,7 @@
       ],
       "dom": {
         "title": "TMU Course Guides | Fall 2026",
-        "heading": "TMU Course Guides \u00b7 Fall 2026",
+        "heading": "TMU Course Guides · Fall 2026",
         "route": "desk",
         "now": "2026-10-13T16:00:00.000Z",
         "theme": "light",
@@ -4308,6 +4527,7 @@
         "renderersAtCapture": []
       },
       "nativeLayerRedraw": {
+        "phase": "after final visibilitychange DOM reconstruction",
         "before": [],
         "after": []
       },
@@ -4315,9 +4535,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 82874,
-        "sha256": "fce1b9cc18350fca335a7c0b1c79a63162fbbaf40530fdbf78417666066321d9",
-        "pixelSha256": "d84cc421785f8b32abac67340bdb3f4fc72a4ad7d2c452d0cfde77a2fff866c4"
+        "bytes": 82971,
+        "sha256": "2fc2cb7a40bc51e057d38e0b5b93b22ee305a8bf2420a05f91e40446ca680241",
+        "pixelSha256": "b899ff372e6e31fea1b9c2d2ae3a1ff8b573cd8b831370df3a6f60a6a4269fc1"
       },
       "status": "captured",
       "fontRequests": [
@@ -4340,7 +4560,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-cen100-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/project-cen100-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -4523,6 +4743,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -4560,12 +4781,23 @@
           "height": 550
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 691,
+          "height": 550,
+          "contextLost": false,
+          "drawingBufferWidth": 691,
+          "drawingBufferHeight": 550,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 185883,
-        "sha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
-        "pixelSha256": "ab0c078fa64a6bb7f2534f59fdaae9448574f04d695730051fe542577e4ae56c"
+        "bytes": 185812,
+        "sha256": "80959b55fa854553195e25afdb4842e57c4d28fba6a81cc1ed072e641233134d",
+        "pixelSha256": "67728df90763ad4e96c210080596caaccf0caebd1943be0bd70b66ebfbe753f6"
       },
       "status": "captured",
       "fontRequests": [
@@ -4588,7 +4820,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-cen100-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/project-cen100-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -4771,6 +5003,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -4808,12 +5041,23 @@
           "height": 550
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 691,
+          "height": 550,
+          "contextLost": false,
+          "drawingBufferWidth": 691,
+          "drawingBufferHeight": 550,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 183555,
-        "sha256": "408bd9e1251fe6a3eec3c689ae2fa98ddf3066b639326e15d6e30165f29edbb9",
-        "pixelSha256": "dc7be1b4d62b74b432377ead5bc8ee29c8498dae7bf620bbb5451d0309875cf2"
+        "bytes": 183573,
+        "sha256": "db19c6f418ad54194a193f6cfaa1056d55efa4c1cb0193deb942d0e023faad4c",
+        "pixelSha256": "69ff495333667f6ae284f572043a73c992c349d8c51baee2e30bdac12e3dcdbc"
       },
       "status": "captured",
       "fontRequests": [
@@ -4836,7 +5080,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-cen100-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/project-cen100-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -5019,6 +5263,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -5056,12 +5301,23 @@
           "height": 303
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 374,
+          "height": 303,
+          "contextLost": false,
+          "drawingBufferWidth": 374,
+          "drawingBufferHeight": 303,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 90803,
-        "sha256": "06c63aeafdd259c071626f7bd218905cb77800cf3922f73b8532175ebd0d3369",
-        "pixelSha256": "46f6a93c920182029df72f0bdbfd1b55b5ae00362aeaf671ae89832ddd14c879"
+        "bytes": 90852,
+        "sha256": "241c4244a5fc463e228c1fc00bbc803076af443deb6e5d4ecc3d33a956fc28a6",
+        "pixelSha256": "d7792f17a4968034ea697bb6d9efeaa4bede5de6ebf128352386a7f783c4ff5a"
       },
       "status": "captured",
       "fontRequests": [
@@ -5084,7 +5340,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-cen100-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/project-cen100-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -5267,6 +5523,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -5304,12 +5561,23 @@
           "height": 303
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 374,
+          "height": 303,
+          "contextLost": false,
+          "drawingBufferWidth": 374,
+          "drawingBufferHeight": 303,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 89760,
-        "sha256": "eb4690524953b82a480a999485fbb5ab562216ab56527ac914389ffc7af9de97",
-        "pixelSha256": "579880d1af206e22535c47cc867e7867e0bd673fe26348dc7b5b239eddb41f81"
+        "bytes": 89026,
+        "sha256": "4e19ff5f4d2d957892adb2028eeee951d22293245550913c29648caf57c5cfcc",
+        "pixelSha256": "c4db75029616dbdc0e806d42dda83e65ca966f7dfd31869de898f53f109517b8"
       },
       "status": "captured",
       "fontRequests": [
@@ -5332,7 +5600,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-mth140-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/project-mth140-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -5518,6 +5786,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -5555,12 +5824,23 @@
           "height": 550
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 691,
+          "height": 550,
+          "contextLost": false,
+          "drawingBufferWidth": 691,
+          "drawingBufferHeight": 550,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 315180,
-        "sha256": "02960507297fe07f658df640c2fded6d18fc6b8836f26113b50b41f146d69cfb",
-        "pixelSha256": "0c1801b4afdc371cfd6a682d0bf873ba041dca4a3cf0a761d173dc8d0d73e7c9"
+        "bytes": 315125,
+        "sha256": "981077869bf801bdd009ad8cd4ea1debd76ef8f838fe37d57a6ebe88dbce53dd",
+        "pixelSha256": "efbb1fd3c5ef98dd1d8e953e58addcf06a29c0a11f835f2e76a47d365f7831b6"
       },
       "status": "captured",
       "fontRequests": [
@@ -5583,7 +5863,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-mth140-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/project-mth140-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -5769,6 +6049,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -5806,12 +6087,23 @@
           "height": 550
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 691,
+          "height": 550,
+          "contextLost": false,
+          "drawingBufferWidth": 691,
+          "drawingBufferHeight": 550,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 311601,
-        "sha256": "b88e48b09ebcdb976af2a2bcec5477773f5231bd3d59c075fe844f77db1626e3",
-        "pixelSha256": "bfd223cc32eb1df31880b50d5b1c3e3bf7f6aafed0187e42d7c9b1e2d497c82b"
+        "bytes": 311554,
+        "sha256": "7369465a09e46d87b29573e7348cbca4222038fbabd47638227d878b897435ac",
+        "pixelSha256": "80fee8928340afd86e4146e5e95895e1e317629d16fa61bf1a56838e6ddb4633"
       },
       "status": "captured",
       "fontRequests": [
@@ -5834,7 +6126,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-mth140-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/project-mth140-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -6020,6 +6312,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -6057,12 +6350,23 @@
           "height": 336
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 374,
+          "height": 336,
+          "contextLost": false,
+          "drawingBufferWidth": 374,
+          "drawingBufferHeight": 336,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 138767,
-        "sha256": "e3f744f0a3ab80d06b5f2e02710d104ba4b38954d5eee537d94f2d174edcfc39",
-        "pixelSha256": "198f7ae054ebcc0b0bf626a226c85ede6451da4e78e5b0dd2762d5812e992dfc"
+        "bytes": 138764,
+        "sha256": "fe1ce3068f554995f762dff0c45d21416747ce15b5b5f88058e1d2e87c1d78ec",
+        "pixelSha256": "d0aba723c7ac9c9779efd95fce000b1dec6b56bd275e4fb7115a7bb9ceafd98c"
       },
       "status": "captured",
       "fontRequests": [
@@ -6085,7 +6389,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-mth140-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/project-mth140-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -6271,6 +6575,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -6308,12 +6613,23 @@
           "height": 336
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 374,
+          "height": 336,
+          "contextLost": false,
+          "drawingBufferWidth": 374,
+          "drawingBufferHeight": 336,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 136986,
-        "sha256": "5cfbf6c971ae5a7c1ccedccca9025b113cd4f45190a2f656163e8db6cb90a8ff",
-        "pixelSha256": "ce7c71adeec4694120b3fad2fa796b22c974b0b21c0deeaf9d7a8f7fe8c7fcd1"
+        "bytes": 136739,
+        "sha256": "03469bde9e9c98fa9ca21b2ee8afd9080e7fa34a804705b3ee4c3dd8a8198dc4",
+        "pixelSha256": "0559b4814b2a0ca2b7093322ab7c476ff9fcb554d1d5ff0fe4842fd1a64b7727"
       },
       "status": "captured",
       "fontRequests": [
@@ -6336,7 +6652,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-mth141-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/project-mth141-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -6522,6 +6838,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -6559,12 +6876,23 @@
           "height": 550
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 691,
+          "height": 550,
+          "contextLost": false,
+          "drawingBufferWidth": 691,
+          "drawingBufferHeight": 550,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 277462,
-        "sha256": "47470d808b8999f1b2f9e7949c0b4bb97a0674a093c7e108cf3b9773923d07d7",
-        "pixelSha256": "af5a95f4ee980453492aa232db781f86c1f911c3c84aca2e0a6f19d0cdf60324"
+        "bytes": 277245,
+        "sha256": "3a10b5d3fe6611c217cdddf312dcdf8a9711962628fd17b0f20af10e66086304",
+        "pixelSha256": "7a056b91d2dc12812b1bf2ab1a31e18246e5ac2802c0f434717edc8976467170"
       },
       "status": "captured",
       "fontRequests": [
@@ -6587,7 +6915,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-mth141-1440x900-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/project-mth141-1440x900-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -6773,6 +7101,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -6810,12 +7139,23 @@
           "height": 550
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 691,
+          "height": 550,
+          "contextLost": false,
+          "drawingBufferWidth": 691,
+          "drawingBufferHeight": 550,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 274771,
-        "sha256": "a1443487989122a172d96390ded13a6aa04d10e0feebd8e0bf196dc5f2e1e5a0",
-        "pixelSha256": "5d1aafaabf7c39a6b84e9145215fc5977c33bc8b90e07e10dc9adbdfaf9d3a15"
+        "bytes": 274521,
+        "sha256": "8081f9567c1ef0c8656a124269933cc1df2446e08ca0bbadf9a74130fbf9b16f",
+        "pixelSha256": "45485ff1b129f5890f30d111755a61b0ed66153ebb9bd39664cab7382c83ae77"
       },
       "status": "captured",
       "fontRequests": [
@@ -6838,7 +7178,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-mth141-390x844-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/project-mth141-390x844-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -7024,6 +7364,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -7061,12 +7402,23 @@
           "height": 336
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 374,
+          "height": 336,
+          "contextLost": false,
+          "drawingBufferWidth": 374,
+          "drawingBufferHeight": 336,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 139557,
-        "sha256": "41d12045a6b8ef1850c146a8595d8522367ccd60f2e73e60249ad6adbe4f415a",
-        "pixelSha256": "4935b20b37b23c52e5bbdee9ca65355ee3891c7e44197714ea547dd377701665"
+        "bytes": 139439,
+        "sha256": "275285669a13cc30a990083588d0bd8e3edbc10aaf47d4a83313483875eb4753",
+        "pixelSha256": "50c9942ce65b49ab9abe28ed414bbd1f87f19b0cd8fd111d85fa3d13280331be"
       },
       "status": "captured",
       "fontRequests": [
@@ -7089,7 +7441,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/project-mth141-390x844-light.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/project-mth141-390x844-light.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -7275,6 +7627,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -7312,12 +7665,23 @@
           "height": 336
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 374,
+          "height": 336,
+          "contextLost": false,
+          "drawingBufferWidth": 374,
+          "drawingBufferHeight": 336,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 137116,
-        "sha256": "409c960caf8a141ea008e50b415f2478a6aabb4e8dc081674d6371f008d7860d",
-        "pixelSha256": "17fe13774ad73b7cf2039eaecf8fa61068b0ae6862eb6f1f549a0351f791b804"
+        "bytes": 136986,
+        "sha256": "4e92bf53de6127cf94572c6b04b963ffbd1d1b2fd23f2449983cb5a66529f0df",
+        "pixelSha256": "3b5afaaf27b4e27dd31b9db00aa4fb7beb80471fc1f405541f740ff4b1e2c893"
       },
       "status": "captured",
       "fontRequests": [
@@ -7343,7 +7707,7 @@
       "noWebGL": false,
       "fullPage": false,
       "nativeClock": false,
-      "screenshot": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/repeat/root-cen100-1440x900-dark.png",
+      "screenshot": "tools/qa/reports/perf-visuals/before/repeat/root-cen100-1440x900-dark.png",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -7526,6 +7890,7 @@
         ]
       },
       "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
         "before": [
           {
             "renderer": "webgl2",
@@ -7563,12 +7928,23 @@
           "height": 550
         }
       ],
+      "actualWebGLContexts": [
+        {
+          "width": 691,
+          "height": 550,
+          "contextLost": false,
+          "drawingBufferWidth": 691,
+          "drawingBufferHeight": 550,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 185883,
-        "sha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
-        "pixelSha256": "ab0c078fa64a6bb7f2534f59fdaae9448574f04d695730051fe542577e4ae56c"
+        "bytes": 185812,
+        "sha256": "80959b55fa854553195e25afdb4842e57c4d28fba6a81cc1ed072e641233134d",
+        "pixelSha256": "67728df90763ad4e96c210080596caaccf0caebd1943be0bd70b66ebfbe753f6"
       },
       "status": "captured",
       "fontRequests": [
@@ -7596,14 +7972,14 @@
       "maxChannelDifference": 0,
       "differenceBounds": null,
       "pixelIdentical": true,
-      "beforeSha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
-      "afterSha256": "dcdd5fa9cd2441b0a77ee6057526caf504ac6a3de445b374f0262305cc9218c3",
-      "diff": "tools/qa/reports/perf-visuals/before-native-before-desk-final-event/repeat/root-cen100-1440x900-dark-diff.png"
+      "beforeSha256": "80959b55fa854553195e25afdb4842e57c4d28fba6a81cc1ed072e641233134d",
+      "afterSha256": "80959b55fa854553195e25afdb4842e57c4d28fba6a81cc1ed072e641233134d",
+      "diff": "tools/qa/reports/perf-visuals/before/repeat/root-cen100-1440x900-dark-diff.png"
     }
   },
-  "productSourceSha256After": "0b91e7a2c77d4b19babe56a2af9d2cc9d2eddd69b1a61029be1ee03cf904552f",
+  "productSourceSha256After": "88f6d0479c5b29933b352827c04ef3ef6974d7847017ac6e64383333802aa102",
   "sourceUnchanged": true,
-  "protectedSourceSha256After": "12f7d7b20b727ab2bbd2da6ae61835def99dde85e32bd74f04735bed7c86cbab",
+  "protectedSourceSha256After": "1b773fabf9affdc543ba245a8822642aab9167f28bc1990b5f4f293d4deab653",
   "protectedSourceUnchanged": true,
   "summary": {
     "requested": 32,
@@ -7612,6 +7988,7 @@
     "initialAttemptFailures": 0,
     "naturalSettlementFailures": 0,
     "errors": 0,
-    "repeatPixelIdentical": true
+    "repeatPixelIdentical": true,
+    "evidenceFailures": 0
   }
 }

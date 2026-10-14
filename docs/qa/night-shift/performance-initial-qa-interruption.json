@@ -1,0 +1,239 @@
+{
+  "schemaVersion": 1,
+  "runDirectory": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-13T23-57-02-861Z-75641",
+  "startedAt": "2026-10-13T23:57:02.861Z",
+  "lastRecordedStatus": "running",
+  "lastRecordedCompletedAt": null,
+  "lastRecordedFailures": 6,
+  "interruption": {
+    "signal": "SIGINT",
+    "processId": 75641,
+    "executionSession": 39206,
+    "observedExitCode": 130,
+    "allOwnedBrowsersClosed": true,
+    "reason": "Stopped the known failed initial run for isolated diagnosis; the last raw summary was partial and is not final QA evidence."
+  },
+  "cases": [
+    {
+      "name": "perf",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 304,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "routes",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 60,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "stability",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 45,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "frames",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 24,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "deadlines",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 128,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "modes",
+      "records": [
+        {
+          "base": "/",
+          "status": "failed",
+          "failures": 1,
+          "assertions": 188,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "layout",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 288,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "webkit",
+      "records": [
+        {
+          "base": "/",
+          "status": "skipped",
+          "failures": 0,
+          "assertions": 0,
+          "skips": [
+            {
+              "feature": "Playwright WebKit routes, deadlines and layout",
+              "reason": "WebKit could not launch; install its browser and OS dependencies. browserType.launch: Executable doesn't exist at /home/agent/.cache/ms-playwright/webkit-2227/pw_run.sh\n\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551 Looks like Playwright Test or Playwright was just installed or updated. \u2551\n\u2551 Please run the following command to download new browsers:              \u2551\n\u2551                                                                         \u2551\n\u2551     npx playwright install                                              \u2551\n\u2551                                                                         \u2551\n\u2551 <3 Playwright Team                                                      \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nojs",
+      "records": [
+        {
+          "base": "/",
+          "status": "failed",
+          "failures": 4,
+          "assertions": 33,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "bfcache",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 56,
+          "skips": [
+            {
+              "feature": "cen100: native persisted BFCache restoration",
+              "reason": "The browser performed a document Back without pageshow.persisted. Shell retention/resume cannot be claimed.",
+              "navigation": [
+                {
+                  "type": "back_forward",
+                  "notRestoredReasons": {
+                    "src": null,
+                    "id": null,
+                    "url": "http://127.0.0.1:45301/cen100/?motion=off",
+                    "name": null,
+                    "reasons": [
+                      {
+                        "reason": "masked"
+                      }
+                    ],
+                    "children": []
+                  }
+                }
+              ]
+            },
+            {
+              "feature": "mth141: native persisted BFCache restoration",
+              "reason": "The browser performed a document Back without pageshow.persisted. Shell retention/resume cannot be claimed.",
+              "navigation": [
+                {
+                  "type": "back_forward",
+                  "notRestoredReasons": {
+                    "src": null,
+                    "id": null,
+                    "url": "http://127.0.0.1:45301/mth141/?motion=off",
+                    "name": null,
+                    "reasons": [
+                      {
+                        "reason": "masked"
+                      }
+                    ],
+                    "children": []
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "failures",
+      "records": [
+        {
+          "base": "/",
+          "status": "failed",
+          "failures": 1,
+          "assertions": 40,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "crosstab",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 126,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "clock",
+      "records": []
+    },
+    {
+      "name": "forward",
+      "records": []
+    }
+  ],
+  "failureReports": [
+    {
+      "check": "modes",
+      "path": "performance-modes-initial-failure.json",
+      "sha256": "230decf191bad2f9dcf650f9b4403d30ef912b17ed07c986be66cca69aa643b3",
+      "byteIdenticalCopy": true
+    },
+    {
+      "check": "nojs",
+      "path": "performance-nojs-initial-failure.json",
+      "sha256": "a431bd3405518487d0be3fdd3aba5b109caa7916427b0777f1a7d5bf2e47abfd",
+      "byteIdenticalCopy": true
+    },
+    {
+      "check": "failures",
+      "path": "performance-failures-initial-failure.json",
+      "sha256": "7ffcb60df4f7be607c322bad845947f0204462727385f292765595e6c3cd862c",
+      "byteIdenticalCopy": true
+    }
+  ],
+  "originalSummarySha256": "bc46e6461730851a6bb953d0bd24610efd487ef24d0252d12b89adae4dbd742c"
+}

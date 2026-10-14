@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "status": "diagnostic evidence; excluded from final optimization comparison",
-  "rationale": "Historical6723266 captures exposed coordinate-based dither and rounded-control antialias variants despite identical recorded DOM, fonts and scene state. Prior failures remain archived and cannot pass the final visual gate. Under the refreshed4dc3568 control and matching optimized source, the native all-layer invalidation protocol matched both Deskphone themes across sources, plus same-source dark repeats and CEN→MTH140→MTH141→freshCEN history. The browser API requests repaint of real settled layers without modifying product content or CSS; final visibilitychange preserves the real pausedWebGL static frame. No masks, crops, tolerance or matching-variant selection is used. Full32before+32after strict comparison remains pending.",
+  "status": "historical diagnostics retained; final software-compositor exact comparison passed",
+  "rationale": "Earlier captures exposed coordinate-based gradient dither and rounded-control antialias variants on unchanged source; failed and interrupted matrices remain historical evidence. Native layer repaint follows the final Desk DOM reconstruction and precedes the final course WebGL redraw. The recorded software-compositor environment retains actual SwiftShader WebGL2 through framebuffer readback. Fresh control66049a1 and optimized3d14973 matrices passed all32 exact RGBA pairs and both independent CEN repeats, with0 changed pixels and clean provenance, renderer, error and natural settlement gates. There are no product/CSS changes, masks, crops, pixel tolerance or matching-variant selection in the capture protocol.",
   "earlierObserverDiagnostic": {
     "schemaVersion": 1,
     "label": "before",
@@ -27856,5 +27856,141 @@
       "diff": "tools/qa/reports/perf-visuals/before-software-compositor-interrupted-4dc3568/repeat/root-cen100-1440x900-dark-diff.png"
     },
     "courseCapturesWithLiveSwiftShaderEvidence": 16
+  },
+  "final660SoftwareCompositorValidation": {
+    "status": "strict exact visual comparison passed",
+    "beforeRevision": "66049a17117ff085a99413066b326bb599f7b2c8",
+    "afterRevision": "3d14973ef56e8dcf5be036793cae391bd392699c",
+    "totalPixels": 26002560,
+    "summary": {
+      "expected": 32,
+      "compared": 32,
+      "pixelIdentical": 32,
+      "different": 0,
+      "failed": 0,
+      "changedPixels": 0,
+      "browserErrors": 0,
+      "naturalSettlementFailures": 0,
+      "repeatFailures": 0,
+      "evidenceFailures": 0,
+      "protectedSourceMatches": true
+    },
+    "beforeSummary": {
+      "requested": 32,
+      "captured": 32,
+      "failed": 0,
+      "initialAttemptFailures": 0,
+      "naturalSettlementFailures": 0,
+      "errors": 0,
+      "repeatPixelIdentical": true,
+      "evidenceFailures": 0
+    },
+    "afterSummary": {
+      "requested": 32,
+      "captured": 32,
+      "failed": 0,
+      "initialAttemptFailures": 0,
+      "naturalSettlementFailures": 0,
+      "errors": 0,
+      "repeatPixelIdentical": true,
+      "evidenceFailures": 0
+    },
+    "repeats": [
+      {
+        "changedPixels": 0,
+        "hashesMatch": true,
+        "pass": true
+      },
+      {
+        "changedPixels": 0,
+        "hashesMatch": true,
+        "pass": true
+      }
+    ],
+    "recipe": {
+      "fullPage": false,
+      "deviceScaleFactor": 1,
+      "timezone": "America/Toronto",
+      "locale": "en-CA",
+      "initialSavedScenePause": true,
+      "entryAnimations": "normal",
+      "settledDelayMs": 1500,
+      "random": "FNV-1a route seed with a 32-bit LCG; seeded before product scripts",
+      "initialClock": "moving Date offset",
+      "freeze": "freeze after settlement, pause through GuideMotion and dispatch workspace-changed/visibilitychange; final visibilitychange redraw immediately before capture",
+      "sceneReadyGate": true,
+      "sceneFrameAndBoundsStableMs": 100,
+      "screenshotAnimations": "disabled",
+      "masking": false,
+      "cssInjection": false,
+      "noWebGL": false,
+      "compositorStagesBeforeDraw": true,
+      "gpuRasterization": false,
+      "gpuCompositing": false,
+      "chromiumScreenshotSurface": "legacy",
+      "nativeLayerInvalidation": {
+        "desk": "after final visibilitychange DOM reconstruction",
+        "course": "before final visibilitychange static scene redraw"
+      }
+    },
+    "execution": [
+      {
+        "captureConcurrency": 1,
+        "diagnostic": false
+      },
+      {
+        "captureConcurrency": 1,
+        "diagnostic": false
+      }
+    ],
+    "nativeGPUStatus": [
+      {
+        "2d_canvas": "enabled",
+        "direct_rendering_display_compositor": "disabled_off_ok",
+        "gpu_compositing": "disabled_software",
+        "multiple_raster_threads": "enabled_on",
+        "opengl": "enabled_on",
+        "rasterization": "disabled_software",
+        "raw_draw": "disabled_off_ok",
+        "skia_graphite": "disabled_off",
+        "trees_in_viz": "disabled_off",
+        "video_decode": "enabled",
+        "video_encode": "disabled_software",
+        "vulkan": "disabled_off",
+        "webgl": "enabled_readback",
+        "webgpu": "unavailable_software",
+        "webgpu_on_vk_via_gl_interop": "disabled_off",
+        "webnn": "disabled_off"
+      },
+      {
+        "2d_canvas": "enabled",
+        "direct_rendering_display_compositor": "disabled_off_ok",
+        "gpu_compositing": "disabled_software",
+        "multiple_raster_threads": "enabled_on",
+        "opengl": "enabled_on",
+        "rasterization": "disabled_software",
+        "raw_draw": "disabled_off_ok",
+        "skia_graphite": "disabled_off",
+        "trees_in_viz": "disabled_off",
+        "video_decode": "enabled",
+        "video_encode": "disabled_software",
+        "vulkan": "disabled_off",
+        "webgl": "enabled_readback",
+        "webgpu": "unavailable_software",
+        "webgpu_on_vk_via_gl_interop": "disabled_off",
+        "webnn": "disabled_off"
+      }
+    ],
+    "actualLiveWebGLCourseCaptures": [
+      24,
+      24
+    ],
+    "protectedSourceSha256": "1b773fabf9affdc543ba245a8822642aab9167f28bc1990b5f4f293d4deab653",
+    "metadataEqualCases": {
+      "platformFonts": 32,
+      "wrapper": 32,
+      "imageDimensionsAndPositions": 32,
+      "finalSceneStateAndBounds": 32
+    }
   }
 }

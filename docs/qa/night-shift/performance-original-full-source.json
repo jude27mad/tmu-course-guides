@@ -1,0 +1,30 @@
+{
+  "recordedAt": "2026-10-14T02:08:59.650Z",
+  "runDirectory": "tools/qa/reports/2026-10-14T01-40-01-387Z-96502",
+  "repositoryCommit": "3d14973ef56e8dcf5be036793cae391bd392699c",
+  "productFingerprint": "14aab876ca16efa6dc335eb663dd7817bde3948628ce48613c18deaa00234e32",
+  "protectedFingerprint": "1b773fabf9affdc543ba245a8822642aab9167f28bc1990b5f4f293d4deab653",
+  "sources": [
+    {
+      "path": "tools/qa/checks-resilience.mjs",
+      "sha256": "43acc2217eea6f289dd760de67f0f4f9d805289a311c4277e363bd57e024b579"
+    },
+    {
+      "path": "tools/qa/checks.mjs",
+      "sha256": "ae5f73702935e07258d71c36bc4c4cf20f73f13aba17607066376b7a36136563"
+    },
+    {
+      "path": "tools/qa/checks-perf.mjs",
+      "sha256": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657"
+    },
+    {
+      "path": "tools/qa/runtime.mjs",
+      "sha256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587"
+    },
+    {
+      "path": "tools/qa/instrument.mjs",
+      "sha256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892"
+    }
+  ],
+  "note": "Recorded while full96502 was running, before any BF round-trip helper edits. No QA source changed since full run launch; HEAD verified separately."
+}

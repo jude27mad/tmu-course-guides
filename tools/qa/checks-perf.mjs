@@ -56,6 +56,11 @@ export const PROFILES = {
 const DEFAULT_MARGIN = { fraction: .1, requestCount: 2, transferBytes: 4096, bytesByType: 8192, chainDepth: 1 };
 const finiteCount = value => Number.isFinite(value) && value >= 0;
 const byteBreakdownPresent = row => row.network?.bytesByType !== null && typeof row.network?.bytesByType === 'object' && !Array.isArray(row.network.bytesByType);
+const byteBreakdownValid = row => {
+  if (!byteBreakdownPresent(row) || !finiteCount(row.network.transferBytes)) return false;
+  const values = Object.values(row.network.bytesByType);
+  return values.length > 0 && values.every(finiteCount) && values.reduce((sum, bytes) => sum + bytes, 0) === row.network.transferBytes;
+};
 const caseKey = row => [row.base, row.route, row.profile].join('|');
 const assertion = (name, pass, actual, expected, detail) => ({ name, pass: Boolean(pass), actual, expected, ...(detail ? { detail } : {}) });
 
@@ -90,6 +95,7 @@ export function makeBudgets(measurements, { margin = DEFAULT_MARGIN } = {}) {
       if (!byteBreakdownPresent(row)) throw new Error(`Invalid ${key} measurement bytesByType.`);
       for (const metric of ['requestCount', 'transferBytes', 'chainDepth']) if (!finiteCount(baseline[metric])) throw new Error(`Invalid ${key} measurement ${metric}.`);
       for (const [type, bytes] of Object.entries(baseline.bytesByType)) if (!finiteCount(bytes)) throw new Error(`Invalid ${key} measurement bytesByType.${type}.`);
+      if (!byteBreakdownValid(row)) throw new Error(`Invalid ${key} measurement bytesByType: finite resource-type bytes must sum to transferBytes.`);
       const limits = {
         requestCount: increase(baseline.requestCount, allowance.requestCount),
         transferBytes: increase(baseline.transferBytes, allowance.transferBytes),
@@ -118,7 +124,7 @@ export function assertBudgets(measurements, budgets, { base } = {}) {
     const key = caseKey(row), budget = budgets.cases.find(item => caseKey(item) === key);
     if (!budget) { out.push(assertion(`${key}: budget case present`, false, key, 'committed case budget')); continue; }
     const actual = budgetMetrics(row);
-    out.push(assertion(`${key}: transfer byte breakdown available`, byteBreakdownPresent(row), row.network?.bytesByType, 'measured bytes by resource type'));
+    out.push(assertion(`${key}: transfer byte breakdown available`, byteBreakdownValid(row), row.network?.bytesByType, 'measured bytes by resource type'));
     for (const metric of ['requestCount', 'transferBytes', 'chainDepth']) {
       const limit = budget.limits?.[metric];
       out.push(assertion(`${key}: budget ${metric}`, finiteCount(actual[metric]) && finiteCount(limit) && actual[metric] <= limit, actual[metric], limit));
@@ -146,11 +152,18 @@ export function computeCLS(entries) {
 export function summarizeNetwork(resources) {
   const bytesByType = Object.fromEntries(RESOURCE_TYPES.map(type => [type, 0]));
   const urlCounts = {}, moduleURLs = new Map();
+  const invalidTransferByteURLs = [];
   let transferBytes = 0;
   for (const resource of resources) {
-    const type = (resource.type || 'Other').toLowerCase(), bytes = finiteCount(resource.transferBytes) ? resource.transferBytes : 0;
-    bytesByType[type] = (bytesByType[type] ?? 0) + bytes;
-    transferBytes += bytes;
+    const type = (resource.type || 'Other').toLowerCase(), measured = finiteCount(resource.transferBytes);
+    if (resource.finished && !measured) {
+      invalidTransferByteURLs.push(resource.url);
+      bytesByType[type] = null;
+      transferBytes = null;
+    } else if (measured) {
+      if (bytesByType[type] !== null) bytesByType[type] = (bytesByType[type] ?? 0) + resource.transferBytes;
+      if (transferBytes !== null) transferBytes += resource.transferBytes;
+    }
     urlCounts[resource.url] = (urlCounts[resource.url] ?? 0) + 1;
     try {
       const url = new URL(resource.url);
@@ -166,9 +179,14 @@ export function summarizeNetwork(resources) {
     moduleURLCollisions: [...moduleURLs].filter(([, urls]) => urls.size > 1).map(([path, urls]) => ({ path, urls: [...urls].sort() })).sort((a, b) => a.path.localeCompare(b.path)),
     fetchedModuleURLs: [...moduleURLs.values()].flatMap(urls => [...urls]).sort(),
     unfinishedURLs: resources.filter(row => !row.finished && !row.failed).map(row => row.url),
+    invalidTransferByteURLs,
     byteSource: 'CDP Network.loadingFinished.encodedDataLength; Content-Length and decoded response-body bytes are separate diagnostics.',
     resources
   };
+}
+
+export function completeNetworkSample(collection, network) {
+  return Boolean(collection?.networkQuiet && Array.isArray(network?.unfinishedURLs) && network.unfinishedURLs.length === 0 && Array.isArray(network?.invalidTransferByteURLs) && network.invalidTransferByteURLs.length === 0);
 }
 
 // Runs before product scripts. Only native PerformanceObservers and short-lived
@@ -379,7 +397,7 @@ async function measureRoute(env, route, profileName, out) {
     observation.modules = { chainDepth: graph.longestChainDepth, shortestDistanceDepth: graph.maxDepth, moduleCount: graph.moduleCount, edgeCount: graph.edgeCount, entryScripts: state.moduleScripts, bootDynamicEdges: graph.bootDynamicEdges, graph, fetchedLazyModuleURLs: observation.network.fetchedModuleURLs.filter(url => !graph.nodes.some(node => node.url === url)), runtimeURLCollisions: observation.network.moduleURLCollisions };
     out.assertions.push(assertion(`${label}: completed route and real deadline content`, readiness.routeReady, readiness, 'completed route, real content and populated deadline'));
     out.assertions.push(assertion(`${label}: declared optional feature fetches attempted`, readiness.optionalFeaturesAttempted, readiness.optionalFeatures, expectedFeatures, 'Observe normal product loading; QA never imports optional vendors.'));
-    out.assertions.push(assertion(`${label}: network sample reaches quiet boundary`, collection.networkQuiet && observation.network.unfinishedURLs.length === 0, observation.collection, 'complete readiness + 2500 ms optional settlement + 1500 ms no active requests, unchanged during browser capture'));
+    out.assertions.push(assertion(`${label}: network sample reaches quiet boundary`, completeNetworkSample(collection, observation.network), observation.collection, 'complete readiness + 2500 ms optional settlement + 1500 ms no active requests, unchanged during browser capture'));
     for (const type of ['paint', 'largest-contentful-paint', 'layout-shift', 'longtask']) out.assertions.push(assertion(`${label}: performance observer ${type} supported`, state.supportedEntryTypes.includes(type), state.supportedEntryTypes, type));
     out.assertions.push(assertion(`${label}: performance observers installed`, state.observerErrors.length === 0, state.observerErrors, []));
     out.assertions.push(assertion(`${label}: fetched modules use one URL per path`, observation.network.moduleURLCollisions.length === 0, observation.network.moduleURLCollisions, []));

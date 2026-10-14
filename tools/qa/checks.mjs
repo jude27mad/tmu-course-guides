@@ -417,13 +417,33 @@ export async function deadlines(env) {
   return out;
 }
 
+export function initialStaticSceneReady(state) {
+  if(!state||!['webgl2','poster'].includes(state.renderer))return false;
+  // An offscreen scene renders on demand when it enters the viewport.
+  if(state.onScreen===false)return true;
+  return state.sceneReady==='true'&&state.motionState==='still'&&(state.renderer==='poster'||Number.isInteger(state.sceneFrame)&&state.sceneFrame>=1);
+}
+
+export async function waitForInitialStaticScene(page,route,timeout=15000) {
+  let state;
+  await until(async()=>{
+    state=await page.evaluate(()=>{
+      const art=document.querySelector('.header-art');if(!art)return null;
+      const box=art.getBoundingClientRect();
+      return {sampledAt:performance.now(),renderer:art.dataset.renderer,sceneReady:art.dataset.sceneReady??null,sceneFrame:Number(art.dataset.sceneFrame||0),sceneTime:art.dataset.sceneTime??null,motionState:art.dataset.motionState,awake:art.dataset.awake,onScreen:box.width>0&&box.height>0&&box.bottom>0&&box.right>0&&box.top<innerHeight&&box.left<innerWidth,width:box.width,height:box.height};
+    });
+    return initialStaticSceneReady(state);
+  },`${route} initial static scene`,timeout);
+  return state;
+}
+
 async function motionState(page) {
   return page.evaluate(()=>{
     const visible=el=>{const s=getComputedStyle(el),r=el.getBoundingClientRect();return s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0;};
     const animatedTransforms=document.getAnimations().filter(a=>a.playState==='running'&&a.effect?.getKeyframes().some(k=>k.transform&&k.transform!=='none')).map(a=>({target:a.effect.target?.className,duration:a.effect.getTiming().duration}));
     const decorative=[...document.querySelectorAll('[class*="cursor"],[class*="particle"],[class*="dust"]')].filter(visible).map(el=>({tag:el.tagName,class:el.className}));
     const transforms=[...document.querySelectorAll('.header-upgraded,.hero-copy,.header-art,.ns-title-char,main[data-route-region]')].map(el=>({class:el.className,transform:getComputedStyle(el).transform}));
-    return {preference:window.GuideMotion?.preference(),motion:document.documentElement.dataset.motion,animatedTransforms,decorative,transforms,metrics:window.__qaMetrics.snapshot(),content:document.querySelector('main[data-route-region]')?.innerText.trim().length??0,renderers:[...document.querySelectorAll('[data-renderer]')].map(el=>({renderer:el.dataset.renderer,poster:!!el.querySelector('img.scene-poster')?.complete,posterVisible:!!el.querySelector('img.scene-poster')&&visible(el.querySelector('img.scene-poster'))})),coursework:!!document.querySelector('.workspace-panel,#assessment-list,#board,[data-course-card]'),itemIds:[...document.querySelectorAll('[id^="guide-item-"],details.assessment[id]')].map(el=>el.id),deskCourses:[...document.querySelectorAll('[data-course-card]')].map(el=>el.dataset.courseCard)};
+    return {preference:window.GuideMotion?.preference(),motion:document.documentElement.dataset.motion,animatedTransforms,decorative,transforms,metrics:window.__qaMetrics.snapshot(),content:document.querySelector('main[data-route-region]')?.innerText.trim().length??0,renderers:[...document.querySelectorAll('[data-renderer]')].map(el=>{const box=el.getBoundingClientRect();return {renderer:el.dataset.renderer,poster:!!el.querySelector('img.scene-poster')?.complete,posterVisible:!!el.querySelector('img.scene-poster')&&visible(el.querySelector('img.scene-poster')),sceneReady:el.dataset.sceneReady??null,sceneFrame:Number(el.dataset.sceneFrame||0),sceneTime:el.dataset.sceneTime??null,motionState:el.dataset.motionState,awake:el.dataset.awake,onScreen:box.width>0&&box.height>0&&box.bottom>0&&box.right>0&&box.top<innerHeight&&box.left<innerWidth,width:box.width,height:box.height};}),coursework:!!document.querySelector('.workspace-panel,#assessment-list,#board,[data-course-card]'),itemIds:[...document.querySelectorAll('[id^="guide-item-"],details.assessment[id]')].map(el=>el.id),deskCourses:[...document.querySelectorAll('[data-course-card]')].map(el=>el.dataset.courseCard),sampledAt:performance.now()};
   });
 }
 
@@ -443,6 +463,9 @@ export async function modes(env) {
   ];
   for(const variant of variants) for(const route of ROUTES) await runCase(env,out,`${route}: ${variant.name}`,async(page,observation)=>{
     await page.goto(routeURL(env,route,variant.query));await ready(page,route);await settle(page,out);
+    // Renderer construction precedes shader completion and the first static
+    // frame. Sample locked motion after that frame, preserving the 450-ms gate.
+    if(variant.locked&&route!=='desk')observation.sceneInitialization=await waitForInitialStaticScene(page,route);
     observation.before=await motionState(page);await page.waitForTimeout(450);observation.after=await motionState(page);
     assert(out,`${route} ${variant.name}: coursework usable`,observation.after.content>20&&observation.after.coursework,observation.after.content,'visible coursework');
     assertCoursework(out,`${route} ${variant.name}`,observation.after,route);
