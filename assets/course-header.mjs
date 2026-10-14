@@ -5,10 +5,10 @@ import {BOOK_COURSES,bookPosterPaths,currentTheme,onTheme} from './book/course-s
 import {createBookState,attachBookState,detachBookState,describeSpread,setBookHost} from './book/book-state.mjs';
 import {recordsForCourse,semesterWeeks,currentWeekIndex} from './book/weeks.mjs';
 import {COURSES} from './course-data.mjs?v=20261012-assessments2';
-import {held,openItem,today as torontoToday,addDays,timestamp} from './night/core.mjs?v=20261013-shift2';
-import {readSaved} from './night/targets.mjs?v=20261013-shift1';
-import {currentTarget} from './night/deadline.mjs?v=20261013-shift2';
-import {mountRail} from './night/timeline.mjs?v=20261013-shift2';
+import {held,openItem,today as torontoToday,addDays,timestamp} from './night/core.mjs?v=20261014-book1';
+import {readSaved} from './night/targets.mjs?v=20261014-book1';
+import {currentTarget} from './night/deadline.mjs?v=20261014-book1';
+import {mountRail} from './night/timeline.mjs?v=20261014-book1';
 let live;
 export function mount(ctx={}){
  unmount();
@@ -33,7 +33,7 @@ export function mount(ctx={}){
  function staticArt(){if(art.dataset.renderer!=='poster')return;art.removeAttribute('tabindex');art.setAttribute('role','img');art.removeAttribute('aria-roledescription');art.setAttribute('aria-label',art.dataset.description);meta.hidden=true;}
  const fallbackObserver=new MutationObserver(staticArt);life.observer(fallbackObserver,art,{attributes:true,attributeFilter:['data-renderer']});
  // Coursework and router capture are ready independently of scene import or shader compilation.
- void (async()=>{try{const m=await import('./course-scene.mjs?v=20261013-qa1');if(live!==state||life.signal.aborted)return;const scene=await m.mountScene(art,course,life.signal);if(live!==state||life.signal.aborted)scene?.dispose();else state.scene=scene;}catch{if(live===state){art.dataset.renderer='poster';art.dataset.sceneReady='true';art.dataset.awake='true';staticArt();}}})();
+ void (async()=>{try{const m=await import('./course-scene.mjs?v=20261014-book1');if(live!==state||life.signal.aborted)return;const scene=await m.mountScene(art,course,life.signal);if(live!==state||life.signal.aborted)scene?.dispose();else state.scene=scene;}catch{if(live===state){art.dataset.renderer='poster';art.dataset.sceneReady='true';art.dataset.awake='true';staticArt();}}})();
 }
 export function unmount(){if(!live)return;const state=live;live=null;state.life.dispose();state.scene?.dispose();state.book?.dispose();state.restore();}
 

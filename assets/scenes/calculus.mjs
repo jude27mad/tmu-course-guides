@@ -1,4 +1,4 @@
-import {T,mesh,disposeScene} from './primitives.mjs?v=20261013-shift2';
+import {T,mesh,disposeScene} from './primitives.mjs?v=20261014-book1';
 // Many strands sample a moving family of smooth curves. Position and slope share one function.
 const functionGLSL=`float wave(float x,float z,float t){return 1.55*sin(1.18*x+1.5*z+t*.23)+.18*sin(z*2.1+t*.28)+.08*x;}`;
 export function createCalculus(p){

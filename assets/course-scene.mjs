@@ -1,11 +1,11 @@
 import * as T from './app/three.mjs?v=20261013-stage1';
-import {createCircuit} from './scenes/circuit.mjs?v=20261013-shift2';
-import {createCalculus} from './scenes/calculus.mjs?v=20261013-shift2';
-import {createAlgebra} from './scenes/algebra.mjs?v=20261013-shift2';
+import {createCircuit} from './scenes/circuit.mjs?v=20261014-book1';
+import {createCalculus} from './scenes/calculus.mjs?v=20261014-book1';
+import {createAlgebra} from './scenes/algebra.mjs?v=20261014-book1';
 import {sceneMotionAllowed} from './guide-motion.mjs?v=20261013-qa1';
-import {createStudioEnvironment} from './scenes/future-look.mjs?v=20261013-shift2';
+import {createStudioEnvironment} from './scenes/future-look.mjs?v=20261014-book1';
 import {framePose,posterPaths,rotationFitDistance} from './scenes/framing.mjs?v=20261012-subject1';
-import {disposeScene} from './scenes/primitives.mjs?v=20261013-shift2';
+import {disposeScene} from './scenes/primitives.mjs?v=20261014-book1';
 import {createDragState} from './scenes/drag.mjs?v=20261012-subject1';
 // Night Shift holds (palette, sheets) rest the scene like the saved pause, without touching storage.
 const motionAllowed=()=>sceneMotionAllowed()&&!document.documentElement.classList.contains('ns-held');

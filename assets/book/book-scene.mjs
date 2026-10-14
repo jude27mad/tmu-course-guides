@@ -21,7 +21,7 @@
    the slot: book-ready, book-fallback, book-hover {id}, book-turn {phase, from, to}. */
 import * as T from '../app/three.mjs?v=20261013-stage1';
 import {probe,getStage} from '../app/stage.mjs?v=20261013-stage1';
-import {tier as currentTier,onTier,held,preference,sceneMotionAllowed} from '../night/core.mjs?v=20261013-shift2';
+import {tier as currentTier,onTier,held,preference,sceneMotionAllowed} from '../night/core.mjs?v=20261014-book1';
 import {gsap} from '../vendor/gsap-3.15.0.mjs';
 import {createBookTextures} from './textures.mjs';
 import {createPopupSet,PALETTES,restPose,popupSpec} from './popup.mjs';
