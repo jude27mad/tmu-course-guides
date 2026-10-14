@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T05:56:03.310Z",
+  "status": "passed-offline-mocks-only",
+  "runner": "/tmp/ns-perf-passive-followups.mjs",
+  "runnerSHA256": "0f98ba0db2fc3b717fe161c8bb6e41fa0f48b02147a31e0ad28af72f42f5aafe",
+  "mechanicalSource": "/tmp/ns-perf-passive-followups-mechanical.mjs",
+  "mechanicalSourceSHA256": "3b1dae51fa6052e4cb41af3e82d11f917ab41679a8f363cbbdcde2f4be7b8df9",
+  "tests": 13,
+  "passed": 13,
+  "failed": 0,
+  "cases": [
+    {
+      "name": "native browser identity/type and exact newContext/newPage argument objects pass through once",
+      "passed": true
+    },
+    {
+      "name": "native BFCache launch options and ignoreDefaultArgs preserve object identity without any CDP",
+      "passed": true
+    },
+    {
+      "name": "successful Page.evaluate preserves original callback, arguments, receiver and exact return value",
+      "passed": true
+    },
+    {
+      "name": "first locator retains exact native guarded callback and undefined/timeout arguments; callbacks execute once",
+      "passed": true
+    },
+    {
+      "name": "physical click, native selectOption, normalgoto and Back options remain original",
+      "passed": true
+    },
+    {
+      "name": "failed Page.evaluate preserves Error identity after bounded readonly diagnostic failure",
+      "passed": true
+    },
+    {
+      "name": "failed Page.evaluate preserves null identity after bounded readonly diagnostic failure",
+      "passed": true
+    },
+    {
+      "name": "failed Page.evaluate preserves undefined identity after bounded readonly diagnostic failure",
+      "passed": true
+    },
+    {
+      "name": "failed Locator.evaluate preserves original rejection and never retries original callback",
+      "passed": true
+    },
+    {
+      "name": "diagnostic options getter failures do not prevent original native call",
+      "passed": true
+    },
+    {
+      "name": "request object IDs join exact native type/nav/frame/start/failure; no cancellation classification",
+      "passed": true
+    },
+    {
+      "name": "failures-only CDP uses only Network.enable/Page.enable and records native initiator/cancellation fields without headers",
+      "passed": true
+    },
+    {
+      "name": "bounded recording reports dropped events instead of silent causal completeness",
+      "passed": true
+    }
+  ],
+  "browserStarted": false,
+  "scope": "Offline mock verification only. No active source edits or imported QA callbacks/assertions modified. Actual whole-check browser follow-up remains required."
+}

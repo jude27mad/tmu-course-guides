@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T06:04:38.324090Z",
+  "reviewer": "/root/latest_crosstab_audit",
+  "status": "private candidate; independent peer approval required before active application",
+  "baseline": {
+    "path": "/tmp/ns-perf-crosstab-b2-before.mjs",
+    "sha256": "b2bafedee3cc0569d4354334d42fcaac55d3ddcbf7ceb0e1ecdf43bddcd1f8d6",
+    "activeCurrentResilienceSHA256": "b2bafedee3cc0569d4354334d42fcaac55d3ddcbf7ceb0e1ecdf43bddcd1f8d6"
+  },
+  "candidate": {
+    "path": "/tmp/ns-perf-crosstab-private/tools/qa/checks-resilience.mjs",
+    "sha256": "db77a8d9fa49683f6370c87fc1794dbec247bc3c95cf524fee1d5d58d12e0de8"
+  },
+  "newTest": {
+    "path": "/tmp/ns-perf-crosstab-private/tools/qa/propagation.test.mjs",
+    "destination": "tools/qa/resilience-propagation.test.mjs",
+    "sha256": "d432bf97d463ce7082302bb7da3d08d4b98ade1445105dfe8de4be8f029b7305",
+    "temporaryPathDependencies": false
+  },
+  "patch": {
+    "path": "/tmp/ns-perf-crosstab-propagation.patch",
+    "sha256": "99441a2215fd48036ae4fb563ff3573f5863a6708ef6e1156d95fce8cf0d2825"
+  },
+  "mechanicalChecks": {
+    "entireB2SourceRecoveredByteExactlyAfterRemovingOnlyAddedHelperThreeInspectMetadataLinesAndExplicitProgressThirdArgument": true,
+    "genericUntilFunctionByteIdentical": true,
+    "originalReceiverEvaluatePredicateAndLabelByteIdentical": true,
+    "functionalAssertionLinesByteIdentical": true,
+    "functionalAssertionLineCount": 41,
+    "onlyBudgetChange": "The crosstab inspect original progress-target until call gains resilienceReadinessForPage(receiver).timeoutMs; four named progress inspect calls share it, with 30 s only under actual registered Chromium / env.gpu === false. Other modes retain 10 s.",
+    "unchanged": "Every fixture, snapshot, complete functional case, sender/native method, route readiness, native operation, section propagation wait, general until function, default page/navigation limit and every other source byte are unchanged."
+  },
+  "loopSemantics": {
+    "originalControls": [
+      "do first sample",
+      "await original fn",
+      "if truthy return undefined immediately",
+      "on false await exactly sleep(50)",
+      "while original Node time < end",
+      "throw original Timed out waiting for label error"
+    ],
+    "candidateControls": [
+      "do first sample",
+      "await original fn into value while passive first/last/count/max capture completes",
+      "if value truthy record ready then return undefined immediately",
+      "on false await exactly injected pause(50), default sleep",
+      "while injected now, default Date.now, < end",
+      "record timeout then throw original Timed out waiting for label error; preserve native exception identity"
+    ],
+    "additionalBehavior": "Only Node observation of policy/status/elapsed/sample count/max reply/first and last original predicate values. No extra predicate calls, browser probes, retries or sleeps; no product change."
+  },
+  "TDD": {
+    "red": {
+      "path": "/tmp/ns-perf-crosstab-propagation-final-red.log",
+      "sha256": "72d750a82bd70135fac900ed54969c3ac77250fb9456ececb223734177caa375",
+      "actualExitCode": 1,
+      "tests": 37,
+      "pass": 30,
+      "fail": 7,
+      "durationMs": 1152.810356,
+      "note": "Actual unchanged old loop reproduces recorded 21,199 and 12,573 ms false-reply scheduling failures; seven desired new helper/wiring tests fail without the candidate."
+    },
+    "green": {
+      "path": "/tmp/ns-perf-crosstab-propagation-final-green.log",
+      "sha256": "fef11bf96f6b0d37635324c73eb925c132aa50afa7142a2fee8f2405c3421598",
+      "actualExitCode": 0,
+      "tests": 37,
+      "pass": 37,
+      "fail": 0,
+      "durationMs": 727.149051
+    },
+    "meaningfulCoverage": [
+      "Recorded false native replies followed by real target correction within selected 30 s.",
+      "All GPU/WebKit/Firefox/unknown/unregistered policies remain 10 s and still fail after recorded late false reply.",
+      "Never-correct target still fails after selected 30 s.",
+      "Exact do-first/true-return behavior remains valid even for an in-flight true reply past the scheduling deadline.",
+      "Synchronous false-to-true preserves one 50 ms pause, two samples and default 10 s.",
+      "Native exceptions (Error/null/undefined) retain exact identity, one sample and zero retry/sleep.",
+      "Only the original inspect predicate receives the explicit receiver policy; section until calls remain unchanged."
+    ]
+  },
+  "diagnosticEvidence": {
+    "path": "/tmp/ns-perf-aa7-crosstab-passive-final-proof.json",
+    "sha256": "829d6edd3d050e865492f618dd4b18881051338e2bbe989957e7eeea15a82a54",
+    "remainsFailed": true
+  },
+  "next": "Obtain independent mechanical peer approval, apply only this patch and a short accurate QA documentation paragraph, run full Node QA suite, then a genuine unchanged complete crosstab check at both bases with current source/driver/environment binding."
+}

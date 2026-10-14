@@ -1,0 +1,610 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T05:55:09.919422Z",
+  "reviewer": "/root/latest_crosstab_audit",
+  "status": "failed diagnostic follow-up, preserved",
+  "runDirectory": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T05-44-47-549Z-137557",
+  "startedAt": "2026-10-14T05:44:47.549Z",
+  "completedAt": "2026-10-14T05:49:50.915Z",
+  "CLI": {
+    "session": 27404,
+    "actualObservedExitCode": 1,
+    "summaryExitCode": 1,
+    "observedVia": "functions.exec tools.write_stdin returned exit_code 1 after normal process completion; no termination or retry."
+  },
+  "selection": {
+    "checks": [
+      "crosstab"
+    ],
+    "bases": [
+      "/",
+      "/tmu-course-guides/"
+    ],
+    "gpu": false,
+    "help": false
+  },
+  "raw": {
+    "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T05-44-47-549Z-137557/crosstab.json",
+    "sha256": "3518332b7b4a7291613cb93475ae2b2f8db600b4a46216fc05d132bb9e9349ed"
+  },
+  "summary": {
+    "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T05-44-47-549Z-137557/summary.json",
+    "sha256": "715e08646ceeae85e7fa2c277dc1ac927bd0e28a4d41e54763d18c95954d0be3"
+  },
+  "passiveDiagnostics": {
+    "path": "/tmp/ns-perf-aa7-crosstab-passive-diagnostics.json",
+    "sha256": "a4ad65476dc11bd9250a4089f2795076108b0b9f4c3c8c5ea773975db3557c96",
+    "externalRunner": {
+      "path": "/tmp/ns-perf-aa7-crosstab-passive-followup.mjs",
+      "sha256": "84e96a7bc66743b9ba2ac6810ad16d5c565ec19bdb019ac7cbda5c0354273896"
+    },
+    "additionalOverheadExplicit": true,
+    "semanticConditionsChanged": false
+  },
+  "sourceBefore": {
+    "path": "/tmp/ns-perf-aa7-crosstab-source-before-bound.json",
+    "sha256": "2da19ab7187d99493a06fd246c08c40ef2c4b7e18fa25915218a7af429fd0b8d"
+  },
+  "sourceAfter": {
+    "path": "/tmp/ns-perf-aa7-crosstab-source-after-bound.json",
+    "sha256": "9c427a76bf45c133b207c79d4b8c7a033ddf195b6a167da16e1b7c975612ac0c"
+  },
+  "sourceUnchanged": true,
+  "actualDriverIdentityUnchanged": true,
+  "productFingerprint": "1795468f427084977fac5a0707eef0b14e461c8d2041cb9c6d1e0315de48851f",
+  "protectedFingerprint": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+  "resources": {
+    "openContexts": [],
+    "openPages": [],
+    "runnerErrors": []
+  },
+  "cases": [
+    {
+      "base": "/",
+      "status": "failed",
+      "assertions": 105,
+      "failedAssertions": [
+        {
+          "name": "mth140: native cross-tab completion, Undo and section changes: execution",
+          "pass": false,
+          "actual": "Error: Timed out waiting for course card/dock Undo storage propagation\n    at until (file:///workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:81:9)\n    at async inspect (file:///workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:559:7)\n    at async runCase.seed.seed (file:///workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:571:19)\n    at async runCase (file:///workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:175:5)\n    at async crosstab (file:///workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:550:3)\n    at async runHarness (file:///workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///tmp/ns-perf-aa7-crosstab-passive-followup.mjs:118:16",
+          "expected": "case completes"
+        }
+      ],
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "status": "failed",
+      "assertions": 105,
+      "failedAssertions": [
+        {
+          "name": "mth140: native cross-tab completion, Undo and section changes: execution",
+          "pass": false,
+          "actual": "Error: Timed out waiting for course card/dock Undo storage propagation\n    at until (file:///workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:81:9)\n    at async inspect (file:///workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:559:7)\n    at async runCase.seed.seed (file:///workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:571:19)\n    at async runCase (file:///workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:175:5)\n    at async crosstab (file:///workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:550:3)\n    at async runHarness (file:///workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///tmp/ns-perf-aa7-crosstab-passive-followup.mjs:118:16",
+          "expected": "case completes"
+        }
+      ],
+      "runnerErrors": [],
+      "cleanupErrors": []
+    }
+  ],
+  "causalObservations": [
+    {
+      "base": "/",
+      "senderPage": 3,
+      "receiverPage": 4,
+      "senderSecondUndoClick": {
+        "receivedAt": "2026-10-14T05:46:30.804Z",
+        "nodeMs": 1791956790804,
+        "sequence": 19,
+        "type": "native-ui-click-capture",
+        "browserMs": 27876,
+        "timeOrigin": 1791907200000,
+        "wallClock": 1791907200000,
+        "dropped": 0,
+        "target": {
+          "id": "undo-complete",
+          "quickComplete": null
+        },
+        "trusted": false,
+        "state": {
+          "url": "http://127.0.0.1:34277/mth140/?motion=off",
+          "course": "mth140",
+          "router": "mth140",
+          "shell": "367effa1-3d70-4a58-b089-6582b25e1008",
+          "next": {
+            "id": "midterm",
+            "title": "Midterm Test",
+            "cenTitle": null
+          },
+          "dockTitle": "Midterm Test",
+          "hudTitle": "Midterm Test",
+          "undo": {
+            "connected": true,
+            "hidden": false,
+            "disabled": false,
+            "parentHidden": false
+          },
+          "confirmation": {
+            "connected": true,
+            "hidden": false
+          },
+          "quick": [
+            {
+              "id": "midterm",
+              "connected": true,
+              "hidden": false,
+              "disabled": false
+            }
+          ],
+          "progress": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+          "progressError": null
+        }
+      },
+      "senderPostUndoMutation": {
+        "receivedAt": "2026-10-14T05:46:30.921Z",
+        "nodeMs": 1791956790921,
+        "sequence": 20,
+        "type": "mutation-after-dispatch",
+        "browserMs": 27983,
+        "timeOrigin": 1791907200000,
+        "wallClock": 1791907200000,
+        "dropped": 0,
+        "state": {
+          "url": "http://127.0.0.1:34277/mth140/?motion=off",
+          "course": "mth140",
+          "router": "mth140",
+          "shell": "367effa1-3d70-4a58-b089-6582b25e1008",
+          "next": {
+            "id": "quiz-2",
+            "title": "Lab Quiz 2",
+            "cenTitle": null
+          },
+          "dockTitle": "Midterm Test",
+          "hudTitle": "Midterm Test",
+          "undo": {
+            "connected": true,
+            "hidden": false,
+            "disabled": false,
+            "parentHidden": true
+          },
+          "confirmation": {
+            "connected": true,
+            "hidden": true
+          },
+          "quick": [
+            {
+              "id": "quiz-2",
+              "connected": true,
+              "hidden": false,
+              "disabled": false
+            }
+          ],
+          "progress": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+          "progressError": null
+        }
+      },
+      "senderResolvedAfterUndo": {
+        "receivedAt": "2026-10-14T05:46:31.064Z",
+        "nodeMs": 1791956791064,
+        "sequence": 21,
+        "type": "guide-completion-capture",
+        "browserMs": 28120,
+        "timeOrigin": 1791907200000,
+        "wallClock": 1791907200000,
+        "dropped": 0,
+        "state": {
+          "url": "http://127.0.0.1:34277/mth140/?motion=off",
+          "course": "mth140",
+          "router": "mth140",
+          "shell": "367effa1-3d70-4a58-b089-6582b25e1008",
+          "next": {
+            "id": "quiz-2",
+            "title": "Lab Quiz 2",
+            "cenTitle": null
+          },
+          "dockTitle": "Lab Quiz 2",
+          "hudTitle": "Lab Quiz 2",
+          "undo": {
+            "connected": true,
+            "hidden": false,
+            "disabled": false,
+            "parentHidden": true
+          },
+          "confirmation": {
+            "connected": true,
+            "hidden": true
+          },
+          "quick": [
+            {
+              "id": "quiz-2",
+              "connected": true,
+              "hidden": false,
+              "disabled": false
+            }
+          ],
+          "progress": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+          "progressError": null
+        }
+      },
+      "receiverLastOriginalPredicate": {
+        "sequence": 4,
+        "requestAt": "2026-10-14T05:46:31.412Z",
+        "nodeRequestMs": 1791956791412,
+        "sourceSHA256": "7529b7649dcd041b21616d72704feb0d75d8df661d2fb2c0c8a7b39a3bec94f7",
+        "arguments": {
+          "course": "mth140",
+          "title": "Lab Quiz 2",
+          "route": "mth140"
+        },
+        "status": "replied",
+        "replyAt": "2026-10-14T05:46:52.611Z",
+        "nodeReplyMs": 1791956812611,
+        "replyMs": 21199,
+        "value": false
+      },
+      "receiverFourthTrustedProgressEvent": {
+        "receivedAt": "2026-10-14T05:46:52.621Z",
+        "nodeMs": 1791956812621,
+        "sequence": 17,
+        "type": "native-storage-capture",
+        "browserMs": 49692,
+        "timeOrigin": 1791907200000,
+        "wallClock": 1791907200000,
+        "dropped": 0,
+        "storage": {
+          "key": "mth140-progress-v1",
+          "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+          "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+          "trusted": true,
+          "url": "http://127.0.0.1:34277/mth140/?motion=off"
+        },
+        "state": {
+          "url": "http://127.0.0.1:34277/mth140/",
+          "course": "mth140",
+          "router": "mth140",
+          "shell": "02d35c51-d765-4032-8488-5ea8b965ad72",
+          "next": {
+            "id": "midterm",
+            "title": "Midterm Test",
+            "cenTitle": null
+          },
+          "dockTitle": "Midterm Test",
+          "hudTitle": "Midterm Test",
+          "undo": {
+            "connected": true,
+            "hidden": false,
+            "disabled": false,
+            "parentHidden": true
+          },
+          "confirmation": {
+            "connected": true,
+            "hidden": true
+          },
+          "quick": [
+            {
+              "id": "midterm",
+              "connected": true,
+              "hidden": false,
+              "disabled": false
+            }
+          ],
+          "progress": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+          "progressError": null
+        }
+      },
+      "receiverCorrectedAfterFourthEvent": {
+        "receivedAt": "2026-10-14T05:46:52.871Z",
+        "nodeMs": 1791956812871,
+        "sequence": 19,
+        "type": "mutation-after-dispatch",
+        "browserMs": 49945,
+        "timeOrigin": 1791907200000,
+        "wallClock": 1791907200000,
+        "dropped": 0,
+        "state": {
+          "url": "http://127.0.0.1:34277/mth140/",
+          "course": "mth140",
+          "router": "mth140",
+          "shell": "02d35c51-d765-4032-8488-5ea8b965ad72",
+          "next": {
+            "id": "quiz-2",
+            "title": "Lab Quiz 2",
+            "cenTitle": null
+          },
+          "dockTitle": "Lab Quiz 2",
+          "hudTitle": "Lab Quiz 2",
+          "undo": {
+            "connected": true,
+            "hidden": false,
+            "disabled": false,
+            "parentHidden": true
+          },
+          "confirmation": {
+            "connected": true,
+            "hidden": true
+          },
+          "quick": [
+            {
+              "id": "quiz-2",
+              "connected": true,
+              "hidden": false,
+              "disabled": false
+            }
+          ],
+          "progress": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+          "progressError": null
+        }
+      },
+      "senderProgressWriteToReceiverEventObservedMs": 21700,
+      "predicateReplyToReceiverEventObservedMs": 10,
+      "predicateReplyToCorrectedReceiverDockObservedMs": 260,
+      "senderReceivedForeignStorageEvents": 0,
+      "diagnosticDroppedRecords": 0
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "senderPage": 9,
+      "receiverPage": 10,
+      "senderSecondUndoClick": {
+        "receivedAt": "2026-10-14T05:48:47.483Z",
+        "nodeMs": 1791956927483,
+        "sequence": 19,
+        "type": "native-ui-click-capture",
+        "browserMs": 26222,
+        "timeOrigin": 1791907200000,
+        "wallClock": 1791907200000,
+        "dropped": 0,
+        "target": {
+          "id": "undo-complete",
+          "quickComplete": null
+        },
+        "trusted": false,
+        "state": {
+          "url": "http://127.0.0.1:33203/tmu-course-guides/mth140/?motion=off",
+          "course": "mth140",
+          "router": "mth140",
+          "shell": "75e09b57-9c1f-44a3-9baa-e5652fa6c20c",
+          "next": {
+            "id": "midterm",
+            "title": "Midterm Test",
+            "cenTitle": null
+          },
+          "dockTitle": "Midterm Test",
+          "hudTitle": "Midterm Test",
+          "undo": {
+            "connected": true,
+            "hidden": false,
+            "disabled": false,
+            "parentHidden": false
+          },
+          "confirmation": {
+            "connected": true,
+            "hidden": false
+          },
+          "quick": [
+            {
+              "id": "midterm",
+              "connected": true,
+              "hidden": false,
+              "disabled": false
+            }
+          ],
+          "progress": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+          "progressError": null
+        }
+      },
+      "senderPostUndoMutation": {
+        "receivedAt": "2026-10-14T05:48:47.612Z",
+        "nodeMs": 1791956927612,
+        "sequence": 20,
+        "type": "mutation-after-dispatch",
+        "browserMs": 26331,
+        "timeOrigin": 1791907200000,
+        "wallClock": 1791907200000,
+        "dropped": 0,
+        "state": {
+          "url": "http://127.0.0.1:33203/tmu-course-guides/mth140/?motion=off",
+          "course": "mth140",
+          "router": "mth140",
+          "shell": "75e09b57-9c1f-44a3-9baa-e5652fa6c20c",
+          "next": {
+            "id": "quiz-2",
+            "title": "Lab Quiz 2",
+            "cenTitle": null
+          },
+          "dockTitle": "Midterm Test",
+          "hudTitle": "Midterm Test",
+          "undo": {
+            "connected": true,
+            "hidden": false,
+            "disabled": false,
+            "parentHidden": true
+          },
+          "confirmation": {
+            "connected": true,
+            "hidden": true
+          },
+          "quick": [
+            {
+              "id": "quiz-2",
+              "connected": true,
+              "hidden": false,
+              "disabled": false
+            }
+          ],
+          "progress": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+          "progressError": null
+        }
+      },
+      "senderResolvedAfterUndo": {
+        "receivedAt": "2026-10-14T05:48:47.652Z",
+        "nodeMs": 1791956927652,
+        "sequence": 21,
+        "type": "guide-completion-capture",
+        "browserMs": 26389,
+        "timeOrigin": 1791907200000,
+        "wallClock": 1791907200000,
+        "dropped": 0,
+        "state": {
+          "url": "http://127.0.0.1:33203/tmu-course-guides/mth140/?motion=off",
+          "course": "mth140",
+          "router": "mth140",
+          "shell": "75e09b57-9c1f-44a3-9baa-e5652fa6c20c",
+          "next": {
+            "id": "quiz-2",
+            "title": "Lab Quiz 2",
+            "cenTitle": null
+          },
+          "dockTitle": "Lab Quiz 2",
+          "hudTitle": "Lab Quiz 2",
+          "undo": {
+            "connected": true,
+            "hidden": false,
+            "disabled": false,
+            "parentHidden": true
+          },
+          "confirmation": {
+            "connected": true,
+            "hidden": true
+          },
+          "quick": [
+            {
+              "id": "quiz-2",
+              "connected": true,
+              "hidden": false,
+              "disabled": false
+            }
+          ],
+          "progress": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+          "progressError": null
+        }
+      },
+      "receiverLastOriginalPredicate": {
+        "sequence": 5,
+        "requestAt": "2026-10-14T05:48:47.798Z",
+        "nodeRequestMs": 1791956927798,
+        "sourceSHA256": "7529b7649dcd041b21616d72704feb0d75d8df661d2fb2c0c8a7b39a3bec94f7",
+        "arguments": {
+          "course": "mth140",
+          "title": "Lab Quiz 2",
+          "route": "mth140"
+        },
+        "status": "replied",
+        "replyAt": "2026-10-14T05:49:00.371Z",
+        "nodeReplyMs": 1791956940371,
+        "replyMs": 12573,
+        "value": false
+      },
+      "receiverFourthTrustedProgressEvent": {
+        "receivedAt": "2026-10-14T05:49:00.558Z",
+        "nodeMs": 1791956940558,
+        "sequence": 17,
+        "type": "native-storage-capture",
+        "browserMs": 39299,
+        "timeOrigin": 1791907200000,
+        "wallClock": 1791907200000,
+        "dropped": 0,
+        "storage": {
+          "key": "mth140-progress-v1",
+          "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+          "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+          "trusted": true,
+          "url": "http://127.0.0.1:33203/tmu-course-guides/mth140/?motion=off"
+        },
+        "state": {
+          "url": "http://127.0.0.1:33203/tmu-course-guides/mth140/",
+          "course": "mth140",
+          "router": "mth140",
+          "shell": "06822972-9643-4903-a313-3d304766550a",
+          "next": {
+            "id": "midterm",
+            "title": "Midterm Test",
+            "cenTitle": null
+          },
+          "dockTitle": "Midterm Test",
+          "hudTitle": "Midterm Test",
+          "undo": {
+            "connected": true,
+            "hidden": false,
+            "disabled": false,
+            "parentHidden": true
+          },
+          "confirmation": {
+            "connected": true,
+            "hidden": true
+          },
+          "quick": [
+            {
+              "id": "midterm",
+              "connected": true,
+              "hidden": false,
+              "disabled": false
+            }
+          ],
+          "progress": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+          "progressError": null
+        }
+      },
+      "receiverCorrectedAfterFourthEvent": {
+        "receivedAt": "2026-10-14T05:49:00.767Z",
+        "nodeMs": 1791956940767,
+        "sequence": 19,
+        "type": "mutation-after-dispatch",
+        "browserMs": 39503,
+        "timeOrigin": 1791907200000,
+        "wallClock": 1791907200000,
+        "dropped": 0,
+        "state": {
+          "url": "http://127.0.0.1:33203/tmu-course-guides/mth140/",
+          "course": "mth140",
+          "router": "mth140",
+          "shell": "06822972-9643-4903-a313-3d304766550a",
+          "next": {
+            "id": "quiz-2",
+            "title": "Lab Quiz 2",
+            "cenTitle": null
+          },
+          "dockTitle": "Lab Quiz 2",
+          "hudTitle": "Lab Quiz 2",
+          "undo": {
+            "connected": true,
+            "hidden": false,
+            "disabled": false,
+            "parentHidden": true
+          },
+          "confirmation": {
+            "connected": true,
+            "hidden": true
+          },
+          "quick": [
+            {
+              "id": "quiz-2",
+              "connected": true,
+              "hidden": false,
+              "disabled": false
+            }
+          ],
+          "progress": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+          "progressError": null
+        }
+      },
+      "senderProgressWriteToReceiverEventObservedMs": 12946,
+      "predicateReplyToReceiverEventObservedMs": 187,
+      "predicateReplyToCorrectedReceiverDockObservedMs": 396,
+      "senderReceivedForeignStorageEvents": 0,
+      "diagnosticDroppedRecords": 0
+    }
+  ],
+  "conclusion": {
+    "establishedForThisFollowup": "Both sender second Undo handlers activated, removed quiz-2 completion, hid confirmation and restored sender card/dock/HUD. On receiver, a single original false predicate reply consumed 21,199 ms at root and 12,573 ms at project. The native fourth storage event and receiver correction followed that reply. The existing generic until loop then exhausted its 10 s scheduling deadline. The measured failing phase is delayed receiver reply/event processing, not a no-op Undo or persistent incorrect progress.",
+    "notEstablished": "Underlying cause of the delayed receiver processing is not identified. Renderer selection alone does not prove a GPU cause. Original earlier full-run failures lack these passive samples and retain unknown exact causes.",
+    "notWaived": true,
+    "noRetry": true,
+    "noTimingPolicyChangeInThisRun": true,
+    "noProductChangeInThisRun": true,
+    "remainingWork": "A separately reviewed, scoped QA polling policy change can be considered by the root agent using these actual measured replies; this artifact itself remains failed."
+  }
+}

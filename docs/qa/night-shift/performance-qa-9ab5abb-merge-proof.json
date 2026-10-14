@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "status": "read-only-merge-preview-not-applied",
+  "recordedAt": "2026-10-14T05:50:27.668287+00:00",
+  "ownerRevision": "9ab5abb5d7c54f5c70abb9ef87ee5e2132db24f1",
+  "mergeBase": "aa7bca26bdfe6d640766858f4f3a27e2e9e668e7",
+  "activeChecksSHA256": "90b19585765d2ffc933a3aa75ab09e4b3d8da87d207cb26353fc54c64fb50b5a",
+  "previewChecksPath": "/tmp/ns-perf-deadline-9ab-merge-preview/tools/qa/checks.mjs",
+  "previewChecksSHA256": "e1cc6550f304cd30d092cfcc34a78548365ce3c9b06e2f9ea6b53f1c1deee9ca",
+  "rawThreeWay": {
+    "exitCode": 2,
+    "conflictBlocks": 2,
+    "path": "/tmp/ns-perf-deadline-9ab-merge-preview/mechanical-conflicts.mjs",
+    "sha256": "826e04d1576a4a16cba914855e2bce1b2d9ec613521f0cbfa4b8b0ea626894ae"
+  },
+  "resolutionPatch": {
+    "path": "/tmp/ns-perf-deadline-9ab-merge-preview/owner-merge-on-active-checks.patch",
+    "sha256": "2573041ad55b9b2a510f4e457a815b4b3c9ea55150352355896cb4128cab424b"
+  },
+  "ownerChangesPreserved": {
+    "sampleMotionByteIdentical": true,
+    "sampleMotionSHA256": "4923bd688cc449e1d46d0cb2c8d0ae45ba3d24b8a0a35d57ea7c6e77a5d8aacc",
+    "originalOwnerRawSceneFrameStringOrNull": true,
+    "motionStateNullNormalized": true,
+    "bothModeSampleSitesUseSampleMotion": true,
+    "owner450msWindowUnchanged": true,
+    "allOwnerReadyPredicatesUnchanged": true
+  },
+  "ourChangesPreserved": {
+    "clockedCompletionHelperAndRegistrationByteIdentical": true,
+    "whole4478ByteDeadlinesFunctionByteIdentical": true,
+    "initialStaticSceneGateAndWaitByteIdentical": true,
+    "lockedSceneInitializationCallBeforeOwnerSample": true,
+    "additionalGeometryAndSceneTimeAwakeAndSampledAtRetained": true,
+    "allOriginalAssertionLinesByteIdentical": true
+  },
+  "normalizationOfOnlyNewOwnerChangesReproducesActiveChecksSHA256": "90b19585765d2ffc933a3aa75ab09e4b3d8da87d207cb26353fc54c64fb50b5a",
+  "rootActiveSourcesUnchangedByPreview": true,
+  "runtimeImplications": {
+    "changedExecutedCheck": [
+      "modes"
+    ],
+    "mustRerunModesBothBases": true,
+    "deadlinesWholeCheckStillRequiredBothBases": true,
+    "otherCheckBodiesAndRunCaseByteIdentical": true,
+    "newOwnerSampleMotionFunctionOnlyCalledByModes": true,
+    "productSourceDeltaFromAA7Owner": []
+  },
+  "testCommand": "node --test --test-isolation=none tools/qa/checks.test.mjs tools/qa/clocked-completion.test.mjs tests/qa-motion-readiness.test.mjs",
+  "testStatus": "passed pure tests only; no browser launched",
+  "testResult": {
+    "path": "/tmp/ns-perf-deadline-9ab-merge-preview/pure-tests.log",
+    "sha256": "3967b4a27b99e6edbbd73c776fab902a97377e6d75125ccfa8ff6f7e5800914c",
+    "tests": 29,
+    "passed": 29,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 476.325069,
+    "coverage": "13 existing checks helpers + 11 clocked completion helpers + 5 exact owner scene-readiness tests"
+  }
+}

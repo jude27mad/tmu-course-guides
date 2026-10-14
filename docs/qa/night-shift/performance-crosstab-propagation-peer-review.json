@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T06:06:09.602Z",
+  "reviewer": "/root/latest_source_review",
+  "review": "Independent read-only source-scope review; no active edits, browser launch or test rerun.",
+  "approvedSourceScope": true,
+  "browserAcceptanceEstablished": false,
+  "materialFindings": [],
+  "gates": {
+    "originalSnapshotMatchesActiveB2": true,
+    "candidateHashMatchesExpected": true,
+    "normalizedEntireOriginalByteIdentical": true,
+    "localShadowSitesOne": true,
+    "thirdArgumentSitesOne": true,
+    "genericUntilByteIdentical": true,
+    "allAssertionCallsiteLinesIdentical": true,
+    "allNativeUIAndNavigationCallLinesIdentical": true,
+    "exactOriginalStoragePredicateBoth": true,
+    "existingStrictPolicyOnly": true,
+    "observedUntilDefaultTenSeconds": true,
+    "observedLoopAlwaysStartsBeforeBudgetCheck": true,
+    "observedTrueResultReturnsBeforePauseAndBudgetCheck": true,
+    "nativeErrorsNotRetried": true,
+    "bothSectionWaitsStillGlobalTenSeconds": true,
+    "greenLog37PassedZeroFailed": true,
+    "redLog37ThirtyPassedSevenFailed": true
+  },
+  "bindings": {
+    "oldPath": "/tmp/ns-perf-crosstab-b2-before.mjs",
+    "oldSHA256": "b2bafedee3cc0569d4354334d42fcaac55d3ddcbf7ceb0e1ecdf43bddcd1f8d6",
+    "candidatePath": "/tmp/ns-perf-crosstab-private/tools/qa/checks-resilience.mjs",
+    "candidateSHA256": "db77a8d9fa49683f6370c87fc1794dbec247bc3c95cf524fee1d5d58d12e0de8",
+    "normalizedAfterSHA256": "b2bafedee3cc0569d4354334d42fcaac55d3ddcbf7ceb0e1ecdf43bddcd1f8d6",
+    "testPath": "/tmp/ns-perf-crosstab-private/tools/qa/propagation.test.mjs",
+    "testSHA256": "d432bf97d463ce7082302bb7da3d08d4b98ade1445105dfe8de4be8f029b7305",
+    "originalUntilSHA256": "772d3ef43ae7ef5143cefe6c64c32ec560319b95aa7b980607bd1ee612092535",
+    "assertionCallsiteLines": 43,
+    "nativeActionAndNavigationCallLines": 14,
+    "storagePredicateSHA256": "194f6268e3cf03c497e663add7f6661a1a690c363e15bbe2e08f5ccd98cd4619",
+    "greenPath": "/tmp/ns-perf-crosstab-propagation-final-green.log",
+    "greenSHA256": "fef11bf96f6b0d37635324c73eb925c132aa50afa7142a2fee8f2405c3421598",
+    "redPath": "/tmp/ns-perf-crosstab-propagation-final-red.log",
+    "redSHA256": "72d750a82bd70135fac900ed54969c3ac77250fb9456ececb223734177caa375"
+  },
+  "scope": {
+    "changedLocations": [
+      "new observeResiliencePropagation helper",
+      "crossTab inspect local progress-only until shadow, observations and explicit existingreceiver-policy argument"
+    ],
+    "unchanged": "Mechanical removal of these exact additions reproduces entire old b2bafed helper bytes, proving othercases/defaults/fixtures/UIactions/nativearguments/saveddata/assertions untouched.",
+    "polling": "Original do-first boolean predicate, true return including late reply, fixed50msfalse pause and deadline loop condition retained. Failed native callback immediately rethrows identical error, no retry. 30s only actualChromium+explicitGPUfalse; other/unknown/unregistered policies stay10s.",
+    "diagnostics": "Node-only count/time/first-lastboolean observations; no extra browser reads, condition waivers, scene wait, storage synthesis, source product changes or defaultpage timeout changes.",
+    "limits": "Observedwait still preserves the original in-flight native reply overrun and late-true behavior. 30s is a scheduling budget, not a hard browser-RPC cap. Instrumentation adds Nodeclock reads.",
+    "evidence": "Recorded21199/12573msfalse reply cases are supportingpassive reproductions, not proven causes of original full-run failures. Originalfailedrun remains failed/causeunknown.",
+    "requiredAcceptance": "Rerunentirecrosstab genuinechecks bothbases under matching original1.57 renderer/settings with preserved trusted-native storage, exactsenderUndo, section and shell assertions. Sourceapproval does not establish browserpass or permit discarding earlier failures."
+  },
+  "logParserNote": "Node spec reporter uses ℹ summary marker; parsed exact37/37/0 and37/30/7 withzero skipped. The initial TAP-marker-only gate adapter was corrected without source/test/log changes."
+}

@@ -1,0 +1,77 @@
+{
+  "copies": [
+    {
+      "source": "/tmp/ns-perf-deadline-applied-mechanical-proof.json",
+      "target": "docs/qa/night-shift/performance-deadline-applied-scope.json",
+      "sha256": "15a72567fca01606f8620e20f1cf05003a47af7ccefde77f83ef5f47076c5fd5",
+      "bytes": 4054
+    },
+    {
+      "source": "/tmp/ns-perf-deadline-proposal-peer-review.json",
+      "target": "docs/qa/night-shift/performance-deadline-peer-review.json",
+      "sha256": "d991d05fe3b3ce10e0624cf9432112dc8e49bf0b5f77b809f9e71b03bdbc9344",
+      "bytes": 6179
+    },
+    {
+      "source": "/tmp/ns-perf-deadline-9ab-merge-preview/merge-proof.json",
+      "target": "docs/qa/night-shift/performance-qa-9ab5abb-merge-proof.json",
+      "sha256": "8fdfb6a23e77cf0d00a7e25472a7d424f7c37b8e188057896c10a4c2704e4757",
+      "bytes": 2844
+    },
+    {
+      "source": "/tmp/ns-perf-crosstab-propagation-private-proof.json",
+      "target": "docs/qa/night-shift/performance-crosstab-propagation-private-proof.json",
+      "sha256": "f77be387975e0d1f3e3c518c552edc0eef41da6e0ece3091df8e4b1c806bf8c6",
+      "bytes": 4939
+    },
+    {
+      "source": "/tmp/ns-perf-crosstab-propagation-peer-review.json",
+      "target": "docs/qa/night-shift/performance-crosstab-propagation-peer-review.json",
+      "sha256": "d6aa43e728ad1378e448c37882af3182ab02ec405f1ed7931bb92ca4d21e34d7",
+      "bytes": 4102
+    },
+    {
+      "source": "/tmp/ns-perf-aa7-crosstab-passive-final-proof.json",
+      "target": "docs/qa/night-shift/performance-crosstab-passive-proof.json",
+      "sha256": "829d6edd3d050e865492f618dd4b18881051338e2bbe989957e7eeea15a82a54",
+      "bytes": 22269
+    },
+    {
+      "source": "/tmp/ns-perf-aa7-crosstab-passive-diagnostics.json",
+      "target": "docs/qa/night-shift/performance-crosstab-passive-diagnostics.json",
+      "sha256": "a4ad65476dc11bd9250a4089f2795076108b0b9f4c3c8c5ea773975db3557c96",
+      "bytes": 445468
+    },
+    {
+      "source": "/tmp/ns-perf-aa7-crosstab-source-before.json",
+      "target": "docs/qa/night-shift/performance-crosstab-passive-source-before.json",
+      "sha256": "be4c1e52370bd50db1869d6fe5a6fd3b82721aa8b4498fbdae19e20ea895c9aa",
+      "bytes": 2872
+    },
+    {
+      "source": "/tmp/ns-perf-aa7-crosstab-source-after.json",
+      "target": "docs/qa/night-shift/performance-crosstab-passive-source-after.json",
+      "sha256": "baf8c7e8e71e7ed6b93f3d20e0a61e91412425325520c930039a4108e9896c9e",
+      "bytes": 2990
+    },
+    {
+      "source": "/tmp/ns-perf-passive-followups-mechanical-proof.json",
+      "target": "docs/qa/night-shift/performance-recovery-passive-mocks.json",
+      "sha256": "04cfb4afcf93d59413d2d645037b8a537189e3546ea4a4127aa19edb2fa7d348",
+      "bytes": 2532
+    },
+    {
+      "source": "/tmp/ns-perf-passive-followups-peer-review.json",
+      "target": "docs/qa/night-shift/performance-recovery-passive-peer-review.json",
+      "sha256": "4770f0d76160a4a54c82fc9dc47b04274ed300a48e373a996bc7ddb35ed8ce69",
+      "bytes": 3449
+    },
+    {
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T05-44-47-549Z-137557/crosstab.json",
+      "target": "docs/qa/night-shift/performance-crosstab-passive-failed.json",
+      "sha256": "3518332b7b4a7291613cb93475ae2b2f8db600b4a46216fc05d132bb9e9349ed",
+      "bytes": 330688
+    }
+  ],
+  "scope": "Exact copies of historical failed diagnostics and source-scope reviews. No browser acceptance or full-suite pass is inferred."
+}

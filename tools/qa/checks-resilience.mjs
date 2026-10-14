@@ -105,6 +105,33 @@ function readinessScope(page) {
 }
 export const resilienceReadinessForPage = page => readinessScope(page)?.policy ?? defaultReadiness;
 
+/** Observe the original boolean polling loop without changing its predicate,
+ * do-first/true-result behavior, 50 ms pause or native error. Used only by
+ * cross-tab progress inspection; the generic `until` stays unchanged. */
+export function observeResiliencePropagation(observation, { now = Date.now, pause = sleep } = {}) {
+  return async function (fn, label, timeout = 10_000) {
+    const started = now(), end = started + timeout;
+    Object.assign(observation, { label, timeoutMs: timeout, status: 'running', sampleCount: 0, maxBrowserReplyMs: 0, firstSample: null, lastSample: null });
+    try {
+      do {
+        const requested = now();let value;
+        try { value = await fn(); }
+        finally {
+          const replied = now(), sample = { elapsedMs: replied - started, replyMs: replied - requested, value };
+          observation.sampleCount++;observation.maxBrowserReplyMs = Math.max(observation.maxBrowserReplyMs, sample.replyMs);
+          observation.firstSample ??= sample;observation.lastSample = sample;
+        }
+        if (value) { observation.status = 'ready';return; }
+        await pause(50);
+      } while (now() < end);
+      observation.status = 'timeout';throw Error('Timed out waiting for ' + label);
+    } catch (error) {
+      if (observation.status !== 'timeout') observation.status = 'error';
+      observation.error = error instanceof Error ? error.message : typeof error === 'string' ? error : null;throw error;
+    } finally { observation.elapsedMs = now() - started; }
+  };
+}
+
 /** The poll budget bounds scheduling; an in-flight native browser reply may
  * overrun it. Preserve do-first/true-result behavior and record that overhead. */
 export async function waitForResilienceReady({ sample, label, timeoutMs = 10_000, observation = {}, now = Date.now, pause = sleep }) {
@@ -556,7 +583,10 @@ export async function crosstab(env) {
     const undo = () => performResilienceInteraction(sender, { name: 'cross-tab Undo', selector: '#undo-complete', method: 'evaluate-click' });
     const inspect = async (name, currentSeed, route) => {
       const expected = expectedTarget(course, currentSeed, +new Date(now));
-      await until(() => receiver.evaluate(({ course, title, route }) => document.querySelector(route === 'desk' ? `[data-course-card="${course}"] .desk-course-title` : '.ns-dock [data-ns-title]')?.textContent.trim() === title, { course, title: expected.title, route }), name + ' storage propagation');
+      const propagation = { course, route, expectedTitle: expected.title, policy: resilienceReadinessForPage(receiver) };
+      (observation.propagationWaits ??= []).push(propagation);
+      const until = observeResiliencePropagation(propagation);
+      await until(() => receiver.evaluate(({ course, title, route }) => document.querySelector(route === 'desk' ? `[data-course-card="${course}"] .desk-course-title` : '.ns-dock [data-ns-title]')?.textContent.trim() === title, { course, title: expected.title, route }), name + ' storage propagation', resilienceReadinessForPage(receiver).timeoutMs);
       const state = await snapshot(receiver, course);
       observation[name] = state;
       checkSurfaces(out, name, state, course, currentSeed, +new Date(now));
