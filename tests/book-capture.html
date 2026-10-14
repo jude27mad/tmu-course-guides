@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Semester book capture</title>
+<link rel="stylesheet" href="../assets/fonts/archivo.css?v=20261012-privacy1">
+<!--
+  Real-renderer capture fixture for the MTH140 semester book (semester-book spec §5.11, §10.1 captures).
+  Not a route document: it mounts the engine exactly as the course header does, on a plain desk backdrop.
+
+  Query: course=mth140  theme=dark|light  view=wide|tall (or w=, h=)  tier=high|mid (read by night/core)
+         poster=1        ink 0, no pop-ups, block split 0.5, hero motif; the exported file is the canvas only
+         date=YYYY-MM-DD[THH:MM]  Toronto clock for the views (default 2026-10-12T12:00)
+         week=<index>    open a spread other than today's      section=<n>   done=<id,id>
+         motion=full     run the arrival (default: the paused frame, policy 'cut')
+  Exposes window.__bookCapture = { status: 'loading' | 'ready' | 'failed', renderer, reason, frame, stats }
+  and window.__bookCaptureExport(type = 'image/webp', quality = .86) → data URL of the stage canvas
+  (transparent where the CSS desk shows through). tools/scene-build/book-posters.mjs drives it.
+-->
+<style>
+ :root{--ns-desk:#162024;--ns-desk-2:#0b1113;--ns-desk-light:rgb(255 196 138 / .16);--ns-desk-vignette:rgb(0 0 0 / .55);color-scheme:dark}
+ :root[data-theme=light]{--ns-desk:#e6dfd1;--ns-desk-2:#d5cbb8;--ns-desk-light:rgb(255 252 243 / .9);--ns-desk-vignette:rgb(70 52 24 / .14);color-scheme:light}
+ html,body{margin:0;background:var(--ns-desk-2)}
+ body{font:13px/1.4 system-ui,sans-serif;color:#9aa}
+ .stage{position:relative;overflow:hidden;
+  background:radial-gradient(60% 70% at 62% 42%,var(--ns-desk-light),transparent 70%),linear-gradient(160deg,var(--ns-desk),var(--ns-desk-2))}
+ .stage:after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 160px var(--ns-desk-vignette)}
+ [data-art]{position:absolute;inset:0}
+ pre{margin:8px 12px;white-space:pre-wrap}
+ body.bare pre{display:none}
+</style>
+<body data-page="course" data-course="mth140">
+<div class="stage"><div data-art aria-hidden="true"></div></div>
+<pre id="status">Loading the real renderer…</pre>
+<script>
+ // Motion policy without the guide: the paused frame by default (as ?motion=off), the arrival with motion=full.
+ (()=>{const full=new URLSearchParams(location.search).get('motion')==='full';
+  window.GuideMotion={motionAllowed:()=>full,sceneMotionAllowed:()=>full,setScenePaused(){},
+   preference:()=>({reduced:false,forced:!full,scenePaused:false,paused:false})};})();
+</script>
+<script type="module">
+const q=new URLSearchParams(location.search);
+const course=q.get('course')||'mth140',theme=q.get('theme')==='light'?'light':'dark',view=q.get('view')==='tall'?'tall':'wide';
+const poster=q.get('poster')==='1',motion=q.get('motion')==='full'?'full':'cut';
+const SIZES={wide:[1440,600],tall:[390,300]};
+const [w,h]=[Number(q.get('w'))||SIZES[view][0],Number(q.get('h'))||SIZES[view][1]];
+document.documentElement.dataset.theme=theme;
+if(q.get('bare')==='1')document.body.classList.add('bare');
+const stage=document.querySelector('.stage'),slot=stage.querySelector('[data-art]'),status=document.querySelector('#status');
+stage.style.width=w+'px';stage.style.height=h+'px';
+const report=window.__bookCapture={status:'loading',renderer:null,reason:null,frame:0,stats:null};
+const show=()=>{status.textContent=JSON.stringify({...report,stats:undefined,dataset:{...slot.dataset}},null,1);};
+try{
+ const [{COURSES},{timestamp},weeksModule,bookState,stageModule,scene]=await Promise.all([
+  import('../assets/course-data.mjs'),import('../assets/schedule.mjs'),import('../assets/book/weeks.mjs'),
+  import('../assets/book/book-state.mjs'),import('../assets/app/stage.mjs?v=20261013-stage1'),import('../assets/book/book-scene.mjs')]);
+ const [day,time='12:00']=(q.get('date')||'2026-10-12T12:00').split('T');
+ const now=timestamp(day,time),section=Number(q.get('section'))||0;
+ const completed=Object.fromEntries((q.get('done')||'').split(',').filter(Boolean).map(id=>[id,true]));
+ const data=COURSES[course];
+ const weeks=weeksModule.semesterWeeks({records:weeksModule.recordsForCourse(course,{section,completed})});
+ const today=weeksModule.currentWeekIndex(weeks,new Date(now));
+ const state=bookState.createBookState({course,weeks,today,policy:()=>motion});
+ if(q.has('week'))state.openWeek(Number(q.get('week')),{animate:false});
+ const target=q.get('target')??(()=>{try{return weeks.flatMap(x=>x.records).find(r=>!r.completed&&(r.date||r.week||'')>=day)?.id??null;}catch{return null;}})();
+ const ctx={course,data,weeks,section,completed,now,targetId:target};
+ const getView=i=>bookState.describeSpread(weeks[i],ctx);
+ // The capture keeps the drawing buffer; the first probe creates the one context, mountBook reuses it.
+ stageModule.probe({preserveDrawingBuffer:true});
+ const controller=await scene.mountBook(slot,{course,state,getView,poster,arrival:{start:performance.now()},
+  onOpen(){},onFallback(reason){report.reason=reason;},dockTarget:()=>null});
+ report.renderer=await controller.ready;
+ if(report.renderer!=='webgl2'){report.status='failed';report.reason??=slot.dataset.rendererReason||'poster';show();}
+ else{
+  // Settled: the scene has rendered a frame and nothing is animating. Two more frames for safety.
+  const settled=()=>slot.dataset.sceneReady==='true'&&slot.dataset.motionState!=='running';
+  const start=performance.now();
+  while(!settled()&&performance.now()-start<20000)await new Promise(r=>requestAnimationFrame(r));
+  for(let i=0;i<3;i++){controller.requestFrame();await new Promise(r=>requestAnimationFrame(r));}
+  report.frame=Number(slot.dataset.sceneFrame)||0;report.stats=controller.stats?.()??null;
+  report.status=settled()?'ready':'failed';if(!settled())report.reason='did not settle';
+  show();
+ }
+ window.__bookCaptureExport=(type='image/webp',quality=.86)=>{
+  const canvas=slot.querySelector('canvas');if(!canvas)return null;
+  controller.requestFrame();
+  return canvas.toDataURL(type,quality);
+ };
+ window.__bookController=controller;window.__bookState=state;
+}catch(error){
+ report.status='failed';report.reason=String(error?.stack||error);show();
+}
+</script>
+</body>
+</html>

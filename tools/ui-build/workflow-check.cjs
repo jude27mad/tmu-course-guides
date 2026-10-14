@@ -376,12 +376,10 @@ async function checkPalette(){
   // Cancelable book event hands control to a listener, otherwise timeline fallback works.
   let selected=null;const book=event=>{selected=event.detail.index;event.preventDefault();};d.addEventListener('book-open-week',book);
   await open(launcher);query('w9');key('Enter');await pause(40);assert.equal(selected,8,'week alias routes to zero-based book index');d.removeEventListener('book-open-week',book);
-  w.CourseWorkspace.show('info',true);await open(launcher);query('oct 13');key('Enter');await until(()=>d.activeElement.dataset.date==='2026-10-15','week fallback did not focus the selected item');
-  assert.equal(d.body.dataset.workspaceView,'assignments');assert.equal(d.activeElement.closest('.ns-timeline'),d.querySelector('.ns-timeline'),'unhandled week focuses timeline');assert.equal(d.activeElement.dataset.date,'2026-10-15','fallback focuses first item in selected week');
-  const timeline=d.querySelector('.ns-timeline'),rail=timeline.querySelector('.ns-tl-scroll'),track=timeline.querySelector('.ns-tl-track');
-  Object.defineProperty(track,'scrollWidth',{configurable:true,value:1000});Object.defineProperty(rail,'clientWidth',{configurable:true,value:200});rail.scrollLeft=0;
-  await open(launcher);query('week 9');key('Enter');await until(()=>d.activeElement===timeline,'empty week fallback did not focus timeline');
-  assert.equal(d.activeElement,timeline,'empty week fallback focuses timeline');assert(rail.scrollLeft>400,'empty week scrolls rail to selected week instead of Today');
+  // On a book route the book takes the week (spec §6.9): its rail selects the spread and holds focus.
+  w.CourseWorkspace.show('info',true);await open(launcher);query('oct 13');key('Enter');
+  await until(()=>d.activeElement?.matches?.('.ns-tick[data-index="5"]'),'book week did not focus its rail week');
+  assert.equal(d.activeElement.getAttribute('aria-checked'),'true','the palette week is the selected spread');
   await open(launcher);query('quiz');key('End');query('midterm');assert.match(active().textContent,/Midterm Test/,'new query selects the best result');query('quiz');key('End');key('Enter');await pause(20);assert.equal(search.value,'quiz');assert.equal(d.activeElement,search,'fallback search receives focus');assert(!d.querySelector('#workspace-search').hidden);assert(d.querySelectorAll('#guide-search-results li').length);
   assert(d.querySelector('#topic-functions').hidden,'inline query actually hides unrelated topic');
   await open(launcher);query('Functions & graphs');key('Enter');await until(()=>d.activeElement===d.querySelector('#topic-functions > summary'),'topic did not receive focus');
@@ -392,6 +390,13 @@ async function checkPalette(){
   const css=d.querySelector('link[data-night="palette"]');assert(css?.hasAttribute('data-shell-style'),'palette CSS belongs to persistent shell');
   await w.TMURouter.navigate('https://guide.test/mth141/');await pause(180);assert.equal(d.querySelector('.ns-palette'),palette);assert.equal(d.querySelector('link[data-night="palette"]'),css);
   await open();query('midterm');assert.match(active().textContent,/Fri Oct 16/,'route change indexes destination deadlines');key('Escape');await pause(20);
+  // Without a book, the timeline is the fallback: the first item of the week, or the timeline itself.
+  w.CourseWorkspace.show('info',true);await open();query('oct 13');key('Enter');await until(()=>d.activeElement.dataset.date==='2026-10-16','week fallback did not focus the selected item');
+  assert.equal(d.body.dataset.workspaceView,'assignments');assert.equal(d.activeElement.closest('.ns-timeline'),d.querySelector('.ns-timeline'),'unhandled week focuses timeline');
+  {const timeline=d.querySelector('.ns-timeline'),rail=timeline.querySelector('.ns-tl-scroll'),track=timeline.querySelector('.ns-tl-track');
+  Object.defineProperty(track,'scrollWidth',{configurable:true,value:1000});Object.defineProperty(rail,'clientWidth',{configurable:true,value:200});rail.scrollLeft=0;
+  await open();query('week 10');key('Enter');await until(()=>d.activeElement===timeline,'empty week fallback did not focus timeline');
+  assert(rail.scrollLeft>400,'empty week scrolls rail to selected week instead of Today');}
   await w.TMURouter.navigate('https://guide.test/');await pause(100);await open(d.querySelector('.hub-theme'));query('week 9');assert(palette.querySelector('[aria-disabled="true"]'),'Desk week results disabled');assert(!options().some(o=>/Search the guide/.test(o.textContent)),'no guide search on the Desk');key('Enter');await pause(20);assert(palette.open,'a disabled Desk week runs nothing');key('Escape');
   assert.deepEqual(errors,[],'palette runtime errors');
   console.log('palette: shortcuts, focus handoffs, filter opening, holds, weeks, fallback search, 20 cycles and route reindex passed');

@@ -1,4 +1,4 @@
-import {T,mesh,disposeScene} from './primitives.mjs?v=20261013-shift2';
+import {T,mesh,disposeScene} from './primitives.mjs?v=20261014-book1';
 import {planetaryState} from './scene-math.mjs?v=20261012-subject1';
 
 // Involute tooth flanks, 20° pressure angle. Radii share a common module.

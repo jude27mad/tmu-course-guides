@@ -5,7 +5,7 @@ import vm from 'node:vm';
 import {SCHEDULE} from '../assets/cen-schedule.mjs';
 import {COURSES} from '../assets/course-data.mjs';
 import {timestamp,addDays} from '../assets/schedule.mjs';
-import {resolveTarget,cenUpcoming,cenCompleted,readSection,readCompleted,readSaved,keys,parts,compact,overall,GRACE} from '../assets/night/targets.mjs';
+import {resolveTarget,cenUpcoming,cenCompleted,readSection,readCompleted,readSaved,keys,parts,compact,overall,GRACE,targetDate} from '../assets/night/targets.mjs';
 
 /* Frozen clocks only: every case passes an explicit `now`. Records are the real ones; the two derived record
    sets below are marked and exist only to exercise a rule the real Fall 2026 data never triggers. */
@@ -74,7 +74,7 @@ test('a dated submission without a time counts down to 11:59 PM Toronto; a dated
   for(const e of SCHEDULE){
     const d=resolveTarget({course:'cen100',data:SCHEDULE,id:e.id,now:NOON_OCT12});
     if(e.time)assert.equal(d.precision,'exact',e.id);
-    else if(/ due$/.test(e.title)){assert.equal(d.precision,'exact',e.id);assert.equal(d.at,toronto(addDays(e.date,1),'00:00'),e.id);assert.equal(d.label,'Due by end of day',e.id);assert.equal(d.when.endsWith('by 11:59 PM Toronto'),true,e.id);}
+    else if(/ due$/.test(e.title)){assert.equal(d.precision,'exact',e.id);assert.equal(d.at,toronto(addDays(e.date,1),'00:00'),e.id);assert.equal(targetDate(d),e.date,`${e.id}: dated on its due day, not the midnight after`);assert.equal(d.label,'Due by end of day',e.id);assert.equal(d.when.endsWith('by 11:59 PM Toronto'),true,e.id);}
     // Presentations, reviews and lab reminders happen in class: no invented time.
     else{assert.equal(d.precision,'day',e.id);assert.equal(d.label,'Time not posted · check D2L',e.id);assert.doesNotMatch(d.when+d.label,/\d:\d\d|11:59/,e.id);}
   }

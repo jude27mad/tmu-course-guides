@@ -1,4 +1,4 @@
-import * as T from '../vendor/three-0.186.1.mjs?v=20261013-shift2';
+import * as T from '../app/three.mjs?v=20261013-stage1';
 export {T};
 export function material(color,extra={}){return new T.MeshPhysicalMaterial({color,roughness:.28,metalness:.55,clearcoat:.6,clearcoatRoughness:.2,...extra});}
 export function mesh(group,geometry,mat,position=[0,0,0]){const m=new T.Mesh(geometry,mat);m.position.set(...position);group.add(m);return m;}

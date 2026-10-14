@@ -1,4 +1,4 @@
-import {T,mesh,arrow,disposeScene} from './primitives.mjs?v=20261013-shift2';
+import {T,mesh,arrow,disposeScene} from './primitives.mjs?v=20261014-book1';
 import {sphereTransform} from './scene-math.mjs?v=20261012-subject1';
 export function createAlgebra(p){
  const root=new T.Group(),volume=new T.Group();root.add(volume);root.name='linear-transformation';volume.matrixAutoUpdate=false;

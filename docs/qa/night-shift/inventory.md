@@ -30,6 +30,7 @@ No storage key, namespace or key constructor uses `location.pathname`, `location
 |---|---|---|---|
 | `night-warp` | JSON `{t, color, …}` | **none** (`assets/night/warp.mjs` does not exist) | inline head script `index.html:9`, `mth140/index.html:9`, `mth141/index.html:9` (read + remove; adds `html.ns-warp-in`, fail-safe in `layout.css:19–22`). Dormant. |
 | `night-dragged` | `'1'` | `assets/night/hero.mjs:146` | `hero.mjs:135` |
+| `tmu-book-hint-v1` | `'1'` | `assets/course-header.mjs` (first drag or swipe page turn) | `course-header.mjs` mountBook (adds `ns-explored`) |
 
 ### Not real storage
 

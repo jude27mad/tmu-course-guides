@@ -168,7 +168,7 @@ export function status(t,now=Date.now()){
 /* The Toronto calendar date a target falls on, or null while it is unresolved (quiz week, pending, empty). */
 export function targetDate(t){
  if(!t)return null;
- if(t.precision==='exact')return today(new Date(t.at));
+ if(t.precision==='exact')return today(new Date(t.endOfDay?t.at-1:t.at)); // end-of-day dues count to the next midnight
  return t.precision==='day'?t.date:null;
 }
 /* One sentence for a polite live region (updated at most once a minute by its owner). */

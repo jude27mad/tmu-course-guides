@@ -683,8 +683,10 @@ All placement uses lens shift (`camera.setViewOffset`) and a fit function.
 
 | Theme | Desk tokens | Stage tokens |
 |---|---|---|
-| Light | `--ns-desk: #e6dfd1`, `--ns-desk-2: #d5cbb8`, `--ns-desk-light: rgb(255 252 243 / .9)`, `--ns-desk-vignette: rgb(70 52 24 / .14)` | `--ns-stage-ink: #151c1f`, `--ns-stage-muted: #4e5855`, `--ns-stage-soon: #8a4f12`, `--ns-stage-hot: #9a3a20` |
+| Light | `--ns-desk: #e6dfd1`, `--ns-desk-2: #d5cbb8`, `--ns-desk-light: rgb(255 252 243 / .9)`, `--ns-desk-vignette: rgb(70 52 24 / .14)` | `--ns-stage-ink: #151c1f`, `--ns-stage-muted: #434c49`, `--ns-stage-soon: #8a4f12`, `--ns-stage-hot: #9a3a20` |
 | Dark | `--ns-desk: #162024`, `--ns-desk-2: #0b1113`, `--ns-desk-light: rgb(255 196 138 / .16)`, `--ns-desk-vignette: rgb(0 0 0 / .55)` | `--ns-stage-ink: #eef0ea`, `--ns-stage-muted: #a1b0ae`, `--ns-stage-soon: #ffc9a3`, `--ns-stage-hot: #ff9a7c` |
+
+`--ns-stage-strong` (set on `body.workspace`) colours the stage eyebrow and the HUD Next label and chip: light `color-mix(in srgb, var(--strong) 75%, var(--ns-stage-ink))`, dark `var(--strong)`, so both keep 4.5:1 on the desk.
 
 **Replace** the graphite-only values under `html[data-book]`:
 

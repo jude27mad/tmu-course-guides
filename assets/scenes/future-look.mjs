@@ -1,4 +1,4 @@
-import * as T from '../vendor/three-0.186.1.mjs?v=20261013-shift2';
+import * as T from '../app/three.mjs?v=20261013-stage1';
 
 // Original, tileable surface field. A single texture is shared by every material.
 export function createFutureLook(palette){

@@ -82,16 +82,17 @@ async function fixture(route){
  }};
 }
 
+// MTH141 still mounts course-scene.mjs; MTH140's book has its own readiness tests in book-lifecycle.cjs.
 test('direct routes enable navigation before their header scene is ready',async()=>{
- const f=await fixture('mth140');
+ const f=await fixture('mth141');
  try{
-  const scene=f.scenes.get('mth140');
+  const scene=f.scenes.get('mth141');
   await bounded(scene.started.promise,'direct header scene did not start');
   let ready=false;f.boot.then(()=>{ready=true;});await turn();
   assert.equal(ready,true,'direct boot must finish while scene initialization remains pending');
   assert.equal(scene.ready.settled,false);
-  assert.deepEqual(f.calls,['mth140'],'the route module after the header must mount');
-  assert.deepEqual(f.changes,['mth140']);
+  assert.deepEqual(f.calls,['mth141'],'the route module after the header must mount');
+  assert.deepEqual(f.changes,['mth141']);
   const shell=f.w.document.documentElement.dataset.shellId;
   const changed=deferred();f.w.document.addEventListener('route-changed',()=>changed.resolve(),{once:true});
   let intercepted;
