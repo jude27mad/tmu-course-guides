@@ -14,18 +14,18 @@
       "route": "desk",
       "profile": "phone",
       "baseline": {
-        "requestCount": 30,
-        "transferBytes": 547034,
+        "requestCount": 31,
+        "transferBytes": 623321,
         "bytesByType": {
-          "document": 5859,
-          "stylesheet": 54038,
+          "document": 5850,
+          "stylesheet": 80764,
           "image": 382,
           "media": 0,
           "font": 90281,
-          "script": 306562,
+          "script": 356149,
           "texttrack": 0,
           "xhr": 0,
-          "fetch": 89912,
+          "fetch": 89895,
           "prefetch": 0,
           "eventsource": 0,
           "websocket": 0,
@@ -36,16 +36,16 @@
           "preflight": 0,
           "other": 0
         },
-        "chainDepth": 4
+        "chainDepth": 5
       },
       "limits": {
-        "requestCount": 33,
-        "transferBytes": 601738,
+        "requestCount": 35,
+        "transferBytes": 685654,
         "bytesByType": {
           "cspviolationreport": 8192,
-          "document": 14051,
+          "document": 14042,
           "eventsource": 8192,
-          "fetch": 98904,
+          "fetch": 98885,
           "font": 99310,
           "image": 8574,
           "manifest": 8192,
@@ -54,14 +54,14 @@
           "ping": 8192,
           "prefetch": 8192,
           "preflight": 8192,
-          "script": 337219,
+          "script": 391764,
           "signedexchange": 8192,
-          "stylesheet": 62230,
+          "stylesheet": 88956,
           "texttrack": 8192,
           "websocket": 8192,
           "xhr": 8192
         },
-        "chainDepth": 5
+        "chainDepth": 6
       }
     },
     {
@@ -69,18 +69,18 @@
       "route": "cen100",
       "profile": "phone",
       "baseline": {
-        "requestCount": 53,
-        "transferBytes": 1515304,
+        "requestCount": 56,
+        "transferBytes": 1618005,
         "bytesByType": {
-          "document": 51010,
-          "stylesheet": 129034,
+          "document": 51003,
+          "stylesheet": 153161,
           "image": 32801,
           "media": 0,
           "font": 90281,
-          "script": 1167417,
+          "script": 1246017,
           "texttrack": 0,
           "xhr": 0,
-          "fetch": 44761,
+          "fetch": 44742,
           "prefetch": 0,
           "eventsource": 0,
           "websocket": 0,
@@ -91,16 +91,16 @@
           "preflight": 0,
           "other": 0
         },
-        "chainDepth": 4
+        "chainDepth": 5
       },
       "limits": {
-        "requestCount": 59,
-        "transferBytes": 1666835,
+        "requestCount": 62,
+        "transferBytes": 1779806,
         "bytesByType": {
           "cspviolationreport": 8192,
-          "document": 59202,
+          "document": 59195,
           "eventsource": 8192,
-          "fetch": 52953,
+          "fetch": 52934,
           "font": 99310,
           "image": 40993,
           "manifest": 8192,
@@ -109,14 +109,14 @@
           "ping": 8192,
           "prefetch": 8192,
           "preflight": 8192,
-          "script": 1284159,
+          "script": 1370619,
           "signedexchange": 8192,
-          "stylesheet": 141938,
+          "stylesheet": 168478,
           "texttrack": 8192,
           "websocket": 8192,
           "xhr": 8192
         },
-        "chainDepth": 5
+        "chainDepth": 6
       }
     },
     {
@@ -124,18 +124,18 @@
       "route": "mth140",
       "profile": "phone",
       "baseline": {
-        "requestCount": 63,
-        "transferBytes": 1623099,
+        "requestCount": 67,
+        "transferBytes": 1892207,
         "bytesByType": {
-          "document": 19411,
-          "stylesheet": 173764,
-          "image": 73761,
+          "document": 19408,
+          "stylesheet": 197891,
+          "image": 26092,
           "media": 0,
           "font": 90281,
-          "script": 1189522,
+          "script": 1482198,
           "texttrack": 0,
           "xhr": 0,
-          "fetch": 76360,
+          "fetch": 76337,
           "prefetch": 0,
           "eventsource": 0,
           "websocket": 0,
@@ -146,32 +146,32 @@
           "preflight": 0,
           "other": 0
         },
-        "chainDepth": 4
+        "chainDepth": 5
       },
       "limits": {
-        "requestCount": 70,
-        "transferBytes": 1785409,
+        "requestCount": 74,
+        "transferBytes": 2081428,
         "bytesByType": {
           "cspviolationreport": 8192,
-          "document": 27603,
+          "document": 27600,
           "eventsource": 8192,
-          "fetch": 84552,
+          "fetch": 84529,
           "font": 99310,
-          "image": 81953,
+          "image": 34284,
           "manifest": 8192,
           "media": 8192,
           "other": 8192,
           "ping": 8192,
           "prefetch": 8192,
           "preflight": 8192,
-          "script": 1308475,
+          "script": 1630418,
           "signedexchange": 8192,
-          "stylesheet": 191141,
+          "stylesheet": 217681,
           "texttrack": 8192,
           "websocket": 8192,
           "xhr": 8192
         },
-        "chainDepth": 5
+        "chainDepth": 6
       }
     },
     {
@@ -179,18 +179,18 @@
       "route": "mth141",
       "profile": "phone",
       "baseline": {
-        "requestCount": 63,
-        "transferBytes": 1600135,
+        "requestCount": 66,
+        "transferBytes": 1702836,
         "bytesByType": {
-          "document": 19491,
-          "stylesheet": 173764,
+          "document": 19484,
+          "stylesheet": 197891,
           "image": 50797,
           "media": 0,
           "font": 90281,
-          "script": 1189522,
+          "script": 1268122,
           "texttrack": 0,
           "xhr": 0,
-          "fetch": 76280,
+          "fetch": 76261,
           "prefetch": 0,
           "eventsource": 0,
           "websocket": 0,
@@ -201,16 +201,16 @@
           "preflight": 0,
           "other": 0
         },
-        "chainDepth": 4
+        "chainDepth": 5
       },
       "limits": {
-        "requestCount": 70,
-        "transferBytes": 1760149,
+        "requestCount": 73,
+        "transferBytes": 1873120,
         "bytesByType": {
           "cspviolationreport": 8192,
-          "document": 27683,
+          "document": 27676,
           "eventsource": 8192,
-          "fetch": 84472,
+          "fetch": 84453,
           "font": 99310,
           "image": 58989,
           "manifest": 8192,
@@ -219,14 +219,14 @@
           "ping": 8192,
           "prefetch": 8192,
           "preflight": 8192,
-          "script": 1308475,
+          "script": 1394935,
           "signedexchange": 8192,
-          "stylesheet": 191141,
+          "stylesheet": 217681,
           "texttrack": 8192,
           "websocket": 8192,
           "xhr": 8192
         },
-        "chainDepth": 5
+        "chainDepth": 6
       }
     },
     {
@@ -234,18 +234,18 @@
       "route": "desk",
       "profile": "desktop",
       "baseline": {
-        "requestCount": 30,
-        "transferBytes": 547034,
+        "requestCount": 31,
+        "transferBytes": 623321,
         "bytesByType": {
-          "document": 5859,
-          "stylesheet": 54038,
+          "document": 5850,
+          "stylesheet": 80764,
           "image": 382,
           "media": 0,
           "font": 90281,
-          "script": 306562,
+          "script": 356149,
           "texttrack": 0,
           "xhr": 0,
-          "fetch": 89912,
+          "fetch": 89895,
           "prefetch": 0,
           "eventsource": 0,
           "websocket": 0,
@@ -256,16 +256,16 @@
           "preflight": 0,
           "other": 0
         },
-        "chainDepth": 4
+        "chainDepth": 5
       },
       "limits": {
-        "requestCount": 33,
-        "transferBytes": 601738,
+        "requestCount": 35,
+        "transferBytes": 685654,
         "bytesByType": {
           "cspviolationreport": 8192,
-          "document": 14051,
+          "document": 14042,
           "eventsource": 8192,
-          "fetch": 98904,
+          "fetch": 98885,
           "font": 99310,
           "image": 8574,
           "manifest": 8192,
@@ -274,14 +274,14 @@
           "ping": 8192,
           "prefetch": 8192,
           "preflight": 8192,
-          "script": 337219,
+          "script": 391764,
           "signedexchange": 8192,
-          "stylesheet": 62230,
+          "stylesheet": 88956,
           "texttrack": 8192,
           "websocket": 8192,
           "xhr": 8192
         },
-        "chainDepth": 5
+        "chainDepth": 6
       }
     },
     {
@@ -289,18 +289,18 @@
       "route": "cen100",
       "profile": "desktop",
       "baseline": {
-        "requestCount": 53,
-        "transferBytes": 1515304,
+        "requestCount": 56,
+        "transferBytes": 1618005,
         "bytesByType": {
-          "document": 51010,
-          "stylesheet": 129034,
+          "document": 51003,
+          "stylesheet": 153161,
           "image": 32801,
           "media": 0,
           "font": 90281,
-          "script": 1167417,
+          "script": 1246017,
           "texttrack": 0,
           "xhr": 0,
-          "fetch": 44761,
+          "fetch": 44742,
           "prefetch": 0,
           "eventsource": 0,
           "websocket": 0,
@@ -311,16 +311,16 @@
           "preflight": 0,
           "other": 0
         },
-        "chainDepth": 4
+        "chainDepth": 5
       },
       "limits": {
-        "requestCount": 59,
-        "transferBytes": 1666835,
+        "requestCount": 62,
+        "transferBytes": 1779806,
         "bytesByType": {
           "cspviolationreport": 8192,
-          "document": 59202,
+          "document": 59195,
           "eventsource": 8192,
-          "fetch": 52953,
+          "fetch": 52934,
           "font": 99310,
           "image": 40993,
           "manifest": 8192,
@@ -329,14 +329,14 @@
           "ping": 8192,
           "prefetch": 8192,
           "preflight": 8192,
-          "script": 1284159,
+          "script": 1370619,
           "signedexchange": 8192,
-          "stylesheet": 141938,
+          "stylesheet": 168478,
           "texttrack": 8192,
           "websocket": 8192,
           "xhr": 8192
         },
-        "chainDepth": 5
+        "chainDepth": 6
       }
     },
     {
@@ -344,18 +344,18 @@
       "route": "mth140",
       "profile": "desktop",
       "baseline": {
-        "requestCount": 63,
-        "transferBytes": 1623099,
+        "requestCount": 67,
+        "transferBytes": 1926244,
         "bytesByType": {
-          "document": 19411,
-          "stylesheet": 173764,
-          "image": 73761,
+          "document": 19408,
+          "stylesheet": 197891,
+          "image": 60129,
           "media": 0,
           "font": 90281,
-          "script": 1189522,
+          "script": 1482198,
           "texttrack": 0,
           "xhr": 0,
-          "fetch": 76360,
+          "fetch": 76337,
           "prefetch": 0,
           "eventsource": 0,
           "websocket": 0,
@@ -366,32 +366,32 @@
           "preflight": 0,
           "other": 0
         },
-        "chainDepth": 4
+        "chainDepth": 5
       },
       "limits": {
-        "requestCount": 70,
-        "transferBytes": 1785409,
+        "requestCount": 74,
+        "transferBytes": 2118869,
         "bytesByType": {
           "cspviolationreport": 8192,
-          "document": 27603,
+          "document": 27600,
           "eventsource": 8192,
-          "fetch": 84552,
+          "fetch": 84529,
           "font": 99310,
-          "image": 81953,
+          "image": 68321,
           "manifest": 8192,
           "media": 8192,
           "other": 8192,
           "ping": 8192,
           "prefetch": 8192,
           "preflight": 8192,
-          "script": 1308475,
+          "script": 1630418,
           "signedexchange": 8192,
-          "stylesheet": 191141,
+          "stylesheet": 217681,
           "texttrack": 8192,
           "websocket": 8192,
           "xhr": 8192
         },
-        "chainDepth": 5
+        "chainDepth": 6
       }
     },
     {
@@ -399,18 +399,18 @@
       "route": "mth141",
       "profile": "desktop",
       "baseline": {
-        "requestCount": 63,
-        "transferBytes": 1600135,
+        "requestCount": 66,
+        "transferBytes": 1702836,
         "bytesByType": {
-          "document": 19491,
-          "stylesheet": 173764,
+          "document": 19484,
+          "stylesheet": 197891,
           "image": 50797,
           "media": 0,
           "font": 90281,
-          "script": 1189522,
+          "script": 1268122,
           "texttrack": 0,
           "xhr": 0,
-          "fetch": 76280,
+          "fetch": 76261,
           "prefetch": 0,
           "eventsource": 0,
           "websocket": 0,
@@ -421,16 +421,16 @@
           "preflight": 0,
           "other": 0
         },
-        "chainDepth": 4
+        "chainDepth": 5
       },
       "limits": {
-        "requestCount": 70,
-        "transferBytes": 1760149,
+        "requestCount": 73,
+        "transferBytes": 1873120,
         "bytesByType": {
           "cspviolationreport": 8192,
-          "document": 27683,
+          "document": 27676,
           "eventsource": 8192,
-          "fetch": 84472,
+          "fetch": 84453,
           "font": 99310,
           "image": 58989,
           "manifest": 8192,
@@ -439,14 +439,14 @@
           "ping": 8192,
           "prefetch": 8192,
           "preflight": 8192,
-          "script": 1308475,
+          "script": 1394935,
           "signedexchange": 8192,
-          "stylesheet": 191141,
+          "stylesheet": 217681,
           "texttrack": 8192,
           "websocket": 8192,
           "xhr": 8192
         },
-        "chainDepth": 5
+        "chainDepth": 6
       }
     },
     {
@@ -454,18 +454,18 @@
       "route": "desk",
       "profile": "phone",
       "baseline": {
-        "requestCount": 30,
-        "transferBytes": 547034,
+        "requestCount": 31,
+        "transferBytes": 623321,
         "bytesByType": {
-          "document": 5859,
-          "stylesheet": 54038,
+          "document": 5850,
+          "stylesheet": 80764,
           "image": 382,
           "media": 0,
           "font": 90281,
-          "script": 306562,
+          "script": 356149,
           "texttrack": 0,
           "xhr": 0,
-          "fetch": 89912,
+          "fetch": 89895,
           "prefetch": 0,
           "eventsource": 0,
           "websocket": 0,
@@ -476,16 +476,16 @@
           "preflight": 0,
           "other": 0
         },
-        "chainDepth": 4
+        "chainDepth": 5
       },
       "limits": {
-        "requestCount": 33,
-        "transferBytes": 601738,
+        "requestCount": 35,
+        "transferBytes": 685654,
         "bytesByType": {
           "cspviolationreport": 8192,
-          "document": 14051,
+          "document": 14042,
           "eventsource": 8192,
-          "fetch": 98904,
+          "fetch": 98885,
           "font": 99310,
           "image": 8574,
           "manifest": 8192,
@@ -494,14 +494,14 @@
           "ping": 8192,
           "prefetch": 8192,
           "preflight": 8192,
-          "script": 337219,
+          "script": 391764,
           "signedexchange": 8192,
-          "stylesheet": 62230,
+          "stylesheet": 88956,
           "texttrack": 8192,
           "websocket": 8192,
           "xhr": 8192
         },
-        "chainDepth": 5
+        "chainDepth": 6
       }
     },
     {
@@ -509,18 +509,18 @@
       "route": "cen100",
       "profile": "phone",
       "baseline": {
-        "requestCount": 53,
-        "transferBytes": 1515304,
+        "requestCount": 56,
+        "transferBytes": 1618005,
         "bytesByType": {
-          "document": 51010,
-          "stylesheet": 129034,
+          "document": 51003,
+          "stylesheet": 153161,
           "image": 32801,
           "media": 0,
           "font": 90281,
-          "script": 1167417,
+          "script": 1246017,
           "texttrack": 0,
           "xhr": 0,
-          "fetch": 44761,
+          "fetch": 44742,
           "prefetch": 0,
           "eventsource": 0,
           "websocket": 0,
@@ -531,16 +531,16 @@
           "preflight": 0,
           "other": 0
         },
-        "chainDepth": 4
+        "chainDepth": 5
       },
       "limits": {
-        "requestCount": 59,
-        "transferBytes": 1666835,
+        "requestCount": 62,
+        "transferBytes": 1779806,
         "bytesByType": {
           "cspviolationreport": 8192,
-          "document": 59202,
+          "document": 59195,
           "eventsource": 8192,
-          "fetch": 52953,
+          "fetch": 52934,
           "font": 99310,
           "image": 40993,
           "manifest": 8192,
@@ -549,14 +549,14 @@
           "ping": 8192,
           "prefetch": 8192,
           "preflight": 8192,
-          "script": 1284159,
+          "script": 1370619,
           "signedexchange": 8192,
-          "stylesheet": 141938,
+          "stylesheet": 168478,
           "texttrack": 8192,
           "websocket": 8192,
           "xhr": 8192
         },
-        "chainDepth": 5
+        "chainDepth": 6
       }
     },
     {
@@ -564,18 +564,18 @@
       "route": "mth140",
       "profile": "phone",
       "baseline": {
-        "requestCount": 63,
-        "transferBytes": 1623099,
+        "requestCount": 67,
+        "transferBytes": 1892207,
         "bytesByType": {
-          "document": 19411,
-          "stylesheet": 173764,
-          "image": 73761,
+          "document": 19408,
+          "stylesheet": 197891,
+          "image": 26092,
           "media": 0,
           "font": 90281,
-          "script": 1189522,
+          "script": 1482198,
           "texttrack": 0,
           "xhr": 0,
-          "fetch": 76360,
+          "fetch": 76337,
           "prefetch": 0,
           "eventsource": 0,
           "websocket": 0,
@@ -586,32 +586,32 @@
           "preflight": 0,
           "other": 0
         },
-        "chainDepth": 4
+        "chainDepth": 5
       },
       "limits": {
-        "requestCount": 70,
-        "transferBytes": 1785409,
+        "requestCount": 74,
+        "transferBytes": 2081428,
         "bytesByType": {
           "cspviolationreport": 8192,
-          "document": 27603,
+          "document": 27600,
           "eventsource": 8192,
-          "fetch": 84552,
+          "fetch": 84529,
           "font": 99310,
-          "image": 81953,
+          "image": 34284,
           "manifest": 8192,
           "media": 8192,
           "other": 8192,
           "ping": 8192,
           "prefetch": 8192,
           "preflight": 8192,
-          "script": 1308475,
+          "script": 1630418,
           "signedexchange": 8192,
-          "stylesheet": 191141,
+          "stylesheet": 217681,
           "texttrack": 8192,
           "websocket": 8192,
           "xhr": 8192
         },
-        "chainDepth": 5
+        "chainDepth": 6
       }
     },
     {
@@ -619,18 +619,18 @@
       "route": "mth141",
       "profile": "phone",
       "baseline": {
-        "requestCount": 63,
-        "transferBytes": 1600135,
+        "requestCount": 66,
+        "transferBytes": 1702836,
         "bytesByType": {
-          "document": 19491,
-          "stylesheet": 173764,
+          "document": 19484,
+          "stylesheet": 197891,
           "image": 50797,
           "media": 0,
           "font": 90281,
-          "script": 1189522,
+          "script": 1268122,
           "texttrack": 0,
           "xhr": 0,
-          "fetch": 76280,
+          "fetch": 76261,
           "prefetch": 0,
           "eventsource": 0,
           "websocket": 0,
@@ -641,16 +641,16 @@
           "preflight": 0,
           "other": 0
         },
-        "chainDepth": 4
+        "chainDepth": 5
       },
       "limits": {
-        "requestCount": 70,
-        "transferBytes": 1760149,
+        "requestCount": 73,
+        "transferBytes": 1873120,
         "bytesByType": {
           "cspviolationreport": 8192,
-          "document": 27683,
+          "document": 27676,
           "eventsource": 8192,
-          "fetch": 84472,
+          "fetch": 84453,
           "font": 99310,
           "image": 58989,
           "manifest": 8192,
@@ -659,14 +659,14 @@
           "ping": 8192,
           "prefetch": 8192,
           "preflight": 8192,
-          "script": 1308475,
+          "script": 1394935,
           "signedexchange": 8192,
-          "stylesheet": 191141,
+          "stylesheet": 217681,
           "texttrack": 8192,
           "websocket": 8192,
           "xhr": 8192
         },
-        "chainDepth": 5
+        "chainDepth": 6
       }
     },
     {
@@ -674,18 +674,18 @@
       "route": "desk",
       "profile": "desktop",
       "baseline": {
-        "requestCount": 30,
-        "transferBytes": 547034,
+        "requestCount": 31,
+        "transferBytes": 623321,
         "bytesByType": {
-          "document": 5859,
-          "stylesheet": 54038,
+          "document": 5850,
+          "stylesheet": 80764,
           "image": 382,
           "media": 0,
           "font": 90281,
-          "script": 306562,
+          "script": 356149,
           "texttrack": 0,
           "xhr": 0,
-          "fetch": 89912,
+          "fetch": 89895,
           "prefetch": 0,
           "eventsource": 0,
           "websocket": 0,
@@ -696,16 +696,16 @@
           "preflight": 0,
           "other": 0
         },
-        "chainDepth": 4
+        "chainDepth": 5
       },
       "limits": {
-        "requestCount": 33,
-        "transferBytes": 601738,
+        "requestCount": 35,
+        "transferBytes": 685654,
         "bytesByType": {
           "cspviolationreport": 8192,
-          "document": 14051,
+          "document": 14042,
           "eventsource": 8192,
-          "fetch": 98904,
+          "fetch": 98885,
           "font": 99310,
           "image": 8574,
           "manifest": 8192,
@@ -714,14 +714,14 @@
           "ping": 8192,
           "prefetch": 8192,
           "preflight": 8192,
-          "script": 337219,
+          "script": 391764,
           "signedexchange": 8192,
-          "stylesheet": 62230,
+          "stylesheet": 88956,
           "texttrack": 8192,
           "websocket": 8192,
           "xhr": 8192
         },
-        "chainDepth": 5
+        "chainDepth": 6
       }
     },
     {
@@ -729,18 +729,18 @@
       "route": "cen100",
       "profile": "desktop",
       "baseline": {
-        "requestCount": 53,
-        "transferBytes": 1515304,
+        "requestCount": 56,
+        "transferBytes": 1618005,
         "bytesByType": {
-          "document": 51010,
-          "stylesheet": 129034,
+          "document": 51003,
+          "stylesheet": 153161,
           "image": 32801,
           "media": 0,
           "font": 90281,
-          "script": 1167417,
+          "script": 1246017,
           "texttrack": 0,
           "xhr": 0,
-          "fetch": 44761,
+          "fetch": 44742,
           "prefetch": 0,
           "eventsource": 0,
           "websocket": 0,
@@ -751,16 +751,16 @@
           "preflight": 0,
           "other": 0
         },
-        "chainDepth": 4
+        "chainDepth": 5
       },
       "limits": {
-        "requestCount": 59,
-        "transferBytes": 1666835,
+        "requestCount": 62,
+        "transferBytes": 1779806,
         "bytesByType": {
           "cspviolationreport": 8192,
-          "document": 59202,
+          "document": 59195,
           "eventsource": 8192,
-          "fetch": 52953,
+          "fetch": 52934,
           "font": 99310,
           "image": 40993,
           "manifest": 8192,
@@ -769,14 +769,14 @@
           "ping": 8192,
           "prefetch": 8192,
           "preflight": 8192,
-          "script": 1284159,
+          "script": 1370619,
           "signedexchange": 8192,
-          "stylesheet": 141938,
+          "stylesheet": 168478,
           "texttrack": 8192,
           "websocket": 8192,
           "xhr": 8192
         },
-        "chainDepth": 5
+        "chainDepth": 6
       }
     },
     {
@@ -784,18 +784,18 @@
       "route": "mth140",
       "profile": "desktop",
       "baseline": {
-        "requestCount": 63,
-        "transferBytes": 1623099,
+        "requestCount": 67,
+        "transferBytes": 1926244,
         "bytesByType": {
-          "document": 19411,
-          "stylesheet": 173764,
-          "image": 73761,
+          "document": 19408,
+          "stylesheet": 197891,
+          "image": 60129,
           "media": 0,
           "font": 90281,
-          "script": 1189522,
+          "script": 1482198,
           "texttrack": 0,
           "xhr": 0,
-          "fetch": 76360,
+          "fetch": 76337,
           "prefetch": 0,
           "eventsource": 0,
           "websocket": 0,
@@ -806,32 +806,32 @@
           "preflight": 0,
           "other": 0
         },
-        "chainDepth": 4
+        "chainDepth": 5
       },
       "limits": {
-        "requestCount": 70,
-        "transferBytes": 1785409,
+        "requestCount": 74,
+        "transferBytes": 2118869,
         "bytesByType": {
           "cspviolationreport": 8192,
-          "document": 27603,
+          "document": 27600,
           "eventsource": 8192,
-          "fetch": 84552,
+          "fetch": 84529,
           "font": 99310,
-          "image": 81953,
+          "image": 68321,
           "manifest": 8192,
           "media": 8192,
           "other": 8192,
           "ping": 8192,
           "prefetch": 8192,
           "preflight": 8192,
-          "script": 1308475,
+          "script": 1630418,
           "signedexchange": 8192,
-          "stylesheet": 191141,
+          "stylesheet": 217681,
           "texttrack": 8192,
           "websocket": 8192,
           "xhr": 8192
         },
-        "chainDepth": 5
+        "chainDepth": 6
       }
     },
     {
@@ -839,18 +839,18 @@
       "route": "mth141",
       "profile": "desktop",
       "baseline": {
-        "requestCount": 63,
-        "transferBytes": 1600135,
+        "requestCount": 66,
+        "transferBytes": 1702836,
         "bytesByType": {
-          "document": 19491,
-          "stylesheet": 173764,
+          "document": 19484,
+          "stylesheet": 197891,
           "image": 50797,
           "media": 0,
           "font": 90281,
-          "script": 1189522,
+          "script": 1268122,
           "texttrack": 0,
           "xhr": 0,
-          "fetch": 76280,
+          "fetch": 76261,
           "prefetch": 0,
           "eventsource": 0,
           "websocket": 0,
@@ -861,16 +861,16 @@
           "preflight": 0,
           "other": 0
         },
-        "chainDepth": 4
+        "chainDepth": 5
       },
       "limits": {
-        "requestCount": 70,
-        "transferBytes": 1760149,
+        "requestCount": 73,
+        "transferBytes": 1873120,
         "bytesByType": {
           "cspviolationreport": 8192,
-          "document": 27683,
+          "document": 27676,
           "eventsource": 8192,
-          "fetch": 84472,
+          "fetch": 84453,
           "font": 99310,
           "image": 58989,
           "manifest": 8192,
@@ -879,14 +879,14 @@
           "ping": 8192,
           "prefetch": 8192,
           "preflight": 8192,
-          "script": 1308475,
+          "script": 1394935,
           "signedexchange": 8192,
-          "stylesheet": 191141,
+          "stylesheet": 217681,
           "texttrack": 8192,
           "websocket": 8192,
           "xhr": 8192
         },
-        "chainDepth": 5
+        "chainDepth": 6
       }
     }
   ]

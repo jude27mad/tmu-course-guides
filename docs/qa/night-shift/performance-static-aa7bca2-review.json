@@ -1,0 +1,3112 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T04:25:48.860Z",
+  "reviewer": "/root/latest_source_review",
+  "scope": "Offline source verification only; no tests or browser started. Only this /tmp proof written.",
+  "source": {
+    "control": {
+      "root": "/workspace/ns-perf-control-aa7",
+      "revision": "aa7bca26bdfe6d640766858f4f3a27e2e9e668e7",
+      "productFingerprint": "f53027510da4ab7382192a2b05a3acc7dcab5ce3cf93d62a9d197345de765960",
+      "protectedFingerprint": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481"
+    },
+    "after": {
+      "root": "/workspace/tmu-course-guides",
+      "revision": "da7878492e14d319f171ad256a09e54288437900",
+      "productFingerprint": "1795468f427084977fac5a0707eef0b14e461c8d2041cb9c6d1e0315de48851f",
+      "protectedFingerprint": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481"
+    },
+    "fingerprintFileCount": 106,
+    "fingerprintAlgorithm": "SHA256 over sorted selected path + NUL + bytes + NUL. Protected skips router/routeboot and uses body-through-EOF for HTML. Selection matches actual AA7 source capture."
+  },
+  "protectedAssets": {
+    "count": 93,
+    "allEqual": true,
+    "files": [
+      {
+        "path": "assets/app/stage.mjs",
+        "bytes": 20575,
+        "sha256": "81b84e8dd6278ce978b019dea956dcd4bdfb38daffebf8ba9168f6fe90d9a416",
+        "controlSHA256": "81b84e8dd6278ce978b019dea956dcd4bdfb38daffebf8ba9168f6fe90d9a416",
+        "equal": true
+      },
+      {
+        "path": "assets/app/three.mjs",
+        "bytes": 542,
+        "sha256": "39a7b05f0283a6548379a9bdc4d40170f94f5289286067e9ce81ea66664e1c32",
+        "controlSHA256": "39a7b05f0283a6548379a9bdc4d40170f94f5289286067e9ce81ea66664e1c32",
+        "equal": true
+      },
+      {
+        "path": "assets/app/transition.mjs",
+        "bytes": 8028,
+        "sha256": "3a6d819b7a99fe8ac4ce64bfe7a2b0f11d7bc4d8bbaea6eb9a4541d78edbc1c3",
+        "controlSHA256": "3a6d819b7a99fe8ac4ce64bfe7a2b0f11d7bc4d8bbaea6eb9a4541d78edbc1c3",
+        "equal": true
+      },
+      {
+        "path": "assets/book/book-geometry.mjs",
+        "bytes": 28573,
+        "sha256": "82610c213b2ecb3f89303d0b1c7cb344bd3d277df116f48e2faf5d13bf142522",
+        "controlSHA256": "82610c213b2ecb3f89303d0b1c7cb344bd3d277df116f48e2faf5d13bf142522",
+        "equal": true
+      },
+      {
+        "path": "assets/book/book-scene.mjs",
+        "bytes": 62056,
+        "sha256": "f72fee225f797d18132ad2d32fd82c430fc49dcbef1e2e91a598dcecfd18be63",
+        "controlSHA256": "f72fee225f797d18132ad2d32fd82c430fc49dcbef1e2e91a598dcecfd18be63",
+        "equal": true
+      },
+      {
+        "path": "assets/book/book-state.mjs",
+        "bytes": 26454,
+        "sha256": "7a3139385dc29f152d57998bbbdcd50b0cf4cce00978eed542f8ba470162c075",
+        "controlSHA256": "7a3139385dc29f152d57998bbbdcd50b0cf4cce00978eed542f8ba470162c075",
+        "equal": true
+      },
+      {
+        "path": "assets/book/course-styles.mjs",
+        "bytes": 6460,
+        "sha256": "a59e0f4934be10b9eb984b1f130565a48999044e1080af233791654c3511287b",
+        "controlSHA256": "a59e0f4934be10b9eb984b1f130565a48999044e1080af233791654c3511287b",
+        "equal": true
+      },
+      {
+        "path": "assets/book/page-bend-math.mjs",
+        "bytes": 7699,
+        "sha256": "0932b6ea62f740def7d2b5990f2447e729bc4e294f6ed3bf61256574deddef17",
+        "controlSHA256": "0932b6ea62f740def7d2b5990f2447e729bc4e294f6ed3bf61256574deddef17",
+        "equal": true
+      },
+      {
+        "path": "assets/book/page-bend.mjs",
+        "bytes": 18263,
+        "sha256": "3d6316f6d90049be89697034a8c9fedb1b24d8b55e5e4687dd29c5e6ea12b28f",
+        "controlSHA256": "3d6316f6d90049be89697034a8c9fedb1b24d8b55e5e4687dd29c5e6ea12b28f",
+        "equal": true
+      },
+      {
+        "path": "assets/book/popup.mjs",
+        "bytes": 46522,
+        "sha256": "67437b38ffd351f275eb07db4d246e002d0776b0541ff137e5f616effeb33832",
+        "controlSHA256": "67437b38ffd351f275eb07db4d246e002d0776b0541ff137e5f616effeb33832",
+        "equal": true
+      },
+      {
+        "path": "assets/book/posters/mth140-dark-tall.webp",
+        "bytes": 9960,
+        "sha256": "6e243890a010c966b91447bb9e5eefb5b16edb021ceb2f1a35b6e71e9aaab128",
+        "controlSHA256": "6e243890a010c966b91447bb9e5eefb5b16edb021ceb2f1a35b6e71e9aaab128",
+        "equal": true
+      },
+      {
+        "path": "assets/book/posters/mth140-dark-wide.webp",
+        "bytes": 32698,
+        "sha256": "9238eb89c642dc05fada0805ad8746f7d932551b26568739b90320712a52c943",
+        "controlSHA256": "9238eb89c642dc05fada0805ad8746f7d932551b26568739b90320712a52c943",
+        "equal": true
+      },
+      {
+        "path": "assets/book/posters/mth140-light-tall.webp",
+        "bytes": 8626,
+        "sha256": "5e01b0ff81755698a94eb538eeb873524d20aaedebcfba7e93f40213da3207d7",
+        "controlSHA256": "5e01b0ff81755698a94eb538eeb873524d20aaedebcfba7e93f40213da3207d7",
+        "equal": true
+      },
+      {
+        "path": "assets/book/posters/mth140-light-wide.webp",
+        "bytes": 42662,
+        "sha256": "09444de50e7c7ff750217d3fce3daff65a12646c9a12c48c8b084de64e781e70",
+        "controlSHA256": "09444de50e7c7ff750217d3fce3daff65a12646c9a12c48c8b084de64e781e70",
+        "equal": true
+      },
+      {
+        "path": "assets/book/textures.mjs",
+        "bytes": 61009,
+        "sha256": "62c154ffef9cd3a782c5ff4c48f3930e167159aab6d6f48c98e4a79e507ecf90",
+        "controlSHA256": "62c154ffef9cd3a782c5ff4c48f3930e167159aab6d6f48c98e4a79e507ecf90",
+        "equal": true
+      },
+      {
+        "path": "assets/book/weeks.mjs",
+        "bytes": 8733,
+        "sha256": "0b34ccd3f2e0af48233636234a8271f97f0a1ddb3f40fdabee3f87c0fe3fdb91",
+        "controlSHA256": "0b34ccd3f2e0af48233636234a8271f97f0a1ddb3f40fdabee3f87c0fe3fdb91",
+        "equal": true
+      },
+      {
+        "path": "assets/cen-guide.mjs",
+        "bytes": 73460,
+        "sha256": "0e7d1e59d4d059329e6dd66ff68a0706afe110500f4944bbd4119b83c973bde7",
+        "controlSHA256": "0e7d1e59d4d059329e6dd66ff68a0706afe110500f4944bbd4119b83c973bde7",
+        "equal": true
+      },
+      {
+        "path": "assets/cen-schedule.js",
+        "bytes": 307,
+        "sha256": "e4ddc48552c39b1d85c1c8ebf2fa62e346acfb6f577a840e906994e4d12aaf3a",
+        "controlSHA256": "e4ddc48552c39b1d85c1c8ebf2fa62e346acfb6f577a840e906994e4d12aaf3a",
+        "equal": true
+      },
+      {
+        "path": "assets/cen-schedule.mjs",
+        "bytes": 2736,
+        "sha256": "8a99596a91ca50f88dbd82c95f4535014e57b76565e3f2fb809b94b2198e0dfa",
+        "controlSHA256": "8a99596a91ca50f88dbd82c95f4535014e57b76565e3f2fb809b94b2198e0dfa",
+        "equal": true
+      },
+      {
+        "path": "assets/course-data.mjs",
+        "bytes": 45603,
+        "sha256": "8f07568428cd9bc52d6ec3a850bd15f695aa9e390d48270a914c4536decf299c",
+        "controlSHA256": "8f07568428cd9bc52d6ec3a850bd15f695aa9e390d48270a914c4536decf299c",
+        "equal": true
+      },
+      {
+        "path": "assets/course-header.css",
+        "bytes": 10656,
+        "sha256": "00907706f7e91d81d83b7aca22d2e54155d692eef1fb47b763f4c60992cbd8de",
+        "controlSHA256": "00907706f7e91d81d83b7aca22d2e54155d692eef1fb47b763f4c60992cbd8de",
+        "equal": true
+      },
+      {
+        "path": "assets/course-header.mjs",
+        "bytes": 18913,
+        "sha256": "c3ea918ffaa5776dda518bb245234955097907e04f2443273765742c04cc877e",
+        "controlSHA256": "c3ea918ffaa5776dda518bb245234955097907e04f2443273765742c04cc877e",
+        "equal": true
+      },
+      {
+        "path": "assets/course-scene.mjs",
+        "bytes": 12045,
+        "sha256": "2c2ea35adf38e1f49700b4306b2e7bed9029c0227ff37c8826973868dd522c0d",
+        "controlSHA256": "2c2ea35adf38e1f49700b4306b2e7bed9029c0227ff37c8826973868dd522c0d",
+        "equal": true
+      },
+      {
+        "path": "assets/desk/desk-data.mjs",
+        "bytes": 5491,
+        "sha256": "2e98fa313f17e20a3043e6470b218ec31cbb6289360e93f72a7064a2046a9774",
+        "controlSHA256": "2e98fa313f17e20a3043e6470b218ec31cbb6289360e93f72a7064a2046a9774",
+        "equal": true
+      },
+      {
+        "path": "assets/editorial.css",
+        "bytes": 25583,
+        "sha256": "980d62c1eb0a0211af4e617114b4ac5f756ce594e779346443889e7e1332d267",
+        "controlSHA256": "980d62c1eb0a0211af4e617114b4ac5f756ce594e779346443889e7e1332d267",
+        "equal": true
+      },
+      {
+        "path": "assets/editorial.mjs",
+        "bytes": 7753,
+        "sha256": "1bac2843ea29e1eefb3165534040602bbedbbd170da0f2b74eb49fef03a2d189",
+        "controlSHA256": "1bac2843ea29e1eefb3165534040602bbedbbd170da0f2b74eb49fef03a2d189",
+        "equal": true
+      },
+      {
+        "path": "assets/fonts/OFL.txt",
+        "bytes": 4388,
+        "sha256": "108b4e57c9c796d3d38d0428ca7ee39de47ad93187302718d9b2d8864b9b716b",
+        "controlSHA256": "108b4e57c9c796d3d38d0428ca7ee39de47ad93187302718d9b2d8864b9b716b",
+        "equal": true
+      },
+      {
+        "path": "assets/fonts/archivo-latin-ext.woff2",
+        "bytes": 86240,
+        "sha256": "5717f37059660ca5c899bad6c48ee22c3ac55cb3c484055241689d0f905a1a86",
+        "controlSHA256": "5717f37059660ca5c899bad6c48ee22c3ac55cb3c484055241689d0f905a1a86",
+        "equal": true
+      },
+      {
+        "path": "assets/fonts/archivo-latin.woff2",
+        "bytes": 90104,
+        "sha256": "e3a28eade21a900c7155a247757f4b2834c07bb7ef07ad7efa55cebaac1e8f5e",
+        "controlSHA256": "e3a28eade21a900c7155a247757f4b2834c07bb7ef07ad7efa55cebaac1e8f5e",
+        "equal": true
+      },
+      {
+        "path": "assets/fonts/archivo-vietnamese.woff2",
+        "bytes": 34464,
+        "sha256": "332e6f66de84927cdffc60894e4e186ced783f5cb4b3e88200f45b7c1d306810",
+        "controlSHA256": "332e6f66de84927cdffc60894e4e186ced783f5cb4b3e88200f45b7c1d306810",
+        "equal": true
+      },
+      {
+        "path": "assets/fonts/archivo.css",
+        "bytes": 1185,
+        "sha256": "d2a46d6b432ef60e210ff1d1fbb79e7ad228984f396f057b78235aa03bf2ec88",
+        "controlSHA256": "d2a46d6b432ef60e210ff1d1fbb79e7ad228984f396f057b78235aa03bf2ec88",
+        "equal": true
+      },
+      {
+        "path": "assets/guide-mark.svg",
+        "bytes": 204,
+        "sha256": "e72034e3494e8e2e9673ce4e8c2c2feae0489c20f44109f619eda0c2c494767a",
+        "controlSHA256": "e72034e3494e8e2e9673ce4e8c2c2feae0489c20f44109f619eda0c2c494767a",
+        "equal": true
+      },
+      {
+        "path": "assets/guide-motion.css",
+        "bytes": 3314,
+        "sha256": "156f2e12ffaa74e60562930bdbce11556643ba20e6e2c6e4cf45f2a7a38ef24d",
+        "controlSHA256": "156f2e12ffaa74e60562930bdbce11556643ba20e6e2c6e4cf45f2a7a38ef24d",
+        "equal": true
+      },
+      {
+        "path": "assets/guide-motion.mjs",
+        "bytes": 14927,
+        "sha256": "7c44b77878aa6d914ef47f6486d189e0ab924d60ded919a4be9df77fa9c759c1",
+        "controlSHA256": "7c44b77878aa6d914ef47f6486d189e0ab924d60ded919a4be9df77fa9c759c1",
+        "equal": true
+      },
+      {
+        "path": "assets/header-geometry.mjs",
+        "bytes": 865,
+        "sha256": "596a49341417a8c18f6774074d86a96b9ce8cf9448b909ca3598c530155ba94e",
+        "controlSHA256": "596a49341417a8c18f6774074d86a96b9ce8cf9448b909ca3598c530155ba94e",
+        "equal": true
+      },
+      {
+        "path": "assets/hub.css",
+        "bytes": 6642,
+        "sha256": "486060aa7e2ba9522352b7afb4e3517dc2942fab1fe692a4532f679df97a73d6",
+        "controlSHA256": "486060aa7e2ba9522352b7afb4e3517dc2942fab1fe692a4532f679df97a73d6",
+        "equal": true
+      },
+      {
+        "path": "assets/hub.js",
+        "bytes": 3581,
+        "sha256": "47b53816fa7d89ce2b08cd37c5189ce52f2f841a32435b1458e93a6a5491cd3c",
+        "controlSHA256": "47b53816fa7d89ce2b08cd37c5189ce52f2f841a32435b1458e93a6a5491cd3c",
+        "equal": true
+      },
+      {
+        "path": "assets/lab-challenge-data.mjs",
+        "bytes": 5752,
+        "sha256": "71b7e2c55bf467147fde4511cfec892770e5ec16334eb2ee744fdff2e3a3bb70",
+        "controlSHA256": "71b7e2c55bf467147fde4511cfec892770e5ec16334eb2ee744fdff2e3a3bb70",
+        "equal": true
+      },
+      {
+        "path": "assets/lab-challenges.css",
+        "bytes": 7783,
+        "sha256": "df2ee70a86c0383801138003795290a5e845180c31aada20b6dbe7ef19639966",
+        "controlSHA256": "df2ee70a86c0383801138003795290a5e845180c31aada20b6dbe7ef19639966",
+        "equal": true
+      },
+      {
+        "path": "assets/lab-challenges.mjs",
+        "bytes": 10357,
+        "sha256": "04a6085f7651b9caad8b8a5064051c62955f406fbbf759dcbc1a1bee89e91be6",
+        "controlSHA256": "04a6085f7651b9caad8b8a5064051c62955f406fbbf759dcbc1a1bee89e91be6",
+        "equal": true
+      },
+      {
+        "path": "assets/lab-composition-math.mjs",
+        "bytes": 2377,
+        "sha256": "6505f9fbb47bd5ef373d7b83b90fad2a445dbcb54ed448f14550051ae5ad59fa",
+        "controlSHA256": "6505f9fbb47bd5ef373d7b83b90fad2a445dbcb54ed448f14550051ae5ad59fa",
+        "equal": true
+      },
+      {
+        "path": "assets/lab-composition.css",
+        "bytes": 10305,
+        "sha256": "723e78ef189107b0478fcfa4f10511f9ec5e21be1d09c6694f2e5ca9714adc2e",
+        "controlSHA256": "723e78ef189107b0478fcfa4f10511f9ec5e21be1d09c6694f2e5ca9714adc2e",
+        "equal": true
+      },
+      {
+        "path": "assets/lab-composition.mjs",
+        "bytes": 12987,
+        "sha256": "1a585c28e963803b86ab2dccccd674dab8515980db1eda436c208ed4f131bc07",
+        "controlSHA256": "1a585c28e963803b86ab2dccccd674dab8515980db1eda436c208ed4f131bc07",
+        "equal": true
+      },
+      {
+        "path": "assets/lab-math.mjs",
+        "bytes": 1240,
+        "sha256": "99ba722dfdd628b6315850636a602388eb9f47b98b150e2864193cc5d55447a9",
+        "controlSHA256": "99ba722dfdd628b6315850636a602388eb9f47b98b150e2864193cc5d55447a9",
+        "equal": true
+      },
+      {
+        "path": "assets/legacy-route.js",
+        "bytes": 2227,
+        "sha256": "d75f803d0645fcde754ea5bb90e1f14e5b16746ff67741a36788d2d19d92e70b",
+        "controlSHA256": "d75f803d0645fcde754ea5bb90e1f14e5b16746ff67741a36788d2d19d92e70b",
+        "equal": true
+      },
+      {
+        "path": "assets/math-guide.mjs",
+        "bytes": 36472,
+        "sha256": "883d1237fde7ea7c2c493c770d59ef0731a8f719c7dced805ebf22406d5710ec",
+        "controlSHA256": "883d1237fde7ea7c2c493c770d59ef0731a8f719c7dced805ebf22406d5710ec",
+        "equal": true
+      },
+      {
+        "path": "assets/math-labs.mjs",
+        "bytes": 25291,
+        "sha256": "dd8434050c6b77f780d55d61dbe63e459b4a09a461614079136051d8abb65d6e",
+        "controlSHA256": "dd8434050c6b77f780d55d61dbe63e459b4a09a461614079136051d8abb65d6e",
+        "equal": true
+      },
+      {
+        "path": "assets/math-studio.css",
+        "bytes": 7457,
+        "sha256": "88249d3f4630df0c00395e524dd4a5a1630998b64fee400d6ae7e3c56b560f0c",
+        "controlSHA256": "88249d3f4630df0c00395e524dd4a5a1630998b64fee400d6ae7e3c56b560f0c",
+        "equal": true
+      },
+      {
+        "path": "assets/math.css",
+        "bytes": 18487,
+        "sha256": "6970f63d076cfb4af4f5c281f4ebd8ee1d3a09a4ffbdf3b410e9350ab127cbc6",
+        "controlSHA256": "6970f63d076cfb4af4f5c281f4ebd8ee1d3a09a4ffbdf3b410e9350ab127cbc6",
+        "equal": true
+      },
+      {
+        "path": "assets/night/boot.mjs",
+        "bytes": 3305,
+        "sha256": "ae452f05550fa66611fadc2510b4cf0304b5b928c8b6e494ba68e07930c7be20",
+        "controlSHA256": "ae452f05550fa66611fadc2510b4cf0304b5b928c8b6e494ba68e07930c7be20",
+        "equal": true
+      },
+      {
+        "path": "assets/night/core.mjs",
+        "bytes": 15383,
+        "sha256": "d1e5aabb6cff9e8bd78ba28e8b76e994c32b81f292488c6c2d9ac172c899d224",
+        "controlSHA256": "d1e5aabb6cff9e8bd78ba28e8b76e994c32b81f292488c6c2d9ac172c899d224",
+        "equal": true
+      },
+      {
+        "path": "assets/night/deadline.mjs",
+        "bytes": 15107,
+        "sha256": "cc6ff297d71b44da83cbdda41ee2b21dbc1e5c5f5941c943dd542cf4e9069f0c",
+        "controlSHA256": "cc6ff297d71b44da83cbdda41ee2b21dbc1e5c5f5941c943dd542cf4e9069f0c",
+        "equal": true
+      },
+      {
+        "path": "assets/night/desk.css",
+        "bytes": 15484,
+        "sha256": "23a8a78a1dcdff42a36ea55d772c7a703b57035f6b35a6672598da77a2f60946",
+        "controlSHA256": "23a8a78a1dcdff42a36ea55d772c7a703b57035f6b35a6672598da77a2f60946",
+        "equal": true
+      },
+      {
+        "path": "assets/night/desk.mjs",
+        "bytes": 7614,
+        "sha256": "608c065ade5295a2dbe638ca120f961e9397a08b4ee3a538636d18022bd4f34b",
+        "controlSHA256": "608c065ade5295a2dbe638ca120f961e9397a08b4ee3a538636d18022bd4f34b",
+        "equal": true
+      },
+      {
+        "path": "assets/night/grain.png",
+        "bytes": 16732,
+        "sha256": "5b84c75d8a351b3778b6553428bd98582267be60bcc14d92c495461253e9fce8",
+        "controlSHA256": "5b84c75d8a351b3778b6553428bd98582267be60bcc14d92c495461253e9fce8",
+        "equal": true
+      },
+      {
+        "path": "assets/night/hero.css",
+        "bytes": 12998,
+        "sha256": "6450fe1c15f589e18f6a6cf80341be5c15783b599d8a88b4f295a282c757dd01",
+        "controlSHA256": "6450fe1c15f589e18f6a6cf80341be5c15783b599d8a88b4f295a282c757dd01",
+        "equal": true
+      },
+      {
+        "path": "assets/night/hero.mjs",
+        "bytes": 10920,
+        "sha256": "663d075c0c675b84aa232a780e97817fc43dfb76e31af83462399987fbf6931f",
+        "controlSHA256": "663d075c0c675b84aa232a780e97817fc43dfb76e31af83462399987fbf6931f",
+        "equal": true
+      },
+      {
+        "path": "assets/night/layout.css",
+        "bytes": 54566,
+        "sha256": "a1d59f8166486f8a1dc990c0a11218878e8b8d08d10f4e6a0a019744b5d74399",
+        "controlSHA256": "a1d59f8166486f8a1dc990c0a11218878e8b8d08d10f4e6a0a019744b5d74399",
+        "equal": true
+      },
+      {
+        "path": "assets/night/palette.css",
+        "bytes": 2015,
+        "sha256": "f7869dd1a2724fdb1884dceaebae7498fc2359ad60e58b7929938b6eba5103a2",
+        "controlSHA256": "f7869dd1a2724fdb1884dceaebae7498fc2359ad60e58b7929938b6eba5103a2",
+        "equal": true
+      },
+      {
+        "path": "assets/night/palette.mjs",
+        "bytes": 21754,
+        "sha256": "8bc9f2b135e202940e9b3331f779f80849b7227f035b8d25dece8b3155ebacbc",
+        "controlSHA256": "8bc9f2b135e202940e9b3331f779f80849b7227f035b8d25dece8b3155ebacbc",
+        "equal": true
+      },
+      {
+        "path": "assets/night/scroll.css",
+        "bytes": 2916,
+        "sha256": "77de1734ca1051c3328c75f5a08fb02039a588e42af53ab890ee0611c1792820",
+        "controlSHA256": "77de1734ca1051c3328c75f5a08fb02039a588e42af53ab890ee0611c1792820",
+        "equal": true
+      },
+      {
+        "path": "assets/night/scroll.mjs",
+        "bytes": 29506,
+        "sha256": "c96c149ef68dc94b9c7a67f589cd10549eb5b5feeab79d987f72230941541394",
+        "controlSHA256": "c96c149ef68dc94b9c7a67f589cd10549eb5b5feeab79d987f72230941541394",
+        "equal": true
+      },
+      {
+        "path": "assets/night/targets.mjs",
+        "bytes": 13197,
+        "sha256": "41f02a0ed45c1d3627c68388a6ab35893ff386c35ddd60c0de45010d687fed1f",
+        "controlSHA256": "41f02a0ed45c1d3627c68388a6ab35893ff386c35ddd60c0de45010d687fed1f",
+        "equal": true
+      },
+      {
+        "path": "assets/night/timeline.mjs",
+        "bytes": 27377,
+        "sha256": "d257ef608b187c0b0dd445dc39bbf4291708ac165ede698cb30e1febfbb342c9",
+        "controlSHA256": "d257ef608b187c0b0dd445dc39bbf4291708ac165ede698cb30e1febfbb342c9",
+        "equal": true
+      },
+      {
+        "path": "assets/route-lifecycle.mjs",
+        "bytes": 1957,
+        "sha256": "3b4ab8f0d5b9294778afe686624328e1fc0532f9288580f7c8247f8774d15e4a",
+        "controlSHA256": "3b4ab8f0d5b9294778afe686624328e1fc0532f9288580f7c8247f8774d15e4a",
+        "equal": true
+      },
+      {
+        "path": "assets/scenes/algebra.mjs",
+        "bytes": 3258,
+        "sha256": "7ce621466b730fe8bd0f94dd005aa42177bf6e2074098c98aec107e7e8c616a3",
+        "controlSHA256": "7ce621466b730fe8bd0f94dd005aa42177bf6e2074098c98aec107e7e8c616a3",
+        "equal": true
+      },
+      {
+        "path": "assets/scenes/calculus.mjs",
+        "bytes": 2921,
+        "sha256": "cf4cde310d1b8ac7478b25c96e7dd6b8ee488cccd4cea0f497bee29fc090afbc",
+        "controlSHA256": "cf4cde310d1b8ac7478b25c96e7dd6b8ee488cccd4cea0f497bee29fc090afbc",
+        "equal": true
+      },
+      {
+        "path": "assets/scenes/circuit.mjs",
+        "bytes": 4384,
+        "sha256": "40368985ce653b0b1ae9e7b64e0f3a6e58c20e31f9862e32a9d99da07a567254",
+        "controlSHA256": "40368985ce653b0b1ae9e7b64e0f3a6e58c20e31f9862e32a9d99da07a567254",
+        "equal": true
+      },
+      {
+        "path": "assets/scenes/drag.mjs",
+        "bytes": 913,
+        "sha256": "98e15e7b89bec442c2a2c142dbdb3ef7c8b0a719d90efe019d66fbc31061c326",
+        "controlSHA256": "98e15e7b89bec442c2a2c142dbdb3ef7c8b0a719d90efe019d66fbc31061c326",
+        "equal": true
+      },
+      {
+        "path": "assets/scenes/framing.mjs",
+        "bytes": 2360,
+        "sha256": "3f57a99bfc2c5bec11142a70e09f9dbd61891c0d6add8b2c817295c2051a301f",
+        "controlSHA256": "3f57a99bfc2c5bec11142a70e09f9dbd61891c0d6add8b2c817295c2051a301f",
+        "equal": true
+      },
+      {
+        "path": "assets/scenes/future-geometry.mjs",
+        "bytes": 3519,
+        "sha256": "b4510a942b2936c1f9861dc672d8a412b21bbe0901904a7e40a76667a20aed90",
+        "controlSHA256": "b4510a942b2936c1f9861dc672d8a412b21bbe0901904a7e40a76667a20aed90",
+        "equal": true
+      },
+      {
+        "path": "assets/scenes/future-look.mjs",
+        "bytes": 4068,
+        "sha256": "e451c5414d5e7879d09ab5fa2b66efe5088bf334af939eeb1d1b20998cf8edbc",
+        "controlSHA256": "e451c5414d5e7879d09ab5fa2b66efe5088bf334af939eeb1d1b20998cf8edbc",
+        "equal": true
+      },
+      {
+        "path": "assets/scenes/posters/cen100-tall.webp",
+        "bytes": 32242,
+        "sha256": "43dd2ba9969273190ee9126216f187d8158546ec9c22c12a2a9a2f559132477c",
+        "controlSHA256": "43dd2ba9969273190ee9126216f187d8158546ec9c22c12a2a9a2f559132477c",
+        "equal": true
+      },
+      {
+        "path": "assets/scenes/posters/cen100-wide.webp",
+        "bytes": 32242,
+        "sha256": "43dd2ba9969273190ee9126216f187d8158546ec9c22c12a2a9a2f559132477c",
+        "controlSHA256": "43dd2ba9969273190ee9126216f187d8158546ec9c22c12a2a9a2f559132477c",
+        "equal": true
+      },
+      {
+        "path": "assets/scenes/posters/mth140-tall.webp",
+        "bytes": 73202,
+        "sha256": "912038f236f1913db82e79b431d58e326cf37ba430ba25dab6c17b2c569766c8",
+        "controlSHA256": "912038f236f1913db82e79b431d58e326cf37ba430ba25dab6c17b2c569766c8",
+        "equal": true
+      },
+      {
+        "path": "assets/scenes/posters/mth140-wide.webp",
+        "bytes": 73202,
+        "sha256": "912038f236f1913db82e79b431d58e326cf37ba430ba25dab6c17b2c569766c8",
+        "controlSHA256": "912038f236f1913db82e79b431d58e326cf37ba430ba25dab6c17b2c569766c8",
+        "equal": true
+      },
+      {
+        "path": "assets/scenes/posters/mth141-tall.webp",
+        "bytes": 50238,
+        "sha256": "a827dff58b1f86b8caab6c3344a3c43124b8f515bf26921b041d79a5beec8fc7",
+        "controlSHA256": "a827dff58b1f86b8caab6c3344a3c43124b8f515bf26921b041d79a5beec8fc7",
+        "equal": true
+      },
+      {
+        "path": "assets/scenes/posters/mth141-wide.webp",
+        "bytes": 50238,
+        "sha256": "a827dff58b1f86b8caab6c3344a3c43124b8f515bf26921b041d79a5beec8fc7",
+        "controlSHA256": "a827dff58b1f86b8caab6c3344a3c43124b8f515bf26921b041d79a5beec8fc7",
+        "equal": true
+      },
+      {
+        "path": "assets/scenes/primitives.mjs",
+        "bytes": 3038,
+        "sha256": "847818e5491a47cdbee4edae72ac5a02c2b6121eba1fb2d532b05135a7b0a812",
+        "controlSHA256": "847818e5491a47cdbee4edae72ac5a02c2b6121eba1fb2d532b05135a7b0a812",
+        "equal": true
+      },
+      {
+        "path": "assets/scenes/scene-math.mjs",
+        "bytes": 2001,
+        "sha256": "9b154ed7459dcf3e9ec4d08301fc8a38b4592410b1c660827ce430078bcbc8c8",
+        "controlSHA256": "9b154ed7459dcf3e9ec4d08301fc8a38b4592410b1c660827ce430078bcbc8c8",
+        "equal": true
+      },
+      {
+        "path": "assets/schedule.mjs",
+        "bytes": 5647,
+        "sha256": "d3e0f351940b56002ac91473fe6fea29604012958d0671ca633d229430c89f9f",
+        "controlSHA256": "d3e0f351940b56002ac91473fe6fea29604012958d0671ca633d229430c89f9f",
+        "equal": true
+      },
+      {
+        "path": "assets/vendor/LENIS-LICENSE.md",
+        "bytes": 1096,
+        "sha256": "bba15b1137346a73ed8c35e7f20961a69e0ed842d956a50339240c3e7b08c089",
+        "controlSHA256": "bba15b1137346a73ed8c35e7f20961a69e0ed842d956a50339240c3e7b08c089",
+        "equal": true
+      },
+      {
+        "path": "assets/vendor/MOTION-LICENSE.md",
+        "bytes": 1100,
+        "sha256": "1bf0dc3f7727723e5a032ed12164a47cf92c05204cb1a3485f123c24e2833ed1",
+        "controlSHA256": "1bf0dc3f7727723e5a032ed12164a47cf92c05204cb1a3485f123c24e2833ed1",
+        "equal": true
+      },
+      {
+        "path": "assets/vendor/THREE-LICENSE.md",
+        "bytes": 1081,
+        "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+        "controlSHA256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+        "equal": true
+      },
+      {
+        "path": "assets/vendor/gsap-3.15.0-LICENSE.txt",
+        "bytes": 494,
+        "sha256": "762620c39d5b001e60d05c289c1259f31720c51d3d40dfe6ff31f85cd641549f",
+        "controlSHA256": "762620c39d5b001e60d05c289c1259f31720c51d3d40dfe6ff31f85cd641549f",
+        "equal": true
+      },
+      {
+        "path": "assets/vendor/gsap-3.15.0.mjs",
+        "bytes": 95884,
+        "sha256": "e6ede5ab4bd593b9d4e2283e01ccda612b60a2aa58b0e0cdd1b6e398ba6da5ea",
+        "controlSHA256": "e6ede5ab4bd593b9d4e2283e01ccda612b60a2aa58b0e0cdd1b6e398ba6da5ea",
+        "equal": true
+      },
+      {
+        "path": "assets/vendor/motion-14.1.0.mjs",
+        "bytes": 55375,
+        "sha256": "2817d8d528a2e46e201b89cbcd0c4b4912abac1d80fc2f74ea9425605936c105",
+        "controlSHA256": "2817d8d528a2e46e201b89cbcd0c4b4912abac1d80fc2f74ea9425605936c105",
+        "equal": true
+      },
+      {
+        "path": "assets/vendor/night-vendor.mjs",
+        "bytes": 69065,
+        "sha256": "66bcd0ad8732b11032f2d5f3ceffd242e51aa9b7f205dd70572785ab82eac03b",
+        "controlSHA256": "66bcd0ad8732b11032f2d5f3ceffd242e51aa9b7f205dd70572785ab82eac03b",
+        "equal": true
+      },
+      {
+        "path": "assets/vendor/three-0.186.1.mjs",
+        "bytes": 621214,
+        "sha256": "c1f72522291c2ab8ed65621abc95816468429e71e82d61384a9e72646ddba501",
+        "controlSHA256": "c1f72522291c2ab8ed65621abc95816468429e71e82d61384a9e72646ddba501",
+        "equal": true
+      },
+      {
+        "path": "assets/visuals.css",
+        "bytes": 17606,
+        "sha256": "edfeea5aae6c85f3f61b2a5c3ce837149927f8992f66f9cf70c3f89cafa9b72e",
+        "controlSHA256": "edfeea5aae6c85f3f61b2a5c3ce837149927f8992f66f9cf70c3f89cafa9b72e",
+        "equal": true
+      },
+      {
+        "path": "assets/visuals.js",
+        "bytes": 7743,
+        "sha256": "a9d8d090cd6509045fb9b4b5ae38fd9e17feaa2c69d6b8fa0d1049275a624c54",
+        "controlSHA256": "a9d8d090cd6509045fb9b4b5ae38fd9e17feaa2c69d6b8fa0d1049275a624c54",
+        "equal": true
+      },
+      {
+        "path": "assets/workspace.css",
+        "bytes": 13760,
+        "sha256": "ade66387386f80b81ede177af2831dbf3522c1df81c364046042863517c31ff9",
+        "controlSHA256": "ade66387386f80b81ede177af2831dbf3522c1df81c364046042863517c31ff9",
+        "equal": true
+      },
+      {
+        "path": "assets/workspace.mjs",
+        "bytes": 15880,
+        "sha256": "07dfb6137a8b034e0dfa4f3d5156672a155332d57ad339c82213082089c0ae28",
+        "controlSHA256": "07dfb6137a8b034e0dfa4f3d5156672a155332d57ad339c82213082089c0ae28",
+        "equal": true
+      }
+    ]
+  },
+  "routeBodies": {
+    "allEqual": true,
+    "files": [
+      {
+        "path": "index.html",
+        "bytes": 3674,
+        "sha256": "1e736521df4faca83600d0fc3f1e3cab47dd10cf686c7c4dc4c0269f6ea576f2",
+        "controlSHA256": "1e736521df4faca83600d0fc3f1e3cab47dd10cf686c7c4dc4c0269f6ea576f2",
+        "equal": true
+      },
+      {
+        "path": "cen100/index.html",
+        "bytes": 28120,
+        "sha256": "070e811bedf1fc8cf2553dbb4ea44f55c12066aebd7c747d8e595515f334a6ad",
+        "controlSHA256": "070e811bedf1fc8cf2553dbb4ea44f55c12066aebd7c747d8e595515f334a6ad",
+        "equal": true
+      },
+      {
+        "path": "mth140/index.html",
+        "bytes": 16133,
+        "sha256": "3ea736d0bcca56150e41a8c2a0daf2a3f2d1c438aba2ea17c1f59d6c445e2e15",
+        "controlSHA256": "3ea736d0bcca56150e41a8c2a0daf2a3f2d1c438aba2ea17c1f59d6c445e2e15",
+        "equal": true
+      },
+      {
+        "path": "mth141/index.html",
+        "bytes": 16205,
+        "sha256": "eed4377c09acff8a943ea3dcf33112b764e8fb0dee0bf38b6c5babd397bc4578",
+        "controlSHA256": "eed4377c09acff8a943ea3dcf33112b764e8fb0dee0bf38b6c5babd397bc4578",
+        "equal": true
+      }
+    ]
+  },
+  "mth140": {
+    "headDiffHunkCount": 1,
+    "hunks": [
+      "@@ -35 +35,33 @@"
+    ],
+    "diff": "diff --git a/mth140/index.html b/mth140/index.html\nindex 13696e2..eae0286 100644\n--- a/mth140/index.html\n+++ b/mth140/index.html\n@@ -35 +35,33 @@\n-<script type=\"module\" src=\"../assets/app/route-boot.mjs?v=20261014-book1\"></script>\n+<!-- BEGIN GENERATED BOOT PRELOADS: tools/generate-modulepreloads.mjs -->\n+<link rel=\"preload\" href=\"../assets/fonts/archivo-latin.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>\n+<link rel=\"modulepreload\" href=\"../assets/app/route-boot.mjs?v=20261014-perf3\">\n+<link rel=\"modulepreload\" href=\"../assets/app/router.mjs?v=20261014-perf3\">\n+<link rel=\"modulepreload\" href=\"../assets/app/transition.mjs\">\n+<link rel=\"modulepreload\" href=\"../assets/book/book-state.mjs\">\n+<link rel=\"modulepreload\" href=\"../assets/book/course-styles.mjs?v=20261013-book1\">\n+<link rel=\"modulepreload\" href=\"../assets/book/weeks.mjs\">\n+<link rel=\"modulepreload\" href=\"../assets/course-data.mjs?v=20261012-assessments2\">\n+<link rel=\"modulepreload\" href=\"../assets/course-header.mjs?v=20261014-book1\">\n+<link rel=\"modulepreload\" href=\"../assets/editorial.mjs?v=20261013-shift1\">\n+<link rel=\"modulepreload\" href=\"../assets/guide-motion.mjs?v=20261013-qa1\">\n+<link rel=\"modulepreload\" href=\"../assets/lab-challenge-data.mjs\">\n+<link rel=\"modulepreload\" href=\"../assets/lab-challenges.mjs?v=20261013-shift1\">\n+<link rel=\"modulepreload\" href=\"../assets/lab-composition-math.mjs?v=20261011-studio3\">\n+<link rel=\"modulepreload\" href=\"../assets/lab-composition.mjs?v=20261013-shift1\">\n+<link rel=\"modulepreload\" href=\"../assets/lab-math.mjs\">\n+<link rel=\"modulepreload\" href=\"../assets/math-guide.mjs?v=20261013-resilience1\">\n+<link rel=\"modulepreload\" href=\"../assets/math-labs.mjs?v=20261013-shift1\">\n+<link rel=\"modulepreload\" href=\"../assets/night/boot.mjs?v=20261014-book1\">\n+<link rel=\"modulepreload\" href=\"../assets/night/core.mjs?v=20261014-book1\">\n+<link rel=\"modulepreload\" href=\"../assets/night/deadline.mjs?v=20261014-book1\">\n+<link rel=\"modulepreload\" href=\"../assets/night/targets.mjs?v=20261014-book1\">\n+<link rel=\"modulepreload\" href=\"../assets/night/timeline.mjs?v=20261014-book1\">\n+<link rel=\"modulepreload\" href=\"../assets/route-lifecycle.mjs\">\n+<link rel=\"modulepreload\" href=\"../assets/scenes/framing.mjs?v=20261012-subject1\">\n+<link rel=\"modulepreload\" href=\"../assets/scenes/scene-math.mjs?v=20261012-subject1\">\n+<link rel=\"modulepreload\" href=\"../assets/schedule.mjs\">\n+<link rel=\"modulepreload\" href=\"../assets/vendor/gsap-3.15.0.mjs\">\n+<link rel=\"modulepreload\" href=\"../assets/visuals.js?v=20261013-shift1\">\n+<link rel=\"modulepreload\" href=\"../assets/workspace.mjs?v=20261013-shift1\">\n+<!-- END GENERATED BOOT PRELOADS -->\n+<script type=\"module\" src=\"../assets/app/route-boot.mjs?v=20261014-perf3\"></script>\n",
+    "oneContiguousHeadBlock": true
+  },
+  "font": {
+    "path": "assets/fonts/archivo-latin.woff2",
+    "bytes": 90104,
+    "sha256": "e3a28eade21a900c7155a247757f4b2834c07bb7ef07ad7efa55cebaac1e8f5e",
+    "sameAsControl": true,
+    "cssPath": "assets/fonts/archivo.css",
+    "cssSHA256": "d2a46d6b432ef60e210ff1d1fbb79e7ad228984f396f057b78235aa03bf2ec88",
+    "cssSameAsControl": true,
+    "fontDisplayValues": [
+      "swap",
+      "swap",
+      "swap"
+    ],
+    "unicodeLatinFaceCount": 1
+  },
+  "graphs": [
+    {
+      "base": "/",
+      "route": "desk",
+      "documentPath": "index.html",
+      "moduleCount": 17,
+      "edgeCount": 32,
+      "longestChainDepth": 5,
+      "shortestDistanceDepth": 2,
+      "moduleSourceBytes": 325815,
+      "generatedHTMLByteIdentical": true,
+      "exactPreloadURLsMatchRealGraph": true,
+      "moduleURLs": [
+        "https://tmu.invalid/assets/app/route-boot.mjs?v=20261014-perf3",
+        "https://tmu.invalid/assets/app/router.mjs?v=20261014-perf3",
+        "https://tmu.invalid/assets/app/transition.mjs",
+        "https://tmu.invalid/assets/book/book-state.mjs",
+        "https://tmu.invalid/assets/book/weeks.mjs",
+        "https://tmu.invalid/assets/cen-schedule.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/course-data.mjs?v=20261012-assessments2",
+        "https://tmu.invalid/assets/guide-motion.mjs?v=20261013-qa1",
+        "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/desk.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/route-lifecycle.mjs",
+        "https://tmu.invalid/assets/schedule.mjs",
+        "https://tmu.invalid/assets/vendor/gsap-3.15.0.mjs"
+      ],
+      "edges": [
+        {
+          "from": "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/desk.mjs?v=20261014-book1",
+          "kind": "boot-dynamic",
+          "reason": "awaited Desk directory"
+        },
+        {
+          "from": "https://tmu.invalid/assets/guide-motion.mjs?v=20261013-qa1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/guide-motion.mjs?v=20261013-qa1",
+          "to": "https://tmu.invalid/assets/vendor/gsap-3.15.0.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/app/route-boot.mjs?v=20261014-perf3",
+          "to": "https://tmu.invalid/assets/app/router.mjs?v=20261014-perf3",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/desk.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/desk.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/desk.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/cen-schedule.mjs?v=20261013-shift1",
+          "kind": "boot-dynamic",
+          "reason": "awaited Desk course data"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "boot-dynamic",
+          "reason": "awaited Desk course data"
+        },
+        {
+          "from": "https://tmu.invalid/assets/app/router.mjs?v=20261014-perf3",
+          "to": "https://tmu.invalid/assets/app/transition.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/weeks.mjs",
+          "to": "https://tmu.invalid/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/weeks.mjs",
+          "to": "https://tmu.invalid/assets/schedule.mjs",
+          "kind": "static"
+        }
+      ],
+      "aliases": [],
+      "forbiddenPreloadNodes": [],
+      "fontPreloadURLs": [
+        "https://tmu.invalid/assets/fonts/archivo-latin.woff2"
+      ],
+      "exactlyLatinFontOnly": true,
+      "headPreloadBlockBytes": 1397
+    },
+    {
+      "base": "/",
+      "route": "cen100",
+      "documentPath": "cen100/index.html",
+      "moduleCount": 24,
+      "edgeCount": 42,
+      "longestChainDepth": 5,
+      "shortestDistanceDepth": 2,
+      "moduleSourceBytes": 452771,
+      "generatedHTMLByteIdentical": true,
+      "exactPreloadURLsMatchRealGraph": true,
+      "moduleURLs": [
+        "https://tmu.invalid/assets/app/route-boot.mjs?v=20261014-perf3",
+        "https://tmu.invalid/assets/app/router.mjs?v=20261014-perf3",
+        "https://tmu.invalid/assets/app/transition.mjs",
+        "https://tmu.invalid/assets/book/book-state.mjs",
+        "https://tmu.invalid/assets/book/course-styles.mjs?v=20261013-book1",
+        "https://tmu.invalid/assets/book/weeks.mjs",
+        "https://tmu.invalid/assets/cen-guide.mjs?v=20261013-resilience1",
+        "https://tmu.invalid/assets/cen-schedule.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/course-data.mjs?v=20261012-assessments2",
+        "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/editorial.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/guide-motion.mjs?v=20261013-qa1",
+        "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/route-lifecycle.mjs",
+        "https://tmu.invalid/assets/scenes/framing.mjs?v=20261012-subject1",
+        "https://tmu.invalid/assets/scenes/scene-math.mjs?v=20261012-subject1",
+        "https://tmu.invalid/assets/schedule.mjs",
+        "https://tmu.invalid/assets/vendor/gsap-3.15.0.mjs",
+        "https://tmu.invalid/assets/visuals.js?v=20261013-shift1",
+        "https://tmu.invalid/assets/workspace.mjs?v=20261013-shift1"
+      ],
+      "edges": [
+        {
+          "from": "https://tmu.invalid/assets/cen-guide.mjs?v=20261013-resilience1",
+          "to": "https://tmu.invalid/assets/cen-schedule.mjs?v=20261013-shift1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/visuals.js?v=20261013-shift1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/editorial.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/workspace.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/guide-motion.mjs?v=20261013-qa1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/scenes/framing.mjs?v=20261012-subject1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/course-styles.mjs?v=20261013-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/guide-motion.mjs?v=20261013-qa1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/guide-motion.mjs?v=20261013-qa1",
+          "to": "https://tmu.invalid/assets/vendor/gsap-3.15.0.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/app/route-boot.mjs?v=20261014-perf3",
+          "to": "https://tmu.invalid/assets/app/router.mjs?v=20261014-perf3",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/scenes/framing.mjs?v=20261012-subject1",
+          "to": "https://tmu.invalid/assets/scenes/scene-math.mjs?v=20261012-subject1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/weeks.mjs",
+          "to": "https://tmu.invalid/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/weeks.mjs",
+          "to": "https://tmu.invalid/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/app/router.mjs?v=20261014-perf3",
+          "to": "https://tmu.invalid/assets/app/transition.mjs",
+          "kind": "static"
+        }
+      ],
+      "aliases": [],
+      "forbiddenPreloadNodes": [],
+      "fontPreloadURLs": [
+        "https://tmu.invalid/assets/fonts/archivo-latin.woff2"
+      ],
+      "exactlyLatinFontOnly": true,
+      "headPreloadBlockBytes": 2013
+    },
+    {
+      "base": "/",
+      "route": "mth140",
+      "documentPath": "mth140/index.html",
+      "moduleCount": 29,
+      "edgeCount": 48,
+      "longestChainDepth": 5,
+      "shortestDistanceDepth": 2,
+      "moduleSourceBytes": 471051,
+      "generatedHTMLByteIdentical": true,
+      "exactPreloadURLsMatchRealGraph": true,
+      "moduleURLs": [
+        "https://tmu.invalid/assets/app/route-boot.mjs?v=20261014-perf3",
+        "https://tmu.invalid/assets/app/router.mjs?v=20261014-perf3",
+        "https://tmu.invalid/assets/app/transition.mjs",
+        "https://tmu.invalid/assets/book/book-state.mjs",
+        "https://tmu.invalid/assets/book/course-styles.mjs?v=20261013-book1",
+        "https://tmu.invalid/assets/book/weeks.mjs",
+        "https://tmu.invalid/assets/course-data.mjs?v=20261012-assessments2",
+        "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/editorial.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/guide-motion.mjs?v=20261013-qa1",
+        "https://tmu.invalid/assets/lab-challenge-data.mjs",
+        "https://tmu.invalid/assets/lab-challenges.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/lab-composition-math.mjs?v=20261011-studio3",
+        "https://tmu.invalid/assets/lab-composition.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/lab-math.mjs",
+        "https://tmu.invalid/assets/math-guide.mjs?v=20261013-resilience1",
+        "https://tmu.invalid/assets/math-labs.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/route-lifecycle.mjs",
+        "https://tmu.invalid/assets/scenes/framing.mjs?v=20261012-subject1",
+        "https://tmu.invalid/assets/scenes/scene-math.mjs?v=20261012-subject1",
+        "https://tmu.invalid/assets/schedule.mjs",
+        "https://tmu.invalid/assets/vendor/gsap-3.15.0.mjs",
+        "https://tmu.invalid/assets/visuals.js?v=20261013-shift1",
+        "https://tmu.invalid/assets/workspace.mjs?v=20261013-shift1"
+      ],
+      "edges": [
+        {
+          "from": "https://tmu.invalid/assets/visuals.js?v=20261013-shift1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/math-guide.mjs?v=20261013-resilience1",
+          "to": "https://tmu.invalid/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/math-guide.mjs?v=20261013-resilience1",
+          "to": "https://tmu.invalid/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/math-labs.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/assets/lab-math.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/math-labs.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/assets/lab-composition.mjs?v=20261013-shift1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/math-labs.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/assets/lab-challenges.mjs?v=20261013-shift1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/editorial.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/workspace.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/guide-motion.mjs?v=20261013-qa1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/scenes/framing.mjs?v=20261012-subject1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/course-styles.mjs?v=20261013-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/guide-motion.mjs?v=20261013-qa1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/guide-motion.mjs?v=20261013-qa1",
+          "to": "https://tmu.invalid/assets/vendor/gsap-3.15.0.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/app/route-boot.mjs?v=20261014-perf3",
+          "to": "https://tmu.invalid/assets/app/router.mjs?v=20261014-perf3",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/lab-composition.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/assets/lab-composition-math.mjs?v=20261011-studio3",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/lab-challenges.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/assets/lab-challenge-data.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/scenes/framing.mjs?v=20261012-subject1",
+          "to": "https://tmu.invalid/assets/scenes/scene-math.mjs?v=20261012-subject1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/weeks.mjs",
+          "to": "https://tmu.invalid/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/weeks.mjs",
+          "to": "https://tmu.invalid/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/app/router.mjs?v=20261014-perf3",
+          "to": "https://tmu.invalid/assets/app/transition.mjs",
+          "kind": "static"
+        }
+      ],
+      "aliases": [],
+      "forbiddenPreloadNodes": [],
+      "fontPreloadURLs": [
+        "https://tmu.invalid/assets/fonts/archivo-latin.woff2"
+      ],
+      "exactlyLatinFontOnly": true,
+      "headPreloadBlockBytes": 2386
+    },
+    {
+      "base": "/",
+      "route": "mth141",
+      "documentPath": "mth141/index.html",
+      "moduleCount": 29,
+      "edgeCount": 48,
+      "longestChainDepth": 5,
+      "shortestDistanceDepth": 2,
+      "moduleSourceBytes": 471051,
+      "generatedHTMLByteIdentical": true,
+      "exactPreloadURLsMatchRealGraph": true,
+      "moduleURLs": [
+        "https://tmu.invalid/assets/app/route-boot.mjs?v=20261014-perf3",
+        "https://tmu.invalid/assets/app/router.mjs?v=20261014-perf3",
+        "https://tmu.invalid/assets/app/transition.mjs",
+        "https://tmu.invalid/assets/book/book-state.mjs",
+        "https://tmu.invalid/assets/book/course-styles.mjs?v=20261013-book1",
+        "https://tmu.invalid/assets/book/weeks.mjs",
+        "https://tmu.invalid/assets/course-data.mjs?v=20261012-assessments2",
+        "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/editorial.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/guide-motion.mjs?v=20261013-qa1",
+        "https://tmu.invalid/assets/lab-challenge-data.mjs",
+        "https://tmu.invalid/assets/lab-challenges.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/lab-composition-math.mjs?v=20261011-studio3",
+        "https://tmu.invalid/assets/lab-composition.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/lab-math.mjs",
+        "https://tmu.invalid/assets/math-guide.mjs?v=20261013-resilience1",
+        "https://tmu.invalid/assets/math-labs.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/route-lifecycle.mjs",
+        "https://tmu.invalid/assets/scenes/framing.mjs?v=20261012-subject1",
+        "https://tmu.invalid/assets/scenes/scene-math.mjs?v=20261012-subject1",
+        "https://tmu.invalid/assets/schedule.mjs",
+        "https://tmu.invalid/assets/vendor/gsap-3.15.0.mjs",
+        "https://tmu.invalid/assets/visuals.js?v=20261013-shift1",
+        "https://tmu.invalid/assets/workspace.mjs?v=20261013-shift1"
+      ],
+      "edges": [
+        {
+          "from": "https://tmu.invalid/assets/visuals.js?v=20261013-shift1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/math-guide.mjs?v=20261013-resilience1",
+          "to": "https://tmu.invalid/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/math-guide.mjs?v=20261013-resilience1",
+          "to": "https://tmu.invalid/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/math-labs.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/assets/lab-math.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/math-labs.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/assets/lab-composition.mjs?v=20261013-shift1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/math-labs.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/assets/lab-challenges.mjs?v=20261013-shift1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/editorial.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/workspace.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/guide-motion.mjs?v=20261013-qa1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/scenes/framing.mjs?v=20261012-subject1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/course-styles.mjs?v=20261013-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/guide-motion.mjs?v=20261013-qa1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/guide-motion.mjs?v=20261013-qa1",
+          "to": "https://tmu.invalid/assets/vendor/gsap-3.15.0.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/app/route-boot.mjs?v=20261014-perf3",
+          "to": "https://tmu.invalid/assets/app/router.mjs?v=20261014-perf3",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/lab-composition.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/assets/lab-composition-math.mjs?v=20261011-studio3",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/lab-challenges.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/assets/lab-challenge-data.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/scenes/framing.mjs?v=20261012-subject1",
+          "to": "https://tmu.invalid/assets/scenes/scene-math.mjs?v=20261012-subject1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/weeks.mjs",
+          "to": "https://tmu.invalid/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/book/weeks.mjs",
+          "to": "https://tmu.invalid/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/assets/app/router.mjs?v=20261014-perf3",
+          "to": "https://tmu.invalid/assets/app/transition.mjs",
+          "kind": "static"
+        }
+      ],
+      "aliases": [],
+      "forbiddenPreloadNodes": [],
+      "fontPreloadURLs": [
+        "https://tmu.invalid/assets/fonts/archivo-latin.woff2"
+      ],
+      "exactlyLatinFontOnly": true,
+      "headPreloadBlockBytes": 2386
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "route": "desk",
+      "documentPath": "index.html",
+      "moduleCount": 17,
+      "edgeCount": 32,
+      "longestChainDepth": 5,
+      "shortestDistanceDepth": 2,
+      "moduleSourceBytes": 325815,
+      "generatedHTMLByteIdentical": true,
+      "exactPreloadURLsMatchRealGraph": true,
+      "moduleURLs": [
+        "https://tmu.invalid/tmu-course-guides/assets/app/route-boot.mjs?v=20261014-perf3",
+        "https://tmu.invalid/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+        "https://tmu.invalid/tmu-course-guides/assets/app/transition.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/cen-schedule.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+        "https://tmu.invalid/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/desk.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/vendor/gsap-3.15.0.mjs"
+      ],
+      "edges": [
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/desk.mjs?v=20261014-book1",
+          "kind": "boot-dynamic",
+          "reason": "awaited Desk directory"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/vendor/gsap-3.15.0.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/app/route-boot.mjs?v=20261014-perf3",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/desk.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/desk.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/desk.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/cen-schedule.mjs?v=20261013-shift1",
+          "kind": "boot-dynamic",
+          "reason": "awaited Desk course data"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "boot-dynamic",
+          "reason": "awaited Desk course data"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/app/transition.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+          "kind": "static"
+        }
+      ],
+      "aliases": [],
+      "forbiddenPreloadNodes": [],
+      "fontPreloadURLs": [
+        "https://tmu.invalid/tmu-course-guides/assets/fonts/archivo-latin.woff2"
+      ],
+      "exactlyLatinFontOnly": true,
+      "headPreloadBlockBytes": 1397
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "route": "cen100",
+      "documentPath": "cen100/index.html",
+      "moduleCount": 24,
+      "edgeCount": 42,
+      "longestChainDepth": 5,
+      "shortestDistanceDepth": 2,
+      "moduleSourceBytes": 452771,
+      "generatedHTMLByteIdentical": true,
+      "exactPreloadURLsMatchRealGraph": true,
+      "moduleURLs": [
+        "https://tmu.invalid/tmu-course-guides/assets/app/route-boot.mjs?v=20261014-perf3",
+        "https://tmu.invalid/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+        "https://tmu.invalid/tmu-course-guides/assets/app/transition.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/book/course-styles.mjs?v=20261013-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/cen-guide.mjs?v=20261013-resilience1",
+        "https://tmu.invalid/tmu-course-guides/assets/cen-schedule.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+        "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/editorial.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/scenes/framing.mjs?v=20261012-subject1",
+        "https://tmu.invalid/tmu-course-guides/assets/scenes/scene-math.mjs?v=20261012-subject1",
+        "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/vendor/gsap-3.15.0.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/visuals.js?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/workspace.mjs?v=20261013-shift1"
+      ],
+      "edges": [
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/cen-guide.mjs?v=20261013-resilience1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/cen-schedule.mjs?v=20261013-shift1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/visuals.js?v=20261013-shift1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/editorial.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/workspace.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/scenes/framing.mjs?v=20261012-subject1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/course-styles.mjs?v=20261013-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/vendor/gsap-3.15.0.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/app/route-boot.mjs?v=20261014-perf3",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/scenes/framing.mjs?v=20261012-subject1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/scenes/scene-math.mjs?v=20261012-subject1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/app/transition.mjs",
+          "kind": "static"
+        }
+      ],
+      "aliases": [],
+      "forbiddenPreloadNodes": [],
+      "fontPreloadURLs": [
+        "https://tmu.invalid/tmu-course-guides/assets/fonts/archivo-latin.woff2"
+      ],
+      "exactlyLatinFontOnly": true,
+      "headPreloadBlockBytes": 2013
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "route": "mth140",
+      "documentPath": "mth140/index.html",
+      "moduleCount": 29,
+      "edgeCount": 48,
+      "longestChainDepth": 5,
+      "shortestDistanceDepth": 2,
+      "moduleSourceBytes": 471051,
+      "generatedHTMLByteIdentical": true,
+      "exactPreloadURLsMatchRealGraph": true,
+      "moduleURLs": [
+        "https://tmu.invalid/tmu-course-guides/assets/app/route-boot.mjs?v=20261014-perf3",
+        "https://tmu.invalid/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+        "https://tmu.invalid/tmu-course-guides/assets/app/transition.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/book/course-styles.mjs?v=20261013-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+        "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/editorial.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-challenge-data.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-challenges.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-composition-math.mjs?v=20261011-studio3",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-composition.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-math.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/math-guide.mjs?v=20261013-resilience1",
+        "https://tmu.invalid/tmu-course-guides/assets/math-labs.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/scenes/framing.mjs?v=20261012-subject1",
+        "https://tmu.invalid/tmu-course-guides/assets/scenes/scene-math.mjs?v=20261012-subject1",
+        "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/vendor/gsap-3.15.0.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/visuals.js?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/workspace.mjs?v=20261013-shift1"
+      ],
+      "edges": [
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/visuals.js?v=20261013-shift1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/math-guide.mjs?v=20261013-resilience1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/math-guide.mjs?v=20261013-resilience1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/math-labs.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/lab-math.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/math-labs.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/lab-composition.mjs?v=20261013-shift1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/math-labs.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/lab-challenges.mjs?v=20261013-shift1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/editorial.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/workspace.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/scenes/framing.mjs?v=20261012-subject1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/course-styles.mjs?v=20261013-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/vendor/gsap-3.15.0.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/app/route-boot.mjs?v=20261014-perf3",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/lab-composition.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/lab-composition-math.mjs?v=20261011-studio3",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/lab-challenges.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/lab-challenge-data.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/scenes/framing.mjs?v=20261012-subject1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/scenes/scene-math.mjs?v=20261012-subject1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/app/transition.mjs",
+          "kind": "static"
+        }
+      ],
+      "aliases": [],
+      "forbiddenPreloadNodes": [],
+      "fontPreloadURLs": [
+        "https://tmu.invalid/tmu-course-guides/assets/fonts/archivo-latin.woff2"
+      ],
+      "exactlyLatinFontOnly": true,
+      "headPreloadBlockBytes": 2386
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "route": "mth141",
+      "documentPath": "mth141/index.html",
+      "moduleCount": 29,
+      "edgeCount": 48,
+      "longestChainDepth": 5,
+      "shortestDistanceDepth": 2,
+      "moduleSourceBytes": 471051,
+      "generatedHTMLByteIdentical": true,
+      "exactPreloadURLsMatchRealGraph": true,
+      "moduleURLs": [
+        "https://tmu.invalid/tmu-course-guides/assets/app/route-boot.mjs?v=20261014-perf3",
+        "https://tmu.invalid/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+        "https://tmu.invalid/tmu-course-guides/assets/app/transition.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/book/course-styles.mjs?v=20261013-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+        "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/editorial.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-challenge-data.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-challenges.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-composition-math.mjs?v=20261011-studio3",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-composition.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-math.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/math-guide.mjs?v=20261013-resilience1",
+        "https://tmu.invalid/tmu-course-guides/assets/math-labs.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/scenes/framing.mjs?v=20261012-subject1",
+        "https://tmu.invalid/tmu-course-guides/assets/scenes/scene-math.mjs?v=20261012-subject1",
+        "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/vendor/gsap-3.15.0.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/visuals.js?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/workspace.mjs?v=20261013-shift1"
+      ],
+      "edges": [
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/visuals.js?v=20261013-shift1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/math-guide.mjs?v=20261013-resilience1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/math-guide.mjs?v=20261013-resilience1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/math-labs.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/lab-math.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/math-labs.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/lab-composition.mjs?v=20261013-shift1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/math-labs.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/lab-challenges.mjs?v=20261013-shift1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/editorial.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/workspace.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/scenes/framing.mjs?v=20261012-subject1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/course-styles.mjs?v=20261013-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/vendor/gsap-3.15.0.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/app/route-boot.mjs?v=20261014-perf3",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/lab-composition.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/lab-composition-math.mjs?v=20261011-studio3",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/lab-challenges.mjs?v=20261013-shift1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/lab-challenge-data.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/scenes/framing.mjs?v=20261012-subject1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/scenes/scene-math.mjs?v=20261012-subject1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "kind": "static"
+        },
+        {
+          "from": "https://tmu.invalid/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+          "to": "https://tmu.invalid/tmu-course-guides/assets/app/transition.mjs",
+          "kind": "static"
+        }
+      ],
+      "aliases": [],
+      "forbiddenPreloadNodes": [],
+      "fontPreloadURLs": [
+        "https://tmu.invalid/tmu-course-guides/assets/fonts/archivo-latin.woff2"
+      ],
+      "exactlyLatinFontOnly": true,
+      "headPreloadBlockBytes": 2386
+    }
+  ],
+  "assetURLIdentity": {
+    "sourceWalk": "Repository tests/asset-urls.test.mjs literal/import + VERSION feature policy",
+    "referencedFiles": 70,
+    "referenceCount": 285,
+    "aliases": []
+  },
+  "router": {
+    "sourceSHA256": "50ca18534f312b16a87a0c4a8c650cc1ab975ed9ee623844b4a2915e35fdfe24",
+    "ownerDiff": "diff --git a/assets/app/router.mjs b/assets/app/router.mjs\nindex dd60619..ab075c1 100644\n--- a/assets/app/router.mjs\n+++ b/assets/app/router.mjs\n@@ -145,7 +145,10 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url\n  const sameOrigin=url=>url.origin===base.origin&&/^https?:$/.test(url.protocol);\n  const fallback=url=>{if(sameOrigin(url))assign(url.href);return false;};\n  const canonical=input=>{const url=new URL(input,window.location.href),name=routeForURL(url,base);if(!name)return null;const result=new URL(name==='desk'?'':name+'/',base);result.search=url.search;return result;};\n- async function prefetch(input){\n+ const mayPrefetch=()=>{const connection=window.navigator?.connection;return !connection?.saveData&&!['slow-2g','2g'].includes(connection?.effectiveType);};\n+ const fineHover=()=>window.matchMedia?.('(hover: hover) and (pointer: fine)')?.matches??true;\n+ async function prefetch(input){return mayPrefetch()?loadDocument(input):null;}\n+ async function loadDocument(input){\n   const url=canonical(input);if(!url)return null;\n   const key=url.href;\n   if(cache.has(key)){const value=cache.get(key);cache.delete(key);cache.set(key,value);return value;}\n@@ -295,7 +298,7 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url\n    // Scene work and destination preparation overlap. Only the scene's wait is\n    // capped by the transition controller; existing navigation guards keep their contract.\n    const preparing=(async()=>{\n-    const destination=await awaitCurrent(prefetch(url),request),incoming=destination.document;\n+    const destination=await awaitCurrent(loadDocument(url),request),incoming=destination.document;\n     const nextModules=await awaitCurrent(loadRouteModules({document:incoming,url:destination.url,importModule}),request);\n     if(modules.some(module=>module.reloadRequired===true))throw Error('Outgoing route requires reload');\n     const commitHead=await awaitCurrent(prepareHead(incoming,destination.url,request),request);\n@@ -367,7 +370,12 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url\n   const signal=listenerController.signal;\n   window.addEventListener('click',event=>{const a=linkFromEvent(event);if(isRouteLink(event,a,{base,currentURL:window.location.href})){event.preventDefault();navigate(a.href,{origin:transitionOrigin(window,event.detail>0?a:null)});}}, {capture:true,signal});\n   const warm=event=>{const a=linkFromEvent(event);if(isRouteLink({button:0},a,{base,currentURL:window.location.href}))prefetch(a.href).catch(()=>{});};\n-  window.addEventListener('pointerenter',warm,{capture:true,signal});window.addEventListener('focus',warm,{capture:true,signal});\n+  // Touch may synthesize entry/focus while scrolling. Keyboard focus remains route intent on every device.\n+  let lastPointerType=null;\n+  window.addEventListener('pointerdown',event=>{lastPointerType=event.pointerType||'mouse';},{capture:true,signal});\n+  window.addEventListener('keydown',()=>{lastPointerType=null;},{capture:true,signal});\n+  window.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch'&&fineHover())warm(event);},{capture:true,signal});\n+  window.addEventListener('focus',event=>{if(lastPointerType!=='touch')warm(event);},{capture:true,signal});\n   window.addEventListener('popstate',event=>{\n    browserEntry=event.state?.[STATE_KEY];\n    if(restoring){\n@@ -405,8 +413,8 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url\n    if(history.state?.[STATE_KEY]?.id===activeEntry&&currentURL!==window.location.href)replaceState({...history.state,[STATE_KEY]:{id:marker(),index:activeIndex+1,scroll:scroll()}},'',window.location.href);\n    browserEntry=ensureEntry();activeEntry=browserEntry.id;activeIndex=browserEntry.index??activeIndex;currentURL=window.location.href;\n   },{capture:true,signal});\n-  if(autoPrefetch){\n-   const warmRoutes=()=>{idle=null;for(const name of ROUTES)if(name!==route)prefetch(new URL(name==='desk'?'':name+'/',base)).catch(()=>{});};\n+  if(autoPrefetch&&fineHover()&&mayPrefetch()){\n+   const warmRoutes=()=>{idle=null;if(!fineHover()||!mayPrefetch())return;for(const name of ROUTES)if(name!==route)prefetch(new URL(name==='desk'?'':name+'/',base)).catch(()=>{});};\n    idle=window.requestIdleCallback?window.requestIdleCallback(warmRoutes,{timeout:1500}):window.setTimeout(warmRoutes,150);\n   }\n  }\n",
+    "routeBootOwnerDiff": "diff --git a/assets/app/route-boot.mjs b/assets/app/route-boot.mjs\nindex cd6c412..5951ed2 100644\n--- a/assets/app/route-boot.mjs\n+++ b/assets/app/route-boot.mjs\n@@ -1,5 +1,5 @@\n /* Direct loads and router swaps use the same lifecycle and document order. */\n-import {createRouter,mountRouteModules,routeFromDocument} from './router.mjs?v=20261014-book1';\n+import {createRouter,mountRouteModules,routeFromDocument} from './router.mjs?v=20261014-perf3';\n export {mountRouteModules};\n const boots=new WeakMap();\n const ROUTES=['desk','cen100','mth140','mth141'];\n",
+    "ownerFocusContractPreserved": true,
+    "mandatoryNavigationUsesLoadDocument": true
+  },
+  "opportunities": {
+    "measurement": "Uncompressed repository/source byte sizes, not measured compressed production transfers or predicted load-time savings.",
+    "eagerBookModules": [
+      {
+        "path": "assets/book/book-state.mjs",
+        "bytes": 26454,
+        "sha256": "7a3139385dc29f152d57998bbbdcd50b0cf4cce00978eed542f8ba470162c075"
+      },
+      {
+        "path": "assets/book/weeks.mjs",
+        "bytes": 8733,
+        "sha256": "0b34ccd3f2e0af48233636234a8271f97f0a1ddb3f40fdabee3f87c0fe3fdb91"
+      },
+      {
+        "path": "assets/book/course-styles.mjs",
+        "bytes": 6460,
+        "sha256": "a59e0f4934be10b9eb984b1f130565a48999044e1080af233791654c3511287b"
+      }
+    ],
+    "eagerDeskBookStateWeeksBytes": 35187,
+    "eagerCourseBookStateWeeksStylesBytes": 41647,
+    "deferredBookModules": [
+      {
+        "path": "assets/app/stage.mjs",
+        "bytes": 20575,
+        "sha256": "81b84e8dd6278ce978b019dea956dcd4bdfb38daffebf8ba9168f6fe90d9a416"
+      },
+      {
+        "path": "assets/app/three.mjs",
+        "bytes": 542,
+        "sha256": "39a7b05f0283a6548379a9bdc4d40170f94f5289286067e9ce81ea66664e1c32"
+      },
+      {
+        "path": "assets/book/book-scene.mjs",
+        "bytes": 62056,
+        "sha256": "f72fee225f797d18132ad2d32fd82c430fc49dcbef1e2e91a598dcecfd18be63"
+      },
+      {
+        "path": "assets/book/book-geometry.mjs",
+        "bytes": 28573,
+        "sha256": "82610c213b2ecb3f89303d0b1c7cb344bd3d277df116f48e2faf5d13bf142522"
+      },
+      {
+        "path": "assets/book/page-bend.mjs",
+        "bytes": 18263,
+        "sha256": "3d6316f6d90049be89697034a8c9fedb1b24d8b55e5e4687dd29c5e6ea12b28f"
+      },
+      {
+        "path": "assets/book/page-bend-math.mjs",
+        "bytes": 7699,
+        "sha256": "0932b6ea62f740def7d2b5990f2447e729bc4e294f6ed3bf61256574deddef17"
+      },
+      {
+        "path": "assets/book/popup.mjs",
+        "bytes": 46522,
+        "sha256": "67437b38ffd351f275eb07db4d246e002d0776b0541ff137e5f616effeb33832"
+      },
+      {
+        "path": "assets/book/textures.mjs",
+        "bytes": 61009,
+        "sha256": "62c154ffef9cd3a782c5ff4c48f3930e167159aab6d6f48c98e4a79e507ecf90"
+      }
+    ],
+    "vendors": [
+      {
+        "path": "assets/vendor/three-0.186.1.mjs",
+        "bytes": 621214,
+        "sha256": "c1f72522291c2ab8ed65621abc95816468429e71e82d61384a9e72646ddba501"
+      },
+      {
+        "path": "assets/vendor/gsap-3.15.0.mjs",
+        "bytes": 95884,
+        "sha256": "e6ede5ab4bd593b9d4e2283e01ccda612b60a2aa58b0e0cdd1b6e398ba6da5ea"
+      },
+      {
+        "path": "assets/vendor/night-vendor.mjs",
+        "bytes": 69065,
+        "sha256": "66bcd0ad8732b11032f2d5f3ceffd242e51aa9b7f205dd70572785ab82eac03b"
+      }
+    ],
+    "mathCSSBytes": [
+      {
+        "path": "assets/fonts/archivo.css",
+        "bytes": 1185,
+        "sha256": "d2a46d6b432ef60e210ff1d1fbb79e7ad228984f396f057b78235aa03bf2ec88"
+      },
+      {
+        "path": "assets/math.css",
+        "bytes": 18487,
+        "sha256": "6970f63d076cfb4af4f5c281f4ebd8ee1d3a09a4ffbdf3b410e9350ab127cbc6"
+      },
+      {
+        "path": "assets/math-studio.css",
+        "bytes": 7457,
+        "sha256": "88249d3f4630df0c00395e524dd4a5a1630998b64fee400d6ae7e3c56b560f0c"
+      },
+      {
+        "path": "assets/visuals.css",
+        "bytes": 17606,
+        "sha256": "edfeea5aae6c85f3f61b2a5c3ce837149927f8992f66f9cf70c3f89cafa9b72e"
+      },
+      {
+        "path": "assets/lab-composition.css",
+        "bytes": 10305,
+        "sha256": "723e78ef189107b0478fcfa4f10511f9ec5e21be1d09c6694f2e5ca9714adc2e"
+      },
+      {
+        "path": "assets/lab-challenges.css",
+        "bytes": 7783,
+        "sha256": "df2ee70a86c0383801138003795290a5e845180c31aada20b6dbe7ef19639966"
+      },
+      {
+        "path": "assets/editorial.css",
+        "bytes": 25583,
+        "sha256": "980d62c1eb0a0211af4e617114b4ac5f756ce594e779346443889e7e1332d267"
+      },
+      {
+        "path": "assets/workspace.css",
+        "bytes": 13760,
+        "sha256": "ade66387386f80b81ede177af2831dbf3522c1df81c364046042863517c31ff9"
+      },
+      {
+        "path": "assets/course-header.css",
+        "bytes": 10656,
+        "sha256": "00907706f7e91d81d83b7aca22d2e54155d692eef1fb47b763f4c60992cbd8de"
+      },
+      {
+        "path": "assets/guide-motion.css",
+        "bytes": 3314,
+        "sha256": "156f2e12ffaa74e60562930bdbce11556643ba20e6e2c6e4cf45f2a7a38ef24d"
+      },
+      {
+        "path": "assets/night/layout.css",
+        "bytes": 54566,
+        "sha256": "a1d59f8166486f8a1dc990c0a11218878e8b8d08d10f4e6a0a019744b5d74399"
+      },
+      {
+        "path": "assets/night/hero.css",
+        "bytes": 12998,
+        "sha256": "6450fe1c15f589e18f6a6cf80341be5c15783b599d8a88b4f295a282c757dd01"
+      },
+      {
+        "path": "assets/night/scroll.css",
+        "bytes": 2916,
+        "sha256": "77de1734ca1051c3328c75f5a08fb02039a588e42af53ab890ee0611c1792820"
+      },
+      {
+        "path": "assets/night/palette.css",
+        "bytes": 2015,
+        "sha256": "f7869dd1a2724fdb1884dceaebae7498fc2359ad60e58b7929938b6eba5103a2"
+      }
+    ],
+    "ownerReviewRequired": "These are future opportunities only. All owner modules and visual CSS remain unchanged.",
+    "textureGeometryCombinedSourceBytes": 89582,
+    "texturePaintMethod": "Runtime CanvasTexture painters and procedural height/normal maps; one Path2D logo literal. No fetched SVG texture asset or measured texture-generation runtime is claimed.",
+    "splitReview": "Owner review could assess splitting nonessential book painters/geometry and the shared eager book state away from unrelated routes, preserving the exact visuals and lifecycle. These byte totals are existing source sizes, not guaranteed achievable savings."
+  },
+  "passed": true,
+  "allHTMLBodies": {
+    "count": 11,
+    "files": [
+      {
+        "path": "cen100/index.html",
+        "bodyFound": true,
+        "bytes": 28120,
+        "sha256": "070e811bedf1fc8cf2553dbb4ea44f55c12066aebd7c747d8e595515f334a6ad",
+        "controlSHA256": "070e811bedf1fc8cf2553dbb4ea44f55c12066aebd7c747d8e595515f334a6ad",
+        "equal": true,
+        "comparison": "authored-body-through-EOF"
+      },
+      {
+        "path": "colour-preview.html",
+        "bodyFound": true,
+        "bytes": 81153,
+        "sha256": "cd11e1945eb3733a97705b99a5d92229bc669615bdeba7dce021223e9166ecb7",
+        "controlSHA256": "cd11e1945eb3733a97705b99a5d92229bc669615bdeba7dce021223e9166ecb7",
+        "equal": true,
+        "comparison": "authored-body-through-EOF"
+      },
+      {
+        "path": "index.html",
+        "bodyFound": true,
+        "bytes": 3674,
+        "sha256": "1e736521df4faca83600d0fc3f1e3cab47dd10cf686c7c4dc4c0269f6ea576f2",
+        "controlSHA256": "1e736521df4faca83600d0fc3f1e3cab47dd10cf686c7c4dc4c0269f6ea576f2",
+        "equal": true,
+        "comparison": "authored-body-through-EOF"
+      },
+      {
+        "path": "mth140/index.html",
+        "bodyFound": true,
+        "bytes": 16133,
+        "sha256": "3ea736d0bcca56150e41a8c2a0daf2a3f2d1c438aba2ea17c1f59d6c445e2e15",
+        "controlSHA256": "3ea736d0bcca56150e41a8c2a0daf2a3f2d1c438aba2ea17c1f59d6c445e2e15",
+        "equal": true,
+        "comparison": "authored-body-through-EOF"
+      },
+      {
+        "path": "mth141/index.html",
+        "bodyFound": true,
+        "bytes": 16205,
+        "sha256": "eed4377c09acff8a943ea3dcf33112b764e8fb0dee0bf38b6c5babd397bc4578",
+        "controlSHA256": "eed4377c09acff8a943ea3dcf33112b764e8fb0dee0bf38b6c5babd397bc4578",
+        "equal": true,
+        "comparison": "authored-body-through-EOF"
+      },
+      {
+        "path": "privacy.html",
+        "bodyFound": true,
+        "bytes": 799,
+        "sha256": "83a6b42e27c6248cef2c1d10655e4b58042c37eef032679e2421e7a86ae63e68",
+        "controlSHA256": "83a6b42e27c6248cef2c1d10655e4b58042c37eef032679e2421e7a86ae63e68",
+        "equal": true,
+        "comparison": "authored-body-through-EOF"
+      },
+      {
+        "path": "tests/book-capture.html",
+        "bodyFound": true,
+        "bytes": 4195,
+        "sha256": "33ed53963663187452dc4e425a264e6a03e6601e2621dce5ba98c8660904607c",
+        "controlSHA256": "33ed53963663187452dc4e425a264e6a03e6601e2621dce5ba98c8660904607c",
+        "equal": true,
+        "comparison": "authored-body-through-EOF"
+      },
+      {
+        "path": "tests/editorial/index.html",
+        "bodyFound": true,
+        "bytes": 2536,
+        "sha256": "f495211f60fe0ddb4eb72baae40de00c55e1af983ea7daa7a3910029e6eb276a",
+        "controlSHA256": "f495211f60fe0ddb4eb72baae40de00c55e1af983ea7daa7a3910029e6eb276a",
+        "equal": true,
+        "comparison": "authored-body-through-EOF"
+      },
+      {
+        "path": "tests/header-preview.html",
+        "bodyFound": false,
+        "bytes": 2671,
+        "sha256": "500cc12cd9c50a853f986163e2cbaf0b717b6018920f1c991ef665c16e13c8cc",
+        "controlSHA256": "500cc12cd9c50a853f986163e2cbaf0b717b6018920f1c991ef665c16e13c8cc",
+        "equal": true,
+        "comparison": "whole-file fallback: fixture has implicit HTML body"
+      },
+      {
+        "path": "tests/scene-capture.html",
+        "bodyFound": false,
+        "bytes": 1178,
+        "sha256": "9f7600187eddd2ddaaa2bc8891bddd0f09aceb943f23279a58c1d06bf247dd8f",
+        "controlSHA256": "9f7600187eddd2ddaaa2bc8891bddd0f09aceb943f23279a58c1d06bf247dd8f",
+        "equal": true,
+        "comparison": "whole-file fallback: fixture has implicit HTML body"
+      },
+      {
+        "path": "tests/studio-preview.html",
+        "bodyFound": true,
+        "bytes": 1052,
+        "sha256": "f6dca57ec4a11d55e76800d591f48f21348d8b1991c95eda608131fc90dd3a1e",
+        "controlSHA256": "f6dca57ec4a11d55e76800d591f48f21348d8b1991c95eda608131fc90dd3a1e",
+        "equal": true,
+        "comparison": "authored-body-through-EOF"
+      }
+    ],
+    "allEqual": true
+  },
+  "countClarification": {
+    "trackedAssetFiles": 95,
+    "unchangedAssetFilesExcludingRouterRouteBoot": 93,
+    "routeDocuments": 4,
+    "allSelectedHTMLFiles": 11,
+    "fingerprintSelectedFiles": 106,
+    "protectedFingerprintEntries": 104,
+    "note": "Count derived from actual git ls-files. Owner HTML fixture bodies are checked alongside product route bodies.",
+    "trackedAssetsPlusFourRouteDocuments": 99,
+    "unchangedAssetsPlusFourRouteBodies": 97
+  }
+}
