@@ -112,8 +112,9 @@ async function routeSnapshot(page) {
   return page.evaluate(() => {
     const main=document.querySelector('main[data-route-region]'), active=document.activeElement;
     const skip=document.querySelector('body>.skip-link');
-    const skipId=skip?new URL(skip.href).hash.slice(1):null;
-    return {url:location.href,shell:document.documentElement.dataset.shellId,title:document.title,course:document.body.dataset.course??null,page:document.body.dataset.page??null,content:main?.innerText.trim().length??0,heading:main?.querySelector('h1')?.textContent.trim()??'',focus:{id:active?.id,tag:active?.tagName,inside:!!main?.contains(active),skipId}};
+    // The router focuses the Skip destination only when it is the route region itself; otherwise the heading.
+    const skipRaw=skip?new URL(skip.href).hash.slice(1):null,skipId=skipRaw&&document.getElementById(skipRaw)===main?skipRaw:null;
+    return {url:location.href,shell:document.documentElement.dataset.shellId,title:document.title,course:document.body.dataset.course??null,page:document.body.dataset.page??null,content:main?.innerText.trim().length??0,heading:main?.querySelector('h1')?.textContent.trim()??'',focus:{id:active?.id,tag:active?.tagName,inside:!!main?.contains(active),skipId,heading:!!active&&active===main?.querySelector('h1')}};
   });
 }
 
@@ -133,7 +134,7 @@ export async function routes(env) {
       assert(out,`${label}: title`,state.title===TITLES[route],state.title,TITLES[route]);
       assert(out,`${label}: body identity`,state.course===(route==='desk'?null:route)&&state.page===(route==='desk'?'desk':null),{course:state.course,page:state.page},{course:route==='desk'?null:route,page:route==='desk'?'desk':null});
       assert(out,`${label}: coursework rendered`,state.content>20&&!!state.heading,{characters:state.content,heading:state.heading},'visible route heading and content');
-      assert(out,`${label}: focus target`,state.focus.inside&&(!state.focus.skipId||state.focus.id===state.focus.skipId),state.focus,'route Skip destination, or heading within main');
+      assert(out,`${label}: focus target`,state.focus.inside&&(state.focus.skipId?state.focus.id===state.focus.skipId:state.focus.heading||state.focus.tag==='MAIN'),state.focus,'route Skip destination when it is the region, otherwise the route heading');
     };
     for(const route of ['cen100','mth140','mth141','desk']) {await navigate(page,route);await inspect(route,`open ${route}`);}
     for(const [direction,sequence] of [['back',['mth141','mth140','cen100']],['forward',['mth140','mth141']]]) {
