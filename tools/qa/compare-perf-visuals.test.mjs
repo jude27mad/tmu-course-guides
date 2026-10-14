@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {createHash} from 'node:crypto';
 import {createRequire} from 'node:module';
-import {assertCaptureCompatibility,assertResumeSourceEvidence,cases,captureWork,captureEvidenceProblems,comparePixels,nativeLayerRedrawPhase,parseCaptureOptions,requestNativeLayerRedraw,validateRepeatPixels,visualCaptureRecipe} from './compare-perf-visuals.mjs';
+import {assertCaptureCompatibility,assertResumeSourceEvidence,cases,captureCaseURL,captureWork,captureEvidenceProblems,comparePixels,nativeLayerRedrawPhase,parseCaptureOptions,requestNativeLayerRedraw,validateRepeatPixels,visualCaptureRecipe} from './compare-perf-visuals.mjs';
 const require=createRequire(import.meta.url);
 const {PNG}=require(process.env.PNGJS_PATH||'/opt/codex/cua_node/lib/node_modules/pngjs');
 
@@ -46,6 +46,47 @@ test('a missing --only value fails before any browser capture can start',()=>{
 
 const capturedRecords=()=>cases().map(record=>({...record,status:'captured',errors:[]}));
 const completedManifest=records=>({recipe:{noWebGL:false},execution:{captureConcurrency:1},sourceUnchanged:true,productSourceSha256:'product',productSourceSha256After:'product',protectedSourceUnchanged:true,protectedSourceSha256:'protected',protectedSourceSha256After:'protected',cases:records??capturedRecords()});
+
+test('public book-tier override preserves matrix IDs and changes only MTH140 URLs at both bases',()=>{
+  const options=parseCaptureOptions(['--book-tier','high']),matrix=cases(options);
+  assert.deepEqual(options,{bookTier:'high'});
+  assert.deepEqual(matrix.map(entry=>entry.id),cases().map(entry=>entry.id));
+  for(const entry of matrix) {
+    const url=new URL(captureCaseURL(entry,'http://localhost:4321'));
+    assert.equal(url.pathname,entry.base+(entry.route==='desk'?'':entry.route+'/'));
+    assert.equal(url.search,entry.route==='mth140'?'?tier=high':'');
+    assert.equal(entry.bookTier,entry.route==='mth140'?'high':undefined);
+  }
+  for(const base of ['/','/tmu-course-guides/'])assert.ok(captureWork(base,options).selected.filter(entry=>entry.route==='mth140').every(entry=>entry.bookTier==='high'));
+  for(const options of [['--book-tier'],['--book-tier','--serial'],['--book-tier','mid'],['--book-tier','high','--no-webgl']])assert.throws(()=>parseCaptureOptions(options),/book-tier/);
+});
+
+test('comparison and resume require the same public book-tier recipe',()=>{
+  const original=completedManifest(),forced={...original,recipe:visualCaptureRecipe({bookTier:'high'})};
+  assert.deepEqual(forced.recipe.bookTier,{route:'mth140',value:'high',query:'?tier=high'});
+  assert.throws(()=>assertCaptureCompatibility(original,forced),/recipes differ/);
+  assert.doesNotThrow(()=>assertCaptureCompatibility(forced,{...forced}));
+});
+
+test('public book-tier evidence rejects wrong queries, routes, actual tiers and repeat navigation',()=>{
+  const records=cases({bookTier:'high'}).map(entry=>({...entry,status:'captured',errors:[],bookTier:entry.bookTier??null,tier:entry.route==='mth140'?'high':null,requestedURL:captureCaseURL(entry,'http://localhost:4321'),url:captureCaseURL(entry,'http://localhost:4321')}));
+  const manifest={...completedManifest(records),recipe:visualCaptureRecipe({bookTier:'high'})};
+  assert.deepEqual(captureEvidenceProblems(manifest),[]);
+  const original=records.find(entry=>entry.route==='mth140');original.png={sha256:'original'};
+  manifest.repeatCheck={case:original.id,capture:{...original,png:{sha256:'repeated'}},comparison:{pixelIdentical:true,beforeSha256:'original',afterSha256:'repeated'}};
+  assert.deepEqual(captureEvidenceProblems(manifest),[]);
+  const badURL=original.url.replace('?tier=high','');
+  for(const patch of [{url:badURL},{requestedURL:badURL},{url:original.url+'&extra=1'},{bookTier:null},{tier:'mid'}]) {
+    const saved={...original};Object.assign(original,patch);
+    assert.ok(captureEvidenceProblems(manifest).some(problem=>problem.scope==='case'&&problem.reason.includes('book-tier')));
+    Object.assign(original,saved);
+  }
+  manifest.repeatCheck.capture.url=badURL;
+  assert.ok(captureEvidenceProblems(manifest).some(problem=>problem.scope==='repeat'&&problem.reason.includes('book-tier')));
+  delete manifest.repeatCheck;
+  records[0].url+='?tier=high';
+  assert.ok(captureEvidenceProblems(manifest).some(problem=>problem.scope==='case'&&problem.reason.includes('book-tier')));
+});
 
 test('resume still performs a requested repeat when all matrix captures already exist',()=>{
   const records=capturedRecords(),work=captureWork('/',{resume:true,repeatCheck:true},records);

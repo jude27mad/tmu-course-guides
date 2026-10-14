@@ -1,0 +1,5004 @@
+{
+  "schemaVersion": 1,
+  "check": "clock",
+  "startedAt": "2026-10-14T04:29:12.369Z",
+  "completedAt": "2026-10-14T05:38:20.262Z",
+  "environment": {
+    "node": "v24.19.0",
+    "platform": "linux",
+    "architecture": "x64",
+    "deployments": [
+      {
+        "base": "/",
+        "origin": "http://127.0.0.1:40913",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "154.0.8037.57",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      },
+      {
+        "base": "/tmu-course-guides/",
+        "origin": "http://127.0.0.1:42255",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "154.0.8037.57",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      }
+    ],
+    "requestedMode": "SwiftShader",
+    "playwrightPath": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "playwrightSource": "PLAYWRIGHT_PATH",
+    "chromiumPath": "/usr/bin/chromium",
+    "chromiumSource": "QA_CHROMIUM_PATH",
+    "launchArgs": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "status": "passed",
+  "failures": 0,
+  "cases": [
+    {
+      "base": "/",
+      "origin": "http://127.0.0.1:40913",
+      "status": "passed",
+      "assertions": [
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before desk: Desk target title",
+          "pass": true,
+          "actual": "WHMIS certification",
+          "expected": "WHMIS certification"
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before desk: Desk chip uses current clock",
+          "pass": true,
+          "actual": "0m left",
+          "expected": "0m left"
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before desk: Desk published dates",
+          "pass": true,
+          "actual": "Wed Oct 14 · by 11:59 PM Toronto",
+          "expected": "Wed Oct 14 · by 11:59 PM Toronto"
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before desk: Desk overall current target/date",
+          "pass": true,
+          "actual": {
+            "title": "WHMIS certification",
+            "when": "Wed Oct 14 · by 11:59 PM Toronto",
+            "word": null,
+            "digits": [
+              {
+                "unit": "d",
+                "text": "00"
+              },
+              {
+                "unit": "h",
+                "text": "00"
+              },
+              {
+                "unit": "m",
+                "text": "00"
+              }
+            ]
+          },
+          "expected": {
+            "course": "cen100",
+            "id": "whmis",
+            "title": "WHMIS certification",
+            "kind": "assignment",
+            "open": "y3",
+            "precision": "exact",
+            "endOfDay": true,
+            "at": 1792036800000,
+            "when": "Wed Oct 14 · by 11:59 PM Toronto",
+            "label": "Due by end of day"
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before desk: Desk overall countdown current/nonnegative",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "00"
+            },
+            {
+              "unit": "h",
+              "text": "00"
+            },
+            {
+              "unit": "m",
+              "text": "00"
+            }
+          ],
+          "expected": {
+            "state": "hot",
+            "ms": 30000,
+            "d": 0,
+            "h": 0,
+            "m": 0,
+            "s": 30,
+            "progress": 0.0000248015873015873
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute desk: Desk target title",
+          "pass": true,
+          "actual": "Failure Analysis Labs: both parts",
+          "expected": "Failure Analysis Labs: both parts"
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute desk: Desk chip uses current clock",
+          "pass": true,
+          "actual": "6d 23h left",
+          "expected": "6d 23h left"
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute desk: Desk published dates",
+          "pass": true,
+          "actual": "Wed Oct 21 · by 11:59 PM Toronto",
+          "expected": "Wed Oct 21 · by 11:59 PM Toronto"
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute desk: Desk overall current target/date",
+          "pass": true,
+          "actual": {
+            "title": "Failure Analysis Labs: both parts",
+            "when": "Wed Oct 21 · by 11:59 PM Toronto",
+            "word": null,
+            "digits": [
+              {
+                "unit": "d",
+                "text": "06"
+              },
+              {
+                "unit": "h",
+                "text": "23"
+              },
+              {
+                "unit": "m",
+                "text": "59"
+              }
+            ]
+          },
+          "expected": {
+            "course": "cen100",
+            "id": "failure",
+            "title": "Failure Analysis Labs: both parts",
+            "kind": "assignment",
+            "open": "m3",
+            "precision": "exact",
+            "endOfDay": true,
+            "at": 1792641600000,
+            "when": "Wed Oct 21 · by 11:59 PM Toronto",
+            "label": "Due by end of day"
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute desk: Desk overall countdown current/nonnegative",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "06"
+            },
+            {
+              "unit": "h",
+              "text": "23"
+            },
+            {
+              "unit": "m",
+              "text": "59"
+            }
+          ],
+          "expected": {
+            "state": "ahead",
+            "ms": 604740000,
+            "d": 6,
+            "h": 23,
+            "m": 59,
+            "s": 0,
+            "progress": 0.4999503968253968
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry: Desk Toronto day current",
+          "pass": true,
+          "actual": "Thursday, Oct 15 · Toronto",
+          "expected": "Oct 15"
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry on desk: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before cen100: course card target",
+          "pass": true,
+          "actual": {
+            "title": "WHMIS certification due",
+            "id": "whmis",
+            "key": "whmisexact1792036800000",
+            "when": "Wed Oct 14 · by 11:59 PM Toronto",
+            "digits": [
+              {
+                "unit": "d",
+                "text": "00"
+              },
+              {
+                "unit": "h",
+                "text": "00"
+              },
+              {
+                "unit": "m",
+                "text": "00"
+              },
+              {
+                "unit": "s",
+                "text": "30"
+              }
+            ]
+          },
+          "expected": {
+            "title": "WHMIS certification",
+            "id": "whmis"
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before cen100: course card published dates",
+          "pass": true,
+          "actual": "Wed Oct 14 · by 11:59 PM Toronto",
+          "expected": "Wed Oct 14 · by 11:59 PM Toronto"
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before cen100: dock target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "WHMIS certification",
+            "chip": "0m",
+            "section": "Section 1 · Group 1"
+          },
+          "expected": {
+            "title": "WHMIS certification",
+            "chip": "0m"
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before cen100: HUD target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "WHMIS certification",
+            "chip": "0m"
+          },
+          "expected": {
+            "title": "WHMIS certification",
+            "chip": "0m"
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before cen100: countdown digits never negative",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before cen100: card digits use current clock",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "00"
+            },
+            {
+              "unit": "h",
+              "text": "00"
+            },
+            {
+              "unit": "m",
+              "text": "00"
+            },
+            {
+              "unit": "s",
+              "text": "30"
+            }
+          ],
+          "expected": {
+            "state": "hot",
+            "ms": 30000,
+            "d": 0,
+            "h": 0,
+            "m": 0,
+            "s": 30,
+            "progress": 0.0000248015873015873
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute cen100: course card target",
+          "pass": true,
+          "actual": {
+            "title": "Failure Analysis Labs: both parts due",
+            "id": "failure",
+            "key": "failureexact1792641600000",
+            "when": "Wed Oct 21 · by 11:59 PM Toronto",
+            "digits": [
+              {
+                "unit": "d",
+                "text": "06"
+              },
+              {
+                "unit": "h",
+                "text": "23"
+              },
+              {
+                "unit": "m",
+                "text": "59"
+              },
+              {
+                "unit": "s",
+                "text": "00"
+              }
+            ]
+          },
+          "expected": {
+            "title": "Failure Analysis Labs: both parts",
+            "id": "failure"
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute cen100: course card published dates",
+          "pass": true,
+          "actual": "Wed Oct 21 · by 11:59 PM Toronto",
+          "expected": "Wed Oct 21 · by 11:59 PM Toronto"
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute cen100: dock target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Failure Analysis Labs: both parts",
+            "chip": "6d 23h",
+            "section": "Section 1 · Group 1"
+          },
+          "expected": {
+            "title": "Failure Analysis Labs: both parts",
+            "chip": "6d 23h"
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute cen100: HUD target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Failure Analysis Labs: both parts",
+            "chip": "6d 23h"
+          },
+          "expected": {
+            "title": "Failure Analysis Labs: both parts",
+            "chip": "6d 23h"
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute cen100: countdown digits never negative",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute cen100: card digits use current clock",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "06"
+            },
+            {
+              "unit": "h",
+              "text": "23"
+            },
+            {
+              "unit": "m",
+              "text": "59"
+            },
+            {
+              "unit": "s",
+              "text": "00"
+            }
+          ],
+          "expected": {
+            "state": "ahead",
+            "ms": 604740000,
+            "d": 6,
+            "h": 23,
+            "m": 59,
+            "s": 0,
+            "progress": 0.4999503968253968
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry on cen100: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before desk: Desk target title",
+          "pass": true,
+          "actual": "Lab Quiz 3",
+          "expected": "Lab Quiz 3"
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before desk: Desk chip uses current clock",
+          "pass": true,
+          "actual": "11d 15h left",
+          "expected": "11d 15h left"
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before desk: Desk published dates",
+          "pass": true,
+          "actual": "Thu Nov 12 · 4:00 PM · VIC106",
+          "expected": "Thu Nov 12 · 4:00 PM · VIC106"
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before desk: Desk overall current target/date",
+          "pass": true,
+          "actual": {
+            "title": "Lab Quiz 3",
+            "when": "Thu Nov 12 · 4:00 PM · VIC106",
+            "word": null,
+            "digits": [
+              {
+                "unit": "d",
+                "text": "11"
+              },
+              {
+                "unit": "h",
+                "text": "15"
+              },
+              {
+                "unit": "m",
+                "text": "00"
+              }
+            ]
+          },
+          "expected": {
+            "course": "mth140",
+            "id": "quiz-3",
+            "title": "Lab Quiz 3",
+            "kind": "quiz",
+            "open": "assessment-quiz-3",
+            "precision": "exact",
+            "at": 1794517200000,
+            "end": 1794524400000,
+            "when": "Thu Nov 12 · 4:00 PM · VIC106",
+            "label": "Your lab quiz starts",
+            "note": "Quiz day follows your section’s lab timetable. Check D2L for changes."
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before desk: Desk overall countdown current/nonnegative",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "11"
+            },
+            {
+              "unit": "h",
+              "text": "15"
+            },
+            {
+              "unit": "m",
+              "text": "00"
+            }
+          ],
+          "expected": {
+            "state": "ahead",
+            "ms": 1004430000,
+            "d": 11,
+            "h": 15,
+            "m": 0,
+            "s": 30,
+            "progress": 0.8303819444444445
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute desk: Desk target title",
+          "pass": true,
+          "actual": "Lab Quiz 3",
+          "expected": "Lab Quiz 3"
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute desk: Desk chip uses current clock",
+          "pass": true,
+          "actual": "11d 14h left",
+          "expected": "11d 14h left"
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute desk: Desk published dates",
+          "pass": true,
+          "actual": "Thu Nov 12 · 4:00 PM · VIC106",
+          "expected": "Thu Nov 12 · 4:00 PM · VIC106"
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute desk: Desk overall current target/date",
+          "pass": true,
+          "actual": {
+            "title": "Lab Quiz 3",
+            "when": "Thu Nov 12 · 4:00 PM · VIC106",
+            "word": null,
+            "digits": [
+              {
+                "unit": "d",
+                "text": "11"
+              },
+              {
+                "unit": "h",
+                "text": "14"
+              },
+              {
+                "unit": "m",
+                "text": "59"
+              }
+            ]
+          },
+          "expected": {
+            "course": "mth140",
+            "id": "quiz-3",
+            "title": "Lab Quiz 3",
+            "kind": "quiz",
+            "open": "assessment-quiz-3",
+            "precision": "exact",
+            "at": 1794517200000,
+            "end": 1794524400000,
+            "when": "Thu Nov 12 · 4:00 PM · VIC106",
+            "label": "Your lab quiz starts",
+            "note": "Quiz day follows your section’s lab timetable. Check D2L for changes."
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute desk: Desk overall countdown current/nonnegative",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "11"
+            },
+            {
+              "unit": "h",
+              "text": "14"
+            },
+            {
+              "unit": "m",
+              "text": "59"
+            }
+          ],
+          "expected": {
+            "state": "ahead",
+            "ms": 1004340000,
+            "d": 11,
+            "h": 14,
+            "m": 59,
+            "s": 0,
+            "progress": 0.8303075396825397
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back: Desk Toronto day current",
+          "pass": true,
+          "actual": "Sunday, Nov 1 · Toronto",
+          "expected": "Nov 1"
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back on desk: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before mth140: course card target",
+          "pass": true,
+          "actual": {
+            "title": "Lab Quiz 3",
+            "id": "quiz-3",
+            "key": "quiz-3exact1794517200000",
+            "when": "Thu Nov 12 · 4:00 PM · VIC106",
+            "digits": [
+              {
+                "unit": "d",
+                "text": "11"
+              },
+              {
+                "unit": "h",
+                "text": "15"
+              },
+              {
+                "unit": "m",
+                "text": "00"
+              },
+              {
+                "unit": "s",
+                "text": "30"
+              }
+            ]
+          },
+          "expected": {
+            "title": "Lab Quiz 3",
+            "id": "quiz-3"
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before mth140: course card published dates",
+          "pass": true,
+          "actual": "Thu Nov 12 · 4:00 PM · VIC106",
+          "expected": "Thu Nov 12 · 4:00 PM · VIC106"
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before mth140: dock target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Lab Quiz 3",
+            "chip": "11d 15h",
+            "section": "Section 31"
+          },
+          "expected": {
+            "title": "Lab Quiz 3",
+            "chip": "11d 15h"
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before mth140: HUD target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Lab Quiz 3",
+            "chip": "11d 15h"
+          },
+          "expected": {
+            "title": "Lab Quiz 3",
+            "chip": "11d 15h"
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before mth140: countdown digits never negative",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before mth140: card digits use current clock",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "11"
+            },
+            {
+              "unit": "h",
+              "text": "15"
+            },
+            {
+              "unit": "m",
+              "text": "00"
+            },
+            {
+              "unit": "s",
+              "text": "30"
+            }
+          ],
+          "expected": {
+            "state": "ahead",
+            "ms": 1004430000,
+            "d": 11,
+            "h": 15,
+            "m": 0,
+            "s": 30,
+            "progress": 0.8303819444444445
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute mth140: course card target",
+          "pass": true,
+          "actual": {
+            "title": "Lab Quiz 3",
+            "id": "quiz-3",
+            "key": "quiz-3exact1794517200000",
+            "when": "Thu Nov 12 · 4:00 PM · VIC106",
+            "digits": [
+              {
+                "unit": "d",
+                "text": "11"
+              },
+              {
+                "unit": "h",
+                "text": "14"
+              },
+              {
+                "unit": "m",
+                "text": "59"
+              },
+              {
+                "unit": "s",
+                "text": "00"
+              }
+            ]
+          },
+          "expected": {
+            "title": "Lab Quiz 3",
+            "id": "quiz-3"
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute mth140: course card published dates",
+          "pass": true,
+          "actual": "Thu Nov 12 · 4:00 PM · VIC106",
+          "expected": "Thu Nov 12 · 4:00 PM · VIC106"
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute mth140: dock target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Lab Quiz 3",
+            "chip": "11d 14h",
+            "section": "Section 31"
+          },
+          "expected": {
+            "title": "Lab Quiz 3",
+            "chip": "11d 14h"
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute mth140: HUD target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Lab Quiz 3",
+            "chip": "11d 14h"
+          },
+          "expected": {
+            "title": "Lab Quiz 3",
+            "chip": "11d 14h"
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute mth140: countdown digits never negative",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute mth140: card digits use current clock",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "11"
+            },
+            {
+              "unit": "h",
+              "text": "14"
+            },
+            {
+              "unit": "m",
+              "text": "59"
+            },
+            {
+              "unit": "s",
+              "text": "00"
+            }
+          ],
+          "expected": {
+            "state": "ahead",
+            "ms": 1004340000,
+            "d": 11,
+            "h": 14,
+            "m": 59,
+            "s": 0,
+            "progress": 0.8303075396825397
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back on mth140: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "one backwards wall-clock jump before desk: Desk target title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "one backwards wall-clock jump before desk: Desk chip uses current clock",
+          "pass": true,
+          "actual": "30m left",
+          "expected": "30m left"
+        },
+        {
+          "name": "one backwards wall-clock jump before desk: Desk published dates",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": "Wed Oct 14 · 3:00 PM Toronto"
+        },
+        {
+          "name": "one backwards wall-clock jump before desk: Desk overall current target/date",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz",
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "word": null,
+            "digits": [
+              {
+                "unit": "d",
+                "text": "00"
+              },
+              {
+                "unit": "h",
+                "text": "00"
+              },
+              {
+                "unit": "m",
+                "text": "30"
+              }
+            ]
+          },
+          "expected": {
+            "course": "cen100",
+            "id": "integrity",
+            "title": "Academic Integrity Quiz",
+            "kind": "assignment",
+            "open": "y4",
+            "precision": "exact",
+            "at": 1792004400000,
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "label": "Due"
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump before desk: Desk overall countdown current/nonnegative",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "00"
+            },
+            {
+              "unit": "h",
+              "text": "00"
+            },
+            {
+              "unit": "m",
+              "text": "30"
+            }
+          ],
+          "expected": {
+            "state": "hot",
+            "ms": 1800000,
+            "d": 0,
+            "h": 0,
+            "m": 30,
+            "s": 0,
+            "progress": 0.001488095238095238
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute desk: Desk target title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute desk: Desk chip uses current clock",
+          "pass": true,
+          "actual": "1h 29m left",
+          "expected": "1h 29m left"
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute desk: Desk published dates",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": "Wed Oct 14 · 3:00 PM Toronto"
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute desk: Desk overall current target/date",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz",
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "word": null,
+            "digits": [
+              {
+                "unit": "d",
+                "text": "00"
+              },
+              {
+                "unit": "h",
+                "text": "01"
+              },
+              {
+                "unit": "m",
+                "text": "29"
+              }
+            ]
+          },
+          "expected": {
+            "course": "cen100",
+            "id": "integrity",
+            "title": "Academic Integrity Quiz",
+            "kind": "assignment",
+            "open": "y4",
+            "precision": "exact",
+            "at": 1792004400000,
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "label": "Due"
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute desk: Desk overall countdown current/nonnegative",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "00"
+            },
+            {
+              "unit": "h",
+              "text": "01"
+            },
+            {
+              "unit": "m",
+              "text": "29"
+            }
+          ],
+          "expected": {
+            "state": "hot",
+            "ms": 5340000,
+            "d": 0,
+            "h": 1,
+            "m": 29,
+            "s": 0,
+            "progress": 0.00441468253968254
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump: Desk Toronto day current",
+          "pass": true,
+          "actual": "Wednesday, Oct 14 · Toronto",
+          "expected": "Oct 14"
+        },
+        {
+          "name": "one backwards wall-clock jump on desk: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "one backwards wall-clock jump before cen100: course card target",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+            "id": "integrity",
+            "key": "integrityexact1792004400000",
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "digits": [
+              {
+                "unit": "d",
+                "text": "00"
+              },
+              {
+                "unit": "h",
+                "text": "00"
+              },
+              {
+                "unit": "m",
+                "text": "30"
+              },
+              {
+                "unit": "s",
+                "text": "00"
+              }
+            ]
+          },
+          "expected": {
+            "title": "Academic Integrity Quiz",
+            "id": "integrity"
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump before cen100: course card published dates",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": "Wed Oct 14 · 3:00 PM Toronto"
+        },
+        {
+          "name": "one backwards wall-clock jump before cen100: dock target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz",
+            "chip": "30m",
+            "section": "Section 1 · Group 1"
+          },
+          "expected": {
+            "title": "Academic Integrity Quiz",
+            "chip": "30m"
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump before cen100: HUD target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz",
+            "chip": "30m"
+          },
+          "expected": {
+            "title": "Academic Integrity Quiz",
+            "chip": "30m"
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump before cen100: countdown digits never negative",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "one backwards wall-clock jump before cen100: card digits use current clock",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "00"
+            },
+            {
+              "unit": "h",
+              "text": "00"
+            },
+            {
+              "unit": "m",
+              "text": "30"
+            },
+            {
+              "unit": "s",
+              "text": "00"
+            }
+          ],
+          "expected": {
+            "state": "hot",
+            "ms": 1800000,
+            "d": 0,
+            "h": 0,
+            "m": 30,
+            "s": 0,
+            "progress": 0.001488095238095238
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute cen100: course card target",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+            "id": "integrity",
+            "key": "integrityexact1792004400000",
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "digits": [
+              {
+                "unit": "d",
+                "text": "00"
+              },
+              {
+                "unit": "h",
+                "text": "01"
+              },
+              {
+                "unit": "m",
+                "text": "29"
+              },
+              {
+                "unit": "s",
+                "text": "00"
+              }
+            ]
+          },
+          "expected": {
+            "title": "Academic Integrity Quiz",
+            "id": "integrity"
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute cen100: course card published dates",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": "Wed Oct 14 · 3:00 PM Toronto"
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute cen100: dock target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz",
+            "chip": "1h 29m",
+            "section": "Section 1 · Group 1"
+          },
+          "expected": {
+            "title": "Academic Integrity Quiz",
+            "chip": "1h 29m"
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute cen100: HUD target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz",
+            "chip": "1h 29m"
+          },
+          "expected": {
+            "title": "Academic Integrity Quiz",
+            "chip": "1h 29m"
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute cen100: countdown digits never negative",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute cen100: card digits use current clock",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "00"
+            },
+            {
+              "unit": "h",
+              "text": "01"
+            },
+            {
+              "unit": "m",
+              "text": "29"
+            },
+            {
+              "unit": "s",
+              "text": "00"
+            }
+          ],
+          "expected": {
+            "state": "hot",
+            "ms": 5340000,
+            "d": 0,
+            "h": 1,
+            "m": 29,
+            "s": 0,
+            "progress": 0.00441468253968254
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump on cen100: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "observations": {
+        "cases": [
+          {
+            "name": "Toronto midnight / CEN end-of-day expiry on desk",
+            "readinessPolicy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "readiness": [
+              {
+                "route": "desk",
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "label": "desk mounted route and deadlines",
+                "timeoutMs": 30000,
+                "status": "ready",
+                "sampleCount": 1,
+                "maxBrowserReplyMs": 139,
+                "firstSample": {
+                  "elapsedMs": 139,
+                  "replyMs": 139,
+                  "state": {
+                    "ready": true,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": true,
+                      "renderedMainText": true,
+                      "deadlineNode": true
+                    },
+                    "actual": {
+                      "bodyRoute": "desk",
+                      "routerRoute": "desk",
+                      "completedRoute": "desk",
+                      "mainTextLength": 1150,
+                      "deadlineNode": true
+                    }
+                  }
+                },
+                "lastSample": {
+                  "elapsedMs": 139,
+                  "replyMs": 139,
+                  "state": {
+                    "ready": true,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": true,
+                      "renderedMainText": true,
+                      "deadlineNode": true
+                    },
+                    "actual": {
+                      "bodyRoute": "desk",
+                      "routerRoute": "desk",
+                      "completedRoute": "desk",
+                      "mainTextLength": 1150,
+                      "deadlineNode": true
+                    }
+                  }
+                },
+                "elapsedMs": 139
+              }
+            ],
+            "routeActions": [],
+            "interactionActions": [],
+            "navigations": [],
+            "before": {
+              "route": "desk",
+              "shell": "f4c50aab-f4dc-40ab-9748-4a610637eedc",
+              "heading": "TMU Course Guides · Fall 2026",
+              "content": 1150,
+              "desk": {
+                "title": "WHMIS certification",
+                "chip": "0m left",
+                "when": "Wed Oct 14 · by 11:59 PM Toronto",
+                "section": "Section 1",
+                "today": "Wednesday, Oct 14 · Toronto"
+              },
+              "overall": {
+                "title": "WHMIS certification",
+                "when": "Wed Oct 14 · by 11:59 PM Toronto",
+                "word": null,
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "00"
+                  }
+                ]
+              },
+              "card": {
+                "title": null,
+                "id": null,
+                "when": null,
+                "digits": []
+              },
+              "dock": {
+                "title": null,
+                "chip": null,
+                "section": null
+              },
+              "hud": {
+                "title": null,
+                "chip": null
+              },
+              "counts": {
+                "main": 1,
+                "dock": 0,
+                "card": 0,
+                "hud": 0,
+                "heading": 1,
+                "itemIds": []
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1792036650696
+                }
+              ],
+              "storageEvents": []
+            },
+            "after": {
+              "route": "desk",
+              "shell": "f4c50aab-f4dc-40ab-9748-4a610637eedc",
+              "heading": "TMU Course Guides · Fall 2026",
+              "content": 1193,
+              "desk": {
+                "title": "Failure Analysis Labs: both parts",
+                "chip": "6d 23h left",
+                "when": "Wed Oct 21 · by 11:59 PM Toronto",
+                "section": "Section 1",
+                "today": "Thursday, Oct 15 · Toronto"
+              },
+              "overall": {
+                "title": "Failure Analysis Labs: both parts",
+                "when": "Wed Oct 21 · by 11:59 PM Toronto",
+                "word": null,
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "06"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "23"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "59"
+                  }
+                ]
+              },
+              "card": {
+                "title": null,
+                "id": null,
+                "when": null,
+                "digits": []
+              },
+              "dock": {
+                "title": null,
+                "chip": null,
+                "section": null
+              },
+              "hud": {
+                "title": null,
+                "chip": null
+              },
+              "counts": {
+                "main": 1,
+                "dock": 0,
+                "card": 0,
+                "hud": 0,
+                "heading": 1,
+                "itemIds": []
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1792036650696
+                }
+              ],
+              "storageEvents": []
+            },
+            "clock": {
+              "before": "2026-10-15T03:59:30Z",
+              "jump": "2026-10-15T04:00:00Z",
+              "observed": "2026-10-15T04:01:00.000Z",
+              "timezone": "America/Toronto",
+              "allowedUpdateMs": 60000
+            },
+            "telemetry": []
+          },
+          {
+            "name": "Toronto midnight / CEN end-of-day expiry on cen100",
+            "readinessPolicy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "readiness": [
+              {
+                "route": "cen100",
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "label": "cen100 mounted route and deadlines",
+                "timeoutMs": 30000,
+                "status": "ready",
+                "sampleCount": 3,
+                "maxBrowserReplyMs": 448,
+                "firstSample": {
+                  "elapsedMs": 448,
+                  "replyMs": 448,
+                  "state": {
+                    "ready": false,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": false,
+                      "renderedMainText": true,
+                      "deadlineNode": false
+                    },
+                    "actual": {
+                      "bodyRoute": "cen100",
+                      "routerRoute": "cen100",
+                      "mainTextLength": 1821,
+                      "deadlineNode": false
+                    }
+                  }
+                },
+                "lastSample": {
+                  "elapsedMs": 962,
+                  "replyMs": 223,
+                  "state": {
+                    "ready": true,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": true,
+                      "renderedMainText": true,
+                      "deadlineNode": true
+                    },
+                    "actual": {
+                      "bodyRoute": "cen100",
+                      "routerRoute": "cen100",
+                      "completedRoute": "cen100",
+                      "mainTextLength": 1802,
+                      "deadlineNode": true
+                    }
+                  }
+                },
+                "elapsedMs": 962
+              }
+            ],
+            "routeActions": [],
+            "interactionActions": [],
+            "navigations": [],
+            "before": {
+              "route": "cen100",
+              "shell": "68f14294-92f3-41e6-87f6-2cf29e2b4212",
+              "heading": "Intro toEngineering",
+              "content": 1802,
+              "desk": {
+                "title": null,
+                "chip": null,
+                "when": null,
+                "section": null,
+                "today": null
+              },
+              "overall": {
+                "title": null,
+                "when": null,
+                "word": null,
+                "digits": []
+              },
+              "card": {
+                "title": "WHMIS certification due",
+                "id": "whmis",
+                "key": "whmisexact1792036800000",
+                "when": "Wed Oct 14 · by 11:59 PM Toronto",
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "s",
+                    "text": "30"
+                  }
+                ]
+              },
+              "dock": {
+                "title": "WHMIS certification",
+                "chip": "0m",
+                "section": "Section 1 · Group 1"
+              },
+              "hud": {
+                "title": "WHMIS certification",
+                "chip": "0m"
+              },
+              "counts": {
+                "main": 1,
+                "dock": 1,
+                "card": 1,
+                "hud": 1,
+                "heading": 1,
+                "itemIds": [
+                  "guide-item-m3",
+                  "guide-item-m4",
+                  "guide-item-y6",
+                  "guide-item-m5",
+                  "guide-item-m6",
+                  "guide-item-m7",
+                  "guide-item-m1",
+                  "guide-item-m2",
+                  "guide-item-y3",
+                  "guide-item-y5",
+                  "guide-item-y2",
+                  "guide-item-y7",
+                  "guide-item-y8",
+                  "guide-item-m8",
+                  "guide-item-y9",
+                  "guide-item-y1",
+                  "guide-item-y4"
+                ]
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1792036650524
+                }
+              ],
+              "storageEvents": []
+            },
+            "after": {
+              "route": "cen100",
+              "shell": "68f14294-92f3-41e6-87f6-2cf29e2b4212",
+              "heading": "Intro toEngineering",
+              "content": 1805,
+              "desk": {
+                "title": null,
+                "chip": null,
+                "when": null,
+                "section": null,
+                "today": null
+              },
+              "overall": {
+                "title": null,
+                "when": null,
+                "word": null,
+                "digits": []
+              },
+              "card": {
+                "title": "Failure Analysis Labs: both parts due",
+                "id": "failure",
+                "key": "failureexact1792641600000",
+                "when": "Wed Oct 21 · by 11:59 PM Toronto",
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "06"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "23"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "59"
+                  },
+                  {
+                    "unit": "s",
+                    "text": "00"
+                  }
+                ]
+              },
+              "dock": {
+                "title": "Failure Analysis Labs: both parts",
+                "chip": "6d 23h",
+                "section": "Section 1 · Group 1"
+              },
+              "hud": {
+                "title": "Failure Analysis Labs: both parts",
+                "chip": "6d 23h"
+              },
+              "counts": {
+                "main": 1,
+                "dock": 1,
+                "card": 1,
+                "hud": 1,
+                "heading": 1,
+                "itemIds": [
+                  "guide-item-m3",
+                  "guide-item-m4",
+                  "guide-item-y6",
+                  "guide-item-m5",
+                  "guide-item-m6",
+                  "guide-item-m7",
+                  "guide-item-m1",
+                  "guide-item-m2",
+                  "guide-item-y3",
+                  "guide-item-y5",
+                  "guide-item-y2",
+                  "guide-item-y7",
+                  "guide-item-y8",
+                  "guide-item-m8",
+                  "guide-item-y9",
+                  "guide-item-y1",
+                  "guide-item-y4"
+                ]
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1792036650524
+                }
+              ],
+              "storageEvents": []
+            },
+            "clock": {
+              "before": "2026-10-15T03:59:30Z",
+              "jump": "2026-10-15T04:00:00Z",
+              "observed": "2026-10-15T04:01:00.000Z",
+              "timezone": "America/Toronto",
+              "allowedUpdateMs": 60000
+            },
+            "telemetry": []
+          },
+          {
+            "name": "Nov 1 Toronto DST fall-back on desk",
+            "readinessPolicy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "readiness": [
+              {
+                "route": "desk",
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "label": "desk mounted route and deadlines",
+                "timeoutMs": 30000,
+                "status": "ready",
+                "sampleCount": 1,
+                "maxBrowserReplyMs": 83,
+                "firstSample": {
+                  "elapsedMs": 83,
+                  "replyMs": 83,
+                  "state": {
+                    "ready": true,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": true,
+                      "renderedMainText": true,
+                      "deadlineNode": true
+                    },
+                    "actual": {
+                      "bodyRoute": "desk",
+                      "routerRoute": "desk",
+                      "completedRoute": "desk",
+                      "mainTextLength": 1285,
+                      "deadlineNode": true
+                    }
+                  }
+                },
+                "lastSample": {
+                  "elapsedMs": 83,
+                  "replyMs": 83,
+                  "state": {
+                    "ready": true,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": true,
+                      "renderedMainText": true,
+                      "deadlineNode": true
+                    },
+                    "actual": {
+                      "bodyRoute": "desk",
+                      "routerRoute": "desk",
+                      "completedRoute": "desk",
+                      "mainTextLength": 1285,
+                      "deadlineNode": true
+                    }
+                  }
+                },
+                "elapsedMs": 83
+              }
+            ],
+            "routeActions": [],
+            "interactionActions": [],
+            "navigations": [],
+            "before": {
+              "route": "desk",
+              "shell": "cd722b5e-f5e3-4380-862a-0ee41129c79b",
+              "heading": "TMU Course Guides · Fall 2026",
+              "content": 1285,
+              "desk": {
+                "title": "Lab Quiz 3",
+                "chip": "11d 15h left",
+                "when": "Thu Nov 12 · 4:00 PM · VIC106",
+                "section": "Section 31 · Thu 4:00 PM lab · VIC106",
+                "today": "Sunday, Nov 1 · Toronto"
+              },
+              "overall": {
+                "title": "Lab Quiz 3",
+                "when": "Thu Nov 12 · 4:00 PM · VIC106",
+                "word": null,
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "11"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "15"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "00"
+                  }
+                ]
+              },
+              "card": {
+                "title": null,
+                "id": null,
+                "when": null,
+                "digits": []
+              },
+              "dock": {
+                "title": null,
+                "chip": null,
+                "section": null
+              },
+              "hud": {
+                "title": null,
+                "chip": null
+              },
+              "counts": {
+                "main": 1,
+                "dock": 0,
+                "card": 0,
+                "hud": 0,
+                "heading": 1,
+                "itemIds": []
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1793512650806
+                }
+              ],
+              "storageEvents": []
+            },
+            "after": {
+              "route": "desk",
+              "shell": "cd722b5e-f5e3-4380-862a-0ee41129c79b",
+              "heading": "TMU Course Guides · Fall 2026",
+              "content": 1285,
+              "desk": {
+                "title": "Lab Quiz 3",
+                "chip": "11d 14h left",
+                "when": "Thu Nov 12 · 4:00 PM · VIC106",
+                "section": "Section 31 · Thu 4:00 PM lab · VIC106",
+                "today": "Sunday, Nov 1 · Toronto"
+              },
+              "overall": {
+                "title": "Lab Quiz 3",
+                "when": "Thu Nov 12 · 4:00 PM · VIC106",
+                "word": null,
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "11"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "14"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "59"
+                  }
+                ]
+              },
+              "card": {
+                "title": null,
+                "id": null,
+                "when": null,
+                "digits": []
+              },
+              "dock": {
+                "title": null,
+                "chip": null,
+                "section": null
+              },
+              "hud": {
+                "title": null,
+                "chip": null
+              },
+              "counts": {
+                "main": 1,
+                "dock": 0,
+                "card": 0,
+                "hud": 0,
+                "heading": 1,
+                "itemIds": []
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1793512650806
+                }
+              ],
+              "storageEvents": []
+            },
+            "clock": {
+              "before": "2026-11-01T05:59:30Z",
+              "jump": "2026-11-01T06:00:00Z",
+              "observed": "2026-11-01T06:01:00.000Z",
+              "timezone": "America/Toronto",
+              "allowedUpdateMs": 60000
+            },
+            "telemetry": []
+          },
+          {
+            "name": "Nov 1 Toronto DST fall-back on mth140",
+            "readinessPolicy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "readiness": [
+              {
+                "route": "mth140",
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "label": "mth140 mounted route and deadlines",
+                "timeoutMs": 30000,
+                "status": "ready",
+                "sampleCount": 7,
+                "maxBrowserReplyMs": 340,
+                "firstSample": {
+                  "elapsedMs": 55,
+                  "replyMs": 55,
+                  "state": {
+                    "ready": false,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": false,
+                      "renderedMainText": true,
+                      "deadlineNode": false
+                    },
+                    "actual": {
+                      "bodyRoute": "mth140",
+                      "routerRoute": "mth140",
+                      "mainTextLength": 421,
+                      "deadlineNode": false
+                    }
+                  }
+                },
+                "lastSample": {
+                  "elapsedMs": 1350,
+                  "replyMs": 101,
+                  "state": {
+                    "ready": true,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": true,
+                      "renderedMainText": true,
+                      "deadlineNode": true
+                    },
+                    "actual": {
+                      "bodyRoute": "mth140",
+                      "routerRoute": "mth140",
+                      "completedRoute": "mth140",
+                      "mainTextLength": 1081,
+                      "deadlineNode": true
+                    }
+                  }
+                },
+                "elapsedMs": 1350
+              }
+            ],
+            "routeActions": [],
+            "interactionActions": [],
+            "navigations": [],
+            "before": {
+              "route": "mth140",
+              "shell": "27eba0aa-4aca-4016-8f8a-45f0ec74e351",
+              "heading": "Calculus I",
+              "content": 1081,
+              "desk": {
+                "title": null,
+                "chip": null,
+                "when": null,
+                "section": null,
+                "today": null
+              },
+              "overall": {
+                "title": null,
+                "when": null,
+                "word": null,
+                "digits": []
+              },
+              "card": {
+                "title": "Lab Quiz 3",
+                "id": "quiz-3",
+                "key": "quiz-3exact1794517200000",
+                "when": "Thu Nov 12 · 4:00 PM · VIC106",
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "11"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "15"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "s",
+                    "text": "30"
+                  }
+                ]
+              },
+              "dock": {
+                "title": "Lab Quiz 3",
+                "chip": "11d 15h",
+                "section": "Section 31"
+              },
+              "hud": {
+                "title": "Lab Quiz 3",
+                "chip": "11d 15h"
+              },
+              "counts": {
+                "main": 1,
+                "dock": 1,
+                "card": 1,
+                "hud": 1,
+                "heading": 1,
+                "itemIds": [
+                  "assessment-count",
+                  "assessment-list",
+                  "assessment-quiz-3",
+                  "assessment-quiz-4",
+                  "assessment-final",
+                  "assessment-quiz-1",
+                  "assessment-quiz-2",
+                  "assessment-midterm",
+                  "assessment-empty"
+                ]
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1793512651074
+                }
+              ],
+              "storageEvents": []
+            },
+            "after": {
+              "route": "mth140",
+              "shell": "27eba0aa-4aca-4016-8f8a-45f0ec74e351",
+              "heading": "Calculus I",
+              "content": 1168,
+              "desk": {
+                "title": null,
+                "chip": null,
+                "when": null,
+                "section": null,
+                "today": null
+              },
+              "overall": {
+                "title": null,
+                "when": null,
+                "word": null,
+                "digits": []
+              },
+              "card": {
+                "title": "Lab Quiz 3",
+                "id": "quiz-3",
+                "key": "quiz-3exact1794517200000",
+                "when": "Thu Nov 12 · 4:00 PM · VIC106",
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "11"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "14"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "59"
+                  },
+                  {
+                    "unit": "s",
+                    "text": "00"
+                  }
+                ]
+              },
+              "dock": {
+                "title": "Lab Quiz 3",
+                "chip": "11d 14h",
+                "section": "Section 31"
+              },
+              "hud": {
+                "title": "Lab Quiz 3",
+                "chip": "11d 14h"
+              },
+              "counts": {
+                "main": 1,
+                "dock": 1,
+                "card": 1,
+                "hud": 1,
+                "heading": 1,
+                "itemIds": [
+                  "assessment-count",
+                  "assessment-list",
+                  "assessment-quiz-3",
+                  "assessment-quiz-4",
+                  "assessment-final",
+                  "assessment-quiz-1",
+                  "assessment-quiz-2",
+                  "assessment-midterm",
+                  "assessment-empty"
+                ]
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1793512651074
+                }
+              ],
+              "storageEvents": []
+            },
+            "clock": {
+              "before": "2026-11-01T05:59:30Z",
+              "jump": "2026-11-01T06:00:00Z",
+              "observed": "2026-11-01T06:01:00.000Z",
+              "timezone": "America/Toronto",
+              "allowedUpdateMs": 60000
+            },
+            "telemetry": []
+          },
+          {
+            "name": "one backwards wall-clock jump on desk",
+            "readinessPolicy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "readiness": [
+              {
+                "route": "desk",
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "label": "desk mounted route and deadlines",
+                "timeoutMs": 30000,
+                "status": "ready",
+                "sampleCount": 1,
+                "maxBrowserReplyMs": 325,
+                "firstSample": {
+                  "elapsedMs": 325,
+                  "replyMs": 325,
+                  "state": {
+                    "ready": true,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": true,
+                      "renderedMainText": true,
+                      "deadlineNode": true
+                    },
+                    "actual": {
+                      "bodyRoute": "desk",
+                      "routerRoute": "desk",
+                      "completedRoute": "desk",
+                      "mainTextLength": 1124,
+                      "deadlineNode": true
+                    }
+                  }
+                },
+                "lastSample": {
+                  "elapsedMs": 325,
+                  "replyMs": 325,
+                  "state": {
+                    "ready": true,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": true,
+                      "renderedMainText": true,
+                      "deadlineNode": true
+                    },
+                    "actual": {
+                      "bodyRoute": "desk",
+                      "routerRoute": "desk",
+                      "completedRoute": "desk",
+                      "mainTextLength": 1124,
+                      "deadlineNode": true
+                    }
+                  }
+                },
+                "elapsedMs": 325
+              }
+            ],
+            "routeActions": [],
+            "interactionActions": [],
+            "navigations": [],
+            "before": {
+              "route": "desk",
+              "shell": "d5794316-0e5f-41d4-b9a2-0dfa0f87605c",
+              "heading": "TMU Course Guides · Fall 2026",
+              "content": 1124,
+              "desk": {
+                "title": "Academic Integrity Quiz",
+                "chip": "30m left",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "section": "Section 1",
+                "today": "Wednesday, Oct 14 · Toronto"
+              },
+              "overall": {
+                "title": "Academic Integrity Quiz",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "word": null,
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "30"
+                  }
+                ]
+              },
+              "card": {
+                "title": null,
+                "id": null,
+                "when": null,
+                "digits": []
+              },
+              "dock": {
+                "title": null,
+                "chip": null,
+                "section": null
+              },
+              "hud": {
+                "title": null,
+                "chip": null
+              },
+              "counts": {
+                "main": 1,
+                "dock": 0,
+                "card": 0,
+                "hud": 0,
+                "heading": 1,
+                "itemIds": []
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1792002481471
+                }
+              ],
+              "storageEvents": []
+            },
+            "after": {
+              "route": "desk",
+              "shell": "d5794316-0e5f-41d4-b9a2-0dfa0f87605c",
+              "heading": "TMU Course Guides · Fall 2026",
+              "content": 1127,
+              "desk": {
+                "title": "Academic Integrity Quiz",
+                "chip": "1h 29m left",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "section": "Section 1",
+                "today": "Wednesday, Oct 14 · Toronto"
+              },
+              "overall": {
+                "title": "Academic Integrity Quiz",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "word": null,
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "01"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "29"
+                  }
+                ]
+              },
+              "card": {
+                "title": null,
+                "id": null,
+                "when": null,
+                "digits": []
+              },
+              "dock": {
+                "title": null,
+                "chip": null,
+                "section": null
+              },
+              "hud": {
+                "title": null,
+                "chip": null
+              },
+              "counts": {
+                "main": 1,
+                "dock": 0,
+                "card": 0,
+                "hud": 0,
+                "heading": 1,
+                "itemIds": []
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1792002481471
+                }
+              ],
+              "storageEvents": []
+            },
+            "clock": {
+              "before": "2026-10-14T18:30:00Z",
+              "jump": "2026-10-14T17:30:00Z",
+              "observed": "2026-10-14T17:31:00.000Z",
+              "timezone": "America/Toronto",
+              "allowedUpdateMs": 60000
+            },
+            "telemetry": []
+          },
+          {
+            "name": "one backwards wall-clock jump on cen100",
+            "readinessPolicy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "readiness": [
+              {
+                "route": "cen100",
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "label": "cen100 mounted route and deadlines",
+                "timeoutMs": 30000,
+                "status": "ready",
+                "sampleCount": 5,
+                "maxBrowserReplyMs": 495,
+                "firstSample": {
+                  "elapsedMs": 495,
+                  "replyMs": 495,
+                  "state": {
+                    "ready": false,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": false,
+                      "renderedMainText": true,
+                      "deadlineNode": false
+                    },
+                    "actual": {
+                      "bodyRoute": "cen100",
+                      "routerRoute": "cen100",
+                      "mainTextLength": 1837,
+                      "deadlineNode": false
+                    }
+                  }
+                },
+                "lastSample": {
+                  "elapsedMs": 1686,
+                  "replyMs": 451,
+                  "state": {
+                    "ready": true,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": true,
+                      "renderedMainText": true,
+                      "deadlineNode": true
+                    },
+                    "actual": {
+                      "bodyRoute": "cen100",
+                      "routerRoute": "cen100",
+                      "completedRoute": "cen100",
+                      "mainTextLength": 1873,
+                      "deadlineNode": true
+                    }
+                  }
+                },
+                "elapsedMs": 1686
+              }
+            ],
+            "routeActions": [],
+            "interactionActions": [],
+            "navigations": [],
+            "before": {
+              "route": "cen100",
+              "shell": "6f3e1c66-ee88-4a8c-a0c2-3ad704ac7bba",
+              "heading": "Intro toEngineering",
+              "content": 1873,
+              "desk": {
+                "title": null,
+                "chip": null,
+                "when": null,
+                "section": null,
+                "today": null
+              },
+              "overall": {
+                "title": null,
+                "when": null,
+                "word": null,
+                "digits": []
+              },
+              "card": {
+                "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+                "id": "integrity",
+                "key": "integrityexact1792004400000",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "30"
+                  },
+                  {
+                    "unit": "s",
+                    "text": "00"
+                  }
+                ]
+              },
+              "dock": {
+                "title": "Academic Integrity Quiz",
+                "chip": "30m",
+                "section": "Section 1 · Group 1"
+              },
+              "hud": {
+                "title": "Academic Integrity Quiz",
+                "chip": "30m"
+              },
+              "counts": {
+                "main": 1,
+                "dock": 1,
+                "card": 1,
+                "hud": 1,
+                "heading": 1,
+                "itemIds": [
+                  "guide-item-m3",
+                  "guide-item-m4",
+                  "guide-item-y6",
+                  "guide-item-m5",
+                  "guide-item-m6",
+                  "guide-item-m7",
+                  "guide-item-m1",
+                  "guide-item-m2",
+                  "guide-item-y3",
+                  "guide-item-y4",
+                  "guide-item-y5",
+                  "guide-item-y2",
+                  "guide-item-y7",
+                  "guide-item-y8",
+                  "guide-item-m8",
+                  "guide-item-y9",
+                  "guide-item-y1"
+                ]
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1792002480962
+                }
+              ],
+              "storageEvents": []
+            },
+            "after": {
+              "route": "cen100",
+              "shell": "6f3e1c66-ee88-4a8c-a0c2-3ad704ac7bba",
+              "heading": "Intro toEngineering",
+              "content": 1876,
+              "desk": {
+                "title": null,
+                "chip": null,
+                "when": null,
+                "section": null,
+                "today": null
+              },
+              "overall": {
+                "title": null,
+                "when": null,
+                "word": null,
+                "digits": []
+              },
+              "card": {
+                "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+                "id": "integrity",
+                "key": "integrityexact1792004400000",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "01"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "29"
+                  },
+                  {
+                    "unit": "s",
+                    "text": "00"
+                  }
+                ]
+              },
+              "dock": {
+                "title": "Academic Integrity Quiz",
+                "chip": "1h 29m",
+                "section": "Section 1 · Group 1"
+              },
+              "hud": {
+                "title": "Academic Integrity Quiz",
+                "chip": "1h 29m"
+              },
+              "counts": {
+                "main": 1,
+                "dock": 1,
+                "card": 1,
+                "hud": 1,
+                "heading": 1,
+                "itemIds": [
+                  "guide-item-m3",
+                  "guide-item-m4",
+                  "guide-item-y6",
+                  "guide-item-m5",
+                  "guide-item-m6",
+                  "guide-item-m7",
+                  "guide-item-m1",
+                  "guide-item-m2",
+                  "guide-item-y3",
+                  "guide-item-y4",
+                  "guide-item-y5",
+                  "guide-item-y2",
+                  "guide-item-y7",
+                  "guide-item-y8",
+                  "guide-item-m8",
+                  "guide-item-y9",
+                  "guide-item-y1"
+                ]
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1792002480962
+                }
+              ],
+              "storageEvents": []
+            },
+            "clock": {
+              "before": "2026-10-14T18:30:00Z",
+              "jump": "2026-10-14T17:30:00Z",
+              "observed": "2026-10-14T17:31:00.000Z",
+              "timezone": "America/Toronto",
+              "allowedUpdateMs": 60000
+            },
+            "telemetry": []
+          }
+        ],
+        "runnerErrors": []
+      },
+      "skipped": [],
+      "durationMs": 156373,
+      "failures": 0
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "origin": "http://127.0.0.1:42255",
+      "status": "passed",
+      "assertions": [
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before desk: Desk target title",
+          "pass": true,
+          "actual": "WHMIS certification",
+          "expected": "WHMIS certification"
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before desk: Desk chip uses current clock",
+          "pass": true,
+          "actual": "0m left",
+          "expected": "0m left"
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before desk: Desk published dates",
+          "pass": true,
+          "actual": "Wed Oct 14 · by 11:59 PM Toronto",
+          "expected": "Wed Oct 14 · by 11:59 PM Toronto"
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before desk: Desk overall current target/date",
+          "pass": true,
+          "actual": {
+            "title": "WHMIS certification",
+            "when": "Wed Oct 14 · by 11:59 PM Toronto",
+            "word": null,
+            "digits": [
+              {
+                "unit": "d",
+                "text": "00"
+              },
+              {
+                "unit": "h",
+                "text": "00"
+              },
+              {
+                "unit": "m",
+                "text": "00"
+              }
+            ]
+          },
+          "expected": {
+            "course": "cen100",
+            "id": "whmis",
+            "title": "WHMIS certification",
+            "kind": "assignment",
+            "open": "y3",
+            "precision": "exact",
+            "endOfDay": true,
+            "at": 1792036800000,
+            "when": "Wed Oct 14 · by 11:59 PM Toronto",
+            "label": "Due by end of day"
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before desk: Desk overall countdown current/nonnegative",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "00"
+            },
+            {
+              "unit": "h",
+              "text": "00"
+            },
+            {
+              "unit": "m",
+              "text": "00"
+            }
+          ],
+          "expected": {
+            "state": "hot",
+            "ms": 30000,
+            "d": 0,
+            "h": 0,
+            "m": 0,
+            "s": 30,
+            "progress": 0.0000248015873015873
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute desk: Desk target title",
+          "pass": true,
+          "actual": "Failure Analysis Labs: both parts",
+          "expected": "Failure Analysis Labs: both parts"
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute desk: Desk chip uses current clock",
+          "pass": true,
+          "actual": "6d 23h left",
+          "expected": "6d 23h left"
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute desk: Desk published dates",
+          "pass": true,
+          "actual": "Wed Oct 21 · by 11:59 PM Toronto",
+          "expected": "Wed Oct 21 · by 11:59 PM Toronto"
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute desk: Desk overall current target/date",
+          "pass": true,
+          "actual": {
+            "title": "Failure Analysis Labs: both parts",
+            "when": "Wed Oct 21 · by 11:59 PM Toronto",
+            "word": null,
+            "digits": [
+              {
+                "unit": "d",
+                "text": "06"
+              },
+              {
+                "unit": "h",
+                "text": "23"
+              },
+              {
+                "unit": "m",
+                "text": "59"
+              }
+            ]
+          },
+          "expected": {
+            "course": "cen100",
+            "id": "failure",
+            "title": "Failure Analysis Labs: both parts",
+            "kind": "assignment",
+            "open": "m3",
+            "precision": "exact",
+            "endOfDay": true,
+            "at": 1792641600000,
+            "when": "Wed Oct 21 · by 11:59 PM Toronto",
+            "label": "Due by end of day"
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute desk: Desk overall countdown current/nonnegative",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "06"
+            },
+            {
+              "unit": "h",
+              "text": "23"
+            },
+            {
+              "unit": "m",
+              "text": "59"
+            }
+          ],
+          "expected": {
+            "state": "ahead",
+            "ms": 604740000,
+            "d": 6,
+            "h": 23,
+            "m": 59,
+            "s": 0,
+            "progress": 0.4999503968253968
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry: Desk Toronto day current",
+          "pass": true,
+          "actual": "Thursday, Oct 15 · Toronto",
+          "expected": "Oct 15"
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry on desk: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before cen100: course card target",
+          "pass": true,
+          "actual": {
+            "title": "WHMIS certification due",
+            "id": "whmis",
+            "key": "whmisexact1792036800000",
+            "when": "Wed Oct 14 · by 11:59 PM Toronto",
+            "digits": [
+              {
+                "unit": "d",
+                "text": "00"
+              },
+              {
+                "unit": "h",
+                "text": "00"
+              },
+              {
+                "unit": "m",
+                "text": "00"
+              },
+              {
+                "unit": "s",
+                "text": "30"
+              }
+            ]
+          },
+          "expected": {
+            "title": "WHMIS certification",
+            "id": "whmis"
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before cen100: course card published dates",
+          "pass": true,
+          "actual": "Wed Oct 14 · by 11:59 PM Toronto",
+          "expected": "Wed Oct 14 · by 11:59 PM Toronto"
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before cen100: dock target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "WHMIS certification",
+            "chip": "0m",
+            "section": "Section 1 · Group 1"
+          },
+          "expected": {
+            "title": "WHMIS certification",
+            "chip": "0m"
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before cen100: HUD target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "WHMIS certification",
+            "chip": "0m"
+          },
+          "expected": {
+            "title": "WHMIS certification",
+            "chip": "0m"
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before cen100: countdown digits never negative",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry before cen100: card digits use current clock",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "00"
+            },
+            {
+              "unit": "h",
+              "text": "00"
+            },
+            {
+              "unit": "m",
+              "text": "00"
+            },
+            {
+              "unit": "s",
+              "text": "30"
+            }
+          ],
+          "expected": {
+            "state": "hot",
+            "ms": 30000,
+            "d": 0,
+            "h": 0,
+            "m": 0,
+            "s": 30,
+            "progress": 0.0000248015873015873
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute cen100: course card target",
+          "pass": true,
+          "actual": {
+            "title": "Failure Analysis Labs: both parts due",
+            "id": "failure",
+            "key": "failureexact1792641600000",
+            "when": "Wed Oct 21 · by 11:59 PM Toronto",
+            "digits": [
+              {
+                "unit": "d",
+                "text": "06"
+              },
+              {
+                "unit": "h",
+                "text": "23"
+              },
+              {
+                "unit": "m",
+                "text": "59"
+              },
+              {
+                "unit": "s",
+                "text": "00"
+              }
+            ]
+          },
+          "expected": {
+            "title": "Failure Analysis Labs: both parts",
+            "id": "failure"
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute cen100: course card published dates",
+          "pass": true,
+          "actual": "Wed Oct 21 · by 11:59 PM Toronto",
+          "expected": "Wed Oct 21 · by 11:59 PM Toronto"
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute cen100: dock target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Failure Analysis Labs: both parts",
+            "chip": "6d 23h",
+            "section": "Section 1 · Group 1"
+          },
+          "expected": {
+            "title": "Failure Analysis Labs: both parts",
+            "chip": "6d 23h"
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute cen100: HUD target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Failure Analysis Labs: both parts",
+            "chip": "6d 23h"
+          },
+          "expected": {
+            "title": "Failure Analysis Labs: both parts",
+            "chip": "6d 23h"
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute cen100: countdown digits never negative",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry within one minute cen100: card digits use current clock",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "06"
+            },
+            {
+              "unit": "h",
+              "text": "23"
+            },
+            {
+              "unit": "m",
+              "text": "59"
+            },
+            {
+              "unit": "s",
+              "text": "00"
+            }
+          ],
+          "expected": {
+            "state": "ahead",
+            "ms": 604740000,
+            "d": 6,
+            "h": 23,
+            "m": 59,
+            "s": 0,
+            "progress": 0.4999503968253968
+          }
+        },
+        {
+          "name": "Toronto midnight / CEN end-of-day expiry on cen100: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before desk: Desk target title",
+          "pass": true,
+          "actual": "Lab Quiz 3",
+          "expected": "Lab Quiz 3"
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before desk: Desk chip uses current clock",
+          "pass": true,
+          "actual": "11d 15h left",
+          "expected": "11d 15h left"
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before desk: Desk published dates",
+          "pass": true,
+          "actual": "Thu Nov 12 · 4:00 PM · VIC106",
+          "expected": "Thu Nov 12 · 4:00 PM · VIC106"
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before desk: Desk overall current target/date",
+          "pass": true,
+          "actual": {
+            "title": "Lab Quiz 3",
+            "when": "Thu Nov 12 · 4:00 PM · VIC106",
+            "word": null,
+            "digits": [
+              {
+                "unit": "d",
+                "text": "11"
+              },
+              {
+                "unit": "h",
+                "text": "15"
+              },
+              {
+                "unit": "m",
+                "text": "00"
+              }
+            ]
+          },
+          "expected": {
+            "course": "mth140",
+            "id": "quiz-3",
+            "title": "Lab Quiz 3",
+            "kind": "quiz",
+            "open": "assessment-quiz-3",
+            "precision": "exact",
+            "at": 1794517200000,
+            "end": 1794524400000,
+            "when": "Thu Nov 12 · 4:00 PM · VIC106",
+            "label": "Your lab quiz starts",
+            "note": "Quiz day follows your section’s lab timetable. Check D2L for changes."
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before desk: Desk overall countdown current/nonnegative",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "11"
+            },
+            {
+              "unit": "h",
+              "text": "15"
+            },
+            {
+              "unit": "m",
+              "text": "00"
+            }
+          ],
+          "expected": {
+            "state": "ahead",
+            "ms": 1004430000,
+            "d": 11,
+            "h": 15,
+            "m": 0,
+            "s": 30,
+            "progress": 0.8303819444444445
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute desk: Desk target title",
+          "pass": true,
+          "actual": "Lab Quiz 3",
+          "expected": "Lab Quiz 3"
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute desk: Desk chip uses current clock",
+          "pass": true,
+          "actual": "11d 14h left",
+          "expected": "11d 14h left"
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute desk: Desk published dates",
+          "pass": true,
+          "actual": "Thu Nov 12 · 4:00 PM · VIC106",
+          "expected": "Thu Nov 12 · 4:00 PM · VIC106"
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute desk: Desk overall current target/date",
+          "pass": true,
+          "actual": {
+            "title": "Lab Quiz 3",
+            "when": "Thu Nov 12 · 4:00 PM · VIC106",
+            "word": null,
+            "digits": [
+              {
+                "unit": "d",
+                "text": "11"
+              },
+              {
+                "unit": "h",
+                "text": "14"
+              },
+              {
+                "unit": "m",
+                "text": "59"
+              }
+            ]
+          },
+          "expected": {
+            "course": "mth140",
+            "id": "quiz-3",
+            "title": "Lab Quiz 3",
+            "kind": "quiz",
+            "open": "assessment-quiz-3",
+            "precision": "exact",
+            "at": 1794517200000,
+            "end": 1794524400000,
+            "when": "Thu Nov 12 · 4:00 PM · VIC106",
+            "label": "Your lab quiz starts",
+            "note": "Quiz day follows your section’s lab timetable. Check D2L for changes."
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute desk: Desk overall countdown current/nonnegative",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "11"
+            },
+            {
+              "unit": "h",
+              "text": "14"
+            },
+            {
+              "unit": "m",
+              "text": "59"
+            }
+          ],
+          "expected": {
+            "state": "ahead",
+            "ms": 1004340000,
+            "d": 11,
+            "h": 14,
+            "m": 59,
+            "s": 0,
+            "progress": 0.8303075396825397
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back: Desk Toronto day current",
+          "pass": true,
+          "actual": "Sunday, Nov 1 · Toronto",
+          "expected": "Nov 1"
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back on desk: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before mth140: course card target",
+          "pass": true,
+          "actual": {
+            "title": "Lab Quiz 3",
+            "id": "quiz-3",
+            "key": "quiz-3exact1794517200000",
+            "when": "Thu Nov 12 · 4:00 PM · VIC106",
+            "digits": [
+              {
+                "unit": "d",
+                "text": "11"
+              },
+              {
+                "unit": "h",
+                "text": "15"
+              },
+              {
+                "unit": "m",
+                "text": "00"
+              },
+              {
+                "unit": "s",
+                "text": "30"
+              }
+            ]
+          },
+          "expected": {
+            "title": "Lab Quiz 3",
+            "id": "quiz-3"
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before mth140: course card published dates",
+          "pass": true,
+          "actual": "Thu Nov 12 · 4:00 PM · VIC106",
+          "expected": "Thu Nov 12 · 4:00 PM · VIC106"
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before mth140: dock target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Lab Quiz 3",
+            "chip": "11d 15h",
+            "section": "Section 31"
+          },
+          "expected": {
+            "title": "Lab Quiz 3",
+            "chip": "11d 15h"
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before mth140: HUD target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Lab Quiz 3",
+            "chip": "11d 15h"
+          },
+          "expected": {
+            "title": "Lab Quiz 3",
+            "chip": "11d 15h"
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before mth140: countdown digits never negative",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back before mth140: card digits use current clock",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "11"
+            },
+            {
+              "unit": "h",
+              "text": "15"
+            },
+            {
+              "unit": "m",
+              "text": "00"
+            },
+            {
+              "unit": "s",
+              "text": "30"
+            }
+          ],
+          "expected": {
+            "state": "ahead",
+            "ms": 1004430000,
+            "d": 11,
+            "h": 15,
+            "m": 0,
+            "s": 30,
+            "progress": 0.8303819444444445
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute mth140: course card target",
+          "pass": true,
+          "actual": {
+            "title": "Lab Quiz 3",
+            "id": "quiz-3",
+            "key": "quiz-3exact1794517200000",
+            "when": "Thu Nov 12 · 4:00 PM · VIC106",
+            "digits": [
+              {
+                "unit": "d",
+                "text": "11"
+              },
+              {
+                "unit": "h",
+                "text": "14"
+              },
+              {
+                "unit": "m",
+                "text": "59"
+              },
+              {
+                "unit": "s",
+                "text": "00"
+              }
+            ]
+          },
+          "expected": {
+            "title": "Lab Quiz 3",
+            "id": "quiz-3"
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute mth140: course card published dates",
+          "pass": true,
+          "actual": "Thu Nov 12 · 4:00 PM · VIC106",
+          "expected": "Thu Nov 12 · 4:00 PM · VIC106"
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute mth140: dock target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Lab Quiz 3",
+            "chip": "11d 14h",
+            "section": "Section 31"
+          },
+          "expected": {
+            "title": "Lab Quiz 3",
+            "chip": "11d 14h"
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute mth140: HUD target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Lab Quiz 3",
+            "chip": "11d 14h"
+          },
+          "expected": {
+            "title": "Lab Quiz 3",
+            "chip": "11d 14h"
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute mth140: countdown digits never negative",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back within one minute mth140: card digits use current clock",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "11"
+            },
+            {
+              "unit": "h",
+              "text": "14"
+            },
+            {
+              "unit": "m",
+              "text": "59"
+            },
+            {
+              "unit": "s",
+              "text": "00"
+            }
+          ],
+          "expected": {
+            "state": "ahead",
+            "ms": 1004340000,
+            "d": 11,
+            "h": 14,
+            "m": 59,
+            "s": 0,
+            "progress": 0.8303075396825397
+          }
+        },
+        {
+          "name": "Nov 1 Toronto DST fall-back on mth140: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "one backwards wall-clock jump before desk: Desk target title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "one backwards wall-clock jump before desk: Desk chip uses current clock",
+          "pass": true,
+          "actual": "30m left",
+          "expected": "30m left"
+        },
+        {
+          "name": "one backwards wall-clock jump before desk: Desk published dates",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": "Wed Oct 14 · 3:00 PM Toronto"
+        },
+        {
+          "name": "one backwards wall-clock jump before desk: Desk overall current target/date",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz",
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "word": null,
+            "digits": [
+              {
+                "unit": "d",
+                "text": "00"
+              },
+              {
+                "unit": "h",
+                "text": "00"
+              },
+              {
+                "unit": "m",
+                "text": "30"
+              }
+            ]
+          },
+          "expected": {
+            "course": "cen100",
+            "id": "integrity",
+            "title": "Academic Integrity Quiz",
+            "kind": "assignment",
+            "open": "y4",
+            "precision": "exact",
+            "at": 1792004400000,
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "label": "Due"
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump before desk: Desk overall countdown current/nonnegative",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "00"
+            },
+            {
+              "unit": "h",
+              "text": "00"
+            },
+            {
+              "unit": "m",
+              "text": "30"
+            }
+          ],
+          "expected": {
+            "state": "hot",
+            "ms": 1800000,
+            "d": 0,
+            "h": 0,
+            "m": 30,
+            "s": 0,
+            "progress": 0.001488095238095238
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute desk: Desk target title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute desk: Desk chip uses current clock",
+          "pass": true,
+          "actual": "1h 29m left",
+          "expected": "1h 29m left"
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute desk: Desk published dates",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": "Wed Oct 14 · 3:00 PM Toronto"
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute desk: Desk overall current target/date",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz",
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "word": null,
+            "digits": [
+              {
+                "unit": "d",
+                "text": "00"
+              },
+              {
+                "unit": "h",
+                "text": "01"
+              },
+              {
+                "unit": "m",
+                "text": "29"
+              }
+            ]
+          },
+          "expected": {
+            "course": "cen100",
+            "id": "integrity",
+            "title": "Academic Integrity Quiz",
+            "kind": "assignment",
+            "open": "y4",
+            "precision": "exact",
+            "at": 1792004400000,
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "label": "Due"
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute desk: Desk overall countdown current/nonnegative",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "00"
+            },
+            {
+              "unit": "h",
+              "text": "01"
+            },
+            {
+              "unit": "m",
+              "text": "29"
+            }
+          ],
+          "expected": {
+            "state": "hot",
+            "ms": 5340000,
+            "d": 0,
+            "h": 1,
+            "m": 29,
+            "s": 0,
+            "progress": 0.00441468253968254
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump: Desk Toronto day current",
+          "pass": true,
+          "actual": "Wednesday, Oct 14 · Toronto",
+          "expected": "Oct 14"
+        },
+        {
+          "name": "one backwards wall-clock jump on desk: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "one backwards wall-clock jump before cen100: course card target",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+            "id": "integrity",
+            "key": "integrityexact1792004400000",
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "digits": [
+              {
+                "unit": "d",
+                "text": "00"
+              },
+              {
+                "unit": "h",
+                "text": "00"
+              },
+              {
+                "unit": "m",
+                "text": "30"
+              },
+              {
+                "unit": "s",
+                "text": "00"
+              }
+            ]
+          },
+          "expected": {
+            "title": "Academic Integrity Quiz",
+            "id": "integrity"
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump before cen100: course card published dates",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": "Wed Oct 14 · 3:00 PM Toronto"
+        },
+        {
+          "name": "one backwards wall-clock jump before cen100: dock target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz",
+            "chip": "30m",
+            "section": "Section 1 · Group 1"
+          },
+          "expected": {
+            "title": "Academic Integrity Quiz",
+            "chip": "30m"
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump before cen100: HUD target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz",
+            "chip": "30m"
+          },
+          "expected": {
+            "title": "Academic Integrity Quiz",
+            "chip": "30m"
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump before cen100: countdown digits never negative",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "one backwards wall-clock jump before cen100: card digits use current clock",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "00"
+            },
+            {
+              "unit": "h",
+              "text": "00"
+            },
+            {
+              "unit": "m",
+              "text": "30"
+            },
+            {
+              "unit": "s",
+              "text": "00"
+            }
+          ],
+          "expected": {
+            "state": "hot",
+            "ms": 1800000,
+            "d": 0,
+            "h": 0,
+            "m": 30,
+            "s": 0,
+            "progress": 0.001488095238095238
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute cen100: course card target",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+            "id": "integrity",
+            "key": "integrityexact1792004400000",
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "digits": [
+              {
+                "unit": "d",
+                "text": "00"
+              },
+              {
+                "unit": "h",
+                "text": "01"
+              },
+              {
+                "unit": "m",
+                "text": "29"
+              },
+              {
+                "unit": "s",
+                "text": "00"
+              }
+            ]
+          },
+          "expected": {
+            "title": "Academic Integrity Quiz",
+            "id": "integrity"
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute cen100: course card published dates",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": "Wed Oct 14 · 3:00 PM Toronto"
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute cen100: dock target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz",
+            "chip": "1h 29m",
+            "section": "Section 1 · Group 1"
+          },
+          "expected": {
+            "title": "Academic Integrity Quiz",
+            "chip": "1h 29m"
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute cen100: HUD target and current chip",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz",
+            "chip": "1h 29m"
+          },
+          "expected": {
+            "title": "Academic Integrity Quiz",
+            "chip": "1h 29m"
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute cen100: countdown digits never negative",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "one backwards wall-clock jump within one minute cen100: card digits use current clock",
+          "pass": true,
+          "actual": [
+            {
+              "unit": "d",
+              "text": "00"
+            },
+            {
+              "unit": "h",
+              "text": "01"
+            },
+            {
+              "unit": "m",
+              "text": "29"
+            },
+            {
+              "unit": "s",
+              "text": "00"
+            }
+          ],
+          "expected": {
+            "state": "hot",
+            "ms": 5340000,
+            "d": 0,
+            "h": 1,
+            "m": 29,
+            "s": 0,
+            "progress": 0.00441468253968254
+          }
+        },
+        {
+          "name": "one backwards wall-clock jump on cen100: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "observations": {
+        "cases": [
+          {
+            "name": "Toronto midnight / CEN end-of-day expiry on desk",
+            "readinessPolicy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "readiness": [
+              {
+                "route": "desk",
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "label": "desk mounted route and deadlines",
+                "timeoutMs": 30000,
+                "status": "ready",
+                "sampleCount": 1,
+                "maxBrowserReplyMs": 173,
+                "firstSample": {
+                  "elapsedMs": 173,
+                  "replyMs": 173,
+                  "state": {
+                    "ready": true,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": true,
+                      "renderedMainText": true,
+                      "deadlineNode": true
+                    },
+                    "actual": {
+                      "bodyRoute": "desk",
+                      "routerRoute": "desk",
+                      "completedRoute": "desk",
+                      "mainTextLength": 1150,
+                      "deadlineNode": true
+                    }
+                  }
+                },
+                "lastSample": {
+                  "elapsedMs": 173,
+                  "replyMs": 173,
+                  "state": {
+                    "ready": true,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": true,
+                      "renderedMainText": true,
+                      "deadlineNode": true
+                    },
+                    "actual": {
+                      "bodyRoute": "desk",
+                      "routerRoute": "desk",
+                      "completedRoute": "desk",
+                      "mainTextLength": 1150,
+                      "deadlineNode": true
+                    }
+                  }
+                },
+                "elapsedMs": 173
+              }
+            ],
+            "routeActions": [],
+            "interactionActions": [],
+            "navigations": [],
+            "before": {
+              "route": "desk",
+              "shell": "3b787ebe-3e0d-4851-97e0-80f07bbc6405",
+              "heading": "TMU Course Guides · Fall 2026",
+              "content": 1150,
+              "desk": {
+                "title": "WHMIS certification",
+                "chip": "0m left",
+                "when": "Wed Oct 14 · by 11:59 PM Toronto",
+                "section": "Section 1",
+                "today": "Wednesday, Oct 14 · Toronto"
+              },
+              "overall": {
+                "title": "WHMIS certification",
+                "when": "Wed Oct 14 · by 11:59 PM Toronto",
+                "word": null,
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "00"
+                  }
+                ]
+              },
+              "card": {
+                "title": null,
+                "id": null,
+                "when": null,
+                "digits": []
+              },
+              "dock": {
+                "title": null,
+                "chip": null,
+                "section": null
+              },
+              "hud": {
+                "title": null,
+                "chip": null
+              },
+              "counts": {
+                "main": 1,
+                "dock": 0,
+                "card": 0,
+                "hud": 0,
+                "heading": 1,
+                "itemIds": []
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1792036652453
+                }
+              ],
+              "storageEvents": []
+            },
+            "after": {
+              "route": "desk",
+              "shell": "3b787ebe-3e0d-4851-97e0-80f07bbc6405",
+              "heading": "TMU Course Guides · Fall 2026",
+              "content": 1193,
+              "desk": {
+                "title": "Failure Analysis Labs: both parts",
+                "chip": "6d 23h left",
+                "when": "Wed Oct 21 · by 11:59 PM Toronto",
+                "section": "Section 1",
+                "today": "Thursday, Oct 15 · Toronto"
+              },
+              "overall": {
+                "title": "Failure Analysis Labs: both parts",
+                "when": "Wed Oct 21 · by 11:59 PM Toronto",
+                "word": null,
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "06"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "23"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "59"
+                  }
+                ]
+              },
+              "card": {
+                "title": null,
+                "id": null,
+                "when": null,
+                "digits": []
+              },
+              "dock": {
+                "title": null,
+                "chip": null,
+                "section": null
+              },
+              "hud": {
+                "title": null,
+                "chip": null
+              },
+              "counts": {
+                "main": 1,
+                "dock": 0,
+                "card": 0,
+                "hud": 0,
+                "heading": 1,
+                "itemIds": []
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1792036652453
+                }
+              ],
+              "storageEvents": []
+            },
+            "clock": {
+              "before": "2026-10-15T03:59:30Z",
+              "jump": "2026-10-15T04:00:00Z",
+              "observed": "2026-10-15T04:01:00.000Z",
+              "timezone": "America/Toronto",
+              "allowedUpdateMs": 60000
+            },
+            "telemetry": []
+          },
+          {
+            "name": "Toronto midnight / CEN end-of-day expiry on cen100",
+            "readinessPolicy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "readiness": [
+              {
+                "route": "cen100",
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "label": "cen100 mounted route and deadlines",
+                "timeoutMs": 30000,
+                "status": "ready",
+                "sampleCount": 5,
+                "maxBrowserReplyMs": 863,
+                "firstSample": {
+                  "elapsedMs": 863,
+                  "replyMs": 863,
+                  "state": {
+                    "ready": false,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": false,
+                      "renderedMainText": true,
+                      "deadlineNode": false
+                    },
+                    "actual": {
+                      "bodyRoute": "cen100",
+                      "routerRoute": "cen100",
+                      "mainTextLength": 1821,
+                      "deadlineNode": false
+                    }
+                  }
+                },
+                "lastSample": {
+                  "elapsedMs": 2179,
+                  "replyMs": 503,
+                  "state": {
+                    "ready": true,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": true,
+                      "renderedMainText": true,
+                      "deadlineNode": true
+                    },
+                    "actual": {
+                      "bodyRoute": "cen100",
+                      "routerRoute": "cen100",
+                      "completedRoute": "cen100",
+                      "mainTextLength": 1802,
+                      "deadlineNode": true
+                    }
+                  }
+                },
+                "elapsedMs": 2179
+              }
+            ],
+            "routeActions": [],
+            "interactionActions": [],
+            "navigations": [],
+            "before": {
+              "route": "cen100",
+              "shell": "c880de05-7daa-4184-b833-18b15bd37f3b",
+              "heading": "Intro toEngineering",
+              "content": 1802,
+              "desk": {
+                "title": null,
+                "chip": null,
+                "when": null,
+                "section": null,
+                "today": null
+              },
+              "overall": {
+                "title": null,
+                "when": null,
+                "word": null,
+                "digits": []
+              },
+              "card": {
+                "title": "WHMIS certification due",
+                "id": "whmis",
+                "key": "whmisexact1792036800000",
+                "when": "Wed Oct 14 · by 11:59 PM Toronto",
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "s",
+                    "text": "30"
+                  }
+                ]
+              },
+              "dock": {
+                "title": "WHMIS certification",
+                "chip": "0m",
+                "section": "Section 1 · Group 1"
+              },
+              "hud": {
+                "title": "WHMIS certification",
+                "chip": "0m"
+              },
+              "counts": {
+                "main": 1,
+                "dock": 1,
+                "card": 1,
+                "hud": 1,
+                "heading": 1,
+                "itemIds": [
+                  "guide-item-m3",
+                  "guide-item-m4",
+                  "guide-item-y6",
+                  "guide-item-m5",
+                  "guide-item-m6",
+                  "guide-item-m7",
+                  "guide-item-m1",
+                  "guide-item-m2",
+                  "guide-item-y3",
+                  "guide-item-y5",
+                  "guide-item-y2",
+                  "guide-item-y7",
+                  "guide-item-y8",
+                  "guide-item-m8",
+                  "guide-item-y9",
+                  "guide-item-y1",
+                  "guide-item-y4"
+                ]
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1792036651551
+                }
+              ],
+              "storageEvents": []
+            },
+            "after": {
+              "route": "cen100",
+              "shell": "c880de05-7daa-4184-b833-18b15bd37f3b",
+              "heading": "Intro toEngineering",
+              "content": 1805,
+              "desk": {
+                "title": null,
+                "chip": null,
+                "when": null,
+                "section": null,
+                "today": null
+              },
+              "overall": {
+                "title": null,
+                "when": null,
+                "word": null,
+                "digits": []
+              },
+              "card": {
+                "title": "Failure Analysis Labs: both parts due",
+                "id": "failure",
+                "key": "failureexact1792641600000",
+                "when": "Wed Oct 21 · by 11:59 PM Toronto",
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "06"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "23"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "59"
+                  },
+                  {
+                    "unit": "s",
+                    "text": "00"
+                  }
+                ]
+              },
+              "dock": {
+                "title": "Failure Analysis Labs: both parts",
+                "chip": "6d 23h",
+                "section": "Section 1 · Group 1"
+              },
+              "hud": {
+                "title": "Failure Analysis Labs: both parts",
+                "chip": "6d 23h"
+              },
+              "counts": {
+                "main": 1,
+                "dock": 1,
+                "card": 1,
+                "hud": 1,
+                "heading": 1,
+                "itemIds": [
+                  "guide-item-m3",
+                  "guide-item-m4",
+                  "guide-item-y6",
+                  "guide-item-m5",
+                  "guide-item-m6",
+                  "guide-item-m7",
+                  "guide-item-m1",
+                  "guide-item-m2",
+                  "guide-item-y3",
+                  "guide-item-y5",
+                  "guide-item-y2",
+                  "guide-item-y7",
+                  "guide-item-y8",
+                  "guide-item-m8",
+                  "guide-item-y9",
+                  "guide-item-y1",
+                  "guide-item-y4"
+                ]
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1792036651551
+                }
+              ],
+              "storageEvents": []
+            },
+            "clock": {
+              "before": "2026-10-15T03:59:30Z",
+              "jump": "2026-10-15T04:00:00Z",
+              "observed": "2026-10-15T04:01:00.000Z",
+              "timezone": "America/Toronto",
+              "allowedUpdateMs": 60000
+            },
+            "telemetry": []
+          },
+          {
+            "name": "Nov 1 Toronto DST fall-back on desk",
+            "readinessPolicy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "readiness": [
+              {
+                "route": "desk",
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "label": "desk mounted route and deadlines",
+                "timeoutMs": 30000,
+                "status": "ready",
+                "sampleCount": 1,
+                "maxBrowserReplyMs": 270,
+                "firstSample": {
+                  "elapsedMs": 270,
+                  "replyMs": 270,
+                  "state": {
+                    "ready": true,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": true,
+                      "renderedMainText": true,
+                      "deadlineNode": true
+                    },
+                    "actual": {
+                      "bodyRoute": "desk",
+                      "routerRoute": "desk",
+                      "completedRoute": "desk",
+                      "mainTextLength": 1285,
+                      "deadlineNode": true
+                    }
+                  }
+                },
+                "lastSample": {
+                  "elapsedMs": 270,
+                  "replyMs": 270,
+                  "state": {
+                    "ready": true,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": true,
+                      "renderedMainText": true,
+                      "deadlineNode": true
+                    },
+                    "actual": {
+                      "bodyRoute": "desk",
+                      "routerRoute": "desk",
+                      "completedRoute": "desk",
+                      "mainTextLength": 1285,
+                      "deadlineNode": true
+                    }
+                  }
+                },
+                "elapsedMs": 270
+              }
+            ],
+            "routeActions": [],
+            "interactionActions": [],
+            "navigations": [],
+            "before": {
+              "route": "desk",
+              "shell": "ec3f20ef-b41b-4b4a-ade7-3626fe0023dc",
+              "heading": "TMU Course Guides · Fall 2026",
+              "content": 1285,
+              "desk": {
+                "title": "Lab Quiz 3",
+                "chip": "11d 15h left",
+                "when": "Thu Nov 12 · 4:00 PM · VIC106",
+                "section": "Section 31 · Thu 4:00 PM lab · VIC106",
+                "today": "Sunday, Nov 1 · Toronto"
+              },
+              "overall": {
+                "title": "Lab Quiz 3",
+                "when": "Thu Nov 12 · 4:00 PM · VIC106",
+                "word": null,
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "11"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "15"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "00"
+                  }
+                ]
+              },
+              "card": {
+                "title": null,
+                "id": null,
+                "when": null,
+                "digits": []
+              },
+              "dock": {
+                "title": null,
+                "chip": null,
+                "section": null
+              },
+              "hud": {
+                "title": null,
+                "chip": null
+              },
+              "counts": {
+                "main": 1,
+                "dock": 0,
+                "card": 0,
+                "hud": 0,
+                "heading": 1,
+                "itemIds": []
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1793512650767
+                }
+              ],
+              "storageEvents": []
+            },
+            "after": {
+              "route": "desk",
+              "shell": "ec3f20ef-b41b-4b4a-ade7-3626fe0023dc",
+              "heading": "TMU Course Guides · Fall 2026",
+              "content": 1285,
+              "desk": {
+                "title": "Lab Quiz 3",
+                "chip": "11d 14h left",
+                "when": "Thu Nov 12 · 4:00 PM · VIC106",
+                "section": "Section 31 · Thu 4:00 PM lab · VIC106",
+                "today": "Sunday, Nov 1 · Toronto"
+              },
+              "overall": {
+                "title": "Lab Quiz 3",
+                "when": "Thu Nov 12 · 4:00 PM · VIC106",
+                "word": null,
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "11"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "14"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "59"
+                  }
+                ]
+              },
+              "card": {
+                "title": null,
+                "id": null,
+                "when": null,
+                "digits": []
+              },
+              "dock": {
+                "title": null,
+                "chip": null,
+                "section": null
+              },
+              "hud": {
+                "title": null,
+                "chip": null
+              },
+              "counts": {
+                "main": 1,
+                "dock": 0,
+                "card": 0,
+                "hud": 0,
+                "heading": 1,
+                "itemIds": []
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1793512650767
+                }
+              ],
+              "storageEvents": []
+            },
+            "clock": {
+              "before": "2026-11-01T05:59:30Z",
+              "jump": "2026-11-01T06:00:00Z",
+              "observed": "2026-11-01T06:01:00.000Z",
+              "timezone": "America/Toronto",
+              "allowedUpdateMs": 60000
+            },
+            "telemetry": []
+          },
+          {
+            "name": "Nov 1 Toronto DST fall-back on mth140",
+            "readinessPolicy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "readiness": [
+              {
+                "route": "mth140",
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "label": "mth140 mounted route and deadlines",
+                "timeoutMs": 30000,
+                "status": "ready",
+                "sampleCount": 9,
+                "maxBrowserReplyMs": 268,
+                "firstSample": {
+                  "elapsedMs": 47,
+                  "replyMs": 47,
+                  "state": {
+                    "ready": false,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": false,
+                      "renderedMainText": true,
+                      "deadlineNode": false
+                    },
+                    "actual": {
+                      "bodyRoute": "mth140",
+                      "routerRoute": "mth140",
+                      "mainTextLength": 355,
+                      "deadlineNode": false
+                    }
+                  }
+                },
+                "lastSample": {
+                  "elapsedMs": 1680,
+                  "replyMs": 253,
+                  "state": {
+                    "ready": true,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": true,
+                      "renderedMainText": true,
+                      "deadlineNode": true
+                    },
+                    "actual": {
+                      "bodyRoute": "mth140",
+                      "routerRoute": "mth140",
+                      "completedRoute": "mth140",
+                      "mainTextLength": 1081,
+                      "deadlineNode": true
+                    }
+                  }
+                },
+                "elapsedMs": 1680
+              }
+            ],
+            "routeActions": [],
+            "interactionActions": [],
+            "navigations": [],
+            "before": {
+              "route": "mth140",
+              "shell": "0711856f-933d-4e93-8ada-6845b6cb0a00",
+              "heading": "Calculus I",
+              "content": 1081,
+              "desk": {
+                "title": null,
+                "chip": null,
+                "when": null,
+                "section": null,
+                "today": null
+              },
+              "overall": {
+                "title": null,
+                "when": null,
+                "word": null,
+                "digits": []
+              },
+              "card": {
+                "title": "Lab Quiz 3",
+                "id": "quiz-3",
+                "key": "quiz-3exact1794517200000",
+                "when": "Thu Nov 12 · 4:00 PM · VIC106",
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "11"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "15"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "s",
+                    "text": "30"
+                  }
+                ]
+              },
+              "dock": {
+                "title": "Lab Quiz 3",
+                "chip": "11d 15h",
+                "section": "Section 31"
+              },
+              "hud": {
+                "title": "Lab Quiz 3",
+                "chip": "11d 15h"
+              },
+              "counts": {
+                "main": 1,
+                "dock": 1,
+                "card": 1,
+                "hud": 1,
+                "heading": 1,
+                "itemIds": [
+                  "assessment-count",
+                  "assessment-list",
+                  "assessment-quiz-3",
+                  "assessment-quiz-4",
+                  "assessment-final",
+                  "assessment-quiz-1",
+                  "assessment-quiz-2",
+                  "assessment-midterm",
+                  "assessment-empty"
+                ]
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1793512650746
+                }
+              ],
+              "storageEvents": []
+            },
+            "after": {
+              "route": "mth140",
+              "shell": "0711856f-933d-4e93-8ada-6845b6cb0a00",
+              "heading": "Calculus I",
+              "content": 1168,
+              "desk": {
+                "title": null,
+                "chip": null,
+                "when": null,
+                "section": null,
+                "today": null
+              },
+              "overall": {
+                "title": null,
+                "when": null,
+                "word": null,
+                "digits": []
+              },
+              "card": {
+                "title": "Lab Quiz 3",
+                "id": "quiz-3",
+                "key": "quiz-3exact1794517200000",
+                "when": "Thu Nov 12 · 4:00 PM · VIC106",
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "11"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "14"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "59"
+                  },
+                  {
+                    "unit": "s",
+                    "text": "00"
+                  }
+                ]
+              },
+              "dock": {
+                "title": "Lab Quiz 3",
+                "chip": "11d 14h",
+                "section": "Section 31"
+              },
+              "hud": {
+                "title": "Lab Quiz 3",
+                "chip": "11d 14h"
+              },
+              "counts": {
+                "main": 1,
+                "dock": 1,
+                "card": 1,
+                "hud": 1,
+                "heading": 1,
+                "itemIds": [
+                  "assessment-count",
+                  "assessment-list",
+                  "assessment-quiz-3",
+                  "assessment-quiz-4",
+                  "assessment-final",
+                  "assessment-quiz-1",
+                  "assessment-quiz-2",
+                  "assessment-midterm",
+                  "assessment-empty"
+                ]
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1793512650746
+                }
+              ],
+              "storageEvents": []
+            },
+            "clock": {
+              "before": "2026-11-01T05:59:30Z",
+              "jump": "2026-11-01T06:00:00Z",
+              "observed": "2026-11-01T06:01:00.000Z",
+              "timezone": "America/Toronto",
+              "allowedUpdateMs": 60000
+            },
+            "telemetry": []
+          },
+          {
+            "name": "one backwards wall-clock jump on desk",
+            "readinessPolicy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "readiness": [
+              {
+                "route": "desk",
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "label": "desk mounted route and deadlines",
+                "timeoutMs": 30000,
+                "status": "ready",
+                "sampleCount": 1,
+                "maxBrowserReplyMs": 160,
+                "firstSample": {
+                  "elapsedMs": 160,
+                  "replyMs": 160,
+                  "state": {
+                    "ready": true,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": true,
+                      "renderedMainText": true,
+                      "deadlineNode": true
+                    },
+                    "actual": {
+                      "bodyRoute": "desk",
+                      "routerRoute": "desk",
+                      "completedRoute": "desk",
+                      "mainTextLength": 1124,
+                      "deadlineNode": true
+                    }
+                  }
+                },
+                "lastSample": {
+                  "elapsedMs": 160,
+                  "replyMs": 160,
+                  "state": {
+                    "ready": true,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": true,
+                      "renderedMainText": true,
+                      "deadlineNode": true
+                    },
+                    "actual": {
+                      "bodyRoute": "desk",
+                      "routerRoute": "desk",
+                      "completedRoute": "desk",
+                      "mainTextLength": 1124,
+                      "deadlineNode": true
+                    }
+                  }
+                },
+                "elapsedMs": 160
+              }
+            ],
+            "routeActions": [],
+            "interactionActions": [],
+            "navigations": [],
+            "before": {
+              "route": "desk",
+              "shell": "27b16605-85c7-475b-a9c3-b326012a4a52",
+              "heading": "TMU Course Guides · Fall 2026",
+              "content": 1124,
+              "desk": {
+                "title": "Academic Integrity Quiz",
+                "chip": "30m left",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "section": "Section 1",
+                "today": "Wednesday, Oct 14 · Toronto"
+              },
+              "overall": {
+                "title": "Academic Integrity Quiz",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "word": null,
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "30"
+                  }
+                ]
+              },
+              "card": {
+                "title": null,
+                "id": null,
+                "when": null,
+                "digits": []
+              },
+              "dock": {
+                "title": null,
+                "chip": null,
+                "section": null
+              },
+              "hud": {
+                "title": null,
+                "chip": null
+              },
+              "counts": {
+                "main": 1,
+                "dock": 0,
+                "card": 0,
+                "hud": 0,
+                "heading": 1,
+                "itemIds": []
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1792002480596
+                }
+              ],
+              "storageEvents": []
+            },
+            "after": {
+              "route": "desk",
+              "shell": "27b16605-85c7-475b-a9c3-b326012a4a52",
+              "heading": "TMU Course Guides · Fall 2026",
+              "content": 1127,
+              "desk": {
+                "title": "Academic Integrity Quiz",
+                "chip": "1h 29m left",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "section": "Section 1",
+                "today": "Wednesday, Oct 14 · Toronto"
+              },
+              "overall": {
+                "title": "Academic Integrity Quiz",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "word": null,
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "01"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "29"
+                  }
+                ]
+              },
+              "card": {
+                "title": null,
+                "id": null,
+                "when": null,
+                "digits": []
+              },
+              "dock": {
+                "title": null,
+                "chip": null,
+                "section": null
+              },
+              "hud": {
+                "title": null,
+                "chip": null
+              },
+              "counts": {
+                "main": 1,
+                "dock": 0,
+                "card": 0,
+                "hud": 0,
+                "heading": 1,
+                "itemIds": []
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1792002480596
+                }
+              ],
+              "storageEvents": []
+            },
+            "clock": {
+              "before": "2026-10-14T18:30:00Z",
+              "jump": "2026-10-14T17:30:00Z",
+              "observed": "2026-10-14T17:31:00.000Z",
+              "timezone": "America/Toronto",
+              "allowedUpdateMs": 60000
+            },
+            "telemetry": []
+          },
+          {
+            "name": "one backwards wall-clock jump on cen100",
+            "readinessPolicy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "readiness": [
+              {
+                "route": "cen100",
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "label": "cen100 mounted route and deadlines",
+                "timeoutMs": 30000,
+                "status": "ready",
+                "sampleCount": 5,
+                "maxBrowserReplyMs": 543,
+                "firstSample": {
+                  "elapsedMs": 543,
+                  "replyMs": 543,
+                  "state": {
+                    "ready": false,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": false,
+                      "renderedMainText": true,
+                      "deadlineNode": false
+                    },
+                    "actual": {
+                      "bodyRoute": "cen100",
+                      "routerRoute": "cen100",
+                      "mainTextLength": 1541,
+                      "deadlineNode": false
+                    }
+                  }
+                },
+                "lastSample": {
+                  "elapsedMs": 1762,
+                  "replyMs": 535,
+                  "state": {
+                    "ready": true,
+                    "components": {
+                      "bodyIdentity": true,
+                      "routerIdentity": true,
+                      "completedMarker": true,
+                      "renderedMainText": true,
+                      "deadlineNode": true
+                    },
+                    "actual": {
+                      "bodyRoute": "cen100",
+                      "routerRoute": "cen100",
+                      "completedRoute": "cen100",
+                      "mainTextLength": 1873,
+                      "deadlineNode": true
+                    }
+                  }
+                },
+                "elapsedMs": 1762
+              }
+            ],
+            "routeActions": [],
+            "interactionActions": [],
+            "navigations": [],
+            "before": {
+              "route": "cen100",
+              "shell": "d6ad400c-e85b-42e0-982b-710aa19befa5",
+              "heading": "Intro toEngineering",
+              "content": 1873,
+              "desk": {
+                "title": null,
+                "chip": null,
+                "when": null,
+                "section": null,
+                "today": null
+              },
+              "overall": {
+                "title": null,
+                "when": null,
+                "word": null,
+                "digits": []
+              },
+              "card": {
+                "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+                "id": "integrity",
+                "key": "integrityexact1792004400000",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "30"
+                  },
+                  {
+                    "unit": "s",
+                    "text": "00"
+                  }
+                ]
+              },
+              "dock": {
+                "title": "Academic Integrity Quiz",
+                "chip": "30m",
+                "section": "Section 1 · Group 1"
+              },
+              "hud": {
+                "title": "Academic Integrity Quiz",
+                "chip": "30m"
+              },
+              "counts": {
+                "main": 1,
+                "dock": 1,
+                "card": 1,
+                "hud": 1,
+                "heading": 1,
+                "itemIds": [
+                  "guide-item-m3",
+                  "guide-item-m4",
+                  "guide-item-y6",
+                  "guide-item-m5",
+                  "guide-item-m6",
+                  "guide-item-m7",
+                  "guide-item-m1",
+                  "guide-item-m2",
+                  "guide-item-y3",
+                  "guide-item-y4",
+                  "guide-item-y5",
+                  "guide-item-y2",
+                  "guide-item-y7",
+                  "guide-item-y8",
+                  "guide-item-m8",
+                  "guide-item-y9",
+                  "guide-item-y1"
+                ]
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1792002480745
+                }
+              ],
+              "storageEvents": []
+            },
+            "after": {
+              "route": "cen100",
+              "shell": "d6ad400c-e85b-42e0-982b-710aa19befa5",
+              "heading": "Intro toEngineering",
+              "content": 1876,
+              "desk": {
+                "title": null,
+                "chip": null,
+                "when": null,
+                "section": null,
+                "today": null
+              },
+              "overall": {
+                "title": null,
+                "when": null,
+                "word": null,
+                "digits": []
+              },
+              "card": {
+                "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+                "id": "integrity",
+                "key": "integrityexact1792004400000",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "00"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "01"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "29"
+                  },
+                  {
+                    "unit": "s",
+                    "text": "00"
+                  }
+                ]
+              },
+              "dock": {
+                "title": "Academic Integrity Quiz",
+                "chip": "1h 29m",
+                "section": "Section 1 · Group 1"
+              },
+              "hud": {
+                "title": "Academic Integrity Quiz",
+                "chip": "1h 29m"
+              },
+              "counts": {
+                "main": 1,
+                "dock": 1,
+                "card": 1,
+                "hud": 1,
+                "heading": 1,
+                "itemIds": [
+                  "guide-item-m3",
+                  "guide-item-m4",
+                  "guide-item-y6",
+                  "guide-item-m5",
+                  "guide-item-m6",
+                  "guide-item-m7",
+                  "guide-item-m1",
+                  "guide-item-m2",
+                  "guide-item-y3",
+                  "guide-item-y4",
+                  "guide-item-y5",
+                  "guide-item-y2",
+                  "guide-item-y7",
+                  "guide-item-y8",
+                  "guide-item-m8",
+                  "guide-item-y9",
+                  "guide-item-y1"
+                ]
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1792002480745
+                }
+              ],
+              "storageEvents": []
+            },
+            "clock": {
+              "before": "2026-10-14T18:30:00Z",
+              "jump": "2026-10-14T17:30:00Z",
+              "observed": "2026-10-14T17:31:00.000Z",
+              "timezone": "America/Toronto",
+              "allowedUpdateMs": 60000
+            },
+            "telemetry": []
+          }
+        ],
+        "runnerErrors": []
+      },
+      "skipped": [],
+      "durationMs": 167833,
+      "failures": 0
+    }
+  ],
+  "runErrors": []
+}

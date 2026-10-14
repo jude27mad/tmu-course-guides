@@ -12,6 +12,17 @@ const physicalClickTimeouts=new WeakMap();
 // Allow renderer/driver actionability overhead; semantic readiness keeps its own limits.
 export const clickTimeoutMs=({gpu,browserName}={})=>gpu===false&&browserName==='chromium'?30000:10000;
 const physicalClickOptions=page=>({timeout:physicalClickTimeouts.get(page)??10000});
+const clockedCompletionScopes=new WeakMap();
+export const clockedCompletionTimeoutMs=options=>clickTimeoutMs(options);
+const defaultClockedCompletionPolicy=Object.freeze({browserName:null,gpu:null,timeoutMs:10000});
+export function registerClockedCompletionScope(page,{browser,gpu,observation}={}) {
+  let browserName=null;
+  try {browserName=browser?.browserType?.()?.name?.()??null;} catch {}
+  const policy=Object.freeze({browserName,gpu:gpu??null,timeoutMs:clockedCompletionTimeoutMs({browserName,gpu})});
+  const actions=[];
+  if(observation) {observation.clockedCompletionPolicy=policy;observation.clockedCompletionActions=actions;}
+  const state={policy,actions};clockedCompletionScopes.set(page,state);return state;
+}
 function assert(out, name, pass, actual, expected, detail) {
   out.assertions.push({name,pass:!!pass,...(actual===undefined?{}:{actual}),...(expected===undefined?{}:{expected}),...(detail?{detail}:{})});
 }
@@ -75,6 +86,7 @@ async function runCase(env, out, name, fn, {storage={},contextOptions={},browser
     const physicalClickTimeoutMs=clickTimeoutMs({gpu:env.gpu,browserName:browser.browserType?.().name?.()});
     physicalClickTimeouts.set(page,physicalClickTimeoutMs);
     observation.physicalClickTimeoutMs=physicalClickTimeoutMs;
+    if(clock) registerClockedCompletionScope(page,{browser,gpu:env.gpu,observation});
     const errors = telemetry(page);
     observation.telemetry = errors;
     if(process.env.QA_NAV_DIAGNOSTICS==='1') {
@@ -133,10 +145,45 @@ async function sceneSettled(page) {
   await page.evaluate(()=>new Promise(done=>requestAnimationFrame(()=>requestAnimationFrame(done))));
 }
 
-async function activateClocked(page,selector) {
+export function clockedCompletionSnapshot(page,selector) {
+  return page.evaluate(selector=>{
+    const elements=document.querySelectorAll(selector),element=elements[0];
+    return {url:location.href,route:window.TMURouter?.route,completedRoute:window.__qaRouteCompleted,selector,count:elements.length,
+      first:element?{tag:element.tagName,id:element.id,completion:element.dataset.quickComplete??null,isConnected:element.isConnected,disabled:typeof element.disabled==='boolean'?element.disabled:null,rectCount:element.getClientRects().length}:null};
+  },selector);
+}
+
+export async function boundedClockedCompletionDiagnostic(snapshot,{setTimer=setTimeout,clearTimer=clearTimeout}={}) {
+  let timer;
+  try {return await Promise.race([Promise.resolve().then(snapshot),new Promise((_,reject)=>{timer=setTimer(()=>reject(Error('Clocked completion snapshot exceeded 5000 ms')),5000);})]);}
+  finally {if(timer!==undefined)clearTimer(timer);}
+}
+
+export async function activateClocked(page,selector,{now=Date.now,snapshot=clockedCompletionSnapshot,setTimer,clearTimer}={}) {
   // Native button activation tests deadline semantics with a simulated clock.
   // Pointer hit testing and tab navigation are tested with real timers elsewhere.
-  await page.locator(selector).first().evaluate(el=>{if(el.disabled||!el.getClientRects().length)throw Error('Deadline action unavailable');el.click();});
+  // Extend only the registered software Chromium call; all semantic checks and
+  // default limits remain unchanged. The earlier timeout's exact cause is unknown.
+  const scope=clockedCompletionScopes.get(page),policy=scope?.policy??defaultClockedCompletionPolicy;
+  const trace={selector,method:'evaluate-click',first:true,policy,timeoutMs:policy.timeoutMs,nativeCall:{method:'Locator.first().evaluate',argument:'undefined',options:{timeout:policy.timeoutMs}},status:'pending'};
+  scope?.actions.push(trace);
+  const capture=async phase=>{
+    const start=now();trace[phase+'DiagnosticStartedAt']=start;
+    try {trace[phase+'Snapshot']=await boundedClockedCompletionDiagnostic(()=>snapshot(page,selector),{setTimer,clearTimer});}
+    catch(error) {trace[phase+'SnapshotError']=error?.message??String(error);}
+    finally {const end=now();trace[phase+'DiagnosticCompletedAt']=end;trace[phase+'DiagnosticElapsedMs']=end-start;}
+  };
+  await capture('before');
+  trace.startedAt=now();
+  try {
+    await page.locator(selector).first().evaluate(el=>{if(el.disabled||!el.getClientRects().length)throw Error('Deadline action unavailable');el.click();},undefined,{timeout:policy.timeoutMs});
+    trace.completedAt=now();trace.elapsedMs=trace.completedAt-trace.startedAt;trace.status='activated';
+    return trace;
+  } catch(error) {
+    trace.completedAt=now();trace.elapsedMs=trace.completedAt-trace.startedAt;trace.status='error';trace.error=error?.message??String(error);
+    await capture('failure');
+    throw error;
+  }
 }
 
 async function settle(page,out) {

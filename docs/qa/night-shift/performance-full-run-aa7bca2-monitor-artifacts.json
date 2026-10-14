@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T05:39:35.731Z",
+  "rawDirectory": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962",
+  "startedAt": "2026-10-14T04:29:12.369Z",
+  "completedAt": "2026-10-14T05:38:20.262Z",
+  "status": "failed",
+  "summaryExitCode": 1,
+  "cliExitCode": null,
+  "cliExitNote": "Root owns session31458 and retrieves the actual CLI exit independently.",
+  "counts": {
+    "checks": 14,
+    "records": 28,
+    "passedRecords": 21,
+    "failedRecords": 5,
+    "skippedRecords": 2,
+    "assertions": 2859,
+    "passedAssertions": 2852,
+    "failedAssertions": 7,
+    "skipEntries": 4,
+    "runnerEvents": 229
+  },
+  "artifacts": [
+    {
+      "name": "perf",
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/perf.json",
+      "sha256": "8f02ee6001a545562ea711facd17f8483fd089c0bb5be2014d330bc8453f9ad3",
+      "status": "passed",
+      "failures": 0,
+      "caseCount": 2,
+      "bases": [
+        "/",
+        "/tmu-course-guides/"
+      ],
+      "completedAt": "2026-10-14T05:38:20.262Z",
+      "equalToSummaryCases": true
+    },
+    {
+      "name": "routes",
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/routes.json",
+      "sha256": "9305417e6d893e16b5e7b806b6fa00d42e6db0df4fbfe019e8882386b5ac824f",
+      "status": "passed",
+      "failures": 0,
+      "caseCount": 2,
+      "bases": [
+        "/",
+        "/tmu-course-guides/"
+      ],
+      "completedAt": "2026-10-14T05:38:20.262Z",
+      "equalToSummaryCases": true
+    },
+    {
+      "name": "stability",
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/stability.json",
+      "sha256": "864b2d6fee0e2f0a5f618910f9958a429f226e852d0d394da96ccf3ea4c8a132",
+      "status": "passed",
+      "failures": 0,
+      "caseCount": 2,
+      "bases": [
+        "/",
+        "/tmu-course-guides/"
+      ],
+      "completedAt": "2026-10-14T05:38:20.262Z",
+      "equalToSummaryCases": true
+    },
+    {
+      "name": "frames",
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/frames.json",
+      "sha256": "c4a6b95fac2477b3da41a15fac92fd52862613f011617eee6b5a38d2630eb253",
+      "status": "passed",
+      "failures": 0,
+      "caseCount": 2,
+      "bases": [
+        "/",
+        "/tmu-course-guides/"
+      ],
+      "completedAt": "2026-10-14T05:38:20.262Z",
+      "equalToSummaryCases": true
+    },
+    {
+      "name": "deadlines",
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/deadlines.json",
+      "sha256": "991bae1302dc9eedf90be9f34e80bddbc05c1d3869ae0c07b0d94d3298058f96",
+      "status": "failed",
+      "failures": 1,
+      "caseCount": 2,
+      "bases": [
+        "/",
+        "/tmu-course-guides/"
+      ],
+      "completedAt": "2026-10-14T05:38:20.262Z",
+      "equalToSummaryCases": true
+    },
+    {
+      "name": "modes",
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/modes.json",
+      "sha256": "fa79f6d11d93cffbf93bc8495fa3e4ea1374f683a368ea3a5261a530a9e9ea8a",
+      "status": "passed",
+      "failures": 0,
+      "caseCount": 2,
+      "bases": [
+        "/",
+        "/tmu-course-guides/"
+      ],
+      "completedAt": "2026-10-14T05:38:20.262Z",
+      "equalToSummaryCases": true
+    },
+    {
+      "name": "layout",
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/layout.json",
+      "sha256": "22f70587e4cf7a95c803dbcc91a27996240c8eb08fd613bc361b37ae325c164e",
+      "status": "passed",
+      "failures": 0,
+      "caseCount": 2,
+      "bases": [
+        "/",
+        "/tmu-course-guides/"
+      ],
+      "completedAt": "2026-10-14T05:38:20.262Z",
+      "equalToSummaryCases": true
+    },
+    {
+      "name": "webkit",
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/webkit.json",
+      "sha256": "a7e200277b147e4a2378599e55e555fe88729e38ff1edc46f72cc32b01cf5b81",
+      "status": "skipped",
+      "failures": 0,
+      "caseCount": 2,
+      "bases": [
+        "/",
+        "/tmu-course-guides/"
+      ],
+      "completedAt": "2026-10-14T05:38:20.262Z",
+      "equalToSummaryCases": true
+    },
+    {
+      "name": "nojs",
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/nojs.json",
+      "sha256": "f8d07ceb0f0d1cd4a0b3b4a654a3a475c42776024cbb44118bceb08283fdffbb",
+      "status": "passed",
+      "failures": 0,
+      "caseCount": 2,
+      "bases": [
+        "/",
+        "/tmu-course-guides/"
+      ],
+      "completedAt": "2026-10-14T05:38:20.262Z",
+      "equalToSummaryCases": true
+    },
+    {
+      "name": "bfcache",
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/bfcache.json",
+      "sha256": "a7e6d2acd782082ef9dbaeb346a28c1eb0d4c337c998a695eb9a56e6987c7793",
+      "status": "failed",
+      "failures": 1,
+      "caseCount": 2,
+      "bases": [
+        "/",
+        "/tmu-course-guides/"
+      ],
+      "completedAt": "2026-10-14T05:38:20.262Z",
+      "equalToSummaryCases": true
+    },
+    {
+      "name": "failures",
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/failures.json",
+      "sha256": "2e271eec61c9e67ee67cc8c2aabfdde59ae404d43b5fab2faa65cb31d3ff6de5",
+      "status": "failed",
+      "failures": 2,
+      "caseCount": 2,
+      "bases": [
+        "/",
+        "/tmu-course-guides/"
+      ],
+      "completedAt": "2026-10-14T05:38:20.262Z",
+      "equalToSummaryCases": true
+    },
+    {
+      "name": "crosstab",
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/crosstab.json",
+      "sha256": "8f7e274742bcafe68ea6b7339cc40b5cfd2e131daf48087d7c172b7532cf6765",
+      "status": "failed",
+      "failures": 3,
+      "caseCount": 2,
+      "bases": [
+        "/",
+        "/tmu-course-guides/"
+      ],
+      "completedAt": "2026-10-14T05:38:20.262Z",
+      "equalToSummaryCases": true
+    },
+    {
+      "name": "clock",
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/clock.json",
+      "sha256": "a3560e3bb1b7710e8f9660db9419da97d9c9cf86fb168527736ae44ff3a6bd63",
+      "status": "passed",
+      "failures": 0,
+      "caseCount": 2,
+      "bases": [
+        "/",
+        "/tmu-course-guides/"
+      ],
+      "completedAt": "2026-10-14T05:38:20.262Z",
+      "equalToSummaryCases": true
+    },
+    {
+      "name": "forward",
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/forward.json",
+      "sha256": "e3d4e79afc29c87e5906061c1f46394c5d300e3c4b53ab722332167372072e6d",
+      "status": "passed",
+      "failures": 0,
+      "caseCount": 2,
+      "bases": [
+        "/",
+        "/tmu-course-guides/"
+      ],
+      "completedAt": "2026-10-14T05:38:20.262Z",
+      "equalToSummaryCases": true
+    }
+  ],
+  "additional": [
+    {
+      "path": "/tmp/ns-perf-aa7-full-source-start.json",
+      "sha256": "7a583a1877f5785dc4778f9ccd33e1af3198ef41bb33ef7ab306e070942c9252"
+    },
+    {
+      "path": "/tmp/ns-perf-aa7-full-source-close.json",
+      "sha256": "4d1e5185244bf39bec665a5fa6537697b41d89ad6ae7521da7f226fab08cef8f"
+    },
+    {
+      "path": "/tmp/ns-perf-aa7-full-monitor-proof.json",
+      "sha256": "6d32b58e37caa53341aa340936c73542f31f4b4a50e600e4cecc60c3c411f4f9"
+    },
+    {
+      "path": "/tmp/ns-perf-aa7-full-qa.log",
+      "sha256": "d062b47b0e724883da5bfccafed2fd92589854a302987842869cd1e94e3038ef"
+    },
+    {
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/summary.json",
+      "sha256": "cce1749b0815925c9a877b39f2c6d56e1c8b5ebb26d9eeb398a70970dfec1901"
+    }
+  ],
+  "all14ReportsCompleteAndMatch": true,
+  "runErrors": []
+}
