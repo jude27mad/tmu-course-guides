@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "status": "active-QA-helper-source-continuity-verified-browser-followup-pending",
+  "recordedAt": "2026-10-14T05:45:12.846082+00:00",
+  "originalFullRunSource": {
+    "startPath": "/tmp/ns-perf-aa7-full-source-start.json",
+    "startSHA256": "7a583a1877f5785dc4778f9ccd33e1af3198ef41bb33ef7ab306e070942c9252",
+    "closePath": "/tmp/ns-perf-aa7-full-source-close.json",
+    "closeSHA256": "4d1e5185244bf39bec665a5fa6537697b41d89ad6ae7521da7f226fab08cef8f",
+    "launchRevision": "cec2cef7c58752f5f08ffaa979206af25c3ec602",
+    "originalChecksSHA256": "340eaf3e1ac9a1aac7958e6e7b97d73c176f991fa754f661f2525f5a34b52e16"
+  },
+  "activeHelper": {
+    "path": "tools/qa/checks.mjs",
+    "sha256": "90b19585765d2ffc933a3aa75ab09e4b3d8da87d207cb26353fc54c64fb50b5a",
+    "matchesReviewedIsolatedProposal": true,
+    "normalizationRestoresWholeOriginalFileByteForByte": true,
+    "normalizedSHA256": "340eaf3e1ac9a1aac7958e6e7b97d73c176f991fa754f661f2525f5a34b52e16",
+    "originalNativeCallbackSHA256": "ddd371bfa882666ca720b66b7b790910eeb491fb1e87323d437dc9441af6c215",
+    "callbackByteIdentical": true,
+    "wholeDeadlinesFunctionBytes": 4478,
+    "wholeDeadlinesFunctionSHA256": "93a66285f1ad79b53b1a5283b905cdbfe455015add5ff0f187a3e6f8d07edad4",
+    "allFixturesAndAssertionsAndCallSitesByteIdentical": true,
+    "assertSubstringOccurrencesIncludingDefinition": 50,
+    "executableAssertCallSitesExcludingDefinition": 49,
+    "assertionSourceLinesExcludingDefinition": 49,
+    "assertionSourceLinesSHA256": "af9557f0d5445c1fce88bed09c7acbfb278c143fec69768504a1155df48a22bb",
+    "unchangedCallSites": [
+      "await activateClocked(page,'[data-quick-complete]');",
+      "await activateClocked(page,'#undo-complete');"
+    ],
+    "onlyClockedRunCaseCaller": [
+      "},{storage:deadlineStorage(fixture.course,fixture.uncompleted,fixture.section),contextOptions:{timezoneId:'America/Toronto'},clock:fixture.now});"
+    ],
+    "newRegistrationOnlyWhenClockTruthy": true,
+    "pageDefaultTimeoutStillMs": 10000,
+    "runCaseOtherChangedLines": 0,
+    "otherRuntimeSourcesUnchanged": [
+      {
+        "path": "tools/qa/checks-resilience.mjs",
+        "originalFullRunSHA256": "b2bafedee3cc0569d4354334d42fcaac55d3ddcbf7ceb0e1ecdf43bddcd1f8d6",
+        "activeSHA256": "b2bafedee3cc0569d4354334d42fcaac55d3ddcbf7ceb0e1ecdf43bddcd1f8d6",
+        "equal": true
+      },
+      {
+        "path": "tools/qa/checks-perf.mjs",
+        "originalFullRunSHA256": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657",
+        "activeSHA256": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657",
+        "equal": true
+      },
+      {
+        "path": "tools/qa/runtime.mjs",
+        "originalFullRunSHA256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587",
+        "activeSHA256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587",
+        "equal": true
+      },
+      {
+        "path": "tools/qa/instrument.mjs",
+        "originalFullRunSHA256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892",
+        "activeSHA256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892",
+        "equal": true
+      }
+    ]
+  },
+  "runtimeSelection": {
+    "selectionArgument": "deadlines",
+    "selectedChecks": [
+      "deadlines"
+    ],
+    "bases": [
+      "/",
+      "/tmu-course-guides/"
+    ],
+    "gpu": false,
+    "onlySelectedFunctionCalled": true,
+    "completeFunctionRunsAtEachBase": true,
+    "allCheckFunctionsRemainImportedButUnselectedFunctionsNotExecuted": true,
+    "supportingLines": {
+      "run": "tools/qa/run.mjs:8",
+      "selection": "tools/qa/runtime.mjs:36",
+      "defaultBases": "tools/qa/runtime.mjs:38",
+      "nativeCallLoop": "tools/qa/runtime.mjs:314"
+    }
+  },
+  "originalFailureDisposition": "Preserve the immutable full-run failed assertion and original status. Exact cause unknown. Replace only whole deadlines check after genuine complete two-base followup passes; do not change or manufacture original full-run pass."
+}

@@ -1,0 +1,1151 @@
+{
+  "schemaVersion": 1,
+  "status": "verified",
+  "recordedAt": "2026-10-14T09:43:07.476973+00:00",
+  "libraryDirectory": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu",
+  "dependencyManifest": {
+    "path": "/tmp/ns-perf-webkit-local-dependencies.json",
+    "sha256": "741decea65ff53f7e47bbc3852f78ba3969cd00900024365d1aca155d9350c00"
+  },
+  "packages": [
+    {
+      "path": "/tmp/ns-perf-webkit-debs/libcairo-script-interpreter2_1.18.4-1+b1_amd64.deb",
+      "realPath": "/tmp/ns-perf-webkit-debs/libcairo-script-interpreter2_1.18.4-1+b1_amd64.deb",
+      "sha256": "52b45eb6e49c53c0a35ef45555a9457b094482eafef27d27cd777b916a2f06de",
+      "bytes": 59256,
+      "linkTarget": null,
+      "name": "libcairo-script-interpreter2_1.18.4-1+b1_amd64.deb",
+      "package": "libcairo-script-interpreter2",
+      "version": "1.18.4-1+b1"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-debs/libgles2_1.7.0-1+b2_amd64.deb",
+      "realPath": "/tmp/ns-perf-webkit-debs/libgles2_1.7.0-1+b2_amd64.deb",
+      "sha256": "e12c18aa77939d122ee1dea520ba0440b97dc19200b7396e03dff03a3ece74c1",
+      "bytes": 17256,
+      "linkTarget": null,
+      "name": "libgles2_1.7.0-1+b2_amd64.deb",
+      "package": "libgles2",
+      "version": "1.7.0-1+b2"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-debs/libgraphene-1.0-0_1.10.8-5_amd64.deb",
+      "realPath": "/tmp/ns-perf-webkit-debs/libgraphene-1.0-0_1.10.8-5_amd64.deb",
+      "sha256": "ddcf98f17f6c0a7c76974d7238be1468e59c186034c1b806638d32d9f446ea6e",
+      "bytes": 42352,
+      "linkTarget": null,
+      "name": "libgraphene-1.0-0_1.10.8-5_amd64.deb",
+      "package": "libgraphene-1.0-0",
+      "version": "1.10.8-5"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-debs/libgtk-4-1_4.18.6+ds-2_amd64.deb",
+      "realPath": "/tmp/ns-perf-webkit-debs/libgtk-4-1_4.18.6+ds-2_amd64.deb",
+      "sha256": "51ab1114a57702e703cce745c24caf5bd31ec1d2a900c72fd15fe47c6c030e68",
+      "bytes": 3166640,
+      "linkTarget": null,
+      "name": "libgtk-4-1_4.18.6+ds-2_amd64.deb",
+      "package": "libgtk-4-1",
+      "version": "4.18.6+ds-2"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-debs/libharfbuzz-icu0_10.2.0-1+deb13u1_amd64.deb",
+      "realPath": "/tmp/ns-perf-webkit-debs/libharfbuzz-icu0_10.2.0-1+deb13u1_amd64.deb",
+      "sha256": "0b45d951629e98673c0da73b2bcd0886a467d833bb3b7499892a168f247165d2",
+      "bytes": 15452,
+      "linkTarget": null,
+      "name": "libharfbuzz-icu0_10.2.0-1+deb13u1_amd64.deb",
+      "package": "libharfbuzz-icu0",
+      "version": "10.2.0-1+deb13u1"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-debs/libhidapi-hidraw0_0.14.0-1+b2_amd64.deb",
+      "realPath": "/tmp/ns-perf-webkit-debs/libhidapi-hidraw0_0.14.0-1+b2_amd64.deb",
+      "sha256": "89c546cb55be403ce63fe668baff2515979100a30fa07e2b97de186b9c07f01e",
+      "bytes": 12664,
+      "linkTarget": null,
+      "name": "libhidapi-hidraw0_0.14.0-1+b2_amd64.deb",
+      "package": "libhidapi-hidraw0",
+      "version": "0.14.0-1+b2"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-debs/libhyphen0_2.8.8-7+b2_amd64.deb",
+      "realPath": "/tmp/ns-perf-webkit-debs/libhyphen0_2.8.8-7+b2_amd64.deb",
+      "sha256": "fa9dca7b8cf1381fd52800c44a385c5725a78a88bd705f7c39b1046a5293435e",
+      "bytes": 30664,
+      "linkTarget": null,
+      "name": "libhyphen0_2.8.8-7+b2_amd64.deb",
+      "package": "libhyphen0",
+      "version": "2.8.8-7+b2"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-debs/liblzo2-2_2.10-3+b1_amd64.deb",
+      "realPath": "/tmp/ns-perf-webkit-debs/liblzo2-2_2.10-3+b1_amd64.deb",
+      "sha256": "f3032201fe2928a87e13f05ce256ff3ac2a7860c7e594dc51ae6d7348a4466ce",
+      "bytes": 55100,
+      "linkTarget": null,
+      "name": "liblzo2-2_2.10-3+b1_amd64.deb",
+      "package": "liblzo2-2",
+      "version": "2.10-3+b1"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-debs/libmanette-0.2-0_0.2.12-1_amd64.deb",
+      "realPath": "/tmp/ns-perf-webkit-debs/libmanette-0.2-0_0.2.12-1_amd64.deb",
+      "sha256": "98841a467692c46fd1870275113235691ebbfe71a3524f6b2a0fa7e9c33c6e56",
+      "bytes": 43752,
+      "linkTarget": null,
+      "name": "libmanette-0.2-0_0.2.12-1_amd64.deb",
+      "package": "libmanette-0.2-0",
+      "version": "0.2.12-1"
+    }
+  ],
+  "libraries": [
+    {
+      "path": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2.1.0",
+      "sha256": "a705c66de30ca4e883120c70acae0f1011d7c3f97605eef331e03493beae3812",
+      "bytes": 71832,
+      "linkTarget": "libGLESv2.so.2.1.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2",
+      "soname": "libGLESv2.so.2",
+      "package": "libgles2_1.7.0-1+b2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2.1.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2.1.0",
+      "sha256": "a705c66de30ca4e883120c70acae0f1011d7c3f97605eef331e03493beae3812",
+      "bytes": 71832,
+      "linkTarget": null,
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2.1.0",
+      "soname": "libGLESv2.so.2",
+      "package": "libgles2_1.7.0-1+b2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2.11804.4",
+      "sha256": "dfa4f90f5e2ff7557fdfdcab3a354687e321be88649eaa0f66c74ab66c66c21f",
+      "bytes": 160480,
+      "linkTarget": "libcairo-script-interpreter.so.2.11804.4",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2",
+      "soname": "libcairo-script-interpreter.so.2",
+      "package": "libcairo-script-interpreter2_1.18.4-1+b1_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2.11804.4",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2.11804.4",
+      "sha256": "dfa4f90f5e2ff7557fdfdcab3a354687e321be88649eaa0f66c74ab66c66c21f",
+      "bytes": 160480,
+      "linkTarget": null,
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2.11804.4",
+      "soname": "libcairo-script-interpreter.so.2",
+      "package": "libcairo-script-interpreter2_1.18.4-1+b1_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0.1000.8",
+      "sha256": "8b313232e77ee9060a4c242e13c3731f2e815ff5af319b6003788c40510bfdfc",
+      "bytes": 116576,
+      "linkTarget": "libgraphene-1.0.so.0.1000.8",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0",
+      "soname": "libgraphene-1.0.so.0",
+      "package": "libgraphene-1.0-0_1.10.8-5_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0.1000.8",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0.1000.8",
+      "sha256": "8b313232e77ee9060a4c242e13c3731f2e815ff5af319b6003788c40510bfdfc",
+      "bytes": 116576,
+      "linkTarget": null,
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0.1000.8",
+      "soname": "libgraphene-1.0.so.0",
+      "package": "libgraphene-1.0-0_1.10.8-5_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1.1800.6",
+      "sha256": "36afb4270891fd08e2ff5817541e2729ddd020cd1fc6af58bde53ce0ad769e8e",
+      "bytes": 11050200,
+      "linkTarget": "libgtk-4.so.1.1800.6",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1",
+      "soname": "libgtk-4.so.1",
+      "package": "libgtk-4-1_4.18.6+ds-2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1.1800.6",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1.1800.6",
+      "sha256": "36afb4270891fd08e2ff5817541e2729ddd020cd1fc6af58bde53ce0ad769e8e",
+      "bytes": 11050200,
+      "linkTarget": null,
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1.1800.6",
+      "soname": "libgtk-4.so.1",
+      "package": "libgtk-4-1_4.18.6+ds-2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0.61020.0",
+      "sha256": "2f4a4b769aa49d0d1a5ffc74969e27c0800a0af4e3557d5a1726058ea516ffd2",
+      "bytes": 14176,
+      "linkTarget": "libharfbuzz-icu.so.0.61020.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0",
+      "soname": "libharfbuzz-icu.so.0",
+      "package": "libharfbuzz-icu0_10.2.0-1+deb13u1_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0.61020.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0.61020.0",
+      "sha256": "2f4a4b769aa49d0d1a5ffc74969e27c0800a0af4e3557d5a1726058ea516ffd2",
+      "bytes": 14176,
+      "linkTarget": null,
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0.61020.0",
+      "soname": "libharfbuzz-icu.so.0",
+      "package": "libharfbuzz-icu0_10.2.0-1+deb13u1_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0.0.0",
+      "sha256": "efbd56b5abd00cff532e66e067e45994e43cf51cf74d5cd9f69d23bb373b5296",
+      "bytes": 26472,
+      "linkTarget": "libhidapi-hidraw.so.0.0.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0",
+      "soname": "libhidapi-hidraw.so.0",
+      "package": "libhidapi-hidraw0_0.14.0-1+b2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0.0.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0.0.0",
+      "sha256": "efbd56b5abd00cff532e66e067e45994e43cf51cf74d5cd9f69d23bb373b5296",
+      "bytes": 26472,
+      "linkTarget": null,
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0.0.0",
+      "soname": "libhidapi-hidraw.so.0",
+      "package": "libhidapi-hidraw0_0.14.0-1+b2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0.3.0",
+      "sha256": "10067ece9b6d1b77b64b4df23062cec0d2e8638c89ccf91d8276065433149ab2",
+      "bytes": 26464,
+      "linkTarget": "libhyphen.so.0.3.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0",
+      "soname": "libhyphen.so.0",
+      "package": "libhyphen0_2.8.8-7+b2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0.3.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0.3.0",
+      "sha256": "10067ece9b6d1b77b64b4df23062cec0d2e8638c89ccf91d8276065433149ab2",
+      "bytes": 26464,
+      "linkTarget": null,
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0.3.0",
+      "soname": "libhyphen.so.0",
+      "package": "libhyphen0_2.8.8-7+b2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/liblzo2.so.2",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/liblzo2.so.2.0.0",
+      "sha256": "c5425e5594b9f73641796b7a311b55ee679773f840c5f1a211f5eea6fa35775b",
+      "bytes": 145320,
+      "linkTarget": "liblzo2.so.2.0.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/liblzo2.so.2",
+      "soname": "liblzo2.so.2",
+      "package": "liblzo2-2_2.10-3+b1_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/liblzo2.so.2.0.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/liblzo2.so.2.0.0",
+      "sha256": "c5425e5594b9f73641796b7a311b55ee679773f840c5f1a211f5eea6fa35775b",
+      "bytes": 145320,
+      "linkTarget": null,
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/liblzo2.so.2.0.0",
+      "soname": "liblzo2.so.2",
+      "package": "liblzo2-2_2.10-3+b1_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libmanette-0.2.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libmanette-0.2.so.0",
+      "sha256": "dd7f16e036f30544c25c97f6d1d0ef76d5d33a294f82cfa2ea35d36a18dc60ee",
+      "bytes": 309312,
+      "linkTarget": null,
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libmanette-0.2.so.0",
+      "soname": "libmanette-0.2.so.0",
+      "package": "libmanette-0.2-0_0.2.12-1_amd64.deb"
+    }
+  ],
+  "links": [
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libGLESv2.so.2",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2.1.0",
+      "sha256": "a705c66de30ca4e883120c70acae0f1011d7c3f97605eef331e03493beae3812",
+      "bytes": 71832,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libGLESv2.so.2",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2",
+      "soname": "libGLESv2.so.2",
+      "package": "libgles2_1.7.0-1+b2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libGLESv2.so.2.1.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2.1.0",
+      "sha256": "a705c66de30ca4e883120c70acae0f1011d7c3f97605eef331e03493beae3812",
+      "bytes": 71832,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2.1.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libGLESv2.so.2.1.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2.1.0",
+      "soname": "libGLESv2.so.2",
+      "package": "libgles2_1.7.0-1+b2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libcairo-script-interpreter.so.2",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2.11804.4",
+      "sha256": "dfa4f90f5e2ff7557fdfdcab3a354687e321be88649eaa0f66c74ab66c66c21f",
+      "bytes": 160480,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libcairo-script-interpreter.so.2",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2",
+      "soname": "libcairo-script-interpreter.so.2",
+      "package": "libcairo-script-interpreter2_1.18.4-1+b1_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libcairo-script-interpreter.so.2.11804.4",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2.11804.4",
+      "sha256": "dfa4f90f5e2ff7557fdfdcab3a354687e321be88649eaa0f66c74ab66c66c21f",
+      "bytes": 160480,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2.11804.4",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libcairo-script-interpreter.so.2.11804.4",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2.11804.4",
+      "soname": "libcairo-script-interpreter.so.2",
+      "package": "libcairo-script-interpreter2_1.18.4-1+b1_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libgraphene-1.0.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0.1000.8",
+      "sha256": "8b313232e77ee9060a4c242e13c3731f2e815ff5af319b6003788c40510bfdfc",
+      "bytes": 116576,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libgraphene-1.0.so.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0",
+      "soname": "libgraphene-1.0.so.0",
+      "package": "libgraphene-1.0-0_1.10.8-5_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libgraphene-1.0.so.0.1000.8",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0.1000.8",
+      "sha256": "8b313232e77ee9060a4c242e13c3731f2e815ff5af319b6003788c40510bfdfc",
+      "bytes": 116576,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0.1000.8",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libgraphene-1.0.so.0.1000.8",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0.1000.8",
+      "soname": "libgraphene-1.0.so.0",
+      "package": "libgraphene-1.0-0_1.10.8-5_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libgtk-4.so.1",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1.1800.6",
+      "sha256": "36afb4270891fd08e2ff5817541e2729ddd020cd1fc6af58bde53ce0ad769e8e",
+      "bytes": 11050200,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libgtk-4.so.1",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1",
+      "soname": "libgtk-4.so.1",
+      "package": "libgtk-4-1_4.18.6+ds-2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libgtk-4.so.1.1800.6",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1.1800.6",
+      "sha256": "36afb4270891fd08e2ff5817541e2729ddd020cd1fc6af58bde53ce0ad769e8e",
+      "bytes": 11050200,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1.1800.6",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libgtk-4.so.1.1800.6",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1.1800.6",
+      "soname": "libgtk-4.so.1",
+      "package": "libgtk-4-1_4.18.6+ds-2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libharfbuzz-icu.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0.61020.0",
+      "sha256": "2f4a4b769aa49d0d1a5ffc74969e27c0800a0af4e3557d5a1726058ea516ffd2",
+      "bytes": 14176,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libharfbuzz-icu.so.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0",
+      "soname": "libharfbuzz-icu.so.0",
+      "package": "libharfbuzz-icu0_10.2.0-1+deb13u1_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libharfbuzz-icu.so.0.61020.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0.61020.0",
+      "sha256": "2f4a4b769aa49d0d1a5ffc74969e27c0800a0af4e3557d5a1726058ea516ffd2",
+      "bytes": 14176,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0.61020.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libharfbuzz-icu.so.0.61020.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0.61020.0",
+      "soname": "libharfbuzz-icu.so.0",
+      "package": "libharfbuzz-icu0_10.2.0-1+deb13u1_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libhidapi-hidraw.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0.0.0",
+      "sha256": "efbd56b5abd00cff532e66e067e45994e43cf51cf74d5cd9f69d23bb373b5296",
+      "bytes": 26472,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libhidapi-hidraw.so.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0",
+      "soname": "libhidapi-hidraw.so.0",
+      "package": "libhidapi-hidraw0_0.14.0-1+b2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libhidapi-hidraw.so.0.0.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0.0.0",
+      "sha256": "efbd56b5abd00cff532e66e067e45994e43cf51cf74d5cd9f69d23bb373b5296",
+      "bytes": 26472,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0.0.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libhidapi-hidraw.so.0.0.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0.0.0",
+      "soname": "libhidapi-hidraw.so.0",
+      "package": "libhidapi-hidraw0_0.14.0-1+b2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libhyphen.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0.3.0",
+      "sha256": "10067ece9b6d1b77b64b4df23062cec0d2e8638c89ccf91d8276065433149ab2",
+      "bytes": 26464,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libhyphen.so.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0",
+      "soname": "libhyphen.so.0",
+      "package": "libhyphen0_2.8.8-7+b2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libhyphen.so.0.3.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0.3.0",
+      "sha256": "10067ece9b6d1b77b64b4df23062cec0d2e8638c89ccf91d8276065433149ab2",
+      "bytes": 26464,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0.3.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libhyphen.so.0.3.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0.3.0",
+      "soname": "libhyphen.so.0",
+      "package": "libhyphen0_2.8.8-7+b2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/liblzo2.so.2",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/liblzo2.so.2.0.0",
+      "sha256": "c5425e5594b9f73641796b7a311b55ee679773f840c5f1a211f5eea6fa35775b",
+      "bytes": 145320,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/liblzo2.so.2",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/liblzo2.so.2",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/liblzo2.so.2",
+      "soname": "liblzo2.so.2",
+      "package": "liblzo2-2_2.10-3+b1_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/liblzo2.so.2.0.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/liblzo2.so.2.0.0",
+      "sha256": "c5425e5594b9f73641796b7a311b55ee679773f840c5f1a211f5eea6fa35775b",
+      "bytes": 145320,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/liblzo2.so.2.0.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/liblzo2.so.2.0.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/liblzo2.so.2.0.0",
+      "soname": "liblzo2.so.2",
+      "package": "liblzo2-2_2.10-3+b1_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libmanette-0.2.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libmanette-0.2.so.0",
+      "sha256": "dd7f16e036f30544c25c97f6d1d0ef76d5d33a294f82cfa2ea35d36a18dc60ee",
+      "bytes": 309312,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libmanette-0.2.so.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libmanette-0.2.so.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libmanette-0.2.so.0",
+      "soname": "libmanette-0.2.so.0",
+      "package": "libmanette-0.2-0_0.2.12-1_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libGLESv2.so.2",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2.1.0",
+      "sha256": "a705c66de30ca4e883120c70acae0f1011d7c3f97605eef331e03493beae3812",
+      "bytes": 71832,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libGLESv2.so.2",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2",
+      "soname": "libGLESv2.so.2",
+      "package": "libgles2_1.7.0-1+b2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libGLESv2.so.2.1.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2.1.0",
+      "sha256": "a705c66de30ca4e883120c70acae0f1011d7c3f97605eef331e03493beae3812",
+      "bytes": 71832,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2.1.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libGLESv2.so.2.1.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2.1.0",
+      "soname": "libGLESv2.so.2",
+      "package": "libgles2_1.7.0-1+b2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libcairo-script-interpreter.so.2",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2.11804.4",
+      "sha256": "dfa4f90f5e2ff7557fdfdcab3a354687e321be88649eaa0f66c74ab66c66c21f",
+      "bytes": 160480,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libcairo-script-interpreter.so.2",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2",
+      "soname": "libcairo-script-interpreter.so.2",
+      "package": "libcairo-script-interpreter2_1.18.4-1+b1_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libcairo-script-interpreter.so.2.11804.4",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2.11804.4",
+      "sha256": "dfa4f90f5e2ff7557fdfdcab3a354687e321be88649eaa0f66c74ab66c66c21f",
+      "bytes": 160480,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2.11804.4",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libcairo-script-interpreter.so.2.11804.4",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2.11804.4",
+      "soname": "libcairo-script-interpreter.so.2",
+      "package": "libcairo-script-interpreter2_1.18.4-1+b1_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libgraphene-1.0.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0.1000.8",
+      "sha256": "8b313232e77ee9060a4c242e13c3731f2e815ff5af319b6003788c40510bfdfc",
+      "bytes": 116576,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libgraphene-1.0.so.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0",
+      "soname": "libgraphene-1.0.so.0",
+      "package": "libgraphene-1.0-0_1.10.8-5_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libgraphene-1.0.so.0.1000.8",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0.1000.8",
+      "sha256": "8b313232e77ee9060a4c242e13c3731f2e815ff5af319b6003788c40510bfdfc",
+      "bytes": 116576,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0.1000.8",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libgraphene-1.0.so.0.1000.8",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0.1000.8",
+      "soname": "libgraphene-1.0.so.0",
+      "package": "libgraphene-1.0-0_1.10.8-5_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libgtk-4.so.1",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1.1800.6",
+      "sha256": "36afb4270891fd08e2ff5817541e2729ddd020cd1fc6af58bde53ce0ad769e8e",
+      "bytes": 11050200,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libgtk-4.so.1",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1",
+      "soname": "libgtk-4.so.1",
+      "package": "libgtk-4-1_4.18.6+ds-2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libgtk-4.so.1.1800.6",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1.1800.6",
+      "sha256": "36afb4270891fd08e2ff5817541e2729ddd020cd1fc6af58bde53ce0ad769e8e",
+      "bytes": 11050200,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1.1800.6",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libgtk-4.so.1.1800.6",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1.1800.6",
+      "soname": "libgtk-4.so.1",
+      "package": "libgtk-4-1_4.18.6+ds-2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libharfbuzz-icu.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0.61020.0",
+      "sha256": "2f4a4b769aa49d0d1a5ffc74969e27c0800a0af4e3557d5a1726058ea516ffd2",
+      "bytes": 14176,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libharfbuzz-icu.so.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0",
+      "soname": "libharfbuzz-icu.so.0",
+      "package": "libharfbuzz-icu0_10.2.0-1+deb13u1_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libharfbuzz-icu.so.0.61020.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0.61020.0",
+      "sha256": "2f4a4b769aa49d0d1a5ffc74969e27c0800a0af4e3557d5a1726058ea516ffd2",
+      "bytes": 14176,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0.61020.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libharfbuzz-icu.so.0.61020.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0.61020.0",
+      "soname": "libharfbuzz-icu.so.0",
+      "package": "libharfbuzz-icu0_10.2.0-1+deb13u1_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libhidapi-hidraw.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0.0.0",
+      "sha256": "efbd56b5abd00cff532e66e067e45994e43cf51cf74d5cd9f69d23bb373b5296",
+      "bytes": 26472,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libhidapi-hidraw.so.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0",
+      "soname": "libhidapi-hidraw.so.0",
+      "package": "libhidapi-hidraw0_0.14.0-1+b2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libhidapi-hidraw.so.0.0.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0.0.0",
+      "sha256": "efbd56b5abd00cff532e66e067e45994e43cf51cf74d5cd9f69d23bb373b5296",
+      "bytes": 26472,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0.0.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libhidapi-hidraw.so.0.0.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0.0.0",
+      "soname": "libhidapi-hidraw.so.0",
+      "package": "libhidapi-hidraw0_0.14.0-1+b2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libhyphen.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0.3.0",
+      "sha256": "10067ece9b6d1b77b64b4df23062cec0d2e8638c89ccf91d8276065433149ab2",
+      "bytes": 26464,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libhyphen.so.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0",
+      "soname": "libhyphen.so.0",
+      "package": "libhyphen0_2.8.8-7+b2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libhyphen.so.0.3.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0.3.0",
+      "sha256": "10067ece9b6d1b77b64b4df23062cec0d2e8638c89ccf91d8276065433149ab2",
+      "bytes": 26464,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0.3.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libhyphen.so.0.3.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0.3.0",
+      "soname": "libhyphen.so.0",
+      "package": "libhyphen0_2.8.8-7+b2_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/liblzo2.so.2",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/liblzo2.so.2.0.0",
+      "sha256": "c5425e5594b9f73641796b7a311b55ee679773f840c5f1a211f5eea6fa35775b",
+      "bytes": 145320,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/liblzo2.so.2",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/liblzo2.so.2",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/liblzo2.so.2",
+      "soname": "liblzo2.so.2",
+      "package": "liblzo2-2_2.10-3+b1_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/liblzo2.so.2.0.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/liblzo2.so.2.0.0",
+      "sha256": "c5425e5594b9f73641796b7a311b55ee679773f840c5f1a211f5eea6fa35775b",
+      "bytes": 145320,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/liblzo2.so.2.0.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/liblzo2.so.2.0.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/liblzo2.so.2.0.0",
+      "soname": "liblzo2.so.2",
+      "package": "liblzo2-2_2.10-3+b1_amd64.deb"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libmanette-0.2.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libmanette-0.2.so.0",
+      "sha256": "dd7f16e036f30544c25c97f6d1d0ef76d5d33a294f82cfa2ea35d36a18dc60ee",
+      "bytes": 309312,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libmanette-0.2.so.0",
+      "destinationPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libmanette-0.2.so.0",
+      "sourcePath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libmanette-0.2.so.0",
+      "soname": "libmanette-0.2.so.0",
+      "package": "libmanette-0.2-0_0.2.12-1_amd64.deb"
+    }
+  ],
+  "preservedExecutables": [
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/MiniBrowser",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/MiniBrowser",
+      "sha256": "98384046ffbca250cfb254be6849210749f6455b0a5f18ebae022daf6bd39382",
+      "bytes": 228,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/bin/MiniBrowser",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/bin/MiniBrowser",
+      "sha256": "eadd1fab67807ed423ce5846b41c728d1ec77bdda9081999aa8cce7e54f6d6ae",
+      "bytes": 154528,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/bin/WebKitGPUProcess",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/bin/WebKitGPUProcess",
+      "sha256": "3adc310cb3376886ee29a0aedead71d5fbfa4cb7ddd4a6203f5c3bc36f08b3e4",
+      "bytes": 14544,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/bin/WebKitNetworkProcess",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/bin/WebKitNetworkProcess",
+      "sha256": "9e151cce8e1084264495e390d4f8589e1272ffad14c38521607b469a5a4328c9",
+      "bytes": 14544,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/bin/WebKitWebProcess",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/bin/WebKitWebProcess",
+      "sha256": "52b260df03022f47ec9f377806e1d6f607ada9578f3a0802c7692ac767be5b1c",
+      "bytes": 14544,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libjavascriptcoregtk-6.0.so.1",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libjavascriptcoregtk-6.0.so.1.9.0",
+      "sha256": "ac32bbb5fc92a48187c11d46b24479cae0a7e84deb56cb3cc8507698bf41976c",
+      "bytes": 34461968,
+      "linkTarget": "libjavascriptcoregtk-6.0.so.1.9.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libjavascriptcoregtk-6.0.so.1.9.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libjavascriptcoregtk-6.0.so.1.9.0",
+      "sha256": "ac32bbb5fc92a48187c11d46b24479cae0a7e84deb56cb3cc8507698bf41976c",
+      "bytes": 34461968,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libwebkitgtk-6.0.so.4",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libwebkitgtk-6.0.so.4.20.0",
+      "sha256": "01ba5218b1d9768e3f9482e33223908d1764241f1526001c73033e5a8ec18b53",
+      "bytes": 107279128,
+      "linkTarget": "libwebkitgtk-6.0.so.4.20.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libwebkitgtk-6.0.so.4.20.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libwebkitgtk-6.0.so.4.20.0",
+      "sha256": "01ba5218b1d9768e3f9482e33223908d1764241f1526001c73033e5a8ec18b53",
+      "bytes": 107279128,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libwebkitgtkinjectedbundle.so",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libwebkitgtkinjectedbundle.so",
+      "sha256": "19613ebe0bb1c1a96d1cc252a3646d93094aa9506ed0ba46884af25946e72afc",
+      "bytes": 14328,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libbacktrace.so.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libbacktrace.so.0.0.0",
+      "sha256": "72b197c9012acd9deaf0012f1a689215f57e83fc6e3bd0799558e96734d35db7",
+      "bytes": 100648,
+      "linkTarget": "libbacktrace.so.0.0.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libbacktrace.so.0.0.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libbacktrace.so.0.0.0",
+      "sha256": "72b197c9012acd9deaf0012f1a689215f57e83fc6e3bd0799558e96734d35db7",
+      "bytes": 100648,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libsoup-3.0.so.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libsoup-3.0.so.0.7.4",
+      "sha256": "86a0b672e15186eae51674b5d5faac0f8b82e5872e217a3627c16127d5ce2923",
+      "bytes": 594992,
+      "linkTarget": "libsoup-3.0.so.0.7.4"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libsoup-3.0.so.0.7.4",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libsoup-3.0.so.0.7.4",
+      "sha256": "86a0b672e15186eae51674b5d5faac0f8b82e5872e217a3627c16127d5ce2923",
+      "bytes": 594992,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/MiniBrowser",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/MiniBrowser",
+      "sha256": "990aafd77eb05fb166c0ab5ae9765d1e6ea728e1643f3d61773cb19be869e277",
+      "bytes": 284,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/bin/MiniBrowser",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/bin/MiniBrowser",
+      "sha256": "410ea0a6e278495d2511ca19379de93d47937a31c3382d296794b71f1c7c199e",
+      "bytes": 48840,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/bin/WPEGPUProcess",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/bin/WPEGPUProcess",
+      "sha256": "d53191da17a476456a197a1a8e3101cec6654cf2dc70a9187adae273f7763eab",
+      "bytes": 14544,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/bin/WPENetworkProcess",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/bin/WPENetworkProcess",
+      "sha256": "9c2a2ee784f08d546e5aa2b5728a62716b62f1b88815e10172f132b64d1a7bc9",
+      "bytes": 14544,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/bin/WPEWebProcess",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/bin/WPEWebProcess",
+      "sha256": "2b029c6fb3692814be5bbd1a11c0d371a7e83450aed884b3b395343667746e2b",
+      "bytes": 14544,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/lib/libWPEInjectedBundle.so",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/lib/libWPEInjectedBundle.so",
+      "sha256": "96ac60e47c52245a88dc66e2788304563066415553471da3c3cad7997a2a70ff",
+      "bytes": 14328,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/lib/libWPEWebKit-2.0.so.1",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/lib/libWPEWebKit-2.0.so.1.12.0",
+      "sha256": "b9b5ce06f940662062a8916990ff2fe8e6fb282b65a2ae532e7971b04a0f313c",
+      "bytes": 138193456,
+      "linkTarget": "libWPEWebKit-2.0.so.1.12.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/lib/libWPEWebKit-2.0.so.1.12.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/lib/libWPEWebKit-2.0.so.1.12.0",
+      "sha256": "b9b5ce06f940662062a8916990ff2fe8e6fb282b65a2ae532e7971b04a0f313c",
+      "bytes": 138193456,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libbacktrace.so.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libbacktrace.so.0.0.0",
+      "sha256": "5f4c1a879a298d66eb2d40ed8198bdaa0d63a1c5819894ed2d6505f14d9deb9f",
+      "bytes": 100648,
+      "linkTarget": "libbacktrace.so.0.0.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libbacktrace.so.0.0.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libbacktrace.so.0.0.0",
+      "sha256": "5f4c1a879a298d66eb2d40ed8198bdaa0d63a1c5819894ed2d6505f14d9deb9f",
+      "bytes": 100648,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libsoup-3.0.so.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libsoup-3.0.so.0.7.4",
+      "sha256": "fb9f500217b917a75c08f41f77bfdc0672a08d36d57f794fe2226be535cfb0ba",
+      "bytes": 594992,
+      "linkTarget": "libsoup-3.0.so.0.7.4"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libsoup-3.0.so.0.7.4",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libsoup-3.0.so.0.7.4",
+      "sha256": "fb9f500217b917a75c08f41f77bfdc0672a08d36d57f794fe2226be535cfb0ba",
+      "bytes": 594992,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/pw_run.sh",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/pw_run.sh",
+      "sha256": "a85baad3d8c07173ac387a59b41500c382b21ed692afe0964d29aac247ccc63b",
+      "bytes": 3049,
+      "linkTarget": null
+    }
+  ],
+  "baseline": {
+    "path": "/tmp/ns-perf-webkit-wrapper-baseline-final.json",
+    "sha256": "bbe6d2a229a768d7dabb716e6301d7bb5c968ca2511af38b23c1db1efe485c9b"
+  },
+  "stockSysLibrariesBefore": [
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libmanette-0.2.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libmanette-0.2.so.0",
+      "sha256": "dd7f16e036f30544c25c97f6d1d0ef76d5d33a294f82cfa2ea35d36a18dc60ee",
+      "bytes": 309312,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libmanette-0.2.so.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libhyphen.so.0.3.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0.3.0",
+      "sha256": "10067ece9b6d1b77b64b4df23062cec0d2e8638c89ccf91d8276065433149ab2",
+      "bytes": 26464,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0.3.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libhyphen.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0.3.0",
+      "sha256": "10067ece9b6d1b77b64b4df23062cec0d2e8638c89ccf91d8276065433149ab2",
+      "bytes": 26464,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libhidapi-hidraw.so.0.0.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0.0.0",
+      "sha256": "efbd56b5abd00cff532e66e067e45994e43cf51cf74d5cd9f69d23bb373b5296",
+      "bytes": 26472,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0.0.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libhidapi-hidraw.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0.0.0",
+      "sha256": "efbd56b5abd00cff532e66e067e45994e43cf51cf74d5cd9f69d23bb373b5296",
+      "bytes": 26472,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libharfbuzz-icu.so.0.61020.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0.61020.0",
+      "sha256": "2f4a4b769aa49d0d1a5ffc74969e27c0800a0af4e3557d5a1726058ea516ffd2",
+      "bytes": 14176,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0.61020.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libharfbuzz-icu.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0.61020.0",
+      "sha256": "2f4a4b769aa49d0d1a5ffc74969e27c0800a0af4e3557d5a1726058ea516ffd2",
+      "bytes": 14176,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libgtk-4.so.1.1800.6",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1.1800.6",
+      "sha256": "36afb4270891fd08e2ff5817541e2729ddd020cd1fc6af58bde53ce0ad769e8e",
+      "bytes": 11050200,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1.1800.6"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libgtk-4.so.1",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1.1800.6",
+      "sha256": "36afb4270891fd08e2ff5817541e2729ddd020cd1fc6af58bde53ce0ad769e8e",
+      "bytes": 11050200,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libgraphene-1.0.so.0.1000.8",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0.1000.8",
+      "sha256": "8b313232e77ee9060a4c242e13c3731f2e815ff5af319b6003788c40510bfdfc",
+      "bytes": 116576,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0.1000.8"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libgraphene-1.0.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0.1000.8",
+      "sha256": "8b313232e77ee9060a4c242e13c3731f2e815ff5af319b6003788c40510bfdfc",
+      "bytes": 116576,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libcairo-script-interpreter.so.2.11804.4",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2.11804.4",
+      "sha256": "dfa4f90f5e2ff7557fdfdcab3a354687e321be88649eaa0f66c74ab66c66c21f",
+      "bytes": 160480,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2.11804.4"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libcairo-script-interpreter.so.2",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2.11804.4",
+      "sha256": "dfa4f90f5e2ff7557fdfdcab3a354687e321be88649eaa0f66c74ab66c66c21f",
+      "bytes": 160480,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libGLESv2.so.2.1.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2.1.0",
+      "sha256": "a705c66de30ca4e883120c70acae0f1011d7c3f97605eef331e03493beae3812",
+      "bytes": 71832,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2.1.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libGLESv2.so.2",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2.1.0",
+      "sha256": "a705c66de30ca4e883120c70acae0f1011d7c3f97605eef331e03493beae3812",
+      "bytes": 71832,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libbacktrace.so.0.0.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libbacktrace.so.0.0.0",
+      "sha256": "72b197c9012acd9deaf0012f1a689215f57e83fc6e3bd0799558e96734d35db7",
+      "bytes": 100648,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libsoup-3.0.so.0.7.4",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libsoup-3.0.so.0.7.4",
+      "sha256": "86a0b672e15186eae51674b5d5faac0f8b82e5872e217a3627c16127d5ce2923",
+      "bytes": 594992,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libsoup-3.0.so.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libsoup-3.0.so.0.7.4",
+      "sha256": "86a0b672e15186eae51674b5d5faac0f8b82e5872e217a3627c16127d5ce2923",
+      "bytes": 594992,
+      "linkTarget": "libsoup-3.0.so.0.7.4"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libbacktrace.so.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libbacktrace.so.0.0.0",
+      "sha256": "72b197c9012acd9deaf0012f1a689215f57e83fc6e3bd0799558e96734d35db7",
+      "bytes": 100648,
+      "linkTarget": "libbacktrace.so.0.0.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libmanette-0.2.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libmanette-0.2.so.0",
+      "sha256": "dd7f16e036f30544c25c97f6d1d0ef76d5d33a294f82cfa2ea35d36a18dc60ee",
+      "bytes": 309312,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libmanette-0.2.so.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libhyphen.so.0.3.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0.3.0",
+      "sha256": "10067ece9b6d1b77b64b4df23062cec0d2e8638c89ccf91d8276065433149ab2",
+      "bytes": 26464,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0.3.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libhyphen.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0.3.0",
+      "sha256": "10067ece9b6d1b77b64b4df23062cec0d2e8638c89ccf91d8276065433149ab2",
+      "bytes": 26464,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhyphen.so.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libhidapi-hidraw.so.0.0.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0.0.0",
+      "sha256": "efbd56b5abd00cff532e66e067e45994e43cf51cf74d5cd9f69d23bb373b5296",
+      "bytes": 26472,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0.0.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libhidapi-hidraw.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0.0.0",
+      "sha256": "efbd56b5abd00cff532e66e067e45994e43cf51cf74d5cd9f69d23bb373b5296",
+      "bytes": 26472,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libhidapi-hidraw.so.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libharfbuzz-icu.so.0.61020.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0.61020.0",
+      "sha256": "2f4a4b769aa49d0d1a5ffc74969e27c0800a0af4e3557d5a1726058ea516ffd2",
+      "bytes": 14176,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0.61020.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libharfbuzz-icu.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0.61020.0",
+      "sha256": "2f4a4b769aa49d0d1a5ffc74969e27c0800a0af4e3557d5a1726058ea516ffd2",
+      "bytes": 14176,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libharfbuzz-icu.so.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libgtk-4.so.1.1800.6",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1.1800.6",
+      "sha256": "36afb4270891fd08e2ff5817541e2729ddd020cd1fc6af58bde53ce0ad769e8e",
+      "bytes": 11050200,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1.1800.6"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libgtk-4.so.1",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1.1800.6",
+      "sha256": "36afb4270891fd08e2ff5817541e2729ddd020cd1fc6af58bde53ce0ad769e8e",
+      "bytes": 11050200,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgtk-4.so.1"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libgraphene-1.0.so.0.1000.8",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0.1000.8",
+      "sha256": "8b313232e77ee9060a4c242e13c3731f2e815ff5af319b6003788c40510bfdfc",
+      "bytes": 116576,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0.1000.8"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libgraphene-1.0.so.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0.1000.8",
+      "sha256": "8b313232e77ee9060a4c242e13c3731f2e815ff5af319b6003788c40510bfdfc",
+      "bytes": 116576,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libgraphene-1.0.so.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libcairo-script-interpreter.so.2.11804.4",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2.11804.4",
+      "sha256": "dfa4f90f5e2ff7557fdfdcab3a354687e321be88649eaa0f66c74ab66c66c21f",
+      "bytes": 160480,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2.11804.4"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libcairo-script-interpreter.so.2",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2.11804.4",
+      "sha256": "dfa4f90f5e2ff7557fdfdcab3a354687e321be88649eaa0f66c74ab66c66c21f",
+      "bytes": 160480,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libcairo-script-interpreter.so.2"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libGLESv2.so.2.1.0",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2.1.0",
+      "sha256": "a705c66de30ca4e883120c70acae0f1011d7c3f97605eef331e03493beae3812",
+      "bytes": 71832,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2.1.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libGLESv2.so.2",
+      "realPath": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2.1.0",
+      "sha256": "a705c66de30ca4e883120c70acae0f1011d7c3f97605eef331e03493beae3812",
+      "bytes": 71832,
+      "linkTarget": "/tmp/ns-perf-webkit-libs/usr/lib/x86_64-linux-gnu/libGLESv2.so.2"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libbacktrace.so.0.0.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libbacktrace.so.0.0.0",
+      "sha256": "5f4c1a879a298d66eb2d40ed8198bdaa0d63a1c5819894ed2d6505f14d9deb9f",
+      "bytes": 100648,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libsoup-3.0.so.0.7.4",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libsoup-3.0.so.0.7.4",
+      "sha256": "fb9f500217b917a75c08f41f77bfdc0672a08d36d57f794fe2226be535cfb0ba",
+      "bytes": 594992,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libsoup-3.0.so.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libsoup-3.0.so.0.7.4",
+      "sha256": "fb9f500217b917a75c08f41f77bfdc0672a08d36d57f794fe2226be535cfb0ba",
+      "bytes": 594992,
+      "linkTarget": "libsoup-3.0.so.0.7.4"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libbacktrace.so.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libbacktrace.so.0.0.0",
+      "sha256": "5f4c1a879a298d66eb2d40ed8198bdaa0d63a1c5819894ed2d6505f14d9deb9f",
+      "bytes": 100648,
+      "linkTarget": "libbacktrace.so.0.0.0"
+    }
+  ],
+  "ldd": [
+    {
+      "argv": [
+        "ldd",
+        "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/bin/MiniBrowser"
+      ],
+      "LD_LIBRARY_PATH": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib:/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib",
+      "actualExitCode": 0,
+      "log": "/tmp/ns-perf-webkit-approved-setup-final-gtk-ldd.log",
+      "sha256": "1d95b0f4d7766a013c4fbf47a95089596c97abe974f80fceced7cb5ab6a3f0f4",
+      "missing": []
+    },
+    {
+      "argv": [
+        "ldd",
+        "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/bin/MiniBrowser"
+      ],
+      "LD_LIBRARY_PATH": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/lib:/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib",
+      "actualExitCode": 0,
+      "log": "/tmp/ns-perf-webkit-approved-setup-final-wpe-ldd.log",
+      "sha256": "379f1a89f9ea237a82f310ca07e358be9343c6dc1561d954d680d6985018de4d",
+      "missing": []
+    }
+  ],
+  "originalSetup": {
+    "path": "/tmp/ns-perf-webkit-approved-setup.json",
+    "sha256": "9c4b51feac2f5bf7f10fe296f300055c3f027963dbac8463918ec76834ce931a",
+    "baseline": {
+      "path": "/tmp/ns-perf-webkit-wrapper-baseline.json",
+      "sha256": "e713e1e27d0e2974d594a4677569689a7eba1987847575da2ea354660e3ff14e"
+    }
+  },
+  "script": {
+    "path": "/tmp/ns-perf-webkit-link-setup.py",
+    "sha256": "5faa843a6fe41ce7fb96e05aecb9a0e00d67c49d64be519d57cf389bdda88ddc"
+  },
+  "scope": "Only task-local official ELF/SONAME symlinks were added in bundled WebKit sys/lib. All wrapper, binary, engine and pre-existing library bytes remain unchanged. ldd is read-only; no browser was launched.",
+  "wrapperLDOverrideNote": "Unchanged MiniBrowser wrappers replace LD_LIBRARY_PATH with lib:sys/lib. The WebKit Node-only prefix enables ordinary Playwright host validation and also reaches that invocation initial Chromium probe."
+}

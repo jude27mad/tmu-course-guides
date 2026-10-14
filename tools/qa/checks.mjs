@@ -7,6 +7,22 @@ const routeURL = (env, route, query='') => env.origin + env.base + (route === 'd
 const equal = (a,b) => JSON.stringify(a) === JSON.stringify(b);
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const result = () => ({assertions:[], observations:{cases:[]}, skipped:[]});
+const physicalClickTimeouts=new WeakMap();
+// SwiftShader clicks approached nine seconds in a settled, error-free document.
+// Allow renderer/driver actionability overhead; semantic readiness keeps its own limits.
+export const clickTimeoutMs=({gpu,browserName}={})=>gpu===false&&browserName==='chromium'?30000:10000;
+const physicalClickOptions=page=>({timeout:physicalClickTimeouts.get(page)??10000});
+const clockedCompletionScopes=new WeakMap();
+export const clockedCompletionTimeoutMs=options=>clickTimeoutMs(options);
+const defaultClockedCompletionPolicy=Object.freeze({browserName:null,gpu:null,timeoutMs:10000});
+export function registerClockedCompletionScope(page,{browser,gpu,observation}={}) {
+  let browserName=null;
+  try {browserName=browser?.browserType?.()?.name?.()??null;} catch {}
+  const policy=Object.freeze({browserName,gpu:gpu??null,timeoutMs:clockedCompletionTimeoutMs({browserName,gpu})});
+  const actions=[];
+  if(observation) {observation.clockedCompletionPolicy=policy;observation.clockedCompletionActions=actions;}
+  const state={policy,actions};clockedCompletionScopes.set(page,state);return state;
+}
 function assert(out, name, pass, actual, expected, detail) {
   out.assertions.push({name,pass:!!pass,...(actual===undefined?{}:{actual}),...(expected===undefined?{}:{expected}),...(detail?{detail}:{})});
 }
@@ -20,8 +36,34 @@ function telemetry(page) {
   return errors;
 }
 
+function installNavigationDiagnostics() {
+  const state=window.__qaNavDiagnostics={routes:[],clicks:[]};
+  const append=(rows,row)=>{rows.push(row);if(rows.length>500)rows.shift();};
+  document.addEventListener('route-changed',event=>append(state.routes,{time:performance.now(),route:event.detail?.route,from:event.detail?.from,url:location.href,shell:document.documentElement.dataset.shellId}));
+  document.addEventListener('click',event=>{
+    const target=event.target?.closest?.('a,button,input');
+    const row={time:performance.now(),tag:target?.tagName,id:target?.id,route:target?.dataset.courseLink,completion:target?.dataset.quickComplete,view:target?.dataset.workspaceView,href:target?.getAttribute('href'),url:location.href,defaultPrevented:event.defaultPrevented};
+    append(state.clicks,row);
+    queueMicrotask(()=>{row.defaultPrevented=event.defaultPrevented;row.urlAfterDispatch=location.href;});
+  },true);
+}
+
+async function navigationDiagnosticSnapshot(page) {
+  return page.evaluate(()=>{
+    const main=document.querySelector('main[data-route-region]'),active=document.activeElement;
+    const css=main&&getComputedStyle(main);
+    return {url:location.href,shell:document.documentElement.dataset.shellId,route:window.TMURouter?.route,completedRoute:window.__qaRouteCompleted,body:{course:document.body.dataset.course,page:document.body.dataset.page},content:main?.textContent.trim().length,deadline:document.querySelector('[data-desk-overall-body]:not([hidden]),.ns-count')?.textContent.trim().slice(0,180),focus:{tag:active?.tagName,id:active?.id,inside:!!main?.contains(active)},wrapper:css&&{opacity:css.opacity,filter:css.filter,transform:css.transform},events:window.__qaNavDiagnostics};
+  });
+}
+
+async function boundedNavigationDiagnosticSnapshot(page) {
+  let timer;
+  try {return await Promise.race([navigationDiagnosticSnapshot(page),new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('Navigation snapshot exceeded 5000 ms')),5000);})]);}
+  finally {clearTimeout(timer);}
+}
+
 async function runCase(env, out, name, fn, {storage={},contextOptions={},browser=env.browser,clock,linearClock}={}) {
-  let context;
+  let context,page,diagnosticSession;
   const observation = {name};
   out.observations.cases.push(observation);
   try {
@@ -39,15 +81,38 @@ async function runCase(env, out, name, fn, {storage={},contextOptions={},browser
     },linearClock);
     await context.addInitScript(()=>{document.addEventListener('route-changed',event=>{window.__qaRouteCompleted=event.detail?.route;});});
     await context.addInitScript(seed => {try{for(const [key,value] of Object.entries(seed)) localStorage.setItem(key, typeof value==='string'?value:JSON.stringify(value));}catch{}}, storage);
-    const page = await context.newPage();
+    page = await context.newPage();
     page.setDefaultTimeout(10000);
+    const physicalClickTimeoutMs=clickTimeoutMs({gpu:env.gpu,browserName:browser.browserType?.().name?.()});
+    physicalClickTimeouts.set(page,physicalClickTimeoutMs);
+    observation.physicalClickTimeoutMs=physicalClickTimeoutMs;
+    if(clock) registerClockedCompletionScope(page,{browser,gpu:env.gpu,observation});
     const errors = telemetry(page);
     observation.telemetry = errors;
+    if(process.env.QA_NAV_DIAGNOSTICS==='1') {
+      const diagnostic=observation.navigationDiagnostics={documentRequests:[],frameNavigations:[],pageEvents:[]};
+      await context.addInitScript(installNavigationDiagnostics);
+      page.on('request',request=>{if(request.isNavigationRequest()&&request.frame()===page.mainFrame())diagnostic.documentRequests.push({time:Date.now(),url:request.url(),method:request.method()});});
+      page.on('framenavigated',frame=>{if(frame===page.mainFrame())diagnostic.frameNavigations.push({time:Date.now(),url:frame.url()});});
+      diagnosticSession=await context.newCDPSession(page);
+      for(const type of ['Page.frameRequestedNavigation','Page.frameScheduledNavigation','Page.frameClearedScheduledNavigation','Page.frameNavigated','Page.navigatedWithinDocument'])diagnosticSession.on(type,event=>diagnostic.pageEvents.push({time:Date.now(),type,frameId:event.frameId??event.frame?.id,parentId:event.frame?.parentId,loaderId:event.frame?.loaderId,url:event.url??event.frame?.url,reason:event.reason,disposition:event.disposition}));
+      await diagnosticSession.send('Page.enable');
+    }
     if(clock) await page.clock.install({time:new Date(clock)});
     await fn(page, observation);
   } catch(error) {
     assert(out, `${name}: execution`, false, error.stack || String(error), 'case completes');
+    if(observation.navigationDiagnostics&&page) {
+      observation.navigationDiagnostics.failure={time:Date.now(),pageURL:page.url(),error:error.message};
+      try {observation.navigationDiagnostics.failure.state=await boundedNavigationDiagnosticSnapshot(page);}
+      catch(snapshotError){observation.navigationDiagnostics.failure.snapshotError=snapshotError.message;}
+    }
   } finally {
+    if(observation.navigationDiagnostics&&page&&!observation.navigationDiagnostics.failure) {
+      try {observation.navigationDiagnostics.finalState=await boundedNavigationDiagnosticSnapshot(page);}
+      catch(snapshotError){observation.navigationDiagnostics.snapshotError=snapshotError.message;}
+    }
+    await diagnosticSession?.detach().catch(()=>{});
     if(observation.telemetry) for(const [type,items] of Object.entries(observation.telemetry)) assert(out,`${name}: ${type}`,items.length===0,items,[]);
     await context?.close();
   }
@@ -80,10 +145,45 @@ async function sceneSettled(page) {
   await page.evaluate(()=>new Promise(done=>requestAnimationFrame(()=>requestAnimationFrame(done))));
 }
 
-async function activateClocked(page,selector) {
+export function clockedCompletionSnapshot(page,selector) {
+  return page.evaluate(selector=>{
+    const elements=document.querySelectorAll(selector),element=elements[0];
+    return {url:location.href,route:window.TMURouter?.route,completedRoute:window.__qaRouteCompleted,selector,count:elements.length,
+      first:element?{tag:element.tagName,id:element.id,completion:element.dataset.quickComplete??null,isConnected:element.isConnected,disabled:typeof element.disabled==='boolean'?element.disabled:null,rectCount:element.getClientRects().length}:null};
+  },selector);
+}
+
+export async function boundedClockedCompletionDiagnostic(snapshot,{setTimer=setTimeout,clearTimer=clearTimeout}={}) {
+  let timer;
+  try {return await Promise.race([Promise.resolve().then(snapshot),new Promise((_,reject)=>{timer=setTimer(()=>reject(Error('Clocked completion snapshot exceeded 5000 ms')),5000);})]);}
+  finally {if(timer!==undefined)clearTimer(timer);}
+}
+
+export async function activateClocked(page,selector,{now=Date.now,snapshot=clockedCompletionSnapshot,setTimer,clearTimer}={}) {
   // Native button activation tests deadline semantics with a simulated clock.
   // Pointer hit testing and tab navigation are tested with real timers elsewhere.
-  await page.locator(selector).first().evaluate(el=>{if(el.disabled||!el.getClientRects().length)throw Error('Deadline action unavailable');el.click();});
+  // Extend only the registered software Chromium call; all semantic checks and
+  // default limits remain unchanged. The earlier timeout's exact cause is unknown.
+  const scope=clockedCompletionScopes.get(page),policy=scope?.policy??defaultClockedCompletionPolicy;
+  const trace={selector,method:'evaluate-click',first:true,policy,timeoutMs:policy.timeoutMs,nativeCall:{method:'Locator.first().evaluate',argument:'undefined',options:{timeout:policy.timeoutMs}},status:'pending'};
+  scope?.actions.push(trace);
+  const capture=async phase=>{
+    const start=now();trace[phase+'DiagnosticStartedAt']=start;
+    try {trace[phase+'Snapshot']=await boundedClockedCompletionDiagnostic(()=>snapshot(page,selector),{setTimer,clearTimer});}
+    catch(error) {trace[phase+'SnapshotError']=error?.message??String(error);}
+    finally {const end=now();trace[phase+'DiagnosticCompletedAt']=end;trace[phase+'DiagnosticElapsedMs']=end-start;}
+  };
+  await capture('before');
+  trace.startedAt=now();
+  try {
+    await page.locator(selector).first().evaluate(el=>{if(el.disabled||!el.getClientRects().length)throw Error('Deadline action unavailable');el.click();},undefined,{timeout:policy.timeoutMs});
+    trace.completedAt=now();trace.elapsedMs=trace.completedAt-trace.startedAt;trace.status='activated';
+    return trace;
+  } catch(error) {
+    trace.completedAt=now();trace.elapsedMs=trace.completedAt-trace.startedAt;trace.status='error';trace.error=error?.message??String(error);
+    await capture('failure');
+    throw error;
+  }
 }
 
 async function settle(page,out) {
@@ -104,7 +204,7 @@ async function settle(page,out) {
 }
 
 async function navigate(page, route) {
-  await page.locator(`[data-course-link="${route}"]`).click();
+  await page.locator(`[data-course-link="${route}"]`).click(physicalClickOptions(page));
   await ready(page,route);
 }
 
@@ -153,7 +253,9 @@ async function gsapMetrics(page, env) {
     const core=await import(base+'assets/vendor/gsap-3.15.0.mjs');
     // Import only the already-present optional bundle. Registration/animation is
     // product-owned; this hook merely observes the shared instance.
-    const services=await import(base+'assets/night/core.mjs');
+    const coreURL=document.querySelector('script[data-shell-module][src*="assets/night/core.mjs"]')?.src;
+    if(!coreURL)throw Error('Loaded Night Shift core URL unavailable');
+    const services=await import(coreURL);
     const extra=await import(base+'assets/vendor/night-vendor.mjs?v='+services.VERSION);
     window.__qaMetrics.installGsap(core.gsap,extra.ScrollTrigger);
   }, env.origin+env.base);
@@ -176,11 +278,11 @@ export function countGrowth(before,after) {
 
 async function completionCycle(page,out,label) {
   const before=await page.locator('[data-quick-complete]').first().getAttribute('data-quick-complete');
-  await page.locator('[data-quick-complete]').first().click();
+  await page.locator('[data-quick-complete]').first().click(physicalClickOptions(page));
   await page.locator('#undo-complete').waitFor({state:'visible'});
   const advanced=await page.locator('[data-quick-complete]').first().getAttribute('data-quick-complete');
   assert(out,`${label}: Mark done advances target`,advanced!==before,{before,advanced},'different target');
-  await page.locator('#undo-complete').click();
+  await page.locator('#undo-complete').click(physicalClickOptions(page));
   await until(()=>page.evaluate(id=>document.querySelector('[data-quick-complete]')?.dataset.quickComplete===id,before),'Undo restores target');
   assert(out,`${label}: Undo restores target`,await page.locator('[data-quick-complete]').first().getAttribute('data-quick-complete')===before,before,before);
 }
@@ -201,7 +303,7 @@ export async function stability(env) {
     // Desk state. Warm-up counts are reported rather than excluded silently.
     for(const route of ['cen100','mth140','mth141','desk']) {await navigate(page,route);await settle(page,out);}
     await navigate(page,'mth140');
-    for(const view of ['study','info','assignments']) await page.locator(`[data-workspace-view="${view}"]`).click();
+    for(const view of ['study','info','assignments']) await page.locator(`[data-workspace-view="${view}"]`).click(physicalClickOptions(page));
     await navigate(page,'cen100'); await completionCycle(page,out,'warm-up');
     const palette=await page.locator('dialog.ns-palette,dialog#ns-palette,dialog[data-command-palette]').count();
     if(palette) await paletteCycle(page);
@@ -215,7 +317,7 @@ export async function stability(env) {
     await navigate(page,'mth140');
     for(let i=0;i<20;i++) {
       const view=['study','info','assignments'][i%3];
-      await page.locator(`[data-workspace-view="${view}"]`).click();
+      await page.locator(`[data-workspace-view="${view}"]`).click(physicalClickOptions(page));
       await until(()=>page.evaluate(view=>document.body.dataset.workspaceView===view,view),'workspace view change');
     }
     if(palette) for(let i=0;i<20;i++) await paletteCycle(page);
@@ -374,13 +476,33 @@ export async function deadlines(env) {
   return out;
 }
 
+export function initialStaticSceneReady(state) {
+  if(!state||!['webgl2','poster'].includes(state.renderer))return false;
+  // An offscreen scene renders on demand when it enters the viewport.
+  if(state.onScreen===false)return true;
+  return state.sceneReady==='true'&&state.motionState==='still'&&(state.renderer==='poster'||Number.isInteger(state.sceneFrame)&&state.sceneFrame>=1);
+}
+
+export async function waitForInitialStaticScene(page,route,timeout=15000) {
+  let state;
+  await until(async()=>{
+    state=await page.evaluate(()=>{
+      const art=document.querySelector('.header-art');if(!art)return null;
+      const box=art.getBoundingClientRect();
+      return {sampledAt:performance.now(),renderer:art.dataset.renderer,sceneReady:art.dataset.sceneReady??null,sceneFrame:Number(art.dataset.sceneFrame||0),sceneTime:art.dataset.sceneTime??null,motionState:art.dataset.motionState,awake:art.dataset.awake,onScreen:box.width>0&&box.height>0&&box.bottom>0&&box.right>0&&box.top<innerHeight&&box.left<innerWidth,width:box.width,height:box.height};
+    });
+    return initialStaticSceneReady(state);
+  },`${route} initial static scene`,timeout);
+  return state;
+}
+
 async function motionState(page) {
   return page.evaluate(()=>{
     const visible=el=>{const s=getComputedStyle(el),r=el.getBoundingClientRect();return s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0;};
     const animatedTransforms=document.getAnimations().filter(a=>a.playState==='running'&&a.effect?.getKeyframes().some(k=>k.transform&&k.transform!=='none')).map(a=>({target:a.effect.target?.className,duration:a.effect.getTiming().duration}));
     const decorative=[...document.querySelectorAll('[class*="cursor"],[class*="particle"],[class*="dust"]')].filter(visible).map(el=>({tag:el.tagName,class:el.className}));
     const transforms=[...document.querySelectorAll('.header-upgraded,.hero-copy,.header-art,.ns-title-char,main[data-route-region]')].map(el=>({class:el.className,transform:getComputedStyle(el).transform}));
-    return {preference:window.GuideMotion?.preference(),motion:document.documentElement.dataset.motion,animatedTransforms,decorative,transforms,metrics:window.__qaMetrics.snapshot(),content:document.querySelector('main[data-route-region]')?.innerText.trim().length??0,renderers:[...document.querySelectorAll('[data-renderer]')].map(el=>({renderer:el.dataset.renderer,sceneReady:el.dataset.sceneReady??null,sceneFrame:el.dataset.sceneFrame??null,motionState:el.dataset.motionState??null,poster:!!el.querySelector('img.scene-poster')?.complete,posterVisible:!!el.querySelector('img.scene-poster')&&visible(el.querySelector('img.scene-poster'))})),coursework:!!document.querySelector('.workspace-panel,#assessment-list,#board,[data-course-card]'),itemIds:[...document.querySelectorAll('[id^="guide-item-"],details.assessment[id]')].map(el=>el.id),deskCourses:[...document.querySelectorAll('[data-course-card]')].map(el=>el.dataset.courseCard)};
+    return {preference:window.GuideMotion?.preference(),motion:document.documentElement.dataset.motion,animatedTransforms,decorative,transforms,metrics:window.__qaMetrics.snapshot(),content:document.querySelector('main[data-route-region]')?.innerText.trim().length??0,renderers:[...document.querySelectorAll('[data-renderer]')].map(el=>{const box=el.getBoundingClientRect();return {renderer:el.dataset.renderer,poster:!!el.querySelector('img.scene-poster')?.complete,posterVisible:!!el.querySelector('img.scene-poster')&&visible(el.querySelector('img.scene-poster')),sceneReady:el.dataset.sceneReady??null,sceneFrame:el.dataset.sceneFrame??null,sceneTime:el.dataset.sceneTime??null,motionState:el.dataset.motionState??null,awake:el.dataset.awake,onScreen:box.width>0&&box.height>0&&box.bottom>0&&box.right>0&&box.top<innerHeight&&box.left<innerWidth,width:box.width,height:box.height};}),coursework:!!document.querySelector('.workspace-panel,#assessment-list,#board,[data-course-card]'),itemIds:[...document.querySelectorAll('[id^="guide-item-"],details.assessment[id]')].map(el=>el.id),deskCourses:[...document.querySelectorAll('[data-course-card]')].map(el=>el.dataset.courseCard),sampledAt:performance.now()};
   });
 }
 
@@ -422,6 +544,8 @@ export async function modes(env) {
   ];
   for(const variant of variants) for(const route of ROUTES) await runCase(env,out,`${route}: ${variant.name}`,async(page,observation)=>{
     await page.goto(routeURL(env,route,variant.query));await ready(page,route);await settle(page,out);await sceneSettled(page);
+    // Preserve the locked-scene observation before the unchanged450-ms sample.
+    if(variant.locked&&route!=='desk')observation.sceneInitialization=await waitForInitialStaticScene(page,route);
     await sampleMotion(page,observation);
     assert(out,`${route} ${variant.name}: coursework usable`,observation.after.content>20&&observation.after.coursework,observation.after.content,'visible coursework');
     assertCoursework(out,`${route} ${variant.name}`,observation.after,route);

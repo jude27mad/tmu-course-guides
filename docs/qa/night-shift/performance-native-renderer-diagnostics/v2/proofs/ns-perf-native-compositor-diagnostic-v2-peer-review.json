@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T10:15:45.919158+00:00",
+  "reviewedBy": "/root/final_review",
+  "approved": true,
+  "sourceApprovalOnly": true,
+  "runner": {
+    "path": "/tmp/ns-perf-native-compositor-diagnostic-v2.mjs",
+    "sha256": "80ef2bca5cd0fd7c8e3e98fa10f7bc5ff879044ee1238473b21a17017a314307"
+  },
+  "priorSource": {
+    "path": "/tmp/ns-perf-native-compositor-diagnostic.mjs",
+    "sha256": "f35fbea405a777085877d366fc6fed34db2567023eaeb91c2b4129e5c0fc77ca",
+    "priorApproval": {
+      "path": "/tmp/ns-perf-native-compositor-diagnostic-peer-review.json",
+      "sha256": "66d85830ffeb2d6d9b40d2477d0217f244aabb521358bfb54a1df7c1fe253b14"
+    }
+  },
+  "priorActualFailedDiagnostic": {
+    "summaryPath": "/tmp/ns-perf-native-compositor-diagnostic/reports/2026-10-14T10-11-54-058Z-171257/summary.json",
+    "sha256": "8d5db89ff5b2e502a2f4eedc727f13023ea9ad9bc5e3d67819a3e55a575beccd",
+    "nativeExitCode": 2,
+    "status": "error",
+    "routeCaseCount": 0,
+    "interpretation": "Startup metadata failure only; no route or UI outcome. Original source and raw results remain unchanged."
+  },
+  "matchedProtocol": {
+    "path": "/tmp/ns-perf-ci-driver/node_modules/playwright-core/types/protocol.d.ts",
+    "sha256": "ccd722dea5eca655cf111348ec27a38a376d467407c4cc763d31514550d04d5d",
+    "sourceLines": {
+      "getInfoContractStart": 18622,
+      "getInfoContractEnd": 18650
+    },
+    "contract": "SystemInfo.getInfo returns gpu plus commandLine:string on a browser session; empty string remains actual unavailable metadata and is not fabricated."
+  },
+  "exactNarrowDiffVerified": true,
+  "changes": [
+    "Use a fresh private -v2 output directory.",
+    "Replace the Browser.getBrowserCommandLine/SystemInfo Promise.all with one native SystemInfo.getInfo call.",
+    "Record actual systemInfo.commandLine string rather than unsupported Browser arguments."
+  ],
+  "unchanged": [
+    "Every QA source, CHECKS/instrument call and native assertion.",
+    "The sole additional native launch flag --disable-gpu-compositing and matching bundled driver/browser resolution.",
+    "Native goto10s/click30s, full product animations and ordinary runHarness cleanup/errors/exit propagation.",
+    "No wrapper, proxy, retry, fallback, forced pause, DOM/CSS injection, screenshot or scene invalidation."
+  ],
+  "findings": [],
+  "limits": [
+    "Source-only read-only review; no browser/import/tests/repository edits by reviewer.",
+    "I missed the original Browser metadata API automation precondition; this narrow correction addresses that runtime API incompatibility and does not change QA acceptance.",
+    "Root may execute only after owning prior browser/preview/runtime closure. Actual post-run provenance/resource closure and raw verdict review remain required.",
+    "The v2 probe is a separate counterfactual; it cannot waive the genuine failed normal runs or establish a compositing cause from source alone."
+  ]
+}

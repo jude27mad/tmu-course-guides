@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T07:43:06.633Z",
+  "sourcePath": "/workspace/tmu-course-guides/tools/qa/compare-perf-visuals.mjs",
+  "originalSHA256": "4a975749dfe85ea3734bf8e1dd4d389c2bb6a0887a20eadaa7dc9fff7c26d0a0",
+  "adaptedSHA256": "7686b38be70e870089250a6b48938ac6ae3a3d7eca64ea283b4a00c5d0c3db32",
+  "guardSHA256": "ab4a715b41a95b45b8d9051fdf6ea9022cc5f857394e83340305745d58ea2164",
+  "changes": [
+    {
+      "label": "private runtime binding",
+      "before": "import {fileURLToPath} from 'node:url';\nimport {ROOT,collectPageErrors,inspectBrowserEnvironment,resolveLaunchOptions,resolvePlaywright,startPreview} from './runtime.mjs';",
+      "after": "import {fileURLToPath,pathToFileURL} from 'node:url';\nimport {assertOrdinaryCaptureOptions,hasNaturalBookFallback,ordinaryMTH140Scope} from './ns-perf-default-visual-guard.mjs';\nconst REFERENCE_ROOT=process.env.NS_DEFAULT_VISUAL_ROOT||'/workspace/tmu-course-guides';\nif(!['/workspace/tmu-course-guides','/workspace/ns-perf-control-aa7'].includes(REFERENCE_ROOT))throw Error('Unknown default visual reference root.');\nconst {ROOT,collectPageErrors,inspectBrowserEnvironment,resolveLaunchOptions,resolvePlaywright,startPreview}=await import(pathToFileURL(path.join(REFERENCE_ROOT,'tools/qa/runtime.mjs')).href);"
+    },
+    {
+      "label": "separate ignored output directory",
+      "before": "const REPORTS=path.join(ROOT,'tools/qa/reports/perf-visuals');",
+      "after": "const REPORTS=path.join(ROOT,'tools/qa/reports/perf-visuals-default');"
+    },
+    {
+      "label": "only eight ordinary MTH140 cases",
+      "before": "const ROUTES=['desk','cen100','mth140','mth141'];",
+      "after": "const ROUTES=['mth140'];"
+    },
+    {
+      "label": "ordinary case identity check",
+      "before": "    if(record.status!=='captured')problems.push",
+      "after": "    if(!ordinaryMTH140Scope(record))problems.push({scope:'case',id:record.id,reason:'Default capture must use an ordinary queryless MTH140 identity'});\n    if(record.status!=='captured')problems.push"
+    },
+    {
+      "label": "case natural fallback exception",
+      "before": "if(needsLiveWebGL&&record.route!=='desk'&&!hasLiveSwiftShaderContexts(record))",
+      "after": "if(needsLiveWebGL&&record.route!=='desk'&&!hasLiveSwiftShaderContexts(record)&&!hasNaturalBookFallback(record))"
+    },
+    {
+      "label": "ordinary repeat identity check",
+      "before": "    if(repeat.capture?.status!=='captured'||repeat.comparison?.pixelIdentical!==true)",
+      "after": "    if(!ordinaryMTH140Scope(repeat.capture))problems.push({scope:'repeat',id:repeat.case,reason:'Default repeat must use an ordinary queryless MTH140 identity'});\n    if(repeat.capture?.status!=='captured'||repeat.comparison?.pixelIdentical!==true)"
+    },
+    {
+      "label": "repeat natural fallback exception",
+      "before": "if(needsLiveWebGL&&repeat.capture?.route!=='desk'&&!hasLiveSwiftShaderContexts(repeat.capture))",
+      "after": "if(needsLiveWebGL&&repeat.capture?.route!=='desk'&&!hasLiveSwiftShaderContexts(repeat.capture)&&!hasNaturalBookFallback(repeat.capture))"
+    },
+    {
+      "label": "post-pixel passive default book evidence",
+      "before": "    const png=PNG.sync.read(bytes);\n    if(entry.disableGpuCompositing",
+      "after": "    const png=PNG.sync.read(bytes);\n    record.defaultBookEvidence=await page.evaluate(async()=>{\n      const art=document.querySelector('.header-art[data-book=\"mth140\"]'),poster=art?.querySelector('img.scene-poster'),header=art?.closest('.header-upgraded');\n      if(!art||!poster)return null;\n      const box=el=>{const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};};\n      const style=getComputedStyle(poster),decoded=await poster.decode().then(()=>true,()=>false);\n      return {book:art.dataset.book,renderer:art.dataset.renderer,rendererReason:art.dataset.rendererReason,sceneReady:art.dataset.sceneReady,motionState:art.dataset.motionState,\n        tier:art.dataset.tier??document.documentElement.dataset.nsTier??null,sceneFrame:art.dataset.sceneFrame,drawCalls:art.dataset.drawCalls,triangles:art.dataset.triangles,\n        bookView:header?.dataset.bookView,canvasCount:art.querySelectorAll('canvas').length,box:box(art),\n        tierPolicy:{coarsePointer:matchMedia('(pointer:coarse)').matches,hardwareConcurrency:navigator.hardwareConcurrency,deviceMemory:navigator.deviceMemory,saveData:navigator.connection?.saveData??false},\n        poster:{src:poster.currentSrc||poster.src,complete:poster.complete,decoded,naturalWidth:poster.naturalWidth,naturalHeight:poster.naturalHeight,box:box(poster),computed:{display:style.display,visibility:style.visibility,opacity:style.opacity,transform:style.transform}}};\n    });\n    if(entry.disableGpuCompositing"
+    },
+    {
+      "label": "capture natural fallback exception",
+      "before": "if(!hasLiveSwiftShaderContexts(record))throw Error('Software compositor",
+      "after": "if(!hasLiveSwiftShaderContexts(record)&&!hasNaturalBookFallback(record))throw Error('Software compositor"
+    },
+    {
+      "label": "direct API rejects forced modes",
+      "before": "  if(!['before','after'].includes(label))throw Error('Capture label must be before or after.');",
+      "after": "  if(!['before','after'].includes(label))throw Error('Capture label must be before or after.');\n  assertOrdinaryCaptureOptions({noWebGL,bookTier});"
+    },
+    {
+      "label": "eight requested cases",
+      "before": "requested:only?1+historyCases.length:32",
+      "after": "requested:only?1+historyCases.length:cases().length"
+    },
+    {
+      "label": "eight comparison cases",
+      "before": "expected:32,compared:",
+      "after": "expected:cases().length,compared:"
+    },
+    {
+      "label": "CLI rejects forced modes",
+      "before": "  return parsed;\n}\n\nasync function main",
+      "after": "  assertOrdinaryCaptureOptions(parsed);\n  return parsed;\n}\n\nasync function main"
+    }
+  ],
+  "normalizedOriginalByteIdentical": true
+}

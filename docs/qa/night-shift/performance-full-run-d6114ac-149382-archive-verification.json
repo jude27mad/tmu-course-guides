@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T09:08:00.179Z",
+  "status": "actual-completed-latest-full-run-preserved",
+  "originalStatus": "failed",
+  "originalExitCode": 1,
+  "counts": {
+    "checks": 14,
+    "records": 28,
+    "passedRecords": 16,
+    "failedRecords": 10,
+    "unavailableRecords": 2,
+    "assertions": 2726,
+    "passedAssertions": 2714,
+    "failedAssertions": 12,
+    "skipEntries": 4,
+    "runnerEvents": 225
+  },
+  "archive": [
+    {
+      "name": "summary.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/summary.json",
+      "sha256": "dcdb17cd4d32c0ad4074115ecb11d424ff032c9f8717572b0746e55cbe5df42a",
+      "bytes": 13876330,
+      "byteIdentical": true
+    },
+    {
+      "name": "perf.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/perf.json",
+      "sha256": "3acf9bcdd863bbe07284390b27264dff16d806542564b8b3edd18447193da58d",
+      "bytes": 2199874,
+      "byteIdentical": true
+    },
+    {
+      "name": "routes.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/routes.json",
+      "sha256": "bbdcbf6f253ccf11446bc3ced1e41b9b6620a32d74bc8d57fff583522a56dd24",
+      "bytes": 46825,
+      "byteIdentical": true
+    },
+    {
+      "name": "stability.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/stability.json",
+      "sha256": "10690a1bcd9948817da791884f137dd4dbca09ed48d910a48aa338370471dee4",
+      "bytes": 157879,
+      "byteIdentical": true
+    },
+    {
+      "name": "frames.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/frames.json",
+      "sha256": "c3fd5eb07786eaf43c7a1ab0c27a5afa24da88a8594749693bf5e061be892d6c",
+      "bytes": 144911,
+      "byteIdentical": true
+    },
+    {
+      "name": "deadlines.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/deadlines.json",
+      "sha256": "d0985117f62ba5a2909a097dab297a2ee8aeaa8cfd5e9fced236198646e899bd",
+      "bytes": 155732,
+      "byteIdentical": true
+    },
+    {
+      "name": "modes.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/modes.json",
+      "sha256": "ea2cc1bd19a4d2e83a6d710046a32086edf4c66beec933865713df000e7b585b",
+      "bytes": 7497994,
+      "byteIdentical": true
+    },
+    {
+      "name": "layout.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/layout.json",
+      "sha256": "7cf4d2ef2ed1885b2555a6c983680dedb64a140e195079dd845592dfc0b3bc90",
+      "bytes": 778647,
+      "byteIdentical": true
+    },
+    {
+      "name": "webkit.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/webkit.json",
+      "sha256": "f1be7bf1386cbb1f5cdf6e039b1b53ef3235ebdcff39e8a91715da7ca556ac05",
+      "bytes": 4932,
+      "byteIdentical": true
+    },
+    {
+      "name": "nojs.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/nojs.json",
+      "sha256": "baad131d1180c866b593b26f769301c0d01d2d9437ab89546b7eca8a5c198896",
+      "bytes": 425964,
+      "byteIdentical": true
+    },
+    {
+      "name": "bfcache.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/bfcache.json",
+      "sha256": "a35cb6b8ef80410121c4bbd52da3e63107e10e9eb6f8045ca625aee3eb4a11d0",
+      "bytes": 266566,
+      "byteIdentical": true
+    },
+    {
+      "name": "failures.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/failures.json",
+      "sha256": "4bb5201925642ee462e7b29e94b2489be898973eae68946555024a97b12e6568",
+      "bytes": 318875,
+      "byteIdentical": true
+    },
+    {
+      "name": "crosstab.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/crosstab.json",
+      "sha256": "39b74a96ecd2a07a6431eb36e3497d721e138cab6264a4ba2dcb69ee8b6a1e58",
+      "bytes": 313981,
+      "byteIdentical": true
+    },
+    {
+      "name": "clock.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/clock.json",
+      "sha256": "738a2c394df1ddb33c3601786e06921627d3f3397ae23da11d7e866bbf5075be",
+      "bytes": 153124,
+      "byteIdentical": true
+    },
+    {
+      "name": "forward.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/forward.json",
+      "sha256": "da1d8a4905ad0f6dd0ab630634377030386fb222d0813c025e8d663d437f670b",
+      "bytes": 257806,
+      "byteIdentical": true
+    },
+    {
+      "name": "runner.log",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/runner.log",
+      "sha256": "5e5a9ac4081996dd715a4c0d9ce9f4fcd0aa3c7d2f841d6bdaa2e6fd69be0c2d",
+      "bytes": 1982,
+      "byteIdentical": true
+    },
+    {
+      "name": "source-before.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/source-before.json",
+      "sha256": "be421f9e1f04cc50a97beae080abde314d985829ad9810a6a3cbdbea2cdd2afe",
+      "bytes": 2872,
+      "byteIdentical": true
+    },
+    {
+      "name": "source-before-bound.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/source-before-bound.json",
+      "sha256": "412c0819ab64b78a323f81c4d0c1a8685f76cef4fa81f8a179f994a41be254f2",
+      "bytes": 3786,
+      "byteIdentical": true
+    },
+    {
+      "name": "source-after.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/source-after.json",
+      "sha256": "d54b8db9db95ec56c692539426de04c67438dc294c0e2289b53a6838be0c4871",
+      "bytes": 2990,
+      "byteIdentical": true
+    },
+    {
+      "name": "resource-closure.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/resource-closure.json",
+      "sha256": "16bb30538b6a7fa75c320395b8f886fa437b75cc7a78ec77a9e24fa54d8cc9ec",
+      "bytes": 76747,
+      "byteIdentical": true
+    },
+    {
+      "name": "cli-observation.json",
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/cli-observation.json",
+      "sha256": "ea87ebdc9a6f2bfd2fb3d1ef05f5dd8570ab99dd1e96e1e771cdd940a7ba4bb2",
+      "bytes": 794,
+      "byteIdentical": true
+    }
+  ],
+  "originalRawAssertionsAndTelemetryUnchanged": true,
+  "repositoryWrites": false,
+  "latestFullAcceptance": false
+}

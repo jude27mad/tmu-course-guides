@@ -1,0 +1,16 @@
+✔ default adapter selects exactly eight ordinary MTH140 identities (23.188471ms)
+✔ natural source-authored fallback accepts both bases widths and themes (1.402861ms)
+✔ ordinary identity rejects tier motion query hash route and viewport substitutions (20.486075ms)
+✔ fallback rejects foreign incomplete running erroneous or inconsistent source state (31.421402ms)
+✔ fallback requires exact authored decoded poster source dimensions geometry and visibility (17.221127ms)
+✔ natural fallback requires explicit absence of mounted product WebGL contexts (4.452962ms)
+✔ private fallback exception preserves browser errors source settlement and GPU gates (73.78511ms)
+✔ adapter rejects forced fallback or tier options before browser launch (64.792595ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 492.839566

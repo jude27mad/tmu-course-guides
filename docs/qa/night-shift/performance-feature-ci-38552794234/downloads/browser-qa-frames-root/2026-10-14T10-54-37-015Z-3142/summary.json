@@ -1,0 +1,589 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-14T10:54:37.015Z",
+  "completedAt": "2026-10-14T10:56:03.713Z",
+  "status": "passed",
+  "exitCode": 0,
+  "failures": 0,
+  "selection": {
+    "checks": [
+      "frames"
+    ],
+    "bases": [
+      "/"
+    ],
+    "gpu": false,
+    "help": false
+  },
+  "environment": {
+    "node": "v22.23.3",
+    "platform": "linux",
+    "architecture": "x64",
+    "deployments": [
+      {
+        "base": "/",
+        "origin": "http://127.0.0.1:42305",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "156.0.8078.4",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      }
+    ],
+    "requestedMode": "SwiftShader",
+    "playwrightPath": "/home/runner/work/_temp/qa-playwright/node_modules/playwright",
+    "playwrightSource": "PLAYWRIGHT_PATH",
+    "chromiumPath": "/home/runner/.cache/ms-playwright/chromium-1248/chrome-linux64/chrome",
+    "chromiumSource": "Playwright bundled Chromium",
+    "launchArgs": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "checks": [
+    {
+      "name": "frames",
+      "status": "passed",
+      "failures": 0,
+      "cases": [
+        {
+          "base": "/",
+          "origin": "http://127.0.0.1:42305",
+          "status": "passed",
+          "assertions": [
+            {
+              "name": "desk: frame sample collected",
+              "pass": true,
+              "actual": {
+                "frames": 268,
+                "over16_7ms": {
+                  "count": 65,
+                  "share": 0.24253731343283583,
+                  "percent": 24.253731343283583
+                },
+                "over33ms": {
+                  "count": 15,
+                  "share": 0.055970149253731345,
+                  "percent": 5.597014925373134
+                },
+                "p95ms": 33.20000000000027,
+                "maxMs": 133.4000000000001,
+                "longTasksOver50ms": [],
+                "elapsedMs": 5016.5,
+                "longTaskSupported": true
+              },
+              "expected": "5 seconds and at least two frame intervals"
+            },
+            {
+              "name": "desk: long task observation available",
+              "pass": true,
+              "actual": true,
+              "expected": true
+            },
+            {
+              "name": "desk 5-second wheel scroll: consoleErrors",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "desk 5-second wheel scroll: pageErrors",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "desk 5-second wheel scroll: failedRequests",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "desk 5-second wheel scroll: httpErrors",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "cen100: frame sample collected",
+              "pass": true,
+              "actual": {
+                "frames": 16,
+                "over16_7ms": {
+                  "count": 14,
+                  "share": 0.875,
+                  "percent": 87.5
+                },
+                "over33ms": {
+                  "count": 13,
+                  "share": 0.8125,
+                  "percent": 81.25
+                },
+                "p95ms": 1133.2999999999993,
+                "maxMs": 1133.2999999999993,
+                "longTasksOver50ms": [
+                  {
+                    "start": 9085.600000000006,
+                    "duration": 979,
+                    "name": "self"
+                  },
+                  {
+                    "start": 10064.800000000003,
+                    "duration": 366,
+                    "name": "self"
+                  },
+                  {
+                    "start": 11464.400000000009,
+                    "duration": 385,
+                    "name": "self"
+                  },
+                  {
+                    "start": 11849.800000000003,
+                    "duration": 411,
+                    "name": "self"
+                  }
+                ],
+                "elapsedMs": 5249.699999999999,
+                "longTaskSupported": true
+              },
+              "expected": "5 seconds and at least two frame intervals"
+            },
+            {
+              "name": "cen100: long task observation available",
+              "pass": true,
+              "actual": true,
+              "expected": true
+            },
+            {
+              "name": "cen100 5-second wheel scroll: consoleErrors",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "cen100 5-second wheel scroll: pageErrors",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "cen100 5-second wheel scroll: failedRequests",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "cen100 5-second wheel scroll: httpErrors",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "mth140: frame sample collected",
+              "pass": true,
+              "actual": {
+                "frames": 23,
+                "over16_7ms": {
+                  "count": 21,
+                  "share": 0.9130434782608695,
+                  "percent": 91.30434782608695
+                },
+                "over33ms": {
+                  "count": 20,
+                  "share": 0.8695652173913043,
+                  "percent": 86.95652173913044
+                },
+                "p95ms": 533.3000000000011,
+                "maxMs": 816.6999999999989,
+                "longTasksOver50ms": [
+                  {
+                    "start": 7742.899999999994,
+                    "duration": 385,
+                    "name": "self"
+                  },
+                  {
+                    "start": 8129,
+                    "duration": 380,
+                    "name": "self"
+                  }
+                ],
+                "elapsedMs": 5416.4,
+                "longTaskSupported": true
+              },
+              "expected": "5 seconds and at least two frame intervals"
+            },
+            {
+              "name": "mth140: long task observation available",
+              "pass": true,
+              "actual": true,
+              "expected": true
+            },
+            {
+              "name": "mth140 5-second wheel scroll: consoleErrors",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "mth140 5-second wheel scroll: pageErrors",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "mth140 5-second wheel scroll: failedRequests",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "mth140 5-second wheel scroll: httpErrors",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "mth141: frame sample collected",
+              "pass": true,
+              "actual": {
+                "frames": 82,
+                "over16_7ms": {
+                  "count": 79,
+                  "share": 0.9634146341463414,
+                  "percent": 96.34146341463415
+                },
+                "over33ms": {
+                  "count": 79,
+                  "share": 0.9634146341463414,
+                  "percent": 96.34146341463415
+                },
+                "p95ms": 116.69999999999982,
+                "maxMs": 183.3000000000011,
+                "longTasksOver50ms": [
+                  {
+                    "start": 6937.3000000000175,
+                    "duration": 68,
+                    "name": "self"
+                  },
+                  {
+                    "start": 7006.5,
+                    "duration": 57,
+                    "name": "self"
+                  },
+                  {
+                    "start": 7337.399999999994,
+                    "duration": 68,
+                    "name": "self"
+                  },
+                  {
+                    "start": 7406,
+                    "duration": 111,
+                    "name": "self"
+                  },
+                  {
+                    "start": 7781.5,
+                    "duration": 82,
+                    "name": "self"
+                  },
+                  {
+                    "start": 7863.600000000006,
+                    "duration": 129,
+                    "name": "self"
+                  },
+                  {
+                    "start": 8327.700000000012,
+                    "duration": 64,
+                    "name": "self"
+                  },
+                  {
+                    "start": 8630.800000000017,
+                    "duration": 105,
+                    "name": "self"
+                  }
+                ],
+                "elapsedMs": 5016.500000000001,
+                "longTaskSupported": true
+              },
+              "expected": "5 seconds and at least two frame intervals"
+            },
+            {
+              "name": "mth141: long task observation available",
+              "pass": true,
+              "actual": true,
+              "expected": true
+            },
+            {
+              "name": "mth141 5-second wheel scroll: consoleErrors",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "mth141 5-second wheel scroll: pageErrors",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "mth141 5-second wheel scroll: failedRequests",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "mth141 5-second wheel scroll: httpErrors",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            }
+          ],
+          "observations": {
+            "cases": [
+              {
+                "name": "desk 5-second wheel scroll",
+                "physicalClickTimeoutMs": 30000,
+                "telemetry": {
+                  "consoleErrors": [],
+                  "pageErrors": [],
+                  "failedRequests": [],
+                  "httpErrors": []
+                },
+                "environment": {
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+                  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+                  "hardwareConcurrency": 4,
+                  "deviceMemory": 16,
+                  "viewport": [
+                    1440,
+                    900
+                  ],
+                  "dpr": 1
+                },
+                "measurement": {
+                  "frames": 268,
+                  "over16_7ms": {
+                    "count": 65,
+                    "share": 0.24253731343283583,
+                    "percent": 24.253731343283583
+                  },
+                  "over33ms": {
+                    "count": 15,
+                    "share": 0.055970149253731345,
+                    "percent": 5.597014925373134
+                  },
+                  "p95ms": 33.20000000000027,
+                  "maxMs": 133.4000000000001,
+                  "longTasksOver50ms": [],
+                  "elapsedMs": 5016.5,
+                  "longTaskSupported": true
+                }
+              },
+              {
+                "name": "cen100 5-second wheel scroll",
+                "physicalClickTimeoutMs": 30000,
+                "telemetry": {
+                  "consoleErrors": [],
+                  "pageErrors": [],
+                  "failedRequests": [],
+                  "httpErrors": []
+                },
+                "environment": {
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+                  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+                  "hardwareConcurrency": 4,
+                  "deviceMemory": 16,
+                  "viewport": [
+                    1440,
+                    900
+                  ],
+                  "dpr": 1
+                },
+                "measurement": {
+                  "frames": 16,
+                  "over16_7ms": {
+                    "count": 14,
+                    "share": 0.875,
+                    "percent": 87.5
+                  },
+                  "over33ms": {
+                    "count": 13,
+                    "share": 0.8125,
+                    "percent": 81.25
+                  },
+                  "p95ms": 1133.2999999999993,
+                  "maxMs": 1133.2999999999993,
+                  "longTasksOver50ms": [
+                    {
+                      "start": 9085.600000000006,
+                      "duration": 979,
+                      "name": "self"
+                    },
+                    {
+                      "start": 10064.800000000003,
+                      "duration": 366,
+                      "name": "self"
+                    },
+                    {
+                      "start": 11464.400000000009,
+                      "duration": 385,
+                      "name": "self"
+                    },
+                    {
+                      "start": 11849.800000000003,
+                      "duration": 411,
+                      "name": "self"
+                    }
+                  ],
+                  "elapsedMs": 5249.699999999999,
+                  "longTaskSupported": true
+                }
+              },
+              {
+                "name": "mth140 5-second wheel scroll",
+                "physicalClickTimeoutMs": 30000,
+                "telemetry": {
+                  "consoleErrors": [],
+                  "pageErrors": [],
+                  "failedRequests": [],
+                  "httpErrors": []
+                },
+                "environment": {
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+                  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+                  "hardwareConcurrency": 4,
+                  "deviceMemory": 16,
+                  "viewport": [
+                    1440,
+                    900
+                  ],
+                  "dpr": 1
+                },
+                "measurement": {
+                  "frames": 23,
+                  "over16_7ms": {
+                    "count": 21,
+                    "share": 0.9130434782608695,
+                    "percent": 91.30434782608695
+                  },
+                  "over33ms": {
+                    "count": 20,
+                    "share": 0.8695652173913043,
+                    "percent": 86.95652173913044
+                  },
+                  "p95ms": 533.3000000000011,
+                  "maxMs": 816.6999999999989,
+                  "longTasksOver50ms": [
+                    {
+                      "start": 7742.899999999994,
+                      "duration": 385,
+                      "name": "self"
+                    },
+                    {
+                      "start": 8129,
+                      "duration": 380,
+                      "name": "self"
+                    }
+                  ],
+                  "elapsedMs": 5416.4,
+                  "longTaskSupported": true
+                }
+              },
+              {
+                "name": "mth141 5-second wheel scroll",
+                "physicalClickTimeoutMs": 30000,
+                "telemetry": {
+                  "consoleErrors": [],
+                  "pageErrors": [],
+                  "failedRequests": [],
+                  "httpErrors": []
+                },
+                "environment": {
+                  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+                  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+                  "hardwareConcurrency": 4,
+                  "deviceMemory": 16,
+                  "viewport": [
+                    1440,
+                    900
+                  ],
+                  "dpr": 1
+                },
+                "measurement": {
+                  "frames": 82,
+                  "over16_7ms": {
+                    "count": 79,
+                    "share": 0.9634146341463414,
+                    "percent": 96.34146341463415
+                  },
+                  "over33ms": {
+                    "count": 79,
+                    "share": 0.9634146341463414,
+                    "percent": 96.34146341463415
+                  },
+                  "p95ms": 116.69999999999982,
+                  "maxMs": 183.3000000000011,
+                  "longTasksOver50ms": [
+                    {
+                      "start": 6937.3000000000175,
+                      "duration": 68,
+                      "name": "self"
+                    },
+                    {
+                      "start": 7006.5,
+                      "duration": 57,
+                      "name": "self"
+                    },
+                    {
+                      "start": 7337.399999999994,
+                      "duration": 68,
+                      "name": "self"
+                    },
+                    {
+                      "start": 7406,
+                      "duration": 111,
+                      "name": "self"
+                    },
+                    {
+                      "start": 7781.5,
+                      "duration": 82,
+                      "name": "self"
+                    },
+                    {
+                      "start": 7863.600000000006,
+                      "duration": 129,
+                      "name": "self"
+                    },
+                    {
+                      "start": 8327.700000000012,
+                      "duration": 64,
+                      "name": "self"
+                    },
+                    {
+                      "start": 8630.800000000017,
+                      "duration": 105,
+                      "name": "self"
+                    }
+                  ],
+                  "elapsedMs": 5016.500000000001,
+                  "longTaskSupported": true
+                }
+              }
+            ],
+            "interpretation": "SwiftShader diagnostics: frame pacing here is not evidence of smoothness on a real device.",
+            "runnerErrors": []
+          },
+          "skipped": [],
+          "durationMs": 85201,
+          "failures": 0
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

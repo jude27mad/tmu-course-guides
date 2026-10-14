@@ -9,12 +9,13 @@ try{routerModule=await import('../assets/app/router.mjs');}catch(error){if(error
 const need=()=>{assert.ok(routerModule,'The route router exists');return routerModule;};
 const html=(route='desk',{modules=['first','second'],styles=['common.css'],inline='',region=true}={})=>`<!doctype html><html><head><title>${route} title</title><meta name="description" content="${route} description">${styles.map(href=>`<link rel="stylesheet" href="${href}">`).join('')}${inline?`<style>${inline}</style>`:''}${modules.map(name=>`<script type="module" data-route-module src="modules/${name}.mjs"></script>`).join('')}</head><body class="${route}-class" ${route==='desk'?'data-page="desk"':`data-course="${route}"`}><a class="skip-link" href="#${route}-main">Skip</a>${region?`<main data-route-region id="${route}-main"><h1>${route} heading</h1><a href="../mth140/">Course</a></main>`:''}${route==='desk'?'<footer data-route-content>Desk footer</footer>':''}</body></html>`;
 const until=async(predicate,message,timeout=3000)=>{const start=Date.now();while(!predicate()){if(Date.now()-start>timeout)throw Error(message);await new Promise(resolve=>setTimeout(resolve,5));}};
-function fixture({page,...options}={}){
+function fixture({page,prepareWindow,...options}={}){
  const dom=new JSDOM(page||html(),{url:'https://guide.test/tmu-course-guides/',pretendToBeVisual:true});
  const {window}=dom,events=[],calls=[],fallback=[];
  let x=0,y=0;
  Object.defineProperties(window,{scrollX:{get:()=>x},scrollY:{get:()=>y}});
  window.scrollTo=(a,b)=>{if(typeof a==='object'){x=a.left||0;y=a.top||0;}else{x=a;y=b;}calls.push(['scroll',x,y]);};
+ prepareWindow?.(window);
  const documents=new Map(['desk','cen100','mth140','mth141'].map(route=>[route,html(route)]));
  const imported=[];
  const importModule=async url=>{imported.push(url);const name=new URL(url).pathname.split('/').at(-1).replace('.mjs','');return {mount(ctx){calls.push(['mount',name,ctx.route,ctx.direct,ctx.signal,window.location.hash]);},unmount(){calls.push(['unmount',name]);}};};
@@ -107,6 +108,82 @@ test('prefetch deduplicates requests and bounds parsed document cache',async()=>
  assert.equal(f.calls.filter(c=>c[0]==='fetch').length,1);
  for(let i=0;i<6;i++)await f.router.prefetch(`mth140/?variant=${i}`);
  await f.router.prefetch('cen100/');assert.equal(f.calls.filter(c=>c[0]==='fetch').length,8);f.close();
+});
+
+const flushPrefetch=()=>new Promise(resolve=>setImmediate(resolve));
+function warmingFixture({saveData=false,effectiveType='4g',coarse=false,autoPrefetch=false}={}){
+ const idle=new Map();let nextIdle=0;
+ const f=fixture({autoPrefetch,prepareWindow(window){
+  Object.defineProperty(window.navigator,'connection',{value:{saveData,effectiveType},configurable:true});
+  window.matchMedia=query=>({media:query,matches:/pointer:\s*coarse|hover:\s*none/.test(query)?coarse:/pointer:\s*fine|hover:\s*hover/.test(query)&&!coarse});
+  window.requestIdleCallback=callback=>{idle.set(++nextIdle,callback);return nextIdle;};
+  window.cancelIdleCallback=id=>idle.delete(id);
+ }});
+ const link=f.window.document.createElement('a');link.href='https://guide.test/tmu-course-guides/mth140/';f.window.document.body.append(link);
+ return {...f,link,fetches:()=>f.calls.filter(call=>call[0]==='fetch'),async runIdle(){const callbacks=[...idle.values()];idle.clear();for(const callback of callbacks)callback({didTimeout:false,timeRemaining:()=>50});await flushPrefetch();}};
+}
+function pointer(f,type,pointerType,target=f.link){
+ const event=new f.window.MouseEvent(type,{bubbles:type!=='pointerenter',button:0});
+ Object.defineProperty(event,'pointerType',{value:pointerType});target.dispatchEvent(event);
+}
+
+test('Save-Data suppresses hover, focus and idle prefetch while route navigation still loads',async()=>{
+ const f=warmingFixture({saveData:true,autoPrefetch:true});
+ try{
+  f.router.start();pointer(f,'pointerenter','mouse');
+  f.window.dispatchEvent(new f.window.KeyboardEvent('keydown',{key:'Tab'}));f.link.focus();
+  pointer(f,'pointerdown','touch');await f.runIdle();
+  assert.equal(f.fetches().length,0,'no speculative route document is downloaded with Save-Data');
+  assert.equal(await f.router.navigate('cen100/'),true);assert.equal(f.router.route,'cen100');assert.equal(f.fetches().length,1);
+  assert.equal(await f.router.prefetch('/tmu-course-guides/mth141/'),null);assert.equal(f.fetches().length,1,'public prefetch also honors Save-Data');
+ }finally{f.close();}
+});
+
+test('public speculative prefetch honors constrained connections while navigation still loads',async t=>{
+ for(const connection of [{saveData:true},{effectiveType:'2g'},{effectiveType:'slow-2g'}])await t.test(JSON.stringify(connection),async()=>{
+  const f=warmingFixture(connection);
+  try{
+   const destination=await f.router.prefetch('cen100/');assert.equal(f.fetches().length,0);assert.equal(destination,null);
+   assert.equal(await f.router.navigate('cen100/'),true);assert.equal(f.router.route,'cen100');assert.equal(f.fetches().length,1);
+  }finally{f.close();}
+ });
+});
+
+test('idle prefetch rechecks Save-Data when the scheduled callback runs',async()=>{
+ const f=warmingFixture({autoPrefetch:true});
+ try{f.router.start();f.window.navigator.connection.saveData=true;await f.runIdle();assert.equal(f.fetches().length,0);}
+ finally{f.close();}
+});
+
+test('touch-generated pointerenter does not prefetch on a device that also supports fine hover',async()=>{
+ const f=warmingFixture();
+ try{f.router.start();pointer(f,'pointerenter','touch');await flushPrefetch();assert.equal(f.fetches().length,0);}
+ finally{f.close();}
+});
+
+test('coarse-pointer visits do not prefetch other routes at idle',async()=>{
+ const f=warmingFixture({coarse:true,autoPrefetch:true});
+ try{f.router.start();await f.runIdle();assert.equal(f.fetches().length,0);}
+ finally{f.close();}
+});
+
+test('keyboard focus after touch warms a route without warming touch-induced focus',async()=>{
+ const f=warmingFixture({coarse:true});
+ try{
+  f.router.start();pointer(f,'pointerdown','touch',f.window.document.body);f.link.focus();await flushPrefetch();
+  assert.equal(f.fetches().length,0,'touch-induced focus is not speculative route intent');
+  f.link.blur();f.window.dispatchEvent(new f.window.KeyboardEvent('keydown',{key:'Tab'}));f.link.focus();await flushPrefetch();
+  assert.equal(f.fetches().length,1,'keyboard focus still warms a route on touch devices');
+ }finally{f.close();}
+});
+
+test('desktop hover and keyboard focus share one prefetched route document when idle warming is disabled',async()=>{
+ const f=warmingFixture();
+ try{
+  f.router.start();pointer(f,'pointerenter','mouse');pointer(f,'pointerenter','mouse');
+  f.window.dispatchEvent(new f.window.KeyboardEvent('keydown',{key:'Tab'}));f.link.focus();await f.runIdle();
+  assert.equal(f.fetches().length,1);assert.equal(f.fetches()[0][1],f.link.href);
+ }finally{f.close();}
 });
 
 test('fetch, region, reload-required, transition and mount errors fall back to full navigation',async()=>{

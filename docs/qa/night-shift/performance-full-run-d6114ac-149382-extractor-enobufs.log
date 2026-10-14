@@ -1,0 +1,7 @@
+Error: spawnSync git ENOBUFS
+    at Object.spawnSync (node:internal/child_process:1160:20)
+    at spawnSync (node:child_process:928:24)
+    at execFileSync (node:child_process:971:15)
+    at git (file:///tmp/ns-perf-latest-run-evidence.mjs:26:17)
+    at suiteAndVisual (file:///tmp/ns-perf-latest-run-evidence.mjs:169:213)
+    at async prepareLatestEvidence (file:///tmp/ns-perf-latest-run-evidence.mjs:289:15)

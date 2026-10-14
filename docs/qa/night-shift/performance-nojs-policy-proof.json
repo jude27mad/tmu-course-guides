@@ -1,0 +1,2373 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Native Chromium fixture proof only; no production QA matcher or application code is executed.",
+  "startedAt": "2026-10-14T00:38:43.074Z",
+  "environment": {
+    "node": "v24.19.0",
+    "playwrightPath": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "playwrightVersion": "1.57.0",
+    "executablePath": "/usr/bin/chromium",
+    "customLaunchArgs": [],
+    "browserVersion": "154.0.8037.57"
+  },
+  "fixtureModulepreloads": [
+    "/assets/app/route-boot.mjs?v=20261013-perf2",
+    "/assets/app/router.mjs?v=20261013-perf2",
+    "/assets/guide-motion.mjs?v=20261013-qa1"
+  ],
+  "executionMarkers": [
+    "inlineClassic",
+    "externalClassic",
+    "inlineModule",
+    "entryModule",
+    "routerModule",
+    "motionModule"
+  ],
+  "cases": [
+    {
+      "id": "disabled-no-csp",
+      "javaScriptEnabled": false,
+      "preloads": true,
+      "csp": null,
+      "origin": "http://127.0.0.1:39481",
+      "documentURL": "http://127.0.0.1:39481/cases/disabled-no-csp/",
+      "playwright": {
+        "requests": [
+          {
+            "id": 1,
+            "url": "http://127.0.0.1:39481/cases/disabled-no-csp/",
+            "method": "GET",
+            "resourceType": "document",
+            "isNavigationRequest": true,
+            "state": "finished",
+            "status": 200
+          },
+          {
+            "id": 2,
+            "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "method": "GET",
+            "resourceType": "script",
+            "isNavigationRequest": false,
+            "state": "failed",
+            "errorText": "csp"
+          },
+          {
+            "id": 3,
+            "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "method": "GET",
+            "resourceType": "script",
+            "isNavigationRequest": false,
+            "state": "failed",
+            "errorText": "csp"
+          },
+          {
+            "id": 4,
+            "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+            "method": "GET",
+            "resourceType": "script",
+            "isNavigationRequest": false,
+            "state": "failed",
+            "errorText": "csp"
+          }
+        ],
+        "console": [],
+        "pageErrors": []
+      },
+      "cdp": {
+        "requests": [
+          {
+            "requestId": "15A2A5E8F96B918F83FA9B68A875D80F",
+            "url": "http://127.0.0.1:39481/cases/disabled-no-csp/",
+            "method": "GET",
+            "type": "Document",
+            "documentURL": "http://127.0.0.1:39481/cases/disabled-no-csp/",
+            "initiator": {
+              "type": "other"
+            },
+            "loaderId": "15A2A5E8F96B918F83FA9B68A875D80F",
+            "frameId": "60F5C8507D3C2D25C900DA4E5AC31217",
+            "timestamp": 22477.790727,
+            "state": "finished",
+            "status": 200,
+            "mimeType": "text/html",
+            "responseHeaders": {
+              "Cache-Control": "no-store",
+              "Connection": "keep-alive",
+              "Content-Type": "text/html; charset=utf-8",
+              "Date": "Wed, 14 Oct 2026 00:38:45 GMT",
+              "Keep-Alive": "timeout=5",
+              "Transfer-Encoding": "chunked"
+            },
+            "encodedDataLength": 992,
+            "endTimestamp": 22477.855855
+          },
+          {
+            "requestId": "84231.7",
+            "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "method": "GET",
+            "type": "Script",
+            "documentURL": "http://127.0.0.1:39481/cases/disabled-no-csp/",
+            "initiator": {
+              "type": "script",
+              "url": "about:client",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "loaderId": "15A2A5E8F96B918F83FA9B68A875D80F",
+            "frameId": "60F5C8507D3C2D25C900DA4E5AC31217",
+            "timestamp": 22477.906829,
+            "state": "failed",
+            "errorText": "",
+            "blockedReason": "csp",
+            "canceled": false,
+            "failureType": "Script",
+            "endTimestamp": 22477.906836
+          },
+          {
+            "requestId": "84231.8",
+            "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "method": "GET",
+            "type": "Script",
+            "documentURL": "http://127.0.0.1:39481/cases/disabled-no-csp/",
+            "initiator": {
+              "type": "script",
+              "url": "about:client",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "loaderId": "15A2A5E8F96B918F83FA9B68A875D80F",
+            "frameId": "60F5C8507D3C2D25C900DA4E5AC31217",
+            "timestamp": 22477.907209,
+            "state": "failed",
+            "errorText": "",
+            "blockedReason": "csp",
+            "canceled": false,
+            "failureType": "Script",
+            "endTimestamp": 22477.907215
+          },
+          {
+            "requestId": "84231.9",
+            "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+            "method": "GET",
+            "type": "Script",
+            "documentURL": "http://127.0.0.1:39481/cases/disabled-no-csp/",
+            "initiator": {
+              "type": "script",
+              "url": "about:client",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "loaderId": "15A2A5E8F96B918F83FA9B68A875D80F",
+            "frameId": "60F5C8507D3C2D25C900DA4E5AC31217",
+            "timestamp": 22477.907391,
+            "state": "failed",
+            "errorText": "",
+            "blockedReason": "csp",
+            "canceled": false,
+            "failureType": "Script",
+            "endTimestamp": 22477.907398
+          },
+          {
+            "requestId": "84231.10",
+            "url": "http://127.0.0.1:39481/favicon.ico",
+            "method": "GET",
+            "type": "Other",
+            "documentURL": "http://127.0.0.1:39481/cases/disabled-no-csp/",
+            "initiator": {
+              "type": "other"
+            },
+            "loaderId": "15A2A5E8F96B918F83FA9B68A875D80F",
+            "frameId": "60F5C8507D3C2D25C900DA4E5AC31217",
+            "timestamp": 22477.99992,
+            "state": "finished",
+            "status": 204,
+            "mimeType": "text/plain",
+            "responseHeaders": {
+              "Date": "Wed, 14 Oct 2026 00:38:45 GMT",
+              "Connection": "keep-alive",
+              "Keep-Alive": "timeout=5"
+            },
+            "encodedDataLength": 111,
+            "endTimestamp": 22478.004844
+          }
+        ],
+        "logEntries": []
+      },
+      "assertions": [
+        {
+          "label": "automation evaluate can inspect document and marker properties",
+          "pass": true,
+          "actual": true,
+          "expected": true
+        },
+        {
+          "label": "declared versioned preload URLs retain complete query strings",
+          "pass": true,
+          "actual": [
+            "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1"
+          ],
+          "expected": [
+            "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1"
+          ]
+        },
+        {
+          "label": "fixture document responds successfully",
+          "pass": true,
+          "actual": 200,
+          "expected": 200
+        },
+        {
+          "label": "actual response policy matches selected fixture",
+          "pass": true,
+          "actual": {
+            "enforcedHeader": null,
+            "reportOnlyHeader": null,
+            "meta": []
+          },
+          "expected": {
+            "enforcedHeader": null,
+            "reportOnlyHeader": null,
+            "meta": []
+          }
+        },
+        {
+          "label": "no script request remains unsettled after collection",
+          "pass": true,
+          "actual": {
+            "playwright": [],
+            "cdp": []
+          },
+          "expected": {
+            "playwright": [],
+            "cdp": []
+          }
+        },
+        {
+          "label": "no authored inline, external, or module script executes",
+          "pass": true,
+          "actual": {
+            "inlineClassic": null,
+            "externalClassic": null,
+            "inlineModule": null,
+            "entryModule": null,
+            "routerModule": null,
+            "motionModule": null
+          },
+          "expected": {
+            "inlineClassic": null,
+            "externalClassic": null,
+            "inlineModule": null,
+            "entryModule": null,
+            "routerModule": null,
+            "motionModule": null
+          }
+        },
+        {
+          "label": "no script request completes",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "label": "one Playwright failure per exact declared modulepreload URL",
+          "pass": true,
+          "actual": [
+            {
+              "id": 2,
+              "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+              "method": "GET",
+              "resourceType": "script",
+              "isNavigationRequest": false,
+              "state": "failed",
+              "errorText": "csp"
+            },
+            {
+              "id": 3,
+              "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+              "method": "GET",
+              "resourceType": "script",
+              "isNavigationRequest": false,
+              "state": "failed",
+              "errorText": "csp"
+            },
+            {
+              "id": 4,
+              "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+              "method": "GET",
+              "resourceType": "script",
+              "isNavigationRequest": false,
+              "state": "failed",
+              "errorText": "csp"
+            }
+          ],
+          "expected": [
+            "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1"
+          ]
+        },
+        {
+          "label": "all script failures are declared GET modulepreloads with exact PW csp text",
+          "pass": true,
+          "actual": [
+            {
+              "id": 2,
+              "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+              "method": "GET",
+              "resourceType": "script",
+              "isNavigationRequest": false,
+              "state": "failed",
+              "errorText": "csp"
+            },
+            {
+              "id": 3,
+              "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+              "method": "GET",
+              "resourceType": "script",
+              "isNavigationRequest": false,
+              "state": "failed",
+              "errorText": "csp"
+            },
+            {
+              "id": 4,
+              "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+              "method": "GET",
+              "resourceType": "script",
+              "isNavigationRequest": false,
+              "state": "failed",
+              "errorText": "csp"
+            }
+          ],
+          "expected": {
+            "method": "GET",
+            "resourceType": "script",
+            "errorText": "csp",
+            "URLs": [
+              "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+              "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+              "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1"
+            ]
+          }
+        },
+        {
+          "label": "CDP reports exactly one corresponding modulepreload policy block per URL",
+          "pass": true,
+          "actual": [
+            {
+              "requestId": "84231.7",
+              "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+              "method": "GET",
+              "type": "Script",
+              "documentURL": "http://127.0.0.1:39481/cases/disabled-no-csp/",
+              "initiator": {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "loaderId": "15A2A5E8F96B918F83FA9B68A875D80F",
+              "frameId": "60F5C8507D3C2D25C900DA4E5AC31217",
+              "timestamp": 22477.906829,
+              "state": "failed",
+              "errorText": "",
+              "blockedReason": "csp",
+              "canceled": false,
+              "failureType": "Script",
+              "endTimestamp": 22477.906836
+            },
+            {
+              "requestId": "84231.8",
+              "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+              "method": "GET",
+              "type": "Script",
+              "documentURL": "http://127.0.0.1:39481/cases/disabled-no-csp/",
+              "initiator": {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "loaderId": "15A2A5E8F96B918F83FA9B68A875D80F",
+              "frameId": "60F5C8507D3C2D25C900DA4E5AC31217",
+              "timestamp": 22477.907209,
+              "state": "failed",
+              "errorText": "",
+              "blockedReason": "csp",
+              "canceled": false,
+              "failureType": "Script",
+              "endTimestamp": 22477.907215
+            },
+            {
+              "requestId": "84231.9",
+              "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+              "method": "GET",
+              "type": "Script",
+              "documentURL": "http://127.0.0.1:39481/cases/disabled-no-csp/",
+              "initiator": {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "loaderId": "15A2A5E8F96B918F83FA9B68A875D80F",
+              "frameId": "60F5C8507D3C2D25C900DA4E5AC31217",
+              "timestamp": 22477.907391,
+              "state": "failed",
+              "errorText": "",
+              "blockedReason": "csp",
+              "canceled": false,
+              "failureType": "Script",
+              "endTimestamp": 22477.907398
+            }
+          ],
+          "expected": {
+            "blockedReason": "csp",
+            "URLs": [
+              "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+              "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+              "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1"
+            ]
+          }
+        },
+        {
+          "label": "reference envelope admits precisely these measured disabled-JS failures",
+          "pass": true,
+          "actual": [
+            {
+              "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+              "admitted": true
+            },
+            {
+              "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+              "admitted": true
+            },
+            {
+              "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+              "admitted": true
+            }
+          ],
+          "expected": true
+        }
+      ],
+      "documentResponse": {
+        "url": "http://127.0.0.1:39481/cases/disabled-no-csp/",
+        "status": 200,
+        "headers": {
+          "cache-control": "no-store",
+          "connection": "keep-alive",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Wed, 14 Oct 2026 00:38:45 GMT",
+          "keep-alive": "timeout=5",
+          "transfer-encoding": "chunked"
+        }
+      },
+      "inspection": {
+        "markers": {
+          "inlineClassic": null,
+          "externalClassic": null,
+          "inlineModule": null,
+          "entryModule": null,
+          "routerModule": null,
+          "motionModule": null
+        },
+        "declaredModulepreloads": [
+          "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+          "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+          "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1"
+        ],
+        "declaredScripts": [
+          {
+            "src": null,
+            "type": "classic"
+          },
+          {
+            "src": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+            "type": "classic"
+          },
+          {
+            "src": null,
+            "type": "module"
+          },
+          {
+            "src": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "type": "module"
+          }
+        ],
+        "policyMeta": [],
+        "readableHeading": "Native no-JS policy fixture",
+        "nojsFallbackPresent": true,
+        "resourceTimings": [
+          {
+            "name": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "initiatorType": "other",
+            "transferSize": 0,
+            "duration": 0
+          },
+          {
+            "name": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "initiatorType": "other",
+            "transferSize": 0,
+            "duration": 0
+          },
+          {
+            "name": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+            "initiatorType": "other",
+            "transferSize": 0,
+            "duration": 0
+          },
+          {
+            "name": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+            "initiatorType": "script",
+            "transferSize": 0,
+            "duration": 0
+          },
+          {
+            "name": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "initiatorType": "script",
+            "transferSize": 0,
+            "duration": 0
+          },
+          {
+            "name": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "initiatorType": "script",
+            "transferSize": 0,
+            "duration": 0
+          },
+          {
+            "name": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "initiatorType": "script",
+            "transferSize": 0,
+            "duration": 0
+          },
+          {
+            "name": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+            "initiatorType": "script",
+            "transferSize": 0,
+            "duration": 0
+          },
+          {
+            "name": "http://127.0.0.1:39481/favicon.ico",
+            "initiatorType": "other",
+            "transferSize": 300,
+            "duration": 4.899999998509884
+          }
+        ]
+      },
+      "inspectionSucceeded": true,
+      "documentPolicies": {
+        "enforcedHeader": null,
+        "reportOnlyHeader": null,
+        "meta": []
+      },
+      "completedScripts": {
+        "playwright": [],
+        "cdp": []
+      },
+      "referenceClassification": [
+        {
+          "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+          "errorText": "csp",
+          "admitted": true
+        },
+        {
+          "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+          "errorText": "csp",
+          "admitted": true
+        },
+        {
+          "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+          "errorText": "csp",
+          "admitted": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "disabled-no-csp-no-preloads",
+      "javaScriptEnabled": false,
+      "preloads": false,
+      "csp": null,
+      "origin": "http://127.0.0.1:39481",
+      "documentURL": "http://127.0.0.1:39481/cases/disabled-no-csp-no-preloads/",
+      "playwright": {
+        "requests": [
+          {
+            "id": 1,
+            "url": "http://127.0.0.1:39481/cases/disabled-no-csp-no-preloads/",
+            "method": "GET",
+            "resourceType": "document",
+            "isNavigationRequest": true,
+            "state": "finished",
+            "status": 200
+          }
+        ],
+        "console": [],
+        "pageErrors": []
+      },
+      "cdp": {
+        "requests": [
+          {
+            "requestId": "AD6BAA8EA782245A51418DAE9DE33C39",
+            "url": "http://127.0.0.1:39481/cases/disabled-no-csp-no-preloads/",
+            "method": "GET",
+            "type": "Document",
+            "documentURL": "http://127.0.0.1:39481/cases/disabled-no-csp-no-preloads/",
+            "initiator": {
+              "type": "other"
+            },
+            "loaderId": "AD6BAA8EA782245A51418DAE9DE33C39",
+            "frameId": "22195301B3FF852AD76B4328E4D49C1E",
+            "timestamp": 22479.11549,
+            "state": "finished",
+            "status": 200,
+            "mimeType": "text/html",
+            "responseHeaders": {
+              "Cache-Control": "no-store",
+              "Connection": "keep-alive",
+              "Content-Type": "text/html; charset=utf-8",
+              "Date": "Wed, 14 Oct 2026 00:38:46 GMT",
+              "Keep-Alive": "timeout=5",
+              "Transfer-Encoding": "chunked"
+            },
+            "encodedDataLength": 767,
+            "endTimestamp": 22479.122438
+          },
+          {
+            "requestId": "84269.4",
+            "url": "http://127.0.0.1:39481/favicon.ico",
+            "method": "GET",
+            "type": "Other",
+            "documentURL": "http://127.0.0.1:39481/cases/disabled-no-csp-no-preloads/",
+            "initiator": {
+              "type": "other"
+            },
+            "loaderId": "AD6BAA8EA782245A51418DAE9DE33C39",
+            "frameId": "22195301B3FF852AD76B4328E4D49C1E",
+            "timestamp": 22479.291498,
+            "state": "finished",
+            "status": 204,
+            "mimeType": "text/plain",
+            "responseHeaders": {
+              "Date": "Wed, 14 Oct 2026 00:38:46 GMT",
+              "Connection": "keep-alive",
+              "Keep-Alive": "timeout=5"
+            },
+            "encodedDataLength": 111,
+            "endTimestamp": 22479.295982
+          }
+        ],
+        "logEntries": []
+      },
+      "assertions": [
+        {
+          "label": "automation evaluate can inspect document and marker properties",
+          "pass": true,
+          "actual": true,
+          "expected": true
+        },
+        {
+          "label": "declared versioned preload URLs retain complete query strings",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "label": "fixture document responds successfully",
+          "pass": true,
+          "actual": 200,
+          "expected": 200
+        },
+        {
+          "label": "actual response policy matches selected fixture",
+          "pass": true,
+          "actual": {
+            "enforcedHeader": null,
+            "reportOnlyHeader": null,
+            "meta": []
+          },
+          "expected": {
+            "enforcedHeader": null,
+            "reportOnlyHeader": null,
+            "meta": []
+          }
+        },
+        {
+          "label": "no script request remains unsettled after collection",
+          "pass": true,
+          "actual": {
+            "playwright": [],
+            "cdp": []
+          },
+          "expected": {
+            "playwright": [],
+            "cdp": []
+          }
+        },
+        {
+          "label": "no authored inline, external, or module script executes",
+          "pass": true,
+          "actual": {
+            "inlineClassic": null,
+            "externalClassic": null,
+            "inlineModule": null,
+            "entryModule": null,
+            "routerModule": null,
+            "motionModule": null
+          },
+          "expected": {
+            "inlineClassic": null,
+            "externalClassic": null,
+            "inlineModule": null,
+            "entryModule": null,
+            "routerModule": null,
+            "motionModule": null
+          }
+        },
+        {
+          "label": "no script request completes",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "label": "one Playwright failure per exact declared modulepreload URL",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "label": "all script failures are declared GET modulepreloads with exact PW csp text",
+          "pass": true,
+          "actual": [],
+          "expected": {
+            "method": "GET",
+            "resourceType": "script",
+            "errorText": "csp",
+            "URLs": []
+          }
+        },
+        {
+          "label": "CDP reports exactly one corresponding modulepreload policy block per URL",
+          "pass": true,
+          "actual": [],
+          "expected": {
+            "blockedReason": "csp",
+            "URLs": []
+          }
+        },
+        {
+          "label": "reference envelope admits precisely these measured disabled-JS failures",
+          "pass": true,
+          "actual": [],
+          "expected": true
+        }
+      ],
+      "documentResponse": {
+        "url": "http://127.0.0.1:39481/cases/disabled-no-csp-no-preloads/",
+        "status": 200,
+        "headers": {
+          "cache-control": "no-store",
+          "connection": "keep-alive",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Wed, 14 Oct 2026 00:38:46 GMT",
+          "keep-alive": "timeout=5",
+          "transfer-encoding": "chunked"
+        }
+      },
+      "inspection": {
+        "markers": {
+          "inlineClassic": null,
+          "externalClassic": null,
+          "inlineModule": null,
+          "entryModule": null,
+          "routerModule": null,
+          "motionModule": null
+        },
+        "declaredModulepreloads": [],
+        "declaredScripts": [
+          {
+            "src": null,
+            "type": "classic"
+          },
+          {
+            "src": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+            "type": "classic"
+          },
+          {
+            "src": null,
+            "type": "module"
+          },
+          {
+            "src": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "type": "module"
+          }
+        ],
+        "policyMeta": [],
+        "readableHeading": "Native no-JS policy fixture",
+        "nojsFallbackPresent": true,
+        "resourceTimings": [
+          {
+            "name": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+            "initiatorType": "script",
+            "transferSize": 0,
+            "duration": 0
+          },
+          {
+            "name": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "initiatorType": "script",
+            "transferSize": 0,
+            "duration": 0
+          },
+          {
+            "name": "http://127.0.0.1:39481/favicon.ico",
+            "initiatorType": "other",
+            "transferSize": 300,
+            "duration": 4.300000000745058
+          }
+        ]
+      },
+      "inspectionSucceeded": true,
+      "documentPolicies": {
+        "enforcedHeader": null,
+        "reportOnlyHeader": null,
+        "meta": []
+      },
+      "completedScripts": {
+        "playwright": [],
+        "cdp": []
+      },
+      "referenceClassification": [],
+      "passed": true
+    },
+    {
+      "id": "enabled-no-csp",
+      "javaScriptEnabled": true,
+      "preloads": true,
+      "csp": null,
+      "origin": "http://127.0.0.1:39481",
+      "documentURL": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+      "playwright": {
+        "requests": [
+          {
+            "id": 1,
+            "url": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+            "method": "GET",
+            "resourceType": "document",
+            "isNavigationRequest": true,
+            "state": "finished",
+            "status": 200
+          },
+          {
+            "id": 2,
+            "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "method": "GET",
+            "resourceType": "script",
+            "isNavigationRequest": false,
+            "state": "finished",
+            "status": 200
+          },
+          {
+            "id": 3,
+            "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "method": "GET",
+            "resourceType": "script",
+            "isNavigationRequest": false,
+            "state": "finished",
+            "status": 200
+          },
+          {
+            "id": 4,
+            "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+            "method": "GET",
+            "resourceType": "script",
+            "isNavigationRequest": false,
+            "state": "finished",
+            "status": 200
+          },
+          {
+            "id": 5,
+            "url": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+            "method": "GET",
+            "resourceType": "script",
+            "isNavigationRequest": false,
+            "state": "finished",
+            "status": 200
+          }
+        ],
+        "console": [],
+        "pageErrors": []
+      },
+      "cdp": {
+        "requests": [
+          {
+            "requestId": "6E695F4234898629383A2077573A39ED",
+            "url": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+            "method": "GET",
+            "type": "Document",
+            "documentURL": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+            "initiator": {
+              "type": "other"
+            },
+            "loaderId": "6E695F4234898629383A2077573A39ED",
+            "frameId": "8AC0EBEBE7DDE54FEC02B4F9403637D4",
+            "timestamp": 22480.313542,
+            "state": "finished",
+            "status": 200,
+            "mimeType": "text/html",
+            "responseHeaders": {
+              "Cache-Control": "no-store",
+              "Connection": "keep-alive",
+              "Content-Type": "text/html; charset=utf-8",
+              "Date": "Wed, 14 Oct 2026 00:38:47 GMT",
+              "Keep-Alive": "timeout=5",
+              "Transfer-Encoding": "chunked"
+            },
+            "encodedDataLength": 992,
+            "endTimestamp": 22480.318054
+          },
+          {
+            "requestId": "84311.2",
+            "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "method": "GET",
+            "type": "Script",
+            "documentURL": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+            "initiator": {
+              "type": "parser",
+              "url": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+              "lineNumber": 1,
+              "columnNumber": 77
+            },
+            "loaderId": "6E695F4234898629383A2077573A39ED",
+            "frameId": "8AC0EBEBE7DDE54FEC02B4F9403637D4",
+            "timestamp": 22480.372377,
+            "state": "finished",
+            "status": 200,
+            "mimeType": "text/javascript",
+            "responseHeaders": {
+              "Transfer-Encoding": "chunked",
+              "Cache-Control": "no-store",
+              "Keep-Alive": "timeout=5",
+              "Date": "Wed, 14 Oct 2026 00:38:47 GMT",
+              "Content-Type": "text/javascript; charset=utf-8",
+              "Connection": "keep-alive"
+            },
+            "encodedDataLength": 352,
+            "endTimestamp": 22480.404114
+          },
+          {
+            "requestId": "84311.3",
+            "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "method": "GET",
+            "type": "Script",
+            "documentURL": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+            "initiator": {
+              "type": "parser",
+              "url": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+              "lineNumber": 2,
+              "columnNumber": 73
+            },
+            "loaderId": "6E695F4234898629383A2077573A39ED",
+            "frameId": "8AC0EBEBE7DDE54FEC02B4F9403637D4",
+            "timestamp": 22480.375734,
+            "state": "finished",
+            "status": 200,
+            "mimeType": "text/javascript",
+            "responseHeaders": {
+              "Transfer-Encoding": "chunked",
+              "Cache-Control": "no-store",
+              "Keep-Alive": "timeout=5",
+              "Date": "Wed, 14 Oct 2026 00:38:47 GMT",
+              "Content-Type": "text/javascript; charset=utf-8",
+              "Connection": "keep-alive"
+            },
+            "encodedDataLength": 281,
+            "endTimestamp": 22480.414609
+          },
+          {
+            "requestId": "84311.4",
+            "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+            "method": "GET",
+            "type": "Script",
+            "documentURL": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+            "initiator": {
+              "type": "parser",
+              "url": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+              "lineNumber": 3,
+              "columnNumber": 73
+            },
+            "loaderId": "6E695F4234898629383A2077573A39ED",
+            "frameId": "8AC0EBEBE7DDE54FEC02B4F9403637D4",
+            "timestamp": 22480.375864,
+            "state": "finished",
+            "status": 200,
+            "mimeType": "text/javascript",
+            "responseHeaders": {
+              "Transfer-Encoding": "chunked",
+              "Cache-Control": "no-store",
+              "Keep-Alive": "timeout=5",
+              "Date": "Wed, 14 Oct 2026 00:38:47 GMT",
+              "Content-Type": "text/javascript; charset=utf-8",
+              "Connection": "keep-alive"
+            },
+            "encodedDataLength": 281,
+            "endTimestamp": 22480.41692
+          },
+          {
+            "requestId": "84311.5",
+            "url": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+            "method": "GET",
+            "type": "Script",
+            "documentURL": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+            "initiator": {
+              "type": "parser",
+              "url": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+              "lineNumber": 7,
+              "columnNumber": 52
+            },
+            "loaderId": "6E695F4234898629383A2077573A39ED",
+            "frameId": "8AC0EBEBE7DDE54FEC02B4F9403637D4",
+            "timestamp": 22480.375975,
+            "state": "finished",
+            "status": 200,
+            "mimeType": "text/javascript",
+            "responseHeaders": {
+              "Transfer-Encoding": "chunked",
+              "Cache-Control": "no-store",
+              "Keep-Alive": "timeout=5",
+              "Date": "Wed, 14 Oct 2026 00:38:47 GMT",
+              "Content-Type": "text/javascript; charset=utf-8",
+              "Connection": "keep-alive"
+            },
+            "encodedDataLength": 256,
+            "endTimestamp": 22480.420481
+          },
+          {
+            "requestId": "84311.11",
+            "url": "http://127.0.0.1:39481/favicon.ico",
+            "method": "GET",
+            "type": "Other",
+            "documentURL": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+            "initiator": {
+              "type": "other"
+            },
+            "loaderId": "6E695F4234898629383A2077573A39ED",
+            "frameId": "8AC0EBEBE7DDE54FEC02B4F9403637D4",
+            "timestamp": 22480.453033,
+            "state": "finished",
+            "status": 204,
+            "mimeType": "text/plain",
+            "responseHeaders": {
+              "Date": "Wed, 14 Oct 2026 00:38:47 GMT",
+              "Connection": "keep-alive",
+              "Keep-Alive": "timeout=5"
+            },
+            "encodedDataLength": 111,
+            "endTimestamp": 22480.45938
+          }
+        ],
+        "logEntries": []
+      },
+      "assertions": [
+        {
+          "label": "automation evaluate can inspect document and marker properties",
+          "pass": true,
+          "actual": true,
+          "expected": true
+        },
+        {
+          "label": "declared versioned preload URLs retain complete query strings",
+          "pass": true,
+          "actual": [
+            "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1"
+          ],
+          "expected": [
+            "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1"
+          ]
+        },
+        {
+          "label": "fixture document responds successfully",
+          "pass": true,
+          "actual": 200,
+          "expected": 200
+        },
+        {
+          "label": "actual response policy matches selected fixture",
+          "pass": true,
+          "actual": {
+            "enforcedHeader": null,
+            "reportOnlyHeader": null,
+            "meta": []
+          },
+          "expected": {
+            "enforcedHeader": null,
+            "reportOnlyHeader": null,
+            "meta": []
+          }
+        },
+        {
+          "label": "no script request remains unsettled after collection",
+          "pass": true,
+          "actual": {
+            "playwright": [],
+            "cdp": []
+          },
+          "expected": {
+            "playwright": [],
+            "cdp": []
+          }
+        },
+        {
+          "label": "all six authored execution markers are present",
+          "pass": true,
+          "actual": {
+            "inlineClassic": true,
+            "externalClassic": true,
+            "inlineModule": true,
+            "entryModule": true,
+            "routerModule": true,
+            "motionModule": true
+          },
+          "expected": {
+            "inlineClassic": true,
+            "externalClassic": true,
+            "inlineModule": true,
+            "entryModule": true,
+            "routerModule": true,
+            "motionModule": true
+          }
+        },
+        {
+          "label": "all declared module scripts finish with 200 responses",
+          "pass": true,
+          "actual": [
+            {
+              "id": 2,
+              "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+              "method": "GET",
+              "resourceType": "script",
+              "isNavigationRequest": false,
+              "state": "finished",
+              "status": 200
+            },
+            {
+              "id": 3,
+              "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+              "method": "GET",
+              "resourceType": "script",
+              "isNavigationRequest": false,
+              "state": "finished",
+              "status": 200
+            },
+            {
+              "id": 4,
+              "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+              "method": "GET",
+              "resourceType": "script",
+              "isNavigationRequest": false,
+              "state": "finished",
+              "status": 200
+            },
+            {
+              "id": 5,
+              "url": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+              "method": "GET",
+              "resourceType": "script",
+              "isNavigationRequest": false,
+              "state": "finished",
+              "status": 200
+            }
+          ],
+          "expected": [
+            "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1"
+          ]
+        },
+        {
+          "label": "enabled no-CSP fixture has no failed script requests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "label": "CDP records script completion for all declared URLs",
+          "pass": true,
+          "actual": [
+            {
+              "requestId": "84311.2",
+              "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+              "method": "GET",
+              "type": "Script",
+              "documentURL": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+              "initiator": {
+                "type": "parser",
+                "url": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+                "lineNumber": 1,
+                "columnNumber": 77
+              },
+              "loaderId": "6E695F4234898629383A2077573A39ED",
+              "frameId": "8AC0EBEBE7DDE54FEC02B4F9403637D4",
+              "timestamp": 22480.372377,
+              "state": "finished",
+              "status": 200,
+              "mimeType": "text/javascript",
+              "responseHeaders": {
+                "Transfer-Encoding": "chunked",
+                "Cache-Control": "no-store",
+                "Keep-Alive": "timeout=5",
+                "Date": "Wed, 14 Oct 2026 00:38:47 GMT",
+                "Content-Type": "text/javascript; charset=utf-8",
+                "Connection": "keep-alive"
+              },
+              "encodedDataLength": 352,
+              "endTimestamp": 22480.404114
+            },
+            {
+              "requestId": "84311.3",
+              "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+              "method": "GET",
+              "type": "Script",
+              "documentURL": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+              "initiator": {
+                "type": "parser",
+                "url": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+                "lineNumber": 2,
+                "columnNumber": 73
+              },
+              "loaderId": "6E695F4234898629383A2077573A39ED",
+              "frameId": "8AC0EBEBE7DDE54FEC02B4F9403637D4",
+              "timestamp": 22480.375734,
+              "state": "finished",
+              "status": 200,
+              "mimeType": "text/javascript",
+              "responseHeaders": {
+                "Transfer-Encoding": "chunked",
+                "Cache-Control": "no-store",
+                "Keep-Alive": "timeout=5",
+                "Date": "Wed, 14 Oct 2026 00:38:47 GMT",
+                "Content-Type": "text/javascript; charset=utf-8",
+                "Connection": "keep-alive"
+              },
+              "encodedDataLength": 281,
+              "endTimestamp": 22480.414609
+            },
+            {
+              "requestId": "84311.4",
+              "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+              "method": "GET",
+              "type": "Script",
+              "documentURL": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+              "initiator": {
+                "type": "parser",
+                "url": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+                "lineNumber": 3,
+                "columnNumber": 73
+              },
+              "loaderId": "6E695F4234898629383A2077573A39ED",
+              "frameId": "8AC0EBEBE7DDE54FEC02B4F9403637D4",
+              "timestamp": 22480.375864,
+              "state": "finished",
+              "status": 200,
+              "mimeType": "text/javascript",
+              "responseHeaders": {
+                "Transfer-Encoding": "chunked",
+                "Cache-Control": "no-store",
+                "Keep-Alive": "timeout=5",
+                "Date": "Wed, 14 Oct 2026 00:38:47 GMT",
+                "Content-Type": "text/javascript; charset=utf-8",
+                "Connection": "keep-alive"
+              },
+              "encodedDataLength": 281,
+              "endTimestamp": 22480.41692
+            },
+            {
+              "requestId": "84311.5",
+              "url": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+              "method": "GET",
+              "type": "Script",
+              "documentURL": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+              "initiator": {
+                "type": "parser",
+                "url": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+                "lineNumber": 7,
+                "columnNumber": 52
+              },
+              "loaderId": "6E695F4234898629383A2077573A39ED",
+              "frameId": "8AC0EBEBE7DDE54FEC02B4F9403637D4",
+              "timestamp": 22480.375975,
+              "state": "finished",
+              "status": 200,
+              "mimeType": "text/javascript",
+              "responseHeaders": {
+                "Transfer-Encoding": "chunked",
+                "Cache-Control": "no-store",
+                "Keep-Alive": "timeout=5",
+                "Date": "Wed, 14 Oct 2026 00:38:47 GMT",
+                "Content-Type": "text/javascript; charset=utf-8",
+                "Connection": "keep-alive"
+              },
+              "encodedDataLength": 256,
+              "endTimestamp": 22480.420481
+            }
+          ],
+          "expected": [
+            "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1"
+          ]
+        }
+      ],
+      "documentResponse": {
+        "url": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+        "status": 200,
+        "headers": {
+          "cache-control": "no-store",
+          "connection": "keep-alive",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Wed, 14 Oct 2026 00:38:47 GMT",
+          "keep-alive": "timeout=5",
+          "transfer-encoding": "chunked"
+        }
+      },
+      "inspection": {
+        "markers": {
+          "inlineClassic": true,
+          "externalClassic": true,
+          "inlineModule": true,
+          "entryModule": true,
+          "routerModule": true,
+          "motionModule": true
+        },
+        "declaredModulepreloads": [
+          "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+          "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+          "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1"
+        ],
+        "declaredScripts": [
+          {
+            "src": null,
+            "type": "classic"
+          },
+          {
+            "src": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+            "type": "classic"
+          },
+          {
+            "src": null,
+            "type": "module"
+          },
+          {
+            "src": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "type": "module"
+          }
+        ],
+        "policyMeta": [],
+        "readableHeading": "Native no-JS policy fixture",
+        "nojsFallbackPresent": false,
+        "resourceTimings": [
+          {
+            "name": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "initiatorType": "other",
+            "transferSize": 439,
+            "duration": 30
+          },
+          {
+            "name": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "initiatorType": "other",
+            "transferSize": 368,
+            "duration": 38.80000000074506
+          },
+          {
+            "name": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+            "initiatorType": "other",
+            "transferSize": 368,
+            "duration": 41
+          },
+          {
+            "name": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+            "initiatorType": "script",
+            "transferSize": 343,
+            "duration": 44.399999998509884
+          },
+          {
+            "name": "http://127.0.0.1:39481/favicon.ico",
+            "initiatorType": "other",
+            "transferSize": 300,
+            "duration": 6.299999997019768
+          }
+        ]
+      },
+      "inspectionSucceeded": true,
+      "documentPolicies": {
+        "enforcedHeader": null,
+        "reportOnlyHeader": null,
+        "meta": []
+      },
+      "completedScripts": {
+        "playwright": [
+          {
+            "id": 2,
+            "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "method": "GET",
+            "resourceType": "script",
+            "isNavigationRequest": false,
+            "state": "finished",
+            "status": 200
+          },
+          {
+            "id": 3,
+            "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "method": "GET",
+            "resourceType": "script",
+            "isNavigationRequest": false,
+            "state": "finished",
+            "status": 200
+          },
+          {
+            "id": 4,
+            "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+            "method": "GET",
+            "resourceType": "script",
+            "isNavigationRequest": false,
+            "state": "finished",
+            "status": 200
+          },
+          {
+            "id": 5,
+            "url": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+            "method": "GET",
+            "resourceType": "script",
+            "isNavigationRequest": false,
+            "state": "finished",
+            "status": 200
+          }
+        ],
+        "cdp": [
+          {
+            "requestId": "84311.2",
+            "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "method": "GET",
+            "type": "Script",
+            "documentURL": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+            "initiator": {
+              "type": "parser",
+              "url": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+              "lineNumber": 1,
+              "columnNumber": 77
+            },
+            "loaderId": "6E695F4234898629383A2077573A39ED",
+            "frameId": "8AC0EBEBE7DDE54FEC02B4F9403637D4",
+            "timestamp": 22480.372377,
+            "state": "finished",
+            "status": 200,
+            "mimeType": "text/javascript",
+            "responseHeaders": {
+              "Transfer-Encoding": "chunked",
+              "Cache-Control": "no-store",
+              "Keep-Alive": "timeout=5",
+              "Date": "Wed, 14 Oct 2026 00:38:47 GMT",
+              "Content-Type": "text/javascript; charset=utf-8",
+              "Connection": "keep-alive"
+            },
+            "encodedDataLength": 352,
+            "endTimestamp": 22480.404114
+          },
+          {
+            "requestId": "84311.3",
+            "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "method": "GET",
+            "type": "Script",
+            "documentURL": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+            "initiator": {
+              "type": "parser",
+              "url": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+              "lineNumber": 2,
+              "columnNumber": 73
+            },
+            "loaderId": "6E695F4234898629383A2077573A39ED",
+            "frameId": "8AC0EBEBE7DDE54FEC02B4F9403637D4",
+            "timestamp": 22480.375734,
+            "state": "finished",
+            "status": 200,
+            "mimeType": "text/javascript",
+            "responseHeaders": {
+              "Transfer-Encoding": "chunked",
+              "Cache-Control": "no-store",
+              "Keep-Alive": "timeout=5",
+              "Date": "Wed, 14 Oct 2026 00:38:47 GMT",
+              "Content-Type": "text/javascript; charset=utf-8",
+              "Connection": "keep-alive"
+            },
+            "encodedDataLength": 281,
+            "endTimestamp": 22480.414609
+          },
+          {
+            "requestId": "84311.4",
+            "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+            "method": "GET",
+            "type": "Script",
+            "documentURL": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+            "initiator": {
+              "type": "parser",
+              "url": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+              "lineNumber": 3,
+              "columnNumber": 73
+            },
+            "loaderId": "6E695F4234898629383A2077573A39ED",
+            "frameId": "8AC0EBEBE7DDE54FEC02B4F9403637D4",
+            "timestamp": 22480.375864,
+            "state": "finished",
+            "status": 200,
+            "mimeType": "text/javascript",
+            "responseHeaders": {
+              "Transfer-Encoding": "chunked",
+              "Cache-Control": "no-store",
+              "Keep-Alive": "timeout=5",
+              "Date": "Wed, 14 Oct 2026 00:38:47 GMT",
+              "Content-Type": "text/javascript; charset=utf-8",
+              "Connection": "keep-alive"
+            },
+            "encodedDataLength": 281,
+            "endTimestamp": 22480.41692
+          },
+          {
+            "requestId": "84311.5",
+            "url": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+            "method": "GET",
+            "type": "Script",
+            "documentURL": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+            "initiator": {
+              "type": "parser",
+              "url": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+              "lineNumber": 7,
+              "columnNumber": 52
+            },
+            "loaderId": "6E695F4234898629383A2077573A39ED",
+            "frameId": "8AC0EBEBE7DDE54FEC02B4F9403637D4",
+            "timestamp": 22480.375975,
+            "state": "finished",
+            "status": 200,
+            "mimeType": "text/javascript",
+            "responseHeaders": {
+              "Transfer-Encoding": "chunked",
+              "Cache-Control": "no-store",
+              "Keep-Alive": "timeout=5",
+              "Date": "Wed, 14 Oct 2026 00:38:47 GMT",
+              "Content-Type": "text/javascript; charset=utf-8",
+              "Connection": "keep-alive"
+            },
+            "encodedDataLength": 256,
+            "endTimestamp": 22480.420481
+          }
+        ]
+      },
+      "referenceClassification": [],
+      "passed": true
+    },
+    {
+      "id": "enabled-real-csp",
+      "javaScriptEnabled": true,
+      "preloads": true,
+      "csp": "script-src 'none'; object-src 'none'; base-uri 'none'",
+      "origin": "http://127.0.0.1:39481",
+      "documentURL": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+      "playwright": {
+        "requests": [
+          {
+            "id": 1,
+            "url": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+            "method": "GET",
+            "resourceType": "document",
+            "isNavigationRequest": true,
+            "state": "finished",
+            "status": 200
+          },
+          {
+            "id": 2,
+            "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "method": "GET",
+            "resourceType": "script",
+            "isNavigationRequest": false,
+            "state": "failed",
+            "errorText": "csp"
+          },
+          {
+            "id": 3,
+            "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "method": "GET",
+            "resourceType": "script",
+            "isNavigationRequest": false,
+            "state": "failed",
+            "errorText": "csp"
+          },
+          {
+            "id": 4,
+            "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+            "method": "GET",
+            "resourceType": "script",
+            "isNavigationRequest": false,
+            "state": "failed",
+            "errorText": "csp"
+          },
+          {
+            "id": 5,
+            "url": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+            "method": "GET",
+            "resourceType": "script",
+            "isNavigationRequest": false,
+            "state": "failed",
+            "errorText": "csp"
+          }
+        ],
+        "console": [
+          {
+            "type": "error",
+            "text": "Loading the script 'http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2' violates the following Content Security Policy directive: \"script-src 'none'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked.",
+            "location": {
+              "url": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+              "lineNumber": 1,
+              "columnNumber": 0
+            }
+          },
+          {
+            "type": "error",
+            "text": "Loading the script 'http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2' violates the following Content Security Policy directive: \"script-src 'none'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked.",
+            "location": {
+              "url": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+              "lineNumber": 2,
+              "columnNumber": 0
+            }
+          },
+          {
+            "type": "error",
+            "text": "Loading the script 'http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1' violates the following Content Security Policy directive: \"script-src 'none'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked.",
+            "location": {
+              "url": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+              "lineNumber": 3,
+              "columnNumber": 0
+            }
+          },
+          {
+            "type": "error",
+            "text": "Executing inline script violates the following Content Security Policy directive 'script-src 'none''. Either the 'unsafe-inline' keyword, a hash ('sha256-3SGdF3UPHxqKVmh3eKWR7NpIal3dtT0TLf0ukXscoFI='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+            "location": {
+              "url": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+              "lineNumber": 6,
+              "columnNumber": 0
+            }
+          },
+          {
+            "type": "error",
+            "text": "Loading the script 'http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1' violates the following Content Security Policy directive: \"script-src 'none'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked.",
+            "location": {
+              "url": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+              "lineNumber": 0,
+              "columnNumber": 0
+            }
+          },
+          {
+            "type": "error",
+            "text": "Executing inline script violates the following Content Security Policy directive 'script-src 'none''. Either the 'unsafe-inline' keyword, a hash ('sha256-//c3TJU4YnvawA0m8kXOn5+eDcD/SU0XJmYQAS1Hc0g='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+            "location": {
+              "url": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+              "lineNumber": 8,
+              "columnNumber": 0
+            }
+          }
+        ],
+        "pageErrors": []
+      },
+      "cdp": {
+        "requests": [
+          {
+            "requestId": "5CDEC18E123ABC6FDFC319C87518EAF3",
+            "url": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+            "method": "GET",
+            "type": "Document",
+            "documentURL": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+            "initiator": {
+              "type": "other"
+            },
+            "loaderId": "5CDEC18E123ABC6FDFC319C87518EAF3",
+            "frameId": "2F50E378DDF6083259F379729E8E09B3",
+            "timestamp": 22481.345469,
+            "state": "finished",
+            "status": 200,
+            "mimeType": "text/html",
+            "responseHeaders": {
+              "Cache-Control": "no-store",
+              "Connection": "keep-alive",
+              "Content-Security-Policy": "script-src 'none'; object-src 'none'; base-uri 'none'",
+              "Content-Type": "text/html; charset=utf-8",
+              "Date": "Wed, 14 Oct 2026 00:38:48 GMT",
+              "Keep-Alive": "timeout=5",
+              "Transfer-Encoding": "chunked"
+            },
+            "encodedDataLength": 1072,
+            "endTimestamp": 22481.35113
+          },
+          {
+            "requestId": "84347.7",
+            "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "method": "GET",
+            "type": "Script",
+            "documentURL": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+            "initiator": {
+              "type": "script",
+              "url": "about:client",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "loaderId": "5CDEC18E123ABC6FDFC319C87518EAF3",
+            "frameId": "2F50E378DDF6083259F379729E8E09B3",
+            "timestamp": 22481.392968,
+            "state": "failed",
+            "errorText": "",
+            "blockedReason": "csp",
+            "canceled": false,
+            "failureType": "Script",
+            "endTimestamp": 22481.39298
+          },
+          {
+            "requestId": "84347.8",
+            "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "method": "GET",
+            "type": "Script",
+            "documentURL": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+            "initiator": {
+              "type": "script",
+              "url": "about:client",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "loaderId": "5CDEC18E123ABC6FDFC319C87518EAF3",
+            "frameId": "2F50E378DDF6083259F379729E8E09B3",
+            "timestamp": 22481.393386,
+            "state": "failed",
+            "errorText": "",
+            "blockedReason": "csp",
+            "canceled": false,
+            "failureType": "Script",
+            "endTimestamp": 22481.393418
+          },
+          {
+            "requestId": "84347.9",
+            "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+            "method": "GET",
+            "type": "Script",
+            "documentURL": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+            "initiator": {
+              "type": "script",
+              "url": "about:client",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "loaderId": "5CDEC18E123ABC6FDFC319C87518EAF3",
+            "frameId": "2F50E378DDF6083259F379729E8E09B3",
+            "timestamp": 22481.393703,
+            "state": "failed",
+            "errorText": "",
+            "blockedReason": "csp",
+            "canceled": false,
+            "failureType": "Script",
+            "endTimestamp": 22481.393733
+          },
+          {
+            "requestId": "84347.10",
+            "url": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+            "method": "GET",
+            "type": "Script",
+            "documentURL": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+            "initiator": {
+              "type": "parser",
+              "url": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+              "lineNumber": 7,
+              "columnNumber": 61
+            },
+            "loaderId": "5CDEC18E123ABC6FDFC319C87518EAF3",
+            "frameId": "2F50E378DDF6083259F379729E8E09B3",
+            "timestamp": 22481.395413,
+            "state": "failed",
+            "errorText": "",
+            "blockedReason": "csp",
+            "canceled": false,
+            "failureType": "Script",
+            "endTimestamp": 22481.395423
+          },
+          {
+            "requestId": "84347.11",
+            "url": "http://127.0.0.1:39481/favicon.ico",
+            "method": "GET",
+            "type": "Other",
+            "documentURL": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+            "initiator": {
+              "type": "other"
+            },
+            "loaderId": "5CDEC18E123ABC6FDFC319C87518EAF3",
+            "frameId": "2F50E378DDF6083259F379729E8E09B3",
+            "timestamp": 22481.474447,
+            "state": "finished",
+            "status": 204,
+            "mimeType": "text/plain",
+            "responseHeaders": {
+              "Date": "Wed, 14 Oct 2026 00:38:48 GMT",
+              "Connection": "keep-alive",
+              "Keep-Alive": "timeout=5"
+            },
+            "encodedDataLength": 111,
+            "endTimestamp": 22481.486478
+          }
+        ],
+        "logEntries": [
+          {
+            "source": "security",
+            "level": "error",
+            "text": "Loading the script 'http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2' violates the following Content Security Policy directive: \"script-src 'none'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked.",
+            "timestamp": 1791938328825.678,
+            "url": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+            "lineNumber": 1
+          },
+          {
+            "source": "security",
+            "level": "error",
+            "text": "Loading the script 'http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2' violates the following Content Security Policy directive: \"script-src 'none'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked.",
+            "timestamp": 1791938328826.422,
+            "url": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+            "lineNumber": 2
+          },
+          {
+            "source": "security",
+            "level": "error",
+            "text": "Loading the script 'http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1' violates the following Content Security Policy directive: \"script-src 'none'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked.",
+            "timestamp": 1791938328826.815,
+            "url": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+            "lineNumber": 3
+          },
+          {
+            "source": "security",
+            "level": "error",
+            "text": "Executing inline script violates the following Content Security Policy directive 'script-src 'none''. Either the 'unsafe-inline' keyword, a hash ('sha256-3SGdF3UPHxqKVmh3eKWR7NpIal3dtT0TLf0ukXscoFI='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+            "timestamp": 1791938328827.937,
+            "url": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+            "lineNumber": 6
+          },
+          {
+            "source": "security",
+            "level": "error",
+            "text": "Loading the script 'http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1' violates the following Content Security Policy directive: \"script-src 'none'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked.",
+            "timestamp": 1791938328828.604,
+            "url": "http://127.0.0.1:39481/cases/enabled-real-csp/"
+          },
+          {
+            "source": "security",
+            "level": "error",
+            "text": "Executing inline script violates the following Content Security Policy directive 'script-src 'none''. Either the 'unsafe-inline' keyword, a hash ('sha256-//c3TJU4YnvawA0m8kXOn5+eDcD/SU0XJmYQAS1Hc0g='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+            "timestamp": 1791938328828.988,
+            "url": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+            "lineNumber": 8
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "label": "automation evaluate can inspect document and marker properties",
+          "pass": true,
+          "actual": true,
+          "expected": true
+        },
+        {
+          "label": "declared versioned preload URLs retain complete query strings",
+          "pass": true,
+          "actual": [
+            "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1"
+          ],
+          "expected": [
+            "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1"
+          ]
+        },
+        {
+          "label": "fixture document responds successfully",
+          "pass": true,
+          "actual": 200,
+          "expected": 200
+        },
+        {
+          "label": "actual response policy matches selected fixture",
+          "pass": true,
+          "actual": {
+            "enforcedHeader": "script-src 'none'; object-src 'none'; base-uri 'none'",
+            "reportOnlyHeader": null,
+            "meta": []
+          },
+          "expected": {
+            "enforcedHeader": "script-src 'none'; object-src 'none'; base-uri 'none'",
+            "reportOnlyHeader": null,
+            "meta": []
+          }
+        },
+        {
+          "label": "no script request remains unsettled after collection",
+          "pass": true,
+          "actual": {
+            "playwright": [],
+            "cdp": []
+          },
+          "expected": {
+            "playwright": [],
+            "cdp": []
+          }
+        },
+        {
+          "label": "real authored CSP suppresses all six execution markers",
+          "pass": true,
+          "actual": {
+            "inlineClassic": null,
+            "externalClassic": null,
+            "inlineModule": null,
+            "entryModule": null,
+            "routerModule": null,
+            "motionModule": null
+          },
+          "expected": {
+            "inlineClassic": null,
+            "externalClassic": null,
+            "inlineModule": null,
+            "entryModule": null,
+            "routerModule": null,
+            "motionModule": null
+          }
+        },
+        {
+          "label": "real CSP yields failures for every exact declared modulepreload",
+          "pass": true,
+          "actual": [
+            {
+              "id": 2,
+              "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+              "method": "GET",
+              "resourceType": "script",
+              "isNavigationRequest": false,
+              "state": "failed",
+              "errorText": "csp"
+            },
+            {
+              "id": 3,
+              "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+              "method": "GET",
+              "resourceType": "script",
+              "isNavigationRequest": false,
+              "state": "failed",
+              "errorText": "csp"
+            },
+            {
+              "id": 4,
+              "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+              "method": "GET",
+              "resourceType": "script",
+              "isNavigationRequest": false,
+              "state": "failed",
+              "errorText": "csp"
+            }
+          ],
+          "expected": [
+            "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1"
+          ]
+        },
+        {
+          "label": "real CSP also blocks the external classic script",
+          "pass": true,
+          "actual": [
+            {
+              "id": 2,
+              "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+              "method": "GET",
+              "resourceType": "script",
+              "isNavigationRequest": false,
+              "state": "failed",
+              "errorText": "csp"
+            },
+            {
+              "id": 3,
+              "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+              "method": "GET",
+              "resourceType": "script",
+              "isNavigationRequest": false,
+              "state": "failed",
+              "errorText": "csp"
+            },
+            {
+              "id": 4,
+              "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+              "method": "GET",
+              "resourceType": "script",
+              "isNavigationRequest": false,
+              "state": "failed",
+              "errorText": "csp"
+            },
+            {
+              "id": 5,
+              "url": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+              "method": "GET",
+              "resourceType": "script",
+              "isNavigationRequest": false,
+              "state": "failed",
+              "errorText": "csp"
+            }
+          ],
+          "expected": {
+            "URL": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+            "errorText": "csp"
+          }
+        },
+        {
+          "label": "CDP records actual CSP block reason",
+          "pass": true,
+          "actual": [
+            {
+              "requestId": "84347.7",
+              "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+              "method": "GET",
+              "type": "Script",
+              "documentURL": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+              "initiator": {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "loaderId": "5CDEC18E123ABC6FDFC319C87518EAF3",
+              "frameId": "2F50E378DDF6083259F379729E8E09B3",
+              "timestamp": 22481.392968,
+              "state": "failed",
+              "errorText": "",
+              "blockedReason": "csp",
+              "canceled": false,
+              "failureType": "Script",
+              "endTimestamp": 22481.39298
+            },
+            {
+              "requestId": "84347.8",
+              "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+              "method": "GET",
+              "type": "Script",
+              "documentURL": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+              "initiator": {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "loaderId": "5CDEC18E123ABC6FDFC319C87518EAF3",
+              "frameId": "2F50E378DDF6083259F379729E8E09B3",
+              "timestamp": 22481.393386,
+              "state": "failed",
+              "errorText": "",
+              "blockedReason": "csp",
+              "canceled": false,
+              "failureType": "Script",
+              "endTimestamp": 22481.393418
+            },
+            {
+              "requestId": "84347.9",
+              "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+              "method": "GET",
+              "type": "Script",
+              "documentURL": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+              "initiator": {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "loaderId": "5CDEC18E123ABC6FDFC319C87518EAF3",
+              "frameId": "2F50E378DDF6083259F379729E8E09B3",
+              "timestamp": 22481.393703,
+              "state": "failed",
+              "errorText": "",
+              "blockedReason": "csp",
+              "canceled": false,
+              "failureType": "Script",
+              "endTimestamp": 22481.393733
+            }
+          ],
+          "expected": {
+            "blockedReason": "csp",
+            "URLs": [
+              "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+              "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+              "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1"
+            ]
+          }
+        },
+        {
+          "label": "real CSP script failures are rejected by reference envelope",
+          "pass": true,
+          "actual": [
+            {
+              "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+              "admitted": false
+            },
+            {
+              "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+              "admitted": false
+            },
+            {
+              "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+              "admitted": false
+            },
+            {
+              "url": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+              "admitted": false
+            }
+          ],
+          "expected": false
+        },
+        {
+          "label": "no blocked script reaches successful completion",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "documentResponse": {
+        "url": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+        "status": 200,
+        "headers": {
+          "cache-control": "no-store",
+          "connection": "keep-alive",
+          "content-security-policy": "script-src 'none'; object-src 'none'; base-uri 'none'",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Wed, 14 Oct 2026 00:38:48 GMT",
+          "keep-alive": "timeout=5",
+          "transfer-encoding": "chunked"
+        }
+      },
+      "inspection": {
+        "markers": {
+          "inlineClassic": null,
+          "externalClassic": null,
+          "inlineModule": null,
+          "entryModule": null,
+          "routerModule": null,
+          "motionModule": null
+        },
+        "declaredModulepreloads": [
+          "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+          "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+          "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1"
+        ],
+        "declaredScripts": [
+          {
+            "src": null,
+            "type": "classic"
+          },
+          {
+            "src": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+            "type": "classic"
+          },
+          {
+            "src": null,
+            "type": "module"
+          },
+          {
+            "src": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "type": "module"
+          }
+        ],
+        "policyMeta": [],
+        "readableHeading": "Native no-JS policy fixture",
+        "nojsFallbackPresent": false,
+        "resourceTimings": [
+          {
+            "name": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "initiatorType": "other",
+            "transferSize": 0,
+            "duration": 0
+          },
+          {
+            "name": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "initiatorType": "other",
+            "transferSize": 0,
+            "duration": 0
+          },
+          {
+            "name": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+            "initiatorType": "other",
+            "transferSize": 0,
+            "duration": 0
+          },
+          {
+            "name": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+            "initiatorType": "script",
+            "transferSize": 0,
+            "duration": 0
+          },
+          {
+            "name": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "initiatorType": "script",
+            "transferSize": 0,
+            "duration": 0
+          },
+          {
+            "name": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+            "initiatorType": "script",
+            "transferSize": 0,
+            "duration": 0
+          },
+          {
+            "name": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+            "initiatorType": "script",
+            "transferSize": 0,
+            "duration": 0
+          },
+          {
+            "name": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+            "initiatorType": "script",
+            "transferSize": 0,
+            "duration": 0
+          },
+          {
+            "name": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+            "initiatorType": "script",
+            "transferSize": 0,
+            "duration": 0
+          },
+          {
+            "name": "http://127.0.0.1:39481/favicon.ico",
+            "initiatorType": "other",
+            "transferSize": 300,
+            "duration": 10.899999998509884
+          }
+        ]
+      },
+      "inspectionSucceeded": true,
+      "documentPolicies": {
+        "enforcedHeader": "script-src 'none'; object-src 'none'; base-uri 'none'",
+        "reportOnlyHeader": null,
+        "meta": []
+      },
+      "completedScripts": {
+        "playwright": [],
+        "cdp": []
+      },
+      "referenceClassification": [
+        {
+          "url": "http://127.0.0.1:39481/assets/app/route-boot.mjs?v=20261013-perf2",
+          "errorText": "csp",
+          "admitted": false
+        },
+        {
+          "url": "http://127.0.0.1:39481/assets/app/router.mjs?v=20261013-perf2",
+          "errorText": "csp",
+          "admitted": false
+        },
+        {
+          "url": "http://127.0.0.1:39481/assets/guide-motion.mjs?v=20261013-qa1",
+          "errorText": "csp",
+          "admitted": false
+        },
+        {
+          "url": "http://127.0.0.1:39481/assets/fixture-classic.js?v=fixture1",
+          "errorText": "csp",
+          "admitted": false
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "serverRequests": [
+    {
+      "url": "/cases/disabled-no-csp/",
+      "method": "GET",
+      "referer": null,
+      "status": 200
+    },
+    {
+      "url": "/favicon.ico",
+      "method": "GET",
+      "referer": "http://127.0.0.1:39481/cases/disabled-no-csp/",
+      "status": 204
+    },
+    {
+      "url": "/cases/disabled-no-csp-no-preloads/",
+      "method": "GET",
+      "referer": null,
+      "status": 200
+    },
+    {
+      "url": "/favicon.ico",
+      "method": "GET",
+      "referer": "http://127.0.0.1:39481/cases/disabled-no-csp-no-preloads/",
+      "status": 204
+    },
+    {
+      "url": "/cases/enabled-no-csp/",
+      "method": "GET",
+      "referer": null,
+      "status": 200
+    },
+    {
+      "url": "/assets/app/route-boot.mjs?v=20261013-perf2",
+      "method": "GET",
+      "referer": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+      "status": 200
+    },
+    {
+      "url": "/assets/app/router.mjs?v=20261013-perf2",
+      "method": "GET",
+      "referer": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+      "status": 200
+    },
+    {
+      "url": "/assets/guide-motion.mjs?v=20261013-qa1",
+      "method": "GET",
+      "referer": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+      "status": 200
+    },
+    {
+      "url": "/assets/fixture-classic.js?v=fixture1",
+      "method": "GET",
+      "referer": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+      "status": 200
+    },
+    {
+      "url": "/favicon.ico",
+      "method": "GET",
+      "referer": "http://127.0.0.1:39481/cases/enabled-no-csp/",
+      "status": 204
+    },
+    {
+      "url": "/cases/enabled-real-csp/",
+      "method": "GET",
+      "referer": null,
+      "status": 200
+    },
+    {
+      "url": "/favicon.ico",
+      "method": "GET",
+      "referer": "http://127.0.0.1:39481/cases/enabled-real-csp/",
+      "status": 204
+    }
+  ],
+  "offlineSelfCheck": {
+    "passed": true,
+    "scope": "Static fixtures and synthetic reference-envelope checks only; no browser or HTTP listener started."
+  },
+  "origin": "http://127.0.0.1:39481",
+  "passed": true,
+  "finishedAt": "2026-10-14T00:38:49.547Z"
+}

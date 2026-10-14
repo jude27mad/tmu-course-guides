@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T09:22:17.247789+00:00",
+  "phase": "After launch; PID binding only, independent prelaunch source proof is source-start.json",
+  "beforeRunner": {
+    "pid": 164790,
+    "args": [
+      "node",
+      "/tmp/ns-perf-default-visual-capture.mjs",
+      "capture",
+      "before",
+      "--repeat-case",
+      "root-mth140-1440x900-dark",
+      "--serial",
+      "--compositor-drain",
+      "--disable-gpu-rasterization",
+      "--native-layer-redraw",
+      "--disable-gpu-compositing"
+    ],
+    "stat": "164790 (MainThread) S 164787 164786 164786 0 -1 4194560 35791 1724 0 0 411 114 2 0 20 0 11 0 5384849 1613373440 24244 18446744073709551615 1 1 0 0 0 0 0 16781312 83459 0 0 0 17 2 0 0 0 0 0 0 0 0 0 0 0 0 0"
+  }
+}

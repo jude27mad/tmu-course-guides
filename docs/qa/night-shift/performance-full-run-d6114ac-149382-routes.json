@@ -1,0 +1,1236 @@
+{
+  "schemaVersion": 1,
+  "check": "routes",
+  "startedAt": "2026-10-14T07:09:10.842Z",
+  "completedAt": "2026-10-14T08:39:46.631Z",
+  "environment": {
+    "node": "v24.19.0",
+    "platform": "linux",
+    "architecture": "x64",
+    "deployments": [
+      {
+        "base": "/",
+        "origin": "http://127.0.0.1:33547",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "154.0.8037.57",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      },
+      {
+        "base": "/tmu-course-guides/",
+        "origin": "http://127.0.0.1:42001",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "154.0.8037.57",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      }
+    ],
+    "requestedMode": "SwiftShader",
+    "playwrightPath": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "playwrightSource": "PLAYWRIGHT_PATH",
+    "chromiumPath": "/usr/bin/chromium",
+    "chromiumSource": "QA_CHROMIUM_PATH",
+    "launchArgs": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "status": "failed",
+  "failures": 2,
+  "cases": [
+    {
+      "base": "/",
+      "origin": "http://127.0.0.1:33547",
+      "status": "failed",
+      "assertions": [
+        {
+          "name": "initial persistent shell id",
+          "pass": true,
+          "actual": "f426271d-4bca-4008-8e7b-30f3fcc61459",
+          "expected": "nonempty"
+        },
+        {
+          "name": "open cen100: no document reload",
+          "pass": true,
+          "actual": "f426271d-4bca-4008-8e7b-30f3fcc61459",
+          "expected": "f426271d-4bca-4008-8e7b-30f3fcc61459"
+        },
+        {
+          "name": "open cen100: URL",
+          "pass": true,
+          "actual": "http://127.0.0.1:33547/cen100/",
+          "expected": "http://127.0.0.1:33547/cen100/"
+        },
+        {
+          "name": "open cen100: title",
+          "pass": true,
+          "actual": "CEN100 | TMU Course Guides",
+          "expected": "CEN100 | TMU Course Guides"
+        },
+        {
+          "name": "open cen100: body identity",
+          "pass": true,
+          "actual": {
+            "course": "cen100",
+            "page": null
+          },
+          "expected": {
+            "course": "cen100",
+            "page": null
+          }
+        },
+        {
+          "name": "open cen100: coursework rendered",
+          "pass": true,
+          "actual": {
+            "characters": 1766,
+            "heading": "Intro toEngineering"
+          },
+          "expected": "visible route heading and content"
+        },
+        {
+          "name": "open cen100: focus target",
+          "pass": true,
+          "actual": {
+            "id": "course-main",
+            "tag": "MAIN",
+            "inside": true,
+            "skipId": "course-main",
+            "heading": false
+          },
+          "expected": "route Skip destination when it is the region, otherwise the route heading"
+        },
+        {
+          "name": "open mth140: no document reload",
+          "pass": true,
+          "actual": "f426271d-4bca-4008-8e7b-30f3fcc61459",
+          "expected": "f426271d-4bca-4008-8e7b-30f3fcc61459"
+        },
+        {
+          "name": "open mth140: URL",
+          "pass": true,
+          "actual": "http://127.0.0.1:33547/mth140/",
+          "expected": "http://127.0.0.1:33547/mth140/"
+        },
+        {
+          "name": "open mth140: title",
+          "pass": true,
+          "actual": "MTH140: Calculus I | TMU Course Guides",
+          "expected": "MTH140: Calculus I | TMU Course Guides"
+        },
+        {
+          "name": "open mth140: body identity",
+          "pass": true,
+          "actual": {
+            "course": "mth140",
+            "page": null
+          },
+          "expected": {
+            "course": "mth140",
+            "page": null
+          }
+        },
+        {
+          "name": "open mth140: coursework rendered",
+          "pass": true,
+          "actual": {
+            "characters": 1216,
+            "heading": "Calculus I"
+          },
+          "expected": "visible route heading and content"
+        },
+        {
+          "name": "open mth140: focus target",
+          "pass": true,
+          "actual": {
+            "id": "course-title",
+            "tag": "H1",
+            "inside": true,
+            "skipId": null,
+            "heading": true
+          },
+          "expected": "route Skip destination when it is the region, otherwise the route heading"
+        },
+        {
+          "name": "route and history navigation: execution",
+          "pass": false,
+          "actual": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-course-link=\"mth141\"]')\u001b[22m\n\u001b[2m    - locator resolved to <a class=\"course-link\" data-course-link=\"mth141\" href=\"http://127.0.0.1:33547/mth141/\">…</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\n    at navigate (/workspace/tmu-course-guides/tools/qa/checks.mjs:207:55)\n    at /workspace/tmu-course-guides/tools/qa/checks.mjs:239:68\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks.mjs:102:5)\n    at async Object.routes (/workspace/tmu-course-guides/tools/qa/checks.mjs:223:3)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+          "expected": "case completes"
+        },
+        {
+          "name": "route and history navigation: consoleErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "route and history navigation: pageErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "route and history navigation: failedRequests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "route and history navigation: httpErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "observations": {
+        "cases": [
+          {
+            "name": "route and history navigation",
+            "physicalClickTimeoutMs": 30000,
+            "telemetry": {
+              "consoleErrors": [],
+              "pageErrors": [],
+              "failedRequests": [],
+              "httpErrors": []
+            },
+            "navigationDiagnostics": {
+              "documentRequests": [
+                {
+                  "time": 1791962140395,
+                  "url": "http://127.0.0.1:33547/",
+                  "method": "GET"
+                }
+              ],
+              "frameNavigations": [
+                {
+                  "time": 1791962140441,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962141518,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962142741,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962142978,
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962158918,
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962162251,
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962202930,
+                  "url": "http://127.0.0.1:33547/mth140/"
+                }
+              ],
+              "pageEvents": [
+                {
+                  "time": 1791962140441,
+                  "type": "Page.frameNavigated",
+                  "frameId": "C8A62DAE8925F1942C0B5E3939D80A3C",
+                  "loaderId": "70816A087CAB7708BE027AF1844690DE",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962141527,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "C8A62DAE8925F1942C0B5E3939D80A3C",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962142741,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "C8A62DAE8925F1942C0B5E3939D80A3C",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962142978,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "C8A62DAE8925F1942C0B5E3939D80A3C",
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962158918,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "C8A62DAE8925F1942C0B5E3939D80A3C",
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962162251,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "C8A62DAE8925F1942C0B5E3939D80A3C",
+                  "url": "http://127.0.0.1:33547/mth140/"
+                }
+              ],
+              "failure": {
+                "time": 1791962200206,
+                "pageURL": "http://127.0.0.1:33547/mth140/",
+                "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-course-link=\"mth141\"]')\u001b[22m\n\u001b[2m    - locator resolved to <a class=\"course-link\" data-course-link=\"mth141\" href=\"http://127.0.0.1:33547/mth141/\">…</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n",
+                "state": {
+                  "url": "http://127.0.0.1:33547/mth140/",
+                  "shell": "f426271d-4bca-4008-8e7b-30f3fcc61459",
+                  "route": "mth140",
+                  "completedRoute": "mth140",
+                  "body": {
+                    "course": "mth140"
+                  },
+                  "content": 29831,
+                  "deadline": "Oct 12–16Quiz weekOct 12–Oct 16 · during your assigned labChoose section for quiz dateLab Quiz 2: Quiz week. Oct 12–Oct 16 · during your assigned lab.",
+                  "focus": {
+                    "tag": "H1",
+                    "id": "course-title",
+                    "inside": true
+                  },
+                  "wrapper": {
+                    "opacity": "1",
+                    "filter": "none",
+                    "transform": "none"
+                  },
+                  "events": {
+                    "routes": [
+                      {
+                        "time": 1285.1999999955297,
+                        "route": "desk",
+                        "from": null,
+                        "url": "http://127.0.0.1:33547/",
+                        "shell": "f426271d-4bca-4008-8e7b-30f3fcc61459"
+                      },
+                      {
+                        "time": 3749,
+                        "route": "cen100",
+                        "from": "desk",
+                        "url": "http://127.0.0.1:33547/cen100/",
+                        "shell": "f426271d-4bca-4008-8e7b-30f3fcc61459"
+                      },
+                      {
+                        "time": 29449.29999999702,
+                        "route": "mth140",
+                        "from": "cen100",
+                        "url": "http://127.0.0.1:33547/mth140/",
+                        "shell": "f426271d-4bca-4008-8e7b-30f3fcc61459"
+                      }
+                    ],
+                    "clicks": [
+                      {
+                        "time": 2324.7999999970198,
+                        "tag": "A",
+                        "id": "",
+                        "route": "cen100",
+                        "href": "http://127.0.0.1:33547/cen100/",
+                        "url": "http://127.0.0.1:33547/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/"
+                      },
+                      {
+                        "time": 18524.89999999851,
+                        "tag": "A",
+                        "id": "",
+                        "route": "mth140",
+                        "href": "http://127.0.0.1:33547/mth140/",
+                        "url": "http://127.0.0.1:33547/cen100/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/cen100/"
+                      },
+                      {
+                        "time": 26380.89999999851,
+                        "tag": "BUTTON",
+                        "id": "tab-assessments",
+                        "href": null,
+                        "url": "http://127.0.0.1:33547/mth140/",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/mth140/"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "steps": [
+              {
+                "route": "desk",
+                "url": "http://127.0.0.1:33547/",
+                "shell": "f426271d-4bca-4008-8e7b-30f3fcc61459",
+                "title": "TMU Course Guides | Fall 2026",
+                "course": null,
+                "page": "desk",
+                "content": 1103,
+                "heading": "TMU Course Guides · Fall 2026",
+                "focus": {
+                  "id": "",
+                  "tag": "BODY",
+                  "inside": false,
+                  "skipId": "desk-main",
+                  "heading": false
+                }
+              },
+              {
+                "route": "cen100",
+                "label": "open cen100",
+                "url": "http://127.0.0.1:33547/cen100/",
+                "shell": "f426271d-4bca-4008-8e7b-30f3fcc61459",
+                "title": "CEN100 | TMU Course Guides",
+                "course": "cen100",
+                "page": null,
+                "content": 1766,
+                "heading": "Intro toEngineering",
+                "focus": {
+                  "id": "course-main",
+                  "tag": "MAIN",
+                  "inside": true,
+                  "skipId": "course-main",
+                  "heading": false
+                }
+              },
+              {
+                "route": "mth140",
+                "label": "open mth140",
+                "url": "http://127.0.0.1:33547/mth140/",
+                "shell": "f426271d-4bca-4008-8e7b-30f3fcc61459",
+                "title": "MTH140: Calculus I | TMU Course Guides",
+                "course": "mth140",
+                "page": null,
+                "content": 1216,
+                "heading": "Calculus I",
+                "focus": {
+                  "id": "course-title",
+                  "tag": "H1",
+                  "inside": true,
+                  "skipId": null,
+                  "heading": true
+                }
+              }
+            ]
+          }
+        ],
+        "runnerErrors": []
+      },
+      "skipped": [],
+      "durationMs": 63570,
+      "failures": 1
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "origin": "http://127.0.0.1:42001",
+      "status": "failed",
+      "assertions": [
+        {
+          "name": "initial persistent shell id",
+          "pass": true,
+          "actual": "8a82b7af-c937-4064-87d9-237e350ff278",
+          "expected": "nonempty"
+        },
+        {
+          "name": "open cen100: no document reload",
+          "pass": true,
+          "actual": "8a82b7af-c937-4064-87d9-237e350ff278",
+          "expected": "8a82b7af-c937-4064-87d9-237e350ff278"
+        },
+        {
+          "name": "open cen100: URL",
+          "pass": true,
+          "actual": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+        },
+        {
+          "name": "open cen100: title",
+          "pass": true,
+          "actual": "CEN100 | TMU Course Guides",
+          "expected": "CEN100 | TMU Course Guides"
+        },
+        {
+          "name": "open cen100: body identity",
+          "pass": true,
+          "actual": {
+            "course": "cen100",
+            "page": null
+          },
+          "expected": {
+            "course": "cen100",
+            "page": null
+          }
+        },
+        {
+          "name": "open cen100: coursework rendered",
+          "pass": true,
+          "actual": {
+            "characters": 1766,
+            "heading": "Intro toEngineering"
+          },
+          "expected": "visible route heading and content"
+        },
+        {
+          "name": "open cen100: focus target",
+          "pass": true,
+          "actual": {
+            "id": "course-main",
+            "tag": "MAIN",
+            "inside": true,
+            "skipId": "course-main",
+            "heading": false
+          },
+          "expected": "route Skip destination when it is the region, otherwise the route heading"
+        },
+        {
+          "name": "open mth140: no document reload",
+          "pass": true,
+          "actual": "8a82b7af-c937-4064-87d9-237e350ff278",
+          "expected": "8a82b7af-c937-4064-87d9-237e350ff278"
+        },
+        {
+          "name": "open mth140: URL",
+          "pass": true,
+          "actual": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+        },
+        {
+          "name": "open mth140: title",
+          "pass": true,
+          "actual": "MTH140: Calculus I | TMU Course Guides",
+          "expected": "MTH140: Calculus I | TMU Course Guides"
+        },
+        {
+          "name": "open mth140: body identity",
+          "pass": true,
+          "actual": {
+            "course": "mth140",
+            "page": null
+          },
+          "expected": {
+            "course": "mth140",
+            "page": null
+          }
+        },
+        {
+          "name": "open mth140: coursework rendered",
+          "pass": true,
+          "actual": {
+            "characters": 1216,
+            "heading": "Calculus I"
+          },
+          "expected": "visible route heading and content"
+        },
+        {
+          "name": "open mth140: focus target",
+          "pass": true,
+          "actual": {
+            "id": "course-title",
+            "tag": "H1",
+            "inside": true,
+            "skipId": null,
+            "heading": true
+          },
+          "expected": "route Skip destination when it is the region, otherwise the route heading"
+        },
+        {
+          "name": "open mth141: no document reload",
+          "pass": true,
+          "actual": "8a82b7af-c937-4064-87d9-237e350ff278",
+          "expected": "8a82b7af-c937-4064-87d9-237e350ff278"
+        },
+        {
+          "name": "open mth141: URL",
+          "pass": true,
+          "actual": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+        },
+        {
+          "name": "open mth141: title",
+          "pass": true,
+          "actual": "MTH141: Linear Algebra | TMU Course Guides",
+          "expected": "MTH141: Linear Algebra | TMU Course Guides"
+        },
+        {
+          "name": "open mth141: body identity",
+          "pass": true,
+          "actual": {
+            "course": "mth141",
+            "page": null
+          },
+          "expected": {
+            "course": "mth141",
+            "page": null
+          }
+        },
+        {
+          "name": "open mth141: coursework rendered",
+          "pass": true,
+          "actual": {
+            "characters": 1073,
+            "heading": "Linear Algebra"
+          },
+          "expected": "visible route heading and content"
+        },
+        {
+          "name": "open mth141: focus target",
+          "pass": true,
+          "actual": {
+            "id": "math-main",
+            "tag": "MAIN",
+            "inside": true,
+            "skipId": "math-main",
+            "heading": false
+          },
+          "expected": "route Skip destination when it is the region, otherwise the route heading"
+        },
+        {
+          "name": "open desk: no document reload",
+          "pass": true,
+          "actual": "8a82b7af-c937-4064-87d9-237e350ff278",
+          "expected": "8a82b7af-c937-4064-87d9-237e350ff278"
+        },
+        {
+          "name": "open desk: URL",
+          "pass": true,
+          "actual": "http://127.0.0.1:42001/tmu-course-guides/",
+          "expected": "http://127.0.0.1:42001/tmu-course-guides/"
+        },
+        {
+          "name": "open desk: title",
+          "pass": true,
+          "actual": "TMU Course Guides | Fall 2026",
+          "expected": "TMU Course Guides | Fall 2026"
+        },
+        {
+          "name": "open desk: body identity",
+          "pass": true,
+          "actual": {
+            "course": null,
+            "page": "desk"
+          },
+          "expected": {
+            "course": null,
+            "page": "desk"
+          }
+        },
+        {
+          "name": "open desk: coursework rendered",
+          "pass": true,
+          "actual": {
+            "characters": 1103,
+            "heading": "TMU Course Guides · Fall 2026"
+          },
+          "expected": "visible route heading and content"
+        },
+        {
+          "name": "open desk: focus target",
+          "pass": true,
+          "actual": {
+            "id": "desk-main",
+            "tag": "MAIN",
+            "inside": true,
+            "skipId": "desk-main",
+            "heading": false
+          },
+          "expected": "route Skip destination when it is the region, otherwise the route heading"
+        },
+        {
+          "name": "back to mth141: no document reload",
+          "pass": true,
+          "actual": "8a82b7af-c937-4064-87d9-237e350ff278",
+          "expected": "8a82b7af-c937-4064-87d9-237e350ff278"
+        },
+        {
+          "name": "back to mth141: URL",
+          "pass": true,
+          "actual": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+        },
+        {
+          "name": "back to mth141: title",
+          "pass": true,
+          "actual": "MTH141: Linear Algebra | TMU Course Guides",
+          "expected": "MTH141: Linear Algebra | TMU Course Guides"
+        },
+        {
+          "name": "back to mth141: body identity",
+          "pass": true,
+          "actual": {
+            "course": "mth141",
+            "page": null
+          },
+          "expected": {
+            "course": "mth141",
+            "page": null
+          }
+        },
+        {
+          "name": "back to mth141: coursework rendered",
+          "pass": true,
+          "actual": {
+            "characters": 1073,
+            "heading": "Linear Algebra"
+          },
+          "expected": "visible route heading and content"
+        },
+        {
+          "name": "back to mth141: focus target",
+          "pass": true,
+          "actual": {
+            "id": "math-main",
+            "tag": "MAIN",
+            "inside": true,
+            "skipId": "math-main",
+            "heading": false
+          },
+          "expected": "route Skip destination when it is the region, otherwise the route heading"
+        },
+        {
+          "name": "back to mth140: no document reload",
+          "pass": true,
+          "actual": "8a82b7af-c937-4064-87d9-237e350ff278",
+          "expected": "8a82b7af-c937-4064-87d9-237e350ff278"
+        },
+        {
+          "name": "back to mth140: URL",
+          "pass": true,
+          "actual": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+        },
+        {
+          "name": "back to mth140: title",
+          "pass": true,
+          "actual": "MTH140: Calculus I | TMU Course Guides",
+          "expected": "MTH140: Calculus I | TMU Course Guides"
+        },
+        {
+          "name": "back to mth140: body identity",
+          "pass": true,
+          "actual": {
+            "course": "mth140",
+            "page": null
+          },
+          "expected": {
+            "course": "mth140",
+            "page": null
+          }
+        },
+        {
+          "name": "back to mth140: coursework rendered",
+          "pass": true,
+          "actual": {
+            "characters": 1216,
+            "heading": "Calculus I"
+          },
+          "expected": "visible route heading and content"
+        },
+        {
+          "name": "back to mth140: focus target",
+          "pass": true,
+          "actual": {
+            "id": "course-title",
+            "tag": "H1",
+            "inside": true,
+            "skipId": null,
+            "heading": true
+          },
+          "expected": "route Skip destination when it is the region, otherwise the route heading"
+        },
+        {
+          "name": "route and history navigation: execution",
+          "pass": false,
+          "actual": "Error: Timed out waiting for cen100 completed navigation, content and deadline\n    at until (file:///workspace/tmu-course-guides/tools/qa/checks.mjs:127:9)\n    at async ready (file:///workspace/tmu-course-guides/tools/qa/checks.mjs:133:3)\n    at async file:///workspace/tmu-course-guides/tools/qa/checks.mjs:241:100\n    at async runCase (file:///workspace/tmu-course-guides/tools/qa/checks.mjs:102:5)\n    at async Object.routes (file:///workspace/tmu-course-guides/tools/qa/checks.mjs:223:3)\n    at async runHarness (file:///workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+          "expected": "case completes"
+        },
+        {
+          "name": "route and history navigation: consoleErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "route and history navigation: pageErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "route and history navigation: failedRequests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "route and history navigation: httpErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "observations": {
+        "cases": [
+          {
+            "name": "route and history navigation",
+            "physicalClickTimeoutMs": 30000,
+            "telemetry": {
+              "consoleErrors": [],
+              "pageErrors": [],
+              "failedRequests": [],
+              "httpErrors": []
+            },
+            "navigationDiagnostics": {
+              "documentRequests": [
+                {
+                  "time": 1791964987943,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/",
+                  "method": "GET"
+                }
+              ],
+              "frameNavigations": [
+                {
+                  "time": 1791964987970,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791964988589,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791964989608,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791964989802,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965000860,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965003114,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965008991,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965009542,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791965022899,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791965024024,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965024425,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791965032252,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965044741,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                }
+              ],
+              "pageEvents": [
+                {
+                  "time": 1791964987970,
+                  "type": "Page.frameNavigated",
+                  "frameId": "C38537F778CC574501F34ABB36C6A706",
+                  "loaderId": "8A1CBC0957FE6CC22DBB50B2E468B33E",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791964988591,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "C38537F778CC574501F34ABB36C6A706",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791964989608,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "C38537F778CC574501F34ABB36C6A706",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791964989803,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "C38537F778CC574501F34ABB36C6A706",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965000860,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "C38537F778CC574501F34ABB36C6A706",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965003114,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "C38537F778CC574501F34ABB36C6A706",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965008991,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "C38537F778CC574501F34ABB36C6A706",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965009542,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "C38537F778CC574501F34ABB36C6A706",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791965022899,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "C38537F778CC574501F34ABB36C6A706",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791965024024,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "C38537F778CC574501F34ABB36C6A706",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965024425,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "C38537F778CC574501F34ABB36C6A706",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791965032252,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "C38537F778CC574501F34ABB36C6A706",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965044741,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "C38537F778CC574501F34ABB36C6A706",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                }
+              ],
+              "failure": {
+                "time": 1791965058061,
+                "pageURL": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+                "error": "Timed out waiting for cen100 completed navigation, content and deadline",
+                "state": {
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+                  "shell": "8a82b7af-c937-4064-87d9-237e350ff278",
+                  "route": "cen100",
+                  "completedRoute": "cen100",
+                  "body": {
+                    "course": "cen100"
+                  },
+                  "content": 44202,
+                  "deadline": "00days10hrs55min40secDueWed Oct 14 · 3:00 PM Toronto10 hours and 55 minutes remaining until Academic Integrity Quiz. Wed Oct 14 · 3:00 PM Toronto.",
+                  "focus": {
+                    "tag": "MAIN",
+                    "id": "course-main",
+                    "inside": true
+                  },
+                  "wrapper": {
+                    "opacity": "1",
+                    "filter": "none",
+                    "transform": "none"
+                  },
+                  "events": {
+                    "routes": [
+                      {
+                        "time": 798.7999999970198,
+                        "route": "desk",
+                        "from": null,
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/",
+                        "shell": "8a82b7af-c937-4064-87d9-237e350ff278"
+                      },
+                      {
+                        "time": 3235.1999999955297,
+                        "route": "cen100",
+                        "from": "desk",
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+                        "shell": "8a82b7af-c937-4064-87d9-237e350ff278"
+                      },
+                      {
+                        "time": 18714.60000000149,
+                        "route": "mth140",
+                        "from": "cen100",
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                        "shell": "8a82b7af-c937-4064-87d9-237e350ff278"
+                      },
+                      {
+                        "time": 22375.39999999851,
+                        "route": "mth141",
+                        "from": "mth140",
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+                        "shell": "8a82b7af-c937-4064-87d9-237e350ff278"
+                      },
+                      {
+                        "time": 36400.89999999851,
+                        "route": "desk",
+                        "from": "mth141",
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/",
+                        "shell": "8a82b7af-c937-4064-87d9-237e350ff278"
+                      },
+                      {
+                        "time": 36961.89999999851,
+                        "route": "mth141",
+                        "from": "desk",
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+                        "shell": "8a82b7af-c937-4064-87d9-237e350ff278"
+                      },
+                      {
+                        "time": 52851.39999999851,
+                        "route": "mth140",
+                        "from": "mth141",
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                        "shell": "8a82b7af-c937-4064-87d9-237e350ff278"
+                      },
+                      {
+                        "time": 71727.89999999851,
+                        "route": "cen100",
+                        "from": "mth140",
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+                        "shell": "8a82b7af-c937-4064-87d9-237e350ff278"
+                      }
+                    ],
+                    "clicks": [
+                      {
+                        "time": 1647.3999999985099,
+                        "tag": "A",
+                        "id": "",
+                        "route": "cen100",
+                        "href": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/"
+                      },
+                      {
+                        "time": 12907.89999999851,
+                        "tag": "A",
+                        "id": "",
+                        "route": "mth140",
+                        "href": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                      },
+                      {
+                        "time": 17003.39999999851,
+                        "tag": "BUTTON",
+                        "id": "tab-assessments",
+                        "href": null,
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                      },
+                      {
+                        "time": 21042.60000000149,
+                        "tag": "A",
+                        "id": "",
+                        "route": "mth141",
+                        "href": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                      },
+                      {
+                        "time": 22052.69999999553,
+                        "tag": "BUTTON",
+                        "id": "tab-assessments",
+                        "href": null,
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                      },
+                      {
+                        "time": 34957.10000000149,
+                        "tag": "A",
+                        "id": "",
+                        "route": "desk",
+                        "href": "http://127.0.0.1:42001/tmu-course-guides/",
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                      },
+                      {
+                        "time": 36811.5,
+                        "tag": "BUTTON",
+                        "id": "tab-assessments",
+                        "href": null,
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                      },
+                      {
+                        "time": 52618,
+                        "tag": "BUTTON",
+                        "id": "tab-assessments",
+                        "href": null,
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "steps": [
+              {
+                "route": "desk",
+                "url": "http://127.0.0.1:42001/tmu-course-guides/",
+                "shell": "8a82b7af-c937-4064-87d9-237e350ff278",
+                "title": "TMU Course Guides | Fall 2026",
+                "course": null,
+                "page": "desk",
+                "content": 1103,
+                "heading": "TMU Course Guides · Fall 2026",
+                "focus": {
+                  "id": "",
+                  "tag": "BODY",
+                  "inside": false,
+                  "skipId": "desk-main",
+                  "heading": false
+                }
+              },
+              {
+                "route": "cen100",
+                "label": "open cen100",
+                "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+                "shell": "8a82b7af-c937-4064-87d9-237e350ff278",
+                "title": "CEN100 | TMU Course Guides",
+                "course": "cen100",
+                "page": null,
+                "content": 1766,
+                "heading": "Intro toEngineering",
+                "focus": {
+                  "id": "course-main",
+                  "tag": "MAIN",
+                  "inside": true,
+                  "skipId": "course-main",
+                  "heading": false
+                }
+              },
+              {
+                "route": "mth140",
+                "label": "open mth140",
+                "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                "shell": "8a82b7af-c937-4064-87d9-237e350ff278",
+                "title": "MTH140: Calculus I | TMU Course Guides",
+                "course": "mth140",
+                "page": null,
+                "content": 1216,
+                "heading": "Calculus I",
+                "focus": {
+                  "id": "course-title",
+                  "tag": "H1",
+                  "inside": true,
+                  "skipId": null,
+                  "heading": true
+                }
+              },
+              {
+                "route": "mth141",
+                "label": "open mth141",
+                "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+                "shell": "8a82b7af-c937-4064-87d9-237e350ff278",
+                "title": "MTH141: Linear Algebra | TMU Course Guides",
+                "course": "mth141",
+                "page": null,
+                "content": 1073,
+                "heading": "Linear Algebra",
+                "focus": {
+                  "id": "math-main",
+                  "tag": "MAIN",
+                  "inside": true,
+                  "skipId": "math-main",
+                  "heading": false
+                }
+              },
+              {
+                "route": "desk",
+                "label": "open desk",
+                "url": "http://127.0.0.1:42001/tmu-course-guides/",
+                "shell": "8a82b7af-c937-4064-87d9-237e350ff278",
+                "title": "TMU Course Guides | Fall 2026",
+                "course": null,
+                "page": "desk",
+                "content": 1103,
+                "heading": "TMU Course Guides · Fall 2026",
+                "focus": {
+                  "id": "desk-main",
+                  "tag": "MAIN",
+                  "inside": true,
+                  "skipId": "desk-main",
+                  "heading": false
+                }
+              },
+              {
+                "route": "mth141",
+                "label": "back to mth141",
+                "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+                "shell": "8a82b7af-c937-4064-87d9-237e350ff278",
+                "title": "MTH141: Linear Algebra | TMU Course Guides",
+                "course": "mth141",
+                "page": null,
+                "content": 1073,
+                "heading": "Linear Algebra",
+                "focus": {
+                  "id": "math-main",
+                  "tag": "MAIN",
+                  "inside": true,
+                  "skipId": "math-main",
+                  "heading": false
+                }
+              },
+              {
+                "route": "mth140",
+                "label": "back to mth140",
+                "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                "shell": "8a82b7af-c937-4064-87d9-237e350ff278",
+                "title": "MTH140: Calculus I | TMU Course Guides",
+                "course": "mth140",
+                "page": null,
+                "content": 1216,
+                "heading": "Calculus I",
+                "focus": {
+                  "id": "course-title",
+                  "tag": "H1",
+                  "inside": true,
+                  "skipId": null,
+                  "heading": true
+                }
+              }
+            ]
+          }
+        ],
+        "runnerErrors": []
+      },
+      "skipped": [],
+      "durationMs": 73765,
+      "failures": 1
+    }
+  ],
+  "runErrors": []
+}

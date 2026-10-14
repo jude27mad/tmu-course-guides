@@ -145,7 +145,10 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
  const sameOrigin=url=>url.origin===base.origin&&/^https?:$/.test(url.protocol);
  const fallback=url=>{if(sameOrigin(url))assign(url.href);return false;};
  const canonical=input=>{const url=new URL(input,window.location.href),name=routeForURL(url,base);if(!name)return null;const result=new URL(name==='desk'?'':name+'/',base);result.search=url.search;return result;};
- async function prefetch(input){
+ const mayPrefetch=()=>{const connection=window.navigator?.connection;return !connection?.saveData&&!['slow-2g','2g'].includes(connection?.effectiveType);};
+ const fineHover=()=>window.matchMedia?.('(hover: hover) and (pointer: fine)')?.matches??true;
+ async function prefetch(input){return mayPrefetch()?loadDocument(input):null;}
+ async function loadDocument(input){
   const url=canonical(input);if(!url)return null;
   const key=url.href;
   if(cache.has(key)){const value=cache.get(key);cache.delete(key);cache.set(key,value);return value;}
@@ -295,7 +298,7 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
    // Scene work and destination preparation overlap. Only the scene's wait is
    // capped by the transition controller; existing navigation guards keep their contract.
    const preparing=(async()=>{
-    const destination=await awaitCurrent(prefetch(url),request),incoming=destination.document;
+    const destination=await awaitCurrent(loadDocument(url),request),incoming=destination.document;
     const nextModules=await awaitCurrent(loadRouteModules({document:incoming,url:destination.url,importModule}),request);
     if(modules.some(module=>module.reloadRequired===true))throw Error('Outgoing route requires reload');
     const commitHead=await awaitCurrent(prepareHead(incoming,destination.url,request),request);
@@ -367,7 +370,12 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   const signal=listenerController.signal;
   window.addEventListener('click',event=>{const a=linkFromEvent(event);if(isRouteLink(event,a,{base,currentURL:window.location.href})){event.preventDefault();navigate(a.href,{origin:transitionOrigin(window,event.detail>0?a:null)});}}, {capture:true,signal});
   const warm=event=>{const a=linkFromEvent(event);if(isRouteLink({button:0},a,{base,currentURL:window.location.href}))prefetch(a.href).catch(()=>{});};
-  window.addEventListener('pointerenter',warm,{capture:true,signal});window.addEventListener('focus',warm,{capture:true,signal});
+  // Touch may synthesize entry/focus while scrolling. Keyboard focus remains route intent on every device.
+  let lastPointerType=null;
+  window.addEventListener('pointerdown',event=>{lastPointerType=event.pointerType||'mouse';},{capture:true,signal});
+  window.addEventListener('keydown',()=>{lastPointerType=null;},{capture:true,signal});
+  window.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch'&&fineHover())warm(event);},{capture:true,signal});
+  window.addEventListener('focus',event=>{if(lastPointerType!=='touch')warm(event);},{capture:true,signal});
   window.addEventListener('popstate',event=>{
    browserEntry=event.state?.[STATE_KEY];
    if(restoring){
@@ -405,8 +413,8 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
    if(history.state?.[STATE_KEY]?.id===activeEntry&&currentURL!==window.location.href)replaceState({...history.state,[STATE_KEY]:{id:marker(),index:activeIndex+1,scroll:scroll()}},'',window.location.href);
    browserEntry=ensureEntry();activeEntry=browserEntry.id;activeIndex=browserEntry.index??activeIndex;currentURL=window.location.href;
   },{capture:true,signal});
-  if(autoPrefetch){
-   const warmRoutes=()=>{idle=null;for(const name of ROUTES)if(name!==route)prefetch(new URL(name==='desk'?'':name+'/',base)).catch(()=>{});};
+  if(autoPrefetch&&fineHover()&&mayPrefetch()){
+   const warmRoutes=()=>{idle=null;if(!fineHover()||!mayPrefetch())return;for(const name of ROUTES)if(name!==route)prefetch(new URL(name==='desk'?'':name+'/',base)).catch(()=>{});};
    idle=window.requestIdleCallback?window.requestIdleCallback(warmRoutes,{timeout:1500}):window.setTimeout(warmRoutes,150);
   }
  }

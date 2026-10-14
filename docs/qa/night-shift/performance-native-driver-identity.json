@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T03:30:50.484Z",
+  "status": "not-equivalent-under-current-runner-resolution",
+  "runtimePath": "/workspace/tmu-course-guides/tools/qa/runtime.mjs",
+  "runtimeSHA256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587",
+  "nodePath": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+  "identities": [
+    {
+      "descriptor": "/opt/codex/cua_node/lib/node_modules/playwright",
+      "resolvedEntry": "/opt/codex/cua_node/lib/node_modules/playwright/index.js",
+      "realEntry": "/opt/codex/cua_node/lib/node_modules/playwright/index.js",
+      "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright/package.json",
+      "realPackagePath": "/opt/codex/cua_node/lib/node_modules/playwright/package.json",
+      "name": "playwright",
+      "version": "1.57.0",
+      "entrySHA256": "4e98f65f0a9d9bcab8cffc0c5cfdd87fd3f5b0be74fc494ff166a466b204cd44",
+      "packageSHA256": "07726a5a20b29123d85311af7d11b7de6bf00ddd03121d3c9061995043ebd261",
+      "core": {
+        "realEntry": "/opt/codex/cua_node/lib/node_modules/playwright-core/index.js",
+        "realPackagePath": "/opt/codex/cua_node/lib/node_modules/playwright-core/package.json",
+        "name": "playwright-core",
+        "version": "1.57.0",
+        "entrySHA256": "a4f83b5b2915b43bddd5384d963a66d1fd4d978a3db8059969fb78de65bc519a",
+        "packageSHA256": "6d38907778eb872e37e8da93b430b011c3dfbe8848c4214becb7effdc0aff1d6"
+      },
+      "requirePaths": [
+        "/workspace/tmu-course-guides/tools/qa/node_modules",
+        "/workspace/tmu-course-guides/tools/node_modules",
+        "/workspace/tmu-course-guides/node_modules",
+        "/workspace/node_modules",
+        "/node_modules",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "/home/agent/.node_modules",
+        "/home/agent/.node_libraries",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/lib/node"
+      ]
+    },
+    {
+      "descriptor": "playwright",
+      "resolvedEntry": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.js",
+      "realEntry": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.js",
+      "packagePath": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/package.json",
+      "realPackagePath": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/package.json",
+      "name": "playwright",
+      "version": "1.62.1",
+      "entrySHA256": "4e98f65f0a9d9bcab8cffc0c5cfdd87fd3f5b0be74fc494ff166a466b204cd44",
+      "packageSHA256": "ca170ec143a88ed3043ac953eb3b2377b2b97304104f4e1e23316684ce2c35af",
+      "core": {
+        "realEntry": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/index.js",
+        "realPackagePath": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/package.json",
+        "name": "playwright-core",
+        "version": "1.62.1",
+        "entrySHA256": "a58fb2cec4293e7dcf73c58a179898a4f3986666451a19da4e731fa3af63265b",
+        "packageSHA256": "07c47543631fef9508760365dee9fbe958c562093ec8d122543949ed231f233f"
+      },
+      "requirePaths": [
+        "/workspace/tmu-course-guides/tools/qa/node_modules",
+        "/workspace/tmu-course-guides/tools/node_modules",
+        "/workspace/tmu-course-guides/node_modules",
+        "/workspace/node_modules",
+        "/node_modules",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "/home/agent/.node_modules",
+        "/home/agent/.node_libraries",
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/lib/node"
+      ]
+    }
+  ],
+  "note": "Read-only module resolution metadata. No package loaded, browser launched or test executed. Original absolute and current fallback packages have distinct realpaths, versions and package bytes; matching entry-file bytes alone do not prove package identity. Historical focused NODE_PATH has not been independently established."
+}

@@ -1,0 +1,971 @@
+{
+  "schemaVersion": 1,
+  "status": "archive-plan-only",
+  "recordedAt": "2026-10-14T10:14:01.344542+00:00",
+  "suggestedArchiveName": "supported-normal-interrupted",
+  "actualRunState": "operator-interrupted-incomplete",
+  "expectedSelections": 28,
+  "finalizedSelections": 7,
+  "finalizedPassed": 4,
+  "finalizedFailed": 3,
+  "finalizedFailedAssertions": 3,
+  "interruptedSelection": {
+    "check": "frames",
+    "base": "/tmu-course-guides/",
+    "actualCLIExitCode": 130
+  },
+  "neverStartedSelections": 20,
+  "actualOuterCLIExitCode": 2,
+  "originalMatrixStatus": "stopped-on-integrity-failure",
+  "originalMatrixComplete": false,
+  "masterSourceAfterAbsent": true,
+  "postCloseSourceCapture": "proofs/ns-perf-supported-partial-source-after.json",
+  "postCloseSourceCLIObservation": {
+    "reportedBy": "/root",
+    "actualExitCode": 0,
+    "actualSessionID": 82197,
+    "actualToolChunk": "819680",
+    "source": "Parent task message; not inferred from file existence"
+  },
+  "archiveAcceptance": "Faithful byte preservation/provenance only. This interrupted sweep is not a completed all28 run and establishes no QA acceptance, failure waiver or replacement of original Playwright1.57 complete failed28/perf pair. No WebKit invocation started.",
+  "records": [
+    {
+      "index": 1,
+      "check": "perf",
+      "base": "/",
+      "state": "finalized",
+      "nativeClassification": "passed",
+      "nativeRecordStatus": "passed",
+      "actualCLIExitCode": 0,
+      "sourceBefore": {
+        "path": "/tmp/ns-perf-supported-all28-final/01-perf-root/source-before.json",
+        "sha256": "902ceb73a874b493a3998d2dc9ebc03758d6fcd10db8b8c432972fdce48c4efb",
+        "recordedAt": "2026-10-14T09:45:52.190Z"
+      },
+      "sourceAfter": {
+        "path": "/tmp/ns-perf-supported-all28-final/01-perf-root/source-after.json",
+        "sha256": "96cb7c83dbbe1084a27f4c1b11d126d27ffdef78ac8978ec5dbb0cd9b679692c",
+        "recordedAt": "2026-10-14T09:50:03.901Z"
+      },
+      "raw": {
+        "summary.json": {
+          "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T09-45-52-844Z-167399/summary.json",
+          "exactCopy": "/tmp/ns-perf-supported-all28-final/01-perf-root/raw-summary.json",
+          "sha256": "3957420191b97ad771539de48440b42200f5f5557330ee6fbf8f32399aefb135"
+        },
+        "perf.json": {
+          "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T09-45-52-844Z-167399/perf.json",
+          "exactCopy": "/tmp/ns-perf-supported-all28-final/01-perf-root/raw-perf.json",
+          "sha256": "6069fa009cb7b576c0524b47c9bbbb3a579e32a55efa73273d9059818113ca4d"
+        }
+      },
+      "resourceClosure": {
+        "recordedAt": "2026-10-14T09:49:53.886679Z",
+        "childPID": 167399,
+        "liveBrowserOrQARuntimeProcesses": [],
+        "ownedPreviewPorts": [
+          {
+            "port": 34421,
+            "connectEx": 111,
+            "expected": 111,
+            "refused": true
+          }
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "check": "perf",
+      "base": "/tmu-course-guides/",
+      "state": "finalized",
+      "nativeClassification": "passed",
+      "nativeRecordStatus": "passed",
+      "actualCLIExitCode": 0,
+      "sourceBefore": {
+        "path": "/tmp/ns-perf-supported-all28-final/02-perf-project/source-before.json",
+        "sha256": "a4ad8aadd6e53a0669782138a4acd04bfd287239f2dc47f840e9aac87f90e28e",
+        "recordedAt": "2026-10-14T09:50:08.403Z"
+      },
+      "sourceAfter": {
+        "path": "/tmp/ns-perf-supported-all28-final/02-perf-project/source-after.json",
+        "sha256": "92c37d0765ceb6206b00de8e4de586491e80120897fe294276741fdc615189a4",
+        "recordedAt": "2026-10-14T09:55:28.741Z"
+      },
+      "raw": {
+        "summary.json": {
+          "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T09-50-09-104Z-168291/summary.json",
+          "exactCopy": "/tmp/ns-perf-supported-all28-final/02-perf-project/raw-summary.json",
+          "sha256": "4764c8df77bbd52aeb080516f0fea105f07598375c6c9b0b00cbbf9af8a25138"
+        },
+        "perf.json": {
+          "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T09-50-09-104Z-168291/perf.json",
+          "exactCopy": "/tmp/ns-perf-supported-all28-final/02-perf-project/raw-perf.json",
+          "sha256": "1a7377935b94a8a2b023bcd783cd30d6cdca42f24a9b08bb7fedea80cba288c8"
+        }
+      },
+      "resourceClosure": {
+        "recordedAt": "2026-10-14T09:55:21.939357Z",
+        "childPID": 168291,
+        "liveBrowserOrQARuntimeProcesses": [],
+        "ownedPreviewPorts": [
+          {
+            "port": 34741,
+            "connectEx": 111,
+            "expected": 111,
+            "refused": true
+          }
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "check": "routes",
+      "base": "/",
+      "state": "finalized",
+      "nativeClassification": "failed",
+      "nativeRecordStatus": "failed",
+      "actualCLIExitCode": 1,
+      "sourceBefore": {
+        "path": "/tmp/ns-perf-supported-all28-final/03-routes-root/source-before.json",
+        "sha256": "9bbf27baf991e4e9b8cfd3e8cd64fc31ff05d13510d1442ab0201e5089f5c7be",
+        "recordedAt": "2026-10-14T09:55:34.814Z"
+      },
+      "sourceAfter": {
+        "path": "/tmp/ns-perf-supported-all28-final/03-routes-root/source-after.json",
+        "sha256": "3c3c76146ad4f915da44f3df7ab34f755c18ac7bb35808458a7193a096078068",
+        "recordedAt": "2026-10-14T09:57:30.007Z"
+      },
+      "raw": {
+        "summary.json": {
+          "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T09-55-36-613Z-169101/summary.json",
+          "exactCopy": "/tmp/ns-perf-supported-all28-final/03-routes-root/raw-summary.json",
+          "sha256": "099652f5cca923828f9f330d2b45b846680023452db34f31befb9985185fe0c8"
+        },
+        "routes.json": {
+          "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T09-55-36-613Z-169101/routes.json",
+          "exactCopy": "/tmp/ns-perf-supported-all28-final/03-routes-root/raw-routes.json",
+          "sha256": "d9cd0a7ce4cea2a369effb17bfe13e780af1893ce6d3d54cb23fd2b490ef0800"
+        }
+      },
+      "resourceClosure": {
+        "recordedAt": "2026-10-14T09:57:24.387567Z",
+        "childPID": 169101,
+        "liveBrowserOrQARuntimeProcesses": [],
+        "ownedPreviewPorts": [
+          {
+            "port": 44521,
+            "connectEx": 111,
+            "expected": 111,
+            "refused": true
+          }
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "check": "routes",
+      "base": "/tmu-course-guides/",
+      "state": "finalized",
+      "nativeClassification": "passed",
+      "nativeRecordStatus": "passed",
+      "actualCLIExitCode": 0,
+      "sourceBefore": {
+        "path": "/tmp/ns-perf-supported-all28-final/04-routes-project/source-before.json",
+        "sha256": "3c764d12da4b5fd006d80071bd4eba8759fe75d40e63cdc9f4c4c3bd5e45df5e",
+        "recordedAt": "2026-10-14T09:57:34.329Z"
+      },
+      "sourceAfter": {
+        "path": "/tmp/ns-perf-supported-all28-final/04-routes-project/source-after.json",
+        "sha256": "34da8eae1dca1b8e233e4b20aa413b0e604d32adea7aee02df5bbc10beb5bc74",
+        "recordedAt": "2026-10-14T10:00:02.309Z"
+      },
+      "raw": {
+        "summary.json": {
+          "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T09-57-34-694Z-169334/summary.json",
+          "exactCopy": "/tmp/ns-perf-supported-all28-final/04-routes-project/raw-summary.json",
+          "sha256": "9f34b20857a8a6ae18fe91400ba2ecee6e2f6d25d666c9f9f4d48fa265155416"
+        },
+        "routes.json": {
+          "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T09-57-34-694Z-169334/routes.json",
+          "exactCopy": "/tmp/ns-perf-supported-all28-final/04-routes-project/raw-routes.json",
+          "sha256": "bb258c6dad092a531af7b3468299e50e294dd120c87b60260b05a46cd3f3dda7"
+        }
+      },
+      "resourceClosure": {
+        "recordedAt": "2026-10-14T09:59:56.243558Z",
+        "childPID": 169334,
+        "liveBrowserOrQARuntimeProcesses": [],
+        "ownedPreviewPorts": [
+          {
+            "port": 33469,
+            "connectEx": 111,
+            "expected": 111,
+            "refused": true
+          }
+        ]
+      }
+    },
+    {
+      "index": 5,
+      "check": "stability",
+      "base": "/",
+      "state": "finalized",
+      "nativeClassification": "failed",
+      "nativeRecordStatus": "failed",
+      "actualCLIExitCode": 1,
+      "sourceBefore": {
+        "path": "/tmp/ns-perf-supported-all28-final/05-stability-root/source-before.json",
+        "sha256": "81500495dacd325fb829086f41af8611b7a65b1ef44a6cbc204d0dd965c0d535",
+        "recordedAt": "2026-10-14T10:00:05.185Z"
+      },
+      "sourceAfter": {
+        "path": "/tmp/ns-perf-supported-all28-final/05-stability-root/source-after.json",
+        "sha256": "0d8e457bdeb528ef5d3872b846fade148cf9f47afdcf6e74d17cd416fe29ee00",
+        "recordedAt": "2026-10-14T10:00:42.292Z"
+      },
+      "raw": {
+        "summary.json": {
+          "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T10-00-05-499Z-169623/summary.json",
+          "exactCopy": "/tmp/ns-perf-supported-all28-final/05-stability-root/raw-summary.json",
+          "sha256": "c1f7c34928791e479d69717ec82f6b87e6f060c5191845e4feceba9dea0b2f87"
+        },
+        "stability.json": {
+          "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T10-00-05-499Z-169623/stability.json",
+          "exactCopy": "/tmp/ns-perf-supported-all28-final/05-stability-root/raw-stability.json",
+          "sha256": "deecbe0b7bdbc5815386677f51da761e9359e01fafef7f6d9cb1aa06ff91f049"
+        }
+      },
+      "resourceClosure": {
+        "recordedAt": "2026-10-14T10:00:33.281001Z",
+        "childPID": 169623,
+        "liveBrowserOrQARuntimeProcesses": [],
+        "ownedPreviewPorts": [
+          {
+            "port": 39119,
+            "connectEx": 111,
+            "expected": 111,
+            "refused": true
+          }
+        ]
+      }
+    },
+    {
+      "index": 6,
+      "check": "stability",
+      "base": "/tmu-course-guides/",
+      "state": "finalized",
+      "nativeClassification": "failed",
+      "nativeRecordStatus": "failed",
+      "actualCLIExitCode": 1,
+      "sourceBefore": {
+        "path": "/tmp/ns-perf-supported-all28-final/06-stability-project/source-before.json",
+        "sha256": "85060fd4b712380df0abdcaf43c13bd8a8bafa6739cf19f21e81a2a708c10352",
+        "recordedAt": "2026-10-14T10:00:47.045Z"
+      },
+      "sourceAfter": {
+        "path": "/tmp/ns-perf-supported-all28-final/06-stability-project/source-after.json",
+        "sha256": "fa3de91f104a6fcd6bb9d8190dd6e601325a7daee88a1e62b7e6fa899fc51c2c",
+        "recordedAt": "2026-10-14T10:02:45.783Z"
+      },
+      "raw": {
+        "summary.json": {
+          "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T10-00-47-746Z-169839/summary.json",
+          "exactCopy": "/tmp/ns-perf-supported-all28-final/06-stability-project/raw-summary.json",
+          "sha256": "dd9067c253ab5398d3520f7524d50ade07e5ba36275ab156b3f5740ee64588b3"
+        },
+        "stability.json": {
+          "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T10-00-47-746Z-169839/stability.json",
+          "exactCopy": "/tmp/ns-perf-supported-all28-final/06-stability-project/raw-stability.json",
+          "sha256": "04f3220d1a927727f08d24275fffcd0f5aa35b005a1b49228fe693b42037d1eb"
+        }
+      },
+      "resourceClosure": {
+        "recordedAt": "2026-10-14T10:02:42.618784Z",
+        "childPID": 169839,
+        "liveBrowserOrQARuntimeProcesses": [],
+        "ownedPreviewPorts": [
+          {
+            "port": 34999,
+            "connectEx": 111,
+            "expected": 111,
+            "refused": true
+          }
+        ]
+      }
+    },
+    {
+      "index": 7,
+      "check": "frames",
+      "base": "/",
+      "state": "finalized",
+      "nativeClassification": "passed",
+      "nativeRecordStatus": "passed",
+      "actualCLIExitCode": 0,
+      "sourceBefore": {
+        "path": "/tmp/ns-perf-supported-all28-final/07-frames-root/source-before.json",
+        "sha256": "11fefb1e38a1e880a6927bffc310d191343cfe1167aa2b9f8556fdb1663bed37",
+        "recordedAt": "2026-10-14T10:02:50.030Z"
+      },
+      "sourceAfter": {
+        "path": "/tmp/ns-perf-supported-all28-final/07-frames-root/source-after.json",
+        "sha256": "c9cc29afafc8f3251a8f521b9355061cd6c7c4e05a9e23075f764c7cd5599e39",
+        "recordedAt": "2026-10-14T10:08:44.541Z"
+      },
+      "raw": {
+        "summary.json": {
+          "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T10-02-50-512Z-170252/summary.json",
+          "exactCopy": "/tmp/ns-perf-supported-all28-final/07-frames-root/raw-summary.json",
+          "sha256": "a9e676a20cea47981cbc7dbe542abf1b7ba2ef2939f48589e9db9f5cc36b6d02"
+        },
+        "frames.json": {
+          "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T10-02-50-512Z-170252/frames.json",
+          "exactCopy": "/tmp/ns-perf-supported-all28-final/07-frames-root/raw-frames.json",
+          "sha256": "c8e87153726eede245c86f687099b59fc100535fe3c653b496aa66f172373be0"
+        }
+      },
+      "resourceClosure": {
+        "recordedAt": "2026-10-14T10:08:40.637189Z",
+        "childPID": 170252,
+        "liveBrowserOrQARuntimeProcesses": [],
+        "ownedPreviewPorts": [
+          {
+            "port": 43817,
+            "connectEx": 111,
+            "expected": 111,
+            "refused": true
+          }
+        ]
+      }
+    },
+    {
+      "index": 8,
+      "check": "frames",
+      "base": "/tmu-course-guides/",
+      "state": "interrupted-partial",
+      "nativeClassification": null,
+      "nativeRecordStatus": "integrity-failed",
+      "actualCLIExitCode": 130,
+      "sourceBefore": {
+        "path": "/tmp/ns-perf-supported-all28-final/08-frames-project/source-before.json",
+        "sha256": "869e563abfa93505ae1cd042538b913c82daafaca4bca03c9bbd89201c7574f4",
+        "recordedAt": "2026-10-14T10:08:46.938Z"
+      },
+      "sourceAfter": null,
+      "raw": {
+        "summary.json": {
+          "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T10-08-47-308Z-170918/summary.json",
+          "exactCopy": "/tmp/ns-perf-supported-all28-final/08-frames-project/raw-summary.json",
+          "sha256": "198d043b39ce9438f58f62342ad9e8b813d4dd7e0cfa3ee0ae83bfdf8a143a23"
+        },
+        "frames.json": {
+          "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T10-08-47-308Z-170918/frames.json",
+          "exactCopy": "/tmp/ns-perf-supported-all28-final/08-frames-project/raw-frames.json",
+          "sha256": "f89d398d47ec4317e3672324ebbf4380d856e9bf092b4ab6b4245238fce4d0e6"
+        }
+      },
+      "resourceClosure": {
+        "recordedAt": "2026-10-14T10:09:37.661410Z",
+        "childPID": 170918,
+        "liveBrowserOrQARuntimeProcesses": [],
+        "ownedPreviewPorts": [
+          {
+            "port": 35877,
+            "connectEx": 111,
+            "expected": 111,
+            "refused": true
+          }
+        ]
+      }
+    }
+  ],
+  "files": [
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/01-perf-root/cli.log",
+      "destinationRelative": "run/01-perf-root/cli.log",
+      "sha256": "00a78eed4cec3dc237784b7dbf66272c26b5b8158c7ce2ce476df05916e42445",
+      "bytes": 378,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/01-perf-root/raw-perf.json",
+      "destinationRelative": "run/01-perf-root/raw-perf.json",
+      "sha256": "6069fa009cb7b576c0524b47c9bbbb3a579e32a55efa73273d9059818113ca4d",
+      "bytes": 1056660,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/01-perf-root/raw-summary.json",
+      "destinationRelative": "run/01-perf-root/raw-summary.json",
+      "sha256": "3957420191b97ad771539de48440b42200f5f5557330ee6fbf8f32399aefb135",
+      "bytes": 1160196,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/01-perf-root/record.json",
+      "destinationRelative": "run/01-perf-root/record.json",
+      "sha256": "d9524900b7e3b5eb7feb148c7ac183518a1cad3303813880f709d112a593bd4f",
+      "bytes": 959019,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/01-perf-root/source-after.json",
+      "destinationRelative": "run/01-perf-root/source-after.json",
+      "sha256": "96cb7c83dbbe1084a27f4c1b11d126d27ffdef78ac8978ec5dbb0cd9b679692c",
+      "bytes": 4264,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/01-perf-root/source-after.json.log",
+      "destinationRelative": "run/01-perf-root/source-after.json.log",
+      "sha256": "9f9b95e08f0246163b152cb73eec6200f0e7aa3c9abd72ebd82014386a7161d6",
+      "bytes": 537,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/01-perf-root/source-before.json",
+      "destinationRelative": "run/01-perf-root/source-before.json",
+      "sha256": "902ceb73a874b493a3998d2dc9ebc03758d6fcd10db8b8c432972fdce48c4efb",
+      "bytes": 3965,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/01-perf-root/source-before.json.log",
+      "destinationRelative": "run/01-perf-root/source-before.json.log",
+      "sha256": "4f1bff5ebae7661637c0ed3b3a4603a7c7303517ca1f8981bda5df1b749d551e",
+      "bytes": 475,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/02-perf-project/cli.log",
+      "destinationRelative": "run/02-perf-project/cli.log",
+      "sha256": "be8144a0950a83fdf0976b2e7e39656e8ceae4080576aa687736334e5c7960b4",
+      "bytes": 540,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/02-perf-project/raw-perf.json",
+      "destinationRelative": "run/02-perf-project/raw-perf.json",
+      "sha256": "1a7377935b94a8a2b023bcd783cd30d6cdca42f24a9b08bb7fedea80cba288c8",
+      "bytes": 1132320,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/02-perf-project/raw-summary.json",
+      "destinationRelative": "run/02-perf-project/raw-summary.json",
+      "sha256": "4764c8df77bbd52aeb080516f0fea105f07598375c6c9b0b00cbbf9af8a25138",
+      "bytes": 1237078,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/02-perf-project/record.json",
+      "destinationRelative": "run/02-perf-project/record.json",
+      "sha256": "3bd844225cd2a3aa730cfa48d92e29da4d87fe7369d720cccaaf6f5be8fdf288",
+      "bytes": 1033544,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/02-perf-project/source-after.json",
+      "destinationRelative": "run/02-perf-project/source-after.json",
+      "sha256": "92c37d0765ceb6206b00de8e4de586491e80120897fe294276741fdc615189a4",
+      "bytes": 4267,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/02-perf-project/source-after.json.log",
+      "destinationRelative": "run/02-perf-project/source-after.json.log",
+      "sha256": "a1509e43d9222570826d5c6fba10f10ef90a65c6e131dfb40ca5f07aff6145e1",
+      "bytes": 540,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/02-perf-project/source-before.json",
+      "destinationRelative": "run/02-perf-project/source-before.json",
+      "sha256": "a4ad8aadd6e53a0669782138a4acd04bfd287239f2dc47f840e9aac87f90e28e",
+      "bytes": 3965,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/02-perf-project/source-before.json.log",
+      "destinationRelative": "run/02-perf-project/source-before.json.log",
+      "sha256": "63c955074126b142ab280132facb928b8cc5b156a1ea401ade73e7d2beb8f041",
+      "bytes": 478,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/03-routes-root/cli.log",
+      "destinationRelative": "run/03-routes-root/cli.log",
+      "sha256": "8d1c41d514326b7f6c233a8bcc023cfbf31fb24f2a6ea4c1bdc63ad696dba290",
+      "bytes": 128,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/03-routes-root/raw-routes.json",
+      "destinationRelative": "run/03-routes-root/raw-routes.json",
+      "sha256": "d9cd0a7ce4cea2a369effb17bfe13e780af1893ce6d3d54cb23fd2b490ef0800",
+      "bytes": 12584,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/03-routes-root/raw-summary.json",
+      "destinationRelative": "run/03-routes-root/raw-summary.json",
+      "sha256": "099652f5cca923828f9f330d2b45b846680023452db34f31befb9985185fe0c8",
+      "bytes": 14022,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/03-routes-root/record.json",
+      "destinationRelative": "run/03-routes-root/record.json",
+      "sha256": "cdf529568e80fdd1f03f3cfd0271f58619eb1e581ed43e498fa0cba22ee29977",
+      "bytes": 17070,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/03-routes-root/source-after.json",
+      "destinationRelative": "run/03-routes-root/source-after.json",
+      "sha256": "3c3c76146ad4f915da44f3df7ab34f755c18ac7bb35808458a7193a096078068",
+      "bytes": 4266,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/03-routes-root/source-after.json.log",
+      "destinationRelative": "run/03-routes-root/source-after.json.log",
+      "sha256": "553014882cf53fed816f6079075ac3d601150ccc2ebaa41d5903ef8b6b785dcb",
+      "bytes": 539,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/03-routes-root/source-before.json",
+      "destinationRelative": "run/03-routes-root/source-before.json",
+      "sha256": "9bbf27baf991e4e9b8cfd3e8cd64fc31ff05d13510d1442ab0201e5089f5c7be",
+      "bytes": 3965,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/03-routes-root/source-before.json.log",
+      "destinationRelative": "run/03-routes-root/source-before.json.log",
+      "sha256": "960c23d0dd9392341e2064a71157e47473f1bb010433e87ce4771d2ee1104441",
+      "bytes": 477,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/04-routes-project/cli.log",
+      "destinationRelative": "run/04-routes-project/cli.log",
+      "sha256": "4b371e01f617f6d5f0b7aab78883034dec3d9830bdfda26712d4ab7a05130fa0",
+      "bytes": 146,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/04-routes-project/raw-routes.json",
+      "destinationRelative": "run/04-routes-project/raw-routes.json",
+      "sha256": "bb258c6dad092a531af7b3468299e50e294dd120c87b60260b05a46cd3f3dda7",
+      "bytes": 39809,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/04-routes-project/raw-summary.json",
+      "destinationRelative": "run/04-routes-project/raw-summary.json",
+      "sha256": "9f34b20857a8a6ae18fe91400ba2ecee6e2f6d25d666c9f9f4d48fa265155416",
+      "bytes": 44297,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/04-routes-project/record.json",
+      "destinationRelative": "run/04-routes-project/record.json",
+      "sha256": "f333041d1dc8ee06b1fbf5b1c607f75a1b94f16bb06d10490378827a56a96bb6",
+      "bytes": 41344,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/04-routes-project/source-after.json",
+      "destinationRelative": "run/04-routes-project/source-after.json",
+      "sha256": "34da8eae1dca1b8e233e4b20aa413b0e604d32adea7aee02df5bbc10beb5bc74",
+      "bytes": 4269,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/04-routes-project/source-after.json.log",
+      "destinationRelative": "run/04-routes-project/source-after.json.log",
+      "sha256": "801fd601f7b871c67aedd72b31f107bce6d0ed5696fc4af7399a172b96dd27a5",
+      "bytes": 542,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/04-routes-project/source-before.json",
+      "destinationRelative": "run/04-routes-project/source-before.json",
+      "sha256": "3c764d12da4b5fd006d80071bd4eba8759fe75d40e63cdc9f4c4c3bd5e45df5e",
+      "bytes": 3965,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/04-routes-project/source-before.json.log",
+      "destinationRelative": "run/04-routes-project/source-before.json.log",
+      "sha256": "6ac1178811c6384107825bd8db1ebc40fba64280ec7033b509024ba8a76446a0",
+      "bytes": 480,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/05-stability-root/cli.log",
+      "destinationRelative": "run/05-stability-root/cli.log",
+      "sha256": "f3f4af7a3397cd9cc31c8b8c1254adc16c93f91626af26a980b42f76ce780158",
+      "bytes": 131,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/05-stability-root/raw-stability.json",
+      "destinationRelative": "run/05-stability-root/raw-stability.json",
+      "sha256": "deecbe0b7bdbc5815386677f51da761e9359e01fafef7f6d9cb1aa06ff91f049",
+      "bytes": 5915,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/05-stability-root/raw-summary.json",
+      "destinationRelative": "run/05-stability-root/raw-summary.json",
+      "sha256": "c1f7c34928791e479d69717ec82f6b87e6f060c5191845e4feceba9dea0b2f87",
+      "bytes": 6652,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/05-stability-root/record.json",
+      "destinationRelative": "run/05-stability-root/record.json",
+      "sha256": "f97b72d3b7f96fc880825491cfe733541bd05f09963b12831363b3f6ce5a08b5",
+      "bytes": 12293,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/05-stability-root/source-after.json",
+      "destinationRelative": "run/05-stability-root/source-after.json",
+      "sha256": "0d8e457bdeb528ef5d3872b846fade148cf9f47afdcf6e74d17cd416fe29ee00",
+      "bytes": 4269,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/05-stability-root/source-after.json.log",
+      "destinationRelative": "run/05-stability-root/source-after.json.log",
+      "sha256": "8932f55e9cefe8461f4e080b9883d788a4fb644ffc11ad258e420a04a0ade068",
+      "bytes": 542,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/05-stability-root/source-before.json",
+      "destinationRelative": "run/05-stability-root/source-before.json",
+      "sha256": "81500495dacd325fb829086f41af8611b7a65b1ef44a6cbc204d0dd965c0d535",
+      "bytes": 3965,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/05-stability-root/source-before.json.log",
+      "destinationRelative": "run/05-stability-root/source-before.json.log",
+      "sha256": "305cba4ec3d242fda56dba097aef9180d22540fd5204986a372eb01532e02459",
+      "bytes": 480,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/06-stability-project/cli.log",
+      "destinationRelative": "run/06-stability-project/cli.log",
+      "sha256": "19f4d9ef5bd694916b7523fbf515da7521ac69ae7823f3bb80ec19b83801f937",
+      "bytes": 149,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/06-stability-project/raw-stability.json",
+      "destinationRelative": "run/06-stability-project/raw-stability.json",
+      "sha256": "04f3220d1a927727f08d24275fffcd0f5aa35b005a1b49228fe693b42037d1eb",
+      "bytes": 7641,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/06-stability-project/raw-summary.json",
+      "destinationRelative": "run/06-stability-project/raw-summary.json",
+      "sha256": "dd9067c253ab5398d3520f7524d50ade07e5ba36275ab156b3f5740ee64588b3",
+      "bytes": 8452,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/06-stability-project/record.json",
+      "destinationRelative": "run/06-stability-project/record.json",
+      "sha256": "3592e19d42b7d987ce558cfbee928ae218c0c0ddbb95d877ca73570acc13ba71",
+      "bytes": 12876,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/06-stability-project/source-after.json",
+      "destinationRelative": "run/06-stability-project/source-after.json",
+      "sha256": "fa3de91f104a6fcd6bb9d8190dd6e601325a7daee88a1e62b7e6fa899fc51c2c",
+      "bytes": 4272,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/06-stability-project/source-after.json.log",
+      "destinationRelative": "run/06-stability-project/source-after.json.log",
+      "sha256": "97f6e9776d4fceeaa3492553fd9595522881080ade3b65576ea34bbe4a3daaa9",
+      "bytes": 545,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/06-stability-project/source-before.json",
+      "destinationRelative": "run/06-stability-project/source-before.json",
+      "sha256": "85060fd4b712380df0abdcaf43c13bd8a8bafa6739cf19f21e81a2a708c10352",
+      "bytes": 3965,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/06-stability-project/source-before.json.log",
+      "destinationRelative": "run/06-stability-project/source-before.json.log",
+      "sha256": "7e604bcaa3e8e55cd7e79a2402f890c51bad53380d0840fb87c87992f9417fa6",
+      "bytes": 483,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/07-frames-root/cli.log",
+      "destinationRelative": "run/07-frames-root/cli.log",
+      "sha256": "f8dea3a88b8a3332707f087c0fc81026b8870fa332212a935764532a04e3008f",
+      "bytes": 128,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/07-frames-root/raw-frames.json",
+      "destinationRelative": "run/07-frames-root/raw-frames.json",
+      "sha256": "c8e87153726eede245c86f687099b59fc100535fe3c653b496aa66f172373be0",
+      "bytes": 66249,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/07-frames-root/raw-summary.json",
+      "destinationRelative": "run/07-frames-root/raw-summary.json",
+      "sha256": "a9e676a20cea47981cbc7dbe542abf1b7ba2ef2939f48589e9db9f5cc36b6d02",
+      "bytes": 73655,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/07-frames-root/record.json",
+      "destinationRelative": "run/07-frames-root/record.json",
+      "sha256": "d033cfe3ff8eda92bd20144097df30e82b84f0f367ba43e4c4dde63b2c32ae8d",
+      "bytes": 64802,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/07-frames-root/source-after.json",
+      "destinationRelative": "run/07-frames-root/source-after.json",
+      "sha256": "c9cc29afafc8f3251a8f521b9355061cd6c7c4e05a9e23075f764c7cd5599e39",
+      "bytes": 4266,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/07-frames-root/source-after.json.log",
+      "destinationRelative": "run/07-frames-root/source-after.json.log",
+      "sha256": "2914345c654eead81ca92b212a120eb21010102d12b4c31cc0e08d512dcaf2a0",
+      "bytes": 539,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/07-frames-root/source-before.json",
+      "destinationRelative": "run/07-frames-root/source-before.json",
+      "sha256": "11fefb1e38a1e880a6927bffc310d191343cfe1167aa2b9f8556fdb1663bed37",
+      "bytes": 3965,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/07-frames-root/source-before.json.log",
+      "destinationRelative": "run/07-frames-root/source-before.json.log",
+      "sha256": "d51a1dcebdfee8c429d8d3903e23e6dd582e3ca5c98bcd3cc5314e1b5eb37737",
+      "bytes": 477,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/08-frames-project/cli.log",
+      "destinationRelative": "run/08-frames-project/cli.log",
+      "sha256": "6c9221165247ee2fdb1139a2c11add84b3023e943b7480bf4fe7c998bd453e2e",
+      "bytes": 151,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/08-frames-project/raw-frames.json",
+      "destinationRelative": "run/08-frames-project/raw-frames.json",
+      "sha256": "f89d398d47ec4317e3672324ebbf4380d856e9bf092b4ab6b4245238fce4d0e6",
+      "bytes": 89463,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/08-frames-project/raw-summary.json",
+      "destinationRelative": "run/08-frames-project/raw-summary.json",
+      "sha256": "198d043b39ce9438f58f62342ad9e8b813d4dd7e0cfa3ee0ae83bfdf8a143a23",
+      "bytes": 90562,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/08-frames-project/record.json",
+      "destinationRelative": "run/08-frames-project/record.json",
+      "sha256": "2f43ad8aebea19cf02042393781f5d3a709ede48ee40d986374884fdac864808",
+      "bytes": 2496,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/08-frames-project/source-before.json",
+      "destinationRelative": "run/08-frames-project/source-before.json",
+      "sha256": "869e563abfa93505ae1cd042538b913c82daafaca4bca03c9bbd89201c7574f4",
+      "bytes": 3965,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/08-frames-project/source-before.json.log",
+      "destinationRelative": "run/08-frames-project/source-before.json.log",
+      "sha256": "ce536f92fe93b66acc41a142a907f4a815759fa43b6fb3ddad53ad0d0f8dc693",
+      "bytes": 480,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/matrix-source-before.json",
+      "destinationRelative": "run/matrix-source-before.json",
+      "sha256": "c81352f1b459606fcbbe70c3fe14cd1a6ee01a5173540787a8c1bb78cbb7c4ab",
+      "bytes": 3965,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/matrix-source-before.json.log",
+      "destinationRelative": "run/matrix-source-before.json.log",
+      "sha256": "10b95d62c444102542c6ab20a9cdabcff44b1842671d5426b1603e6aa8577826",
+      "bytes": 469,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-all28-final/matrix.json",
+      "destinationRelative": "run/matrix.json",
+      "sha256": "44dcbcb66bc4f06f8e9d1e1c7e2fcbce5d71c2de181525b9f8ac04208314988d",
+      "bytes": 2370501,
+      "copyMode": "exact bytes; never rewrite JSON paths/payloads"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-stop-intent.json",
+      "destinationRelative": "proofs/ns-perf-supported-stop-intent.json",
+      "sha256": "a79bdfbf8c91f8acc0fd7fd6edb2f94d16fd966ce4f793e3c9f685176525752b",
+      "bytes": 793,
+      "copyMode": "exact bytes"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-partial-cli-observation.json",
+      "destinationRelative": "proofs/ns-perf-supported-partial-cli-observation.json",
+      "sha256": "dc229aeaf49a53a251eacfac5f2dd776582d9a1d6e026a6eb562ce5fbf7261bb",
+      "bytes": 401,
+      "copyMode": "exact bytes"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-partial-resource-closure.json",
+      "destinationRelative": "proofs/ns-perf-supported-partial-resource-closure.json",
+      "sha256": "766fa7aa8a7ffbda32804b77e513641135aa122eebb754925c02d2f4e847f4c0",
+      "bytes": 245,
+      "copyMode": "exact bytes"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-partial-source-after.json",
+      "destinationRelative": "proofs/ns-perf-supported-partial-source-after.json",
+      "sha256": "53625ff3383e90154a9c34225e1a914939d62cfb10e20384bec28c55229221e5",
+      "bytes": 4258,
+      "copyMode": "exact bytes"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-matrix-readiness.json",
+      "destinationRelative": "proofs/ns-perf-supported-matrix-readiness.json",
+      "sha256": "bbc1640100b4f6f609e4ebef109b4d8f19e734858eb3fa33611c3f2891a4762d",
+      "bytes": 2841,
+      "copyMode": "exact bytes"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-matrix-peer-review.json",
+      "destinationRelative": "proofs/ns-perf-supported-matrix-peer-review.json",
+      "sha256": "3ffb492c1f90cf52a3422c6d71741b8409b8bd0fc10b3661ea0bcff48920b700",
+      "bytes": 7359,
+      "copyMode": "exact bytes"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-matrix.py",
+      "destinationRelative": "proofs/ns-perf-supported-matrix.py",
+      "sha256": "3f35e3dcae7b6d97103bf248b7336d2bad69e2ed9d669790b49a832fa455714d",
+      "bytes": 28491,
+      "copyMode": "exact bytes"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-environment-source-capture.mjs",
+      "destinationRelative": "proofs/ns-perf-environment-source-capture.mjs",
+      "sha256": "b94bcb12740fe0536637b7c1cb6a64d58122cc1e4a5b920a1608b63cd957d198",
+      "bytes": 7625,
+      "copyMode": "exact bytes"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-matrix.test.py",
+      "destinationRelative": "proofs/ns-perf-supported-matrix.test.py",
+      "sha256": "aa61402a2f9e1d925ab371c435ba692f81b5cbea209e81fa28bdeafe1369b355",
+      "bytes": 16857,
+      "copyMode": "exact bytes"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-supported-matrix-tests-final.log",
+      "destinationRelative": "proofs/ns-perf-supported-matrix-tests-final.log",
+      "sha256": "b535bef106c96b106bdd8b3d35f1d5c129f446c6a532d2ec51ca3f6147cc274d",
+      "bytes": 111,
+      "copyMode": "exact bytes"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-webkit-link-setup.py",
+      "destinationRelative": "proofs/ns-perf-webkit-link-setup.py",
+      "sha256": "5faa843a6fe41ce7fb96e05aecb9a0e00d67c49d64be519d57cf389bdda88ddc",
+      "bytes": 10095,
+      "copyMode": "exact bytes"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-webkit-approved-setup-final.json",
+      "destinationRelative": "proofs/ns-perf-webkit-approved-setup-final.json",
+      "sha256": "69569d45fa8b67923a76f146a4f60f5d657b5c0ac9eddfa77cbf65e3621654b8",
+      "bytes": 64044,
+      "copyMode": "exact bytes"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-webkit-wrapper-baseline-final.json",
+      "destinationRelative": "proofs/ns-perf-webkit-wrapper-baseline-final.json",
+      "sha256": "bbe6d2a229a768d7dabb716e6301d7bb5c968ca2511af38b23c1db1efe485c9b",
+      "bytes": 24605,
+      "copyMode": "exact bytes"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-webkit-approved-setup-final-gtk-ldd.log",
+      "destinationRelative": "proofs/ns-perf-webkit-approved-setup-final-gtk-ldd.log",
+      "sha256": "1d95b0f4d7766a013c4fbf47a95089596c97abe974f80fceced7cb5ab6a3f0f4",
+      "bytes": 14901,
+      "copyMode": "exact bytes"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-webkit-approved-setup-final-wpe-ldd.log",
+      "destinationRelative": "proofs/ns-perf-webkit-approved-setup-final-wpe-ldd.log",
+      "sha256": "379f1a89f9ea237a82f310ca07e358be9343c6dc1561d954d680d6985018de4d",
+      "bytes": 12390,
+      "copyMode": "exact bytes"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-webkit-approved-setup.json",
+      "destinationRelative": "proofs/ns-perf-webkit-approved-setup.json",
+      "sha256": "9c4b51feac2f5bf7f10fe296f300055c3f027963dbac8463918ec76834ce931a",
+      "bytes": 47359,
+      "copyMode": "exact bytes"
+    },
+    {
+      "sourcePath": "/tmp/ns-perf-webkit-wrapper-baseline.json",
+      "destinationRelative": "proofs/ns-perf-webkit-wrapper-baseline.json",
+      "sha256": "e713e1e27d0e2974d594a4677569689a7eba1987847575da2ea354660e3ff14e",
+      "bytes": 12235,
+      "copyMode": "exact bytes"
+    }
+  ],
+  "totalFiles": 82,
+  "totalBytes": 9889502,
+  "copyProcedure": [
+    "Choose a new archive directory named supported-normal-interrupted.",
+    "Verify every source SHA before copying. Copy only the listed files to destinationRelative without JSON reserialization or path rewriting.",
+    "Verify every destination SHA equals its source SHA. Retain this plan and native matrix record unchanged.",
+    "Link the archive as operator-interrupted incomplete additional matched-driver evidence; show seven final records, partial eighth, and20 never started. Keep original complete legacy28 and paired perf evidence separate."
+  ],
+  "prohibitedRelabeling": [
+    "No complete/all28/passed claim.",
+    "No source-after claim for interrupted case8; only separate post-close master-bound capture exists.",
+    "No treating interrupted raw assertions as completed functional failures or success.",
+    "No merging counts/timings with original Playwright1.57 paired before/after performance or complete failed28."
+  ]
+}

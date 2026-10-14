@@ -1,0 +1,521 @@
+{
+  "nativePolicyProof": {
+    "path": "/tmp/ns-nojs-native-policy-proof.json",
+    "passed": true,
+    "cells": [
+      {
+        "id": "disabled-no-csp",
+        "passed": true,
+        "assertions": 11
+      },
+      {
+        "id": "disabled-no-csp-no-preloads",
+        "passed": true,
+        "assertions": 11
+      },
+      {
+        "id": "enabled-no-csp",
+        "passed": true,
+        "assertions": 9
+      },
+      {
+        "id": "enabled-real-csp",
+        "passed": true,
+        "assertions": 11
+      }
+    ]
+  },
+  "focusedNoJS": {
+    "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T00-38-58-921Z-84375/nojs.json",
+    "status": "passed",
+    "failures": 0,
+    "completedAt": "2026-10-14T00:39:09.004Z",
+    "bases": [
+      {
+        "base": "/",
+        "assertions": 41,
+        "failures": 0
+      },
+      {
+        "base": "/tmu-course-guides/",
+        "assertions": 41,
+        "failures": 0
+      }
+    ]
+  },
+  "warmOfflineProbe": {
+    "path": "/tmp/ns-offline-warm-results.json",
+    "originalTimeoutMs": 10000,
+    "runs": [
+      {
+        "label": "control660",
+        "status": "failed",
+        "offlineReached": true,
+        "unexpectedBrowserErrors": 0,
+        "error": "Timed out waiting for desk mounted route and deadlines at offline cached desk",
+        "phases": [
+          {
+            "phase": "online initial Desk",
+            "status": "ready",
+            "elapsedMs": 133,
+            "lastReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            },
+            "diagnosticSnapshotReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            }
+          },
+          {
+            "phase": "online warm cen100",
+            "status": "ready",
+            "elapsedMs": 1431,
+            "lastReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            },
+            "diagnosticSnapshotReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            }
+          },
+          {
+            "phase": "online warm mth140",
+            "status": "ready",
+            "elapsedMs": 2197,
+            "lastReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            },
+            "diagnosticSnapshotReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            }
+          },
+          {
+            "phase": "online warm mth141",
+            "status": "ready",
+            "elapsedMs": 472,
+            "lastReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            },
+            "diagnosticSnapshotReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            }
+          },
+          {
+            "phase": "online warm desk",
+            "status": "ready",
+            "elapsedMs": 206,
+            "lastReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            },
+            "diagnosticSnapshotReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            }
+          },
+          {
+            "phase": "offline cached cen100",
+            "status": "ready",
+            "elapsedMs": 381,
+            "lastReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            },
+            "diagnosticSnapshotReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            }
+          },
+          {
+            "phase": "offline cached mth140",
+            "status": "ready",
+            "elapsedMs": 1444,
+            "lastReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            },
+            "diagnosticSnapshotReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            }
+          },
+          {
+            "phase": "offline cached mth141",
+            "status": "ready",
+            "elapsedMs": 461,
+            "lastReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            },
+            "diagnosticSnapshotReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            }
+          },
+          {
+            "phase": "offline cached desk",
+            "status": "timeout",
+            "elapsedMs": 13540,
+            "lastReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": false,
+              "renderedMainText": true,
+              "deadlineNode": false
+            },
+            "diagnosticSnapshotReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            }
+          }
+        ]
+      },
+      {
+        "label": "topic",
+        "status": "passed",
+        "offlineReached": true,
+        "unexpectedBrowserErrors": 0,
+        "error": null,
+        "phases": [
+          {
+            "phase": "online initial Desk",
+            "status": "ready",
+            "elapsedMs": 213,
+            "lastReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            },
+            "diagnosticSnapshotReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            }
+          },
+          {
+            "phase": "online warm cen100",
+            "status": "ready",
+            "elapsedMs": 1001,
+            "lastReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            },
+            "diagnosticSnapshotReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            }
+          },
+          {
+            "phase": "online warm mth140",
+            "status": "ready",
+            "elapsedMs": 2020,
+            "lastReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            },
+            "diagnosticSnapshotReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            }
+          },
+          {
+            "phase": "online warm mth141",
+            "status": "ready",
+            "elapsedMs": 541,
+            "lastReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            },
+            "diagnosticSnapshotReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            }
+          },
+          {
+            "phase": "online warm desk",
+            "status": "ready",
+            "elapsedMs": 210,
+            "lastReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            },
+            "diagnosticSnapshotReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            }
+          },
+          {
+            "phase": "offline cached cen100",
+            "status": "ready",
+            "elapsedMs": 478,
+            "lastReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            },
+            "diagnosticSnapshotReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            }
+          },
+          {
+            "phase": "offline cached mth140",
+            "status": "ready",
+            "elapsedMs": 1290,
+            "lastReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            },
+            "diagnosticSnapshotReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            }
+          },
+          {
+            "phase": "offline cached mth141",
+            "status": "ready",
+            "elapsedMs": 340,
+            "lastReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            },
+            "diagnosticSnapshotReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            }
+          },
+          {
+            "phase": "offline cached desk",
+            "status": "ready",
+            "elapsedMs": 238,
+            "lastReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            },
+            "diagnosticSnapshotReadiness": {
+              "bodyIdentity": true,
+              "routerIdentity": true,
+              "completedMarker": true,
+              "renderedMainText": true,
+              "deadlineNode": true
+            }
+          }
+        ]
+      }
+    ],
+    "interpretation": "Initial topic online MTH140 timeout was not reproduced and remains unresolved. Control660 observed a different preserved offline Desk timeout, with all predicates true in the following diagnostic snapshot; no readiness limit was raised and no product behavior changed."
+  },
+  "protectedSources": {
+    "head": "3d14973ef56e8dcf5be036793cae391bd392699c",
+    "count": 20,
+    "allUnchanged": true,
+    "hashes": [
+      {
+        "path": "assets/book/page-bend-math.mjs",
+        "headSha256": "0932b6ea62f740def7d2b5990f2447e729bc4e294f6ed3bf61256574deddef17",
+        "workingSha256": "0932b6ea62f740def7d2b5990f2447e729bc4e294f6ed3bf61256574deddef17"
+      },
+      {
+        "path": "assets/book/weeks.mjs",
+        "headSha256": "0b34ccd3f2e0af48233636234a8271f97f0a1ddb3f40fdabee3f87c0fe3fdb91",
+        "workingSha256": "0b34ccd3f2e0af48233636234a8271f97f0a1ddb3f40fdabee3f87c0fe3fdb91"
+      },
+      {
+        "path": "assets/course-header.mjs",
+        "headSha256": "211e9da620f3427fb4a8ad43e40a6fe71787c286af0538beae8c4ba43e24fece",
+        "workingSha256": "211e9da620f3427fb4a8ad43e40a6fe71787c286af0538beae8c4ba43e24fece"
+      },
+      {
+        "path": "assets/course-scene.mjs",
+        "headSha256": "6193fb23735dcb4f0ac588893f134b956f22aa9ed0670db315f60f57fd2505a2",
+        "workingSha256": "6193fb23735dcb4f0ac588893f134b956f22aa9ed0670db315f60f57fd2505a2"
+      },
+      {
+        "path": "assets/night/deadline.mjs",
+        "headSha256": "ea48b3d4e2d875f4d884ca3e38072cd8733c0bdefcf272a6bcf62fb866ce5e37",
+        "workingSha256": "ea48b3d4e2d875f4d884ca3e38072cd8733c0bdefcf272a6bcf62fb866ce5e37"
+      },
+      {
+        "path": "assets/night/hero.css",
+        "headSha256": "2ca145fa77d797ef3bc2c47f7410d8c64f76d652d6744ce199b72dfc83b05d9f",
+        "workingSha256": "2ca145fa77d797ef3bc2c47f7410d8c64f76d652d6744ce199b72dfc83b05d9f"
+      },
+      {
+        "path": "assets/night/hero.mjs",
+        "headSha256": "56a582d513a85c962f49f6d042f9636e07b6538b55c5b90f035f31fd3b54bbc8",
+        "workingSha256": "56a582d513a85c962f49f6d042f9636e07b6538b55c5b90f035f31fd3b54bbc8"
+      },
+      {
+        "path": "assets/night/layout.css",
+        "headSha256": "07ec212a86472d267259cedb25484279001c6e4b6b2e7630242b6a5693d19435",
+        "workingSha256": "07ec212a86472d267259cedb25484279001c6e4b6b2e7630242b6a5693d19435"
+      },
+      {
+        "path": "assets/night/scroll.css",
+        "headSha256": "f0c06b70681f7973d219fb0c527d6f3e17c46c95440cdb99ef4b192ba2bc03e2",
+        "workingSha256": "f0c06b70681f7973d219fb0c527d6f3e17c46c95440cdb99ef4b192ba2bc03e2"
+      },
+      {
+        "path": "assets/night/scroll.mjs",
+        "headSha256": "bf8890c8c09b4333563bbe30432932b9c51c00d987faacfe469a8c949970d658",
+        "workingSha256": "bf8890c8c09b4333563bbe30432932b9c51c00d987faacfe469a8c949970d658"
+      },
+      {
+        "path": "assets/night/timeline.mjs",
+        "headSha256": "f8d51ce5323020b6e931fa1241c200e4fb8e7591a2f2262b3d1139989c49f401",
+        "workingSha256": "f8d51ce5323020b6e931fa1241c200e4fb8e7591a2f2262b3d1139989c49f401"
+      },
+      {
+        "path": "assets/scenes/algebra.mjs",
+        "headSha256": "36fae0d99a9c2fbc06760236e6607d78a21911263b89692928c7e3494ed1ef8b",
+        "workingSha256": "36fae0d99a9c2fbc06760236e6607d78a21911263b89692928c7e3494ed1ef8b"
+      },
+      {
+        "path": "assets/scenes/calculus.mjs",
+        "headSha256": "cddfa5a78857773c80e51aa89afafea7843b7aa48913d0b72fa5c8cec6dea2c3",
+        "workingSha256": "cddfa5a78857773c80e51aa89afafea7843b7aa48913d0b72fa5c8cec6dea2c3"
+      },
+      {
+        "path": "assets/scenes/circuit.mjs",
+        "headSha256": "f03872b8dc8edb2bcdc06236d18c90b0c1e65be1ce0e9ac06734cbe2ef4302b1",
+        "workingSha256": "f03872b8dc8edb2bcdc06236d18c90b0c1e65be1ce0e9ac06734cbe2ef4302b1"
+      },
+      {
+        "path": "assets/scenes/drag.mjs",
+        "headSha256": "98e15e7b89bec442c2a2c142dbdb3ef7c8b0a719d90efe019d66fbc31061c326",
+        "workingSha256": "98e15e7b89bec442c2a2c142dbdb3ef7c8b0a719d90efe019d66fbc31061c326"
+      },
+      {
+        "path": "assets/scenes/framing.mjs",
+        "headSha256": "3f57a99bfc2c5bec11142a70e09f9dbd61891c0d6add8b2c817295c2051a301f",
+        "workingSha256": "3f57a99bfc2c5bec11142a70e09f9dbd61891c0d6add8b2c817295c2051a301f"
+      },
+      {
+        "path": "assets/scenes/future-geometry.mjs",
+        "headSha256": "b4510a942b2936c1f9861dc672d8a412b21bbe0901904a7e40a76667a20aed90",
+        "workingSha256": "b4510a942b2936c1f9861dc672d8a412b21bbe0901904a7e40a76667a20aed90"
+      },
+      {
+        "path": "assets/scenes/future-look.mjs",
+        "headSha256": "d1d1e2de239bf03cce840e584c59885cdc229587d30fe75bd21ea6f61ee2eb0d",
+        "workingSha256": "d1d1e2de239bf03cce840e584c59885cdc229587d30fe75bd21ea6f61ee2eb0d"
+      },
+      {
+        "path": "assets/scenes/primitives.mjs",
+        "headSha256": "6c3556f6aefffd403e84db4b9c924621af308bcd6a9374b12327ae2e04067fbf",
+        "workingSha256": "6c3556f6aefffd403e84db4b9c924621af308bcd6a9374b12327ae2e04067fbf"
+      },
+      {
+        "path": "assets/scenes/scene-math.mjs",
+        "headSha256": "9b154ed7459dcf3e9ec4d08301fc8a38b4592410b1c660827ce430078bcbc8c8",
+        "workingSha256": "9b154ed7459dcf3e9ec4d08301fc8a38b4592410b1c660827ce430078bcbc8c8"
+      }
+    ]
+  },
+  "ownedBrowserProcesses": "All three serial commands exited; their awaited finally cleanup closed contexts, browsers, CDP sessions and preview servers."
+}

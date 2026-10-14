@@ -1,0 +1,13 @@
+{
+  "recordedAt": "2026-10-14T10:20:11.682633Z",
+  "childPID": 171614,
+  "liveBrowserOrQARuntimeProcesses": [],
+  "ownedPreviewPorts": [
+    {
+      "port": 45735,
+      "connectEx": 111,
+      "expected": 111,
+      "refused": true
+    }
+  ]
+}

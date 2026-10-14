@@ -1,0 +1,7 @@
+{
+  "observedAt": "2026-10-14T10:27:30.247585+00:00",
+  "actualCLIExitCode": 1,
+  "sessionID": 99959,
+  "actualToolChunk": "10ecfc",
+  "scope": "Whole unchanged routes/root diagnostic failed,12assertions/1fail. GPUcompositing+GPUrasterization bothdisabledsoftware/liveWebGLreadback. No cause or normal-run waiver."
+}

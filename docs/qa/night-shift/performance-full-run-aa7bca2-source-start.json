@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T04:29:51.004Z",
+  "phase": "Observed after launch while the first root-base phone profile group was running; the five runtime files match the already committed launch HEAD. This is not relabeled as a prelaunch capture.",
+  "repositoryCommit": "cec2cef7c58752f5f08ffaa979206af25c3ec602",
+  "productFingerprint": "1795468f427084977fac5a0707eef0b14e461c8d2041cb9c6d1e0315de48851f",
+  "protectedFingerprint": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+  "sources": [
+    {
+      "path": "tools/qa/checks-resilience.mjs",
+      "sha256": "b2bafedee3cc0569d4354334d42fcaac55d3ddcbf7ceb0e1ecdf43bddcd1f8d6",
+      "committedBlobEqual": true
+    },
+    {
+      "path": "tools/qa/checks.mjs",
+      "sha256": "340eaf3e1ac9a1aac7958e6e7b97d73c176f991fa754f661f2525f5a34b52e16",
+      "committedBlobEqual": true
+    },
+    {
+      "path": "tools/qa/checks-perf.mjs",
+      "sha256": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657",
+      "committedBlobEqual": true
+    },
+    {
+      "path": "tools/qa/runtime.mjs",
+      "sha256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587",
+      "committedBlobEqual": true
+    },
+    {
+      "path": "tools/qa/instrument.mjs",
+      "sha256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892",
+      "committedBlobEqual": true
+    }
+  ],
+  "environment": {
+    "PLAYWRIGHT_PATH": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "QA_CHROMIUM_PATH": "/usr/bin/chromium",
+    "QA_GPU": "0",
+    "QA_NAV_DIAGNOSTICS": "1"
+  },
+  "sourceContinuity": "No runtime-source edits are permitted until the full run closes; postclose hashes will be compared."
+}

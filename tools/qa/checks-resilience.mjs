@@ -48,14 +48,124 @@ export function expectedFailureEvent(event, { target, mode, offlineURLs = new Se
   return false; // Synthetic fetch responses/rejections should produce no browser errors.
 }
 
+function cspAllowsSelfScript(policy) {
+  if (typeof policy !== 'string') return false;
+  if (policy.includes(',')) return policy.split(',').every(cspAllowsSelfScript);
+  const directives = new Map();
+  for (const directive of policy.split(';')) {
+    const [name, ...sources] = directive.trim().toLowerCase().split(/\s+/);
+    if (name && !directives.has(name)) directives.set(name, sources);
+  }
+  // Sandbox may introduce script or opaque-origin restrictions; none is authored here.
+  if (directives.has('sandbox')) return false;
+  const sources = directives.get('script-src-elem') ?? directives.get('script-src') ?? directives.get('default-src');
+  return !sources || sources.includes("'self'") && !sources.includes("'none'") && !sources.includes("'strict-dynamic'");
+}
+
+/** Chromium also reports its explicit script-disabled policy as exact `csp`.
+ * Bind that diagnostic to authored hints and observed Script requests; actual
+ * CSP restrictions and every enabled-JavaScript case remain unexpected. */
+export function expectedNoScriptPreloadEvent(event, { javaScriptEnabled, documentURL, declaredPreloads, requests, cspPolicies } = {}) {
+  if (javaScriptEnabled !== false || event?.type !== 'requestfailed' || event.method !== 'GET' || event.message !== 'csp' || typeof event.requestUrl !== 'string') return false;
+  if (!Array.isArray(declaredPreloads) || !Array.isArray(requests) || !Array.isArray(cspPolicies) || !cspPolicies.every(cspAllowsSelfScript) || !declaredPreloads.includes(event.requestUrl)) return false;
+  if (!requests.some(request => request?.url === event.requestUrl && request.method === 'GET' && request.resourceType === 'script')) return false;
+  try {
+    const target = new URL(event.requestUrl), document = new URL(documentURL);
+    return /^https?:$/.test(target.protocol) && target.origin === document.origin && !target.hash && /\.(?:mjs|js)$/i.test(target.pathname);
+  } catch { return false; }
+}
+
 async function until(fn, label, timeout = 10_000) {
   const end = Date.now() + timeout;
   do { if (await fn()) return; await sleep(50); } while (Date.now() < end);
   throw Error('Timed out waiting for ' + label);
 }
 
+export const resilienceReadyTimeout = ({ browserName, gpu } = {}) => browserName === 'chromium' && gpu === false ? 30_000 : 10_000;
+const contextReadiness = new WeakMap(), pageReadiness = new WeakMap();
+const defaultReadiness = Object.freeze({ browserName: null, gpu: null, timeoutMs: 10_000 });
+export function registerResilienceReadinessScope(context, { browser, gpu, observation, telemetry = () => [] }) {
+  let browserName = null;
+  try { browserName = browser.browserType?.()?.name?.() ?? null; } catch {}
+  const policy = Object.freeze({ browserName, gpu: gpu ?? null, timeoutMs: resilienceReadyTimeout({ browserName, gpu }) });
+  observation.readinessPolicy = policy;observation.readiness = [];observation.routeActions = [];observation.interactionActions = [];observation.navigations = [];
+  const pendingByPage = new WeakMap();
+  const scope = { policy, waits: observation.readiness, actions: observation.routeActions, interactions: observation.interactionActions, navigations: observation.navigations, telemetry, pending(page) { return [...(pendingByPage.get(page)?.values() ?? [])]; }, registerPage(page) {
+    if (pageReadiness.has(page)) return;
+    pageReadiness.set(page, scope);const pending = new Map();pendingByPage.set(page, pending);
+    page.on?.('request', request => pending.set(request, { url: request.url(), method: request.method(), resourceType: request.resourceType(), startedAt: Date.now() }));
+    page.on?.('requestfinished', request => pending.delete(request));page.on?.('requestfailed', request => pending.delete(request));
+  } };
+  contextReadiness.set(context, scope);
+  return scope;
+}
+function readinessScope(page) {
+  const scope = pageReadiness.get(page);if (scope) return scope;
+  try { const contextScope = contextReadiness.get(page.context?.());contextScope?.registerPage(page);return contextScope; } catch { return undefined; }
+}
+export const resilienceReadinessForPage = page => readinessScope(page)?.policy ?? defaultReadiness;
+
+/** Observe the original boolean polling loop without changing its predicate,
+ * do-first/true-result behavior, 50 ms pause or native error. Used only by
+ * cross-tab progress inspection; the generic `until` stays unchanged. */
+export function observeResiliencePropagation(observation, { now = Date.now, pause = sleep } = {}) {
+  return async function (fn, label, timeout = 10_000) {
+    const started = now(), end = started + timeout;
+    Object.assign(observation, { label, timeoutMs: timeout, status: 'running', sampleCount: 0, maxBrowserReplyMs: 0, firstSample: null, lastSample: null });
+    try {
+      do {
+        const requested = now();let value;
+        try { value = await fn(); }
+        finally {
+          const replied = now(), sample = { elapsedMs: replied - started, replyMs: replied - requested, value };
+          observation.sampleCount++;observation.maxBrowserReplyMs = Math.max(observation.maxBrowserReplyMs, sample.replyMs);
+          observation.firstSample ??= sample;observation.lastSample = sample;
+        }
+        if (value) { observation.status = 'ready';return; }
+        await pause(50);
+      } while (now() < end);
+      observation.status = 'timeout';throw Error('Timed out waiting for ' + label);
+    } catch (error) {
+      if (observation.status !== 'timeout') observation.status = 'error';
+      observation.error = error instanceof Error ? error.message : typeof error === 'string' ? error : null;throw error;
+    } finally { observation.elapsedMs = now() - started; }
+  };
+}
+
+/** The poll budget bounds scheduling; an in-flight native browser reply may
+ * overrun it. Preserve do-first/true-result behavior and record that overhead. */
+export async function waitForResilienceReady({ sample, label, timeoutMs = 10_000, observation = {}, now = Date.now, pause = sleep }) {
+  const started = now(), end = started + timeoutMs;
+  Object.assign(observation, { label, timeoutMs, status: 'running', sampleCount: 0, maxBrowserReplyMs: 0, firstSample: null, lastSample: null });
+  try {
+    do {
+      const requested = now();let state, replied;
+      try { state = await sample(); }
+      finally { replied = now();observation.sampleCount++;observation.maxBrowserReplyMs = Math.max(observation.maxBrowserReplyMs, replied - requested); }
+      const replyMs = replied - requested;
+      const recorded = { elapsedMs: replied - started, replyMs, state };
+      observation.firstSample ??= recorded;observation.lastSample = recorded;
+      if (state.ready) { observation.status = 'ready';return observation; }
+      if (replied >= end) break;
+      await pause(Math.min(50, end - replied));
+    } while (now() < end);
+    observation.status = 'timeout';throw Error('Timed out waiting for ' + label);
+  } catch (error) {
+    if (observation.status !== 'timeout') observation.status = 'error';
+    observation.error = error.message;throw error;
+  } finally { observation.elapsedMs = now() - started; }
+}
+
 async function ready(page, route) {
-  await until(() => page.evaluate(route => (document.body.dataset.page || document.body.dataset.course) === route && window.TMURouter?.route === route && window.__qaRouteCompleted === route && document.querySelector('main[data-route-region]')?.innerText.trim().length > 20 && Boolean(route === 'desk' ? document.querySelector('[data-course-card="cen100"] [data-desk-next]:not([hidden])') : document.querySelector('.ns-count')), route), route + ' mounted route and deadlines');
+  const scope = readinessScope(page), policy = scope?.policy ?? defaultReadiness, observation = { route, policy };
+  scope?.waits.push(observation);
+  await waitForResilienceReady({ label: route + ' mounted route and deadlines', timeoutMs: policy.timeoutMs, observation, sample: () => page.evaluate(route => {
+    const bodyRoute = document.body.dataset.page || document.body.dataset.course, routerRoute = window.TMURouter?.route, completedRoute = window.__qaRouteCompleted;
+    const mainTextLength = document.querySelector('main[data-route-region]')?.innerText.trim().length ?? 0;
+    const deadlineNode = Boolean(route === 'desk' ? document.querySelector('[data-course-card="cen100"] [data-desk-next]:not([hidden])') : document.querySelector('.ns-count'));
+    const components = { bodyIdentity: bodyRoute === route, routerIdentity: routerRoute === route, completedMarker: completedRoute === route, renderedMainText: mainTextLength > 20, deadlineNode };
+    return { ready: Object.values(components).every(Boolean), components, actual: { bodyRoute, routerRoute, completedRoute, mainTextLength, deadlineNode } };
+  }, route) });
 }
 
 async function initialize(context, env, seed = {}) {
@@ -77,10 +187,12 @@ async function runCase(env, out, name, fn, { seed, options, browser = env.browse
   const collectors = [];
   try {
     context = await browser.newContext({ viewport: { width: 1440, height: 900 }, timezoneId: 'America/Toronto', ...options });
+    const readiness = registerResilienceReadinessScope(context, { browser, gpu: env.gpu, observation, telemetry: () => collectors.flatMap(collector => collector.events) });
     await initialize(context, env, seed);
     if (init) await context.addInitScript(init.fn, init.arg);
     const newPage = async () => {
       const page = await context.newPage();
+      readiness.registerPage(page);
       page.setDefaultTimeout(10_000);
       collectors.push(collectPageErrors(page, { expected }));
       if (fixedTime) await page.clock.setFixedTime(new Date(fixedTime));
@@ -92,15 +204,131 @@ async function runCase(env, out, name, fn, { seed, options, browser = env.browse
     assertion(out, name + ': execution', false, error.stack || String(error), 'case completes');
   } finally {
     observation.telemetry = collectors.flatMap(collector => collector.events);
+    // Disabled-script requests precede DOM inspection of their declared hints.
+    if (options?.javaScriptEnabled === false) for (const event of observation.telemetry) event.expected = Boolean(expected(event));
     assertion(out, name + ': unexpected browser errors', observation.telemetry.every(event => event.expected), observation.telemetry.filter(event => !event.expected), []);
     for (const collector of collectors) collector.detach();
     await context?.close();
   }
 }
 
+async function routeActionFailureSnapshot(page, route, scope) {
+  let timer;
+  try {
+    const state = await Promise.race([page.evaluate(route => {
+      const main = document.querySelector('main[data-route-region]'), style = main && getComputedStyle(main);
+      const target = document.querySelector(`[data-course-link="${route}"]`), courseLinks = [...document.querySelectorAll('[data-course-link]')].map(anchor => ({ course: anchor.dataset.courseLink, href: anchor.href, connected: anchor.isConnected }));
+      return { url: location.href, bodyRoute: document.body.dataset.page || document.body.dataset.course, routerRoute: window.TMURouter?.route, completedRoute: window.__qaRouteCompleted, targetPresent: Boolean(target), targetCount: document.querySelectorAll(`[data-course-link="${route}"]`).length, target: target && { href: target.href, connected: target.isConnected, html: target.outerHTML }, courseLinkCount: courseLinks.length, courseLinks, mainTextLength: main?.innerText.trim().length ?? 0, wrapper: style && { opacity: style.opacity, display: style.display, visibility: style.visibility, transform: style.transform, filter: style.filter } };
+    }, route), new Promise((_, reject) => { timer = setTimeout(() => reject(Error('Passive route-action snapshot exceeded 5000ms')), 5000); })]);
+    return { ...state, pendingRequests: scope?.pending(page) ?? [], telemetry: scope?.telemetry() ?? [] };
+  } finally { clearTimeout(timer); }
+}
+
+export async function activateResilienceRoute(page, route, { now = Date.now, snapshot = routeActionFailureSnapshot } = {}) {
+  const scope = readinessScope(page), policy = scope?.policy ?? defaultReadiness, started = now();
+  const trace = { route, selector: `[data-course-link="${route}"]`, policy, timeoutMs: policy.timeoutMs, status: 'running' };scope?.actions.push(trace);
+  try {
+    await page.locator(trace.selector).first().evaluate(anchor => anchor.click(), undefined, { timeout: policy.timeoutMs });
+    trace.elapsedMs = now() - started;trace.status = 'activated';return trace;
+  } catch (error) {
+    trace.elapsedMs = now() - started;trace.status = 'error';trace.error = error.message;
+    trace.failureNetwork = { pendingRequests: scope?.pending(page) ?? [], telemetry: scope?.telemetry() ?? [] };
+    const diagnosticStarted = now();
+    try { trace.failureSnapshot = await snapshot(page, route, scope); } catch (diagnosticError) { trace.snapshotError = diagnosticError.message; }
+    trace.diagnosticElapsedMs = now() - diagnosticStarted;throw error;
+  }
+}
+
 async function clickRoute(page, route) {
-  await page.locator(`[data-course-link="${route}"]`).first().evaluate(anchor => anchor.click());
+  await activateResilienceRoute(page, route);
   await ready(page, route);
+}
+
+/** Diagnostics must never turn an operation failure into an unbounded wait. */
+export async function boundedResilienceDiagnostic(task, { setTimer = setTimeout, clearTimer = clearTimeout } = {}) {
+  let timer;
+  try {
+    return await Promise.race([Promise.resolve().then(task), new Promise((_, reject) => {
+      timer = setTimer(() => reject(Error('Passive native-operation snapshot exceeded 5000ms')), 5000);
+    })]);
+  } finally { clearTimer(timer); }
+}
+
+const nativePageURL = page => { try { return page.url?.() ?? null; } catch { return null; } };
+async function nativeOperationFailureSnapshot(page, { selector = null, targetURL = null }) {
+  return page.evaluate(({ selector, targetURL }) => {
+    const main = document.querySelector('main[data-route-region]'), style = main && getComputedStyle(main), target = selector && document.querySelector(selector);
+    return { url: location.href, expectedURL: targetURL, readyState: document.readyState, title: document.title, fontsStatus: document.fonts?.status ?? null,
+      bodyRoute: document.body?.dataset.page || document.body?.dataset.course, routerRoute: window.TMURouter?.route, completedRoute: window.__qaRouteCompleted,
+      mainTextLength: main?.innerText.trim().length ?? 0, wrapper: style && { opacity: style.opacity, display: style.display, visibility: style.visibility, transform: style.transform, filter: style.filter },
+      targetPresent: Boolean(target), targetCount: selector ? document.querySelectorAll(selector).length : null, target: target && { tag: target.tagName, href: target.href ?? null, value: target.value ?? null, disabled: target.disabled ?? null, connected: target.isConnected, html: target.outerHTML.slice(0, 1000) },
+      dialogs: [...document.querySelectorAll('dialog')].map(dialog => ({ id: dialog.id, open: dialog.open })),
+      navigationTiming: performance.getEntriesByType('navigation').map(entry => ({ name: entry.name, type: entry.type, duration: entry.duration, responseStart: entry.responseStart, responseEnd: entry.responseEnd, domContentLoadedEventEnd: entry.domContentLoadedEventEnd, loadEventEnd: entry.loadEventEnd })) };
+  }, { selector, targetURL });
+}
+
+async function recordNativeOperationFailure(trace, page, scope, error, started, { now, snapshot, setTimer, clearTimer }) {
+  trace.elapsedMs = now() - started;trace.status = 'error';trace.error = error?.message ?? String(error);
+  // Save Node-side evidence before asking a possibly stalled browser to reply.
+  trace.failureNetwork = { pendingRequests: [], telemetry: [] };
+  for (const [source, collect] of [['pendingRequests', () => scope?.pending(page) ?? []], ['telemetry', () => scope?.telemetry() ?? []]]) {
+    try { trace.failureNetwork[source] = collect(); }
+    catch (diagnosticError) { (trace.failureNetwork.errors ??= []).push({ source, message: diagnosticError?.message ?? String(diagnosticError) }); }
+  }
+  const diagnosticStarted = now();
+  try { trace.failureSnapshot = await boundedResilienceDiagnostic(() => snapshot(page, trace), { setTimer, clearTimer }); }
+  catch (diagnosticError) { trace.snapshotError = diagnosticError?.message ?? String(diagnosticError); }
+  trace.diagnosticElapsedMs = now() - diagnosticStarted;
+}
+
+/** Preserve each cross-tab action's native method and locator strictness. */
+export async function performResilienceInteraction(page, { name, selector, method, first = false, value }, { now = Date.now, snapshot = nativeOperationFailureSnapshot, setTimer, clearTimer } = {}) {
+  if (!['evaluate-click', 'click', 'selectOption'].includes(method)) throw Error('Unsupported resilience interaction: ' + method);
+  const scope = readinessScope(page), policy = scope?.policy ?? defaultReadiness, started = now(), options = { timeout: policy.timeoutMs };
+  const trace = { name, selector, method, first, ...(method === 'selectOption' ? { value } : {}), sourceURL: nativePageURL(page), policy, options, timeoutMs: policy.timeoutMs, status: 'running' };scope?.interactions.push(trace);
+  try {
+    const locator = page.locator(selector), target = first ? locator.first() : locator;
+    if (method === 'evaluate-click') await target.evaluate(element => element.click(), undefined, options);
+    else if (method === 'click') await target.click(options);
+    else await target.selectOption(value, options);
+    trace.elapsedMs = now() - started;trace.status = 'activated';return trace;
+  } catch (error) {
+    await recordNativeOperationFailure(trace, page, scope, error, started, { now, snapshot, setTimer, clearTimer });throw error;
+  }
+}
+
+function observeNativeNavigation(page, trace, started, now) {
+  const listeners = [], record = (type, details = {}) => {
+    if (trace.events.length >= 100) { trace.droppedEvents++;return; }
+    trace.events.push({ type, elapsedMs: now() - started, phase: trace.status === 'error' ? 'diagnostic' : 'operation', ...details });
+  };
+  const listen = (type, handler) => { page.on?.(type, handler);listeners.push([type, handler]); };
+  const mainRequest = request => { try { return request.isNavigationRequest() && request.frame() === page.mainFrame(); } catch { return false; } };
+  listen('request', request => { if (mainRequest(request)) record('request', { url: request.url(), method: request.method() }); });
+  listen('response', response => { if (mainRequest(response.request())) record('response', { url: response.url(), status: response.status() }); });
+  listen('requestfinished', request => { if (mainRequest(request)) record('requestfinished', { url: request.url() }); });
+  listen('requestfailed', request => { if (mainRequest(request)) record('requestfailed', { url: request.url(), message: request.failure()?.errorText ?? null }); });
+  listen('framenavigated', frame => { if (frame === page.mainFrame()) record('commit', { url: frame.url() }); });
+  listen('domcontentloaded', () => record('domcontentloaded', { url: nativePageURL(page) }));
+  listen('load', () => record('load', { url: nativePageURL(page) }));
+  listen('pageerror', error => record('pageerror', { url: nativePageURL(page), message: error.message }));
+  listen('crash', () => record('crash', { url: nativePageURL(page) }));
+  listen('close', () => record('close', { url: nativePageURL(page) }));
+  return () => { for (const [type, handler] of listeners) page.off?.(type, handler); };
+}
+
+/** Only BFCache's parking/Back calls use this per-operation budget. */
+export async function performResilienceNavigation(page, { name, method, targetURL }, { now = Date.now, snapshot = nativeOperationFailureSnapshot, setTimer, clearTimer } = {}) {
+  if (!['goto', 'goBack'].includes(method)) throw Error('Unsupported resilience navigation: ' + method);
+  const scope = readinessScope(page), policy = scope?.policy ?? defaultReadiness, started = now(), options = { waitUntil: method === 'goto' ? 'load' : 'commit', timeout: policy.timeoutMs };
+  const trace = { name, method, sourceURL: nativePageURL(page), targetURL, policy, options, timeoutMs: policy.timeoutMs, status: 'running', events: [], droppedEvents: 0 };scope?.navigations.push(trace);
+  const detach = observeNativeNavigation(page, trace, started, now);
+  try {
+    const response = method === 'goto' ? await page.goto(targetURL, options) : await page.goBack(options);
+    trace.elapsedMs = now() - started;trace.status = 'navigated';trace.resultURL = nativePageURL(page);trace.response = response ? { url: response.url(), status: response.status() } : null;return trace;
+  } catch (error) {
+    await recordNativeOperationFailure(trace, page, scope, error, started, { now, snapshot, setTimer, clearTimer });throw error;
+  } finally { detach(); }
 }
 
 async function snapshot(page, course) {
@@ -180,8 +408,23 @@ export async function webkit(env) {
 
 export async function nojs(env) {
   const out = result();
-  for (const route of ROUTES) await runCase(env, out, route + ': no JavaScript', async (page, observation) => {
-    await page.goto(url(env, route));
+  for (const route of ROUTES) {
+  const scriptPolicy = { javaScriptEnabled: false, documentURL: url(env, route), declaredPreloads: [], cspPolicies: [], requests: [], failures: [], completedScripts: [], executedMarkers: [] };
+  await runCase(env, out, route + ': no JavaScript', async (page, observation) => {
+    observation.scriptPolicy = scriptPolicy;
+    const requestInfo = request => ({ url: request.url(), method: request.method(), resourceType: request.resourceType() });
+    page.on('request', request => { if (request.resourceType() === 'script') scriptPolicy.requests.push(requestInfo(request)); });
+    page.on('requestfailed', request => { if (request.resourceType() === 'script') scriptPolicy.failures.push({ ...requestInfo(request), message: request.failure()?.errorText }); });
+    page.on('requestfinished', request => { if (request.resourceType() === 'script') scriptPolicy.completedScripts.push(request.url()); });
+    const response = await page.goto(url(env, route));
+    const declared = await page.evaluate(() => ({ documentURL: location.href, declaredPreloads: [...document.querySelectorAll('link[rel~="modulepreload"][href]')].map(link => link.href), cspPolicies: [...document.querySelectorAll('meta[http-equiv]')].filter(meta => meta.httpEquiv.toLowerCase() === 'content-security-policy').map(meta => meta.content), executedMarkers: ['TMURouter', 'TMUHub', 'GuideMotion', 'CourseWorkspace', '__qaRouteCompleted'].filter(name => Object.hasOwn(window, name)) }));
+    Object.assign(scriptPolicy, declared);
+    const headerPolicy = (await response.allHeaders())['content-security-policy'];
+    if (headerPolicy) scriptPolicy.cspPolicies.push(headerPolicy);
+    const blockedURLs = [...new Set(scriptPolicy.failures.map(request => request.url))].sort(), declaredURLs = [...new Set(scriptPolicy.declaredPreloads)].sort();
+    assertion(out, route + ': disabled scripts block exactly declared modulepreload URLs', JSON.stringify(blockedURLs) === JSON.stringify(declaredURLs) && scriptPolicy.failures.every(request => expectedNoScriptPreloadEvent({ type: 'requestfailed', requestUrl: request.url, method: request.method, message: request.message }, scriptPolicy)), { blockedURLs, failures: scriptPolicy.failures }, declaredURLs);
+    const pendingScriptCount = scriptPolicy.requests.length - scriptPolicy.failures.length - scriptPolicy.completedScripts.length;
+    assertion(out, route + ': no application script completes, remains pending or sets an application marker', scriptPolicy.completedScripts.length === 0 && pendingScriptCount === 0 && scriptPolicy.executedMarkers.length === 0, { completedScripts: scriptPolicy.completedScripts, pendingScriptCount, executedMarkers: scriptPolicy.executedMarkers }, { completedScripts: [], pendingScriptCount: 0, executedMarkers: [] });
     observation.reading = await page.evaluate(() => {
       const main = document.querySelector('main[data-route-region]');
       const nativeHidden = el => {
@@ -219,7 +462,8 @@ export async function nojs(env) {
       assertion(out, route + ': published assessment dates readable', !missingDates.length, { missingDates, readableTimes: state.readableTimes }, dates);
       if (records.some(row => !row.date && !row.week)) assertion(out, route + ': unresolved dates remain honest', /Date pending|not (?:yet )?(?:posted|announced)|await/i.test(state.readableText), state.readableText.slice(-1500), 'pending date wording');
     }
-  }, { options: { javaScriptEnabled: false } });
+  }, { options: { javaScriptEnabled: false }, expected: event => expectedNoScriptPreloadEvent(event, scriptPolicy) });
+  }
   return out;
 }
 
@@ -335,11 +579,14 @@ export async function crosstab(env) {
     await sender.goto(url(env, course, '?motion=off')); await ready(sender, course);
     await receiver.goto(url(env, 'desk', '?motion=off')); await ready(receiver, 'desk');
     const progressKey = course === 'cen100' ? 'cen100-personal-plan-v1' : course + '-progress-v1', sectionKey = course === 'cen100' ? 'cen100-contact-choice-v1' : course + '-section-v1';
-    const mark = async () => { await sender.locator('[data-quick-complete]').first().evaluate(button => button.click()); };
-    const undo = async () => { await sender.locator('#undo-complete').evaluate(button => button.click()); };
+    const mark = () => performResilienceInteraction(sender, { name: 'cross-tab Mark done', selector: '[data-quick-complete]', method: 'evaluate-click', first: true });
+    const undo = () => performResilienceInteraction(sender, { name: 'cross-tab Undo', selector: '#undo-complete', method: 'evaluate-click' });
     const inspect = async (name, currentSeed, route) => {
       const expected = expectedTarget(course, currentSeed, +new Date(now));
-      await until(() => receiver.evaluate(({ course, title, route }) => document.querySelector(route === 'desk' ? `[data-course-card="${course}"] .desk-course-title` : '.ns-dock [data-ns-title]')?.textContent.trim() === title, { course, title: expected.title, route }), name + ' storage propagation');
+      const propagation = { course, route, expectedTitle: expected.title, policy: resilienceReadinessForPage(receiver) };
+      (observation.propagationWaits ??= []).push(propagation);
+      const until = observeResiliencePropagation(propagation);
+      await until(() => receiver.evaluate(({ course, title, route }) => document.querySelector(route === 'desk' ? `[data-course-card="${course}"] .desk-course-title` : '.ns-dock [data-ns-title]')?.textContent.trim() === title, { course, title: expected.title, route }), name + ' storage propagation', resilienceReadinessForPage(receiver).timeoutMs);
       const state = await snapshot(receiver, course);
       observation[name] = state;
       checkSurfaces(out, name, state, course, currentSeed, +new Date(now));
@@ -354,8 +601,8 @@ export async function crosstab(env) {
     await undo(); await inspect('course card/dock Undo', seed, course);
     const changed = structuredClone(seed), changedSection = course === 'cen100' ? 2 : 32, originalSection = course === 'cen100' ? 1 : 31, sectionSelect = course === 'cen100' ? '#contact-section' : '#section-select';
     changed[sectionKey] = course === 'cen100' ? { section: changedSection, group: 1 } : changedSection;
-    await sender.locator('.workspace-section').click();
-    await sender.locator(sectionSelect).selectOption(String(changedSection));
+    await performResilienceInteraction(sender, { name: 'cross-tab open section', selector: '.workspace-section', method: 'click' });
+    await performResilienceInteraction(sender, { name: 'cross-tab change section', selector: sectionSelect, method: 'selectOption', value: String(changedSection) });
     await until(() => receiver.locator(sectionSelect).inputValue().then(value => value === String(changedSection)), 'other tab selected section');
     observation.sectionCourse = await snapshot(receiver, course);
     checkSurfaces(out, 'course card/dock section change', observation.sectionCourse, course, changed, +new Date(now));
@@ -363,7 +610,7 @@ export async function crosstab(env) {
     assertion(out, 'section propagated by trusted native event', observation.sectionCourse.storageEvents.some(event => event.key === sectionKey && event.trusted), observation.sectionCourse.storageEvents, sectionKey);
     assertion(out, 'cross-tab updates preserve receiver shell', observation.sectionCourse.shell === shell, observation.sectionCourse.shell, shell);
     await clickRoute(receiver, 'desk');
-    await sender.locator(sectionSelect).selectOption(String(originalSection));
+    await performResilienceInteraction(sender, { name: 'cross-tab restore section', selector: sectionSelect, method: 'selectOption', value: String(originalSection) });
     await until(() => receiver.evaluate(({course,section}) => document.querySelector(`[data-course-card="${course}"] .desk-course-section`)?.textContent.includes(String(section)), {course,section:originalSection}), 'Desk section storage update');
     observation.sectionDesk = await snapshot(receiver, course);
     checkSurfaces(out, 'Desk section change', observation.sectionDesk, course, seed, +new Date(now));
@@ -387,11 +634,11 @@ export async function bfcache(env) {
       const course = route === 'desk' ? 'cen100' : route;
       await page.goto(url(env, route, '?motion=off')); await ready(page, route);
       observation.before = await snapshot(page, course);
-      await page.goto(env.origin + env.base + 'privacy.html');
+      await performResilienceNavigation(page, { name: 'BFCache park', method: 'goto', targetURL: env.origin + env.base + 'privacy.html' });
       const changed = structuredClone(seed), progressKey = course === 'cen100' ? 'cen100-personal-plan-v1' : course + '-progress-v1';
       changed[progressKey].completed[expectedTarget(course, seed, +new Date(seed.__qaResilienceNow)).id] = true;
       await page.evaluate(({ key, progress }) => { localStorage.setItem(key, JSON.stringify(progress)); localStorage.setItem('__qaResilienceNow', '2026-10-13T17:00:00Z'); }, { key: progressKey, progress: changed[progressKey] });
-      await page.goBack({ waitUntil: 'commit' }); await ready(page, route);
+      await performResilienceNavigation(page, { name: 'BFCache Back', method: 'goBack', targetURL: url(env, route, '?motion=off') }); await ready(page, route);
       observation.after = await snapshot(page, course);
       observation.navigation = await page.evaluate(() => performance.getEntriesByType('navigation').map(entry => ({ type: entry.type, notRestoredReasons: entry.notRestoredReasons?.toJSON?.() ?? null })));
       assertion(out, route + ': Back page usable', observation.after.heading && observation.after.content > 20, observation.after, 'readable route');

@@ -1,0 +1,538 @@
+﻿2026-10-14T10:54:11.9452854Z Current runner version: '2.337.0'
+2026-10-14T10:54:11.9478734Z ##[group]Runner Image Provisioner
+2026-10-14T10:54:11.9479546Z Hosted Compute Agent
+2026-10-14T10:54:11.9480112Z Version: 20261002.596
+2026-10-14T10:54:11.9480699Z Commit: c3d12f3313a95f25162a1503be624f3b0617f8c0
+2026-10-14T10:54:11.9481352Z Build Date: 2026-10-02T22:28:27Z
+2026-10-14T10:54:11.9482001Z Worker ID: {1354a951-7c70-432e-990e-214a41ae8772}
+2026-10-14T10:54:11.9482679Z Region: westus3
+2026-10-14T10:54:11.9483184Z Cloud: Azure
+2026-10-14T10:54:11.9483695Z ##[endgroup]
+2026-10-14T10:54:11.9485420Z ##[group]Operating System
+2026-10-14T10:54:11.9486003Z Ubuntu
+2026-10-14T10:54:11.9486556Z 24.04.5
+2026-10-14T10:54:11.9487001Z LTS
+2026-10-14T10:54:11.9487461Z ##[endgroup]
+2026-10-14T10:54:11.9487951Z ##[group]Runner Image
+2026-10-14T10:54:11.9488923Z Image: ubuntu-24.04
+2026-10-14T10:54:11.9489500Z Version: 20261004.327.1
+2026-10-14T10:54:11.9490630Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261004.327/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-14T10:54:11.9492038Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261004.327
+2026-10-14T10:54:11.9492908Z ##[endgroup]
+2026-10-14T10:54:11.9493965Z ##[group]GITHUB_TOKEN Permissions
+2026-10-14T10:54:11.9496115Z Contents: read
+2026-10-14T10:54:11.9496702Z Metadata: read
+2026-10-14T10:54:11.9497193Z ##[endgroup]
+2026-10-14T10:54:11.9499448Z Secret source: Actions
+2026-10-14T10:54:11.9500376Z Cache mode: write
+2026-10-14T10:54:11.9501196Z Prepare workflow directory
+2026-10-14T10:54:12.0085023Z Prepare all required actions
+2026-10-14T10:54:12.0135426Z Getting action download info
+2026-10-14T10:54:12.3437685Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-10-14T10:54:12.4361423Z Download action repository 'actions/setup-node@v6' (SHA:249970729cb0ef3589644e2896645e5dc5ba9c38)
+2026-10-14T10:54:12.5026760Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-14T10:54:12.6734533Z Complete job name: Browser QA (deadlines, /tmu-course-guides/)
+2026-10-14T10:54:12.7472089Z ##[group]Run actions/checkout@v6
+2026-10-14T10:54:12.7472869Z with:
+2026-10-14T10:54:12.7473289Z   persist-credentials: false
+2026-10-14T10:54:12.7473807Z   repository: jude27mad/tmu-course-guides
+2026-10-14T10:54:12.7477551Z   token: ***
+2026-10-14T10:54:12.7477950Z   ssh-strict: true
+2026-10-14T10:54:12.7478606Z   ssh-user: git
+2026-10-14T10:54:12.7479176Z   clean: true
+2026-10-14T10:54:12.7479761Z   sparse-checkout-cone-mode: true
+2026-10-14T10:54:12.7480427Z   fetch-depth: 1
+2026-10-14T10:54:12.7480980Z   fetch-tags: false
+2026-10-14T10:54:12.7481557Z   show-progress: true
+2026-10-14T10:54:12.7482360Z   lfs: false
+2026-10-14T10:54:12.7482983Z   submodules: false
+2026-10-14T10:54:12.7483674Z   set-safe-directory: true
+2026-10-14T10:54:12.7484650Z   allow-unsafe-pr-checkout: false
+2026-10-14T10:54:12.7485863Z env:
+2026-10-14T10:54:12.7486232Z   CI: true
+2026-10-14T10:54:12.7486630Z   npm_config_audit: false
+2026-10-14T10:54:12.7487068Z   npm_config_fund: false
+2026-10-14T10:54:12.7487540Z   PLAYWRIGHT_VERSION: 1.64.0
+2026-10-14T10:54:12.7488007Z   QA_BASE: /tmu-course-guides/
+2026-10-14T10:54:12.7488590Z   QA_CHECK: deadlines
+2026-10-14T10:54:12.7488993Z ##[endgroup]
+2026-10-14T10:54:12.8494894Z Syncing repository: jude27mad/tmu-course-guides
+2026-10-14T10:54:12.8497701Z ##[group]Getting Git version info
+2026-10-14T10:54:12.8498755Z Working directory is '/home/runner/work/tmu-course-guides/tmu-course-guides'
+2026-10-14T10:54:12.8499834Z [command]/usr/bin/git version
+2026-10-14T10:54:12.8589339Z git version 2.55.0
+2026-10-14T10:54:12.8612617Z ##[endgroup]
+2026-10-14T10:54:12.8627055Z Temporarily overriding HOME='/home/runner/work/_temp/76f9bd58-6ad8-4e34-92a4-eee7a38b559a' before making global git config changes
+2026-10-14T10:54:12.8629570Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-14T10:54:12.8635977Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/tmu-course-guides/tmu-course-guides
+2026-10-14T10:54:12.8683037Z Deleting the contents of '/home/runner/work/tmu-course-guides/tmu-course-guides'
+2026-10-14T10:54:12.8686384Z ##[group]Determining repository object format
+2026-10-14T10:54:12.8688372Z ##[endgroup]
+2026-10-14T10:54:12.8689862Z ##[group]Initializing the repository
+2026-10-14T10:54:12.8692933Z [command]/usr/bin/git init /home/runner/work/tmu-course-guides/tmu-course-guides
+2026-10-14T10:54:12.8773369Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-14T10:54:12.8775249Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-14T10:54:12.8777312Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-14T10:54:12.8778905Z hint: call:
+2026-10-14T10:54:12.8779695Z hint:
+2026-10-14T10:54:12.8780701Z hint: 	git config --global init.defaultBranch <name>
+2026-10-14T10:54:12.8781866Z hint:
+2026-10-14T10:54:12.8783033Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-14T10:54:12.8784783Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-14T10:54:12.8786101Z hint:
+2026-10-14T10:54:12.8786906Z hint: 	git branch -m <name>
+2026-10-14T10:54:12.8787826Z hint:
+2026-10-14T10:54:12.8789316Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-14T10:54:12.8791738Z Initialized empty Git repository in /home/runner/work/tmu-course-guides/tmu-course-guides/.git/
+2026-10-14T10:54:12.8801406Z [command]/usr/bin/git remote add origin https://github.com/jude27mad/tmu-course-guides
+2026-10-14T10:54:12.8835984Z ##[endgroup]
+2026-10-14T10:54:12.8836860Z ##[group]Disabling automatic garbage collection
+2026-10-14T10:54:12.8841675Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-14T10:54:12.8889391Z ##[endgroup]
+2026-10-14T10:54:12.8890723Z ##[group]Setting up auth
+2026-10-14T10:54:12.8891655Z Removing SSH command configuration
+2026-10-14T10:54:12.8892989Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-14T10:54:12.8915768Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-14T10:54:12.9279309Z Removing HTTP extra header
+2026-10-14T10:54:12.9299849Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-14T10:54:12.9315781Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-14T10:54:12.9512943Z Removing includeIf entries pointing to credentials config files
+2026-10-14T10:54:12.9520952Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-14T10:54:12.9551544Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-14T10:54:12.9731541Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-0de7ae1a-a302-4d3c-9c7c-ffc9337c3faa.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-14T10:54:12.9767081Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/tmu-course-guides/tmu-course-guides/.git.path /home/runner/work/_temp/git-credentials-0de7ae1a-a302-4d3c-9c7c-ffc9337c3faa.config
+2026-10-14T10:54:12.9797262Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/tmu-course-guides/tmu-course-guides/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-0de7ae1a-a302-4d3c-9c7c-ffc9337c3faa.config
+2026-10-14T10:54:12.9828709Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-0de7ae1a-a302-4d3c-9c7c-ffc9337c3faa.config
+2026-10-14T10:54:12.9862795Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-0de7ae1a-a302-4d3c-9c7c-ffc9337c3faa.config
+2026-10-14T10:54:12.9892348Z ##[endgroup]
+2026-10-14T10:54:12.9893016Z ##[group]Fetching the repository
+2026-10-14T10:54:12.9905458Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +f9a46fdb52729f47c0f13911d40ada85e6a6137e:refs/remotes/origin/codex/ns-perf
+2026-10-14T10:54:14.4112355Z From https://github.com/jude27mad/tmu-course-guides
+2026-10-14T10:54:14.4116069Z  * [new ref]         f9a46fdb52729f47c0f13911d40ada85e6a6137e -> origin/codex/ns-perf
+2026-10-14T10:54:14.4125193Z [command]/usr/bin/git branch --list --remote origin/codex/ns-perf
+2026-10-14T10:54:14.4155773Z   origin/codex/ns-perf
+2026-10-14T10:54:14.4166452Z [command]/usr/bin/git rev-parse refs/remotes/origin/codex/ns-perf
+2026-10-14T10:54:14.4179348Z f9a46fdb52729f47c0f13911d40ada85e6a6137e
+2026-10-14T10:54:14.4189162Z ##[endgroup]
+2026-10-14T10:54:14.4190122Z ##[group]Determining the checkout info
+2026-10-14T10:54:14.4190973Z ##[endgroup]
+2026-10-14T10:54:14.4193115Z [command]/usr/bin/git sparse-checkout disable
+2026-10-14T10:54:14.4243206Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-14T10:54:14.4270857Z ##[group]Checking out the ref
+2026-10-14T10:54:14.4275680Z [command]/usr/bin/git checkout --progress --force -B codex/ns-perf refs/remotes/origin/codex/ns-perf
+2026-10-14T10:54:14.6889147Z Switched to a new branch 'codex/ns-perf'
+2026-10-14T10:54:14.6891613Z branch 'codex/ns-perf' set up to track 'origin/codex/ns-perf'.
+2026-10-14T10:54:14.6908380Z ##[endgroup]
+2026-10-14T10:54:14.6953435Z [command]/usr/bin/git log -1 --format=%H
+2026-10-14T10:54:14.6979328Z f9a46fdb52729f47c0f13911d40ada85e6a6137e
+2026-10-14T10:54:14.6990111Z ##[group]Removing auth
+2026-10-14T10:54:14.6991725Z Removing SSH command configuration
+2026-10-14T10:54:14.6994562Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-14T10:54:14.7046286Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-14T10:54:14.7228570Z Removing HTTP extra header
+2026-10-14T10:54:14.7232112Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-14T10:54:14.7263432Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-14T10:54:14.7438985Z Removing includeIf entries pointing to credentials config files
+2026-10-14T10:54:14.7443729Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-14T10:54:14.7471018Z includeif.gitdir:/home/runner/work/tmu-course-guides/tmu-course-guides/.git.path
+2026-10-14T10:54:14.7472348Z includeif.gitdir:/home/runner/work/tmu-course-guides/tmu-course-guides/.git/worktrees/*.path
+2026-10-14T10:54:14.7473404Z includeif.gitdir:/github/workspace/.git.path
+2026-10-14T10:54:14.7474184Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-14T10:54:14.7480812Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/tmu-course-guides/tmu-course-guides/.git.path
+2026-10-14T10:54:14.7500832Z /home/runner/work/_temp/git-credentials-0de7ae1a-a302-4d3c-9c7c-ffc9337c3faa.config
+2026-10-14T10:54:14.7509682Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/tmu-course-guides/tmu-course-guides/.git.path /home/runner/work/_temp/git-credentials-0de7ae1a-a302-4d3c-9c7c-ffc9337c3faa.config
+2026-10-14T10:54:14.7541395Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/tmu-course-guides/tmu-course-guides/.git/worktrees/*.path
+2026-10-14T10:54:14.7563453Z /home/runner/work/_temp/git-credentials-0de7ae1a-a302-4d3c-9c7c-ffc9337c3faa.config
+2026-10-14T10:54:14.7572701Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/tmu-course-guides/tmu-course-guides/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-0de7ae1a-a302-4d3c-9c7c-ffc9337c3faa.config
+2026-10-14T10:54:14.7601399Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-14T10:54:14.7661629Z /github/runner_temp/git-credentials-0de7ae1a-a302-4d3c-9c7c-ffc9337c3faa.config
+2026-10-14T10:54:14.7671538Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-0de7ae1a-a302-4d3c-9c7c-ffc9337c3faa.config
+2026-10-14T10:54:14.7699373Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-14T10:54:14.7718154Z /github/runner_temp/git-credentials-0de7ae1a-a302-4d3c-9c7c-ffc9337c3faa.config
+2026-10-14T10:54:14.7724600Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-0de7ae1a-a302-4d3c-9c7c-ffc9337c3faa.config
+2026-10-14T10:54:14.7753214Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-14T10:54:14.7925929Z Removing credentials config '/home/runner/work/_temp/git-credentials-0de7ae1a-a302-4d3c-9c7c-ffc9337c3faa.config'
+2026-10-14T10:54:14.7934444Z ##[endgroup]
+2026-10-14T10:54:14.8166100Z ##[group]Run actions/setup-node@v6
+2026-10-14T10:54:14.8166443Z with:
+2026-10-14T10:54:14.8166682Z   node-version: 22
+2026-10-14T10:54:14.8166927Z   cache: npm
+2026-10-14T10:54:14.8167210Z   cache-dependency-path: .github/workflows/ci.yml
+2026-10-14T10:54:14.8167558Z   check-latest: false
+2026-10-14T10:54:14.8170589Z   token: ***
+2026-10-14T10:54:14.8170865Z   package-manager-cache: true
+2026-10-14T10:54:14.8171142Z env:
+2026-10-14T10:54:14.8171357Z   CI: true
+2026-10-14T10:54:14.8171588Z   npm_config_audit: false
+2026-10-14T10:54:14.8171884Z   npm_config_fund: false
+2026-10-14T10:54:14.8172152Z   PLAYWRIGHT_VERSION: 1.64.0
+2026-10-14T10:54:14.8172438Z   QA_BASE: /tmu-course-guides/
+2026-10-14T10:54:14.8172723Z   QA_CHECK: deadlines
+2026-10-14T10:54:14.8172969Z ##[endgroup]
+2026-10-14T10:54:14.9565551Z Found in cache @ /opt/hostedtoolcache/node/22.23.3/x64
+2026-10-14T10:54:14.9570330Z ##[group]Environment details
+2026-10-14T10:54:15.3052484Z node: v22.23.3
+2026-10-14T10:54:15.3053185Z npm: 10.9.9
+2026-10-14T10:54:15.3053493Z yarn: 1.22.22
+2026-10-14T10:54:15.3054671Z ##[endgroup]
+2026-10-14T10:54:15.3072588Z [command]/opt/hostedtoolcache/node/22.23.3/x64/bin/npm config get cache
+2026-10-14T10:54:15.4057363Z /home/runner/.npm
+2026-10-14T10:54:15.6213013Z npm cache is not found
+2026-10-14T10:54:15.6333684Z ##[group]Run # Keep QA-only dependencies outside the checkout and site manifests.
+2026-10-14T10:54:15.6334313Z [36;1m# Keep QA-only dependencies outside the checkout and site manifests.[0m
+2026-10-14T10:54:15.6334995Z [36;1mnpm install --prefix "$RUNNER_TEMP/qa-playwright" --no-save --package-lock=false "playwright@$PLAYWRIGHT_VERSION"[0m
+2026-10-14T10:54:15.6335738Z [36;1mnode "$RUNNER_TEMP/qa-playwright/node_modules/playwright/cli.js" install --with-deps chromium[0m
+2026-10-14T10:54:15.6519695Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-14T10:54:15.6520102Z env:
+2026-10-14T10:54:15.6520327Z   CI: true
+2026-10-14T10:54:15.6520528Z   npm_config_audit: false
+2026-10-14T10:54:15.6520772Z   npm_config_fund: false
+2026-10-14T10:54:15.6521012Z   PLAYWRIGHT_VERSION: 1.64.0
+2026-10-14T10:54:15.6521258Z   QA_BASE: /tmu-course-guides/
+2026-10-14T10:54:15.6521502Z   QA_CHECK: deadlines
+2026-10-14T10:54:15.6521720Z ##[endgroup]
+2026-10-14T10:54:17.4226924Z 
+2026-10-14T10:54:17.4236454Z added 2 packages in 2s
+2026-10-14T10:54:17.9094325Z Installing dependencies...
+2026-10-14T10:54:17.9194987Z Switching to root user to install dependencies...
+2026-10-14T10:54:17.9828633Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-14T10:54:18.0219687Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+2026-10-14T10:54:18.0250614Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+2026-10-14T10:54:18.0252240Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+2026-10-14T10:54:18.0273724Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+2026-10-14T10:54:18.1402778Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1397 kB]
+2026-10-14T10:54:18.1590178Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [308 kB]
+2026-10-14T10:54:18.1613716Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1702 kB]
+2026-10-14T10:54:18.1716444Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [342 kB]
+2026-10-14T10:54:18.1742010Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [1805 kB]
+2026-10-14T10:54:18.1839497Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [411 kB]
+2026-10-14T10:54:18.1854716Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Packages [50.7 kB]
+2026-10-14T10:54:18.1867490Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-updates/multiverse Translation-en [14.0 kB]
+2026-10-14T10:54:18.1964891Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Packages [748 B]
+2026-10-14T10:54:18.2296512Z Get:15 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+2026-10-14T10:54:18.2379683Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1145 kB]
+2026-10-14T10:54:18.2771533Z Get:24 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [576 kB]
+2026-10-14T10:54:18.2881184Z Get:25 https://packages.microsoft.com/ubuntu/24.04/prod noble/main all Packages [640 B]
+2026-10-14T10:54:18.2892148Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [231 kB]
+2026-10-14T10:54:18.2910347Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1221 kB]
+2026-10-14T10:54:18.2911672Z Get:26 https://packages.microsoft.com/ubuntu/24.04/prod noble/main armhf Packages [12.4 kB]
+2026-10-14T10:54:18.2959592Z Get:27 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [518 kB]
+2026-10-14T10:54:18.2976263Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble-security/universe Translation-en [246 kB]
+2026-10-14T10:54:18.2994484Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1713 kB]
+2026-10-14T10:54:18.3094060Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted Translation-en [392 kB]
+2026-10-14T10:54:18.3099786Z Get:22 http://azure.archive.ubuntu.com/ubuntu noble-security/multiverse amd64 Packages [45.4 kB]
+2026-10-14T10:54:18.3109810Z Get:23 http://azure.archive.ubuntu.com/ubuntu noble-security/multiverse Translation-en [12.1 kB]
+2026-10-14T10:54:21.2158400Z Fetched 12.5 MB in 1s (9922 kB/s)
+2026-10-14T10:54:22.1571762Z Reading package lists...
+2026-10-14T10:54:22.2569011Z Reading package lists...
+2026-10-14T10:54:22.4605263Z Building dependency tree...
+2026-10-14T10:54:22.4611990Z Reading state information...
+2026-10-14T10:54:22.6208779Z libasound2t64 is already the newest version (1.2.11-1ubuntu0.3).
+2026-10-14T10:54:22.6209523Z libasound2t64 set to manually installed.
+2026-10-14T10:54:22.6210310Z libatk-bridge2.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-14T10:54:22.6211071Z libatk-bridge2.0-0t64 set to manually installed.
+2026-10-14T10:54:22.6211775Z libatk1.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-14T10:54:22.6212778Z libatk1.0-0t64 set to manually installed.
+2026-10-14T10:54:22.6213584Z libatspi2.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-14T10:54:22.6214365Z libatspi2.0-0t64 set to manually installed.
+2026-10-14T10:54:22.6215139Z libcairo2 is already the newest version (1.18.0-3build1).
+2026-10-14T10:54:22.6216290Z libcairo2 set to manually installed.
+2026-10-14T10:54:22.6217044Z libcups2t64 is already the newest version (2.4.7-1.2ubuntu7.14).
+2026-10-14T10:54:22.6217792Z libcups2t64 set to manually installed.
+2026-10-14T10:54:22.6218953Z libdbus-1-3 is already the newest version (1.14.10-4ubuntu4.1).
+2026-10-14T10:54:22.6219737Z libdbus-1-3 set to manually installed.
+2026-10-14T10:54:22.6220579Z libdrm2 is already the newest version (2.4.125-1ubuntu0.1~24.04.2).
+2026-10-14T10:54:22.6221380Z libdrm2 set to manually installed.
+2026-10-14T10:54:22.6222248Z libgbm1 is already the newest version (25.2.8-0ubuntu0.24.04.4).
+2026-10-14T10:54:22.6223011Z libgbm1 set to manually installed.
+2026-10-14T10:54:22.6223837Z libglib2.0-0t64 is already the newest version (2.80.0-6ubuntu3.9).
+2026-10-14T10:54:22.6224511Z libglib2.0-0t64 set to manually installed.
+2026-10-14T10:54:22.6224983Z libnspr4 is already the newest version (2:4.35-1.1build1).
+2026-10-14T10:54:22.6225699Z libnspr4 set to manually installed.
+2026-10-14T10:54:22.6226392Z libnss3 is already the newest version (2:3.98-1ubuntu0.2).
+2026-10-14T10:54:22.6227091Z libnss3 set to manually installed.
+2026-10-14T10:54:22.6227841Z libpango-1.0-0 is already the newest version (1.52.1+ds-1build1).
+2026-10-14T10:54:22.6228987Z libpango-1.0-0 set to manually installed.
+2026-10-14T10:54:22.6229736Z libxcb1 is already the newest version (1.15-1ubuntu2).
+2026-10-14T10:54:22.6230435Z libxcb1 set to manually installed.
+2026-10-14T10:54:22.6231224Z libxcomposite1 is already the newest version (1:0.4.5-1build3).
+2026-10-14T10:54:22.6232012Z libxcomposite1 set to manually installed.
+2026-10-14T10:54:22.6232842Z libxdamage1 is already the newest version (1:1.1.6-1build1).
+2026-10-14T10:54:22.6233637Z libxdamage1 set to manually installed.
+2026-10-14T10:54:22.6234431Z libxext6 is already the newest version (2:1.3.4-1build2).
+2026-10-14T10:54:22.6235203Z libxext6 set to manually installed.
+2026-10-14T10:54:22.6236024Z libxfixes3 is already the newest version (1:6.0.0-2build1).
+2026-10-14T10:54:22.6236808Z libxfixes3 set to manually installed.
+2026-10-14T10:54:22.6237636Z libxkbcommon0 is already the newest version (1.6.0-1build1).
+2026-10-14T10:54:22.6238664Z libxkbcommon0 set to manually installed.
+2026-10-14T10:54:22.6239519Z libxrandr2 is already the newest version (2:1.5.2-2build1).
+2026-10-14T10:54:22.6240292Z libxrandr2 set to manually installed.
+2026-10-14T10:54:22.6241092Z xvfb is already the newest version (2:21.1.12-1ubuntu1.8).
+2026-10-14T10:54:22.6242192Z fonts-noto-color-emoji is already the newest version (2.047-0ubuntu0.24.04.1).
+2026-10-14T10:54:22.6243293Z libfontconfig1 is already the newest version (2.15.0-1.1ubuntu2).
+2026-10-14T10:54:22.6244548Z libfontconfig1 set to manually installed.
+2026-10-14T10:54:22.6245367Z fonts-liberation is already the newest version (1:2.1.5-3).
+2026-10-14T10:54:22.6246150Z fonts-liberation set to manually installed.
+2026-10-14T10:54:22.6246916Z The following additional packages will be installed:
+2026-10-14T10:54:22.6247730Z   libx11-data libx11-xcb1 xfonts-encodings xfonts-utils
+2026-10-14T10:54:22.6248684Z Recommended packages:
+2026-10-14T10:54:22.6249185Z   fonts-ipafont-mincho fonts-tlwg-loma
+2026-10-14T10:54:22.7065215Z The following NEW packages will be installed:
+2026-10-14T10:54:22.7065808Z   fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+2026-10-14T10:54:22.7073885Z   fonts-wqy-zenhei xfonts-cyrillic xfonts-encodings xfonts-scalable
+2026-10-14T10:54:22.7074521Z   xfonts-utils
+2026-10-14T10:54:22.7078939Z The following packages will be upgraded:
+2026-10-14T10:54:22.7084059Z   libfreetype6 libx11-6 libx11-data libx11-xcb1
+2026-10-14T10:54:22.7234080Z 4 upgraded, 9 newly installed, 0 to remove and 31 not upgraded.
+2026-10-14T10:54:22.7234627Z Need to get 22.3 MB of archives.
+2026-10-14T10:54:22.7235058Z After this operation, 79.6 MB of additional disk space will be used.
+2026-10-14T10:54:22.7235548Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-14T10:54:22.8067475Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-ipafont-gothic all 00303-21ubuntu1 [3513 kB]
+2026-10-14T10:54:22.9311325Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 libx11-6 amd64 2:1.8.7-1ubuntu0.1 [653 kB]
+2026-10-14T10:54:23.0106224Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 libx11-xcb1 amd64 2:1.8.7-1ubuntu0.1 [7796 B]
+2026-10-14T10:54:23.0743842Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 libx11-data all 2:1.8.7-1ubuntu0.1 [116 kB]
+2026-10-14T10:54:23.1394660Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 fonts-freefont-ttf all 20211204+svn4273-2 [5641 kB]
+2026-10-14T10:54:23.3140534Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-tlwg-loma-otf all 1:0.7.3-1 [107 kB]
+2026-10-14T10:54:23.3786096Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-unifont all 1:15.1.01-1build1 [2993 kB]
+2026-10-14T10:54:23.5009282Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-wqy-zenhei all 0.9.45-8 [7472 kB]
+2026-10-14T10:54:23.8958452Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libfreetype6 amd64 2.13.2+dfsg-1ubuntu0.2 [403 kB]
+2026-10-14T10:54:23.9626922Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-encodings all 1:1.0.5-0ubuntu2 [578 kB]
+2026-10-14T10:54:24.0378204Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-utils amd64 1:7.7+6build3 [94.4 kB]
+2026-10-14T10:54:24.1038535Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 xfonts-cyrillic all 1:1.0.5+nmu1 [384 kB]
+2026-10-14T10:54:24.1698327Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-scalable all 1:1.0.3-1.3 [304 kB]
+2026-10-14T10:54:24.4152815Z Fetched 22.3 MB in 1s (15.2 MB/s)
+2026-10-14T10:54:24.4355862Z Selecting previously unselected package fonts-ipafont-gothic.
+2026-10-14T10:54:24.4517403Z (Reading database ... 
+2026-10-14T10:54:24.4518005Z (Reading database ... 5%
+2026-10-14T10:54:24.4518510Z (Reading database ... 10%
+2026-10-14T10:54:24.4518754Z (Reading database ... 15%
+2026-10-14T10:54:24.4518989Z (Reading database ... 20%
+2026-10-14T10:54:24.4519293Z (Reading database ... 25%
+2026-10-14T10:54:24.4519524Z (Reading database ... 30%
+2026-10-14T10:54:24.4519763Z (Reading database ... 35%
+2026-10-14T10:54:24.4519989Z (Reading database ... 40%
+2026-10-14T10:54:24.4520215Z (Reading database ... 45%
+2026-10-14T10:54:24.4520440Z (Reading database ... 50%
+2026-10-14T10:54:24.4556998Z (Reading database ... 55%
+2026-10-14T10:54:24.5874612Z (Reading database ... 60%
+2026-10-14T10:54:24.7940850Z (Reading database ... 65%
+2026-10-14T10:54:24.9850457Z (Reading database ... 70%
+2026-10-14T10:54:25.1470916Z (Reading database ... 75%
+2026-10-14T10:54:25.3441344Z (Reading database ... 80%
+2026-10-14T10:54:25.5363142Z (Reading database ... 85%
+2026-10-14T10:54:25.7440413Z (Reading database ... 90%
+2026-10-14T10:54:25.9452890Z (Reading database ... 95%
+2026-10-14T10:54:25.9453431Z (Reading database ... 100%
+2026-10-14T10:54:25.9454233Z (Reading database ... 203191 files and directories currently installed.)
+2026-10-14T10:54:25.9499291Z Preparing to unpack .../00-fonts-ipafont-gothic_00303-21ubuntu1_all.deb ...
+2026-10-14T10:54:25.9574345Z Unpacking fonts-ipafont-gothic (00303-21ubuntu1) ...
+2026-10-14T10:54:26.1935677Z Preparing to unpack .../01-libx11-6_2%3a1.8.7-1ubuntu0.1_amd64.deb ...
+2026-10-14T10:54:26.1957938Z Unpacking libx11-6:amd64 (2:1.8.7-1ubuntu0.1) over (2:1.8.7-1build1) ...
+2026-10-14T10:54:26.2289432Z Preparing to unpack .../02-libx11-xcb1_2%3a1.8.7-1ubuntu0.1_amd64.deb ...
+2026-10-14T10:54:26.2309599Z Unpacking libx11-xcb1:amd64 (2:1.8.7-1ubuntu0.1) over (2:1.8.7-1build1) ...
+2026-10-14T10:54:26.2579843Z Preparing to unpack .../03-libx11-data_2%3a1.8.7-1ubuntu0.1_all.deb ...
+2026-10-14T10:54:26.2592472Z Unpacking libx11-data (2:1.8.7-1ubuntu0.1) over (2:1.8.7-1build1) ...
+2026-10-14T10:54:26.3252884Z Selecting previously unselected package fonts-freefont-ttf.
+2026-10-14T10:54:26.3369039Z Preparing to unpack .../04-fonts-freefont-ttf_20211204+svn4273-2_all.deb ...
+2026-10-14T10:54:26.3377855Z Unpacking fonts-freefont-ttf (20211204+svn4273-2) ...
+2026-10-14T10:54:26.4072211Z Selecting previously unselected package fonts-tlwg-loma-otf.
+2026-10-14T10:54:26.4180673Z Preparing to unpack .../05-fonts-tlwg-loma-otf_1%3a0.7.3-1_all.deb ...
+2026-10-14T10:54:26.4187986Z Unpacking fonts-tlwg-loma-otf (1:0.7.3-1) ...
+2026-10-14T10:54:26.4324508Z Selecting previously unselected package fonts-unifont.
+2026-10-14T10:54:26.4431979Z Preparing to unpack .../06-fonts-unifont_1%3a15.1.01-1build1_all.deb ...
+2026-10-14T10:54:26.4439498Z Unpacking fonts-unifont (1:15.1.01-1build1) ...
+2026-10-14T10:54:26.5347952Z Selecting previously unselected package fonts-wqy-zenhei.
+2026-10-14T10:54:26.5456403Z Preparing to unpack .../07-fonts-wqy-zenhei_0.9.45-8_all.deb ...
+2026-10-14T10:54:26.5530837Z Unpacking fonts-wqy-zenhei (0.9.45-8) ...
+2026-10-14T10:54:27.0254025Z Preparing to unpack .../08-libfreetype6_2.13.2+dfsg-1ubuntu0.2_amd64.deb ...
+2026-10-14T10:54:27.0273364Z Unpacking libfreetype6:amd64 (2.13.2+dfsg-1ubuntu0.2) over (2.13.2+dfsg-1ubuntu0.1) ...
+2026-10-14T10:54:27.0452044Z Selecting previously unselected package xfonts-encodings.
+2026-10-14T10:54:27.0561846Z Preparing to unpack .../09-xfonts-encodings_1%3a1.0.5-0ubuntu2_all.deb ...
+2026-10-14T10:54:27.0570522Z Unpacking xfonts-encodings (1:1.0.5-0ubuntu2) ...
+2026-10-14T10:54:27.0755506Z Selecting previously unselected package xfonts-utils.
+2026-10-14T10:54:27.0862839Z Preparing to unpack .../10-xfonts-utils_1%3a7.7+6build3_amd64.deb ...
+2026-10-14T10:54:27.0870921Z Unpacking xfonts-utils (1:7.7+6build3) ...
+2026-10-14T10:54:27.1097433Z Selecting previously unselected package xfonts-cyrillic.
+2026-10-14T10:54:27.1205228Z Preparing to unpack .../11-xfonts-cyrillic_1%3a1.0.5+nmu1_all.deb ...
+2026-10-14T10:54:27.1209952Z Unpacking xfonts-cyrillic (1:1.0.5+nmu1) ...
+2026-10-14T10:54:27.1413919Z Selecting previously unselected package xfonts-scalable.
+2026-10-14T10:54:27.1521184Z Preparing to unpack .../12-xfonts-scalable_1%3a1.0.3-1.3_all.deb ...
+2026-10-14T10:54:27.1525412Z Unpacking xfonts-scalable (1:1.0.3-1.3) ...
+2026-10-14T10:54:27.1853044Z Setting up fonts-wqy-zenhei (0.9.45-8) ...
+2026-10-14T10:54:27.1938697Z Setting up fonts-freefont-ttf (20211204+svn4273-2) ...
+2026-10-14T10:54:27.1950627Z Setting up fonts-tlwg-loma-otf (1:0.7.3-1) ...
+2026-10-14T10:54:27.1962040Z Setting up libfreetype6:amd64 (2.13.2+dfsg-1ubuntu0.2) ...
+2026-10-14T10:54:27.1973648Z Setting up libx11-data (2:1.8.7-1ubuntu0.1) ...
+2026-10-14T10:54:27.1985974Z Setting up xfonts-encodings (1:1.0.5-0ubuntu2) ...
+2026-10-14T10:54:27.1997937Z Setting up fonts-ipafont-gothic (00303-21ubuntu1) ...
+2026-10-14T10:54:27.2044678Z update-alternatives: using /usr/share/fonts/opentype/ipafont-gothic/ipag.ttf to provide /usr/share/fonts/truetype/fonts-japanese-gothic.ttf (fonts-japanese-gothic.ttf) in auto mode
+2026-10-14T10:54:27.2054388Z Setting up libx11-6:amd64 (2:1.8.7-1ubuntu0.1) ...
+2026-10-14T10:54:27.2066216Z Setting up fonts-unifont (1:15.1.01-1build1) ...
+2026-10-14T10:54:27.2080840Z Setting up libx11-xcb1:amd64 (2:1.8.7-1ubuntu0.1) ...
+2026-10-14T10:54:27.2092410Z Setting up xfonts-utils (1:7.7+6build3) ...
+2026-10-14T10:54:27.2119636Z Setting up xfonts-cyrillic (1:1.0.5+nmu1) ...
+2026-10-14T10:54:27.2333204Z Setting up xfonts-scalable (1:1.0.3-1.3) ...
+2026-10-14T10:54:27.2529261Z Processing triggers for libc-bin (2.39-0ubuntu8.9) ...
+2026-10-14T10:54:27.2751294Z Processing triggers for man-db (2.12.0-4build2) ...
+2026-10-14T10:54:27.2766664Z Not building database; man-db/auto-update is not 'true'.
+2026-10-14T10:54:27.2777154Z Processing triggers for fontconfig (2.15.0-1.1ubuntu2) ...
+2026-10-14T10:54:29.0279963Z 
+2026-10-14T10:54:29.0280525Z Running kernel seems to be up-to-date.
+2026-10-14T10:54:29.0280903Z 
+2026-10-14T10:54:29.0281073Z Restarting services...
+2026-10-14T10:54:29.0344490Z  systemctl restart php8.3-fpm.service
+2026-10-14T10:54:29.1234237Z 
+2026-10-14T10:54:29.1235588Z No containers need to be restarted.
+2026-10-14T10:54:29.1235890Z 
+2026-10-14T10:54:29.1248958Z No user sessions are running outdated binaries.
+2026-10-14T10:54:29.1249238Z 
+2026-10-14T10:54:29.1249524Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2026-10-14T10:54:30.0855705Z Downloading Chrome for Testing 156.0.8078.4 (playwright chromium v1248) from https://cdn.playwright.dev/builds/cft/156.0.8078.4/linux64/chrome-linux64.zip
+2026-10-14T10:54:30.5156329Z |                                                                                |   0% of 191.1 MiB
+2026-10-14T10:54:30.6914812Z |■■■■■■■■                                                                        |  10% of 191.1 MiB
+2026-10-14T10:54:30.7701303Z |■■■■■■■■■■■■■■■■                                                                |  20% of 191.1 MiB
+2026-10-14T10:54:30.8386809Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 191.1 MiB
+2026-10-14T10:54:30.9390994Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 191.1 MiB
+2026-10-14T10:54:31.0367271Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 191.1 MiB
+2026-10-14T10:54:31.1319807Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 191.1 MiB
+2026-10-14T10:54:31.2240450Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 191.1 MiB
+2026-10-14T10:54:31.2948859Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 191.1 MiB
+2026-10-14T10:54:31.3858949Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 191.1 MiB
+2026-10-14T10:54:31.4762959Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 191.1 MiB
+2026-10-14T10:54:34.1119992Z Chrome for Testing 156.0.8078.4 (playwright chromium v1248) downloaded to /home/runner/.cache/ms-playwright/chromium-1248
+2026-10-14T10:54:34.1123519Z Downloading FFmpeg (playwright ffmpeg v1013) from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1013/ffmpeg-linux.zip
+2026-10-14T10:54:34.5200186Z |                                                                                |   0% of 2.2 MiB
+2026-10-14T10:54:34.5229857Z |■■■■■■■■                                                                        |  10% of 2.2 MiB
+2026-10-14T10:54:34.5249817Z |■■■■■■■■■■■■■■■■                                                                |  20% of 2.2 MiB
+2026-10-14T10:54:34.5259305Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 2.2 MiB
+2026-10-14T10:54:34.5285248Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 2.2 MiB
+2026-10-14T10:54:34.5304893Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 2.2 MiB
+2026-10-14T10:54:34.5333824Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 2.2 MiB
+2026-10-14T10:54:34.5348934Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 2.2 MiB
+2026-10-14T10:54:34.5365795Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 2.2 MiB
+2026-10-14T10:54:34.5381295Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 2.2 MiB
+2026-10-14T10:54:34.5409219Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 2.2 MiB
+2026-10-14T10:54:34.6029505Z FFmpeg (playwright ffmpeg v1013) downloaded to /home/runner/.cache/ms-playwright/ffmpeg-1013
+2026-10-14T10:54:34.6040100Z Downloading Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) from https://cdn.playwright.dev/builds/cft/156.0.8078.4/linux64/chrome-headless-shell-linux64.zip
+2026-10-14T10:54:35.0609337Z |                                                                                |   0% of 120 MiB
+2026-10-14T10:54:35.2049345Z |■■■■■■■■                                                                        |  10% of 120 MiB
+2026-10-14T10:54:35.2541627Z |■■■■■■■■■■■■■■■■                                                                |  20% of 120 MiB
+2026-10-14T10:54:35.3149985Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 120 MiB
+2026-10-14T10:54:35.3512473Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 120 MiB
+2026-10-14T10:54:35.3931014Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 120 MiB
+2026-10-14T10:54:35.4356878Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 120 MiB
+2026-10-14T10:54:35.4771750Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 120 MiB
+2026-10-14T10:54:35.5215944Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 120 MiB
+2026-10-14T10:54:35.5588872Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 120 MiB
+2026-10-14T10:54:35.6055840Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 120 MiB
+2026-10-14T10:54:37.4537917Z Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) downloaded to /home/runner/.cache/ms-playwright/chromium_headless_shell-1248
+2026-10-14T10:54:37.4686795Z ##[group]Run export PLAYWRIGHT_PATH="$RUNNER_TEMP/qa-playwright/node_modules/playwright"
+2026-10-14T10:54:37.4687377Z [36;1mexport PLAYWRIGHT_PATH="$RUNNER_TEMP/qa-playwright/node_modules/playwright"[0m
+2026-10-14T10:54:37.4687832Z [36;1mnode tools/qa/run.mjs "$QA_CHECK" --base "$QA_BASE"[0m
+2026-10-14T10:54:37.4728519Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-14T10:54:37.4728840Z env:
+2026-10-14T10:54:37.4729023Z   CI: true
+2026-10-14T10:54:37.4729216Z   npm_config_audit: false
+2026-10-14T10:54:37.4729595Z   npm_config_fund: false
+2026-10-14T10:54:37.4729826Z   PLAYWRIGHT_VERSION: 1.64.0
+2026-10-14T10:54:37.4730065Z   QA_BASE: /tmu-course-guides/
+2026-10-14T10:54:37.4730309Z   QA_CHECK: deadlines
+2026-10-14T10:54:37.4730508Z ##[endgroup]
+2026-10-14T10:55:19.2597423Z deadlines /tmu-course-guides/: passed (0 failures)
+2026-10-14T10:55:19.7782503Z QA passed. Reports: /home/runner/work/tmu-course-guides/tmu-course-guides/tools/qa/reports/2026-10-14T10-54-37-541Z-3055
+2026-10-14T10:55:19.7914127Z ##[group]Run shopt -s nullglob
+2026-10-14T10:55:19.7914423Z [36;1mshopt -s nullglob[0m
+2026-10-14T10:55:19.7914710Z [36;1mfor report in tools/qa/reports/*/summary.md; do[0m
+2026-10-14T10:55:19.7915046Z [36;1m  cat "$report" >> "$GITHUB_STEP_SUMMARY"[0m
+2026-10-14T10:55:19.7915324Z [36;1mdone[0m
+2026-10-14T10:55:19.7915551Z [36;1mfor report in tools/qa/reports/*/*.md; do[0m
+2026-10-14T10:55:19.7915836Z [36;1m  echo "::group::$report"[0m
+2026-10-14T10:55:19.7916075Z [36;1m  cat "$report"[0m
+2026-10-14T10:55:19.7916313Z [36;1m  echo '::endgroup::'[0m
+2026-10-14T10:55:19.7916536Z [36;1mdone[0m
+2026-10-14T10:55:19.7953942Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-14T10:55:19.7954266Z env:
+2026-10-14T10:55:19.7954452Z   CI: true
+2026-10-14T10:55:19.7954647Z   npm_config_audit: false
+2026-10-14T10:55:19.7954882Z   npm_config_fund: false
+2026-10-14T10:55:19.7955111Z   PLAYWRIGHT_VERSION: 1.64.0
+2026-10-14T10:55:19.7955408Z   QA_BASE: /tmu-course-guides/
+2026-10-14T10:55:19.7955639Z   QA_CHECK: deadlines
+2026-10-14T10:55:19.7955844Z ##[endgroup]
+2026-10-14T10:55:19.8021613Z ##[group]tools/qa/reports/2026-10-14T10-54-37-541Z-3055/deadlines.md
+2026-10-14T10:55:19.8027919Z # QA: deadlines
+2026-10-14T10:55:19.8028285Z 
+2026-10-14T10:55:19.8028605Z Result: **passed** (0 failed assertions).
+2026-10-14T10:55:19.8028907Z 
+2026-10-14T10:55:19.8029169Z Rendering requested: **SwiftShader**.
+2026-10-14T10:55:19.8030296Z - /tmu-course-guides/: SwiftShader; ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver). Software-renderer frame numbers are diagnostics, not evidence of device smoothness.
+2026-10-14T10:55:19.8031302Z Chromium: /home/runner/.cache/ms-playwright/chromium-1248/chrome-linux64/chrome
+2026-10-14T10:55:19.8031601Z 
+2026-10-14T10:55:19.8031745Z | Base | Result | Assertions | Skips |
+2026-10-14T10:55:19.8032020Z | --- | --- | ---: | ---: |
+2026-10-14T10:55:19.8032300Z | /tmu-course-guides/ | passed | 128 | 0 |
+2026-10-14T10:55:19.8032747Z ##[endgroup]
+2026-10-14T10:55:19.8033150Z ##[group]tools/qa/reports/2026-10-14T10-54-37-541Z-3055/summary.md
+2026-10-14T10:55:19.8035685Z # QA run
+2026-10-14T10:55:19.8035853Z 
+2026-10-14T10:55:19.8036127Z Result: **passed**; exit 0; 0 failed assertions.
+2026-10-14T10:55:19.8036461Z 
+2026-10-14T10:55:19.8036706Z Rendering requested: **SwiftShader**.
+2026-10-14T10:55:19.8038309Z - /tmu-course-guides/: SwiftShader; ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver). Software-renderer frame numbers are diagnostics, not evidence of device smoothness.
+2026-10-14T10:55:19.8039723Z Chromium: /home/runner/.cache/ms-playwright/chromium-1248/chrome-linux64/chrome
+2026-10-14T10:55:19.8040030Z 
+2026-10-14T10:55:19.8040205Z | Check | Result | Bases | Failed assertions |
+2026-10-14T10:55:19.8040501Z | --- | --- | ---: | ---: |
+2026-10-14T10:55:19.8040768Z | deadlines | passed | 1 | 0 |
+2026-10-14T10:55:19.8041195Z ##[endgroup]
+2026-10-14T10:55:19.8125298Z ##[group]Run actions/upload-artifact@v4
+2026-10-14T10:55:19.8125601Z with:
+2026-10-14T10:55:19.8125824Z   name: browser-qa-deadlines-github-pages
+2026-10-14T10:55:19.8126103Z   path: tools/qa/reports/
+2026-10-14T10:55:19.8126327Z   if-no-files-found: warn
+2026-10-14T10:55:19.8126548Z   retention-days: 7
+2026-10-14T10:55:19.8126758Z   compression-level: 6
+2026-10-14T10:55:19.8126962Z   overwrite: false
+2026-10-14T10:55:19.8127168Z   include-hidden-files: false
+2026-10-14T10:55:19.8127390Z env:
+2026-10-14T10:55:19.8127711Z   CI: true
+2026-10-14T10:55:19.8127896Z   npm_config_audit: false
+2026-10-14T10:55:19.8128386Z   npm_config_fund: false
+2026-10-14T10:55:19.8128676Z   PLAYWRIGHT_VERSION: 1.64.0
+2026-10-14T10:55:19.8128920Z   QA_BASE: /tmu-course-guides/
+2026-10-14T10:55:19.8129151Z   QA_CHECK: deadlines
+2026-10-14T10:55:19.8129356Z ##[endgroup]
+2026-10-14T10:55:19.9742766Z (node:3338) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-14T10:55:19.9743894Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-14T10:55:19.9814460Z With the provided path, there will be 4 files uploaded
+2026-10-14T10:55:19.9817435Z Artifact name is valid!
+2026-10-14T10:55:19.9819376Z Root directory input is valid!
+2026-10-14T10:55:20.3490935Z Beginning upload of artifact content to blob storage
+2026-10-14T10:55:20.3728293Z (node:3338) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-14T10:55:20.5976941Z Uploaded bytes 10306
+2026-10-14T10:55:20.6609806Z Finished uploading artifact content to blob storage!
+2026-10-14T10:55:20.6610943Z SHA256 digest of uploaded artifact zip is bc61b72667a29c91499969dbff02ecdc899a44b255ef8dd683dba21d3af0250a
+2026-10-14T10:55:20.6613230Z Finalizing artifact upload
+2026-10-14T10:55:20.9115860Z Artifact browser-qa-deadlines-github-pages.zip successfully finalized. Artifact ID 11887004037
+2026-10-14T10:55:20.9117708Z Artifact browser-qa-deadlines-github-pages has been successfully uploaded! Final size is 10306 bytes. Artifact ID is 11887004037
+2026-10-14T10:55:20.9124588Z Artifact download URL: https://github.com/jude27mad/tmu-course-guides/actions/runs/38552794234/artifacts/11887004037
+2026-10-14T10:55:20.9286870Z Post job cleanup.
+2026-10-14T10:55:21.0643547Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/tmu-course-guides/tmu-course-guides --files-from manifest.txt --use-compress-program zstdmt
+2026-10-14T10:55:21.3759572Z Failed to save: Unable to reserve cache with key node-cache-Linux-x64-npm-356a8d059e2215ea153efc7018a8091154b13c34a30c8d5fcc7593e371728a41, another job may be creating this cache.
+2026-10-14T10:55:21.3904837Z Post job cleanup.
+2026-10-14T10:55:21.4742671Z [command]/usr/bin/git version
+2026-10-14T10:55:21.4787138Z git version 2.55.0
+2026-10-14T10:55:21.4834609Z Temporarily overriding HOME='/home/runner/work/_temp/43d37d6a-c4ab-4103-893e-2870ed683db5' before making global git config changes
+2026-10-14T10:55:21.4835727Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-14T10:55:21.4841785Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/tmu-course-guides/tmu-course-guides
+2026-10-14T10:55:21.4873203Z Removing SSH command configuration
+2026-10-14T10:55:21.4881242Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-14T10:55:21.4914076Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-14T10:55:21.5129218Z Removing HTTP extra header
+2026-10-14T10:55:21.5139666Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-14T10:55:21.5167972Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-14T10:55:21.5363974Z Removing includeIf entries pointing to credentials config files
+2026-10-14T10:55:21.5372794Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-14T10:55:21.5429592Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-14T10:55:21.5783647Z Cleaning up orphan processes
+2026-10-14T10:55:21.6047121Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

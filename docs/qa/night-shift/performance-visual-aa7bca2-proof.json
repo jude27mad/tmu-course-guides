@@ -1,0 +1,692 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T06:18:45.093Z",
+  "reviewer": "/root/latest_visual_prepare",
+  "captureCLI": {
+    "before": 0,
+    "after": 0,
+    "compare": 0
+  },
+  "files": {
+    "before": {
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/perf-visuals/before/manifest.json",
+      "sha256": "f6002a6523ee15265230af236c1d024dbe12b68ea55ad7f1a3e1ff8e2f4c9f04",
+      "bytes": 229296
+    },
+    "after": {
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/perf-visuals/after/manifest.json",
+      "sha256": "c601f1307451f099b530c3bcd401e9cacb228a29149609b755ea3e197f0fa091",
+      "bytes": 229261
+    },
+    "compare": {
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/perf-visuals/compare/comparison.json",
+      "sha256": "7365d5e3490372f2ac0f84ab302713bd1724418166947702abde5ac3b2506454",
+      "bytes": 32785
+    }
+  },
+  "source": {
+    "control": {
+      "revisionNow": "aa7bca26bdfe6d640766858f4f3a27e2e9e668e7",
+      "product": "f53027510da4ab7382192a2b05a3acc7dcab5ce3cf93d62a9d197345de765960",
+      "protected": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+      "toolSHA256": "4a975749dfe85ea3734bf8e1dd4d389c2bb6a0887a20eadaa7dc9fff7c26d0a0"
+    },
+    "topic": {
+      "revisionNow": "322534822e9ac7c6d6cf5442f46210f0d20a28aa",
+      "product": "1795468f427084977fac5a0707eef0b14e461c8d2041cb9c6d1e0315de48851f",
+      "protected": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+      "toolSHA256": "4a975749dfe85ea3734bf8e1dd4d389c2bb6a0887a20eadaa7dc9fff7c26d0a0"
+    }
+  },
+  "pixelPairs": [
+    {
+      "id": "root-desk-1440x900-dark",
+      "beforeSHA256": "395de936e7417ecdb76f015139d0a8c60112c60f1f033796106c55e5e7263b36",
+      "afterSHA256": "395de936e7417ecdb76f015139d0a8c60112c60f1f033796106c55e5e7263b36",
+      "width": 1440,
+      "height": 900,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "root-desk-1440x900-light",
+      "beforeSHA256": "996cc3334c437d223a010812cfdd3bda684f7c53ebdcc04248b998867300cf50",
+      "afterSHA256": "996cc3334c437d223a010812cfdd3bda684f7c53ebdcc04248b998867300cf50",
+      "width": 1440,
+      "height": 900,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "root-desk-390x844-dark",
+      "beforeSHA256": "1b2c9089545552c00544cbcbf266ebe33526d73e811ff8afd44bc46b28f20b7e",
+      "afterSHA256": "1b2c9089545552c00544cbcbf266ebe33526d73e811ff8afd44bc46b28f20b7e",
+      "width": 390,
+      "height": 844,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "root-desk-390x844-light",
+      "beforeSHA256": "2fc2cb7a40bc51e057d38e0b5b93b22ee305a8bf2420a05f91e40446ca680241",
+      "afterSHA256": "2fc2cb7a40bc51e057d38e0b5b93b22ee305a8bf2420a05f91e40446ca680241",
+      "width": 390,
+      "height": 844,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "root-cen100-1440x900-dark",
+      "beforeSHA256": "bdbb1b942b70cbc5ce9cfd6f547eec1035cba741740a6e19a4c3c942bd8f25bc",
+      "afterSHA256": "bdbb1b942b70cbc5ce9cfd6f547eec1035cba741740a6e19a4c3c942bd8f25bc",
+      "width": 1440,
+      "height": 900,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "root-cen100-1440x900-light",
+      "beforeSHA256": "3ae949afde4fb52e9c8ff8c27695a03f2ccd4f012b784e4f7208b126b6da90bd",
+      "afterSHA256": "3ae949afde4fb52e9c8ff8c27695a03f2ccd4f012b784e4f7208b126b6da90bd",
+      "width": 1440,
+      "height": 900,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "root-cen100-390x844-dark",
+      "beforeSHA256": "313533dfad8622a1d1e50a7e2cd1e00367cd8cb6ce705bfb5536abf460fa2890",
+      "afterSHA256": "313533dfad8622a1d1e50a7e2cd1e00367cd8cb6ce705bfb5536abf460fa2890",
+      "width": 390,
+      "height": 844,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "root-cen100-390x844-light",
+      "beforeSHA256": "1d17378b12caf6cba725b38bd74fe59f94aa57e09350387225ec06c1e8fb788f",
+      "afterSHA256": "1d17378b12caf6cba725b38bd74fe59f94aa57e09350387225ec06c1e8fb788f",
+      "width": 390,
+      "height": 844,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "root-mth140-1440x900-dark",
+      "beforeSHA256": "b6fb703dd6d4c106715fe98e498d9b752c835b1131ddbb58ed6defb0e2261bc6",
+      "afterSHA256": "b6fb703dd6d4c106715fe98e498d9b752c835b1131ddbb58ed6defb0e2261bc6",
+      "width": 1440,
+      "height": 900,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "root-mth140-1440x900-light",
+      "beforeSHA256": "54799466b902c5d1ab36d19366ffe41cf0def6ac9bea63c3ddfffe15fc17e3d1",
+      "afterSHA256": "54799466b902c5d1ab36d19366ffe41cf0def6ac9bea63c3ddfffe15fc17e3d1",
+      "width": 1440,
+      "height": 900,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "root-mth140-390x844-dark",
+      "beforeSHA256": "5602b70573e38013014716836f1769164526e239e5b457541237a7fa07d4379b",
+      "afterSHA256": "5602b70573e38013014716836f1769164526e239e5b457541237a7fa07d4379b",
+      "width": 390,
+      "height": 844,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "root-mth140-390x844-light",
+      "beforeSHA256": "1dba9404f8a21e4fca4bbc6adc6d56fab37eb893cad54cb008c4f025e0e54dee",
+      "afterSHA256": "1dba9404f8a21e4fca4bbc6adc6d56fab37eb893cad54cb008c4f025e0e54dee",
+      "width": 390,
+      "height": 844,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "root-mth141-1440x900-dark",
+      "beforeSHA256": "5423125bf4bfc6cafeb1a187a98a10d7c69a037eaecfbd00de35666ab3716684",
+      "afterSHA256": "5423125bf4bfc6cafeb1a187a98a10d7c69a037eaecfbd00de35666ab3716684",
+      "width": 1440,
+      "height": 900,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "root-mth141-1440x900-light",
+      "beforeSHA256": "f0ef94a4262bdaf900d508d2f5d87f54cce88aef72f68af2ebb9e8380abe530d",
+      "afterSHA256": "f0ef94a4262bdaf900d508d2f5d87f54cce88aef72f68af2ebb9e8380abe530d",
+      "width": 1440,
+      "height": 900,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "root-mth141-390x844-dark",
+      "beforeSHA256": "521df1075323f73683cf98cf56b09445a872951d3b502fdcc8e5f24586c410f5",
+      "afterSHA256": "521df1075323f73683cf98cf56b09445a872951d3b502fdcc8e5f24586c410f5",
+      "width": 390,
+      "height": 844,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "root-mth141-390x844-light",
+      "beforeSHA256": "267526a82933c4fd87a6b4108563e3f2d0cded7446ceeb8bb9f9c496f6817c02",
+      "afterSHA256": "267526a82933c4fd87a6b4108563e3f2d0cded7446ceeb8bb9f9c496f6817c02",
+      "width": 390,
+      "height": 844,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "project-desk-1440x900-dark",
+      "beforeSHA256": "395de936e7417ecdb76f015139d0a8c60112c60f1f033796106c55e5e7263b36",
+      "afterSHA256": "395de936e7417ecdb76f015139d0a8c60112c60f1f033796106c55e5e7263b36",
+      "width": 1440,
+      "height": 900,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "project-desk-1440x900-light",
+      "beforeSHA256": "996cc3334c437d223a010812cfdd3bda684f7c53ebdcc04248b998867300cf50",
+      "afterSHA256": "996cc3334c437d223a010812cfdd3bda684f7c53ebdcc04248b998867300cf50",
+      "width": 1440,
+      "height": 900,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "project-desk-390x844-dark",
+      "beforeSHA256": "1b2c9089545552c00544cbcbf266ebe33526d73e811ff8afd44bc46b28f20b7e",
+      "afterSHA256": "1b2c9089545552c00544cbcbf266ebe33526d73e811ff8afd44bc46b28f20b7e",
+      "width": 390,
+      "height": 844,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "project-desk-390x844-light",
+      "beforeSHA256": "2fc2cb7a40bc51e057d38e0b5b93b22ee305a8bf2420a05f91e40446ca680241",
+      "afterSHA256": "2fc2cb7a40bc51e057d38e0b5b93b22ee305a8bf2420a05f91e40446ca680241",
+      "width": 390,
+      "height": 844,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "project-cen100-1440x900-dark",
+      "beforeSHA256": "bdbb1b942b70cbc5ce9cfd6f547eec1035cba741740a6e19a4c3c942bd8f25bc",
+      "afterSHA256": "bdbb1b942b70cbc5ce9cfd6f547eec1035cba741740a6e19a4c3c942bd8f25bc",
+      "width": 1440,
+      "height": 900,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "project-cen100-1440x900-light",
+      "beforeSHA256": "3ae949afde4fb52e9c8ff8c27695a03f2ccd4f012b784e4f7208b126b6da90bd",
+      "afterSHA256": "3ae949afde4fb52e9c8ff8c27695a03f2ccd4f012b784e4f7208b126b6da90bd",
+      "width": 1440,
+      "height": 900,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "project-cen100-390x844-dark",
+      "beforeSHA256": "313533dfad8622a1d1e50a7e2cd1e00367cd8cb6ce705bfb5536abf460fa2890",
+      "afterSHA256": "313533dfad8622a1d1e50a7e2cd1e00367cd8cb6ce705bfb5536abf460fa2890",
+      "width": 390,
+      "height": 844,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "project-cen100-390x844-light",
+      "beforeSHA256": "1d17378b12caf6cba725b38bd74fe59f94aa57e09350387225ec06c1e8fb788f",
+      "afterSHA256": "1d17378b12caf6cba725b38bd74fe59f94aa57e09350387225ec06c1e8fb788f",
+      "width": 390,
+      "height": 844,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "project-mth140-1440x900-dark",
+      "beforeSHA256": "b6fb703dd6d4c106715fe98e498d9b752c835b1131ddbb58ed6defb0e2261bc6",
+      "afterSHA256": "b6fb703dd6d4c106715fe98e498d9b752c835b1131ddbb58ed6defb0e2261bc6",
+      "width": 1440,
+      "height": 900,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "project-mth140-1440x900-light",
+      "beforeSHA256": "54799466b902c5d1ab36d19366ffe41cf0def6ac9bea63c3ddfffe15fc17e3d1",
+      "afterSHA256": "54799466b902c5d1ab36d19366ffe41cf0def6ac9bea63c3ddfffe15fc17e3d1",
+      "width": 1440,
+      "height": 900,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "project-mth140-390x844-dark",
+      "beforeSHA256": "5602b70573e38013014716836f1769164526e239e5b457541237a7fa07d4379b",
+      "afterSHA256": "5602b70573e38013014716836f1769164526e239e5b457541237a7fa07d4379b",
+      "width": 390,
+      "height": 844,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "project-mth140-390x844-light",
+      "beforeSHA256": "1dba9404f8a21e4fca4bbc6adc6d56fab37eb893cad54cb008c4f025e0e54dee",
+      "afterSHA256": "1dba9404f8a21e4fca4bbc6adc6d56fab37eb893cad54cb008c4f025e0e54dee",
+      "width": 390,
+      "height": 844,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "project-mth141-1440x900-dark",
+      "beforeSHA256": "5423125bf4bfc6cafeb1a187a98a10d7c69a037eaecfbd00de35666ab3716684",
+      "afterSHA256": "5423125bf4bfc6cafeb1a187a98a10d7c69a037eaecfbd00de35666ab3716684",
+      "width": 1440,
+      "height": 900,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "project-mth141-1440x900-light",
+      "beforeSHA256": "f0ef94a4262bdaf900d508d2f5d87f54cce88aef72f68af2ebb9e8380abe530d",
+      "afterSHA256": "f0ef94a4262bdaf900d508d2f5d87f54cce88aef72f68af2ebb9e8380abe530d",
+      "width": 1440,
+      "height": 900,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "project-mth141-390x844-dark",
+      "beforeSHA256": "521df1075323f73683cf98cf56b09445a872951d3b502fdcc8e5f24586c410f5",
+      "afterSHA256": "521df1075323f73683cf98cf56b09445a872951d3b502fdcc8e5f24586c410f5",
+      "width": 390,
+      "height": 844,
+      "RGBAIdentical": true
+    },
+    {
+      "id": "project-mth141-390x844-light",
+      "beforeSHA256": "267526a82933c4fd87a6b4108563e3f2d0cded7446ceeb8bb9f9c496f6817c02",
+      "afterSHA256": "267526a82933c4fd87a6b4108563e3f2d0cded7446ceeb8bb9f9c496f6817c02",
+      "width": 390,
+      "height": 844,
+      "RGBAIdentical": true
+    }
+  ],
+  "metadataPairs": [
+    {
+      "id": "root-desk-1440x900-dark",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "root-desk-1440x900-light",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "root-desk-390x844-dark",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "root-desk-390x844-light",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "root-cen100-1440x900-dark",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "root-cen100-1440x900-light",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "root-cen100-390x844-dark",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "root-cen100-390x844-light",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "root-mth140-1440x900-dark",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "root-mth140-1440x900-light",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "root-mth140-390x844-dark",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "root-mth140-390x844-light",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "root-mth141-1440x900-dark",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "root-mth141-1440x900-light",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "root-mth141-390x844-dark",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "root-mth141-390x844-light",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "project-desk-1440x900-dark",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "project-desk-1440x900-light",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "project-desk-390x844-dark",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "project-desk-390x844-light",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "project-cen100-1440x900-dark",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "project-cen100-1440x900-light",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "project-cen100-390x844-dark",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "project-cen100-390x844-light",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "project-mth140-1440x900-dark",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "project-mth140-1440x900-light",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "project-mth140-390x844-dark",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "project-mth140-390x844-light",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "project-mth141-1440x900-dark",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "project-mth141-1440x900-light",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "project-mth141-390x844-dark",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    },
+    {
+      "id": "project-mth141-390x844-light",
+      "platformFontsIdentical": true,
+      "headingIdentical": true,
+      "wrapperIdentical": true,
+      "themeIdentical": true,
+      "imagesIdentical": true,
+      "sceneBoundsIdentical": true
+    }
+  ],
+  "manualInspection": {
+    "cases": [
+      "root-mth140-1440x900-dark",
+      "root-mth140-390x844-dark"
+    ],
+    "bothReferences": true,
+    "finding": "Both references visibly render the actual open book model, page text, ribbon and pop-up card. Every book capture also retains positive live SwiftShader WebGL2 drawing buffers, renderer webgl2, ready true, still motion and positive sceneFrame; no poster substitution."
+  },
+  "previewClosure": [
+    {
+      "origin": "http://127.0.0.1:37681",
+      "result": "ECONNREFUSED"
+    },
+    {
+      "origin": "http://127.0.0.1:33677",
+      "result": "ECONNREFUSED"
+    },
+    {
+      "origin": "http://127.0.0.1:33005",
+      "result": "ECONNREFUSED"
+    },
+    {
+      "origin": "http://127.0.0.1:38737",
+      "result": "ECONNREFUSED"
+    }
+  ],
+  "liveChromiumProcesses": [],
+  "summary": {
+    "independentRGBAIdentical": 32,
+    "metadataDifferences": [],
+    "liveCourseCaptures": 48,
+    "liveMTH140BookCaptures": 16,
+    "before": {
+      "requested": 32,
+      "captured": 32,
+      "failed": 0,
+      "initialAttemptFailures": 0,
+      "naturalSettlementFailures": 0,
+      "errors": 0,
+      "repeatPixelIdentical": true,
+      "evidenceFailures": 0
+    },
+    "after": {
+      "requested": 32,
+      "captured": 32,
+      "failed": 0,
+      "initialAttemptFailures": 0,
+      "naturalSettlementFailures": 0,
+      "errors": 0,
+      "repeatPixelIdentical": true,
+      "evidenceFailures": 0
+    },
+    "comparison": {
+      "expected": 32,
+      "compared": 32,
+      "pixelIdentical": 32,
+      "different": 0,
+      "failed": 0,
+      "changedPixels": 0,
+      "browserErrors": 0,
+      "naturalSettlementFailures": 0,
+      "repeatFailures": 0,
+      "evidenceFailures": 0,
+      "protectedSourceMatches": true
+    },
+    "previewPortsClosed": true,
+    "browserProcessesClosed": true
+  },
+  "captureRevisions": {
+    "before": "aa7bca26bdfe6d640766858f4f3a27e2e9e668e7",
+    "after": "b096bd83b26a08b6efca98e0d7b3023adb732a25"
+  },
+  "captureRecipe": {
+    "fullPage": false,
+    "deviceScaleFactor": 1,
+    "timezone": "America/Toronto",
+    "locale": "en-CA",
+    "initialSavedScenePause": true,
+    "entryAnimations": "normal",
+    "settledDelayMs": 1500,
+    "random": "FNV-1a route seed with a 32-bit LCG; seeded before product scripts",
+    "initialClock": "moving Date offset",
+    "freeze": "freeze after settlement, pause through GuideMotion and dispatch workspace-changed/visibilitychange; final visibilitychange redraw immediately before capture",
+    "sceneReadyGate": true,
+    "sceneFrameAndBoundsStableMs": 100,
+    "screenshotAnimations": "disabled",
+    "masking": false,
+    "cssInjection": false,
+    "noWebGL": false,
+    "bookTier": {
+      "route": "mth140",
+      "value": "high",
+      "query": "?tier=high"
+    },
+    "compositorStagesBeforeDraw": true,
+    "gpuRasterization": false,
+    "gpuCompositing": false,
+    "chromiumScreenshotSurface": "legacy",
+    "nativeLayerInvalidation": {
+      "desk": "after final visibilitychange DOM reconstruction",
+      "course": "before final visibilitychange static scene redraw"
+    }
+  }
+}

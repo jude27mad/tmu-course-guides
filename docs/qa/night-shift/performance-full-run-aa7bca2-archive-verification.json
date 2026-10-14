@@ -1,0 +1,317 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T05:44:13.728228Z",
+  "archiver": "/root/latest_report_prepare",
+  "status": "original-completed-full-run-failed-preserved",
+  "rawDirectory": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962",
+  "startedAt": "2026-10-14T04:29:12.369Z",
+  "completedAt": "2026-10-14T05:38:20.262Z",
+  "summaryStatus": "failed",
+  "summaryExitCode": 1,
+  "cliExitObservation": {
+    "exitCode": 1,
+    "sessionID": 31458,
+    "observer": "/root",
+    "source": "Root agent task message reporting its independently retrieved CLI exit; archive worker did not retrieve that session itself.",
+    "reportedAfterRunClosure": true
+  },
+  "counts": {
+    "checks": 14,
+    "records": 28,
+    "passedRecords": 21,
+    "failedRecords": 5,
+    "unavailableRecords": 2,
+    "assertions": 2859,
+    "passedAssertions": 2852,
+    "failedAssertions": 7,
+    "skipEntries": 4,
+    "runnerEvents": 229
+  },
+  "artifacts": [
+    {
+      "role": "Original completed failed whole-run summary; no status or telemetry changes",
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/summary.json",
+      "archive": "performance-full-run-aa7bca2-summary-failed.json",
+      "sha256": "cce1749b0815925c9a877b39f2c6d56e1c8b5ebb26d9eeb398a70970dfec1901",
+      "bytes": 14189380,
+      "byteIdentical": true
+    },
+    {
+      "role": "Original complete raw whole check at both deployment bases",
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/perf.json",
+      "archive": "performance-full-run-aa7bca2-perf.json",
+      "sha256": "8f02ee6001a545562ea711facd17f8483fd089c0bb5be2014d330bc8453f9ad3",
+      "bytes": 2164058,
+      "byteIdentical": true,
+      "check": "perf",
+      "status": "passed",
+      "failures": 0,
+      "records": 2,
+      "equalToSummaryCases": true
+    },
+    {
+      "role": "Original complete raw whole check at both deployment bases",
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/routes.json",
+      "archive": "performance-full-run-aa7bca2-routes.json",
+      "sha256": "9305417e6d893e16b5e7b806b6fa00d42e6db0df4fbfe019e8882386b5ac824f",
+      "bytes": 77212,
+      "byteIdentical": true,
+      "check": "routes",
+      "status": "passed",
+      "failures": 0,
+      "records": 2,
+      "equalToSummaryCases": true
+    },
+    {
+      "role": "Original complete raw whole check at both deployment bases",
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/stability.json",
+      "archive": "performance-full-run-aa7bca2-stability.json",
+      "sha256": "864b2d6fee0e2f0a5f618910f9958a429f226e852d0d394da96ccf3ea4c8a132",
+      "bytes": 508732,
+      "byteIdentical": true,
+      "check": "stability",
+      "status": "passed",
+      "failures": 0,
+      "records": 2,
+      "equalToSummaryCases": true
+    },
+    {
+      "role": "Original complete raw whole check at both deployment bases",
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/frames.json",
+      "archive": "performance-full-run-aa7bca2-frames.json",
+      "sha256": "c4a6b95fac2477b3da41a15fac92fd52862613f011617eee6b5a38d2630eb253",
+      "bytes": 120873,
+      "byteIdentical": true,
+      "check": "frames",
+      "status": "passed",
+      "failures": 0,
+      "records": 2,
+      "equalToSummaryCases": true
+    },
+    {
+      "role": "Original complete raw whole check at both deployment bases",
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/deadlines.json",
+      "archive": "performance-full-run-aa7bca2-deadlines.json",
+      "sha256": "991bae1302dc9eedf90be9f34e80bddbc05c1d3869ae0c07b0d94d3298058f96",
+      "bytes": 132372,
+      "byteIdentical": true,
+      "check": "deadlines",
+      "status": "failed",
+      "failures": 1,
+      "records": 2,
+      "equalToSummaryCases": true
+    },
+    {
+      "role": "Original complete raw whole check at both deployment bases",
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/modes.json",
+      "archive": "performance-full-run-aa7bca2-modes.json",
+      "sha256": "fa79f6d11d93cffbf93bc8495fa3e4ea1374f683a368ea3a5261a530a9e9ea8a",
+      "bytes": 7478279,
+      "byteIdentical": true,
+      "check": "modes",
+      "status": "passed",
+      "failures": 0,
+      "records": 2,
+      "equalToSummaryCases": true
+    },
+    {
+      "role": "Original complete raw whole check at both deployment bases",
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/layout.json",
+      "archive": "performance-full-run-aa7bca2-layout.json",
+      "sha256": "22f70587e4cf7a95c803dbcc91a27996240c8eb08fd613bc361b37ae325c164e",
+      "bytes": 780443,
+      "byteIdentical": true,
+      "check": "layout",
+      "status": "passed",
+      "failures": 0,
+      "records": 2,
+      "equalToSummaryCases": true
+    },
+    {
+      "role": "Original complete raw whole check at both deployment bases",
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/webkit.json",
+      "archive": "performance-full-run-aa7bca2-webkit.json",
+      "sha256": "a7e200277b147e4a2378599e55e555fe88729e38ff1edc46f72cc32b01cf5b81",
+      "bytes": 4932,
+      "byteIdentical": true,
+      "check": "webkit",
+      "status": "skipped",
+      "failures": 0,
+      "records": 2,
+      "equalToSummaryCases": true
+    },
+    {
+      "role": "Original complete raw whole check at both deployment bases",
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/nojs.json",
+      "archive": "performance-full-run-aa7bca2-nojs.json",
+      "sha256": "f8d07ceb0f0d1cd4a0b3b4a654a3a475c42776024cbb44118bceb08283fdffbb",
+      "bytes": 425964,
+      "byteIdentical": true,
+      "check": "nojs",
+      "status": "passed",
+      "failures": 0,
+      "records": 2,
+      "equalToSummaryCases": true
+    },
+    {
+      "role": "Original complete raw whole check at both deployment bases",
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/bfcache.json",
+      "archive": "performance-full-run-aa7bca2-bfcache.json",
+      "sha256": "a7e6d2acd782082ef9dbaeb346a28c1eb0d4c337c998a695eb9a56e6987c7793",
+      "bytes": 282389,
+      "byteIdentical": true,
+      "check": "bfcache",
+      "status": "failed",
+      "failures": 1,
+      "records": 2,
+      "equalToSummaryCases": true
+    },
+    {
+      "role": "Original complete raw whole check at both deployment bases",
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/failures.json",
+      "archive": "performance-full-run-aa7bca2-failures.json",
+      "sha256": "2e271eec61c9e67ee67cc8c2aabfdde59ae404d43b5fab2faa65cb31d3ff6de5",
+      "bytes": 323395,
+      "byteIdentical": true,
+      "check": "failures",
+      "status": "failed",
+      "failures": 2,
+      "records": 2,
+      "equalToSummaryCases": true
+    },
+    {
+      "role": "Original complete raw whole check at both deployment bases",
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/crosstab.json",
+      "archive": "performance-full-run-aa7bca2-crosstab.json",
+      "sha256": "8f7e274742bcafe68ea6b7339cc40b5cfd2e131daf48087d7c172b7532cf6765",
+      "bytes": 300675,
+      "byteIdentical": true,
+      "check": "crosstab",
+      "status": "failed",
+      "failures": 3,
+      "records": 2,
+      "equalToSummaryCases": true
+    },
+    {
+      "role": "Original complete raw whole check at both deployment bases",
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/clock.json",
+      "archive": "performance-full-run-aa7bca2-clock.json",
+      "sha256": "a3560e3bb1b7710e8f9660db9419da97d9c9cf86fb168527736ae44ff3a6bd63",
+      "bytes": 153107,
+      "byteIdentical": true,
+      "check": "clock",
+      "status": "passed",
+      "failures": 0,
+      "records": 2,
+      "equalToSummaryCases": true
+    },
+    {
+      "role": "Original complete raw whole check at both deployment bases",
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/forward.json",
+      "archive": "performance-full-run-aa7bca2-forward.json",
+      "sha256": "e3d4e79afc29c87e5906061c1f46394c5d300e3c4b53ab722332167372072e6d",
+      "bytes": 257766,
+      "byteIdentical": true,
+      "check": "forward",
+      "status": "passed",
+      "failures": 0,
+      "records": 2,
+      "equalToSummaryCases": true
+    },
+    {
+      "role": "Exact original source/monitor evidence; original phase and nullable CLI field preserved",
+      "source": "/tmp/ns-perf-aa7-full-source-start.json",
+      "archive": "performance-full-run-aa7bca2-source-start.json",
+      "sha256": "7a583a1877f5785dc4778f9ccd33e1af3198ef41bb33ef7ab306e070942c9252",
+      "bytes": 1718,
+      "byteIdentical": true
+    },
+    {
+      "role": "Exact original source/monitor evidence; original phase and nullable CLI field preserved",
+      "source": "/tmp/ns-perf-aa7-full-source-close.json",
+      "archive": "performance-full-run-aa7bca2-source-close.json",
+      "sha256": "4d1e5185244bf39bec665a5fa6537697b41d89ad6ae7521da7f226fab08cef8f",
+      "bytes": 2983,
+      "byteIdentical": true
+    },
+    {
+      "role": "Exact original source/monitor evidence; original phase and nullable CLI field preserved",
+      "source": "/tmp/ns-perf-aa7-full-monitor-proof.json",
+      "archive": "performance-full-run-aa7bca2-monitor-proof.json",
+      "sha256": "6d32b58e37caa53341aa340936c73542f31f4b4a50e600e4cecc60c3c411f4f9",
+      "bytes": 88631,
+      "byteIdentical": true
+    },
+    {
+      "role": "Exact original source/monitor evidence; original phase and nullable CLI field preserved",
+      "source": "/tmp/ns-perf-aa7-full-monitor-artifacts.json",
+      "archive": "performance-full-run-aa7bca2-monitor-artifacts.json",
+      "sha256": "b76cc8c013f7a396373758acdbbe05196c89c2c9bdb604a44d0d971c8af096c0",
+      "bytes": 7881,
+      "byteIdentical": true
+    },
+    {
+      "role": "Exact completed full-run CLI log",
+      "source": "/tmp/ns-perf-aa7-full-qa.log",
+      "archive": "performance-full-run-aa7bca2-runner.log",
+      "sha256": "d062b47b0e724883da5bfccafed2fd92589854a302987842869cd1e94e3038ef",
+      "bytes": 2340,
+      "byteIdentical": true
+    },
+    {
+      "role": "Canonical latest AA7 passed performance check only, separate from failed whole-run status",
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962/perf.json",
+      "archive": "performance-after.json",
+      "sha256": "8f02ee6001a545562ea711facd17f8483fd089c0bb5be2014d330bc8453f9ad3",
+      "bytes": 2164058,
+      "byteIdentical": true
+    }
+  ],
+  "originalAssertionsAndTelemetryUnchanged": true,
+  "all14ReportsCompleteAndMatchSummary": true,
+  "source": {
+    "runtimeCheckpoint": "cec2cef7c58752f5f08ffaa979206af25c3ec602",
+    "controlRevision": "aa7bca26bdfe6d640766858f4f3a27e2e9e668e7",
+    "productFingerprint": "1795468f427084977fac5a0707eef0b14e461c8d2041cb9c6d1e0315de48851f",
+    "protectedFingerprint": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+    "startPhase": "Postlaunch during first root phone group; not a prelaunch capture",
+    "endPhase": "After original runner disappeared and resources closed"
+  },
+  "failedWholeChecks": [
+    {
+      "check": "deadlines",
+      "failures": 1,
+      "failedBases": [
+        "/"
+      ]
+    },
+    {
+      "check": "bfcache",
+      "failures": 1,
+      "failedBases": [
+        "/tmu-course-guides/"
+      ]
+    },
+    {
+      "check": "failures",
+      "failures": 2,
+      "failedBases": [
+        "/tmu-course-guides/"
+      ]
+    },
+    {
+      "check": "crosstab",
+      "failures": 3,
+      "failedBases": [
+        "/",
+        "/tmu-course-guides/"
+      ]
+    }
+  ],
+  "notes": [
+    "The full original run remains failed. The canonical after file is the original passing perf check, not a rewritten whole-run result.",
+    "No focused follow-up, current visual matrix, root/UI/tool pass or native skip interpretation is admitted here.",
+    "The monitor artifact\u2019s original cliExitCode:null is preserved byte-for-byte; the independent root CLI observation is recorded separately above.",
+    "Every raw skipped entry, expected:false telemetry flag and failed assertion is preserved in exact copies."
+  ]
+}

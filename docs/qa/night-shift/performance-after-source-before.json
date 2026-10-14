@@ -1,0 +1,33 @@
+{
+  "recordedAt": "2026-10-14T03:08:04.664Z",
+  "runDirectory": "tools/qa/reports/2026-10-14T03-08-07-562Z-112962",
+  "repositoryCommit": "34aad19de8a9acf97c962dff1424483d2f656280",
+  "productFingerprint": "14aab876ca16efa6dc335eb663dd7817bde3948628ce48613c18deaa00234e32",
+  "protectedFingerprint": "1b773fabf9affdc543ba245a8822642aab9167f28bc1990b5f4f293d4deab653",
+  "sources": [
+    {
+      "path": "tools/qa/checks-resilience.mjs",
+      "sha256": "b2bafedee3cc0569d4354334d42fcaac55d3ddcbf7ceb0e1ecdf43bddcd1f8d6"
+    },
+    {
+      "path": "tools/qa/checks.mjs",
+      "sha256": "ae5f73702935e07258d71c36bc4c4cf20f73f13aba17607066376b7a36136563"
+    },
+    {
+      "path": "tools/qa/checks-perf.mjs",
+      "sha256": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657"
+    },
+    {
+      "path": "tools/qa/runtime.mjs",
+      "sha256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587"
+    },
+    {
+      "path": "tools/qa/instrument.mjs",
+      "sha256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892"
+    }
+  ],
+  "note": "Recorded before fresh complete perf-only follow-up. Product and unaffected QA sources remain frozen; no profile, cap, guard or budget change. Actual helper working bytes b2 differ from old helper in checkpoint HEAD.",
+  "startedAt": "2026-10-14T03:08:07.562Z",
+  "boundAt": "2026-10-14T03:13:14.399Z",
+  "beforeManifestSHA256": "11ea71579e4e153c73ece2c6661ae216217469525d446711177b39d172454fd7"
+}

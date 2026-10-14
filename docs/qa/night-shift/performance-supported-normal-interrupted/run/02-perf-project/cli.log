@@ -1,0 +1,10 @@
+perf /tmu-course-guides/: measuring desk phone
+perf /tmu-course-guides/: measuring cen100 phone
+perf /tmu-course-guides/: measuring mth140 phone
+perf /tmu-course-guides/: measuring mth141 phone
+perf /tmu-course-guides/: measuring desk desktop
+perf /tmu-course-guides/: measuring cen100 desktop
+perf /tmu-course-guides/: measuring mth140 desktop
+perf /tmu-course-guides/: measuring mth141 desktop
+perf /tmu-course-guides/: passed (0 failures)
+QA passed. Reports: /workspace/tmu-course-guides/tools/qa/reports/2026-10-14T09-50-09-104Z-168291

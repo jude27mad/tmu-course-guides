@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 1,
+  "runDirectory": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T00-43-55-585Z-86009",
+  "startedAt": "2026-10-14T00:43:55.585Z",
+  "lastRecordedStatus": "running",
+  "completedAt": null,
+  "lastRecordedFailures": 1,
+  "interruption": {
+    "signal": "SIGINT",
+    "processId": 86009,
+    "executionSession": 45964,
+    "observedExitCode": 130,
+    "allOwnedBrowsersClosed": true,
+    "reason": "Stopped a known storage-denial mounted-route readiness timeout after all root-base checks; the interrupted project-base sample is not accepted."
+  },
+  "cases": [
+    {
+      "name": "perf",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 304,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "routes",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 60,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "stability",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 45,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "frames",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 24,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "deadlines",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 128,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "modes",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 188,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "layout",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 288,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "webkit",
+      "records": [
+        {
+          "base": "/",
+          "status": "skipped",
+          "failures": 0,
+          "assertions": 0,
+          "skips": [
+            {
+              "feature": "Playwright WebKit routes, deadlines and layout",
+              "reason": "WebKit could not launch; install its browser and OS dependencies. browserType.launch: Executable doesn't exist at /home/agent/.cache/ms-playwright/webkit-2227/pw_run.sh\n\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551 Looks like Playwright Test or Playwright was just installed or updated. \u2551\n\u2551 Please run the following command to download new browsers:              \u2551\n\u2551                                                                         \u2551\n\u2551     npx playwright install                                              \u2551\n\u2551                                                                         \u2551\n\u2551 <3 Playwright Team                                                      \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nojs",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 41,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "bfcache",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 65,
+          "skips": [
+            {
+              "feature": "mth141: native persisted BFCache restoration",
+              "reason": "The browser performed a document Back without pageshow.persisted. Shell retention/resume cannot be claimed.",
+              "navigation": [
+                {
+                  "type": "back_forward",
+                  "notRestoredReasons": {
+                    "src": null,
+                    "id": null,
+                    "url": "http://127.0.0.1:36189/mth141/?motion=off",
+                    "name": null,
+                    "reasons": [
+                      {
+                        "reason": "masked"
+                      }
+                    ],
+                    "children": []
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "failures",
+      "records": [
+        {
+          "base": "/",
+          "status": "failed",
+          "failures": 1,
+          "assertions": 43,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "crosstab",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 126,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "clock",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 75,
+          "skips": []
+        }
+      ]
+    },
+    {
+      "name": "forward",
+      "records": [
+        {
+          "base": "/",
+          "status": "passed",
+          "failures": 0,
+          "assertions": 90,
+          "skips": []
+        }
+      ]
+    }
+  ],
+  "failureReport": {
+    "path": "performance-failures-storage-denial-timeout.json",
+    "sha256": "1dbc9bc214874182b3c094b52b549ee93a34cd235ad4c84674c8d81821e2f65f",
+    "byteIdenticalCopy": true
+  },
+  "summarySha256": "0997535bc9b61406f4b392d0f8e29a773a426b1f86eef13edeba3dc9b66daa29"
+}

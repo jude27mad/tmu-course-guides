@@ -1,0 +1,3342 @@
+{
+  "schemaVersion": 1,
+  "check": "frames",
+  "startedAt": "2026-10-14T04:29:12.369Z",
+  "completedAt": "2026-10-14T05:38:20.262Z",
+  "environment": {
+    "node": "v24.19.0",
+    "platform": "linux",
+    "architecture": "x64",
+    "deployments": [
+      {
+        "base": "/",
+        "origin": "http://127.0.0.1:40913",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "154.0.8037.57",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      },
+      {
+        "base": "/tmu-course-guides/",
+        "origin": "http://127.0.0.1:42255",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "154.0.8037.57",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      }
+    ],
+    "requestedMode": "SwiftShader",
+    "playwrightPath": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "playwrightSource": "PLAYWRIGHT_PATH",
+    "chromiumPath": "/usr/bin/chromium",
+    "chromiumSource": "QA_CHROMIUM_PATH",
+    "launchArgs": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "status": "passed",
+  "failures": 0,
+  "cases": [
+    {
+      "base": "/",
+      "origin": "http://127.0.0.1:40913",
+      "status": "passed",
+      "assertions": [
+        {
+          "name": "desk: frame sample collected",
+          "pass": true,
+          "actual": {
+            "frames": 176,
+            "over16_7ms": {
+              "count": 53,
+              "share": 0.30113636363636365,
+              "percent": 30.113636363636363
+            },
+            "over33ms": {
+              "count": 21,
+              "share": 0.11931818181818182,
+              "percent": 11.931818181818182
+            },
+            "p95ms": 83.29999999999927,
+            "maxMs": 550,
+            "longTasksOver50ms": [
+              {
+                "start": 5045.5,
+                "duration": 69,
+                "name": "self"
+              }
+            ],
+            "elapsedMs": 5166.5,
+            "longTaskSupported": true
+          },
+          "expected": "5 seconds and at least two frame intervals"
+        },
+        {
+          "name": "desk: long task observation available",
+          "pass": true,
+          "actual": true,
+          "expected": true
+        },
+        {
+          "name": "desk 5-second wheel scroll: consoleErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "desk 5-second wheel scroll: pageErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "desk 5-second wheel scroll: failedRequests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "desk 5-second wheel scroll: httpErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "cen100: frame sample collected",
+          "pass": true,
+          "actual": {
+            "frames": 8,
+            "over16_7ms": {
+              "count": 8,
+              "share": 1,
+              "percent": 100
+            },
+            "over33ms": {
+              "count": 8,
+              "share": 1,
+              "percent": 100
+            },
+            "p95ms": 1650,
+            "maxMs": 1650,
+            "longTasksOver50ms": [
+              {
+                "start": 10776.29999999702,
+                "duration": 1488,
+                "name": "self"
+              },
+              {
+                "start": 12329.59999999404,
+                "duration": 215,
+                "name": "self"
+              },
+              {
+                "start": 12545.29999999702,
+                "duration": 51,
+                "name": "self"
+              },
+              {
+                "start": 13162.79999999702,
+                "duration": 194,
+                "name": "self"
+              },
+              {
+                "start": 13950.79999999702,
+                "duration": 76,
+                "name": "self"
+              }
+            ],
+            "elapsedMs": 5533.1,
+            "longTaskSupported": true
+          },
+          "expected": "5 seconds and at least two frame intervals"
+        },
+        {
+          "name": "cen100: long task observation available",
+          "pass": true,
+          "actual": true,
+          "expected": true
+        },
+        {
+          "name": "cen100 5-second wheel scroll: consoleErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "cen100 5-second wheel scroll: pageErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "cen100 5-second wheel scroll: failedRequests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "cen100 5-second wheel scroll: httpErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "mth140: frame sample collected",
+          "pass": true,
+          "actual": {
+            "frames": 4,
+            "over16_7ms": {
+              "count": 4,
+              "share": 1,
+              "percent": 100
+            },
+            "over33ms": {
+              "count": 3,
+              "share": 0.75,
+              "percent": 75
+            },
+            "p95ms": 5666.4,
+            "maxMs": 5666.4,
+            "longTasksOver50ms": [
+              {
+                "start": 5601.89999999851,
+                "duration": 2763,
+                "name": "self"
+              },
+              {
+                "start": 8404.10000000149,
+                "duration": 69,
+                "name": "self"
+              },
+              {
+                "start": 8545.20000000298,
+                "duration": 6656,
+                "name": "self"
+              }
+            ],
+            "elapsedMs": 8566.4,
+            "longTaskSupported": true
+          },
+          "expected": "5 seconds and at least two frame intervals"
+        },
+        {
+          "name": "mth140: long task observation available",
+          "pass": true,
+          "actual": true,
+          "expected": true
+        },
+        {
+          "name": "mth140 5-second wheel scroll: consoleErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "mth140 5-second wheel scroll: pageErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "mth140 5-second wheel scroll: failedRequests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "mth140 5-second wheel scroll: httpErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "mth141: frame sample collected",
+          "pass": true,
+          "actual": {
+            "frames": 31,
+            "over16_7ms": {
+              "count": 31,
+              "share": 1,
+              "percent": 100
+            },
+            "over33ms": {
+              "count": 31,
+              "share": 1,
+              "percent": 100
+            },
+            "p95ms": 283.39999999999964,
+            "maxMs": 349.89999999999964,
+            "longTasksOver50ms": [
+              {
+                "start": 10005.10000000149,
+                "duration": 210,
+                "name": "self"
+              },
+              {
+                "start": 10264.10000000149,
+                "duration": 66,
+                "name": "self"
+              },
+              {
+                "start": 11131.89999999851,
+                "duration": 243,
+                "name": "self"
+              },
+              {
+                "start": 11376.70000000298,
+                "duration": 155,
+                "name": "self"
+              },
+              {
+                "start": 12254.30000000447,
+                "duration": 133,
+                "name": "self"
+              },
+              {
+                "start": 12388.30000000447,
+                "duration": 185,
+                "name": "self"
+              },
+              {
+                "start": 13270.30000000447,
+                "duration": 161,
+                "name": "self"
+              },
+              {
+                "start": 13431.70000000298,
+                "duration": 138,
+                "name": "self"
+              },
+              {
+                "start": 14053.80000000447,
+                "duration": 113,
+                "name": "self"
+              },
+              {
+                "start": 14167.39999999851,
+                "duration": 93,
+                "name": "self"
+              },
+              {
+                "start": 14892.20000000298,
+                "duration": 98,
+                "name": "self"
+              },
+              {
+                "start": 14990.60000000149,
+                "duration": 135,
+                "name": "self"
+              }
+            ],
+            "elapsedMs": 5116.5,
+            "longTaskSupported": true
+          },
+          "expected": "5 seconds and at least two frame intervals"
+        },
+        {
+          "name": "mth141: long task observation available",
+          "pass": true,
+          "actual": true,
+          "expected": true
+        },
+        {
+          "name": "mth141 5-second wheel scroll: consoleErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "mth141 5-second wheel scroll: pageErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "mth141 5-second wheel scroll: failedRequests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "mth141 5-second wheel scroll: httpErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "observations": {
+        "cases": [
+          {
+            "name": "desk 5-second wheel scroll",
+            "physicalClickTimeoutMs": 30000,
+            "telemetry": {
+              "consoleErrors": [],
+              "pageErrors": [],
+              "failedRequests": [],
+              "httpErrors": []
+            },
+            "navigationDiagnostics": {
+              "documentRequests": [
+                {
+                  "time": 1791952913065,
+                  "url": "http://127.0.0.1:40913/",
+                  "method": "GET"
+                }
+              ],
+              "frameNavigations": [
+                {
+                  "time": 1791952913111,
+                  "url": "http://127.0.0.1:40913/"
+                },
+                {
+                  "time": 1791952914040,
+                  "url": "http://127.0.0.1:40913/"
+                },
+                {
+                  "time": 1791952916436,
+                  "url": "http://127.0.0.1:40913/"
+                },
+                {
+                  "time": 1791952917410,
+                  "url": "http://127.0.0.1:40913/"
+                },
+                {
+                  "time": 1791952919872,
+                  "url": "http://127.0.0.1:40913/"
+                },
+                {
+                  "time": 1791952920888,
+                  "url": "http://127.0.0.1:40913/"
+                },
+                {
+                  "time": 1791952921875,
+                  "url": "http://127.0.0.1:40913/"
+                },
+                {
+                  "time": 1791952923632,
+                  "url": "http://127.0.0.1:40913/"
+                },
+                {
+                  "time": 1791952923646,
+                  "url": "http://127.0.0.1:40913/"
+                }
+              ],
+              "pageEvents": [
+                {
+                  "time": 1791952913111,
+                  "type": "Page.frameNavigated",
+                  "frameId": "0E3002BD9140BFBB556EBCE1BCFFACBB",
+                  "loaderId": "7CAA1C06DB442DD81C2AA8B9DBB08223",
+                  "url": "http://127.0.0.1:40913/"
+                },
+                {
+                  "time": 1791952914040,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "0E3002BD9140BFBB556EBCE1BCFFACBB",
+                  "url": "http://127.0.0.1:40913/"
+                },
+                {
+                  "time": 1791952916436,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "0E3002BD9140BFBB556EBCE1BCFFACBB",
+                  "url": "http://127.0.0.1:40913/"
+                },
+                {
+                  "time": 1791952917410,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "0E3002BD9140BFBB556EBCE1BCFFACBB",
+                  "url": "http://127.0.0.1:40913/"
+                },
+                {
+                  "time": 1791952919873,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "0E3002BD9140BFBB556EBCE1BCFFACBB",
+                  "url": "http://127.0.0.1:40913/"
+                },
+                {
+                  "time": 1791952920889,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "0E3002BD9140BFBB556EBCE1BCFFACBB",
+                  "url": "http://127.0.0.1:40913/"
+                },
+                {
+                  "time": 1791952921875,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "0E3002BD9140BFBB556EBCE1BCFFACBB",
+                  "url": "http://127.0.0.1:40913/"
+                }
+              ],
+              "finalState": {
+                "url": "http://127.0.0.1:40913/",
+                "shell": "30596398-3f8e-423b-a8f3-bf9127aadd3e",
+                "route": "desk",
+                "completedRoute": "desk",
+                "body": {
+                  "page": "desk"
+                },
+                "content": 1344,
+                "deadline": "MTH140Calculus ILab Quiz 2Oct 12–16Quiz weekOct 12–Oct 16 · during your assigned labView in MTH140→Choose section for quiz date",
+                "focus": {
+                  "tag": "BODY",
+                  "id": "",
+                  "inside": false
+                },
+                "wrapper": {
+                  "opacity": "1",
+                  "filter": "none",
+                  "transform": "none"
+                },
+                "events": {
+                  "routes": [
+                    {
+                      "time": 1086,
+                      "route": "desk",
+                      "from": null,
+                      "url": "http://127.0.0.1:40913/",
+                      "shell": "30596398-3f8e-423b-a8f3-bf9127aadd3e"
+                    }
+                  ],
+                  "clicks": []
+                }
+              }
+            },
+            "environment": {
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+              "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+              "hardwareConcurrency": 5,
+              "deviceMemory": 16,
+              "viewport": [
+                1440,
+                900
+              ],
+              "dpr": 1
+            },
+            "measurement": {
+              "frames": 176,
+              "over16_7ms": {
+                "count": 53,
+                "share": 0.30113636363636365,
+                "percent": 30.113636363636363
+              },
+              "over33ms": {
+                "count": 21,
+                "share": 0.11931818181818182,
+                "percent": 11.931818181818182
+              },
+              "p95ms": 83.29999999999927,
+              "maxMs": 550,
+              "longTasksOver50ms": [
+                {
+                  "start": 5045.5,
+                  "duration": 69,
+                  "name": "self"
+                }
+              ],
+              "elapsedMs": 5166.5,
+              "longTaskSupported": true
+            }
+          },
+          {
+            "name": "cen100 5-second wheel scroll",
+            "physicalClickTimeoutMs": 30000,
+            "telemetry": {
+              "consoleErrors": [],
+              "pageErrors": [],
+              "failedRequests": [],
+              "httpErrors": []
+            },
+            "navigationDiagnostics": {
+              "documentRequests": [
+                {
+                  "time": 1791952924062,
+                  "url": "http://127.0.0.1:40913/cen100/",
+                  "method": "GET"
+                }
+              ],
+              "frameNavigations": [
+                {
+                  "time": 1791952924088,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952924839,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952937579,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952938593,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952939607,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952940647,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952941685,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952942648,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952943803,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952944832,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952946008,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952947425,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952948449,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952949451,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952950460,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952951798,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952952899,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952953987,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952955135,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952956287,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952957357,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952958446,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952959539,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952960641,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952961728,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952962843,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952963841,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952964845,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952965880,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952967012,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952968107,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952969261,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952970256,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952971302,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952972294,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952974514,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952977371,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952979022,
+                  "url": "http://127.0.0.1:40913/cen100/"
+                }
+              ],
+              "pageEvents": [
+                {
+                  "time": 1791952924088,
+                  "type": "Page.frameNavigated",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "loaderId": "D4A23025FA5E87915208C485DA3EBD2D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952924849,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952937579,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952938594,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952939607,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952940647,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952941685,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952942649,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952943812,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952944833,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952946009,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952947425,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952948449,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952949452,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952950467,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952951798,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952952901,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952953987,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952955144,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952956289,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952957357,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952958446,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952959539,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952960641,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952961728,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952962843,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952963841,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952964845,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952965880,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952967012,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952968108,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952969262,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952970256,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952971302,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952972297,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952974514,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                },
+                {
+                  "time": 1791952977373,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B0865D59C406CB5DDCE9A510FB90638D",
+                  "url": "http://127.0.0.1:40913/cen100/"
+                }
+              ],
+              "finalState": {
+                "url": "http://127.0.0.1:40913/cen100/",
+                "shell": "0dab20cc-8cf1-4fdd-ade7-5a22549df6db",
+                "route": "cen100",
+                "completedRoute": "cen100",
+                "body": {
+                  "course": "cen100"
+                },
+                "content": 46809,
+                "deadline": "00days14hrs17min01secDueWed Oct 14 · 3:00 PM Toronto14 hours and 17 minutes remaining until Academic Integrity Quiz. Wed Oct 14 · 3:00 PM Toronto.",
+                "focus": {
+                  "tag": "BODY",
+                  "id": "",
+                  "inside": false
+                },
+                "wrapper": {
+                  "opacity": "1",
+                  "filter": "none",
+                  "transform": "none"
+                },
+                "events": {
+                  "routes": [
+                    {
+                      "time": 2455.0999999940395,
+                      "route": "cen100",
+                      "from": null,
+                      "url": "http://127.0.0.1:40913/cen100/",
+                      "shell": "0dab20cc-8cf1-4fdd-ade7-5a22549df6db"
+                    }
+                  ],
+                  "clicks": []
+                }
+              }
+            },
+            "environment": {
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+              "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+              "hardwareConcurrency": 5,
+              "deviceMemory": 16,
+              "viewport": [
+                1440,
+                900
+              ],
+              "dpr": 1
+            },
+            "measurement": {
+              "frames": 8,
+              "over16_7ms": {
+                "count": 8,
+                "share": 1,
+                "percent": 100
+              },
+              "over33ms": {
+                "count": 8,
+                "share": 1,
+                "percent": 100
+              },
+              "p95ms": 1650,
+              "maxMs": 1650,
+              "longTasksOver50ms": [
+                {
+                  "start": 10776.29999999702,
+                  "duration": 1488,
+                  "name": "self"
+                },
+                {
+                  "start": 12329.59999999404,
+                  "duration": 215,
+                  "name": "self"
+                },
+                {
+                  "start": 12545.29999999702,
+                  "duration": 51,
+                  "name": "self"
+                },
+                {
+                  "start": 13162.79999999702,
+                  "duration": 194,
+                  "name": "self"
+                },
+                {
+                  "start": 13950.79999999702,
+                  "duration": 76,
+                  "name": "self"
+                }
+              ],
+              "elapsedMs": 5533.1,
+              "longTaskSupported": true
+            }
+          },
+          {
+            "name": "mth140 5-second wheel scroll",
+            "physicalClickTimeoutMs": 30000,
+            "telemetry": {
+              "consoleErrors": [],
+              "pageErrors": [],
+              "failedRequests": [],
+              "httpErrors": []
+            },
+            "navigationDiagnostics": {
+              "documentRequests": [
+                {
+                  "time": 1791952981359,
+                  "url": "http://127.0.0.1:40913/mth140/",
+                  "method": "GET"
+                }
+              ],
+              "frameNavigations": [
+                {
+                  "time": 1791952981436,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791952982393,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791952999216,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953002452,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953003669,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953006700,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953010587,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953013047,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953015145,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953016173,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953017508,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953018508,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953019480,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953020998,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953021985,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953022989,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953024001,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953024981,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953026021,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953027030,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953028018,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953030898,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953093964,
+                  "url": "http://127.0.0.1:40913/mth140/"
+                }
+              ],
+              "pageEvents": [
+                {
+                  "time": 1791952981436,
+                  "type": "Page.frameNavigated",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "loaderId": "CB456E93F6C8A2DDCC19BAD2297C3A08",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791952982394,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791952999217,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953002454,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953003669,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953006700,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953010587,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953013047,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953015145,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953016173,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953017508,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953018508,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953019481,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953020998,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953021998,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953022989,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953024005,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953024981,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953026026,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953027030,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953028018,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                },
+                {
+                  "time": 1791953030898,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "D83D2E3C75F5198C39616CDA2FF1C0A9",
+                  "url": "http://127.0.0.1:40913/mth140/"
+                }
+              ],
+              "finalState": {
+                "url": "http://127.0.0.1:40913/mth140/",
+                "shell": "35d647b5-0318-47d9-8a17-508557477c0f",
+                "route": "mth140",
+                "completedRoute": "mth140",
+                "body": {
+                  "course": "mth140"
+                },
+                "content": 30625,
+                "deadline": "Oct 12–16Quiz weekOct 12–Oct 16 · during your assigned labChoose section for quiz dateLab Quiz 2: Quiz week. Oct 12–Oct 16 · during your assigned lab.",
+                "focus": {
+                  "tag": "BODY",
+                  "id": "",
+                  "inside": false
+                },
+                "wrapper": {
+                  "opacity": "1",
+                  "filter": "none",
+                  "transform": "none"
+                },
+                "events": {
+                  "routes": [
+                    {
+                      "time": 2517.2000000029802,
+                      "route": "mth140",
+                      "from": null,
+                      "url": "http://127.0.0.1:40913/mth140/",
+                      "shell": "35d647b5-0318-47d9-8a17-508557477c0f"
+                    }
+                  ],
+                  "clicks": [
+                    {
+                      "time": 1785.6000000014901,
+                      "tag": "BUTTON",
+                      "id": "tab-assessments",
+                      "href": null,
+                      "url": "http://127.0.0.1:40913/mth140/",
+                      "defaultPrevented": false,
+                      "urlAfterDispatch": "http://127.0.0.1:40913/mth140/"
+                    }
+                  ]
+                }
+              }
+            },
+            "environment": {
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+              "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+              "hardwareConcurrency": 5,
+              "deviceMemory": 16,
+              "viewport": [
+                1440,
+                900
+              ],
+              "dpr": 1
+            },
+            "measurement": {
+              "frames": 4,
+              "over16_7ms": {
+                "count": 4,
+                "share": 1,
+                "percent": 100
+              },
+              "over33ms": {
+                "count": 3,
+                "share": 0.75,
+                "percent": 75
+              },
+              "p95ms": 5666.4,
+              "maxMs": 5666.4,
+              "longTasksOver50ms": [
+                {
+                  "start": 5601.89999999851,
+                  "duration": 2763,
+                  "name": "self"
+                },
+                {
+                  "start": 8404.10000000149,
+                  "duration": 69,
+                  "name": "self"
+                },
+                {
+                  "start": 8545.20000000298,
+                  "duration": 6656,
+                  "name": "self"
+                }
+              ],
+              "elapsedMs": 8566.4,
+              "longTaskSupported": true
+            }
+          },
+          {
+            "name": "mth141 5-second wheel scroll",
+            "physicalClickTimeoutMs": 30000,
+            "telemetry": {
+              "consoleErrors": [],
+              "pageErrors": [],
+              "failedRequests": [],
+              "httpErrors": []
+            },
+            "navigationDiagnostics": {
+              "documentRequests": [
+                {
+                  "time": 1791953096100,
+                  "url": "http://127.0.0.1:40913/mth141/",
+                  "method": "GET"
+                }
+              ],
+              "frameNavigations": [
+                {
+                  "time": 1791953096407,
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953097038,
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953107657,
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953108715,
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953109716,
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953110700,
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953111734,
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953112757,
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953113801,
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953114832,
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953115819,
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953117118,
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953118124,
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953119113,
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953120126,
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953121137,
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953122141,
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953131024,
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953131299,
+                  "url": "http://127.0.0.1:40913/mth141/"
+                }
+              ],
+              "pageEvents": [
+                {
+                  "time": 1791953096407,
+                  "type": "Page.frameNavigated",
+                  "frameId": "B39F103BEBE263909792B71D4F5B2507",
+                  "loaderId": "CE14614605E5B5AE7BAC655EB96597FF",
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953097038,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B39F103BEBE263909792B71D4F5B2507",
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953107657,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B39F103BEBE263909792B71D4F5B2507",
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953108715,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B39F103BEBE263909792B71D4F5B2507",
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953109716,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B39F103BEBE263909792B71D4F5B2507",
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953110702,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B39F103BEBE263909792B71D4F5B2507",
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953111738,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B39F103BEBE263909792B71D4F5B2507",
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953112758,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B39F103BEBE263909792B71D4F5B2507",
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953113802,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B39F103BEBE263909792B71D4F5B2507",
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953114833,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B39F103BEBE263909792B71D4F5B2507",
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953115819,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B39F103BEBE263909792B71D4F5B2507",
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953117118,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B39F103BEBE263909792B71D4F5B2507",
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953118124,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B39F103BEBE263909792B71D4F5B2507",
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953119114,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B39F103BEBE263909792B71D4F5B2507",
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953120126,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B39F103BEBE263909792B71D4F5B2507",
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953121143,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B39F103BEBE263909792B71D4F5B2507",
+                  "url": "http://127.0.0.1:40913/mth141/"
+                },
+                {
+                  "time": 1791953122146,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "B39F103BEBE263909792B71D4F5B2507",
+                  "url": "http://127.0.0.1:40913/mth141/"
+                }
+              ],
+              "finalState": {
+                "url": "http://127.0.0.1:40913/mth141/",
+                "shell": "4d55cae2-8e6f-456f-8f0f-148758d4d0ce",
+                "route": "mth141",
+                "completedRoute": "mth141",
+                "body": {
+                  "course": "mth141"
+                },
+                "content": 34933,
+                "deadline": "02days17hrs44min29secTest startsFri Oct 16 · 6:30 PM Toronto2 days and 17 hours remaining until Midterm Test. Fri Oct 16 · 6:30 PM Toronto.",
+                "focus": {
+                  "tag": "BODY",
+                  "id": "",
+                  "inside": false
+                },
+                "wrapper": {
+                  "opacity": "1",
+                  "filter": "none",
+                  "transform": "none"
+                },
+                "events": {
+                  "routes": [
+                    {
+                      "time": 2182.10000000149,
+                      "route": "mth141",
+                      "from": null,
+                      "url": "http://127.0.0.1:40913/mth141/",
+                      "shell": "4d55cae2-8e6f-456f-8f0f-148758d4d0ce"
+                    }
+                  ],
+                  "clicks": [
+                    {
+                      "time": 1966.3999999985099,
+                      "tag": "BUTTON",
+                      "id": "tab-assessments",
+                      "href": null,
+                      "url": "http://127.0.0.1:40913/mth141/",
+                      "defaultPrevented": false,
+                      "urlAfterDispatch": "http://127.0.0.1:40913/mth141/"
+                    }
+                  ]
+                }
+              }
+            },
+            "environment": {
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+              "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+              "hardwareConcurrency": 5,
+              "deviceMemory": 16,
+              "viewport": [
+                1440,
+                900
+              ],
+              "dpr": 1
+            },
+            "measurement": {
+              "frames": 31,
+              "over16_7ms": {
+                "count": 31,
+                "share": 1,
+                "percent": 100
+              },
+              "over33ms": {
+                "count": 31,
+                "share": 1,
+                "percent": 100
+              },
+              "p95ms": 283.39999999999964,
+              "maxMs": 349.89999999999964,
+              "longTasksOver50ms": [
+                {
+                  "start": 10005.10000000149,
+                  "duration": 210,
+                  "name": "self"
+                },
+                {
+                  "start": 10264.10000000149,
+                  "duration": 66,
+                  "name": "self"
+                },
+                {
+                  "start": 11131.89999999851,
+                  "duration": 243,
+                  "name": "self"
+                },
+                {
+                  "start": 11376.70000000298,
+                  "duration": 155,
+                  "name": "self"
+                },
+                {
+                  "start": 12254.30000000447,
+                  "duration": 133,
+                  "name": "self"
+                },
+                {
+                  "start": 12388.30000000447,
+                  "duration": 185,
+                  "name": "self"
+                },
+                {
+                  "start": 13270.30000000447,
+                  "duration": 161,
+                  "name": "self"
+                },
+                {
+                  "start": 13431.70000000298,
+                  "duration": 138,
+                  "name": "self"
+                },
+                {
+                  "start": 14053.80000000447,
+                  "duration": 113,
+                  "name": "self"
+                },
+                {
+                  "start": 14167.39999999851,
+                  "duration": 93,
+                  "name": "self"
+                },
+                {
+                  "start": 14892.20000000298,
+                  "duration": 98,
+                  "name": "self"
+                },
+                {
+                  "start": 14990.60000000149,
+                  "duration": 135,
+                  "name": "self"
+                }
+              ],
+              "elapsedMs": 5116.5,
+              "longTaskSupported": true
+            }
+          }
+        ],
+        "interpretation": "SwiftShader diagnostics: frame pacing here is not evidence of smoothness on a real device.",
+        "runnerErrors": []
+      },
+      "skipped": [],
+      "durationMs": 218715,
+      "failures": 0
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "origin": "http://127.0.0.1:42255",
+      "status": "passed",
+      "assertions": [
+        {
+          "name": "desk: frame sample collected",
+          "pass": true,
+          "actual": {
+            "frames": 241,
+            "over16_7ms": {
+              "count": 72,
+              "share": 0.2987551867219917,
+              "percent": 29.87551867219917
+            },
+            "over33ms": {
+              "count": 23,
+              "share": 0.0954356846473029,
+              "percent": 9.54356846473029
+            },
+            "p95ms": 33.40000000000009,
+            "maxMs": 166.69999999999982,
+            "longTasksOver50ms": [],
+            "elapsedMs": 5016.434,
+            "longTaskSupported": true
+          },
+          "expected": "5 seconds and at least two frame intervals"
+        },
+        {
+          "name": "desk: long task observation available",
+          "pass": true,
+          "actual": true,
+          "expected": true
+        },
+        {
+          "name": "desk 5-second wheel scroll: consoleErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "desk 5-second wheel scroll: pageErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "desk 5-second wheel scroll: failedRequests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "desk 5-second wheel scroll: httpErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "cen100: frame sample collected",
+          "pass": true,
+          "actual": {
+            "frames": 14,
+            "over16_7ms": {
+              "count": 14,
+              "share": 1,
+              "percent": 100
+            },
+            "over33ms": {
+              "count": 14,
+              "share": 1,
+              "percent": 100
+            },
+            "p95ms": 783.2999999999993,
+            "maxMs": 783.2999999999993,
+            "longTasksOver50ms": [
+              {
+                "start": 8443.60000000149,
+                "duration": 367,
+                "name": "self"
+              },
+              {
+                "start": 9627.10000000149,
+                "duration": 61,
+                "name": "self"
+              },
+              {
+                "start": 10634.89999999851,
+                "duration": 52,
+                "name": "self"
+              },
+              {
+                "start": 10714.89999999851,
+                "duration": 392,
+                "name": "self"
+              },
+              {
+                "start": 11108,
+                "duration": 374,
+                "name": "self"
+              },
+              {
+                "start": 12596.80000000447,
+                "duration": 83,
+                "name": "self"
+              },
+              {
+                "start": 13063.60000000149,
+                "duration": 542,
+                "name": "self"
+              }
+            ],
+            "elapsedMs": 5149.700000000001,
+            "longTaskSupported": true
+          },
+          "expected": "5 seconds and at least two frame intervals"
+        },
+        {
+          "name": "cen100: long task observation available",
+          "pass": true,
+          "actual": true,
+          "expected": true
+        },
+        {
+          "name": "cen100 5-second wheel scroll: consoleErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "cen100 5-second wheel scroll: pageErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "cen100 5-second wheel scroll: failedRequests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "cen100 5-second wheel scroll: httpErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "mth140: frame sample collected",
+          "pass": true,
+          "actual": {
+            "frames": 5,
+            "over16_7ms": {
+              "count": 4,
+              "share": 0.8,
+              "percent": 80
+            },
+            "over33ms": {
+              "count": 3,
+              "share": 0.6,
+              "percent": 60
+            },
+            "p95ms": 7666.299999999999,
+            "maxMs": 7666.299999999999,
+            "longTasksOver50ms": [
+              {
+                "start": 4243.60000000149,
+                "duration": 1719,
+                "name": "self"
+              },
+              {
+                "start": 6011.89999999851,
+                "duration": 5423,
+                "name": "self"
+              },
+              {
+                "start": 11436,
+                "duration": 2249,
+                "name": "self"
+              }
+            ],
+            "elapsedMs": 9466.2,
+            "longTaskSupported": true
+          },
+          "expected": "5 seconds and at least two frame intervals"
+        },
+        {
+          "name": "mth140: long task observation available",
+          "pass": true,
+          "actual": true,
+          "expected": true
+        },
+        {
+          "name": "mth140 5-second wheel scroll: consoleErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "mth140 5-second wheel scroll: pageErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "mth140 5-second wheel scroll: failedRequests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "mth140 5-second wheel scroll: httpErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "mth141: frame sample collected",
+          "pass": true,
+          "actual": {
+            "frames": 43,
+            "over16_7ms": {
+              "count": 43,
+              "share": 1,
+              "percent": 100
+            },
+            "over33ms": {
+              "count": 42,
+              "share": 0.9767441860465116,
+              "percent": 97.67441860465117
+            },
+            "p95ms": 233.3000000000011,
+            "maxMs": 333.2999999999993,
+            "longTasksOver50ms": [
+              {
+                "start": 7800.69999999553,
+                "duration": 59,
+                "name": "self"
+              },
+              {
+                "start": 7886.0999999940395,
+                "duration": 187,
+                "name": "self"
+              },
+              {
+                "start": 8786.39999999851,
+                "duration": 79,
+                "name": "self"
+              },
+              {
+                "start": 8865.59999999404,
+                "duration": 218,
+                "name": "self"
+              },
+              {
+                "start": 9525,
+                "duration": 173,
+                "name": "self"
+              },
+              {
+                "start": 9699.09999999404,
+                "duration": 82,
+                "name": "self"
+              },
+              {
+                "start": 10110.29999999702,
+                "duration": 136,
+                "name": "self"
+              },
+              {
+                "start": 10247.59999999404,
+                "duration": 230,
+                "name": "self"
+              },
+              {
+                "start": 11001.39999999851,
+                "duration": 122,
+                "name": "self"
+              },
+              {
+                "start": 11123.89999999851,
+                "duration": 104,
+                "name": "self"
+              },
+              {
+                "start": 11413.19999999553,
+                "duration": 70,
+                "name": "self"
+              },
+              {
+                "start": 11483.29999999702,
+                "duration": 103,
+                "name": "self"
+              },
+              {
+                "start": 12014.29999999702,
+                "duration": 74,
+                "name": "self"
+              },
+              {
+                "start": 12089,
+                "duration": 95,
+                "name": "self"
+              }
+            ],
+            "elapsedMs": 5033.1,
+            "longTaskSupported": true
+          },
+          "expected": "5 seconds and at least two frame intervals"
+        },
+        {
+          "name": "mth141: long task observation available",
+          "pass": true,
+          "actual": true,
+          "expected": true
+        },
+        {
+          "name": "mth141 5-second wheel scroll: consoleErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "mth141 5-second wheel scroll: pageErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "mth141 5-second wheel scroll: failedRequests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "mth141 5-second wheel scroll: httpErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "observations": {
+        "cases": [
+          {
+            "name": "desk 5-second wheel scroll",
+            "physicalClickTimeoutMs": 30000,
+            "telemetry": {
+              "consoleErrors": [],
+              "pageErrors": [],
+              "failedRequests": [],
+              "httpErrors": []
+            },
+            "navigationDiagnostics": {
+              "documentRequests": [
+                {
+                  "time": 1791954932470,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/",
+                  "method": "GET"
+                }
+              ],
+              "frameNavigations": [
+                {
+                  "time": 1791954932490,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/"
+                },
+                {
+                  "time": 1791954932855,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/"
+                },
+                {
+                  "time": 1791954934923,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/"
+                },
+                {
+                  "time": 1791954935916,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/"
+                },
+                {
+                  "time": 1791954938236,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/"
+                },
+                {
+                  "time": 1791954939240,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/"
+                },
+                {
+                  "time": 1791954941148,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/"
+                },
+                {
+                  "time": 1791954941154,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/"
+                }
+              ],
+              "pageEvents": [
+                {
+                  "time": 1791954932491,
+                  "type": "Page.frameNavigated",
+                  "frameId": "19A8C2D12B9DA9EFEFC853DC88A2ABCB",
+                  "loaderId": "A2D049553765C53CF9E0FFA87DCAAAC9",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/"
+                },
+                {
+                  "time": 1791954932856,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "19A8C2D12B9DA9EFEFC853DC88A2ABCB",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/"
+                },
+                {
+                  "time": 1791954934923,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "19A8C2D12B9DA9EFEFC853DC88A2ABCB",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/"
+                },
+                {
+                  "time": 1791954935916,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "19A8C2D12B9DA9EFEFC853DC88A2ABCB",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/"
+                },
+                {
+                  "time": 1791954938236,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "19A8C2D12B9DA9EFEFC853DC88A2ABCB",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/"
+                },
+                {
+                  "time": 1791954939241,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "19A8C2D12B9DA9EFEFC853DC88A2ABCB",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/"
+                }
+              ],
+              "finalState": {
+                "url": "http://127.0.0.1:42255/tmu-course-guides/",
+                "shell": "c83bb2e9-6723-4680-8839-769157bb90c6",
+                "route": "desk",
+                "completedRoute": "desk",
+                "body": {
+                  "page": "desk"
+                },
+                "content": 1344,
+                "deadline": "MTH140Calculus ILab Quiz 2Oct 12–16Quiz weekOct 12–Oct 16 · during your assigned labView in MTH140→Choose section for quiz date",
+                "focus": {
+                  "tag": "BODY",
+                  "id": "",
+                  "inside": false
+                },
+                "wrapper": {
+                  "opacity": "1",
+                  "filter": "none",
+                  "transform": "none"
+                },
+                "events": {
+                  "routes": [
+                    {
+                      "time": 437.69999999552965,
+                      "route": "desk",
+                      "from": null,
+                      "url": "http://127.0.0.1:42255/tmu-course-guides/",
+                      "shell": "c83bb2e9-6723-4680-8839-769157bb90c6"
+                    }
+                  ],
+                  "clicks": []
+                }
+              }
+            },
+            "environment": {
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+              "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+              "hardwareConcurrency": 5,
+              "deviceMemory": 16,
+              "viewport": [
+                1440,
+                900
+              ],
+              "dpr": 1
+            },
+            "measurement": {
+              "frames": 241,
+              "over16_7ms": {
+                "count": 72,
+                "share": 0.2987551867219917,
+                "percent": 29.87551867219917
+              },
+              "over33ms": {
+                "count": 23,
+                "share": 0.0954356846473029,
+                "percent": 9.54356846473029
+              },
+              "p95ms": 33.40000000000009,
+              "maxMs": 166.69999999999982,
+              "longTasksOver50ms": [],
+              "elapsedMs": 5016.434,
+              "longTaskSupported": true
+            }
+          },
+          {
+            "name": "cen100 5-second wheel scroll",
+            "physicalClickTimeoutMs": 30000,
+            "telemetry": {
+              "consoleErrors": [],
+              "pageErrors": [],
+              "failedRequests": [],
+              "httpErrors": []
+            },
+            "navigationDiagnostics": {
+              "documentRequests": [
+                {
+                  "time": 1791954941462,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/",
+                  "method": "GET"
+                }
+              ],
+              "frameNavigations": [
+                {
+                  "time": 1791954941485,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954942166,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954951407,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954952972,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954953970,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954955358,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954956317,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954957714,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954960537,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954961471,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954962484,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954963490,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954964507,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954965485,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954966577,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954967574,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954968589,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954969586,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954970598,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954971596,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954972752,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954973729,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954974735,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954975765,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954976888,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954977919,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954978909,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954979958,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954980926,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954981932,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954982931,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954984322,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                }
+              ],
+              "pageEvents": [
+                {
+                  "time": 1791954941486,
+                  "type": "Page.frameNavigated",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "loaderId": "7AF314058B1CB04FBCDF1DA93500CCE1",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954942211,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954951407,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954952972,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954953971,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954955358,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954956317,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954957714,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954960537,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954961471,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954962484,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954963490,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954964510,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954965485,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954966577,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954967574,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954968589,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954969586,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954970598,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954971600,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954972752,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954973729,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954974735,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954975765,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954976890,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954977919,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954978909,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954979959,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954980926,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954981938,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791954982931,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "7F80322F71B6F046F380DE461C827E8A",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/"
+                }
+              ],
+              "finalState": {
+                "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/",
+                "shell": "1c1f9b05-ac8b-46b5-b89c-7cfb83670828",
+                "route": "cen100",
+                "completedRoute": "cen100",
+                "body": {
+                  "course": "cen100"
+                },
+                "content": 46809,
+                "deadline": "00days13hrs43min35secDueWed Oct 14 · 3:00 PM Toronto13 hours and 43 minutes remaining until Academic Integrity Quiz. Wed Oct 14 · 3:00 PM Toronto.",
+                "focus": {
+                  "tag": "BODY",
+                  "id": "",
+                  "inside": false
+                },
+                "wrapper": {
+                  "opacity": "1",
+                  "filter": "none",
+                  "transform": "none"
+                },
+                "events": {
+                  "routes": [
+                    {
+                      "time": 2031.7000000029802,
+                      "route": "cen100",
+                      "from": null,
+                      "url": "http://127.0.0.1:42255/tmu-course-guides/cen100/",
+                      "shell": "1c1f9b05-ac8b-46b5-b89c-7cfb83670828"
+                    }
+                  ],
+                  "clicks": []
+                }
+              }
+            },
+            "environment": {
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+              "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+              "hardwareConcurrency": 5,
+              "deviceMemory": 16,
+              "viewport": [
+                1440,
+                900
+              ],
+              "dpr": 1
+            },
+            "measurement": {
+              "frames": 14,
+              "over16_7ms": {
+                "count": 14,
+                "share": 1,
+                "percent": 100
+              },
+              "over33ms": {
+                "count": 14,
+                "share": 1,
+                "percent": 100
+              },
+              "p95ms": 783.2999999999993,
+              "maxMs": 783.2999999999993,
+              "longTasksOver50ms": [
+                {
+                  "start": 8443.60000000149,
+                  "duration": 367,
+                  "name": "self"
+                },
+                {
+                  "start": 9627.10000000149,
+                  "duration": 61,
+                  "name": "self"
+                },
+                {
+                  "start": 10634.89999999851,
+                  "duration": 52,
+                  "name": "self"
+                },
+                {
+                  "start": 10714.89999999851,
+                  "duration": 392,
+                  "name": "self"
+                },
+                {
+                  "start": 11108,
+                  "duration": 374,
+                  "name": "self"
+                },
+                {
+                  "start": 12596.80000000447,
+                  "duration": 83,
+                  "name": "self"
+                },
+                {
+                  "start": 13063.60000000149,
+                  "duration": 542,
+                  "name": "self"
+                }
+              ],
+              "elapsedMs": 5149.700000000001,
+              "longTaskSupported": true
+            }
+          },
+          {
+            "name": "mth140 5-second wheel scroll",
+            "physicalClickTimeoutMs": 30000,
+            "telemetry": {
+              "consoleErrors": [],
+              "pageErrors": [],
+              "failedRequests": [],
+              "httpErrors": []
+            },
+            "navigationDiagnostics": {
+              "documentRequests": [
+                {
+                  "time": 1791954985341,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/",
+                  "method": "GET"
+                }
+              ],
+              "frameNavigations": [
+                {
+                  "time": 1791954985375,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791954985866,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791954999333,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955002320,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955003425,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955005607,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955007270,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955008258,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955010304,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955011798,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955012802,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955013805,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955014924,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955015888,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955017165,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955018172,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955019169,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955020244,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955021168,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955022198,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955023233,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955025164,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955026173,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955045272,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                }
+              ],
+              "pageEvents": [
+                {
+                  "time": 1791954985375,
+                  "type": "Page.frameNavigated",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "loaderId": "9EA252901BD4A514F2ACDDA66A652942",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791954985880,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791954999333,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955002325,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955003425,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955005608,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955007271,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955008258,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955010304,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955011799,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955012803,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955013808,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955014924,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955015888,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955017167,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955018172,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955019169,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955020245,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955021168,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955022199,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955023233,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955025170,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791955026173,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "46557015CBC1949658511E29C7FDAE36",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                }
+              ],
+              "finalState": {
+                "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/",
+                "shell": "ccdda192-afb1-4e64-a2df-3cd393bd70c6",
+                "route": "mth140",
+                "completedRoute": "mth140",
+                "body": {
+                  "course": "mth140"
+                },
+                "content": 30625,
+                "deadline": "Oct 12–16Quiz weekOct 12–Oct 16 · during your assigned labChoose section for quiz dateLab Quiz 2: Quiz week. Oct 12–Oct 16 · during your assigned lab.",
+                "focus": {
+                  "tag": "BODY",
+                  "id": "",
+                  "inside": false
+                },
+                "wrapper": {
+                  "opacity": "1",
+                  "filter": "none",
+                  "transform": "none"
+                },
+                "events": {
+                  "routes": [
+                    {
+                      "time": 1996.5,
+                      "route": "mth140",
+                      "from": null,
+                      "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/",
+                      "shell": "ccdda192-afb1-4e64-a2df-3cd393bd70c6"
+                    }
+                  ],
+                  "clicks": [
+                    {
+                      "time": 1301.3999999985099,
+                      "tag": "BUTTON",
+                      "id": "tab-assessments",
+                      "href": null,
+                      "url": "http://127.0.0.1:42255/tmu-course-guides/mth140/",
+                      "defaultPrevented": false,
+                      "urlAfterDispatch": "http://127.0.0.1:42255/tmu-course-guides/mth140/"
+                    }
+                  ]
+                }
+              }
+            },
+            "environment": {
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+              "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+              "hardwareConcurrency": 5,
+              "deviceMemory": 16,
+              "viewport": [
+                1440,
+                900
+              ],
+              "dpr": 1
+            },
+            "measurement": {
+              "frames": 5,
+              "over16_7ms": {
+                "count": 4,
+                "share": 0.8,
+                "percent": 80
+              },
+              "over33ms": {
+                "count": 3,
+                "share": 0.6,
+                "percent": 60
+              },
+              "p95ms": 7666.299999999999,
+              "maxMs": 7666.299999999999,
+              "longTasksOver50ms": [
+                {
+                  "start": 4243.60000000149,
+                  "duration": 1719,
+                  "name": "self"
+                },
+                {
+                  "start": 6011.89999999851,
+                  "duration": 5423,
+                  "name": "self"
+                },
+                {
+                  "start": 11436,
+                  "duration": 2249,
+                  "name": "self"
+                }
+              ],
+              "elapsedMs": 9466.2,
+              "longTaskSupported": true
+            }
+          },
+          {
+            "name": "mth141 5-second wheel scroll",
+            "physicalClickTimeoutMs": 30000,
+            "telemetry": {
+              "consoleErrors": [],
+              "pageErrors": [],
+              "failedRequests": [],
+              "httpErrors": []
+            },
+            "navigationDiagnostics": {
+              "documentRequests": [
+                {
+                  "time": 1791955046354,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/",
+                  "method": "GET"
+                }
+              ],
+              "frameNavigations": [
+                {
+                  "time": 1791955046429,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955047049,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955055475,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955056485,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955057603,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955058598,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955059654,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955060667,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955061675,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955062670,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955064118,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955065112,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955066118,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955067115,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955068119,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955069122,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955071899,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955072061,
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                }
+              ],
+              "pageEvents": [
+                {
+                  "time": 1791955046429,
+                  "type": "Page.frameNavigated",
+                  "frameId": "9575D026C94B6FEC44982B1A8B2F6DE8",
+                  "loaderId": "C22BE32D735AC95124D13824522B6914",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955047056,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "9575D026C94B6FEC44982B1A8B2F6DE8",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955055475,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "9575D026C94B6FEC44982B1A8B2F6DE8",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955056485,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "9575D026C94B6FEC44982B1A8B2F6DE8",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955057603,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "9575D026C94B6FEC44982B1A8B2F6DE8",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955058598,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "9575D026C94B6FEC44982B1A8B2F6DE8",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955059654,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "9575D026C94B6FEC44982B1A8B2F6DE8",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955060668,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "9575D026C94B6FEC44982B1A8B2F6DE8",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955061675,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "9575D026C94B6FEC44982B1A8B2F6DE8",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955062670,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "9575D026C94B6FEC44982B1A8B2F6DE8",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955064118,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "9575D026C94B6FEC44982B1A8B2F6DE8",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955065114,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "9575D026C94B6FEC44982B1A8B2F6DE8",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955066118,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "9575D026C94B6FEC44982B1A8B2F6DE8",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955067116,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "9575D026C94B6FEC44982B1A8B2F6DE8",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955068119,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "9575D026C94B6FEC44982B1A8B2F6DE8",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791955069124,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "9575D026C94B6FEC44982B1A8B2F6DE8",
+                  "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                }
+              ],
+              "finalState": {
+                "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/",
+                "shell": "296877ba-0ad9-418c-89e7-a151a22167d6",
+                "route": "mth141",
+                "completedRoute": "mth141",
+                "body": {
+                  "course": "mth141"
+                },
+                "content": 34933,
+                "deadline": "02days17hrs12min09secTest startsFri Oct 16 · 6:30 PM Toronto2 days and 17 hours remaining until Midterm Test. Fri Oct 16 · 6:30 PM Toronto.",
+                "focus": {
+                  "tag": "BODY",
+                  "id": "",
+                  "inside": false
+                },
+                "wrapper": {
+                  "opacity": "1",
+                  "filter": "none",
+                  "transform": "none"
+                },
+                "events": {
+                  "routes": [
+                    {
+                      "time": 1510.7999999970198,
+                      "route": "mth141",
+                      "from": null,
+                      "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/",
+                      "shell": "296877ba-0ad9-418c-89e7-a151a22167d6"
+                    }
+                  ],
+                  "clicks": [
+                    {
+                      "time": 1266.7999999970198,
+                      "tag": "BUTTON",
+                      "id": "tab-assessments",
+                      "href": null,
+                      "url": "http://127.0.0.1:42255/tmu-course-guides/mth141/",
+                      "defaultPrevented": false,
+                      "urlAfterDispatch": "http://127.0.0.1:42255/tmu-course-guides/mth141/"
+                    }
+                  ]
+                }
+              }
+            },
+            "environment": {
+              "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+              "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+              "hardwareConcurrency": 5,
+              "deviceMemory": 16,
+              "viewport": [
+                1440,
+                900
+              ],
+              "dpr": 1
+            },
+            "measurement": {
+              "frames": 43,
+              "over16_7ms": {
+                "count": 43,
+                "share": 1,
+                "percent": 100
+              },
+              "over33ms": {
+                "count": 42,
+                "share": 0.9767441860465116,
+                "percent": 97.67441860465117
+              },
+              "p95ms": 233.3000000000011,
+              "maxMs": 333.2999999999993,
+              "longTasksOver50ms": [
+                {
+                  "start": 7800.69999999553,
+                  "duration": 59,
+                  "name": "self"
+                },
+                {
+                  "start": 7886.0999999940395,
+                  "duration": 187,
+                  "name": "self"
+                },
+                {
+                  "start": 8786.39999999851,
+                  "duration": 79,
+                  "name": "self"
+                },
+                {
+                  "start": 8865.59999999404,
+                  "duration": 218,
+                  "name": "self"
+                },
+                {
+                  "start": 9525,
+                  "duration": 173,
+                  "name": "self"
+                },
+                {
+                  "start": 9699.09999999404,
+                  "duration": 82,
+                  "name": "self"
+                },
+                {
+                  "start": 10110.29999999702,
+                  "duration": 136,
+                  "name": "self"
+                },
+                {
+                  "start": 10247.59999999404,
+                  "duration": 230,
+                  "name": "self"
+                },
+                {
+                  "start": 11001.39999999851,
+                  "duration": 122,
+                  "name": "self"
+                },
+                {
+                  "start": 11123.89999999851,
+                  "duration": 104,
+                  "name": "self"
+                },
+                {
+                  "start": 11413.19999999553,
+                  "duration": 70,
+                  "name": "self"
+                },
+                {
+                  "start": 11483.29999999702,
+                  "duration": 103,
+                  "name": "self"
+                },
+                {
+                  "start": 12014.29999999702,
+                  "duration": 74,
+                  "name": "self"
+                },
+                {
+                  "start": 12089,
+                  "duration": 95,
+                  "name": "self"
+                }
+              ],
+              "elapsedMs": 5033.1,
+              "longTaskSupported": true
+            }
+          }
+        ],
+        "interpretation": "SwiftShader diagnostics: frame pacing here is not evidence of smoothness on a real device.",
+        "runnerErrors": []
+      },
+      "skipped": [],
+      "durationMs": 139844,
+      "failures": 0
+    }
+  ],
+  "runErrors": []
+}

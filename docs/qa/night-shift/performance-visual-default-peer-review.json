@@ -1,0 +1,250 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "independent-private-default-visual-adapter-source-review",
+  "status": "passed-offline-source-review-only",
+  "approvedSourceScope": true,
+  "sourceApprovalOnly": true,
+  "reviewedBy": "/root/final_review",
+  "reviewedAt": "2026-10-14T07:48:36.965926+00:00",
+  "review": "Read-only inspection and hash/normalization checks of the private queryless MTH140 visual adapter. Only the requested TMP review artifact was written. No source imports, tests, browser, pixels decoded or repository changes by this reviewer.",
+  "canonicalTool": {
+    "path": "/workspace/tmu-course-guides/tools/qa/compare-perf-visuals.mjs",
+    "sha256": "4a975749dfe85ea3734bf8e1dd4d389c2bb6a0887a20eadaa7dc9fff7c26d0a0",
+    "unchanged": true
+  },
+  "privateProof": {
+    "path": "/tmp/ns-perf-default-visual-private-proof.json",
+    "sha256": "0475d0c3d8327052aca5042ea9e91eaa60883b829d8362ddd9e7b51c6811eedf"
+  },
+  "reviewedFiles": [
+    {
+      "path": "/tmp/ns-perf-default-visual-capture.mjs",
+      "sha256": "7686b38be70e870089250a6b48938ac6ae3a3d7eca64ea283b4a00c5d0c3db32",
+      "bytes": 50487
+    },
+    {
+      "path": "/tmp/ns-perf-default-visual-guard.mjs",
+      "sha256": "ab4a715b41a95b45b8d9051fdf6ea9022cc5f857394e83340305745d58ea2164",
+      "bytes": 2642
+    },
+    {
+      "path": "/tmp/ns-perf-default-visual-guard.test.mjs",
+      "sha256": "8611cbe779604c4fe4a4eba8d52dd0687007864c979dcaf0e240ac67dc46c21f",
+      "bytes": 7226
+    },
+    {
+      "path": "/tmp/ns-perf-default-visual-build.mjs",
+      "sha256": "12278fd36439b1998b4be9dab8a0d210804d692f5981e24fab3a1f131b95f3b2",
+      "bytes": 6428
+    },
+    {
+      "path": "/tmp/ns-perf-default-visual-source-diff.json",
+      "sha256": "497827a13c97bfaa276e66566974ed995f7c80133b9d9c0bdc124cf6fcab0d23",
+      "bytes": 6022
+    },
+    {
+      "path": "/tmp/ns-perf-default-visual-red.log",
+      "sha256": "8255d0623254684954354753e60e5b1f52acb3a8b84576a12c643a7ccb54c5ac",
+      "bytes": 7443
+    },
+    {
+      "path": "/tmp/ns-perf-default-visual-context-red.log",
+      "sha256": "64425a35a43502a0a454a4504fc16368ce4793785ece33b5fac3c7b3c3171e98",
+      "bytes": 1778
+    },
+    {
+      "path": "/tmp/ns-perf-default-visual-green.log",
+      "sha256": "39c26c38f0cdedd565fb6c4a02270153fd13a50c10bde5ba666b46394ab97a78",
+      "bytes": 877
+    },
+    {
+      "path": "/tmp/ns-perf-default-visual-original-guard.log",
+      "sha256": "0099844216bf5d8b6b6b0ab2dec767b8a3f26ae55bfe0d5ef1571f1d0bdab7bd",
+      "bytes": 2363
+    }
+  ],
+  "mechanicalPreservation": {
+    "explicitReplacementCount": 13,
+    "reverseReplacementsUnique": true,
+    "entireNormalizedSourceByteIdenticalToCanonical": true,
+    "normalizedSHA256": "4a975749dfe85ea3734bf8e1dd4d389c2bb6a0887a20eadaa7dc9fff7c26d0a0",
+    "adaptedSHA256": "7686b38be70e870089250a6b48938ac6ae3a3d7eca64ea283b4a00c5d0c3db32",
+    "unchangedExceptListedReplacements": true
+  },
+  "scope": {
+    "routes": [
+      "mth140"
+    ],
+    "bases": [
+      "/",
+      "/tmu-course-guides/"
+    ],
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "themes": [
+      "dark",
+      "light"
+    ],
+    "requestedCases": 8,
+    "requestedURLQueryAndHashAbsent": true,
+    "forcedBookTierAndWebGLDisableRejectedBeforeLaunch": true,
+    "referenceRootAllowlist": [
+      "/workspace/tmu-course-guides",
+      "/workspace/ns-perf-control-aa7"
+    ],
+    "separateIgnoredOutputDirectory": "tools/qa/reports/perf-visuals-default",
+    "repeatCase": "root-mth140-1440x900-dark",
+    "canonicalBook32OutputUntouched": true
+  },
+  "preservedGates": {
+    "exactRGBAComparatorNoMasksToleranceOrNormalization": true,
+    "PNGAndRepeatActualBytesHashesAndDimensions": true,
+    "nativeSceneAndGeometrySettlement": true,
+    "fontEvidenceAndImageDecode": true,
+    "naturalWrapperSettlement": true,
+    "allBrowserErrorsRemainFailures": true,
+    "productProtectedFingerprintsAndUnchangedAtEnd": true,
+    "softwareCompositorAndSwiftShaderEnabledReadbackEnvironment": true,
+    "originalExistingLiveWebGLContextReadbackPath": true,
+    "recipeCompatibilityAndConcurrency": true,
+    "repeatEvidenceRequiresSameOrdinaryIdentity": true
+  },
+  "naturalPosterException": {
+    "onlyReplacesLiveProductContextRequirement": true,
+    "ordinaryMTH140ScopeRequired": true,
+    "bookIdentity": "mth140",
+    "renderer": "poster",
+    "sceneReady": "true",
+    "motionState": "still",
+    "headerBookView": "poster",
+    "canvasCount": 0,
+    "actualWebGLContextsMustBeExplicitEmptyArray": true,
+    "tierKnownAndTierLowReasonRequiresLowTier": true,
+    "allowedSourceAuthoredReasons": [
+      "tier-low",
+      "performance-caveat",
+      "unavailable",
+      "no-webgl2"
+    ],
+    "errorShaderLostAbortedUnknownReasonsRejected": true,
+    "sceneFrameDrawCallsTrianglesAbsentOrZero": true,
+    "posterCompleteAndDecoded": true,
+    "exactSameOriginThemeWidthAuthoredPosterURL": true,
+    "actualIntrinsicDimensionsRequired": true,
+    "finitePositiveArtAndPosterBoxesExactlyEqual": true,
+    "display": "block",
+    "visibility": "visible",
+    "opacity": "1",
+    "transform": "none",
+    "browserErrorsSourceSettlementGPUOtherGatesStillRequired": true,
+    "sourceAuthoredPosters": [
+      {
+        "path": "assets/book/posters/mth140-dark-tall.webp",
+        "sha256": "6e243890a010c966b91447bb9e5eefb5b16edb021ceb2f1a35b6e71e9aaab128",
+        "intrinsicWidth": 780,
+        "intrinsicHeight": 600,
+        "independentHeaderWidth": 780,
+        "independentHeaderHeight": 600,
+        "controlBytesEqual": true
+      },
+      {
+        "path": "assets/book/posters/mth140-dark-wide.webp",
+        "sha256": "9238eb89c642dc05fada0805ad8746f7d932551b26568739b90320712a52c943",
+        "intrinsicWidth": 2160,
+        "intrinsicHeight": 900,
+        "independentHeaderWidth": 2160,
+        "independentHeaderHeight": 900,
+        "controlBytesEqual": true
+      },
+      {
+        "path": "assets/book/posters/mth140-light-tall.webp",
+        "sha256": "5e01b0ff81755698a94eb538eeb873524d20aaedebcfba7e93f40213da3207d7",
+        "intrinsicWidth": 780,
+        "intrinsicHeight": 600,
+        "independentHeaderWidth": 780,
+        "independentHeaderHeight": 600,
+        "controlBytesEqual": true
+      },
+      {
+        "path": "assets/book/posters/mth140-light-wide.webp",
+        "sha256": "09444de50e7c7ff750217d3fce3daff65a12646c9a12c48c8b084de64e781e70",
+        "intrinsicWidth": 2160,
+        "intrinsicHeight": 900,
+        "independentHeaderWidth": 2160,
+        "independentHeaderHeight": 900,
+        "controlBytesEqual": true
+      }
+    ]
+  },
+  "authoredSourceBindings": [
+    {
+      "path": "assets/course-header.mjs",
+      "sha256": "c3ea918ffaa5776dda518bb245234955097907e04f2443273765742c04cc877e"
+    },
+    {
+      "path": "assets/book/course-styles.mjs",
+      "sha256": "a59e0f4934be10b9eb984b1f130565a48999044e1080af233791654c3511287b"
+    },
+    {
+      "path": "assets/app/stage.mjs",
+      "sha256": "81b84e8dd6278ce978b019dea956dcd4bdfb38daffebf8ba9168f6fe90d9a416"
+    },
+    {
+      "path": "assets/night/core.mjs",
+      "sha256": "d1e5aabb6cff9e8bd78ba28e8b76e994c32b81f292488c6c2d9ac172c899d224"
+    }
+  ],
+  "postPixelObservations": {
+    "newBookEvidenceCollectedAfterScreenshotBytes": true,
+    "onlyReadonlyDOMDatasetGeometryComputedStyleImageDecode": true,
+    "noNewProductDOMCSSMutations": true,
+    "doesNotForceRendererTierOrFallback": true,
+    "instrumentationOverheadIsSeparateFromProductPerformance": true
+  },
+  "reportedOfflineTests": {
+    "initialRED": {
+      "pass": 1,
+      "fail": 6,
+      "expectedFailures": true
+    },
+    "mountedContextRED": {
+      "pass": 7,
+      "fail": 1,
+      "expectedFailures": true
+    },
+    "GREEN": {
+      "pass": 8,
+      "fail": 0
+    },
+    "originalBookGuards": {
+      "pass": 22,
+      "fail": 0
+    },
+    "logsAndProofHashesVerified": true,
+    "rerunByReviewer": false
+  },
+  "materialFindings": [],
+  "limitations": [
+    "Source approval does not establish any browser capture or pixel-parity result.",
+    "Before/after captures must use the same recorded recipe and strict original repeat/environment/source/error gates; only the public book-tier override is omitted.",
+    "A source-authored natural poster is a fallback capture and cannot be described as a live WebGL model.",
+    "This independent default-URL visual coverage does not waive any failed normal full QA record or prove its historical cause.",
+    "Poster intrinsic dimensions were checked from WebP container headers only; no PNG or image pixels were decoded by this reviewer."
+  ],
+  "browserAcceptanceEstablished": false,
+  "actualCapturesRunByReviewer": false,
+  "browsersLaunched": false,
+  "modulesImported": false,
+  "testsRun": false,
+  "pixelsDecoded": false,
+  "activeSourceOrRepositoryFilesEdited": false,
+  "canonicalEvidenceWritten": false
+}

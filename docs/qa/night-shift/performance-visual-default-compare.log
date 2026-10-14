@@ -1,0 +1,9 @@
+root-mth140-1440x900-dark: 0/1296000 changed pixels
+root-mth140-1440x900-light: 0/1296000 changed pixels
+root-mth140-390x844-dark: 0/329160 changed pixels
+root-mth140-390x844-light: 0/329160 changed pixels
+project-mth140-1440x900-dark: 0/1296000 changed pixels
+project-mth140-1440x900-light: 0/1296000 changed pixels
+project-mth140-390x844-dark: 0/329160 changed pixels
+project-mth140-390x844-light: 0/329160 changed pixels
+{"expected":8,"compared":8,"pixelIdentical":8,"different":0,"failed":0,"changedPixels":0,"browserErrors":0,"naturalSettlementFailures":0,"repeatFailures":0,"evidenceFailures":0,"protectedSourceMatches":true}

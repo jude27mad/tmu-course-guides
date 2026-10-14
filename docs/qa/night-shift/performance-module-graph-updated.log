@@ -1,0 +1,16 @@
+✔ static requests use the JavaScript parser and leave lazy imports outside the graph (537.977001ms)
+✔ script roots preserve document-relative URL identity and route roles (2.585239ms)
+✔ queries are distinct native modules while graph depths remain cycle safe (545.36721ms)
+✔ an eager second root shortens dependency depth without changing the static graph (1609.292959ms)
+✔ unresolved external requests fail instead of claiming a complete local graph (445.087851ms)
+✔ literal dynamic references are compiler-verified code with exact decoded version URLs (1155.901447ms)
+✔ Desk boot follows awaited directory and target data while leaving vendors lazy (4160.22556ms)
+✔ await classification honors lexical code and direct parenthesized calls (693.838756ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9171.819787

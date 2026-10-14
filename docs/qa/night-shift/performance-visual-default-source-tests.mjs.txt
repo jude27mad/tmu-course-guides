@@ -1,0 +1,59 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import {hasNaturalBookFallback,ordinaryMTH140Scope} from './ns-perf-default-visual-guard.mjs';
+import {cases,captureEvidenceProblems,parseCaptureOptions} from './ns-perf-default-visual-capture.mjs';
+
+const record=(base='/',width=1440,theme='dark')=>{
+ const wide=width===1440,origin='http://127.0.0.1:4321',box={x:wide?248:0,y:wide?0:379.109375,width:wide?1192.015625:390,height:wide?594:300};
+ return {id:`${base==='/'?'root':'project'}-mth140-${width}x${wide?900:844}-${theme}`,base,route:'mth140',viewport:{width,height:wide?900:844},theme,noWebGL:false,bookTier:null,requestedURL:origin+base+'mth140/',url:origin+base+'mth140/',status:'captured',errors:[],actualWebGLContexts:[],defaultBookEvidence:{book:'mth140',renderer:'poster',rendererReason:'performance-caveat',sceneReady:'true',motionState:'still',tier:'high',bookView:'poster',canvasCount:0,box,poster:{src:origin+base+`assets/book/posters/mth140-${theme}-${wide?'wide':'tall'}.webp`,complete:true,decoded:true,naturalWidth:wide?2160:780,naturalHeight:wide?900:600,box:{...box},computed:{display:'block',visibility:'visible',opacity:'1',transform:'none'}}}};
+};
+const mutate=(input,path,value)=>{const result=structuredClone(input),keys=path.split('.');let target=result;for(const key of keys.slice(0,-1))target=target[key];target[keys.at(-1)]=value;return result;};
+const gpu={featureStatus:{gpu_compositing:'disabled_software',webgl:'enabled_readback'},auxAttributes:{glRenderer:'ANGLE Vulkan SwiftShader'}};
+const manifest=records=>({recipe:{noWebGL:false,gpuCompositing:false},environment:{gpuInfo:gpu},execution:{captureConcurrency:1},sourceUnchanged:true,productSourceSha256:'product',productSourceSha256After:'product',protectedSourceUnchanged:true,protectedSourceSha256:'protected',protectedSourceSha256After:'protected',cases:records});
+
+test('default adapter selects exactly eight ordinary MTH140 identities',()=>{
+ const matrix=cases();assert.equal(matrix.length,8);assert.equal(new Set(matrix.map(r=>r.id)).size,8);
+ assert.ok(matrix.every(r=>r.route==='mth140'&&!r.bookTier&&!r.noWebGL));
+ for(const base of ['/','/tmu-course-guides/'])for(const width of [1440,390])for(const theme of ['dark','light'])assert.ok(matrix.some(r=>r.base===base&&r.viewport.width===width&&r.theme===theme));
+});
+
+test('natural source-authored fallback accepts both bases widths and themes',()=>{
+ for(const base of ['/','/tmu-course-guides/'])for(const width of [1440,390])for(const theme of ['dark','light'])assert.equal(hasNaturalBookFallback(record(base,width,theme)),true);
+});
+
+test('ordinary identity rejects tier motion query hash route and viewport substitutions',()=>{
+ const original=record();assert.equal(ordinaryMTH140Scope(original),true);
+ for(const [key,value] of [['route','mth141'],['base','/other/'],['viewport.width',391],['viewport.height',844],['theme','sepia'],['bookTier','high'],['noWebGL',true],['url',original.url+'?tier=high'],['requestedURL',original.url+'?motion=off'],['url',original.url+'#coursework'],['url',original.url.replace('4321','5432')]])assert.equal(ordinaryMTH140Scope(mutate(original,key,value)),false,key);
+});
+
+test('fallback rejects foreign incomplete running erroneous or inconsistent source state',()=>{
+ const original=record();
+ for(const [key,value] of [['status','failed'],['naturalSettlementFailure','Unsettled'],['defaultBookEvidence.book','mth141'],['defaultBookEvidence.renderer','pending'],['defaultBookEvidence.sceneReady','false'],['defaultBookEvidence.motionState','running'],['defaultBookEvidence.rendererReason','error'],['defaultBookEvidence.rendererReason','shader'],['defaultBookEvidence.rendererReason','lost'],['defaultBookEvidence.rendererReason','aborted'],['defaultBookEvidence.rendererReason','unknown'],['defaultBookEvidence.tier',null],['defaultBookEvidence.tier','unknown'],['defaultBookEvidence.bookView','pending'],['defaultBookEvidence.canvasCount',1]])assert.equal(hasNaturalBookFallback(mutate(original,key,value)),false,key+' '+value);
+ assert.equal(hasNaturalBookFallback(mutate(original,'defaultBookEvidence.rendererReason','tier-low')),false);
+ assert.equal(hasNaturalBookFallback(mutate(mutate(original,'defaultBookEvidence.rendererReason','tier-low'),'defaultBookEvidence.tier','low')),true);
+});
+
+test('fallback requires exact authored decoded poster source dimensions geometry and visibility',()=>{
+ const original=record();
+ for(const [key,value] of [['defaultBookEvidence.poster.src',original.defaultBookEvidence.poster.src+'?x=1'],['defaultBookEvidence.poster.src',original.defaultBookEvidence.poster.src.replace('dark','light')],['defaultBookEvidence.poster.src',original.defaultBookEvidence.poster.src.replace('wide','tall')],['defaultBookEvidence.poster.complete',false],['defaultBookEvidence.poster.decoded',false],['defaultBookEvidence.poster.naturalWidth',1],['defaultBookEvidence.poster.naturalHeight',1],['defaultBookEvidence.poster.box.width',0],['defaultBookEvidence.poster.box.x',249],['defaultBookEvidence.box.width',0],['defaultBookEvidence.poster.computed.opacity','0'],['defaultBookEvidence.poster.computed.display','none'],['defaultBookEvidence.poster.computed.visibility','hidden'],['defaultBookEvidence.poster.computed.transform','matrix(1,0,0,1,1,0)']])assert.equal(hasNaturalBookFallback(mutate(original,key,value)),false,key);
+});
+
+test('natural fallback requires explicit absence of mounted product WebGL contexts',()=>{
+ const original=record();
+ assert.equal(hasNaturalBookFallback(mutate(original,'actualWebGLContexts',undefined)),false);
+ assert.equal(hasNaturalBookFallback(mutate(original,'actualWebGLContexts',[{contextLost:false,drawingBufferWidth:100,drawingBufferHeight:100,unmaskedRenderer:'ANGLE SwiftShader'}])),false);
+});
+
+test('private fallback exception preserves browser errors source settlement and GPU gates',()=>{
+ const records=['/','/tmu-course-guides/'].flatMap(base=>[1440,390].flatMap(width=>['dark','light'].map(theme=>record(base,width,theme)))),good=manifest(records);
+ assert.deepEqual(captureEvidenceProblems(good),[]);
+ const bad=structuredClone(good);bad.cases[0].errors=[{type:'pageerror',message:'Unexpected'}];assert.ok(captureEvidenceProblems(bad).some(r=>r.reason.includes('Browser error')));
+ const unsettled=structuredClone(good);unsettled.cases[0].naturalSettlementFailure='Wrapper failed';assert.ok(captureEvidenceProblems(unsettled).some(r=>r.reason.includes('settlement')));
+ const changed=structuredClone(good);changed.sourceUnchanged=false;assert.ok(captureEvidenceProblems(changed).some(r=>r.scope==='manifest'));
+ const badGPU=structuredClone(good);badGPU.environment.gpuInfo.featureStatus.webgl='disabled_off';assert.ok(captureEvidenceProblems(badGPU).some(r=>r.scope==='manifest'&&r.reason.includes('WebGL')));
+ const wrongPoster=structuredClone(good);wrongPoster.cases[0].defaultBookEvidence.poster.decoded=false;assert.ok(captureEvidenceProblems(wrongPoster).some(r=>r.reason.includes('WebGL2 capture')));
+});
+
+test('adapter rejects forced fallback or tier options before browser launch',()=>{
+ for(const options of [['--book-tier','high'],['--no-webgl']])assert.throws(()=>parseCaptureOptions(options),/ordinary|default|forced/i);
+});

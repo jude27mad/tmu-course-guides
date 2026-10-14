@@ -1,0 +1,1423 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T11:13:01.765684+00:00",
+  "reviewedBy": "/root/final_review",
+  "approvedActualCIScope": true,
+  "runID": 38552794234,
+  "headSHA": "f9a46fdb52729f47c0f13911d40ada85e6a6137e",
+  "runURL": "https://github.com/jude27mad/tmu-course-guides/actions/runs/38552794234",
+  "scope": "Actual feature CI evidence for7 core browser checks at both bases plus2 actually executed WebKit checks, alongside separate successful root/UI jobs. No claim of six additional resilience CI checks or complete all14x2 coverage.",
+  "metadata": {
+    "run.json": {
+      "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/run.json",
+      "sha256": "dde7b89dfeef6caa92c50695a07f4398ba7fcd5196192f2a367a18a1268771dd"
+    },
+    "jobs.json": {
+      "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/jobs.json",
+      "sha256": "faaaf65ae00131751de8ff14acfadeccbf90e7df95493d7c5bee14a606ca249d"
+    },
+    "artifacts.json": {
+      "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/artifacts.json",
+      "sha256": "bfb664996879548dc5a8c157ba798381d6511b558f67a6aeb46f49635c90e1ff"
+    },
+    "download-verification.json": {
+      "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/download-verification.json",
+      "sha256": "3a931247356853cdbfa2ed9ec535040b7ad25932cbfe8dd0ad1903805d3f81ef"
+    },
+    "download-receipts.json": {
+      "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/download-receipts.json",
+      "sha256": "b03d89dcd85108174842f86d763aba595651700756157f1053418740a5800775"
+    },
+    "full-run.log": {
+      "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/full-run.log",
+      "sha256": "fa890a1080a68a0295a16f9b79e978beef50abc8846e49a36a82ee3f1a941a1e"
+    }
+  },
+  "sourceBlobSHA256": {
+    "tools/qa/checks.mjs": "e1cc6550f304cd30d092cfcc34a78548365ce3c9b06e2f9ea6b53f1c1deee9ca",
+    "tools/qa/checks-resilience.mjs": "db77a8d9fa49683f6370c87fc1794dbec247bc3c95cf524fee1d5d58d12e0de8",
+    "tools/qa/checks-perf.mjs": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657",
+    "tools/qa/runtime.mjs": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587",
+    "tools/qa/instrument.mjs": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892",
+    "tools/qa/run.mjs": "d8894931aef10f795774fbc5cd4e3c7f8ccf547569a534a46006e8a362002621",
+    ".github/workflows/ci.yml": "8184690d698af02314f746ab53c711c16ab17bc090f6715c33c68ac305e96410"
+  },
+  "globalChecks": {
+    "actualRunAnd18JobsSuccess": true,
+    "exact16CoverageAnd64Files": true,
+    "reviewedFrozenProductQAAndWorkflowSourceUnchanged": true
+  },
+  "rows": [
+    {
+      "artifactID": 11887004037,
+      "artifactName": "browser-qa-deadlines-github-pages",
+      "check": "deadlines",
+      "base": "/tmu-course-guides/",
+      "jobID": 115814544273,
+      "jobName": "Browser QA (deadlines, /tmu-course-guides/)",
+      "jobLog": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/job-logs/115814544273.log",
+        "sha256": "d083de5c05e5f821d4f2192312df3a5bac5d0fd3b2329fa74f3e492d23982d69"
+      },
+      "zip": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/zips/browser-qa-deadlines-github-pages.zip",
+        "sha256": "bc61b72667a29c91499969dbff02ecdc899a44b255ef8dd683dba21d3af0250a",
+        "apiDigest": "sha256:bc61b72667a29c91499969dbff02ecdc899a44b255ef8dd683dba21d3af0250a"
+      },
+      "files": [
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-deadlines-github-pages/2026-10-14T10-54-37-541Z-3055/deadlines.json",
+          "sha256": "f9d7112cce6afb87b8bab9542b3783a9990c638afdea9143adb949ae294ed543",
+          "sizeBytes": 57053,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-deadlines-github-pages/2026-10-14T10-54-37-541Z-3055/deadlines.md",
+          "sha256": "4537f03e6218690fd96ee6282d31311e02c93d775bcf3e0d13c9bfeec7deb4aa",
+          "sizeBytes": 503,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-deadlines-github-pages/2026-10-14T10-54-37-541Z-3055/summary.json",
+          "sha256": "4d2b3102a3f328a597c7fa81fb19981187bc836de5a36afbc5b5c0678c1c86da",
+          "sizeBytes": 64348,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-deadlines-github-pages/2026-10-14T10-54-37-541Z-3055/summary.md",
+          "sha256": "ce5b4824d2fcb5b5d502b92d628f2f8e97e2f5aada9c08e031dadd2c0699cad0",
+          "sizeBytes": 499,
+          "exactZIPAndExtractedBytes": true
+        }
+      ],
+      "rawSummary": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-deadlines-github-pages/2026-10-14T10-54-37-541Z-3055/summary.json",
+        "sha256": "4d2b3102a3f328a597c7fa81fb19981187bc836de5a36afbc5b5c0678c1c86da"
+      },
+      "rawCheck": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-deadlines-github-pages/2026-10-14T10-54-37-541Z-3055/deadlines.json",
+        "sha256": "f9d7112cce6afb87b8bab9542b3783a9990c638afdea9143adb949ae294ed543"
+      },
+      "assertions": 128,
+      "falseAssertions": 0,
+      "skipped": [],
+      "runErrors": [],
+      "runnerEvents": 0,
+      "owningTelemetryEvents": 0,
+      "status": "passed",
+      "CLIexit": 0,
+      "checks": {
+        "exactAPIArtifactBinding": true,
+        "ZIPMemberSetExactAndNoPNG": true,
+        "EveryExtractedFileExact": true,
+        "actualJobCheckoutAndCLIReportBinding": true,
+        "rawMatchesCompleteSummary": true,
+        "actualPassedNonemptyExpectedCounts": true,
+        "allSkipsErrorsAndCleanupEmpty": true,
+        "actualMatching156BundledSW": true,
+        "nativeRawTimesWithinActualJob": true,
+        "owningTelemetryEmpty": true
+      },
+      "findings": []
+    },
+    {
+      "artifactID": 11887292717,
+      "artifactName": "browser-qa-deadlines-root",
+      "check": "deadlines",
+      "base": "/",
+      "jobID": 115814544156,
+      "jobName": "Browser QA (deadlines, /)",
+      "jobLog": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/job-logs/115814544156.log",
+        "sha256": "0cb2127a7beca48601df6ddffb723eb9347c8a788ac0151d7b6192e2361e8e48"
+      },
+      "zip": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/zips/browser-qa-deadlines-root.zip",
+        "sha256": "9a0ade1e65f320c7f7a2a8a01454865f3049ac95b5e8f60fb99cd61ef4fb3a38",
+        "apiDigest": "sha256:9a0ade1e65f320c7f7a2a8a01454865f3049ac95b5e8f60fb99cd61ef4fb3a38"
+      },
+      "files": [
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-deadlines-root/2026-10-14T10-54-37-533Z-3132/deadlines.json",
+          "sha256": "5344a1eca2ccacc32812161f988ce860e38e7a21dda4b822c3532dcb1a8db82b",
+          "sizeBytes": 56945,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-deadlines-root/2026-10-14T10-54-37-533Z-3132/deadlines.md",
+          "sha256": "9d4910eea9d7704377b92756076363fd5030dfdfaea15d79a76b46571b84de2c",
+          "sizeBytes": 467,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-deadlines-root/2026-10-14T10-54-37-533Z-3132/summary.json",
+          "sha256": "ec95df19cb9bd920018cab4e688a4a2b6bc40c0be855f20c8c3c89c213f9a197",
+          "sizeBytes": 64222,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-deadlines-root/2026-10-14T10-54-37-533Z-3132/summary.md",
+          "sha256": "baea9bbaad2ea6f8e8f8263dc52d7758b83366ce606b5c1c1437992cf6026d99",
+          "sizeBytes": 481,
+          "exactZIPAndExtractedBytes": true
+        }
+      ],
+      "rawSummary": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-deadlines-root/2026-10-14T10-54-37-533Z-3132/summary.json",
+        "sha256": "ec95df19cb9bd920018cab4e688a4a2b6bc40c0be855f20c8c3c89c213f9a197"
+      },
+      "rawCheck": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-deadlines-root/2026-10-14T10-54-37-533Z-3132/deadlines.json",
+        "sha256": "5344a1eca2ccacc32812161f988ce860e38e7a21dda4b822c3532dcb1a8db82b"
+      },
+      "assertions": 128,
+      "falseAssertions": 0,
+      "skipped": [],
+      "runErrors": [],
+      "runnerEvents": 0,
+      "owningTelemetryEvents": 0,
+      "status": "passed",
+      "CLIexit": 0,
+      "checks": {
+        "exactAPIArtifactBinding": true,
+        "ZIPMemberSetExactAndNoPNG": true,
+        "EveryExtractedFileExact": true,
+        "actualJobCheckoutAndCLIReportBinding": true,
+        "rawMatchesCompleteSummary": true,
+        "actualPassedNonemptyExpectedCounts": true,
+        "allSkipsErrorsAndCleanupEmpty": true,
+        "actualMatching156BundledSW": true,
+        "nativeRawTimesWithinActualJob": true,
+        "owningTelemetryEmpty": true
+      },
+      "findings": []
+    },
+    {
+      "artifactID": 11887890569,
+      "artifactName": "browser-qa-frames-github-pages",
+      "check": "frames",
+      "base": "/tmu-course-guides/",
+      "jobID": 115814544159,
+      "jobName": "Browser QA (frames, /tmu-course-guides/)",
+      "jobLog": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/job-logs/115814544159.log",
+        "sha256": "8199a11be365f17b88171134b203edea85689b20a204f643bdd40fb91b7acbc0"
+      },
+      "zip": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/zips/browser-qa-frames-github-pages.zip",
+        "sha256": "d1b84f4110898b1a5c7f85f804e0b097a783fdf36079266587518f96bda7a92c",
+        "apiDigest": "sha256:d1b84f4110898b1a5c7f85f804e0b097a783fdf36079266587518f96bda7a92c"
+      },
+      "files": [
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-frames-github-pages/2026-10-14T10-54-35-873Z-3132/frames.json",
+          "sha256": "e6bffe35fe7cb2ac36bdada34c41e119b645fb7ba9f26f79c6180457ca468f94",
+          "sizeBytes": 17328,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-frames-github-pages/2026-10-14T10-54-35-873Z-3132/frames.md",
+          "sha256": "4c719eac7eb425fbb6f3e4908dda763095af02b9d01eb221cfbaa945b5555fa8",
+          "sizeBytes": 499,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-frames-github-pages/2026-10-14T10-54-35-873Z-3132/summary.json",
+          "sha256": "482266c04070dd151c496bd3b92adbcd315bea7e4e535fb587ca45aa18836cd1",
+          "sizeBytes": 19696,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-frames-github-pages/2026-10-14T10-54-35-873Z-3132/summary.md",
+          "sha256": "736e7a4ecfa83f434d5cfd594c06b204aff924371622f57e3b287263943fdb05",
+          "sizeBytes": 496,
+          "exactZIPAndExtractedBytes": true
+        }
+      ],
+      "rawSummary": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-frames-github-pages/2026-10-14T10-54-35-873Z-3132/summary.json",
+        "sha256": "482266c04070dd151c496bd3b92adbcd315bea7e4e535fb587ca45aa18836cd1"
+      },
+      "rawCheck": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-frames-github-pages/2026-10-14T10-54-35-873Z-3132/frames.json",
+        "sha256": "e6bffe35fe7cb2ac36bdada34c41e119b645fb7ba9f26f79c6180457ca468f94"
+      },
+      "assertions": 24,
+      "falseAssertions": 0,
+      "skipped": [],
+      "runErrors": [],
+      "runnerEvents": 0,
+      "owningTelemetryEvents": 0,
+      "status": "passed",
+      "CLIexit": 0,
+      "checks": {
+        "exactAPIArtifactBinding": true,
+        "ZIPMemberSetExactAndNoPNG": true,
+        "EveryExtractedFileExact": true,
+        "actualJobCheckoutAndCLIReportBinding": true,
+        "rawMatchesCompleteSummary": true,
+        "actualPassedNonemptyExpectedCounts": true,
+        "allSkipsErrorsAndCleanupEmpty": true,
+        "actualMatching156BundledSW": true,
+        "nativeRawTimesWithinActualJob": true,
+        "owningTelemetryEmpty": true
+      },
+      "findings": []
+    },
+    {
+      "artifactID": 11887372664,
+      "artifactName": "browser-qa-frames-root",
+      "check": "frames",
+      "base": "/",
+      "jobID": 115814544182,
+      "jobName": "Browser QA (frames, /)",
+      "jobLog": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/job-logs/115814544182.log",
+        "sha256": "9bc24d9377dbcf98cf947a064e3bfe387eb635b7d0013a534759bb024ebbc45f"
+      },
+      "zip": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/zips/browser-qa-frames-root.zip",
+        "sha256": "4b5431fca64b478154c90cbd58a31097dd1fc60044b4f083040d15f888e42a53",
+        "apiDigest": "sha256:4b5431fca64b478154c90cbd58a31097dd1fc60044b4f083040d15f888e42a53"
+      },
+      "files": [
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-frames-root/2026-10-14T10-54-37-015Z-3142/frames.json",
+          "sha256": "15bfd3c25b2393228723f6e8c0471d25019cb2eb318e4473844ef12c07178b5f",
+          "sizeBytes": 17394,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-frames-root/2026-10-14T10-54-37-015Z-3142/frames.md",
+          "sha256": "e1ea1d327bf3882f2d0d17dfdae58dd647b28ea923e23642804371cbc4ee68e3",
+          "sizeBytes": 463,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-frames-root/2026-10-14T10-54-37-015Z-3142/summary.json",
+          "sha256": "0fa5e6abb8fddf274dd96c6e7f4416abbae6e1913ae0b2b8d4ad84cf4b8fdf47",
+          "sizeBytes": 19744,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-frames-root/2026-10-14T10-54-37-015Z-3142/summary.md",
+          "sha256": "7dbff903069e91baa91501c50ce43a0111f46e816ab43aa7b73ded0593681483",
+          "sizeBytes": 478,
+          "exactZIPAndExtractedBytes": true
+        }
+      ],
+      "rawSummary": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-frames-root/2026-10-14T10-54-37-015Z-3142/summary.json",
+        "sha256": "0fa5e6abb8fddf274dd96c6e7f4416abbae6e1913ae0b2b8d4ad84cf4b8fdf47"
+      },
+      "rawCheck": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-frames-root/2026-10-14T10-54-37-015Z-3142/frames.json",
+        "sha256": "15bfd3c25b2393228723f6e8c0471d25019cb2eb318e4473844ef12c07178b5f"
+      },
+      "assertions": 24,
+      "falseAssertions": 0,
+      "skipped": [],
+      "runErrors": [],
+      "runnerEvents": 0,
+      "owningTelemetryEvents": 0,
+      "status": "passed",
+      "CLIexit": 0,
+      "checks": {
+        "exactAPIArtifactBinding": true,
+        "ZIPMemberSetExactAndNoPNG": true,
+        "EveryExtractedFileExact": true,
+        "actualJobCheckoutAndCLIReportBinding": true,
+        "rawMatchesCompleteSummary": true,
+        "actualPassedNonemptyExpectedCounts": true,
+        "allSkipsErrorsAndCleanupEmpty": true,
+        "actualMatching156BundledSW": true,
+        "nativeRawTimesWithinActualJob": true,
+        "owningTelemetryEmpty": true
+      },
+      "findings": []
+    },
+    {
+      "artifactID": 11887497368,
+      "artifactName": "browser-qa-layout-github-pages",
+      "check": "layout",
+      "base": "/tmu-course-guides/",
+      "jobID": 115814545007,
+      "jobName": "Browser QA (layout, /tmu-course-guides/)",
+      "jobLog": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/job-logs/115814545007.log",
+        "sha256": "124efa4625cdc3fc43981493075f780ca481e81083cef09ec8763460d4586078"
+      },
+      "zip": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/zips/browser-qa-layout-github-pages.zip",
+        "sha256": "c9110b6454fb7e0b518a30673305894b48b632edc3add18702fc3bb48e1f2b2f",
+        "apiDigest": "sha256:c9110b6454fb7e0b518a30673305894b48b632edc3add18702fc3bb48e1f2b2f"
+      },
+      "files": [
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-layout-github-pages/2026-10-14T10-54-50-133Z-3137/layout.json",
+          "sha256": "b1cc0723871b10d6e6df155bbbab3fd2723cbd2e1732ff398a0356ac2c0e227b",
+          "sizeBytes": 316391,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-layout-github-pages/2026-10-14T10-54-50-133Z-3137/layout.md",
+          "sha256": "7e4f89495931f9523671a80f366b88e3884cd64a0f093d9b07d45d4e7fba4c8c",
+          "sizeBytes": 500,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-layout-github-pages/2026-10-14T10-54-50-133Z-3137/summary.json",
+          "sha256": "162e545a02515580a490b139c5f788f0fabbee1b333205a3fca24f7d97ca3415",
+          "sizeBytes": 359211,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-layout-github-pages/2026-10-14T10-54-50-133Z-3137/summary.md",
+          "sha256": "dbe3fa7c84f0806dbca43164d9b6b7c27d484dc1b6683771ae0a5e5b019fa3fa",
+          "sizeBytes": 496,
+          "exactZIPAndExtractedBytes": true
+        }
+      ],
+      "rawSummary": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-layout-github-pages/2026-10-14T10-54-50-133Z-3137/summary.json",
+        "sha256": "162e545a02515580a490b139c5f788f0fabbee1b333205a3fca24f7d97ca3415"
+      },
+      "rawCheck": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-layout-github-pages/2026-10-14T10-54-50-133Z-3137/layout.json",
+        "sha256": "b1cc0723871b10d6e6df155bbbab3fd2723cbd2e1732ff398a0356ac2c0e227b"
+      },
+      "assertions": 288,
+      "falseAssertions": 0,
+      "skipped": [],
+      "runErrors": [],
+      "runnerEvents": 0,
+      "owningTelemetryEvents": 0,
+      "status": "passed",
+      "CLIexit": 0,
+      "checks": {
+        "exactAPIArtifactBinding": true,
+        "ZIPMemberSetExactAndNoPNG": true,
+        "EveryExtractedFileExact": true,
+        "actualJobCheckoutAndCLIReportBinding": true,
+        "rawMatchesCompleteSummary": true,
+        "actualPassedNonemptyExpectedCounts": true,
+        "allSkipsErrorsAndCleanupEmpty": true,
+        "actualMatching156BundledSW": true,
+        "nativeRawTimesWithinActualJob": true,
+        "owningTelemetryEmpty": true
+      },
+      "findings": []
+    },
+    {
+      "artifactID": 11887542140,
+      "artifactName": "browser-qa-layout-root",
+      "check": "layout",
+      "base": "/",
+      "jobID": 115814544157,
+      "jobName": "Browser QA (layout, /)",
+      "jobLog": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/job-logs/115814544157.log",
+        "sha256": "f541a626cbd52066c40c6303facfb2f1809ea370981fd969228bb6e68e5d5e46"
+      },
+      "zip": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/zips/browser-qa-layout-root.zip",
+        "sha256": "f00b428dc2fdb9d5c7fb2e15ae0f2060d55a57c3d30afb9edb285bf796b0d5de",
+        "apiDigest": "sha256:f00b428dc2fdb9d5c7fb2e15ae0f2060d55a57c3d30afb9edb285bf796b0d5de"
+      },
+      "files": [
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-layout-root/2026-10-14T10-54-34-160Z-2920/layout.json",
+          "sha256": "8652b5f86d93be53f627f9d9c0b3450207396030dd77218e9cd3a19a30e05c02",
+          "sizeBytes": 316355,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-layout-root/2026-10-14T10-54-34-160Z-2920/layout.md",
+          "sha256": "fba3992d0a6a6bce37094822e304af27d360a03a97975f6c895e34df4add05ac",
+          "sizeBytes": 464,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-layout-root/2026-10-14T10-54-34-160Z-2920/summary.json",
+          "sha256": "42097a56c6a365884a5552e054c5ec8174e6ba6b1160e57a0a4d14c78b775e72",
+          "sizeBytes": 359157,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-layout-root/2026-10-14T10-54-34-160Z-2920/summary.md",
+          "sha256": "a749386476f1dc3d8ab59e3bf5c51442982069e6d28cfaea464368a36f91121e",
+          "sizeBytes": 478,
+          "exactZIPAndExtractedBytes": true
+        }
+      ],
+      "rawSummary": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-layout-root/2026-10-14T10-54-34-160Z-2920/summary.json",
+        "sha256": "42097a56c6a365884a5552e054c5ec8174e6ba6b1160e57a0a4d14c78b775e72"
+      },
+      "rawCheck": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-layout-root/2026-10-14T10-54-34-160Z-2920/layout.json",
+        "sha256": "8652b5f86d93be53f627f9d9c0b3450207396030dd77218e9cd3a19a30e05c02"
+      },
+      "assertions": 288,
+      "falseAssertions": 0,
+      "skipped": [],
+      "runErrors": [],
+      "runnerEvents": 0,
+      "owningTelemetryEvents": 0,
+      "status": "passed",
+      "CLIexit": 0,
+      "checks": {
+        "exactAPIArtifactBinding": true,
+        "ZIPMemberSetExactAndNoPNG": true,
+        "EveryExtractedFileExact": true,
+        "actualJobCheckoutAndCLIReportBinding": true,
+        "rawMatchesCompleteSummary": true,
+        "actualPassedNonemptyExpectedCounts": true,
+        "allSkipsErrorsAndCleanupEmpty": true,
+        "actualMatching156BundledSW": true,
+        "nativeRawTimesWithinActualJob": true,
+        "owningTelemetryEmpty": true
+      },
+      "findings": []
+    },
+    {
+      "artifactID": 11887686818,
+      "artifactName": "browser-qa-modes-github-pages",
+      "check": "modes",
+      "base": "/tmu-course-guides/",
+      "jobID": 115814544315,
+      "jobName": "Browser QA (modes, /tmu-course-guides/)",
+      "jobLog": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/job-logs/115814544315.log",
+        "sha256": "83b01f3080a9cda01b8b1506432538e6c82df77098ef775dd1eb1f1d8b5939be"
+      },
+      "zip": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/zips/browser-qa-modes-github-pages.zip",
+        "sha256": "94c1731d42b3a847aa467a56810ea61073f5f827d3f8ea0b5afd8f0f61b895b5",
+        "apiDigest": "sha256:94c1731d42b3a847aa467a56810ea61073f5f827d3f8ea0b5afd8f0f61b895b5"
+      },
+      "files": [
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-modes-github-pages/2026-10-14T10-54-42-698Z-2929/modes.json",
+          "sha256": "b822a60f4435815169fa9869deca7152c6ec2729357c67e355a658aa06b7eb50",
+          "sizeBytes": 3644736,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-modes-github-pages/2026-10-14T10-54-42-698Z-2929/modes.md",
+          "sha256": "49fa7d4e7d014e7ab5672c037c5a1cc6a191ce43ff2c7e3b5cc8601bbf9b7a99",
+          "sizeBytes": 499,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-modes-github-pages/2026-10-14T10-54-42-698Z-2929/summary.json",
+          "sha256": "982e64d06d593f909593eb30b35565b0422c0ebc88d3ec41f4c7762e87841cf5",
+          "sizeBytes": 3950199,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-modes-github-pages/2026-10-14T10-54-42-698Z-2929/summary.md",
+          "sha256": "800ed87d306bb8cc971273002dacd0324ed4eef6ce3da3a1258b52025f7e6822",
+          "sizeBytes": 495,
+          "exactZIPAndExtractedBytes": true
+        }
+      ],
+      "rawSummary": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-modes-github-pages/2026-10-14T10-54-42-698Z-2929/summary.json",
+        "sha256": "982e64d06d593f909593eb30b35565b0422c0ebc88d3ec41f4c7762e87841cf5"
+      },
+      "rawCheck": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-modes-github-pages/2026-10-14T10-54-42-698Z-2929/modes.json",
+        "sha256": "b822a60f4435815169fa9869deca7152c6ec2729357c67e355a658aa06b7eb50"
+      },
+      "assertions": 188,
+      "falseAssertions": 0,
+      "skipped": [],
+      "runErrors": [],
+      "runnerEvents": 0,
+      "owningTelemetryEvents": 0,
+      "status": "passed",
+      "CLIexit": 0,
+      "checks": {
+        "exactAPIArtifactBinding": true,
+        "ZIPMemberSetExactAndNoPNG": true,
+        "EveryExtractedFileExact": true,
+        "actualJobCheckoutAndCLIReportBinding": true,
+        "rawMatchesCompleteSummary": true,
+        "actualPassedNonemptyExpectedCounts": true,
+        "allSkipsErrorsAndCleanupEmpty": true,
+        "actualMatching156BundledSW": true,
+        "nativeRawTimesWithinActualJob": true,
+        "owningTelemetryEmpty": true
+      },
+      "findings": []
+    },
+    {
+      "artifactID": 11888290285,
+      "artifactName": "browser-qa-modes-root",
+      "check": "modes",
+      "base": "/",
+      "jobID": 115814544447,
+      "jobName": "Browser QA (modes, /)",
+      "jobLog": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/job-logs/115814544447.log",
+        "sha256": "b18906b9b108d76f31e075a903fca140fb29b0ddb727d462dd71cac3e5db811b"
+      },
+      "zip": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/zips/browser-qa-modes-root.zip",
+        "sha256": "fa4883dafef6f49f0e1b82b3408d6788cb62a60e7491db97206281a4b325a2c2",
+        "apiDigest": "sha256:fa4883dafef6f49f0e1b82b3408d6788cb62a60e7491db97206281a4b325a2c2"
+      },
+      "files": [
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-modes-root/2026-10-14T10-54-37-491Z-3139/modes.json",
+          "sha256": "28c79964de6611047b51e8f0b36c14b590ca729b6f5c2060e5e6ac186de1f026",
+          "sizeBytes": 3644707,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-modes-root/2026-10-14T10-54-37-491Z-3139/modes.md",
+          "sha256": "ff90bb3f64ce7a5adb0416651ab12c36f2f9e97562d30a2ac988fbf2c0445863",
+          "sizeBytes": 463,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-modes-root/2026-10-14T10-54-37-491Z-3139/summary.json",
+          "sha256": "112ce7714a3527a3c543a5cd23a314abeaddf37650b99d967b35c4343660f226",
+          "sizeBytes": 3950152,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-modes-root/2026-10-14T10-54-37-491Z-3139/summary.md",
+          "sha256": "110c27a66275c134261d23616ecbc61a83e736ff312e09d885ce3e780332f2e8",
+          "sizeBytes": 477,
+          "exactZIPAndExtractedBytes": true
+        }
+      ],
+      "rawSummary": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-modes-root/2026-10-14T10-54-37-491Z-3139/summary.json",
+        "sha256": "112ce7714a3527a3c543a5cd23a314abeaddf37650b99d967b35c4343660f226"
+      },
+      "rawCheck": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-modes-root/2026-10-14T10-54-37-491Z-3139/modes.json",
+        "sha256": "28c79964de6611047b51e8f0b36c14b590ca729b6f5c2060e5e6ac186de1f026"
+      },
+      "assertions": 188,
+      "falseAssertions": 0,
+      "skipped": [],
+      "runErrors": [],
+      "runnerEvents": 0,
+      "owningTelemetryEvents": 0,
+      "status": "passed",
+      "CLIexit": 0,
+      "checks": {
+        "exactAPIArtifactBinding": true,
+        "ZIPMemberSetExactAndNoPNG": true,
+        "EveryExtractedFileExact": true,
+        "actualJobCheckoutAndCLIReportBinding": true,
+        "rawMatchesCompleteSummary": true,
+        "actualPassedNonemptyExpectedCounts": true,
+        "allSkipsErrorsAndCleanupEmpty": true,
+        "actualMatching156BundledSW": true,
+        "nativeRawTimesWithinActualJob": true,
+        "owningTelemetryEmpty": true
+      },
+      "findings": []
+    },
+    {
+      "artifactID": 11887332859,
+      "artifactName": "browser-qa-perf-github-pages",
+      "check": "perf",
+      "base": "/tmu-course-guides/",
+      "jobID": 115814544364,
+      "jobName": "Browser QA (perf, /tmu-course-guides/)",
+      "jobLog": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/job-logs/115814544364.log",
+        "sha256": "4f3fca8fbe6dbf610f43cab036525962c02973bc173d8d08ad5993c65010f0f1"
+      },
+      "zip": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/zips/browser-qa-perf-github-pages.zip",
+        "sha256": "a5a7f62d1d54e4c59b598b5c32bed9d7422394504b033effc8ead3f358c33e31",
+        "apiDigest": "sha256:a5a7f62d1d54e4c59b598b5c32bed9d7422394504b033effc8ead3f358c33e31"
+      },
+      "files": [
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-perf-github-pages/2026-10-14T10-54-38-907Z-3133/perf.json",
+          "sha256": "f67a774f4e498cbc547506216971f4f24e96fdd28b9d3f8fe70e3d1f4572947f",
+          "sizeBytes": 1072940,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-perf-github-pages/2026-10-14T10-54-38-907Z-3133/perf.md",
+          "sha256": "23ab18b60bde1ce645bea7b4065cd6644b2a885e0f070a5beb4045cd8b731613",
+          "sizeBytes": 498,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-perf-github-pages/2026-10-14T10-54-38-907Z-3133/summary.json",
+          "sha256": "aa939643c925d111cce7277e79ff9df524fcf37d150ee0d70ba511a6abd8e577",
+          "sizeBytes": 1170922,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-perf-github-pages/2026-10-14T10-54-38-907Z-3133/summary.md",
+          "sha256": "e5148ff8bde52c9c26f012147d1abac70e52daac96a858c25e64c5de7b336180",
+          "sizeBytes": 494,
+          "exactZIPAndExtractedBytes": true
+        }
+      ],
+      "rawSummary": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-perf-github-pages/2026-10-14T10-54-38-907Z-3133/summary.json",
+        "sha256": "aa939643c925d111cce7277e79ff9df524fcf37d150ee0d70ba511a6abd8e577"
+      },
+      "rawCheck": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-perf-github-pages/2026-10-14T10-54-38-907Z-3133/perf.json",
+        "sha256": "f67a774f4e498cbc547506216971f4f24e96fdd28b9d3f8fe70e3d1f4572947f"
+      },
+      "assertions": 304,
+      "falseAssertions": 0,
+      "skipped": [],
+      "runErrors": [],
+      "runnerEvents": 0,
+      "owningTelemetryEvents": 0,
+      "status": "passed",
+      "CLIexit": 0,
+      "checks": {
+        "exactAPIArtifactBinding": true,
+        "ZIPMemberSetExactAndNoPNG": true,
+        "EveryExtractedFileExact": true,
+        "actualJobCheckoutAndCLIReportBinding": true,
+        "rawMatchesCompleteSummary": true,
+        "actualPassedNonemptyExpectedCounts": true,
+        "allSkipsErrorsAndCleanupEmpty": true,
+        "actualMatching156BundledSW": true,
+        "nativeRawTimesWithinActualJob": true,
+        "coldSettingsExactBaseline": true,
+        "nativeColdSamplesReadyQuietUncappedClean": true,
+        "unchangedNativeBudgetGatesTimingReportOnly": true,
+        "owningTelemetryEmpty": true
+      },
+      "findings": [],
+      "perfSamples": [
+        {
+          "route": "desk",
+          "profile": "phone",
+          "ready": true,
+          "quiet": true,
+          "capped": false,
+          "captureAttempts": 1
+        },
+        {
+          "route": "cen100",
+          "profile": "phone",
+          "ready": true,
+          "quiet": true,
+          "capped": false,
+          "captureAttempts": 1
+        },
+        {
+          "route": "mth140",
+          "profile": "phone",
+          "ready": true,
+          "quiet": true,
+          "capped": false,
+          "captureAttempts": 1
+        },
+        {
+          "route": "mth141",
+          "profile": "phone",
+          "ready": true,
+          "quiet": true,
+          "capped": false,
+          "captureAttempts": 1
+        },
+        {
+          "route": "desk",
+          "profile": "desktop",
+          "ready": true,
+          "quiet": true,
+          "capped": false,
+          "captureAttempts": 1
+        },
+        {
+          "route": "cen100",
+          "profile": "desktop",
+          "ready": true,
+          "quiet": true,
+          "capped": false,
+          "captureAttempts": 1
+        },
+        {
+          "route": "mth140",
+          "profile": "desktop",
+          "ready": true,
+          "quiet": true,
+          "capped": false,
+          "captureAttempts": 1
+        },
+        {
+          "route": "mth141",
+          "profile": "desktop",
+          "ready": true,
+          "quiet": true,
+          "capped": false,
+          "captureAttempts": 1
+        }
+      ]
+    },
+    {
+      "artifactID": 11887158618,
+      "artifactName": "browser-qa-perf-root",
+      "check": "perf",
+      "base": "/",
+      "jobID": 115814544328,
+      "jobName": "Browser QA (perf, /)",
+      "jobLog": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/job-logs/115814544328.log",
+        "sha256": "1d57b38287922e3edcaa282792f11c952d8fd6108ad5fe494dcacd14becc326e"
+      },
+      "zip": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/zips/browser-qa-perf-root.zip",
+        "sha256": "f05464eb0e6ccd53024380111cafda168f95b379d3a3df75b4d06d8926761b6d",
+        "apiDigest": "sha256:f05464eb0e6ccd53024380111cafda168f95b379d3a3df75b4d06d8926761b6d"
+      },
+      "files": [
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-perf-root/2026-10-14T10-54-49-652Z-2943/perf.json",
+          "sha256": "16c509caa66182c25db6e36648e7bfa3d081b58993386af009776c7e99dedf4c",
+          "sizeBytes": 1003691,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-perf-root/2026-10-14T10-54-49-652Z-2943/perf.md",
+          "sha256": "51389e236cc4540f2fdc4d5fb67cf769a495ae19efce1dc9def5cc67f5f95cf8",
+          "sizeBytes": 462,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-perf-root/2026-10-14T10-54-49-652Z-2943/summary.json",
+          "sha256": "3e251c7b3fe819e190c7ad66f44bedb59afd2d5af2efbb4c64110fbc1906a728",
+          "sizeBytes": 1101207,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-perf-root/2026-10-14T10-54-49-652Z-2943/summary.md",
+          "sha256": "f9476abfa3b535bc0ed3e85ee32816e1c71691f68ac1886c03b4f1ab57e37eb6",
+          "sizeBytes": 476,
+          "exactZIPAndExtractedBytes": true
+        }
+      ],
+      "rawSummary": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-perf-root/2026-10-14T10-54-49-652Z-2943/summary.json",
+        "sha256": "3e251c7b3fe819e190c7ad66f44bedb59afd2d5af2efbb4c64110fbc1906a728"
+      },
+      "rawCheck": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-perf-root/2026-10-14T10-54-49-652Z-2943/perf.json",
+        "sha256": "16c509caa66182c25db6e36648e7bfa3d081b58993386af009776c7e99dedf4c"
+      },
+      "assertions": 304,
+      "falseAssertions": 0,
+      "skipped": [],
+      "runErrors": [],
+      "runnerEvents": 0,
+      "owningTelemetryEvents": 0,
+      "status": "passed",
+      "CLIexit": 0,
+      "checks": {
+        "exactAPIArtifactBinding": true,
+        "ZIPMemberSetExactAndNoPNG": true,
+        "EveryExtractedFileExact": true,
+        "actualJobCheckoutAndCLIReportBinding": true,
+        "rawMatchesCompleteSummary": true,
+        "actualPassedNonemptyExpectedCounts": true,
+        "allSkipsErrorsAndCleanupEmpty": true,
+        "actualMatching156BundledSW": true,
+        "nativeRawTimesWithinActualJob": true,
+        "coldSettingsExactBaseline": true,
+        "nativeColdSamplesReadyQuietUncappedClean": true,
+        "unchangedNativeBudgetGatesTimingReportOnly": true,
+        "owningTelemetryEmpty": true
+      },
+      "findings": [],
+      "perfSamples": [
+        {
+          "route": "desk",
+          "profile": "phone",
+          "ready": true,
+          "quiet": true,
+          "capped": false,
+          "captureAttempts": 1
+        },
+        {
+          "route": "cen100",
+          "profile": "phone",
+          "ready": true,
+          "quiet": true,
+          "capped": false,
+          "captureAttempts": 1
+        },
+        {
+          "route": "mth140",
+          "profile": "phone",
+          "ready": true,
+          "quiet": true,
+          "capped": false,
+          "captureAttempts": 1
+        },
+        {
+          "route": "mth141",
+          "profile": "phone",
+          "ready": true,
+          "quiet": true,
+          "capped": false,
+          "captureAttempts": 1
+        },
+        {
+          "route": "desk",
+          "profile": "desktop",
+          "ready": true,
+          "quiet": true,
+          "capped": false,
+          "captureAttempts": 1
+        },
+        {
+          "route": "cen100",
+          "profile": "desktop",
+          "ready": true,
+          "quiet": true,
+          "capped": false,
+          "captureAttempts": 1
+        },
+        {
+          "route": "mth140",
+          "profile": "desktop",
+          "ready": true,
+          "quiet": true,
+          "capped": false,
+          "captureAttempts": 1
+        },
+        {
+          "route": "mth141",
+          "profile": "desktop",
+          "ready": true,
+          "quiet": true,
+          "capped": false,
+          "captureAttempts": 1
+        }
+      ]
+    },
+    {
+      "artifactID": 11887905365,
+      "artifactName": "browser-qa-routes-github-pages",
+      "check": "routes",
+      "base": "/tmu-course-guides/",
+      "jobID": 115814544296,
+      "jobName": "Browser QA (routes, /tmu-course-guides/)",
+      "jobLog": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/job-logs/115814544296.log",
+        "sha256": "0a2c733e8937b74fc2234ce9aaabda47891e366479adea1a83dd4ee24617a7a6"
+      },
+      "zip": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/zips/browser-qa-routes-github-pages.zip",
+        "sha256": "debcbdb289c5c31b6d3d2221867e646619676297e965458bae9a2df37bf4f6e8",
+        "apiDigest": "sha256:debcbdb289c5c31b6d3d2221867e646619676297e965458bae9a2df37bf4f6e8"
+      },
+      "files": [
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-routes-github-pages/2026-10-14T10-54-35-343Z-3141/routes.json",
+          "sha256": "8d891ca41a5266353fddb65cd627196cb344bbba4b9b0f9c4a2bef0e033c0fde",
+          "sizeBytes": 24001,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-routes-github-pages/2026-10-14T10-54-35-343Z-3141/routes.md",
+          "sha256": "5417152d3b9739138f5455e3b11c8d2ba9fb1acb635c824107c8af4683a5a7b3",
+          "sizeBytes": 499,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-routes-github-pages/2026-10-14T10-54-35-343Z-3141/summary.json",
+          "sha256": "5ae9c2570639cc50a2818c7de09805a83f8fe4a8f954887789b2749e54d8cd35",
+          "sizeBytes": 27053,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-routes-github-pages/2026-10-14T10-54-35-343Z-3141/summary.md",
+          "sha256": "cdbb97ccc946d1ef00fe0df91924020a3c851670b7dba30eca1c6eb3fed59efb",
+          "sizeBytes": 496,
+          "exactZIPAndExtractedBytes": true
+        }
+      ],
+      "rawSummary": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-routes-github-pages/2026-10-14T10-54-35-343Z-3141/summary.json",
+        "sha256": "5ae9c2570639cc50a2818c7de09805a83f8fe4a8f954887789b2749e54d8cd35"
+      },
+      "rawCheck": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-routes-github-pages/2026-10-14T10-54-35-343Z-3141/routes.json",
+        "sha256": "8d891ca41a5266353fddb65cd627196cb344bbba4b9b0f9c4a2bef0e033c0fde"
+      },
+      "assertions": 60,
+      "falseAssertions": 0,
+      "skipped": [],
+      "runErrors": [],
+      "runnerEvents": 0,
+      "owningTelemetryEvents": 0,
+      "status": "passed",
+      "CLIexit": 0,
+      "checks": {
+        "exactAPIArtifactBinding": true,
+        "ZIPMemberSetExactAndNoPNG": true,
+        "EveryExtractedFileExact": true,
+        "actualJobCheckoutAndCLIReportBinding": true,
+        "rawMatchesCompleteSummary": true,
+        "actualPassedNonemptyExpectedCounts": true,
+        "allSkipsErrorsAndCleanupEmpty": true,
+        "actualMatching156BundledSW": true,
+        "nativeRawTimesWithinActualJob": true,
+        "owningTelemetryEmpty": true
+      },
+      "findings": []
+    },
+    {
+      "artifactID": 11887417260,
+      "artifactName": "browser-qa-routes-root",
+      "check": "routes",
+      "base": "/",
+      "jobID": 115814544230,
+      "jobName": "Browser QA (routes, /)",
+      "jobLog": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/job-logs/115814544230.log",
+        "sha256": "e4c987c550b1a417d817256d41a30113b763bb75be9e23a01344e2067eb17472"
+      },
+      "zip": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/zips/browser-qa-routes-root.zip",
+        "sha256": "4bcd14535bf8f3cc2b838888979866e9dc9bf41bb49098bf11c5df5206f41908",
+        "apiDigest": "sha256:4bcd14535bf8f3cc2b838888979866e9dc9bf41bb49098bf11c5df5206f41908"
+      },
+      "files": [
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-routes-root/2026-10-14T10-54-36-753Z-2928/routes.json",
+          "sha256": "a2d0f524e653f424bb0eada3d34e5af5938b5c5b71f772940c8a5b5d4c3a2770",
+          "sizeBytes": 23461,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-routes-root/2026-10-14T10-54-36-753Z-2928/routes.md",
+          "sha256": "745f8f39c2bdac2b33e4819aad241b33a05218e631bf6cfae8592ee8ec953dc0",
+          "sizeBytes": 463,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-routes-root/2026-10-14T10-54-36-753Z-2928/summary.json",
+          "sha256": "2068c8de4451060ac425a8ddd7f5335425320991f7329d953dce21eca79eb3ac",
+          "sizeBytes": 26495,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-routes-root/2026-10-14T10-54-36-753Z-2928/summary.md",
+          "sha256": "6f4588cfc4a7e6bb7859c026682c8fc835d45002b18aa77b189630c97fbf650f",
+          "sizeBytes": 478,
+          "exactZIPAndExtractedBytes": true
+        }
+      ],
+      "rawSummary": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-routes-root/2026-10-14T10-54-36-753Z-2928/summary.json",
+        "sha256": "2068c8de4451060ac425a8ddd7f5335425320991f7329d953dce21eca79eb3ac"
+      },
+      "rawCheck": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-routes-root/2026-10-14T10-54-36-753Z-2928/routes.json",
+        "sha256": "a2d0f524e653f424bb0eada3d34e5af5938b5c5b71f772940c8a5b5d4c3a2770"
+      },
+      "assertions": 60,
+      "falseAssertions": 0,
+      "skipped": [],
+      "runErrors": [],
+      "runnerEvents": 0,
+      "owningTelemetryEvents": 0,
+      "status": "passed",
+      "CLIexit": 0,
+      "checks": {
+        "exactAPIArtifactBinding": true,
+        "ZIPMemberSetExactAndNoPNG": true,
+        "EveryExtractedFileExact": true,
+        "actualJobCheckoutAndCLIReportBinding": true,
+        "rawMatchesCompleteSummary": true,
+        "actualPassedNonemptyExpectedCounts": true,
+        "allSkipsErrorsAndCleanupEmpty": true,
+        "actualMatching156BundledSW": true,
+        "nativeRawTimesWithinActualJob": true,
+        "owningTelemetryEmpty": true
+      },
+      "findings": []
+    },
+    {
+      "artifactID": 11887397879,
+      "artifactName": "browser-qa-stability-github-pages",
+      "check": "stability",
+      "base": "/tmu-course-guides/",
+      "jobID": 115814544330,
+      "jobName": "Browser QA (stability, /tmu-course-guides/)",
+      "jobLog": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/job-logs/115814544330.log",
+        "sha256": "ada5df4a188bd60f9afbf3c8357aac7c28bd819f0f9e09f916d50e90c39679ba"
+      },
+      "zip": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/zips/browser-qa-stability-github-pages.zip",
+        "sha256": "878c32c2181aa4a3ba0136139500fbf3828f172c687df5b98c3394ca00c376db",
+        "apiDigest": "sha256:878c32c2181aa4a3ba0136139500fbf3828f172c687df5b98c3394ca00c376db"
+      },
+      "files": [
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-stability-github-pages/2026-10-14T10-54-37-189Z-3140/stability.json",
+          "sha256": "c9c4f8194bf121037d9e4b841f16b710bab7bc3bec7f1cb0a10d35b2991fc6e7",
+          "sizeBytes": 103245,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-stability-github-pages/2026-10-14T10-54-37-189Z-3140/stability.md",
+          "sha256": "fdb1300c46f0558a2c74ab29dbb1287630f5149f260239a6275caa5ea8bd03af",
+          "sizeBytes": 502,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-stability-github-pages/2026-10-14T10-54-37-189Z-3140/summary.json",
+          "sha256": "8b7eb59bb0105fe89cb528901d52191617a6131e6d0dd7b76f7c5b23dcfe15ba",
+          "sizeBytes": 113288,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-stability-github-pages/2026-10-14T10-54-37-189Z-3140/summary.md",
+          "sha256": "99a3a33eb2a670c53c09ab3e0a1a15ba28ac5996095ead1ffb57c0b0cfe38aff",
+          "sizeBytes": 499,
+          "exactZIPAndExtractedBytes": true
+        }
+      ],
+      "rawSummary": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-stability-github-pages/2026-10-14T10-54-37-189Z-3140/summary.json",
+        "sha256": "8b7eb59bb0105fe89cb528901d52191617a6131e6d0dd7b76f7c5b23dcfe15ba"
+      },
+      "rawCheck": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-stability-github-pages/2026-10-14T10-54-37-189Z-3140/stability.json",
+        "sha256": "c9c4f8194bf121037d9e4b841f16b710bab7bc3bec7f1cb0a10d35b2991fc6e7"
+      },
+      "assertions": 45,
+      "falseAssertions": 0,
+      "skipped": [],
+      "runErrors": [],
+      "runnerEvents": 0,
+      "owningTelemetryEvents": 0,
+      "status": "passed",
+      "CLIexit": 0,
+      "checks": {
+        "exactAPIArtifactBinding": true,
+        "ZIPMemberSetExactAndNoPNG": true,
+        "EveryExtractedFileExact": true,
+        "actualJobCheckoutAndCLIReportBinding": true,
+        "rawMatchesCompleteSummary": true,
+        "actualPassedNonemptyExpectedCounts": true,
+        "allSkipsErrorsAndCleanupEmpty": true,
+        "actualMatching156BundledSW": true,
+        "nativeRawTimesWithinActualJob": true,
+        "owningTelemetryEmpty": true
+      },
+      "findings": []
+    },
+    {
+      "artifactID": 11887123668,
+      "artifactName": "browser-qa-stability-root",
+      "check": "stability",
+      "base": "/",
+      "jobID": 115814544121,
+      "jobName": "Browser QA (stability, /)",
+      "jobLog": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/job-logs/115814544121.log",
+        "sha256": "646ecdaf696361d717172fd76fe8fe9145368d310155c8c806659b976b8164c4"
+      },
+      "zip": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/zips/browser-qa-stability-root.zip",
+        "sha256": "db67f765847e98e84816e0e6efc199d3ce3a329adb09aede74cd593ce42cb9be",
+        "apiDigest": "sha256:db67f765847e98e84816e0e6efc199d3ce3a329adb09aede74cd593ce42cb9be"
+      },
+      "files": [
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-stability-root/2026-10-14T10-54-33-402Z-2934/stability.json",
+          "sha256": "88dcd5d25054de8a9f3d98a9465546840d20a10aad78dc79b47ed947ff1be1a8",
+          "sizeBytes": 103209,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-stability-root/2026-10-14T10-54-33-402Z-2934/stability.md",
+          "sha256": "b2a85efce78b94cc889976e3a676011202aeab8c0b5e8d8f48c5e08a9b9f004c",
+          "sizeBytes": 466,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-stability-root/2026-10-14T10-54-33-402Z-2934/summary.json",
+          "sha256": "3d53c455963e339d09c88f6ffa9291aadfaa1fdd94cdd2fe492022a49261e2e1",
+          "sizeBytes": 113234,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-stability-root/2026-10-14T10-54-33-402Z-2934/summary.md",
+          "sha256": "48b2830f688f03d66c52c0b22e92a7ded1dd42f55196e4fe41e3ef47e2f58179",
+          "sizeBytes": 481,
+          "exactZIPAndExtractedBytes": true
+        }
+      ],
+      "rawSummary": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-stability-root/2026-10-14T10-54-33-402Z-2934/summary.json",
+        "sha256": "3d53c455963e339d09c88f6ffa9291aadfaa1fdd94cdd2fe492022a49261e2e1"
+      },
+      "rawCheck": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-stability-root/2026-10-14T10-54-33-402Z-2934/stability.json",
+        "sha256": "88dcd5d25054de8a9f3d98a9465546840d20a10aad78dc79b47ed947ff1be1a8"
+      },
+      "assertions": 45,
+      "falseAssertions": 0,
+      "skipped": [],
+      "runErrors": [],
+      "runnerEvents": 0,
+      "owningTelemetryEvents": 0,
+      "status": "passed",
+      "CLIexit": 0,
+      "checks": {
+        "exactAPIArtifactBinding": true,
+        "ZIPMemberSetExactAndNoPNG": true,
+        "EveryExtractedFileExact": true,
+        "actualJobCheckoutAndCLIReportBinding": true,
+        "rawMatchesCompleteSummary": true,
+        "actualPassedNonemptyExpectedCounts": true,
+        "allSkipsErrorsAndCleanupEmpty": true,
+        "actualMatching156BundledSW": true,
+        "nativeRawTimesWithinActualJob": true,
+        "owningTelemetryEmpty": true
+      },
+      "findings": []
+    },
+    {
+      "artifactID": 11887731689,
+      "artifactName": "browser-qa-webkit-github-pages",
+      "check": "webkit",
+      "base": "/tmu-course-guides/",
+      "jobID": 115814544074,
+      "jobName": "WebKit QA (/tmu-course-guides/)",
+      "jobLog": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/job-logs/115814544074.log",
+        "sha256": "87ebcb0508074736e023826516fc289671cf6b3d85bf4d6413ac6e9bf425f804"
+      },
+      "zip": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/zips/browser-qa-webkit-github-pages.zip",
+        "sha256": "9620c89969f3b89d58a6a53fd4a8edc50fab09bbf3a10ae64ada92516e9f85a4",
+        "apiDigest": "sha256:9620c89969f3b89d58a6a53fd4a8edc50fab09bbf3a10ae64ada92516e9f85a4"
+      },
+      "files": [
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-webkit-github-pages/2026-10-14T10-55-16-243Z-5256/summary.json",
+          "sha256": "6569318d9b4b4abec91f7ab1b8c18982d0980b7fbd0ffea1911d0369d9fb6ba6",
+          "sizeBytes": 575396,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-webkit-github-pages/2026-10-14T10-55-16-243Z-5256/summary.md",
+          "sha256": "970792cbd1e4b4a8226c5835c3065f8c4363378fac0c63a20f0a7db820ff274c",
+          "sizeBytes": 496,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-webkit-github-pages/2026-10-14T10-55-16-243Z-5256/webkit.json",
+          "sha256": "8df08e21708b5d33231b4f399c883791a1f79b4297be442a7cd643a4fe08dece",
+          "sizeBytes": 512952,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-webkit-github-pages/2026-10-14T10-55-16-243Z-5256/webkit.md",
+          "sha256": "d283fe16ed85ef5992a8e8c5461811c1bfeb447dafc300e5b58474785481a2de",
+          "sizeBytes": 500,
+          "exactZIPAndExtractedBytes": true
+        }
+      ],
+      "rawSummary": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-webkit-github-pages/2026-10-14T10-55-16-243Z-5256/summary.json",
+        "sha256": "6569318d9b4b4abec91f7ab1b8c18982d0980b7fbd0ffea1911d0369d9fb6ba6"
+      },
+      "rawCheck": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-webkit-github-pages/2026-10-14T10-55-16-243Z-5256/webkit.json",
+        "sha256": "8df08e21708b5d33231b4f399c883791a1f79b4297be442a7cd643a4fe08dece"
+      },
+      "assertions": 664,
+      "falseAssertions": 0,
+      "skipped": [],
+      "runErrors": [],
+      "runnerEvents": 0,
+      "owningTelemetryEvents": 0,
+      "status": "passed",
+      "CLIexit": 0,
+      "checks": {
+        "exactAPIArtifactBinding": true,
+        "ZIPMemberSetExactAndNoPNG": true,
+        "EveryExtractedFileExact": true,
+        "actualJobCheckoutAndCLIReportBinding": true,
+        "rawMatchesCompleteSummary": true,
+        "actualPassedNonemptyExpectedCounts": true,
+        "allSkipsErrorsAndCleanupEmpty": true,
+        "actualMatching156BundledSW": true,
+        "nativeRawTimesWithinActualJob": true,
+        "actualWebKitExecutedNoAvailabilitySkip": true,
+        "owningTelemetryEmpty": true
+      },
+      "findings": [],
+      "actualWebKit": {
+        "name": "WebKit",
+        "version": "27.2",
+        "iphone": {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screen": {
+            "width": 390,
+            "height": 844
+          },
+          "deviceScaleFactor": 3,
+          "isMobile": true,
+          "hasTouch": true
+        }
+      },
+      "scopes": [
+        "iPhone 390px touch DPR3 routes",
+        "iPhone 390px touch DPR3 deadlines",
+        "desktop 1440px routes",
+        "desktop 1440px deadlines",
+        "WebKit existing layout matrix (390 touch DPR3; 1024 and 1440 desktop)"
+      ]
+    },
+    {
+      "artifactID": 11887682143,
+      "artifactName": "browser-qa-webkit-root",
+      "check": "webkit",
+      "base": "/",
+      "jobID": 115814543729,
+      "jobName": "WebKit QA (/)",
+      "jobLog": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/job-logs/115814543729.log",
+        "sha256": "feb25c4d077f0ec833a6930ff844f92c3121d693954f7b5e95f2165df84730e3"
+      },
+      "zip": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/zips/browser-qa-webkit-root.zip",
+        "sha256": "ef753e2aa4df4d03cf07500175cb68cb085a0ea85b35b72775d9d426003b44bd",
+        "apiDigest": "sha256:ef753e2aa4df4d03cf07500175cb68cb085a0ea85b35b72775d9d426003b44bd"
+      },
+      "files": [
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-webkit-root/2026-10-14T10-55-44-496Z-5278/summary.json",
+          "sha256": "18b1f12f8399afa3783b32f1902e7b55402081e57f25d3c6b1f831a400a24b8d",
+          "sizeBytes": 574192,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-webkit-root/2026-10-14T10-55-44-496Z-5278/summary.md",
+          "sha256": "f66809b83b548b75f94c099ed9c5a615a56a0adb5fd9ff9aa25bb1a0cedf5b6b",
+          "sizeBytes": 478,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-webkit-root/2026-10-14T10-55-44-496Z-5278/webkit.json",
+          "sha256": "cf1f89aacfbbbab55aad5f115536be3c520d9d1fd35faed47fe1610e5a5e51dd",
+          "sizeBytes": 511766,
+          "exactZIPAndExtractedBytes": true
+        },
+        {
+          "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-webkit-root/2026-10-14T10-55-44-496Z-5278/webkit.md",
+          "sha256": "860d3d03cc6e7205b3470837fe691ff0b8453a750c81c8a4ba5ed1b602150ffa",
+          "sizeBytes": 464,
+          "exactZIPAndExtractedBytes": true
+        }
+      ],
+      "rawSummary": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-webkit-root/2026-10-14T10-55-44-496Z-5278/summary.json",
+        "sha256": "18b1f12f8399afa3783b32f1902e7b55402081e57f25d3c6b1f831a400a24b8d"
+      },
+      "rawCheck": {
+        "path": "/tmp/ns-perf-ci-f9a46-run-38552794234/downloads/browser-qa-webkit-root/2026-10-14T10-55-44-496Z-5278/webkit.json",
+        "sha256": "cf1f89aacfbbbab55aad5f115536be3c520d9d1fd35faed47fe1610e5a5e51dd"
+      },
+      "assertions": 664,
+      "falseAssertions": 0,
+      "skipped": [],
+      "runErrors": [],
+      "runnerEvents": 0,
+      "owningTelemetryEvents": 0,
+      "status": "passed",
+      "CLIexit": 0,
+      "checks": {
+        "exactAPIArtifactBinding": true,
+        "ZIPMemberSetExactAndNoPNG": true,
+        "EveryExtractedFileExact": true,
+        "actualJobCheckoutAndCLIReportBinding": true,
+        "rawMatchesCompleteSummary": true,
+        "actualPassedNonemptyExpectedCounts": true,
+        "allSkipsErrorsAndCleanupEmpty": true,
+        "actualMatching156BundledSW": true,
+        "nativeRawTimesWithinActualJob": true,
+        "actualWebKitExecutedNoAvailabilitySkip": true,
+        "owningTelemetryEmpty": true
+      },
+      "findings": [],
+      "actualWebKit": {
+        "name": "WebKit",
+        "version": "27.2",
+        "iphone": {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screen": {
+            "width": 390,
+            "height": 844
+          },
+          "deviceScaleFactor": 3,
+          "isMobile": true,
+          "hasTouch": true
+        }
+      },
+      "scopes": [
+        "iPhone 390px touch DPR3 routes",
+        "iPhone 390px touch DPR3 deadlines",
+        "desktop 1440px routes",
+        "desktop 1440px deadlines",
+        "WebKit existing layout matrix (390 touch DPR3; 1024 and 1440 desktop)"
+      ]
+    }
+  ],
+  "counts": {
+    "jobs": 18,
+    "browserCheckRecords": 16,
+    "coreBrowserRecords": 14,
+    "webkitRecords": 2,
+    "coreAssertions": 2074,
+    "webkitAssertions": 1328,
+    "allBrowserAssertions": 3402,
+    "failedBrowserAssertions": 0,
+    "browserSkipEntries": 0,
+    "browserRunnerEvents": 0,
+    "rootCITotalTests": 415,
+    "rootCIPass": 414,
+    "rootCIFail": 0,
+    "rootCISkip": 1
+  },
+  "findings": [],
+  "notes": [
+    "All16 ZIPs independently match the exact GitHub API digests;64 extracted JSON/Markdown files match both ZIP payload and recorded hashes. No PNG was read.",
+    "Each browser job log was independently read for actual checkoutSHA, pinned1.64 install/browser version, native CLI, QA_BASE/check, and exact native report directory; API job/run/artifact identities agree.",
+    "full-run.log retains only root/UI logs. CI root is414pass/1skip out of415, not local415/415. The one optional rail-caption Playwright root-test skip remains honest.",
+    "WebKit27.2 executed664 assertions at eachbase, no skipped availability record; its Chromium environment probe remains separately identified.",
+    "CI perf uses identical keyed cold settings and unchanged native request/byte/import gates; CI measurements do not replace the paired1.57 before/after performance artifacts.",
+    "Legacy complete local FAILED12 and stopped supported/local counterfactual failures remain unchanged; current CI success establishes no causal explanation or generic event waiver."
+  ],
+  "limits": [
+    "No browser/test/import/repository mutation or PNG/heavy work by reviewer. This private JSON only.",
+    "Run logs/API metadata and sourceblob identity bind CI source; no new CI runtime source fingerprint was invented. Product/protected equivalence follows unchanged scoped sources since the independently fingerprinted d611 checkpoint.",
+    "No CI evidence exists here for nojs,bfcache,failures,crosstab,clock,forward; those checks and native conditional gaps remain their actual separately recorded local scopes.",
+    "Actual remote resource closure is evidenced by completed successful native runs/jobs and no cleanup errors, not a local process/port probe."
+  ]
+}

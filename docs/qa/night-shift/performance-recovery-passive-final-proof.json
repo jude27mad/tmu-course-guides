@@ -1,0 +1,1649 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T06:41:18.992Z",
+  "reviewer": "/root/latest_source_review",
+  "status": "genuine-whole-BFCache-and-failures-followups-passed",
+  "gates": {
+    "normalHarnessPassed": true,
+    "exactWholeSelection": true,
+    "allFourWholeRecordsPassed": true,
+    "sourcesAndProductUnchanged": true,
+    "driverUnchanged157": true,
+    "sourceCapturedBeforeActualStart": true,
+    "postCapturedAfterCompletion": true,
+    "traceSavedAfterOrdinaryClosure": true,
+    "frozenRunnerMatchesReviewed": true,
+    "noDiagnosticsErrors": true,
+    "noDroppedRows": true,
+    "noNewBFCacheCDPSessions": true,
+    "allNewUnexpectedTelemetryAbsent": true,
+    "noReproducedAborts": true,
+    "noRejectedEvaluateOrLocatorCalls": true,
+    "closureObserved": true
+  },
+  "rawRun": {
+    "directory": "tools/qa/reports/2026-10-14T06-20-53-360Z-143242",
+    "startedAt": "2026-10-14T06:20:53.360Z",
+    "completedAt": "2026-10-14T06:33:58.939Z",
+    "status": "passed",
+    "exitCode": 0,
+    "failures": 0,
+    "errors": [],
+    "assertions": 216,
+    "caseRecords": 4
+  },
+  "bindings": [
+    {
+      "path": "tools/qa/reports/2026-10-14T06-20-53-360Z-143242/summary.json",
+      "sha256": "24ebe7418252229d6a039ecf549618f1b639cce0e9e87b0f3a45414b95d6b285"
+    },
+    {
+      "path": "tools/qa/reports/2026-10-14T06-20-53-360Z-143242/bfcache.json",
+      "sha256": "5f796be1a783cd2ce8479ce35e05989696b8e68f98fcb121645d98a025f57a30"
+    },
+    {
+      "path": "tools/qa/reports/2026-10-14T06-20-53-360Z-143242/failures.json",
+      "sha256": "0b791630ab31ed0fd0f4bc1868604ac076b39115b9c5b77e559c184be4c5089c"
+    },
+    {
+      "path": "/tmp/ns-perf-aa7-passive-followups-traces.json",
+      "sha256": "43f3c9ede156a47b3123154d57ad00999a997b69c58f95cbaf2171442ac09a50"
+    },
+    {
+      "path": "/tmp/ns-perf-passive-followups.mjs",
+      "sha256": "0f98ba0db2fc3b717fe161c8bb6e41fa0f48b02147a31e0ad28af72f42f5aafe"
+    },
+    {
+      "path": "/tmp/ns-perf-passive-followups-mechanical-proof.json",
+      "sha256": "04cfb4afcf93d59413d2d645037b8a537189e3546ea4a4127aa19edb2fa7d348"
+    },
+    {
+      "path": "/tmp/ns-perf-passive-followups-peer-review.json",
+      "sha256": "4770f0d76160a4a54c82fc9dc47b04274ed300a48e373a996bc7ddb35ed8ce69"
+    },
+    {
+      "path": "/tmp/ns-perf-aa7-passive-followups.log",
+      "sha256": "f8cd0d8299df47929ba9339df8c7edc16f68929116ec6013c501790fcf272da2"
+    },
+    {
+      "path": "/tmp/ns-perf-aa7-passive-followups-source-before-bound.json",
+      "sha256": "aad5051413617ff188f835eee4afbd38de3836324a82fcd6bb5d79bca2663b5f"
+    },
+    {
+      "path": "/tmp/ns-perf-aa7-passive-followups-source-after.json",
+      "sha256": "05e2d2dfe56ca21982ea00d93718da588232a2e4ba018a809aedf8ddffcfe15a"
+    },
+    {
+      "path": "/tmp/ns-perf-aa7-passive-followups-resource-closure.json",
+      "sha256": "d1057a078b701352e6d7266ef03c6e569521f825080a40d0359ee671b845611e"
+    }
+  ],
+  "source": {
+    "before": {
+      "recordedAt": "2026-10-14T06:20:42.882Z",
+      "runDirectory": "tools/qa/reports/2026-10-14T06-20-53-360Z-143242",
+      "repositoryCommit": "322534822e9ac7c6d6cf5442f46210f0d20a28aa",
+      "productFingerprint": "1795468f427084977fac5a0707eef0b14e461c8d2041cb9c6d1e0315de48851f",
+      "protectedFingerprint": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+      "sources": [
+        {
+          "path": "tools/qa/checks-resilience.mjs",
+          "sha256": "db77a8d9fa49683f6370c87fc1794dbec247bc3c95cf524fee1d5d58d12e0de8"
+        },
+        {
+          "path": "tools/qa/checks.mjs",
+          "sha256": "e1cc6550f304cd30d092cfcc34a78548365ce3c9b06e2f9ea6b53f1c1deee9ca"
+        },
+        {
+          "path": "tools/qa/checks-perf.mjs",
+          "sha256": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657"
+        },
+        {
+          "path": "tools/qa/runtime.mjs",
+          "sha256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587"
+        },
+        {
+          "path": "tools/qa/instrument.mjs",
+          "sha256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892"
+        }
+      ],
+      "launchEnvironment": {
+        "PLAYWRIGHT_PATH": "/opt/codex/cua_node/lib/node_modules/playwright",
+        "QA_CHROMIUM_PATH": "/usr/bin/chromium",
+        "QA_PERF_RECORD": null,
+        "QA_GPU": "0",
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules"
+      },
+      "loader": {
+        "modulePath": "/opt/codex/cua_node/lib/node_modules/playwright",
+        "source": "PLAYWRIGHT_PATH"
+      },
+      "driverIdentity": {
+        "playwright": {
+          "name": "playwright",
+          "version": "1.57.0",
+          "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright",
+          "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright/package.json",
+          "packageSHA256": "07726a5a20b29123d85311af7d11b7de6bf00ddd03121d3c9061995043ebd261",
+          "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright/index.js",
+          "entrySHA256": "4e98f65f0a9d9bcab8cffc0c5cfdd87fd3f5b0be74fc494ff166a466b204cd44"
+        },
+        "core": {
+          "name": "playwright-core",
+          "version": "1.57.0",
+          "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright-core",
+          "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright-core/package.json",
+          "packageSHA256": "6d38907778eb872e37e8da93b430b011c3dfbe8848c4214becb7effdc0aff1d6",
+          "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright-core/index.js",
+          "entrySHA256": "a4f83b5b2915b43bddd5384d963a66d1fd4d978a3db8059969fb78de65bc519a"
+        }
+      },
+      "launchOptions": {
+        "headless": true,
+        "executablePath": "/usr/bin/chromium",
+        "args": [
+          "--use-angle=swiftshader",
+          "--enable-unsafe-swiftshader",
+          "--ignore-gpu-blocklist"
+        ]
+      },
+      "note": "AA7 follow-up actual source capture; 1.57 driver with explicit software Chromium. No browser launched by this capture. Run metadata must independently bind check and phase. Source captured before actual harness start; bound to first genuine raw report without changing recordedAt.",
+      "startedAt": "2026-10-14T06:20:53.360Z",
+      "boundAt": "2026-10-14T06:24:54.131Z",
+      "beforeEvidence": {
+        "path": "/tmp/ns-perf-aa7-passive-followups-source-before.json",
+        "sha256": "de0afe7f80ab7b86577c67f057d2f77a0282579abb76403f7d22f055b41e9921"
+      }
+    },
+    "after": {
+      "recordedAt": "2026-10-14T06:34:15.896Z",
+      "runDirectory": null,
+      "repositoryCommit": "322534822e9ac7c6d6cf5442f46210f0d20a28aa",
+      "productFingerprint": "1795468f427084977fac5a0707eef0b14e461c8d2041cb9c6d1e0315de48851f",
+      "protectedFingerprint": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+      "sources": [
+        {
+          "path": "tools/qa/checks-resilience.mjs",
+          "sha256": "db77a8d9fa49683f6370c87fc1794dbec247bc3c95cf524fee1d5d58d12e0de8"
+        },
+        {
+          "path": "tools/qa/checks.mjs",
+          "sha256": "e1cc6550f304cd30d092cfcc34a78548365ce3c9b06e2f9ea6b53f1c1deee9ca"
+        },
+        {
+          "path": "tools/qa/checks-perf.mjs",
+          "sha256": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657"
+        },
+        {
+          "path": "tools/qa/runtime.mjs",
+          "sha256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587"
+        },
+        {
+          "path": "tools/qa/instrument.mjs",
+          "sha256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892"
+        }
+      ],
+      "launchEnvironment": {
+        "PLAYWRIGHT_PATH": "/opt/codex/cua_node/lib/node_modules/playwright",
+        "QA_CHROMIUM_PATH": "/usr/bin/chromium",
+        "QA_PERF_RECORD": null,
+        "QA_GPU": "0",
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules"
+      },
+      "loader": {
+        "modulePath": "/opt/codex/cua_node/lib/node_modules/playwright",
+        "source": "PLAYWRIGHT_PATH"
+      },
+      "driverIdentity": {
+        "playwright": {
+          "name": "playwright",
+          "version": "1.57.0",
+          "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright",
+          "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright/package.json",
+          "packageSHA256": "07726a5a20b29123d85311af7d11b7de6bf00ddd03121d3c9061995043ebd261",
+          "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright/index.js",
+          "entrySHA256": "4e98f65f0a9d9bcab8cffc0c5cfdd87fd3f5b0be74fc494ff166a466b204cd44"
+        },
+        "core": {
+          "name": "playwright-core",
+          "version": "1.57.0",
+          "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright-core",
+          "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright-core/package.json",
+          "packageSHA256": "6d38907778eb872e37e8da93b430b011c3dfbe8848c4214becb7effdc0aff1d6",
+          "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright-core/index.js",
+          "entrySHA256": "a4f83b5b2915b43bddd5384d963a66d1fd4d978a3db8059969fb78de65bc519a"
+        }
+      },
+      "launchOptions": {
+        "headless": true,
+        "executablePath": "/usr/bin/chromium",
+        "args": [
+          "--use-angle=swiftshader",
+          "--enable-unsafe-swiftshader",
+          "--ignore-gpu-blocklist"
+        ]
+      },
+      "note": "AA7 follow-up actual source capture; 1.57 driver with explicit software Chromium. No browser launched by this capture. Run metadata must independently bind check and phase.",
+      "sourceUnchanged": true,
+      "driverIdentityUnchanged": true,
+      "observedAfterClosureAt": "2026-10-14T06:34:15.896Z"
+    }
+  },
+  "BFCache": [
+    {
+      "base": "/",
+      "status": "passed",
+      "assertions": 65,
+      "skipped": [
+        {
+          "feature": "mth141: native persisted BFCache restoration",
+          "reason": "The browser performed a document Back without pageshow.persisted. Shell retention/resume cannot be claimed.",
+          "navigation": [
+            {
+              "type": "back_forward",
+              "notRestoredReasons": {
+                "src": null,
+                "id": null,
+                "url": "http://127.0.0.1:38389/mth141/?motion=off",
+                "name": null,
+                "reasons": [
+                  {
+                    "reason": "masked"
+                  }
+                ],
+                "children": []
+              }
+            }
+          ]
+        }
+      ],
+      "skippedSHA256": [
+        "f5097d78607b98aec696f74429fdd73faab7fc92a1e50f1ce9844996ddfb5633"
+      ],
+      "nativeCases": [
+        {
+          "name": "desk: native document Back / BFCache",
+          "persisted": true,
+          "shellBefore": "4ec21c6b-6bc4-471d-b22c-68df7f783899",
+          "shellAfter": "4ec21c6b-6bc4-471d-b22c-68df7f783899",
+          "sameShell": true,
+          "countsSame": true,
+          "lastReady": {
+            "route": "cen100",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "cen100 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 4,
+            "maxBrowserReplyMs": 2047,
+            "firstSample": {
+              "elapsedMs": 15,
+              "replyMs": 15,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1150,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 2285,
+              "replyMs": 2047,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 1871,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 2285
+          },
+          "postReturnNativeAction": {
+            "route": "cen100",
+            "selector": "[data-course-link=\"cen100\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 299
+          },
+          "externalPostReturnCall": {
+            "observedAt": 1791958867341,
+            "method": "Locator.evaluate",
+            "locator": "locator([data-course-link=\"cen100\"]).first()",
+            "startedAt": 1791958867341,
+            "status": "resolved",
+            "callbackSHA256": "aa3162ff8a063efc196e6a619687294cdd0943788397d3a2475e9b305db21849",
+            "callbackPrefix": "anchor => anchor.click()",
+            "argumentCount": 3,
+            "secondArgument": "undefined",
+            "thirdOptions": {
+              "timeout": 30000
+            },
+            "completedAt": 1791958867640,
+            "elapsedMs": 299
+          },
+          "postReturnNewDocumentRequests": [],
+          "postReturnFrameEvents": [
+            {
+              "observedAt": 1791958867631,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:38389/?motion=off"
+            },
+            {
+              "observedAt": 1791958867879,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:38389/cen100/"
+            },
+            {
+              "observedAt": 1791958870021,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:38389/cen100/"
+            },
+            {
+              "observedAt": 1791958870036,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:38389/cen100/"
+            }
+          ],
+          "observerCDPAttached": false
+        },
+        {
+          "name": "cen100: native document Back / BFCache",
+          "persisted": true,
+          "shellBefore": "9e197c17-91b7-425d-9973-916d963548db",
+          "shellAfter": "9e197c17-91b7-425d-9973-916d963548db",
+          "sameShell": true,
+          "countsSame": true,
+          "lastReady": {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 2,
+            "maxBrowserReplyMs": 1644,
+            "firstSample": {
+              "elapsedMs": 1644,
+              "replyMs": 1644,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 616,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1723,
+              "replyMs": 28,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1150,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1723
+          },
+          "postReturnNativeAction": {
+            "route": "desk",
+            "selector": "[data-course-link=\"desk\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 214
+          },
+          "externalPostReturnCall": {
+            "observedAt": 1791958897525,
+            "method": "Locator.evaluate",
+            "locator": "locator([data-course-link=\"desk\"]).first()",
+            "startedAt": 1791958897525,
+            "status": "resolved",
+            "callbackSHA256": "aa3162ff8a063efc196e6a619687294cdd0943788397d3a2475e9b305db21849",
+            "callbackPrefix": "anchor => anchor.click()",
+            "argumentCount": 3,
+            "secondArgument": "undefined",
+            "thirdOptions": {
+              "timeout": 30000
+            },
+            "completedAt": 1791958897739,
+            "elapsedMs": 214
+          },
+          "postReturnNewDocumentRequests": [],
+          "postReturnFrameEvents": [
+            {
+              "observedAt": 1791958897718,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:38389/cen100/?motion=off"
+            },
+            {
+              "observedAt": 1791958899300,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:38389/"
+            },
+            {
+              "observedAt": 1791958899488,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:38389/"
+            },
+            {
+              "observedAt": 1791958899498,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:38389/"
+            }
+          ],
+          "observerCDPAttached": false
+        },
+        {
+          "name": "mth140: native document Back / BFCache",
+          "persisted": true,
+          "shellBefore": "580092cd-79e7-447e-a68f-9eeb98817d44",
+          "shellAfter": "580092cd-79e7-447e-a68f-9eeb98817d44",
+          "sameShell": true,
+          "countsSame": true,
+          "lastReady": {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 3,
+            "maxBrowserReplyMs": 43,
+            "firstSample": {
+              "elapsedMs": 10,
+              "replyMs": 10,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth140",
+                  "routerRoute": "mth140",
+                  "completedRoute": "mth140",
+                  "mainTextLength": 1288,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 157,
+              "replyMs": 4,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1285,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 157
+          },
+          "postReturnNativeAction": {
+            "route": "desk",
+            "selector": "[data-course-link=\"desk\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 13402
+          },
+          "externalPostReturnCall": {
+            "observedAt": 1791958908474,
+            "method": "Locator.evaluate",
+            "locator": "locator([data-course-link=\"desk\"]).first()",
+            "startedAt": 1791958908474,
+            "status": "resolved",
+            "callbackSHA256": "aa3162ff8a063efc196e6a619687294cdd0943788397d3a2475e9b305db21849",
+            "callbackPrefix": "anchor => anchor.click()",
+            "argumentCount": 3,
+            "secondArgument": "undefined",
+            "thirdOptions": {
+              "timeout": 30000
+            },
+            "completedAt": 1791958921876,
+            "elapsedMs": 13402
+          },
+          "postReturnNewDocumentRequests": [],
+          "postReturnFrameEvents": [
+            {
+              "observedAt": 1791958921868,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:38389/mth140/?motion=off"
+            },
+            {
+              "observedAt": 1791958921975,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:38389/"
+            },
+            {
+              "observedAt": 1791958922087,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:38389/"
+            }
+          ],
+          "observerCDPAttached": false
+        },
+        {
+          "name": "mth141: native document Back / BFCache",
+          "persisted": false,
+          "shellBefore": "9fc012af-ac57-44b7-9263-078246e72095",
+          "shellAfter": "7edb5d40-110c-43fa-8b38-c0a58d7579e5",
+          "sameShell": false,
+          "countsSame": true,
+          "lastReady": {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 10,
+            "maxBrowserReplyMs": 390,
+            "firstSample": {
+              "elapsedMs": 132,
+              "replyMs": 132,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "mainTextLength": 358,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1985,
+              "replyMs": 107,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1118,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1985
+          },
+          "postReturnNativeAction": null,
+          "externalPostReturnCall": null,
+          "postReturnNewDocumentRequests": [],
+          "postReturnFrameEvents": [],
+          "observerCDPAttached": false
+        }
+      ]
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "assertions": 65,
+      "skipped": [
+        {
+          "feature": "mth141: native persisted BFCache restoration",
+          "reason": "The browser performed a document Back without pageshow.persisted. Shell retention/resume cannot be claimed.",
+          "navigation": [
+            {
+              "type": "back_forward",
+              "notRestoredReasons": {
+                "src": null,
+                "id": null,
+                "url": "http://127.0.0.1:43313/tmu-course-guides/mth141/?motion=off",
+                "name": null,
+                "reasons": [
+                  {
+                    "reason": "masked"
+                  }
+                ],
+                "children": []
+              }
+            }
+          ]
+        }
+      ],
+      "skippedSHA256": [
+        "b0ebfb087ce51de96500b880009e2cf1a8941a31448f1181608f8baced7141ad"
+      ],
+      "nativeCases": [
+        {
+          "name": "desk: native document Back / BFCache",
+          "persisted": true,
+          "shellBefore": "b60326c3-b669-4e78-b4fc-de85384cab1b",
+          "shellAfter": "b60326c3-b669-4e78-b4fc-de85384cab1b",
+          "sameShell": true,
+          "countsSame": true,
+          "lastReady": {
+            "route": "cen100",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "cen100 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 4,
+            "maxBrowserReplyMs": 1082,
+            "firstSample": {
+              "elapsedMs": 4,
+              "replyMs": 4,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1150,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1266,
+              "replyMs": 1082,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 1871,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1266
+          },
+          "postReturnNativeAction": {
+            "route": "cen100",
+            "selector": "[data-course-link=\"cen100\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 233
+          },
+          "externalPostReturnCall": {
+            "observedAt": 1791959281910,
+            "method": "Locator.evaluate",
+            "locator": "locator([data-course-link=\"cen100\"]).first()",
+            "startedAt": 1791959281910,
+            "status": "resolved",
+            "callbackSHA256": "aa3162ff8a063efc196e6a619687294cdd0943788397d3a2475e9b305db21849",
+            "callbackPrefix": "anchor => anchor.click()",
+            "argumentCount": 3,
+            "secondArgument": "undefined",
+            "thirdOptions": {
+              "timeout": 30000
+            },
+            "completedAt": 1791959282143,
+            "elapsedMs": 233
+          },
+          "postReturnNewDocumentRequests": [],
+          "postReturnFrameEvents": [
+            {
+              "observedAt": 1791959282141,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:43313/tmu-course-guides/?motion=off"
+            },
+            {
+              "observedAt": 1791959282310,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:43313/tmu-course-guides/cen100/"
+            },
+            {
+              "observedAt": 1791959283530,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:43313/tmu-course-guides/cen100/"
+            },
+            {
+              "observedAt": 1791959283579,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:43313/tmu-course-guides/cen100/"
+            }
+          ],
+          "observerCDPAttached": false
+        },
+        {
+          "name": "cen100: native document Back / BFCache",
+          "persisted": true,
+          "shellBefore": "ca0b3cdf-381e-4c70-94f3-403f0df51b60",
+          "shellAfter": "ca0b3cdf-381e-4c70-94f3-403f0df51b60",
+          "sameShell": true,
+          "countsSame": true,
+          "lastReady": {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 3,
+            "maxBrowserReplyMs": 2345,
+            "firstSample": {
+              "elapsedMs": 12,
+              "replyMs": 12,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "cen100",
+                  "routerRoute": "cen100",
+                  "completedRoute": "cen100",
+                  "mainTextLength": 1871,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 2538,
+              "replyMs": 82,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1150,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 2538
+          },
+          "postReturnNativeAction": {
+            "route": "desk",
+            "selector": "[data-course-link=\"desk\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 381
+          },
+          "externalPostReturnCall": {
+            "observedAt": 1791959317562,
+            "method": "Locator.evaluate",
+            "locator": "locator([data-course-link=\"desk\"]).first()",
+            "startedAt": 1791959317562,
+            "status": "resolved",
+            "callbackSHA256": "aa3162ff8a063efc196e6a619687294cdd0943788397d3a2475e9b305db21849",
+            "callbackPrefix": "anchor => anchor.click()",
+            "argumentCount": 3,
+            "secondArgument": "undefined",
+            "thirdOptions": {
+              "timeout": 30000
+            },
+            "completedAt": 1791959317943,
+            "elapsedMs": 381
+          },
+          "postReturnNewDocumentRequests": [],
+          "postReturnFrameEvents": [
+            {
+              "observedAt": 1791959317935,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:43313/tmu-course-guides/cen100/?motion=off"
+            },
+            {
+              "observedAt": 1791959320288,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:43313/tmu-course-guides/"
+            },
+            {
+              "observedAt": 1791959320516,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:43313/tmu-course-guides/"
+            },
+            {
+              "observedAt": 1791959320537,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:43313/tmu-course-guides/"
+            }
+          ],
+          "observerCDPAttached": false
+        },
+        {
+          "name": "mth140: native document Back / BFCache",
+          "persisted": true,
+          "shellBefore": "11d795c2-c7fe-427f-9eba-4f52521e9b1b",
+          "shellAfter": "11d795c2-c7fe-427f-9eba-4f52521e9b1b",
+          "sameShell": true,
+          "countsSame": true,
+          "lastReady": {
+            "route": "desk",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "desk mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 3,
+            "maxBrowserReplyMs": 151,
+            "firstSample": {
+              "elapsedMs": 19,
+              "replyMs": 19,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": false,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth140",
+                  "routerRoute": "mth140",
+                  "completedRoute": "mth140",
+                  "mainTextLength": 1288,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 321,
+              "replyMs": 51,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "desk",
+                  "routerRoute": "desk",
+                  "completedRoute": "desk",
+                  "mainTextLength": 1285,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 321
+          },
+          "postReturnNativeAction": {
+            "route": "desk",
+            "selector": "[data-course-link=\"desk\"]",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "timeoutMs": 30000,
+            "status": "activated",
+            "elapsedMs": 19906
+          },
+          "externalPostReturnCall": {
+            "observedAt": 1791959325502,
+            "method": "Locator.evaluate",
+            "locator": "locator([data-course-link=\"desk\"]).first()",
+            "startedAt": 1791959325502,
+            "status": "resolved",
+            "callbackSHA256": "aa3162ff8a063efc196e6a619687294cdd0943788397d3a2475e9b305db21849",
+            "callbackPrefix": "anchor => anchor.click()",
+            "argumentCount": 3,
+            "secondArgument": "undefined",
+            "thirdOptions": {
+              "timeout": 30000
+            },
+            "completedAt": 1791959345408,
+            "elapsedMs": 19906
+          },
+          "postReturnNewDocumentRequests": [],
+          "postReturnFrameEvents": [
+            {
+              "observedAt": 1791959345404,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:43313/tmu-course-guides/mth140/?motion=off"
+            },
+            {
+              "observedAt": 1791959345576,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:43313/tmu-course-guides/"
+            },
+            {
+              "observedAt": 1791959345772,
+              "type": "main-frame-commit",
+              "url": "http://127.0.0.1:43313/tmu-course-guides/"
+            }
+          ],
+          "observerCDPAttached": false
+        },
+        {
+          "name": "mth141: native document Back / BFCache",
+          "persisted": false,
+          "shellBefore": "30f6f96b-732b-4578-93b8-d0bf143a3321",
+          "shellAfter": "de061001-6d37-40a4-8c9e-a74a93a49664",
+          "sameShell": false,
+          "countsSame": true,
+          "lastReady": {
+            "route": "mth141",
+            "policy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "label": "mth141 mounted route and deadlines",
+            "timeoutMs": 30000,
+            "status": "ready",
+            "sampleCount": 8,
+            "maxBrowserReplyMs": 322,
+            "firstSample": {
+              "elapsedMs": 322,
+              "replyMs": 322,
+              "state": {
+                "ready": false,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": false,
+                  "completedMarker": false,
+                  "renderedMainText": true,
+                  "deadlineNode": false
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "mainTextLength": 359,
+                  "deadlineNode": false
+                }
+              }
+            },
+            "lastSample": {
+              "elapsedMs": 1407,
+              "replyMs": 86,
+              "state": {
+                "ready": true,
+                "components": {
+                  "bodyIdentity": true,
+                  "routerIdentity": true,
+                  "completedMarker": true,
+                  "renderedMainText": true,
+                  "deadlineNode": true
+                },
+                "actual": {
+                  "bodyRoute": "mth141",
+                  "routerRoute": "mth141",
+                  "completedRoute": "mth141",
+                  "mainTextLength": 1118,
+                  "deadlineNode": true
+                }
+              }
+            },
+            "elapsedMs": 1407
+          },
+          "postReturnNativeAction": null,
+          "externalPostReturnCall": null,
+          "postReturnNewDocumentRequests": [],
+          "postReturnFrameEvents": [],
+          "observerCDPAttached": false
+        }
+      ]
+    }
+  ],
+  "failures": [
+    {
+      "base": "/",
+      "status": "passed",
+      "assertions": 43,
+      "unexpectedTelemetry": [],
+      "selectedCases": [
+        {
+          "name": "fetch missing-region",
+          "documentRequests": [
+            "http://127.0.0.1:38389/mth141/?motion=off&qa_failure=missing-region"
+          ],
+          "response": null,
+          "telemetry": [],
+          "bareCourseFetches": [],
+          "cdpCanceled": [],
+          "cdpNativeDocumentRequests": [
+            {
+              "observedAt": 1791959089924,
+              "type": "Network.requestWillBeSent",
+              "requestId": "878B65A312CF8B1855B14D10E8749C20",
+              "loaderId": "878B65A312CF8B1855B14D10E8749C20",
+              "frameId": "4A90D7598FC0A6EE6E7D159A4D2BB686",
+              "documentURL": "http://127.0.0.1:38389/?motion=off",
+              "timestamp": 43242.488583,
+              "wallTime": 1791959089.921946,
+              "resourceType": "Document",
+              "url": "http://127.0.0.1:38389/?motion=off",
+              "method": "GET",
+              "initiator": {
+                "type": "other",
+                "stack": null
+              }
+            },
+            {
+              "observedAt": 1791959090953,
+              "type": "Network.requestWillBeSent",
+              "requestId": "29D32BBB25994DCA689C658AA30DA1B8",
+              "loaderId": "29D32BBB25994DCA689C658AA30DA1B8",
+              "frameId": "4A90D7598FC0A6EE6E7D159A4D2BB686",
+              "documentURL": "http://127.0.0.1:38389/mth141/?motion=off&qa_failure=missing-region",
+              "timestamp": 43243.519173,
+              "wallTime": 1791959090.952582,
+              "resourceType": "Document",
+              "url": "http://127.0.0.1:38389/mth141/?motion=off&qa_failure=missing-region",
+              "method": "GET",
+              "initiator": {
+                "type": "script",
+                "stack": {
+                  "description": null,
+                  "callFrames": [
+                    {
+                      "functionName": "assign",
+                      "url": "http://127.0.0.1:38389/assets/app/router.mjs?v=20261014-perf3",
+                      "lineNumber": 95,
+                      "columnNumber": 168
+                    },
+                    {
+                      "functionName": "fallback",
+                      "url": "http://127.0.0.1:38389/assets/app/router.mjs?v=20261014-perf3",
+                      "lineNumber": 145,
+                      "columnNumber": 41
+                    },
+                    {
+                      "functionName": "performNavigation",
+                      "url": "http://127.0.0.1:38389/assets/app/router.mjs?v=20261014-perf3",
+                      "lineNumber": 338,
+                      "columnNumber": 10
+                    }
+                  ],
+                  "parent": null
+                }
+              }
+            }
+          ],
+          "nodeFailedRequests": []
+        },
+        {
+          "name": "misspelt route",
+          "documentRequests": null,
+          "response": {
+            "status": 404,
+            "url": "http://127.0.0.1:38389/cen10o/?qa_failure=404",
+            "text": "Not found",
+            "router": null
+          },
+          "telemetry": [
+            {
+              "type": "http",
+              "requestUrl": "http://127.0.0.1:38389/cen10o/?qa_failure=404",
+              "status": 404,
+              "message": "HTTP 404",
+              "url": "http://127.0.0.1:38389/?motion=off",
+              "expected": true
+            },
+            {
+              "type": "console",
+              "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+              "location": {
+                "url": "http://127.0.0.1:38389/cen10o/?qa_failure=404",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "url": "http://127.0.0.1:38389/cen10o/?qa_failure=404",
+              "expected": true
+            },
+            {
+              "type": "console",
+              "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+              "location": {
+                "url": "http://127.0.0.1:38389/favicon.ico",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "url": "http://127.0.0.1:38389/cen10o/?qa_failure=404",
+              "expected": true
+            }
+          ],
+          "bareCourseFetches": [],
+          "cdpCanceled": [],
+          "cdpNativeDocumentRequests": [
+            {
+              "observedAt": 1791959267941,
+              "type": "Network.requestWillBeSent",
+              "requestId": "F034C633E63F6B75EB61E90ED2C0E5FF",
+              "loaderId": "F034C633E63F6B75EB61E90ED2C0E5FF",
+              "frameId": "E4F694812CC96038FA5BC17BAA47926A",
+              "documentURL": "http://127.0.0.1:38389/?motion=off",
+              "timestamp": 43420.502905,
+              "wallTime": 1791959267.936394,
+              "resourceType": "Document",
+              "url": "http://127.0.0.1:38389/?motion=off",
+              "method": "GET",
+              "initiator": {
+                "type": "other",
+                "stack": null
+              }
+            },
+            {
+              "observedAt": 1791959269982,
+              "type": "Network.requestWillBeSent",
+              "requestId": "C8015AD0AC48805DDBB5AA59699B0A2E",
+              "loaderId": "C8015AD0AC48805DDBB5AA59699B0A2E",
+              "frameId": "E4F694812CC96038FA5BC17BAA47926A",
+              "documentURL": "http://127.0.0.1:38389/cen10o/?qa_failure=404",
+              "timestamp": 43422.54371,
+              "wallTime": 1791959269.977587,
+              "resourceType": "Document",
+              "url": "http://127.0.0.1:38389/cen10o/?qa_failure=404",
+              "method": "GET",
+              "initiator": {
+                "type": "script",
+                "stack": {
+                  "description": null,
+                  "callFrames": [
+                    {
+                      "functionName": "eval",
+                      "url": "",
+                      "lineNumber": 0,
+                      "columnNumber": 154
+                    },
+                    {
+                      "functionName": "evaluate",
+                      "url": "",
+                      "lineNumber": 291,
+                      "columnNumber": 15
+                    },
+                    {
+                      "functionName": "",
+                      "url": "",
+                      "lineNumber": 0,
+                      "columnNumber": 43
+                    }
+                  ],
+                  "parent": null
+                }
+              }
+            }
+          ],
+          "nodeFailedRequests": []
+        }
+      ]
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "assertions": 43,
+      "unexpectedTelemetry": [],
+      "selectedCases": [
+        {
+          "name": "fetch missing-region",
+          "documentRequests": [
+            "http://127.0.0.1:43313/tmu-course-guides/mth141/?motion=off&qa_failure=missing-region"
+          ],
+          "response": null,
+          "telemetry": [],
+          "bareCourseFetches": [],
+          "cdpCanceled": [],
+          "cdpNativeDocumentRequests": [
+            {
+              "observedAt": 1791959436925,
+              "type": "Network.requestWillBeSent",
+              "requestId": "03BFDD7AFE5674139E234F0576E140A1",
+              "loaderId": "03BFDD7AFE5674139E234F0576E140A1",
+              "frameId": "A8DAD3ED1A53FB4D15267067447A62C9",
+              "documentURL": "http://127.0.0.1:43313/tmu-course-guides/?motion=off",
+              "timestamp": 43589.488729,
+              "wallTime": 1791959436.922201,
+              "resourceType": "Document",
+              "url": "http://127.0.0.1:43313/tmu-course-guides/?motion=off",
+              "method": "GET",
+              "initiator": {
+                "type": "other",
+                "stack": null
+              }
+            },
+            {
+              "observedAt": 1791959438322,
+              "type": "Network.requestWillBeSent",
+              "requestId": "2D2DF741DEEC93155D54C817F8809ACC",
+              "loaderId": "2D2DF741DEEC93155D54C817F8809ACC",
+              "frameId": "A8DAD3ED1A53FB4D15267067447A62C9",
+              "documentURL": "http://127.0.0.1:43313/tmu-course-guides/mth141/?motion=off&qa_failure=missing-region",
+              "timestamp": 43590.878613,
+              "wallTime": 1791959438.315806,
+              "resourceType": "Document",
+              "url": "http://127.0.0.1:43313/tmu-course-guides/mth141/?motion=off&qa_failure=missing-region",
+              "method": "GET",
+              "initiator": {
+                "type": "script",
+                "stack": {
+                  "description": null,
+                  "callFrames": [
+                    {
+                      "functionName": "assign",
+                      "url": "http://127.0.0.1:43313/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+                      "lineNumber": 95,
+                      "columnNumber": 168
+                    },
+                    {
+                      "functionName": "fallback",
+                      "url": "http://127.0.0.1:43313/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+                      "lineNumber": 145,
+                      "columnNumber": 41
+                    },
+                    {
+                      "functionName": "performNavigation",
+                      "url": "http://127.0.0.1:43313/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+                      "lineNumber": 338,
+                      "columnNumber": 10
+                    }
+                  ],
+                  "parent": null
+                }
+              }
+            }
+          ],
+          "nodeFailedRequests": []
+        },
+        {
+          "name": "misspelt route",
+          "documentRequests": null,
+          "response": {
+            "status": 404,
+            "url": "http://127.0.0.1:43313/tmu-course-guides/cen10o/?qa_failure=404",
+            "text": "Not found",
+            "router": null
+          },
+          "telemetry": [
+            {
+              "type": "http",
+              "requestUrl": "http://127.0.0.1:43313/tmu-course-guides/cen10o/?qa_failure=404",
+              "status": 404,
+              "message": "HTTP 404",
+              "url": "http://127.0.0.1:43313/tmu-course-guides/?motion=off",
+              "expected": true
+            },
+            {
+              "type": "console",
+              "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+              "location": {
+                "url": "http://127.0.0.1:43313/tmu-course-guides/cen10o/?qa_failure=404",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "url": "http://127.0.0.1:43313/tmu-course-guides/cen10o/?qa_failure=404",
+              "expected": true
+            },
+            {
+              "type": "console",
+              "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+              "location": {
+                "url": "http://127.0.0.1:43313/favicon.ico",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              "url": "http://127.0.0.1:43313/tmu-course-guides/cen10o/?qa_failure=404",
+              "expected": true
+            }
+          ],
+          "bareCourseFetches": [],
+          "cdpCanceled": [],
+          "cdpNativeDocumentRequests": [
+            {
+              "observedAt": 1791959635894,
+              "type": "Network.requestWillBeSent",
+              "requestId": "5344E725B76E1BB53686ABADCF176388",
+              "loaderId": "5344E725B76E1BB53686ABADCF176388",
+              "frameId": "585722059FC2EFA4400C894C1462ECD3",
+              "documentURL": "http://127.0.0.1:43313/tmu-course-guides/?motion=off",
+              "timestamp": 43788.455748,
+              "wallTime": 1791959635.893666,
+              "resourceType": "Document",
+              "url": "http://127.0.0.1:43313/tmu-course-guides/?motion=off",
+              "method": "GET",
+              "initiator": {
+                "type": "other",
+                "stack": null
+              }
+            },
+            {
+              "observedAt": 1791959637463,
+              "type": "Network.requestWillBeSent",
+              "requestId": "BD3CE805D7B469E902BE190FD4C5F55E",
+              "loaderId": "BD3CE805D7B469E902BE190FD4C5F55E",
+              "frameId": "585722059FC2EFA4400C894C1462ECD3",
+              "documentURL": "http://127.0.0.1:43313/tmu-course-guides/cen10o/?qa_failure=404",
+              "timestamp": 43790.028811,
+              "wallTime": 1791959637.462231,
+              "resourceType": "Document",
+              "url": "http://127.0.0.1:43313/tmu-course-guides/cen10o/?qa_failure=404",
+              "method": "GET",
+              "initiator": {
+                "type": "script",
+                "stack": {
+                  "description": null,
+                  "callFrames": [
+                    {
+                      "functionName": "eval",
+                      "url": "",
+                      "lineNumber": 0,
+                      "columnNumber": 154
+                    },
+                    {
+                      "functionName": "evaluate",
+                      "url": "",
+                      "lineNumber": 291,
+                      "columnNumber": 15
+                    },
+                    {
+                      "functionName": "",
+                      "url": "",
+                      "lineNumber": 0,
+                      "columnNumber": 43
+                    }
+                  ],
+                  "parent": null
+                }
+              }
+            }
+          ],
+          "nodeFailedRequests": []
+        }
+      ]
+    }
+  ],
+  "diagnostics": {
+    "requestFailedCount": 6,
+    "requestFailures": [
+      {
+        "observedAt": 1791959228584,
+        "type": "requestfailed",
+        "requestId": 82,
+        "url": "http://127.0.0.1:38389/assets/scenes/posters/cen100-wide.webp?v=20261012-subject1",
+        "method": "GET",
+        "resourceType": "image",
+        "isNavigationRequest": false,
+        "mainFrame": true,
+        "pageURL": "http://127.0.0.1:38389/cen100/",
+        "errorText": "net::ERR_INTERNET_DISCONNECTED",
+        "timing": {
+          "startTime": 0,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": -1,
+          "responseStart": -1,
+          "responseEnd": -1
+        },
+        "classification": "unclassified"
+      },
+      {
+        "observedAt": 1791959245291,
+        "type": "requestfailed",
+        "requestId": 83,
+        "url": "http://127.0.0.1:38389/assets/book/posters/mth140-light-wide.webp",
+        "method": "GET",
+        "resourceType": "image",
+        "isNavigationRequest": false,
+        "mainFrame": true,
+        "pageURL": "http://127.0.0.1:38389/mth140/",
+        "errorText": "net::ERR_INTERNET_DISCONNECTED",
+        "timing": {
+          "startTime": 0,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": -1,
+          "responseStart": -1,
+          "responseEnd": -1
+        },
+        "classification": "unclassified"
+      },
+      {
+        "observedAt": 1791959246042,
+        "type": "requestfailed",
+        "requestId": 84,
+        "url": "http://127.0.0.1:38389/assets/scenes/posters/mth141-wide.webp?v=20261012-subject1",
+        "method": "GET",
+        "resourceType": "image",
+        "isNavigationRequest": false,
+        "mainFrame": true,
+        "pageURL": "http://127.0.0.1:38389/mth141/",
+        "errorText": "net::ERR_INTERNET_DISCONNECTED",
+        "timing": {
+          "startTime": 0,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": -1,
+          "responseStart": -1,
+          "responseEnd": -1
+        },
+        "classification": "unclassified"
+      },
+      {
+        "observedAt": 1791959610439,
+        "type": "requestfailed",
+        "requestId": 82,
+        "url": "http://127.0.0.1:43313/tmu-course-guides/assets/scenes/posters/cen100-wide.webp?v=20261012-subject1",
+        "method": "GET",
+        "resourceType": "image",
+        "isNavigationRequest": false,
+        "mainFrame": true,
+        "pageURL": "http://127.0.0.1:43313/tmu-course-guides/cen100/",
+        "errorText": "net::ERR_INTERNET_DISCONNECTED",
+        "timing": {
+          "startTime": 0,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": -1,
+          "responseStart": -1,
+          "responseEnd": -1
+        },
+        "classification": "unclassified"
+      },
+      {
+        "observedAt": 1791959623509,
+        "type": "requestfailed",
+        "requestId": 83,
+        "url": "http://127.0.0.1:43313/tmu-course-guides/assets/book/posters/mth140-light-wide.webp",
+        "method": "GET",
+        "resourceType": "image",
+        "isNavigationRequest": false,
+        "mainFrame": true,
+        "pageURL": "http://127.0.0.1:43313/tmu-course-guides/mth140/",
+        "errorText": "net::ERR_INTERNET_DISCONNECTED",
+        "timing": {
+          "startTime": 0,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": -1,
+          "responseStart": -1,
+          "responseEnd": -1
+        },
+        "classification": "unclassified"
+      },
+      {
+        "observedAt": 1791959625041,
+        "type": "requestfailed",
+        "requestId": 84,
+        "url": "http://127.0.0.1:43313/tmu-course-guides/assets/scenes/posters/mth141-wide.webp?v=20261012-subject1",
+        "method": "GET",
+        "resourceType": "image",
+        "isNavigationRequest": false,
+        "mainFrame": true,
+        "pageURL": "http://127.0.0.1:43313/tmu-course-guides/mth141/",
+        "errorText": "net::ERR_INTERNET_DISCONNECTED",
+        "timing": {
+          "startTime": 0,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": -1,
+          "responseStart": -1,
+          "responseEnd": -1
+        },
+        "classification": "unclassified"
+      }
+    ],
+    "abortedCount": 0,
+    "rejectedNativeCalls": 0,
+    "diagnosticErrors": [],
+    "droppedRows": []
+  },
+  "causality": {
+    "originalFullRunDirectory": "tools/qa/reports/2026-10-14T04-29-12-369Z-124962",
+    "originalFullStatus": "failed",
+    "originalFiveAbortedRequests": "Cause UNKNOWN. Fresh whole checks emitted zero ERR_ABORTED, so no aborted-request initiator/cancellation correlation was reproduced and no earlier event is reclassified.",
+    "originalProjectMTH140ContextDestroyed": "Cause UNKNOWN. Fresh native persisted return and same-shell postreturnDesk passed bothbases; no new nativeDocument requests follow those clicks. Longer successful native activation replies do not explain the old latercontext-destroyed failure.",
+    "sameDocumentFrameCaution": "Playwright framenavigated fires for same-document history changes too. Frameevent alone does not prove fullnavigation; nativeisNavigationRequest/typeDocument and shell identity must agree.",
+    "expectedOfflineFailures": "The six image ERR_INTERNET_DISCONNECTED events occur only in the original intentional warmed-offline case and preserve its exact existing expected-event policy. External traces leave classifications unassigned.",
+    "coverage": "Native persisted BFCache established forDesk/CEN/MTH140 atbothbases. MTH141 performs usable documentBack with maskednon-restoration atbothbases; two exact skips preserved. Synthetic handler cases are separate, notnative evidence.",
+    "noPolicyChange": "No product/QA source edits during run. BF/failures importedfunction bodies, callbacks, nativearguments and assertion/allowlist conditions remain original. Passiveobservations only; rawfullrun remains failed."
+  }
+}

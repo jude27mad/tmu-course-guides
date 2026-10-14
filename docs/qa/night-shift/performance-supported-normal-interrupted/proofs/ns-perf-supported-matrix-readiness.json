@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T09:43:58.522985+00:00",
+  "status": "ready-awaiting-peer-approval",
+  "scope": "Private preparation only. No browser launched. Root owns actual supported all28 launch. Original old-toolchain failures and before/after perf evidence remain separate.",
+  "files": [
+    {
+      "path": "/tmp/ns-perf-supported-matrix.py",
+      "sha256": "3f35e3dcae7b6d97103bf248b7336d2bad69e2ed9d669790b49a832fa455714d"
+    },
+    {
+      "path": "/tmp/ns-perf-environment-source-capture.mjs",
+      "sha256": "b94bcb12740fe0536637b7c1cb6a64d58122cc1e4a5b920a1608b63cd957d198"
+    },
+    {
+      "path": "/tmp/ns-perf-supported-matrix.test.py",
+      "sha256": "aa61402a2f9e1d925ab371c435ba692f81b5cbea209e81fa28bdeafe1369b355"
+    },
+    {
+      "path": "/tmp/ns-perf-supported-matrix-tests-final.log",
+      "sha256": "b535bef106c96b106bdd8b3d35f1d5c129f446c6a532d2ec51ca3f6147cc274d"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-link-setup.py",
+      "sha256": "5faa843a6fe41ce7fb96e05aecb9a0e00d67c49d64be519d57cf389bdda88ddc"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-approved-setup-final.json",
+      "sha256": "69569d45fa8b67923a76f146a4f60f5d657b5c0ac9eddfa77cbf65e3621654b8"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-wrapper-baseline-final.json",
+      "sha256": "bbe6d2a229a768d7dabb716e6301d7bb5c968ca2511af38b23c1db1efe485c9b"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-approved-setup.json",
+      "sha256": "9c4b51feac2f5bf7f10fe296f300055c3f027963dbac8463918ec76834ce931a"
+    },
+    {
+      "path": "/tmp/ns-perf-webkit-wrapper-baseline.json",
+      "sha256": "e713e1e27d0e2974d594a4677569689a7eba1987847575da2ea354660e3ff14e"
+    }
+  ],
+  "observedActions": [
+    {
+      "name": "initial-approved-setup",
+      "sessionID": 21803,
+      "finalToolChunk": "00a839",
+      "actualExitCode": 2,
+      "reason": "GTK liblzo2.so.2 missing; raw failed manifest preserved"
+    },
+    {
+      "name": "final-approved-transitive-setup",
+      "sessionID": 24060,
+      "finalToolChunk": "54d3ba",
+      "actualExitCode": 0,
+      "result": "Both GTK/WPE ldd CLI0/no missing; all27 original identities preserved"
+    },
+    {
+      "name": "pure-mock-tests",
+      "toolChunk": "e85dba",
+      "actualExitCode": 0,
+      "testCount": 12,
+      "durationSeconds": 0.158
+    },
+    {
+      "name": "helper-syntax",
+      "toolChunk": "0dcf9b",
+      "actualExitCode": 0
+    }
+  ],
+  "readyArgv": [
+    "python3",
+    "/tmp/ns-perf-supported-matrix.py",
+    "--output",
+    "/tmp/ns-perf-supported-all28-final",
+    "--capture-sha",
+    "b94bcb12740fe0536637b7c1cb6a64d58122cc1e4a5b920a1608b63cd957d198",
+    "--webkit-setup",
+    "/tmp/ns-perf-webkit-approved-setup-final.json",
+    "--webkit-setup-sha",
+    "69569d45fa8b67923a76f146a4f60f5d657b5c0ac9eddfa77cbf65e3621654b8"
+  ]
+}

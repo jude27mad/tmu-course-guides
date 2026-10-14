@@ -1,0 +1,10 @@
+{
+  "observedAt": "2026-10-14T10:10:05.927860+00:00",
+  "sessionID": 30500,
+  "actualOuterCLIExitCode": 2,
+  "actualToolChunk": "8cd5f0",
+  "reason": "Root operator SIGINT for a controlled native compositor diagnostic; not a passing complete matrix.",
+  "finalizedRecords": 7,
+  "failedAssertions": 3,
+  "retainedPartialRawRecord": "/tmp/ns-perf-supported-all28-final/08-frames-project/record.json"
+}

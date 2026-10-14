@@ -1,0 +1,2127 @@
+{
+  "schemaVersion": 1,
+  "rawDirectory": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382",
+  "observedAt": "2026-10-14T08:41:31.851Z",
+  "observationCompletedAt": "2026-10-14T08:41:31.995Z",
+  "note": "Passive resource observations after normal harness close. Original raw errors/cleanup arrays and exact source/driver identities are preserved. No browser or CDP intervention, no source edit, no process kill, no CLI-exit inference.",
+  "runStartedAt": "2026-10-14T07:09:10.842Z",
+  "runCompletedAt": "2026-10-14T08:39:46.631Z",
+  "rawStatus": "failed",
+  "rawExitCode": 1,
+  "rawFailures": 12,
+  "artifacts": {
+    "summary": {
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382/summary.json",
+      "sha256": "dcdb17cd4d32c0ad4074115ecb11d424ff032c9f8717572b0746e55cbe5df42a"
+    },
+    "before": {
+      "path": "/tmp/ns-perf-latest-full-source-before.json",
+      "sha256": "be421f9e1f04cc50a97beae080abde314d985829ad9810a6a3cbdbea2cdd2afe"
+    },
+    "after": {
+      "path": "/tmp/ns-perf-latest-full-source-after.json",
+      "sha256": "d54b8db9db95ec56c692539426de04c67438dc294c0e2289b53a6838be0c4871"
+    }
+  },
+  "sourceUnchanged": true,
+  "productUnchanged": true,
+  "protectedUnchanged": true,
+  "currentSources": [
+    {
+      "path": "tools/qa/checks-resilience.mjs",
+      "sha256": "db77a8d9fa49683f6370c87fc1794dbec247bc3c95cf524fee1d5d58d12e0de8"
+    },
+    {
+      "path": "tools/qa/checks.mjs",
+      "sha256": "e1cc6550f304cd30d092cfcc34a78548365ce3c9b06e2f9ea6b53f1c1deee9ca"
+    },
+    {
+      "path": "tools/qa/checks-perf.mjs",
+      "sha256": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657"
+    },
+    {
+      "path": "tools/qa/runtime.mjs",
+      "sha256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587"
+    },
+    {
+      "path": "tools/qa/instrument.mjs",
+      "sha256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892"
+    }
+  ],
+  "driverIdentity": {
+    "playwright": {
+      "name": "playwright",
+      "version": "1.57.0",
+      "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright",
+      "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright/package.json",
+      "packageSHA256": "07726a5a20b29123d85311af7d11b7de6bf00ddd03121d3c9061995043ebd261",
+      "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright/index.js",
+      "entrySHA256": "4e98f65f0a9d9bcab8cffc0c5cfdd87fd3f5b0be74fc494ff166a466b204cd44"
+    },
+    "core": {
+      "name": "playwright-core",
+      "version": "1.57.0",
+      "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright-core",
+      "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright-core/package.json",
+      "packageSHA256": "6d38907778eb872e37e8da93b430b011c3dfbe8848c4214becb7effdc0aff1d6",
+      "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright-core/index.js",
+      "entrySHA256": "a4f83b5b2915b43bddd5384d963a66d1fd4d978a3db8059969fb78de65bc519a"
+    }
+  },
+  "loader": {
+    "modulePath": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "source": "PLAYWRIGHT_PATH"
+  },
+  "launchOptions": {
+    "headless": true,
+    "executablePath": "/usr/bin/chromium",
+    "args": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "driverIdentityUnchanged": true,
+  "resources": {
+    "fullQaPid": 149382,
+    "fullQaProcessPresent": false,
+    "fullQaProcess": null,
+    "activeChromiumProcesses": [],
+    "zombieBrowserCount": 458,
+    "ownedPreviewPorts": [
+      {
+        "origin": "http://127.0.0.1:33547",
+        "host": "127.0.0.1",
+        "port": 33547,
+        "startedAt": "2026-10-14T08:41:31.960Z",
+        "observedAt": "2026-10-14T08:41:31.987Z",
+        "result": "refused",
+        "error": {
+          "code": "ECONNREFUSED",
+          "message": "connect ECONNREFUSED 127.0.0.1:33547"
+        }
+      },
+      {
+        "origin": "http://127.0.0.1:42001",
+        "host": "127.0.0.1",
+        "port": 42001,
+        "startedAt": "2026-10-14T08:41:31.969Z",
+        "observedAt": "2026-10-14T08:41:31.987Z",
+        "result": "refused",
+        "error": {
+          "code": "ECONNREFUSED",
+          "message": "connect ECONNREFUSED 127.0.0.1:42001"
+        }
+      }
+    ]
+  },
+  "runnerCleanupErrors": [],
+  "caseCleanupErrors": [],
+  "caseResourceRecords": [
+    {
+      "check": "perf",
+      "base": "/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "perf",
+      "base": "/tmu-course-guides/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "routes",
+      "base": "/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "routes",
+      "base": "/tmu-course-guides/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "stability",
+      "base": "/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "stability",
+      "base": "/tmu-course-guides/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "frames",
+      "base": "/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "frames",
+      "base": "/tmu-course-guides/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "deadlines",
+      "base": "/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "deadlines",
+      "base": "/tmu-course-guides/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "modes",
+      "base": "/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "modes",
+      "base": "/tmu-course-guides/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "layout",
+      "base": "/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "layout",
+      "base": "/tmu-course-guides/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "webkit",
+      "base": "/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "webkit",
+      "base": "/tmu-course-guides/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "nojs",
+      "base": "/",
+      "runnerErrors": [
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/app/route-boot.mjs?v=20261014-perf3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/app/router.mjs?v=20261014-perf3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/app/transition.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/book/book-state.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/book/weeks.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/cen-schedule.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/course-data.mjs?v=20261012-assessments2",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/guide-motion.mjs?v=20261013-qa1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/boot.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/core.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/deadline.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/desk.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/targets.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/timeline.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/route-lifecycle.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/schedule.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/vendor/gsap-3.15.0.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/app/route-boot.mjs?v=20261014-perf3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/app/router.mjs?v=20261014-perf3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/app/transition.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/book/book-state.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/book/course-styles.mjs?v=20261013-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/book/weeks.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/cen-guide.mjs?v=20261013-resilience1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/cen-schedule.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/course-data.mjs?v=20261012-assessments2",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/course-header.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/editorial.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/guide-motion.mjs?v=20261013-qa1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/boot.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/core.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/deadline.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/targets.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/timeline.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/route-lifecycle.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/scenes/framing.mjs?v=20261012-subject1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/scenes/scene-math.mjs?v=20261012-subject1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/schedule.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/vendor/gsap-3.15.0.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/visuals.js?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/workspace.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/app/route-boot.mjs?v=20261014-perf3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/app/router.mjs?v=20261014-perf3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/app/transition.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/book/book-state.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/book/course-styles.mjs?v=20261013-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/book/weeks.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/course-data.mjs?v=20261012-assessments2",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/course-header.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/editorial.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/guide-motion.mjs?v=20261013-qa1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/lab-challenge-data.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/lab-challenges.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/lab-composition-math.mjs?v=20261011-studio3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/lab-composition.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/lab-math.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/math-guide.mjs?v=20261013-resilience1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/math-labs.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/boot.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/core.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/deadline.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/targets.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/timeline.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/route-lifecycle.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/scenes/framing.mjs?v=20261012-subject1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/scenes/scene-math.mjs?v=20261012-subject1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/schedule.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/vendor/gsap-3.15.0.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/visuals.js?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/workspace.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/app/route-boot.mjs?v=20261014-perf3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/app/router.mjs?v=20261014-perf3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/app/transition.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/book/book-state.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/book/course-styles.mjs?v=20261013-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/book/weeks.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/course-data.mjs?v=20261012-assessments2",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/course-header.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/editorial.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/guide-motion.mjs?v=20261013-qa1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/lab-challenge-data.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/lab-challenges.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/lab-composition-math.mjs?v=20261011-studio3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/lab-composition.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/lab-math.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/math-guide.mjs?v=20261013-resilience1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/math-labs.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/boot.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/core.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/deadline.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/targets.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/night/timeline.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/route-lifecycle.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/scenes/framing.mjs?v=20261012-subject1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/scenes/scene-math.mjs?v=20261012-subject1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/schedule.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/vendor/gsap-3.15.0.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/visuals.js?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/workspace.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        }
+      ],
+      "cleanupErrors": []
+    },
+    {
+      "check": "nojs",
+      "base": "/tmu-course-guides/",
+      "runnerErrors": [
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/app/route-boot.mjs?v=20261014-perf3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/app/transition.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/book/book-state.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/book/weeks.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/cen-schedule.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/desk.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/route-lifecycle.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/schedule.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/vendor/gsap-3.15.0.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/app/route-boot.mjs?v=20261014-perf3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/app/transition.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/book/book-state.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/book/course-styles.mjs?v=20261013-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/book/weeks.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/cen-guide.mjs?v=20261013-resilience1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/cen-schedule.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/editorial.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/route-lifecycle.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/scenes/framing.mjs?v=20261012-subject1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/scenes/scene-math.mjs?v=20261012-subject1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/schedule.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/vendor/gsap-3.15.0.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/visuals.js?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/workspace.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/app/route-boot.mjs?v=20261014-perf3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/app/transition.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/book/book-state.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/book/course-styles.mjs?v=20261013-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/book/weeks.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/editorial.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/lab-challenge-data.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/lab-challenges.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/lab-composition-math.mjs?v=20261011-studio3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/lab-composition.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/lab-math.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/math-guide.mjs?v=20261013-resilience1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/math-labs.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/route-lifecycle.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/scenes/framing.mjs?v=20261012-subject1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/scenes/scene-math.mjs?v=20261012-subject1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/schedule.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/vendor/gsap-3.15.0.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/visuals.js?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/workspace.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/app/route-boot.mjs?v=20261014-perf3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/app/transition.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/book/book-state.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/book/course-styles.mjs?v=20261013-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/book/weeks.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/editorial.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/lab-challenge-data.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/lab-challenges.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/lab-composition-math.mjs?v=20261011-studio3",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/lab-composition.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/lab-math.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/math-guide.mjs?v=20261013-resilience1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/math-labs.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/route-lifecycle.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/scenes/framing.mjs?v=20261012-subject1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/scenes/scene-math.mjs?v=20261012-subject1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/schedule.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/vendor/gsap-3.15.0.mjs",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/visuals.js?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/workspace.mjs?v=20261013-shift1",
+          "method": "GET",
+          "message": "csp",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        }
+      ],
+      "cleanupErrors": []
+    },
+    {
+      "check": "bfcache",
+      "base": "/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "bfcache",
+      "base": "/tmu-course-guides/",
+      "runnerErrors": [
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/",
+          "method": "GET",
+          "message": "net::ERR_ABORTED",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/?motion=off",
+          "expected": false
+        }
+      ],
+      "cleanupErrors": []
+    },
+    {
+      "check": "failures",
+      "base": "/",
+      "runnerErrors": [
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/scenes/posters/cen100-wide.webp?v=20261012-subject1",
+          "method": "GET",
+          "message": "net::ERR_INTERNET_DISCONNECTED",
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "console",
+          "message": "Failed to load resource: net::ERR_INTERNET_DISCONNECTED",
+          "location": {
+            "url": "http://127.0.0.1:33547/assets/scenes/posters/cen100-wide.webp?v=20261012-subject1",
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "url": "http://127.0.0.1:33547/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/book/posters/mth140-light-wide.webp",
+          "method": "GET",
+          "message": "net::ERR_INTERNET_DISCONNECTED",
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "console",
+          "message": "Failed to load resource: net::ERR_INTERNET_DISCONNECTED",
+          "location": {
+            "url": "http://127.0.0.1:33547/assets/book/posters/mth140-light-wide.webp",
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "url": "http://127.0.0.1:33547/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:33547/assets/scenes/posters/mth141-wide.webp?v=20261012-subject1",
+          "method": "GET",
+          "message": "net::ERR_INTERNET_DISCONNECTED",
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "console",
+          "message": "Failed to load resource: net::ERR_INTERNET_DISCONNECTED",
+          "location": {
+            "url": "http://127.0.0.1:33547/assets/scenes/posters/mth141-wide.webp?v=20261012-subject1",
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "url": "http://127.0.0.1:33547/mth141/",
+          "expected": false
+        },
+        {
+          "type": "http",
+          "requestUrl": "http://127.0.0.1:33547/cen10o/?qa_failure=404",
+          "status": 404,
+          "message": "HTTP 404",
+          "url": "http://127.0.0.1:33547/?motion=off",
+          "expected": false
+        },
+        {
+          "type": "console",
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "location": {
+            "url": "http://127.0.0.1:33547/cen10o/?qa_failure=404",
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "url": "http://127.0.0.1:33547/cen10o/?qa_failure=404",
+          "expected": false
+        },
+        {
+          "type": "console",
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "location": {
+            "url": "http://127.0.0.1:33547/favicon.ico",
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "url": "http://127.0.0.1:33547/cen10o/?qa_failure=404",
+          "expected": false
+        }
+      ],
+      "cleanupErrors": []
+    },
+    {
+      "check": "failures",
+      "base": "/tmu-course-guides/",
+      "runnerErrors": [
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/scenes/posters/cen100-wide.webp?v=20261012-subject1",
+          "method": "GET",
+          "message": "net::ERR_INTERNET_DISCONNECTED",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "console",
+          "message": "Failed to load resource: net::ERR_INTERNET_DISCONNECTED",
+          "location": {
+            "url": "http://127.0.0.1:42001/tmu-course-guides/assets/scenes/posters/cen100-wide.webp?v=20261012-subject1",
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/book/posters/mth140-light-wide.webp",
+          "method": "GET",
+          "message": "net::ERR_INTERNET_DISCONNECTED",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "console",
+          "message": "Failed to load resource: net::ERR_INTERNET_DISCONNECTED",
+          "location": {
+            "url": "http://127.0.0.1:42001/tmu-course-guides/assets/book/posters/mth140-light-wide.webp",
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+          "expected": false
+        },
+        {
+          "type": "requestfailed",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/assets/scenes/posters/mth141-wide.webp?v=20261012-subject1",
+          "method": "GET",
+          "message": "net::ERR_INTERNET_DISCONNECTED",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "console",
+          "message": "Failed to load resource: net::ERR_INTERNET_DISCONNECTED",
+          "location": {
+            "url": "http://127.0.0.1:42001/tmu-course-guides/assets/scenes/posters/mth141-wide.webp?v=20261012-subject1",
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/",
+          "expected": false
+        },
+        {
+          "type": "http",
+          "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/cen10o/?qa_failure=404",
+          "status": 404,
+          "message": "HTTP 404",
+          "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off",
+          "expected": false
+        },
+        {
+          "type": "console",
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "location": {
+            "url": "http://127.0.0.1:42001/tmu-course-guides/cen10o/?qa_failure=404",
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen10o/?qa_failure=404",
+          "expected": false
+        },
+        {
+          "type": "console",
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "location": {
+            "url": "http://127.0.0.1:42001/favicon.ico",
+            "lineNumber": 0,
+            "columnNumber": 0
+          },
+          "url": "http://127.0.0.1:42001/tmu-course-guides/cen10o/?qa_failure=404",
+          "expected": false
+        }
+      ],
+      "cleanupErrors": []
+    },
+    {
+      "check": "crosstab",
+      "base": "/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "crosstab",
+      "base": "/tmu-course-guides/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "clock",
+      "base": "/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "clock",
+      "base": "/tmu-course-guides/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "forward",
+      "base": "/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    },
+    {
+      "check": "forward",
+      "base": "/tmu-course-guides/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    }
+  ],
+  "rawRunErrors": [],
+  "allObservedResourcesClosed": true
+}

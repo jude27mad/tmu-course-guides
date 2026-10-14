@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 4,
+  "recordedAt": "2026-10-14T09:04:03.843037Z",
+  "status": "bounded-git-reader-fix-prepared-only-pending-peer-review-and-execution",
+  "files": [
+    {
+      "path": "/tmp/ns-perf-latest-run-evidence.mjs",
+      "sha256": "dd9e6dfa6f0fbb9e27372b70915660b8576d98100b91401bac3be29f79af450a"
+    },
+    {
+      "path": "/tmp/ns-perf-latest-run-evidence-schema.md",
+      "sha256": "e138665876fa56d1f00611b78e711f520d30dc42e3ea72febda435b9ed4229a3"
+    },
+    {
+      "path": "/tmp/ns-perf-aa7-check-validators.mjs",
+      "sha256": "4b8d9317dfac1d78d0bef2be7cefc2102040e20734e372e105abc64398024430"
+    },
+    {
+      "path": "/tmp/ns-perf-aa7-effective-composite.mjs",
+      "sha256": "4123a3efc78b821411350e317283fec0b1b757f909409a67983091fc54badff2"
+    }
+  ],
+  "syntaxChecksPassed": true,
+  "browsersLaunched": false,
+  "testsRun": false,
+  "productionTestCountsAdded": 0,
+  "repositoryWrites": false,
+  "actualLatestCandidateGenerated": false,
+  "latestFullAcceptanceClaimed": false,
+  "wholeRecoverySupportsSingleBase": true,
+  "effectiveCoverageReplacesOnlyOriginallyFailedCase": true,
+  "originalLatestAll28VerdictAndEventsImmutable": true,
+  "failedNativeFixturesRequireGenuinePersistedRestoration": true,
+  "actualIndependentFollowupEvidenceReviewRequired": true,
+  "reviewedBlockersAddressed": [
+    "fresh own-run source captures and honest metadata binding",
+    "committed suite/primary visual evidence identity",
+    "complete32 visual/PNG/RGBA/environment/settlement/repeat gates",
+    "exact per-sample AA7 before perf settings"
+  ],
+  "actualMonitorClosureSchemaSupported": true,
+  "priorSourceReview": {
+    "path": "/tmp/ns-perf-latest-run-evidence-peer-review.json",
+    "sha256": "a5820ad918f395f5f9f17dd1b151859b009db94fbcdc147a6c037286c3f482ba",
+    "status": "blocked source review retained"
+  },
+  "priorFrozenArtifacts": [
+    "/tmp/ns-perf-latest-run-evidence-1dd-reviewed.mjs",
+    "/tmp/ns-perf-latest-run-evidence-608-reviewed-schema.md",
+    "/tmp/ns-perf-latest-run-evidence-97-reviewed-preparation-proof.json"
+  ],
+  "executionHistory": [
+    {
+      "path": "/tmp/ns-perf-latest-full-original-execution-enobufs.json",
+      "sha256": "2e91aaf1b4a1a2e02be684919fbf440ec289dcc1ef84a356b8d350761b6b7919"
+    }
+  ],
+  "transportOnlyFix": "Root-authorized execFileSync git maxBuffer64MiB, larger than actual committed9,573,406-byte trace; exact full blob comparison unchanged"
+}

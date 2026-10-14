@@ -1,0 +1,640 @@
+{
+  "recordedAt": "2026-10-14T08:42:50.827Z",
+  "note": "Derived immutable status inventory. Original assertion/native error/expected fields remain in bound raw summary; no raw edit or event reclassification.",
+  "raw": {
+    "path": "tools/qa/reports/2026-10-14T07-09-10-842Z-149382/summary.json",
+    "sha256": "dcdb17cd4d32c0ad4074115ecb11d424ff032c9f8717572b0746e55cbe5df42a"
+  },
+  "startedAt": "2026-10-14T07:09:10.842Z",
+  "completedAt": "2026-10-14T08:39:46.631Z",
+  "status": "failed",
+  "exitCode": 1,
+  "failures": 12,
+  "errors": [],
+  "counts": {
+    "records": 28,
+    "passed": 16,
+    "failed": 10,
+    "skipped": 2,
+    "assertions": 2726,
+    "passedAssertions": 2714,
+    "failedAssertions": 12,
+    "featureSkips": 4,
+    "runnerErrors": 225
+  },
+  "records": [
+    {
+      "check": "perf",
+      "base": "/",
+      "status": "failed",
+      "failures": 2,
+      "durationMs": 374457,
+      "assertions": 304,
+      "passedAssertions": 302,
+      "failedAssertions": [
+        {
+          "index": 91,
+          "name": "mth140 desktop: declared optional feature fetches attempted",
+          "actual": [
+            {
+              "name": "palette",
+              "href": "http://127.0.0.1:33547/assets/night/palette.css?v=20261014-book1",
+              "requests": [
+                {
+                  "url": "http://127.0.0.1:33547/assets/night/palette.css?v=20261014-book1",
+                  "finished": true,
+                  "failed": false,
+                  "status": 200
+                },
+                {
+                  "url": "http://127.0.0.1:33547/assets/night/palette.mjs?v=20261014-book1",
+                  "finished": true,
+                  "failed": false,
+                  "status": 200
+                }
+              ]
+            },
+            {
+              "name": "hero",
+              "href": null,
+              "requests": []
+            },
+            {
+              "name": "scroll",
+              "href": null,
+              "requests": []
+            }
+          ],
+          "expected": [
+            "palette",
+            "hero",
+            "scroll"
+          ],
+          "detail": "Observe normal product loading; QA never imports optional vendors."
+        },
+        {
+          "index": 92,
+          "name": "mth140 desktop: network sample reaches quiet boundary",
+          "actual": {
+            "durationMs": 145811,
+            "capMs": 90000,
+            "optionalSettlementMs": 2500,
+            "networkQuietMs": 1500,
+            "routeReady": false,
+            "networkQuiet": false,
+            "capped": true,
+            "timeCapReached": true,
+            "appearanceCheckpointWait": {
+              "waited": false,
+              "durationMs": 21681,
+              "remainingMs": -34129,
+              "capped": false,
+              "initialPending": [],
+              "pendingAtEnd": [],
+              "reason": null
+            },
+            "activeRequestsAtEnd": 0,
+            "captureAttempts": 0,
+            "navigationWaitUntil": "commit",
+            "readinessIncludes": "Completed semantic route and declared optional CSS/module fetch attempts",
+            "readiness": {
+              "perfObserverReady": true,
+              "routeReady": true,
+              "optionalStyles": [
+                {
+                  "name": "palette",
+                  "href": "http://127.0.0.1:33547/assets/night/palette.css?v=20261014-book1"
+                },
+                {
+                  "name": "hero",
+                  "href": null
+                },
+                {
+                  "name": "scroll",
+                  "href": null
+                }
+              ],
+              "optionalFeatures": [
+                {
+                  "name": "palette",
+                  "href": "http://127.0.0.1:33547/assets/night/palette.css?v=20261014-book1",
+                  "requests": [
+                    {
+                      "url": "http://127.0.0.1:33547/assets/night/palette.css?v=20261014-book1",
+                      "finished": true,
+                      "failed": false,
+                      "status": 200
+                    },
+                    {
+                      "url": "http://127.0.0.1:33547/assets/night/palette.mjs?v=20261014-book1",
+                      "finished": true,
+                      "failed": false,
+                      "status": 200
+                    }
+                  ]
+                },
+                {
+                  "name": "hero",
+                  "href": null,
+                  "requests": []
+                },
+                {
+                  "name": "scroll",
+                  "href": null,
+                  "requests": []
+                }
+              ],
+              "optionalFeaturesAttempted": false
+            }
+          },
+          "expected": "complete readiness + 2500 ms optional settlement + 1500 ms no active requests, unchanged during browser capture"
+        }
+      ],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "perf",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "failures": 0,
+      "durationMs": 210867,
+      "assertions": 304,
+      "passedAssertions": 304,
+      "failedAssertions": [],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "routes",
+      "base": "/",
+      "status": "failed",
+      "failures": 1,
+      "durationMs": 63570,
+      "assertions": 18,
+      "passedAssertions": 17,
+      "failedAssertions": [
+        {
+          "index": 13,
+          "name": "route and history navigation: execution",
+          "actual": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-course-link=\"mth141\"]')\u001b[22m\n\u001b[2m    - locator resolved to <a class=\"course-link\" data-course-link=\"mth141\" href=\"http://127.0.0.1:33547/mth141/\">…</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\n    at navigate (/workspace/tmu-course-guides/tools/qa/checks.mjs:207:55)\n    at /workspace/tmu-course-guides/tools/qa/checks.mjs:239:68\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks.mjs:102:5)\n    at async Object.routes (/workspace/tmu-course-guides/tools/qa/checks.mjs:223:3)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+          "expected": "case completes"
+        }
+      ],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "routes",
+      "base": "/tmu-course-guides/",
+      "status": "failed",
+      "failures": 1,
+      "durationMs": 73765,
+      "assertions": 42,
+      "passedAssertions": 41,
+      "failedAssertions": [
+        {
+          "index": 37,
+          "name": "route and history navigation: execution",
+          "actual": "Error: Timed out waiting for cen100 completed navigation, content and deadline\n    at until (file:///workspace/tmu-course-guides/tools/qa/checks.mjs:127:9)\n    at async ready (file:///workspace/tmu-course-guides/tools/qa/checks.mjs:133:3)\n    at async file:///workspace/tmu-course-guides/tools/qa/checks.mjs:241:100\n    at async runCase (file:///workspace/tmu-course-guides/tools/qa/checks.mjs:102:5)\n    at async Object.routes (file:///workspace/tmu-course-guides/tools/qa/checks.mjs:223:3)\n    at async runHarness (file:///workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+          "expected": "case completes"
+        }
+      ],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "stability",
+      "base": "/",
+      "status": "failed",
+      "failures": 1,
+      "durationMs": 289060,
+      "assertions": 7,
+      "passedAssertions": 6,
+      "failedAssertions": [
+        {
+          "index": 2,
+          "name": "repeated lifecycle operations: execution",
+          "actual": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-course-link=\"desk\"]')\u001b[22m\n\u001b[2m    - locator resolved to <a data-course-link=\"desk\" class=\"course-link desk-link\" href=\"http://127.0.0.1:33547/\">…</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\n    at navigate (/workspace/tmu-course-guides/tools/qa/checks.mjs:207:55)\n    at runCase.linearClock (/workspace/tmu-course-guides/tools/qa/checks.mjs:315:69)\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks.mjs:102:5)\n    at async Object.stability (/workspace/tmu-course-guides/tools/qa/checks.mjs:299:3)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+          "expected": "case completes"
+        }
+      ],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "stability",
+      "base": "/tmu-course-guides/",
+      "status": "failed",
+      "failures": 1,
+      "durationMs": 319114,
+      "assertions": 7,
+      "passedAssertions": 6,
+      "failedAssertions": [
+        {
+          "index": 2,
+          "name": "repeated lifecycle operations: execution",
+          "actual": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-course-link=\"desk\"]')\u001b[22m\n\u001b[2m    - locator resolved to <a data-course-link=\"desk\" class=\"course-link desk-link\" href=\"http://127.0.0.1:42001/tmu-course-guides/\">…</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\n    at navigate (/workspace/tmu-course-guides/tools/qa/checks.mjs:207:55)\n    at runCase.linearClock (/workspace/tmu-course-guides/tools/qa/checks.mjs:315:69)\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks.mjs:102:5)\n    at async Object.stability (/workspace/tmu-course-guides/tools/qa/checks.mjs:299:3)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+          "expected": "case completes"
+        }
+      ],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "frames",
+      "base": "/",
+      "status": "passed",
+      "failures": 0,
+      "durationMs": 323070,
+      "assertions": 24,
+      "passedAssertions": 24,
+      "failedAssertions": [],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "frames",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "failures": 0,
+      "durationMs": 253069,
+      "assertions": 24,
+      "passedAssertions": 24,
+      "failedAssertions": [],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "deadlines",
+      "base": "/",
+      "status": "passed",
+      "failures": 0,
+      "durationMs": 109058,
+      "assertions": 128,
+      "passedAssertions": 128,
+      "failedAssertions": [],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "deadlines",
+      "base": "/tmu-course-guides/",
+      "status": "failed",
+      "failures": 1,
+      "durationMs": 112817,
+      "assertions": 113,
+      "passedAssertions": 112,
+      "failedAssertions": [
+        {
+          "index": 86,
+          "name": "MTH140 midterm: execution",
+          "actual": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-course-link=\"mth140\"]')\u001b[22m\n\u001b[2m    - locator resolved to <a class=\"course-link\" data-course-link=\"mth140\" href=\"http://127.0.0.1:42001/tmu-course-guides/mth140/\">…</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\n    at navigate (/workspace/tmu-course-guides/tools/qa/checks.mjs:207:55)\n    at /workspace/tmu-course-guides/tools/qa/checks.mjs:465:13\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks.mjs:102:5)\n    at async Object.deadlines (/workspace/tmu-course-guides/tools/qa/checks.mjs:444:34)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+          "expected": "case completes"
+        }
+      ],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "modes",
+      "base": "/",
+      "status": "passed",
+      "failures": 0,
+      "durationMs": 377022,
+      "assertions": 188,
+      "passedAssertions": 188,
+      "failedAssertions": [],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "modes",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "failures": 0,
+      "durationMs": 303002,
+      "assertions": 188,
+      "passedAssertions": 188,
+      "failedAssertions": [],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "layout",
+      "base": "/",
+      "status": "passed",
+      "failures": 0,
+      "durationMs": 442244,
+      "assertions": 288,
+      "passedAssertions": 288,
+      "failedAssertions": [],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "layout",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "failures": 0,
+      "durationMs": 269591,
+      "assertions": 288,
+      "passedAssertions": 288,
+      "failedAssertions": [],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "webkit",
+      "base": "/",
+      "status": "skipped",
+      "failures": 0,
+      "durationMs": 16,
+      "assertions": 0,
+      "passedAssertions": 0,
+      "failedAssertions": [],
+      "skipped": [
+        {
+          "feature": "Playwright WebKit routes, deadlines and layout",
+          "reason": "WebKit could not launch; install its browser and OS dependencies. browserType.launch: Executable doesn't exist at /home/agent/.cache/ms-playwright/webkit-2227/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+        }
+      ],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "webkit",
+      "base": "/tmu-course-guides/",
+      "status": "skipped",
+      "failures": 0,
+      "durationMs": 7,
+      "assertions": 0,
+      "passedAssertions": 0,
+      "failedAssertions": [],
+      "skipped": [
+        {
+          "feature": "Playwright WebKit routes, deadlines and layout",
+          "reason": "WebKit could not launch; install its browser and OS dependencies. browserType.launch: Executable doesn't exist at /home/agent/.cache/ms-playwright/webkit-2227/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+        }
+      ],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "nojs",
+      "base": "/",
+      "status": "passed",
+      "failures": 0,
+      "durationMs": 7776,
+      "assertions": 41,
+      "passedAssertions": 41,
+      "failedAssertions": [],
+      "skipped": [],
+      "runnerErrorCount": 99,
+      "cleanupErrors": []
+    },
+    {
+      "check": "nojs",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "failures": 0,
+      "durationMs": 7736,
+      "assertions": 41,
+      "passedAssertions": 41,
+      "failedAssertions": [],
+      "skipped": [],
+      "runnerErrorCount": 99,
+      "cleanupErrors": []
+    },
+    {
+      "check": "bfcache",
+      "base": "/",
+      "status": "failed",
+      "failures": 1,
+      "durationMs": 167791,
+      "assertions": 65,
+      "passedAssertions": 64,
+      "failedAssertions": [
+        {
+          "index": 10,
+          "name": "cen100: native document Back / BFCache: execution",
+          "actual": "page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:33547/privacy.html\", waiting until \"load\"\u001b[22m\n\n    at performResilienceNavigation (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:327:53)\n    at runCase.browser (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:637:13)\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:202:5)\n    at async Object.bfcache (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:633:7)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+          "expected": "case completes"
+        }
+      ],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "bfcache",
+      "base": "/tmu-course-guides/",
+      "status": "failed",
+      "failures": 2,
+      "durationMs": 129659,
+      "assertions": 56,
+      "passedAssertions": 54,
+      "failedAssertions": [
+        {
+          "index": 21,
+          "name": "mth140: native document Back / BFCache: execution",
+          "actual": "page.evaluate: Execution context was destroyed, most likely because of a navigation\n    at sample (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:162:142)\n    at waitForResilienceReady (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:143:27)\n    at async ready (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:162:3)\n    at async clickRoute (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:244:3)\n    at async runCase.browser (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:654:56)\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:202:5)\n    at async Object.bfcache (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:633:7)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+          "expected": "case completes"
+        },
+        {
+          "index": 22,
+          "name": "mth140: native document Back / BFCache: unexpected browser errors",
+          "actual": [
+            {
+              "type": "requestfailed",
+              "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/",
+              "method": "GET",
+              "message": "net::ERR_ABORTED",
+              "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/?motion=off",
+              "expected": false
+            }
+          ],
+          "expected": []
+        }
+      ],
+      "skipped": [
+        {
+          "feature": "cen100: native persisted BFCache restoration",
+          "reason": "The browser performed a document Back without pageshow.persisted. Shell retention/resume cannot be claimed.",
+          "navigation": [
+            {
+              "type": "back_forward",
+              "notRestoredReasons": {
+                "src": null,
+                "id": null,
+                "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/?motion=off",
+                "name": null,
+                "reasons": [
+                  {
+                    "reason": "masked"
+                  }
+                ],
+                "children": []
+              }
+            }
+          ]
+        },
+        {
+          "feature": "mth141: native persisted BFCache restoration",
+          "reason": "The browser performed a document Back without pageshow.persisted. Shell retention/resume cannot be claimed.",
+          "navigation": [
+            {
+              "type": "back_forward",
+              "notRestoredReasons": {
+                "src": null,
+                "id": null,
+                "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/?motion=off",
+                "name": null,
+                "reasons": [
+                  {
+                    "reason": "masked"
+                  }
+                ],
+                "children": []
+              }
+            }
+          ]
+        }
+      ],
+      "runnerErrorCount": 1,
+      "cleanupErrors": []
+    },
+    {
+      "check": "failures",
+      "base": "/",
+      "status": "passed",
+      "failures": 0,
+      "durationMs": 292890,
+      "assertions": 43,
+      "passedAssertions": 43,
+      "failedAssertions": [],
+      "skipped": [],
+      "runnerErrorCount": 13,
+      "cleanupErrors": []
+    },
+    {
+      "check": "failures",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "failures": 0,
+      "durationMs": 193727,
+      "assertions": 43,
+      "passedAssertions": 43,
+      "failedAssertions": [],
+      "skipped": [],
+      "runnerErrorCount": 13,
+      "cleanupErrors": []
+    },
+    {
+      "check": "crosstab",
+      "base": "/",
+      "status": "failed",
+      "failures": 1,
+      "durationMs": 179198,
+      "assertions": 92,
+      "passedAssertions": 91,
+      "failedAssertions": [
+        {
+          "index": 48,
+          "name": "mth140: native cross-tab completion, Undo and section changes: execution",
+          "actual": "locator.evaluate: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#undo-complete')\u001b[22m\n\n    at performResilienceInteraction (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:291:51)\n    at undo (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:583:24)\n    at runCase.seed.seed (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:597:11)\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:202:5)\n    at async Object.crosstab (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:577:3)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+          "expected": "case completes"
+        }
+      ],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "crosstab",
+      "base": "/tmu-course-guides/",
+      "status": "failed",
+      "failures": 1,
+      "durationMs": 125880,
+      "assertions": 92,
+      "passedAssertions": 91,
+      "failedAssertions": [
+        {
+          "index": 48,
+          "name": "mth140: native cross-tab completion, Undo and section changes: execution",
+          "actual": "locator.evaluate: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#undo-complete')\u001b[22m\n\n    at performResilienceInteraction (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:291:51)\n    at undo (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:583:24)\n    at runCase.seed.seed (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:597:11)\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:202:5)\n    at async Object.crosstab (/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:577:3)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+          "expected": "case completes"
+        }
+      ],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "clock",
+      "base": "/",
+      "status": "passed",
+      "failures": 0,
+      "durationMs": 220409,
+      "assertions": 75,
+      "passedAssertions": 75,
+      "failedAssertions": [],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "clock",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "failures": 0,
+      "durationMs": 196855,
+      "assertions": 75,
+      "passedAssertions": 75,
+      "failedAssertions": [],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "forward",
+      "base": "/",
+      "status": "passed",
+      "failures": 0,
+      "durationMs": 133958,
+      "assertions": 90,
+      "passedAssertions": 90,
+      "failedAssertions": [],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    },
+    {
+      "check": "forward",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "failures": 0,
+      "durationMs": 193105,
+      "assertions": 90,
+      "passedAssertions": 90,
+      "failedAssertions": [],
+      "skipped": [],
+      "runnerErrorCount": 0,
+      "cleanupErrors": []
+    }
+  ]
+}

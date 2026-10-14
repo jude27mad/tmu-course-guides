@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "runDirectory": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382",
+  "summarySHA256": "dcdb17cd4d32c0ad4074115ecb11d424ff032c9f8717572b0746e55cbe5df42a",
+  "sourceBefore": {
+    "path": "/tmp/ns-perf-latest-full-source-before.json",
+    "sha256": "be421f9e1f04cc50a97beae080abde314d985829ad9810a6a3cbdbea2cdd2afe"
+  },
+  "sourceBeforeBound": {
+    "path": "/tmp/ns-perf-latest-full-source-before-bound.json",
+    "sha256": "412c0819ab64b78a323f81c4d0c1a8685f76cef4fa81f8a179f994a41be254f2"
+  },
+  "sourceAfter": {
+    "path": "/tmp/ns-perf-latest-full-source-after.json",
+    "sha256": "d54b8db9db95ec56c692539426de04c67438dc294c0e2289b53a6838be0c4871"
+  },
+  "resourceClosure": {
+    "path": "/tmp/ns-perf-latest-full-resource-closure.json",
+    "sha256": "16bb30538b6a7fa75c320395b8f886fa437b75cc7a78ec77a9e24fa54d8cc9ec"
+  },
+  "cliObservation": {
+    "path": "/tmp/ns-perf-latest-full-cli-observation.json",
+    "sha256": "ea87ebdc9a6f2bfd2fb3d1ef05f5dd8570ab99dd1e96e1e771cdd940a7ba4bb2"
+  },
+  "runnerLog": {
+    "path": "/tmp/ns-perf-latest-full-qa.log",
+    "sha256": "5e5a9ac4081996dd715a4c0d9ce9f4fcd0aa3c7d2f841d6bdaa2e6fd69be0c2d"
+  },
+  "suiteValidation": {
+    "path": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-current-suite-validation.json",
+    "sha256": "f92f83b5fab3ce075a9beb9791b050c9524747a6040872831f962ae7ffaf82af"
+  },
+  "visualProof": {
+    "path": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-visual-aa7bca2-proof.json",
+    "sha256": "c53e01e618487f7f800696c62b9f1b14b847cdf51e08e8de5106c13fbe711a60"
+  },
+  "visualComparison": {
+    "path": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-visual-comparison.json",
+    "sha256": "7365d5e3490372f2ac0f84ab302713bd1724418166947702abde5ac3b2506454"
+  },
+  "beforeBaseline": {
+    "path": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-before.json",
+    "sha256": "889612c8dc7ba9842230e596f373f35578ca354ff3e3021fb65641d301206256"
+  },
+  "budgets": {
+    "path": "/workspace/tmu-course-guides/tools/qa/perf-budgets.json",
+    "sha256": "d96fdcd150e297673fa925bae5ab171871c2414f4f950bedac6bd47259055a37"
+  },
+  "reviewedSkips": {
+    "path": "/tmp/ns-perf-latest-full-reviewed-skips-empty.json",
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "additionalVisualProofs": [],
+  "wholeCheckFollowups": [],
+  "outputDirectory": "/tmp/ns-perf-latest-full-original-evidence-candidate"
+}

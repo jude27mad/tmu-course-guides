@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T09:27:49.365169+00:00",
+  "phase": "After topic capture launch; PID binding only, independent true prelaunch source proof is after-start.json",
+  "afterRunner": {
+    "pid": 165452,
+    "args": [
+      "node",
+      "/tmp/ns-perf-default-visual-capture.mjs",
+      "capture",
+      "after",
+      "--repeat-case",
+      "root-mth140-1440x900-dark",
+      "--serial",
+      "--compositor-drain",
+      "--disable-gpu-rasterization",
+      "--native-layer-redraw",
+      "--disable-gpu-compositing"
+    ],
+    "stat": "165452 (MainThread) S 165449 165448 165448 0 -1 4194560 26380 1692 0 0 498 167 1 0 20 0 11 0 5418976 1591091200 20927 18446744073709551615 1 1 0 0 0 0 0 16781312 83459 0 0 0 17 3 0 0 0 0 0 0 0 0 0 0 0 0 0"
+  }
+}

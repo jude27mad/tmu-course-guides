@@ -1,0 +1,7 @@
+{
+  "observedAt": "2026-10-14T10:20:11.682929+00:00",
+  "actualCLIExitCode": 1,
+  "sessionID": 43695,
+  "actualToolChunk": "51383a",
+  "scope": "Whole unchanged routes/root diagnostic failed,42 assertions with one failure; nativeGPUcompositiondisabledsoftware/rasterizationenabled/WebGLreadback. No normal-run replacement or cause claim."
+}

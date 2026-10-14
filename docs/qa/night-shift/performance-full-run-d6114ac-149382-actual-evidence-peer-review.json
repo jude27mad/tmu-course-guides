@@ -1,0 +1,372 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "independent-original-full-run-artifact-review",
+  "status": "passed-faithful-failed-archive-review-with-comparison-issue",
+  "approved": true,
+  "approvedArchivePreservation": true,
+  "approvedQAOrGoalAcceptance": false,
+  "sourceApprovalOnly": false,
+  "reviewer": "/root/final_review",
+  "recordedAt": "2026-10-14T09:14:56.028114+00:00",
+  "reviewScope": "Actual original-only execution and its failed-run preservation. Approval does not pass browser QA, admit recovery follow-ups, validate default-URL visuals, waive events or establish the requested goal complete.",
+  "inputs": [
+    {
+      "path": "/tmp/ns-perf-latest-full-original-execution-proof.json",
+      "sha256": "397eadcdc44de60e9d62f11961e20116b8537af4438156cc27cb9fe19df26cf5"
+    },
+    {
+      "path": "/tmp/ns-perf-latest-full-original-evidence-input.json",
+      "sha256": "265e2fba7548bec3375a8633e08e97b55116a1bf705c451eea7c3790173f1dee"
+    },
+    {
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/performance-browser-qa.candidate.json",
+      "sha256": "627e5d1648d51020919653f2e64e769471917686b03e6dcc337eeefdf419676a"
+    },
+    {
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/performance-verification.candidate.json",
+      "sha256": "1824ed0354cfed442c5e4b48d150413d330f8c683390e55ca145e78daa53e5df"
+    },
+    {
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive-verification.json",
+      "sha256": "0240b973849b814a9158c77018f9660ffcb3ba8e7439f8e9b8fa9c32f7b82b1a"
+    }
+  ],
+  "actualBuilderSource": {
+    "path": "/tmp/ns-perf-latest-run-evidence.mjs",
+    "sha256": "dd9e6dfa6f0fbb9e27372b70915660b8576d98100b91401bac3be29f79af450a",
+    "bytes": 53273
+  },
+  "actualBuilderCLI": {
+    "exitCode": 0,
+    "session": 9888,
+    "chunk": "3abd98",
+    "evidence": {
+      "path": "/tmp/ns-perf-latest-full-original-execution-proof.json",
+      "sha256": "397eadcdc44de60e9d62f11961e20116b8537af4438156cc27cb9fe19df26cf5"
+    }
+  },
+  "actualNormalFullCLI": {
+    "exitCode": 1,
+    "status": "failed",
+    "failures": 12,
+    "observation": {
+      "path": "/tmp/ns-perf-latest-full-cli-observation.json",
+      "sha256": "ea87ebdc9a6f2bfd2fb3d1ef05f5dd8570ab99dd1e96e1e771cdd940a7ba4bb2"
+    }
+  },
+  "originalSummary": {
+    "path": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382/summary.json",
+    "sha256": "dcdb17cd4d32c0ad4074115ecb11d424ff032c9f8717572b0746e55cbe5df42a",
+    "startedAt": "2026-10-14T07:09:10.842Z",
+    "completedAt": "2026-10-14T08:39:46.631Z"
+  },
+  "archive": {
+    "copies": [
+      {
+        "name": "summary.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/summary.json",
+        "sha256": "dcdb17cd4d32c0ad4074115ecb11d424ff032c9f8717572b0746e55cbe5df42a",
+        "bytes": 13876330,
+        "byteIdentical": true,
+        "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382/summary.json",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "perf.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/perf.json",
+        "sha256": "3acf9bcdd863bbe07284390b27264dff16d806542564b8b3edd18447193da58d",
+        "bytes": 2199874,
+        "byteIdentical": true,
+        "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382/perf.json",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "routes.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/routes.json",
+        "sha256": "bbdcbf6f253ccf11446bc3ced1e41b9b6620a32d74bc8d57fff583522a56dd24",
+        "bytes": 46825,
+        "byteIdentical": true,
+        "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382/routes.json",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "stability.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/stability.json",
+        "sha256": "10690a1bcd9948817da791884f137dd4dbca09ed48d910a48aa338370471dee4",
+        "bytes": 157879,
+        "byteIdentical": true,
+        "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382/stability.json",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "frames.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/frames.json",
+        "sha256": "c3fd5eb07786eaf43c7a1ab0c27a5afa24da88a8594749693bf5e061be892d6c",
+        "bytes": 144911,
+        "byteIdentical": true,
+        "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382/frames.json",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "deadlines.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/deadlines.json",
+        "sha256": "d0985117f62ba5a2909a097dab297a2ee8aeaa8cfd5e9fced236198646e899bd",
+        "bytes": 155732,
+        "byteIdentical": true,
+        "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382/deadlines.json",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "modes.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/modes.json",
+        "sha256": "ea2cc1bd19a4d2e83a6d710046a32086edf4c66beec933865713df000e7b585b",
+        "bytes": 7497994,
+        "byteIdentical": true,
+        "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382/modes.json",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "layout.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/layout.json",
+        "sha256": "7cf4d2ef2ed1885b2555a6c983680dedb64a140e195079dd845592dfc0b3bc90",
+        "bytes": 778647,
+        "byteIdentical": true,
+        "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382/layout.json",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "webkit.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/webkit.json",
+        "sha256": "f1be7bf1386cbb1f5cdf6e039b1b53ef3235ebdcff39e8a91715da7ca556ac05",
+        "bytes": 4932,
+        "byteIdentical": true,
+        "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382/webkit.json",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "nojs.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/nojs.json",
+        "sha256": "baad131d1180c866b593b26f769301c0d01d2d9437ab89546b7eca8a5c198896",
+        "bytes": 425964,
+        "byteIdentical": true,
+        "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382/nojs.json",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "bfcache.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/bfcache.json",
+        "sha256": "a35cb6b8ef80410121c4bbd52da3e63107e10e9eb6f8045ca625aee3eb4a11d0",
+        "bytes": 266566,
+        "byteIdentical": true,
+        "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382/bfcache.json",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "failures.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/failures.json",
+        "sha256": "4bb5201925642ee462e7b29e94b2489be898973eae68946555024a97b12e6568",
+        "bytes": 318875,
+        "byteIdentical": true,
+        "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382/failures.json",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "crosstab.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/crosstab.json",
+        "sha256": "39b74a96ecd2a07a6431eb36e3497d721e138cab6264a4ba2dcb69ee8b6a1e58",
+        "bytes": 313981,
+        "byteIdentical": true,
+        "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382/crosstab.json",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "clock.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/clock.json",
+        "sha256": "738a2c394df1ddb33c3601786e06921627d3f3397ae23da11d7e866bbf5075be",
+        "bytes": 153124,
+        "byteIdentical": true,
+        "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382/clock.json",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "forward.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/forward.json",
+        "sha256": "da1d8a4905ad0f6dd0ab630634377030386fb222d0813c025e8d663d437f670b",
+        "bytes": 257806,
+        "byteIdentical": true,
+        "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382/forward.json",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "runner.log",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/runner.log",
+        "sha256": "5e5a9ac4081996dd715a4c0d9ce9f4fcd0aa3c7d2f841d6bdaa2e6fd69be0c2d",
+        "bytes": 1982,
+        "byteIdentical": true,
+        "originalPath": "/tmp/ns-perf-latest-full-qa.log",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "source-before.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/source-before.json",
+        "sha256": "be421f9e1f04cc50a97beae080abde314d985829ad9810a6a3cbdbea2cdd2afe",
+        "bytes": 2872,
+        "byteIdentical": true,
+        "originalPath": "/tmp/ns-perf-latest-full-source-before.json",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "source-before-bound.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/source-before-bound.json",
+        "sha256": "412c0819ab64b78a323f81c4d0c1a8685f76cef4fa81f8a179f994a41be254f2",
+        "bytes": 3786,
+        "byteIdentical": true,
+        "originalPath": "/tmp/ns-perf-latest-full-source-before-bound.json",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "source-after.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/source-after.json",
+        "sha256": "d54b8db9db95ec56c692539426de04c67438dc294c0e2289b53a6838be0c4871",
+        "bytes": 2990,
+        "byteIdentical": true,
+        "originalPath": "/tmp/ns-perf-latest-full-source-after.json",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "resource-closure.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/resource-closure.json",
+        "sha256": "16bb30538b6a7fa75c320395b8f886fa437b75cc7a78ec77a9e24fa54d8cc9ec",
+        "bytes": 76747,
+        "byteIdentical": true,
+        "originalPath": "/tmp/ns-perf-latest-full-resource-closure.json",
+        "independentlyByteCompared": true
+      },
+      {
+        "name": "cli-observation.json",
+        "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive/cli-observation.json",
+        "sha256": "ea87ebdc9a6f2bfd2fb3d1ef05f5dd8570ab99dd1e96e1e771cdd940a7ba4bb2",
+        "bytes": 794,
+        "byteIdentical": true,
+        "originalPath": "/tmp/ns-perf-latest-full-cli-observation.json",
+        "independentlyByteCompared": true
+      }
+    ],
+    "verifiedCount": 21,
+    "allCopiesByteIdenticalToExactInputs": true,
+    "all28OriginalCaseObjectsPreserved": true,
+    "all12FailedAssertionObjectsPreserved": true,
+    "all225RunnerEventObjectsAndExpectedFalsePreserved": true,
+    "counts": {
+      "checks": 14,
+      "records": 28,
+      "passedRecords": 16,
+      "failedRecords": 10,
+      "unavailableRecords": 2,
+      "assertions": 2726,
+      "passedAssertions": 2714,
+      "failedAssertions": 12,
+      "skipEntries": 4,
+      "runnerEvents": 225
+    }
+  },
+  "actualSourceAndClosureRefs": {
+    "sourceBefore": {
+      "path": "/tmp/ns-perf-latest-full-source-before.json",
+      "sha256": "be421f9e1f04cc50a97beae080abde314d985829ad9810a6a3cbdbea2cdd2afe"
+    },
+    "sourceBeforeBound": {
+      "path": "/tmp/ns-perf-latest-full-source-before-bound.json",
+      "sha256": "412c0819ab64b78a323f81c4d0c1a8685f76cef4fa81f8a179f994a41be254f2"
+    },
+    "sourceAfter": {
+      "path": "/tmp/ns-perf-latest-full-source-after.json",
+      "sha256": "d54b8db9db95ec56c692539426de04c67438dc294c0e2289b53a6838be0c4871"
+    },
+    "resourceClosure": {
+      "path": "/tmp/ns-perf-latest-full-resource-closure.json",
+      "sha256": "16bb30538b6a7fa75c320395b8f886fa437b75cc7a78ec77a9e24fa54d8cc9ec"
+    },
+    "cliObservation": {
+      "path": "/tmp/ns-perf-latest-full-cli-observation.json",
+      "sha256": "ea87ebdc9a6f2bfd2fb3d1ef05f5dd8570ab99dd1e96e1e771cdd940a7ba4bb2"
+    },
+    "runnerLog": {
+      "path": "/tmp/ns-perf-latest-full-qa.log",
+      "sha256": "5e5a9ac4081996dd715a4c0d9ce9f4fcd0aa3c7d2f841d6bdaa2e6fd69be0c2d"
+    }
+  },
+  "acceptanceState": {
+    "latestNormalFullStatus": "failed",
+    "latestFullAcceptance": false,
+    "effectiveCoverageAcceptance": false,
+    "overallRequestedGoalComplete": false,
+    "defaultURLMTH140Validated": false,
+    "cappedOrFailedPerfCanonicalAfterCandidate": null,
+    "wholeCheckFollowups": "none"
+  },
+  "remainingComparisonIssue": {
+    "check": "failures",
+    "base": "/tmu-course-guides/",
+    "rawStatusPreserved": "passed",
+    "candidateExplicitlyRetainsIssue": true,
+    "issue": "Complete project-base13-event fixture is compared with the committed complete root-base fixture after origin-only normalization; the exact deployment prefix remains and prevents equality.",
+    "independentFinding": "Read-only comparison of all13 event objects after exact actual-origin and deployment-prefix rebasing yields identical multisets. All message/type/status/method/query/hash/stack/expected:false fields remain exact; global/favicon.ico retains its global path.",
+    "independentlyComparedEventCount": 13,
+    "rawFilesUnchanged": true,
+    "classificationWaiverRequired": false
+  },
+  "recommendedNarrowHandling": {
+    "scope": "Comparison-only private validator adaptation, separately source reviewed and tested before use; preserve current original candidate/output/proof bytes.",
+    "rules": [
+      "Only canonicalize explicit same-origin URL fields under the actual declared deployment base.",
+      "Replace that exact base prefix with canonical slash, preserving all remaining path bytes, queries and fragments.",
+      "Keep the existing authored global /favicon.ico role separate from deployment paths.",
+      "Leave about:blank bootstrap errors and all non-URL message/stack/status/expected fields untouched.",
+      "Reject foreign-origin or outside-deployment paths rather than trimming arbitrary prefixes.",
+      "Retain independently validated fixtureAdmits, complete13 count, exact opaque4, owning/runtime multiset, expected:false and no abort admission."
+    ],
+    "negativeCoverageNeeded": [
+      "wrong query/token/path",
+      "outside-base or external origin",
+      "missing/duplicate event",
+      "altered expected flag/message/status/stack",
+      "unmatched ERR_ABORTED"
+    ]
+  },
+  "unmatchedNativeAbort": {
+    "check": "bfcache",
+    "base": "/tmu-course-guides/",
+    "requestUrl": "http://127.0.0.1:42001/tmu-course-guides/",
+    "preservedAsOriginalFailedTelemetry": true,
+    "admittedOrRelabeled": false
+  },
+  "priorFailurePreservation": {
+    "executionFailure": {
+      "path": "/tmp/ns-perf-latest-full-original-execution-enobufs.json",
+      "sha256": "2e91aaf1b4a1a2e02be684919fbf440ec289dcc1ef84a356b8d350761b6b7919",
+      "bytes": 899
+    },
+    "executionFailureLog": {
+      "path": "/tmp/ns-perf-latest-full-original-execution-enobufs.log",
+      "sha256": "1f8331a972f1d9239297f6cd2fbb158286b91eba334a80fe35bf651cd8e1af4f",
+      "bytes": 411
+    },
+    "unchanged": true
+  },
+  "materialArchivePreservationFindings": [],
+  "limits": [
+    "Original normal full run remains FAILED12, irrespective of successful archive-builder CLI0.",
+    "The project fixture comparison issue remains visible until a narrowly reviewed adapter is applied; this review does not alter or waive it.",
+    "Root415/QA138/UI0-eight-vendor and primary32 proofs remain separate committed evidence; default supplement is pending.",
+    "No candidate recomputation, imports, heavy tests, browser, PNG decoding, source or canonical evidence changes were performed by this reviewer."
+  ],
+  "browserAcceptanceEstablished": false,
+  "builderExecutedByReviewer": false,
+  "modulesImported": false,
+  "testsRun": false,
+  "browsersLaunched": false,
+  "pixelsDecoded": false,
+  "activeSourceOrRepositoryFilesEdited": false,
+  "canonicalEvidenceWritten": false
+}

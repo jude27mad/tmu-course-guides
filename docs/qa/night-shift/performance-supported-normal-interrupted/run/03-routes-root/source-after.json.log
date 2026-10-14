@@ -1,0 +1,11 @@
+{
+  "path": "/tmp/ns-perf-supported-all28-final/03-routes-root/source-after.json",
+  "sha256": "3c3c76146ad4f915da44f3df7ab34f755c18ac7bb35808458a7193a096078068",
+  "recordedAt": "2026-10-14T09:57:30.007Z",
+  "productFingerprint": "1795468f427084977fac5a0707eef0b14e461c8d2041cb9c6d1e0315de48851f",
+  "protectedFingerprint": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+  "driverVersion": "1.64.0",
+  "executableSource": "Playwright bundled Chromium",
+  "sourceUnchanged": true,
+  "driverAndLaunchUnchanged": true
+}

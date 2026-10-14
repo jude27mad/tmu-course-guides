@@ -1,0 +1,8 @@
+{
+  "observedAt": "2026-10-14T10:15:03.818839+00:00",
+  "actualCLIExitCode": 2,
+  "sessionID": 47706,
+  "actualToolChunk": "12d857",
+  "cases": 0,
+  "scope": "Failed diagnostic metadata setup, no route UI result. Browser.getBrowserCommandLine lacks enable-automation; original native flags unchanged."
+}

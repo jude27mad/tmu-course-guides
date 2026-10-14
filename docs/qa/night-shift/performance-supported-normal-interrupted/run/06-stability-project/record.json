@@ -1,0 +1,328 @@
+{
+  "check": "stability",
+  "base": "/tmu-course-guides/",
+  "index": 6,
+  "status": "failed",
+  "directory": "/tmp/ns-perf-supported-all28-final/06-stability-project",
+  "prelaunchClosure": {
+    "recordedAt": "2026-10-14T10:00:42.903597Z",
+    "childPID": null,
+    "liveBrowserOrQARuntimeProcesses": [],
+    "ownedPreviewPorts": []
+  },
+  "sourceBefore": {
+    "path": "/tmp/ns-perf-supported-all28-final/06-stability-project/source-before.json",
+    "sha256": "85060fd4b712380df0abdcaf43c13bd8a8bafa6739cf19f21e81a2a708c10352",
+    "recordedAt": "2026-10-14T10:00:47.045Z"
+  },
+  "child": {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "tools/qa/run.mjs",
+      "stability",
+      "--base",
+      "/tmu-course-guides/"
+    ],
+    "cwd": "/workspace/tmu-course-guides",
+    "spawnRequestedAt": "2026-10-14T10:00:47.271044Z",
+    "pid": 169839,
+    "spawnObservedAt": "2026-10-14T10:00:47.280142Z",
+    "actualExitCode": 1,
+    "waitObservedAt": "2026-10-14T10:02:42.500278Z"
+  },
+  "observedOwnedProcesses": [
+    {
+      "pid": 169839,
+      "parent": 167354,
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "tools/qa/run.mjs",
+        "stability",
+        "--base",
+        "/tmu-course-guides/"
+      ],
+      "cwd": "/workspace/tmu-course-guides",
+      "role": "qa-runtime",
+      "firstObservedAt": "2026-10-14T10:00:47.364277Z"
+    },
+    {
+      "pid": 169847,
+      "parent": 169839,
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "tools/preview-server.mjs",
+        "--port",
+        "34999",
+        "--base",
+        "/tmu-course-guides/"
+      ],
+      "cwd": "/workspace/tmu-course-guides",
+      "role": "preview",
+      "firstObservedAt": "2026-10-14T10:00:51.375544Z"
+    },
+    {
+      "pid": 169863,
+      "parent": 169839,
+      "argv": [
+        "/tmp/ns-perf-ci-browsers/chromium-1248/chrome-linux64/chrome",
+        "--disable-field-trial-config",
+        "--disable-background-networking",
+        "--disable-background-timer-throttling",
+        "--disable-backgrounding-occluded-windows",
+        "--disable-back-forward-cache",
+        "--disable-breakpad",
+        "--disable-client-side-phishing-detection",
+        "--disable-component-extensions-with-background-pages",
+        "--disable-component-update",
+        "--no-default-browser-check",
+        "--disable-default-apps",
+        "--disable-dev-shm-usage",
+        "--disable-edgeupdater",
+        "--disable-extensions",
+        "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,NetworkTimeServiceQuerying,AimEnabled,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion",
+        "--enable-features=CDPScreenshotNewSurface",
+        "--allow-pre-commit-input",
+        "--disable-hang-monitor",
+        "--disable-ipc-flooding-protection",
+        "--disable-popup-blocking",
+        "--disable-prompt-on-repost",
+        "--disable-renderer-backgrounding",
+        "--disable-updater-scheduler",
+        "--force-color-profile=srgb",
+        "--metrics-recording-only",
+        "--no-first-run",
+        "--password-store=basic",
+        "--use-mock-keychain",
+        "--no-service-autorun",
+        "--export-tagged-pdf",
+        "--disable-search-engine-choice-screen",
+        "--unsafely-disable-devtools-self-xss-warnings",
+        "--edge-skip-compat-layer-relaunch",
+        "--disable-infobars",
+        "--disable-search-engine-choice-screen",
+        "--disable-sync",
+        "--enable-unsafe-swiftshader",
+        "--headless",
+        "--hide-scrollbars",
+        "--mute-audio",
+        "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+        "--no-sandbox",
+        "--use-angle=swiftshader",
+        "--enable-unsafe-swiftshader",
+        "--ignore-gpu-blocklist",
+        "--user-data-dir=/tmp/playwright_chromiumdev_profile-ANabTK",
+        "--remote-debugging-pipe",
+        "--no-startup-window"
+      ],
+      "cwd": "/workspace/tmu-course-guides",
+      "role": "chromium",
+      "firstObservedAt": "2026-10-14T10:00:51.971436Z"
+    }
+  ],
+  "log": {
+    "path": "/tmp/ns-perf-supported-all28-final/06-stability-project/cli.log",
+    "sha256": "19f4d9ef5bd694916b7523fbf515da7521ac69ae7823f3bb80ec19b83801f937"
+  },
+  "rawDirectory": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T10-00-47-746Z-169839",
+  "raw": {
+    "summary.json": {
+      "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T10-00-47-746Z-169839/summary.json",
+      "exactCopy": "/tmp/ns-perf-supported-all28-final/06-stability-project/raw-summary.json",
+      "sha256": "dd9067c253ab5398d3520f7524d50ade07e5ba36275ab156b3f5740ee64588b3"
+    },
+    "stability.json": {
+      "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T10-00-47-746Z-169839/stability.json",
+      "exactCopy": "/tmp/ns-perf-supported-all28-final/06-stability-project/raw-stability.json",
+      "sha256": "04f3220d1a927727f08d24275fffcd0f5aa35b005a1b49228fe693b42037d1eb"
+    }
+  },
+  "postrunClosure": {
+    "recordedAt": "2026-10-14T10:02:42.618784Z",
+    "childPID": 169839,
+    "liveBrowserOrQARuntimeProcesses": [],
+    "ownedPreviewPorts": [
+      {
+        "port": 34999,
+        "connectEx": 111,
+        "expected": 111,
+        "refused": true
+      }
+    ]
+  },
+  "sourceAfter": {
+    "path": "/tmp/ns-perf-supported-all28-final/06-stability-project/source-after.json",
+    "sha256": "fa3de91f104a6fcd6bb9d8190dd6e601325a7daee88a1e62b7e6fa899fc51c2c",
+    "recordedAt": "2026-10-14T10:02:45.783Z"
+  },
+  "classification": "failed",
+  "actualEnvironment": {
+    "node": "v24.19.0",
+    "platform": "linux",
+    "architecture": "x64",
+    "deployments": [
+      {
+        "base": "/tmu-course-guides/",
+        "origin": "http://127.0.0.1:34999",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "156.0.8078.4",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      }
+    ],
+    "requestedMode": "SwiftShader",
+    "playwrightPath": "/tmp/ns-perf-ci-driver/node_modules/playwright",
+    "playwrightSource": "PLAYWRIGHT_PATH",
+    "chromiumPath": "/tmp/ns-perf-ci-browsers/chromium-1248/chrome-linux64/chrome",
+    "chromiumSource": "Playwright bundled Chromium",
+    "launchArgs": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "rawSummaryStatus": "failed",
+  "rawCheckStatus": "failed",
+  "failedAssertions": 1,
+  "startedAt": "2026-10-14T10:00:47.746Z",
+  "completedAt": "2026-10-14T10:02:42.418Z",
+  "assertions": [
+    {
+      "name": "repeated lifecycle operations: execution",
+      "pass": false,
+      "actual": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-course-link=\"mth141\"]')\u001b[22m\n\u001b[2m    - locator resolved to <a class=\"course-link\" data-course-link=\"mth141\" href=\"http://127.0.0.1:34999/tmu-course-guides/mth141/\">\u2026</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\n    at navigate (/workspace/tmu-course-guides/tools/qa/checks.mjs:207:55)\n    at runCase.linearClock (/workspace/tmu-course-guides/tools/qa/checks.mjs:304:68)\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks.mjs:102:5)\n    at async Object.stability (/workspace/tmu-course-guides/tools/qa/checks.mjs:299:3)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+      "expected": "case completes"
+    },
+    {
+      "name": "repeated lifecycle operations: consoleErrors",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "repeated lifecycle operations: pageErrors",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "repeated lifecycle operations: failedRequests",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "repeated lifecycle operations: httpErrors",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    }
+  ],
+  "skipped": [],
+  "observations": {
+    "cases": [
+      {
+        "name": "repeated lifecycle operations",
+        "physicalClickTimeoutMs": 30000,
+        "telemetry": {
+          "consoleErrors": [],
+          "pageErrors": [],
+          "failedRequests": [],
+          "httpErrors": []
+        },
+        "navigationDiagnostics": {
+          "documentRequests": [
+            {
+              "time": 1791972058810,
+              "url": "http://127.0.0.1:34999/tmu-course-guides/",
+              "method": "GET"
+            }
+          ],
+          "frameNavigations": [
+            {
+              "time": 1791972058862,
+              "url": "http://127.0.0.1:34999/tmu-course-guides/"
+            },
+            {
+              "time": 1791972059577,
+              "url": "http://127.0.0.1:34999/tmu-course-guides/"
+            },
+            {
+              "time": 1791972073609,
+              "url": "http://127.0.0.1:34999/tmu-course-guides/"
+            },
+            {
+              "time": 1791972073822,
+              "url": "http://127.0.0.1:34999/tmu-course-guides/cen100/"
+            },
+            {
+              "time": 1791972098793,
+              "url": "http://127.0.0.1:34999/tmu-course-guides/cen100/"
+            },
+            {
+              "time": 1791972101608,
+              "url": "http://127.0.0.1:34999/tmu-course-guides/mth140/"
+            },
+            {
+              "time": 1791972154983,
+              "url": "http://127.0.0.1:34999/tmu-course-guides/mth140/"
+            }
+          ],
+          "pageEvents": [
+            {
+              "time": 1791972058862,
+              "type": "Page.frameNavigated",
+              "frameId": "B808B337B1CB8BCFD6096A957E688C10",
+              "loaderId": "7BA98C33B69E30610D940DEDB30379AC",
+              "url": "http://127.0.0.1:34999/tmu-course-guides/"
+            },
+            {
+              "time": 1791972059597,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B808B337B1CB8BCFD6096A957E688C10",
+              "url": "http://127.0.0.1:34999/tmu-course-guides/"
+            },
+            {
+              "time": 1791972073609,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B808B337B1CB8BCFD6096A957E688C10",
+              "url": "http://127.0.0.1:34999/tmu-course-guides/"
+            },
+            {
+              "time": 1791972073822,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B808B337B1CB8BCFD6096A957E688C10",
+              "url": "http://127.0.0.1:34999/tmu-course-guides/cen100/"
+            },
+            {
+              "time": 1791972098793,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B808B337B1CB8BCFD6096A957E688C10",
+              "url": "http://127.0.0.1:34999/tmu-course-guides/cen100/"
+            },
+            {
+              "time": 1791972101609,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B808B337B1CB8BCFD6096A957E688C10",
+              "url": "http://127.0.0.1:34999/tmu-course-guides/mth140/"
+            }
+          ],
+          "failure": {
+            "time": 1791972138816,
+            "pageURL": "http://127.0.0.1:34999/tmu-course-guides/mth140/",
+            "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-course-link=\"mth141\"]')\u001b[22m\n\u001b[2m    - locator resolved to <a class=\"course-link\" data-course-link=\"mth141\" href=\"http://127.0.0.1:34999/tmu-course-guides/mth141/\">\u2026</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n",
+            "snapshotError": "Navigation snapshot exceeded 5000 ms"
+          }
+        },
+        "clockMethod": "Moving Date offset at Oct 13 noon Toronto; native animation frames and timers remain instrumented."
+      }
+    ],
+    "runnerErrors": []
+  },
+  "runErrors": []
+}

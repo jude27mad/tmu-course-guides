@@ -1,0 +1,16 @@
+{
+  "recordedAt": "2026-10-14T08:50:31.379Z",
+  "rawDirectory": "/workspace/ns-perf-control-aa7/tools/qa/reports/2026-10-14T08-43-50-664Z-162735",
+  "observer": "/root",
+  "exitCode": 0,
+  "reportedAfterRunClosure": true,
+  "source": "Root actually retrieved tools.write_stdin session34770 completion via functions.exec, returned exit_code0, chunkd31b4b.",
+  "argv": [
+    "node",
+    "tools/qa/run.mjs",
+    "crosstab",
+    "--base",
+    "/"
+  ],
+  "scope": "Unchanged AA7 baseline diagnostic; not current-product acceptance."
+}

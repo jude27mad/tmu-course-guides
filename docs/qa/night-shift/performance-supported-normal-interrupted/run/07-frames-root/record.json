@@ -1,0 +1,1982 @@
+{
+  "check": "frames",
+  "base": "/",
+  "index": 7,
+  "status": "passed",
+  "directory": "/tmp/ns-perf-supported-all28-final/07-frames-root",
+  "prelaunchClosure": {
+    "recordedAt": "2026-10-14T10:02:46.310913Z",
+    "childPID": null,
+    "liveBrowserOrQARuntimeProcesses": [],
+    "ownedPreviewPorts": []
+  },
+  "sourceBefore": {
+    "path": "/tmp/ns-perf-supported-all28-final/07-frames-root/source-before.json",
+    "sha256": "11fefb1e38a1e880a6927bffc310d191343cfe1167aa2b9f8556fdb1663bed37",
+    "recordedAt": "2026-10-14T10:02:50.030Z"
+  },
+  "child": {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "tools/qa/run.mjs",
+      "frames",
+      "--base",
+      "/"
+    ],
+    "cwd": "/workspace/tmu-course-guides",
+    "spawnRequestedAt": "2026-10-14T10:02:50.270840Z",
+    "pid": 170252,
+    "spawnObservedAt": "2026-10-14T10:02:50.272833Z",
+    "actualExitCode": 0,
+    "waitObservedAt": "2026-10-14T10:08:40.547075Z"
+  },
+  "observedOwnedProcesses": [
+    {
+      "pid": 170252,
+      "parent": 167354,
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "tools/qa/run.mjs",
+        "frames",
+        "--base",
+        "/"
+      ],
+      "cwd": "/workspace/tmu-course-guides",
+      "role": "qa-runtime",
+      "firstObservedAt": "2026-10-14T10:02:50.391116Z"
+    },
+    {
+      "pid": 170260,
+      "parent": 170252,
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "tools/preview-server.mjs",
+        "--port",
+        "43817",
+        "--base",
+        "/"
+      ],
+      "cwd": "/workspace/tmu-course-guides",
+      "role": "preview",
+      "firstObservedAt": "2026-10-14T10:02:51.627230Z"
+    },
+    {
+      "pid": 170276,
+      "parent": 170252,
+      "argv": [
+        "/tmp/ns-perf-ci-browsers/chromium-1248/chrome-linux64/chrome",
+        "--disable-field-trial-config",
+        "--disable-background-networking",
+        "--disable-background-timer-throttling",
+        "--disable-backgrounding-occluded-windows",
+        "--disable-back-forward-cache",
+        "--disable-breakpad",
+        "--disable-client-side-phishing-detection",
+        "--disable-component-extensions-with-background-pages",
+        "--disable-component-update",
+        "--no-default-browser-check",
+        "--disable-default-apps",
+        "--disable-dev-shm-usage",
+        "--disable-edgeupdater",
+        "--disable-extensions",
+        "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,NetworkTimeServiceQuerying,AimEnabled,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion",
+        "--enable-features=CDPScreenshotNewSurface",
+        "--allow-pre-commit-input",
+        "--disable-hang-monitor",
+        "--disable-ipc-flooding-protection",
+        "--disable-popup-blocking",
+        "--disable-prompt-on-repost",
+        "--disable-renderer-backgrounding",
+        "--disable-updater-scheduler",
+        "--force-color-profile=srgb",
+        "--metrics-recording-only",
+        "--no-first-run",
+        "--password-store=basic",
+        "--use-mock-keychain",
+        "--no-service-autorun",
+        "--export-tagged-pdf",
+        "--disable-search-engine-choice-screen",
+        "--unsafely-disable-devtools-self-xss-warnings",
+        "--edge-skip-compat-layer-relaunch",
+        "--disable-infobars",
+        "--disable-search-engine-choice-screen",
+        "--disable-sync",
+        "--enable-unsafe-swiftshader",
+        "--headless",
+        "--hide-scrollbars",
+        "--mute-audio",
+        "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+        "--no-sandbox",
+        "--use-angle=swiftshader",
+        "--enable-unsafe-swiftshader",
+        "--ignore-gpu-blocklist",
+        "--user-data-dir=/tmp/playwright_chromiumdev_profile-Tpxgef",
+        "--remote-debugging-pipe",
+        "--no-startup-window"
+      ],
+      "cwd": "/workspace/tmu-course-guides",
+      "role": "chromium",
+      "firstObservedAt": "2026-10-14T10:02:52.988982Z"
+    }
+  ],
+  "log": {
+    "path": "/tmp/ns-perf-supported-all28-final/07-frames-root/cli.log",
+    "sha256": "f8dea3a88b8a3332707f087c0fc81026b8870fa332212a935764532a04e3008f"
+  },
+  "rawDirectory": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T10-02-50-512Z-170252",
+  "raw": {
+    "summary.json": {
+      "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T10-02-50-512Z-170252/summary.json",
+      "exactCopy": "/tmp/ns-perf-supported-all28-final/07-frames-root/raw-summary.json",
+      "sha256": "a9e676a20cea47981cbc7dbe542abf1b7ba2ef2939f48589e9db9f5cc36b6d02"
+    },
+    "frames.json": {
+      "originalPath": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T10-02-50-512Z-170252/frames.json",
+      "exactCopy": "/tmp/ns-perf-supported-all28-final/07-frames-root/raw-frames.json",
+      "sha256": "c8e87153726eede245c86f687099b59fc100535fe3c653b496aa66f172373be0"
+    }
+  },
+  "postrunClosure": {
+    "recordedAt": "2026-10-14T10:08:40.637189Z",
+    "childPID": 170252,
+    "liveBrowserOrQARuntimeProcesses": [],
+    "ownedPreviewPorts": [
+      {
+        "port": 43817,
+        "connectEx": 111,
+        "expected": 111,
+        "refused": true
+      }
+    ]
+  },
+  "sourceAfter": {
+    "path": "/tmp/ns-perf-supported-all28-final/07-frames-root/source-after.json",
+    "sha256": "c9cc29afafc8f3251a8f521b9355061cd6c7c4e05a9e23075f764c7cd5599e39",
+    "recordedAt": "2026-10-14T10:08:44.541Z"
+  },
+  "classification": "passed",
+  "actualEnvironment": {
+    "node": "v24.19.0",
+    "platform": "linux",
+    "architecture": "x64",
+    "deployments": [
+      {
+        "base": "/",
+        "origin": "http://127.0.0.1:43817",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "156.0.8078.4",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      }
+    ],
+    "requestedMode": "SwiftShader",
+    "playwrightPath": "/tmp/ns-perf-ci-driver/node_modules/playwright",
+    "playwrightSource": "PLAYWRIGHT_PATH",
+    "chromiumPath": "/tmp/ns-perf-ci-browsers/chromium-1248/chrome-linux64/chrome",
+    "chromiumSource": "Playwright bundled Chromium",
+    "launchArgs": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "rawSummaryStatus": "passed",
+  "rawCheckStatus": "passed",
+  "failedAssertions": 0,
+  "startedAt": "2026-10-14T10:02:50.512Z",
+  "completedAt": "2026-10-14T10:08:40.162Z",
+  "assertions": [
+    {
+      "name": "desk: frame sample collected",
+      "pass": true,
+      "actual": {
+        "frames": 149,
+        "over16_7ms": {
+          "count": 72,
+          "share": 0.48322147651006714,
+          "percent": 48.32214765100671
+        },
+        "over33ms": {
+          "count": 17,
+          "share": 0.11409395973154363,
+          "percent": 11.409395973154362
+        },
+        "p95ms": 133.39999999999964,
+        "maxMs": 533.3000000000011,
+        "longTasksOver50ms": [
+          {
+            "start": 11487.39999999851,
+            "duration": 76,
+            "name": "self"
+          }
+        ],
+        "elapsedMs": 5283.200000000001,
+        "longTaskSupported": true
+      },
+      "expected": "5 seconds and at least two frame intervals"
+    },
+    {
+      "name": "desk: long task observation available",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "desk 5-second wheel scroll: consoleErrors",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "desk 5-second wheel scroll: pageErrors",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "desk 5-second wheel scroll: failedRequests",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "desk 5-second wheel scroll: httpErrors",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "cen100: frame sample collected",
+      "pass": true,
+      "actual": {
+        "frames": 6,
+        "over16_7ms": {
+          "count": 5,
+          "share": 0.8333333333333334,
+          "percent": 83.33333333333333
+        },
+        "over33ms": {
+          "count": 5,
+          "share": 0.8333333333333334,
+          "percent": 83.33333333333333
+        },
+        "p95ms": 1650,
+        "maxMs": 1650,
+        "longTasksOver50ms": [
+          {
+            "start": 26010.10000000149,
+            "duration": 64,
+            "name": "self"
+          },
+          {
+            "start": 28888.39999999851,
+            "duration": 116,
+            "name": "self"
+          },
+          {
+            "start": 30419.10000000149,
+            "duration": 121,
+            "name": "self"
+          }
+        ],
+        "elapsedMs": 5366.4000000000015,
+        "longTaskSupported": true
+      },
+      "expected": "5 seconds and at least two frame intervals"
+    },
+    {
+      "name": "cen100: long task observation available",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "cen100 5-second wheel scroll: consoleErrors",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "cen100 5-second wheel scroll: pageErrors",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "cen100 5-second wheel scroll: failedRequests",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "cen100 5-second wheel scroll: httpErrors",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "mth140: frame sample collected",
+      "pass": true,
+      "actual": {
+        "frames": 4,
+        "over16_7ms": {
+          "count": 4,
+          "share": 1,
+          "percent": 100
+        },
+        "over33ms": {
+          "count": 4,
+          "share": 1,
+          "percent": 100
+        },
+        "p95ms": 8766.3,
+        "maxMs": 8766.3,
+        "longTasksOver50ms": [
+          {
+            "start": 5893.9000000059605,
+            "duration": 4313,
+            "name": "self"
+          },
+          {
+            "start": 10247.10000000149,
+            "duration": 72,
+            "name": "self"
+          },
+          {
+            "start": 10327.20000000298,
+            "duration": 77,
+            "name": "self"
+          },
+          {
+            "start": 10427.60000000149,
+            "duration": 11575,
+            "name": "self"
+          }
+        ],
+        "elapsedMs": 13216.099999999999,
+        "longTaskSupported": true
+      },
+      "expected": "5 seconds and at least two frame intervals"
+    },
+    {
+      "name": "mth140: long task observation available",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "mth140 5-second wheel scroll: consoleErrors",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "mth140 5-second wheel scroll: pageErrors",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "mth140 5-second wheel scroll: failedRequests",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "mth140 5-second wheel scroll: httpErrors",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "mth141: frame sample collected",
+      "pass": true,
+      "actual": {
+        "frames": 15,
+        "over16_7ms": {
+          "count": 15,
+          "share": 1,
+          "percent": 100
+        },
+        "over33ms": {
+          "count": 15,
+          "share": 1,
+          "percent": 100
+        },
+        "p95ms": 1066.5999999999985,
+        "maxMs": 1066.5999999999985,
+        "longTasksOver50ms": [
+          {
+            "start": 17892.70000000298,
+            "duration": 67,
+            "name": "self"
+          },
+          {
+            "start": 19810.60000000149,
+            "duration": 88,
+            "name": "self"
+          },
+          {
+            "start": 20171.60000000149,
+            "duration": 241,
+            "name": "self"
+          },
+          {
+            "start": 20413.70000000298,
+            "duration": 216,
+            "name": "self"
+          },
+          {
+            "start": 21725.20000000298,
+            "duration": 378,
+            "name": "self"
+          },
+          {
+            "start": 22104.10000000149,
+            "duration": 235,
+            "name": "self"
+          }
+        ],
+        "elapsedMs": 5066.5,
+        "longTaskSupported": true
+      },
+      "expected": "5 seconds and at least two frame intervals"
+    },
+    {
+      "name": "mth141: long task observation available",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "mth141 5-second wheel scroll: consoleErrors",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "mth141 5-second wheel scroll: pageErrors",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "mth141 5-second wheel scroll: failedRequests",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "mth141 5-second wheel scroll: httpErrors",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    }
+  ],
+  "skipped": [],
+  "observations": {
+    "cases": [
+      {
+        "name": "desk 5-second wheel scroll",
+        "physicalClickTimeoutMs": 30000,
+        "telemetry": {
+          "consoleErrors": [],
+          "pageErrors": [],
+          "failedRequests": [],
+          "httpErrors": []
+        },
+        "navigationDiagnostics": {
+          "documentRequests": [
+            {
+              "time": 1791972177705,
+              "url": "http://127.0.0.1:43817/",
+              "method": "GET"
+            }
+          ],
+          "frameNavigations": [
+            {
+              "time": 1791972177815,
+              "url": "http://127.0.0.1:43817/"
+            },
+            {
+              "time": 1791972178560,
+              "url": "http://127.0.0.1:43817/"
+            },
+            {
+              "time": 1791972188945,
+              "url": "http://127.0.0.1:43817/"
+            },
+            {
+              "time": 1791972189927,
+              "url": "http://127.0.0.1:43817/"
+            },
+            {
+              "time": 1791972193344,
+              "url": "http://127.0.0.1:43817/"
+            },
+            {
+              "time": 1791972194338,
+              "url": "http://127.0.0.1:43817/"
+            },
+            {
+              "time": 1791972196354,
+              "url": "http://127.0.0.1:43817/"
+            },
+            {
+              "time": 1791972196365,
+              "url": "http://127.0.0.1:43817/"
+            }
+          ],
+          "pageEvents": [
+            {
+              "time": 1791972177815,
+              "type": "Page.frameNavigated",
+              "frameId": "DE5EE88C5F043C4A1B7D4D369DE4197E",
+              "loaderId": "8DAFF4193DC3177FFD266919E379B2A9",
+              "url": "http://127.0.0.1:43817/"
+            },
+            {
+              "time": 1791972178562,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "DE5EE88C5F043C4A1B7D4D369DE4197E",
+              "url": "http://127.0.0.1:43817/"
+            },
+            {
+              "time": 1791972188945,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "DE5EE88C5F043C4A1B7D4D369DE4197E",
+              "url": "http://127.0.0.1:43817/"
+            },
+            {
+              "time": 1791972189927,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "DE5EE88C5F043C4A1B7D4D369DE4197E",
+              "url": "http://127.0.0.1:43817/"
+            },
+            {
+              "time": 1791972193346,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "DE5EE88C5F043C4A1B7D4D369DE4197E",
+              "url": "http://127.0.0.1:43817/"
+            },
+            {
+              "time": 1791972194339,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "DE5EE88C5F043C4A1B7D4D369DE4197E",
+              "url": "http://127.0.0.1:43817/"
+            }
+          ],
+          "finalState": {
+            "url": "http://127.0.0.1:43817/",
+            "shell": "b3b70323-1756-432a-ae71-5beb0d7204a6",
+            "route": "desk",
+            "completedRoute": "desk",
+            "body": {
+              "page": "desk"
+            },
+            "content": 1343,
+            "deadline": "MTH140Calculus ILab Quiz 2Oct 12\u201316Quiz weekOct 12\u2013Oct 16 \u00b7 during your assigned labView in MTH140\u2192Choose section for quiz date",
+            "focus": {
+              "tag": "BODY",
+              "id": "",
+              "inside": false
+            },
+            "wrapper": {
+              "opacity": "1",
+              "filter": "none",
+              "transform": "none"
+            },
+            "events": {
+              "routes": [
+                {
+                  "time": 919.5,
+                  "route": "desk",
+                  "from": null,
+                  "url": "http://127.0.0.1:43817/",
+                  "shell": "b3b70323-1756-432a-ae71-5beb0d7204a6"
+                }
+              ],
+              "clicks": []
+            }
+          }
+        },
+        "environment": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "hardwareConcurrency": 5,
+          "deviceMemory": 16,
+          "viewport": [
+            1440,
+            900
+          ],
+          "dpr": 1
+        },
+        "measurement": {
+          "frames": 149,
+          "over16_7ms": {
+            "count": 72,
+            "share": 0.48322147651006714,
+            "percent": 48.32214765100671
+          },
+          "over33ms": {
+            "count": 17,
+            "share": 0.11409395973154363,
+            "percent": 11.409395973154362
+          },
+          "p95ms": 133.39999999999964,
+          "maxMs": 533.3000000000011,
+          "longTasksOver50ms": [
+            {
+              "start": 11487.39999999851,
+              "duration": 76,
+              "name": "self"
+            }
+          ],
+          "elapsedMs": 5283.200000000001,
+          "longTaskSupported": true
+        }
+      },
+      {
+        "name": "cen100 5-second wheel scroll",
+        "physicalClickTimeoutMs": 30000,
+        "telemetry": {
+          "consoleErrors": [],
+          "pageErrors": [],
+          "failedRequests": [],
+          "httpErrors": []
+        },
+        "navigationDiagnostics": {
+          "documentRequests": [
+            {
+              "time": 1791972197028,
+              "url": "http://127.0.0.1:43817/cen100/",
+              "method": "GET"
+            }
+          ],
+          "frameNavigations": [
+            {
+              "time": 1791972197110,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972197838,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972227778,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972229365,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972233926,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972236032,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972245219,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972256215,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972264794,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972269735,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972271142,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972272120,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972273082,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972274077,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972275168,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972276420,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972277409,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972278647,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972279664,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972280659,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972281651,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972282891,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972283883,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972284884,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972285926,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972286902,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972288055,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972289061,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972290352,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972291322,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972292352,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972293422,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972294511,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972295518,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972296709,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972297724,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972299000,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972300030,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972301160,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972302220,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972303566,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972304575,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972305994,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972310030,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972315371,
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972317312,
+              "url": "http://127.0.0.1:43817/cen100/"
+            }
+          ],
+          "pageEvents": [
+            {
+              "time": 1791972197110,
+              "type": "Page.frameNavigated",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "loaderId": "6066F63770E7D3CD136ABCD17595AE15",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972197859,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972227778,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972229366,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972233926,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972236032,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972245223,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972256215,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972264794,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972269737,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972271142,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972272121,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972273082,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972274079,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972275168,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972276421,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972277409,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972278654,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972279664,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972280660,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972281651,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972282893,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972283883,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972284884,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972285926,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972286902,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972288055,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972289061,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972290352,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972291324,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972292353,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972293422,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972294511,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972295518,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972296712,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972297726,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972299000,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972300031,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972301160,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972302220,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972303566,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972304575,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972305994,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972310030,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            },
+            {
+              "time": 1791972315371,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A6B262B1B2F6378AB3A51BA7B1FF02A7",
+              "url": "http://127.0.0.1:43817/cen100/"
+            }
+          ],
+          "finalState": {
+            "url": "http://127.0.0.1:43817/cen100/",
+            "shell": "234cb0e8-0a0a-428d-9248-c9295b5cb337",
+            "route": "cen100",
+            "completedRoute": "cen100",
+            "body": {
+              "course": "cen100"
+            },
+            "content": 46807,
+            "deadline": "00days08hrs54min42secDueWed Oct 14 \u00b7 3:00 PM Toronto8 hours and 54 minutes remaining until Academic Integrity Quiz. Wed Oct 14 \u00b7 3:00 PM Toronto.",
+            "focus": {
+              "tag": "BODY",
+              "id": "",
+              "inside": false
+            },
+            "wrapper": {
+              "opacity": "1",
+              "filter": "none",
+              "transform": "none"
+            },
+            "events": {
+              "routes": [
+                {
+                  "time": 4049.7000000029802,
+                  "route": "cen100",
+                  "from": null,
+                  "url": "http://127.0.0.1:43817/cen100/",
+                  "shell": "234cb0e8-0a0a-428d-9248-c9295b5cb337"
+                }
+              ],
+              "clicks": []
+            }
+          }
+        },
+        "environment": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "hardwareConcurrency": 5,
+          "deviceMemory": 16,
+          "viewport": [
+            1440,
+            900
+          ],
+          "dpr": 1
+        },
+        "measurement": {
+          "frames": 6,
+          "over16_7ms": {
+            "count": 5,
+            "share": 0.8333333333333334,
+            "percent": 83.33333333333333
+          },
+          "over33ms": {
+            "count": 5,
+            "share": 0.8333333333333334,
+            "percent": 83.33333333333333
+          },
+          "p95ms": 1650,
+          "maxMs": 1650,
+          "longTasksOver50ms": [
+            {
+              "start": 26010.10000000149,
+              "duration": 64,
+              "name": "self"
+            },
+            {
+              "start": 28888.39999999851,
+              "duration": 116,
+              "name": "self"
+            },
+            {
+              "start": 30419.10000000149,
+              "duration": 121,
+              "name": "self"
+            }
+          ],
+          "elapsedMs": 5366.4000000000015,
+          "longTaskSupported": true
+        }
+      },
+      {
+        "name": "mth140 5-second wheel scroll",
+        "physicalClickTimeoutMs": 30000,
+        "telemetry": {
+          "consoleErrors": [],
+          "pageErrors": [],
+          "failedRequests": [],
+          "httpErrors": []
+        },
+        "navigationDiagnostics": {
+          "documentRequests": [
+            {
+              "time": 1791972322794,
+              "url": "http://127.0.0.1:43817/mth140/",
+              "method": "GET"
+            }
+          ],
+          "frameNavigations": [
+            {
+              "time": 1791972322879,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972323492,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972348632,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972357327,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972368701,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972377342,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972381840,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972382773,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972383762,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972384763,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972385774,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972387104,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972388097,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972390756,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972391953,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972392924,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972394142,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972395182,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972396244,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972397315,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972399564,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972400651,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972401819,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972404701,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972406064,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972407058,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972408151,
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972459914,
+              "url": "http://127.0.0.1:43817/mth140/"
+            }
+          ],
+          "pageEvents": [
+            {
+              "time": 1791972322879,
+              "type": "Page.frameNavigated",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "loaderId": "F8C946BC29A79A9A0C5FEE8CF55BBC34",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972323531,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972348632,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972357327,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972368702,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972377342,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972381841,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972382782,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972383767,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972384763,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972385774,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972387104,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972388098,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972390757,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972391955,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972392924,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972394142,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972395182,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972396250,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972397323,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972399564,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972400653,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972401821,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972404701,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972406064,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972407061,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            },
+            {
+              "time": 1791972408160,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "B46BF51CC26A29F40FA80B618EAFFEE1",
+              "url": "http://127.0.0.1:43817/mth140/"
+            }
+          ],
+          "finalState": {
+            "url": "http://127.0.0.1:43817/mth140/",
+            "shell": "16de0b9a-d4cc-4ae2-94cc-89c75d5b17e1",
+            "route": "mth140",
+            "completedRoute": "mth140",
+            "body": {
+              "course": "mth140"
+            },
+            "content": 30625,
+            "deadline": "Oct 12\u201316Quiz weekOct 12\u2013Oct 16 \u00b7 during your assigned labChoose section for quiz dateLab Quiz 2: Quiz week. Oct 12\u2013Oct 16 \u00b7 during your assigned lab.",
+            "focus": {
+              "tag": "BODY",
+              "id": "",
+              "inside": false
+            },
+            "wrapper": {
+              "opacity": "1",
+              "filter": "none",
+              "transform": "none"
+            },
+            "events": {
+              "routes": [
+                {
+                  "time": 2284.8000000044703,
+                  "route": "mth140",
+                  "from": null,
+                  "url": "http://127.0.0.1:43817/mth140/",
+                  "shell": "16de0b9a-d4cc-4ae2-94cc-89c75d5b17e1"
+                }
+              ],
+              "clicks": [
+                {
+                  "time": 1717.5,
+                  "tag": "BUTTON",
+                  "id": "tab-assessments",
+                  "href": null,
+                  "url": "http://127.0.0.1:43817/mth140/",
+                  "defaultPrevented": false,
+                  "urlAfterDispatch": "http://127.0.0.1:43817/mth140/"
+                }
+              ]
+            }
+          }
+        },
+        "environment": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "hardwareConcurrency": 5,
+          "deviceMemory": 16,
+          "viewport": [
+            1440,
+            900
+          ],
+          "dpr": 1
+        },
+        "measurement": {
+          "frames": 4,
+          "over16_7ms": {
+            "count": 4,
+            "share": 1,
+            "percent": 100
+          },
+          "over33ms": {
+            "count": 4,
+            "share": 1,
+            "percent": 100
+          },
+          "p95ms": 8766.3,
+          "maxMs": 8766.3,
+          "longTasksOver50ms": [
+            {
+              "start": 5893.9000000059605,
+              "duration": 4313,
+              "name": "self"
+            },
+            {
+              "start": 10247.10000000149,
+              "duration": 72,
+              "name": "self"
+            },
+            {
+              "start": 10327.20000000298,
+              "duration": 77,
+              "name": "self"
+            },
+            {
+              "start": 10427.60000000149,
+              "duration": 11575,
+              "name": "self"
+            }
+          ],
+          "elapsedMs": 13216.099999999999,
+          "longTaskSupported": true
+        }
+      },
+      {
+        "name": "mth141 5-second wheel scroll",
+        "physicalClickTimeoutMs": 30000,
+        "telemetry": {
+          "consoleErrors": [],
+          "pageErrors": [],
+          "failedRequests": [],
+          "httpErrors": []
+        },
+        "navigationDiagnostics": {
+          "documentRequests": [
+            {
+              "time": 1791972464139,
+              "url": "http://127.0.0.1:43817/mth141/",
+              "method": "GET"
+            }
+          ],
+          "frameNavigations": [
+            {
+              "time": 1791972464540,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972466868,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972484791,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972486527,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972487970,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972489022,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972490369,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972491358,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972492362,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972493366,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972494425,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972495463,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972496415,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972498513,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972499550,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972500813,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972502224,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972503200,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972504192,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972505193,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972506199,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972507213,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972508245,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972509220,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972510217,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972519482,
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972519724,
+              "url": "http://127.0.0.1:43817/mth141/"
+            }
+          ],
+          "pageEvents": [
+            {
+              "time": 1791972464544,
+              "type": "Page.frameNavigated",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "loaderId": "15CC8682A61EC1592A386316C2BA2FFB",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972467100,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972484791,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972486527,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972487970,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972489022,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972490371,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972491358,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972492366,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972493366,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972494425,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972495463,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972496415,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972498522,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972499550,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972500813,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972502224,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972503200,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972504192,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972505198,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972506199,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972507213,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972508249,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972509221,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            },
+            {
+              "time": 1791972510217,
+              "type": "Page.navigatedWithinDocument",
+              "frameId": "A2892088B3A6C00C77A35A5B839A99AE",
+              "url": "http://127.0.0.1:43817/mth141/"
+            }
+          ],
+          "finalState": {
+            "url": "http://127.0.0.1:43817/mth141/",
+            "shell": "cd93b0c2-691e-45d6-8870-334096e4357f",
+            "route": "mth141",
+            "completedRoute": "mth141",
+            "body": {
+              "course": "mth141"
+            },
+            "content": 34933,
+            "deadline": "02days12hrs21min20secTest startsFri Oct 16 \u00b7 6:30 PM Toronto2 days and 12 hours remaining until Midterm Test. Fri Oct 16 \u00b7 6:30 PM Toronto.",
+            "focus": {
+              "tag": "BODY",
+              "id": "",
+              "inside": false
+            },
+            "wrapper": {
+              "opacity": "1",
+              "filter": "none",
+              "transform": "none"
+            },
+            "events": {
+              "routes": [
+                {
+                  "time": 4744.70000000298,
+                  "route": "mth141",
+                  "from": null,
+                  "url": "http://127.0.0.1:43817/mth141/",
+                  "shell": "cd93b0c2-691e-45d6-8870-334096e4357f"
+                }
+              ],
+              "clicks": [
+                {
+                  "time": 4155.60000000149,
+                  "tag": "BUTTON",
+                  "id": "tab-assessments",
+                  "href": null,
+                  "url": "http://127.0.0.1:43817/mth141/",
+                  "defaultPrevented": false,
+                  "urlAfterDispatch": "http://127.0.0.1:43817/mth141/"
+                }
+              ]
+            }
+          }
+        },
+        "environment": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "hardwareConcurrency": 5,
+          "deviceMemory": 16,
+          "viewport": [
+            1440,
+            900
+          ],
+          "dpr": 1
+        },
+        "measurement": {
+          "frames": 15,
+          "over16_7ms": {
+            "count": 15,
+            "share": 1,
+            "percent": 100
+          },
+          "over33ms": {
+            "count": 15,
+            "share": 1,
+            "percent": 100
+          },
+          "p95ms": 1066.5999999999985,
+          "maxMs": 1066.5999999999985,
+          "longTasksOver50ms": [
+            {
+              "start": 17892.70000000298,
+              "duration": 67,
+              "name": "self"
+            },
+            {
+              "start": 19810.60000000149,
+              "duration": 88,
+              "name": "self"
+            },
+            {
+              "start": 20171.60000000149,
+              "duration": 241,
+              "name": "self"
+            },
+            {
+              "start": 20413.70000000298,
+              "duration": 216,
+              "name": "self"
+            },
+            {
+              "start": 21725.20000000298,
+              "duration": 378,
+              "name": "self"
+            },
+            {
+              "start": 22104.10000000149,
+              "duration": 235,
+              "name": "self"
+            }
+          ],
+          "elapsedMs": 5066.5,
+          "longTaskSupported": true
+        }
+      }
+    ],
+    "interpretation": "SwiftShader diagnostics: frame pacing here is not evidence of smoothness on a real device.",
+    "runnerErrors": []
+  },
+  "runErrors": []
+}

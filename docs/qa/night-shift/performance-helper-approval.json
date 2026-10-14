@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "approved": true,
+  "reviewedBy": "/root",
+  "review": "Exact old/new helper and canonical Git diff reviewed with independent byte-bound preservation proof. All 43 original assertion lines, fixtures, semantic predicates, initial navigation/defaults and existing readiness/route-action bodies remain identical; native BF park/load+Back/commit and seven cross-tab controls alone gain selected software-Chromium scheduling limits and passive bounded diagnostics. Eleven new regressions fail before implementation; 29 focused and 116 full harness tests pass. Approval is for this source scope, and final focused browser/performance validation remains required.",
+  "originalSourceManifestSHA256": "f733b4a825a1b1f9cfa55b32d1705e6d04b6264d861c0fc04fea41c308eb089a",
+  "helperSourceRevision": "34aad19de8a9acf97c962dff1424483d2f656280",
+  "beforeSourceSHA256": "43acc2217eea6f289dd760de67f0f4f9d805289a311c4277e363bd57e024b579",
+  "afterSourceSHA256": "b2bafedee3cc0569d4354334d42fcaac55d3ddcbf7ceb0e1ecdf43bddcd1f8d6",
+  "afterSourcePath": "/tmp/ns-resilience-native-stage/after/tools/qa/checks-resilience.mjs",
+  "reviewedDiffSHA256": "da47cff60a0c782c119f0a3ce7874d3995ae1929574972027959221d49c980c7",
+  "predicatesFixturesAndOtherScopesUnchanged": true,
+  "canonicalDiffCommand": "git diff --binary --no-ext-diff --no-color --unified=3 34aad19 -- tools/qa/checks-resilience.mjs",
+  "reviewedAt": "2026-10-14T03:03:12.551Z",
+  "independentReview": {
+    "path": "/tmp/ns-perf-native-helper-final-review.json",
+    "sha256": "b5cb327fdcc6ab8349b6950c7ad3084dee8caa22eb9d9e67096a24248b913373",
+    "reviewedBy": "/root/final_review",
+    "status": "passed"
+  },
+  "toolTests": {
+    "tests": 116,
+    "pass": 116,
+    "fail": 0,
+    "skipped": 0,
+    "path": "/tmp/ns-resilience-native-tools-tests.log",
+    "sha256": "f2e7cc6175c274e599c504de4867ef971b55a05f51e8c4d035428db4957e1c9f"
+  },
+  "independentReviewPath": "/tmp/ns-perf-native-helper-final-review.json",
+  "independentReviewSHA256": "b5cb327fdcc6ab8349b6950c7ad3084dee8caa22eb9d9e67096a24248b913373"
+}

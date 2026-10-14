@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T09:21:22.014880+00:00",
+  "stage": "true before default capture launch",
+  "source": {
+    "control": {
+      "root": "/workspace/ns-perf-control-aa7",
+      "revision": "aa7bca26bdfe6d640766858f4f3a27e2e9e668e7",
+      "product": "f53027510da4ab7382192a2b05a3acc7dcab5ce3cf93d62a9d197345de765960",
+      "protected": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+      "runtimeSHA256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587",
+      "canonicalVisualToolSHA256": "4a975749dfe85ea3734bf8e1dd4d389c2bb6a0887a20eadaa7dc9fff7c26d0a0"
+    },
+    "topic": {
+      "root": "/workspace/tmu-course-guides",
+      "revision": "d6114ac401a7f3b7b52054f0530c9b76c293a1d8",
+      "product": "1795468f427084977fac5a0707eef0b14e461c8d2041cb9c6d1e0315de48851f",
+      "protected": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+      "runtimeSHA256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587",
+      "canonicalVisualToolSHA256": "4a975749dfe85ea3734bf8e1dd4d389c2bb6a0887a20eadaa7dc9fff7c26d0a0"
+    }
+  },
+  "privateDependencies": {
+    "/tmp/ns-perf-default-visual-capture.mjs": "7686b38be70e870089250a6b48938ac6ae3a3d7eca64ea283b4a00c5d0c3db32",
+    "/tmp/ns-perf-default-visual-guard.mjs": "ab4a715b41a95b45b8d9051fdf6ea9022cc5f857394e83340305745d58ea2164",
+    "/tmp/ns-perf-default-visual-build.mjs": "12278fd36439b1998b4be9dab8a0d210804d692f5981e24fab3a1f131b95f3b2",
+    "/tmp/ns-perf-default-visual-source-diff.json": "497827a13c97bfaa276e66566974ed995f7c80133b9d9c0bdc124cf6fcab0d23",
+    "/tmp/ns-perf-default-visual-peer-review.json": "36733c2a26c82ac1b65222f42cf426aaac938da18cc7a66e055fb5b07492473d"
+  },
+  "driver": {
+    "playwright": {
+      "path": "/opt/codex/cua_node/lib/node_modules/playwright/package.json",
+      "version": "1.57.0",
+      "packageSHA256": "07726a5a20b29123d85311af7d11b7de6bf00ddd03121d3c9061995043ebd261"
+    },
+    "playwright-core": {
+      "path": "/opt/codex/cua_node/lib/node_modules/playwright-core/package.json",
+      "version": "1.57.0",
+      "packageSHA256": "6d38907778eb872e37e8da93b430b011c3dfbe8848c4214becb7effdc0aff1d6"
+    },
+    "pngjs": {
+      "path": "/opt/codex/cua_node/lib/node_modules/pngjs/package.json",
+      "version": "7.0.0",
+      "packageSHA256": "85b17f2f852aece03e71edb4ed4d9fddf6a0a8f0b69ac75d7f00b6592d62d37c"
+    },
+    "chromiumVersion": "Chromium 154.0.8037.57 built on Debian GNU/Linux 13 (trixie)"
+  },
+  "immutableBookEvidence": [
+    {
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/perf-visuals/before/manifest.json",
+      "sha256": "f6002a6523ee15265230af236c1d024dbe12b68ea55ad7f1a3e1ff8e2f4c9f04"
+    },
+    {
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/perf-visuals/after/manifest.json",
+      "sha256": "c601f1307451f099b530c3bcd401e9cacb228a29149609b755ea3e197f0fa091"
+    },
+    {
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/perf-visuals/compare/comparison.json",
+      "sha256": "7365d5e3490372f2ac0f84ab302713bd1724418166947702abde5ac3b2506454"
+    }
+  ]
+}

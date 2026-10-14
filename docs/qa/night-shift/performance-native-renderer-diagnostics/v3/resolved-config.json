@@ -1,0 +1,29 @@
+{
+  "argv": [
+    "routes",
+    "--base",
+    "/"
+  ],
+  "playwrightPath": "/tmp/ns-perf-ci-driver/node_modules/playwright",
+  "executableSource": "Playwright bundled Chromium",
+  "launchOptions": {
+    "headless": true,
+    "executablePath": "/tmp/ns-perf-ci-browsers/chromium-1248/chrome-linux64/chrome",
+    "args": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist",
+      "--disable-gpu-compositing",
+      "--disable-gpu-rasterization"
+    ]
+  },
+  "addedLaunchArguments": [
+    "--disable-gpu-compositing",
+    "--disable-gpu-rasterization"
+  ],
+  "navigationDiagnostics": true,
+  "limits": {
+    "nativeGotoMs": 10000,
+    "physicalChromiumClickMs": 30000
+  }
+}

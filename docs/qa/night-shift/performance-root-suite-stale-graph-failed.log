@@ -1,0 +1,971 @@
+✔ inside the shared route document every asset has exactly one URL (477.548435ms)
+✔ the four route documents name the same shell scripts (73.0091ms)
+✔ changed assets never reuse a URL the deployed site served (5220.572236ms)
+✔ the patched shader replaces the stock vertex chunks with bendPosition and bendNormal, keyed by BEND_KEY (7.011138ms)
+✔ applyBend is idempotent and every bent material shares one program key per variant (1.969826ms)
+✔ R(t, v) stays within [W·MIN_RADIUS_RATIO, W/π], tight at the ends, the W/π hood mid-turn, tighter when fast (67.628259ms)
+✔ the segments used by Sheet.hit equal the mesh x segments per tier, and hits land on the drawn chords (41.470189ms)
+✔ a sheet is endpoint-safe: anchors, normals and bounds stay finite at turn 0 and 1 and every radius (5.721685ms)
+✔ the gutter valley is capped by the half-block and fades out on a turning sheet (0.656046ms)
+✔ bendPoint samples projected through the scene camera pick back to the same face and (x, y) within half a segment (1266.609305ms)
+✔ a static page under a sheet never wins, and with no sheet the static pages pick analytically (63.472137ms)
+✔ corners and drag zones follow the flat page coordinates (0.719177ms)
+✔ hidden, folded or non-interactive pop-ups never win; a shown, settled pop-up does (88.059292ms)
+✔ the arc table keeps the spec sizes and the wave meets its flat-fold condition (13.149443ms)
+✔ heights follow final > midterm > quiz > minor, with weight only a bounded cue inside a category (4.092398ms)
+✔ a hinge sweep stays finite over θ in [0, π] (1/1000 steps and ±1e−6 at both ends) (790.784381ms)
+✔ everything is coplanar when the book is closed (θ = 0) (1.642853ms)
+✔ design heights hold within 1% when the book lies open (θ = π) (3.261553ms)
+✔ chords stay exact while flat = 0: |LM| and |RM| constant to 1e−9 over the sweep (103.504147ms)
+✔ completed pieces lie flat: flat = 1 keeps every strip point within 0.5 mm of its pages at any θ (62.012904ms)
+✔ a spread holds at most three pieces, highest rank toward the head, footprints never overlapping (4.645156ms)
+✔ hood clearance: outgoing and incoming pieces stay on their side of the turning sheet (≤ 0.5 mm) (19251.42751ms)
+✔ the analytic sheet side test agrees with sampled bendPoint geometry (236.249424ms)
+✔ without a sheet the linkage is never pressed, and pressing reports how much (5.003372ms)
+✔ stamp angles are deterministic and within −10° to −4° (0.487109ms)
+✔ a popup set shows ≤ 3 pieces whose pickable meshes are the visible geometry (48.152605ms)
+✔ completion animates flat → desaturate → stamp with motion, and cuts without it (29.561084ms)
+✔ arrival rises largest first; urgency glows only in the dark theme at high tier (32.788101ms)
+✔ a new pose re-solves when block heights or the sheet change, even at the same θ (4.054089ms)
+✔ MTH140 check values (now 2026-10-12, no section): resolver strings verbatim (165.236762ms)
+✔ with section 1, quiz 2 has its day and a row time copied from the resolver (359.600494ms)
+✔ no composed times: never 23:59, never countdown digits, quiz weeks without a section have no time (3485.772838ms)
+✔ pending spread: EXAMS, Date pending, no days and no numeral (26.084353ms)
+✔ partial weeks and week labels follow the interface copy (172.512971ms)
+✔ relative kickers, including BEFORE TERM and AFTER TERM (535.822661ms)
+✔ chips and urgency: DONE, PASSED, and NOW / SOON / NEXT for the target only (316.529716ms)
+✔ completed entries keep their pop-up slot and are announced as recorded in this browser (57.156147ms)
+✔ at most three pop-ups by rank; the rest are counted and printed as more (20.420827ms)
+✔ CEN100: every entry is the resolver’s, and the undated final keeps “Date pending” (160.043127ms)
+✔ signature is stable, ignores the clock between meaningful changes, and changes on completion or section (389.68212ms)
+✔ views are frozen and accept a spread index (29.234556ms)
+✔ paletteEntries: one week command per spread, labelled with the copy (49.879829ms)
+✔ book-state is pure: no document, storage, timers or Three (37.430546ms)
+✔ initial snapshot: today selected, settled, frozen and cached until something changes (3.06237ms)
+✔ commands clamp their target to whole spreads (2.31043ms)
+✔ cut policy, animate:false and a missing animator all swap synchronously (3.154762ms)
+✔ fade policy crossfades through the animator and settles when it resolves (1.797594ms)
+✔ full policy turns through the animator; animation frames reach continuous subscribers only (18.426735ms)
+✔ a new command retargets: the old promise resolves cancelled and key repeats collapse (8.069802ms)
+✔ asking again for the page already turning there joins that turn (4.409333ms)
+✔ lock precedence: a drag or swipe owns the paper over scroll; grab needs full motion (1.711338ms)
+✔ a grab catches a turning page; a command cancels a gesture (1.520966ms)
+✔ index timing: commands at once, scroll at a dwell, gestures at landing (3.29943ms)
+✔ landing rules: velocity picks the side, duration is clamp(|Δ|·900, 180, 600) (7.168147ms)
+✔ anchorDirty is set by commands and releases and read once (1.904129ms)
+✔ discrete subscribers hear select, settle and weeks; continuous ones also hear turn (1.827588ms)
+✔ a throwing subscriber is reported and does not silence the others (3.724092ms)
+✔ setWeeks keeps the selection, clamps it, and accepts the same array to force a refresh (106.224172ms)
+✔ removing the animator mid-turn lands the page where it was going (2.009178ms)
+✔ a failing animator never traps the book (4.122023ms)
+✔ attach wires book-state, book-week and the palette book-open-week; detach unwires (7.487565ms)
+✔ dispose stops everything and later calls are harmless (0.697569ms)
+✔ the controller stub plays the engine side of the contract on fake timers (21.800984ms)
+✔ faces are masks: only black and pure R, G or B fills, inked additively (813.75295ms)
+✔ channels: printed ink in G, accent in B, pencil in R (136.717541ms)
+✔ wording comes from the view verbatim: no 23:59, no countdown digits, honest pending and quiz weeks (1824.279418ms)
+✔ a dated item without a time keeps "Time not posted"; completion and passed states print their words (245.1095ms)
+✔ poster faces print no words and no digits (ink 0) (143.473822ms)
+✔ keep-out: verso text ends and recto text starts clear of the pop-up feet (492.331739ms)
+✔ informational text is at least 28 px; only caps labels and folios go smaller (1504.616735ms)
+✔ manual tracking works when the context has no letterSpacing (82.158847ms)
+✔ repaints happen only when a signature changes; a theme change paints nothing (445.382468ms)
+✔ the bucket follows the on-screen page and the tier; compact below 260 css px; fonts bump the signature (135.693766ms)
+✔ picking regions: items, outer corners and the page (132.862792ms)
+✔ label slots keep the tag aspect, share one atlas and repaint only their own slot (182.958792ms)
+✔ LRU, pool and dispose keep memory bounded (630.748953ms)
+✔ normal maps are unit length and seeded (64.30327ms)
+✔ CEN preserves saved ticks, personal records, profile and all assessment handles (2576.376856ms)
+✔ CEN search, deep links, filters, calendar identifiers and Mark done/Undo retain their behavior (2240.251988ms)
+✔ importing the guide is inert until mount (55.450594ms)
+✔ repeated CEN mount/unmount disposes every route owner and avoids duplicate action handlers (3447.876215ms)
+✔ CEN owns its assessment controls when visuals moves a row outside the route region (1271.387532ms)
+✔ an unfinished backup read cannot alter a remounted CEN route (1441.277558ms)
+✔ CEN remains usable when access to local storage itself is denied (1092.104196ms)
+✔ the colour preview initializes its guide before applying preview controls (357.391461ms)
+✔ extracted records are byte-for-byte the original records (5.66773ms)
+✔ extracted records deep-equal the array in the pre-move root guide (36.809285ms)
+✔ one copy: pure module records also feed the asynchronous classic compatibility script (11.889869ms)
+✔ the CEN page mounts its guide first and keeps schedule/calendar code in the route module (3.999703ms)
+✔ each challenge accepts only its first incorrect step and lets other selections retry (5.464847ms)
+✔ calculus correction examples and their plotted points agree (0.507357ms)
+✔ linear algebra visual examples preserve their stated products and area (2.245603ms)
+✔ column-vector composition applies the rightmost matrix first (4.099088ms)
+✔ every composition agrees with applying the operations in sequence (5.456042ms)
+✔ rotation playback preserves lengths and area rather than shrinking through a chord (1.4895ms)
+✔ playback stages meet continuously and end at the actual product (2.405275ms)
+✔ collapse makes zero area, reflection reverses orientation, and commuting pairs are recognized (0.362057ms)
+✔ shared camera stays finite and contains unit-square corners through all operation orders (11.88611ms)
+circuit: 19 meshes, 30948 triangles
+calculus: 4 meshes, 23470 triangles
+algebra: 9 meshes, 8076 triangles
+✔ animated secants join two curve points and idle tangents have derivative 2x (8.10837ms)
+✔ header shear and rotation preserve oriented unit area through entire loop (28.282638ms)
+✔ signals travel by distance and reach route endpoints (3.00351ms)
+✔ circuit scene stays finite and within geometry budget (926.871573ms)
+✔ calculus scene stays finite and within geometry budget (232.886595ms)
+✔ algebra scene stays finite and within geometry budget (77.364413ms)
+✔ Planetary mechanism and signals stay bounded through repeated interaction and all deadline states (170.118627ms)
+✔ flowing curves reuses finite geometry through maximum impulses and quality changes (5702.643447ms)
+✔ transforming sphere reuses finite geometry through maximum impulses and quality changes (1773.306907ms)
+✔ T01 [system time zone UTC] (54.574262ms)
+✔ T02 [system time zone UTC] (6.197733ms)
+✔ T03 [system time zone UTC] (7.804736ms)
+✔ T04 [system time zone UTC] (6.312642ms)
+✔ T05 [system time zone UTC] (7.655176ms)
+✔ T06 [system time zone UTC] (10.693828ms)
+✔ T07 [system time zone UTC] (6.29621ms)
+✔ T08 [system time zone UTC] (5.465174ms)
+✔ T09 [system time zone UTC] (11.220773ms)
+✔ T10 [system time zone UTC] (12.328189ms)
+✔ T11 [system time zone UTC] (6.310688ms)
+✔ T12 [system time zone UTC] (5.261211ms)
+✔ T13 [system time zone UTC] (4.729657ms)
+✔ T14 [system time zone UTC] (6.044386ms)
+✔ T15 [system time zone UTC] (3.144017ms)
+✔ T16 [system time zone UTC] (3.873212ms)
+✔ T17 [system time zone UTC] (13.970207ms)
+✔ T18 [system time zone UTC] (6.737301ms)
+✔ T19 [system time zone UTC] (10.713431ms)
+✔ T20 [system time zone UTC] (14.762577ms)
+✔ T21 [system time zone UTC] (14.950172ms)
+✔ T22 [system time zone UTC] (33.710343ms)
+✔ T23 [system time zone UTC] (9.06038ms)
+✔ T24 [system time zone UTC] (12.120491ms)
+✔ T25 [system time zone UTC] (11.627686ms)
+✔ T26 [system time zone UTC] (21.211085ms)
+✔ T27 [system time zone UTC] (6.145572ms)
+✔ T28 [system time zone UTC] (19.563014ms)
+✔ T29 [system time zone UTC] (8.362896ms)
+✔ T30 [system time zone UTC] (9.171926ms)
+✔ T31 [system time zone UTC] (13.925174ms)
+✔ T32 [system time zone UTC] (12.669164ms)
+✔ T33 [system time zone UTC] (5.257863ms)
+✔ T34 [system time zone UTC] (10.964998ms)
+✔ T35 [system time zone UTC] (9.35267ms)
+✔ T36 [system time zone UTC] (8.607301ms)
+✔ T37 [system time zone UTC] (7.392187ms)
+✔ T38 [system time zone UTC] (10.100921ms)
+✔ T39 [system time zone UTC] (5.766972ms)
+✔ T40 [system time zone UTC] (10.478674ms)
+✔ all fixtures pass with system time zone America/Toronto (760.928896ms)
+✔ all fixtures pass with system time zone UTC (877.533008ms)
+✔ all fixtures pass with system time zone America/Los_Angeles (927.330348ms)
+✔ all course targets and presentation fields agree with the existing Desk resolver across the term (4854.266414ms)
+✔ section labels exactly match the real Desk list and unsaved/invalid sections remain null (1586.413463ms)
+✔ progress uses strict saved completion records, excludes CEN reminders, and counts work for this Toronto week (1443.69062ms)
+✔ week numbers and book indices use Toronto boundaries, partial weeks, DST and the pending exam spread (5380.910307ms)
+✔ upcoming landmark kinds use shared rank categories and exclude completed, past and reminder rows (693.023019ms)
+✔ denied, corrupt and stale storage yield no invented saved progress or sections and never write (702.342301ms)
+✔ only the overall exact hot target has an urgent spine; competing hot items remain static (74.535783ms)
+✔ day-only, week, pending, live, passed and empty targets never receive an urgent pulse (635.756948ms)
+✔ empty injected data and all completed counted records are honest, with no mutation or extra source assumptions (156.109323ms)
+✔ snapshots do not mutate frozen data, saved state, clocks or other snapshots (440.558586ms)
+✔ holiday uncertainty, Monday make-up dates and sectionless quizzes retain authoritative precision (550.591696ms)
+✔ actual Desk list rendering agrees with adapter targets, chips, sections and the overall winner (9468.155422ms)
+✔ after a context loss, the restored book leaves the fallback and is republished as webgl2 (§5.9) (1462.445998ms)
+✔ Mark done and Undo reach the book from the committed record, though guide-completion fires before the save (§6.10) (475.863622ms)
+✔ Try again reloads after a failed module fetch, and an in-place retry keeps focus off <body> (1000.006636ms)
+✔ Skip to coursework focuses #panel-assessments and keeps it on screen (§6.6, §10.2) (143.405825ms)
+✔ the book's drag hint uses its own session key, tmu-book-hint-v1 (§6.2) (317.684796ms)
+✔ the Next assessment button opens the week that holds an exact-time target, never the date-pending spread (§6.3) (1153.706896ms)
+✔ the rail button names and opens the target week for a chosen section (1086.78646ms)
+✔ outside the term no tick claims today and the note never names a semester week (§6.3) (2497.085009ms)
+✔ the fallback week view counts weeks only inside the term (§6.8) (1085.621412ms)
+✔ a pinned rail that changes height asks scroll.mjs to measure again (night-refresh) (491.054619ms)
+✔ rail and week view focus rings keep their offsets against the shared button rings (2833.595368ms)
+✔ light stage labels keep 4.5:1 on the desk for every course accent (7.859575ms)
+✔ the rail caption is never covered by its buttons, 390-1920 px and at 200% zoom, in both themes (§6.3) (27570.166531ms)
+✔ the pin keeps a focused rail control focused when it binds, refreshes and unbinds (1529.226788ms)
+✔ a pin that becomes possible below its start waits until the reader is back above it (119.104939ms)
+✔ scrolling back up after a teleport past the pin keeps the selected week; the next pass turns forward (162.771296ms)
+✔ a touch swipe on the stage turns exactly one week, forward or back (67.417641ms)
+✔ the discrete swipe (reduced motion) also survives the canvas losing its implicit capture (53.014711ms)
+✔ a palette week jump turns in full motion: the modal hold is gone before book-open-week (573.947468ms)
+✔ a router swap to MTH140 focuses the route heading; the Skip link keeps #panel-assessments (274.655479ms)
+✔ future look releases its generated textures once after repeated updates and quality changes (146.383057ms)
+✔ balanced optics reduce cost while retaining the same material and surface identity (9.046152ms)
+✔ header secant goes through both points on the actual parabola (3.877197ms)
+✔ header secant has a finite tangent limit with slope 2 at x=1 (1.332336ms)
+✔ header shear preserves area and the parallelogram follows the basis vectors (2.841474ms)
+✔ illustration projections preserve straight lines and finite coordinates (3.030707ms)
+✔ header mount lets later route modules run before shader compilation resolves (4193.878783ms)
+✔ header teardown releases a scene while shader compilation is still pending (2194.542091ms)
+✔ direct mth140 keeps Skip before the shared hub at both deployment bases (778.691365ms)
+✔ direct mth141 keeps Skip before the shared hub at both deployment bases (324.106564ms)
+✔ Desk Skip and shell identity survive repeat initialization and route refresh (141.51796ms)
+✔ function shifts, reflections and square-root domain are respected (1.264733ms)
+✔ complex products rotate and scale, including zero multiplier (1.532702ms)
+✔ matrix interpolation reaches exact endpoints and tracks signed area (0.268775ms)
+✔ systems distinguish unique, parallel and coincident lines (0.437233ms)
+✔ secants approach the derivative from both sides without dividing by zero (2.119164ms)
+✔ limit examples distinguish function value, one-sided limits and poles (0.507765ms)
+✔ script source is a classic script with no module syntax (2.739997ms)
+✔ site base is the directory above assets/, for both the preview and Pages bases (0.949224ms)
+✔ each allowlisted CEN hash forwards to <base>cen100/ with the entire query and hash (10.177399ms)
+✔ Desk hashes and generic query flags alone stay on the Desk (6.167128ms)
+✔ forwarded URLs and every other route never forward again (no loop) (3.753992ms)
+✔ the destination is always the fixed same-origin cen100/ under the base, never origin-root or query-supplied (0.759233ms)
+✔ hash patterns match the inventory allowlist (0.4176ms)
+✔ loaded on the Desk it replaces the location once; elsewhere it does nothing (11.129486ms)
+✔ the Desk loads the forwarder synchronously first in <head>; CEN100 never loads it (6.251626ms)
+✔ the Desk keeps plain links to all three guides and reuses no allowlisted id (1.800899ms)
+✔ math modules import without reading the DOM, saved state, or starting route resources (479.509302ms)
+✔ one guide module restores separate course state and preserves release badges through math round trips (829.845855ms)
+✔ guide handlers act once on owned controls and stop on unmount even before the router aborts (522.90926ms)
+✔ guide preserves hash links and completion controls moved into an owned detail sheet (554.077033ms)
+✔ unmount releases pending downloads and ignores backups completing for a retired route (965.353449ms)
+✔ labs remove expansion, topic observers, callbacks and animation frames across math mounts (2123.12696ms)
+✔ composition playback and challenge state are released when the algebra lab unmounts (909.070152ms)
+✔ aborting the route signal tears down guide and lab resources without a separate unmount call (682.85579ms)
+✔ invalid saved math state falls back without rewriting the stored values on mount (332.871439ms)
+✔ remount resets transient search and quick-completion state while keeping saved progress (698.233122ms)
+✔ a later visuals mount receives the current math schedule once and stops receiving it after unmount (630.097965ms)
+✔ static requests use the JavaScript parser and leave lazy imports outside the graph (169.954627ms)
+✔ script roots preserve document-relative URL identity and route roles (3.778972ms)
+✔ queries are distinct native modules while graph depths remain cycle safe (227.689127ms)
+✔ an eager second root shortens dependency depth without changing the static graph (127.119434ms)
+✔ unresolved external requests fail instead of claiming a complete local graph (126.571401ms)
+✔ literal dynamic references are compiler-verified code with exact decoded version URLs (158.234883ms)
+✖ Desk boot follows awaited directory and target data while leaving vendors lazy (687.679991ms)
+✔ await classification honors lexical code and direct parenthesized calls (269.197815ms)
+✔ checked-in boot preloads agree with index.html (1009.119846ms)
+✔ checked-in boot preloads agree with cen100/index.html (533.647523ms)
+✔ checked-in boot preloads agree with mth140/index.html (552.998442ms)
+✔ checked-in boot preloads agree with mth141/index.html (639.180026ms)
+✔ real route blocks preload their exact critical URLs and only the Latin font (6114.159481ms)
+✔ a changed import version disagrees with the generated preload list (785.766899ms)
+✔ root and project-subpath documents produce identical relative preload blocks (898.89667ms)
+✔ insertion ignores commented module tags and accepts HTML head casing (585.317808ms)
+✔ loadCSS reactivates a retained feature sheet without loading it again (988.373185ms)
+✔ CEN100 no-JavaScript coursework retains every published schedule record and exact date (1612.676843ms)
+✔ MTH141 no-JavaScript coursework retains each assessment, announced week, scope and pending final (153.089298ms)
+✔ static course fallbacks keep native deployment-base-relative guide links (397.984502ms)
+✔ the pure bend module exports the CPU and shader contract (35.690723ms)
+✔ 1001 turns and both endpoint neighbourhoods stay finite and above the block (265.293534ms)
+✔ the two endpoints are exactly flat and mirrored, with outward normals (3.300468ms)
+✔ a moving cylindrical fold has circular curvature and parallel flat tails (5.368711ms)
+✔ sampled arclength is preserved to 0.001 of the width throughout the turn (513.043826ms)
+✔ positions and normals are continuous through turns and both fold joins (5.602344ms)
+✔ normals agree with the tangent of the deformed surface (1.357876ms)
+✔ analytic bounds contain the entire page including interior curve extrema (524.367396ms)
+✔ bounds remain continuous when the fold crosses page edges and its extremum (5.146163ms)
+✔ picking returns physical distance and flat coordinates from both endpoint faces (2.334157ms)
+✔ picking uses the sampled chord geometry for a curved page and a sloped ray (0.476859ms)
+✔ overlapping flat tails select the nearest visible fold from either side (1.710985ms)
+✔ picking misses finite strip extensions, rays facing away, and invalid rays (0.609248ms)
+✔ rays landing exactly on sampled vertices and page borders keep their hits (116.451914ms)
+✔ radii and segment options clamp to the supported ranges (8.791654ms)
+✔ the exported GLSL positions and normals match CPU values across sampled turns (19.210441ms)
+✔ fuzzy matching is a case-insensitive subsequence with prefix and word-start preference (7.668022ms)
+✔ math index preserves real IDs and shared deadline precision without filtering completed work (201.978859ms)
+✔ CEN index keeps calendar IDs distinct from opening item handles and includes undated titles (656.665364ms)
+✔ week rows use the week wording of the copy, read in full by screen readers (524.086707ms)
+✔ week query aliases route through the shared week model before fuzzy results (44.610607ms)
+✔ Desk has router places, disabled weeks and only available actions (19.653319ms)
+✔ palette wording matches the interface copy document (326.513006ms)
+✔ base normalization (2.970654ms)
+✔ paths map inside the base only (0.541916ms)
+✔ a project-base server 404s outside the base, serves the Desk at its root and redirects bare directories (196.421607ms)
+✔ the default root server still serves the site at / (73.112626ms)
+✔ desk at /: shared hub keeps the authored Skip link first (613.038812ms)
+✔ mth140 at /: shared hub keeps the authored Skip link first (112.743228ms)
+✔ mth141 at /: shared hub keeps the authored Skip link first (143.600097ms)
+✔ desk at /tmu-course-guides/: shared hub keeps the authored Skip link first (102.90749ms)
+✔ mth140 at /tmu-course-guides/: shared hub keeps the authored Skip link first (93.137792ms)
+✔ mth141 at /tmu-course-guides/: shared hub keeps the authored Skip link first (204.618552ms)
+✔ course chrome gives .hub-brand a 44px target independent of text metrics (1134.92761ms)
+✔ course chrome gives footer a a 44px target independent of text metrics (241.153887ms)
+✔ course chrome gives footer .reset a 44px target independent of text metrics (200.489866ms)
+✔ course chrome gives .workspace-categories button a 44px target independent of text metrics (233.193996ms)
+✔ the existing .35-second arrival settles even when the animation clock stalls (1088.331512ms)
+✔ an old arrival deadline cannot complete a newer exit on the same owner (588.505852ms)
+✔ motion sampling starts after a delayed first paint, retaining the 450 ms window (67.567406ms)
+✔ a scene-ready marker does not hide a continuing drawing loop (54.762074ms)
+✔ a WebGL scene that never becomes ready fails instead of sampling or passing (4.044582ms)
+✔ fallback readiness requires a genuinely loaded and visible authored poster (3.648815ms)
+✔ the Desk is exempt while a course missing its header scene fails (1.713679ms)
+✔ mth140 accepts another tab's completion, Undo and section without echoing storage writes (2147.53532ms)
+✔ mth141 accepts another tab's completion, Undo and section without echoing storage writes (798.122387ms)
+✔ CEN accepts another tab's completion, Undo and profile without echoing storage writes (3596.502463ms)
+✔ cen100 refreshes its card on persisted pageshow after the wall clock changes (2501.49671ms)
+✔ mth140 refreshes its card on persisted pageshow after the wall clock changes (164.166202ms)
+✔ mth141 refreshes its card on persisted pageshow after the wall clock changes (164.221376ms)
+✔ Desk refreshes its visible deadline within one minute after a backwards clock jump at an exact minute (1351.14105ms)
+✔ direct routes enable navigation before their header scene is ready (1763.08502ms)
+✔ a pending course scene cannot block the next route in the navigation queue (629.431621ms)
+✔ deriveBase and route roots work at origin and project bases (4.236486ms)
+✔ eligible links preserve native modified, external, download, targets and same-route hashes (189.842058ms)
+✔ navigation disposes in reverse order, aborts old handlers and preserves the shell (332.413644ms)
+✔ head sync keeps outgoing styles until incoming sheets load and follows destination CSS order (200.333651ms)
+✔ warmed routes reuse loaded stylesheet nodes when the browser goes offline (437.579377ms)
+✔ prefetch deduplicates requests and bounds parsed document cache (88.145179ms)
+✔ Save-Data suppresses hover, focus and idle prefetch while route navigation still loads (61.436921ms)
+▶ public speculative prefetch honors constrained connections while navigation still loads
+  ✔ {"saveData":true} (55.051822ms)
+  ✔ {"effectiveType":"2g"} (43.310391ms)
+  ✔ {"effectiveType":"slow-2g"} (94.298894ms)
+✔ public speculative prefetch honors constrained connections while navigation still loads (194.471322ms)
+✔ idle prefetch rechecks Save-Data when the scheduled callback runs (129.520553ms)
+✔ touch-generated pointerenter does not prefetch on a device that also supports fine hover (21.490983ms)
+✔ coarse-pointer visits do not prefetch other routes at idle (16.820306ms)
+✔ keyboard focus after touch warms a route without warming touch-induced focus (65.668768ms)
+✔ desktop hover and keyboard focus share one prefetched route document when idle warming is disabled (32.822606ms)
+✔ fetch, region, reload-required, transition and mount errors fall back to full navigation (163.304127ms)
+✔ a stalled document fetch falls back once with the whole destination URL (77.136572ms)
+✔ a stalled document body falls back once with the whole destination URL (73.911706ms)
+✔ HTTP 500 and aborted requests each navigate normally once with query and hash (49.421291ms)
+✔ back and forward restore each entry scroll and destination hashes are read at mount as on a direct load (199.505041ms)
+✔ capture interception prevents the old departure handler before document bubbling (60.592364ms)
+Not implemented: navigation to another Document
+Not implemented: navigation to another Document
+Not implemented: navigation to another Document
+✔ all real documents opt into ordered route boot and same-origin connect policy (605.359737ms)
+✔ direct boot waits for DOM readiness, initializes shell once and mounts route scripts in order (43.16926ms)
+✔ canceling a route transition retains the outgoing module and document (28.360009ms)
+✔ a failed direct-load module is reported and skipped; the guide and the other modules stay mounted (83.945874ms)
+✔ a reload or Back/Forward document load returns to the saved position; a new load reveals a mounted fragment (88.548565ms)
+✔ twenty route round trips leave one shell and only current signal active (976.04724ms)
+✔ guide-created hash history entries keep distinct scroll positions (147.87814ms)
+✔ canceling Back restores the outgoing history entry without adding or replacing an entry (273.166536ms)
+✔ Back supersedes a pending push fetch so URL and mounted route finish on the traversed entry (85.152014ms)
+✔ same-route Back preserves focus chosen by the guide hash handler (30.842368ms)
+✔ canceling the latest of queued Back traversals restores the mounted entry (155.173413ms)
+✔ same-route aliases and course roots preserve the shell without remounting (94.962555ms)
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollTo() method
+✔ head sync never moves a loaded sheet, keeps incoming sheets inert until commit and survives a reload followed by Back/Forward (218.449579ms)
+✔ scrolling keeps positions in memory and writes history at most once a second or when the page is hidden (5183.253648ms)
+✔ Back/Forward restore waits for the destination layout to grow instead of clamping (262.596223ms)
+✔ same-route Back reaches the guide once; a cross-route Back leaves the outgoing guide alone (329.621742ms)
+✔ the public navigate() only moves between the four routes (34.210207ms)
+✔ a destination from another deploy (different shell modules) gets a real document load (120.758455ms)
+✔ scene poster settles, pauses, sleeps offscreen, resumes, and disposes (1893.852607ms)
+✔ context loss shows the authored poster and releases the scene frame loop (1614.531558ms)
+✔ unsupported rendering uses an immediate poster without a busy animation loop (676.498322ms)
+✔ nonthrowing shader link failure returns to the poster and stops the GPU frame loop (621.706966ms)
+✔ adaptive GPU frame scheduling keeps advancing after downgrade and sleeps while paused or offscreen (795.441394ms)
+✔ touch drag rotates through movement, releases with inertia, and pointer cancellation clears it (970.503231ms)
+✔ pausing mid-drag releases the gesture so a later touch can start (1289.485727ms)
+✔ each course covers all 34 sections with one matching instructor and lab (8.543579ms)
+✔ quiz dates follow the section and the announced Monday Thanksgiving make-up (4.441994ms)
+✔ confirmed scope, make-up day and exam-format privacy are represented in course data (1.992129ms)
+✔ next assessment respects the lab day and separate completion records (101.79073ms)
+✔ Toronto calendar dates and daylight-saving offsets are preserved (2.24051ms)
+✔ calendar export avoids invented quiz times, missing final dates and holiday dates (23.084367ms)
+✔ practice references retain the source editions and wrapped ranges without page footers (0.352699ms)
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+✔ shared route imports leave the document untouched (819.067729ms)
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+✔ shared modules restore nodes and release resources across 20 paused route round trips (9395.810431ms)
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+    at getSourceSync (node:internal/modules/esm/load:50:11)
+    at defaultLoadSync (node:internal/modules/esm/load:156:34)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+    at #loadSync (node:internal/modules/esm/loader:834:53)
+    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+    at afterResolve (node:internal/modules/esm/loader:607:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+    at node:internal/modules/esm/loader:632:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+✔ shared modules release animated resources across 20 fine-pointer route round trips (9553.211052ms)
+✔ hub and motion services keep shell identity while course identity and saved labels change (45.018357ms)
+✔ sound stays off by default and enabling it persists silently until an allowed play (509.806163ms)
+✔ saved opt-in still requires a user gesture before creating the shared context (101.850247ms)
+✔ paper sound obeys reduced/off policy {"reduced":true} (80.47367ms)
+✔ paper sound obeys reduced/off policy {"motion":"off"} (53.870264ms)
+✔ paper sound obeys reduced/off policy {"controller":false,"reduced":true} (37.352861ms)
+✔ motion controller and saved scene pause gate later plays without recreating audio (41.185916ms)
+✔ five paper actions synthesize bounded sounds and reject retired or unknown names (56.487745ms)
+✔ page turns allow at most one sound per 120 ms and per changed spread (60.985351ms)
+✔ intensity controls output volume, clamps excess and avoids allocation for silence (136.588633ms)
+✔ unsupported WebAudio leaves the opt-in service usable (72.308265ms)
+✔ fixed-ring planetary gears maintain both no-slip ratios (7.413932ms)
+✔ sphere transforms include identity and rank-two projection without moving the origin (3.808804ms)
+✔ drag follows a finger continuously, releases with bounded inertia and cancels cleanly (6.135087ms)
+✔ animated art and basis tips remain visible at extreme drag rotations (467.721409ms)
+✔ the moving tangent endpoints fit in addition to the ribbon surface (6.272138ms)
+✔ CEN Academic Integrity quiz resolves to Oct 14, 3:00 PM Toronto, exact (27.776583ms)
+✔ MTH140 midterm resolves to Oct 23, 6:30 PM Toronto, with its end (38.551414ms)
+✔ a quiz week without a section: week precision, the section CTA and no timer (22.857647ms)
+✔ a quiz week with a saved section: exact lab start, the lab room and the timetable caveat (24.856286ms)
+✔ Thanksgiving: the announced Monday make-up is exact; without one the date needs confirmation (152.110127ms)
+✔ a dated submission without a time counts down to 11:59 PM Toronto; a dated in-class event keeps its date only (278.010335ms)
+✔ an undated final is pending once nothing dated is left; with nothing open the state is honestly empty (4.699209ms)
+✔ completed items are skipped, including reminders whose item is fully recorded (26.995848ms)
+✔ an event in progress is never skipped just because two hours passed (10.737426ms)
+✔ Toronto/UTC date boundaries decide eligibility and day counts (35.235905ms)
+✔ the CEN rules are the guide page’s own upcomingSchedule, case for case (11611.345688ms)
+✔ readers are non-destructive on denied, missing and corrupt storage (2.831101ms)
+✔ the overall next deadline never manufactures a timer from an uncertain target (10.375554ms)
+✔ the Desk’s first-paint course accents mirror COURSE_META (0.969338ms)
+✔ Three vendor retains every existing export and supplies the book engine exports (9.530168ms)
+✔ bundled addons construct resources from the exported Three core (32.481659ms)
+✔ registration validates descriptors, chooses one most-specific match and unregisters safely (598.595673ms)
+✔ motion policy prioritizes off, pause and holds, then OS reduce, with no storage writes (59.140571ms)
+✔ origin snapshots an element rect and defaults to the viewport centre (46.880468ms)
+✔ outgoing animation overlaps document fetching and hands its pose to all incoming mounts and shell event (654.263107ms)
+✔ the hard cap aborts a non-cooperating animation; late resolution cannot create a handoff (92.47969ms)
+✔ the default navigation cap is 1200 ms even when an animation never settles (1325.783043ms)
+✔ reduced motion passes a 150 ms fade budget and aborts a longer fade (215.796271ms)
+✔ failed scene animations never force a reload or block semantic navigation (182.305795ms)
+✔ cut skips animation callbacks, including an off destination and saved pause (502.592679ms)
+✔ a second navigation aborts the first signal and never transfers its late pose (202.371161ms)
+✔ pagehide aborts both animation and pending navigation before a swap (97.622607ms)
+✔ Back/Forward plays the matching reverse/dive without disturbing focus, hashes or scroll (155.401529ms)
+✔ Back during an unfinished outgoing move aborts it, then restores the visited Desk (150.957204ms)
+✔ policy changes abort an in-flight move and invalidate a completed but unconsumed pose (151.814205ms)
+✔ handoffs require the exact request, destination, freshness and a pose; no storage is needed (57.752693ms)
+✔ direct loads deliver continuing:false and never add a cover or consume legacy storage (113.838699ms)
+✔ native clicks capture a pointer rect; keyboard and palette navigation use the centre (304.677821ms)
+✔ modified/new-tab/download/external clicks and same-route hashes do not invoke the controller (50.210145ms)
+✔ a vetoed navigation never runs a scene or unmounts content (29.034733ms)
+✔ weeks exports the pure semester contract (4.328424ms)
+✔ first spread is Tuesday through Sunday and later spreads retain Monday anchors (45.238574ms)
+✔ every announced quiz week selects its unchanged Monday spread (128.007985ms)
+✔ Toronto dates and Monday boundaries determine current week, including DST (13.829335ms)
+✔ selection clamps before and after the term without invalid indices (3.578684ms)
+✔ dated exam records extend the range while undated finals retain pending precision (25.455652ms)
+✔ reading weeks require dated source evidence, not guessed calendar gaps (27.062332ms)
+✔ math normalization preserves section dates, make-up and holiday uncertainty (21.335104ms)
+✔ weights preserve published values and never divide an aggregate quiz grade (7.875898ms)
+✔ CEN mapping excludes reminders and distinguishes schedule ids from item handles (16.664755ms)
+✔ CEN final project landmarks retain teaching spreads before the exam period (175.272472ms)
+✔ completion accepts the guides saved envelopes and strict entry flags only (36.038187ms)
+✔ popup rank keeps categories dominant and real weight secondary (0.668635ms)
+✔ palette queries resolve numbers and real calendar dates with no false matches (109.577638ms)
+ℹ tests 415
+ℹ suites 0
+ℹ pass 414
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 175463.962646
+
+✖ failing tests:
+
+test at tests/module-graph.test.mjs:100:1
+✖ Desk boot follows awaited directory and target data while leaving vendors lazy (687.679991ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  17 !== 15
+  
+      at TestContext.<anonymous> (file:///workspace/tmu-course-guides/tests/module-graph.test.mjs:108:9)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 17,
+    expected: 15,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

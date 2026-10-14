@@ -1,0 +1,1686 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T08:53:30.119Z",
+  "status": "passed-baseline-diagnostic",
+  "scope": "Unchanged AA7 product baseline, current exact five QA source files, genuine whole normal crosstab/root under original1.57 software Chromium. This is not current-product recovery/acceptance and establishes no cause for the older failures.",
+  "rawDirectory": "/workspace/ns-perf-control-aa7/tools/qa/reports/2026-10-14T08-43-50-664Z-162735",
+  "startedAt": "2026-10-14T08:43:50.664Z",
+  "completedAt": "2026-10-14T08:47:48.589Z",
+  "durationMs": 230969,
+  "selection": {
+    "checks": [
+      "crosstab"
+    ],
+    "bases": [
+      "/"
+    ],
+    "gpu": false,
+    "help": false
+  },
+  "environment": {
+    "node": "v24.19.0",
+    "platform": "linux",
+    "architecture": "x64",
+    "deployments": [
+      {
+        "base": "/",
+        "origin": "http://127.0.0.1:43447",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "154.0.8037.57",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      }
+    ],
+    "requestedMode": "SwiftShader",
+    "playwrightPath": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "playwrightSource": "PLAYWRIGHT_PATH",
+    "chromiumPath": "/usr/bin/chromium",
+    "chromiumSource": "QA_CHROMIUM_PATH",
+    "launchArgs": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "driverIdentity": {
+    "playwright": {
+      "name": "playwright",
+      "version": "1.57.0",
+      "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright",
+      "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright/package.json",
+      "packageSHA256": "07726a5a20b29123d85311af7d11b7de6bf00ddd03121d3c9061995043ebd261",
+      "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright/index.js",
+      "entrySHA256": "4e98f65f0a9d9bcab8cffc0c5cfdd87fd3f5b0be74fc494ff166a466b204cd44"
+    },
+    "core": {
+      "name": "playwright-core",
+      "version": "1.57.0",
+      "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright-core",
+      "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright-core/package.json",
+      "packageSHA256": "6d38907778eb872e37e8da93b430b011c3dfbe8848c4214becb7effdc0aff1d6",
+      "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright-core/index.js",
+      "entrySHA256": "a4f83b5b2915b43bddd5384d963a66d1fd4d978a3db8059969fb78de65bc519a"
+    }
+  },
+  "launchOptions": {
+    "headless": true,
+    "executablePath": "/usr/bin/chromium",
+    "args": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "counts": {
+    "assertions": 126,
+    "passed": 126,
+    "failed": 0,
+    "featureSkips": 0
+  },
+  "guards": {
+    "exactWholeRootSelection": true,
+    "genuinePrelaunch": true,
+    "genuinePostclose": true,
+    "rawPassed": true,
+    "wholeRecordPassed": true,
+    "allThreeCasesPresent": true,
+    "noFeatureOrCleanupGap": true,
+    "rawRunnerErrorsEmpty": true,
+    "originalCurrentFiveQASourcesByteIdentical": true,
+    "sourceAndDriverUnchanged": true,
+    "controlProductAndProtectedUnchanged": true,
+    "independentActualCliZero": true,
+    "resourcesActuallyClosed": true
+  },
+  "artifacts": [
+    {
+      "path": "/workspace/ns-perf-control-aa7/tools/qa/reports/2026-10-14T08-43-50-664Z-162735/summary.json",
+      "sha256": "1ec954dbaf9f4006cbd48bfba9cc4919b9596f0665c42ea5e0381727e8955b97",
+      "bytes": 226060
+    },
+    {
+      "path": "/workspace/ns-perf-control-aa7/tools/qa/reports/2026-10-14T08-43-50-664Z-162735/summary.md",
+      "sha256": "0fbc901fe33493b59549a306f9c2e552cb769cdaa16ca23447161988456c3a19",
+      "bytes": 428
+    },
+    {
+      "path": "/workspace/ns-perf-control-aa7/tools/qa/reports/2026-10-14T08-43-50-664Z-162735/crosstab.json",
+      "sha256": "c8f6e421b571536a17ee80c29295376402d2c70c3700ac8ecd76874e347b1515",
+      "bytes": 204684
+    },
+    {
+      "path": "/workspace/ns-perf-control-aa7/tools/qa/reports/2026-10-14T08-43-50-664Z-162735/crosstab.md",
+      "sha256": "c7c15335eca39a802649e86e1799c22102748d13d14f316237dda8f7ec2a72ce",
+      "bytes": 414
+    },
+    {
+      "path": "/tmp/ns-perf-control-crosstab-source-before.json",
+      "sha256": "ae5ed05d9d74fa726370a4e269b3918fa54162ab8f9dfe4e44a24ab5da7b7269",
+      "bytes": 2872
+    },
+    {
+      "path": "/tmp/ns-perf-control-crosstab-source-after.json",
+      "sha256": "f3193dc4f4c1a9306fb29f8bed2571a63823e13ad67838e90cb2270b88f67c10",
+      "bytes": 2990
+    },
+    {
+      "path": "/tmp/ns-perf-control-crosstab-resource-closure.json",
+      "sha256": "3c12abba2da88b7d485018541e294ec39f6b3806054dd8c104518553f71f0d69",
+      "bytes": 4240
+    },
+    {
+      "path": "/tmp/ns-perf-control-crosstab-cli-observation.json",
+      "sha256": "73edaa944b805a5f02eec77dfd679630889c33049746dcc5ab7903d714436da1",
+      "bytes": 530
+    },
+    {
+      "path": "/tmp/ns-perf-control-current-qa-copy.json",
+      "sha256": "784c26666ae5e446e1309c40605f167cf54204ceb788ac9597723caf5be13221",
+      "bytes": 1056
+    },
+    {
+      "path": "/tmp/ns-perf-control-crosstab.log",
+      "sha256": "b7073235d9695c363b0dd90191e1db8016969c4a3ad70324618caf1df7b6451a",
+      "bytes": 132
+    }
+  ],
+  "sourceBefore": {
+    "recordedAt": "2026-10-14T08:43:47.777Z",
+    "runDirectory": null,
+    "repositoryCommit": "aa7bca26bdfe6d640766858f4f3a27e2e9e668e7",
+    "productFingerprint": "f53027510da4ab7382192a2b05a3acc7dcab5ce3cf93d62a9d197345de765960",
+    "protectedFingerprint": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+    "sources": [
+      {
+        "path": "tools/qa/checks-resilience.mjs",
+        "sha256": "db77a8d9fa49683f6370c87fc1794dbec247bc3c95cf524fee1d5d58d12e0de8"
+      },
+      {
+        "path": "tools/qa/checks.mjs",
+        "sha256": "e1cc6550f304cd30d092cfcc34a78548365ce3c9b06e2f9ea6b53f1c1deee9ca"
+      },
+      {
+        "path": "tools/qa/checks-perf.mjs",
+        "sha256": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657"
+      },
+      {
+        "path": "tools/qa/runtime.mjs",
+        "sha256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587"
+      },
+      {
+        "path": "tools/qa/instrument.mjs",
+        "sha256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892"
+      }
+    ],
+    "launchEnvironment": {
+      "PLAYWRIGHT_PATH": "/opt/codex/cua_node/lib/node_modules/playwright",
+      "QA_CHROMIUM_PATH": "/usr/bin/chromium",
+      "QA_PERF_RECORD": null,
+      "QA_GPU": "0",
+      "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules"
+    },
+    "loader": {
+      "modulePath": "/opt/codex/cua_node/lib/node_modules/playwright",
+      "source": "PLAYWRIGHT_PATH"
+    },
+    "driverIdentity": {
+      "playwright": {
+        "name": "playwright",
+        "version": "1.57.0",
+        "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright",
+        "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright/package.json",
+        "packageSHA256": "07726a5a20b29123d85311af7d11b7de6bf00ddd03121d3c9061995043ebd261",
+        "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright/index.js",
+        "entrySHA256": "4e98f65f0a9d9bcab8cffc0c5cfdd87fd3f5b0be74fc494ff166a466b204cd44"
+      },
+      "core": {
+        "name": "playwright-core",
+        "version": "1.57.0",
+        "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright-core",
+        "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright-core/package.json",
+        "packageSHA256": "6d38907778eb872e37e8da93b430b011c3dfbe8848c4214becb7effdc0aff1d6",
+        "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright-core/index.js",
+        "entrySHA256": "a4f83b5b2915b43bddd5384d963a66d1fd4d978a3db8059969fb78de65bc519a"
+      }
+    },
+    "launchOptions": {
+      "headless": true,
+      "executablePath": "/usr/bin/chromium",
+      "args": [
+        "--use-angle=swiftshader",
+        "--enable-unsafe-swiftshader",
+        "--ignore-gpu-blocklist"
+      ]
+    },
+    "note": "AA7 follow-up actual source capture; 1.57 driver with explicit software Chromium. No browser launched by this capture. Run metadata must independently bind check and phase."
+  },
+  "sourceAfter": {
+    "recordedAt": "2026-10-14T08:49:57.943Z",
+    "runDirectory": null,
+    "repositoryCommit": "aa7bca26bdfe6d640766858f4f3a27e2e9e668e7",
+    "productFingerprint": "f53027510da4ab7382192a2b05a3acc7dcab5ce3cf93d62a9d197345de765960",
+    "protectedFingerprint": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+    "sources": [
+      {
+        "path": "tools/qa/checks-resilience.mjs",
+        "sha256": "db77a8d9fa49683f6370c87fc1794dbec247bc3c95cf524fee1d5d58d12e0de8"
+      },
+      {
+        "path": "tools/qa/checks.mjs",
+        "sha256": "e1cc6550f304cd30d092cfcc34a78548365ce3c9b06e2f9ea6b53f1c1deee9ca"
+      },
+      {
+        "path": "tools/qa/checks-perf.mjs",
+        "sha256": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657"
+      },
+      {
+        "path": "tools/qa/runtime.mjs",
+        "sha256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587"
+      },
+      {
+        "path": "tools/qa/instrument.mjs",
+        "sha256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892"
+      }
+    ],
+    "launchEnvironment": {
+      "PLAYWRIGHT_PATH": "/opt/codex/cua_node/lib/node_modules/playwright",
+      "QA_CHROMIUM_PATH": "/usr/bin/chromium",
+      "QA_PERF_RECORD": null,
+      "QA_GPU": "0",
+      "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules"
+    },
+    "loader": {
+      "modulePath": "/opt/codex/cua_node/lib/node_modules/playwright",
+      "source": "PLAYWRIGHT_PATH"
+    },
+    "driverIdentity": {
+      "playwright": {
+        "name": "playwright",
+        "version": "1.57.0",
+        "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright",
+        "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright/package.json",
+        "packageSHA256": "07726a5a20b29123d85311af7d11b7de6bf00ddd03121d3c9061995043ebd261",
+        "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright/index.js",
+        "entrySHA256": "4e98f65f0a9d9bcab8cffc0c5cfdd87fd3f5b0be74fc494ff166a466b204cd44"
+      },
+      "core": {
+        "name": "playwright-core",
+        "version": "1.57.0",
+        "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright-core",
+        "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright-core/package.json",
+        "packageSHA256": "6d38907778eb872e37e8da93b430b011c3dfbe8848c4214becb7effdc0aff1d6",
+        "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright-core/index.js",
+        "entrySHA256": "a4f83b5b2915b43bddd5384d963a66d1fd4d978a3db8059969fb78de65bc519a"
+      }
+    },
+    "launchOptions": {
+      "headless": true,
+      "executablePath": "/usr/bin/chromium",
+      "args": [
+        "--use-angle=swiftshader",
+        "--enable-unsafe-swiftshader",
+        "--ignore-gpu-blocklist"
+      ]
+    },
+    "note": "AA7 follow-up actual source capture; 1.57 driver with explicit software Chromium. No browser launched by this capture. Run metadata must independently bind check and phase.",
+    "sourceUnchanged": true,
+    "driverIdentityUnchanged": true,
+    "observedAfterClosureAt": "2026-10-14T08:49:57.943Z"
+  },
+  "resourcesClosure": {
+    "schemaVersion": 1,
+    "rawDirectory": "/workspace/ns-perf-control-aa7/tools/qa/reports/2026-10-14T08-43-50-664Z-162735",
+    "observedAt": "2026-10-14T08:50:28.240Z",
+    "observationCompletedAt": "2026-10-14T08:50:28.415Z",
+    "note": "Passive resource observations after normal harness close. Original raw errors/cleanup arrays and exact source/driver identities are preserved. No browser or CDP intervention, no source edit, no process kill, no CLI-exit inference.",
+    "runStartedAt": "2026-10-14T08:43:50.664Z",
+    "runCompletedAt": "2026-10-14T08:47:48.589Z",
+    "rawStatus": "passed",
+    "rawExitCode": 0,
+    "rawFailures": 0,
+    "artifacts": {
+      "summary": {
+        "path": "/workspace/ns-perf-control-aa7/tools/qa/reports/2026-10-14T08-43-50-664Z-162735/summary.json",
+        "sha256": "1ec954dbaf9f4006cbd48bfba9cc4919b9596f0665c42ea5e0381727e8955b97"
+      },
+      "before": {
+        "path": "/tmp/ns-perf-control-crosstab-source-before.json",
+        "sha256": "ae5ed05d9d74fa726370a4e269b3918fa54162ab8f9dfe4e44a24ab5da7b7269"
+      },
+      "after": {
+        "path": "/tmp/ns-perf-control-crosstab-source-after.json",
+        "sha256": "f3193dc4f4c1a9306fb29f8bed2571a63823e13ad67838e90cb2270b88f67c10"
+      }
+    },
+    "sourceUnchanged": true,
+    "productUnchanged": true,
+    "protectedUnchanged": true,
+    "currentSources": [
+      {
+        "path": "tools/qa/checks-resilience.mjs",
+        "sha256": "db77a8d9fa49683f6370c87fc1794dbec247bc3c95cf524fee1d5d58d12e0de8"
+      },
+      {
+        "path": "tools/qa/checks.mjs",
+        "sha256": "e1cc6550f304cd30d092cfcc34a78548365ce3c9b06e2f9ea6b53f1c1deee9ca"
+      },
+      {
+        "path": "tools/qa/checks-perf.mjs",
+        "sha256": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657"
+      },
+      {
+        "path": "tools/qa/runtime.mjs",
+        "sha256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587"
+      },
+      {
+        "path": "tools/qa/instrument.mjs",
+        "sha256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892"
+      }
+    ],
+    "driverIdentity": {
+      "playwright": {
+        "name": "playwright",
+        "version": "1.57.0",
+        "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright",
+        "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright/package.json",
+        "packageSHA256": "07726a5a20b29123d85311af7d11b7de6bf00ddd03121d3c9061995043ebd261",
+        "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright/index.js",
+        "entrySHA256": "4e98f65f0a9d9bcab8cffc0c5cfdd87fd3f5b0be74fc494ff166a466b204cd44"
+      },
+      "core": {
+        "name": "playwright-core",
+        "version": "1.57.0",
+        "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright-core",
+        "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright-core/package.json",
+        "packageSHA256": "6d38907778eb872e37e8da93b430b011c3dfbe8848c4214becb7effdc0aff1d6",
+        "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright-core/index.js",
+        "entrySHA256": "a4f83b5b2915b43bddd5384d963a66d1fd4d978a3db8059969fb78de65bc519a"
+      }
+    },
+    "loader": {
+      "modulePath": "/opt/codex/cua_node/lib/node_modules/playwright",
+      "source": "PLAYWRIGHT_PATH"
+    },
+    "launchOptions": {
+      "headless": true,
+      "executablePath": "/usr/bin/chromium",
+      "args": [
+        "--use-angle=swiftshader",
+        "--enable-unsafe-swiftshader",
+        "--ignore-gpu-blocklist"
+      ]
+    },
+    "driverIdentityUnchanged": true,
+    "resources": {
+      "fullQaPid": 162735,
+      "fullQaProcessPresent": false,
+      "fullQaProcess": null,
+      "activeChromiumProcesses": [],
+      "zombieBrowserCount": 461,
+      "ownedPreviewPorts": [
+        {
+          "origin": "http://127.0.0.1:43447",
+          "host": "127.0.0.1",
+          "port": 43447,
+          "startedAt": "2026-10-14T08:50:28.356Z",
+          "observedAt": "2026-10-14T08:50:28.399Z",
+          "result": "refused",
+          "error": {
+            "code": "ECONNREFUSED",
+            "message": "connect ECONNREFUSED 127.0.0.1:43447"
+          }
+        }
+      ]
+    },
+    "runnerCleanupErrors": [],
+    "caseCleanupErrors": [],
+    "caseResourceRecords": [
+      {
+        "check": "crosstab",
+        "base": "/",
+        "runnerErrors": [],
+        "cleanupErrors": []
+      }
+    ],
+    "rawRunErrors": [],
+    "allObservedResourcesClosed": true
+  },
+  "independentActualCliObservation": {
+    "recordedAt": "2026-10-14T08:50:31.379Z",
+    "rawDirectory": "/workspace/ns-perf-control-aa7/tools/qa/reports/2026-10-14T08-43-50-664Z-162735",
+    "observer": "/root",
+    "exitCode": 0,
+    "reportedAfterRunClosure": true,
+    "source": "Root actually retrieved tools.write_stdin session34770 completion via functions.exec, returned exit_code0, chunkd31b4b.",
+    "argv": [
+      "node",
+      "tools/qa/run.mjs",
+      "crosstab",
+      "--base",
+      "/"
+    ],
+    "scope": "Unchanged AA7 baseline diagnostic; not current-product acceptance."
+  },
+  "cases": [
+    {
+      "name": "cen100: native cross-tab completion, Undo and section changes",
+      "readinessPolicy": {
+        "browserName": "chromium",
+        "gpu": false,
+        "timeoutMs": 30000
+      },
+      "interactionActions": [
+        {
+          "name": "cross-tab Mark done",
+          "selector": "[data-quick-complete]",
+          "method": "evaluate-click",
+          "first": true,
+          "sourceURL": "http://127.0.0.1:43447/cen100/?motion=off",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 17960
+        },
+        {
+          "name": "cross-tab Undo",
+          "selector": "#undo-complete",
+          "method": "evaluate-click",
+          "first": false,
+          "sourceURL": "http://127.0.0.1:43447/cen100/?motion=off",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 15775
+        },
+        {
+          "name": "cross-tab Mark done",
+          "selector": "[data-quick-complete]",
+          "method": "evaluate-click",
+          "first": true,
+          "sourceURL": "http://127.0.0.1:43447/cen100/?motion=off",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 2990
+        },
+        {
+          "name": "cross-tab Undo",
+          "selector": "#undo-complete",
+          "method": "evaluate-click",
+          "first": false,
+          "sourceURL": "http://127.0.0.1:43447/cen100/?motion=off",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 6823
+        },
+        {
+          "name": "cross-tab open section",
+          "selector": ".workspace-section",
+          "method": "click",
+          "first": false,
+          "sourceURL": "http://127.0.0.1:43447/cen100/?motion=off",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 1966
+        },
+        {
+          "name": "cross-tab change section",
+          "selector": "#contact-section",
+          "method": "selectOption",
+          "first": false,
+          "value": "2",
+          "sourceURL": "http://127.0.0.1:43447/cen100/?motion=off#course-info",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 2080
+        },
+        {
+          "name": "cross-tab restore section",
+          "selector": "#contact-section",
+          "method": "selectOption",
+          "first": false,
+          "value": "1",
+          "sourceURL": "http://127.0.0.1:43447/cen100/?motion=off#course-info",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 676
+        }
+      ],
+      "routeActions": [
+        {
+          "route": "cen100",
+          "selector": "[data-course-link=\"cen100\"]",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 395
+        },
+        {
+          "route": "desk",
+          "selector": "[data-course-link=\"desk\"]",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 109
+        }
+      ],
+      "propagationWaits": [
+        {
+          "course": "cen100",
+          "route": "desk",
+          "expectedTitle": "WHMIS certification",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "label": "Desk Mark done storage propagation",
+          "timeoutMs": 30000,
+          "status": "ready",
+          "sampleCount": 1,
+          "maxBrowserReplyMs": 12,
+          "firstSample": {
+            "elapsedMs": 13,
+            "replyMs": 12,
+            "value": true
+          },
+          "lastSample": {
+            "elapsedMs": 13,
+            "replyMs": 12,
+            "value": true
+          },
+          "elapsedMs": 13
+        },
+        {
+          "course": "cen100",
+          "route": "desk",
+          "expectedTitle": "Academic Integrity Quiz",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "label": "Desk Undo storage propagation",
+          "timeoutMs": 30000,
+          "status": "ready",
+          "sampleCount": 1,
+          "maxBrowserReplyMs": 30,
+          "firstSample": {
+            "elapsedMs": 30,
+            "replyMs": 30,
+            "value": true
+          },
+          "lastSample": {
+            "elapsedMs": 30,
+            "replyMs": 30,
+            "value": true
+          },
+          "elapsedMs": 30
+        },
+        {
+          "course": "cen100",
+          "route": "cen100",
+          "expectedTitle": "WHMIS certification",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "label": "course card/dock Mark done storage propagation",
+          "timeoutMs": 30000,
+          "status": "ready",
+          "sampleCount": 1,
+          "maxBrowserReplyMs": 3224,
+          "firstSample": {
+            "elapsedMs": 3224,
+            "replyMs": 3224,
+            "value": true
+          },
+          "lastSample": {
+            "elapsedMs": 3224,
+            "replyMs": 3224,
+            "value": true
+          },
+          "elapsedMs": 3224
+        },
+        {
+          "course": "cen100",
+          "route": "cen100",
+          "expectedTitle": "Academic Integrity Quiz",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "label": "course card/dock Undo storage propagation",
+          "timeoutMs": 30000,
+          "status": "ready",
+          "sampleCount": 2,
+          "maxBrowserReplyMs": 6098,
+          "firstSample": {
+            "elapsedMs": 6098,
+            "replyMs": 6098,
+            "value": false
+          },
+          "lastSample": {
+            "elapsedMs": 8347,
+            "replyMs": 2195,
+            "value": true
+          },
+          "elapsedMs": 8347
+        }
+      ],
+      "storageEventsByObservation": {
+        "Desk Mark done": [
+          {
+            "key": "cen100-personal-plan-v1",
+            "oldValue": "{\"completed\":{\"intro\":true,\"entry\":true,\"syllabus\":true,\"email\":true,\"contract\":true,\"outline\":true,\"matlab-1\":true,\"failure\":true,\"reflection-1\":true,\"review\":true,\"notebook-1\":true,\"matlab-2\":true,\"prototype\":true,\"presentation-1\":true,\"presentation-2\":true,\"notebook-2\":true,\"reflection-2\":true,\"exit\":true,\"peer\":true,\"report\":true},\"notes\":{},\"targets\":{},\"checks\":{},\"topics\":{}}",
+            "newValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1,\"integrity\":1},\"notes\":{},\"targets\":{}}",
+            "trusted": true
+          }
+        ],
+        "Desk Undo": [
+          {
+            "key": "cen100-personal-plan-v1",
+            "oldValue": "{\"completed\":{\"intro\":true,\"entry\":true,\"syllabus\":true,\"email\":true,\"contract\":true,\"outline\":true,\"matlab-1\":true,\"failure\":true,\"reflection-1\":true,\"review\":true,\"notebook-1\":true,\"matlab-2\":true,\"prototype\":true,\"presentation-1\":true,\"presentation-2\":true,\"notebook-2\":true,\"reflection-2\":true,\"exit\":true,\"peer\":true,\"report\":true},\"notes\":{},\"targets\":{},\"checks\":{},\"topics\":{}}",
+            "newValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1,\"integrity\":1},\"notes\":{},\"targets\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "cen100-personal-plan-v1",
+            "oldValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1,\"integrity\":1},\"notes\":{},\"targets\":{}}",
+            "newValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1},\"notes\":{},\"targets\":{}}",
+            "trusted": true
+          }
+        ],
+        "course card/dock Mark done": [
+          {
+            "key": "cen100-personal-plan-v1",
+            "oldValue": "{\"completed\":{\"intro\":true,\"entry\":true,\"syllabus\":true,\"email\":true,\"contract\":true,\"outline\":true,\"matlab-1\":true,\"failure\":true,\"reflection-1\":true,\"review\":true,\"notebook-1\":true,\"matlab-2\":true,\"prototype\":true,\"presentation-1\":true,\"presentation-2\":true,\"notebook-2\":true,\"reflection-2\":true,\"exit\":true,\"peer\":true,\"report\":true},\"notes\":{},\"targets\":{},\"checks\":{},\"topics\":{}}",
+            "newValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1,\"integrity\":1},\"notes\":{},\"targets\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "cen100-personal-plan-v1",
+            "oldValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1,\"integrity\":1},\"notes\":{},\"targets\":{}}",
+            "newValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1},\"notes\":{},\"targets\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "cen100-personal-plan-v1",
+            "oldValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1},\"notes\":{},\"targets\":{}}",
+            "newValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1,\"integrity\":1},\"notes\":{},\"targets\":{}}",
+            "trusted": true
+          }
+        ],
+        "course card/dock Undo": [
+          {
+            "key": "cen100-personal-plan-v1",
+            "oldValue": "{\"completed\":{\"intro\":true,\"entry\":true,\"syllabus\":true,\"email\":true,\"contract\":true,\"outline\":true,\"matlab-1\":true,\"failure\":true,\"reflection-1\":true,\"review\":true,\"notebook-1\":true,\"matlab-2\":true,\"prototype\":true,\"presentation-1\":true,\"presentation-2\":true,\"notebook-2\":true,\"reflection-2\":true,\"exit\":true,\"peer\":true,\"report\":true},\"notes\":{},\"targets\":{},\"checks\":{},\"topics\":{}}",
+            "newValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1,\"integrity\":1},\"notes\":{},\"targets\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "cen100-personal-plan-v1",
+            "oldValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1,\"integrity\":1},\"notes\":{},\"targets\":{}}",
+            "newValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1},\"notes\":{},\"targets\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "cen100-personal-plan-v1",
+            "oldValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1},\"notes\":{},\"targets\":{}}",
+            "newValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1,\"integrity\":1},\"notes\":{},\"targets\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "cen100-personal-plan-v1",
+            "oldValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1,\"integrity\":1},\"notes\":{},\"targets\":{}}",
+            "newValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1},\"notes\":{},\"targets\":{}}",
+            "trusted": true
+          }
+        ],
+        "sectionCourse": [
+          {
+            "key": "cen100-personal-plan-v1",
+            "oldValue": "{\"completed\":{\"intro\":true,\"entry\":true,\"syllabus\":true,\"email\":true,\"contract\":true,\"outline\":true,\"matlab-1\":true,\"failure\":true,\"reflection-1\":true,\"review\":true,\"notebook-1\":true,\"matlab-2\":true,\"prototype\":true,\"presentation-1\":true,\"presentation-2\":true,\"notebook-2\":true,\"reflection-2\":true,\"exit\":true,\"peer\":true,\"report\":true},\"notes\":{},\"targets\":{},\"checks\":{},\"topics\":{}}",
+            "newValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1,\"integrity\":1},\"notes\":{},\"targets\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "cen100-personal-plan-v1",
+            "oldValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1,\"integrity\":1},\"notes\":{},\"targets\":{}}",
+            "newValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1},\"notes\":{},\"targets\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "cen100-personal-plan-v1",
+            "oldValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1},\"notes\":{},\"targets\":{}}",
+            "newValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1,\"integrity\":1},\"notes\":{},\"targets\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "cen100-personal-plan-v1",
+            "oldValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1,\"integrity\":1},\"notes\":{},\"targets\":{}}",
+            "newValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1},\"notes\":{},\"targets\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "cen100-contact-choice-v1",
+            "oldValue": "{\"section\":1,\"group\":1}",
+            "newValue": "{\"section\":2,\"group\":null}",
+            "trusted": true
+          }
+        ],
+        "sectionDesk": [
+          {
+            "key": "cen100-personal-plan-v1",
+            "oldValue": "{\"completed\":{\"intro\":true,\"entry\":true,\"syllabus\":true,\"email\":true,\"contract\":true,\"outline\":true,\"matlab-1\":true,\"failure\":true,\"reflection-1\":true,\"review\":true,\"notebook-1\":true,\"matlab-2\":true,\"prototype\":true,\"presentation-1\":true,\"presentation-2\":true,\"notebook-2\":true,\"reflection-2\":true,\"exit\":true,\"peer\":true,\"report\":true},\"notes\":{},\"targets\":{},\"checks\":{},\"topics\":{}}",
+            "newValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1,\"integrity\":1},\"notes\":{},\"targets\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "cen100-personal-plan-v1",
+            "oldValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1,\"integrity\":1},\"notes\":{},\"targets\":{}}",
+            "newValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1},\"notes\":{},\"targets\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "cen100-personal-plan-v1",
+            "oldValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1},\"notes\":{},\"targets\":{}}",
+            "newValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1,\"integrity\":1},\"notes\":{},\"targets\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "cen100-personal-plan-v1",
+            "oldValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1,\"integrity\":1},\"notes\":{},\"targets\":{}}",
+            "newValue": "{\"completed\":{\"intro\":1,\"entry\":1,\"syllabus\":1,\"email\":1,\"contract\":1,\"outline\":1,\"matlab-1\":1,\"failure\":1,\"reflection-1\":1,\"review\":1,\"notebook-1\":1,\"matlab-2\":1,\"prototype\":1,\"presentation-1\":1,\"presentation-2\":1,\"notebook-2\":1,\"reflection-2\":1,\"exit\":1,\"peer\":1,\"report\":1},\"notes\":{},\"targets\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "cen100-contact-choice-v1",
+            "oldValue": "{\"section\":1,\"group\":1}",
+            "newValue": "{\"section\":2,\"group\":null}",
+            "trusted": true
+          },
+          {
+            "key": "cen100-contact-choice-v1",
+            "oldValue": "{\"section\":2,\"group\":null}",
+            "newValue": "{\"section\":1,\"group\":null}",
+            "trusted": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "mth140: native cross-tab completion, Undo and section changes",
+      "readinessPolicy": {
+        "browserName": "chromium",
+        "gpu": false,
+        "timeoutMs": 30000
+      },
+      "interactionActions": [
+        {
+          "name": "cross-tab Mark done",
+          "selector": "[data-quick-complete]",
+          "method": "evaluate-click",
+          "first": true,
+          "sourceURL": "http://127.0.0.1:43447/mth140/?motion=off",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 10636
+        },
+        {
+          "name": "cross-tab Undo",
+          "selector": "#undo-complete",
+          "method": "evaluate-click",
+          "first": false,
+          "sourceURL": "http://127.0.0.1:43447/mth140/?motion=off",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 20024
+        },
+        {
+          "name": "cross-tab Mark done",
+          "selector": "[data-quick-complete]",
+          "method": "evaluate-click",
+          "first": true,
+          "sourceURL": "http://127.0.0.1:43447/mth140/?motion=off",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 269
+        },
+        {
+          "name": "cross-tab Undo",
+          "selector": "#undo-complete",
+          "method": "evaluate-click",
+          "first": false,
+          "sourceURL": "http://127.0.0.1:43447/mth140/?motion=off",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 406
+        },
+        {
+          "name": "cross-tab open section",
+          "selector": ".workspace-section",
+          "method": "click",
+          "first": false,
+          "sourceURL": "http://127.0.0.1:43447/mth140/?motion=off",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 15170
+        },
+        {
+          "name": "cross-tab change section",
+          "selector": "#section-select",
+          "method": "selectOption",
+          "first": false,
+          "value": "32",
+          "sourceURL": "http://127.0.0.1:43447/mth140/?motion=off#course-info",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 2247
+        },
+        {
+          "name": "cross-tab restore section",
+          "selector": "#section-select",
+          "method": "selectOption",
+          "first": false,
+          "value": "31",
+          "sourceURL": "http://127.0.0.1:43447/mth140/?motion=off#course-info",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 431
+        }
+      ],
+      "routeActions": [
+        {
+          "route": "mth140",
+          "selector": "[data-course-link=\"mth140\"]",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 349
+        },
+        {
+          "route": "desk",
+          "selector": "[data-course-link=\"desk\"]",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 65
+        }
+      ],
+      "propagationWaits": [
+        {
+          "course": "mth140",
+          "route": "desk",
+          "expectedTitle": "Midterm Test",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "label": "Desk Mark done storage propagation",
+          "timeoutMs": 30000,
+          "status": "ready",
+          "sampleCount": 1,
+          "maxBrowserReplyMs": 14,
+          "firstSample": {
+            "elapsedMs": 14,
+            "replyMs": 14,
+            "value": true
+          },
+          "lastSample": {
+            "elapsedMs": 14,
+            "replyMs": 14,
+            "value": true
+          },
+          "elapsedMs": 14
+        },
+        {
+          "course": "mth140",
+          "route": "desk",
+          "expectedTitle": "Lab Quiz 2",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "label": "Desk Undo storage propagation",
+          "timeoutMs": 30000,
+          "status": "ready",
+          "sampleCount": 1,
+          "maxBrowserReplyMs": 54,
+          "firstSample": {
+            "elapsedMs": 54,
+            "replyMs": 54,
+            "value": true
+          },
+          "lastSample": {
+            "elapsedMs": 54,
+            "replyMs": 54,
+            "value": true
+          },
+          "elapsedMs": 54
+        },
+        {
+          "course": "mth140",
+          "route": "mth140",
+          "expectedTitle": "Midterm Test",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "label": "course card/dock Mark done storage propagation",
+          "timeoutMs": 30000,
+          "status": "ready",
+          "sampleCount": 1,
+          "maxBrowserReplyMs": 835,
+          "firstSample": {
+            "elapsedMs": 835,
+            "replyMs": 835,
+            "value": true
+          },
+          "lastSample": {
+            "elapsedMs": 835,
+            "replyMs": 835,
+            "value": true
+          },
+          "elapsedMs": 835
+        },
+        {
+          "course": "mth140",
+          "route": "mth140",
+          "expectedTitle": "Lab Quiz 2",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "label": "course card/dock Undo storage propagation",
+          "timeoutMs": 30000,
+          "status": "ready",
+          "sampleCount": 1,
+          "maxBrowserReplyMs": 122,
+          "firstSample": {
+            "elapsedMs": 122,
+            "replyMs": 122,
+            "value": true
+          },
+          "lastSample": {
+            "elapsedMs": 122,
+            "replyMs": 122,
+            "value": true
+          },
+          "elapsedMs": 122
+        }
+      ],
+      "storageEventsByObservation": {
+        "Desk Mark done": [
+          {
+            "key": "mth140-progress-v1",
+            "oldValue": "{\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"checks\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          }
+        ],
+        "Desk Undo": [
+          {
+            "key": "mth140-progress-v1",
+            "oldValue": "{\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"checks\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth140-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          }
+        ],
+        "course card/dock Mark done": [
+          {
+            "key": "mth140-progress-v1",
+            "oldValue": "{\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"checks\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth140-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth140-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          }
+        ],
+        "course card/dock Undo": [
+          {
+            "key": "mth140-progress-v1",
+            "oldValue": "{\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"checks\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth140-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth140-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth140-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          }
+        ],
+        "sectionCourse": [
+          {
+            "key": "mth140-progress-v1",
+            "oldValue": "{\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"checks\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth140-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth140-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth140-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth140-view-v1",
+            "oldValue": "\"assessments\"",
+            "newValue": "\"help\"",
+            "trusted": true
+          },
+          {
+            "key": "mth140-section-v1",
+            "oldValue": "31",
+            "newValue": "32",
+            "trusted": true
+          }
+        ],
+        "sectionDesk": [
+          {
+            "key": "mth140-progress-v1",
+            "oldValue": "{\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"checks\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth140-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth140-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth140-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true,\"quiz-2\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-4\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth140-view-v1",
+            "oldValue": "\"assessments\"",
+            "newValue": "\"help\"",
+            "trusted": true
+          },
+          {
+            "key": "mth140-section-v1",
+            "oldValue": "31",
+            "newValue": "32",
+            "trusted": true
+          },
+          {
+            "key": "mth140-section-v1",
+            "oldValue": "32",
+            "newValue": "31",
+            "trusted": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "mth141: native cross-tab completion, Undo and section changes",
+      "readinessPolicy": {
+        "browserName": "chromium",
+        "gpu": false,
+        "timeoutMs": 30000
+      },
+      "interactionActions": [
+        {
+          "name": "cross-tab Mark done",
+          "selector": "[data-quick-complete]",
+          "method": "evaluate-click",
+          "first": true,
+          "sourceURL": "http://127.0.0.1:43447/mth141/?motion=off",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 13668
+        },
+        {
+          "name": "cross-tab Undo",
+          "selector": "#undo-complete",
+          "method": "evaluate-click",
+          "first": false,
+          "sourceURL": "http://127.0.0.1:43447/mth141/?motion=off",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 3403
+        },
+        {
+          "name": "cross-tab Mark done",
+          "selector": "[data-quick-complete]",
+          "method": "evaluate-click",
+          "first": true,
+          "sourceURL": "http://127.0.0.1:43447/mth141/?motion=off",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 1835
+        },
+        {
+          "name": "cross-tab Undo",
+          "selector": "#undo-complete",
+          "method": "evaluate-click",
+          "first": false,
+          "sourceURL": "http://127.0.0.1:43447/mth141/?motion=off",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 1101
+        },
+        {
+          "name": "cross-tab open section",
+          "selector": ".workspace-section",
+          "method": "click",
+          "first": false,
+          "sourceURL": "http://127.0.0.1:43447/mth141/?motion=off",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 2153
+        },
+        {
+          "name": "cross-tab change section",
+          "selector": "#section-select",
+          "method": "selectOption",
+          "first": false,
+          "value": "32",
+          "sourceURL": "http://127.0.0.1:43447/mth141/?motion=off#course-info",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 1114
+        },
+        {
+          "name": "cross-tab restore section",
+          "selector": "#section-select",
+          "method": "selectOption",
+          "first": false,
+          "value": "31",
+          "sourceURL": "http://127.0.0.1:43447/mth141/?motion=off#course-info",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "options": {
+            "timeout": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 412
+        }
+      ],
+      "routeActions": [
+        {
+          "route": "mth141",
+          "selector": "[data-course-link=\"mth141\"]",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 1751
+        },
+        {
+          "route": "desk",
+          "selector": "[data-course-link=\"desk\"]",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "timeoutMs": 30000,
+          "status": "activated",
+          "elapsedMs": 133
+        }
+      ],
+      "propagationWaits": [
+        {
+          "course": "mth141",
+          "route": "desk",
+          "expectedTitle": "Lab Quiz 3",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "label": "Desk Mark done storage propagation",
+          "timeoutMs": 30000,
+          "status": "ready",
+          "sampleCount": 1,
+          "maxBrowserReplyMs": 62,
+          "firstSample": {
+            "elapsedMs": 62,
+            "replyMs": 62,
+            "value": true
+          },
+          "lastSample": {
+            "elapsedMs": 62,
+            "replyMs": 62,
+            "value": true
+          },
+          "elapsedMs": 62
+        },
+        {
+          "course": "mth141",
+          "route": "desk",
+          "expectedTitle": "Midterm Test",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "label": "Desk Undo storage propagation",
+          "timeoutMs": 30000,
+          "status": "ready",
+          "sampleCount": 1,
+          "maxBrowserReplyMs": 17,
+          "firstSample": {
+            "elapsedMs": 18,
+            "replyMs": 17,
+            "value": true
+          },
+          "lastSample": {
+            "elapsedMs": 18,
+            "replyMs": 17,
+            "value": true
+          },
+          "elapsedMs": 18
+        },
+        {
+          "course": "mth141",
+          "route": "mth141",
+          "expectedTitle": "Lab Quiz 3",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "label": "course card/dock Mark done storage propagation",
+          "timeoutMs": 30000,
+          "status": "ready",
+          "sampleCount": 1,
+          "maxBrowserReplyMs": 5109,
+          "firstSample": {
+            "elapsedMs": 5109,
+            "replyMs": 5109,
+            "value": true
+          },
+          "lastSample": {
+            "elapsedMs": 5109,
+            "replyMs": 5109,
+            "value": true
+          },
+          "elapsedMs": 5109
+        },
+        {
+          "course": "mth141",
+          "route": "mth141",
+          "expectedTitle": "Midterm Test",
+          "policy": {
+            "browserName": "chromium",
+            "gpu": false,
+            "timeoutMs": 30000
+          },
+          "label": "course card/dock Undo storage propagation",
+          "timeoutMs": 30000,
+          "status": "ready",
+          "sampleCount": 1,
+          "maxBrowserReplyMs": 106,
+          "firstSample": {
+            "elapsedMs": 106,
+            "replyMs": 106,
+            "value": true
+          },
+          "lastSample": {
+            "elapsedMs": 106,
+            "replyMs": 106,
+            "value": true
+          },
+          "elapsedMs": 106
+        }
+      ],
+      "storageEventsByObservation": {
+        "Desk Mark done": [
+          {
+            "key": "mth141-progress-v1",
+            "oldValue": "{\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true},\"notes\":{},\"targets\":{},\"checks\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true,\"midterm\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          }
+        ],
+        "Desk Undo": [
+          {
+            "key": "mth141-progress-v1",
+            "oldValue": "{\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true},\"notes\":{},\"targets\":{},\"checks\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true,\"midterm\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth141-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true,\"midterm\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          }
+        ],
+        "course card/dock Mark done": [
+          {
+            "key": "mth141-progress-v1",
+            "oldValue": "{\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true},\"notes\":{},\"targets\":{},\"checks\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true,\"midterm\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth141-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true,\"midterm\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth141-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true,\"midterm\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          }
+        ],
+        "course card/dock Undo": [
+          {
+            "key": "mth141-progress-v1",
+            "oldValue": "{\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true},\"notes\":{},\"targets\":{},\"checks\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true,\"midterm\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth141-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true,\"midterm\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth141-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true,\"midterm\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth141-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true,\"midterm\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          }
+        ],
+        "sectionCourse": [
+          {
+            "key": "mth141-progress-v1",
+            "oldValue": "{\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true},\"notes\":{},\"targets\":{},\"checks\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true,\"midterm\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth141-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true,\"midterm\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth141-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true,\"midterm\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth141-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true,\"midterm\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth141-view-v1",
+            "oldValue": "\"assessments\"",
+            "newValue": "\"help\"",
+            "trusted": true
+          },
+          {
+            "key": "mth141-section-v1",
+            "oldValue": "31",
+            "newValue": "32",
+            "trusted": true
+          }
+        ],
+        "sectionDesk": [
+          {
+            "key": "mth141-progress-v1",
+            "oldValue": "{\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true},\"notes\":{},\"targets\":{},\"checks\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true,\"midterm\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth141-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true,\"midterm\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth141-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true,\"midterm\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth141-progress-v1",
+            "oldValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true,\"midterm\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "newValue": "{\"checks\":{},\"completed\":{\"quiz-1\":true,\"quiz-2\":true,\"quiz-4\":true,\"quiz-5\":true,\"final\":true},\"notes\":{},\"targets\":{},\"topics\":{}}",
+            "trusted": true
+          },
+          {
+            "key": "mth141-view-v1",
+            "oldValue": "\"assessments\"",
+            "newValue": "\"help\"",
+            "trusted": true
+          },
+          {
+            "key": "mth141-section-v1",
+            "oldValue": "31",
+            "newValue": "32",
+            "trusted": true
+          },
+          {
+            "key": "mth141-section-v1",
+            "oldValue": "32",
+            "newValue": "31",
+            "trusted": true
+          }
+        ]
+      }
+    }
+  ]
+}

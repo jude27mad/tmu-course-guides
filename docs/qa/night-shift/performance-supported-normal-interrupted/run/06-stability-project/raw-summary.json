@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-14T10:00:47.746Z",
+  "completedAt": "2026-10-14T10:02:42.418Z",
+  "status": "failed",
+  "exitCode": 1,
+  "failures": 1,
+  "selection": {
+    "checks": [
+      "stability"
+    ],
+    "bases": [
+      "/tmu-course-guides/"
+    ],
+    "gpu": false,
+    "help": false
+  },
+  "environment": {
+    "node": "v24.19.0",
+    "platform": "linux",
+    "architecture": "x64",
+    "deployments": [
+      {
+        "base": "/tmu-course-guides/",
+        "origin": "http://127.0.0.1:34999",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "156.0.8078.4",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      }
+    ],
+    "requestedMode": "SwiftShader",
+    "playwrightPath": "/tmp/ns-perf-ci-driver/node_modules/playwright",
+    "playwrightSource": "PLAYWRIGHT_PATH",
+    "chromiumPath": "/tmp/ns-perf-ci-browsers/chromium-1248/chrome-linux64/chrome",
+    "chromiumSource": "Playwright bundled Chromium",
+    "launchArgs": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "checks": [
+    {
+      "name": "stability",
+      "status": "failed",
+      "failures": 1,
+      "cases": [
+        {
+          "base": "/tmu-course-guides/",
+          "origin": "http://127.0.0.1:34999",
+          "status": "failed",
+          "assertions": [
+            {
+              "name": "repeated lifecycle operations: execution",
+              "pass": false,
+              "actual": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-course-link=\"mth141\"]')\u001b[22m\n\u001b[2m    - locator resolved to <a class=\"course-link\" data-course-link=\"mth141\" href=\"http://127.0.0.1:34999/tmu-course-guides/mth141/\">…</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\n    at navigate (/workspace/tmu-course-guides/tools/qa/checks.mjs:207:55)\n    at runCase.linearClock (/workspace/tmu-course-guides/tools/qa/checks.mjs:304:68)\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks.mjs:102:5)\n    at async Object.stability (/workspace/tmu-course-guides/tools/qa/checks.mjs:299:3)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+              "expected": "case completes"
+            },
+            {
+              "name": "repeated lifecycle operations: consoleErrors",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "repeated lifecycle operations: pageErrors",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "repeated lifecycle operations: failedRequests",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "repeated lifecycle operations: httpErrors",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            }
+          ],
+          "observations": {
+            "cases": [
+              {
+                "name": "repeated lifecycle operations",
+                "physicalClickTimeoutMs": 30000,
+                "telemetry": {
+                  "consoleErrors": [],
+                  "pageErrors": [],
+                  "failedRequests": [],
+                  "httpErrors": []
+                },
+                "navigationDiagnostics": {
+                  "documentRequests": [
+                    {
+                      "time": 1791972058810,
+                      "url": "http://127.0.0.1:34999/tmu-course-guides/",
+                      "method": "GET"
+                    }
+                  ],
+                  "frameNavigations": [
+                    {
+                      "time": 1791972058862,
+                      "url": "http://127.0.0.1:34999/tmu-course-guides/"
+                    },
+                    {
+                      "time": 1791972059577,
+                      "url": "http://127.0.0.1:34999/tmu-course-guides/"
+                    },
+                    {
+                      "time": 1791972073609,
+                      "url": "http://127.0.0.1:34999/tmu-course-guides/"
+                    },
+                    {
+                      "time": 1791972073822,
+                      "url": "http://127.0.0.1:34999/tmu-course-guides/cen100/"
+                    },
+                    {
+                      "time": 1791972098793,
+                      "url": "http://127.0.0.1:34999/tmu-course-guides/cen100/"
+                    },
+                    {
+                      "time": 1791972101608,
+                      "url": "http://127.0.0.1:34999/tmu-course-guides/mth140/"
+                    },
+                    {
+                      "time": 1791972154983,
+                      "url": "http://127.0.0.1:34999/tmu-course-guides/mth140/"
+                    }
+                  ],
+                  "pageEvents": [
+                    {
+                      "time": 1791972058862,
+                      "type": "Page.frameNavigated",
+                      "frameId": "B808B337B1CB8BCFD6096A957E688C10",
+                      "loaderId": "7BA98C33B69E30610D940DEDB30379AC",
+                      "url": "http://127.0.0.1:34999/tmu-course-guides/"
+                    },
+                    {
+                      "time": 1791972059597,
+                      "type": "Page.navigatedWithinDocument",
+                      "frameId": "B808B337B1CB8BCFD6096A957E688C10",
+                      "url": "http://127.0.0.1:34999/tmu-course-guides/"
+                    },
+                    {
+                      "time": 1791972073609,
+                      "type": "Page.navigatedWithinDocument",
+                      "frameId": "B808B337B1CB8BCFD6096A957E688C10",
+                      "url": "http://127.0.0.1:34999/tmu-course-guides/"
+                    },
+                    {
+                      "time": 1791972073822,
+                      "type": "Page.navigatedWithinDocument",
+                      "frameId": "B808B337B1CB8BCFD6096A957E688C10",
+                      "url": "http://127.0.0.1:34999/tmu-course-guides/cen100/"
+                    },
+                    {
+                      "time": 1791972098793,
+                      "type": "Page.navigatedWithinDocument",
+                      "frameId": "B808B337B1CB8BCFD6096A957E688C10",
+                      "url": "http://127.0.0.1:34999/tmu-course-guides/cen100/"
+                    },
+                    {
+                      "time": 1791972101609,
+                      "type": "Page.navigatedWithinDocument",
+                      "frameId": "B808B337B1CB8BCFD6096A957E688C10",
+                      "url": "http://127.0.0.1:34999/tmu-course-guides/mth140/"
+                    }
+                  ],
+                  "failure": {
+                    "time": 1791972138816,
+                    "pageURL": "http://127.0.0.1:34999/tmu-course-guides/mth140/",
+                    "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-course-link=\"mth141\"]')\u001b[22m\n\u001b[2m    - locator resolved to <a class=\"course-link\" data-course-link=\"mth141\" href=\"http://127.0.0.1:34999/tmu-course-guides/mth141/\">…</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n",
+                    "snapshotError": "Navigation snapshot exceeded 5000 ms"
+                  }
+                },
+                "clockMethod": "Moving Date offset at Oct 13 noon Toronto; native animation frames and timers remain instrumented."
+              }
+            ],
+            "runnerErrors": []
+          },
+          "skipped": [],
+          "durationMs": 97542,
+          "failures": 1
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

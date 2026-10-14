@@ -1,0 +1,252 @@
+{
+  "recordedAt": "2026-10-14T09:40:56.688747+00:00",
+  "preservedExecutables": [
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/MiniBrowser",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/MiniBrowser",
+      "sha256": "98384046ffbca250cfb254be6849210749f6455b0a5f18ebae022daf6bd39382",
+      "bytes": 228,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/bin/MiniBrowser",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/bin/MiniBrowser",
+      "sha256": "eadd1fab67807ed423ce5846b41c728d1ec77bdda9081999aa8cce7e54f6d6ae",
+      "bytes": 154528,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/bin/WebKitGPUProcess",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/bin/WebKitGPUProcess",
+      "sha256": "3adc310cb3376886ee29a0aedead71d5fbfa4cb7ddd4a6203f5c3bc36f08b3e4",
+      "bytes": 14544,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/bin/WebKitNetworkProcess",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/bin/WebKitNetworkProcess",
+      "sha256": "9e151cce8e1084264495e390d4f8589e1272ffad14c38521607b469a5a4328c9",
+      "bytes": 14544,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/bin/WebKitWebProcess",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/bin/WebKitWebProcess",
+      "sha256": "52b260df03022f47ec9f377806e1d6f607ada9578f3a0802c7692ac767be5b1c",
+      "bytes": 14544,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libjavascriptcoregtk-6.0.so.1",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libjavascriptcoregtk-6.0.so.1.9.0",
+      "sha256": "ac32bbb5fc92a48187c11d46b24479cae0a7e84deb56cb3cc8507698bf41976c",
+      "bytes": 34461968,
+      "linkTarget": "libjavascriptcoregtk-6.0.so.1.9.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libjavascriptcoregtk-6.0.so.1.9.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libjavascriptcoregtk-6.0.so.1.9.0",
+      "sha256": "ac32bbb5fc92a48187c11d46b24479cae0a7e84deb56cb3cc8507698bf41976c",
+      "bytes": 34461968,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libwebkitgtk-6.0.so.4",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libwebkitgtk-6.0.so.4.20.0",
+      "sha256": "01ba5218b1d9768e3f9482e33223908d1764241f1526001c73033e5a8ec18b53",
+      "bytes": 107279128,
+      "linkTarget": "libwebkitgtk-6.0.so.4.20.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libwebkitgtk-6.0.so.4.20.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libwebkitgtk-6.0.so.4.20.0",
+      "sha256": "01ba5218b1d9768e3f9482e33223908d1764241f1526001c73033e5a8ec18b53",
+      "bytes": 107279128,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libwebkitgtkinjectedbundle.so",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/lib/libwebkitgtkinjectedbundle.so",
+      "sha256": "19613ebe0bb1c1a96d1cc252a3646d93094aa9506ed0ba46884af25946e72afc",
+      "bytes": 14328,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libbacktrace.so.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libbacktrace.so.0.0.0",
+      "sha256": "72b197c9012acd9deaf0012f1a689215f57e83fc6e3bd0799558e96734d35db7",
+      "bytes": 100648,
+      "linkTarget": "libbacktrace.so.0.0.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libbacktrace.so.0.0.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libbacktrace.so.0.0.0",
+      "sha256": "72b197c9012acd9deaf0012f1a689215f57e83fc6e3bd0799558e96734d35db7",
+      "bytes": 100648,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libsoup-3.0.so.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libsoup-3.0.so.0.7.4",
+      "sha256": "86a0b672e15186eae51674b5d5faac0f8b82e5872e217a3627c16127d5ce2923",
+      "bytes": 594992,
+      "linkTarget": "libsoup-3.0.so.0.7.4"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libsoup-3.0.so.0.7.4",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libsoup-3.0.so.0.7.4",
+      "sha256": "86a0b672e15186eae51674b5d5faac0f8b82e5872e217a3627c16127d5ce2923",
+      "bytes": 594992,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/MiniBrowser",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/MiniBrowser",
+      "sha256": "990aafd77eb05fb166c0ab5ae9765d1e6ea728e1643f3d61773cb19be869e277",
+      "bytes": 284,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/bin/MiniBrowser",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/bin/MiniBrowser",
+      "sha256": "410ea0a6e278495d2511ca19379de93d47937a31c3382d296794b71f1c7c199e",
+      "bytes": 48840,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/bin/WPEGPUProcess",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/bin/WPEGPUProcess",
+      "sha256": "d53191da17a476456a197a1a8e3101cec6654cf2dc70a9187adae273f7763eab",
+      "bytes": 14544,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/bin/WPENetworkProcess",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/bin/WPENetworkProcess",
+      "sha256": "9c2a2ee784f08d546e5aa2b5728a62716b62f1b88815e10172f132b64d1a7bc9",
+      "bytes": 14544,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/bin/WPEWebProcess",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/bin/WPEWebProcess",
+      "sha256": "2b029c6fb3692814be5bbd1a11c0d371a7e83450aed884b3b395343667746e2b",
+      "bytes": 14544,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/lib/libWPEInjectedBundle.so",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/lib/libWPEInjectedBundle.so",
+      "sha256": "96ac60e47c52245a88dc66e2788304563066415553471da3c3cad7997a2a70ff",
+      "bytes": 14328,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/lib/libWPEWebKit-2.0.so.1",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/lib/libWPEWebKit-2.0.so.1.12.0",
+      "sha256": "b9b5ce06f940662062a8916990ff2fe8e6fb282b65a2ae532e7971b04a0f313c",
+      "bytes": 138193456,
+      "linkTarget": "libWPEWebKit-2.0.so.1.12.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/lib/libWPEWebKit-2.0.so.1.12.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/lib/libWPEWebKit-2.0.so.1.12.0",
+      "sha256": "b9b5ce06f940662062a8916990ff2fe8e6fb282b65a2ae532e7971b04a0f313c",
+      "bytes": 138193456,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libbacktrace.so.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libbacktrace.so.0.0.0",
+      "sha256": "5f4c1a879a298d66eb2d40ed8198bdaa0d63a1c5819894ed2d6505f14d9deb9f",
+      "bytes": 100648,
+      "linkTarget": "libbacktrace.so.0.0.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libbacktrace.so.0.0.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libbacktrace.so.0.0.0",
+      "sha256": "5f4c1a879a298d66eb2d40ed8198bdaa0d63a1c5819894ed2d6505f14d9deb9f",
+      "bytes": 100648,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libsoup-3.0.so.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libsoup-3.0.so.0.7.4",
+      "sha256": "fb9f500217b917a75c08f41f77bfdc0672a08d36d57f794fe2226be535cfb0ba",
+      "bytes": 594992,
+      "linkTarget": "libsoup-3.0.so.0.7.4"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libsoup-3.0.so.0.7.4",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libsoup-3.0.so.0.7.4",
+      "sha256": "fb9f500217b917a75c08f41f77bfdc0672a08d36d57f794fe2226be535cfb0ba",
+      "bytes": 594992,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/pw_run.sh",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/pw_run.sh",
+      "sha256": "a85baad3d8c07173ac387a59b41500c382b21ed692afe0964d29aac247ccc63b",
+      "bytes": 3049,
+      "linkTarget": null
+    }
+  ],
+  "stockSysLibrariesBefore": [
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libbacktrace.so.0.0.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libbacktrace.so.0.0.0",
+      "sha256": "72b197c9012acd9deaf0012f1a689215f57e83fc6e3bd0799558e96734d35db7",
+      "bytes": 100648,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libsoup-3.0.so.0.7.4",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libsoup-3.0.so.0.7.4",
+      "sha256": "86a0b672e15186eae51674b5d5faac0f8b82e5872e217a3627c16127d5ce2923",
+      "bytes": 594992,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libsoup-3.0.so.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libsoup-3.0.so.0.7.4",
+      "sha256": "86a0b672e15186eae51674b5d5faac0f8b82e5872e217a3627c16127d5ce2923",
+      "bytes": 594992,
+      "linkTarget": "libsoup-3.0.so.0.7.4"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libbacktrace.so.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-gtk/sys/lib/libbacktrace.so.0.0.0",
+      "sha256": "72b197c9012acd9deaf0012f1a689215f57e83fc6e3bd0799558e96734d35db7",
+      "bytes": 100648,
+      "linkTarget": "libbacktrace.so.0.0.0"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libbacktrace.so.0.0.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libbacktrace.so.0.0.0",
+      "sha256": "5f4c1a879a298d66eb2d40ed8198bdaa0d63a1c5819894ed2d6505f14d9deb9f",
+      "bytes": 100648,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libsoup-3.0.so.0.7.4",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libsoup-3.0.so.0.7.4",
+      "sha256": "fb9f500217b917a75c08f41f77bfdc0672a08d36d57f794fe2226be535cfb0ba",
+      "bytes": 594992,
+      "linkTarget": null
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libsoup-3.0.so.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libsoup-3.0.so.0.7.4",
+      "sha256": "fb9f500217b917a75c08f41f77bfdc0672a08d36d57f794fe2226be535cfb0ba",
+      "bytes": 594992,
+      "linkTarget": "libsoup-3.0.so.0.7.4"
+    },
+    {
+      "path": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libbacktrace.so.0",
+      "realPath": "/tmp/ns-perf-ci-browsers/webkit-2370/minibrowser-wpe/sys/lib/libbacktrace.so.0.0.0",
+      "sha256": "5f4c1a879a298d66eb2d40ed8198bdaa0d63a1c5819894ed2d6505f14d9deb9f",
+      "bytes": 100648,
+      "linkTarget": "libbacktrace.so.0.0.0"
+    }
+  ]
+}

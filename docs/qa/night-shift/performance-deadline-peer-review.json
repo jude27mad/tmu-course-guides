@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T05:17:39.345Z",
+  "reviewer": "/root/latest_source_review",
+  "review": "Independent read-only source-scope review. No patch application, browser, or test execution.",
+  "approvedSourceScope": true,
+  "materialFindings": [],
+  "gates": {
+    "patchHashMatches": true,
+    "oldSourceHashMatches": true,
+    "newSourceHashMatches": true,
+    "normalizedEntireSourceIdentical": true,
+    "registrationSitesExactlyOne": true,
+    "callbackOccursExactlyOnceBoth": true,
+    "nativeCallbackExact": true,
+    "deadlineBodyByteIdentical": true,
+    "allAssertionLinesIdentical": true,
+    "bothCallsitesByteIdentical": true,
+    "actual157LocatorSupportsThirdOptions": true,
+    "activeFiveSourcesUntouched": true,
+    "selectedBrowserDerivedFromActualBrowser": true,
+    "softwareLimitUsesExistingStrictPolicy": true,
+    "onlyClockCasesRegister": true,
+    "defaultPolicyTenSeconds": true,
+    "snapshotFiveSecondNodeTimer": true,
+    "originalErrorRethrown": true,
+    "nativeFailureRecordedBeforeDiagnostics": true,
+    "beforeSnapshotErrorsRecordedAndNativeContinues": true,
+    "noNewProductFiles": true
+  },
+  "bindings": {
+    "patchPath": "/tmp/ns-perf-deadline-proposal.patch",
+    "patchSHA256": "ee176103b9a8199eec9fa311cd8a7c5f554ce6243565af9e8e22386da07ea9a4",
+    "proposalProofPath": "/tmp/ns-perf-deadline-proposal-proof.json",
+    "proposalProofSHA256": "9d89a3b61fabccab9e35c86d1a3288528a3a122854c56a2c2e41464738666202",
+    "originalChecksPath": "/tmp/ns-perf-deadline-proposal-checks-original.mjs",
+    "originalChecksSHA256": "340eaf3e1ac9a1aac7958e6e7b97d73c176f991fa754f661f2525f5a34b52e16",
+    "proposedChecksPath": "/tmp/ns-perf-deadline-proposal-checks-proposed.mjs",
+    "proposedChecksSHA256": "90b19585765d2ffc933a3aa75ab09e4b3d8da87d207cb26353fc54c64fb50b5a",
+    "normalizedAfterSHA256": "340eaf3e1ac9a1aac7958e6e7b97d73c176f991fa754f661f2525f5a34b52e16",
+    "nativeCallbackSHA256": "ddd371bfa882666ca720b66b7b790910eeb491fb1e87323d437dc9441af6c215",
+    "deadlineBodySHA256": "93a66285f1ad79b53b1a5283b905cdbfe455015add5ff0f187a3e6f8d07edad4",
+    "deadlineBodyBytes": 4478,
+    "allOriginalAssertionCallsiteLines": 50,
+    "unchangedActivationCallsites": [
+      "      await activateClocked(page,'[data-quick-complete]');",
+      "      await activateClocked(page,'#undo-complete');"
+    ],
+    "activeFiveSources": [
+      {
+        "path": "tools/qa/checks.mjs",
+        "expectedSHA256": "340eaf3e1ac9a1aac7958e6e7b97d73c176f991fa754f661f2525f5a34b52e16",
+        "actualSHA256": "340eaf3e1ac9a1aac7958e6e7b97d73c176f991fa754f661f2525f5a34b52e16"
+      },
+      {
+        "path": "tools/qa/checks-resilience.mjs",
+        "expectedSHA256": "b2bafedee3cc0569d4354334d42fcaac55d3ddcbf7ceb0e1ecdf43bddcd1f8d6",
+        "actualSHA256": "b2bafedee3cc0569d4354334d42fcaac55d3ddcbf7ceb0e1ecdf43bddcd1f8d6"
+      },
+      {
+        "path": "tools/qa/checks-perf.mjs",
+        "expectedSHA256": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657",
+        "actualSHA256": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657"
+      },
+      {
+        "path": "tools/qa/runtime.mjs",
+        "expectedSHA256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587",
+        "actualSHA256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587"
+      },
+      {
+        "path": "tools/qa/instrument.mjs",
+        "expectedSHA256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892",
+        "actualSHA256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892"
+      }
+    ],
+    "actualPlaywright157LocatorSourcePath": "/opt/codex/cua_node/lib/node_modules/playwright-core/lib/client/locator.js",
+    "actualPlaywright157LocatorSourceSHA256": "9c4fa569fd160b2f5a3204615967499f925deca68fc6846af13e0cdbfde87135"
+  },
+  "assessment": {
+    "nativeCallback": "Exact original first locator, disabled and rectangle guards, and native element.click; only native timeout options added.",
+    "policy": "Scope registration only for clocked cases. Existing exact actualChromium && gpu===false rule gives30s; GPU/other/unknown/unregistered retain10s. Product/default/readiness/clock/fixtures/assertions unchanged.",
+    "diagnostics": "Main-world selector and target state reads; each snapshot has its own5s Node timer. Native action time excludes diagnostics. Failure status/error are captured before failure probe; caught probe errors, including null/undefined and timer-cleanup failure, cannot replace original native error.",
+    "limits": "Before-action diagnostics add up to5s passive overhead and can change scheduling. This is documented instrumentation, not evidence that the original timeout was benign. Promise.race bounds diagnostic wait but cannot cancel an already-running read-only browser evaluation.",
+    "noWaivers": "No retries, forced clicks, new semantic readiness predicates, simulated-clock changes, product modifications, or browser-condition assertion waivers.",
+    "followupRequirement": "Approval covers source scope only. Keep original full run failed. Require complete genuine deadline check at BOTH bases under matching original1.57 renderer/launch settings, all fixtures/assertions and telemetry preserved, before adopting replacement check records. Original timeout cause remains unknown."
+  },
+  "proposalTdd": {
+    "verifiedLogHashes": {
+      "red": {
+        "path": "/tmp/ns-perf-deadline-proposal-red.log",
+        "sha256": "dac12cb586a734f290bf26c758c7f1dfdea4ed0ec626ab8ce83807ba92729365",
+        "matchesClaimedSHA256": true,
+        "claimedCounts": {
+          "tests": 24,
+          "passed": 13,
+          "failed": 11,
+          "skipped": 0
+        }
+      },
+      "green": {
+        "path": "/tmp/ns-perf-deadline-proposal-green.log",
+        "sha256": "d0c9fe966dc5899096b86ae362688a1fc68a063b4266b324164716f2a9877d4c",
+        "matchesClaimedSHA256": true,
+        "claimedCounts": {
+          "tests": 24,
+          "passed": 24,
+          "failed": 0,
+          "skipped": 0
+        }
+      }
+    },
+    "testsNotRerunByReviewer": true
+  },
+  "browserProofPerformed": false
+}

@@ -1,0 +1,107 @@
+{
+  "recordedAt": "2026-10-14T04:27:07.250Z",
+  "runDirectory": "/workspace/ns-perf-control-aa7/tools/qa/reports/2026-10-14T04-21-24-855Z-123311",
+  "repositoryCommit": "aa7bca26bdfe6d640766858f4f3a27e2e9e668e7",
+  "productFingerprint": "f53027510da4ab7382192a2b05a3acc7dcab5ce3cf93d62a9d197345de765960",
+  "protectedFingerprint": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+  "sources": [
+    {
+      "path": "tools/qa/checks-resilience.mjs",
+      "sha256": "b2bafedee3cc0569d4354334d42fcaac55d3ddcbf7ceb0e1ecdf43bddcd1f8d6"
+    },
+    {
+      "path": "tools/qa/checks.mjs",
+      "sha256": "ae5f73702935e07258d71c36bc4c4cf20f73f13aba17607066376b7a36136563"
+    },
+    {
+      "path": "tools/qa/checks-perf.mjs",
+      "sha256": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657"
+    },
+    {
+      "path": "tools/qa/runtime.mjs",
+      "sha256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587"
+    },
+    {
+      "path": "tools/qa/instrument.mjs",
+      "sha256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892"
+    }
+  ],
+  "launchEnvironment": {
+    "PLAYWRIGHT_PATH": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "QA_CHROMIUM_PATH": "/usr/bin/chromium",
+    "QA_PERF_RECORD": "1",
+    "QA_GPU": "0",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules"
+  },
+  "loader": {
+    "modulePath": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "source": "PLAYWRIGHT_PATH"
+  },
+  "driverIdentity": {
+    "playwright": {
+      "name": "playwright",
+      "version": "1.57.0",
+      "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright",
+      "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright/package.json",
+      "packageSHA256": "07726a5a20b29123d85311af7d11b7de6bf00ddd03121d3c9061995043ebd261",
+      "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright/index.js",
+      "entrySHA256": "4e98f65f0a9d9bcab8cffc0c5cfdd87fd3f5b0be74fc494ff166a466b204cd44"
+    },
+    "core": {
+      "name": "playwright-core",
+      "version": "1.57.0",
+      "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright-core",
+      "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright-core/package.json",
+      "packageSHA256": "6d38907778eb872e37e8da93b430b011c3dfbe8848c4214becb7effdc0aff1d6",
+      "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright-core/index.js",
+      "entrySHA256": "a4f83b5b2915b43bddd5384d963a66d1fd4d978a3db8059969fb78de65bc519a"
+    }
+  },
+  "launchOptions": {
+    "headless": true,
+    "executablePath": "/usr/bin/chromium",
+    "args": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "note": "Actual AA7 clean product baseline with QA tools copied from 94843ef, original1.57 driver, original profile/cap/readiness policy. Budget recording only, correctness guards remain active. No browser launched by this capture.",
+  "sourceUnchanged": true,
+  "driverIdentityUnchanged": true,
+  "observedAfterClosureAt": "2026-10-14T04:27:07.250Z",
+  "startedAt": "2026-10-14T04:21:24.855Z",
+  "completedAt": "2026-10-14T04:26:55.464Z",
+  "postClosureProof": {
+    "observedAt": "2026-10-14T04:28:02.481Z",
+    "runnerPID": 123311,
+    "runnerAlive": false,
+    "cliExitCode": 0,
+    "previewServers": [
+      {
+        "base": "/",
+        "origin": "http://127.0.0.1:36499",
+        "stopped": true,
+        "errorCode": "ECONNREFUSED"
+      },
+      {
+        "base": "/tmu-course-guides/",
+        "origin": "http://127.0.0.1:34003",
+        "stopped": true,
+        "errorCode": "ECONNREFUSED"
+      }
+    ],
+    "runnerErrors": [
+      {
+        "base": "/",
+        "errors": []
+      },
+      {
+        "base": "/tmu-course-guides/",
+        "errors": []
+      }
+    ],
+    "runtimeCleanupErrors": [],
+    "note": "Native runner awaited scope/context/browser and server cleanup before completed report and CLIexit0; post-exit original runner PID is absent and both preview origins refuse connections. No later screenshot/after-run browser is covered by this closure sample."
+  }
+}

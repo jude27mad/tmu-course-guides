@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "independent-external-runner-source-review",
+  "status": "passed-offline-source-review-only",
+  "reviewedBy": "/root/final_review",
+  "reviewedAt": "2026-10-14T05:59:04.613374+00:00",
+  "runner": {
+    "path": "/tmp/ns-perf-passive-followups.mjs",
+    "sha256": "0f98ba0db2fc3b717fe161c8bb6e41fa0f48b02147a31e0ad28af72f42f5aafe"
+  },
+  "mockProof": {
+    "path": "/tmp/ns-perf-passive-followups-mechanical-proof.json",
+    "sha256": "04cfb4afcf93d59413d2d645037b8a537189e3546ea4a4127aa19edb2fa7d348",
+    "reportedTests": 13,
+    "reportedPassed": 13,
+    "reportedFailed": 0,
+    "reportedBrowserStarted": false,
+    "reexecutedByReviewer": false
+  },
+  "scope": "Read-only inspection of the frozen external passive runner and existing offline mock source/proof. Source approval only; no imports, browser launch, tests, active source edit or canonical evidence write.",
+  "sourceApprovalOnly": true,
+  "browserAcceptanceEstablished": false,
+  "checks": {
+    "originalWholeCheckFunctionsInvokedWithoutChangingTheirCallbacksOrAssertions": true,
+    "nativeCallbacksArgumentsAndReceiversForwardedExactlyOnce": true,
+    "nativeResolvedValueAndRejectedErrorIdentityPreserved": true,
+    "browserTypeAndLaunchOptionsRemainNative": true,
+    "originalGotoAndBackMilestonesOptionsUntouched": true,
+    "bfcacheAddsNoCDPSession": true,
+    "failuresCDPCommandsOnlyNetworkEnableAndPageEnable": true,
+    "cdpProjectionExcludesHeadersEnvironmentAndProtocolDumps": true,
+    "originalRejectionAndNodePendingTimelineRecordedBeforeReadOnlySnapshot": true,
+    "readOnlyNativePageEvaluateSnapshotBoundMs": 5000,
+    "originalOperationNotRetriedOrConvertedToSuccess": true,
+    "sameOriginalErrorRethrownAfterDiagnosticAttempt": true,
+    "diagnosticFailuresRemainSeparate": true,
+    "originalRawExpectedFlagsAndErrorsRemainUnclassified": true,
+    "ordinaryHarnessReportsAndCleanupFinishBeforeExternalTraceWrites": true,
+    "boundedTraceListsReportDroppedCounts": true
+  },
+  "observedActiveSourceHashes": [
+    {
+      "path": "tools/qa/checks.mjs",
+      "sha256": "e1cc6550f304cd30d092cfcc34a78548365ce3c9b06e2f9ea6b53f1c1deee9ca"
+    },
+    {
+      "path": "tools/qa/checks-resilience.mjs",
+      "sha256": "b2bafedee3cc0569d4354334d42fcaac55d3ddcbf7ceb0e1ecdf43bddcd1f8d6"
+    },
+    {
+      "path": "tools/qa/checks-perf.mjs",
+      "sha256": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657"
+    },
+    {
+      "path": "tools/qa/runtime.mjs",
+      "sha256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587"
+    },
+    {
+      "path": "tools/qa/instrument.mjs",
+      "sha256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892"
+    }
+  ],
+  "materialFindings": [],
+  "limitations": [
+    "Observer work changes scheduling; failure snapshots add separately measured passive overhead up to5000ms.",
+    "The snapshot deadline does not cancel an already-running read-only browser evaluation.",
+    "The existing13-case proof is offline mocks only and was inspected, not rerun by this reviewer.",
+    "Original full-run failures remain failed; exact historical causes remain unknown.",
+    "This review admits no event, invents no owning telemetry, grants no waiver and makes no browser-pass claim."
+  ],
+  "browsersLaunched": false,
+  "modulesImported": false,
+  "testsRun": false,
+  "activeQAOrProductFilesEdited": false,
+  "canonicalEvidenceWritten": false
+}

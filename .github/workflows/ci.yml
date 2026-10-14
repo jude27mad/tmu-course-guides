@@ -92,7 +92,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        check: [routes, stability, frames, deadlines, modes, layout]
+        check: [routes, stability, frames, deadlines, modes, layout, perf]
         base: [/, /tmu-course-guides/]
         include:
           - base: /

@@ -1,0 +1,3029 @@
+{
+  "schemaVersion": 1,
+  "label": "before",
+  "capturedAt": "2026-10-14T09:21:38.410Z",
+  "fixedTime": "2026-10-13T16:00:00.000Z",
+  "revision": "aa7bca26bdfe6d640766858f4f3a27e2e9e668e7",
+  "productSourceSha256": "f53027510da4ab7382192a2b05a3acc7dcab5ce3cf93d62a9d197345de765960",
+  "protectedSourceSha256": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+  "recipe": {
+    "fullPage": false,
+    "deviceScaleFactor": 1,
+    "timezone": "America/Toronto",
+    "locale": "en-CA",
+    "initialSavedScenePause": true,
+    "entryAnimations": "normal",
+    "settledDelayMs": 1500,
+    "random": "FNV-1a route seed with a 32-bit LCG; seeded before product scripts",
+    "initialClock": "moving Date offset",
+    "freeze": "freeze after settlement, pause through GuideMotion and dispatch workspace-changed/visibilitychange; final visibilitychange redraw immediately before capture",
+    "sceneReadyGate": true,
+    "sceneFrameAndBoundsStableMs": 100,
+    "screenshotAnimations": "disabled",
+    "masking": false,
+    "cssInjection": false,
+    "noWebGL": false,
+    "compositorStagesBeforeDraw": true,
+    "gpuRasterization": false,
+    "gpuCompositing": false,
+    "chromiumScreenshotSurface": "legacy",
+    "nativeLayerInvalidation": {
+      "desk": "after final visibilitychange DOM reconstruction",
+      "course": "before final visibilitychange static scene redraw"
+    }
+  },
+  "execution": {
+    "captureConcurrency": 1,
+    "diagnostic": false
+  },
+  "environment": {
+    "playwrightPath": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "executablePath": "/usr/bin/chromium",
+    "args": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist",
+      "--run-all-compositor-stages-before-draw",
+      "--disable-gpu-rasterization",
+      "--disable-gpu-compositing",
+      "--enable-gpu-benchmarking"
+    ],
+    "playwrightLegacyScreenshot": true,
+    "chromiumCommandLine": [
+      "/usr/lib/chromium/chromium",
+      "--show-component-extension-options",
+      "--enable-gpu-rasterization",
+      "--no-default-browser-check",
+      "--disable-pings",
+      "--media-router=0",
+      "--enable-remote-extensions",
+      "--load-extension",
+      "--disable-field-trial-config",
+      "--disable-background-networking",
+      "--disable-background-timer-throttling",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-back-forward-cache",
+      "--disable-breakpad",
+      "--disable-client-side-phishing-detection",
+      "--disable-component-extensions-with-background-pages",
+      "--disable-component-update",
+      "--no-default-browser-check",
+      "--disable-default-apps",
+      "--disable-dev-shm-usage",
+      "--disable-extensions",
+      "--disable-features=AcceptCHFrame,AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints",
+      "--allow-pre-commit-input",
+      "--disable-hang-monitor",
+      "--disable-ipc-flooding-protection",
+      "--disable-popup-blocking",
+      "--disable-prompt-on-repost",
+      "--disable-renderer-backgrounding",
+      "--force-color-profile=srgb",
+      "--metrics-recording-only",
+      "--no-first-run",
+      "--password-store=basic",
+      "--use-mock-keychain",
+      "--no-service-autorun",
+      "--export-tagged-pdf",
+      "--disable-search-engine-choice-screen",
+      "--unsafely-disable-devtools-self-xss-warnings",
+      "--edge-skip-compat-layer-relaunch",
+      "--enable-automation",
+      "--disable-infobars",
+      "--disable-search-engine-choice-screen",
+      "--disable-sync",
+      "--headless",
+      "--hide-scrollbars",
+      "--mute-audio",
+      "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+      "--no-sandbox",
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist",
+      "--run-all-compositor-stages-before-draw",
+      "--disable-gpu-rasterization",
+      "--disable-gpu-compositing",
+      "--enable-gpu-benchmarking",
+      "--user-data-dir=/tmp/playwright_chromiumdev_profile-7XCHzw",
+      "--remote-debugging-pipe",
+      "--no-startup-window",
+      "--noerrdialogs",
+      "--ozone-platform=headless",
+      "--ozone-override-screen-size=800,600",
+      "--flag-switches-begin",
+      "--flag-switches-end",
+      "--enable-unsafe-swiftshader"
+    ],
+    "requestedMode": "SwiftShader",
+    "chromiumVersion": "154.0.8037.57",
+    "webgl": {
+      "available": true,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "vendor": "Google Inc. (Google)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+    },
+    "actualMode": "SwiftShader",
+    "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness.",
+    "gpuInfo": {
+      "devices": [
+        {
+          "vendorId": 65535,
+          "deviceId": 65535,
+          "vendorString": "Google Inc. (Google)",
+          "deviceString": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver-5.0.0)",
+          "driverVendor": "SwANGLE",
+          "driverVersion": "5.0.0"
+        }
+      ],
+      "featureStatus": {
+        "2d_canvas": "enabled",
+        "direct_rendering_display_compositor": "disabled_off_ok",
+        "gpu_compositing": "disabled_software",
+        "multiple_raster_threads": "enabled_on",
+        "opengl": "enabled_on",
+        "rasterization": "disabled_software",
+        "raw_draw": "disabled_off_ok",
+        "skia_graphite": "disabled_off",
+        "trees_in_viz": "disabled_off",
+        "video_decode": "enabled",
+        "video_encode": "disabled_software",
+        "vulkan": "disabled_off",
+        "webgl": "enabled_readback",
+        "webgpu": "unavailable_software",
+        "webgpu_on_vk_via_gl_interop": "disabled_off",
+        "webnn": "disabled_off"
+      },
+      "auxAttributes": {
+        "amdSwitchable": false,
+        "canSupportThreadedTextureMailbox": false,
+        "directRenderingVersion": "",
+        "displayType": "ANGLE_SWIFTSHADER",
+        "glExtensions": "GL_AMD_performance_monitor GL_ANGLE_base_vertex_base_instance_shader_builtin GL_ANGLE_blob_cache GL_ANGLE_client_arrays GL_ANGLE_clip_cull_distance GL_ANGLE_compressed_texture_etc GL_ANGLE_copy_texture_3d GL_ANGLE_depth_texture GL_ANGLE_framebuffer_blit GL_ANGLE_framebuffer_multisample GL_ANGLE_get_image GL_ANGLE_get_serialized_context_string GL_ANGLE_get_tex_level_parameter GL_ANGLE_instanced_arrays GL_ANGLE_memory_object_flags GL_ANGLE_memory_size GL_ANGLE_multi_draw GL_ANGLE_pack_reverse_row_order GL_ANGLE_polygon_mode GL_ANGLE_program_binary_readiness_query GL_ANGLE_program_cache_control GL_ANGLE_read_only_depth_stencil_feedback_loops GL_ANGLE_relaxed_vertex_attribute_type GL_ANGLE_renderability_validation GL_ANGLE_request_extension GL_ANGLE_rgbx_internal_format GL_ANGLE_robust_client_memory GL_ANGLE_robust_fragment_shader_output GL_ANGLE_robust_resource_initialization GL_ANGLE_shader_pixel_local_storage GL_ANGLE_shader_pixel_local_storage_coherent GL_ANGLE_stencil_texturing GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_ANGLE_texture_multisample GL_ANGLE_texture_usage GL_ANGLE_translated_shader_source GL_ANGLE_vulkan_image GL_ANGLE_yuv_internal_format GL_APPLE_clip_distance GL_ARM_rgba8 GL_ARM_shader_framebuffer_fetch GL_CHROMIUM_bind_generates_resource GL_CHROMIUM_bind_uniform_location GL_CHROMIUM_copy_compressed_texture GL_CHROMIUM_copy_texture GL_CHROMIUM_lose_context GL_EXT_EGL_image_array GL_EXT_EGL_image_external_wrap_modes GL_EXT_EGL_image_storage GL_EXT_base_instance GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_debug_marker GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_read_format_bgra GL_EXT_robustness GL_EXT_sRGB GL_EXT_sRGB_write_control GL_EXT_semaphore GL_EXT_semaphore_fd GL_EXT_separate_shader_objects GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_non_constant_global_initializers GL_EXT_shader_texture_lod GL_EXT_shadow_samplers GL_EXT_texture_border_clamp GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_filter_anisotropic GL_EXT_texture_format_BGRA8888 GL_EXT_texture_lod_bias GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_type_2_10_10_10_REV GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_debug GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_NV_fence GL_NV_framebuffer_blit GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_polygon_mode GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_compressed_paletted_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth32 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_get_program_binary GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_surfaceless_context GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_vertex_type_10_10_10_2 GL_OVR_multiview GL_OVR_multiview2 GL_QCOM_texture_lod_bias ",
+        "glImplementationParts": "(gl=egl-angle,angle=swiftshader)",
+        "glRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver-5.0.0)",
+        "glResetNotificationStrategy": 33362,
+        "glVendor": "Google Inc. (Google)",
+        "glVersion": "OpenGL ES 3.0 (ANGLE 2.1 git hash: unknown hash)",
+        "glWsExtensions": "EGL_EXT_create_context_robustness EGL_ANGLE_surface_orientation EGL_KHR_create_context EGL_KHR_image EGL_KHR_image_base EGL_EXT_image_gl_colorspace EGL_KHR_gl_colorspace EGL_KHR_gl_texture_2D_image EGL_KHR_gl_texture_cubemap_image EGL_KHR_gl_renderbuffer_image EGL_KHR_get_all_proc_addresses EGL_KHR_fence_sync EGL_KHR_wait_sync EGL_ANGLE_create_context_webgl_compatibility EGL_CHROMIUM_create_context_bind_generates_resource EGL_KHR_swap_buffers_with_damage EGL_EXT_pixel_format_float EGL_KHR_surfaceless_context EGL_ANGLE_display_texture_share_group EGL_ANGLE_display_semaphore_share_group EGL_ANGLE_create_context_client_arrays EGL_ANGLE_program_cache_control EGL_ANGLE_robust_resource_initialization EGL_ANGLE_create_context_extensions_enabled EGL_ANDROID_blob_cache EGL_ANDROID_recordable EGL_ANGLE_create_context_backwards_compatible EGL_KHR_no_config_context EGL_IMG_context_priority EGL_KHR_create_context_no_error EGL_KHR_reusable_sync EGL_EXT_buffer_age EGL_ANGLE_create_surface_swap_interval EGL_ANGLE_vulkan_image EGL_KHR_partial_update EGL_ANGLE_global_fence_sync EGL_ANGLE_memory_usage_report ",
+        "glWsVendor": "Google Inc. (Google)",
+        "glWsVersion": "1.5 (ANGLE 2.1 git hash: unknown hash)",
+        "hardwareSupportsVulkan": false,
+        "inProcessGpu": false,
+        "initializationTime": 0.099498,
+        "isAsan": false,
+        "isClangCoverage": false,
+        "jpegDecodeAcceleratorSupported": false,
+        "maxMsaaSamples": "4",
+        "optimus": false,
+        "passthroughCmdDecoder": true,
+        "pixelShaderVersion": "3.00",
+        "processCrashCount": 0,
+        "sandboxed": false,
+        "skiaBackendType": "GaneshGL",
+        "subpixelFontRendering": true,
+        "targetCpuBits": 64,
+        "vertexShaderVersion": "3.00",
+        "visibilityCallbackCallCount": 0
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "root-mth140-1440x900-dark",
+      "base": "/",
+      "route": "mth140",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "fullPage": false,
+      "nativeClock": false,
+      "screenshot": "tools/qa/reports/perf-visuals-default/before/root-mth140-1440x900-dark.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:36169/mth140/",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "sceneStability": {
+        "intervalMs": 100,
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ]
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 10
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".course-code",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 4
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main .desk-lede,main .subline,main .workspace-panel:not([hidden]) p:not(.team):not(.eyebrow)",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 40
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH140: Calculus I | TMU Course Guides",
+        "heading": "Calculus I",
+        "route": "mth140",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 1440,
+          "height": 2277
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 2277.46875,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 35,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/book/posters/mth140-dark-wide.webp",
+            "naturalWidth": 2160,
+            "naturalHeight": 900,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "4",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/math.css",
+          "/assets/visuals.css",
+          "/assets/math-studio.css",
+          "/assets/lab-composition.css",
+          "/assets/lab-challenges.css",
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "5",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ]
+      },
+      "preCaptureScene": [
+        {
+          "renderer": "webgl2",
+          "ready": "true",
+          "frame": "5",
+          "motionState": "still",
+          "x": 248,
+          "y": 0,
+          "width": 1192.015625,
+          "height": 594
+        }
+      ],
+      "url": "http://127.0.0.1:36169/mth140/",
+      "tier": "high",
+      "defaultBookEvidence": {
+        "book": "mth140",
+        "renderer": "webgl2",
+        "rendererReason": "ok",
+        "sceneReady": "true",
+        "motionState": "still",
+        "tier": "high",
+        "sceneFrame": "5",
+        "drawCalls": "22",
+        "triangles": "2893",
+        "bookView": "webgl2",
+        "canvasCount": 1,
+        "box": {
+          "x": 248,
+          "y": 0,
+          "width": 1192.015625,
+          "height": 594
+        },
+        "tierPolicy": {
+          "coarsePointer": false,
+          "hardwareConcurrency": 5,
+          "deviceMemory": 16,
+          "saveData": false
+        },
+        "poster": {
+          "src": "http://127.0.0.1:36169/assets/book/posters/mth140-dark-wide.webp",
+          "complete": true,
+          "decoded": true,
+          "naturalWidth": 2160,
+          "naturalHeight": 900,
+          "box": {
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          },
+          "computed": {
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "0",
+            "transform": "none"
+          }
+        }
+      },
+      "actualWebGLContexts": [
+        {
+          "width": 1192,
+          "height": 594,
+          "contextLost": false,
+          "drawingBufferWidth": 1192,
+          "drawingBufferHeight": 594,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
+      "png": {
+        "width": 1440,
+        "height": 900,
+        "bytes": 938865,
+        "sha256": "b6fb703dd6d4c106715fe98e498d9b752c835b1131ddbb58ed6defb0e2261bc6",
+        "pixelSha256": "f45f417491be543c4a21f0b0f1e45e66b0a9b533fe39b9cd9c33888d720e72f8"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-mth140-1440x900-light",
+      "base": "/",
+      "route": "mth140",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "fullPage": false,
+      "nativeClock": false,
+      "screenshot": "tools/qa/reports/perf-visuals-default/before/root-mth140-1440x900-light.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:36169/mth140/",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "sceneStability": {
+        "intervalMs": 100,
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ]
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 10
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".course-code",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 4
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main .desk-lede,main .subline,main .workspace-panel:not([hidden]) p:not(.team):not(.eyebrow)",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 40
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH140: Calculus I | TMU Course Guides",
+        "heading": "Calculus I",
+        "route": "mth140",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 1440,
+          "height": 2277
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 2277.46875,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 35,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/book/posters/mth140-light-wide.webp",
+            "naturalWidth": 2160,
+            "naturalHeight": 900,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "4",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/math.css",
+          "/assets/visuals.css",
+          "/assets/math-studio.css",
+          "/assets/lab-composition.css",
+          "/assets/lab-challenges.css",
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "5",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ]
+      },
+      "preCaptureScene": [
+        {
+          "renderer": "webgl2",
+          "ready": "true",
+          "frame": "5",
+          "motionState": "still",
+          "x": 248,
+          "y": 0,
+          "width": 1192.015625,
+          "height": 594
+        }
+      ],
+      "url": "http://127.0.0.1:36169/mth140/",
+      "tier": "high",
+      "defaultBookEvidence": {
+        "book": "mth140",
+        "renderer": "webgl2",
+        "rendererReason": "ok",
+        "sceneReady": "true",
+        "motionState": "still",
+        "tier": "high",
+        "sceneFrame": "5",
+        "drawCalls": "22",
+        "triangles": "2893",
+        "bookView": "webgl2",
+        "canvasCount": 1,
+        "box": {
+          "x": 248,
+          "y": 0,
+          "width": 1192.015625,
+          "height": 594
+        },
+        "tierPolicy": {
+          "coarsePointer": false,
+          "hardwareConcurrency": 5,
+          "deviceMemory": 16,
+          "saveData": false
+        },
+        "poster": {
+          "src": "http://127.0.0.1:36169/assets/book/posters/mth140-light-wide.webp",
+          "complete": true,
+          "decoded": true,
+          "naturalWidth": 2160,
+          "naturalHeight": 900,
+          "box": {
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          },
+          "computed": {
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "0",
+            "transform": "none"
+          }
+        }
+      },
+      "actualWebGLContexts": [
+        {
+          "width": 1192,
+          "height": 594,
+          "contextLost": false,
+          "drawingBufferWidth": 1192,
+          "drawingBufferHeight": 594,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
+      "png": {
+        "width": 1440,
+        "height": 900,
+        "bytes": 894120,
+        "sha256": "54799466b902c5d1ab36d19366ffe41cf0def6ac9bea63c3ddfffe15fc17e3d1",
+        "pixelSha256": "ea2dac1d46a3edbcdd54a37e8accc338d3f22d46a1587155e4325055d48bf206"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-mth140-390x844-dark",
+      "base": "/",
+      "route": "mth140",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "fullPage": false,
+      "nativeClock": false,
+      "screenshot": "tools/qa/reports/perf-visuals-default/before/root-mth140-390x844-dark.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:36169/mth140/",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "sceneStability": {
+        "intervalMs": 100,
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ]
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 10
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".course-code",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 4
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main .desk-lede,main .subline,main .workspace-panel:not([hidden]) p:not(.team):not(.eyebrow)",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 40
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH140: Calculus I | TMU Course Guides",
+        "heading": "Calculus I",
+        "route": "mth140",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 390,
+          "height": 2640
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 203.40625,
+          "width": 390,
+          "height": 2436.328125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 18,
+            "y": 25.5,
+            "width": 25,
+            "height": 25,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/book/posters/mth140-dark-tall.webp",
+            "naturalWidth": 780,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "4",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/math.css",
+          "/assets/visuals.css",
+          "/assets/math-studio.css",
+          "/assets/lab-composition.css",
+          "/assets/lab-challenges.css",
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "5",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ]
+      },
+      "preCaptureScene": [
+        {
+          "renderer": "webgl2",
+          "ready": "true",
+          "frame": "5",
+          "motionState": "still",
+          "x": 0,
+          "y": 379.109375,
+          "width": 390,
+          "height": 300
+        }
+      ],
+      "url": "http://127.0.0.1:36169/mth140/",
+      "tier": "high",
+      "defaultBookEvidence": {
+        "book": "mth140",
+        "renderer": "webgl2",
+        "rendererReason": "ok",
+        "sceneReady": "true",
+        "motionState": "still",
+        "tier": "high",
+        "sceneFrame": "5",
+        "drawCalls": "22",
+        "triangles": "2893",
+        "bookView": "webgl2",
+        "canvasCount": 1,
+        "box": {
+          "x": 0,
+          "y": 379.109375,
+          "width": 390,
+          "height": 300
+        },
+        "tierPolicy": {
+          "coarsePointer": false,
+          "hardwareConcurrency": 5,
+          "deviceMemory": 16,
+          "saveData": false
+        },
+        "poster": {
+          "src": "http://127.0.0.1:36169/assets/book/posters/mth140-dark-tall.webp",
+          "complete": true,
+          "decoded": true,
+          "naturalWidth": 780,
+          "naturalHeight": 600,
+          "box": {
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          },
+          "computed": {
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "0",
+            "transform": "none"
+          }
+        }
+      },
+      "actualWebGLContexts": [
+        {
+          "width": 390,
+          "height": 300,
+          "contextLost": false,
+          "drawingBufferWidth": 390,
+          "drawingBufferHeight": 300,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
+      "png": {
+        "width": 390,
+        "height": 844,
+        "bytes": 267483,
+        "sha256": "5602b70573e38013014716836f1769164526e239e5b457541237a7fa07d4379b",
+        "pixelSha256": "82cfe584ecf22d0eabcda3a3614a74a0aebb11ee93f2d0c93cd207dd54a7493a"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "root-mth140-390x844-light",
+      "base": "/",
+      "route": "mth140",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "fullPage": false,
+      "nativeClock": false,
+      "screenshot": "tools/qa/reports/perf-visuals-default/before/root-mth140-390x844-light.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:36169/mth140/",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "sceneStability": {
+        "intervalMs": 100,
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ]
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 10
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".course-code",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 4
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main .desk-lede,main .subline,main .workspace-panel:not([hidden]) p:not(.team):not(.eyebrow)",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 40
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH140: Calculus I | TMU Course Guides",
+        "heading": "Calculus I",
+        "route": "mth140",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 390,
+          "height": 2640
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 203.40625,
+          "width": 390,
+          "height": 2436.328125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 18,
+            "y": 25.5,
+            "width": 25,
+            "height": 25,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/book/posters/mth140-light-tall.webp",
+            "naturalWidth": 780,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "4",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/math.css",
+          "/assets/visuals.css",
+          "/assets/math-studio.css",
+          "/assets/lab-composition.css",
+          "/assets/lab-challenges.css",
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "5",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ]
+      },
+      "preCaptureScene": [
+        {
+          "renderer": "webgl2",
+          "ready": "true",
+          "frame": "5",
+          "motionState": "still",
+          "x": 0,
+          "y": 379.109375,
+          "width": 390,
+          "height": 300
+        }
+      ],
+      "url": "http://127.0.0.1:36169/mth140/",
+      "tier": "high",
+      "defaultBookEvidence": {
+        "book": "mth140",
+        "renderer": "webgl2",
+        "rendererReason": "ok",
+        "sceneReady": "true",
+        "motionState": "still",
+        "tier": "high",
+        "sceneFrame": "5",
+        "drawCalls": "22",
+        "triangles": "2893",
+        "bookView": "webgl2",
+        "canvasCount": 1,
+        "box": {
+          "x": 0,
+          "y": 379.109375,
+          "width": 390,
+          "height": 300
+        },
+        "tierPolicy": {
+          "coarsePointer": false,
+          "hardwareConcurrency": 5,
+          "deviceMemory": 16,
+          "saveData": false
+        },
+        "poster": {
+          "src": "http://127.0.0.1:36169/assets/book/posters/mth140-light-tall.webp",
+          "complete": true,
+          "decoded": true,
+          "naturalWidth": 780,
+          "naturalHeight": 600,
+          "box": {
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          },
+          "computed": {
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "0",
+            "transform": "none"
+          }
+        }
+      },
+      "actualWebGLContexts": [
+        {
+          "width": 390,
+          "height": 300,
+          "contextLost": false,
+          "drawingBufferWidth": 390,
+          "drawingBufferHeight": 300,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
+      "png": {
+        "width": 390,
+        "height": 844,
+        "bytes": 252120,
+        "sha256": "1dba9404f8a21e4fca4bbc6adc6d56fab37eb893cad54cb008c4f025e0e54dee",
+        "pixelSha256": "cca5fa85b823a0e9e6a62cb329d80d74802cf4b8b6935cce3a2055cf3ed6f62c"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-mth140-1440x900-dark",
+      "base": "/tmu-course-guides/",
+      "route": "mth140",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "fullPage": false,
+      "nativeClock": false,
+      "screenshot": "tools/qa/reports/perf-visuals-default/before/project-mth140-1440x900-dark.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:34699/tmu-course-guides/mth140/",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "sceneStability": {
+        "intervalMs": 100,
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ]
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 10
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".course-code",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 4
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main .desk-lede,main .subline,main .workspace-panel:not([hidden]) p:not(.team):not(.eyebrow)",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 40
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH140: Calculus I | TMU Course Guides",
+        "heading": "Calculus I",
+        "route": "mth140",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 1440,
+          "height": 2277
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 2277.46875,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 35,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/tmu-course-guides/assets/book/posters/mth140-dark-wide.webp",
+            "naturalWidth": 2160,
+            "naturalHeight": 900,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "4",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/math.css",
+          "/tmu-course-guides/assets/visuals.css",
+          "/tmu-course-guides/assets/math-studio.css",
+          "/tmu-course-guides/assets/lab-composition.css",
+          "/tmu-course-guides/assets/lab-challenges.css",
+          "/tmu-course-guides/assets/editorial.css",
+          "/tmu-course-guides/assets/workspace.css",
+          "/tmu-course-guides/assets/course-header.css",
+          "/tmu-course-guides/assets/guide-motion.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/palette.css",
+          "/tmu-course-guides/assets/night/hero.css",
+          "/tmu-course-guides/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "5",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ]
+      },
+      "preCaptureScene": [
+        {
+          "renderer": "webgl2",
+          "ready": "true",
+          "frame": "5",
+          "motionState": "still",
+          "x": 248,
+          "y": 0,
+          "width": 1192.015625,
+          "height": 594
+        }
+      ],
+      "url": "http://127.0.0.1:34699/tmu-course-guides/mth140/",
+      "tier": "high",
+      "defaultBookEvidence": {
+        "book": "mth140",
+        "renderer": "webgl2",
+        "rendererReason": "ok",
+        "sceneReady": "true",
+        "motionState": "still",
+        "tier": "high",
+        "sceneFrame": "5",
+        "drawCalls": "22",
+        "triangles": "2893",
+        "bookView": "webgl2",
+        "canvasCount": 1,
+        "box": {
+          "x": 248,
+          "y": 0,
+          "width": 1192.015625,
+          "height": 594
+        },
+        "tierPolicy": {
+          "coarsePointer": false,
+          "hardwareConcurrency": 5,
+          "deviceMemory": 16,
+          "saveData": false
+        },
+        "poster": {
+          "src": "http://127.0.0.1:34699/tmu-course-guides/assets/book/posters/mth140-dark-wide.webp",
+          "complete": true,
+          "decoded": true,
+          "naturalWidth": 2160,
+          "naturalHeight": 900,
+          "box": {
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          },
+          "computed": {
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "0",
+            "transform": "none"
+          }
+        }
+      },
+      "actualWebGLContexts": [
+        {
+          "width": 1192,
+          "height": 594,
+          "contextLost": false,
+          "drawingBufferWidth": 1192,
+          "drawingBufferHeight": 594,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
+      "png": {
+        "width": 1440,
+        "height": 900,
+        "bytes": 938865,
+        "sha256": "b6fb703dd6d4c106715fe98e498d9b752c835b1131ddbb58ed6defb0e2261bc6",
+        "pixelSha256": "f45f417491be543c4a21f0b0f1e45e66b0a9b533fe39b9cd9c33888d720e72f8"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-mth140-1440x900-light",
+      "base": "/tmu-course-guides/",
+      "route": "mth140",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "fullPage": false,
+      "nativeClock": false,
+      "screenshot": "tools/qa/reports/perf-visuals-default/before/project-mth140-1440x900-light.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:34699/tmu-course-guides/mth140/",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "sceneStability": {
+        "intervalMs": 100,
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ]
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 10
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".course-code",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 4
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main .desk-lede,main .subline,main .workspace-panel:not([hidden]) p:not(.team):not(.eyebrow)",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 40
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH140: Calculus I | TMU Course Guides",
+        "heading": "Calculus I",
+        "route": "mth140",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 1440,
+          "height": 2277
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 2277.46875,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 35,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/tmu-course-guides/assets/book/posters/mth140-light-wide.webp",
+            "naturalWidth": 2160,
+            "naturalHeight": 900,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "4",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/math.css",
+          "/tmu-course-guides/assets/visuals.css",
+          "/tmu-course-guides/assets/math-studio.css",
+          "/tmu-course-guides/assets/lab-composition.css",
+          "/tmu-course-guides/assets/lab-challenges.css",
+          "/tmu-course-guides/assets/editorial.css",
+          "/tmu-course-guides/assets/workspace.css",
+          "/tmu-course-guides/assets/course-header.css",
+          "/tmu-course-guides/assets/guide-motion.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/palette.css",
+          "/tmu-course-guides/assets/night/hero.css",
+          "/tmu-course-guides/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "5",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ]
+      },
+      "preCaptureScene": [
+        {
+          "renderer": "webgl2",
+          "ready": "true",
+          "frame": "5",
+          "motionState": "still",
+          "x": 248,
+          "y": 0,
+          "width": 1192.015625,
+          "height": 594
+        }
+      ],
+      "url": "http://127.0.0.1:34699/tmu-course-guides/mth140/",
+      "tier": "high",
+      "defaultBookEvidence": {
+        "book": "mth140",
+        "renderer": "webgl2",
+        "rendererReason": "ok",
+        "sceneReady": "true",
+        "motionState": "still",
+        "tier": "high",
+        "sceneFrame": "5",
+        "drawCalls": "22",
+        "triangles": "2893",
+        "bookView": "webgl2",
+        "canvasCount": 1,
+        "box": {
+          "x": 248,
+          "y": 0,
+          "width": 1192.015625,
+          "height": 594
+        },
+        "tierPolicy": {
+          "coarsePointer": false,
+          "hardwareConcurrency": 5,
+          "deviceMemory": 16,
+          "saveData": false
+        },
+        "poster": {
+          "src": "http://127.0.0.1:34699/tmu-course-guides/assets/book/posters/mth140-light-wide.webp",
+          "complete": true,
+          "decoded": true,
+          "naturalWidth": 2160,
+          "naturalHeight": 900,
+          "box": {
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          },
+          "computed": {
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "0",
+            "transform": "none"
+          }
+        }
+      },
+      "actualWebGLContexts": [
+        {
+          "width": 1192,
+          "height": 594,
+          "contextLost": false,
+          "drawingBufferWidth": 1192,
+          "drawingBufferHeight": 594,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
+      "png": {
+        "width": 1440,
+        "height": 900,
+        "bytes": 894120,
+        "sha256": "54799466b902c5d1ab36d19366ffe41cf0def6ac9bea63c3ddfffe15fc17e3d1",
+        "pixelSha256": "ea2dac1d46a3edbcdd54a37e8accc338d3f22d46a1587155e4325055d48bf206"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-mth140-390x844-dark",
+      "base": "/tmu-course-guides/",
+      "route": "mth140",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "fullPage": false,
+      "nativeClock": false,
+      "screenshot": "tools/qa/reports/perf-visuals-default/before/project-mth140-390x844-dark.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:34699/tmu-course-guides/mth140/",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "sceneStability": {
+        "intervalMs": 100,
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ]
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 10
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".course-code",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 4
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main .desk-lede,main .subline,main .workspace-panel:not([hidden]) p:not(.team):not(.eyebrow)",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 40
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH140: Calculus I | TMU Course Guides",
+        "heading": "Calculus I",
+        "route": "mth140",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 390,
+          "height": 2640
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 203.40625,
+          "width": 390,
+          "height": 2436.328125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 18,
+            "y": 25.5,
+            "width": 25,
+            "height": 25,
+            "aboveFold": true
+          },
+          {
+            "src": "/tmu-course-guides/assets/book/posters/mth140-dark-tall.webp",
+            "naturalWidth": 780,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "4",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/math.css",
+          "/tmu-course-guides/assets/visuals.css",
+          "/tmu-course-guides/assets/math-studio.css",
+          "/tmu-course-guides/assets/lab-composition.css",
+          "/tmu-course-guides/assets/lab-challenges.css",
+          "/tmu-course-guides/assets/editorial.css",
+          "/tmu-course-guides/assets/workspace.css",
+          "/tmu-course-guides/assets/course-header.css",
+          "/tmu-course-guides/assets/guide-motion.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/palette.css",
+          "/tmu-course-guides/assets/night/hero.css",
+          "/tmu-course-guides/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "5",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ]
+      },
+      "preCaptureScene": [
+        {
+          "renderer": "webgl2",
+          "ready": "true",
+          "frame": "5",
+          "motionState": "still",
+          "x": 0,
+          "y": 379.109375,
+          "width": 390,
+          "height": 300
+        }
+      ],
+      "url": "http://127.0.0.1:34699/tmu-course-guides/mth140/",
+      "tier": "high",
+      "defaultBookEvidence": {
+        "book": "mth140",
+        "renderer": "webgl2",
+        "rendererReason": "ok",
+        "sceneReady": "true",
+        "motionState": "still",
+        "tier": "high",
+        "sceneFrame": "5",
+        "drawCalls": "22",
+        "triangles": "2893",
+        "bookView": "webgl2",
+        "canvasCount": 1,
+        "box": {
+          "x": 0,
+          "y": 379.109375,
+          "width": 390,
+          "height": 300
+        },
+        "tierPolicy": {
+          "coarsePointer": false,
+          "hardwareConcurrency": 5,
+          "deviceMemory": 16,
+          "saveData": false
+        },
+        "poster": {
+          "src": "http://127.0.0.1:34699/tmu-course-guides/assets/book/posters/mth140-dark-tall.webp",
+          "complete": true,
+          "decoded": true,
+          "naturalWidth": 780,
+          "naturalHeight": 600,
+          "box": {
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          },
+          "computed": {
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "0",
+            "transform": "none"
+          }
+        }
+      },
+      "actualWebGLContexts": [
+        {
+          "width": 390,
+          "height": 300,
+          "contextLost": false,
+          "drawingBufferWidth": 390,
+          "drawingBufferHeight": 300,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
+      "png": {
+        "width": 390,
+        "height": 844,
+        "bytes": 267483,
+        "sha256": "5602b70573e38013014716836f1769164526e239e5b457541237a7fa07d4379b",
+        "pixelSha256": "82cfe584ecf22d0eabcda3a3614a74a0aebb11ee93f2d0c93cd207dd54a7493a"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "project-mth140-390x844-light",
+      "base": "/tmu-course-guides/",
+      "route": "mth140",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "light",
+      "noWebGL": false,
+      "fullPage": false,
+      "nativeClock": false,
+      "screenshot": "tools/qa/reports/perf-visuals-default/before/project-mth140-390x844-light.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:34699/tmu-course-guides/mth140/",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "sceneStability": {
+        "intervalMs": 100,
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ]
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 10
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".course-code",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 4
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main .desk-lede,main .subline,main .workspace-panel:not([hidden]) p:not(.team):not(.eyebrow)",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 40
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH140: Calculus I | TMU Course Guides",
+        "heading": "Calculus I",
+        "route": "mth140",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "light",
+        "document": {
+          "width": 390,
+          "height": 2640
+        },
+        "wrapper": {
+          "x": 0,
+          "y": 203.40625,
+          "width": 390,
+          "height": 2436.328125,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/tmu-course-guides/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 18,
+            "y": 25.5,
+            "width": 25,
+            "height": 25,
+            "aboveFold": true
+          },
+          {
+            "src": "/tmu-course-guides/assets/book/posters/mth140-light-tall.webp",
+            "naturalWidth": 780,
+            "naturalHeight": 600,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "4",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/tmu-course-guides/assets/fonts/archivo.css",
+          "/tmu-course-guides/assets/hub.css",
+          "/tmu-course-guides/assets/math.css",
+          "/tmu-course-guides/assets/visuals.css",
+          "/tmu-course-guides/assets/math-studio.css",
+          "/tmu-course-guides/assets/lab-composition.css",
+          "/tmu-course-guides/assets/lab-challenges.css",
+          "/tmu-course-guides/assets/editorial.css",
+          "/tmu-course-guides/assets/workspace.css",
+          "/tmu-course-guides/assets/course-header.css",
+          "/tmu-course-guides/assets/guide-motion.css",
+          "/tmu-course-guides/assets/night/layout.css",
+          "/tmu-course-guides/assets/night/palette.css",
+          "/tmu-course-guides/assets/night/hero.css",
+          "/tmu-course-guides/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "5",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          }
+        ]
+      },
+      "preCaptureScene": [
+        {
+          "renderer": "webgl2",
+          "ready": "true",
+          "frame": "5",
+          "motionState": "still",
+          "x": 0,
+          "y": 379.109375,
+          "width": 390,
+          "height": 300
+        }
+      ],
+      "url": "http://127.0.0.1:34699/tmu-course-guides/mth140/",
+      "tier": "high",
+      "defaultBookEvidence": {
+        "book": "mth140",
+        "renderer": "webgl2",
+        "rendererReason": "ok",
+        "sceneReady": "true",
+        "motionState": "still",
+        "tier": "high",
+        "sceneFrame": "5",
+        "drawCalls": "22",
+        "triangles": "2893",
+        "bookView": "webgl2",
+        "canvasCount": 1,
+        "box": {
+          "x": 0,
+          "y": 379.109375,
+          "width": 390,
+          "height": 300
+        },
+        "tierPolicy": {
+          "coarsePointer": false,
+          "hardwareConcurrency": 5,
+          "deviceMemory": 16,
+          "saveData": false
+        },
+        "poster": {
+          "src": "http://127.0.0.1:34699/tmu-course-guides/assets/book/posters/mth140-light-tall.webp",
+          "complete": true,
+          "decoded": true,
+          "naturalWidth": 780,
+          "naturalHeight": 600,
+          "box": {
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
+          },
+          "computed": {
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "0",
+            "transform": "none"
+          }
+        }
+      },
+      "actualWebGLContexts": [
+        {
+          "width": 390,
+          "height": 300,
+          "contextLost": false,
+          "drawingBufferWidth": 390,
+          "drawingBufferHeight": 300,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
+      "png": {
+        "width": 390,
+        "height": 844,
+        "bytes": 252120,
+        "sha256": "1dba9404f8a21e4fca4bbc6adc6d56fab37eb893cad54cb008c4f025e0e54dee",
+        "pixelSha256": "cca5fa85b823a0e9e6a62cb329d80d74802cf4b8b6935cce3a2055cf3ed6f62c"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/tmu-course-guides/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "repeatCheck": {
+    "case": "root-mth140-1440x900-dark",
+    "capture": {
+      "id": "root-mth140-1440x900-dark",
+      "base": "/",
+      "route": "mth140",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "noWebGL": false,
+      "fullPage": false,
+      "nativeClock": false,
+      "screenshot": "tools/qa/reports/perf-visuals-default/before/repeat/root-mth140-1440x900-dark.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:36169/mth140/",
+      "naturalWrapper": {
+        "opacity": "1",
+        "filter": "none",
+        "transform": "none",
+        "style": ""
+      },
+      "sceneStability": {
+        "intervalMs": 100,
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ]
+      },
+      "platformFonts": [
+        {
+          "label": "heading",
+          "selector": "h1",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 10
+            }
+          ]
+        },
+        {
+          "label": "sidebar",
+          "selector": ".course-code",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 4
+            }
+          ]
+        },
+        {
+          "label": "body",
+          "selector": "main .desk-lede,main .subline,main .workspace-panel:not([hidden]) p:not(.team):not(.eyebrow)",
+          "fonts": [
+            {
+              "familyName": "Archivo SemiBold",
+              "postScriptName": "Archivo-SemiBold",
+              "isCustomFont": true,
+              "glyphCount": 40
+            }
+          ]
+        }
+      ],
+      "dom": {
+        "title": "MTH140: Calculus I | TMU Course Guides",
+        "heading": "Calculus I",
+        "route": "mth140",
+        "now": "2026-10-13T16:00:00.000Z",
+        "theme": "dark",
+        "document": {
+          "width": 1440,
+          "height": 2277
+        },
+        "wrapper": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 2277.46875,
+          "opacity": "1",
+          "filter": "none",
+          "transform": "none"
+        },
+        "motion": {
+          "paused": true,
+          "scenePaused": true,
+          "full": false,
+          "reduced": false,
+          "forced": false
+        },
+        "images": [
+          {
+            "src": "/assets/guide-mark.svg",
+            "naturalWidth": 150,
+            "naturalHeight": 150,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "auto",
+            "x": 16,
+            "y": 35,
+            "width": 30,
+            "height": 30,
+            "aboveFold": true
+          },
+          {
+            "src": "/assets/book/posters/mth140-dark-wide.webp",
+            "naturalWidth": 2160,
+            "naturalHeight": 900,
+            "complete": true,
+            "loading": "auto",
+            "decoding": "async",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594,
+            "aboveFold": true
+          }
+        ],
+        "renderers": [
+          {
+            "renderer": "webgl2",
+            "sceneReady": "true",
+            "motionState": "still",
+            "sceneFrame": "4",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ],
+        "fonts": [
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "unloaded"
+          },
+          {
+            "family": "Archivo",
+            "weight": "400 900",
+            "status": "loaded"
+          }
+        ],
+        "stylesheets": [
+          "/assets/fonts/archivo.css",
+          "/assets/hub.css",
+          "/assets/math.css",
+          "/assets/visuals.css",
+          "/assets/math-studio.css",
+          "/assets/lab-composition.css",
+          "/assets/lab-challenges.css",
+          "/assets/editorial.css",
+          "/assets/workspace.css",
+          "/assets/course-header.css",
+          "/assets/guide-motion.css",
+          "/assets/night/layout.css",
+          "/assets/night/palette.css",
+          "/assets/night/hero.css",
+          "/assets/night/scroll.css"
+        ],
+        "renderersAtCapture": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "5",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ]
+      },
+      "nativeLayerRedraw": {
+        "phase": "before final visibilitychange static scene redraw",
+        "before": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ],
+        "after": [
+          {
+            "renderer": "webgl2",
+            "ready": "true",
+            "frame": "4",
+            "motionState": "still",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          }
+        ]
+      },
+      "preCaptureScene": [
+        {
+          "renderer": "webgl2",
+          "ready": "true",
+          "frame": "5",
+          "motionState": "still",
+          "x": 248,
+          "y": 0,
+          "width": 1192.015625,
+          "height": 594
+        }
+      ],
+      "url": "http://127.0.0.1:36169/mth140/",
+      "tier": "high",
+      "defaultBookEvidence": {
+        "book": "mth140",
+        "renderer": "webgl2",
+        "rendererReason": "ok",
+        "sceneReady": "true",
+        "motionState": "still",
+        "tier": "high",
+        "sceneFrame": "5",
+        "drawCalls": "22",
+        "triangles": "2893",
+        "bookView": "webgl2",
+        "canvasCount": 1,
+        "box": {
+          "x": 248,
+          "y": 0,
+          "width": 1192.015625,
+          "height": 594
+        },
+        "tierPolicy": {
+          "coarsePointer": false,
+          "hardwareConcurrency": 5,
+          "deviceMemory": 16,
+          "saveData": false
+        },
+        "poster": {
+          "src": "http://127.0.0.1:36169/assets/book/posters/mth140-dark-wide.webp",
+          "complete": true,
+          "decoded": true,
+          "naturalWidth": 2160,
+          "naturalHeight": 900,
+          "box": {
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
+          },
+          "computed": {
+            "display": "block",
+            "visibility": "visible",
+            "opacity": "0",
+            "transform": "none"
+          }
+        }
+      },
+      "actualWebGLContexts": [
+        {
+          "width": 1192,
+          "height": 594,
+          "contextLost": false,
+          "drawingBufferWidth": 1192,
+          "drawingBufferHeight": 594,
+          "renderer": "WebKit WebGL",
+          "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+        }
+      ],
+      "png": {
+        "width": 1440,
+        "height": 900,
+        "bytes": 938865,
+        "sha256": "b6fb703dd6d4c106715fe98e498d9b752c835b1131ddbb58ed6defb0e2261bc6",
+        "pixelSha256": "f45f417491be543c4a21f0b0f1e45e66b0a9b533fe39b9cd9c33888d720e72f8"
+      },
+      "status": "captured",
+      "fontRequests": [
+        {
+          "url": "/assets/fonts/archivo-latin.woff2",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    "comparison": {
+      "beforeDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "afterDimensions": {
+        "width": 1440,
+        "height": 900
+      },
+      "equalDimensions": true,
+      "changedPixels": 0,
+      "totalPixels": 1296000,
+      "changedPixelShare": 0,
+      "totalAbsoluteChannelDifference": 0,
+      "maxChannelDifference": 0,
+      "differenceBounds": null,
+      "pixelIdentical": true,
+      "beforeSha256": "b6fb703dd6d4c106715fe98e498d9b752c835b1131ddbb58ed6defb0e2261bc6",
+      "afterSha256": "b6fb703dd6d4c106715fe98e498d9b752c835b1131ddbb58ed6defb0e2261bc6",
+      "diff": "tools/qa/reports/perf-visuals-default/before/repeat/root-mth140-1440x900-dark-diff.png"
+    }
+  },
+  "productSourceSha256After": "f53027510da4ab7382192a2b05a3acc7dcab5ce3cf93d62a9d197345de765960",
+  "sourceUnchanged": true,
+  "protectedSourceSha256After": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+  "protectedSourceUnchanged": true,
+  "summary": {
+    "requested": 8,
+    "captured": 8,
+    "failed": 0,
+    "initialAttemptFailures": 0,
+    "naturalSettlementFailures": 0,
+    "errors": 0,
+    "repeatPixelIdentical": true,
+    "evidenceFailures": 0
+  }
+}

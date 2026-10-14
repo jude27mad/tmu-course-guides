@@ -1,0 +1,7 @@
+{
+  "observedAt": "2026-10-14T10:35:31.482294+00:00",
+  "actualCLIExitCode": 1,
+  "sessionID": 3716,
+  "actualToolChunk": "7a5d70",
+  "scope": "Unchanged frontend control with currentQA failed same MTH140ready step,12assertions/1fail; does not waive any after failure or prove broad cause."
+}

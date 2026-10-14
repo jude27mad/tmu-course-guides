@@ -1,0 +1,7 @@
+{
+  "observedAt": "2026-10-14T10:41:31.624778+00:00",
+  "actualCLIExitCode": 0,
+  "sessionID": 65372,
+  "actualToolChunk": "cb4dcf",
+  "scope": "Ordinary both-base WebKit CLI returned0 with BOTHcases explicitlySKIPPED,0assertions; hostldconfigcache cannot see tasklocal libGLES2. No nativeWebKitcoverage/pass/version claim."
+}

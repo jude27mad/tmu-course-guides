@@ -1,0 +1,633 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "startedAt": "2026-10-14T03:48:48.927Z",
+  "completedAt": "2026-10-14T03:48:55.828Z",
+  "playwrightPath": "/opt/codex/cua_node/lib/node_modules/playwright",
+  "playwrightVersion": "1.57.0",
+  "chromiumVersion": "154.0.8037.57",
+  "launchOptions": {
+    "headless": true,
+    "executablePath": "/usr/bin/chromium",
+    "args": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "currentSourceSHA256": "b2bafedee3cc0569d4354334d42fcaac55d3ddcbf7ceb0e1ecdf43bddcd1f8d6",
+  "originalSourceSHA256": "43acc2217eea6f289dd760de67f0f4f9d805289a311c4277e363bd57e024b579",
+  "fixtureSource": "kind => {\n    const denied = () => { throw new DOMException('QA denied storage', 'SecurityError'); };\n    for (const key of ['localStorage', 'sessionStorage']) if (kind === 'getters') Object.defineProperty(window, key, { configurable: true, get: denied }); else for (const method of ['getItem', 'setItem', 'removeItem', 'clear', 'key']) Object.defineProperty(window[key], method, { configurable: true, value: denied });\n  }",
+  "fixtureSourceSHA256": "3d6005e5fefbd7ca767ef6d1dc9d8f4e2980f2998304c4eeef14af1ed0a5f3e1",
+  "initializeSource": "seed => {\n    document.addEventListener('route-changed', event => { window.__qaRouteCompleted = event.detail?.route; });\n    window.__qaPageshow = [];\n    window.__qaStorageEvents = [];\n    addEventListener('pageshow', event => window.__qaPageshow.push({ persisted: event.persisted, at: Date.now() }));\n    addEventListener('storage', event => window.__qaStorageEvents.push({ key: event.key, oldValue: event.oldValue, newValue: event.newValue, trusted: event.isTrusted }));\n    try { for (const [key, value] of Object.entries(seed)) if (localStorage.getItem(key) === null) localStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value)); } catch {}\n  }",
+  "initializeSourceSHA256": "849c277b7a290493e7fe716d7b23c7e5664a336d3b7878a2364a1f314730cb87",
+  "instrumentSourceSHA256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892",
+  "runtimeSourceSHA256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587",
+  "originalEvents": [
+    {
+      "base": "/",
+      "events": [
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        }
+      ]
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "events": [
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "base": "/",
+      "route": "desk",
+      "kind": "methods",
+      "status": "passed",
+      "requests": [],
+      "productScriptRequests": [],
+      "earlyEvents": [
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        }
+      ],
+      "owningEvents": [],
+      "state": {
+        "url": "about:blank",
+        "documentURL": "about:blank",
+        "mainTextLength": 0,
+        "appMarkers": []
+      },
+      "trace": [
+        {
+          "type": "newPage-requested",
+          "ownerAttached": false
+        },
+        {
+          "type": "context-page",
+          "url": "about:blank",
+          "ownerAttached": false
+        },
+        {
+          "type": "pageerror",
+          "url": "about:blank",
+          "ownerAttached": false,
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7"
+        },
+        {
+          "type": "newPage-resolved",
+          "url": "about:blank",
+          "ownerAttached": false
+        }
+      ]
+    },
+    {
+      "base": "/",
+      "route": "cen100",
+      "kind": "methods",
+      "status": "passed",
+      "requests": [],
+      "productScriptRequests": [],
+      "earlyEvents": [
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        }
+      ],
+      "owningEvents": [],
+      "state": {
+        "url": "about:blank",
+        "documentURL": "about:blank",
+        "mainTextLength": 0,
+        "appMarkers": []
+      },
+      "trace": [
+        {
+          "type": "newPage-requested",
+          "ownerAttached": false
+        },
+        {
+          "type": "context-page",
+          "url": "about:blank",
+          "ownerAttached": false
+        },
+        {
+          "type": "pageerror",
+          "url": "about:blank",
+          "ownerAttached": false,
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7"
+        },
+        {
+          "type": "newPage-resolved",
+          "url": "about:blank",
+          "ownerAttached": false
+        }
+      ]
+    },
+    {
+      "base": "/",
+      "route": "mth140",
+      "kind": "methods",
+      "status": "passed",
+      "requests": [],
+      "productScriptRequests": [],
+      "earlyEvents": [
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        }
+      ],
+      "owningEvents": [],
+      "state": {
+        "url": "about:blank",
+        "documentURL": "about:blank",
+        "mainTextLength": 0,
+        "appMarkers": []
+      },
+      "trace": [
+        {
+          "type": "newPage-requested",
+          "ownerAttached": false
+        },
+        {
+          "type": "context-page",
+          "url": "about:blank",
+          "ownerAttached": false
+        },
+        {
+          "type": "pageerror",
+          "url": "about:blank",
+          "ownerAttached": false,
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7"
+        },
+        {
+          "type": "newPage-resolved",
+          "url": "about:blank",
+          "ownerAttached": false
+        }
+      ]
+    },
+    {
+      "base": "/",
+      "route": "mth141",
+      "kind": "methods",
+      "status": "passed",
+      "requests": [],
+      "productScriptRequests": [],
+      "earlyEvents": [
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        }
+      ],
+      "owningEvents": [],
+      "state": {
+        "url": "about:blank",
+        "documentURL": "about:blank",
+        "mainTextLength": 0,
+        "appMarkers": []
+      },
+      "trace": [
+        {
+          "type": "newPage-requested",
+          "ownerAttached": false
+        },
+        {
+          "type": "context-page",
+          "url": "about:blank",
+          "ownerAttached": false
+        },
+        {
+          "type": "pageerror",
+          "url": "about:blank",
+          "ownerAttached": false,
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7"
+        },
+        {
+          "type": "newPage-resolved",
+          "url": "about:blank",
+          "ownerAttached": false
+        }
+      ]
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "route": "desk",
+      "kind": "methods",
+      "status": "passed",
+      "requests": [],
+      "productScriptRequests": [],
+      "earlyEvents": [
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        }
+      ],
+      "owningEvents": [],
+      "state": {
+        "url": "about:blank",
+        "documentURL": "about:blank",
+        "mainTextLength": 0,
+        "appMarkers": []
+      },
+      "trace": [
+        {
+          "type": "newPage-requested",
+          "ownerAttached": false
+        },
+        {
+          "type": "context-page",
+          "url": "about:blank",
+          "ownerAttached": false
+        },
+        {
+          "type": "pageerror",
+          "url": "about:blank",
+          "ownerAttached": false,
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7"
+        },
+        {
+          "type": "newPage-resolved",
+          "url": "about:blank",
+          "ownerAttached": false
+        }
+      ]
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "route": "cen100",
+      "kind": "methods",
+      "status": "passed",
+      "requests": [],
+      "productScriptRequests": [],
+      "earlyEvents": [
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        }
+      ],
+      "owningEvents": [],
+      "state": {
+        "url": "about:blank",
+        "documentURL": "about:blank",
+        "mainTextLength": 0,
+        "appMarkers": []
+      },
+      "trace": [
+        {
+          "type": "newPage-requested",
+          "ownerAttached": false
+        },
+        {
+          "type": "context-page",
+          "url": "about:blank",
+          "ownerAttached": false
+        },
+        {
+          "type": "pageerror",
+          "url": "about:blank",
+          "ownerAttached": false,
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7"
+        },
+        {
+          "type": "newPage-resolved",
+          "url": "about:blank",
+          "ownerAttached": false
+        }
+      ]
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "route": "mth140",
+      "kind": "methods",
+      "status": "passed",
+      "requests": [],
+      "productScriptRequests": [],
+      "earlyEvents": [
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        }
+      ],
+      "owningEvents": [],
+      "state": {
+        "url": "about:blank",
+        "documentURL": "about:blank",
+        "mainTextLength": 0,
+        "appMarkers": []
+      },
+      "trace": [
+        {
+          "type": "newPage-requested",
+          "ownerAttached": false
+        },
+        {
+          "type": "context-page",
+          "url": "about:blank",
+          "ownerAttached": false
+        },
+        {
+          "type": "pageerror",
+          "url": "about:blank",
+          "ownerAttached": false,
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7"
+        },
+        {
+          "type": "newPage-resolved",
+          "url": "about:blank",
+          "ownerAttached": false
+        }
+      ]
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "route": "mth141",
+      "kind": "methods",
+      "status": "passed",
+      "requests": [],
+      "productScriptRequests": [],
+      "earlyEvents": [
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        }
+      ],
+      "owningEvents": [],
+      "state": {
+        "url": "about:blank",
+        "documentURL": "about:blank",
+        "mainTextLength": 0,
+        "appMarkers": []
+      },
+      "trace": [
+        {
+          "type": "newPage-requested",
+          "ownerAttached": false
+        },
+        {
+          "type": "context-page",
+          "url": "about:blank",
+          "ownerAttached": false
+        },
+        {
+          "type": "pageerror",
+          "url": "about:blank",
+          "ownerAttached": false,
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7"
+        },
+        {
+          "type": "newPage-resolved",
+          "url": "about:blank",
+          "ownerAttached": false
+        }
+      ]
+    },
+    {
+      "base": "/",
+      "route": "control",
+      "kind": "none",
+      "status": "passed",
+      "requests": [],
+      "productScriptRequests": [],
+      "earlyEvents": [],
+      "owningEvents": [],
+      "state": {
+        "url": "about:blank",
+        "documentURL": "about:blank",
+        "mainTextLength": 0,
+        "appMarkers": []
+      },
+      "trace": [
+        {
+          "type": "newPage-requested",
+          "ownerAttached": false
+        },
+        {
+          "type": "context-page",
+          "url": "about:blank",
+          "ownerAttached": false
+        },
+        {
+          "type": "newPage-resolved",
+          "url": "about:blank",
+          "ownerAttached": false
+        }
+      ]
+    },
+    {
+      "base": "/",
+      "route": "control",
+      "kind": "getters",
+      "status": "passed",
+      "requests": [],
+      "productScriptRequests": [],
+      "earlyEvents": [],
+      "owningEvents": [],
+      "state": {
+        "url": "about:blank",
+        "documentURL": "about:blank",
+        "mainTextLength": 0,
+        "appMarkers": []
+      },
+      "trace": [
+        {
+          "type": "newPage-requested",
+          "ownerAttached": false
+        },
+        {
+          "type": "context-page",
+          "url": "about:blank",
+          "ownerAttached": false
+        },
+        {
+          "type": "newPage-resolved",
+          "url": "about:blank",
+          "ownerAttached": false
+        }
+      ]
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "route": "control",
+      "kind": "none",
+      "status": "passed",
+      "requests": [],
+      "productScriptRequests": [],
+      "earlyEvents": [],
+      "owningEvents": [],
+      "state": {
+        "url": "about:blank",
+        "documentURL": "about:blank",
+        "mainTextLength": 0,
+        "appMarkers": []
+      },
+      "trace": [
+        {
+          "type": "newPage-requested",
+          "ownerAttached": false
+        },
+        {
+          "type": "context-page",
+          "url": "about:blank",
+          "ownerAttached": false
+        },
+        {
+          "type": "newPage-resolved",
+          "url": "about:blank",
+          "ownerAttached": false
+        }
+      ]
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "route": "control",
+      "kind": "getters",
+      "status": "passed",
+      "requests": [],
+      "productScriptRequests": [],
+      "earlyEvents": [],
+      "owningEvents": [],
+      "state": {
+        "url": "about:blank",
+        "documentURL": "about:blank",
+        "mainTextLength": 0,
+        "appMarkers": []
+      },
+      "trace": [
+        {
+          "type": "newPage-requested",
+          "ownerAttached": false
+        },
+        {
+          "type": "context-page",
+          "url": "about:blank",
+          "ownerAttached": false
+        },
+        {
+          "type": "newPage-resolved",
+          "url": "about:blank",
+          "ownerAttached": false
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "methodsContexts": 8,
+    "negativeControls": 4,
+    "earlyErrors": 8,
+    "owningErrors": 0,
+    "productScriptRequests": 0,
+    "allContextsAndBrowserClosed": true
+  },
+  "interpretation": "Exact QA-only storage-method denial init throws on the initial opaque about:blank document before runCase attaches its owning collector. Early context-page collection reproduces all original raw fields. This is retained bootstrap capture-gap telemetry, not application telemetry or an inferred product failure cause."
+}

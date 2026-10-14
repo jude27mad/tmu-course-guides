@@ -1,0 +1,39 @@
+✔ default adapter selects exactly eight ordinary MTH140 identities (9.508751ms)
+✔ natural source-authored fallback accepts both bases widths and themes (2.456083ms)
+✔ ordinary identity rejects tier motion query hash route and viewport substitutions (1.641001ms)
+✔ fallback rejects foreign incomplete running erroneous or inconsistent source state (4.453836ms)
+✔ fallback requires exact authored decoded poster source dimensions geometry and visibility (1.590633ms)
+✖ natural fallback requires explicit absence of mounted product WebGL contexts (6.704333ms)
+✔ private fallback exception preserves browser errors source settlement and GPU gates (40.775469ms)
+✔ adapter rejects forced fallback or tier options before browser launch (2.232943ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 7
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 126.188814
+
+✖ failing tests:
+
+test at ../../tmp/ns-perf-default-visual-guard.test.mjs:41:1
+✖ natural fallback requires explicit absence of mounted product WebGL contexts (6.704333ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///tmp/ns-perf-default-visual-guard.test.mjs:43:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

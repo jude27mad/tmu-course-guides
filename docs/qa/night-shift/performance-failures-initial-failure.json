@@ -1,0 +1,1687 @@
+{
+  "schemaVersion": 1,
+  "check": "failures",
+  "startedAt": "2026-10-13T23:57:02.861Z",
+  "completedAt": null,
+  "environment": {
+    "node": "v24.19.0",
+    "platform": "linux",
+    "architecture": "x64",
+    "deployments": [
+      {
+        "base": "/",
+        "origin": "http://127.0.0.1:45301",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "154.0.8037.57",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      }
+    ],
+    "requestedMode": "SwiftShader",
+    "playwrightPath": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "playwrightSource": "PLAYWRIGHT_PATH",
+    "chromiumPath": "/usr/bin/chromium",
+    "chromiumSource": "QA_CHROMIUM_PATH",
+    "launchArgs": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "status": "failed",
+  "failures": 1,
+  "cases": [
+    {
+      "base": "/",
+      "origin": "http://127.0.0.1:45301",
+      "status": "failed",
+      "assertions": [
+        {
+          "name": "500: one normal navigation to requested query/hash URL",
+          "pass": true,
+          "actual": {
+            "documents": [
+              "http://127.0.0.1:45301/mth141/?motion=off&qa_failure=500"
+            ],
+            "url": "http://127.0.0.1:45301/mth141/?motion=off&qa_failure=500#assessment-midterm"
+          },
+          "expected": [
+            "http://127.0.0.1:45301/mth141/?motion=off&qa_failure=500"
+          ]
+        },
+        {
+          "name": "500: recovery replaces failed shell and stays usable",
+          "pass": true,
+          "actual": {
+            "route": "mth141",
+            "shell": "d5ac26c7-9e19-4def-96fe-20687a69c650",
+            "heading": "Linear Algebra",
+            "content": 1016,
+            "desk": {
+              "title": null,
+              "chip": null,
+              "when": null,
+              "section": null,
+              "today": null
+            },
+            "overall": {
+              "title": null,
+              "when": null,
+              "word": null,
+              "digits": []
+            },
+            "card": {
+              "title": "Midterm Test",
+              "id": "midterm",
+              "key": "midtermexact1792189800000",
+              "when": "Fri Oct 16 · 6:30 PM Toronto",
+              "digits": [
+                {
+                  "unit": "d",
+                  "text": "02"
+                },
+                {
+                  "unit": "h",
+                  "text": "22"
+                },
+                {
+                  "unit": "m",
+                  "text": "12"
+                },
+                {
+                  "unit": "s",
+                  "text": "48"
+                }
+              ]
+            },
+            "dock": {
+              "title": "Midterm Test",
+              "chip": "2d 22h",
+              "section": "Choose section"
+            },
+            "hud": {
+              "title": "Midterm Test",
+              "chip": "2d 22h"
+            },
+            "counts": {
+              "main": 1,
+              "dock": 1,
+              "card": 1,
+              "hud": 1,
+              "heading": 1,
+              "itemIds": [
+                "assessment-count",
+                "assessment-list",
+                "assessment-quiz-3",
+                "assessment-quiz-4",
+                "assessment-quiz-5",
+                "assessment-final",
+                "assessment-quiz-1",
+                "assessment-quiz-2",
+                "assessment-empty",
+                "assessment-midterm"
+              ]
+            },
+            "pageshow": [
+              {
+                "persisted": false,
+                "at": 1791937031146
+              }
+            ],
+            "storageEvents": []
+          },
+          "expected": "new document with course content"
+        },
+        {
+          "name": "fetch 500: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "timeout: one normal navigation to requested query/hash URL",
+          "pass": true,
+          "actual": {
+            "documents": [
+              "http://127.0.0.1:45301/mth141/?motion=off&qa_failure=timeout"
+            ],
+            "url": "http://127.0.0.1:45301/mth141/?motion=off&qa_failure=timeout#assessment-midterm"
+          },
+          "expected": [
+            "http://127.0.0.1:45301/mth141/?motion=off&qa_failure=timeout"
+          ]
+        },
+        {
+          "name": "timeout: recovery replaces failed shell and stays usable",
+          "pass": true,
+          "actual": {
+            "route": "mth141",
+            "shell": "9c97f37c-0090-4ab5-a2ba-80c971d3c59d",
+            "heading": "Linear Algebra",
+            "content": 1016,
+            "desk": {
+              "title": null,
+              "chip": null,
+              "when": null,
+              "section": null,
+              "today": null
+            },
+            "overall": {
+              "title": null,
+              "when": null,
+              "word": null,
+              "digits": []
+            },
+            "card": {
+              "title": "Midterm Test",
+              "id": "midterm",
+              "key": "midtermexact1792189800000",
+              "when": "Fri Oct 16 · 6:30 PM Toronto",
+              "digits": [
+                {
+                  "unit": "d",
+                  "text": "02"
+                },
+                {
+                  "unit": "h",
+                  "text": "22"
+                },
+                {
+                  "unit": "m",
+                  "text": "12"
+                },
+                {
+                  "unit": "s",
+                  "text": "35"
+                }
+              ]
+            },
+            "dock": {
+              "title": "Midterm Test",
+              "chip": "2d 22h",
+              "section": "Choose section"
+            },
+            "hud": {
+              "title": "Midterm Test",
+              "chip": "2d 22h"
+            },
+            "counts": {
+              "main": 1,
+              "dock": 1,
+              "card": 1,
+              "hud": 1,
+              "heading": 1,
+              "itemIds": [
+                "assessment-count",
+                "assessment-list",
+                "assessment-quiz-3",
+                "assessment-quiz-4",
+                "assessment-quiz-5",
+                "assessment-final",
+                "assessment-quiz-1",
+                "assessment-quiz-2",
+                "assessment-empty",
+                "assessment-midterm"
+              ]
+            },
+            "pageshow": [
+              {
+                "persisted": false,
+                "at": 1791937043937
+              }
+            ],
+            "storageEvents": []
+          },
+          "expected": "new document with course content"
+        },
+        {
+          "name": "fetch timeout: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "aborted: one normal navigation to requested query/hash URL",
+          "pass": true,
+          "actual": {
+            "documents": [
+              "http://127.0.0.1:45301/mth141/?motion=off&qa_failure=aborted"
+            ],
+            "url": "http://127.0.0.1:45301/mth141/?motion=off&qa_failure=aborted#assessment-midterm"
+          },
+          "expected": [
+            "http://127.0.0.1:45301/mth141/?motion=off&qa_failure=aborted"
+          ]
+        },
+        {
+          "name": "aborted: recovery replaces failed shell and stays usable",
+          "pass": true,
+          "actual": {
+            "route": "mth141",
+            "shell": "629b5f1d-f58c-4499-bfe1-e592650e6ec6",
+            "heading": "Linear Algebra",
+            "content": 1016,
+            "desk": {
+              "title": null,
+              "chip": null,
+              "when": null,
+              "section": null,
+              "today": null
+            },
+            "overall": {
+              "title": null,
+              "when": null,
+              "word": null,
+              "digits": []
+            },
+            "card": {
+              "title": "Midterm Test",
+              "id": "midterm",
+              "key": "midtermexact1792189800000",
+              "when": "Fri Oct 16 · 6:30 PM Toronto",
+              "digits": [
+                {
+                  "unit": "d",
+                  "text": "02"
+                },
+                {
+                  "unit": "h",
+                  "text": "22"
+                },
+                {
+                  "unit": "m",
+                  "text": "12"
+                },
+                {
+                  "unit": "s",
+                  "text": "31"
+                }
+              ]
+            },
+            "dock": {
+              "title": "Midterm Test",
+              "chip": "2d 22h",
+              "section": "Choose section"
+            },
+            "hud": {
+              "title": "Midterm Test",
+              "chip": "2d 22h"
+            },
+            "counts": {
+              "main": 1,
+              "dock": 1,
+              "card": 1,
+              "hud": 1,
+              "heading": 1,
+              "itemIds": [
+                "assessment-count",
+                "assessment-list",
+                "assessment-quiz-3",
+                "assessment-quiz-4",
+                "assessment-quiz-5",
+                "assessment-final",
+                "assessment-quiz-1",
+                "assessment-quiz-2",
+                "assessment-empty",
+                "assessment-midterm"
+              ]
+            },
+            "pageshow": [
+              {
+                "persisted": false,
+                "at": 1791937047491
+              }
+            ],
+            "storageEvents": []
+          },
+          "expected": "new document with course content"
+        },
+        {
+          "name": "fetch aborted: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "missing-region: one normal navigation to requested query/hash URL",
+          "pass": true,
+          "actual": {
+            "documents": [
+              "http://127.0.0.1:45301/mth141/?motion=off&qa_failure=missing-region"
+            ],
+            "url": "http://127.0.0.1:45301/mth141/?motion=off&qa_failure=missing-region#assessment-midterm"
+          },
+          "expected": [
+            "http://127.0.0.1:45301/mth141/?motion=off&qa_failure=missing-region"
+          ]
+        },
+        {
+          "name": "missing-region: recovery replaces failed shell and stays usable",
+          "pass": true,
+          "actual": {
+            "route": "mth141",
+            "shell": "d766d2cc-b2ae-41fb-bda3-8b375944bd54",
+            "heading": "Linear Algebra",
+            "content": 1016,
+            "desk": {
+              "title": null,
+              "chip": null,
+              "when": null,
+              "section": null,
+              "today": null
+            },
+            "overall": {
+              "title": null,
+              "when": null,
+              "word": null,
+              "digits": []
+            },
+            "card": {
+              "title": "Midterm Test",
+              "id": "midterm",
+              "key": "midtermexact1792189800000",
+              "when": "Fri Oct 16 · 6:30 PM Toronto",
+              "digits": [
+                {
+                  "unit": "d",
+                  "text": "02"
+                },
+                {
+                  "unit": "h",
+                  "text": "22"
+                },
+                {
+                  "unit": "m",
+                  "text": "12"
+                },
+                {
+                  "unit": "s",
+                  "text": "29"
+                }
+              ]
+            },
+            "dock": {
+              "title": "Midterm Test",
+              "chip": "2d 22h",
+              "section": "Choose section"
+            },
+            "hud": {
+              "title": "Midterm Test",
+              "chip": "2d 22h"
+            },
+            "counts": {
+              "main": 1,
+              "dock": 1,
+              "card": 1,
+              "hud": 1,
+              "heading": 1,
+              "itemIds": [
+                "assessment-count",
+                "assessment-list",
+                "assessment-quiz-3",
+                "assessment-quiz-4",
+                "assessment-quiz-5",
+                "assessment-final",
+                "assessment-quiz-1",
+                "assessment-quiz-2",
+                "assessment-empty",
+                "assessment-midterm"
+              ]
+            },
+            "pageshow": [
+              {
+                "persisted": false,
+                "at": 1791937050160
+              }
+            ],
+            "storageEvents": []
+          },
+          "expected": "new document with course content"
+        },
+        {
+          "name": "fetch missing-region: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "getters denied: desk direct route readable",
+          "pass": true,
+          "actual": {
+            "route": "desk",
+            "shell": "d2cc2640-5a5a-40fd-8073-72cd72acbbb0",
+            "heading": "TMU Course Guides · Fall 2026",
+            "content": 1101,
+            "desk": {
+              "title": "Academic Integrity Quiz",
+              "chip": "18h 42m left",
+              "when": "Wed Oct 14 · 3:00 PM Toronto",
+              "section": "No section saved",
+              "today": "Tuesday, Oct 13 · Toronto"
+            },
+            "overall": {
+              "title": "Lab Quiz 2",
+              "when": "Oct 12–Oct 16 · during your assigned lab",
+              "word": "Oct 12–16",
+              "digits": []
+            },
+            "card": {
+              "title": null,
+              "id": null,
+              "when": null,
+              "digits": []
+            },
+            "dock": {
+              "title": null,
+              "chip": null,
+              "section": null
+            },
+            "hud": {
+              "title": null,
+              "chip": null
+            },
+            "counts": {
+              "main": 1,
+              "dock": 0,
+              "card": 0,
+              "hud": 0,
+              "heading": 1,
+              "itemIds": []
+            },
+            "pageshow": [
+              {
+                "persisted": false,
+                "at": 1791937052005
+              }
+            ],
+            "storageEvents": []
+          },
+          "expected": "usable route"
+        },
+        {
+          "name": "getters denied: desk navigates",
+          "pass": true,
+          "actual": "http://127.0.0.1:45301/mth141/",
+          "expected": "http://127.0.0.1:45301/mth141/"
+        },
+        {
+          "name": "desk: denied localStorage and sessionStorage getters: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "getters denied: cen100 direct route readable",
+          "pass": true,
+          "actual": {
+            "route": "cen100",
+            "shell": "931decc0-7d33-43e6-b147-a42301c710e9",
+            "heading": "Intro toEngineering",
+            "content": 1766,
+            "desk": {
+              "title": null,
+              "chip": null,
+              "when": null,
+              "section": null,
+              "today": null
+            },
+            "overall": {
+              "title": null,
+              "when": null,
+              "word": null,
+              "digits": []
+            },
+            "card": {
+              "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+              "id": "integrity",
+              "key": "integrityexact1792004400000",
+              "when": "Wed Oct 14 · 3:00 PM Toronto",
+              "digits": [
+                {
+                  "unit": "d",
+                  "text": "00"
+                },
+                {
+                  "unit": "h",
+                  "text": "18"
+                },
+                {
+                  "unit": "m",
+                  "text": "42"
+                },
+                {
+                  "unit": "s",
+                  "text": "22"
+                }
+              ]
+            },
+            "dock": {
+              "title": "Academic Integrity Quiz",
+              "chip": "18h 42m",
+              "section": "Choose section"
+            },
+            "hud": {
+              "title": "Academic Integrity Quiz",
+              "chip": "18h 42m"
+            },
+            "counts": {
+              "main": 1,
+              "dock": 1,
+              "card": 1,
+              "hud": 1,
+              "heading": 1,
+              "itemIds": [
+                "guide-item-m3",
+                "guide-item-m4",
+                "guide-item-y6",
+                "guide-item-m5",
+                "guide-item-m6",
+                "guide-item-m7",
+                "guide-item-m1",
+                "guide-item-m2",
+                "guide-item-y3",
+                "guide-item-y4",
+                "guide-item-y5",
+                "guide-item-y2",
+                "guide-item-y7",
+                "guide-item-y8",
+                "guide-item-m8",
+                "guide-item-y9",
+                "guide-item-y1"
+              ]
+            },
+            "pageshow": [
+              {
+                "persisted": false,
+                "at": 1791937055968
+              }
+            ],
+            "storageEvents": []
+          },
+          "expected": "usable route"
+        },
+        {
+          "name": "getters denied: cen100 navigates",
+          "pass": true,
+          "actual": "http://127.0.0.1:45301/mth141/",
+          "expected": "http://127.0.0.1:45301/mth141/"
+        },
+        {
+          "name": "cen100: denied localStorage and sessionStorage getters: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "getters denied: mth140 direct route readable",
+          "pass": true,
+          "actual": {
+            "route": "mth140",
+            "shell": "68eed10e-38d0-42a2-ba9a-ca32694243bc",
+            "heading": "Calculus I",
+            "content": 1040,
+            "desk": {
+              "title": null,
+              "chip": null,
+              "when": null,
+              "section": null,
+              "today": null
+            },
+            "overall": {
+              "title": null,
+              "when": null,
+              "word": null,
+              "digits": []
+            },
+            "card": {
+              "title": "Lab Quiz 2",
+              "id": "quiz-2",
+              "key": "quiz-2week",
+              "when": "Oct 12–Oct 16 · during your assigned lab",
+              "digits": []
+            },
+            "dock": {
+              "title": "Lab Quiz 2",
+              "chip": "Quiz week",
+              "section": "Choose section"
+            },
+            "hud": {
+              "title": "Lab Quiz 2",
+              "chip": "Quiz week"
+            },
+            "counts": {
+              "main": 1,
+              "dock": 1,
+              "card": 1,
+              "hud": 1,
+              "heading": 1,
+              "itemIds": [
+                "assessment-count",
+                "assessment-list",
+                "assessment-quiz-2",
+                "assessment-midterm",
+                "assessment-quiz-3",
+                "assessment-quiz-4",
+                "assessment-final",
+                "assessment-quiz-1",
+                "assessment-empty"
+              ]
+            },
+            "pageshow": [
+              {
+                "persisted": false,
+                "at": 1791937069350
+              }
+            ],
+            "storageEvents": []
+          },
+          "expected": "usable route"
+        },
+        {
+          "name": "getters denied: mth140 navigates",
+          "pass": true,
+          "actual": "http://127.0.0.1:45301/mth141/",
+          "expected": "http://127.0.0.1:45301/mth141/"
+        },
+        {
+          "name": "mth140: denied localStorage and sessionStorage getters: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "getters denied: mth141 direct route readable",
+          "pass": true,
+          "actual": {
+            "route": "mth141",
+            "shell": "63afe36e-fbb2-4b11-8804-055af41fee2d",
+            "heading": "Linear Algebra",
+            "content": 1073,
+            "desk": {
+              "title": null,
+              "chip": null,
+              "when": null,
+              "section": null,
+              "today": null
+            },
+            "overall": {
+              "title": null,
+              "when": null,
+              "word": null,
+              "digits": []
+            },
+            "card": {
+              "title": "Midterm Test",
+              "id": "midterm",
+              "key": "midtermexact1792189800000",
+              "when": "Fri Oct 16 · 6:30 PM Toronto",
+              "digits": [
+                {
+                  "unit": "d",
+                  "text": "02"
+                },
+                {
+                  "unit": "h",
+                  "text": "22"
+                },
+                {
+                  "unit": "m",
+                  "text": "11"
+                },
+                {
+                  "unit": "s",
+                  "text": "59"
+                }
+              ]
+            },
+            "dock": {
+              "title": "Midterm Test",
+              "chip": "2d 22h",
+              "section": "Choose section"
+            },
+            "hud": {
+              "title": "Midterm Test",
+              "chip": "2d 22h"
+            },
+            "counts": {
+              "main": 1,
+              "dock": 1,
+              "card": 1,
+              "hud": 1,
+              "heading": 1,
+              "itemIds": [
+                "assessment-count",
+                "assessment-list",
+                "assessment-midterm",
+                "assessment-quiz-3",
+                "assessment-quiz-4",
+                "assessment-quiz-5",
+                "assessment-final",
+                "assessment-quiz-1",
+                "assessment-quiz-2",
+                "assessment-empty"
+              ]
+            },
+            "pageshow": [
+              {
+                "persisted": false,
+                "at": 1791937079436
+              }
+            ],
+            "storageEvents": []
+          },
+          "expected": "usable route"
+        },
+        {
+          "name": "getters denied: mth141 navigates",
+          "pass": true,
+          "actual": "http://127.0.0.1:45301/",
+          "expected": "http://127.0.0.1:45301/"
+        },
+        {
+          "name": "mth141: denied localStorage and sessionStorage getters: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "methods denied: desk direct route readable",
+          "pass": true,
+          "actual": {
+            "route": "desk",
+            "shell": "c2300235-52bd-4931-832f-d5b056914520",
+            "heading": "TMU Course Guides · Fall 2026",
+            "content": 1101,
+            "desk": {
+              "title": "Academic Integrity Quiz",
+              "chip": "18h 41m left",
+              "when": "Wed Oct 14 · 3:00 PM Toronto",
+              "section": "No section saved",
+              "today": "Tuesday, Oct 13 · Toronto"
+            },
+            "overall": {
+              "title": "Lab Quiz 2",
+              "when": "Oct 12–Oct 16 · during your assigned lab",
+              "word": "Oct 12–16",
+              "digits": []
+            },
+            "card": {
+              "title": null,
+              "id": null,
+              "when": null,
+              "digits": []
+            },
+            "dock": {
+              "title": null,
+              "chip": null,
+              "section": null
+            },
+            "hud": {
+              "title": null,
+              "chip": null
+            },
+            "counts": {
+              "main": 1,
+              "dock": 0,
+              "card": 0,
+              "hud": 0,
+              "heading": 1,
+              "itemIds": []
+            },
+            "pageshow": [
+              {
+                "persisted": false,
+                "at": 1791937089112
+              }
+            ],
+            "storageEvents": []
+          },
+          "expected": "usable route"
+        },
+        {
+          "name": "methods denied: desk navigates",
+          "pass": true,
+          "actual": "http://127.0.0.1:45301/mth141/",
+          "expected": "http://127.0.0.1:45301/mth141/"
+        },
+        {
+          "name": "desk: denied localStorage and sessionStorage methods: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "methods denied: cen100 direct route readable",
+          "pass": true,
+          "actual": {
+            "route": "cen100",
+            "shell": "be838f89-c4f8-46f5-92b1-1962b684598e",
+            "heading": "Intro toEngineering",
+            "content": 1766,
+            "desk": {
+              "title": null,
+              "chip": null,
+              "when": null,
+              "section": null,
+              "today": null
+            },
+            "overall": {
+              "title": null,
+              "when": null,
+              "word": null,
+              "digits": []
+            },
+            "card": {
+              "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+              "id": "integrity",
+              "key": "integrityexact1792004400000",
+              "when": "Wed Oct 14 · 3:00 PM Toronto",
+              "digits": [
+                {
+                  "unit": "d",
+                  "text": "00"
+                },
+                {
+                  "unit": "h",
+                  "text": "18"
+                },
+                {
+                  "unit": "m",
+                  "text": "41"
+                },
+                {
+                  "unit": "s",
+                  "text": "47"
+                }
+              ]
+            },
+            "dock": {
+              "title": "Academic Integrity Quiz",
+              "chip": "18h 41m",
+              "section": "Choose section"
+            },
+            "hud": {
+              "title": "Academic Integrity Quiz",
+              "chip": "18h 41m"
+            },
+            "counts": {
+              "main": 1,
+              "dock": 1,
+              "card": 1,
+              "hud": 1,
+              "heading": 1,
+              "itemIds": [
+                "guide-item-m3",
+                "guide-item-m4",
+                "guide-item-y6",
+                "guide-item-m5",
+                "guide-item-m6",
+                "guide-item-m7",
+                "guide-item-m1",
+                "guide-item-m2",
+                "guide-item-y3",
+                "guide-item-y4",
+                "guide-item-y5",
+                "guide-item-y2",
+                "guide-item-y7",
+                "guide-item-y8",
+                "guide-item-m8",
+                "guide-item-y9",
+                "guide-item-y1"
+              ]
+            },
+            "pageshow": [
+              {
+                "persisted": false,
+                "at": 1791937092048
+              }
+            ],
+            "storageEvents": []
+          },
+          "expected": "usable route"
+        },
+        {
+          "name": "methods denied: cen100 navigates",
+          "pass": true,
+          "actual": "http://127.0.0.1:45301/mth141/",
+          "expected": "http://127.0.0.1:45301/mth141/"
+        },
+        {
+          "name": "cen100: denied localStorage and sessionStorage methods: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "methods denied: mth140 direct route readable",
+          "pass": true,
+          "actual": {
+            "route": "mth140",
+            "shell": "013dd064-4bb7-4e47-9f41-b58cc7fdab6e",
+            "heading": "Calculus I",
+            "content": 1040,
+            "desk": {
+              "title": null,
+              "chip": null,
+              "when": null,
+              "section": null,
+              "today": null
+            },
+            "overall": {
+              "title": null,
+              "when": null,
+              "word": null,
+              "digits": []
+            },
+            "card": {
+              "title": "Lab Quiz 2",
+              "id": "quiz-2",
+              "key": "quiz-2week",
+              "when": "Oct 12–Oct 16 · during your assigned lab",
+              "digits": []
+            },
+            "dock": {
+              "title": "Lab Quiz 2",
+              "chip": "Quiz week",
+              "section": "Choose section"
+            },
+            "hud": {
+              "title": "Lab Quiz 2",
+              "chip": "Quiz week"
+            },
+            "counts": {
+              "main": 1,
+              "dock": 1,
+              "card": 1,
+              "hud": 1,
+              "heading": 1,
+              "itemIds": [
+                "assessment-count",
+                "assessment-list",
+                "assessment-quiz-2",
+                "assessment-midterm",
+                "assessment-quiz-3",
+                "assessment-quiz-4",
+                "assessment-final",
+                "assessment-quiz-1",
+                "assessment-empty"
+              ]
+            },
+            "pageshow": [
+              {
+                "persisted": false,
+                "at": 1791937105645
+              }
+            ],
+            "storageEvents": []
+          },
+          "expected": "usable route"
+        },
+        {
+          "name": "methods denied: mth140 navigates",
+          "pass": true,
+          "actual": "http://127.0.0.1:45301/mth141/",
+          "expected": "http://127.0.0.1:45301/mth141/"
+        },
+        {
+          "name": "mth140: denied localStorage and sessionStorage methods: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "methods denied: mth141 direct route readable",
+          "pass": true,
+          "actual": {
+            "route": "mth141",
+            "shell": "989351af-9c0b-4b14-bf2f-7816f87b3d1d",
+            "heading": "Linear Algebra",
+            "content": 1073,
+            "desk": {
+              "title": null,
+              "chip": null,
+              "when": null,
+              "section": null,
+              "today": null
+            },
+            "overall": {
+              "title": null,
+              "when": null,
+              "word": null,
+              "digits": []
+            },
+            "card": {
+              "title": "Midterm Test",
+              "id": "midterm",
+              "key": "midtermexact1792189800000",
+              "when": "Fri Oct 16 · 6:30 PM Toronto",
+              "digits": [
+                {
+                  "unit": "d",
+                  "text": "02"
+                },
+                {
+                  "unit": "h",
+                  "text": "22"
+                },
+                {
+                  "unit": "m",
+                  "text": "11"
+                },
+                {
+                  "unit": "s",
+                  "text": "22"
+                }
+              ]
+            },
+            "dock": {
+              "title": "Midterm Test",
+              "chip": "2d 22h",
+              "section": "Choose section"
+            },
+            "hud": {
+              "title": "Midterm Test",
+              "chip": "2d 22h"
+            },
+            "counts": {
+              "main": 1,
+              "dock": 1,
+              "card": 1,
+              "hud": 1,
+              "heading": 1,
+              "itemIds": [
+                "assessment-count",
+                "assessment-list",
+                "assessment-midterm",
+                "assessment-quiz-3",
+                "assessment-quiz-4",
+                "assessment-quiz-5",
+                "assessment-final",
+                "assessment-quiz-1",
+                "assessment-quiz-2",
+                "assessment-empty"
+              ]
+            },
+            "pageshow": [
+              {
+                "persisted": false,
+                "at": 1791937116580
+              }
+            ],
+            "storageEvents": []
+          },
+          "expected": "usable route"
+        },
+        {
+          "name": "methods denied: mth141 navigates",
+          "pass": true,
+          "actual": "http://127.0.0.1:45301/",
+          "expected": "http://127.0.0.1:45301/"
+        },
+        {
+          "name": "mth141: denied localStorage and sessionStorage methods: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "offline after warm load: execution",
+          "pass": false,
+          "actual": "Error: Timed out waiting for mth140 mounted route and deadlines\n    at until (file:///workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:54:9)\n    at async ready (file:///workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:58:3)\n    at async clickRoute (file:///workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:103:3)\n    at async runCase.expected.expectedFailureEvent.mode (file:///workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:267:55)\n    at async runCase (file:///workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:90:5)\n    at async Object.failures (file:///workspace/tmu-course-guides/tools/qa/checks-resilience.mjs:264:3)\n    at async runHarness (file:///workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+          "expected": "case completes"
+        },
+        {
+          "name": "offline after warm load: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "misspelt route reaches native HTTP404 without route claim",
+          "pass": true,
+          "actual": {
+            "status": 404,
+            "url": "http://127.0.0.1:45301/cen10o/?qa_failure=404",
+            "text": "Not found",
+            "router": null
+          },
+          "expected": "HTTP404 at original URL with readable not-found response"
+        },
+        {
+          "name": "misspelt route: unexpected browser errors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "observations": {
+        "cases": [
+          {
+            "name": "fetch 500",
+            "after": {
+              "route": "mth141",
+              "shell": "d5ac26c7-9e19-4def-96fe-20687a69c650",
+              "heading": "Linear Algebra",
+              "content": 1016,
+              "desk": {
+                "title": null,
+                "chip": null,
+                "when": null,
+                "section": null,
+                "today": null
+              },
+              "overall": {
+                "title": null,
+                "when": null,
+                "word": null,
+                "digits": []
+              },
+              "card": {
+                "title": "Midterm Test",
+                "id": "midterm",
+                "key": "midtermexact1792189800000",
+                "when": "Fri Oct 16 · 6:30 PM Toronto",
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "02"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "22"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "12"
+                  },
+                  {
+                    "unit": "s",
+                    "text": "48"
+                  }
+                ]
+              },
+              "dock": {
+                "title": "Midterm Test",
+                "chip": "2d 22h",
+                "section": "Choose section"
+              },
+              "hud": {
+                "title": "Midterm Test",
+                "chip": "2d 22h"
+              },
+              "counts": {
+                "main": 1,
+                "dock": 1,
+                "card": 1,
+                "hud": 1,
+                "heading": 1,
+                "itemIds": [
+                  "assessment-count",
+                  "assessment-list",
+                  "assessment-quiz-3",
+                  "assessment-quiz-4",
+                  "assessment-quiz-5",
+                  "assessment-final",
+                  "assessment-quiz-1",
+                  "assessment-quiz-2",
+                  "assessment-empty",
+                  "assessment-midterm"
+                ]
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1791937031146
+                }
+              ],
+              "storageEvents": []
+            },
+            "documentRequests": [
+              "http://127.0.0.1:45301/mth141/?motion=off&qa_failure=500"
+            ],
+            "telemetry": []
+          },
+          {
+            "name": "fetch timeout",
+            "after": {
+              "route": "mth141",
+              "shell": "9c97f37c-0090-4ab5-a2ba-80c971d3c59d",
+              "heading": "Linear Algebra",
+              "content": 1016,
+              "desk": {
+                "title": null,
+                "chip": null,
+                "when": null,
+                "section": null,
+                "today": null
+              },
+              "overall": {
+                "title": null,
+                "when": null,
+                "word": null,
+                "digits": []
+              },
+              "card": {
+                "title": "Midterm Test",
+                "id": "midterm",
+                "key": "midtermexact1792189800000",
+                "when": "Fri Oct 16 · 6:30 PM Toronto",
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "02"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "22"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "12"
+                  },
+                  {
+                    "unit": "s",
+                    "text": "35"
+                  }
+                ]
+              },
+              "dock": {
+                "title": "Midterm Test",
+                "chip": "2d 22h",
+                "section": "Choose section"
+              },
+              "hud": {
+                "title": "Midterm Test",
+                "chip": "2d 22h"
+              },
+              "counts": {
+                "main": 1,
+                "dock": 1,
+                "card": 1,
+                "hud": 1,
+                "heading": 1,
+                "itemIds": [
+                  "assessment-count",
+                  "assessment-list",
+                  "assessment-quiz-3",
+                  "assessment-quiz-4",
+                  "assessment-quiz-5",
+                  "assessment-final",
+                  "assessment-quiz-1",
+                  "assessment-quiz-2",
+                  "assessment-empty",
+                  "assessment-midterm"
+                ]
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1791937043937
+                }
+              ],
+              "storageEvents": []
+            },
+            "documentRequests": [
+              "http://127.0.0.1:45301/mth141/?motion=off&qa_failure=timeout"
+            ],
+            "telemetry": []
+          },
+          {
+            "name": "fetch aborted",
+            "after": {
+              "route": "mth141",
+              "shell": "629b5f1d-f58c-4499-bfe1-e592650e6ec6",
+              "heading": "Linear Algebra",
+              "content": 1016,
+              "desk": {
+                "title": null,
+                "chip": null,
+                "when": null,
+                "section": null,
+                "today": null
+              },
+              "overall": {
+                "title": null,
+                "when": null,
+                "word": null,
+                "digits": []
+              },
+              "card": {
+                "title": "Midterm Test",
+                "id": "midterm",
+                "key": "midtermexact1792189800000",
+                "when": "Fri Oct 16 · 6:30 PM Toronto",
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "02"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "22"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "12"
+                  },
+                  {
+                    "unit": "s",
+                    "text": "31"
+                  }
+                ]
+              },
+              "dock": {
+                "title": "Midterm Test",
+                "chip": "2d 22h",
+                "section": "Choose section"
+              },
+              "hud": {
+                "title": "Midterm Test",
+                "chip": "2d 22h"
+              },
+              "counts": {
+                "main": 1,
+                "dock": 1,
+                "card": 1,
+                "hud": 1,
+                "heading": 1,
+                "itemIds": [
+                  "assessment-count",
+                  "assessment-list",
+                  "assessment-quiz-3",
+                  "assessment-quiz-4",
+                  "assessment-quiz-5",
+                  "assessment-final",
+                  "assessment-quiz-1",
+                  "assessment-quiz-2",
+                  "assessment-empty",
+                  "assessment-midterm"
+                ]
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1791937047491
+                }
+              ],
+              "storageEvents": []
+            },
+            "documentRequests": [
+              "http://127.0.0.1:45301/mth141/?motion=off&qa_failure=aborted"
+            ],
+            "telemetry": []
+          },
+          {
+            "name": "fetch missing-region",
+            "after": {
+              "route": "mth141",
+              "shell": "d766d2cc-b2ae-41fb-bda3-8b375944bd54",
+              "heading": "Linear Algebra",
+              "content": 1016,
+              "desk": {
+                "title": null,
+                "chip": null,
+                "when": null,
+                "section": null,
+                "today": null
+              },
+              "overall": {
+                "title": null,
+                "when": null,
+                "word": null,
+                "digits": []
+              },
+              "card": {
+                "title": "Midterm Test",
+                "id": "midterm",
+                "key": "midtermexact1792189800000",
+                "when": "Fri Oct 16 · 6:30 PM Toronto",
+                "digits": [
+                  {
+                    "unit": "d",
+                    "text": "02"
+                  },
+                  {
+                    "unit": "h",
+                    "text": "22"
+                  },
+                  {
+                    "unit": "m",
+                    "text": "12"
+                  },
+                  {
+                    "unit": "s",
+                    "text": "29"
+                  }
+                ]
+              },
+              "dock": {
+                "title": "Midterm Test",
+                "chip": "2d 22h",
+                "section": "Choose section"
+              },
+              "hud": {
+                "title": "Midterm Test",
+                "chip": "2d 22h"
+              },
+              "counts": {
+                "main": 1,
+                "dock": 1,
+                "card": 1,
+                "hud": 1,
+                "heading": 1,
+                "itemIds": [
+                  "assessment-count",
+                  "assessment-list",
+                  "assessment-quiz-3",
+                  "assessment-quiz-4",
+                  "assessment-quiz-5",
+                  "assessment-final",
+                  "assessment-quiz-1",
+                  "assessment-quiz-2",
+                  "assessment-empty",
+                  "assessment-midterm"
+                ]
+              },
+              "pageshow": [
+                {
+                  "persisted": false,
+                  "at": 1791937050160
+                }
+              ],
+              "storageEvents": []
+            },
+            "documentRequests": [
+              "http://127.0.0.1:45301/mth141/?motion=off&qa_failure=missing-region"
+            ],
+            "telemetry": []
+          },
+          {
+            "name": "desk: denied localStorage and sessionStorage getters",
+            "navigation": {
+              "route": "desk",
+              "next": "mth141"
+            },
+            "telemetry": []
+          },
+          {
+            "name": "cen100: denied localStorage and sessionStorage getters",
+            "navigation": {
+              "route": "cen100",
+              "next": "mth141"
+            },
+            "telemetry": []
+          },
+          {
+            "name": "mth140: denied localStorage and sessionStorage getters",
+            "navigation": {
+              "route": "mth140",
+              "next": "mth141"
+            },
+            "telemetry": []
+          },
+          {
+            "name": "mth141: denied localStorage and sessionStorage getters",
+            "navigation": {
+              "route": "mth141",
+              "next": "desk"
+            },
+            "telemetry": []
+          },
+          {
+            "name": "desk: denied localStorage and sessionStorage methods",
+            "navigation": {
+              "route": "desk",
+              "next": "mth141"
+            },
+            "telemetry": []
+          },
+          {
+            "name": "cen100: denied localStorage and sessionStorage methods",
+            "navigation": {
+              "route": "cen100",
+              "next": "mth141"
+            },
+            "telemetry": []
+          },
+          {
+            "name": "mth140: denied localStorage and sessionStorage methods",
+            "navigation": {
+              "route": "mth140",
+              "next": "mth141"
+            },
+            "telemetry": []
+          },
+          {
+            "name": "mth141: denied localStorage and sessionStorage methods",
+            "navigation": {
+              "route": "mth141",
+              "next": "desk"
+            },
+            "telemetry": []
+          },
+          {
+            "name": "offline after warm load",
+            "telemetry": []
+          },
+          {
+            "name": "misspelt route",
+            "response": {
+              "status": 404,
+              "url": "http://127.0.0.1:45301/cen10o/?qa_failure=404",
+              "text": "Not found",
+              "router": null
+            },
+            "limit": "Local preview returns its native Not found response; the repository has no custom 404 document. GitHub Pages hosted 404 presentation is not verified here.",
+            "telemetry": [
+              {
+                "type": "http",
+                "requestUrl": "http://127.0.0.1:45301/cen10o/?qa_failure=404",
+                "status": 404,
+                "message": "HTTP 404",
+                "url": "http://127.0.0.1:45301/?motion=off",
+                "expected": true
+              },
+              {
+                "type": "console",
+                "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+                "location": {
+                  "url": "http://127.0.0.1:45301/cen10o/?qa_failure=404",
+                  "lineNumber": 0,
+                  "columnNumber": 0
+                },
+                "url": "http://127.0.0.1:45301/cen10o/?qa_failure=404",
+                "expected": true
+              },
+              {
+                "type": "console",
+                "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+                "location": {
+                  "url": "http://127.0.0.1:45301/favicon.ico",
+                  "lineNumber": 0,
+                  "columnNumber": 0
+                },
+                "url": "http://127.0.0.1:45301/cen10o/?qa_failure=404",
+                "expected": true
+              }
+            ]
+          }
+        ],
+        "runnerErrors": [
+          {
+            "type": "pageerror",
+            "name": "SecurityError",
+            "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+            "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+            "url": "about:blank",
+            "expected": false
+          },
+          {
+            "type": "pageerror",
+            "name": "SecurityError",
+            "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+            "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+            "url": "about:blank",
+            "expected": false
+          },
+          {
+            "type": "pageerror",
+            "name": "SecurityError",
+            "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+            "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+            "url": "about:blank",
+            "expected": false
+          },
+          {
+            "type": "pageerror",
+            "name": "SecurityError",
+            "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+            "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+            "url": "about:blank",
+            "expected": false
+          },
+          {
+            "type": "http",
+            "requestUrl": "http://127.0.0.1:45301/cen10o/?qa_failure=404",
+            "status": 404,
+            "message": "HTTP 404",
+            "url": "http://127.0.0.1:45301/?motion=off",
+            "expected": false
+          },
+          {
+            "type": "console",
+            "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "location": {
+              "url": "http://127.0.0.1:45301/cen10o/?qa_failure=404",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "url": "http://127.0.0.1:45301/cen10o/?qa_failure=404",
+            "expected": false
+          },
+          {
+            "type": "console",
+            "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "location": {
+              "url": "http://127.0.0.1:45301/favicon.ico",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "url": "http://127.0.0.1:45301/cen10o/?qa_failure=404",
+            "expected": false
+          }
+        ]
+      },
+      "skipped": [],
+      "durationMs": 115269,
+      "failures": 1
+    }
+  ],
+  "runErrors": []
+}

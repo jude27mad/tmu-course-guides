@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-14T10:11:54.058Z",
+  "completedAt": "2026-10-14T10:11:56.634Z",
+  "status": "error",
+  "exitCode": 2,
+  "failures": 0,
+  "selection": {
+    "checks": [
+      "routes"
+    ],
+    "bases": [
+      "/"
+    ],
+    "gpu": false,
+    "help": false
+  },
+  "environment": {
+    "node": "v24.19.0",
+    "platform": "linux",
+    "architecture": "x64",
+    "deployments": [],
+    "requestedMode": "SwiftShader",
+    "playwrightPath": "/tmp/ns-perf-ci-driver/node_modules/playwright",
+    "playwrightSource": "PLAYWRIGHT_PATH",
+    "chromiumPath": "/tmp/ns-perf-ci-browsers/chromium-1248/chrome-linux64/chrome",
+    "chromiumSource": "Playwright bundled Chromium",
+    "launchArgs": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist",
+      "--disable-gpu-compositing"
+    ]
+  },
+  "checks": [
+    {
+      "name": "routes",
+      "status": "not-run",
+      "failures": 0,
+      "cases": []
+    }
+  ],
+  "errors": [
+    {
+      "phase": "startup/runtime",
+      "name": "Error",
+      "message": "cdpSession.send: Protocol error (Browser.getBrowserCommandLine): Command line not returned because --enable-automation not set.",
+      "stack": "cdpSession.send: Protocol error (Browser.getBrowserCommandLine): Command line not returned because --enable-automation not set.\n    at inspectNativeEnvironment (/tmp/ns-perf-native-compositor-diagnostic.mjs:35:15)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:305:82)\n    at async file:///tmp/ns-perf-native-compositor-diagnostic.mjs:65:16"
+    }
+  ]
+}

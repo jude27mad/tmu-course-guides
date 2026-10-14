@@ -1,0 +1,53 @@
+perf /: measuring desk phone
+perf /: measuring cen100 phone
+perf /: measuring mth140 phone
+perf /: measuring mth141 phone
+perf /: measuring desk desktop
+perf /: measuring cen100 desktop
+perf /: measuring mth140 desktop
+perf /: measuring mth141 desktop
+perf /: passed (0 failures)
+routes /: passed (0 failures)
+stability /: baseline recorded; starting 20 round trips
+stability /: 20 round trips completed
+stability /: 20 workspace changes and 20 palette cycles completed
+stability /: 10 Mark done/Undo cycles completed
+stability /: passed (0 failures)
+frames /: passed (0 failures)
+deadlines /: failed (1 failures)
+modes /: passed (0 failures)
+layout /: passed (0 failures)
+webkit /: skipped (0 failures)
+nojs /: passed (0 failures)
+bfcache /: passed (0 failures)
+failures /: passed (0 failures)
+crosstab /: failed (1 failures)
+clock /: passed (0 failures)
+forward /: passed (0 failures)
+perf /tmu-course-guides/: measuring desk phone
+perf /tmu-course-guides/: measuring cen100 phone
+perf /tmu-course-guides/: measuring mth140 phone
+perf /tmu-course-guides/: measuring mth141 phone
+perf /tmu-course-guides/: measuring desk desktop
+perf /tmu-course-guides/: measuring cen100 desktop
+perf /tmu-course-guides/: measuring mth140 desktop
+perf /tmu-course-guides/: measuring mth141 desktop
+perf /tmu-course-guides/: passed (0 failures)
+routes /tmu-course-guides/: passed (0 failures)
+stability /tmu-course-guides/: baseline recorded; starting 20 round trips
+stability /tmu-course-guides/: 20 round trips completed
+stability /tmu-course-guides/: 20 workspace changes and 20 palette cycles completed
+stability /tmu-course-guides/: 10 Mark done/Undo cycles completed
+stability /tmu-course-guides/: passed (0 failures)
+frames /tmu-course-guides/: passed (0 failures)
+deadlines /tmu-course-guides/: passed (0 failures)
+modes /tmu-course-guides/: passed (0 failures)
+layout /tmu-course-guides/: passed (0 failures)
+webkit /tmu-course-guides/: skipped (0 failures)
+nojs /tmu-course-guides/: passed (0 failures)
+bfcache /tmu-course-guides/: failed (1 failures)
+failures /tmu-course-guides/: failed (2 failures)
+crosstab /tmu-course-guides/: failed (2 failures)
+clock /tmu-course-guides/: passed (0 failures)
+forward /tmu-course-guides/: passed (0 failures)
+QA failed. Reports: /workspace/tmu-course-guides/tools/qa/reports/2026-10-14T04-29-12-369Z-124962

@@ -1,6 +1,41 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {CHECKS,compactExact,countGrowth,summarizeFrames,until} from './checks.mjs';
+import * as checks from './checks.mjs';
+
+test('only the explicit SwiftShader launch receives a longer physical-click budget',()=>{
+  const {clickTimeoutMs}=checks;
+  assert.equal(typeof clickTimeoutMs,'function');
+  assert.equal(clickTimeoutMs({gpu:false,browserName:'chromium'}),30000);
+  for(const options of [{gpu:true,browserName:'chromium'},{gpu:false,browserName:'webkit'},{gpu:false,browserName:'firefox'},{gpu:false},{gpu:undefined,browserName:'chromium'},{}])assert.equal(clickTimeoutMs(options),10000);
+});
+
+test('a reduced-motion renderer marker cannot stand in for its first static frame',()=>{
+  assert.equal(typeof checks.initialStaticSceneReady,'function');
+  const initializing={renderer:'webgl2',onScreen:true,sceneReady:null,sceneFrame:0,motionState:'still'};
+  assert.equal(checks.initialStaticSceneReady(initializing),false);
+  assert.equal(checks.initialStaticSceneReady({...initializing,sceneReady:'true'}),false);
+  assert.equal(checks.initialStaticSceneReady({...initializing,sceneReady:'true',sceneFrame:1}),true);
+  assert.equal(checks.initialStaticSceneReady({...initializing,sceneReady:'true',sceneFrame:1,motionState:'running'}),false);
+});
+
+test('static-scene readiness respects offscreen demand rendering and authored poster fallback',()=>{
+  assert.equal(typeof checks.initialStaticSceneReady,'function');
+  assert.equal(checks.initialStaticSceneReady(null),false);
+  assert.equal(checks.initialStaticSceneReady({onScreen:false}),false);
+  assert.equal(checks.initialStaticSceneReady({renderer:'webgl2',onScreen:false,sceneReady:null,sceneFrame:0}),true);
+  assert.equal(checks.initialStaticSceneReady({renderer:'poster',onScreen:true,sceneReady:'true',motionState:'still',sceneFrame:0}),true);
+});
+
+test('initial scene wait observes a real first frame and rejects a renderer that never initializes',async()=>{
+  assert.equal(typeof checks.waitForInitialStaticScene,'function');
+  const initializing={renderer:'webgl2',onScreen:true,sceneReady:null,sceneFrame:0,motionState:'still'};
+  const ready={...initializing,sceneReady:'true',sceneFrame:1};let calls=0;
+  const page={evaluate:async()=>++calls===1?initializing:ready};
+  assert.deepEqual(await checks.waitForInitialStaticScene(page,'mth141',1000),ready);
+  assert.equal(calls,2);
+  await assert.rejects(checks.waitForInitialStaticScene({evaluate:async()=>initializing},'mth141',0),/initial static scene/);
+});
 
 test('all six required checks are independently runnable',()=>{
   assert.deepEqual(Object.keys(CHECKS),['routes','stability','frames','deadlines','modes','layout']);
