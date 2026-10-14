@@ -1,0 +1,271 @@
+{
+  "status": "complete canonical native followup: explicit Playwright/core1.57.0, both-base BF/crosstab4recordsPASS",
+  "runDirectory": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T03-34-01-699Z-115290",
+  "startedAt": "2026-10-14T03:34:01.699Z",
+  "completedAt": "2026-10-14T03:39:00.691Z",
+  "exitCode": 0,
+  "repositoryCommit": "34aad19de8a9acf97c962dff1424483d2f656280",
+  "newCheckSourceSHA256": "b2bafedee3cc0569d4354334d42fcaac55d3ddcbf7ceb0e1ecdf43bddcd1f8d6",
+  "sourceBefore": {
+    "path": "/tmp/ns-resilience-native-157-source-before-bound.json",
+    "sha256": "a59ba6477fbed2f580d132eb6f5e47197fb0e544a26ad093057d5afb118b4b16",
+    "recordedAt": "2026-10-14T03:33:52.400Z",
+    "rawEvidence": {
+      "path": "/tmp/ns-resilience-native-157-source-before.json",
+      "sha256": "812637495b74ab41203e2356345afaddc1df79c61790d82731d67672383ed083"
+    }
+  },
+  "sourceAfter": {
+    "path": "/tmp/ns-resilience-native-157-source-after-bound.json",
+    "sha256": "f0f94d917e9106f2aa1d8f693ee364720d9a0932fba5835b0e99e5eb626b4fcf",
+    "recordedAt": "2026-10-14T03:39:23.470Z",
+    "rawEvidence": {
+      "path": "/tmp/ns-resilience-native-157-source-after.json",
+      "sha256": "cd687ae2fb5f507685978b580e2e9a894c84a71b9fe08f054708e5f1f55a95c7"
+    }
+  },
+  "sourceBytesUnchangedAtEnd": true,
+  "driverIdentityUnchangedAtEnd": true,
+  "driverIdentity": {
+    "playwright": {
+      "name": "playwright",
+      "version": "1.57.0",
+      "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright",
+      "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright/package.json",
+      "packageSHA256": "07726a5a20b29123d85311af7d11b7de6bf00ddd03121d3c9061995043ebd261",
+      "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright/index.js",
+      "entrySHA256": "4e98f65f0a9d9bcab8cffc0c5cfdd87fd3f5b0be74fc494ff166a466b204cd44"
+    },
+    "core": {
+      "name": "playwright-core",
+      "version": "1.57.0",
+      "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright-core",
+      "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright-core/package.json",
+      "packageSHA256": "6d38907778eb872e37e8da93b430b011c3dfbe8848c4214becb7effdc0aff1d6",
+      "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright-core/index.js",
+      "entrySHA256": "a4f83b5b2915b43bddd5384d963a66d1fd4d978a3db8059969fb78de65bc519a"
+    }
+  },
+  "launchEnvironment": {
+    "PLAYWRIGHT_PATH": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "QA_CHROMIUM_PATH": "/usr/bin/chromium",
+    "QA_NAV_DIAGNOSTICS": "1",
+    "QA_GPU": "0",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules"
+  },
+  "loader": {
+    "modulePath": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "source": "PLAYWRIGHT_PATH"
+  },
+  "productFingerprint": "14aab876ca16efa6dc335eb663dd7817bde3948628ce48613c18deaa00234e32",
+  "protectedFingerprint": "1b773fabf9affdc543ba245a8822642aab9167f28bc1990b5f4f293d4deab653",
+  "productManifest": {
+    "path": "/tmp/ns-resilience-native-product-manifest.json",
+    "sha256": "1f146ce60a7a1a1281fa0ec47c0e42813c901ad772b549578db2398e093ec3b4",
+    "entryListDigest": "f5579f31b1e754adb8d4ab09e20031924d8f0928bbfd22f0c2c5cab52eb9cda8",
+    "all87WorkingProductFilesEqualFrozenManifestAtEnd": true
+  },
+  "log": "/tmp/ns-resilience-native-157-focused.log",
+  "metrics": [
+    {
+      "check": "bfcache",
+      "base": "/",
+      "status": "passed",
+      "assertions": 65,
+      "durationMs": 74731,
+      "telemetry": 0,
+      "readyWaits": 15,
+      "routeActions": 3,
+      "interactionActions": 0,
+      "navigations": 8,
+      "maxReadyMs": 2178,
+      "maxBrowserReplyMs": 2050,
+      "maxRouteActionMs": 493,
+      "maxInteractionMs": 0,
+      "maxNativeNavigationMs": 7617,
+      "nativeSkips": [
+        {
+          "feature": "cen100: native persisted BFCache restoration",
+          "reason": "The browser performed a document Back without pageshow.persisted. Shell retention/resume cannot be claimed.",
+          "navigation": [
+            {
+              "type": "back_forward",
+              "notRestoredReasons": {
+                "src": null,
+                "id": null,
+                "url": "http://127.0.0.1:38569/cen100/?motion=off",
+                "name": null,
+                "reasons": [
+                  {
+                    "reason": "masked"
+                  }
+                ],
+                "children": []
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "check": "bfcache",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "assertions": 65,
+      "durationMs": 64943,
+      "telemetry": 0,
+      "readyWaits": 15,
+      "routeActions": 3,
+      "interactionActions": 0,
+      "navigations": 8,
+      "maxReadyMs": 2031,
+      "maxBrowserReplyMs": 1137,
+      "maxRouteActionMs": 289,
+      "maxInteractionMs": 0,
+      "maxNativeNavigationMs": 7117,
+      "nativeSkips": [
+        {
+          "feature": "cen100: native persisted BFCache restoration",
+          "reason": "The browser performed a document Back without pageshow.persisted. Shell retention/resume cannot be claimed.",
+          "navigation": [
+            {
+              "type": "back_forward",
+              "notRestoredReasons": {
+                "src": null,
+                "id": null,
+                "url": "http://127.0.0.1:41177/tmu-course-guides/cen100/?motion=off",
+                "name": null,
+                "reasons": [
+                  {
+                    "reason": "masked"
+                  }
+                ],
+                "children": []
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "check": "crosstab",
+      "base": "/",
+      "status": "passed",
+      "assertions": 126,
+      "durationMs": 76221,
+      "telemetry": 0,
+      "readyWaits": 12,
+      "routeActions": 6,
+      "interactionActions": 21,
+      "navigations": 0,
+      "maxReadyMs": 1964,
+      "maxBrowserReplyMs": 1836,
+      "maxRouteActionMs": 206,
+      "maxInteractionMs": 7125,
+      "maxNativeNavigationMs": 0,
+      "nativeSkips": []
+    },
+    {
+      "check": "crosstab",
+      "base": "/tmu-course-guides/",
+      "status": "passed",
+      "assertions": 126,
+      "durationMs": 76392,
+      "telemetry": 0,
+      "readyWaits": 12,
+      "routeActions": 6,
+      "interactionActions": 21,
+      "navigations": 0,
+      "maxReadyMs": 3403,
+      "maxBrowserReplyMs": 3268,
+      "maxRouteActionMs": 188,
+      "maxInteractionMs": 7988,
+      "maxNativeNavigationMs": 0,
+      "nativeSkips": []
+    }
+  ],
+  "totalAssertions": 382,
+  "indexedNativeSkips": [
+    {
+      "check": "bfcache",
+      "base": "/",
+      "recordIndex": 0,
+      "skipIndex": 0,
+      "nativeObservationIndex": 1,
+      "route": "cen100",
+      "skip": {
+        "feature": "cen100: native persisted BFCache restoration",
+        "reason": "The browser performed a document Back without pageshow.persisted. Shell retention/resume cannot be claimed.",
+        "navigation": [
+          {
+            "type": "back_forward",
+            "notRestoredReasons": {
+              "src": null,
+              "id": null,
+              "url": "http://127.0.0.1:38569/cen100/?motion=off",
+              "name": null,
+              "reasons": [
+                {
+                  "reason": "masked"
+                }
+              ],
+              "children": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "bfcache",
+      "base": "/tmu-course-guides/",
+      "recordIndex": 1,
+      "skipIndex": 0,
+      "nativeObservationIndex": 1,
+      "route": "cen100",
+      "skip": {
+        "feature": "cen100: native persisted BFCache restoration",
+        "reason": "The browser performed a document Back without pageshow.persisted. Shell retention/resume cannot be claimed.",
+        "navigation": [
+          {
+            "type": "back_forward",
+            "notRestoredReasons": {
+              "src": null,
+              "id": null,
+              "url": "http://127.0.0.1:41177/tmu-course-guides/cen100/?motion=off",
+              "name": null,
+              "reasons": [
+                {
+                  "reason": "masked"
+                }
+              ],
+              "children": []
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "extendedSuccessfulCalls": [],
+  "resourceClosure": {
+    "session": 17946,
+    "exitCode": 0,
+    "activeOwnedBrowsersAndServersAfterClose": 0,
+    "verifiedBeforeRelease": true
+  },
+  "supportingEarlierEvidence": {
+    "rawDirectory": "tools/qa/reports/2026-10-14T02-59-12-763Z-111119",
+    "proof": "/tmp/ns-resilience-native-final-proof.json",
+    "pairedProof": "/tmp/ns-resilience-native-paired-proof.json",
+    "note": "Earlier default bare Playwright resolution is not accepted as canonical same1.57 evidence; retained as supporting runs. Historical NODE_PATH/driver identity was not captured at that launch."
+  },
+  "testsNotRepeated": {
+    "fullQAtools": 116,
+    "focusedPure": 29,
+    "note": "Already passed unchanged source; their earlier default driver instrumentation is supporting, while this full native followup uses explicit same1.57 identity."
+  },
+  "limitations": [
+    "Exact archived privacy-load/Mark-done timeout triggers remain unknown.",
+    "Native cache-retention skips are tied to these actual route/index/reason observations, never copied from the earlier1.62 report.",
+    "New successful long calls are current observed trajectories and do not establish old failure causes."
+  ]
+}

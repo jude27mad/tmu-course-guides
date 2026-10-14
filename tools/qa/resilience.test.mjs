@@ -3,6 +3,157 @@ import assert from 'node:assert/strict';
 import { RESILIENCE_CHECKS, IPHONE, expectedTarget, expectedChip, expectedFailureEvent, readableDate, seedDeadlines, webkit } from './checks-resilience.mjs';
 import * as noScriptPolicy from './checks-resilience.mjs';
 
+function nativeOperationFixture(browserName = 'chromium', gpu = false, registered = true) {
+  const context = {}, observation = {}, listeners = new Map(), frame = { url: () => page.url() };
+  const page = { context: () => context, url: () => 'https://guide.test/cen100/?motion=off', mainFrame: () => frame,
+    on(type, fn) { const callbacks = listeners.get(type) ?? new Set();callbacks.add(fn);listeners.set(type, callbacks); },
+    off(type, fn) { listeners.get(type)?.delete(fn); },
+    emit(type, argument) { for (const fn of [...(listeners.get(type) ?? [])]) fn(argument); } };
+  const telemetry = [{ type: 'requestfailed', message: 'retained evidence' }];
+  if (registered) noScriptPolicy.registerResilienceReadinessScope(context, { browser: { browserType: () => ({ name: () => browserName }) }, gpu, observation, telemetry: () => telemetry }).registerPage(page);
+  return { page, frame, observation, listeners, telemetry };
+}
+
+test('cross-tab Mark and Undo retain native evaluation, locator strictness and the selected per-call limit', async () => {
+  assert.equal(typeof noScriptPolicy.performResilienceInteraction, 'function');
+  for (const [browserName, gpu, registered, timeout] of [['chromium', false, true, 30_000], ['chromium', true, true, 10_000], ['webkit', false, true, 10_000], [null, false, false, 10_000]]) {
+    const { page, observation } = nativeOperationFixture(browserName, gpu, registered);const calls = [];let clicks = 0;
+    page.locator = selector => {
+      const target = first => ({ evaluate: async (fn, arg, options) => { calls.push({ selector, first, arg, options });fn({ click() { clicks++; } }); } });
+      return { ...target(false), first: () => target(true) };
+    };
+    for (const [name, selector, first] of [['Mark done', '[data-quick-complete]', true], ['Undo', '#undo-complete', false]]) {
+      const trace = await noScriptPolicy.performResilienceInteraction(page, { name, selector, method: 'evaluate-click', first });
+      assert.deepEqual(calls.at(-1), { selector, first, arg: undefined, options: { timeout } });
+      assert.equal(trace.status, 'activated');assert.equal(trace.timeoutMs, timeout);assert.equal(trace.sourceURL, page.url());
+      assert.equal(trace.policy.browserName, registered ? browserName : null);
+      assert.equal(trace.policy.gpu, registered ? gpu : null);
+    }
+    assert.equal(clicks, 2);if (registered) assert.equal(observation.interactionActions.length, 2);
+  }
+});
+
+test('cross-tab section actions preserve physical hit-testing and native selectOption arguments', async () => {
+  assert.equal(typeof noScriptPolicy.performResilienceInteraction, 'function');
+  for (const [browserName, gpu, timeout] of [['chromium', false, 30_000], ['chromium', true, 10_000], ['webkit', false, 10_000]]) {
+    const { page, observation } = nativeOperationFixture(browserName, gpu);const calls = [];
+    page.locator = selector => ({ first() { assert.fail('section actions retain strict locators'); }, click: async options => calls.push({ method: 'click', selector, options }), selectOption: async (value, options) => calls.push({ method: 'selectOption', selector, value, options }) });
+    await noScriptPolicy.performResilienceInteraction(page, { name: 'open section', selector: '.workspace-section', method: 'click' });
+    for (const value of ['32', '31']) await noScriptPolicy.performResilienceInteraction(page, { name: 'select section', selector: '#section-select', method: 'selectOption', value });
+    assert.deepEqual(calls, [{ method: 'click', selector: '.workspace-section', options: { timeout } }, ...['32', '31'].map(value => ({ method: 'selectOption', selector: '#section-select', value, options: { timeout } }))]);
+    assert.equal(observation.interactionActions.length, 3);assert.ok(observation.interactionActions.every(trace => trace.status === 'activated' && trace.first === false));
+    assert.deepEqual(observation.interactionActions.slice(1).map(trace => trace.value), ['32', '31']);
+    assert.deepEqual(observation.routeActions, []);assert.deepEqual(observation.readiness, []);
+  }
+});
+
+test('cross-tab missing controls still fail and retain Node evidence when passive diagnostics fail', async () => {
+  assert.equal(typeof noScriptPolicy.performResilienceInteraction, 'function');
+  const { page, observation, telemetry } = nativeOperationFixture();const error = Error('locator.evaluate: missing Mark done button');let time = 0;
+  page.emit('request', { url: () => 'https://guide.test/pending.mjs', method: () => 'GET', resourceType: () => 'script' });
+  page.locator = () => ({ first: () => ({ evaluate: async (_fn, _arg, options) => { time += options.timeout;throw error; } }) });
+  await assert.rejects(noScriptPolicy.performResilienceInteraction(page, { name: 'Mark done', selector: '[data-quick-complete]', method: 'evaluate-click', first: true }, { now: () => time, snapshot: async () => { throw Error('snapshot unavailable'); } }), candidate => candidate === error);
+  const trace = observation.interactionActions[0];assert.equal(trace.status, 'error');assert.equal(trace.elapsedMs, 30_000);assert.equal(trace.error, error.message);assert.equal(trace.snapshotError, 'snapshot unavailable');
+  assert.equal(trace.failureNetwork.pendingRequests[0].url, 'https://guide.test/pending.mjs');assert.deepEqual(trace.failureNetwork.telemetry, telemetry);
+});
+
+test('native-operation diagnostics have a virtual five-second bound and clear their timer on every outcome', async () => {
+  assert.equal(typeof noScriptPolicy.boundedResilienceDiagnostic, 'function');
+  let fire, limit, cleared = 0;
+  const options = { setTimer(fn, ms) { fire = fn;limit = ms;return 17; }, clearTimer(timer) { assert.equal(timer, 17);cleared++; } };
+  assert.equal(await noScriptPolicy.boundedResilienceDiagnostic(async () => 'snapshot', options), 'snapshot');assert.equal(limit, 5000);assert.equal(cleared, 1);
+  const error = Error('snapshot rejected');await assert.rejects(noScriptPolicy.boundedResilienceDiagnostic(() => Promise.reject(error), options), candidate => candidate === error);assert.equal(cleared, 2);
+  const pending = noScriptPolicy.boundedResilienceDiagnostic(() => new Promise(() => {}), options);fire();
+  await assert.rejects(pending, /snapshot exceeded 5000ms/);assert.equal(cleared, 3);
+});
+
+test('native-operation diagnostic timeout preserves the original action error and its selected limit', async () => {
+  assert.equal(typeof noScriptPolicy.performResilienceInteraction, 'function');
+  const { page, observation } = nativeOperationFixture();const error = Error('native action timeout');let time = 0, cleared = false;
+  page.locator = () => ({ evaluate: async (_fn, _arg, options) => { time += options.timeout;throw error; } });
+  await assert.rejects(noScriptPolicy.performResilienceInteraction(page, { name: 'Undo', selector: '#undo-complete', method: 'evaluate-click' }, {
+    now: () => time, snapshot: () => new Promise(() => {}), setTimer(fn, ms) { assert.equal(ms, 5000);queueMicrotask(() => { time += ms;fn(); });return 1; }, clearTimer(timer) { assert.equal(timer, 1);cleared = true; }
+  }), candidate => candidate === error);
+  const trace = observation.interactionActions[0];assert.equal(trace.status, 'error');assert.equal(trace.timeoutMs, 30_000);assert.equal(trace.elapsedMs, 30_000);assert.equal(trace.diagnosticElapsedMs, 5000);assert.match(trace.snapshotError, /5000ms/);assert.equal(cleared, true);
+});
+
+test('native-operation failures survive throwing Node telemetry and diagnostic timer setup', async () => {
+  assert.equal(typeof noScriptPolicy.performResilienceInteraction, 'function');
+  for (const telemetryError of [Error('Node telemetry unavailable'), null, undefined]) for (const timerThrows of [false, true]) {
+    const context = {}, observation = {}, error = Error('native Undo action failed');
+    noScriptPolicy.registerResilienceReadinessScope(context, { browser: { browserType: () => ({ name: () => 'chromium' }) }, gpu: false, observation, telemetry() { throw telemetryError; } });
+    const page = { context: () => context, locator: () => ({ evaluate: async () => { throw error; } }) };
+    await assert.rejects(noScriptPolicy.performResilienceInteraction(page, { name: 'Undo', selector: '#undo-complete', method: 'evaluate-click' }, {
+      snapshot: async () => ({ targetPresent: false }), ...(timerThrows ? { setTimer() { throw Error('diagnostic timer setup failed'); }, clearTimer() {} } : {})
+    }), candidate => candidate === error);
+    const trace = observation.interactionActions[0];assert.equal(trace.status, 'error');assert.equal(trace.error, error.message);
+    assert.deepEqual(trace.failureNetwork, { pendingRequests: [], telemetry: [], errors: [{ source: 'telemetry', message: telemetryError?.message ?? String(telemetryError) }] });
+    if (timerThrows) assert.equal(trace.snapshotError, 'diagnostic timer setup failed');else assert.equal(trace.failureSnapshot.targetPresent, false);
+  }
+});
+
+test('BFCache parking retains load and native Back retains commit under only the selected call budget', async () => {
+  assert.equal(typeof noScriptPolicy.performResilienceNavigation, 'function');
+  for (const [browserName, gpu, registered, timeout] of [['chromium', false, true, 30_000], ['chromium', true, true, 10_000], ['webkit', false, true, 10_000], [null, false, false, 10_000]]) {
+    const { page, observation, listeners } = nativeOperationFixture(browserName, gpu, registered);const calls = [], parking = 'https://guide.test/privacy.html', returning = page.url();
+    page.goto = async (target, options) => { calls.push({ method: 'goto', target, options });page.url = () => target;return { url: () => target, status: () => 200 }; };
+    page.goBack = async options => { calls.push({ method: 'goBack', options });page.url = () => returning;return null; };
+    const park = await noScriptPolicy.performResilienceNavigation(page, { name: 'BFCache park', method: 'goto', targetURL: parking });
+    const back = await noScriptPolicy.performResilienceNavigation(page, { name: 'BFCache Back', method: 'goBack', targetURL: returning });
+    assert.deepEqual(calls, [{ method: 'goto', target: parking, options: { waitUntil: 'load', timeout } }, { method: 'goBack', options: { waitUntil: 'commit', timeout } }]);
+    assert.equal(park.status, 'navigated');assert.deepEqual(park.response, { url: parking, status: 200 });assert.equal(back.status, 'navigated');assert.equal(back.response, null, 'a cached native Back can return no HTTP response');
+    assert.equal(back.resultURL, returning);assert.equal(back.sourceURL, parking);assert.equal(back.timeoutMs, timeout);
+    if (registered) { assert.equal(observation.navigations.length, 2);assert.deepEqual(observation.readiness, []);assert.deepEqual(observation.routeActions, []); }
+    for (const callbacks of listeners.values()) assert.ok(callbacks.size <= 1, 'temporary navigation listeners are removed');
+  }
+});
+
+test('BFCache passive native navigation records main-frame milestones and detaches its temporary listeners', async () => {
+  assert.equal(typeof noScriptPolicy.performResilienceNavigation, 'function');
+  const { page, frame, observation, listeners } = nativeOperationFixture();let time = 0;const targetURL = 'https://guide.test/privacy.html';
+  const documentRequest = { isNavigationRequest: () => true, frame: () => frame, url: () => targetURL, method: () => 'GET', resourceType: () => 'document' }, childRequest = { ...documentRequest, frame: () => ({}) };
+  page.goto = async () => {
+    page.emit('request', childRequest);time = 2;page.emit('request', documentRequest);
+    time = 4;page.emit('response', { request: () => documentRequest, url: () => targetURL, status: () => 200 });
+    page.url = () => targetURL;time = 6;page.emit('framenavigated', frame);time = 8;page.emit('domcontentloaded');time = 10;page.emit('requestfinished', documentRequest);time = 12;page.emit('load');return null;
+  };
+  const trace = await noScriptPolicy.performResilienceNavigation(page, { name: 'BFCache park', method: 'goto', targetURL }, { now: () => time });
+  assert.deepEqual(trace.events.map(event => [event.type, event.elapsedMs]), [['request', 2], ['response', 4], ['commit', 6], ['domcontentloaded', 8], ['requestfinished', 10], ['load', 12]]);
+  assert.ok(trace.events.every(event => event.phase === 'operation' && event.url === targetURL));assert.equal(trace.elapsedMs, 12);assert.equal(trace.droppedEvents, 0);
+  assert.equal(observation.navigations[0], trace);assert.equal(listeners.get('request').size, 1, 'only the existing pending-request observer remains');
+  for (const type of ['response', 'framenavigated', 'load', 'close']) assert.equal(listeners.get(type).size, 0);
+});
+
+test('BFCache navigation failure remains a failure while late native events and passive state are diagnostic only', async () => {
+  assert.equal(typeof noScriptPolicy.performResilienceNavigation, 'function');
+  const { page, frame, observation, listeners } = nativeOperationFixture();const error = Error('page.goto: privacy load timeout');let time = 0, attempts = 0;const targetURL = 'https://guide.test/privacy.html';
+  const request = { isNavigationRequest: () => true, frame: () => frame, url: () => targetURL, method: () => 'GET', resourceType: () => 'document' };
+  page.goto = async (_url, options) => { attempts++;page.emit('request', request);time += options.timeout;throw error; };
+  await assert.rejects(noScriptPolicy.performResilienceNavigation(page, { name: 'BFCache park', method: 'goto', targetURL }, { now: () => time, snapshot: async () => { time += 25;page.url = () => targetURL;page.emit('load');return { url: targetURL, readyState: 'complete' }; } }), candidate => candidate === error);
+  const trace = observation.navigations[0];assert.equal(attempts, 1);assert.equal(trace.status, 'error');assert.equal(trace.elapsedMs, 30_000);assert.equal(trace.diagnosticElapsedMs, 25);assert.equal(trace.error, error.message);
+  assert.equal(trace.failureNetwork.pendingRequests[0].url, targetURL);assert.equal(trace.failureSnapshot.readyState, 'complete');assert.equal(trace.events.at(-1).phase, 'diagnostic');assert.equal(trace.events.at(-1).elapsedMs, 30_025);
+  assert.equal(listeners.get('load').size, 0);assert.equal(listeners.get('request').size, 1);
+});
+
+test('BFCache passive native navigation traces are bounded without suppressing the operation result', async () => {
+  assert.equal(typeof noScriptPolicy.performResilienceNavigation, 'function');
+  const { page } = nativeOperationFixture();page.goBack = async () => { for (let i = 0; i < 105; i++) page.emit('load');return null; };
+  const trace = await noScriptPolicy.performResilienceNavigation(page, { name: 'BFCache Back', method: 'goBack', targetURL: page.url() });
+  assert.equal(trace.status, 'navigated');assert.equal(trace.events.length, 100);assert.equal(trace.droppedEvents, 5);
+});
+
+test('BFCache Back rejection preserves its original error and detaches listeners after a stalled diagnostic', async () => {
+  assert.equal(typeof noScriptPolicy.performResilienceNavigation, 'function');
+  const { page, observation, listeners } = nativeOperationFixture();const error = Error('page.goBack: native commit timeout');let time = 0, cleared = false;
+  page.goBack = async options => { assert.deepEqual(options, { waitUntil: 'commit', timeout: 30_000 });time += options.timeout;throw error; };
+  await assert.rejects(noScriptPolicy.performResilienceNavigation(page, { name: 'BFCache Back', method: 'goBack', targetURL: page.url() }, {
+    now: () => time, snapshot: () => new Promise(() => {}), setTimer(fn, ms) { assert.equal(ms, 5000);queueMicrotask(() => { time += ms;fn(); });return 1; }, clearTimer(timer) { assert.equal(timer, 1);cleared = true; }
+  }), candidate => candidate === error);
+  const trace = observation.navigations[0];assert.equal(trace.status, 'error');assert.equal(trace.error, error.message);assert.equal(trace.elapsedMs, 30_000);assert.equal(trace.diagnosticElapsedMs, 5000);assert.match(trace.snapshotError, /5000ms/);assert.equal(cleared, true);
+  for (const type of ['response', 'framenavigated', 'load', 'close']) assert.equal(listeners.get(type).size, 0);
+  assert.equal(listeners.get('request').size, 1);
+});
+
 test('only explicit Chromium software-rendering resilience cases receive a 30-second readiness budget', () => {
   const timeout = options => noScriptPolicy.resilienceReadyTimeout?.(options) ?? 10_000;
   assert.equal(timeout({ browserName: 'chromium', gpu: false }), 30_000);

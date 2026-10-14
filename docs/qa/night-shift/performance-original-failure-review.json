@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "approved": true,
+  "reviewedBy": "/root",
+  "review": "Reviewed all seven actual failed assertions and the exact failed runner event. Approval covers their recorded scope for named whole-check follow-up validation only; it does not pass or waive the failed full run, infer its causes, accept incomplete samples or approve any final follow-up that fails.",
+  "originalSummarySHA256": "dc2ed458c5db452072b2d974e4d78e17e2b7855e151b46baf9f8cd5b0314e695",
+  "checks": [
+    {
+      "check": "bfcache",
+      "rawReportSHA256": "f2b979fcc92fd3f54db264c49390c7932c4f552c34dd82b7a6b2118fa24e0a83",
+      "failedAssertions": [
+        {
+          "base": "/",
+          "name": "cen100: native document Back / BFCache: execution",
+          "rawAssertionSHA256": "e1e3e8d82c84768d5f7f678e63c5a19c058b31e2ba7b8266d9ccbf160b62b810"
+        },
+        {
+          "base": "/tmu-course-guides/",
+          "name": "cen100: native document Back / BFCache: execution",
+          "rawAssertionSHA256": "1b09f5aaea78d1adaabb0bea39ab9fd93a1b943281cb608016bf55a03eeda963"
+        },
+        {
+          "base": "/tmu-course-guides/",
+          "name": "mth140: native document Back / BFCache: execution",
+          "rawAssertionSHA256": "fe40bbdebdd31cc1e5fddc808ea085120b6d5aafb7abe7d562ecb15582e5adca"
+        }
+      ],
+      "runnerTelemetry": [
+        {
+          "base": "/tmu-course-guides/",
+          "rawEventSHA256": "f5a8b24de8f307d8e45942237a2fb93d69fa98b60ca083a2e7e7e837c6e1a633"
+        }
+      ],
+      "review": "Reviewed three privacy.html load timeouts at 10 seconds (CEN100 both bases, MTH140 project base), plus the exact project privacy ERR_ABORTED runner event. They remain failed evidence with unknown specific causes. Replacement requires a complete passing BFCache check at both bases, unchanged native operations/assertions, source-bound software-only budget, zero unexpected final telemetry and explicit native restoration gaps."
+    },
+    {
+      "check": "crosstab",
+      "rawReportSHA256": "8815c641d9099e34aaf1a830920d23821ee77d26ae4187ccb52dc7033d07db28",
+      "failedAssertions": [
+        {
+          "base": "/",
+          "name": "mth140: native cross-tab completion, Undo and section changes: execution",
+          "rawAssertionSHA256": "2cb51d4b26d0ecf4a3721247572d3c071233435dcbea12cdbfb069cf404b302f"
+        }
+      ],
+      "runnerTelemetry": [],
+      "review": "Reviewed root MTH140 first Mark done locator.evaluate timeout at 10 seconds. Specific cause unestablished; no original native action trace exists. Replacement requires complete passing both-base cross-tab checks retaining actual native controls, trusted storage events, state and shell assertions, with only the reviewed driver budget and diagnostics."
+    },
+    {
+      "check": "perf",
+      "rawReportSHA256": "1c805aca3e6bbabd3797340be092b9e34fb43af1ae28318514b9fad2318f2b71",
+      "failedAssertions": [
+        {
+          "base": "/tmu-course-guides/",
+          "name": "cen100 phone: completed route and real deadline content",
+          "rawAssertionSHA256": "b05f85427cd8d412f39ff93f5fd8139b4a0c812fc94e8610591d1fd7eb6d13e3"
+        },
+        {
+          "base": "/tmu-course-guides/",
+          "name": "cen100 phone: declared optional feature fetches attempted",
+          "rawAssertionSHA256": "0a9deda73429c0188ce6d00d397fccab808c75b1df15cc3b03072ddab3ca6e69"
+        },
+        {
+          "base": "/tmu-course-guides/",
+          "name": "cen100 phone: network sample reaches quiet boundary",
+          "rawAssertionSHA256": "b9a00d344c400bbba404c88b01a0e7d7ba26d9c087f0d569e8860826e7fa7160"
+        }
+      ],
+      "runnerTelemetry": [],
+      "review": "Reviewed failed CEN100 project-base phone sample: 90-second cap, 27 unfinished requests, no FCP/semantic readiness/optional fetches. Cause unestablished; sample cannot supply final performance. Only a fresh complete passing 16-case whole perf report may replace it, with unchanged profiles, cap, guards and frozen budgets."
+    }
+  ],
+  "reviewedAt": "2026-10-14T02:59:12.545Z"
+}

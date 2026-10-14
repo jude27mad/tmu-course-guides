@@ -1,0 +1,82 @@
+{
+  "recordedAt": "2026-10-14T03:39:23.470Z",
+  "runDirectory": "tools/qa/reports/2026-10-14T03-34-01-699Z-115290",
+  "repositoryCommit": "34aad19de8a9acf97c962dff1424483d2f656280",
+  "productFingerprint": "14aab876ca16efa6dc335eb663dd7817bde3948628ce48613c18deaa00234e32",
+  "protectedFingerprint": "1b773fabf9affdc543ba245a8822642aab9167f28bc1990b5f4f293d4deab653",
+  "sources": [
+    {
+      "path": "tools/qa/checks-resilience.mjs",
+      "sha256": "b2bafedee3cc0569d4354334d42fcaac55d3ddcbf7ceb0e1ecdf43bddcd1f8d6"
+    },
+    {
+      "path": "tools/qa/checks.mjs",
+      "sha256": "ae5f73702935e07258d71c36bc4c4cf20f73f13aba17607066376b7a36136563"
+    },
+    {
+      "path": "tools/qa/checks-perf.mjs",
+      "sha256": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657"
+    },
+    {
+      "path": "tools/qa/runtime.mjs",
+      "sha256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587"
+    },
+    {
+      "path": "tools/qa/instrument.mjs",
+      "sha256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892"
+    }
+  ],
+  "launchEnvironment": {
+    "PLAYWRIGHT_PATH": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "QA_CHROMIUM_PATH": "/usr/bin/chromium",
+    "QA_NAV_DIAGNOSTICS": "1",
+    "QA_GPU": "0",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules"
+  },
+  "loader": {
+    "modulePath": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "source": "PLAYWRIGHT_PATH"
+  },
+  "driverIdentity": {
+    "playwright": {
+      "name": "playwright",
+      "version": "1.57.0",
+      "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright",
+      "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright/package.json",
+      "packageSHA256": "07726a5a20b29123d85311af7d11b7de6bf00ddd03121d3c9061995043ebd261",
+      "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright/index.js",
+      "entrySHA256": "4e98f65f0a9d9bcab8cffc0c5cfdd87fd3f5b0be74fc494ff166a466b204cd44"
+    },
+    "core": {
+      "name": "playwright-core",
+      "version": "1.57.0",
+      "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright-core",
+      "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright-core/package.json",
+      "packageSHA256": "6d38907778eb872e37e8da93b430b011c3dfbe8848c4214becb7effdc0aff1d6",
+      "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright-core/index.js",
+      "entrySHA256": "a4f83b5b2915b43bddd5384d963a66d1fd4d978a3db8059969fb78de65bc519a"
+    }
+  },
+  "launchOptions": {
+    "headless": true,
+    "executablePath": "/usr/bin/chromium",
+    "args": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "note": "Actual after-close source/absolute1.57 loader identity capture; compare with truthful before-launch capture.",
+  "sourceAndDriverUnchangedAtEnd": true,
+  "startedAt": "2026-10-14T03:34:01.699Z",
+  "completedAt": "2026-10-14T03:39:00.691Z",
+  "sourceBytesUnchangedAtEnd": true,
+  "beforeEvidence": {
+    "path": "/tmp/ns-resilience-native-157-source-before.json",
+    "sha256": "812637495b74ab41203e2356345afaddc1df79c61790d82731d67672383ed083"
+  },
+  "afterEvidence": {
+    "path": "/tmp/ns-resilience-native-157-source-after.json",
+    "sha256": "cd687ae2fb5f507685978b580e2e9a894c84a71b9fe08f054708e5f1f55a95c7"
+  }
+}

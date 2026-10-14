@@ -1,0 +1,16 @@
+[
+  {
+    "check": "bfcache",
+    "base": "/",
+    "route": "cen100",
+    "rawSkipSHA256": "7fb5b904c4bf4a2b794d5b58f8347412c531927567a498c8c431a8724c29233e",
+    "review": "Reviewed actual native document Back under the matching explicit Playwright/core 1.57 driver without pageshow.persisted; navigation is back_forward and notRestoredReasons exposes only masked. Native shell retention/resume is not claimed for CEN100. Back-page usability and separate synthetic persisted-handler deadline/storage assertions pass. This is explicit limited coverage, with no inferred product or GPU cause."
+  },
+  {
+    "check": "bfcache",
+    "base": "/tmu-course-guides/",
+    "route": "cen100",
+    "rawSkipSHA256": "302e823d810942b4bb92b918a1d8cd423b257672a52860a2f3ae1e41d0344810",
+    "review": "Reviewed actual native document Back under the matching explicit Playwright/core 1.57 driver without pageshow.persisted; navigation is back_forward and notRestoredReasons exposes only masked. Native shell retention/resume is not claimed for CEN100. Back-page usability and separate synthetic persisted-handler deadline/storage assertions pass. This is explicit limited coverage, with no inferred product or GPU cause."
+  }
+]

@@ -88,9 +88,9 @@ export function registerResilienceReadinessScope(context, { browser, gpu, observ
   let browserName = null;
   try { browserName = browser.browserType?.()?.name?.() ?? null; } catch {}
   const policy = Object.freeze({ browserName, gpu: gpu ?? null, timeoutMs: resilienceReadyTimeout({ browserName, gpu }) });
-  observation.readinessPolicy = policy;observation.readiness = [];observation.routeActions = [];
+  observation.readinessPolicy = policy;observation.readiness = [];observation.routeActions = [];observation.interactionActions = [];observation.navigations = [];
   const pendingByPage = new WeakMap();
-  const scope = { policy, waits: observation.readiness, actions: observation.routeActions, telemetry, pending(page) { return [...(pendingByPage.get(page)?.values() ?? [])]; }, registerPage(page) {
+  const scope = { policy, waits: observation.readiness, actions: observation.routeActions, interactions: observation.interactionActions, navigations: observation.navigations, telemetry, pending(page) { return [...(pendingByPage.get(page)?.values() ?? [])]; }, registerPage(page) {
     if (pageReadiness.has(page)) return;
     pageReadiness.set(page, scope);const pending = new Map();pendingByPage.set(page, pending);
     page.on?.('request', request => pending.set(request, { url: request.url(), method: request.method(), resourceType: request.resourceType(), startedAt: Date.now() }));
@@ -215,6 +215,93 @@ export async function activateResilienceRoute(page, route, { now = Date.now, sna
 async function clickRoute(page, route) {
   await activateResilienceRoute(page, route);
   await ready(page, route);
+}
+
+/** Diagnostics must never turn an operation failure into an unbounded wait. */
+export async function boundedResilienceDiagnostic(task, { setTimer = setTimeout, clearTimer = clearTimeout } = {}) {
+  let timer;
+  try {
+    return await Promise.race([Promise.resolve().then(task), new Promise((_, reject) => {
+      timer = setTimer(() => reject(Error('Passive native-operation snapshot exceeded 5000ms')), 5000);
+    })]);
+  } finally { clearTimer(timer); }
+}
+
+const nativePageURL = page => { try { return page.url?.() ?? null; } catch { return null; } };
+async function nativeOperationFailureSnapshot(page, { selector = null, targetURL = null }) {
+  return page.evaluate(({ selector, targetURL }) => {
+    const main = document.querySelector('main[data-route-region]'), style = main && getComputedStyle(main), target = selector && document.querySelector(selector);
+    return { url: location.href, expectedURL: targetURL, readyState: document.readyState, title: document.title, fontsStatus: document.fonts?.status ?? null,
+      bodyRoute: document.body?.dataset.page || document.body?.dataset.course, routerRoute: window.TMURouter?.route, completedRoute: window.__qaRouteCompleted,
+      mainTextLength: main?.innerText.trim().length ?? 0, wrapper: style && { opacity: style.opacity, display: style.display, visibility: style.visibility, transform: style.transform, filter: style.filter },
+      targetPresent: Boolean(target), targetCount: selector ? document.querySelectorAll(selector).length : null, target: target && { tag: target.tagName, href: target.href ?? null, value: target.value ?? null, disabled: target.disabled ?? null, connected: target.isConnected, html: target.outerHTML.slice(0, 1000) },
+      dialogs: [...document.querySelectorAll('dialog')].map(dialog => ({ id: dialog.id, open: dialog.open })),
+      navigationTiming: performance.getEntriesByType('navigation').map(entry => ({ name: entry.name, type: entry.type, duration: entry.duration, responseStart: entry.responseStart, responseEnd: entry.responseEnd, domContentLoadedEventEnd: entry.domContentLoadedEventEnd, loadEventEnd: entry.loadEventEnd })) };
+  }, { selector, targetURL });
+}
+
+async function recordNativeOperationFailure(trace, page, scope, error, started, { now, snapshot, setTimer, clearTimer }) {
+  trace.elapsedMs = now() - started;trace.status = 'error';trace.error = error?.message ?? String(error);
+  // Save Node-side evidence before asking a possibly stalled browser to reply.
+  trace.failureNetwork = { pendingRequests: [], telemetry: [] };
+  for (const [source, collect] of [['pendingRequests', () => scope?.pending(page) ?? []], ['telemetry', () => scope?.telemetry() ?? []]]) {
+    try { trace.failureNetwork[source] = collect(); }
+    catch (diagnosticError) { (trace.failureNetwork.errors ??= []).push({ source, message: diagnosticError?.message ?? String(diagnosticError) }); }
+  }
+  const diagnosticStarted = now();
+  try { trace.failureSnapshot = await boundedResilienceDiagnostic(() => snapshot(page, trace), { setTimer, clearTimer }); }
+  catch (diagnosticError) { trace.snapshotError = diagnosticError?.message ?? String(diagnosticError); }
+  trace.diagnosticElapsedMs = now() - diagnosticStarted;
+}
+
+/** Preserve each cross-tab action's native method and locator strictness. */
+export async function performResilienceInteraction(page, { name, selector, method, first = false, value }, { now = Date.now, snapshot = nativeOperationFailureSnapshot, setTimer, clearTimer } = {}) {
+  if (!['evaluate-click', 'click', 'selectOption'].includes(method)) throw Error('Unsupported resilience interaction: ' + method);
+  const scope = readinessScope(page), policy = scope?.policy ?? defaultReadiness, started = now(), options = { timeout: policy.timeoutMs };
+  const trace = { name, selector, method, first, ...(method === 'selectOption' ? { value } : {}), sourceURL: nativePageURL(page), policy, options, timeoutMs: policy.timeoutMs, status: 'running' };scope?.interactions.push(trace);
+  try {
+    const locator = page.locator(selector), target = first ? locator.first() : locator;
+    if (method === 'evaluate-click') await target.evaluate(element => element.click(), undefined, options);
+    else if (method === 'click') await target.click(options);
+    else await target.selectOption(value, options);
+    trace.elapsedMs = now() - started;trace.status = 'activated';return trace;
+  } catch (error) {
+    await recordNativeOperationFailure(trace, page, scope, error, started, { now, snapshot, setTimer, clearTimer });throw error;
+  }
+}
+
+function observeNativeNavigation(page, trace, started, now) {
+  const listeners = [], record = (type, details = {}) => {
+    if (trace.events.length >= 100) { trace.droppedEvents++;return; }
+    trace.events.push({ type, elapsedMs: now() - started, phase: trace.status === 'error' ? 'diagnostic' : 'operation', ...details });
+  };
+  const listen = (type, handler) => { page.on?.(type, handler);listeners.push([type, handler]); };
+  const mainRequest = request => { try { return request.isNavigationRequest() && request.frame() === page.mainFrame(); } catch { return false; } };
+  listen('request', request => { if (mainRequest(request)) record('request', { url: request.url(), method: request.method() }); });
+  listen('response', response => { if (mainRequest(response.request())) record('response', { url: response.url(), status: response.status() }); });
+  listen('requestfinished', request => { if (mainRequest(request)) record('requestfinished', { url: request.url() }); });
+  listen('requestfailed', request => { if (mainRequest(request)) record('requestfailed', { url: request.url(), message: request.failure()?.errorText ?? null }); });
+  listen('framenavigated', frame => { if (frame === page.mainFrame()) record('commit', { url: frame.url() }); });
+  listen('domcontentloaded', () => record('domcontentloaded', { url: nativePageURL(page) }));
+  listen('load', () => record('load', { url: nativePageURL(page) }));
+  listen('pageerror', error => record('pageerror', { url: nativePageURL(page), message: error.message }));
+  listen('crash', () => record('crash', { url: nativePageURL(page) }));
+  listen('close', () => record('close', { url: nativePageURL(page) }));
+  return () => { for (const [type, handler] of listeners) page.off?.(type, handler); };
+}
+
+/** Only BFCache's parking/Back calls use this per-operation budget. */
+export async function performResilienceNavigation(page, { name, method, targetURL }, { now = Date.now, snapshot = nativeOperationFailureSnapshot, setTimer, clearTimer } = {}) {
+  if (!['goto', 'goBack'].includes(method)) throw Error('Unsupported resilience navigation: ' + method);
+  const scope = readinessScope(page), policy = scope?.policy ?? defaultReadiness, started = now(), options = { waitUntil: method === 'goto' ? 'load' : 'commit', timeout: policy.timeoutMs };
+  const trace = { name, method, sourceURL: nativePageURL(page), targetURL, policy, options, timeoutMs: policy.timeoutMs, status: 'running', events: [], droppedEvents: 0 };scope?.navigations.push(trace);
+  const detach = observeNativeNavigation(page, trace, started, now);
+  try {
+    const response = method === 'goto' ? await page.goto(targetURL, options) : await page.goBack(options);
+    trace.elapsedMs = now() - started;trace.status = 'navigated';trace.resultURL = nativePageURL(page);trace.response = response ? { url: response.url(), status: response.status() } : null;return trace;
+  } catch (error) {
+    await recordNativeOperationFailure(trace, page, scope, error, started, { now, snapshot, setTimer, clearTimer });throw error;
+  } finally { detach(); }
 }
 
 async function snapshot(page, course) {
@@ -465,8 +552,8 @@ export async function crosstab(env) {
     await sender.goto(url(env, course, '?motion=off')); await ready(sender, course);
     await receiver.goto(url(env, 'desk', '?motion=off')); await ready(receiver, 'desk');
     const progressKey = course === 'cen100' ? 'cen100-personal-plan-v1' : course + '-progress-v1', sectionKey = course === 'cen100' ? 'cen100-contact-choice-v1' : course + '-section-v1';
-    const mark = async () => { await sender.locator('[data-quick-complete]').first().evaluate(button => button.click()); };
-    const undo = async () => { await sender.locator('#undo-complete').evaluate(button => button.click()); };
+    const mark = () => performResilienceInteraction(sender, { name: 'cross-tab Mark done', selector: '[data-quick-complete]', method: 'evaluate-click', first: true });
+    const undo = () => performResilienceInteraction(sender, { name: 'cross-tab Undo', selector: '#undo-complete', method: 'evaluate-click' });
     const inspect = async (name, currentSeed, route) => {
       const expected = expectedTarget(course, currentSeed, +new Date(now));
       await until(() => receiver.evaluate(({ course, title, route }) => document.querySelector(route === 'desk' ? `[data-course-card="${course}"] .desk-course-title` : '.ns-dock [data-ns-title]')?.textContent.trim() === title, { course, title: expected.title, route }), name + ' storage propagation');
@@ -484,8 +571,8 @@ export async function crosstab(env) {
     await undo(); await inspect('course card/dock Undo', seed, course);
     const changed = structuredClone(seed), changedSection = course === 'cen100' ? 2 : 32, originalSection = course === 'cen100' ? 1 : 31, sectionSelect = course === 'cen100' ? '#contact-section' : '#section-select';
     changed[sectionKey] = course === 'cen100' ? { section: changedSection, group: 1 } : changedSection;
-    await sender.locator('.workspace-section').click();
-    await sender.locator(sectionSelect).selectOption(String(changedSection));
+    await performResilienceInteraction(sender, { name: 'cross-tab open section', selector: '.workspace-section', method: 'click' });
+    await performResilienceInteraction(sender, { name: 'cross-tab change section', selector: sectionSelect, method: 'selectOption', value: String(changedSection) });
     await until(() => receiver.locator(sectionSelect).inputValue().then(value => value === String(changedSection)), 'other tab selected section');
     observation.sectionCourse = await snapshot(receiver, course);
     checkSurfaces(out, 'course card/dock section change', observation.sectionCourse, course, changed, +new Date(now));
@@ -493,7 +580,7 @@ export async function crosstab(env) {
     assertion(out, 'section propagated by trusted native event', observation.sectionCourse.storageEvents.some(event => event.key === sectionKey && event.trusted), observation.sectionCourse.storageEvents, sectionKey);
     assertion(out, 'cross-tab updates preserve receiver shell', observation.sectionCourse.shell === shell, observation.sectionCourse.shell, shell);
     await clickRoute(receiver, 'desk');
-    await sender.locator(sectionSelect).selectOption(String(originalSection));
+    await performResilienceInteraction(sender, { name: 'cross-tab restore section', selector: sectionSelect, method: 'selectOption', value: String(originalSection) });
     await until(() => receiver.evaluate(({course,section}) => document.querySelector(`[data-course-card="${course}"] .desk-course-section`)?.textContent.includes(String(section)), {course,section:originalSection}), 'Desk section storage update');
     observation.sectionDesk = await snapshot(receiver, course);
     checkSurfaces(out, 'Desk section change', observation.sectionDesk, course, seed, +new Date(now));
@@ -517,11 +604,11 @@ export async function bfcache(env) {
       const course = route === 'desk' ? 'cen100' : route;
       await page.goto(url(env, route, '?motion=off')); await ready(page, route);
       observation.before = await snapshot(page, course);
-      await page.goto(env.origin + env.base + 'privacy.html');
+      await performResilienceNavigation(page, { name: 'BFCache park', method: 'goto', targetURL: env.origin + env.base + 'privacy.html' });
       const changed = structuredClone(seed), progressKey = course === 'cen100' ? 'cen100-personal-plan-v1' : course + '-progress-v1';
       changed[progressKey].completed[expectedTarget(course, seed, +new Date(seed.__qaResilienceNow)).id] = true;
       await page.evaluate(({ key, progress }) => { localStorage.setItem(key, JSON.stringify(progress)); localStorage.setItem('__qaResilienceNow', '2026-10-13T17:00:00Z'); }, { key: progressKey, progress: changed[progressKey] });
-      await page.goBack({ waitUntil: 'commit' }); await ready(page, route);
+      await performResilienceNavigation(page, { name: 'BFCache Back', method: 'goBack', targetURL: url(env, route, '?motion=off') }); await ready(page, route);
       observation.after = await snapshot(page, course);
       observation.navigation = await page.evaluate(() => performance.getEntriesByType('navigation').map(entry => ({ type: entry.type, notRestoredReasons: entry.notRestoredReasons?.toJSON?.() ?? null })));
       assertion(out, route + ': Back page usable', observation.after.heading && observation.after.content > 20, observation.after, 'readable route');

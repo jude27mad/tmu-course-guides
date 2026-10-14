@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "independent-source-review",
+  "status": "passed",
+  "reviewedBy": "/root/final_review",
+  "reviewedAt": "2026-10-14T03:01:11.342Z",
+  "review": "No material defect or weakened genuine assertion found in the exact native helper/README/test patch. Root acceptance remains separate and depends on focused/full proof results.",
+  "helperSourceRevision": "34aad19de8a9acf97c962dff1424483d2f656280",
+  "beforeSourcePath": "/tmp/ns-perf-native-helper-old-34aad19.mjs",
+  "beforeSourceSHA256": "43acc2217eea6f289dd760de67f0f4f9d805289a311c4277e363bd57e024b579",
+  "afterSourcePath": "/workspace/tmu-course-guides/tools/qa/checks-resilience.mjs",
+  "afterSourceSHA256": "b2bafedee3cc0569d4354334d42fcaac55d3ddcbf7ceb0e1ecdf43bddcd1f8d6",
+  "stagedAfterSourcePath": "/tmp/ns-resilience-native-stage/after/tools/qa/checks-resilience.mjs",
+  "stagedAfterSourceMatchesReviewedBytes": true,
+  "reviewedDiffCommand": "git diff --binary --no-ext-diff --no-color --unified=3 34aad19 -- tools/qa/checks-resilience.mjs",
+  "reviewedDiffPath": "/tmp/ns-perf-native-helper-source-review.diff",
+  "reviewedDiffSHA256": "da47cff60a0c782c119f0a3ce7874d3995ae1929574972027959221d49c980c7",
+  "combinedPatchCommand": "git diff --binary --no-ext-diff --no-color 34aad19 -- tools/qa/checks-resilience.mjs tools/qa/README.md tools/qa/resilience.test.mjs",
+  "combinedPatchPath": "/tmp/ns-perf-native-helper-review.diff",
+  "combinedPatchSHA256": "a70d1f6d47ae2f91629b02efdc4b99801931b099ed66fe795dd849cf568dd0bb",
+  "otherReviewedFiles": [
+    {
+      "path": "tools/qa/README.md",
+      "sha256": "fd61a4327683412457b715e19c97ac7b517dfd38ca86a93a0f555ffda181ce0d"
+    },
+    {
+      "path": "tools/qa/resilience.test.mjs",
+      "sha256": "69c4a3c15117b1360aa96259f775149414b39d85002a4dbb0ebe704cee8eac5a"
+    }
+  ],
+  "predicatesFixturesAndOtherScopesUnchanged": true,
+  "mechanicalPreservation": {
+    "originalAssertionLines": 43,
+    "currentAssertionLines": 43,
+    "assertionLinesByteIdentical": true,
+    "sourceByteIdenticalAfterRemovingOnlyNewHelperMetadataAndRestoringSevenReviewedCallSites": true,
+    "normalizedSourceSHA256": "43acc2217eea6f289dd760de67f0f4f9d805289a311c4277e363bd57e024b579",
+    "initialGotosUnchanged": true,
+    "readinessAndRouteActionHelpersUnchanged": true,
+    "fixturesAndSeedsUnchanged": true,
+    "existingWaitBudgetsUnchanged": true
+  },
+  "operationScope": {
+    "policy": "30 seconds only for registered Chromium with explicit gpu === false; GPU/WebKit/Firefox/unknown stay 10 seconds",
+    "bfcacheCalls": [
+      "parking goto: original load milestone",
+      "native goBack: original commit milestone"
+    ],
+    "crosstabPerCourse": {
+      "nativeEvaluateClick": 4,
+      "physicalClick": 1,
+      "nativeSelectOption": 2,
+      "total": 7
+    },
+    "preservedStrictness": "Mark retains .first(); Undo and section controls retain strict locators",
+    "nativeValues": "Existing changed/restored section string values unchanged",
+    "noRetries": true,
+    "noForceOrNoWaitAfter": true,
+    "noSceneReadinessOrPauseChanges": true,
+    "failureBehavior": "Original operation errors rethrow unchanged; diagnostics are passive and bounded to five seconds, late complete state never converts failure to success",
+    "diagnosticCleanup": "Navigation listeners removed on success and failure; events capped at 100"
+  },
+  "provenance": {
+    "originalRunDirectory": "2026-10-14T01-40-01-387Z-96502",
+    "originalRunStatus": "FAILED: 7 assertions across 3 checks; retained immutable evidence",
+    "originalRuntimeProductRevision": "3d14973ef56e8dcf5be036793cae391bd392699c",
+    "sourceCheckpointRevision": "34aad19de8a9acf97c962dff1424483d2f656280",
+    "originalSourceSnapshotPath": "/tmp/ns-perf-full96502-checks-resilience.mjs",
+    "originalSourceSnapshotMatchesCheckpoint": true,
+    "originalSourceManifestSHA256": "f733b4a825a1b1f9cfa55b32d1705e6d04b6264d861c0fc04fea41c308eb089a",
+    "originalSourceManifestHashProvidedBy": "/tmp/ns-perf-composite-helper-review.pending.json"
+  },
+  "productScope": {
+    "changedProductFilesComparedWith3d14973": [],
+    "changedProductFilesComparedWith34aad19": [],
+    "untrackedProductFiles": [],
+    "productSourceSHA256": "14aab876ca16efa6dc335eb663dd7817bde3948628ce48613c18deaa00234e32",
+    "protectedSourceSHA256": "1b773fabf9affdc543ba245a8822642aab9167f28bc1990b5f4f293d4deab653",
+    "mth140BodySHA256": "485bf0f3e33dc65e30f6ea6cfc1c7e320d5864b772bd2c0b2138b1e13881efc0",
+    "scopeProof": "Read-only git diff --name-only over assets and four route documents returned no changes from either product/capture revision 3d14973 or source checkpoint 34aad19; git ls-files --others found no untracked product files."
+  },
+  "tests": {
+    "notRunByReviewer": true,
+    "reportedTddNewFailures": 11,
+    "reportedFocusedGreen": 29,
+    "reportedFocusedSkipped": 0,
+    "redLog": "/tmp/ns-resilience-native-red.log",
+    "greenLog": "/tmp/ns-resilience-native-green.log",
+    "full116AndBrowserProofsPending": true
+  },
+  "materialFindings": [],
+  "rootApprovalRecorded": false,
+  "browsersLaunched": false,
+  "sourceFilesEdited": false
+}

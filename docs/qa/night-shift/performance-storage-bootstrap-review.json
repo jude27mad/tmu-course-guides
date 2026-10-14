@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "approved": true,
+  "reviewer": "/root",
+  "proofPath": "/tmp/ns-resilience-storage-bootstrap-proof.json",
+  "proofSHA256": "b1877337325e71176897d36412415e96f58591970dd7b4379e60d5c99388142c",
+  "scope": "Only the eight exact original failures-check generic SecurityError events (four per deployment base) reproduced from the unchanged deliberately denied storage methods init on opaque about:blank before case collector attachment. All raw expected:false fields remain unchanged; no owning events are invented. No product request/script/app marker occurs in this reproduction. Other origins, messages, stacks, counts and checks remain rejected.",
+  "rawEvents": [
+    {
+      "base": "/",
+      "events": [
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        }
+      ]
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "events": [
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        },
+        {
+          "type": "pageerror",
+          "name": "SecurityError",
+          "message": "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+          "stack": "SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\n    at <anonymous>:5:5\n    at <anonymous>:6:7",
+          "url": "about:blank",
+          "expected": false
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Original full-run remains failed.",
+    "This classifies a reproduced QA bootstrap fixture capture gap; it does not claim original route-document telemetry was wholly empty or prove historical native navigation timeout causes."
+  ]
+}
