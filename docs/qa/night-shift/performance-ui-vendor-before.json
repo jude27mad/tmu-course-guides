@@ -1,0 +1,46 @@
+{
+  "capturedAt": "2026-10-14T06:36:28.132234+00:00",
+  "head": "322534822e9ac7c6d6cf5442f46210f0d20a28aa",
+  "files": [
+    {
+      "path": "assets/vendor/LENIS-LICENSE.md",
+      "sha256": "bba15b1137346a73ed8c35e7f20961a69e0ed842d956a50339240c3e7b08c089",
+      "bytes": 1096
+    },
+    {
+      "path": "assets/vendor/MOTION-LICENSE.md",
+      "sha256": "1bf0dc3f7727723e5a032ed12164a47cf92c05204cb1a3485f123c24e2833ed1",
+      "bytes": 1100
+    },
+    {
+      "path": "assets/vendor/THREE-LICENSE.md",
+      "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+      "bytes": 1081
+    },
+    {
+      "path": "assets/vendor/gsap-3.15.0-LICENSE.txt",
+      "sha256": "762620c39d5b001e60d05c289c1259f31720c51d3d40dfe6ff31f85cd641549f",
+      "bytes": 494
+    },
+    {
+      "path": "assets/vendor/gsap-3.15.0.mjs",
+      "sha256": "e6ede5ab4bd593b9d4e2283e01ccda612b60a2aa58b0e0cdd1b6e398ba6da5ea",
+      "bytes": 95884
+    },
+    {
+      "path": "assets/vendor/motion-14.1.0.mjs",
+      "sha256": "2817d8d528a2e46e201b89cbcd0c4b4912abac1d80fc2f74ea9425605936c105",
+      "bytes": 55375
+    },
+    {
+      "path": "assets/vendor/night-vendor.mjs",
+      "sha256": "66bcd0ad8732b11032f2d5f3ceffd242e51aa9b7f205dd70572785ab82eac03b",
+      "bytes": 69065
+    },
+    {
+      "path": "assets/vendor/three-0.186.1.mjs",
+      "sha256": "c1f72522291c2ab8ed65621abc95816468429e71e82d61384a9e72646ddba501",
+      "bytes": 621214
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-14T06:35:10.080Z",
+  "recordedAt": "2026-10-14T06:41:18.944Z",
+  "observationSource": "Actual read-only HTTP connection-refused probes and ps result from reviewer tool call after CLI0; preserved before parent started next browser work.",
+  "ports": [
+    {
+      "port": 38389,
+      "closed": true,
+      "code": "ECONNREFUSED"
+    },
+    {
+      "port": 43313,
+      "closed": true,
+      "code": "ECONNREFUSED"
+    }
+  ],
+  "liveChromiumRunnerAndOwnedPreviewProcesses": [],
+  "allClosed": true,
+  "runnerPid": 143242,
+  "execSession": 63247,
+  "cliExitCode": 0
+}

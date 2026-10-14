@@ -1,0 +1,95 @@
+{
+  "capturedAt": "2026-10-14T06:51:36.347911+00:00",
+  "method": "Direct Node test-file execution for each of all eight QA tool test files; all real named tests run. No file-wrapper count substitution.",
+  "CLIexit": 0,
+  "files": [
+    {
+      "path": "/tmp/ns-perf-aa7-qa-unit-checks-perf.test.mjs.log",
+      "sha256": "4b717fdffd268999040dc4f0eb6df4060b72cb0d0718e23a83c10a2cd40749c5",
+      "tests": 22,
+      "pass": 22,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "path": "/tmp/ns-perf-aa7-qa-unit-checks.test.mjs.log",
+      "sha256": "5487b5870aef3a4a8c5579d925cfa12dd8e606c4c511aca45b2334aa58709ca9",
+      "tests": 13,
+      "pass": 13,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "path": "/tmp/ns-perf-aa7-qa-unit-clocked-completion.test.mjs.log",
+      "sha256": "791ee8942d5a02c5f3c89a681d571ac5708ca5fb3480ff3a2127f4347d0012d7",
+      "tests": 11,
+      "pass": 11,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "path": "/tmp/ns-perf-aa7-qa-unit-compare-perf-visuals.test.mjs.log",
+      "sha256": "6303edc81238539a437c10095c566352d53837edf63768d8a0f7f7cfc68ca966",
+      "tests": 22,
+      "pass": 22,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "path": "/tmp/ns-perf-aa7-qa-unit-instrument.test.mjs.log",
+      "sha256": "09cb44dacbef84a0cc39d98864b5265efc6754398bc8ad7e34ca047777b4dc48",
+      "tests": 14,
+      "pass": 14,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "path": "/tmp/ns-perf-aa7-qa-unit-resilience-propagation.test.mjs.log",
+      "sha256": "2536fb6a0ab094a847efc2c2daf542aeb8029935deb199eef1846e792883381f",
+      "tests": 8,
+      "pass": 8,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "path": "/tmp/ns-perf-aa7-qa-unit-resilience.test.mjs.log",
+      "sha256": "d1febb7262d4c184210a8482eecfd03703b0e6f83ddb01167ae396318640b673",
+      "tests": 29,
+      "pass": 29,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "path": "/tmp/ns-perf-aa7-qa-unit-runtime.test.mjs.log",
+      "sha256": "3cd7b1d909169e94e7ed9259a0901eb7438ea18dadb97a23f645f74836105568",
+      "tests": 19,
+      "pass": 19,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    }
+  ],
+  "totals": {
+    "tests": 138,
+    "pass": 138,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  }
+}

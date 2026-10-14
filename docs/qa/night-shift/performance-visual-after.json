@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "label": "after",
-  "capturedAt": "2026-10-13T23:49:29.765Z",
+  "capturedAt": "2026-10-14T06:04:47.893Z",
   "fixedTime": "2026-10-13T16:00:00.000Z",
-  "revision": "3d14973ef56e8dcf5be036793cae391bd392699c",
-  "productSourceSha256": "14aab876ca16efa6dc335eb663dd7817bde3948628ce48613c18deaa00234e32",
-  "protectedSourceSha256": "1b773fabf9affdc543ba245a8822642aab9167f28bc1990b5f4f293d4deab653",
+  "revision": "b096bd83b26a08b6efca98e0d7b3023adb732a25",
+  "productSourceSha256": "1795468f427084977fac5a0707eef0b14e461c8d2041cb9c6d1e0315de48851f",
+  "protectedSourceSha256": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
   "recipe": {
     "fullPage": false,
     "deviceScaleFactor": 1,
@@ -23,6 +23,11 @@
     "masking": false,
     "cssInjection": false,
     "noWebGL": false,
+    "bookTier": {
+      "route": "mth140",
+      "value": "high",
+      "query": "?tier=high"
+    },
     "compositorStagesBeforeDraw": true,
     "gpuRasterization": false,
     "gpuCompositing": false,
@@ -104,7 +109,7 @@
       "--disable-gpu-rasterization",
       "--disable-gpu-compositing",
       "--enable-gpu-benchmarking",
-      "--user-data-dir=/tmp/playwright_chromiumdev_profile-6emqMV",
+      "--user-data-dir=/tmp/playwright_chromiumdev_profile-W2bnza",
       "--remote-debugging-pipe",
       "--no-startup-window",
       "--noerrdialogs",
@@ -169,7 +174,7 @@
         "glWsVersion": "1.5 (ANGLE 2.1 git hash: unknown hash)",
         "hardwareSupportsVulkan": false,
         "inProcessGpu": false,
-        "initializationTime": 0.061831,
+        "initializationTime": 0.125686,
         "isAsan": false,
         "isClangCoverage": false,
         "jpegDecodeAcceleratorSupported": false,
@@ -201,6 +206,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/root-desk-1440x900-dark.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:33005/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -324,6 +331,8 @@
         "after": []
       },
       "preCaptureScene": [],
+      "url": "http://127.0.0.1:33005/",
+      "tier": "high",
       "png": {
         "width": 1440,
         "height": 900,
@@ -353,6 +362,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/root-desk-1440x900-light.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:33005/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -476,6 +487,8 @@
         "after": []
       },
       "preCaptureScene": [],
+      "url": "http://127.0.0.1:33005/",
+      "tier": "high",
       "png": {
         "width": 1440,
         "height": 900,
@@ -505,6 +518,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/root-desk-390x844-dark.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:33005/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -628,6 +643,8 @@
         "after": []
       },
       "preCaptureScene": [],
+      "url": "http://127.0.0.1:33005/",
+      "tier": "high",
       "png": {
         "width": 390,
         "height": 844,
@@ -657,6 +674,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/root-desk-390x844-light.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:33005/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -780,6 +799,8 @@
         "after": []
       },
       "preCaptureScene": [],
+      "url": "http://127.0.0.1:33005/",
+      "tier": "high",
       "png": {
         "width": 390,
         "height": 844,
@@ -809,6 +830,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/root-cen100-1440x900-dark.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:33005/cen100/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -888,13 +911,13 @@
         "theme": "dark",
         "document": {
           "width": 1440,
-          "height": 4334
+          "height": 4118
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 4334.015625,
+          "height": 4118.234375,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -1029,6 +1052,8 @@
           "height": 550
         }
       ],
+      "url": "http://127.0.0.1:33005/cen100/",
+      "tier": "high",
       "actualWebGLContexts": [
         {
           "width": 691,
@@ -1043,9 +1068,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 185812,
-        "sha256": "80959b55fa854553195e25afdb4842e57c4d28fba6a81cc1ed072e641233134d",
-        "pixelSha256": "67728df90763ad4e96c210080596caaccf0caebd1943be0bd70b66ebfbe753f6"
+        "bytes": 175463,
+        "sha256": "bdbb1b942b70cbc5ce9cfd6f547eec1035cba741740a6e19a4c3c942bd8f25bc",
+        "pixelSha256": "16844d634542192cdf0557f31cd85883f28ab49c3f33027ac845fc80d71f38ab"
       },
       "status": "captured",
       "fontRequests": [
@@ -1069,6 +1094,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/root-cen100-1440x900-light.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:33005/cen100/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -1148,13 +1175,13 @@
         "theme": "light",
         "document": {
           "width": 1440,
-          "height": 4334
+          "height": 4118
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 4334.015625,
+          "height": 4118.234375,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -1289,6 +1316,8 @@
           "height": 550
         }
       ],
+      "url": "http://127.0.0.1:33005/cen100/",
+      "tier": "high",
       "actualWebGLContexts": [
         {
           "width": 691,
@@ -1303,9 +1332,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 183573,
-        "sha256": "db19c6f418ad54194a193f6cfaa1056d55efa4c1cb0193deb942d0e023faad4c",
-        "pixelSha256": "69ff495333667f6ae284f572043a73c992c349d8c51baee2e30bdac12e3dcdbc"
+        "bytes": 173451,
+        "sha256": "3ae949afde4fb52e9c8ff8c27695a03f2ccd4f012b784e4f7208b126b6da90bd",
+        "pixelSha256": "74c6d75ac85959d0275352e9c3a4a3a6f6ebf0f8d03b97dd801d4558fb81a082"
       },
       "status": "captured",
       "fontRequests": [
@@ -1329,6 +1358,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/root-cen100-390x844-dark.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:33005/cen100/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -1408,13 +1439,13 @@
         "theme": "dark",
         "document": {
           "width": 390,
-          "height": 4103
+          "height": 4014
         },
         "wrapper": {
           "x": 0,
           "y": 202.890625,
           "width": 390,
-          "height": 3900.0625,
+          "height": 3810.6875,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -1549,6 +1580,8 @@
           "height": 303
         }
       ],
+      "url": "http://127.0.0.1:33005/cen100/",
+      "tier": "high",
       "actualWebGLContexts": [
         {
           "width": 374,
@@ -1563,9 +1596,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 90852,
-        "sha256": "241c4244a5fc463e228c1fc00bbc803076af443deb6e5d4ecc3d33a956fc28a6",
-        "pixelSha256": "d7792f17a4968034ea697bb6d9efeaa4bede5de6ebf128352386a7f783c4ff5a"
+        "bytes": 87112,
+        "sha256": "313533dfad8622a1d1e50a7e2cd1e00367cd8cb6ce705bfb5536abf460fa2890",
+        "pixelSha256": "8f1954cfa683076ef39b17a851c4ab6f0f5f0d007af6bc000c32f271337f1c7f"
       },
       "status": "captured",
       "fontRequests": [
@@ -1589,6 +1622,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/root-cen100-390x844-light.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:33005/cen100/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -1668,13 +1703,13 @@
         "theme": "light",
         "document": {
           "width": 390,
-          "height": 4103
+          "height": 4014
         },
         "wrapper": {
           "x": 0,
           "y": 202.890625,
           "width": 390,
-          "height": 3900.0625,
+          "height": 3810.6875,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -1809,6 +1844,8 @@
           "height": 303
         }
       ],
+      "url": "http://127.0.0.1:33005/cen100/",
+      "tier": "high",
       "actualWebGLContexts": [
         {
           "width": 374,
@@ -1823,9 +1860,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 89026,
-        "sha256": "4e19ff5f4d2d957892adb2028eeee951d22293245550913c29648caf57c5cfcc",
-        "pixelSha256": "c4db75029616dbdc0e806d42dda83e65ca966f7dfd31869de898f53f109517b8"
+        "bytes": 85468,
+        "sha256": "1d17378b12caf6cba725b38bd74fe59f94aa57e09350387225ec06c1e8fb788f",
+        "pixelSha256": "5888fd62a9dbfc083fea3e9219172b3935a272a40a00d6c7b1b52fecb52ae5a0"
       },
       "status": "captured",
       "fontRequests": [
@@ -1849,6 +1886,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/root-mth140-1440x900-dark.png",
+      "bookTier": "high",
+      "requestedURL": "http://127.0.0.1:33005/mth140/?tier=high",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -1861,24 +1900,24 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ],
         "after": [
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ]
       },
@@ -1928,13 +1967,13 @@
         "theme": "dark",
         "document": {
           "width": 1440,
-          "height": 2617
+          "height": 2277
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 2617.265625,
+          "height": 2277.46875,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -1961,16 +2000,16 @@
             "aboveFold": true
           },
           {
-            "src": "/assets/scenes/posters/mth140-wide.webp",
-            "naturalWidth": 900,
-            "naturalHeight": 600,
+            "src": "/assets/book/posters/mth140-dark-wide.webp",
+            "naturalWidth": 2160,
+            "naturalHeight": 900,
             "complete": true,
             "loading": "auto",
             "decoding": "async",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550,
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594,
             "aboveFold": true
           }
         ],
@@ -1979,11 +2018,11 @@
             "renderer": "webgl2",
             "sceneReady": "true",
             "motionState": "still",
-            "sceneFrame": "3",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "sceneFrame": "4",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ],
         "fonts": [
@@ -2024,12 +2063,12 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "4",
+            "frame": "5",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ]
       },
@@ -2039,24 +2078,24 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ],
         "after": [
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ]
       },
@@ -2064,21 +2103,23 @@
         {
           "renderer": "webgl2",
           "ready": "true",
-          "frame": "4",
+          "frame": "5",
           "motionState": "still",
-          "x": 724.796875,
-          "y": 24,
-          "width": 691.203125,
-          "height": 550
+          "x": 248,
+          "y": 0,
+          "width": 1192.015625,
+          "height": 594
         }
       ],
+      "url": "http://127.0.0.1:33005/mth140/?tier=high",
+      "tier": "high",
       "actualWebGLContexts": [
         {
-          "width": 691,
-          "height": 550,
+          "width": 1192,
+          "height": 594,
           "contextLost": false,
-          "drawingBufferWidth": 691,
-          "drawingBufferHeight": 550,
+          "drawingBufferWidth": 1192,
+          "drawingBufferHeight": 594,
           "renderer": "WebKit WebGL",
           "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
         }
@@ -2086,9 +2127,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 315125,
-        "sha256": "981077869bf801bdd009ad8cd4ea1debd76ef8f838fe37d57a6ebe88dbce53dd",
-        "pixelSha256": "efbb1fd3c5ef98dd1d8e953e58addcf06a29c0a11f835f2e76a47d365f7831b6"
+        "bytes": 938865,
+        "sha256": "b6fb703dd6d4c106715fe98e498d9b752c835b1131ddbb58ed6defb0e2261bc6",
+        "pixelSha256": "f45f417491be543c4a21f0b0f1e45e66b0a9b533fe39b9cd9c33888d720e72f8"
       },
       "status": "captured",
       "fontRequests": [
@@ -2112,6 +2153,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/root-mth140-1440x900-light.png",
+      "bookTier": "high",
+      "requestedURL": "http://127.0.0.1:33005/mth140/?tier=high",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -2124,24 +2167,24 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ],
         "after": [
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ]
       },
@@ -2191,13 +2234,13 @@
         "theme": "light",
         "document": {
           "width": 1440,
-          "height": 2617
+          "height": 2277
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 2617.265625,
+          "height": 2277.46875,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -2224,16 +2267,16 @@
             "aboveFold": true
           },
           {
-            "src": "/assets/scenes/posters/mth140-wide.webp",
-            "naturalWidth": 900,
-            "naturalHeight": 600,
+            "src": "/assets/book/posters/mth140-light-wide.webp",
+            "naturalWidth": 2160,
+            "naturalHeight": 900,
             "complete": true,
             "loading": "auto",
             "decoding": "async",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550,
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594,
             "aboveFold": true
           }
         ],
@@ -2242,11 +2285,11 @@
             "renderer": "webgl2",
             "sceneReady": "true",
             "motionState": "still",
-            "sceneFrame": "3",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "sceneFrame": "4",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ],
         "fonts": [
@@ -2287,12 +2330,12 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "4",
+            "frame": "5",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ]
       },
@@ -2302,24 +2345,24 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ],
         "after": [
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ]
       },
@@ -2327,21 +2370,23 @@
         {
           "renderer": "webgl2",
           "ready": "true",
-          "frame": "4",
+          "frame": "5",
           "motionState": "still",
-          "x": 724.796875,
-          "y": 24,
-          "width": 691.203125,
-          "height": 550
+          "x": 248,
+          "y": 0,
+          "width": 1192.015625,
+          "height": 594
         }
       ],
+      "url": "http://127.0.0.1:33005/mth140/?tier=high",
+      "tier": "high",
       "actualWebGLContexts": [
         {
-          "width": 691,
-          "height": 550,
+          "width": 1192,
+          "height": 594,
           "contextLost": false,
-          "drawingBufferWidth": 691,
-          "drawingBufferHeight": 550,
+          "drawingBufferWidth": 1192,
+          "drawingBufferHeight": 594,
           "renderer": "WebKit WebGL",
           "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
         }
@@ -2349,9 +2394,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 311554,
-        "sha256": "7369465a09e46d87b29573e7348cbca4222038fbabd47638227d878b897435ac",
-        "pixelSha256": "80fee8928340afd86e4146e5e95895e1e317629d16fa61bf1a56838e6ddb4633"
+        "bytes": 894120,
+        "sha256": "54799466b902c5d1ab36d19366ffe41cf0def6ac9bea63c3ddfffe15fc17e3d1",
+        "pixelSha256": "ea2dac1d46a3edbcdd54a37e8accc338d3f22d46a1587155e4325055d48bf206"
       },
       "status": "captured",
       "fontRequests": [
@@ -2375,6 +2420,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/root-mth140-390x844-dark.png",
+      "bookTier": "high",
+      "requestedURL": "http://127.0.0.1:33005/mth140/?tier=high",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -2387,24 +2434,24 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ],
         "after": [
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ]
       },
@@ -2454,13 +2501,13 @@
         "theme": "dark",
         "document": {
           "width": 390,
-          "height": 2631
+          "height": 2640
         },
         "wrapper": {
           "x": 0,
           "y": 203.40625,
           "width": 390,
-          "height": 2427.5,
+          "height": 2436.328125,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -2487,16 +2534,16 @@
             "aboveFold": true
           },
           {
-            "src": "/assets/scenes/posters/mth140-tall.webp",
-            "naturalWidth": 900,
+            "src": "/assets/book/posters/mth140-dark-tall.webp",
+            "naturalWidth": 780,
             "naturalHeight": 600,
             "complete": true,
             "loading": "auto",
             "decoding": "async",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336,
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300,
             "aboveFold": true
           }
         ],
@@ -2505,11 +2552,11 @@
             "renderer": "webgl2",
             "sceneReady": "true",
             "motionState": "still",
-            "sceneFrame": "3",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "sceneFrame": "4",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ],
         "fonts": [
@@ -2550,12 +2597,12 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "4",
+            "frame": "5",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ]
       },
@@ -2565,24 +2612,24 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ],
         "after": [
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ]
       },
@@ -2590,21 +2637,23 @@
         {
           "renderer": "webgl2",
           "ready": "true",
-          "frame": "4",
+          "frame": "5",
           "motionState": "still",
-          "x": 8,
-          "y": 325.40625,
-          "width": 374,
-          "height": 336
+          "x": 0,
+          "y": 379.109375,
+          "width": 390,
+          "height": 300
         }
       ],
+      "url": "http://127.0.0.1:33005/mth140/?tier=high",
+      "tier": "high",
       "actualWebGLContexts": [
         {
-          "width": 374,
-          "height": 336,
+          "width": 390,
+          "height": 300,
           "contextLost": false,
-          "drawingBufferWidth": 374,
-          "drawingBufferHeight": 336,
+          "drawingBufferWidth": 390,
+          "drawingBufferHeight": 300,
           "renderer": "WebKit WebGL",
           "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
         }
@@ -2612,9 +2661,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 138764,
-        "sha256": "fe1ce3068f554995f762dff0c45d21416747ce15b5b5f88058e1d2e87c1d78ec",
-        "pixelSha256": "d0aba723c7ac9c9779efd95fce000b1dec6b56bd275e4fb7115a7bb9ceafd98c"
+        "bytes": 267483,
+        "sha256": "5602b70573e38013014716836f1769164526e239e5b457541237a7fa07d4379b",
+        "pixelSha256": "82cfe584ecf22d0eabcda3a3614a74a0aebb11ee93f2d0c93cd207dd54a7493a"
       },
       "status": "captured",
       "fontRequests": [
@@ -2638,6 +2687,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/root-mth140-390x844-light.png",
+      "bookTier": "high",
+      "requestedURL": "http://127.0.0.1:33005/mth140/?tier=high",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -2650,24 +2701,24 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ],
         "after": [
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ]
       },
@@ -2717,13 +2768,13 @@
         "theme": "light",
         "document": {
           "width": 390,
-          "height": 2631
+          "height": 2640
         },
         "wrapper": {
           "x": 0,
           "y": 203.40625,
           "width": 390,
-          "height": 2427.5,
+          "height": 2436.328125,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -2750,16 +2801,16 @@
             "aboveFold": true
           },
           {
-            "src": "/assets/scenes/posters/mth140-tall.webp",
-            "naturalWidth": 900,
+            "src": "/assets/book/posters/mth140-light-tall.webp",
+            "naturalWidth": 780,
             "naturalHeight": 600,
             "complete": true,
             "loading": "auto",
             "decoding": "async",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336,
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300,
             "aboveFold": true
           }
         ],
@@ -2768,11 +2819,11 @@
             "renderer": "webgl2",
             "sceneReady": "true",
             "motionState": "still",
-            "sceneFrame": "3",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "sceneFrame": "4",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ],
         "fonts": [
@@ -2813,12 +2864,12 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "4",
+            "frame": "5",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ]
       },
@@ -2828,24 +2879,24 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ],
         "after": [
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ]
       },
@@ -2853,21 +2904,23 @@
         {
           "renderer": "webgl2",
           "ready": "true",
-          "frame": "4",
+          "frame": "5",
           "motionState": "still",
-          "x": 8,
-          "y": 325.40625,
-          "width": 374,
-          "height": 336
+          "x": 0,
+          "y": 379.109375,
+          "width": 390,
+          "height": 300
         }
       ],
+      "url": "http://127.0.0.1:33005/mth140/?tier=high",
+      "tier": "high",
       "actualWebGLContexts": [
         {
-          "width": 374,
-          "height": 336,
+          "width": 390,
+          "height": 300,
           "contextLost": false,
-          "drawingBufferWidth": 374,
-          "drawingBufferHeight": 336,
+          "drawingBufferWidth": 390,
+          "drawingBufferHeight": 300,
           "renderer": "WebKit WebGL",
           "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
         }
@@ -2875,9 +2928,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 136739,
-        "sha256": "03469bde9e9c98fa9ca21b2ee8afd9080e7fa34a804705b3ee4c3dd8a8198dc4",
-        "pixelSha256": "0559b4814b2a0ca2b7093322ab7c476ff9fcb554d1d5ff0fe4842fd1a64b7727"
+        "bytes": 252120,
+        "sha256": "1dba9404f8a21e4fca4bbc6adc6d56fab37eb893cad54cb008c4f025e0e54dee",
+        "pixelSha256": "cca5fa85b823a0e9e6a62cb329d80d74802cf4b8b6935cce3a2055cf3ed6f62c"
       },
       "status": "captured",
       "fontRequests": [
@@ -2901,6 +2954,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/root-mth141-1440x900-dark.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:33005/mth141/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -2980,13 +3035,13 @@
         "theme": "dark",
         "document": {
           "width": 1440,
-          "height": 2585
+          "height": 2369
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 2584.765625,
+          "height": 2368.984375,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -3124,6 +3179,8 @@
           "height": 550
         }
       ],
+      "url": "http://127.0.0.1:33005/mth141/",
+      "tier": "high",
       "actualWebGLContexts": [
         {
           "width": 691,
@@ -3138,9 +3195,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 277245,
-        "sha256": "3a10b5d3fe6611c217cdddf312dcdf8a9711962628fd17b0f20af10e66086304",
-        "pixelSha256": "7a056b91d2dc12812b1bf2ab1a31e18246e5ac2802c0f434717edc8976467170"
+        "bytes": 261274,
+        "sha256": "5423125bf4bfc6cafeb1a187a98a10d7c69a037eaecfbd00de35666ab3716684",
+        "pixelSha256": "87462deb880821dd08d5be87bbdc8bde112286a59325a090ec22f8d16a8820b1"
       },
       "status": "captured",
       "fontRequests": [
@@ -3164,6 +3221,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/root-mth141-1440x900-light.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:33005/mth141/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3243,13 +3302,13 @@
         "theme": "light",
         "document": {
           "width": 1440,
-          "height": 2585
+          "height": 2369
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 2584.765625,
+          "height": 2368.984375,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -3387,6 +3446,8 @@
           "height": 550
         }
       ],
+      "url": "http://127.0.0.1:33005/mth141/",
+      "tier": "high",
       "actualWebGLContexts": [
         {
           "width": 691,
@@ -3401,9 +3462,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 274521,
-        "sha256": "8081f9567c1ef0c8656a124269933cc1df2446e08ca0bbadf9a74130fbf9b16f",
-        "pixelSha256": "45485ff1b129f5890f30d111755a61b0ed66153ebb9bd39664cab7382c83ae77"
+        "bytes": 259704,
+        "sha256": "f0ef94a4262bdaf900d508d2f5d87f54cce88aef72f68af2ebb9e8380abe530d",
+        "pixelSha256": "fcf2d1d193d0d1a63d97200753568aedba6128bc7340a2194a17a57d4dbca3cc"
       },
       "status": "captured",
       "fontRequests": [
@@ -3427,6 +3488,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/root-mth141-390x844-dark.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:33005/mth141/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3506,13 +3569,13 @@
         "theme": "dark",
         "document": {
           "width": 390,
-          "height": 2621
+          "height": 2532
         },
         "wrapper": {
           "x": 0,
           "y": 203.40625,
           "width": 390,
-          "height": 2418.03125,
+          "height": 2328.65625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -3650,6 +3713,8 @@
           "height": 336
         }
       ],
+      "url": "http://127.0.0.1:33005/mth141/",
+      "tier": "high",
       "actualWebGLContexts": [
         {
           "width": 374,
@@ -3664,9 +3729,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 139439,
-        "sha256": "275285669a13cc30a990083588d0bd8e3edbc10aaf47d4a83313483875eb4753",
-        "pixelSha256": "50c9942ce65b49ab9abe28ed414bbd1f87f19b0cd8fd111d85fa3d13280331be"
+        "bytes": 135411,
+        "sha256": "521df1075323f73683cf98cf56b09445a872951d3b502fdcc8e5f24586c410f5",
+        "pixelSha256": "9a9237277dd4b5506df60d103526b091d7d884f3cf33f57f63ebcd882d1b7873"
       },
       "status": "captured",
       "fontRequests": [
@@ -3690,6 +3755,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/root-mth141-390x844-light.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:33005/mth141/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -3769,13 +3836,13 @@
         "theme": "light",
         "document": {
           "width": 390,
-          "height": 2621
+          "height": 2532
         },
         "wrapper": {
           "x": 0,
           "y": 203.40625,
           "width": 390,
-          "height": 2418.03125,
+          "height": 2328.65625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -3913,6 +3980,8 @@
           "height": 336
         }
       ],
+      "url": "http://127.0.0.1:33005/mth141/",
+      "tier": "high",
       "actualWebGLContexts": [
         {
           "width": 374,
@@ -3927,9 +3996,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 136986,
-        "sha256": "4e92bf53de6127cf94572c6b04b963ffbd1d1b2fd23f2449983cb5a66529f0df",
-        "pixelSha256": "3b5afaaf27b4e27dd31b9db00aa4fb7beb80471fc1f405541f740ff4b1e2c893"
+        "bytes": 133269,
+        "sha256": "267526a82933c4fd87a6b4108563e3f2d0cded7446ceeb8bb9f9c496f6817c02",
+        "pixelSha256": "1f7d38a525c8af32e8e0d5f08e0bd74e105fcf2c8a9adabb0417a459c8e2f525"
       },
       "status": "captured",
       "fontRequests": [
@@ -3953,6 +4022,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/project-desk-1440x900-dark.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:38737/tmu-course-guides/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -4076,6 +4147,8 @@
         "after": []
       },
       "preCaptureScene": [],
+      "url": "http://127.0.0.1:38737/tmu-course-guides/",
+      "tier": "high",
       "png": {
         "width": 1440,
         "height": 900,
@@ -4105,6 +4178,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/project-desk-1440x900-light.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:38737/tmu-course-guides/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -4228,6 +4303,8 @@
         "after": []
       },
       "preCaptureScene": [],
+      "url": "http://127.0.0.1:38737/tmu-course-guides/",
+      "tier": "high",
       "png": {
         "width": 1440,
         "height": 900,
@@ -4257,6 +4334,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/project-desk-390x844-dark.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:38737/tmu-course-guides/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -4380,6 +4459,8 @@
         "after": []
       },
       "preCaptureScene": [],
+      "url": "http://127.0.0.1:38737/tmu-course-guides/",
+      "tier": "high",
       "png": {
         "width": 390,
         "height": 844,
@@ -4409,6 +4490,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/project-desk-390x844-light.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:38737/tmu-course-guides/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -4532,6 +4615,8 @@
         "after": []
       },
       "preCaptureScene": [],
+      "url": "http://127.0.0.1:38737/tmu-course-guides/",
+      "tier": "high",
       "png": {
         "width": 390,
         "height": 844,
@@ -4561,6 +4646,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/project-cen100-1440x900-dark.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:38737/tmu-course-guides/cen100/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -4640,13 +4727,13 @@
         "theme": "dark",
         "document": {
           "width": 1440,
-          "height": 4334
+          "height": 4118
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 4334.015625,
+          "height": 4118.234375,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -4781,6 +4868,8 @@
           "height": 550
         }
       ],
+      "url": "http://127.0.0.1:38737/tmu-course-guides/cen100/",
+      "tier": "high",
       "actualWebGLContexts": [
         {
           "width": 691,
@@ -4795,9 +4884,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 185812,
-        "sha256": "80959b55fa854553195e25afdb4842e57c4d28fba6a81cc1ed072e641233134d",
-        "pixelSha256": "67728df90763ad4e96c210080596caaccf0caebd1943be0bd70b66ebfbe753f6"
+        "bytes": 175463,
+        "sha256": "bdbb1b942b70cbc5ce9cfd6f547eec1035cba741740a6e19a4c3c942bd8f25bc",
+        "pixelSha256": "16844d634542192cdf0557f31cd85883f28ab49c3f33027ac845fc80d71f38ab"
       },
       "status": "captured",
       "fontRequests": [
@@ -4821,6 +4910,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/project-cen100-1440x900-light.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:38737/tmu-course-guides/cen100/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -4900,13 +4991,13 @@
         "theme": "light",
         "document": {
           "width": 1440,
-          "height": 4334
+          "height": 4118
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 4334.015625,
+          "height": 4118.234375,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -5041,6 +5132,8 @@
           "height": 550
         }
       ],
+      "url": "http://127.0.0.1:38737/tmu-course-guides/cen100/",
+      "tier": "high",
       "actualWebGLContexts": [
         {
           "width": 691,
@@ -5055,9 +5148,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 183573,
-        "sha256": "db19c6f418ad54194a193f6cfaa1056d55efa4c1cb0193deb942d0e023faad4c",
-        "pixelSha256": "69ff495333667f6ae284f572043a73c992c349d8c51baee2e30bdac12e3dcdbc"
+        "bytes": 173451,
+        "sha256": "3ae949afde4fb52e9c8ff8c27695a03f2ccd4f012b784e4f7208b126b6da90bd",
+        "pixelSha256": "74c6d75ac85959d0275352e9c3a4a3a6f6ebf0f8d03b97dd801d4558fb81a082"
       },
       "status": "captured",
       "fontRequests": [
@@ -5081,6 +5174,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/project-cen100-390x844-dark.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:38737/tmu-course-guides/cen100/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -5160,13 +5255,13 @@
         "theme": "dark",
         "document": {
           "width": 390,
-          "height": 4103
+          "height": 4014
         },
         "wrapper": {
           "x": 0,
           "y": 202.890625,
           "width": 390,
-          "height": 3900.0625,
+          "height": 3810.6875,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -5301,6 +5396,8 @@
           "height": 303
         }
       ],
+      "url": "http://127.0.0.1:38737/tmu-course-guides/cen100/",
+      "tier": "high",
       "actualWebGLContexts": [
         {
           "width": 374,
@@ -5315,9 +5412,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 90852,
-        "sha256": "241c4244a5fc463e228c1fc00bbc803076af443deb6e5d4ecc3d33a956fc28a6",
-        "pixelSha256": "d7792f17a4968034ea697bb6d9efeaa4bede5de6ebf128352386a7f783c4ff5a"
+        "bytes": 87112,
+        "sha256": "313533dfad8622a1d1e50a7e2cd1e00367cd8cb6ce705bfb5536abf460fa2890",
+        "pixelSha256": "8f1954cfa683076ef39b17a851c4ab6f0f5f0d007af6bc000c32f271337f1c7f"
       },
       "status": "captured",
       "fontRequests": [
@@ -5341,6 +5438,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/project-cen100-390x844-light.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:38737/tmu-course-guides/cen100/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -5420,13 +5519,13 @@
         "theme": "light",
         "document": {
           "width": 390,
-          "height": 4103
+          "height": 4014
         },
         "wrapper": {
           "x": 0,
           "y": 202.890625,
           "width": 390,
-          "height": 3900.0625,
+          "height": 3810.6875,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -5561,6 +5660,8 @@
           "height": 303
         }
       ],
+      "url": "http://127.0.0.1:38737/tmu-course-guides/cen100/",
+      "tier": "high",
       "actualWebGLContexts": [
         {
           "width": 374,
@@ -5575,9 +5676,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 89026,
-        "sha256": "4e19ff5f4d2d957892adb2028eeee951d22293245550913c29648caf57c5cfcc",
-        "pixelSha256": "c4db75029616dbdc0e806d42dda83e65ca966f7dfd31869de898f53f109517b8"
+        "bytes": 85468,
+        "sha256": "1d17378b12caf6cba725b38bd74fe59f94aa57e09350387225ec06c1e8fb788f",
+        "pixelSha256": "5888fd62a9dbfc083fea3e9219172b3935a272a40a00d6c7b1b52fecb52ae5a0"
       },
       "status": "captured",
       "fontRequests": [
@@ -5601,6 +5702,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/project-mth140-1440x900-dark.png",
+      "bookTier": "high",
+      "requestedURL": "http://127.0.0.1:38737/tmu-course-guides/mth140/?tier=high",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -5613,24 +5716,24 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ],
         "after": [
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ]
       },
@@ -5680,13 +5783,13 @@
         "theme": "dark",
         "document": {
           "width": 1440,
-          "height": 2617
+          "height": 2277
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 2617.265625,
+          "height": 2277.46875,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -5713,16 +5816,16 @@
             "aboveFold": true
           },
           {
-            "src": "/tmu-course-guides/assets/scenes/posters/mth140-wide.webp",
-            "naturalWidth": 900,
-            "naturalHeight": 600,
+            "src": "/tmu-course-guides/assets/book/posters/mth140-dark-wide.webp",
+            "naturalWidth": 2160,
+            "naturalHeight": 900,
             "complete": true,
             "loading": "auto",
             "decoding": "async",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550,
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594,
             "aboveFold": true
           }
         ],
@@ -5731,11 +5834,11 @@
             "renderer": "webgl2",
             "sceneReady": "true",
             "motionState": "still",
-            "sceneFrame": "3",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "sceneFrame": "4",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ],
         "fonts": [
@@ -5776,12 +5879,12 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "4",
+            "frame": "5",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ]
       },
@@ -5791,24 +5894,24 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ],
         "after": [
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ]
       },
@@ -5816,21 +5919,23 @@
         {
           "renderer": "webgl2",
           "ready": "true",
-          "frame": "4",
+          "frame": "5",
           "motionState": "still",
-          "x": 724.796875,
-          "y": 24,
-          "width": 691.203125,
-          "height": 550
+          "x": 248,
+          "y": 0,
+          "width": 1192.015625,
+          "height": 594
         }
       ],
+      "url": "http://127.0.0.1:38737/tmu-course-guides/mth140/?tier=high",
+      "tier": "high",
       "actualWebGLContexts": [
         {
-          "width": 691,
-          "height": 550,
+          "width": 1192,
+          "height": 594,
           "contextLost": false,
-          "drawingBufferWidth": 691,
-          "drawingBufferHeight": 550,
+          "drawingBufferWidth": 1192,
+          "drawingBufferHeight": 594,
           "renderer": "WebKit WebGL",
           "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
         }
@@ -5838,9 +5943,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 315125,
-        "sha256": "981077869bf801bdd009ad8cd4ea1debd76ef8f838fe37d57a6ebe88dbce53dd",
-        "pixelSha256": "efbb1fd3c5ef98dd1d8e953e58addcf06a29c0a11f835f2e76a47d365f7831b6"
+        "bytes": 938865,
+        "sha256": "b6fb703dd6d4c106715fe98e498d9b752c835b1131ddbb58ed6defb0e2261bc6",
+        "pixelSha256": "f45f417491be543c4a21f0b0f1e45e66b0a9b533fe39b9cd9c33888d720e72f8"
       },
       "status": "captured",
       "fontRequests": [
@@ -5864,6 +5969,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/project-mth140-1440x900-light.png",
+      "bookTier": "high",
+      "requestedURL": "http://127.0.0.1:38737/tmu-course-guides/mth140/?tier=high",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -5876,24 +5983,24 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ],
         "after": [
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ]
       },
@@ -5943,13 +6050,13 @@
         "theme": "light",
         "document": {
           "width": 1440,
-          "height": 2617
+          "height": 2277
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 2617.265625,
+          "height": 2277.46875,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -5976,16 +6083,16 @@
             "aboveFold": true
           },
           {
-            "src": "/tmu-course-guides/assets/scenes/posters/mth140-wide.webp",
-            "naturalWidth": 900,
-            "naturalHeight": 600,
+            "src": "/tmu-course-guides/assets/book/posters/mth140-light-wide.webp",
+            "naturalWidth": 2160,
+            "naturalHeight": 900,
             "complete": true,
             "loading": "auto",
             "decoding": "async",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550,
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594,
             "aboveFold": true
           }
         ],
@@ -5994,11 +6101,11 @@
             "renderer": "webgl2",
             "sceneReady": "true",
             "motionState": "still",
-            "sceneFrame": "3",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "sceneFrame": "4",
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ],
         "fonts": [
@@ -6039,12 +6146,12 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "4",
+            "frame": "5",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ]
       },
@@ -6054,24 +6161,24 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ],
         "after": [
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 724.796875,
-            "y": 24,
-            "width": 691.203125,
-            "height": 550
+            "x": 248,
+            "y": 0,
+            "width": 1192.015625,
+            "height": 594
           }
         ]
       },
@@ -6079,21 +6186,23 @@
         {
           "renderer": "webgl2",
           "ready": "true",
-          "frame": "4",
+          "frame": "5",
           "motionState": "still",
-          "x": 724.796875,
-          "y": 24,
-          "width": 691.203125,
-          "height": 550
+          "x": 248,
+          "y": 0,
+          "width": 1192.015625,
+          "height": 594
         }
       ],
+      "url": "http://127.0.0.1:38737/tmu-course-guides/mth140/?tier=high",
+      "tier": "high",
       "actualWebGLContexts": [
         {
-          "width": 691,
-          "height": 550,
+          "width": 1192,
+          "height": 594,
           "contextLost": false,
-          "drawingBufferWidth": 691,
-          "drawingBufferHeight": 550,
+          "drawingBufferWidth": 1192,
+          "drawingBufferHeight": 594,
           "renderer": "WebKit WebGL",
           "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
         }
@@ -6101,9 +6210,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 311554,
-        "sha256": "7369465a09e46d87b29573e7348cbca4222038fbabd47638227d878b897435ac",
-        "pixelSha256": "80fee8928340afd86e4146e5e95895e1e317629d16fa61bf1a56838e6ddb4633"
+        "bytes": 894120,
+        "sha256": "54799466b902c5d1ab36d19366ffe41cf0def6ac9bea63c3ddfffe15fc17e3d1",
+        "pixelSha256": "ea2dac1d46a3edbcdd54a37e8accc338d3f22d46a1587155e4325055d48bf206"
       },
       "status": "captured",
       "fontRequests": [
@@ -6127,6 +6236,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/project-mth140-390x844-dark.png",
+      "bookTier": "high",
+      "requestedURL": "http://127.0.0.1:38737/tmu-course-guides/mth140/?tier=high",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -6139,24 +6250,24 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ],
         "after": [
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ]
       },
@@ -6206,13 +6317,13 @@
         "theme": "dark",
         "document": {
           "width": 390,
-          "height": 2631
+          "height": 2640
         },
         "wrapper": {
           "x": 0,
           "y": 203.40625,
           "width": 390,
-          "height": 2427.5,
+          "height": 2436.328125,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -6239,16 +6350,16 @@
             "aboveFold": true
           },
           {
-            "src": "/tmu-course-guides/assets/scenes/posters/mth140-tall.webp",
-            "naturalWidth": 900,
+            "src": "/tmu-course-guides/assets/book/posters/mth140-dark-tall.webp",
+            "naturalWidth": 780,
             "naturalHeight": 600,
             "complete": true,
             "loading": "auto",
             "decoding": "async",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336,
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300,
             "aboveFold": true
           }
         ],
@@ -6257,11 +6368,11 @@
             "renderer": "webgl2",
             "sceneReady": "true",
             "motionState": "still",
-            "sceneFrame": "3",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "sceneFrame": "4",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ],
         "fonts": [
@@ -6302,12 +6413,12 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "4",
+            "frame": "5",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ]
       },
@@ -6317,24 +6428,24 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ],
         "after": [
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ]
       },
@@ -6342,21 +6453,23 @@
         {
           "renderer": "webgl2",
           "ready": "true",
-          "frame": "4",
+          "frame": "5",
           "motionState": "still",
-          "x": 8,
-          "y": 325.40625,
-          "width": 374,
-          "height": 336
+          "x": 0,
+          "y": 379.109375,
+          "width": 390,
+          "height": 300
         }
       ],
+      "url": "http://127.0.0.1:38737/tmu-course-guides/mth140/?tier=high",
+      "tier": "high",
       "actualWebGLContexts": [
         {
-          "width": 374,
-          "height": 336,
+          "width": 390,
+          "height": 300,
           "contextLost": false,
-          "drawingBufferWidth": 374,
-          "drawingBufferHeight": 336,
+          "drawingBufferWidth": 390,
+          "drawingBufferHeight": 300,
           "renderer": "WebKit WebGL",
           "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
         }
@@ -6364,9 +6477,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 138764,
-        "sha256": "fe1ce3068f554995f762dff0c45d21416747ce15b5b5f88058e1d2e87c1d78ec",
-        "pixelSha256": "d0aba723c7ac9c9779efd95fce000b1dec6b56bd275e4fb7115a7bb9ceafd98c"
+        "bytes": 267483,
+        "sha256": "5602b70573e38013014716836f1769164526e239e5b457541237a7fa07d4379b",
+        "pixelSha256": "82cfe584ecf22d0eabcda3a3614a74a0aebb11ee93f2d0c93cd207dd54a7493a"
       },
       "status": "captured",
       "fontRequests": [
@@ -6390,6 +6503,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/project-mth140-390x844-light.png",
+      "bookTier": "high",
+      "requestedURL": "http://127.0.0.1:38737/tmu-course-guides/mth140/?tier=high",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -6402,24 +6517,24 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ],
         "after": [
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ]
       },
@@ -6469,13 +6584,13 @@
         "theme": "light",
         "document": {
           "width": 390,
-          "height": 2631
+          "height": 2640
         },
         "wrapper": {
           "x": 0,
           "y": 203.40625,
           "width": 390,
-          "height": 2427.5,
+          "height": 2436.328125,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -6502,16 +6617,16 @@
             "aboveFold": true
           },
           {
-            "src": "/tmu-course-guides/assets/scenes/posters/mth140-tall.webp",
-            "naturalWidth": 900,
+            "src": "/tmu-course-guides/assets/book/posters/mth140-light-tall.webp",
+            "naturalWidth": 780,
             "naturalHeight": 600,
             "complete": true,
             "loading": "auto",
             "decoding": "async",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336,
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300,
             "aboveFold": true
           }
         ],
@@ -6520,11 +6635,11 @@
             "renderer": "webgl2",
             "sceneReady": "true",
             "motionState": "still",
-            "sceneFrame": "3",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "sceneFrame": "4",
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ],
         "fonts": [
@@ -6565,12 +6680,12 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "4",
+            "frame": "5",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ]
       },
@@ -6580,24 +6695,24 @@
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ],
         "after": [
           {
             "renderer": "webgl2",
             "ready": "true",
-            "frame": "3",
+            "frame": "4",
             "motionState": "still",
-            "x": 8,
-            "y": 325.40625,
-            "width": 374,
-            "height": 336
+            "x": 0,
+            "y": 379.109375,
+            "width": 390,
+            "height": 300
           }
         ]
       },
@@ -6605,21 +6720,23 @@
         {
           "renderer": "webgl2",
           "ready": "true",
-          "frame": "4",
+          "frame": "5",
           "motionState": "still",
-          "x": 8,
-          "y": 325.40625,
-          "width": 374,
-          "height": 336
+          "x": 0,
+          "y": 379.109375,
+          "width": 390,
+          "height": 300
         }
       ],
+      "url": "http://127.0.0.1:38737/tmu-course-guides/mth140/?tier=high",
+      "tier": "high",
       "actualWebGLContexts": [
         {
-          "width": 374,
-          "height": 336,
+          "width": 390,
+          "height": 300,
           "contextLost": false,
-          "drawingBufferWidth": 374,
-          "drawingBufferHeight": 336,
+          "drawingBufferWidth": 390,
+          "drawingBufferHeight": 300,
           "renderer": "WebKit WebGL",
           "unmaskedRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
         }
@@ -6627,9 +6744,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 136739,
-        "sha256": "03469bde9e9c98fa9ca21b2ee8afd9080e7fa34a804705b3ee4c3dd8a8198dc4",
-        "pixelSha256": "0559b4814b2a0ca2b7093322ab7c476ff9fcb554d1d5ff0fe4842fd1a64b7727"
+        "bytes": 252120,
+        "sha256": "1dba9404f8a21e4fca4bbc6adc6d56fab37eb893cad54cb008c4f025e0e54dee",
+        "pixelSha256": "cca5fa85b823a0e9e6a62cb329d80d74802cf4b8b6935cce3a2055cf3ed6f62c"
       },
       "status": "captured",
       "fontRequests": [
@@ -6653,6 +6770,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/project-mth141-1440x900-dark.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:38737/tmu-course-guides/mth141/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -6732,13 +6851,13 @@
         "theme": "dark",
         "document": {
           "width": 1440,
-          "height": 2585
+          "height": 2369
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 2584.765625,
+          "height": 2368.984375,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -6876,6 +6995,8 @@
           "height": 550
         }
       ],
+      "url": "http://127.0.0.1:38737/tmu-course-guides/mth141/",
+      "tier": "high",
       "actualWebGLContexts": [
         {
           "width": 691,
@@ -6890,9 +7011,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 277245,
-        "sha256": "3a10b5d3fe6611c217cdddf312dcdf8a9711962628fd17b0f20af10e66086304",
-        "pixelSha256": "7a056b91d2dc12812b1bf2ab1a31e18246e5ac2802c0f434717edc8976467170"
+        "bytes": 261274,
+        "sha256": "5423125bf4bfc6cafeb1a187a98a10d7c69a037eaecfbd00de35666ab3716684",
+        "pixelSha256": "87462deb880821dd08d5be87bbdc8bde112286a59325a090ec22f8d16a8820b1"
       },
       "status": "captured",
       "fontRequests": [
@@ -6916,6 +7037,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/project-mth141-1440x900-light.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:38737/tmu-course-guides/mth141/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -6995,13 +7118,13 @@
         "theme": "light",
         "document": {
           "width": 1440,
-          "height": 2585
+          "height": 2369
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 2584.765625,
+          "height": 2368.984375,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -7139,6 +7262,8 @@
           "height": 550
         }
       ],
+      "url": "http://127.0.0.1:38737/tmu-course-guides/mth141/",
+      "tier": "high",
       "actualWebGLContexts": [
         {
           "width": 691,
@@ -7153,9 +7278,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 274521,
-        "sha256": "8081f9567c1ef0c8656a124269933cc1df2446e08ca0bbadf9a74130fbf9b16f",
-        "pixelSha256": "45485ff1b129f5890f30d111755a61b0ed66153ebb9bd39664cab7382c83ae77"
+        "bytes": 259704,
+        "sha256": "f0ef94a4262bdaf900d508d2f5d87f54cce88aef72f68af2ebb9e8380abe530d",
+        "pixelSha256": "fcf2d1d193d0d1a63d97200753568aedba6128bc7340a2194a17a57d4dbca3cc"
       },
       "status": "captured",
       "fontRequests": [
@@ -7179,6 +7304,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/project-mth141-390x844-dark.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:38737/tmu-course-guides/mth141/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -7258,13 +7385,13 @@
         "theme": "dark",
         "document": {
           "width": 390,
-          "height": 2621
+          "height": 2532
         },
         "wrapper": {
           "x": 0,
           "y": 203.40625,
           "width": 390,
-          "height": 2418.03125,
+          "height": 2328.65625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -7402,6 +7529,8 @@
           "height": 336
         }
       ],
+      "url": "http://127.0.0.1:38737/tmu-course-guides/mth141/",
+      "tier": "high",
       "actualWebGLContexts": [
         {
           "width": 374,
@@ -7416,9 +7545,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 139439,
-        "sha256": "275285669a13cc30a990083588d0bd8e3edbc10aaf47d4a83313483875eb4753",
-        "pixelSha256": "50c9942ce65b49ab9abe28ed414bbd1f87f19b0cd8fd111d85fa3d13280331be"
+        "bytes": 135411,
+        "sha256": "521df1075323f73683cf98cf56b09445a872951d3b502fdcc8e5f24586c410f5",
+        "pixelSha256": "9a9237277dd4b5506df60d103526b091d7d884f3cf33f57f63ebcd882d1b7873"
       },
       "status": "captured",
       "fontRequests": [
@@ -7442,6 +7571,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/project-mth141-390x844-light.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:38737/tmu-course-guides/mth141/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -7521,13 +7652,13 @@
         "theme": "light",
         "document": {
           "width": 390,
-          "height": 2621
+          "height": 2532
         },
         "wrapper": {
           "x": 0,
           "y": 203.40625,
           "width": 390,
-          "height": 2418.03125,
+          "height": 2328.65625,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -7665,6 +7796,8 @@
           "height": 336
         }
       ],
+      "url": "http://127.0.0.1:38737/tmu-course-guides/mth141/",
+      "tier": "high",
       "actualWebGLContexts": [
         {
           "width": 374,
@@ -7679,9 +7812,9 @@
       "png": {
         "width": 390,
         "height": 844,
-        "bytes": 136986,
-        "sha256": "4e92bf53de6127cf94572c6b04b963ffbd1d1b2fd23f2449983cb5a66529f0df",
-        "pixelSha256": "3b5afaaf27b4e27dd31b9db00aa4fb7beb80471fc1f405541f740ff4b1e2c893"
+        "bytes": 133269,
+        "sha256": "267526a82933c4fd87a6b4108563e3f2d0cded7446ceeb8bb9f9c496f6817c02",
+        "pixelSha256": "1f7d38a525c8af32e8e0d5f08e0bd74e105fcf2c8a9adabb0417a459c8e2f525"
       },
       "status": "captured",
       "fontRequests": [
@@ -7708,6 +7841,8 @@
       "fullPage": false,
       "nativeClock": false,
       "screenshot": "tools/qa/reports/perf-visuals/after/repeat/root-cen100-1440x900-dark.png",
+      "bookTier": null,
+      "requestedURL": "http://127.0.0.1:33005/cen100/",
       "naturalWrapper": {
         "opacity": "1",
         "filter": "none",
@@ -7787,13 +7922,13 @@
         "theme": "dark",
         "document": {
           "width": 1440,
-          "height": 4334
+          "height": 4118
         },
         "wrapper": {
           "x": 248,
           "y": 0,
           "width": 1192,
-          "height": 4334.015625,
+          "height": 4118.234375,
           "opacity": "1",
           "filter": "none",
           "transform": "none"
@@ -7928,6 +8063,8 @@
           "height": 550
         }
       ],
+      "url": "http://127.0.0.1:33005/cen100/",
+      "tier": "high",
       "actualWebGLContexts": [
         {
           "width": 691,
@@ -7942,9 +8079,9 @@
       "png": {
         "width": 1440,
         "height": 900,
-        "bytes": 185812,
-        "sha256": "80959b55fa854553195e25afdb4842e57c4d28fba6a81cc1ed072e641233134d",
-        "pixelSha256": "67728df90763ad4e96c210080596caaccf0caebd1943be0bd70b66ebfbe753f6"
+        "bytes": 175463,
+        "sha256": "bdbb1b942b70cbc5ce9cfd6f547eec1035cba741740a6e19a4c3c942bd8f25bc",
+        "pixelSha256": "16844d634542192cdf0557f31cd85883f28ab49c3f33027ac845fc80d71f38ab"
       },
       "status": "captured",
       "fontRequests": [
@@ -7972,14 +8109,14 @@
       "maxChannelDifference": 0,
       "differenceBounds": null,
       "pixelIdentical": true,
-      "beforeSha256": "80959b55fa854553195e25afdb4842e57c4d28fba6a81cc1ed072e641233134d",
-      "afterSha256": "80959b55fa854553195e25afdb4842e57c4d28fba6a81cc1ed072e641233134d",
+      "beforeSha256": "bdbb1b942b70cbc5ce9cfd6f547eec1035cba741740a6e19a4c3c942bd8f25bc",
+      "afterSha256": "bdbb1b942b70cbc5ce9cfd6f547eec1035cba741740a6e19a4c3c942bd8f25bc",
       "diff": "tools/qa/reports/perf-visuals/after/repeat/root-cen100-1440x900-dark-diff.png"
     }
   },
-  "productSourceSha256After": "14aab876ca16efa6dc335eb663dd7817bde3948628ce48613c18deaa00234e32",
+  "productSourceSha256After": "1795468f427084977fac5a0707eef0b14e461c8d2041cb9c6d1e0315de48851f",
   "sourceUnchanged": true,
-  "protectedSourceSha256After": "1b773fabf9affdc543ba245a8822642aab9167f28bc1990b5f4f293d4deab653",
+  "protectedSourceSha256After": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
   "protectedSourceUnchanged": true,
   "summary": {
     "requested": 32,

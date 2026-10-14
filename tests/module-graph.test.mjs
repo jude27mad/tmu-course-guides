@@ -105,10 +105,12 @@ test('Desk boot follows awaited directory and target data while leaving vendors 
  assert.deepEqual(graph.bootDynamicEdges.map(edge=>new URL(edge.to).pathname).sort(),[
   '/assets/cen-schedule.mjs','/assets/course-data.mjs','/assets/night/desk.mjs'
  ]);
- assert.equal(graph.moduleCount,15);
+ assert.equal(graph.moduleCount,17);
+ assert.ok(graph.nodes.some(node=>node.path==='assets/book/book-state.mjs'));
+ assert.ok(graph.nodes.some(node=>node.path==='assets/book/weeks.mjs'));
  assert.ok(!graph.nodes.some(node=>node.path==='assets/vendor/night-vendor.mjs'||node.path==='assets/vendor/three-0.186.1.mjs'));
  assert.equal(graph.maxDepth,2);
- assert.equal(graph.longestChainDepth,4);
+ assert.equal(graph.longestChainDepth,5);
 });
 
 test('await classification honors lexical code and direct parenthesized calls',()=>{

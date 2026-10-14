@@ -1,0 +1,103 @@
+{
+  "recordedAt": "2026-10-14T07:07:01.299755+00:00",
+  "root": {
+    "command": "PLAYWRIGHT_PATH=/opt/codex/cua_node/lib/node_modules/playwright QA_CHROMIUM_PATH=/usr/bin/chromium node --test tests/*.test.mjs tests/scene-*.cjs",
+    "CLIexit": 0,
+    "tests": 415,
+    "pass": 415,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "priorFailure": "The earlier 414/415 run failed this task's stale Desk graph count15 versus actual17; exact current count17 and chain5 plus eager book state/weeks membership now checked. Earlier failure log preserved."
+  },
+  "ui": {
+    "ciExit": 0,
+    "buildExit": 0,
+    "testExit": 0,
+    "vendorByteIdenticalFiles": 8,
+    "coverage": "All six course\u00d7motion workflows, Desk variants, palette20cycles, root/project routing at motion on/off, native hash/history/focus/state and one-shot transition checks passed. Full original workflow source/assertions retained."
+  },
+  "qaTools": {
+    "tests": 138,
+    "pass": 138,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "copyHashes": [
+    {
+      "name": "performance-root-suite-final.log",
+      "sha256": "59659c37d2dac0e1d0938b352c3d5e1cde79ce17a2681ed4f8994044e450b0b1"
+    },
+    {
+      "name": "performance-root-suite-stale-graph-failed.log",
+      "sha256": "f1bc5763dab0229b406d4039f52daaa02146e3f407684e7103848067b1ad5ff6"
+    },
+    {
+      "name": "performance-module-graph-updated.log",
+      "sha256": "609220a07812b1ccdf7c5e4522ab2fa3f125b4ccb9f217e0ee06e90132891bab"
+    },
+    {
+      "name": "performance-ui-ci.log",
+      "sha256": "65974ca16b8bbc980cf93bf62b5c27c8b0009cbc68f8e5b997f4927d33af26aa"
+    },
+    {
+      "name": "performance-ui-build.log",
+      "sha256": "58cf9f380a0169a4de398d374a8aeb606e39c86488e64fd7d3e423461e0bbfa3"
+    },
+    {
+      "name": "performance-ui-test.log",
+      "sha256": "8780cfe17144a20ffff191fc4e3b0a17bef516f8ce7e1e802bb6d1e5021a0d47"
+    },
+    {
+      "name": "performance-ui-vendor-before.json",
+      "sha256": "68e8e0ea4f39358ea7bcb63ebb9f28a1d8264176aec42c83632124fcd508586f"
+    },
+    {
+      "name": "performance-ui-vendor-after-build.json",
+      "sha256": "e6a7f15422bf32418f0a930e2fc69f6852f718c789d5ad25aa778061eee4f6ad"
+    },
+    {
+      "name": "performance-qa-unit-proof.json",
+      "sha256": "61830206a3c2af7623834c721a5afa12eefb879c559653e4392ef8ec4a10cca0"
+    },
+    {
+      "name": "performance-recovery-passive-final-proof.json",
+      "sha256": "8496c7cbe6e1b24e0e3e7c089a203d4701675f34735c5afbd8c040b2a00c17cf"
+    },
+    {
+      "name": "performance-recovery-passive-traces.json",
+      "sha256": "43f3c9ede156a47b3123154d57ad00999a997b69c58f95cbaf2171442ac09a50"
+    },
+    {
+      "name": "performance-recovery-passive-source-before.json",
+      "sha256": "de0afe7f80ab7b86577c67f057d2f77a0282579abb76403f7d22f055b41e9921"
+    },
+    {
+      "name": "performance-recovery-passive-source-before-bound.json",
+      "sha256": "aad5051413617ff188f835eee4afbd38de3836324a82fcd6bb5d79bca2663b5f"
+    },
+    {
+      "name": "performance-recovery-passive-source-after.json",
+      "sha256": "05e2d2dfe56ca21982ea00d93718da588232a2e4ba018a809aedf8ddffcfe15a"
+    },
+    {
+      "name": "performance-recovery-passive-closure.json",
+      "sha256": "d1057a078b701352e6d7266ef03c6e569521f825080a40d0359ee671b845611e"
+    },
+    {
+      "name": "performance-recovery-passive-summary.json",
+      "sha256": "24ebe7418252229d6a039ecf549618f1b639cce0e9e87b0f3a45414b95d6b285"
+    },
+    {
+      "name": "performance-recovery-passive-bfcache.json",
+      "sha256": "5f796be1a783cd2ce8479ce35e05989696b8e68f98fcb121645d98a025f57a30"
+    },
+    {
+      "name": "performance-recovery-passive-failures.json",
+      "sha256": "0b791630ab31ed0fd0f4bc1868604ac076b39115b9c5b77e559c184be4c5089c"
+    }
+  ],
+  "browserLatestFull": "Pending fresh14\u00d72; this validation record does not claim it passed."
+}
