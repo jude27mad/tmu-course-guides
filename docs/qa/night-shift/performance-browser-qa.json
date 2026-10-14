@@ -2,7 +2,7 @@
   "schemaVersion": 5,
   "artifactType": "current-browser-qa-status",
   "recordedAt": "2026-10-14T10:45:22.615887Z",
-  "status": "failed-complete-legacy-run-and-interrupted-supported-attempt",
+  "status": "feature-ci-passed-scoped-local-failures-preserved",
   "latestFullAcceptance": false,
   "overallRequestedGoalComplete": false,
   "latestCompletedRun": {
@@ -436,7 +436,7 @@
         "path": "docs/qa/night-shift/performance-native-renderer-diagnostics/control/reports/2026-10-14T10-31-44-197Z-172402/summary.json",
         "sha256": "bf69645a76ba073510c64c2dd2fd57e312acd158ead015ef81dec144d7f3a2e9"
       },
-      "sameNativeFailure": "Initial CEN100\u2192MTH140 native click dispatched, then original completed-navigation/content/deadline readiness times out;11/12 assertions pass on both",
+      "sameNativeFailure": "Initial CEN100→MTH140 native click dispatched, then original completed-navigation/content/deadline readiness times out;11/12 assertions pass on both",
       "sameFiveQASources": true,
       "sameDriverAndRecordedRenderFlags": true,
       "currentProductFingerprint": "1795468f427084977fac5a0707eef0b14e461c8d2041cb9c6d1e0315de48851f",
@@ -497,7 +497,7 @@
         "skipped": [
           {
             "feature": "Playwright WebKit routes, deadlines and layout",
-            "reason": "WebKit could not launch; install its browser and OS dependencies. browserType.launch: \n\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551 Host system is missing dependencies to run browsers. \u2551\n\u2551 Missing libraries:                                   \u2551\n\u2551     libGLESv2.so.2                                   \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d"
+            "reason": "WebKit could not launch; install its browser and OS dependencies. browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Missing libraries:                                   ║\n║     libGLESv2.so.2                                   ║\n╚══════════════════════════════════════════════════════╝"
           }
         ],
         "durationMs": 881,
@@ -515,7 +515,7 @@
         "skipped": [
           {
             "feature": "Playwright WebKit routes, deadlines and layout",
-            "reason": "WebKit could not launch; install its browser and OS dependencies. browserType.launch: \n\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551 Host system is missing dependencies to run browsers. \u2551\n\u2551 Missing libraries:                                   \u2551\n\u2551     libGLESv2.so.2                                   \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d"
+            "reason": "WebKit could not launch; install its browser and OS dependencies. browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Missing libraries:                                   ║\n║     libGLESv2.so.2                                   ║\n╚══════════════════════════════════════════════════════╝"
           }
         ],
         "durationMs": 988,
@@ -527,8 +527,34 @@
   },
   "localValidationState": "completed-with-recorded-browser-failures-and-availability-gaps",
   "featureBranchCI": {
-    "status": "not-yet-pushed-or-run",
-    "purpose": "Independent CI on codex/ns-perf before the authorized night-shift merge",
-    "acceptanceEstablished": false
+    "status": "completed-success",
+    "runId": 38552794234,
+    "runURL": "https://github.com/jude27mad/tmu-course-guides/actions/runs/38552794234",
+    "headSHA": "f9a46fdb52729f47c0f13911d40ada85e6a6137e",
+    "jobsPassed": 18,
+    "browserRecordsPassed": 16,
+    "browserAssertionsPassed": 3402,
+    "browserSkipped": 0,
+    "coreChecks": [
+      "perf",
+      "routes",
+      "stability",
+      "frames",
+      "deadlines",
+      "modes",
+      "layout"
+    ],
+    "bases": [
+      "/",
+      "/tmu-course-guides/"
+    ],
+    "actualWebKitVersion": "27.2",
+    "actualWebKitAssertions": 1328,
+    "report": {
+      "path": "docs/qa/night-shift/performance-feature-ci.json",
+      "sha256": "2936687313cd81f23efad8aeb1c817fd20fcd364093612800c2ae0a262b0a3cb"
+    },
+    "acceptanceEstablished": true,
+    "acceptanceScope": "Only the seven core Chromium check types at both bases, executed WebKit checks at both bases, root and JSDOM UI jobs. All local failures remain recorded; no six-check resilience or universal all-QA acceptance."
   }
 }
