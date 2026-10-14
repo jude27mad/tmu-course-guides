@@ -502,8 +502,30 @@ async function motionState(page) {
     const animatedTransforms=document.getAnimations().filter(a=>a.playState==='running'&&a.effect?.getKeyframes().some(k=>k.transform&&k.transform!=='none')).map(a=>({target:a.effect.target?.className,duration:a.effect.getTiming().duration}));
     const decorative=[...document.querySelectorAll('[class*="cursor"],[class*="particle"],[class*="dust"]')].filter(visible).map(el=>({tag:el.tagName,class:el.className}));
     const transforms=[...document.querySelectorAll('.header-upgraded,.hero-copy,.header-art,.ns-title-char,main[data-route-region]')].map(el=>({class:el.className,transform:getComputedStyle(el).transform}));
-    return {preference:window.GuideMotion?.preference(),motion:document.documentElement.dataset.motion,animatedTransforms,decorative,transforms,metrics:window.__qaMetrics.snapshot(),content:document.querySelector('main[data-route-region]')?.innerText.trim().length??0,renderers:[...document.querySelectorAll('[data-renderer]')].map(el=>{const box=el.getBoundingClientRect();return {renderer:el.dataset.renderer,poster:!!el.querySelector('img.scene-poster')?.complete,posterVisible:!!el.querySelector('img.scene-poster')&&visible(el.querySelector('img.scene-poster')),sceneReady:el.dataset.sceneReady??null,sceneFrame:Number(el.dataset.sceneFrame||0),sceneTime:el.dataset.sceneTime??null,motionState:el.dataset.motionState,awake:el.dataset.awake,onScreen:box.width>0&&box.height>0&&box.bottom>0&&box.right>0&&box.top<innerHeight&&box.left<innerWidth,width:box.width,height:box.height};}),coursework:!!document.querySelector('.workspace-panel,#assessment-list,#board,[data-course-card]'),itemIds:[...document.querySelectorAll('[id^="guide-item-"],details.assessment[id]')].map(el=>el.id),deskCourses:[...document.querySelectorAll('[data-course-card]')].map(el=>el.dataset.courseCard),sampledAt:performance.now()};
+    return {preference:window.GuideMotion?.preference(),motion:document.documentElement.dataset.motion,animatedTransforms,decorative,transforms,metrics:window.__qaMetrics.snapshot(),content:document.querySelector('main[data-route-region]')?.innerText.trim().length??0,renderers:[...document.querySelectorAll('[data-renderer]')].map(el=>{const box=el.getBoundingClientRect();return {renderer:el.dataset.renderer,poster:!!el.querySelector('img.scene-poster')?.complete,posterVisible:!!el.querySelector('img.scene-poster')&&visible(el.querySelector('img.scene-poster')),sceneReady:el.dataset.sceneReady??null,sceneFrame:el.dataset.sceneFrame??null,sceneTime:el.dataset.sceneTime??null,motionState:el.dataset.motionState??null,awake:el.dataset.awake,onScreen:box.width>0&&box.height>0&&box.bottom>0&&box.right>0&&box.top<innerHeight&&box.left<innerWidth,width:box.width,height:box.height};}),coursework:!!document.querySelector('.workspace-panel,#assessment-list,#board,[data-course-card]'),itemIds:[...document.querySelectorAll('[id^="guide-item-"],details.assessment[id]')].map(el=>el.id),deskCourses:[...document.querySelectorAll('[data-course-card]')].map(el=>el.dataset.courseCard),sampledAt:performance.now()};
   });
+}
+
+export async function sampleMotion(page,observation,{timeout=10000}={}){
+ // Scene import and compileAsync finish after coursework/DOM settlement. Wait for
+ // the authored first-paint marker or a loaded fallback, never for draw counts to stop.
+ await until(async()=>{
+  observation.sceneReadiness=await page.evaluate(()=>{
+   const route=document.body.dataset.page||document.body.dataset.course,exempt=route==='desk';
+   const visible=el=>{
+    if(!el)return false;
+    for(let node=el;node;node=node.parentElement){const s=getComputedStyle(node);if(node.hidden||s.display==='none'||s.visibility==='hidden'||s.visibility==='collapse'||Number(s.opacity)===0)return false;}
+    const r=el.getBoundingClientRect();return r.width>0&&r.height>0;
+   };
+   const renderers=[...document.querySelectorAll('.header-art')].map(el=>{
+    const poster=el.querySelector('img.scene-poster');
+    return {renderer:el.dataset.renderer??null,sceneReady:el.dataset.sceneReady??null,sceneFrame:el.dataset.sceneFrame??null,motionState:el.dataset.motionState??null,posterLoaded:!!poster?.complete&&poster.naturalWidth>0,posterVisible:visible(poster)};
+   });
+   return {route,exempt,renderers,ready:exempt||renderers.length>0&&renderers.every(r=>/^webgl/.test(r.renderer)?r.sceneReady==='true':r.renderer==='poster'&&r.posterLoaded&&r.posterVisible)};
+  });
+  return observation.sceneReadiness.ready;
+ },'course header scene readiness',timeout);
+ observation.before=await motionState(page);await page.waitForTimeout(450);observation.after=await motionState(page);
 }
 
 function assertCoursework(out,label,state,route) {
@@ -524,7 +546,7 @@ export async function modes(env) {
     await page.goto(routeURL(env,route,variant.query));await ready(page,route);await settle(page,out);await sceneSettled(page);
     // Preserve the locked-scene observation before the unchanged450-ms sample.
     if(variant.locked&&route!=='desk')observation.sceneInitialization=await waitForInitialStaticScene(page,route);
-    observation.before=await motionState(page);await page.waitForTimeout(450);observation.after=await motionState(page);
+    await sampleMotion(page,observation);
     assert(out,`${route} ${variant.name}: coursework usable`,observation.after.content>20&&observation.after.coursework,observation.after.content,'visible coursework');
     assertCoursework(out,`${route} ${variant.name}`,observation.after,route);
     if(variant.locked) {
@@ -540,7 +562,7 @@ export async function modes(env) {
     fallbackBrowser=await env.playwright.chromium.launch({...env.launchOptions,args:[...(env.launchOptions.args??[]),'--disable-webgl']});
     for(const route of ROUTES) await runCase(env,out,`${route}: WebGL disabled`,async(page,observation)=>{
       await page.goto(routeURL(env,route));await ready(page,route);await settle(page,out);
-      observation.before=await motionState(page);await page.waitForTimeout(450);observation.after=await motionState(page);
+      await sampleMotion(page,observation);
       assert(out,`${route}: fallback coursework present`,observation.after.coursework&&observation.after.content>20,observation.after.content,'complete DOM content');
       assertCoursework(out,`${route} WebGL fallback`,observation.after,route);
       assert(out,`${route}: no WebGL contexts`,observation.after.metrics.webgl.active===0,observation.after.metrics.webgl.active,0);
