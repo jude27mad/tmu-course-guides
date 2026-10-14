@@ -1,0 +1,21 @@
+{
+  "reason": "Operator stopped additional matched-driver sweep after three reproduced native timeouts, to isolate native compositor before further full validation. Original complete legacy28 and partial matched records retained.",
+  "target": {
+    "pid": 167354,
+    "argv": [
+      "python3",
+      "/tmp/ns-perf-supported-matrix.py",
+      "--output",
+      "/tmp/ns-perf-supported-all28-final",
+      "--capture-sha",
+      "b94bcb12740fe0536637b7c1cb6a64d58122cc1e4a5b920a1608b63cd957d198",
+      "--webkit-setup",
+      "/tmp/ns-perf-webkit-approved-setup-final.json",
+      "--webkit-setup-sha",
+      "69569d45fa8b67923a76f146a4f60f5d657b5c0ac9eddfa77cbf65e3621654b8"
+    ]
+  },
+  "signal": "SIGINT",
+  "signalSentAt": "2026-10-14T10:09:37.017247+00:00",
+  "actualSignalSent": true
+}

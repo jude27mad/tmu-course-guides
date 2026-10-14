@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T10:31:11.514813+00:00",
+  "reviewedBy": "/root/final_review",
+  "approved": true,
+  "sourceApprovalOnly": true,
+  "runner": {
+    "path": "/tmp/ns-perf-native-compositor-control.mjs",
+    "sha256": "dfa20d2246bd433c4fe939af175fade2c3585dc1e8ac14de9ac616f2ba07c7fa"
+  },
+  "matchedTopicRunner": {
+    "path": "/tmp/ns-perf-native-compositor-diagnostic-v3.mjs",
+    "sha256": "657bac6c6f2820b4ff37616bd89816bb30dd7f5310617fc3cab931c59e4232db"
+  },
+  "priorSourceReview": {
+    "path": "/tmp/ns-perf-native-compositor-diagnostic-v3-peer-review.json",
+    "sha256": "1a50bab93886e6f3b0c07cce23f50292ae22dea46f557199b928cec167570d5f"
+  },
+  "exactBindingOnlyDiffVerified": true,
+  "differences": [
+    "Three absolute imports bind the unchanged matching QA files in /workspace/ns-perf-control-aa7.",
+    "Fresh private output directory /tmp/ns-perf-native-compositor-control."
+  ],
+  "qaFileSHA256": {
+    "checks": "e1cc6550f304cd30d092cfcc34a78548365ce3c9b06e2f9ea6b53f1c1deee9ca",
+    "checks-resilience": "db77a8d9fa49683f6370c87fc1794dbec247bc3c95cf524fee1d5d58d12e0de8",
+    "checks-perf": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657",
+    "runtime": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587",
+    "instrument": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892"
+  },
+  "requiredCwd": "/workspace/ns-perf-control-aa7",
+  "expectedControlProductFingerprint": "f53027510da4ab7382192a2b05a3acc7dcab5ce3cf93d62a9d197345de765960",
+  "expectedProtectedFingerprint": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+  "unchanged": "Exact same root routes check, PW1.64/bundled156 resolution, five native flags, public SystemInfo metadata, full motion, native goto10s/click30s, fixtures/assertions and cleanup/exit reporting. No wrapper/retry/fallback/forced click or product edit.",
+  "findings": [],
+  "limits": [
+    "Source-only approval; no browser/tests/imports/repository edits by reviewer.",
+    "Root must bind actual true prelaunch control source/driver/fingerprint and closure before executing this single baseline probe.",
+    "Actual control result and complete after failures remain separate. A baseline failure cannot waive the failed topic checks or establish the entire intended performance task as complete.",
+    "The expected product/protected fingerprints are required provenance, not recalculated by this light source review."
+  ]
+}

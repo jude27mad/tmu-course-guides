@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T09:02:57.497854Z",
+  "artifactType": "actual-private-builder-execution-failure",
+  "builder": {
+    "path": "/tmp/ns-perf-latest-run-evidence.mjs",
+    "sha256": "3f5b0324464c37ba90e399ce4701600a690c595332d53533c2b67e4124142305"
+  },
+  "manifest": {
+    "path": "/tmp/ns-perf-latest-full-original-evidence-input.json",
+    "sha256": "265e2fba7548bec3375a8633e08e97b55116a1bf705c451eea7c3790173f1dee"
+  },
+  "actualCLIexit": 1,
+  "actualToolSession": 62820,
+  "actualToolChunk": "3ffc7e",
+  "error": "spawnSync git ENOBUFS",
+  "stackLocation": "suiteAndVisual line169 committed supporting suite artifact read via git show",
+  "candidateWritten": false,
+  "browserLaunched": false,
+  "repositoryEdited": false,
+  "note": "Default execFileSync output buffer exhausted while reading committed supporting bytes. No source/evidence guard was waived."
+}

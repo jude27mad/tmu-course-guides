@@ -1,0 +1,65 @@
+import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+import {createRequire} from 'node:module';
+import {readFile,writeFile} from 'node:fs/promises';
+import {existsSync} from 'node:fs';
+import path from 'node:path';
+import net from 'node:net';
+import {captureEvidenceProblems as defaultProblems,validateRepeatPixels as defaultRepeat} from '/tmp/ns-perf-default-visual-capture.mjs';
+import {captureEvidenceProblems as bookProblems} from '/workspace/tmu-course-guides/tools/qa/compare-perf-visuals.mjs';
+import {hasNaturalBookFallback,ordinaryMTH140Scope} from '/tmp/ns-perf-default-visual-guard.mjs';
+const require=createRequire(import.meta.url),{PNG}=require('/opt/codex/cua_node/lib/node_modules/pngjs'),root='/workspace/tmu-course-guides',sha=b=>createHash('sha256').update(b).digest('hex');
+const readJSON=async file=>JSON.parse(await readFile(file,'utf8'));
+const start=await readJSON('/tmp/ns-perf-default-visual-source-start.json');
+const proof={schemaVersion:1,recordedAt:new Date().toISOString(),reviewer:'/root/latest_visual_prepare',actualCLIExitCodes:{before:0,after:0,compare:0},rawArtifacts:{},sources:{},privateDependencies:{},driverDependencies:{},bookProofUnchanged:[],ordinaryDefaultSamples:[],combinedOrdinaryPairs:[],previewPorts:[],runnerPIDs:[],browserProcesses:[]};
+const refs={};
+for(const [label,dir] of [['defaultBefore','perf-visuals-default/before'],['defaultAfter','perf-visuals-default/after'],['defaultCompare','perf-visuals-default/compare'],['bookBefore','perf-visuals/before'],['bookAfter','perf-visuals/after'],['bookCompare','perf-visuals/compare']]){
+ const file=path.join(root,'tools/qa/reports',dir,label.endsWith('Compare')?'comparison.json':'manifest.json'),bytes=await readFile(file);proof.rawArtifacts[label]={path:file,sha256:sha(bytes),bytes:bytes.length};refs[label]=JSON.parse(bytes);
+}
+for(const [label,m] of [['before',refs.defaultBefore],['after',refs.defaultAfter]]){
+ if(defaultProblems(m).length||m.summary.captured!==8||m.summary.initialAttemptFailures||m.summary.failed||m.summary.errors||m.summary.naturalSettlementFailures)throw Error('Default manifest rejected '+label);
+ const repeat=await defaultRepeat(m);if(!repeat?.pass)throw Error('Default repeated PNG rejected '+label);
+ proof[label]={capturedAt:m.capturedAt,revision:m.revision,summary:m.summary,repeatValidation:repeat,source:m.productSourceSha256,sourceAfter:m.productSourceSha256After,protected:m.protectedSourceSha256,protectedAfter:m.protectedSourceSha256After,environment:{playwrightPath:m.environment.playwrightPath,chromiumVersion:m.environment.chromiumVersion,executablePath:m.environment.executablePath,args:m.environment.args,playwrightLegacyScreenshot:m.environment.playwrightLegacyScreenshot,actualMode:m.environment.actualMode,gpuFeatureStatus:m.environment.gpuInfo.featureStatus}};
+ if(m.environment.playwrightPath!=='/opt/codex/cua_node/lib/node_modules/playwright'||m.environment.chromiumVersion!=='154.0.8037.57'||m.environment.executablePath!=='/usr/bin/chromium'||m.environment.playwrightLegacyScreenshot!==true||m.environment.args.includes('--disable-webgl'))throw Error('Original driver or ordinary renderer options changed.');
+ for(const record of [...m.cases,m.repeatCheck.capture]){
+  if(!ordinaryMTH140Scope(record))throw Error('Ordinary MTH140 URL scope rejected');
+  const e=record.defaultBookEvidence;
+  if(e.renderer==='webgl2'){
+   if(e.rendererReason!=='ok'||e.sceneReady!=='true'||e.motionState!=='still'||e.bookView!=='webgl2'||e.canvasCount!==1||Number(e.sceneFrame)<=0||!record.actualWebGLContexts.length||!record.actualWebGLContexts.every(gl=>gl.contextLost===false&&gl.drawingBufferWidth>0&&gl.drawingBufferHeight>0&&/SwiftShader/.test(gl.unmaskedRenderer)))throw Error('Ordinary live book proof rejected');
+  }else if(!hasNaturalBookFallback(record))throw Error('Ordinary source-authored fallback rejected');
+  proof.ordinaryDefaultSamples.push({reference:label,id:record.id,repeat:record===m.repeatCheck.capture,url:record.url,tier:e.tier,renderer:e.renderer,reason:e.rendererReason,sceneReady:e.sceneReady,motionState:e.motionState,frame:e.sceneFrame,drawCalls:e.drawCalls,triangles:e.triangles,canvasCount:e.canvasCount,poster:e.poster,actualWebGLContexts:record.actualWebGLContexts});
+ }
+}
+if(bookProblems(refs.bookBefore).length||bookProblems(refs.bookAfter).length||refs.bookCompare.summary.pixelIdentical!==32||refs.defaultCompare.summary.pixelIdentical!==8||refs.defaultCompare.summary.changedPixels)throw Error('Preserved or supplemental comparison rejected');
+for(const entry of start.immutableBookEvidence){const current=sha(await readFile(entry.path));proof.bookProofUnchanged.push({...entry,currentSHA256:current,unchanged:current===entry.sha256});if(current!==entry.sha256)throw Error('Immutable book proof changed');}
+const recipeWithoutOverride=m=>{const recipe=structuredClone(m.recipe);delete recipe.bookTier;return recipe;};
+for(const book of [refs.bookBefore,refs.bookAfter])if(JSON.stringify(recipeWithoutOverride(book))!==JSON.stringify(refs.defaultBefore.recipe)||book.execution.captureConcurrency!==1||JSON.stringify(book.environment.args)!==JSON.stringify(refs.defaultBefore.environment.args))throw Error('Other 24 ordinary routes do not retain identical renderer and recipe');
+if(JSON.stringify(refs.defaultBefore.recipe)!==JSON.stringify(refs.defaultAfter.recipe))throw Error('Default recipes disagree');
+const expectedIDs=new Set(['root','project'].flatMap(base=>['desk','cen100','mth140','mth141'].flatMap(route=>['1440x900','390x844'].flatMap(size=>['dark','light'].map(theme=>`${base}-${route}-${size}-${theme}`))))),seen=new Set();
+for(const id of expectedIDs){
+ const source=id.includes('-mth140-')?'default':'book',first=refs[source+'Before'].cases.find(r=>r.id===id),second=refs[source+'After'].cases.find(r=>r.id===id),row=refs[source+'Compare'].cases.find(r=>r.id===id);
+ if(!first||!second||!row||row.status!=='compared'||!row.pixelIdentical||row.changedPixels||!row.equalDimensions||first.errors.length||second.errors.length||first.naturalSettlementFailure||second.naturalSettlementFailure)throw Error('Selected ordinary pair rejected '+id);
+ for(const r of [first,second]){const url=new URL(r.url),requested=new URL(r.requestedURL);if(url.href!==requested.href||url.search||url.hash||r.bookTier!==null||url.pathname!==r.base+(r.route==='desk'?'':r.route+'/'))throw Error('Ordinary public URL gap '+id);}
+ const [a,b]=await Promise.all([readFile(path.join(root,first.screenshot)),readFile(path.join(root,second.screenshot))]),pa=PNG.sync.read(a),pb=PNG.sync.read(b);
+ if(sha(a)!==first.png.sha256||sha(b)!==second.png.sha256||pa.width!==pb.width||pa.height!==pb.height||!pa.data.equals(pb.data))throw Error('Independent exact RGBA check failed '+id);
+ const metadata={fonts:JSON.stringify(first.platformFonts)===JSON.stringify(second.platformFonts),heading:first.dom.heading===second.dom.heading,wrapper:JSON.stringify(first.dom.wrapper)===JSON.stringify(second.dom.wrapper),theme:first.dom.theme===second.dom.theme,images:JSON.stringify(first.dom.images)===JSON.stringify(second.dom.images),sceneBounds:JSON.stringify(first.dom.renderersAtCapture.map(({frame,...r})=>r))===JSON.stringify(second.dom.renderersAtCapture.map(({frame,...r})=>r))};
+ if(Object.values(metadata).some(v=>v!==true))throw Error('Settled metadata changed '+id);
+ proof.combinedOrdinaryPairs.push({id,source,route:first.route,base:first.base,viewport:first.viewport,theme:first.theme,beforeURL:first.url,afterURL:second.url,beforePNG:first.screenshot,afterPNG:second.screenshot,beforeSHA256:sha(a),afterSHA256:sha(b),width:pa.width,height:pa.height,pixelIdentical:true,changedPixels:0,totalPixels:pa.width*pa.height,metadata});seen.add(id);
+}
+if(seen.size!==32)throw Error('Combined ordinary matrix incomplete');
+for(const [label,sourceRoot] of [['control','/workspace/ns-perf-control-aa7'],['topic',root]]){
+ const files=[...new Set(execFileSync('git',['ls-files','--cached','--others','--exclude-standard','-z','--','assets','*.html','cen100','mth140','mth141'],{cwd:sourceRoot,encoding:'utf8'}).split('\0').filter(Boolean))].sort(),p=createHash('sha256'),q=createHash('sha256');
+ for(const file of files){const bytes=await readFile(path.join(sourceRoot,file));p.update(file+'\0').update(bytes).update('\0');if(['assets/app/router.mjs','assets/app/route-boot.mjs'].includes(file))continue;q.update(file+'\0').update(file.endsWith('.html')?bytes.toString('utf8').match(/<body\b[\s\S]*$/i)?.[0]??bytes:bytes).update('\0');}
+ proof.sources[label]={root:sourceRoot,revision:execFileSync('git',['rev-parse','HEAD'],{cwd:sourceRoot,encoding:'utf8'}).trim(),product:p.digest('hex'),protected:q.digest('hex'),runtimeSHA256:sha(await readFile(path.join(sourceRoot,'tools/qa/runtime.mjs'))),canonicalToolSHA256:sha(await readFile(path.join(sourceRoot,'tools/qa/compare-perf-visuals.mjs')))};
+ if(proof.sources[label].product!==start.source[label].product||proof.sources[label].protected!==start.source[label].protected||proof.sources[label].runtimeSHA256!==start.source[label].runtimeSHA256||proof.sources[label].canonicalToolSHA256!==start.source[label].canonicalVisualToolSHA256)throw Error('Closure product or runtime source changed');
+}
+for(const [file,expected] of Object.entries(start.privateDependencies)){const current=sha(await readFile(file));proof.privateDependencies[file]={expected,current,unchanged:current===expected};if(current!==expected)throw Error('Capture adapter dependency changed');}
+for(const [label,entry] of Object.entries(start.driver)){if(!entry.path)continue;const bytes=await readFile(entry.path),current=sha(bytes),version=JSON.parse(bytes).version;proof.driverDependencies[label]={path:entry.path,version,sha256:current,unchanged:current===entry.packageSHA256};if(current!==entry.packageSHA256)throw Error('Driver dependency changed');}
+for(const label of ['before','after']){const binding=await readJSON(`/tmp/ns-perf-default-visual-${label}-pid.json`),pid=binding[label+'Runner'].pid,closed=!existsSync('/proc/'+pid);proof.runnerPIDs.push({label,pid,closed});if(!closed)throw Error('Capture runner still live');}
+for(const origin of [...new Set([...refs.defaultBefore.cases,...refs.defaultAfter.cases].map(r=>new URL(r.requestedURL).origin))]){const url=new URL(origin),result=await new Promise(resolve=>{const socket=net.connect({host:url.hostname,port:Number(url.port)});socket.setTimeout(2000);socket.once('connect',()=>{socket.destroy();resolve('CONNECTED');});socket.once('error',e=>resolve(e.code));socket.once('timeout',()=>{socket.destroy();resolve('TIMEOUT');});});proof.previewPorts.push({origin,result});if(result!=='ECONNREFUSED')throw Error('Preview port remains open');}
+proof.browserProcesses=execFileSync('ps',['-eo','pid=,stat=,args='],{encoding:'utf8'}).split('\n').filter(line=>/^\s*\d+\s+[^Z]\S*\s+(?:\/usr\/lib\/chromium\/chromium|\/usr\/bin\/chromium)(?:\s|$)/.test(line));if(proof.browserProcesses.length)throw Error('Live Chromium remains');
+proof.summary={ordinaryDefaultPairs:8,ordinaryDefaultPixelIdentical:8,ordinaryDefaultChangedPixels:0,ordinaryDefaultCapturesAndRepeats:18,ordinaryDefaultLiveWebGLSamples:proof.ordinaryDefaultSamples.filter(r=>r.renderer==='webgl2').length,naturalFallbackSamples:proof.ordinaryDefaultSamples.filter(r=>r.renderer==='poster').length,ordinaryExistingPairs:24,combinedOrdinaryPairs:32,combinedOrdinaryPixelIdentical:32,combinedChangedPixels:0,totalCombinedPixels:proof.combinedOrdinaryPairs.reduce((n,r)=>n+r.totalPixels,0),metadataDifferences:0,originalHighBookProofUnchanged:true,previewPortsClosed:true,runnerPIDsClosed:true,browserProcessesClosed:true};
+proof.completedAt=new Date().toISOString();
+await writeFile('/tmp/ns-perf-default-visual-final-proof.json',JSON.stringify(proof,null,2)+'\n');
+await writeFile(path.join(root,'tools/qa/reports/perf-visuals-default/compare/ordinary-32-comparison.json'),JSON.stringify({schemaVersion:1,comparedAt:proof.completedAt,scope:'32 ordinary public route pairs: 24 unchanged other-route pairs from the immutable book matrix plus 8 fresh queryless MTH140 pairs. Same native recipe; public MTH140 override removed only for the eight supplemental pairs.',sourceArtifacts:proof.rawArtifacts,sourceFingerprints:proof.sources,recipe:refs.defaultBefore.recipe,summary:proof.summary,cases:proof.combinedOrdinaryPairs},null,2)+'\n');
+console.log(JSON.stringify({proof:'/tmp/ns-perf-default-visual-final-proof.json',summary:proof.summary,rawArtifacts:proof.rawArtifacts,runnerPIDs:proof.runnerPIDs,previewPorts:proof.previewPorts},null,2));

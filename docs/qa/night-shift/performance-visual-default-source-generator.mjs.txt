@@ -1,0 +1,43 @@
+import {createHash} from 'node:crypto';
+import {readFile,writeFile} from 'node:fs/promises';
+const sourcePath='/workspace/tmu-course-guides/tools/qa/compare-perf-visuals.mjs';
+const original=await readFile(sourcePath,'utf8'),sha=bytes=>createHash('sha256').update(bytes).digest('hex');
+if(sha(original)!=='4a975749dfe85ea3734bf8e1dd4d389c2bb6a0887a20eadaa7dc9fff7c26d0a0')throw Error('Original visual tool changed. Review the new source before adapting.');
+const changes=[];let adapted=original;
+const replace=(label,before,after)=>{if(adapted.split(before).length!==2)throw Error('Replacement was not unique: '+label);adapted=adapted.replace(before,after);changes.push({label,before,after});};
+replace('private runtime binding',"import {fileURLToPath} from 'node:url';\nimport {ROOT,collectPageErrors,inspectBrowserEnvironment,resolveLaunchOptions,resolvePlaywright,startPreview} from './runtime.mjs';",`import {fileURLToPath,pathToFileURL} from 'node:url';
+import {assertOrdinaryCaptureOptions,hasNaturalBookFallback,ordinaryMTH140Scope} from './ns-perf-default-visual-guard.mjs';
+const REFERENCE_ROOT=process.env.NS_DEFAULT_VISUAL_ROOT||'/workspace/tmu-course-guides';
+if(!['/workspace/tmu-course-guides','/workspace/ns-perf-control-aa7'].includes(REFERENCE_ROOT))throw Error('Unknown default visual reference root.');
+const {ROOT,collectPageErrors,inspectBrowserEnvironment,resolveLaunchOptions,resolvePlaywright,startPreview}=await import(pathToFileURL(path.join(REFERENCE_ROOT,'tools/qa/runtime.mjs')).href);`);
+replace('separate ignored output directory',"const REPORTS=path.join(ROOT,'tools/qa/reports/perf-visuals');","const REPORTS=path.join(ROOT,'tools/qa/reports/perf-visuals-default');");
+replace('only eight ordinary MTH140 cases',"const ROUTES=['desk','cen100','mth140','mth141'];","const ROUTES=['mth140'];");
+replace('ordinary case identity check',"    if(record.status!=='captured')problems.push",`    if(!ordinaryMTH140Scope(record))problems.push({scope:'case',id:record.id,reason:'Default capture must use an ordinary queryless MTH140 identity'});
+    if(record.status!=='captured')problems.push`);
+replace('case natural fallback exception',"if(needsLiveWebGL&&record.route!=='desk'&&!hasLiveSwiftShaderContexts(record))", "if(needsLiveWebGL&&record.route!=='desk'&&!hasLiveSwiftShaderContexts(record)&&!hasNaturalBookFallback(record))");
+replace('ordinary repeat identity check',"    if(repeat.capture?.status!=='captured'||repeat.comparison?.pixelIdentical!==true)",`    if(!ordinaryMTH140Scope(repeat.capture))problems.push({scope:'repeat',id:repeat.case,reason:'Default repeat must use an ordinary queryless MTH140 identity'});
+    if(repeat.capture?.status!=='captured'||repeat.comparison?.pixelIdentical!==true)`);
+replace('repeat natural fallback exception',"if(needsLiveWebGL&&repeat.capture?.route!=='desk'&&!hasLiveSwiftShaderContexts(repeat.capture))", "if(needsLiveWebGL&&repeat.capture?.route!=='desk'&&!hasLiveSwiftShaderContexts(repeat.capture)&&!hasNaturalBookFallback(repeat.capture))");
+replace('post-pixel passive default book evidence',"    const png=PNG.sync.read(bytes);\n    if(entry.disableGpuCompositing",`    const png=PNG.sync.read(bytes);
+    record.defaultBookEvidence=await page.evaluate(async()=>{
+      const art=document.querySelector('.header-art[data-book="mth140"]'),poster=art?.querySelector('img.scene-poster'),header=art?.closest('.header-upgraded');
+      if(!art||!poster)return null;
+      const box=el=>{const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};};
+      const style=getComputedStyle(poster),decoded=await poster.decode().then(()=>true,()=>false);
+      return {book:art.dataset.book,renderer:art.dataset.renderer,rendererReason:art.dataset.rendererReason,sceneReady:art.dataset.sceneReady,motionState:art.dataset.motionState,
+        tier:art.dataset.tier??document.documentElement.dataset.nsTier??null,sceneFrame:art.dataset.sceneFrame,drawCalls:art.dataset.drawCalls,triangles:art.dataset.triangles,
+        bookView:header?.dataset.bookView,canvasCount:art.querySelectorAll('canvas').length,box:box(art),
+        tierPolicy:{coarsePointer:matchMedia('(pointer:coarse)').matches,hardwareConcurrency:navigator.hardwareConcurrency,deviceMemory:navigator.deviceMemory,saveData:navigator.connection?.saveData??false},
+        poster:{src:poster.currentSrc||poster.src,complete:poster.complete,decoded,naturalWidth:poster.naturalWidth,naturalHeight:poster.naturalHeight,box:box(poster),computed:{display:style.display,visibility:style.visibility,opacity:style.opacity,transform:style.transform}}};
+    });
+    if(entry.disableGpuCompositing`);
+replace('capture natural fallback exception',"if(!hasLiveSwiftShaderContexts(record))throw Error('Software compositor", "if(!hasLiveSwiftShaderContexts(record)&&!hasNaturalBookFallback(record))throw Error('Software compositor");
+replace('direct API rejects forced modes',"  if(!['before','after'].includes(label))throw Error('Capture label must be before or after.');", "  if(!['before','after'].includes(label))throw Error('Capture label must be before or after.');\n  assertOrdinaryCaptureOptions({noWebGL,bookTier});");
+replace('eight requested cases',"requested:only?1+historyCases.length:32", "requested:only?1+historyCases.length:cases().length");
+replace('eight comparison cases',"expected:32,compared:","expected:cases().length,compared:");
+replace('CLI rejects forced modes',"  return parsed;\n}\n\nasync function main", "  assertOrdinaryCaptureOptions(parsed);\n  return parsed;\n}\n\nasync function main");
+let normalized=adapted;for(const {before,after,label} of [...changes].reverse()){if(normalized.split(after).length!==2)throw Error('Normalization was not unique: '+label);normalized=normalized.replace(after,before);}
+if(normalized!==original)throw Error('Adapted source does not normalize exactly to original.');
+await writeFile('/tmp/ns-perf-default-visual-capture.mjs',adapted);
+await writeFile('/tmp/ns-perf-default-visual-source-diff.json',JSON.stringify({schemaVersion:1,recordedAt:new Date().toISOString(),sourcePath,originalSHA256:sha(original),adaptedSHA256:sha(adapted),guardSHA256:sha(await readFile('/tmp/ns-perf-default-visual-guard.mjs')),changes,normalizedOriginalByteIdentical:true},null,2)+'\n');
+console.log(JSON.stringify({originalSHA256:sha(original),adaptedSHA256:sha(adapted),changes:changes.length,normalizedOriginalByteIdentical:true}));

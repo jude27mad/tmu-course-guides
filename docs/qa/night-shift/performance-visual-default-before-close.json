@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T09:26:18.058Z",
+  "stage": "Before default capture closed, before topic after launch",
+  "cliExitCode": 0,
+  "manifestSHA256": "49ff75d1fa8be2368dad028d39d7e9ef83f96ae5598a2b76b1b4a3e8e308d84f",
+  "summary": {
+    "requested": 8,
+    "captured": 8,
+    "failed": 0,
+    "initialAttemptFailures": 0,
+    "naturalSettlementFailures": 0,
+    "errors": 0,
+    "repeatPixelIdentical": true,
+    "evidenceFailures": 0
+  },
+  "repeatValidation": {
+    "beforeDimensions": {
+      "width": 1440,
+      "height": 900
+    },
+    "afterDimensions": {
+      "width": 1440,
+      "height": 900
+    },
+    "equalDimensions": true,
+    "changedPixels": 0,
+    "totalPixels": 1296000,
+    "changedPixelShare": 0,
+    "totalAbsoluteChannelDifference": 0,
+    "maxChannelDifference": 0,
+    "differenceBounds": null,
+    "pixelIdentical": true,
+    "beforeSha256": "b6fb703dd6d4c106715fe98e498d9b752c835b1131ddbb58ed6defb0e2261bc6",
+    "afterSha256": "b6fb703dd6d4c106715fe98e498d9b752c835b1131ddbb58ed6defb0e2261bc6",
+    "originalHashMatches": true,
+    "repeatHashMatches": true,
+    "pass": true
+  },
+  "source": "f53027510da4ab7382192a2b05a3acc7dcab5ce3cf93d62a9d197345de765960",
+  "sourceAfter": "f53027510da4ab7382192a2b05a3acc7dcab5ce3cf93d62a9d197345de765960",
+  "protected": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+  "protectedAfter": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+  "dependenciesUnchanged": {
+    "/tmp/ns-perf-default-visual-capture.mjs": {
+      "expected": "7686b38be70e870089250a6b48938ac6ae3a3d7eca64ea283b4a00c5d0c3db32",
+      "current": "7686b38be70e870089250a6b48938ac6ae3a3d7eca64ea283b4a00c5d0c3db32",
+      "equal": true
+    },
+    "/tmp/ns-perf-default-visual-guard.mjs": {
+      "expected": "ab4a715b41a95b45b8d9051fdf6ea9022cc5f857394e83340305745d58ea2164",
+      "current": "ab4a715b41a95b45b8d9051fdf6ea9022cc5f857394e83340305745d58ea2164",
+      "equal": true
+    },
+    "/tmp/ns-perf-default-visual-build.mjs": {
+      "expected": "12278fd36439b1998b4be9dab8a0d210804d692f5981e24fab3a1f131b95f3b2",
+      "current": "12278fd36439b1998b4be9dab8a0d210804d692f5981e24fab3a1f131b95f3b2",
+      "equal": true
+    },
+    "/tmp/ns-perf-default-visual-source-diff.json": {
+      "expected": "497827a13c97bfaa276e66566974ed995f7c80133b9d9c0bdc124cf6fcab0d23",
+      "current": "497827a13c97bfaa276e66566974ed995f7c80133b9d9c0bdc124cf6fcab0d23",
+      "equal": true
+    },
+    "/tmp/ns-perf-default-visual-peer-review.json": {
+      "expected": "36733c2a26c82ac1b65222f42cf426aaac938da18cc7a66e055fb5b07492473d",
+      "current": "36733c2a26c82ac1b65222f42cf426aaac938da18cc7a66e055fb5b07492473d",
+      "equal": true
+    }
+  },
+  "rendererCounts": {
+    "webgl2": 8
+  },
+  "runnerPID": 164790,
+  "runnerClosed": true,
+  "ports": [
+    {
+      "origin": "http://127.0.0.1:36169",
+      "result": "ECONNREFUSED"
+    },
+    {
+      "origin": "http://127.0.0.1:34699",
+      "result": "ECONNREFUSED"
+    }
+  ]
+}

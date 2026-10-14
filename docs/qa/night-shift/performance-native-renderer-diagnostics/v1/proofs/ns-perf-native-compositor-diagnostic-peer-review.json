@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T10:11:17.645503+00:00",
+  "reviewedBy": "/root/final_review",
+  "approved": true,
+  "sourceApprovalOnly": true,
+  "runner": {
+    "path": "/tmp/ns-perf-native-compositor-diagnostic.mjs",
+    "sha256": "f35fbea405a777085877d366fc6fed34db2567023eaeb91c2b4129e5c0fc77ca"
+  },
+  "scope": "Private single root routes counterfactual diagnostic using the ordinary exported runHarness, original CHECKS and instrument. No normal matrix replacement or acceptance waiver. Root must retain sole GPU ownership and launch only after supported all28 native closure.",
+  "findings": [],
+  "guardsReviewed": [
+    "Exact routes/root selection and unchanged checks/instrument references; no check wrapper, proxy, substitution or assertion transformation.",
+    "Normal resolveLaunchOptions supplies the three SwiftShader flags; the only appended launch argument is --disable-gpu-compositing. Matching explicit Playwright/cache and removed QA_CHROMIUM_PATH preserve bundled-resolver provenance.",
+    "Public inspectBrowser hook runs ordinary inspectBrowserEnvironment then read-only native Browser.getBrowserCommandLine/SystemInfo.getInfo, detaching its CDP session in finally. No page/header/environment serialization, DOM/CSS mutation, forced pause, screenshot, native invalidation or frame rewrite.",
+    "Native goto10s/click30s limits and full product animations remain in unchanged current QA sources; no retry or timeout extension.",
+    "Existing private output directory is rejected before config write/browser launch; all diagnostic reports/config stay under /tmp.",
+    "Actual native runHarness exitCode is propagated, and ordinary raw assertions/errors/cleanup remain untouched."
+  ],
+  "sourceBindings": {
+    "checks": "e1cc6550f304cd30d092cfcc34a78548365ce3c9b06e2f9ea6b53f1c1deee9ca",
+    "runtime": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587",
+    "instrument": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892"
+  },
+  "limits": [
+    "No runner import/execution, browser, tests, repository edits or PNG work by reviewer; this private JSON only.",
+    "This review does not establish a passing diagnostic, compositing cause, physical-device performance, or successful native all28 QA. Metadata reads can affect timing, so any causal claim requires actual controlled evidence.",
+    "Source/driver/browser pre/post binding and native resource closure must accompany any executed result. Original normal QA failures remain preserved."
+  ]
+}

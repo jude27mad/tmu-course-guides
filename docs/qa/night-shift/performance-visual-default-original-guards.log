@@ -1,0 +1,30 @@
+✔ visual capture matrix covers four routes, two deployment bases, two viewports and two themes (27.075646ms)
+✔ raw comparison detects a one-channel difference without tolerance and gives its exact bounds (26.864645ms)
+✔ raw comparison reports unequal page heights even when added pixels are transparent black (8.079894ms)
+✔ a missing --only value fails before any browser capture can start (9.095074ms)
+✔ public book-tier override preserves matrix IDs and changes only MTH140 URLs at both bases (15.658182ms)
+✔ comparison and resume require the same public book-tier recipe (10.757828ms)
+✔ public book-tier evidence rejects wrong queries, routes, actual tiers and repeat navigation (84.233464ms)
+✔ resume still performs a requested repeat when all matrix captures already exist (3.828023ms)
+✔ an explicit repeat case validates CEN without changing the 32-case matrix (6.51845ms)
+✔ mixed-history probe captures the original, selected other routes, then repeats the original (3.500093ms)
+✔ resume and comparison cannot mix capture concurrency or incomplete source evidence (4.573322ms)
+✔ resume preserves invalid run provenance while allowing a completed failed-case retry (2.408901ms)
+✔ compositor stabilization changes only the recorded Chromium environment condition (3.575388ms)
+✔ Desk repaint follows final DOM reconstruction while course repaint precedes WebGL refresh (1.098428ms)
+✔ native layer invalidation requires the real browser API and waits two frames (6.081487ms)
+✔ --only scopes resumed captures and retries to the requested case and deployment base (1.757976ms)
+✔ software compositor requires native readback and live SwiftShader evidence in captures and repeats (18.476274ms)
+✔ software compositor rejects the separate no-WebGL poster recipe before launch (2.794356ms)
+✔ capture evidence rejects browser errors, natural settlement failures and unsuccessful captures (2.380677ms)
+✔ capture evidence rejects arbitrary IDs and mismatched canonical viewport metadata (4.772807ms)
+✔ identical stored repeat metrics cannot override repeat browser or settlement failures (4.587196ms)
+✔ repeat validation decodes actual PNGs and rejects changed, tampered or missing repeat bytes (68.918315ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 500.286391

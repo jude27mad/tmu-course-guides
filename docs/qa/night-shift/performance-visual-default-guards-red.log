@@ -1,0 +1,189 @@
+✖ default adapter selects exactly eight ordinary MTH140 identities (12.662787ms)
+✖ natural source-authored fallback accepts both bases widths and themes (2.145502ms)
+✖ ordinary identity rejects tier motion query hash route and viewport substitutions (4.110234ms)
+✖ fallback rejects foreign incomplete running erroneous or inconsistent source state (5.57248ms)
+✔ fallback requires exact authored decoded poster source dimensions geometry and visibility (3.29303ms)
+✖ private fallback exception preserves browser errors source settlement and GPU gates (30.866912ms)
+✖ adapter rejects forced fallback or tier options before browser launch (1.893246ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 1
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 88.387798
+
+✖ failing tests:
+
+test at ../../tmp/ns-perf-default-visual-guard.test.mjs:14:1
+✖ default adapter selects exactly eight ordinary MTH140 identities (12.662787ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  32 !== 8
+  
+      at TestContext.<anonymous> (file:///tmp/ns-perf-default-visual-guard.test.mjs:15:30)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 32,
+    expected: 8,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../tmp/ns-perf-default-visual-guard.test.mjs:20:1
+✖ natural source-authored fallback accepts both bases widths and themes (2.145502ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///tmp/ns-perf-default-visual-guard.test.mjs:21:121)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../tmp/ns-perf-default-visual-guard.test.mjs:24:1
+✖ ordinary identity rejects tier motion query hash route and viewport substitutions (4.110234ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///tmp/ns-perf-default-visual-guard.test.mjs:25:33)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../tmp/ns-perf-default-visual-guard.test.mjs:29:1
+✖ fallback rejects foreign incomplete running erroneous or inconsistent source state (5.57248ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///tmp/ns-perf-default-visual-guard.test.mjs:33:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../tmp/ns-perf-default-visual-guard.test.mjs:41:1
+✖ private fallback exception preserves browser errors source settlement and GPU gates (30.866912ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + [
+  +   {
+  +     detail: [],
+  +     id: 'root-mth140-1440x900-dark',
+  +     reason: 'Live SwiftShader WebGL2 capture evidence is missing or invalid',
+  +     scope: 'case'
+  +   },
+  +   {
+  +     detail: [],
+  +     id: 'root-mth140-1440x900-light',
+  +     reason: 'Live SwiftShader WebGL2 capture evidence is missing or invalid',
+  +     scope: 'case'
+  +   },
+  +   {
+  +     detail: [],
+  +     id: 'root-mth140-390x844-dark',
+  +     reason: 'Live SwiftShader WebGL2 capture evidence is missing or invalid',
+  +     scope: 'case'
+  +   },
+  +   {
+  +     detail: [],
+  +     id: 'root-mth140-390x844-light',
+  +     reason: 'Live SwiftShader WebGL2 capture evidence is missing or invalid',
+  +     scope: 'case'
+  +   },
+  +   {
+  +     detail: [],
+  +     id: 'project-mth140-1440x900-dark',
+  +     reason: 'Live SwiftShader WebGL2 capture evidence is missing or invalid',
+  +     scope: 'case'
+  +   },
+  +   {
+  +     detail: [],
+  +     id: 'project-mth140-1440x900-light',
+  +     reason: 'Live SwiftShader WebGL2 capture evidence is missing or invalid',
+  +     scope: 'case'
+  +   },
+  +   {
+  +     detail: [],
+  +     id: 'project-mth140-390x844-dark',
+  +     reason: 'Live SwiftShader WebGL2 capture evidence is missing or invalid',
+  +     scope: 'case'
+  +   },
+  +   {
+  +     detail: [],
+  +     id: 'project-mth140-390x844-light',
+  +     reason: 'Live SwiftShader WebGL2 capture evidence is missing or invalid',
+  +     scope: 'case'
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///tmp/ns-perf-default-visual-guard.test.mjs:43:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [Array],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ../../tmp/ns-perf-default-visual-guard.test.mjs:51:1
+✖ adapter rejects forced fallback or tier options before browser launch (1.893246ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///tmp/ns-perf-default-visual-guard.test.mjs:52:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /ordinary|default|forced/i,
+    operator: 'throws',
+    diff: 'simple'
+  }

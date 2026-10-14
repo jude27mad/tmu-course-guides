@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-14T10:00:05.499Z",
+  "completedAt": "2026-10-14T10:00:32.772Z",
+  "status": "failed",
+  "exitCode": 1,
+  "failures": 1,
+  "selection": {
+    "checks": [
+      "stability"
+    ],
+    "bases": [
+      "/"
+    ],
+    "gpu": false,
+    "help": false
+  },
+  "environment": {
+    "node": "v24.19.0",
+    "platform": "linux",
+    "architecture": "x64",
+    "deployments": [
+      {
+        "base": "/",
+        "origin": "http://127.0.0.1:39119",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "156.0.8078.4",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      }
+    ],
+    "requestedMode": "SwiftShader",
+    "playwrightPath": "/tmp/ns-perf-ci-driver/node_modules/playwright",
+    "playwrightSource": "PLAYWRIGHT_PATH",
+    "chromiumPath": "/tmp/ns-perf-ci-browsers/chromium-1248/chrome-linux64/chrome",
+    "chromiumSource": "Playwright bundled Chromium",
+    "launchArgs": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "checks": [
+    {
+      "name": "stability",
+      "status": "failed",
+      "failures": 1,
+      "cases": [
+        {
+          "base": "/",
+          "origin": "http://127.0.0.1:39119",
+          "status": "failed",
+          "assertions": [
+            {
+              "name": "repeated lifecycle operations: execution",
+              "pass": false,
+              "actual": "page.goto: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:39119/\", waiting until \"load\"\u001b[22m\n\n    at runCase.linearClock (/workspace/tmu-course-guides/tools/qa/checks.mjs:301:16)\n    at runCase (/workspace/tmu-course-guides/tools/qa/checks.mjs:102:11)\n    at async Object.stability (/workspace/tmu-course-guides/tools/qa/checks.mjs:299:3)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+              "expected": "case completes"
+            },
+            {
+              "name": "repeated lifecycle operations: consoleErrors",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "repeated lifecycle operations: pageErrors",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "repeated lifecycle operations: failedRequests",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            },
+            {
+              "name": "repeated lifecycle operations: httpErrors",
+              "pass": true,
+              "actual": [],
+              "expected": []
+            }
+          ],
+          "observations": {
+            "cases": [
+              {
+                "name": "repeated lifecycle operations",
+                "physicalClickTimeoutMs": 30000,
+                "telemetry": {
+                  "consoleErrors": [],
+                  "pageErrors": [],
+                  "failedRequests": [],
+                  "httpErrors": []
+                },
+                "navigationDiagnostics": {
+                  "documentRequests": [
+                    {
+                      "time": 1791972021712,
+                      "url": "http://127.0.0.1:39119/",
+                      "method": "GET"
+                    }
+                  ],
+                  "frameNavigations": [
+                    {
+                      "time": 1791972021925,
+                      "url": "http://127.0.0.1:39119/"
+                    },
+                    {
+                      "time": 1791972030738,
+                      "url": "http://127.0.0.1:39119/"
+                    },
+                    {
+                      "time": 1791972030942,
+                      "url": "http://127.0.0.1:39119/"
+                    },
+                    {
+                      "time": 1791972030950,
+                      "url": "http://127.0.0.1:39119/"
+                    }
+                  ],
+                  "pageEvents": [
+                    {
+                      "time": 1791972021927,
+                      "type": "Page.frameNavigated",
+                      "frameId": "1C8D660D07BB2330E2E47B5776E416B7",
+                      "loaderId": "723FD82878D4EE171B09EC7C20C88CCB",
+                      "url": "http://127.0.0.1:39119/"
+                    },
+                    {
+                      "time": 1791972030738,
+                      "type": "Page.navigatedWithinDocument",
+                      "frameId": "1C8D660D07BB2330E2E47B5776E416B7",
+                      "url": "http://127.0.0.1:39119/"
+                    }
+                  ],
+                  "failure": {
+                    "time": 1791972030482,
+                    "pageURL": "http://127.0.0.1:39119/",
+                    "error": "page.goto: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:39119/\", waiting until \"load\"\u001b[22m\n",
+                    "state": {
+                      "url": "http://127.0.0.1:39119/",
+                      "shell": "b0896ae8-172a-49c0-9f0a-064438877de9",
+                      "route": "desk",
+                      "body": {
+                        "page": "desk"
+                      },
+                      "content": 833,
+                      "focus": {
+                        "tag": "BODY",
+                        "id": "",
+                        "inside": false
+                      },
+                      "wrapper": {
+                        "opacity": "1",
+                        "filter": "none",
+                        "transform": "none"
+                      },
+                      "events": {
+                        "routes": [],
+                        "clicks": []
+                      }
+                    }
+                  }
+                },
+                "clockMethod": "Moving Date offset at Oct 13 noon Toronto; native animation frames and timers remain instrumented."
+              }
+            ],
+            "runnerErrors": []
+          },
+          "skipped": [],
+          "durationMs": 13795,
+          "failures": 1
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

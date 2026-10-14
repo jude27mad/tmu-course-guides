@@ -1,0 +1,16 @@
+{
+  "recordedAt": "2026-10-14T08:58:28.911Z",
+  "rawDirectory": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T08-51-25-629Z-163348",
+  "observer": "/root",
+  "exitCode": 1,
+  "reportedAfterRunClosure": true,
+  "source": "Root actually retrieved tools.write_stdin session37408 completion via functions.exec, returned exit_code1, chunk1d9937.",
+  "argv": [
+    "node",
+    "tools/qa/run.mjs",
+    "crosstab",
+    "--base",
+    "/"
+  ],
+  "scope": "Fresh current whole root crosstab remains FAILED; no original full-run verdict replaced."
+}

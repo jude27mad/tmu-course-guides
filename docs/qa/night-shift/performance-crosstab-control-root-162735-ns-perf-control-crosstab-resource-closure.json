@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "rawDirectory": "/workspace/ns-perf-control-aa7/tools/qa/reports/2026-10-14T08-43-50-664Z-162735",
+  "observedAt": "2026-10-14T08:50:28.240Z",
+  "observationCompletedAt": "2026-10-14T08:50:28.415Z",
+  "note": "Passive resource observations after normal harness close. Original raw errors/cleanup arrays and exact source/driver identities are preserved. No browser or CDP intervention, no source edit, no process kill, no CLI-exit inference.",
+  "runStartedAt": "2026-10-14T08:43:50.664Z",
+  "runCompletedAt": "2026-10-14T08:47:48.589Z",
+  "rawStatus": "passed",
+  "rawExitCode": 0,
+  "rawFailures": 0,
+  "artifacts": {
+    "summary": {
+      "path": "/workspace/ns-perf-control-aa7/tools/qa/reports/2026-10-14T08-43-50-664Z-162735/summary.json",
+      "sha256": "1ec954dbaf9f4006cbd48bfba9cc4919b9596f0665c42ea5e0381727e8955b97"
+    },
+    "before": {
+      "path": "/tmp/ns-perf-control-crosstab-source-before.json",
+      "sha256": "ae5ed05d9d74fa726370a4e269b3918fa54162ab8f9dfe4e44a24ab5da7b7269"
+    },
+    "after": {
+      "path": "/tmp/ns-perf-control-crosstab-source-after.json",
+      "sha256": "f3193dc4f4c1a9306fb29f8bed2571a63823e13ad67838e90cb2270b88f67c10"
+    }
+  },
+  "sourceUnchanged": true,
+  "productUnchanged": true,
+  "protectedUnchanged": true,
+  "currentSources": [
+    {
+      "path": "tools/qa/checks-resilience.mjs",
+      "sha256": "db77a8d9fa49683f6370c87fc1794dbec247bc3c95cf524fee1d5d58d12e0de8"
+    },
+    {
+      "path": "tools/qa/checks.mjs",
+      "sha256": "e1cc6550f304cd30d092cfcc34a78548365ce3c9b06e2f9ea6b53f1c1deee9ca"
+    },
+    {
+      "path": "tools/qa/checks-perf.mjs",
+      "sha256": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657"
+    },
+    {
+      "path": "tools/qa/runtime.mjs",
+      "sha256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587"
+    },
+    {
+      "path": "tools/qa/instrument.mjs",
+      "sha256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892"
+    }
+  ],
+  "driverIdentity": {
+    "playwright": {
+      "name": "playwright",
+      "version": "1.57.0",
+      "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright",
+      "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright/package.json",
+      "packageSHA256": "07726a5a20b29123d85311af7d11b7de6bf00ddd03121d3c9061995043ebd261",
+      "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright/index.js",
+      "entrySHA256": "4e98f65f0a9d9bcab8cffc0c5cfdd87fd3f5b0be74fc494ff166a466b204cd44"
+    },
+    "core": {
+      "name": "playwright-core",
+      "version": "1.57.0",
+      "realDirectory": "/opt/codex/cua_node/lib/node_modules/playwright-core",
+      "packagePath": "/opt/codex/cua_node/lib/node_modules/playwright-core/package.json",
+      "packageSHA256": "6d38907778eb872e37e8da93b430b011c3dfbe8848c4214becb7effdc0aff1d6",
+      "entryPath": "/opt/codex/cua_node/lib/node_modules/playwright-core/index.js",
+      "entrySHA256": "a4f83b5b2915b43bddd5384d963a66d1fd4d978a3db8059969fb78de65bc519a"
+    }
+  },
+  "loader": {
+    "modulePath": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "source": "PLAYWRIGHT_PATH"
+  },
+  "launchOptions": {
+    "headless": true,
+    "executablePath": "/usr/bin/chromium",
+    "args": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "driverIdentityUnchanged": true,
+  "resources": {
+    "fullQaPid": 162735,
+    "fullQaProcessPresent": false,
+    "fullQaProcess": null,
+    "activeChromiumProcesses": [],
+    "zombieBrowserCount": 461,
+    "ownedPreviewPorts": [
+      {
+        "origin": "http://127.0.0.1:43447",
+        "host": "127.0.0.1",
+        "port": 43447,
+        "startedAt": "2026-10-14T08:50:28.356Z",
+        "observedAt": "2026-10-14T08:50:28.399Z",
+        "result": "refused",
+        "error": {
+          "code": "ECONNREFUSED",
+          "message": "connect ECONNREFUSED 127.0.0.1:43447"
+        }
+      }
+    ]
+  },
+  "runnerCleanupErrors": [],
+  "caseCleanupErrors": [],
+  "caseResourceRecords": [
+    {
+      "check": "crosstab",
+      "base": "/",
+      "runnerErrors": [],
+      "cleanupErrors": []
+    }
+  ],
+  "rawRunErrors": [],
+  "allObservedResourcesClosed": true
+}

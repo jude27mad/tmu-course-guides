@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "independent-latest-run-evidence-builder-source-review",
+  "status": "passed-source-review-only-transport-fix",
+  "approved": true,
+  "approvedSourceScope": true,
+  "sourceApprovalOnly": true,
+  "reviewedBy": "/root/final_review",
+  "reviewedAt": "2026-10-14T09:05:22.234045+00:00",
+  "reviewedFiles": [
+    {
+      "path": "/tmp/ns-perf-latest-run-evidence.mjs",
+      "sha256": "dd9e6dfa6f0fbb9e27372b70915660b8576d98100b91401bac3be29f79af450a"
+    },
+    {
+      "path": "/tmp/ns-perf-latest-run-evidence-3f5-reviewed.mjs",
+      "sha256": "3f5b0324464c37ba90e399ce4701600a690c595332d53533c2b67e4124142305"
+    },
+    {
+      "path": "/tmp/ns-perf-latest-run-evidence-schema.md",
+      "sha256": "e138665876fa56d1f00611b78e711f520d30dc42e3ea72febda435b9ed4229a3"
+    },
+    {
+      "path": "/tmp/ns-perf-latest-run-evidence-d6-reviewed-schema.md",
+      "sha256": "d6f84e3ea3598e77cf72238d21f9a2d76f9100b670b4fd641e4f9a0a04c6a3f5"
+    },
+    {
+      "path": "/tmp/ns-perf-latest-run-evidence-preparation-proof.json",
+      "sha256": "03cc57882ab4a7f3f48bf40cd58aafc1e81c4b084d1bde5375cb796e4c09a157"
+    },
+    {
+      "path": "/tmp/ns-perf-latest-full-original-execution-enobufs.json",
+      "sha256": "2e91aaf1b4a1a2e02be684919fbf440ec289dcc1ef84a356b8d350761b6b7919"
+    },
+    {
+      "path": "/tmp/ns-perf-latest-run-evidence-peer-review-3f5.json",
+      "sha256": "2b44417b94991b48f232384e3544b5c3b711d84f71c05c4653f386b583ebc412"
+    }
+  ],
+  "review": "Independent read-only check of the root-authorized64MiB Git output buffer fix. Reversing the sole line addition reproduces the entire previously approved3f5 source byte-for-byte. Schema only appends transport/failure-history documentation. No builder imports, execution, tests or browser by this reviewer.",
+  "change": {
+    "before": "const git=args=>execFileSync('git',args,{cwd:ROOT});",
+    "after": "const git=args=>execFileSync('git',args,{cwd:ROOT,maxBuffer:64*1024*1024});",
+    "uniqueSourceChange": true,
+    "maxBufferBytes": 67108864,
+    "actualCommittedSupportingTraceBytes": 9573406,
+    "normalizedEntireSourceSHA256": "3f5b0324464c37ba90e399ce4701600a690c595332d53533c2b67e4124142305",
+    "allIdentityAssertionTelemetryAndEvidenceGatesByteIdentical": true,
+    "gitReaderStillBounded": true
+  },
+  "preservedExecutionFailure": {
+    "path": "/tmp/ns-perf-latest-full-original-execution-enobufs.json",
+    "sha256": "2e91aaf1b4a1a2e02be684919fbf440ec289dcc1ef84a356b8d350761b6b7919",
+    "actualCLIexit": 1,
+    "candidateWritten": false,
+    "error": "spawnSync git ENOBUFS"
+  },
+  "priorSourceApproval": {
+    "path": "/tmp/ns-perf-latest-run-evidence-peer-review-3f5.json",
+    "sha256": "2b44417b94991b48f232384e3544b5c3b711d84f71c05c4653f386b583ebc412",
+    "preservedUnmodified": true
+  },
+  "materialFindings": [],
+  "limits": [
+    "Approval covers the sole transport change and inherits the prior3f5 source review scope; no actual candidate or follow-up input evidence is accepted here.",
+    "Actual149382 normal full run remains failed12. Original buffer failure is retained; no source or telemetry waiver is introduced.",
+    "Root authorized a single retry after this source review; this reviewer has not executed it.",
+    "Default-URL visual evidence remains separately unvalidated until its actual guarded review."
+  ],
+  "browserAcceptanceEstablished": false,
+  "builderExecuted": false,
+  "modulesImported": false,
+  "testsRun": false,
+  "browsersLaunched": false,
+  "pixelsDecoded": false,
+  "activeSourceOrRepositoryFilesEdited": false,
+  "canonicalEvidenceWritten": false
+}

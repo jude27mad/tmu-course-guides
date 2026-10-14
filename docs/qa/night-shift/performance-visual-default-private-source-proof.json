@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T07:45:01.834104+00:00",
+  "scope": "Private offline adapter and guard preparation only. No browser started or active repository file edited.",
+  "sourceOriginalSHA256": "4a975749dfe85ea3734bf8e1dd4d389c2bb6a0887a20eadaa7dc9fff7c26d0a0",
+  "files": [
+    {
+      "path": "/tmp/ns-perf-default-visual-capture.mjs",
+      "sha256": "7686b38be70e870089250a6b48938ac6ae3a3d7eca64ea283b4a00c5d0c3db32",
+      "bytes": 50487
+    },
+    {
+      "path": "/tmp/ns-perf-default-visual-guard.mjs",
+      "sha256": "ab4a715b41a95b45b8d9051fdf6ea9022cc5f857394e83340305745d58ea2164",
+      "bytes": 2642
+    },
+    {
+      "path": "/tmp/ns-perf-default-visual-guard.test.mjs",
+      "sha256": "8611cbe779604c4fe4a4eba8d52dd0687007864c979dcaf0e240ac67dc46c21f",
+      "bytes": 7226
+    },
+    {
+      "path": "/tmp/ns-perf-default-visual-build.mjs",
+      "sha256": "12278fd36439b1998b4be9dab8a0d210804d692f5981e24fab3a1f131b95f3b2",
+      "bytes": 6428
+    },
+    {
+      "path": "/tmp/ns-perf-default-visual-source-diff.json",
+      "sha256": "497827a13c97bfaa276e66566974ed995f7c80133b9d9c0bdc124cf6fcab0d23",
+      "bytes": 6022
+    },
+    {
+      "path": "/tmp/ns-perf-default-visual-red.log",
+      "sha256": "8255d0623254684954354753e60e5b1f52acb3a8b84576a12c643a7ccb54c5ac",
+      "bytes": 7443
+    },
+    {
+      "path": "/tmp/ns-perf-default-visual-context-red.log",
+      "sha256": "64425a35a43502a0a454a4504fc16368ce4793785ece33b5fac3c7b3c3171e98",
+      "bytes": 1778
+    },
+    {
+      "path": "/tmp/ns-perf-default-visual-green.log",
+      "sha256": "39c26c38f0cdedd565fb6c4a02270153fd13a50c10bde5ba666b46394ab97a78",
+      "bytes": 877
+    },
+    {
+      "path": "/tmp/ns-perf-default-visual-original-guard.log",
+      "sha256": "0099844216bf5d8b6b6b0ab2dec767b8a3f26ae55bfe0d5ef1571f1d0bdab7bd",
+      "bytes": 2363
+    }
+  ],
+  "sourceAuthoredPosters": [
+    {
+      "path": "assets/book/posters/mth140-dark-tall.webp",
+      "sha256": "6e243890a010c966b91447bb9e5eefb5b16edb021ceb2f1a35b6e71e9aaab128",
+      "intrinsicWidth": 780,
+      "intrinsicHeight": 600
+    },
+    {
+      "path": "assets/book/posters/mth140-dark-wide.webp",
+      "sha256": "9238eb89c642dc05fada0805ad8746f7d932551b26568739b90320712a52c943",
+      "intrinsicWidth": 2160,
+      "intrinsicHeight": 900
+    },
+    {
+      "path": "assets/book/posters/mth140-light-tall.webp",
+      "sha256": "5e01b0ff81755698a94eb538eeb873524d20aaedebcfba7e93f40213da3207d7",
+      "intrinsicWidth": 780,
+      "intrinsicHeight": 600
+    },
+    {
+      "path": "assets/book/posters/mth140-light-wide.webp",
+      "sha256": "09444de50e7c7ff750217d3fce3daff65a12646c9a12c48c8b084de64e781e70",
+      "intrinsicWidth": 2160,
+      "intrinsicHeight": 900
+    }
+  ],
+  "authoredSource": [
+    {
+      "path": "assets/course-header.mjs",
+      "sha256": "c3ea918ffaa5776dda518bb245234955097907e04f2443273765742c04cc877e"
+    },
+    {
+      "path": "assets/book/course-styles.mjs",
+      "sha256": "a59e0f4934be10b9eb984b1f130565a48999044e1080af233791654c3511287b"
+    },
+    {
+      "path": "assets/app/stage.mjs",
+      "sha256": "81b84e8dd6278ce978b019dea956dcd4bdfb38daffebf8ba9168f6fe90d9a416"
+    },
+    {
+      "path": "assets/night/core.mjs",
+      "sha256": "d1e5aabb6cff9e8bd78ba28e8b76e994c32b81f292488c6c2d9ac172c899d224"
+    }
+  ],
+  "tests": {
+    "initialRED": {
+      "pass": 1,
+      "fail": 6,
+      "expectedFailures": true
+    },
+    "mountedContextRED": {
+      "pass": 7,
+      "fail": 1,
+      "expectedFailures": true
+    },
+    "GREEN": {
+      "pass": 8,
+      "fail": 0
+    },
+    "originalBookGuards": {
+      "pass": 22,
+      "fail": 0
+    }
+  },
+  "browserLease": "Not granted; no browser launched.",
+  "plannedCapture": {
+    "beforeRoot": "/workspace/ns-perf-control-aa7",
+    "afterRoot": "/workspace/tmu-course-guides",
+    "cases": 8,
+    "repeatCase": "root-mth140-1440x900-dark",
+    "referenceSamples": 9,
+    "scope": "MTH140 only, two bases, two widths and two themes, exact ordinary queryless URLs",
+    "outputDirectory": "tools/qa/reports/perf-visuals-default",
+    "estimatedTotalMinutes": "3\u20136",
+    "recipe": "Same native flags and settlement recipe as the immutable 32-case book proof; omit only --book-tier high."
+  }
+}

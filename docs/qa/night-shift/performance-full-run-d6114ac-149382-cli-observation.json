@@ -1,0 +1,33 @@
+{
+  "recordedAt": "2026-10-14T08:41:03.026Z",
+  "rawDirectory": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T07-09-10-842Z-149382",
+  "observer": "/root",
+  "exitCode": 1,
+  "reportedAfterRunClosure": true,
+  "source": "Root actually retrieved tools.write_stdin session19852 completion via functions.exec; this is the returned exit_code, not an inference from summary.",
+  "toolResult": {
+    "chunk_id": "940ac7",
+    "wall_time_seconds": 0.000020658,
+    "exit_code": 1,
+    "original_token_count": 0,
+    "output": ""
+  },
+  "argv": [
+    "node",
+    "tools/qa/run.mjs",
+    "perf",
+    "routes",
+    "stability",
+    "frames",
+    "deadlines",
+    "modes",
+    "layout",
+    "webkit",
+    "nojs",
+    "bfcache",
+    "failures",
+    "crosstab",
+    "clock",
+    "forward"
+  ]
+}

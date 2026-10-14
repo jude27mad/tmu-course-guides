@@ -1,0 +1,10 @@
+after: root-mth140-1440x900-dark: captured
+after: root-mth140-1440x900-light: captured
+after: root-mth140-390x844-dark: captured
+after: root-mth140-390x844-light: captured
+repeat: root-mth140-1440x900-dark: {"beforeDimensions":{"width":1440,"height":900},"afterDimensions":{"width":1440,"height":900},"equalDimensions":true,"changedPixels":0,"totalPixels":1296000,"changedPixelShare":0,"totalAbsoluteChannelDifference":0,"maxChannelDifference":0,"differenceBounds":null,"pixelIdentical":true,"beforeSha256":"b6fb703dd6d4c106715fe98e498d9b752c835b1131ddbb58ed6defb0e2261bc6","afterSha256":"b6fb703dd6d4c106715fe98e498d9b752c835b1131ddbb58ed6defb0e2261bc6","diff":"tools/qa/reports/perf-visuals-default/after/repeat/root-mth140-1440x900-dark-diff.png"}
+after: project-mth140-1440x900-dark: captured
+after: project-mth140-1440x900-light: captured
+after: project-mth140-390x844-dark: captured
+after: project-mth140-390x844-light: captured
+{"requested":8,"captured":8,"failed":0,"initialAttemptFailures":0,"naturalSettlementFailures":0,"errors":0,"repeatPixelIdentical":true,"evidenceFailures":0}

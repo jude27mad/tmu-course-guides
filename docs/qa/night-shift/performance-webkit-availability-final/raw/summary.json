@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-14T10:37:27.406Z",
+  "completedAt": "2026-10-14T10:37:39.880Z",
+  "status": "passed",
+  "exitCode": 0,
+  "failures": 0,
+  "selection": {
+    "checks": [
+      "webkit"
+    ],
+    "bases": [
+      "/",
+      "/tmu-course-guides/"
+    ],
+    "gpu": false,
+    "help": false
+  },
+  "environment": {
+    "node": "v24.19.0",
+    "platform": "linux",
+    "architecture": "x64",
+    "deployments": [
+      {
+        "base": "/",
+        "origin": "http://127.0.0.1:46771",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "156.0.8078.4",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      },
+      {
+        "base": "/tmu-course-guides/",
+        "origin": "http://127.0.0.1:40355",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "156.0.8078.4",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      }
+    ],
+    "requestedMode": "SwiftShader",
+    "playwrightPath": "/tmp/ns-perf-ci-driver/node_modules/playwright",
+    "playwrightSource": "PLAYWRIGHT_PATH",
+    "chromiumPath": "/tmp/ns-perf-ci-browsers/chromium-1248/chrome-linux64/chrome",
+    "chromiumSource": "Playwright bundled Chromium",
+    "launchArgs": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "checks": [
+    {
+      "name": "webkit",
+      "status": "skipped",
+      "failures": 0,
+      "cases": [
+        {
+          "base": "/",
+          "origin": "http://127.0.0.1:46771",
+          "status": "skipped",
+          "assertions": [],
+          "observations": {
+            "cases": [],
+            "runnerErrors": []
+          },
+          "skipped": [
+            {
+              "feature": "Playwright WebKit routes, deadlines and layout",
+              "reason": "WebKit could not launch; install its browser and OS dependencies. browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Missing libraries:                                   ║\n║     libGLESv2.so.2                                   ║\n╚══════════════════════════════════════════════════════╝"
+            }
+          ],
+          "durationMs": 881,
+          "failures": 0
+        },
+        {
+          "base": "/tmu-course-guides/",
+          "origin": "http://127.0.0.1:40355",
+          "status": "skipped",
+          "assertions": [],
+          "observations": {
+            "cases": [],
+            "runnerErrors": []
+          },
+          "skipped": [
+            {
+              "feature": "Playwright WebKit routes, deadlines and layout",
+              "reason": "WebKit could not launch; install its browser and OS dependencies. browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Missing libraries:                                   ║\n║     libGLESv2.so.2                                   ║\n╚══════════════════════════════════════════════════════╝"
+            }
+          ],
+          "durationMs": 988,
+          "failures": 0
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

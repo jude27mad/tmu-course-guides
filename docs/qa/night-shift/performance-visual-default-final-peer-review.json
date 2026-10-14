@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T09:48:46.606174+00:00",
+  "reviewedBy": "/root/final_review",
+  "approved": true,
+  "approvalScope": "Independent light metadata/provenance review of completed ordinary visual evidence. Raw RGBA/PNG comparisons were performed by the visual owner; this reviewer did not decode or reread PNGs or relaunch any browser. This approval is not overall browser QA acceptance.",
+  "proof": {
+    "path": "/tmp/ns-perf-default-visual-final-proof.json",
+    "sha256": "2a25591c02e3b5c5f830453c05385a531aa879f1c1fb0e5cc3c4bebfc13ca189"
+  },
+  "combined": {
+    "path": "/workspace/tmu-course-guides/tools/qa/reports/perf-visuals-default/compare/ordinary-32-comparison.json",
+    "sha256": "ba7838799858b5bd1b4844846e539129530c3fe06cff7b129427510f687df274"
+  },
+  "rawArtifacts": {
+    "defaultBefore": {
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/perf-visuals-default/before/manifest.json",
+      "sha256": "49ff75d1fa8be2368dad028d39d7e9ef83f96ae5598a2b76b1b4a3e8e308d84f",
+      "bytes": 90224
+    },
+    "defaultAfter": {
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/perf-visuals-default/after/manifest.json",
+      "sha256": "429f8840e96058b45c89792f8aae159a976fadadbe444570cdb9b9d11c749130",
+      "bytes": 90213
+    },
+    "defaultCompare": {
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/perf-visuals-default/compare/comparison.json",
+      "sha256": "873d4ecc127bce7660cd0b230617e3c7b1508147294986fda2b2ca2095c585c5",
+      "bytes": 11018
+    },
+    "bookBefore": {
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/perf-visuals/before/manifest.json",
+      "sha256": "f6002a6523ee15265230af236c1d024dbe12b68ea55ad7f1a3e1ff8e2f4c9f04",
+      "bytes": 229296
+    },
+    "bookAfter": {
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/perf-visuals/after/manifest.json",
+      "sha256": "c601f1307451f099b530c3bcd401e9cacb228a29149609b755ea3e197f0fa091",
+      "bytes": 229261
+    },
+    "bookCompare": {
+      "path": "/workspace/tmu-course-guides/tools/qa/reports/perf-visuals/compare/comparison.json",
+      "sha256": "7365d5e3490372f2ac0f84ab302713bd1724418166947702abde5ac3b2506454",
+      "bytes": 32785
+    }
+  },
+  "checks": {
+    "proofExactSHA": true,
+    "combinedExactSHA": true,
+    "rawArtifactSHAAndSizes": true,
+    "reviewedPrivateDependenciesUnchanged": true,
+    "immutablePrimaryBookSHA": true,
+    "driverPackageBindings": true,
+    "CLIExitCodes": true,
+    "sourceAndProtectedContinuity": true,
+    "recipeNativeStrict": true,
+    "noDiagnosticsAndSerial": true,
+    "environmentSoftwareReadback": true,
+    "exactEightDefaultIDs": true,
+    "allDefaultURLsQueryless": true,
+    "allDefaultCapturesReadyAndSettled": true,
+    "allEighteenDefaultSamplesLive": true,
+    "defaultRepeatStrictZero": true,
+    "exactCombined32IDs": true,
+    "combinedRowsBoundToRawComparisons": true,
+    "combined32StrictZeros": true,
+    "combined32Queryless": true,
+    "proofCombinedRowsIdentical": true,
+    "closureMetadata": true,
+    "recipeIdenticalExceptExplicitMTH140BookTier": true
+  },
+  "findings": [],
+  "summary": {
+    "ordinaryDefaultPairs": 8,
+    "ordinaryDefaultPixelIdentical": 8,
+    "ordinaryDefaultChangedPixels": 0,
+    "ordinaryDefaultCapturesAndRepeats": 18,
+    "ordinaryDefaultLiveWebGLSamples": 18,
+    "naturalFallbackSamples": 0,
+    "ordinaryExistingPairs": 24,
+    "combinedOrdinaryPairs": 32,
+    "combinedOrdinaryPixelIdentical": 32,
+    "combinedChangedPixels": 0,
+    "totalCombinedPixels": 26002560,
+    "metadataDifferences": 0,
+    "originalHighBookProofUnchanged": true,
+    "previewPortsClosed": true,
+    "runnerPIDsClosed": true,
+    "browserProcessesClosed": true
+  },
+  "limits": [
+    "The ordinary 32-pair result combines 24 previously captured unchanged queryless other-route pairs with 8 fresh queryless MTH140 pairs; it is not a claim of a second fresh full32 capture.",
+    "All 18 default MTH140 captures including both repeats use actual live book WebGL; the narrowly reviewed natural-poster exception is unused.",
+    "Closure is checked against the finalized bound visual proof; no present-time process or port probe was performed during another agent owned verification.",
+    "No browser, tests, repository edits, PNG decoding or heavy work was performed. Old 1.57 full-QA failures and supported 1.64 verification remain separate."
+  ],
+  "priorReview": {
+    "path": "/tmp/ns-perf-default-visual-final-peer-review.json",
+    "sha256": "271da70cb15a89bc4bfff07a972282c618c300fcca02ee27c3d39addf704a54b",
+    "initialFalseMetadataBlock": "The first review required whole-recipe equality with the primary book matrix. Its only difference is the already authorized MTH140 ?tier=high override; this supplement deliberately omits that override for exact queryless URLs. All other recipe fields match byte-equivalent JSON values. The initial review is preserved."
+  },
+  "soleRecipeDifference": {
+    "primary": {
+      "bookTier": {
+        "route": "mth140",
+        "value": "high",
+        "query": "?tier=high"
+      }
+    },
+    "default": "bookTier key omitted; cases and actual/requested URLs queryless",
+    "otherFieldsIdentical": true
+  }
+}

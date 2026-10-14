@@ -1,0 +1,538 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T09:39:06.919Z",
+  "status": "passed-read-only-static-review",
+  "note": "Offline static source/tracking review against cached origin/night-shift9ab. No fetch, tests, browser, or repository mutations. Cached refs do not establish live remote state.",
+  "facts": {
+    "branch": "codex/ns-perf",
+    "head": "d6114ac401a7f3b7b52054f0530c9b76c293a1d8",
+    "reference": "origin/night-shift",
+    "referenceCommit": "9ab5abb5d7c54f5c70abb9ef87ee5e2132db24f1",
+    "upstream": "refs/remotes/origin/night-shift",
+    "behind": 0,
+    "ahead": 22,
+    "cachedTopicRemote": null,
+    "localNightShift": null,
+    "localMain": "refs/heads/main f4c8342e5ccfe36469a66842527e665f056cad35",
+    "cachedMain": "refs/remotes/origin/main 66049a17117ff085a99413066b326bb599f7b2c8",
+    "statusPorcelain": "",
+    "networkFetchPerformed": false
+  },
+  "guards": {
+    "cachedReferenceIsLatestKnown9ab": true,
+    "correctTopicBranch": true,
+    "protectedFilesUnchanged": true,
+    "onlyTwoProductAssetsChanged": true,
+    "allHtmlBodiesUnchanged": true,
+    "mthSingleHeadHunk": true,
+    "allEightGeneratedHeadsExact": true,
+    "graphsCountsAndDepth": true,
+    "noAliasesOrDeferredPreloads": true,
+    "oneActualLatinFontOnly": true,
+    "fontAndCSSUnchanged": true,
+    "newAssetTokensExact": true
+  },
+  "sourceFingerprints": {
+    "before": "f53027510da4ab7382192a2b05a3acc7dcab5ce3cf93d62a9d197345de765960",
+    "after": "1795468f427084977fac5a0707eef0b14e461c8d2041cb9c6d1e0315de48851f",
+    "protectedBefore": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+    "protectedAfter": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+    "productFileCount": 106
+  },
+  "qaSources": [
+    {
+      "path": "tools/qa/checks.mjs",
+      "sha256": "e1cc6550f304cd30d092cfcc34a78548365ce3c9b06e2f9ea6b53f1c1deee9ca"
+    },
+    {
+      "path": "tools/qa/checks-resilience.mjs",
+      "sha256": "db77a8d9fa49683f6370c87fc1794dbec247bc3c95cf524fee1d5d58d12e0de8"
+    },
+    {
+      "path": "tools/qa/checks-perf.mjs",
+      "sha256": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657"
+    },
+    {
+      "path": "tools/qa/runtime.mjs",
+      "sha256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587"
+    },
+    {
+      "path": "tools/qa/instrument.mjs",
+      "sha256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892"
+    }
+  ],
+  "protectedFileCount": 39,
+  "forbiddenChanges": [],
+  "assetCount": 95,
+  "changedAssets": [
+    {
+      "path": "assets/app/route-boot.mjs",
+      "beforeSHA256": "171206d039cef76ad974abb0f5749caa7ce40336a6a63a0e7f37356e0b9aabdc",
+      "afterSHA256": "19964ef23cae4c339a22e3d0b5525d742d461d98cbebbb8cad10a143a4f72a24"
+    },
+    {
+      "path": "assets/app/router.mjs",
+      "beforeSHA256": "357b6d47408f2ab5ba045aec500459fa4f8b50c48f82569e5173d01e5a9f06c0",
+      "afterSHA256": "50ca18534f312b16a87a0c4a8c650cc1ab975ed9ee623844b4a2915e35fdfe24"
+    }
+  ],
+  "htmlBodies": [
+    {
+      "path": "cen100/index.html",
+      "same": true,
+      "bodySHA256": "070e811bedf1fc8cf2553dbb4ea44f55c12066aebd7c747d8e595515f334a6ad",
+      "explicitBody": true
+    },
+    {
+      "path": "colour-preview.html",
+      "same": true,
+      "bodySHA256": "cd11e1945eb3733a97705b99a5d92229bc669615bdeba7dce021223e9166ecb7",
+      "explicitBody": true
+    },
+    {
+      "path": "index.html",
+      "same": true,
+      "bodySHA256": "1e736521df4faca83600d0fc3f1e3cab47dd10cf686c7c4dc4c0269f6ea576f2",
+      "explicitBody": true
+    },
+    {
+      "path": "mth140/index.html",
+      "same": true,
+      "bodySHA256": "3ea736d0bcca56150e41a8c2a0daf2a3f2d1c438aba2ea17c1f59d6c445e2e15",
+      "explicitBody": true
+    },
+    {
+      "path": "mth141/index.html",
+      "same": true,
+      "bodySHA256": "eed4377c09acff8a943ea3dcf33112b764e8fb0dee0bf38b6c5babd397bc4578",
+      "explicitBody": true
+    },
+    {
+      "path": "privacy.html",
+      "same": true,
+      "bodySHA256": "83a6b42e27c6248cef2c1d10655e4b58042c37eef032679e2421e7a86ae63e68",
+      "explicitBody": true
+    },
+    {
+      "path": "tests/book-capture.html",
+      "same": true,
+      "bodySHA256": "33ed53963663187452dc4e425a264e6a03e6601e2621dce5ba98c8660904607c",
+      "explicitBody": true
+    },
+    {
+      "path": "tests/editorial/index.html",
+      "same": true,
+      "bodySHA256": "f495211f60fe0ddb4eb72baae40de00c55e1af983ea7daa7a3910029e6eb276a",
+      "explicitBody": true
+    },
+    {
+      "path": "tests/header-preview.html",
+      "same": true,
+      "bodySHA256": "500cc12cd9c50a853f986163e2cbaf0b717b6018920f1c991ef665c16e13c8cc",
+      "explicitBody": false
+    },
+    {
+      "path": "tests/scene-capture.html",
+      "same": true,
+      "bodySHA256": "9f7600187eddd2ddaaa2bc8891bddd0f09aceb943f23279a58c1d06bf247dd8f",
+      "explicitBody": false
+    },
+    {
+      "path": "tests/studio-preview.html",
+      "same": true,
+      "bodySHA256": "f6dca57ec4a11d55e76800d591f48f21348d8b1991c95eda608131fc90dd3a1e",
+      "explicitBody": true
+    }
+  ],
+  "mthHeadHunks": [
+    "@@ -35 +35,33 @@"
+  ],
+  "changedTokens": [
+    {
+      "path": "index.html",
+      "urls": [
+        "assets/app/route-boot.mjs?v=20261014-perf3",
+        "assets/app/router.mjs?v=20261014-perf3",
+        "assets/app/route-boot.mjs?v=20261014-perf3"
+      ]
+    },
+    {
+      "path": "cen100/index.html",
+      "urls": [
+        "../assets/app/route-boot.mjs?v=20261014-perf3",
+        "../assets/app/router.mjs?v=20261014-perf3",
+        "../assets/app/route-boot.mjs?v=20261014-perf3"
+      ]
+    },
+    {
+      "path": "mth140/index.html",
+      "urls": [
+        "../assets/app/route-boot.mjs?v=20261014-perf3",
+        "../assets/app/router.mjs?v=20261014-perf3",
+        "../assets/app/route-boot.mjs?v=20261014-perf3"
+      ]
+    },
+    {
+      "path": "mth141/index.html",
+      "urls": [
+        "../assets/app/route-boot.mjs?v=20261014-perf3",
+        "../assets/app/router.mjs?v=20261014-perf3",
+        "../assets/app/route-boot.mjs?v=20261014-perf3"
+      ]
+    }
+  ],
+  "font": {
+    "bytes": 90104,
+    "sha256": "e3a28eade21a900c7155a247757f4b2834c07bb7ef07ad7efa55cebaac1e8f5e",
+    "fontDisplay": [
+      "swap",
+      "swap",
+      "swap"
+    ],
+    "cssSHA256": "d2a46d6b432ef60e210ff1d1fbb79e7ad228984f396f057b78235aa03bf2ec88"
+  },
+  "graphs": [
+    {
+      "base": "/",
+      "documentPath": "index.html",
+      "moduleCount": 17,
+      "edgeCount": 32,
+      "sourceBytes": 325815,
+      "longestChainDepth": 5,
+      "maxShortestDepth": 2,
+      "generatedBlockBytes": 1397,
+      "generatedHeadExactlyMatches": true,
+      "urls": [
+        "https://tmu.invalid/assets/app/route-boot.mjs?v=20261014-perf3",
+        "https://tmu.invalid/assets/app/router.mjs?v=20261014-perf3",
+        "https://tmu.invalid/assets/app/transition.mjs",
+        "https://tmu.invalid/assets/book/book-state.mjs",
+        "https://tmu.invalid/assets/book/weeks.mjs",
+        "https://tmu.invalid/assets/cen-schedule.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/course-data.mjs?v=20261012-assessments2",
+        "https://tmu.invalid/assets/guide-motion.mjs?v=20261013-qa1",
+        "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/desk.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/route-lifecycle.mjs",
+        "https://tmu.invalid/assets/schedule.mjs",
+        "https://tmu.invalid/assets/vendor/gsap-3.15.0.mjs"
+      ],
+      "aliases": [],
+      "forbiddenDeferred": [],
+      "fonts": [
+        "https://tmu.invalid/assets/fonts/archivo-latin.woff2"
+      ]
+    },
+    {
+      "base": "/",
+      "documentPath": "cen100/index.html",
+      "moduleCount": 24,
+      "edgeCount": 42,
+      "sourceBytes": 452771,
+      "longestChainDepth": 5,
+      "maxShortestDepth": 2,
+      "generatedBlockBytes": 2013,
+      "generatedHeadExactlyMatches": true,
+      "urls": [
+        "https://tmu.invalid/assets/app/route-boot.mjs?v=20261014-perf3",
+        "https://tmu.invalid/assets/app/router.mjs?v=20261014-perf3",
+        "https://tmu.invalid/assets/app/transition.mjs",
+        "https://tmu.invalid/assets/book/book-state.mjs",
+        "https://tmu.invalid/assets/book/course-styles.mjs?v=20261013-book1",
+        "https://tmu.invalid/assets/book/weeks.mjs",
+        "https://tmu.invalid/assets/cen-guide.mjs?v=20261013-resilience1",
+        "https://tmu.invalid/assets/cen-schedule.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/course-data.mjs?v=20261012-assessments2",
+        "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/editorial.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/guide-motion.mjs?v=20261013-qa1",
+        "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/route-lifecycle.mjs",
+        "https://tmu.invalid/assets/scenes/framing.mjs?v=20261012-subject1",
+        "https://tmu.invalid/assets/scenes/scene-math.mjs?v=20261012-subject1",
+        "https://tmu.invalid/assets/schedule.mjs",
+        "https://tmu.invalid/assets/vendor/gsap-3.15.0.mjs",
+        "https://tmu.invalid/assets/visuals.js?v=20261013-shift1",
+        "https://tmu.invalid/assets/workspace.mjs?v=20261013-shift1"
+      ],
+      "aliases": [],
+      "forbiddenDeferred": [],
+      "fonts": [
+        "https://tmu.invalid/assets/fonts/archivo-latin.woff2"
+      ]
+    },
+    {
+      "base": "/",
+      "documentPath": "mth140/index.html",
+      "moduleCount": 29,
+      "edgeCount": 48,
+      "sourceBytes": 471051,
+      "longestChainDepth": 5,
+      "maxShortestDepth": 2,
+      "generatedBlockBytes": 2386,
+      "generatedHeadExactlyMatches": true,
+      "urls": [
+        "https://tmu.invalid/assets/app/route-boot.mjs?v=20261014-perf3",
+        "https://tmu.invalid/assets/app/router.mjs?v=20261014-perf3",
+        "https://tmu.invalid/assets/app/transition.mjs",
+        "https://tmu.invalid/assets/book/book-state.mjs",
+        "https://tmu.invalid/assets/book/course-styles.mjs?v=20261013-book1",
+        "https://tmu.invalid/assets/book/weeks.mjs",
+        "https://tmu.invalid/assets/course-data.mjs?v=20261012-assessments2",
+        "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/editorial.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/guide-motion.mjs?v=20261013-qa1",
+        "https://tmu.invalid/assets/lab-challenge-data.mjs",
+        "https://tmu.invalid/assets/lab-challenges.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/lab-composition-math.mjs?v=20261011-studio3",
+        "https://tmu.invalid/assets/lab-composition.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/lab-math.mjs",
+        "https://tmu.invalid/assets/math-guide.mjs?v=20261013-resilience1",
+        "https://tmu.invalid/assets/math-labs.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/route-lifecycle.mjs",
+        "https://tmu.invalid/assets/scenes/framing.mjs?v=20261012-subject1",
+        "https://tmu.invalid/assets/scenes/scene-math.mjs?v=20261012-subject1",
+        "https://tmu.invalid/assets/schedule.mjs",
+        "https://tmu.invalid/assets/vendor/gsap-3.15.0.mjs",
+        "https://tmu.invalid/assets/visuals.js?v=20261013-shift1",
+        "https://tmu.invalid/assets/workspace.mjs?v=20261013-shift1"
+      ],
+      "aliases": [],
+      "forbiddenDeferred": [],
+      "fonts": [
+        "https://tmu.invalid/assets/fonts/archivo-latin.woff2"
+      ]
+    },
+    {
+      "base": "/",
+      "documentPath": "mth141/index.html",
+      "moduleCount": 29,
+      "edgeCount": 48,
+      "sourceBytes": 471051,
+      "longestChainDepth": 5,
+      "maxShortestDepth": 2,
+      "generatedBlockBytes": 2386,
+      "generatedHeadExactlyMatches": true,
+      "urls": [
+        "https://tmu.invalid/assets/app/route-boot.mjs?v=20261014-perf3",
+        "https://tmu.invalid/assets/app/router.mjs?v=20261014-perf3",
+        "https://tmu.invalid/assets/app/transition.mjs",
+        "https://tmu.invalid/assets/book/book-state.mjs",
+        "https://tmu.invalid/assets/book/course-styles.mjs?v=20261013-book1",
+        "https://tmu.invalid/assets/book/weeks.mjs",
+        "https://tmu.invalid/assets/course-data.mjs?v=20261012-assessments2",
+        "https://tmu.invalid/assets/course-header.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/editorial.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/guide-motion.mjs?v=20261013-qa1",
+        "https://tmu.invalid/assets/lab-challenge-data.mjs",
+        "https://tmu.invalid/assets/lab-challenges.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/lab-composition-math.mjs?v=20261011-studio3",
+        "https://tmu.invalid/assets/lab-composition.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/lab-math.mjs",
+        "https://tmu.invalid/assets/math-guide.mjs?v=20261013-resilience1",
+        "https://tmu.invalid/assets/math-labs.mjs?v=20261013-shift1",
+        "https://tmu.invalid/assets/night/boot.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/core.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/deadline.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/targets.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/night/timeline.mjs?v=20261014-book1",
+        "https://tmu.invalid/assets/route-lifecycle.mjs",
+        "https://tmu.invalid/assets/scenes/framing.mjs?v=20261012-subject1",
+        "https://tmu.invalid/assets/scenes/scene-math.mjs?v=20261012-subject1",
+        "https://tmu.invalid/assets/schedule.mjs",
+        "https://tmu.invalid/assets/vendor/gsap-3.15.0.mjs",
+        "https://tmu.invalid/assets/visuals.js?v=20261013-shift1",
+        "https://tmu.invalid/assets/workspace.mjs?v=20261013-shift1"
+      ],
+      "aliases": [],
+      "forbiddenDeferred": [],
+      "fonts": [
+        "https://tmu.invalid/assets/fonts/archivo-latin.woff2"
+      ]
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "documentPath": "index.html",
+      "moduleCount": 17,
+      "edgeCount": 32,
+      "sourceBytes": 325815,
+      "longestChainDepth": 5,
+      "maxShortestDepth": 2,
+      "generatedBlockBytes": 1397,
+      "generatedHeadExactlyMatches": true,
+      "urls": [
+        "https://tmu.invalid/tmu-course-guides/assets/app/route-boot.mjs?v=20261014-perf3",
+        "https://tmu.invalid/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+        "https://tmu.invalid/tmu-course-guides/assets/app/transition.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/cen-schedule.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+        "https://tmu.invalid/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/desk.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/vendor/gsap-3.15.0.mjs"
+      ],
+      "aliases": [],
+      "forbiddenDeferred": [],
+      "fonts": [
+        "https://tmu.invalid/tmu-course-guides/assets/fonts/archivo-latin.woff2"
+      ]
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "documentPath": "cen100/index.html",
+      "moduleCount": 24,
+      "edgeCount": 42,
+      "sourceBytes": 452771,
+      "longestChainDepth": 5,
+      "maxShortestDepth": 2,
+      "generatedBlockBytes": 2013,
+      "generatedHeadExactlyMatches": true,
+      "urls": [
+        "https://tmu.invalid/tmu-course-guides/assets/app/route-boot.mjs?v=20261014-perf3",
+        "https://tmu.invalid/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+        "https://tmu.invalid/tmu-course-guides/assets/app/transition.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/book/course-styles.mjs?v=20261013-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/cen-guide.mjs?v=20261013-resilience1",
+        "https://tmu.invalid/tmu-course-guides/assets/cen-schedule.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+        "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/editorial.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/scenes/framing.mjs?v=20261012-subject1",
+        "https://tmu.invalid/tmu-course-guides/assets/scenes/scene-math.mjs?v=20261012-subject1",
+        "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/vendor/gsap-3.15.0.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/visuals.js?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/workspace.mjs?v=20261013-shift1"
+      ],
+      "aliases": [],
+      "forbiddenDeferred": [],
+      "fonts": [
+        "https://tmu.invalid/tmu-course-guides/assets/fonts/archivo-latin.woff2"
+      ]
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "documentPath": "mth140/index.html",
+      "moduleCount": 29,
+      "edgeCount": 48,
+      "sourceBytes": 471051,
+      "longestChainDepth": 5,
+      "maxShortestDepth": 2,
+      "generatedBlockBytes": 2386,
+      "generatedHeadExactlyMatches": true,
+      "urls": [
+        "https://tmu.invalid/tmu-course-guides/assets/app/route-boot.mjs?v=20261014-perf3",
+        "https://tmu.invalid/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+        "https://tmu.invalid/tmu-course-guides/assets/app/transition.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/book/course-styles.mjs?v=20261013-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+        "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/editorial.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-challenge-data.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-challenges.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-composition-math.mjs?v=20261011-studio3",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-composition.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-math.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/math-guide.mjs?v=20261013-resilience1",
+        "https://tmu.invalid/tmu-course-guides/assets/math-labs.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/scenes/framing.mjs?v=20261012-subject1",
+        "https://tmu.invalid/tmu-course-guides/assets/scenes/scene-math.mjs?v=20261012-subject1",
+        "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/vendor/gsap-3.15.0.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/visuals.js?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/workspace.mjs?v=20261013-shift1"
+      ],
+      "aliases": [],
+      "forbiddenDeferred": [],
+      "fonts": [
+        "https://tmu.invalid/tmu-course-guides/assets/fonts/archivo-latin.woff2"
+      ]
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "documentPath": "mth141/index.html",
+      "moduleCount": 29,
+      "edgeCount": 48,
+      "sourceBytes": 471051,
+      "longestChainDepth": 5,
+      "maxShortestDepth": 2,
+      "generatedBlockBytes": 2386,
+      "generatedHeadExactlyMatches": true,
+      "urls": [
+        "https://tmu.invalid/tmu-course-guides/assets/app/route-boot.mjs?v=20261014-perf3",
+        "https://tmu.invalid/tmu-course-guides/assets/app/router.mjs?v=20261014-perf3",
+        "https://tmu.invalid/tmu-course-guides/assets/app/transition.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/book/book-state.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/book/course-styles.mjs?v=20261013-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/book/weeks.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/course-data.mjs?v=20261012-assessments2",
+        "https://tmu.invalid/tmu-course-guides/assets/course-header.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/editorial.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/guide-motion.mjs?v=20261013-qa1",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-challenge-data.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-challenges.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-composition-math.mjs?v=20261011-studio3",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-composition.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/lab-math.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/math-guide.mjs?v=20261013-resilience1",
+        "https://tmu.invalid/tmu-course-guides/assets/math-labs.mjs?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/boot.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/core.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/deadline.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/targets.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/night/timeline.mjs?v=20261014-book1",
+        "https://tmu.invalid/tmu-course-guides/assets/route-lifecycle.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/scenes/framing.mjs?v=20261012-subject1",
+        "https://tmu.invalid/tmu-course-guides/assets/scenes/scene-math.mjs?v=20261012-subject1",
+        "https://tmu.invalid/tmu-course-guides/assets/schedule.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/vendor/gsap-3.15.0.mjs",
+        "https://tmu.invalid/tmu-course-guides/assets/visuals.js?v=20261013-shift1",
+        "https://tmu.invalid/tmu-course-guides/assets/workspace.mjs?v=20261013-shift1"
+      ],
+      "aliases": [],
+      "forbiddenDeferred": [],
+      "fonts": [
+        "https://tmu.invalid/tmu-course-guides/assets/fonts/archivo-latin.woff2"
+      ]
+    }
+  ]
+}

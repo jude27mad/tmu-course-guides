@@ -1,0 +1,4540 @@
+{
+  "schemaVersion": 1,
+  "check": "deadlines",
+  "startedAt": "2026-10-14T07:09:10.842Z",
+  "completedAt": "2026-10-14T08:39:46.631Z",
+  "environment": {
+    "node": "v24.19.0",
+    "platform": "linux",
+    "architecture": "x64",
+    "deployments": [
+      {
+        "base": "/",
+        "origin": "http://127.0.0.1:33547",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "154.0.8037.57",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      },
+      {
+        "base": "/tmu-course-guides/",
+        "origin": "http://127.0.0.1:42001",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "154.0.8037.57",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      }
+    ],
+    "requestedMode": "SwiftShader",
+    "playwrightPath": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "playwrightSource": "PLAYWRIGHT_PATH",
+    "chromiumPath": "/usr/bin/chromium",
+    "chromiumSource": "QA_CHROMIUM_PATH",
+    "launchArgs": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "status": "failed",
+  "failures": 1,
+  "cases": [
+    {
+      "base": "/",
+      "origin": "http://127.0.0.1:33547",
+      "status": "passed",
+      "assertions": [
+        {
+          "name": "CEN Academic Integrity: Desk overall title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity: Desk overall date/time",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": [
+            "Oct 14",
+            "3:00 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "CEN Academic Integrity: Desk overall precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "CEN Academic Integrity: Desk course title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity: Desk course date/time",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": [
+            "Oct 14",
+            "3:00 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "CEN Academic Integrity: Desk course precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "CEN Academic Integrity: Desk countdown",
+          "pass": true,
+          "actual": "1d 2h left",
+          "expected": "1d 2h left"
+        },
+        {
+          "name": "CEN Academic Integrity: resolved target",
+          "pass": true,
+          "actual": {
+            "course": "cen100",
+            "id": "integrity",
+            "title": "Academic Integrity Quiz",
+            "kind": "assignment",
+            "open": "y4",
+            "precision": "exact",
+            "at": 1792004400000,
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "label": "Due"
+          },
+          "expected": {
+            "id": "integrity",
+            "title": "Academic Integrity Quiz",
+            "precision": "exact",
+            "at": 1792004400000
+          }
+        },
+        {
+          "name": "CEN Academic Integrity: card target title and id",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+            "id": "integrity"
+          },
+          "expected": {
+            "title": "Academic Integrity Quiz",
+            "id": "integrity"
+          }
+        },
+        {
+          "name": "CEN Academic Integrity: card date/time",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": [
+            "Oct 14",
+            "3:00 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "CEN Academic Integrity: card precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "CEN Academic Integrity: dock target title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity: dock target state",
+          "pass": true,
+          "actual": "1d 2h",
+          "expected": "1d 2h"
+        },
+        {
+          "name": "CEN Academic Integrity: hero target title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity: hero target state",
+          "pass": true,
+          "actual": "1d 2h",
+          "expected": "1d 2h"
+        },
+        {
+          "name": "CEN Academic Integrity: card timer matches target",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+            "id": "integrity",
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "precision": "exact",
+            "cta": null,
+            "timer": true,
+            "key": "integrityexact1792004400000"
+          },
+          "expected": "timer for 2026-10-14T19:00:00.000Z"
+        },
+        {
+          "name": "CEN Academic Integrity: completion changes all course surfaces",
+          "pass": true,
+          "actual": {
+            "kind": "course",
+            "target": {
+              "course": "cen100",
+              "id": "whmis",
+              "title": "WHMIS certification",
+              "kind": "assignment",
+              "open": "y3",
+              "precision": "exact",
+              "endOfDay": true,
+              "at": 1792036800000,
+              "when": "Wed Oct 14 · by 11:59 PM Toronto",
+              "label": "Due by end of day"
+            },
+            "card": {
+              "title": "WHMIS certification due",
+              "id": "whmis",
+              "when": "Wed Oct 14 · by 11:59 PM Toronto",
+              "precision": "exact",
+              "cta": null,
+              "timer": true,
+              "key": "whmisexact1792036800000"
+            },
+            "dock": {
+              "title": "WHMIS certification",
+              "chip": "1d 11h"
+            },
+            "hero": {
+              "title": "WHMIS certification",
+              "chip": "1d 11h"
+            }
+          },
+          "expected": "next eligible target on card, dock, hero"
+        },
+        {
+          "name": "CEN Academic Integrity Undo: resolved target",
+          "pass": true,
+          "actual": {
+            "course": "cen100",
+            "id": "integrity",
+            "title": "Academic Integrity Quiz",
+            "kind": "assignment",
+            "open": "y4",
+            "precision": "exact",
+            "at": 1792004400000,
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "label": "Due"
+          },
+          "expected": {
+            "id": "integrity",
+            "title": "Academic Integrity Quiz",
+            "precision": "exact",
+            "at": 1792004400000
+          }
+        },
+        {
+          "name": "CEN Academic Integrity Undo: card target title and id",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+            "id": "integrity"
+          },
+          "expected": {
+            "title": "Academic Integrity Quiz",
+            "id": "integrity"
+          }
+        },
+        {
+          "name": "CEN Academic Integrity Undo: card date/time",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": [
+            "Oct 14",
+            "3:00 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "CEN Academic Integrity Undo: card precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "CEN Academic Integrity Undo: dock target title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity Undo: dock target state",
+          "pass": true,
+          "actual": "1d 2h",
+          "expected": "1d 2h"
+        },
+        {
+          "name": "CEN Academic Integrity Undo: hero target title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity Undo: hero target state",
+          "pass": true,
+          "actual": "1d 2h",
+          "expected": "1d 2h"
+        },
+        {
+          "name": "CEN Academic Integrity Undo: card timer matches target",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+            "id": "integrity",
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "precision": "exact",
+            "cta": null,
+            "timer": true,
+            "key": "integrityexact1792004400000"
+          },
+          "expected": "timer for 2026-10-14T19:00:00.000Z"
+        },
+        {
+          "name": "CEN Academic Integrity Desk Undo: Desk overall title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity Desk Undo: Desk overall date/time",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": [
+            "Oct 14",
+            "3:00 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "CEN Academic Integrity Desk Undo: Desk overall precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "CEN Academic Integrity Desk Undo: Desk course title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity Desk Undo: Desk course date/time",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": [
+            "Oct 14",
+            "3:00 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "CEN Academic Integrity Desk Undo: Desk course precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "CEN Academic Integrity Desk Undo: Desk countdown",
+          "pass": true,
+          "actual": "1d 2h left",
+          "expected": "1d 2h left"
+        },
+        {
+          "name": "CEN Academic Integrity resume: resolved target",
+          "pass": true,
+          "actual": {
+            "course": "cen100",
+            "id": "integrity",
+            "title": "Academic Integrity Quiz",
+            "kind": "assignment",
+            "open": "y4",
+            "precision": "exact",
+            "at": 1792004400000,
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "label": "Due"
+          },
+          "expected": {
+            "id": "integrity",
+            "title": "Academic Integrity Quiz",
+            "precision": "exact",
+            "at": 1792004400000
+          }
+        },
+        {
+          "name": "CEN Academic Integrity resume: card target title and id",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+            "id": "integrity"
+          },
+          "expected": {
+            "title": "Academic Integrity Quiz",
+            "id": "integrity"
+          }
+        },
+        {
+          "name": "CEN Academic Integrity resume: card date/time",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": [
+            "Oct 14",
+            "3:00 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "CEN Academic Integrity resume: card precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "CEN Academic Integrity resume: dock target title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity resume: dock target state",
+          "pass": true,
+          "actual": "1d 1h",
+          "expected": "1d 1h"
+        },
+        {
+          "name": "CEN Academic Integrity resume: hero target title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity resume: hero target state",
+          "pass": true,
+          "actual": "1d 1h",
+          "expected": "1d 1h"
+        },
+        {
+          "name": "CEN Academic Integrity resume: card timer matches target",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+            "id": "integrity",
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "precision": "exact",
+            "cta": null,
+            "timer": true,
+            "key": "integrityexact1792004400000"
+          },
+          "expected": "timer for 2026-10-14T19:00:00.000Z"
+        },
+        {
+          "name": "CEN Academic Integrity Desk resume: Desk overall title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity Desk resume: Desk overall date/time",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": [
+            "Oct 14",
+            "3:00 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "CEN Academic Integrity Desk resume: Desk overall precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "CEN Academic Integrity Desk resume: Desk course title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity Desk resume: Desk course date/time",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": [
+            "Oct 14",
+            "3:00 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "CEN Academic Integrity Desk resume: Desk course precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "CEN Academic Integrity Desk resume: Desk countdown",
+          "pass": true,
+          "actual": "1d 1h left",
+          "expected": "1d 1h left"
+        },
+        {
+          "name": "CEN Academic Integrity: consoleErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "CEN Academic Integrity: pageErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "CEN Academic Integrity: failedRequests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "CEN Academic Integrity: httpErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "MTH140 midterm: Desk overall title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm: Desk overall date/time",
+          "pass": true,
+          "actual": "Fri Oct 23 · 6:30 PM Toronto",
+          "expected": [
+            "Oct 23",
+            "6:30 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "MTH140 midterm: Desk overall precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "MTH140 midterm: Desk course title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm: Desk course date/time",
+          "pass": true,
+          "actual": "Fri Oct 23 · 6:30 PM Toronto",
+          "expected": [
+            "Oct 23",
+            "6:30 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "MTH140 midterm: Desk course precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "MTH140 midterm: Desk countdown",
+          "pass": true,
+          "actual": "3d 6h left",
+          "expected": "3d 6h left"
+        },
+        {
+          "name": "MTH140 midterm: resolved target",
+          "pass": true,
+          "actual": {
+            "course": "mth140",
+            "id": "midterm",
+            "title": "Midterm Test",
+            "kind": "midterm",
+            "open": "assessment-midterm",
+            "precision": "exact",
+            "at": 1792794600000,
+            "end": 1792801800000,
+            "when": "Fri Oct 23 · 6:30 PM Toronto",
+            "label": "Test starts"
+          },
+          "expected": {
+            "id": "midterm",
+            "title": "Midterm Test",
+            "precision": "exact",
+            "at": 1792794600000
+          }
+        },
+        {
+          "name": "MTH140 midterm: card target title and id",
+          "pass": true,
+          "actual": {
+            "title": "Midterm Test",
+            "id": "midterm"
+          },
+          "expected": {
+            "title": "Midterm Test",
+            "id": "midterm"
+          }
+        },
+        {
+          "name": "MTH140 midterm: card date/time",
+          "pass": true,
+          "actual": "Fri Oct 23 · 6:30 PM Toronto",
+          "expected": [
+            "Oct 23",
+            "6:30 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "MTH140 midterm: card precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "MTH140 midterm: dock target title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm: dock target state",
+          "pass": true,
+          "actual": "3d 6h",
+          "expected": "3d 6h"
+        },
+        {
+          "name": "MTH140 midterm: hero target title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm: hero target state",
+          "pass": true,
+          "actual": "3d 6h",
+          "expected": "3d 6h"
+        },
+        {
+          "name": "MTH140 midterm: card timer matches target",
+          "pass": true,
+          "actual": {
+            "title": "Midterm Test",
+            "id": "midterm",
+            "when": "Fri Oct 23 · 6:30 PM Toronto",
+            "precision": "exact",
+            "cta": null,
+            "timer": true,
+            "key": "midtermexact1792794600000"
+          },
+          "expected": "timer for 2026-10-23T22:30:00.000Z"
+        },
+        {
+          "name": "MTH140 midterm: completion changes all course surfaces",
+          "pass": true,
+          "actual": {
+            "kind": "course",
+            "target": {
+              "course": "mth140",
+              "id": "quiz-3",
+              "title": "Lab Quiz 3",
+              "kind": "quiz",
+              "open": "assessment-quiz-3",
+              "precision": "exact",
+              "at": 1794517200000,
+              "end": 1794524400000,
+              "when": "Thu Nov 12 · 4:00 PM · VIC106",
+              "label": "Your lab quiz starts",
+              "note": "Quiz day follows your section’s lab timetable. Check D2L for changes."
+            },
+            "card": {
+              "title": "Lab Quiz 3",
+              "id": "quiz-3",
+              "when": "Thu Nov 12 · 4:00 PM · VIC106",
+              "precision": "exact",
+              "cta": null,
+              "timer": true,
+              "key": "quiz-3exact1794517200000"
+            },
+            "dock": {
+              "title": "Lab Quiz 3",
+              "chip": "23d 4h"
+            },
+            "hero": {
+              "title": "Lab Quiz 3",
+              "chip": "23d 4h"
+            }
+          },
+          "expected": "next eligible target on card, dock, hero"
+        },
+        {
+          "name": "MTH140 midterm Undo: resolved target",
+          "pass": true,
+          "actual": {
+            "course": "mth140",
+            "id": "midterm",
+            "title": "Midterm Test",
+            "kind": "midterm",
+            "open": "assessment-midterm",
+            "precision": "exact",
+            "at": 1792794600000,
+            "end": 1792801800000,
+            "when": "Fri Oct 23 · 6:30 PM Toronto",
+            "label": "Test starts"
+          },
+          "expected": {
+            "id": "midterm",
+            "title": "Midterm Test",
+            "precision": "exact",
+            "at": 1792794600000
+          }
+        },
+        {
+          "name": "MTH140 midterm Undo: card target title and id",
+          "pass": true,
+          "actual": {
+            "title": "Midterm Test",
+            "id": "midterm"
+          },
+          "expected": {
+            "title": "Midterm Test",
+            "id": "midterm"
+          }
+        },
+        {
+          "name": "MTH140 midterm Undo: card date/time",
+          "pass": true,
+          "actual": "Fri Oct 23 · 6:30 PM Toronto",
+          "expected": [
+            "Oct 23",
+            "6:30 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "MTH140 midterm Undo: card precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "MTH140 midterm Undo: dock target title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm Undo: dock target state",
+          "pass": true,
+          "actual": "3d 6h",
+          "expected": "3d 6h"
+        },
+        {
+          "name": "MTH140 midterm Undo: hero target title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm Undo: hero target state",
+          "pass": true,
+          "actual": "3d 6h",
+          "expected": "3d 6h"
+        },
+        {
+          "name": "MTH140 midterm Undo: card timer matches target",
+          "pass": true,
+          "actual": {
+            "title": "Midterm Test",
+            "id": "midterm",
+            "when": "Fri Oct 23 · 6:30 PM Toronto",
+            "precision": "exact",
+            "cta": null,
+            "timer": true,
+            "key": "midtermexact1792794600000"
+          },
+          "expected": "timer for 2026-10-23T22:30:00.000Z"
+        },
+        {
+          "name": "MTH140 midterm Desk Undo: Desk overall title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm Desk Undo: Desk overall date/time",
+          "pass": true,
+          "actual": "Fri Oct 23 · 6:30 PM Toronto",
+          "expected": [
+            "Oct 23",
+            "6:30 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "MTH140 midterm Desk Undo: Desk overall precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "MTH140 midterm Desk Undo: Desk course title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm Desk Undo: Desk course date/time",
+          "pass": true,
+          "actual": "Fri Oct 23 · 6:30 PM Toronto",
+          "expected": [
+            "Oct 23",
+            "6:30 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "MTH140 midterm Desk Undo: Desk course precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "MTH140 midterm Desk Undo: Desk countdown",
+          "pass": true,
+          "actual": "3d 6h left",
+          "expected": "3d 6h left"
+        },
+        {
+          "name": "MTH140 midterm resume: resolved target",
+          "pass": true,
+          "actual": {
+            "course": "mth140",
+            "id": "midterm",
+            "title": "Midterm Test",
+            "kind": "midterm",
+            "open": "assessment-midterm",
+            "precision": "exact",
+            "at": 1792794600000,
+            "end": 1792801800000,
+            "when": "Fri Oct 23 · 6:30 PM Toronto",
+            "label": "Test starts"
+          },
+          "expected": {
+            "id": "midterm",
+            "title": "Midterm Test",
+            "precision": "exact",
+            "at": 1792794600000
+          }
+        },
+        {
+          "name": "MTH140 midterm resume: card target title and id",
+          "pass": true,
+          "actual": {
+            "title": "Midterm Test",
+            "id": "midterm"
+          },
+          "expected": {
+            "title": "Midterm Test",
+            "id": "midterm"
+          }
+        },
+        {
+          "name": "MTH140 midterm resume: card date/time",
+          "pass": true,
+          "actual": "Fri Oct 23 · 6:30 PM Toronto",
+          "expected": [
+            "Oct 23",
+            "6:30 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "MTH140 midterm resume: card precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "MTH140 midterm resume: dock target title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm resume: dock target state",
+          "pass": true,
+          "actual": "3d 5h",
+          "expected": "3d 5h"
+        },
+        {
+          "name": "MTH140 midterm resume: hero target title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm resume: hero target state",
+          "pass": true,
+          "actual": "3d 5h",
+          "expected": "3d 5h"
+        },
+        {
+          "name": "MTH140 midterm resume: card timer matches target",
+          "pass": true,
+          "actual": {
+            "title": "Midterm Test",
+            "id": "midterm",
+            "when": "Fri Oct 23 · 6:30 PM Toronto",
+            "precision": "exact",
+            "cta": null,
+            "timer": true,
+            "key": "midtermexact1792794600000"
+          },
+          "expected": "timer for 2026-10-23T22:30:00.000Z"
+        },
+        {
+          "name": "MTH140 midterm Desk resume: Desk overall title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm Desk resume: Desk overall date/time",
+          "pass": true,
+          "actual": "Fri Oct 23 · 6:30 PM Toronto",
+          "expected": [
+            "Oct 23",
+            "6:30 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "MTH140 midterm Desk resume: Desk overall precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "MTH140 midterm Desk resume: Desk course title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm Desk resume: Desk course date/time",
+          "pass": true,
+          "actual": "Fri Oct 23 · 6:30 PM Toronto",
+          "expected": [
+            "Oct 23",
+            "6:30 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "MTH140 midterm Desk resume: Desk course precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "MTH140 midterm Desk resume: Desk countdown",
+          "pass": true,
+          "actual": "3d 5h left",
+          "expected": "3d 5h left"
+        },
+        {
+          "name": "MTH140 midterm: consoleErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "MTH140 midterm: pageErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "MTH140 midterm: failedRequests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "MTH140 midterm: httpErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Quiz week without section: Desk overall title",
+          "pass": true,
+          "actual": "Lab Quiz 2",
+          "expected": "Lab Quiz 2"
+        },
+        {
+          "name": "Quiz week without section: Desk overall date/time",
+          "pass": true,
+          "actual": "Oct 12–Oct 16 · during your assigned lab",
+          "expected": [
+            "Oct 12",
+            "Oct 16"
+          ]
+        },
+        {
+          "name": "Quiz week without section: Desk overall precision",
+          "pass": true,
+          "actual": "week",
+          "expected": "week"
+        },
+        {
+          "name": "Quiz week without section: Desk course title",
+          "pass": true,
+          "actual": "Lab Quiz 2",
+          "expected": "Lab Quiz 2"
+        },
+        {
+          "name": "Quiz week without section: Desk course date/time",
+          "pass": true,
+          "actual": "Oct 12–Oct 16 · during your assigned lab",
+          "expected": [
+            "Oct 12",
+            "Oct 16"
+          ]
+        },
+        {
+          "name": "Quiz week without section: Desk course precision",
+          "pass": true,
+          "actual": "week",
+          "expected": "week"
+        },
+        {
+          "name": "Quiz week without section: Desk section CTA",
+          "pass": true,
+          "actual": "Choose section for quiz date",
+          "expected": "Choose section for quiz date"
+        },
+        {
+          "name": "Quiz week without section: no Desk timer for quiz week",
+          "pass": true,
+          "actual": false,
+          "expected": false
+        },
+        {
+          "name": "Quiz week without section: resolved target",
+          "pass": true,
+          "actual": {
+            "course": "mth140",
+            "id": "quiz-2",
+            "title": "Lab Quiz 2",
+            "kind": "quiz",
+            "open": "assessment-quiz-2",
+            "precision": "week",
+            "week": "2026-10-12",
+            "weekEnd": "2026-10-16",
+            "range": "Oct 12–16",
+            "when": "Oct 12–Oct 16 · during your assigned lab",
+            "label": "Quiz week",
+            "cta": "Choose section for quiz date"
+          },
+          "expected": {
+            "id": "quiz-2",
+            "title": "Lab Quiz 2",
+            "precision": "week"
+          }
+        },
+        {
+          "name": "Quiz week without section: card target title and id",
+          "pass": true,
+          "actual": {
+            "title": "Lab Quiz 2",
+            "id": "quiz-2"
+          },
+          "expected": {
+            "title": "Lab Quiz 2",
+            "id": "quiz-2"
+          }
+        },
+        {
+          "name": "Quiz week without section: card date/time",
+          "pass": true,
+          "actual": "Oct 12–Oct 16 · during your assigned lab",
+          "expected": [
+            "Oct 12",
+            "Oct 16"
+          ]
+        },
+        {
+          "name": "Quiz week without section: card precision",
+          "pass": true,
+          "actual": "week",
+          "expected": "week"
+        },
+        {
+          "name": "Quiz week without section: dock target title",
+          "pass": true,
+          "actual": "Lab Quiz 2",
+          "expected": "Lab Quiz 2"
+        },
+        {
+          "name": "Quiz week without section: dock target state",
+          "pass": true,
+          "actual": "Quiz week",
+          "expected": "Quiz week"
+        },
+        {
+          "name": "Quiz week without section: hero target title",
+          "pass": true,
+          "actual": "Lab Quiz 2",
+          "expected": "Lab Quiz 2"
+        },
+        {
+          "name": "Quiz week without section: hero target state",
+          "pass": true,
+          "actual": "Quiz week",
+          "expected": "Quiz week"
+        },
+        {
+          "name": "Quiz week without section: course section CTA",
+          "pass": true,
+          "actual": "Choose section for quiz date",
+          "expected": "Choose section for quiz date"
+        },
+        {
+          "name": "Quiz week without section: no timer for quiz week",
+          "pass": true,
+          "actual": false,
+          "expected": false
+        },
+        {
+          "name": "Quiz week without section: consoleErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Quiz week without section: pageErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Quiz week without section: failedRequests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Quiz week without section: httpErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "observations": {
+        "cases": [
+          {
+            "name": "CEN Academic Integrity",
+            "physicalClickTimeoutMs": 30000,
+            "clockedCompletionPolicy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "clockedCompletionActions": [
+              {
+                "selector": "[data-quick-complete]",
+                "method": "evaluate-click",
+                "first": true,
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "timeoutMs": 30000,
+                "nativeCall": {
+                  "method": "Locator.first().evaluate",
+                  "argument": "undefined",
+                  "options": {
+                    "timeout": 30000
+                  }
+                },
+                "status": "activated",
+                "beforeDiagnosticStartedAt": 1791962825213,
+                "beforeSnapshot": {
+                  "url": "http://127.0.0.1:33547/cen100/",
+                  "route": "cen100",
+                  "completedRoute": "cen100",
+                  "selector": "[data-quick-complete]",
+                  "count": 1,
+                  "first": {
+                    "tag": "BUTTON",
+                    "id": "",
+                    "completion": "integrity",
+                    "isConnected": true,
+                    "disabled": false,
+                    "rectCount": 1
+                  }
+                },
+                "beforeDiagnosticCompletedAt": 1791962825221,
+                "beforeDiagnosticElapsedMs": 8,
+                "startedAt": 1791962825221,
+                "completedAt": 1791962827766,
+                "elapsedMs": 2545
+              },
+              {
+                "selector": "#undo-complete",
+                "method": "evaluate-click",
+                "first": true,
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "timeoutMs": 30000,
+                "nativeCall": {
+                  "method": "Locator.first().evaluate",
+                  "argument": "undefined",
+                  "options": {
+                    "timeout": 30000
+                  }
+                },
+                "status": "activated",
+                "beforeDiagnosticStartedAt": 1791962827842,
+                "beforeSnapshot": {
+                  "url": "http://127.0.0.1:33547/cen100/",
+                  "route": "cen100",
+                  "completedRoute": "cen100",
+                  "selector": "#undo-complete",
+                  "count": 1,
+                  "first": {
+                    "tag": "BUTTON",
+                    "id": "undo-complete",
+                    "completion": null,
+                    "isConnected": true,
+                    "disabled": false,
+                    "rectCount": 1
+                  }
+                },
+                "beforeDiagnosticCompletedAt": 1791962827902,
+                "beforeDiagnosticElapsedMs": 60,
+                "startedAt": 1791962827902,
+                "completedAt": 1791962830736,
+                "elapsedMs": 2834
+              }
+            ],
+            "telemetry": {
+              "consoleErrors": [],
+              "pageErrors": [],
+              "failedRequests": [],
+              "httpErrors": []
+            },
+            "navigationDiagnostics": {
+              "documentRequests": [
+                {
+                  "time": 1791962817684,
+                  "url": "http://127.0.0.1:33547/?motion=off",
+                  "method": "GET"
+                }
+              ],
+              "frameNavigations": [
+                {
+                  "time": 1791962817716,
+                  "url": "http://127.0.0.1:33547/?motion=off"
+                },
+                {
+                  "time": 1791962818786,
+                  "url": "http://127.0.0.1:33547/?motion=off"
+                },
+                {
+                  "time": 1791962819785,
+                  "url": "http://127.0.0.1:33547/?motion=off"
+                },
+                {
+                  "time": 1791962820094,
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962832914,
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962834086,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962835290,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962835345,
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962848587,
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962849113,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962849435,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962849462,
+                  "url": "http://127.0.0.1:33547/"
+                }
+              ],
+              "pageEvents": [
+                {
+                  "time": 1791962817717,
+                  "type": "Page.frameNavigated",
+                  "frameId": "42C7A308EA80710B044B2923CAA88292",
+                  "loaderId": "4754F6392C4D9478877333788362EF1A",
+                  "url": "http://127.0.0.1:33547/?motion=off"
+                },
+                {
+                  "time": 1791962818787,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "42C7A308EA80710B044B2923CAA88292",
+                  "url": "http://127.0.0.1:33547/?motion=off"
+                },
+                {
+                  "time": 1791962819785,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "42C7A308EA80710B044B2923CAA88292",
+                  "url": "http://127.0.0.1:33547/?motion=off"
+                },
+                {
+                  "time": 1791962820094,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "42C7A308EA80710B044B2923CAA88292",
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962832915,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "42C7A308EA80710B044B2923CAA88292",
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962834087,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "42C7A308EA80710B044B2923CAA88292",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962835290,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "42C7A308EA80710B044B2923CAA88292",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962835346,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "42C7A308EA80710B044B2923CAA88292",
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962848587,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "42C7A308EA80710B044B2923CAA88292",
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962849113,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "42C7A308EA80710B044B2923CAA88292",
+                  "url": "http://127.0.0.1:33547/"
+                }
+              ],
+              "finalState": {
+                "url": "http://127.0.0.1:33547/",
+                "shell": "3e44d90e-18b4-4d59-8d9b-bc61ba0035b0",
+                "route": "desk",
+                "completedRoute": "desk",
+                "body": {
+                  "page": "desk"
+                },
+                "content": 1358,
+                "deadline": "CEN100EngineeringAcademic Integrity Quiz01days01hrs59minDueWed Oct 14 · 3:00 PM TorontoView in CEN100→",
+                "focus": {
+                  "tag": "MAIN",
+                  "id": "desk-main",
+                  "inside": true
+                },
+                "wrapper": {
+                  "opacity": "1",
+                  "filter": "none",
+                  "transform": "none"
+                },
+                "events": {
+                  "routes": [
+                    {
+                      "time": 2123,
+                      "route": "desk",
+                      "from": null,
+                      "url": "http://127.0.0.1:33547/?motion=off",
+                      "shell": "3e44d90e-18b4-4d59-8d9b-bc61ba0035b0"
+                    },
+                    {
+                      "time": 4903,
+                      "route": "cen100",
+                      "from": "desk",
+                      "url": "http://127.0.0.1:33547/cen100/",
+                      "shell": "3e44d90e-18b4-4d59-8d9b-bc61ba0035b0"
+                    },
+                    {
+                      "time": 17287,
+                      "route": "desk",
+                      "from": "cen100",
+                      "url": "http://127.0.0.1:33547/",
+                      "shell": "3e44d90e-18b4-4d59-8d9b-bc61ba0035b0"
+                    },
+                    {
+                      "time": 19465,
+                      "route": "cen100",
+                      "from": "desk",
+                      "url": "http://127.0.0.1:33547/cen100/",
+                      "shell": "3e44d90e-18b4-4d59-8d9b-bc61ba0035b0"
+                    },
+                    {
+                      "time": 32397,
+                      "route": "desk",
+                      "from": "cen100",
+                      "url": "http://127.0.0.1:33547/",
+                      "shell": "3e44d90e-18b4-4d59-8d9b-bc61ba0035b0"
+                    }
+                  ],
+                  "clicks": [
+                    {
+                      "time": 2962,
+                      "tag": "A",
+                      "id": "",
+                      "route": "cen100",
+                      "href": "http://127.0.0.1:33547/cen100/",
+                      "url": "http://127.0.0.1:33547/?motion=off",
+                      "defaultPrevented": true,
+                      "urlAfterDispatch": "http://127.0.0.1:33547/?motion=off"
+                    },
+                    {
+                      "time": 8867,
+                      "tag": "BUTTON",
+                      "id": "",
+                      "completion": "integrity",
+                      "href": null,
+                      "url": "http://127.0.0.1:33547/cen100/",
+                      "defaultPrevented": false,
+                      "urlAfterDispatch": "http://127.0.0.1:33547/cen100/"
+                    },
+                    {
+                      "time": 11134,
+                      "tag": "BUTTON",
+                      "id": "undo-complete",
+                      "href": null,
+                      "url": "http://127.0.0.1:33547/cen100/",
+                      "defaultPrevented": false,
+                      "urlAfterDispatch": "http://127.0.0.1:33547/cen100/"
+                    },
+                    {
+                      "time": 16047,
+                      "tag": "A",
+                      "id": "",
+                      "route": "desk",
+                      "href": "http://127.0.0.1:33547/",
+                      "url": "http://127.0.0.1:33547/cen100/",
+                      "defaultPrevented": true,
+                      "urlAfterDispatch": "http://127.0.0.1:33547/cen100/"
+                    },
+                    {
+                      "time": 18453,
+                      "tag": "A",
+                      "id": "",
+                      "route": "cen100",
+                      "href": "http://127.0.0.1:33547/cen100/",
+                      "url": "http://127.0.0.1:33547/",
+                      "defaultPrevented": true,
+                      "urlAfterDispatch": "http://127.0.0.1:33547/"
+                    },
+                    {
+                      "time": 31760,
+                      "tag": "A",
+                      "id": "",
+                      "route": "desk",
+                      "href": "http://127.0.0.1:33547/",
+                      "url": "http://127.0.0.1:33547/cen100/",
+                      "defaultPrevented": true,
+                      "urlAfterDispatch": "http://127.0.0.1:33547/cen100/"
+                    }
+                  ]
+                }
+              }
+            },
+            "fixedClock": {
+              "requested": "2026-10-13T16:00:00.000Z",
+              "actual": "2026-10-13T16:00:01.491Z",
+              "timezone": "America/Toronto"
+            },
+            "desk": {
+              "kind": "desk",
+              "overall": {
+                "title": "Academic Integrity Quiz",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "timer": true,
+                "precision": "exact",
+                "course": "cen100"
+              },
+              "course": {
+                "title": "Academic Integrity Quiz",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "chip": "1d 2h left",
+                "cta": null,
+                "precision": "exact"
+              }
+            },
+            "course": {
+              "kind": "course",
+              "target": {
+                "course": "cen100",
+                "id": "integrity",
+                "title": "Academic Integrity Quiz",
+                "kind": "assignment",
+                "open": "y4",
+                "precision": "exact",
+                "at": 1792004400000,
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "label": "Due"
+              },
+              "card": {
+                "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+                "id": "integrity",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "precision": "exact",
+                "cta": null,
+                "timer": true,
+                "key": "integrityexact1792004400000"
+              },
+              "dock": {
+                "title": "Academic Integrity Quiz",
+                "chip": "1d 2h"
+              },
+              "hero": {
+                "title": "Academic Integrity Quiz",
+                "chip": "1d 2h"
+              }
+            },
+            "afterDone": {
+              "kind": "course",
+              "target": {
+                "course": "cen100",
+                "id": "whmis",
+                "title": "WHMIS certification",
+                "kind": "assignment",
+                "open": "y3",
+                "precision": "exact",
+                "endOfDay": true,
+                "at": 1792036800000,
+                "when": "Wed Oct 14 · by 11:59 PM Toronto",
+                "label": "Due by end of day"
+              },
+              "card": {
+                "title": "WHMIS certification due",
+                "id": "whmis",
+                "when": "Wed Oct 14 · by 11:59 PM Toronto",
+                "precision": "exact",
+                "cta": null,
+                "timer": true,
+                "key": "whmisexact1792036800000"
+              },
+              "dock": {
+                "title": "WHMIS certification",
+                "chip": "1d 11h"
+              },
+              "hero": {
+                "title": "WHMIS certification",
+                "chip": "1d 11h"
+              }
+            },
+            "afterUndo": {
+              "kind": "course",
+              "target": {
+                "course": "cen100",
+                "id": "integrity",
+                "title": "Academic Integrity Quiz",
+                "kind": "assignment",
+                "open": "y4",
+                "precision": "exact",
+                "at": 1792004400000,
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "label": "Due"
+              },
+              "card": {
+                "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+                "id": "integrity",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "precision": "exact",
+                "cta": null,
+                "timer": true,
+                "key": "integrityexact1792004400000"
+              },
+              "dock": {
+                "title": "Academic Integrity Quiz",
+                "chip": "1d 2h"
+              },
+              "hero": {
+                "title": "Academic Integrity Quiz",
+                "chip": "1d 2h"
+              }
+            },
+            "deskAfterUndo": {
+              "kind": "desk",
+              "overall": {
+                "title": "Academic Integrity Quiz",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "timer": true,
+                "precision": "exact",
+                "course": "cen100"
+              },
+              "course": {
+                "title": "Academic Integrity Quiz",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "chip": "1d 2h left",
+                "cta": null,
+                "precision": "exact"
+              }
+            },
+            "afterResume": {
+              "kind": "course",
+              "target": {
+                "course": "cen100",
+                "id": "integrity",
+                "title": "Academic Integrity Quiz",
+                "kind": "assignment",
+                "open": "y4",
+                "precision": "exact",
+                "at": 1792004400000,
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "label": "Due"
+              },
+              "card": {
+                "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+                "id": "integrity",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "precision": "exact",
+                "cta": null,
+                "timer": true,
+                "key": "integrityexact1792004400000"
+              },
+              "dock": {
+                "title": "Academic Integrity Quiz",
+                "chip": "1d 1h"
+              },
+              "hero": {
+                "title": "Academic Integrity Quiz",
+                "chip": "1d 1h"
+              }
+            },
+            "visibilityMethod": "Synthetic visibilitychange with document.hidden getter: verifies resume handler and real-clock jump, not browser background throttling.",
+            "deskAfterResume": {
+              "kind": "desk",
+              "overall": {
+                "title": "Academic Integrity Quiz",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "timer": true,
+                "precision": "exact",
+                "course": "cen100"
+              },
+              "course": {
+                "title": "Academic Integrity Quiz",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "chip": "1d 1h left",
+                "cta": null,
+                "precision": "exact"
+              }
+            }
+          },
+          {
+            "name": "MTH140 midterm",
+            "physicalClickTimeoutMs": 30000,
+            "clockedCompletionPolicy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "clockedCompletionActions": [
+              {
+                "selector": "[data-quick-complete]",
+                "method": "evaluate-click",
+                "first": true,
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "timeoutMs": 30000,
+                "nativeCall": {
+                  "method": "Locator.first().evaluate",
+                  "argument": "undefined",
+                  "options": {
+                    "timeout": 30000
+                  }
+                },
+                "status": "activated",
+                "beforeDiagnosticStartedAt": 1791962860539,
+                "beforeSnapshot": {
+                  "url": "http://127.0.0.1:33547/mth140/",
+                  "route": "mth140",
+                  "completedRoute": "mth140",
+                  "selector": "[data-quick-complete]",
+                  "count": 1,
+                  "first": {
+                    "tag": "BUTTON",
+                    "id": "",
+                    "completion": "midterm",
+                    "isConnected": true,
+                    "disabled": false,
+                    "rectCount": 1
+                  }
+                },
+                "beforeDiagnosticCompletedAt": 1791962860567,
+                "beforeDiagnosticElapsedMs": 28,
+                "startedAt": 1791962860567,
+                "completedAt": 1791962874338,
+                "elapsedMs": 13771
+              },
+              {
+                "selector": "#undo-complete",
+                "method": "evaluate-click",
+                "first": true,
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "timeoutMs": 30000,
+                "nativeCall": {
+                  "method": "Locator.first().evaluate",
+                  "argument": "undefined",
+                  "options": {
+                    "timeout": 30000
+                  }
+                },
+                "status": "activated",
+                "beforeDiagnosticStartedAt": 1791962874811,
+                "beforeSnapshot": {
+                  "url": "http://127.0.0.1:33547/mth140/",
+                  "route": "mth140",
+                  "completedRoute": "mth140",
+                  "selector": "#undo-complete",
+                  "count": 1,
+                  "first": {
+                    "tag": "BUTTON",
+                    "id": "undo-complete",
+                    "completion": null,
+                    "isConnected": true,
+                    "disabled": false,
+                    "rectCount": 1
+                  }
+                },
+                "beforeDiagnosticCompletedAt": 1791962874840,
+                "beforeDiagnosticElapsedMs": 29,
+                "startedAt": 1791962874840,
+                "completedAt": 1791962875365,
+                "elapsedMs": 525
+              }
+            ],
+            "telemetry": {
+              "consoleErrors": [],
+              "pageErrors": [],
+              "failedRequests": [],
+              "httpErrors": []
+            },
+            "navigationDiagnostics": {
+              "documentRequests": [
+                {
+                  "time": 1791962850955,
+                  "url": "http://127.0.0.1:33547/?motion=off",
+                  "method": "GET"
+                }
+              ],
+              "frameNavigations": [
+                {
+                  "time": 1791962851013,
+                  "url": "http://127.0.0.1:33547/?motion=off"
+                },
+                {
+                  "time": 1791962852184,
+                  "url": "http://127.0.0.1:33547/?motion=off"
+                },
+                {
+                  "time": 1791962853070,
+                  "url": "http://127.0.0.1:33547/?motion=off"
+                },
+                {
+                  "time": 1791962853528,
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962877080,
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962877324,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962891452,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962891634,
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962904445,
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962904675,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962908038,
+                  "url": "http://127.0.0.1:33547/"
+                }
+              ],
+              "pageEvents": [
+                {
+                  "time": 1791962851013,
+                  "type": "Page.frameNavigated",
+                  "frameId": "2D52A1F03915E54A27274B0C62C4E04C",
+                  "loaderId": "DE30001AB4761F7D66EA6D971EFD6CD4",
+                  "url": "http://127.0.0.1:33547/?motion=off"
+                },
+                {
+                  "time": 1791962852198,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "2D52A1F03915E54A27274B0C62C4E04C",
+                  "url": "http://127.0.0.1:33547/?motion=off"
+                },
+                {
+                  "time": 1791962853071,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "2D52A1F03915E54A27274B0C62C4E04C",
+                  "url": "http://127.0.0.1:33547/?motion=off"
+                },
+                {
+                  "time": 1791962853528,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "2D52A1F03915E54A27274B0C62C4E04C",
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962877080,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "2D52A1F03915E54A27274B0C62C4E04C",
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962877328,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "2D52A1F03915E54A27274B0C62C4E04C",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962891452,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "2D52A1F03915E54A27274B0C62C4E04C",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962891635,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "2D52A1F03915E54A27274B0C62C4E04C",
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962904445,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "2D52A1F03915E54A27274B0C62C4E04C",
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962904677,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "2D52A1F03915E54A27274B0C62C4E04C",
+                  "url": "http://127.0.0.1:33547/"
+                }
+              ],
+              "finalState": {
+                "url": "http://127.0.0.1:33547/",
+                "shell": "a0efd316-eaf8-463a-9cf2-c263c3bc70dc",
+                "route": "desk",
+                "completedRoute": "desk",
+                "body": {
+                  "page": "desk"
+                },
+                "content": 1364,
+                "deadline": "MTH140Calculus IMidterm Test03days05hrs29minTest startsFri Oct 23 · 6:30 PM TorontoView in MTH140→",
+                "focus": {
+                  "tag": "MAIN",
+                  "id": "desk-main",
+                  "inside": true
+                },
+                "wrapper": {
+                  "opacity": "1",
+                  "filter": "none",
+                  "transform": "none"
+                },
+                "events": {
+                  "routes": [
+                    {
+                      "time": 2126,
+                      "route": "desk",
+                      "from": null,
+                      "url": "http://127.0.0.1:33547/?motion=off",
+                      "shell": "a0efd316-eaf8-463a-9cf2-c263c3bc70dc"
+                    },
+                    {
+                      "time": 5155,
+                      "route": "mth140",
+                      "from": "desk",
+                      "url": "http://127.0.0.1:33547/mth140/",
+                      "shell": "a0efd316-eaf8-463a-9cf2-c263c3bc70dc"
+                    },
+                    {
+                      "time": 27289,
+                      "route": "desk",
+                      "from": "mth140",
+                      "url": "http://127.0.0.1:33547/",
+                      "shell": "a0efd316-eaf8-463a-9cf2-c263c3bc70dc"
+                    },
+                    {
+                      "time": 42608,
+                      "route": "mth140",
+                      "from": "desk",
+                      "url": "http://127.0.0.1:33547/mth140/",
+                      "shell": "a0efd316-eaf8-463a-9cf2-c263c3bc70dc"
+                    },
+                    {
+                      "time": 54635,
+                      "route": "desk",
+                      "from": "mth140",
+                      "url": "http://127.0.0.1:33547/",
+                      "shell": "a0efd316-eaf8-463a-9cf2-c263c3bc70dc"
+                    }
+                  ],
+                  "clicks": [
+                    {
+                      "time": 2917,
+                      "tag": "A",
+                      "id": "",
+                      "route": "mth140",
+                      "href": "http://127.0.0.1:33547/mth140/",
+                      "url": "http://127.0.0.1:33547/?motion=off",
+                      "defaultPrevented": true,
+                      "urlAfterDispatch": "http://127.0.0.1:33547/?motion=off"
+                    },
+                    {
+                      "time": 4581,
+                      "tag": "BUTTON",
+                      "id": "tab-assessments",
+                      "href": null,
+                      "url": "http://127.0.0.1:33547/mth140/",
+                      "defaultPrevented": false,
+                      "urlAfterDispatch": "http://127.0.0.1:33547/mth140/"
+                    },
+                    {
+                      "time": 23693,
+                      "tag": "BUTTON",
+                      "id": "",
+                      "completion": "midterm",
+                      "href": null,
+                      "url": "http://127.0.0.1:33547/mth140/",
+                      "defaultPrevented": false,
+                      "urlAfterDispatch": "http://127.0.0.1:33547/mth140/"
+                    },
+                    {
+                      "time": 24821,
+                      "tag": "BUTTON",
+                      "id": "undo-complete",
+                      "href": null,
+                      "url": "http://127.0.0.1:33547/mth140/",
+                      "defaultPrevented": false,
+                      "urlAfterDispatch": "http://127.0.0.1:33547/mth140/"
+                    },
+                    {
+                      "time": 26908,
+                      "tag": "A",
+                      "id": "",
+                      "route": "desk",
+                      "href": "http://127.0.0.1:33547/",
+                      "url": "http://127.0.0.1:33547/mth140/",
+                      "defaultPrevented": true,
+                      "urlAfterDispatch": "http://127.0.0.1:33547/mth140/"
+                    },
+                    {
+                      "time": 41287,
+                      "tag": "A",
+                      "id": "",
+                      "route": "mth140",
+                      "href": "http://127.0.0.1:33547/mth140/",
+                      "url": "http://127.0.0.1:33547/",
+                      "defaultPrevented": true,
+                      "urlAfterDispatch": "http://127.0.0.1:33547/"
+                    },
+                    {
+                      "time": 42157,
+                      "tag": "BUTTON",
+                      "id": "tab-assessments",
+                      "href": null,
+                      "url": "http://127.0.0.1:33547/mth140/",
+                      "defaultPrevented": false,
+                      "urlAfterDispatch": "http://127.0.0.1:33547/mth140/"
+                    },
+                    {
+                      "time": 54283,
+                      "tag": "A",
+                      "id": "",
+                      "route": "desk",
+                      "href": "http://127.0.0.1:33547/",
+                      "url": "http://127.0.0.1:33547/mth140/",
+                      "defaultPrevented": true,
+                      "urlAfterDispatch": "http://127.0.0.1:33547/mth140/"
+                    }
+                  ]
+                }
+              }
+            },
+            "fixedClock": {
+              "requested": "2026-10-20T16:00:00.000Z",
+              "actual": "2026-10-20T16:00:01.464Z",
+              "timezone": "America/Toronto"
+            },
+            "desk": {
+              "kind": "desk",
+              "overall": {
+                "title": "Midterm Test",
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "timer": true,
+                "precision": "exact",
+                "course": "mth140"
+              },
+              "course": {
+                "title": "Midterm Test",
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "chip": "3d 6h left",
+                "cta": null,
+                "precision": "exact"
+              }
+            },
+            "course": {
+              "kind": "course",
+              "target": {
+                "course": "mth140",
+                "id": "midterm",
+                "title": "Midterm Test",
+                "kind": "midterm",
+                "open": "assessment-midterm",
+                "precision": "exact",
+                "at": 1792794600000,
+                "end": 1792801800000,
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "label": "Test starts"
+              },
+              "card": {
+                "title": "Midterm Test",
+                "id": "midterm",
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "precision": "exact",
+                "cta": null,
+                "timer": true,
+                "key": "midtermexact1792794600000"
+              },
+              "dock": {
+                "title": "Midterm Test",
+                "chip": "3d 6h"
+              },
+              "hero": {
+                "title": "Midterm Test",
+                "chip": "3d 6h"
+              }
+            },
+            "afterDone": {
+              "kind": "course",
+              "target": {
+                "course": "mth140",
+                "id": "quiz-3",
+                "title": "Lab Quiz 3",
+                "kind": "quiz",
+                "open": "assessment-quiz-3",
+                "precision": "exact",
+                "at": 1794517200000,
+                "end": 1794524400000,
+                "when": "Thu Nov 12 · 4:00 PM · VIC106",
+                "label": "Your lab quiz starts",
+                "note": "Quiz day follows your section’s lab timetable. Check D2L for changes."
+              },
+              "card": {
+                "title": "Lab Quiz 3",
+                "id": "quiz-3",
+                "when": "Thu Nov 12 · 4:00 PM · VIC106",
+                "precision": "exact",
+                "cta": null,
+                "timer": true,
+                "key": "quiz-3exact1794517200000"
+              },
+              "dock": {
+                "title": "Lab Quiz 3",
+                "chip": "23d 4h"
+              },
+              "hero": {
+                "title": "Lab Quiz 3",
+                "chip": "23d 4h"
+              }
+            },
+            "afterUndo": {
+              "kind": "course",
+              "target": {
+                "course": "mth140",
+                "id": "midterm",
+                "title": "Midterm Test",
+                "kind": "midterm",
+                "open": "assessment-midterm",
+                "precision": "exact",
+                "at": 1792794600000,
+                "end": 1792801800000,
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "label": "Test starts"
+              },
+              "card": {
+                "title": "Midterm Test",
+                "id": "midterm",
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "precision": "exact",
+                "cta": null,
+                "timer": true,
+                "key": "midtermexact1792794600000"
+              },
+              "dock": {
+                "title": "Midterm Test",
+                "chip": "3d 6h"
+              },
+              "hero": {
+                "title": "Midterm Test",
+                "chip": "3d 6h"
+              }
+            },
+            "deskAfterUndo": {
+              "kind": "desk",
+              "overall": {
+                "title": "Midterm Test",
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "timer": true,
+                "precision": "exact",
+                "course": "mth140"
+              },
+              "course": {
+                "title": "Midterm Test",
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "chip": "3d 6h left",
+                "cta": null,
+                "precision": "exact"
+              }
+            },
+            "afterResume": {
+              "kind": "course",
+              "target": {
+                "course": "mth140",
+                "id": "midterm",
+                "title": "Midterm Test",
+                "kind": "midterm",
+                "open": "assessment-midterm",
+                "precision": "exact",
+                "at": 1792794600000,
+                "end": 1792801800000,
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "label": "Test starts"
+              },
+              "card": {
+                "title": "Midterm Test",
+                "id": "midterm",
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "precision": "exact",
+                "cta": null,
+                "timer": true,
+                "key": "midtermexact1792794600000"
+              },
+              "dock": {
+                "title": "Midterm Test",
+                "chip": "3d 5h"
+              },
+              "hero": {
+                "title": "Midterm Test",
+                "chip": "3d 5h"
+              }
+            },
+            "visibilityMethod": "Synthetic visibilitychange with document.hidden getter: verifies resume handler and real-clock jump, not browser background throttling.",
+            "deskAfterResume": {
+              "kind": "desk",
+              "overall": {
+                "title": "Midterm Test",
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "timer": true,
+                "precision": "exact",
+                "course": "mth140"
+              },
+              "course": {
+                "title": "Midterm Test",
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "chip": "3d 5h left",
+                "cta": null,
+                "precision": "exact"
+              }
+            }
+          },
+          {
+            "name": "Quiz week without section",
+            "physicalClickTimeoutMs": 30000,
+            "clockedCompletionPolicy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "clockedCompletionActions": [],
+            "telemetry": {
+              "consoleErrors": [],
+              "pageErrors": [],
+              "failedRequests": [],
+              "httpErrors": []
+            },
+            "navigationDiagnostics": {
+              "documentRequests": [
+                {
+                  "time": 1791962914492,
+                  "url": "http://127.0.0.1:33547/?motion=off",
+                  "method": "GET"
+                }
+              ],
+              "frameNavigations": [
+                {
+                  "time": 1791962914530,
+                  "url": "http://127.0.0.1:33547/?motion=off"
+                },
+                {
+                  "time": 1791962917063,
+                  "url": "http://127.0.0.1:33547/?motion=off"
+                },
+                {
+                  "time": 1791962918359,
+                  "url": "http://127.0.0.1:33547/?motion=off"
+                },
+                {
+                  "time": 1791962918658,
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962925977,
+                  "url": "http://127.0.0.1:33547/mth140/"
+                }
+              ],
+              "pageEvents": [
+                {
+                  "time": 1791962914531,
+                  "type": "Page.frameNavigated",
+                  "frameId": "F859D82092EE2F8B95C20311E88CCB9D",
+                  "loaderId": "2C0D7BAD8FA65F4E10895AE8C2E75DD3",
+                  "url": "http://127.0.0.1:33547/?motion=off"
+                },
+                {
+                  "time": 1791962917071,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "F859D82092EE2F8B95C20311E88CCB9D",
+                  "url": "http://127.0.0.1:33547/?motion=off"
+                },
+                {
+                  "time": 1791962918359,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "F859D82092EE2F8B95C20311E88CCB9D",
+                  "url": "http://127.0.0.1:33547/?motion=off"
+                },
+                {
+                  "time": 1791962918658,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "F859D82092EE2F8B95C20311E88CCB9D",
+                  "url": "http://127.0.0.1:33547/mth140/"
+                }
+              ],
+              "finalState": {
+                "url": "http://127.0.0.1:33547/mth140/",
+                "shell": "0c2088fb-5b22-45b6-833c-cfe6eac1db6e",
+                "route": "mth140",
+                "completedRoute": "mth140",
+                "body": {
+                  "course": "mth140"
+                },
+                "content": 29805,
+                "deadline": "Oct 12–16Quiz weekOct 12–Oct 16 · during your assigned labChoose section for quiz dateLab Quiz 2: Quiz week. Oct 12–Oct 16 · during your assigned lab.",
+                "focus": {
+                  "tag": "H1",
+                  "id": "course-title",
+                  "inside": true
+                },
+                "wrapper": {
+                  "opacity": "1",
+                  "filter": "none",
+                  "transform": "none"
+                },
+                "events": {
+                  "routes": [
+                    {
+                      "time": 5090,
+                      "route": "desk",
+                      "from": null,
+                      "url": "http://127.0.0.1:33547/?motion=off",
+                      "shell": "0c2088fb-5b22-45b6-833c-cfe6eac1db6e"
+                    },
+                    {
+                      "time": 9071,
+                      "route": "mth140",
+                      "from": "desk",
+                      "url": "http://127.0.0.1:33547/mth140/",
+                      "shell": "0c2088fb-5b22-45b6-833c-cfe6eac1db6e"
+                    }
+                  ],
+                  "clicks": [
+                    {
+                      "time": 6131,
+                      "tag": "A",
+                      "id": "",
+                      "route": "mth140",
+                      "href": "http://127.0.0.1:33547/mth140/",
+                      "url": "http://127.0.0.1:33547/?motion=off",
+                      "defaultPrevented": true,
+                      "urlAfterDispatch": "http://127.0.0.1:33547/?motion=off"
+                    },
+                    {
+                      "time": 8071,
+                      "tag": "BUTTON",
+                      "id": "tab-assessments",
+                      "href": null,
+                      "url": "http://127.0.0.1:33547/mth140/",
+                      "defaultPrevented": false,
+                      "urlAfterDispatch": "http://127.0.0.1:33547/mth140/"
+                    }
+                  ]
+                }
+              }
+            },
+            "fixedClock": {
+              "requested": "2026-10-13T16:00:00.000Z",
+              "actual": "2026-10-13T16:00:03.203Z",
+              "timezone": "America/Toronto"
+            },
+            "desk": {
+              "kind": "desk",
+              "overall": {
+                "title": "Lab Quiz 2",
+                "when": "Oct 12–Oct 16 · during your assigned lab",
+                "timer": false,
+                "precision": "week",
+                "course": "mth140"
+              },
+              "course": {
+                "title": "Lab Quiz 2",
+                "when": "Oct 12–Oct 16 · during your assigned lab",
+                "chip": "Quiz week",
+                "cta": "Choose section for quiz date",
+                "precision": "week"
+              }
+            },
+            "course": {
+              "kind": "course",
+              "target": {
+                "course": "mth140",
+                "id": "quiz-2",
+                "title": "Lab Quiz 2",
+                "kind": "quiz",
+                "open": "assessment-quiz-2",
+                "precision": "week",
+                "week": "2026-10-12",
+                "weekEnd": "2026-10-16",
+                "range": "Oct 12–16",
+                "when": "Oct 12–Oct 16 · during your assigned lab",
+                "label": "Quiz week",
+                "cta": "Choose section for quiz date"
+              },
+              "card": {
+                "title": "Lab Quiz 2",
+                "id": "quiz-2",
+                "when": "Oct 12–Oct 16 · during your assigned lab",
+                "precision": "week",
+                "cta": "Choose section for quiz date",
+                "timer": false,
+                "key": "quiz-2week"
+              },
+              "dock": {
+                "title": "Lab Quiz 2",
+                "chip": "Quiz week"
+              },
+              "hero": {
+                "title": "Lab Quiz 2",
+                "chip": "Quiz week"
+              }
+            }
+          }
+        ],
+        "runnerErrors": []
+      },
+      "skipped": [],
+      "durationMs": 109058,
+      "failures": 0
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "origin": "http://127.0.0.1:42001",
+      "status": "failed",
+      "assertions": [
+        {
+          "name": "CEN Academic Integrity: Desk overall title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity: Desk overall date/time",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": [
+            "Oct 14",
+            "3:00 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "CEN Academic Integrity: Desk overall precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "CEN Academic Integrity: Desk course title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity: Desk course date/time",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": [
+            "Oct 14",
+            "3:00 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "CEN Academic Integrity: Desk course precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "CEN Academic Integrity: Desk countdown",
+          "pass": true,
+          "actual": "1d 2h left",
+          "expected": "1d 2h left"
+        },
+        {
+          "name": "CEN Academic Integrity: resolved target",
+          "pass": true,
+          "actual": {
+            "course": "cen100",
+            "id": "integrity",
+            "title": "Academic Integrity Quiz",
+            "kind": "assignment",
+            "open": "y4",
+            "precision": "exact",
+            "at": 1792004400000,
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "label": "Due"
+          },
+          "expected": {
+            "id": "integrity",
+            "title": "Academic Integrity Quiz",
+            "precision": "exact",
+            "at": 1792004400000
+          }
+        },
+        {
+          "name": "CEN Academic Integrity: card target title and id",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+            "id": "integrity"
+          },
+          "expected": {
+            "title": "Academic Integrity Quiz",
+            "id": "integrity"
+          }
+        },
+        {
+          "name": "CEN Academic Integrity: card date/time",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": [
+            "Oct 14",
+            "3:00 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "CEN Academic Integrity: card precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "CEN Academic Integrity: dock target title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity: dock target state",
+          "pass": true,
+          "actual": "1d 2h",
+          "expected": "1d 2h"
+        },
+        {
+          "name": "CEN Academic Integrity: hero target title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity: hero target state",
+          "pass": true,
+          "actual": "1d 2h",
+          "expected": "1d 2h"
+        },
+        {
+          "name": "CEN Academic Integrity: card timer matches target",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+            "id": "integrity",
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "precision": "exact",
+            "cta": null,
+            "timer": true,
+            "key": "integrityexact1792004400000"
+          },
+          "expected": "timer for 2026-10-14T19:00:00.000Z"
+        },
+        {
+          "name": "CEN Academic Integrity: completion changes all course surfaces",
+          "pass": true,
+          "actual": {
+            "kind": "course",
+            "target": {
+              "course": "cen100",
+              "id": "whmis",
+              "title": "WHMIS certification",
+              "kind": "assignment",
+              "open": "y3",
+              "precision": "exact",
+              "endOfDay": true,
+              "at": 1792036800000,
+              "when": "Wed Oct 14 · by 11:59 PM Toronto",
+              "label": "Due by end of day"
+            },
+            "card": {
+              "title": "WHMIS certification due",
+              "id": "whmis",
+              "when": "Wed Oct 14 · by 11:59 PM Toronto",
+              "precision": "exact",
+              "cta": null,
+              "timer": true,
+              "key": "whmisexact1792036800000"
+            },
+            "dock": {
+              "title": "WHMIS certification",
+              "chip": "1d 11h"
+            },
+            "hero": {
+              "title": "WHMIS certification",
+              "chip": "1d 11h"
+            }
+          },
+          "expected": "next eligible target on card, dock, hero"
+        },
+        {
+          "name": "CEN Academic Integrity Undo: resolved target",
+          "pass": true,
+          "actual": {
+            "course": "cen100",
+            "id": "integrity",
+            "title": "Academic Integrity Quiz",
+            "kind": "assignment",
+            "open": "y4",
+            "precision": "exact",
+            "at": 1792004400000,
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "label": "Due"
+          },
+          "expected": {
+            "id": "integrity",
+            "title": "Academic Integrity Quiz",
+            "precision": "exact",
+            "at": 1792004400000
+          }
+        },
+        {
+          "name": "CEN Academic Integrity Undo: card target title and id",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+            "id": "integrity"
+          },
+          "expected": {
+            "title": "Academic Integrity Quiz",
+            "id": "integrity"
+          }
+        },
+        {
+          "name": "CEN Academic Integrity Undo: card date/time",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": [
+            "Oct 14",
+            "3:00 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "CEN Academic Integrity Undo: card precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "CEN Academic Integrity Undo: dock target title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity Undo: dock target state",
+          "pass": true,
+          "actual": "1d 2h",
+          "expected": "1d 2h"
+        },
+        {
+          "name": "CEN Academic Integrity Undo: hero target title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity Undo: hero target state",
+          "pass": true,
+          "actual": "1d 2h",
+          "expected": "1d 2h"
+        },
+        {
+          "name": "CEN Academic Integrity Undo: card timer matches target",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+            "id": "integrity",
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "precision": "exact",
+            "cta": null,
+            "timer": true,
+            "key": "integrityexact1792004400000"
+          },
+          "expected": "timer for 2026-10-14T19:00:00.000Z"
+        },
+        {
+          "name": "CEN Academic Integrity Desk Undo: Desk overall title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity Desk Undo: Desk overall date/time",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": [
+            "Oct 14",
+            "3:00 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "CEN Academic Integrity Desk Undo: Desk overall precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "CEN Academic Integrity Desk Undo: Desk course title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity Desk Undo: Desk course date/time",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": [
+            "Oct 14",
+            "3:00 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "CEN Academic Integrity Desk Undo: Desk course precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "CEN Academic Integrity Desk Undo: Desk countdown",
+          "pass": true,
+          "actual": "1d 2h left",
+          "expected": "1d 2h left"
+        },
+        {
+          "name": "CEN Academic Integrity resume: resolved target",
+          "pass": true,
+          "actual": {
+            "course": "cen100",
+            "id": "integrity",
+            "title": "Academic Integrity Quiz",
+            "kind": "assignment",
+            "open": "y4",
+            "precision": "exact",
+            "at": 1792004400000,
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "label": "Due"
+          },
+          "expected": {
+            "id": "integrity",
+            "title": "Academic Integrity Quiz",
+            "precision": "exact",
+            "at": 1792004400000
+          }
+        },
+        {
+          "name": "CEN Academic Integrity resume: card target title and id",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+            "id": "integrity"
+          },
+          "expected": {
+            "title": "Academic Integrity Quiz",
+            "id": "integrity"
+          }
+        },
+        {
+          "name": "CEN Academic Integrity resume: card date/time",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": [
+            "Oct 14",
+            "3:00 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "CEN Academic Integrity resume: card precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "CEN Academic Integrity resume: dock target title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity resume: dock target state",
+          "pass": true,
+          "actual": "1d 1h",
+          "expected": "1d 1h"
+        },
+        {
+          "name": "CEN Academic Integrity resume: hero target title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity resume: hero target state",
+          "pass": true,
+          "actual": "1d 1h",
+          "expected": "1d 1h"
+        },
+        {
+          "name": "CEN Academic Integrity resume: card timer matches target",
+          "pass": true,
+          "actual": {
+            "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+            "id": "integrity",
+            "when": "Wed Oct 14 · 3:00 PM Toronto",
+            "precision": "exact",
+            "cta": null,
+            "timer": true,
+            "key": "integrityexact1792004400000"
+          },
+          "expected": "timer for 2026-10-14T19:00:00.000Z"
+        },
+        {
+          "name": "CEN Academic Integrity Desk resume: Desk overall title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity Desk resume: Desk overall date/time",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": [
+            "Oct 14",
+            "3:00 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "CEN Academic Integrity Desk resume: Desk overall precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "CEN Academic Integrity Desk resume: Desk course title",
+          "pass": true,
+          "actual": "Academic Integrity Quiz",
+          "expected": "Academic Integrity Quiz"
+        },
+        {
+          "name": "CEN Academic Integrity Desk resume: Desk course date/time",
+          "pass": true,
+          "actual": "Wed Oct 14 · 3:00 PM Toronto",
+          "expected": [
+            "Oct 14",
+            "3:00 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "CEN Academic Integrity Desk resume: Desk course precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "CEN Academic Integrity Desk resume: Desk countdown",
+          "pass": true,
+          "actual": "1d 1h left",
+          "expected": "1d 1h left"
+        },
+        {
+          "name": "CEN Academic Integrity: consoleErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "CEN Academic Integrity: pageErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "CEN Academic Integrity: failedRequests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "CEN Academic Integrity: httpErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "MTH140 midterm: Desk overall title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm: Desk overall date/time",
+          "pass": true,
+          "actual": "Fri Oct 23 · 6:30 PM Toronto",
+          "expected": [
+            "Oct 23",
+            "6:30 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "MTH140 midterm: Desk overall precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "MTH140 midterm: Desk course title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm: Desk course date/time",
+          "pass": true,
+          "actual": "Fri Oct 23 · 6:30 PM Toronto",
+          "expected": [
+            "Oct 23",
+            "6:30 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "MTH140 midterm: Desk course precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "MTH140 midterm: Desk countdown",
+          "pass": true,
+          "actual": "3d 6h left",
+          "expected": "3d 6h left"
+        },
+        {
+          "name": "MTH140 midterm: resolved target",
+          "pass": true,
+          "actual": {
+            "course": "mth140",
+            "id": "midterm",
+            "title": "Midterm Test",
+            "kind": "midterm",
+            "open": "assessment-midterm",
+            "precision": "exact",
+            "at": 1792794600000,
+            "end": 1792801800000,
+            "when": "Fri Oct 23 · 6:30 PM Toronto",
+            "label": "Test starts"
+          },
+          "expected": {
+            "id": "midterm",
+            "title": "Midterm Test",
+            "precision": "exact",
+            "at": 1792794600000
+          }
+        },
+        {
+          "name": "MTH140 midterm: card target title and id",
+          "pass": true,
+          "actual": {
+            "title": "Midterm Test",
+            "id": "midterm"
+          },
+          "expected": {
+            "title": "Midterm Test",
+            "id": "midterm"
+          }
+        },
+        {
+          "name": "MTH140 midterm: card date/time",
+          "pass": true,
+          "actual": "Fri Oct 23 · 6:30 PM Toronto",
+          "expected": [
+            "Oct 23",
+            "6:30 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "MTH140 midterm: card precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "MTH140 midterm: dock target title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm: dock target state",
+          "pass": true,
+          "actual": "3d 6h",
+          "expected": "3d 6h"
+        },
+        {
+          "name": "MTH140 midterm: hero target title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm: hero target state",
+          "pass": true,
+          "actual": "3d 6h",
+          "expected": "3d 6h"
+        },
+        {
+          "name": "MTH140 midterm: card timer matches target",
+          "pass": true,
+          "actual": {
+            "title": "Midterm Test",
+            "id": "midterm",
+            "when": "Fri Oct 23 · 6:30 PM Toronto",
+            "precision": "exact",
+            "cta": null,
+            "timer": true,
+            "key": "midtermexact1792794600000"
+          },
+          "expected": "timer for 2026-10-23T22:30:00.000Z"
+        },
+        {
+          "name": "MTH140 midterm: completion changes all course surfaces",
+          "pass": true,
+          "actual": {
+            "kind": "course",
+            "target": {
+              "course": "mth140",
+              "id": "quiz-3",
+              "title": "Lab Quiz 3",
+              "kind": "quiz",
+              "open": "assessment-quiz-3",
+              "precision": "exact",
+              "at": 1794517200000,
+              "end": 1794524400000,
+              "when": "Thu Nov 12 · 4:00 PM · VIC106",
+              "label": "Your lab quiz starts",
+              "note": "Quiz day follows your section’s lab timetable. Check D2L for changes."
+            },
+            "card": {
+              "title": "Lab Quiz 3",
+              "id": "quiz-3",
+              "when": "Thu Nov 12 · 4:00 PM · VIC106",
+              "precision": "exact",
+              "cta": null,
+              "timer": true,
+              "key": "quiz-3exact1794517200000"
+            },
+            "dock": {
+              "title": "Lab Quiz 3",
+              "chip": "23d 4h"
+            },
+            "hero": {
+              "title": "Lab Quiz 3",
+              "chip": "23d 4h"
+            }
+          },
+          "expected": "next eligible target on card, dock, hero"
+        },
+        {
+          "name": "MTH140 midterm Undo: resolved target",
+          "pass": true,
+          "actual": {
+            "course": "mth140",
+            "id": "midterm",
+            "title": "Midterm Test",
+            "kind": "midterm",
+            "open": "assessment-midterm",
+            "precision": "exact",
+            "at": 1792794600000,
+            "end": 1792801800000,
+            "when": "Fri Oct 23 · 6:30 PM Toronto",
+            "label": "Test starts"
+          },
+          "expected": {
+            "id": "midterm",
+            "title": "Midterm Test",
+            "precision": "exact",
+            "at": 1792794600000
+          }
+        },
+        {
+          "name": "MTH140 midterm Undo: card target title and id",
+          "pass": true,
+          "actual": {
+            "title": "Midterm Test",
+            "id": "midterm"
+          },
+          "expected": {
+            "title": "Midterm Test",
+            "id": "midterm"
+          }
+        },
+        {
+          "name": "MTH140 midterm Undo: card date/time",
+          "pass": true,
+          "actual": "Fri Oct 23 · 6:30 PM Toronto",
+          "expected": [
+            "Oct 23",
+            "6:30 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "MTH140 midterm Undo: card precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "MTH140 midterm Undo: dock target title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm Undo: dock target state",
+          "pass": true,
+          "actual": "3d 6h",
+          "expected": "3d 6h"
+        },
+        {
+          "name": "MTH140 midterm Undo: hero target title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm Undo: hero target state",
+          "pass": true,
+          "actual": "3d 6h",
+          "expected": "3d 6h"
+        },
+        {
+          "name": "MTH140 midterm Undo: card timer matches target",
+          "pass": true,
+          "actual": {
+            "title": "Midterm Test",
+            "id": "midterm",
+            "when": "Fri Oct 23 · 6:30 PM Toronto",
+            "precision": "exact",
+            "cta": null,
+            "timer": true,
+            "key": "midtermexact1792794600000"
+          },
+          "expected": "timer for 2026-10-23T22:30:00.000Z"
+        },
+        {
+          "name": "MTH140 midterm Desk Undo: Desk overall title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm Desk Undo: Desk overall date/time",
+          "pass": true,
+          "actual": "Fri Oct 23 · 6:30 PM Toronto",
+          "expected": [
+            "Oct 23",
+            "6:30 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "MTH140 midterm Desk Undo: Desk overall precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "MTH140 midterm Desk Undo: Desk course title",
+          "pass": true,
+          "actual": "Midterm Test",
+          "expected": "Midterm Test"
+        },
+        {
+          "name": "MTH140 midterm Desk Undo: Desk course date/time",
+          "pass": true,
+          "actual": "Fri Oct 23 · 6:30 PM Toronto",
+          "expected": [
+            "Oct 23",
+            "6:30 PM",
+            "Toronto"
+          ]
+        },
+        {
+          "name": "MTH140 midterm Desk Undo: Desk course precision",
+          "pass": true,
+          "actual": "exact",
+          "expected": "exact"
+        },
+        {
+          "name": "MTH140 midterm Desk Undo: Desk countdown",
+          "pass": true,
+          "actual": "3d 6h left",
+          "expected": "3d 6h left"
+        },
+        {
+          "name": "MTH140 midterm: execution",
+          "pass": false,
+          "actual": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-course-link=\"mth140\"]')\u001b[22m\n\u001b[2m    - locator resolved to <a class=\"course-link\" data-course-link=\"mth140\" href=\"http://127.0.0.1:42001/tmu-course-guides/mth140/\">…</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\n    at navigate (/workspace/tmu-course-guides/tools/qa/checks.mjs:207:55)\n    at /workspace/tmu-course-guides/tools/qa/checks.mjs:465:13\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks.mjs:102:5)\n    at async Object.deadlines (/workspace/tmu-course-guides/tools/qa/checks.mjs:444:34)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+          "expected": "case completes"
+        },
+        {
+          "name": "MTH140 midterm: consoleErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "MTH140 midterm: pageErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "MTH140 midterm: failedRequests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "MTH140 midterm: httpErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Quiz week without section: Desk overall title",
+          "pass": true,
+          "actual": "Lab Quiz 2",
+          "expected": "Lab Quiz 2"
+        },
+        {
+          "name": "Quiz week without section: Desk overall date/time",
+          "pass": true,
+          "actual": "Oct 12–Oct 16 · during your assigned lab",
+          "expected": [
+            "Oct 12",
+            "Oct 16"
+          ]
+        },
+        {
+          "name": "Quiz week without section: Desk overall precision",
+          "pass": true,
+          "actual": "week",
+          "expected": "week"
+        },
+        {
+          "name": "Quiz week without section: Desk course title",
+          "pass": true,
+          "actual": "Lab Quiz 2",
+          "expected": "Lab Quiz 2"
+        },
+        {
+          "name": "Quiz week without section: Desk course date/time",
+          "pass": true,
+          "actual": "Oct 12–Oct 16 · during your assigned lab",
+          "expected": [
+            "Oct 12",
+            "Oct 16"
+          ]
+        },
+        {
+          "name": "Quiz week without section: Desk course precision",
+          "pass": true,
+          "actual": "week",
+          "expected": "week"
+        },
+        {
+          "name": "Quiz week without section: Desk section CTA",
+          "pass": true,
+          "actual": "Choose section for quiz date",
+          "expected": "Choose section for quiz date"
+        },
+        {
+          "name": "Quiz week without section: no Desk timer for quiz week",
+          "pass": true,
+          "actual": false,
+          "expected": false
+        },
+        {
+          "name": "Quiz week without section: resolved target",
+          "pass": true,
+          "actual": {
+            "course": "mth140",
+            "id": "quiz-2",
+            "title": "Lab Quiz 2",
+            "kind": "quiz",
+            "open": "assessment-quiz-2",
+            "precision": "week",
+            "week": "2026-10-12",
+            "weekEnd": "2026-10-16",
+            "range": "Oct 12–16",
+            "when": "Oct 12–Oct 16 · during your assigned lab",
+            "label": "Quiz week",
+            "cta": "Choose section for quiz date"
+          },
+          "expected": {
+            "id": "quiz-2",
+            "title": "Lab Quiz 2",
+            "precision": "week"
+          }
+        },
+        {
+          "name": "Quiz week without section: card target title and id",
+          "pass": true,
+          "actual": {
+            "title": "Lab Quiz 2",
+            "id": "quiz-2"
+          },
+          "expected": {
+            "title": "Lab Quiz 2",
+            "id": "quiz-2"
+          }
+        },
+        {
+          "name": "Quiz week without section: card date/time",
+          "pass": true,
+          "actual": "Oct 12–Oct 16 · during your assigned lab",
+          "expected": [
+            "Oct 12",
+            "Oct 16"
+          ]
+        },
+        {
+          "name": "Quiz week without section: card precision",
+          "pass": true,
+          "actual": "week",
+          "expected": "week"
+        },
+        {
+          "name": "Quiz week without section: dock target title",
+          "pass": true,
+          "actual": "Lab Quiz 2",
+          "expected": "Lab Quiz 2"
+        },
+        {
+          "name": "Quiz week without section: dock target state",
+          "pass": true,
+          "actual": "Quiz week",
+          "expected": "Quiz week"
+        },
+        {
+          "name": "Quiz week without section: hero target title",
+          "pass": true,
+          "actual": "Lab Quiz 2",
+          "expected": "Lab Quiz 2"
+        },
+        {
+          "name": "Quiz week without section: hero target state",
+          "pass": true,
+          "actual": "Quiz week",
+          "expected": "Quiz week"
+        },
+        {
+          "name": "Quiz week without section: course section CTA",
+          "pass": true,
+          "actual": "Choose section for quiz date",
+          "expected": "Choose section for quiz date"
+        },
+        {
+          "name": "Quiz week without section: no timer for quiz week",
+          "pass": true,
+          "actual": false,
+          "expected": false
+        },
+        {
+          "name": "Quiz week without section: consoleErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Quiz week without section: pageErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Quiz week without section: failedRequests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "Quiz week without section: httpErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "observations": {
+        "cases": [
+          {
+            "name": "CEN Academic Integrity",
+            "physicalClickTimeoutMs": 30000,
+            "clockedCompletionPolicy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "clockedCompletionActions": [
+              {
+                "selector": "[data-quick-complete]",
+                "method": "evaluate-click",
+                "first": true,
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "timeoutMs": 30000,
+                "nativeCall": {
+                  "method": "Locator.first().evaluate",
+                  "argument": "undefined",
+                  "options": {
+                    "timeout": 30000
+                  }
+                },
+                "status": "activated",
+                "beforeDiagnosticStartedAt": 1791965647593,
+                "beforeSnapshot": {
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+                  "route": "cen100",
+                  "completedRoute": "cen100",
+                  "selector": "[data-quick-complete]",
+                  "count": 1,
+                  "first": {
+                    "tag": "BUTTON",
+                    "id": "",
+                    "completion": "integrity",
+                    "isConnected": true,
+                    "disabled": false,
+                    "rectCount": 1
+                  }
+                },
+                "beforeDiagnosticCompletedAt": 1791965647598,
+                "beforeDiagnosticElapsedMs": 5,
+                "startedAt": 1791965647598,
+                "completedAt": 1791965648835,
+                "elapsedMs": 1237
+              },
+              {
+                "selector": "#undo-complete",
+                "method": "evaluate-click",
+                "first": true,
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "timeoutMs": 30000,
+                "nativeCall": {
+                  "method": "Locator.first().evaluate",
+                  "argument": "undefined",
+                  "options": {
+                    "timeout": 30000
+                  }
+                },
+                "status": "activated",
+                "beforeDiagnosticStartedAt": 1791965648876,
+                "beforeSnapshot": {
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+                  "route": "cen100",
+                  "completedRoute": "cen100",
+                  "selector": "#undo-complete",
+                  "count": 1,
+                  "first": {
+                    "tag": "BUTTON",
+                    "id": "undo-complete",
+                    "completion": null,
+                    "isConnected": true,
+                    "disabled": false,
+                    "rectCount": 1
+                  }
+                },
+                "beforeDiagnosticCompletedAt": 1791965648894,
+                "beforeDiagnosticElapsedMs": 18,
+                "startedAt": 1791965648894,
+                "completedAt": 1791965651120,
+                "elapsedMs": 2226
+              }
+            ],
+            "telemetry": {
+              "consoleErrors": [],
+              "pageErrors": [],
+              "failedRequests": [],
+              "httpErrors": []
+            },
+            "navigationDiagnostics": {
+              "documentRequests": [
+                {
+                  "time": 1791965636727,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off",
+                  "method": "GET"
+                }
+              ],
+              "frameNavigations": [
+                {
+                  "time": 1791965636760,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                },
+                {
+                  "time": 1791965637495,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                },
+                {
+                  "time": 1791965638338,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                },
+                {
+                  "time": 1791965638474,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965651841,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965652168,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965653155,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965653226,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965661262,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965661966,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965662166,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965662183,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                }
+              ],
+              "pageEvents": [
+                {
+                  "time": 1791965636760,
+                  "type": "Page.frameNavigated",
+                  "frameId": "5630411AD97ED2FCC3C5B69422DE4FD4",
+                  "loaderId": "947EAFAEAB9195D9EC1991B4226D8582",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                },
+                {
+                  "time": 1791965637510,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "5630411AD97ED2FCC3C5B69422DE4FD4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                },
+                {
+                  "time": 1791965638338,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "5630411AD97ED2FCC3C5B69422DE4FD4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                },
+                {
+                  "time": 1791965638475,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "5630411AD97ED2FCC3C5B69422DE4FD4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965651841,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "5630411AD97ED2FCC3C5B69422DE4FD4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965652168,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "5630411AD97ED2FCC3C5B69422DE4FD4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965653155,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "5630411AD97ED2FCC3C5B69422DE4FD4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965653226,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "5630411AD97ED2FCC3C5B69422DE4FD4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965661262,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "5630411AD97ED2FCC3C5B69422DE4FD4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965661966,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "5630411AD97ED2FCC3C5B69422DE4FD4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                }
+              ],
+              "finalState": {
+                "url": "http://127.0.0.1:42001/tmu-course-guides/",
+                "shell": "9c1aaa87-ea2b-4281-8055-5c884a3a733e",
+                "route": "desk",
+                "completedRoute": "desk",
+                "body": {
+                  "page": "desk"
+                },
+                "content": 1358,
+                "deadline": "CEN100EngineeringAcademic Integrity Quiz01days01hrs59minDueWed Oct 14 · 3:00 PM TorontoView in CEN100→",
+                "focus": {
+                  "tag": "MAIN",
+                  "id": "desk-main",
+                  "inside": true
+                },
+                "wrapper": {
+                  "opacity": "1",
+                  "filter": "none",
+                  "transform": "none"
+                },
+                "events": {
+                  "routes": [
+                    {
+                      "time": 1534,
+                      "route": "desk",
+                      "from": null,
+                      "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off",
+                      "shell": "9c1aaa87-ea2b-4281-8055-5c884a3a733e"
+                    },
+                    {
+                      "time": 3449,
+                      "route": "cen100",
+                      "from": "desk",
+                      "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+                      "shell": "9c1aaa87-ea2b-4281-8055-5c884a3a733e"
+                    },
+                    {
+                      "time": 16116,
+                      "route": "desk",
+                      "from": "cen100",
+                      "url": "http://127.0.0.1:42001/tmu-course-guides/",
+                      "shell": "9c1aaa87-ea2b-4281-8055-5c884a3a733e"
+                    },
+                    {
+                      "time": 17667,
+                      "route": "cen100",
+                      "from": "desk",
+                      "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+                      "shell": "9c1aaa87-ea2b-4281-8055-5c884a3a733e"
+                    },
+                    {
+                      "time": 25937,
+                      "route": "desk",
+                      "from": "cen100",
+                      "url": "http://127.0.0.1:42001/tmu-course-guides/",
+                      "shell": "9c1aaa87-ea2b-4281-8055-5c884a3a733e"
+                    }
+                  ],
+                  "clicks": [
+                    {
+                      "time": 2224,
+                      "tag": "A",
+                      "id": "",
+                      "route": "cen100",
+                      "href": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+                      "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off",
+                      "defaultPrevented": true,
+                      "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                    },
+                    {
+                      "time": 11579,
+                      "tag": "BUTTON",
+                      "id": "",
+                      "completion": "integrity",
+                      "href": null,
+                      "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+                      "defaultPrevented": false,
+                      "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                    },
+                    {
+                      "time": 12850,
+                      "tag": "BUTTON",
+                      "id": "undo-complete",
+                      "href": null,
+                      "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+                      "defaultPrevented": false,
+                      "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                    },
+                    {
+                      "time": 15712,
+                      "tag": "A",
+                      "id": "",
+                      "route": "desk",
+                      "href": "http://127.0.0.1:42001/tmu-course-guides/",
+                      "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+                      "defaultPrevented": true,
+                      "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                    },
+                    {
+                      "time": 17032,
+                      "tag": "A",
+                      "id": "",
+                      "route": "cen100",
+                      "href": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+                      "url": "http://127.0.0.1:42001/tmu-course-guides/",
+                      "defaultPrevented": true,
+                      "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/"
+                    },
+                    {
+                      "time": 25134,
+                      "tag": "A",
+                      "id": "",
+                      "route": "desk",
+                      "href": "http://127.0.0.1:42001/tmu-course-guides/",
+                      "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/",
+                      "defaultPrevented": true,
+                      "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                    }
+                  ]
+                }
+              }
+            },
+            "fixedClock": {
+              "requested": "2026-10-13T16:00:00.000Z",
+              "actual": "2026-10-13T16:00:01.109Z",
+              "timezone": "America/Toronto"
+            },
+            "desk": {
+              "kind": "desk",
+              "overall": {
+                "title": "Academic Integrity Quiz",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "timer": true,
+                "precision": "exact",
+                "course": "cen100"
+              },
+              "course": {
+                "title": "Academic Integrity Quiz",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "chip": "1d 2h left",
+                "cta": null,
+                "precision": "exact"
+              }
+            },
+            "course": {
+              "kind": "course",
+              "target": {
+                "course": "cen100",
+                "id": "integrity",
+                "title": "Academic Integrity Quiz",
+                "kind": "assignment",
+                "open": "y4",
+                "precision": "exact",
+                "at": 1792004400000,
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "label": "Due"
+              },
+              "card": {
+                "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+                "id": "integrity",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "precision": "exact",
+                "cta": null,
+                "timer": true,
+                "key": "integrityexact1792004400000"
+              },
+              "dock": {
+                "title": "Academic Integrity Quiz",
+                "chip": "1d 2h"
+              },
+              "hero": {
+                "title": "Academic Integrity Quiz",
+                "chip": "1d 2h"
+              }
+            },
+            "afterDone": {
+              "kind": "course",
+              "target": {
+                "course": "cen100",
+                "id": "whmis",
+                "title": "WHMIS certification",
+                "kind": "assignment",
+                "open": "y3",
+                "precision": "exact",
+                "endOfDay": true,
+                "at": 1792036800000,
+                "when": "Wed Oct 14 · by 11:59 PM Toronto",
+                "label": "Due by end of day"
+              },
+              "card": {
+                "title": "WHMIS certification due",
+                "id": "whmis",
+                "when": "Wed Oct 14 · by 11:59 PM Toronto",
+                "precision": "exact",
+                "cta": null,
+                "timer": true,
+                "key": "whmisexact1792036800000"
+              },
+              "dock": {
+                "title": "WHMIS certification",
+                "chip": "1d 11h"
+              },
+              "hero": {
+                "title": "WHMIS certification",
+                "chip": "1d 11h"
+              }
+            },
+            "afterUndo": {
+              "kind": "course",
+              "target": {
+                "course": "cen100",
+                "id": "integrity",
+                "title": "Academic Integrity Quiz",
+                "kind": "assignment",
+                "open": "y4",
+                "precision": "exact",
+                "at": 1792004400000,
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "label": "Due"
+              },
+              "card": {
+                "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+                "id": "integrity",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "precision": "exact",
+                "cta": null,
+                "timer": true,
+                "key": "integrityexact1792004400000"
+              },
+              "dock": {
+                "title": "Academic Integrity Quiz",
+                "chip": "1d 2h"
+              },
+              "hero": {
+                "title": "Academic Integrity Quiz",
+                "chip": "1d 2h"
+              }
+            },
+            "deskAfterUndo": {
+              "kind": "desk",
+              "overall": {
+                "title": "Academic Integrity Quiz",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "timer": true,
+                "precision": "exact",
+                "course": "cen100"
+              },
+              "course": {
+                "title": "Academic Integrity Quiz",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "chip": "1d 2h left",
+                "cta": null,
+                "precision": "exact"
+              }
+            },
+            "afterResume": {
+              "kind": "course",
+              "target": {
+                "course": "cen100",
+                "id": "integrity",
+                "title": "Academic Integrity Quiz",
+                "kind": "assignment",
+                "open": "y4",
+                "precision": "exact",
+                "at": 1792004400000,
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "label": "Due"
+              },
+              "card": {
+                "title": "Academic Integrity Quiz due, 3:00 PM Toronto time",
+                "id": "integrity",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "precision": "exact",
+                "cta": null,
+                "timer": true,
+                "key": "integrityexact1792004400000"
+              },
+              "dock": {
+                "title": "Academic Integrity Quiz",
+                "chip": "1d 1h"
+              },
+              "hero": {
+                "title": "Academic Integrity Quiz",
+                "chip": "1d 1h"
+              }
+            },
+            "visibilityMethod": "Synthetic visibilitychange with document.hidden getter: verifies resume handler and real-clock jump, not browser background throttling.",
+            "deskAfterResume": {
+              "kind": "desk",
+              "overall": {
+                "title": "Academic Integrity Quiz",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "timer": true,
+                "precision": "exact",
+                "course": "cen100"
+              },
+              "course": {
+                "title": "Academic Integrity Quiz",
+                "when": "Wed Oct 14 · 3:00 PM Toronto",
+                "chip": "1d 1h left",
+                "cta": null,
+                "precision": "exact"
+              }
+            }
+          },
+          {
+            "name": "MTH140 midterm",
+            "physicalClickTimeoutMs": 30000,
+            "clockedCompletionPolicy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "clockedCompletionActions": [
+              {
+                "selector": "[data-quick-complete]",
+                "method": "evaluate-click",
+                "first": true,
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "timeoutMs": 30000,
+                "nativeCall": {
+                  "method": "Locator.first().evaluate",
+                  "argument": "undefined",
+                  "options": {
+                    "timeout": 30000
+                  }
+                },
+                "status": "activated",
+                "beforeDiagnosticStartedAt": 1791965669758,
+                "beforeSnapshotError": "Clocked completion snapshot exceeded 5000 ms",
+                "beforeDiagnosticCompletedAt": 1791965674760,
+                "beforeDiagnosticElapsedMs": 5002,
+                "startedAt": 1791965674760,
+                "completedAt": 1791965679350,
+                "elapsedMs": 4590
+              },
+              {
+                "selector": "#undo-complete",
+                "method": "evaluate-click",
+                "first": true,
+                "policy": {
+                  "browserName": "chromium",
+                  "gpu": false,
+                  "timeoutMs": 30000
+                },
+                "timeoutMs": 30000,
+                "nativeCall": {
+                  "method": "Locator.first().evaluate",
+                  "argument": "undefined",
+                  "options": {
+                    "timeout": 30000
+                  }
+                },
+                "status": "activated",
+                "beforeDiagnosticStartedAt": 1791965679397,
+                "beforeSnapshot": {
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                  "route": "mth140",
+                  "completedRoute": "mth140",
+                  "selector": "#undo-complete",
+                  "count": 1,
+                  "first": {
+                    "tag": "BUTTON",
+                    "id": "undo-complete",
+                    "completion": null,
+                    "isConnected": true,
+                    "disabled": false,
+                    "rectCount": 1
+                  }
+                },
+                "beforeDiagnosticCompletedAt": 1791965679552,
+                "beforeDiagnosticElapsedMs": 155,
+                "startedAt": 1791965679552,
+                "completedAt": 1791965679882,
+                "elapsedMs": 330
+              }
+            ],
+            "telemetry": {
+              "consoleErrors": [],
+              "pageErrors": [],
+              "failedRequests": [],
+              "httpErrors": []
+            },
+            "navigationDiagnostics": {
+              "documentRequests": [
+                {
+                  "time": 1791965663184,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off",
+                  "method": "GET"
+                }
+              ],
+              "frameNavigations": [
+                {
+                  "time": 1791965663221,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                },
+                {
+                  "time": 1791965663965,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                },
+                {
+                  "time": 1791965664680,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                },
+                {
+                  "time": 1791965664935,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965682159,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965682438,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965713483,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                }
+              ],
+              "pageEvents": [
+                {
+                  "time": 1791965663221,
+                  "type": "Page.frameNavigated",
+                  "frameId": "E45AA421F576A362B672A2D61CA65D78",
+                  "loaderId": "8CD563F00A6370F43B7258A5F3B9A3FC",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                },
+                {
+                  "time": 1791965663974,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "E45AA421F576A362B672A2D61CA65D78",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                },
+                {
+                  "time": 1791965664680,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "E45AA421F576A362B672A2D61CA65D78",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                },
+                {
+                  "time": 1791965664935,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "E45AA421F576A362B672A2D61CA65D78",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965682165,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "E45AA421F576A362B672A2D61CA65D78",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965682439,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "E45AA421F576A362B672A2D61CA65D78",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                }
+              ],
+              "failure": {
+                "time": 1791965712770,
+                "pageURL": "http://127.0.0.1:42001/tmu-course-guides/",
+                "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-course-link=\"mth140\"]')\u001b[22m\n\u001b[2m    - locator resolved to <a class=\"course-link\" data-course-link=\"mth140\" href=\"http://127.0.0.1:42001/tmu-course-guides/mth140/\">…</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n",
+                "state": {
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/",
+                  "shell": "9651f0f4-54a2-454e-a6a0-370fc3665f8b",
+                  "route": "desk",
+                  "completedRoute": "desk",
+                  "body": {
+                    "page": "desk"
+                  },
+                  "content": 1364,
+                  "deadline": "MTH140Calculus IMidterm Test03days06hrs29minTest startsFri Oct 23 · 6:30 PM TorontoView in MTH140→",
+                  "focus": {
+                    "tag": "MAIN",
+                    "id": "desk-main",
+                    "inside": true
+                  },
+                  "wrapper": {
+                    "opacity": "1",
+                    "filter": "none",
+                    "transform": "none"
+                  },
+                  "events": {
+                    "routes": [
+                      {
+                        "time": 1539,
+                        "route": "desk",
+                        "from": null,
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off",
+                        "shell": "9651f0f4-54a2-454e-a6a0-370fc3665f8b"
+                      },
+                      {
+                        "time": 3852,
+                        "route": "mth140",
+                        "from": "desk",
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                        "shell": "9651f0f4-54a2-454e-a6a0-370fc3665f8b"
+                      },
+                      {
+                        "time": 19988,
+                        "route": "desk",
+                        "from": "mth140",
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/",
+                        "shell": "9651f0f4-54a2-454e-a6a0-370fc3665f8b"
+                      }
+                    ],
+                    "clicks": [
+                      {
+                        "time": 2108,
+                        "tag": "A",
+                        "id": "",
+                        "route": "mth140",
+                        "href": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                      },
+                      {
+                        "time": 3223,
+                        "tag": "BUTTON",
+                        "id": "tab-assessments",
+                        "href": null,
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                      },
+                      {
+                        "time": 16524,
+                        "tag": "BUTTON",
+                        "id": "",
+                        "completion": "midterm",
+                        "href": null,
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                      },
+                      {
+                        "time": 17059,
+                        "tag": "BUTTON",
+                        "id": "undo-complete",
+                        "href": null,
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                      },
+                      {
+                        "time": 19569,
+                        "tag": "A",
+                        "id": "",
+                        "route": "desk",
+                        "href": "http://127.0.0.1:42001/tmu-course-guides/",
+                        "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "fixedClock": {
+              "requested": "2026-10-20T16:00:00.000Z",
+              "actual": "2026-10-20T16:00:01.149Z",
+              "timezone": "America/Toronto"
+            },
+            "desk": {
+              "kind": "desk",
+              "overall": {
+                "title": "Midterm Test",
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "timer": true,
+                "precision": "exact",
+                "course": "mth140"
+              },
+              "course": {
+                "title": "Midterm Test",
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "chip": "3d 6h left",
+                "cta": null,
+                "precision": "exact"
+              }
+            },
+            "course": {
+              "kind": "course",
+              "target": {
+                "course": "mth140",
+                "id": "midterm",
+                "title": "Midterm Test",
+                "kind": "midterm",
+                "open": "assessment-midterm",
+                "precision": "exact",
+                "at": 1792794600000,
+                "end": 1792801800000,
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "label": "Test starts"
+              },
+              "card": {
+                "title": "Midterm Test",
+                "id": "midterm",
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "precision": "exact",
+                "cta": null,
+                "timer": true,
+                "key": "midtermexact1792794600000"
+              },
+              "dock": {
+                "title": "Midterm Test",
+                "chip": "3d 6h"
+              },
+              "hero": {
+                "title": "Midterm Test",
+                "chip": "3d 6h"
+              }
+            },
+            "afterDone": {
+              "kind": "course",
+              "target": {
+                "course": "mth140",
+                "id": "quiz-3",
+                "title": "Lab Quiz 3",
+                "kind": "quiz",
+                "open": "assessment-quiz-3",
+                "precision": "exact",
+                "at": 1794517200000,
+                "end": 1794524400000,
+                "when": "Thu Nov 12 · 4:00 PM · VIC106",
+                "label": "Your lab quiz starts",
+                "note": "Quiz day follows your section’s lab timetable. Check D2L for changes."
+              },
+              "card": {
+                "title": "Lab Quiz 3",
+                "id": "quiz-3",
+                "when": "Thu Nov 12 · 4:00 PM · VIC106",
+                "precision": "exact",
+                "cta": null,
+                "timer": true,
+                "key": "quiz-3exact1794517200000"
+              },
+              "dock": {
+                "title": "Lab Quiz 3",
+                "chip": "23d 4h"
+              },
+              "hero": {
+                "title": "Lab Quiz 3",
+                "chip": "23d 4h"
+              }
+            },
+            "afterUndo": {
+              "kind": "course",
+              "target": {
+                "course": "mth140",
+                "id": "midterm",
+                "title": "Midterm Test",
+                "kind": "midterm",
+                "open": "assessment-midterm",
+                "precision": "exact",
+                "at": 1792794600000,
+                "end": 1792801800000,
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "label": "Test starts"
+              },
+              "card": {
+                "title": "Midterm Test",
+                "id": "midterm",
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "precision": "exact",
+                "cta": null,
+                "timer": true,
+                "key": "midtermexact1792794600000"
+              },
+              "dock": {
+                "title": "Midterm Test",
+                "chip": "3d 6h"
+              },
+              "hero": {
+                "title": "Midterm Test",
+                "chip": "3d 6h"
+              }
+            },
+            "deskAfterUndo": {
+              "kind": "desk",
+              "overall": {
+                "title": "Midterm Test",
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "timer": true,
+                "precision": "exact",
+                "course": "mth140"
+              },
+              "course": {
+                "title": "Midterm Test",
+                "when": "Fri Oct 23 · 6:30 PM Toronto",
+                "chip": "3d 6h left",
+                "cta": null,
+                "precision": "exact"
+              }
+            }
+          },
+          {
+            "name": "Quiz week without section",
+            "physicalClickTimeoutMs": 30000,
+            "clockedCompletionPolicy": {
+              "browserName": "chromium",
+              "gpu": false,
+              "timeoutMs": 30000
+            },
+            "clockedCompletionActions": [],
+            "telemetry": {
+              "consoleErrors": [],
+              "pageErrors": [],
+              "failedRequests": [],
+              "httpErrors": []
+            },
+            "navigationDiagnostics": {
+              "documentRequests": [
+                {
+                  "time": 1791965720013,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off",
+                  "method": "GET"
+                }
+              ],
+              "frameNavigations": [
+                {
+                  "time": 1791965720228,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                },
+                {
+                  "time": 1791965723906,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                },
+                {
+                  "time": 1791965728171,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                },
+                {
+                  "time": 1791965728642,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965748650,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                }
+              ],
+              "pageEvents": [
+                {
+                  "time": 1791965720234,
+                  "type": "Page.frameNavigated",
+                  "frameId": "4CF7908D39FA047D19D834158635FC84",
+                  "loaderId": "104C5916CAEDAF81AD9A32682D0F0543",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                },
+                {
+                  "time": 1791965723950,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "4CF7908D39FA047D19D834158635FC84",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                },
+                {
+                  "time": 1791965728171,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "4CF7908D39FA047D19D834158635FC84",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                },
+                {
+                  "time": 1791965728643,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "4CF7908D39FA047D19D834158635FC84",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                }
+              ],
+              "finalState": {
+                "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                "shell": "e590c86f-1450-45d3-bc2d-842588a53942",
+                "route": "mth140",
+                "completedRoute": "mth140",
+                "body": {
+                  "course": "mth140"
+                },
+                "content": 29805,
+                "deadline": "Oct 12–16Quiz weekOct 12–Oct 16 · during your assigned labChoose section for quiz dateLab Quiz 2: Quiz week. Oct 12–Oct 16 · during your assigned lab.",
+                "focus": {
+                  "tag": "H1",
+                  "id": "course-title",
+                  "inside": true
+                },
+                "wrapper": {
+                  "opacity": "1",
+                  "filter": "none",
+                  "transform": "none"
+                },
+                "events": {
+                  "routes": [
+                    {
+                      "time": 6519,
+                      "route": "desk",
+                      "from": null,
+                      "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off",
+                      "shell": "e590c86f-1450-45d3-bc2d-842588a53942"
+                    },
+                    {
+                      "time": 12874,
+                      "route": "mth140",
+                      "from": "desk",
+                      "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                      "shell": "e590c86f-1450-45d3-bc2d-842588a53942"
+                    }
+                  ],
+                  "clicks": [
+                    {
+                      "time": 10988,
+                      "tag": "A",
+                      "id": "",
+                      "route": "mth140",
+                      "href": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                      "url": "http://127.0.0.1:42001/tmu-course-guides/?motion=off",
+                      "defaultPrevented": true,
+                      "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/?motion=off"
+                    },
+                    {
+                      "time": 12439,
+                      "tag": "BUTTON",
+                      "id": "tab-assessments",
+                      "href": null,
+                      "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                      "defaultPrevented": false,
+                      "urlAfterDispatch": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                    }
+                  ]
+                }
+              }
+            },
+            "fixedClock": {
+              "requested": "2026-10-13T16:00:00.000Z",
+              "actual": "2026-10-13T16:00:04.526Z",
+              "timezone": "America/Toronto"
+            },
+            "desk": {
+              "kind": "desk",
+              "overall": {
+                "title": "Lab Quiz 2",
+                "when": "Oct 12–Oct 16 · during your assigned lab",
+                "timer": false,
+                "precision": "week",
+                "course": "mth140"
+              },
+              "course": {
+                "title": "Lab Quiz 2",
+                "when": "Oct 12–Oct 16 · during your assigned lab",
+                "chip": "Quiz week",
+                "cta": "Choose section for quiz date",
+                "precision": "week"
+              }
+            },
+            "course": {
+              "kind": "course",
+              "target": {
+                "course": "mth140",
+                "id": "quiz-2",
+                "title": "Lab Quiz 2",
+                "kind": "quiz",
+                "open": "assessment-quiz-2",
+                "precision": "week",
+                "week": "2026-10-12",
+                "weekEnd": "2026-10-16",
+                "range": "Oct 12–16",
+                "when": "Oct 12–Oct 16 · during your assigned lab",
+                "label": "Quiz week",
+                "cta": "Choose section for quiz date"
+              },
+              "card": {
+                "title": "Lab Quiz 2",
+                "id": "quiz-2",
+                "when": "Oct 12–Oct 16 · during your assigned lab",
+                "precision": "week",
+                "cta": "Choose section for quiz date",
+                "timer": false,
+                "key": "quiz-2week"
+              },
+              "dock": {
+                "title": "Lab Quiz 2",
+                "chip": "Quiz week"
+              },
+              "hero": {
+                "title": "Lab Quiz 2",
+                "chip": "Quiz week"
+              }
+            }
+          }
+        ],
+        "runnerErrors": []
+      },
+      "skipped": [],
+      "durationMs": 112817,
+      "failures": 1
+    }
+  ],
+  "runErrors": []
+}

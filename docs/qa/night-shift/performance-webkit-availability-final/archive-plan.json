@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "preparedAt": "2026-10-14T10:45:22.615887Z",
+  "status": "exact-webkit-unavailability-copy-plan-not-applied",
+  "archiveDestination": "docs/qa/night-shift/performance-webkit-availability-final",
+  "files": [
+    {
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T10-37-27-406Z-172681/summary.json",
+      "destination": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-webkit-availability-final/raw/summary.json",
+      "destinationRelative": "docs/qa/night-shift/performance-webkit-availability-final/raw/summary.json",
+      "sha256": "26ab43f612391f2659ba1423fd407d567ba2d802eb56a95690adce89fe9ad80e",
+      "bytes": 4397,
+      "destinationMustNotExist": true,
+      "copyMode": "exact bytes; preserve raw skips/errors/paths/source/driver/CLI/closure"
+    },
+    {
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T10-37-27-406Z-172681/summary.md",
+      "destination": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-webkit-availability-final/raw/summary.md",
+      "destinationRelative": "docs/qa/night-shift/performance-webkit-availability-final/raw/summary.md",
+      "sha256": "fad9c3ec813a43112d34b30a2fae250d0b042a91ece631cc432c1c35609fb265",
+      "bytes": 684,
+      "destinationMustNotExist": true,
+      "copyMode": "exact bytes; preserve raw skips/errors/paths/source/driver/CLI/closure"
+    },
+    {
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T10-37-27-406Z-172681/webkit.json",
+      "destination": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-webkit-availability-final/raw/webkit.json",
+      "destinationRelative": "docs/qa/night-shift/performance-webkit-availability-final/raw/webkit.json",
+      "sha256": "5acf5272f5c1e937d49777e45f4fe8e9f52225f11e99e10c5d26d9fb587b1039",
+      "bytes": 3994,
+      "destinationMustNotExist": true,
+      "copyMode": "exact bytes; preserve raw skips/errors/paths/source/driver/CLI/closure"
+    },
+    {
+      "source": "/workspace/tmu-course-guides/tools/qa/reports/2026-10-14T10-37-27-406Z-172681/webkit.md",
+      "destination": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-webkit-availability-final/raw/webkit.md",
+      "destinationRelative": "docs/qa/night-shift/performance-webkit-availability-final/raw/webkit.md",
+      "sha256": "cbc34782243e22e69c9dec25606b4d9afb37be35044bd1b751b521be65cb7b28",
+      "bytes": 1979,
+      "destinationMustNotExist": true,
+      "copyMode": "exact bytes; preserve raw skips/errors/paths/source/driver/CLI/closure"
+    },
+    {
+      "source": "/tmp/ns-perf-webkit-source-before.json",
+      "destination": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-source-before.json",
+      "destinationRelative": "docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-source-before.json",
+      "sha256": "0dbf6b1cb2eaf7011cdd5fbfafba6e80128bcf9369023de7009466095d9dbf8e",
+      "bytes": 39387,
+      "destinationMustNotExist": true,
+      "copyMode": "exact bytes; preserve raw skips/errors/paths/source/driver/CLI/closure"
+    },
+    {
+      "source": "/tmp/ns-perf-webkit-source-after.json",
+      "destination": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-source-after.json",
+      "destinationRelative": "docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-source-after.json",
+      "sha256": "9615e5d50000600028f81dbbd3ebfcacad43beac8dbe0b578667256b072045ba",
+      "bytes": 39658,
+      "destinationMustNotExist": true,
+      "copyMode": "exact bytes; preserve raw skips/errors/paths/source/driver/CLI/closure"
+    },
+    {
+      "source": "/tmp/ns-perf-webkit-cli-observation.json",
+      "destination": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-cli-observation.json",
+      "destinationRelative": "docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-cli-observation.json",
+      "sha256": "691710362efab120397d42222622ec4bc1d1cd0cea22c00b749a7b578f63f4a1",
+      "bytes": 327,
+      "destinationMustNotExist": true,
+      "copyMode": "exact bytes; preserve raw skips/errors/paths/source/driver/CLI/closure"
+    },
+    {
+      "source": "/tmp/ns-perf-webkit-resource-closure.json",
+      "destination": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-resource-closure.json",
+      "destinationRelative": "docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-resource-closure.json",
+      "sha256": "a0562d6c0991f92fdb7842ada6453126faff26a0f255aab7d893bfac29395d5a",
+      "bytes": 348,
+      "destinationMustNotExist": true,
+      "copyMode": "exact bytes; preserve raw skips/errors/paths/source/driver/CLI/closure"
+    },
+    {
+      "source": "/tmp/ns-perf-webkit-approved-setup-final.json",
+      "destination": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-approved-setup-final.json",
+      "destinationRelative": "docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-approved-setup-final.json",
+      "sha256": "69569d45fa8b67923a76f146a4f60f5d657b5c0ac9eddfa77cbf65e3621654b8",
+      "bytes": 64044,
+      "destinationMustNotExist": true,
+      "copyMode": "exact bytes; preserve raw skips/errors/paths/source/driver/CLI/closure"
+    },
+    {
+      "source": "/tmp/ns-perf-webkit-approved-setup-final-wpe-ldd.log",
+      "destination": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-approved-setup-final-wpe-ldd.log",
+      "destinationRelative": "docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-approved-setup-final-wpe-ldd.log",
+      "sha256": "379f1a89f9ea237a82f310ca07e358be9343c6dc1561d954d680d6985018de4d",
+      "bytes": 12390,
+      "destinationMustNotExist": true,
+      "copyMode": "exact bytes; preserve raw skips/errors/paths/source/driver/CLI/closure"
+    },
+    {
+      "source": "/tmp/ns-perf-webkit-approved-setup-final-gtk-ldd.log",
+      "destination": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-approved-setup-final-gtk-ldd.log",
+      "destinationRelative": "docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-approved-setup-final-gtk-ldd.log",
+      "sha256": "1d95b0f4d7766a013c4fbf47a95089596c97abe974f80fceced7cb5ab6a3f0f4",
+      "bytes": 14901,
+      "destinationMustNotExist": true,
+      "copyMode": "exact bytes; preserve raw skips/errors/paths/source/driver/CLI/closure"
+    },
+    {
+      "source": "/tmp/ns-perf-webkit-wrapper-baseline-final.json",
+      "destination": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-wrapper-baseline-final.json",
+      "destinationRelative": "docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-wrapper-baseline-final.json",
+      "sha256": "bbe6d2a229a768d7dabb716e6301d7bb5c968ca2511af38b23c1db1efe485c9b",
+      "bytes": 24605,
+      "destinationMustNotExist": true,
+      "copyMode": "exact bytes; preserve raw skips/errors/paths/source/driver/CLI/closure"
+    },
+    {
+      "source": "/tmp/ns-perf-webkit-local-dependencies.json",
+      "destination": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-local-dependencies.json",
+      "destinationRelative": "docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-local-dependencies.json",
+      "sha256": "741decea65ff53f7e47bbc3852f78ba3969cd00900024365d1aca155d9350c00",
+      "bytes": 1304,
+      "destinationMustNotExist": true,
+      "copyMode": "exact bytes; preserve raw skips/errors/paths/source/driver/CLI/closure"
+    },
+    {
+      "source": "/tmp/ns-perf-webkit-availability.json",
+      "destination": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-availability.json",
+      "destinationRelative": "docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-availability.json",
+      "sha256": "06ee1acbe65b3e45dbe692d0332782b97548047d13b4544d3bf9ad37c81db9b2",
+      "bytes": 13805,
+      "destinationMustNotExist": true,
+      "copyMode": "exact bytes; preserve raw skips/errors/paths/source/driver/CLI/closure"
+    },
+    {
+      "source": "/tmp/ns-perf-webkit-link-setup.py",
+      "destination": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-link-setup.py",
+      "destinationRelative": "docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-link-setup.py",
+      "sha256": "5faa843a6fe41ce7fb96e05aecb9a0e00d67c49d64be519d57cf389bdda88ddc",
+      "bytes": 10095,
+      "destinationMustNotExist": true,
+      "copyMode": "exact bytes; preserve raw skips/errors/paths/source/driver/CLI/closure"
+    }
+  ],
+  "rawVerdict": {
+    "status": "unavailable-skipped-both-bases",
+    "actualCLIexit": 0,
+    "rawSummaryStatus": "passed",
+    "executedNativeWebKitAssertions": 0,
+    "skippedRecords": 2,
+    "bases": [
+      "/",
+      "/tmu-course-guides/"
+    ],
+    "actualWebKitVersion": null,
+    "nativeWebKitCoverageEstablished": false,
+    "reason": "Playwright host dependency validation reports missing libGLESv2.so.2; local GTK/WPE ELF setup does not satisfy host ldconfig cache validation. No bypass or system writes were applied.",
+    "rawSummary": {
+      "path": "docs/qa/night-shift/performance-webkit-availability-final/raw/summary.json",
+      "sha256": "26ab43f612391f2659ba1423fd407d567ba2d802eb56a95690adce89fe9ad80e"
+    },
+    "rawCheck": {
+      "path": "docs/qa/night-shift/performance-webkit-availability-final/raw/webkit.json",
+      "sha256": "5acf5272f5c1e937d49777e45f4fe8e9f52225f11e99e10c5d26d9fb587b1039"
+    },
+    "actualCLI": {
+      "path": "docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-cli-observation.json",
+      "sha256": "691710362efab120397d42222622ec4bc1d1cd0cea22c00b749a7b578f63f4a1"
+    },
+    "sourceBefore": {
+      "path": "docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-source-before.json",
+      "sha256": "0dbf6b1cb2eaf7011cdd5fbfafba6e80128bcf9369023de7009466095d9dbf8e"
+    },
+    "sourceAfter": {
+      "path": "docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-source-after.json",
+      "sha256": "9615e5d50000600028f81dbbd3ebfcacad43beac8dbe0b578667256b072045ba"
+    },
+    "closure": {
+      "path": "docs/qa/night-shift/performance-webkit-availability-final/proofs/ns-perf-webkit-resource-closure.json",
+      "sha256": "a0562d6c0991f92fdb7842ada6453126faff26a0f255aab7d893bfac29395d5a"
+    },
+    "rawSkippedRecords": [
+      {
+        "base": "/",
+        "origin": "http://127.0.0.1:46771",
+        "status": "skipped",
+        "assertions": [],
+        "observations": {
+          "cases": [],
+          "runnerErrors": []
+        },
+        "skipped": [
+          {
+            "feature": "Playwright WebKit routes, deadlines and layout",
+            "reason": "WebKit could not launch; install its browser and OS dependencies. browserType.launch: \n\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551 Host system is missing dependencies to run browsers. \u2551\n\u2551 Missing libraries:                                   \u2551\n\u2551     libGLESv2.so.2                                   \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d"
+          }
+        ],
+        "durationMs": 881,
+        "failures": 0
+      },
+      {
+        "base": "/tmu-course-guides/",
+        "origin": "http://127.0.0.1:40355",
+        "status": "skipped",
+        "assertions": [],
+        "observations": {
+          "cases": [],
+          "runnerErrors": []
+        },
+        "skipped": [
+          {
+            "feature": "Playwright WebKit routes, deadlines and layout",
+            "reason": "WebKit could not launch; install its browser and OS dependencies. browserType.launch: \n\u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n\u2551 Host system is missing dependencies to run browsers. \u2551\n\u2551 Missing libraries:                                   \u2551\n\u2551     libGLESv2.so.2                                   \u2551\n\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d"
+          }
+        ],
+        "durationMs": 988,
+        "failures": 0
+      }
+    ],
+    "sourceAndDriverUnchanged": true,
+    "capturedAt": "2026-10-14T10:37:39.880Z"
+  },
+  "noNativeCoverageOrVersionClaim": true,
+  "repositoryMutationPerformed": false
+}

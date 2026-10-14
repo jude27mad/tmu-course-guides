@@ -1,0 +1,31 @@
+export function ordinaryMTH140Scope(record){
+ try{
+  const {base,route,viewport,theme}=record;
+  if(!['/','/tmu-course-guides/'].includes(base)||route!=='mth140'||!['dark','light'].includes(theme)||record.noWebGL!==false||record.bookTier!==null)return false;
+  if(!viewport||!((viewport.width===1440&&viewport.height===900)||(viewport.width===390&&viewport.height===844)))return false;
+  if(record.id!==`${base==='/'?'root':'project'}-mth140-${viewport.width}x${viewport.height}-${theme}`)return false;
+  const requested=new URL(record.requestedURL),actual=new URL(record.url);
+  return requested.protocol==='http:'&&requested.hostname==='127.0.0.1'&&requested.href===actual.href&&requested.pathname===base+'mth140/'&&!requested.search&&!requested.hash;
+ }catch{return false;}
+}
+
+const validBox=box=>box&&['x','y','width','height'].every(key=>Number.isFinite(box[key]))&&box.width>0&&box.height>0;
+
+export function hasNaturalBookFallback(record){
+ if(!ordinaryMTH140Scope(record)||record.status==='failed'||record.naturalSettlementFailure)return false;
+ if(!Array.isArray(record.actualWebGLContexts)||record.actualWebGLContexts.length!==0)return false;
+ const state=record.defaultBookEvidence,poster=state?.poster;
+ if(!state||state.book!=='mth140'||state.renderer!=='poster'||state.sceneReady!=='true'||state.motionState!=='still'||state.bookView!=='poster'||state.canvasCount!==0||!['low','mid','high'].includes(state.tier))return false;
+ if(!['tier-low','performance-caveat','unavailable','no-webgl2'].includes(state.rendererReason)||state.rendererReason==='tier-low'&&state.tier!=='low')return false;
+ if(state.sceneFrame!==undefined&&state.sceneFrame!=='0'||state.drawCalls!==undefined&&state.drawCalls!=='0'||state.triangles!==undefined&&state.triangles!=='0')return false;
+ if(!poster||poster.complete!==true||poster.decoded!==true||!validBox(state.box)||!validBox(poster.box))return false;
+ for(const key of ['x','y','width','height'])if(state.box[key]!==poster.box[key])return false;
+ const wide=record.viewport.width===1440,expected=new URL(record.base+`assets/book/posters/mth140-${record.theme}-${wide?'wide':'tall'}.webp`,record.url).href;
+ if(poster.src!==expected||poster.naturalWidth!==(wide?2160:780)||poster.naturalHeight!==(wide?900:600))return false;
+ const style=poster.computed;
+ return style?.display==='block'&&style.visibility==='visible'&&style.opacity==='1'&&style.transform==='none';
+}
+
+export function assertOrdinaryCaptureOptions(options){
+ if(options.noWebGL||options.bookTier!==undefined)throw Error('Default visual capture requires ordinary queryless MTH140 without forced tier or WebGL-disable options.');
+}

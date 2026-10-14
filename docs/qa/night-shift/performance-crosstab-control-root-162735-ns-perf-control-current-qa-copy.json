@@ -1,0 +1,31 @@
+{
+  "recordedAt": "2026-10-14T08:43:42.977225+00:00",
+  "scope": "Copy only five QA files into detached unchanged AA7 control, after normal149382 source/resource closure. No product assets or HTML edited.",
+  "files": [
+    {
+      "path": "tools/qa/checks-resilience.mjs",
+      "sha256": "db77a8d9fa49683f6370c87fc1794dbec247bc3c95cf524fee1d5d58d12e0de8",
+      "byteIdentical": true
+    },
+    {
+      "path": "tools/qa/checks.mjs",
+      "sha256": "e1cc6550f304cd30d092cfcc34a78548365ce3c9b06e2f9ea6b53f1c1deee9ca",
+      "byteIdentical": true
+    },
+    {
+      "path": "tools/qa/checks-perf.mjs",
+      "sha256": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657",
+      "byteIdentical": true
+    },
+    {
+      "path": "tools/qa/runtime.mjs",
+      "sha256": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587",
+      "byteIdentical": true
+    },
+    {
+      "path": "tools/qa/instrument.mjs",
+      "sha256": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892",
+      "byteIdentical": true
+    }
+  ]
+}

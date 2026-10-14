@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T10:21:51.018540+00:00",
+  "reviewedBy": "/root/final_review",
+  "approved": true,
+  "sourceApprovalOnly": true,
+  "runner": {
+    "path": "/tmp/ns-perf-native-compositor-diagnostic-v3.mjs",
+    "sha256": "657bac6c6f2820b4ff37616bd89816bb30dd7f5310617fc3cab931c59e4232db"
+  },
+  "priorSource": {
+    "path": "/tmp/ns-perf-native-compositor-diagnostic-v2.mjs",
+    "sha256": "80ef2bca5cd0fd7c8e3e98fa10f7bc5ff879044ee1238473b21a17017a314307"
+  },
+  "priorSourceReview": {
+    "path": "/tmp/ns-perf-native-compositor-diagnostic-v2-peer-review.json",
+    "sha256": "3a976c1105f712b058850771edf8ba220445ffe1875331989b57f1f55569622e"
+  },
+  "exactNarrowDiffVerified": true,
+  "changes": [
+    "Fresh private -v3 output directory.",
+    "Append only --disable-gpu-rasterization beside the existing --disable-gpu-compositing argument.",
+    "Record both extra native flags truthfully in addedLaunchArguments."
+  ],
+  "unchanged": [
+    "Exact root routes selection, CHECKS, instrument, driver/bundled resolver and SystemInfo metadata hook.",
+    "Native goto10s/click30s, full motion, assertions, fixtures and native cleanup/exit/raw reporting.",
+    "No browser/page wrapper, retries, forced clicks, pause/freeze, DOM/CSS edits, scene invalidation, fallback or assertion change."
+  ],
+  "preservedActualV2": {
+    "summaryPath": "/tmp/ns-perf-native-compositor-diagnostic-v2/reports/2026-10-14T10-16-37-639Z-171614/summary.json",
+    "sha256": "57ffb7112a50217b4e7f65ec8138dc30f1f4871d95e7cce1e5f235c2a968bedc",
+    "actualNativeExitCode": 1,
+    "status": "failed",
+    "assertions": 42,
+    "pass": 41,
+    "fail": 1,
+    "failure": "CEN100 completed navigation/content/deadline readiness timeout after history traversal",
+    "nativeFeatureStatus": {
+      "2d_canvas": "enabled",
+      "direct_rendering_display_compositor": "disabled_off_ok",
+      "gpu_compositing": "disabled_software",
+      "multiple_raster_threads": "enabled_on",
+      "opengl": "enabled_on",
+      "rasterization": "enabled",
+      "raw_draw": "disabled_off_ok",
+      "skia_graphite": "disabled_off",
+      "trees_in_viz": "disabled_off",
+      "video_decode": "enabled",
+      "video_encode": "disabled_software",
+      "vulkan": "disabled_off",
+      "webgl": "enabled_readback",
+      "webgpu": "unavailable_software",
+      "webgpu_on_vk_via_gl_interop": "disabled_off",
+      "webnn": "disabled_off"
+    },
+    "interpretation": "A genuine whole-route-check failure; observed physical clicks and earlier history steps do not waive its later readiness failure or establish a compositor cause."
+  },
+  "findings": [],
+  "limits": [
+    "Source-only approval; no browser/tests/imports/repository edits by reviewer.",
+    "Root must independently establish prior runtime/browser/preview closure before executing v3.",
+    "The v3 counterfactual does not replace ordinary supported all28 or original1.57 failed evidence. Even if v3 passes, causal conclusions require proper matched controls and cannot waive failures.",
+    "Actual postsource/driver/environment/closure and complete raw verdicts must be reviewed separately."
+  ]
+}

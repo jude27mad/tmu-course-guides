@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T09:09:41.305508Z",
+  "artifactType": "actual-private-original-evidence-builder-completion",
+  "actualBuilderCLIexit": 0,
+  "actualToolSession": 9888,
+  "actualToolChunk": "3abd98",
+  "builder": {
+    "path": "/tmp/ns-perf-latest-run-evidence.mjs",
+    "sha256": "dd9e6dfa6f0fbb9e27372b70915660b8576d98100b91401bac3be29f79af450a",
+    "bytes": 53273
+  },
+  "manifest": {
+    "path": "/tmp/ns-perf-latest-full-original-evidence-input.json",
+    "sha256": "265e2fba7548bec3375a8633e08e97b55116a1bf705c451eea7c3790173f1dee",
+    "bytes": 2515
+  },
+  "sourceApproval": {
+    "path": "/tmp/ns-perf-latest-run-evidence-peer-review-dd9.json",
+    "sha256": "109554af7a7779acd4276b0c61d0f4b2b64c8a1666b9d1a58a671a22cfa2a534",
+    "bytes": 3619
+  },
+  "priorExecutionFailure": {
+    "path": "/tmp/ns-perf-latest-full-original-execution-enobufs.json",
+    "sha256": "2e91aaf1b4a1a2e02be684919fbf440ec289dcc1ef84a356b8d350761b6b7919",
+    "bytes": 899
+  },
+  "priorExecutionFailureLog": {
+    "path": "/tmp/ns-perf-latest-full-original-execution-enobufs.log",
+    "sha256": "1f8331a972f1d9239297f6cd2fbb158286b91eba334a80fe35bf651cd8e1af4f",
+    "bytes": 411
+  },
+  "outputs": [
+    {
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/performance-browser-qa.candidate.json",
+      "sha256": "627e5d1648d51020919653f2e64e769471917686b03e6dcc337eeefdf419676a",
+      "bytes": 14203834
+    },
+    {
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/performance-verification.candidate.json",
+      "sha256": "1824ed0354cfed442c5e4b48d150413d330f8c683390e55ca145e78daa53e5df",
+      "bytes": 13916694
+    },
+    {
+      "path": "/tmp/ns-perf-latest-full-original-evidence-candidate/archive-verification.json",
+      "sha256": "0240b973849b814a9158c77018f9660ffcb3ba8e7439f8e9b8fa9c32f7b82b1a",
+      "bytes": 6278
+    }
+  ],
+  "originalFullRunStatus": "failed",
+  "originalFullRunCLIexit": 1,
+  "counts": {
+    "checks": 14,
+    "records": 28,
+    "passedRecords": 16,
+    "failedRecords": 10,
+    "unavailableRecords": 2,
+    "assertions": 2726,
+    "passedAssertions": 2714,
+    "failedAssertions": 12,
+    "skipEntries": 4,
+    "runnerEvents": 225
+  },
+  "allOriginalAssertionAndExpectedFlagsPreserved": true,
+  "latestFullAcceptance": false,
+  "effectiveCoverageAcceptance": false,
+  "overallRequestedGoalComplete": false,
+  "validationIssueCount": 1,
+  "validationIssues": [
+    {
+      "check": "failures",
+      "base": "/tmu-course-guides/",
+      "rawStatusPreserved": "passed",
+      "message": "Generic failure fixture event multiset must match the complete original root fixture, preserving expected:false\n+ actual - expected\n\n  [\n+   '{\"expected\":false,\"location\":{\"columnNumber\":0,\"lineNumber\":0,\"url\":\"<run-origin>/favicon.ico\"},\"message\":\"Failed to load resource: the server responded with a status of 404 (Not Found)\",\"type\":\"console\",\"url\":\"<run-origin>/tmu-course-guides/cen10o/?qa_failure=404\"}',\n+   '{\"expected\":false,\"location\":{\"columnNumber\":0,\"lineNumber\":0,\"url\":\"<run-origin>/tmu-course-guides/assets/book/posters/mth140-light-wide.webp\"},\"message\":\"Failed to load resource: net::ERR_INTERNET_DISCONNECTED\",\"type\":\"console\",\"url\":\"<run-origin>/tmu-course-guides/mth140/\"}',\n+   '{\"expected\":false,\"location\":{\"columnNumber\":0,\"lineNumber\":0,\"url\":\"<run-origin>/tmu-course-guides/assets/scenes/posters/cen100-wide.webp?v=20261012-subject1\"},\"message\":\"Failed to load resource: net::ERR_INTERNET_DISCONNECTED\",\"type\":\"console\",\"url\":\"<run-origin>/tmu-course-guides/cen100/\"}',\n+   '{\"expected\":false,\"location\":{\"columnNumber\":0,\"lineNumber\":0,\"url\":\"<run-origin>/tmu-course-guides/assets/scenes/posters/mth141-wide.webp?v=20261012-subject1\"},\"message\":\"Failed to load resource: net::ERR_INTERNET_DISCONNECTED\",\"type\":\"console\",\"url\":\"<run-origin>/tmu-course-guides/mth141/\"}',\n+   '{\"expected\":false,\"location\":{\"columnNumber\":0,\"lineNumber\":0,\"url\":\"<run-origin>/tmu-course-guides/cen10o/?qa_failure=404\"},\"message\":\"Failed to load resource: the server responded with a status of 404 (Not Found)\",\"type\":\"console\",\"url\":\"<run-origin>/tmu-course-guides/cen10o/?qa_failure=404\"}',\n-   '{\"expected\":false,\"location\":{\"columnNumber\":0,\"lineNumber\":0,\"url\":\"<run-origin>/assets/book/posters/mth140-light-wide.webp\"},\"message\":\"Failed to load resource: net::ERR_INTERNET_DISCONNECTED\",\"type\":\"console\",\"url\":\"<run-origin>/mth140/\"}',\n-   '{\"expected\":false,\"location\":{\"columnNumber\":0,\"lineNumber\":0,\"url\":\"<run-origin>/assets/scenes/posters/cen100-wide.webp?v=20261012-subject1\"},\"message\":\"Failed to load resource: net::ERR_INTERNET_DISCONNECTED\",\"type\":\"console\",\"url\":\"<run-origin>/cen100/\"}',\n-   '{\"expected\":false,\"location\":{\"columnNumber\":0,\"lineNumber\":0,\"url\":\"<run-origin>/assets/scenes/posters/mth141-wide.webp?v=20261012-subject1\"},\"message\":\"Failed to load resource: net::ERR_INTERNET_DISCONNECTED\",\"type\":\"console\",\"url\":\"<run-origin>/mth141/\"}',\n-   '{\"expected\":false,\"location\":{\"columnNumber\":0,\"lineNumber\":0,\"url\":\"<run-origin>/cen10o/?qa_failure=404\"},\"message\":\"Failed to load resource: the server responded with a status of 404 (Not Found)\",\"type\":\"console\",\"url\":\"<run-origin>/cen10o/?qa_failure=404\"}',\n-   '{\"expected\":false,\"location\":{\"columnNumber\":0,\"lineNumber\":0,\"url\":\"<run-origin>/favicon.ico\"},\"message\":\"Failed to load resource: the server responded with a status of 404 (Not Found)\",\"type\":\"console\",\"url\":\"<run-origin>/cen10o/?qa_failure=404\"}',\n    `{\"expected\":false,\"message\":\"Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\",\"name\":\"SecurityError\",\"stack\":\"SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\\\\n    at <anonymous>:5:5\\\\n    at <anonymous>:6:7\",\"type\":\"pageerror\",\"url\":\"about:blank\"}`,\n    `{\"expected\":false,\"message\":\"Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\",\"name\":\"SecurityError\",\"stack\":\"SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\\\\n    at <anonymous>:5:5\\\\n    at <anonymous>:6:7\",\"type\":\"pageerror\",\"url\":\"about:blank\"}`,\n    `{\"expected\":false,\"message\":\"Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\",\"name\":\"SecurityError\",\"stack\":\"SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\\\\n    at <anonymous>:5:5\\\\n    at <anonymous>:6:7\",\"type\":\"pageerror\",\"url\":\"about:blank\"}`,\n    `{\"expected\":false,\"message\":\"Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\",\"name\":\"SecurityError\",\"stack\":\"SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.\\\\n    at <anonymous>:5:5\\\\n    at <anonymous>:6:7\",\"type\":\"pageerror\",\"url\":\"about:blank\"}`,\n+   '{\"expected\":false,\"message\":\"HTTP 404\",\"requestUrl\":\"<run-origin>/tmu-course-guides/cen10o/?qa_failure=404\",\"status\":404,\"type\":\"http\",\"url\":\"<run-origin>/tmu-course-guides/?motion=off\"}',\n+   '{\"expected\":false,\"message\":\"net::ERR_INTERNET_DISCONNECTED\",\"method\":\"GET\",\"requestUrl\":\"<run-origin>/tmu-course-guides/assets/book/posters/mth140-light-wide.webp\",\"type\":\"requestfailed\",\"url\":\"<run-origin>/tmu-course-guides/mth140/\"}',\n+   '{\"expected\":false,\"message\":\"net::ERR_INTERNET_DISCONNECTED\",\"method\":\"GET\",\"requestUrl\":\"<run-origin>/tmu-course-guides/assets/scenes/posters/cen100-wide.webp?v=20261012-subject1\",\"type\":\"requestfailed\",\"url\":\"<run-origin>/tmu-course-guides/cen100/\"}',\n+   '{\"expected\":false,\"message\":\"net::ERR_INTERNET_DISCONNECTED\",\"method\":\"GET\",\"requestUrl\":\"<run-origin>/tmu-course-guides/assets/scenes/posters/mth141-wide.webp?v=20261012-subject1\",\"type\":\"requestfailed\",\"url\":\"<run-origin>/tmu-course-guides/mth141/\"}'\n-   '{\"expected\":false,\"message\":\"HTTP 404\",\"requestUrl\":\"<run-origin>/cen10o/?qa_failure=404\",\"status\":404,\"type\":\"http\",\"url\":\"<run-origin>/?motion=off\"}',\n-   '{\"expected\":false,\"message\":\"net::ERR_INTERNET_DISCONNECTED\",\"method\":\"GET\",\"requestUrl\":\"<run-origin>/assets/book/posters/mth140-light-wide.webp\",\"type\":\"requestfailed\",\"url\":\"<run-origin>/mth140/\"}',\n-   '{\"expected\":false,\"message\":\"net::ERR_INTERNET_DISCONNECTED\",\"method\":\"GET\",\"requestUrl\":\"<run-origin>/assets/scenes/posters/cen100-wide.webp?v=20261012-subject1\",\"type\":\"requestfailed\",\"url\":\"<run-origin>/cen100/\"}',\n-   '{\"expected\":false,\"message\":\"net::ERR_INTERNET_DISCONNECTED\",\"method\":\"GET\",\"requestUrl\":\"<run-origin>/assets/scenes/posters/mth141-wide.webp?v=20261012-subject1\",\"type\":\"requestfailed\",\"url\":\"<run-origin>/mth141/\"}'\n  ]\n",
+      "meaning": "Raw verdict is unchanged; this evidence guard blocks acceptance."
+    }
+  ],
+  "archiveFiles": 21,
+  "repositoryWrites": false,
+  "browsersLaunched": false,
+  "modernDriverAccepted": false,
+  "note": "Actual builder extraction completed. It archives FAILED12 without waivers and records a project deployment-base fixture-comparison issue. Builder CLI0 is not browser acceptance; original actual runner CLI1 and all raw evidence remain authoritative."
+}

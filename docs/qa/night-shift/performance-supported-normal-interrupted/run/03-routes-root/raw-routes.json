@@ -1,0 +1,344 @@
+{
+  "schemaVersion": 1,
+  "check": "routes",
+  "startedAt": "2026-10-14T09:55:36.613Z",
+  "completedAt": "2026-10-14T09:57:23.625Z",
+  "environment": {
+    "node": "v24.19.0",
+    "platform": "linux",
+    "architecture": "x64",
+    "deployments": [
+      {
+        "base": "/",
+        "origin": "http://127.0.0.1:44521",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "156.0.8078.4",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      }
+    ],
+    "requestedMode": "SwiftShader",
+    "playwrightPath": "/tmp/ns-perf-ci-driver/node_modules/playwright",
+    "playwrightSource": "PLAYWRIGHT_PATH",
+    "chromiumPath": "/tmp/ns-perf-ci-browsers/chromium-1248/chrome-linux64/chrome",
+    "chromiumSource": "Playwright bundled Chromium",
+    "launchArgs": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "status": "failed",
+  "failures": 1,
+  "cases": [
+    {
+      "base": "/",
+      "origin": "http://127.0.0.1:44521",
+      "status": "failed",
+      "assertions": [
+        {
+          "name": "initial persistent shell id",
+          "pass": true,
+          "actual": "1aca9498-4e65-4497-b1bb-06bbeeb8dfc5",
+          "expected": "nonempty"
+        },
+        {
+          "name": "open cen100: no document reload",
+          "pass": true,
+          "actual": "1aca9498-4e65-4497-b1bb-06bbeeb8dfc5",
+          "expected": "1aca9498-4e65-4497-b1bb-06bbeeb8dfc5"
+        },
+        {
+          "name": "open cen100: URL",
+          "pass": true,
+          "actual": "http://127.0.0.1:44521/cen100/",
+          "expected": "http://127.0.0.1:44521/cen100/"
+        },
+        {
+          "name": "open cen100: title",
+          "pass": true,
+          "actual": "CEN100 | TMU Course Guides",
+          "expected": "CEN100 | TMU Course Guides"
+        },
+        {
+          "name": "open cen100: body identity",
+          "pass": true,
+          "actual": {
+            "course": "cen100",
+            "page": null
+          },
+          "expected": {
+            "course": "cen100",
+            "page": null
+          }
+        },
+        {
+          "name": "open cen100: coursework rendered",
+          "pass": true,
+          "actual": {
+            "characters": 1763,
+            "heading": "Intro toEngineering"
+          },
+          "expected": "visible route heading and content"
+        },
+        {
+          "name": "open cen100: focus target",
+          "pass": true,
+          "actual": {
+            "id": "course-main",
+            "tag": "MAIN",
+            "inside": true,
+            "skipId": "course-main",
+            "heading": false
+          },
+          "expected": "route Skip destination when it is the region, otherwise the route heading"
+        },
+        {
+          "name": "open mth140: no document reload",
+          "pass": true,
+          "actual": "1aca9498-4e65-4497-b1bb-06bbeeb8dfc5",
+          "expected": "1aca9498-4e65-4497-b1bb-06bbeeb8dfc5"
+        },
+        {
+          "name": "open mth140: URL",
+          "pass": true,
+          "actual": "http://127.0.0.1:44521/mth140/",
+          "expected": "http://127.0.0.1:44521/mth140/"
+        },
+        {
+          "name": "open mth140: title",
+          "pass": true,
+          "actual": "MTH140: Calculus I | TMU Course Guides",
+          "expected": "MTH140: Calculus I | TMU Course Guides"
+        },
+        {
+          "name": "open mth140: body identity",
+          "pass": true,
+          "actual": {
+            "course": "mth140",
+            "page": null
+          },
+          "expected": {
+            "course": "mth140",
+            "page": null
+          }
+        },
+        {
+          "name": "open mth140: coursework rendered",
+          "pass": true,
+          "actual": {
+            "characters": 1216,
+            "heading": "Calculus I"
+          },
+          "expected": "visible route heading and content"
+        },
+        {
+          "name": "open mth140: focus target",
+          "pass": true,
+          "actual": {
+            "id": "course-title",
+            "tag": "H1",
+            "inside": true,
+            "skipId": null,
+            "heading": true
+          },
+          "expected": "route Skip destination when it is the region, otherwise the route heading"
+        },
+        {
+          "name": "route and history navigation: execution",
+          "pass": false,
+          "actual": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-course-link=\"mth141\"]')\u001b[22m\n\u001b[2m    - locator resolved to <a class=\"course-link\" data-course-link=\"mth141\" href=\"http://127.0.0.1:44521/mth141/\">…</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\n    at navigate (/workspace/tmu-course-guides/tools/qa/checks.mjs:207:55)\n    at /workspace/tmu-course-guides/tools/qa/checks.mjs:239:68\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks.mjs:102:5)\n    at async Object.routes (/workspace/tmu-course-guides/tools/qa/checks.mjs:223:3)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+          "expected": "case completes"
+        },
+        {
+          "name": "route and history navigation: consoleErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "route and history navigation: pageErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "route and history navigation: failedRequests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "route and history navigation: httpErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "observations": {
+        "cases": [
+          {
+            "name": "route and history navigation",
+            "physicalClickTimeoutMs": 30000,
+            "telemetry": {
+              "consoleErrors": [],
+              "pageErrors": [],
+              "failedRequests": [],
+              "httpErrors": []
+            },
+            "navigationDiagnostics": {
+              "documentRequests": [
+                {
+                  "time": 1791971745104,
+                  "url": "http://127.0.0.1:44521/",
+                  "method": "GET"
+                }
+              ],
+              "frameNavigations": [
+                {
+                  "time": 1791971745176,
+                  "url": "http://127.0.0.1:44521/"
+                },
+                {
+                  "time": 1791971746138,
+                  "url": "http://127.0.0.1:44521/"
+                },
+                {
+                  "time": 1791971764057,
+                  "url": "http://127.0.0.1:44521/"
+                },
+                {
+                  "time": 1791971764446,
+                  "url": "http://127.0.0.1:44521/cen100/"
+                },
+                {
+                  "time": 1791971772299,
+                  "url": "http://127.0.0.1:44521/cen100/"
+                },
+                {
+                  "time": 1791971784771,
+                  "url": "http://127.0.0.1:44521/mth140/"
+                },
+                {
+                  "time": 1791971831166,
+                  "url": "http://127.0.0.1:44521/mth140/"
+                }
+              ],
+              "pageEvents": [
+                {
+                  "time": 1791971745176,
+                  "type": "Page.frameNavigated",
+                  "frameId": "21603D8E12315A206001A4EA30118D28",
+                  "loaderId": "AC70D4AC498543930506E7A0DE022361",
+                  "url": "http://127.0.0.1:44521/"
+                },
+                {
+                  "time": 1791971746161,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "21603D8E12315A206001A4EA30118D28",
+                  "url": "http://127.0.0.1:44521/"
+                },
+                {
+                  "time": 1791971764057,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "21603D8E12315A206001A4EA30118D28",
+                  "url": "http://127.0.0.1:44521/"
+                },
+                {
+                  "time": 1791971764446,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "21603D8E12315A206001A4EA30118D28",
+                  "url": "http://127.0.0.1:44521/cen100/"
+                },
+                {
+                  "time": 1791971772313,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "21603D8E12315A206001A4EA30118D28",
+                  "url": "http://127.0.0.1:44521/cen100/"
+                },
+                {
+                  "time": 1791971784772,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "21603D8E12315A206001A4EA30118D28",
+                  "url": "http://127.0.0.1:44521/mth140/"
+                }
+              ],
+              "failure": {
+                "time": 1791971824197,
+                "pageURL": "http://127.0.0.1:44521/mth140/",
+                "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-course-link=\"mth141\"]')\u001b[22m\n\u001b[2m    - locator resolved to <a class=\"course-link\" data-course-link=\"mth141\" href=\"http://127.0.0.1:44521/mth141/\">…</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n",
+                "snapshotError": "Navigation snapshot exceeded 5000 ms"
+              }
+            },
+            "steps": [
+              {
+                "route": "desk",
+                "url": "http://127.0.0.1:44521/",
+                "shell": "1aca9498-4e65-4497-b1bb-06bbeeb8dfc5",
+                "title": "TMU Course Guides | Fall 2026",
+                "course": null,
+                "page": "desk",
+                "content": 1102,
+                "heading": "TMU Course Guides · Fall 2026",
+                "focus": {
+                  "id": "",
+                  "tag": "BODY",
+                  "inside": false,
+                  "skipId": "desk-main",
+                  "heading": false
+                }
+              },
+              {
+                "route": "cen100",
+                "label": "open cen100",
+                "url": "http://127.0.0.1:44521/cen100/",
+                "shell": "1aca9498-4e65-4497-b1bb-06bbeeb8dfc5",
+                "title": "CEN100 | TMU Course Guides",
+                "course": "cen100",
+                "page": null,
+                "content": 1763,
+                "heading": "Intro toEngineering",
+                "focus": {
+                  "id": "course-main",
+                  "tag": "MAIN",
+                  "inside": true,
+                  "skipId": "course-main",
+                  "heading": false
+                }
+              },
+              {
+                "route": "mth140",
+                "label": "open mth140",
+                "url": "http://127.0.0.1:44521/mth140/",
+                "shell": "1aca9498-4e65-4497-b1bb-06bbeeb8dfc5",
+                "title": "MTH140: Calculus I | TMU Course Guides",
+                "course": "mth140",
+                "page": null,
+                "content": 1216,
+                "heading": "Calculus I",
+                "focus": {
+                  "id": "course-title",
+                  "tag": "H1",
+                  "inside": true,
+                  "skipId": null,
+                  "heading": true
+                }
+              }
+            ]
+          }
+        ],
+        "runnerErrors": []
+      },
+      "skipped": [],
+      "durationMs": 88394,
+      "failures": 1
+    }
+  ],
+  "runErrors": []
+}

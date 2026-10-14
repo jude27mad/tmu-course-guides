@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T09:52:19.951306+00:00",
+  "reviewedBy": "/root/final_review",
+  "approved": true,
+  "approvalScope": "Light read-only provenance review of installed original failed-full archive integration and the now-installed exact ordinary-visual status augmentation. This approves documentation/evidence fidelity only, not supported modern QA acceptance or overall task completion.",
+  "originalIntegration": {
+    "path": "/tmp/ns-perf-latest-full-repo-integration/integration-manifest.json",
+    "sha256": "852c9ec336b0300eec2b6fa7eaf91a3ad8ae99ecbab0b0ae1d2a29db8a4d373d",
+    "installedEntries": 67,
+    "manifestSelfCopy": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-full-run-d6114ac-149382-integration-manifest.json"
+  },
+  "ordinaryVisualStatusManifest": {
+    "path": "/tmp/ns-perf-ordinary-visual-status-integration/integration-manifest.json",
+    "sha256": "f6c05a16ac2a1b67aeb19930d2f0ee164aa6bca7b2015f8c84c917eba101cace",
+    "drafts": [
+      {
+        "source": "/tmp/ns-perf-ordinary-visual-status-integration/performance-browser-qa.json",
+        "destination": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-browser-qa.json",
+        "sourceSHA256": "11678dfe2c265d0e3100f4964319b52552b46e2cb850e9947d152afaeec84103",
+        "expectedExistingDestinationSHA256": "9aaa8ae1db0f4ff73473c0e64032ae604941d25dbd6cdefa3ae74a90e724f51b",
+        "bytes": 12696,
+        "role": "ordinary-default-visual-status-augmentation-only"
+      },
+      {
+        "source": "/tmp/ns-perf-ordinary-visual-status-integration/performance-verification.json",
+        "destination": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-verification.json",
+        "sourceSHA256": "396f659a31417a65e9da581bea2958775173b2d09c1e62521c0741578d20ceae",
+        "expectedExistingDestinationSHA256": "a5f34e32611021d2d44a098f6b64cd9a9c082ba531303047a11fe1c06105e9a4",
+        "bytes": 9349,
+        "role": "ordinary-default-visual-status-augmentation-only"
+      },
+      {
+        "source": "/tmp/ns-perf-ordinary-visual-status-integration/performance.md",
+        "destination": "/workspace/tmu-course-guides/docs/qa/night-shift/performance.md",
+        "sourceSHA256": "ce8c19a8772c2bf10f81f23d3ceee37f7123088e10928984943f4c915ed50f02",
+        "expectedExistingDestinationSHA256": "1de8f984cbe16f30a59d86cadc074a139da090b09b7a7588c60f29839cab7580",
+        "bytes": 27180,
+        "role": "ordinary-default-visual-status-augmentation-only"
+      },
+      {
+        "source": "/tmp/ns-perf-ordinary-visual-status-integration/README.md",
+        "destination": "/workspace/tmu-course-guides/docs/qa/night-shift/README.md",
+        "sourceSHA256": "15509ab0b9dd788e8bb2c62f9d78accc10fb3287c4d153c95cbe357ccf866de2",
+        "expectedExistingDestinationSHA256": "0e0f17d1e3ce33d1e31310e56813fad2505ade69a9fe0a19cf95a8387b45d492",
+        "bytes": 3593,
+        "role": "ordinary-default-visual-status-augmentation-only"
+      }
+    ]
+  },
+  "independentActualVisualReview": {
+    "path": "/tmp/ns-perf-default-visual-final-peer-review-v2.json",
+    "sha256": "849b5ecb255807574508a5b415a0b81fa03d38ef2ddc39efdd394c26288ae8a7"
+  },
+  "checks": {
+    "originalManifestSHA": true,
+    "newManifestSHA": true,
+    "integrationDestinationsDocsOnlyUnique": true,
+    "originalManifestSelfCopyExact": true,
+    "retainedMeasurementAndPrimaryEvidenceExact": true,
+    "allFourDraftSourcesPinned": true,
+    "newDestinationsCanonicalDocsOnly": true,
+    "oldRawFullAndDiagnosticObjectsUnchanged": true,
+    "unchangedNonVisualVerificationScopes": true,
+    "newCanonicalBrowserReference": true,
+    "FAILED12And225Preserved": true,
+    "NoOverallQAAcceptance": true,
+    "actualVisualArtifactReferences": true,
+    "visualMetadataMatchesIndependentReview": true,
+    "MeasurementTablesUnchanged": true,
+    "statusTextHonest": true,
+    "63OriginalNonSupersededArchiveEntriesExactBytes": true,
+    "fourInstalledAugmentationFilesExactDraftBytes": true
+  },
+  "findings": [],
+  "scopeNotes": [
+    "The original raw FAILED12 verdict, all225 runner events/expected flags, failed current crosstab diagnostic and passed control diagnostic remain unchanged.",
+    "The displayed paired before/after cold metrics remain the already valid 1.57 paired samples. No capped failed-full perf record is installed as canonical after evidence.",
+    "The only new accepted scope is the completed ordinary visual result: 24 retained queryless pairs plus 8 fresh default MTH140 pairs, with all18 default captures/repeats live WebGL.",
+    "The supported 1.64 matrix stays pending and acceptedRecords0; the original 1.57 full archive remains failed and no mixed-driver composite or retry waiver is claimed.",
+    "The original project13-event comparison-only deployment-prefix issue remains explicitly preserved; unexpected projectBF ERR_ABORTED remains failed."
+  ],
+  "limits": [
+    "No browser, tests, source imports, PNG work or repository writes. Only this private /tmp review JSON was written.",
+    "Integration is restricted to documentation and immutable evidence; actual product/protected fingerprints are enforced by the separately reviewed source capture guards.",
+    "The four augmentation files are already installed byte-identically to the reviewed drafts. Their old pre-overwrite guards are historical and must not be rerun as current-source guards; this reviewer did not perform or observe those writes."
+  ],
+  "priorReview": {
+    "path": "/tmp/ns-perf-ordinary-visual-status-integration-peer-review.json",
+    "sha256": "c94159af48fe43516e8d7390fe52035f8e9e4c4889fc83197e77c45b11d80059",
+    "initialStateBlock": "Root had already installed all four proposed augmentation files during review. The original67 map and new before-overwrite guards therefore no longer matched those four current destinations. The mismatch was exactly the new source SHA for each of the four documented destinations; all63 other original archive entries were independently verified unchanged. This review validates the actual installed final bytes without claiming to observe the past overwrite guard execution."
+  },
+  "installedStatusAugmentation": [
+    {
+      "path": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-browser-qa.json",
+      "actualSHA256": "11678dfe2c265d0e3100f4964319b52552b46e2cb850e9947d152afaeec84103",
+      "reviewedDraftSHA256": "11678dfe2c265d0e3100f4964319b52552b46e2cb850e9947d152afaeec84103",
+      "priorGuardSHA256": "9aaa8ae1db0f4ff73473c0e64032ae604941d25dbd6cdefa3ae74a90e724f51b"
+    },
+    {
+      "path": "/workspace/tmu-course-guides/docs/qa/night-shift/performance-verification.json",
+      "actualSHA256": "396f659a31417a65e9da581bea2958775173b2d09c1e62521c0741578d20ceae",
+      "reviewedDraftSHA256": "396f659a31417a65e9da581bea2958775173b2d09c1e62521c0741578d20ceae",
+      "priorGuardSHA256": "a5f34e32611021d2d44a098f6b64cd9a9c082ba531303047a11fe1c06105e9a4"
+    },
+    {
+      "path": "/workspace/tmu-course-guides/docs/qa/night-shift/performance.md",
+      "actualSHA256": "ce8c19a8772c2bf10f81f23d3ceee37f7123088e10928984943f4c915ed50f02",
+      "reviewedDraftSHA256": "ce8c19a8772c2bf10f81f23d3ceee37f7123088e10928984943f4c915ed50f02",
+      "priorGuardSHA256": "1de8f984cbe16f30a59d86cadc074a139da090b09b7a7588c60f29839cab7580"
+    },
+    {
+      "path": "/workspace/tmu-course-guides/docs/qa/night-shift/README.md",
+      "actualSHA256": "15509ab0b9dd788e8bb2c62f9d78accc10fb3287c4d153c95cbe357ccf866de2",
+      "reviewedDraftSHA256": "15509ab0b9dd788e8bb2c62f9d78accc10fb3287c4d153c95cbe357ccf866de2",
+      "priorGuardSHA256": "0e0f17d1e3ce33d1e31310e56813fad2505ade69a9fe0a19cf95a8387b45d492"
+    }
+  ]
+}

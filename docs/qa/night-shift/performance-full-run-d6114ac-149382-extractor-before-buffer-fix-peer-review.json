@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "independent-latest-run-evidence-builder-source-review",
+  "status": "passed-source-review-only",
+  "approved": true,
+  "approvedSourceScope": true,
+  "sourceApprovalOnly": true,
+  "reviewedBy": "/root/final_review",
+  "reviewedAt": "2026-10-14T08:51:32.268167+00:00",
+  "review": "Independent read-only review of the corrected frozen latest-run evidence builder and schema against retained1dd inputs. Exact hashes verified, changed guards inspected, and existing committed manifest metadata/monitor closure schema checked without imports, tests, browser, PNG decode or actual builder execution.",
+  "reviewedFiles": [
+    {
+      "path": "/tmp/ns-perf-latest-run-evidence.mjs",
+      "sha256": "3f5b0324464c37ba90e399ce4701600a690c595332d53533c2b67e4124142305"
+    },
+    {
+      "path": "/tmp/ns-perf-latest-run-evidence-schema.md",
+      "sha256": "d6f84e3ea3598e77cf72238d21f9a2d76f9100b670b4fd641e4f9a0a04c6a3f5"
+    },
+    {
+      "path": "/tmp/ns-perf-latest-run-evidence-preparation-proof.json",
+      "sha256": "55ee913f75e22b73366b9f1cd66789c5458d93ac43e743540467c8550b6280fb"
+    },
+    {
+      "path": "/tmp/ns-perf-aa7-check-validators.mjs",
+      "sha256": "4b8d9317dfac1d78d0bef2be7cefc2102040e20734e372e105abc64398024430"
+    },
+    {
+      "path": "/tmp/ns-perf-aa7-effective-composite.mjs",
+      "sha256": "4123a3efc78b821411350e317283fec0b1b757f909409a67983091fc54badff2"
+    }
+  ],
+  "priorBlockedReview": {
+    "path": "/tmp/ns-perf-latest-run-evidence-peer-review.json",
+    "sha256": "a5820ad918f395f5f9f17dd1b151859b009db94fbcdc147a6c037286c3f482ba",
+    "preservedUnmodified": true
+  },
+  "priorReviewedSource": {
+    "path": "/tmp/ns-perf-latest-run-evidence-1dd-reviewed.mjs",
+    "sha256": "1dd17df3855ba4749c47b2e38932a11cb13cb2574e2c155eb3ead8495a3c25df"
+  },
+  "reviewedChangeDiff": {
+    "command": "git diff --no-index --binary --no-ext-diff --no-color --unified=3 /tmp/ns-perf-latest-run-evidence-1dd-reviewed.mjs /tmp/ns-perf-latest-run-evidence.mjs",
+    "sha256": "0f76818d21282188203339d3153c3683d7b62023fc91e6dba5bafe91b881dcb6"
+  },
+  "resolvedFindings": [
+    {
+      "id": "followup_source_run_binding",
+      "resolution": "Fresh raw prelaunch >= original completedAt and < own start. Every capture binds its own directory, selection and startedAt; after also completedAt. Null directory uses separately hash-bound metadata with all raw fields preserved and truthful binding time. Actual evidence peer binds optional metadata artifacts."
+    },
+    {
+      "id": "primary_visual_verdict",
+      "resolution": "All32 zero-difference/error/evidence/settlement/repeat counters, protected fingerprints, exact IDs, captured case metadata, live contexts, frozen native recipe/environment and actual PNG/RGBA equality now required, including actual repeat bytes."
+    },
+    {
+      "id": "committed_suite_visual_identity",
+      "resolution": "Suite/primary proof/comparison require exact DOCS path and actuald6114ac committed blob equality. Supporting suite copy hashes also match committed blobs; numeric substitutes and empty copies cannot pass."
+    },
+    {
+      "id": "perf_profile_equality",
+      "resolution": "Frozen AA7 BEFORE map validates exactly8 unique profiles per selected base and all settings deep-equal by base/route/profile for original, follow-up and disclosed effective union."
+    }
+  ],
+  "gates": {
+    "original14RawReportsSummaryAll28PreservedByteIdentically": true,
+    "originalFailedVerdictAllFalseAssertionsAndRawEventsRemainUnmodified": true,
+    "actualPrelaunchBoundPostclosureDriverAndRootCLIEvidenceRequired": true,
+    "actualMonitorClosureResourcesPortsAndFullRawArraysRequired": true,
+    "sourceFiveFilesMatchLaunchD611AndProduct179ProtectedC428": true,
+    "singleBaseOrBothBaseWholeChecksExactLiteralCLI": true,
+    "onlyOriginallyFailedBaseReplacements": true,
+    "untouchedPassedLatestFullBaseAuthoritative": true,
+    "independentActualFinalizedEvidenceReviewRequiredNotSourceApproval": true,
+    "originalCompleteFixtureIdentityMultiplicityAndReviewRequired": true,
+    "failedNativeBFFixtureRequiresGenuinePersistedRestorationAndRouterRecovery": true,
+    "currentNativeGapsCannotRecoverSubstantiveFailures": true,
+    "noJs99ExactGetScriptCspZeroExecution": true,
+    "failure13ExactExpectedFalseReconciliation": true,
+    "unknownNativeAbortSecurityErrorOrUnownedEventsRejected": true,
+    "canonicalAfterRejectsFailedCappedOrOld660Samples": true,
+    "allEffective16Samples368BudgetsAndExactSettingsRequired": true,
+    "effectiveUnionExplicitlyNotNewFullRun": true,
+    "productionRoot415Qa138UiZeroEightVendorsOnlyCommittedProof": true,
+    "primary32TierHighScopeHonest": true,
+    "defaultSupplementAlwaysUnvalidatedAndOverallGoalFalse": true,
+    "allValidationBeforeSoleNewTmpCandidateWrites": true
+  },
+  "materialFindings": [],
+  "preparationVerification": {
+    "syntaxChecksReportedPassed": true,
+    "testsRunByPreparer": false,
+    "productionCountsAddedByPrivatePreparation": 0,
+    "builderExecutedByPreparer": false,
+    "sourceHashesIndependentlyVerified": true
+  },
+  "limits": [
+    "Approval covers corrected source guards only; no actual candidate or recovery input manifest was executed or approved.",
+    "Actual149382 normal full run remains failed12; source approval cannot pass it or explain its original causes.",
+    "Later whole-check evidence requires its own independent finalized-evidence review and cannot reuse this source-only approval.",
+    "Default-URL MTH140 supplemental coverage remains unvalidated and cannot establish overall completion.",
+    "The builder itself will decode primary PNGs after closure; this reviewer checked source/metadata only and decoded no image pixels.",
+    "Any source/schema/helper changes require a new exact hash-bound review."
+  ],
+  "browserAcceptanceEstablished": false,
+  "overallRequestedGoalComplete": false,
+  "builderExecuted": false,
+  "modulesImported": false,
+  "testsRun": false,
+  "browsersLaunched": false,
+  "pixelsDecoded": false,
+  "activeSourceOrRepositoryFilesEdited": false,
+  "canonicalEvidenceWritten": false
+}

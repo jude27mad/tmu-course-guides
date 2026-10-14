@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T09:45:15.609660+00:00",
+  "reviewedBy": "/root/final_review",
+  "approved": true,
+  "sourceApprovalOnly": true,
+  "approvalScope": "Independent read-only review of the private supported-environment orchestrator, capture helper, setup source and bound preparation metadata. This does not approve any browser QA verdict, telemetry policy classification or overall task acceptance.",
+  "files": {
+    "orchestrator": {
+      "path": "/tmp/ns-perf-supported-matrix.py",
+      "sha256": "3f35e3dcae7b6d97103bf248b7336d2bad69e2ed9d669790b49a832fa455714d"
+    },
+    "captureHelper": {
+      "path": "/tmp/ns-perf-environment-source-capture.mjs",
+      "sha256": "b94bcb12740fe0536637b7c1cb6a64d58122cc1e4a5b920a1608b63cd957d198"
+    },
+    "mockTests": {
+      "path": "/tmp/ns-perf-supported-matrix.test.py",
+      "sha256": "aa61402a2f9e1d925ab371c435ba692f81b5cbea209e81fa28bdeafe1369b355"
+    },
+    "mockLog": {
+      "path": "/tmp/ns-perf-supported-matrix-tests-final.log",
+      "sha256": "b535bef106c96b106bdd8b3d35f1d5c129f446c6a532d2ec51ca3f6147cc274d"
+    },
+    "setupScript": {
+      "path": "/tmp/ns-perf-webkit-link-setup.py",
+      "sha256": "5faa843a6fe41ce7fb96e05aecb9a0e00d67c49d64be519d57cf389bdda88ddc"
+    },
+    "setupManifest": {
+      "path": "/tmp/ns-perf-webkit-approved-setup-final.json",
+      "sha256": "69569d45fa8b67923a76f146a4f60f5d657b5c0ac9eddfa77cbf65e3621654b8"
+    },
+    "setupBaseline": {
+      "path": "/tmp/ns-perf-webkit-wrapper-baseline-final.json",
+      "sha256": "bbe6d2a229a768d7dabb716e6301d7bb5c968ca2511af38b23c1db1efe485c9b"
+    },
+    "initialFailedSetupManifest": {
+      "path": "/tmp/ns-perf-webkit-approved-setup.json",
+      "sha256": "9c4b51feac2f5bf7f10fe296f300055c3f027963dbac8463918ec76834ce931a"
+    },
+    "initialWrapperBaseline": {
+      "path": "/tmp/ns-perf-webkit-wrapper-baseline.json",
+      "sha256": "e713e1e27d0e2974d594a4677569689a7eba1987847575da2ea354660e3ff14e"
+    },
+    "readiness": {
+      "path": "/tmp/ns-perf-supported-matrix-readiness.json",
+      "sha256": "bbc1640100b4f6f609e4ebef109b4d8f19e734858eb3fa33611c3f2891a4762d"
+    }
+  },
+  "repositoryCommitObserved": "d6114ac401a7f3b7b52054f0530c9b76c293a1d8",
+  "pinnedScopes": {
+    "productFingerprint": "1795468f427084977fac5a0707eef0b14e461c8d2041cb9c6d1e0315de48851f",
+    "protectedFingerprint": "c428377743e2e8a1ee386c55882e182d3b8e750ade67b1bd2b65835c210e0481",
+    "productAndProtectedFingerprintRecalculatedByReviewer": false,
+    "note": "These exact fingerprints are required by every source capture and continuity guard; this review inspected the guard and prior frozen evidence, and directly rehashed current QA files only."
+  },
+  "qaSourcesObserved": {
+    "tools/qa/checks.mjs": "e1cc6550f304cd30d092cfcc34a78548365ce3c9b06e2f9ea6b53f1c1deee9ca",
+    "tools/qa/checks-resilience.mjs": "db77a8d9fa49683f6370c87fc1794dbec247bc3c95cf524fee1d5d58d12e0de8",
+    "tools/qa/checks-perf.mjs": "56d2ab6a4ee6af66722301ee131952d3c4fb16e0eba016f70a75d1fbd4fc3657",
+    "tools/qa/runtime.mjs": "a8715a046c02b1e095e8600a29f3c2a39b7b93816d0c0a5fae61f95295bd9587",
+    "tools/qa/instrument.mjs": "d377323d6c2e434f7e488a8c40c5b93d983ae724aab741dfa95f4f606e9fb892",
+    "tools/qa/run.mjs": "d8894931aef10f795774fbc5cd4e3c7f8ccf547569a534a46006e8a362002621"
+  },
+  "reviewFindings": [],
+  "guardsReviewed": [
+    "Exact 14-check by 2-base plan, one ordinary node tools/qa/run.mjs CHECK --base BASE invocation at a time, no retries, wrappers, native predicate edits, forced clicks or timeout changes.",
+    "Actual Popen argv/PID/spawn/wait/exit and own log, unique new raw directory with actual PID and native timestamp, exact summary/check copies, complete raw assertions/skips/observations/runner flags retained.",
+    "Per-use capture-helper hashes before and after capture, pinned five QA sources and entrypoint plus product/protected fingerprints, exact actual Playwright/core 1.64 identities and matching bundled Chromium binary/manifest, no fallback.",
+    "Requested and inspected actual SwiftShader mode, available WebGL and SwiftShader renderer required; genuine native assertion failures continue honestly, while setup/source/resource integrity failures stop further launches.",
+    "No next child before native closure: live Chromium/WebKit/runtime/preview processes rejected and all owned localhost preview ports must return ECONNREFUSED. Postsource follows child close; master continuity checked again at end.",
+    "SIGINT and SIGTERM enter own-child bounded native signal cleanup, retain actual child exit/wait/log and any own partial raw copies; interrupted or missing reports stay integrity failures and cannot become successful records.",
+    "Output resolved and required to be a new directory under /tmp, including symlink-escape rejection. Original repository/source/raw canonical files are not edited by the private source.",
+    "WebKit-only child LD prefix and exact final setup manifest binding; unchanged ordinary initial Chromium probe in that child honestly inherits the prefix. Other invocations retain original LD environment. Setup hash checked around each case/final capture.",
+    "Setup adds only approved local ELF/SONAME links in bundled WebKit sys/lib, refuses unproven existing destinations and overwrite, verifies package-extracted bytes and prefix confinement, preserves original wrapper/binary/engine/stock identities; final transitive extension is tied to the original retained baseline.",
+    "allSelectedRecordsVerified explicitly means native raw/CLI/source/driver/browser/closure verification only: no generic event policy, old 1.57 replacement, failure waiver or overall task acceptance."
+  ],
+  "preparationMetadataReviewed": {
+    "mockTestsReported": 12,
+    "mockActualExitCodeReported": 0,
+    "mockLogReadByReviewer": true,
+    "mockTestsExecutedByReviewer": false,
+    "setupStatus": "verified",
+    "packageCount": 9,
+    "libraryCount": 17,
+    "addedLinks": 34,
+    "originalIdentitiesPreserved": 27,
+    "originalIdentityListMatchesInitialSetup": true,
+    "gtkAndWpeLddReportedActualExitCodes": [
+      0,
+      0
+    ],
+    "gtkAndWpeMissingLibraries": [
+      [],
+      []
+    ],
+    "setupOrLddExecutedByReviewer": false
+  },
+  "readyArgv": [
+    "python3",
+    "/tmp/ns-perf-supported-matrix.py",
+    "--output",
+    "/tmp/ns-perf-supported-all28-final",
+    "--capture-sha",
+    "b94bcb12740fe0536637b7c1cb6a64d58122cc1e4a5b920a1608b63cd957d198",
+    "--webkit-setup",
+    "/tmp/ns-perf-webkit-approved-setup-final.json",
+    "--webkit-setup-sha",
+    "69569d45fa8b67923a76f146a4f60f5d657b5c0ac9eddfa77cbf65e3621654b8"
+  ],
+  "limits": [
+    "No orchestrator/helper/setup import or execution, browser launch, test execution, PNG work, repository or product source edits were performed by this reviewer.",
+    "Source approval cannot prove successful WebKit launch, all28 native QA results, telemetry-policy acceptance, or final task completion; those require actual bound reports and independent evidence review.",
+    "The supported 1.64 verification is a separate environment run; original 1.57 failed full runs and paired cold performance evidence remain unchanged.",
+    "Native declared-unavailable and feature-gap records must remain visible and cannot be described as full unconditional coverage."
+  ]
+}

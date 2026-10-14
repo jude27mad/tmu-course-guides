@@ -1,0 +1,3604 @@
+{
+  "schemaVersion": 1,
+  "check": "stability",
+  "startedAt": "2026-10-14T07:09:10.842Z",
+  "completedAt": "2026-10-14T08:39:46.631Z",
+  "environment": {
+    "node": "v24.19.0",
+    "platform": "linux",
+    "architecture": "x64",
+    "deployments": [
+      {
+        "base": "/",
+        "origin": "http://127.0.0.1:33547",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "154.0.8037.57",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      },
+      {
+        "base": "/tmu-course-guides/",
+        "origin": "http://127.0.0.1:42001",
+        "requestedMode": "SwiftShader",
+        "chromiumVersion": "154.0.8037.57",
+        "webgl": {
+          "available": true,
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "vendor": "Google Inc. (Google)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+        },
+        "actualMode": "SwiftShader",
+        "frameInterpretation": "Software-renderer frame numbers are diagnostics, not evidence of device smoothness."
+      }
+    ],
+    "requestedMode": "SwiftShader",
+    "playwrightPath": "/opt/codex/cua_node/lib/node_modules/playwright",
+    "playwrightSource": "PLAYWRIGHT_PATH",
+    "chromiumPath": "/usr/bin/chromium",
+    "chromiumSource": "QA_CHROMIUM_PATH",
+    "launchArgs": [
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "status": "failed",
+  "failures": 2,
+  "cases": [
+    {
+      "base": "/",
+      "origin": "http://127.0.0.1:33547",
+      "status": "failed",
+      "assertions": [
+        {
+          "name": "warm-up: Mark done advances target",
+          "pass": true,
+          "actual": {
+            "before": "integrity",
+            "advanced": "whmis"
+          },
+          "expected": "different target"
+        },
+        {
+          "name": "warm-up: Undo restores target",
+          "pass": true,
+          "actual": "integrity",
+          "expected": "integrity"
+        },
+        {
+          "name": "repeated lifecycle operations: execution",
+          "pass": false,
+          "actual": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-course-link=\"desk\"]')\u001b[22m\n\u001b[2m    - locator resolved to <a data-course-link=\"desk\" class=\"course-link desk-link\" href=\"http://127.0.0.1:33547/\">…</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\n    at navigate (/workspace/tmu-course-guides/tools/qa/checks.mjs:207:55)\n    at runCase.linearClock (/workspace/tmu-course-guides/tools/qa/checks.mjs:315:69)\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks.mjs:102:5)\n    at async Object.stability (/workspace/tmu-course-guides/tools/qa/checks.mjs:299:3)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+          "expected": "case completes"
+        },
+        {
+          "name": "repeated lifecycle operations: consoleErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "repeated lifecycle operations: pageErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "repeated lifecycle operations: failedRequests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "repeated lifecycle operations: httpErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "observations": {
+        "cases": [
+          {
+            "name": "repeated lifecycle operations",
+            "physicalClickTimeoutMs": 30000,
+            "telemetry": {
+              "consoleErrors": [],
+              "pageErrors": [],
+              "failedRequests": [],
+              "httpErrors": []
+            },
+            "navigationDiagnostics": {
+              "documentRequests": [
+                {
+                  "time": 1791962213138,
+                  "url": "http://127.0.0.1:33547/",
+                  "method": "GET"
+                }
+              ],
+              "frameNavigations": [
+                {
+                  "time": 1791962213239,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962214546,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962216976,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962217458,
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962239806,
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962246225,
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962289824,
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962290886,
+                  "url": "http://127.0.0.1:33547/mth141/"
+                },
+                {
+                  "time": 1791962314843,
+                  "url": "http://127.0.0.1:33547/mth141/"
+                },
+                {
+                  "time": 1791962315797,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962319314,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962319361,
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962328978,
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962329054,
+                  "url": "http://127.0.0.1:33547/mth140/#study"
+                },
+                {
+                  "time": 1791962335675,
+                  "url": "http://127.0.0.1:33547/mth140/#study"
+                },
+                {
+                  "time": 1791962335814,
+                  "url": "http://127.0.0.1:33547/mth140/#course-info"
+                },
+                {
+                  "time": 1791962341901,
+                  "url": "http://127.0.0.1:33547/mth140/#course-info"
+                },
+                {
+                  "time": 1791962341920,
+                  "url": "http://127.0.0.1:33547/mth140/#assignments"
+                },
+                {
+                  "time": 1791962348959,
+                  "url": "http://127.0.0.1:33547/mth140/#assignments"
+                },
+                {
+                  "time": 1791962349654,
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962375222,
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962378430,
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962379889,
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962380260,
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962380972,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962384152,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962384230,
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962399190,
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962402159,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962405340,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962405537,
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962427485,
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962428013,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962433520,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962433548,
+                  "url": "http://127.0.0.1:33547/mth141/"
+                },
+                {
+                  "time": 1791962455803,
+                  "url": "http://127.0.0.1:33547/mth141/"
+                },
+                {
+                  "time": 1791962456932,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962457402,
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962457505,
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962492070,
+                  "url": "http://127.0.0.1:33547/cen100/"
+                }
+              ],
+              "pageEvents": [
+                {
+                  "time": 1791962213239,
+                  "type": "Page.frameNavigated",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "loaderId": "21F76A8B8CAFA42A99F4C4D5019FF972",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962214556,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962216976,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962217458,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962239806,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962246225,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962289824,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962290891,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/mth141/"
+                },
+                {
+                  "time": 1791962314844,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/mth141/"
+                },
+                {
+                  "time": 1791962315797,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962319314,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962319361,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962328978,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962329054,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/mth140/#study"
+                },
+                {
+                  "time": 1791962335701,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/mth140/#study"
+                },
+                {
+                  "time": 1791962335814,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/mth140/#course-info"
+                },
+                {
+                  "time": 1791962341901,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/mth140/#course-info"
+                },
+                {
+                  "time": 1791962341920,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/mth140/#assignments"
+                },
+                {
+                  "time": 1791962348960,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/mth140/#assignments"
+                },
+                {
+                  "time": 1791962349655,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962375223,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962378430,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962379889,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962380260,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962380972,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962384152,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962384230,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962399191,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/cen100/"
+                },
+                {
+                  "time": 1791962402160,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962405340,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962405537,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962427485,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/mth140/"
+                },
+                {
+                  "time": 1791962428014,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962433520,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962433548,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/mth141/"
+                },
+                {
+                  "time": 1791962455803,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/mth141/"
+                },
+                {
+                  "time": 1791962456932,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962457402,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/"
+                },
+                {
+                  "time": 1791962457505,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "07FEFC21A6E87D72D007B2C476053CA7",
+                  "url": "http://127.0.0.1:33547/cen100/"
+                }
+              ],
+              "failure": {
+                "time": 1791962491066,
+                "pageURL": "http://127.0.0.1:33547/cen100/",
+                "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-course-link=\"desk\"]')\u001b[22m\n\u001b[2m    - locator resolved to <a data-course-link=\"desk\" class=\"course-link desk-link\" href=\"http://127.0.0.1:33547/\">…</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n",
+                "state": {
+                  "url": "http://127.0.0.1:33547/cen100/",
+                  "shell": "55dab25d-e5ed-4ebe-8d19-b445aec5e2d8",
+                  "route": "cen100",
+                  "completedRoute": "cen100",
+                  "body": {
+                    "course": "cen100"
+                  },
+                  "content": 44197,
+                  "deadline": "01days02hrs55min22secDueWed Oct 14 · 3:00 PM Toronto1 days and 2 hours remaining until Academic Integrity Quiz. Wed Oct 14 · 3:00 PM Toronto.",
+                  "focus": {
+                    "tag": "MAIN",
+                    "id": "course-main",
+                    "inside": true
+                  },
+                  "wrapper": {
+                    "opacity": "1",
+                    "filter": "none",
+                    "transform": "none"
+                  },
+                  "events": {
+                    "routes": [
+                      {
+                        "time": 1444.8999999985099,
+                        "route": "desk",
+                        "from": null,
+                        "url": "http://127.0.0.1:33547/",
+                        "shell": "55dab25d-e5ed-4ebe-8d19-b445aec5e2d8"
+                      },
+                      {
+                        "time": 5028.60000000149,
+                        "route": "cen100",
+                        "from": "desk",
+                        "url": "http://127.0.0.1:33547/cen100/",
+                        "shell": "55dab25d-e5ed-4ebe-8d19-b445aec5e2d8"
+                      },
+                      {
+                        "time": 42323.79999999702,
+                        "route": "mth140",
+                        "from": "cen100",
+                        "url": "http://127.0.0.1:33547/mth140/",
+                        "shell": "55dab25d-e5ed-4ebe-8d19-b445aec5e2d8"
+                      },
+                      {
+                        "time": 80698.20000000298,
+                        "route": "mth141",
+                        "from": "mth140",
+                        "url": "http://127.0.0.1:33547/mth141/",
+                        "shell": "55dab25d-e5ed-4ebe-8d19-b445aec5e2d8"
+                      },
+                      {
+                        "time": 103013.70000000298,
+                        "route": "desk",
+                        "from": "mth141",
+                        "url": "http://127.0.0.1:33547/",
+                        "shell": "55dab25d-e5ed-4ebe-8d19-b445aec5e2d8"
+                      },
+                      {
+                        "time": 107031.10000000149,
+                        "route": "mth140",
+                        "from": "desk",
+                        "url": "http://127.0.0.1:33547/mth140/",
+                        "shell": "55dab25d-e5ed-4ebe-8d19-b445aec5e2d8"
+                      },
+                      {
+                        "time": 138361.79999999702,
+                        "route": "cen100",
+                        "from": "mth140",
+                        "url": "http://127.0.0.1:33547/cen100/",
+                        "shell": "55dab25d-e5ed-4ebe-8d19-b445aec5e2d8"
+                      },
+                      {
+                        "time": 167955.70000000298,
+                        "route": "desk",
+                        "from": "cen100",
+                        "url": "http://127.0.0.1:33547/",
+                        "shell": "55dab25d-e5ed-4ebe-8d19-b445aec5e2d8"
+                      },
+                      {
+                        "time": 172059.6000000015,
+                        "route": "cen100",
+                        "from": "desk",
+                        "url": "http://127.0.0.1:33547/cen100/",
+                        "shell": "55dab25d-e5ed-4ebe-8d19-b445aec5e2d8"
+                      },
+                      {
+                        "time": 190099.8999999985,
+                        "route": "desk",
+                        "from": "cen100",
+                        "url": "http://127.0.0.1:33547/",
+                        "shell": "55dab25d-e5ed-4ebe-8d19-b445aec5e2d8"
+                      },
+                      {
+                        "time": 196119.3999999985,
+                        "route": "mth140",
+                        "from": "desk",
+                        "url": "http://127.0.0.1:33547/mth140/",
+                        "shell": "55dab25d-e5ed-4ebe-8d19-b445aec5e2d8"
+                      },
+                      {
+                        "time": 214912.79999999702,
+                        "route": "desk",
+                        "from": "mth140",
+                        "url": "http://127.0.0.1:33547/",
+                        "shell": "55dab25d-e5ed-4ebe-8d19-b445aec5e2d8"
+                      },
+                      {
+                        "time": 221032.29999999702,
+                        "route": "mth141",
+                        "from": "desk",
+                        "url": "http://127.0.0.1:33547/mth141/",
+                        "shell": "55dab25d-e5ed-4ebe-8d19-b445aec5e2d8"
+                      },
+                      {
+                        "time": 243937.6000000015,
+                        "route": "desk",
+                        "from": "mth141",
+                        "url": "http://127.0.0.1:33547/",
+                        "shell": "55dab25d-e5ed-4ebe-8d19-b445aec5e2d8"
+                      },
+                      {
+                        "time": 245899.5,
+                        "route": "cen100",
+                        "from": "desk",
+                        "url": "http://127.0.0.1:33547/cen100/",
+                        "shell": "55dab25d-e5ed-4ebe-8d19-b445aec5e2d8"
+                      }
+                    ],
+                    "clicks": [
+                      {
+                        "time": 3729.7999999970198,
+                        "tag": "A",
+                        "id": "",
+                        "route": "cen100",
+                        "href": "http://127.0.0.1:33547/cen100/",
+                        "url": "http://127.0.0.1:33547/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/"
+                      },
+                      {
+                        "time": 26612.5,
+                        "tag": "A",
+                        "id": "",
+                        "route": "mth140",
+                        "href": "http://127.0.0.1:33547/mth140/",
+                        "url": "http://127.0.0.1:33547/cen100/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/cen100/"
+                      },
+                      {
+                        "time": 38010.10000000149,
+                        "tag": "BUTTON",
+                        "id": "tab-assessments",
+                        "href": null,
+                        "url": "http://127.0.0.1:33547/mth140/",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/mth140/"
+                      },
+                      {
+                        "time": 76521.5,
+                        "tag": "A",
+                        "id": "",
+                        "route": "mth141",
+                        "href": "http://127.0.0.1:33547/mth141/",
+                        "url": "http://127.0.0.1:33547/mth140/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/mth140/"
+                      },
+                      {
+                        "time": 78425.60000000149,
+                        "tag": "BUTTON",
+                        "id": "tab-assessments",
+                        "href": null,
+                        "url": "http://127.0.0.1:33547/mth141/",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/mth141/"
+                      },
+                      {
+                        "time": 101659.70000000298,
+                        "tag": "A",
+                        "id": "",
+                        "route": "desk",
+                        "href": "http://127.0.0.1:33547/",
+                        "url": "http://127.0.0.1:33547/mth141/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/mth141/"
+                      },
+                      {
+                        "time": 106108.79999999702,
+                        "tag": "A",
+                        "id": "",
+                        "route": "mth140",
+                        "href": "http://127.0.0.1:33547/mth140/",
+                        "url": "http://127.0.0.1:33547/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/"
+                      },
+                      {
+                        "time": 106591.89999999851,
+                        "tag": "BUTTON",
+                        "id": "tab-assessments",
+                        "href": null,
+                        "url": "http://127.0.0.1:33547/mth140/",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/mth140/"
+                      },
+                      {
+                        "time": 115508.79999999702,
+                        "tag": "A",
+                        "id": "",
+                        "view": "study",
+                        "href": "#study",
+                        "url": "http://127.0.0.1:33547/mth140/",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/mth140/"
+                      },
+                      {
+                        "time": 115509.79999999702,
+                        "tag": "BUTTON",
+                        "id": "tab-topics",
+                        "href": null,
+                        "url": "http://127.0.0.1:33547/mth140/",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/mth140/#study"
+                      },
+                      {
+                        "time": 122125.10000000149,
+                        "tag": "A",
+                        "id": "",
+                        "view": "info",
+                        "href": "#course-info",
+                        "url": "http://127.0.0.1:33547/mth140/#study",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/mth140/#study"
+                      },
+                      {
+                        "time": 122125.79999999702,
+                        "tag": "BUTTON",
+                        "id": "tab-help",
+                        "href": null,
+                        "url": "http://127.0.0.1:33547/mth140/#study",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/mth140/#course-info"
+                      },
+                      {
+                        "time": 128669.29999999702,
+                        "tag": "A",
+                        "id": "",
+                        "view": "assignments",
+                        "href": "#assignments",
+                        "url": "http://127.0.0.1:33547/mth140/#course-info",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/mth140/#course-info"
+                      },
+                      {
+                        "time": 128670.29999999702,
+                        "tag": "BUTTON",
+                        "id": "tab-assessments",
+                        "href": null,
+                        "url": "http://127.0.0.1:33547/mth140/#course-info",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/mth140/#assignments"
+                      },
+                      {
+                        "time": 135808.20000000298,
+                        "tag": "A",
+                        "id": "",
+                        "route": "cen100",
+                        "href": "http://127.0.0.1:33547/cen100/",
+                        "url": "http://127.0.0.1:33547/mth140/#assignments",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/mth140/#assignments"
+                      },
+                      {
+                        "time": 158659.6000000015,
+                        "tag": "BUTTON",
+                        "id": "",
+                        "completion": "integrity",
+                        "href": null,
+                        "url": "http://127.0.0.1:33547/cen100/",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/cen100/"
+                      },
+                      {
+                        "time": 164087.1000000015,
+                        "tag": "BUTTON",
+                        "id": "undo-complete",
+                        "href": null,
+                        "url": "http://127.0.0.1:33547/cen100/",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/cen100/"
+                      },
+                      {
+                        "time": 167091.1000000015,
+                        "tag": "A",
+                        "id": "",
+                        "route": "desk",
+                        "href": "http://127.0.0.1:33547/",
+                        "url": "http://127.0.0.1:33547/cen100/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/cen100/"
+                      },
+                      {
+                        "time": 170956.6000000015,
+                        "tag": "A",
+                        "id": "",
+                        "route": "cen100",
+                        "href": "http://127.0.0.1:33547/cen100/",
+                        "url": "http://127.0.0.1:33547/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/"
+                      },
+                      {
+                        "time": 186012.3999999985,
+                        "tag": "A",
+                        "id": "",
+                        "route": "desk",
+                        "href": "http://127.0.0.1:33547/",
+                        "url": "http://127.0.0.1:33547/cen100/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/cen100/"
+                      },
+                      {
+                        "time": 192174.6000000015,
+                        "tag": "A",
+                        "id": "",
+                        "route": "mth140",
+                        "href": "http://127.0.0.1:33547/mth140/",
+                        "url": "http://127.0.0.1:33547/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/"
+                      },
+                      {
+                        "time": 195617.1000000015,
+                        "tag": "BUTTON",
+                        "id": "tab-assessments",
+                        "href": null,
+                        "url": "http://127.0.0.1:33547/mth140/",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/mth140/"
+                      },
+                      {
+                        "time": 214335,
+                        "tag": "A",
+                        "id": "",
+                        "route": "desk",
+                        "href": "http://127.0.0.1:33547/",
+                        "url": "http://127.0.0.1:33547/mth140/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/mth140/"
+                      },
+                      {
+                        "time": 220314.79999999702,
+                        "tag": "A",
+                        "id": "",
+                        "route": "mth141",
+                        "href": "http://127.0.0.1:33547/mth141/",
+                        "url": "http://127.0.0.1:33547/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/"
+                      },
+                      {
+                        "time": 220927.6000000015,
+                        "tag": "BUTTON",
+                        "id": "tab-assessments",
+                        "href": null,
+                        "url": "http://127.0.0.1:33547/mth141/",
+                        "defaultPrevented": false,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/mth141/"
+                      },
+                      {
+                        "time": 242662.70000000298,
+                        "tag": "A",
+                        "id": "",
+                        "route": "desk",
+                        "href": "http://127.0.0.1:33547/",
+                        "url": "http://127.0.0.1:33547/mth141/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/mth141/"
+                      },
+                      {
+                        "time": 244227.8999999985,
+                        "tag": "A",
+                        "id": "",
+                        "route": "cen100",
+                        "href": "http://127.0.0.1:33547/cen100/",
+                        "url": "http://127.0.0.1:33547/",
+                        "defaultPrevented": true,
+                        "urlAfterDispatch": "http://127.0.0.1:33547/"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "clockMethod": "Moving Date offset at Oct 13 noon Toronto; native animation frames and timers remain instrumented.",
+            "garbageCollection": {
+              "available": true,
+              "method": "Playwright page.requestGC before both snapshots"
+            },
+            "baseline": {
+              "listeners": {
+                "live": 107,
+                "retained": 107,
+                "connected": 103,
+                "disconnected": 0,
+                "other": 4,
+                "details": [
+                  {
+                    "target": "a",
+                    "type": "click",
+                    "capture": false,
+                    "once": false,
+                    "source": "e=>{e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "AbortSignal",
+                    "type": "abort",
+                    "capture": false,
+                    "once": true,
+                    "source": "()=>{if(live===state)unmount();}",
+                    "status": "other",
+                    "count": 1
+                  },
+                  {
+                    "target": "AbortSignal",
+                    "type": "abort",
+                    "capture": false,
+                    "once": true,
+                    "source": "()=>{if(signal.aborted)return;controller.abort();const pending=[...cleanups].reverse();cleanups.clear();for(const fn of pending)fn();}",
+                    "status": "other",
+                    "count": 1
+                  },
+                  {
+                    "target": "body",
+                    "type": "touchstart",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(e){return e}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "button",
+                    "type": "click",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>{input.value='';render();input.focus();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "button",
+                    "type": "click",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>{mode=['auto','dark','light'][(['auto','dark','light'].indexOf(mode)+1)%3];applyTheme();try{localStorage.setItem('tmu-guide-theme-v1',mode)}catch{}}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "button",
+                    "type": "click",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>close()",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "canvas",
+                    "type": "webglcontextcreationerror",
+                    "capture": false,
+                    "once": false,
+                    "source": "function nn(M){Bt(\"WebGLRenderer: A WebGL context could not be created. Reason: \",M.statusMessage)}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "canvas",
+                    "type": "webglcontextlost",
+                    "capture": false,
+                    "once": false,
+                    "source": "function contextLost(event){ event.preventDefault(); // three does too; restoration needs it if(lost)return;lost=true;losses++; cancel();busy=requested=false;last=0;dropTargets(); emit(listeners.lost,'context'); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "canvas",
+                    "type": "webglcontextlost",
+                    "capture": false,
+                    "once": false,
+                    "source": "function he(M){M.preventDefault(),$l(\"WebGLRenderer: Context Lost.\"),D=!0}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "canvas",
+                    "type": "webglcontextrestored",
+                    "capture": false,
+                    "once": false,
+                    "source": "function contextRestored(){ if(!lost)return;lost=false; if(losses>=2){release('lost',false);return;} // a second loss keeps the poster for the rest of the visit emit(listeners.restored);requestFrame(); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "canvas",
+                    "type": "webglcontextrestored",
+                    "capture": false,
+                    "once": false,
+                    "source": "function re(){$l(\"WebGLRenderer: Context Restored.\"),D=!1;let M=O.autoReset,L=Ot.enabled,H=Ot.autoUpdate,z=Ot.needsUpdate,V=Ot.type;Lt(),O.autoReset=M,Ot.enabled=L,Ot.autoUpdate=H,Ot.needsUpdate=z,Ot.type=V}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "dialog#ns-palette",
+                    "type": "cancel",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{event.preventDefault();close();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "dialog#ns-palette",
+                    "type": "click",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{if(event.target===dialog){const box=dialog.getBoundingClientRect();if(event.clientX<box.left||event.clientX>box.right||event.clientY<box.top||event.clientY>box.bottom)close();}}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "dialog#ns-palette",
+                    "type": "close",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>{if(!dialog.open&&opener)finish();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "dialog#ns-palette",
+                    "type": "keydown",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{ if(event.isComposing)return; if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close();return;} if(event.target!==input)return; if(['ArrowDown','ArrowUp','Home','End','Enter'].includes(event.key)){event.preven",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "div#ns-palette-results",
+                    "type": "click",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{const option=event.target.closest('[data-result]');if(option)run(Number(option.dataset.result));}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "div#ns-palette-results",
+                    "type": "pointerdown",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>event.preventDefault()",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "div#ns-palette-results",
+                    "type": "pointermove",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{const option=event.target.closest('[data-result]');if(option&&!results[Number(option.dataset.result)]?.disabled)select(Number(option.dataset.result));}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "change",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{if(event.target.matches?.('#section-select,#contact-section,#contact-group'))queueMicrotask(reindex);}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "change",
+                    "capture": false,
+                    "once": false,
+                    "source": "function refreshProfiles(){for(const [id] of courses){let profile;try{profile=JSON.parse(localStorage.getItem(id==='cen100'?'cen100-contact-choice-v1':id+'-section-v1')||'null')}catch{}const section=Number(id==='cen100'?profile?.section:pro",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "click",
+                    "capture": true,
+                    "once": false,
+                    "source": "e=>{if(e.isTrusted)userGesture=true;}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "click",
+                    "capture": false,
+                    "once": false,
+                    "source": "e=>{if(e.target.closest('[data-ns-section]'))$('.workspace-section')?.click();else if(e.target.closest('[data-ns-motion]'))toggleMotion();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "click",
+                    "capture": true,
+                    "once": false,
+                    "source": "event=>{ const target=event.target?.closest?.('a,button,input'); const row={time:performance.now(),tag:target?.tagName,id:target?.id,route:target?.dataset.courseLink,completion:target?.dataset.quickComplete,view:target?.dataset.workspaceVie",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "click",
+                    "capture": true,
+                    "once": false,
+                    "source": "event=>{ const target=event.target.closest?.('[data-ns-search],.workspace-search');if(!target||bypass)return; event.preventDefault();event.stopImmediatePropagation();open(target); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "click",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{if(event.target.closest?.('.hub-theme'))queueMicrotask(reindex);}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "course-schedule",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>reindex()",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "course-view-change",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>reindex()",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "DOMContentLoaded",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(e,n){if(Qe=Z.documentElement,K=Z.body,kr=[W,Z,Qe,K],nt&&!e&&!Ci){xe(F,\"scrollEnd\",Tn);return}Rn(),Ue=F.isRefreshing=!0,Ci||Cn();var t=jt(\"refreshInit\");pn&&F.sort(),n||Nr(),N.forEach(function(i){Le(i)&&(i.smooth&&(i.target.style.sc",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "guide-completion",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>reindex()",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "guide-motion-change",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>motionLabel(motion)",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "guide-motion-change",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>reindex()",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "guide-motion-change",
+                    "capture": false,
+                    "once": false,
+                    "source": "function gateChange(){if(runnable()){last=0;requestFrame();}else{cancel();last=0;sleep();}}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "guide-motion-change",
+                    "capture": false,
+                    "once": false,
+                    "source": "function policyChanged(event){ if(active&&(event.type==='night-hold'&&event.detail===true||transitionPolicy({window,url:active.url,fromURL:active.fromURL})!==active.policy))cancel(); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "guide-motion-change",
+                    "capture": false,
+                    "once": false,
+                    "source": "function syncRoot(){const root=document.documentElement;root.classList.toggle('ns-still',!ambientAllowed());root.classList.toggle('ns-held',held());}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "keydown",
+                    "capture": true,
+                    "once": false,
+                    "source": "e=>{if(e.isTrusted)userGesture=true;}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "keydown",
+                    "capture": true,
+                    "once": false,
+                    "source": "event=>{ if(event.key==='Escape'&&event.target.closest?.('#workspace-search')){ const button=document.querySelector('.workspace-search');if(button?.getAttribute('aria-expanded')==='true'){event.preventDefault();event.stopPropagation();bypas",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "mousedown",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){return cr=1}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "mouseup",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){return cr=0}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "night-hold",
+                    "capture": false,
+                    "once": false,
+                    "source": "function gateChange(){if(runnable()){last=0;requestFrame();}else{cancel();last=0;sleep();}}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "night-hold",
+                    "capture": false,
+                    "once": false,
+                    "source": "function policyChanged(event){ if(active&&(event.type==='night-hold'&&event.detail===true||transitionPolicy({window,url:active.url,fromURL:active.fromURL})!==active.policy))cancel(); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "night-hold",
+                    "capture": false,
+                    "once": false,
+                    "source": "function syncRoot(){const root=document.documentElement;root.classList.toggle('ns-still',!ambientAllowed());root.classList.toggle('ns-held',held());}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "night-sound",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>reindex()",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "night-tier",
+                    "capture": false,
+                    "once": false,
+                    "source": "e=>fn(e.detail.tier)",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "pointerdown",
+                    "capture": true,
+                    "once": false,
+                    "source": "e=>{if(e.isTrusted)userGesture=true;}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "pointerdown",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){return cr=1}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "pointerup",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){return cr=0}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "route-changed",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>{close(false);reindex();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "route-changed",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>{if(routeLife?.root!==document.querySelector('.wrap,.math-wrap'))unbindRoute();mount();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "route-changed",
+                    "capture": false,
+                    "once": false,
+                    "source": "e=>{if(e.detail?.route==='desk'){dock.hidden=true;dock.inert=true;document.documentElement.classList.remove('ns-docked');}}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "route-changed",
+                    "capture": false,
+                    "once": false,
+                    "source": "e=>setRoute(e.detail?.route)",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "route-changed",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{window.__qaRouteCompleted=event.detail?.route;}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "route-changed",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>append(state.routes,{time:performance.now(),route:event.detail?.route,from:event.detail?.from,url:location.href,shell:document.documentElement.dataset.shellId})",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "route-changed",
+                    "capture": false,
+                    "once": false,
+                    "source": "function refresh(){const route=document.body.dataset.page==='desk'?'desk':document.body.dataset.course;const utilities=root.querySelector('.workspace-utilities');if(utilities){utilities.hidden=route==='desk';if(route==='desk')root.querySele",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "route-will-change",
+                    "capture": false,
+                    "once": false,
+                    "source": "function willChange(event){ const detail=event.detail;if(typeof detail?.waitUntil!=='function')return; cancel(); // Let every navigation guard veto first. The router starts its fetch in this // same turn, rather than waiting for either anim",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "scroll",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){(!Xe||!Xe.isPressed||Xe.startX>K.clientWidth)&&(N.cache++,Xe?Oi||(Oi=requestAnimationFrame(Ct)):Ct(),nt||jt(\"scrollStart\"),nt=Ne())}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "touchcancel",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(e){return e}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "touchend",
+                    "capture": true,
+                    "once": false,
+                    "source": "e=>{if(e.isTrusted)userGesture=true;}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "touchend",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){return cr=0}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "touchstart",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){return cr=1}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "visibilitychange",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>{if(document.hidden)clearTimeout(state.timer);else render();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "visibilitychange",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>{if(document.visibilityState==='hidden')hide();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "visibilitychange",
+                    "capture": false,
+                    "once": false,
+                    "source": "function gateChange(){if(runnable()){last=0;requestFrame();}else{cancel();last=0;sleep();}}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "visibilitychange",
+                    "capture": false,
+                    "once": false,
+                    "source": "function policyChanged(event){ if(active&&(event.type==='night-hold'&&event.detail===true||transitionPolicy({window,url:active.url,fromURL:active.fromURL})!==active.policy))cancel(); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "visibilitychange",
+                    "capture": false,
+                    "once": false,
+                    "source": "function syncRoot(){const root=document.documentElement;root.classList.toggle('ns-still',!ambientAllowed());root.classList.toggle('ns-held',held());}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "visibilitychange",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){var S=W.innerWidth,_=W.innerHeight;Z.hidden?(Kr=S,jr=_):(Kr!==S||jr!==_)&&Ti()}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "workspace-changed",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>reindex()",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "workspace-changed",
+                    "capture": false,
+                    "once": false,
+                    "source": "function mount(){ const nav=document.querySelector('.workspace-nav');if(!nav||nav.hidden||routeLife)return;const life=routeLife=scope();life.root=document.querySelector('.wrap,.math-wrap');const queue=fn=>queueMicrotask(()=>{if(!life.signal",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "html",
+                    "type": "scroll",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){return bt&&bt.isPressed||N.cache++}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "input#ns-palette-input",
+                    "type": "input",
+                    "capture": false,
+                    "once": false,
+                    "source": "(preserve=false)=>{ const previous=preserve===true?results[active]?.id:null,query=input.value.trim(),found=searchIndex(index,input.value); // The guide-search suggestion closes every non-empty query on a course page; it has no group heading",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "MediaQueryList",
+                    "type": "change",
+                    "capture": false,
+                    "once": false,
+                    "source": "function policyChanged(event){ if(active&&(event.type==='night-hold'&&event.detail===true||transitionPolicy({window,url:active.url,fromURL:active.fromURL})!==active.policy))cancel(); }",
+                    "status": "other",
+                    "count": 1
+                  },
+                  {
+                    "target": "MediaQueryList",
+                    "type": "change",
+                    "capture": false,
+                    "once": false,
+                    "source": "function updatePreference(){document.documentElement.dataset.motion=motionAllowed()?'on':'off';if(!motionAllowed())for(const owner of [...tracks.keys()])cancel(owner);document.dispatchEvent(new CustomEvent('guide-motion-change',{detail:{ena",
+                    "status": "other",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "__playwright_global_listeners_check__",
+                    "capture": false,
+                    "once": false,
+                    "source": "() => seenEvent = true",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "auxclick",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "click",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "click",
+                    "capture": true,
+                    "once": false,
+                    "source": "event=>{const a=linkFromEvent(event);if(isRouteLink(event,a,{base,currentURL:window.location.href})){event.preventDefault();navigate(a.href,{origin:transitionOrigin(window,event.detail>0?a:null)});}}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "contextmenu",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "dblclick",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "focus",
+                    "capture": true,
+                    "once": false,
+                    "source": "event=>{if(lastPointerType!=='touch')warm(event);}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "focus",
+                    "capture": false,
+                    "once": false,
+                    "source": "function render(){ if(!live)return; clearTimeout(live.timer); const {root,data}=live,now=Date.now(),targets=[]; for(const course of COURSE_IDS){ const records=data[course];if(!records)continue; // records unavailable: that card keeps its pl",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "hashchange",
+                    "capture": true,
+                    "once": false,
+                    "source": "event=>{ if(dispatchingHash)return; if(suppressHash!==null&&event.newURL===suppressHash){suppressHash=null;event.stopImmediatePropagation();return;} if(swapping){event.stopImmediatePropagation();return;} // Bookkeeping for a traversal belon",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "keydown",
+                    "capture": true,
+                    "once": false,
+                    "source": "()=>{lastPointerType=null;}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "load",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(e,n){if(Qe=Z.documentElement,K=Z.body,kr=[W,Z,Qe,K],nt&&!e&&!Ci){xe(F,\"scrollEnd\",Tn);return}Rn(),Ue=F.isRefreshing=!0,Ci||Cn();var t=jt(\"refreshInit\");pn&&F.sort(),n||Nr(),N.forEach(function(i){Le(i)&&(i.smooth&&(i.target.style.sc",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "mousedown",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "mousemove",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "mouseup",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "pagehide",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>{latestRequest?.cancel();hide();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "pagehide",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>active?.cancel()",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "pagehide",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{if(event.persisted){sleeping=true;cancel();last=0;}else release('unloaded');}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "pageshow",
+                    "capture": false,
+                    "once": false,
+                    "source": "e=>{if(e.persisted)render();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "pageshow",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{if(event.persisted&&sleeping){sleeping=false;requestFrame();}}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "pointerdown",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "pointerdown",
+                    "capture": true,
+                    "once": false,
+                    "source": "event=>{lastPointerType=event.pointerType||'mouse';}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "pointerenter",
+                    "capture": true,
+                    "once": false,
+                    "source": "event=>{if(event.pointerType!=='touch'&&fineHover())warm(event);}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "pointerup",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "popstate",
+                    "capture": true,
+                    "once": false,
+                    "source": "event=>{ browserEntry=event.state?.[STATE_KEY]; if(restoring){ if(browserEntry?.id===restoring.id){const done=restoring.resolve;restoring=null;done();} else{event.stopImmediatePropagation();const delta=restoring.index-browserEntry?.index;if",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "resize",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(e){N.cache++,(e===!0||!Oe&&!dn&&!Z.fullscreenElement&&!Z.webkitFullscreenElement&&(!yr||_n!==W.innerWidth||Math.abs(W.innerHeight-gn)>W.innerHeight*.25))&&or.restart(!0)}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "scroll",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>{ if(swapping||settle)return; positions.set(activeEntry,scroll()); persistTimer??=window.setTimeout(persistScroll,Math.max(250,1000-(Date.now()-lastPersist))); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "storage",
+                    "capture": false,
+                    "once": false,
+                    "source": "e=>{if(e.key==='guide-motion-paused'){scenePaused=e.newValue==='true';document.dispatchEvent(new Event('guide-motion-change'));}}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "storage",
+                    "capture": false,
+                    "once": false,
+                    "source": "e=>{if(e.key===null||watched.has(e.key))render();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "storage",
+                    "capture": false,
+                    "once": false,
+                    "source": "function refreshProfiles(){for(const [id] of courses){let profile;try{profile=JSON.parse(localStorage.getItem(id==='cen100'?'cen100-contact-choice-v1':id+'-section-v1')||'null')}catch{}const section=Number(id==='cen100'?profile?.section:pro",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "touchcancel",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "touchend",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "touchstart",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "wheel",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){(!Xe||!Xe.isPressed||Xe.startX>K.clientWidth)&&(N.cache++,Xe?Oi||(Oi=requestAnimationFrame(Ct)):Ct(),nt||jt(\"scrollStart\"),nt=Ne())}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "wheel",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){return s.tween&&s.tween.kill()&&(s.tween=0)}",
+                    "status": "connected",
+                    "count": 2
+                  }
+                ]
+              },
+              "observers": {
+                "total": 1,
+                "intersection": {
+                  "active": 0,
+                  "instances": 0,
+                  "targets": 0,
+                  "connectedTargets": 0
+                },
+                "mutation": {
+                  "active": 1,
+                  "instances": 1,
+                  "targets": 1,
+                  "connectedTargets": 1
+                },
+                "resize": {
+                  "active": 0,
+                  "instances": 0,
+                  "targets": 0,
+                  "connectedTargets": 0
+                }
+              },
+              "raf": {
+                "pending": 3,
+                "recurring": 2
+              },
+              "canvases": {
+                "connected": 1,
+                "contexts": 1,
+                "drawCalls": 1522,
+                "drawCalls2d": 690
+              },
+              "webgl": {
+                "active": 1,
+                "lost": 0,
+                "total": 1,
+                "connected": 1,
+                "drawCalls": 832
+              },
+              "gsap": {
+                "available": true,
+                "tickerCallbacks": 2,
+                "scrollTriggers": 0
+              }
+            },
+            "shell": "55dab25d-e5ed-4ebe-8d19-b445aec5e2d8"
+          }
+        ],
+        "runnerErrors": []
+      },
+      "skipped": [],
+      "durationMs": 289060,
+      "failures": 1
+    },
+    {
+      "base": "/tmu-course-guides/",
+      "origin": "http://127.0.0.1:42001",
+      "status": "failed",
+      "assertions": [
+        {
+          "name": "warm-up: Mark done advances target",
+          "pass": true,
+          "actual": {
+            "before": "integrity",
+            "advanced": "whmis"
+          },
+          "expected": "different target"
+        },
+        {
+          "name": "warm-up: Undo restores target",
+          "pass": true,
+          "actual": "integrity",
+          "expected": "integrity"
+        },
+        {
+          "name": "repeated lifecycle operations: execution",
+          "pass": false,
+          "actual": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-course-link=\"desk\"]')\u001b[22m\n\u001b[2m    - locator resolved to <a data-course-link=\"desk\" class=\"course-link desk-link\" href=\"http://127.0.0.1:42001/tmu-course-guides/\">…</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\n    at navigate (/workspace/tmu-course-guides/tools/qa/checks.mjs:207:55)\n    at runCase.linearClock (/workspace/tmu-course-guides/tools/qa/checks.mjs:315:69)\n    at async runCase (/workspace/tmu-course-guides/tools/qa/checks.mjs:102:5)\n    at async Object.stability (/workspace/tmu-course-guides/tools/qa/checks.mjs:299:3)\n    at async runHarness (/workspace/tmu-course-guides/tools/qa/runtime.mjs:314:53)\n    at async file:///workspace/tmu-course-guides/tools/qa/run.mjs:8:18",
+          "expected": "case completes"
+        },
+        {
+          "name": "repeated lifecycle operations: consoleErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "repeated lifecycle operations: pageErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "repeated lifecycle operations: failedRequests",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        },
+        {
+          "name": "repeated lifecycle operations: httpErrors",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "observations": {
+        "cases": [
+          {
+            "name": "repeated lifecycle operations",
+            "physicalClickTimeoutMs": 30000,
+            "telemetry": {
+              "consoleErrors": [],
+              "pageErrors": [],
+              "failedRequests": [],
+              "httpErrors": []
+            },
+            "navigationDiagnostics": {
+              "documentRequests": [
+                {
+                  "time": 1791965062620,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/",
+                  "method": "GET"
+                }
+              ],
+              "frameNavigations": [
+                {
+                  "time": 1791965062643,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965063635,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965064807,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965065016,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965081349,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965083835,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965109956,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965110654,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791965127873,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791965128686,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965131882,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965131954,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965136332,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965136380,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/#study"
+                },
+                {
+                  "time": 1791965145615,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/#study"
+                },
+                {
+                  "time": 1791965145649,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/#course-info"
+                },
+                {
+                  "time": 1791965150175,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/#course-info"
+                },
+                {
+                  "time": 1791965150213,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/#assignments"
+                },
+                {
+                  "time": 1791965157009,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/#assignments"
+                },
+                {
+                  "time": 1791965157937,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965176356,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965178308,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965179258,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965180029,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965180899,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965183608,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965183698,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965195604,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965197174,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965198223,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965198269,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965213610,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965219208,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965259278,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965259410,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791965278007,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791965279342,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965279787,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965279891,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965292375,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965294349,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965295386,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965295405,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965302857,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965305866,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965308245,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965308317,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791965320955,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791965321694,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965322093,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965322158,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965334714,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965336925,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965337415,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965337510,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965381061,
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                }
+              ],
+              "pageEvents": [
+                {
+                  "time": 1791965062645,
+                  "type": "Page.frameNavigated",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "loaderId": "6C657B9AF99B313C0B6DDEB6BB7E6D48",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965063653,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965064810,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965065016,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965081349,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965083835,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965109956,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965110654,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791965127874,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791965128686,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965131882,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965131954,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965136332,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965136381,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/#study"
+                },
+                {
+                  "time": 1791965145616,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/#study"
+                },
+                {
+                  "time": 1791965145650,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/#course-info"
+                },
+                {
+                  "time": 1791965150176,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/#course-info"
+                },
+                {
+                  "time": 1791965150213,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/#assignments"
+                },
+                {
+                  "time": 1791965157009,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/#assignments"
+                },
+                {
+                  "time": 1791965157937,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965176356,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965178310,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965179258,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965180029,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965180899,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965183610,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965183698,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965195611,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965197174,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965198223,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965198269,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965213610,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965219208,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965259279,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965259410,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791965278008,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791965279342,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965279788,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965279896,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965292375,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965294351,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965295386,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965295406,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965302857,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                },
+                {
+                  "time": 1791965305870,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965308245,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965308318,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791965320955,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth141/"
+                },
+                {
+                  "time": 1791965321711,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965322093,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965322158,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965334715,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/cen100/"
+                },
+                {
+                  "time": 1791965336925,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965337415,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/"
+                },
+                {
+                  "time": 1791965337510,
+                  "type": "Page.navigatedWithinDocument",
+                  "frameId": "FA10C3C64067F406BFACBD12DDAEA4E4",
+                  "url": "http://127.0.0.1:42001/tmu-course-guides/mth140/"
+                }
+              ],
+              "failure": {
+                "time": 1791965370511,
+                "pageURL": "http://127.0.0.1:42001/tmu-course-guides/mth140/",
+                "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-course-link=\"desk\"]')\u001b[22m\n\u001b[2m    - locator resolved to <a data-course-link=\"desk\" class=\"course-link desk-link\" href=\"http://127.0.0.1:42001/tmu-course-guides/\">…</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n",
+                "snapshotError": "Navigation snapshot exceeded 5000 ms"
+              }
+            },
+            "clockMethod": "Moving Date offset at Oct 13 noon Toronto; native animation frames and timers remain instrumented.",
+            "garbageCollection": {
+              "available": true,
+              "method": "Playwright page.requestGC before both snapshots"
+            },
+            "baseline": {
+              "listeners": {
+                "live": 107,
+                "retained": 107,
+                "connected": 103,
+                "disconnected": 0,
+                "other": 4,
+                "details": [
+                  {
+                    "target": "a",
+                    "type": "click",
+                    "capture": false,
+                    "once": false,
+                    "source": "e=>{e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "AbortSignal",
+                    "type": "abort",
+                    "capture": false,
+                    "once": true,
+                    "source": "()=>{if(live===state)unmount();}",
+                    "status": "other",
+                    "count": 1
+                  },
+                  {
+                    "target": "AbortSignal",
+                    "type": "abort",
+                    "capture": false,
+                    "once": true,
+                    "source": "()=>{if(signal.aborted)return;controller.abort();const pending=[...cleanups].reverse();cleanups.clear();for(const fn of pending)fn();}",
+                    "status": "other",
+                    "count": 1
+                  },
+                  {
+                    "target": "body",
+                    "type": "touchstart",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(e){return e}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "button",
+                    "type": "click",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>{input.value='';render();input.focus();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "button",
+                    "type": "click",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>{mode=['auto','dark','light'][(['auto','dark','light'].indexOf(mode)+1)%3];applyTheme();try{localStorage.setItem('tmu-guide-theme-v1',mode)}catch{}}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "button",
+                    "type": "click",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>close()",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "canvas",
+                    "type": "webglcontextcreationerror",
+                    "capture": false,
+                    "once": false,
+                    "source": "function nn(M){Bt(\"WebGLRenderer: A WebGL context could not be created. Reason: \",M.statusMessage)}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "canvas",
+                    "type": "webglcontextlost",
+                    "capture": false,
+                    "once": false,
+                    "source": "function contextLost(event){ event.preventDefault(); // three does too; restoration needs it if(lost)return;lost=true;losses++; cancel();busy=requested=false;last=0;dropTargets(); emit(listeners.lost,'context'); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "canvas",
+                    "type": "webglcontextlost",
+                    "capture": false,
+                    "once": false,
+                    "source": "function he(M){M.preventDefault(),$l(\"WebGLRenderer: Context Lost.\"),D=!0}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "canvas",
+                    "type": "webglcontextrestored",
+                    "capture": false,
+                    "once": false,
+                    "source": "function contextRestored(){ if(!lost)return;lost=false; if(losses>=2){release('lost',false);return;} // a second loss keeps the poster for the rest of the visit emit(listeners.restored);requestFrame(); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "canvas",
+                    "type": "webglcontextrestored",
+                    "capture": false,
+                    "once": false,
+                    "source": "function re(){$l(\"WebGLRenderer: Context Restored.\"),D=!1;let M=O.autoReset,L=Ot.enabled,H=Ot.autoUpdate,z=Ot.needsUpdate,V=Ot.type;Lt(),O.autoReset=M,Ot.enabled=L,Ot.autoUpdate=H,Ot.needsUpdate=z,Ot.type=V}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "dialog#ns-palette",
+                    "type": "cancel",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{event.preventDefault();close();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "dialog#ns-palette",
+                    "type": "click",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{if(event.target===dialog){const box=dialog.getBoundingClientRect();if(event.clientX<box.left||event.clientX>box.right||event.clientY<box.top||event.clientY>box.bottom)close();}}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "dialog#ns-palette",
+                    "type": "close",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>{if(!dialog.open&&opener)finish();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "dialog#ns-palette",
+                    "type": "keydown",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{ if(event.isComposing)return; if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close();return;} if(event.target!==input)return; if(['ArrowDown','ArrowUp','Home','End','Enter'].includes(event.key)){event.preven",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "div#ns-palette-results",
+                    "type": "click",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{const option=event.target.closest('[data-result]');if(option)run(Number(option.dataset.result));}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "div#ns-palette-results",
+                    "type": "pointerdown",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>event.preventDefault()",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "div#ns-palette-results",
+                    "type": "pointermove",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{const option=event.target.closest('[data-result]');if(option&&!results[Number(option.dataset.result)]?.disabled)select(Number(option.dataset.result));}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "change",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{if(event.target.matches?.('#section-select,#contact-section,#contact-group'))queueMicrotask(reindex);}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "change",
+                    "capture": false,
+                    "once": false,
+                    "source": "function refreshProfiles(){for(const [id] of courses){let profile;try{profile=JSON.parse(localStorage.getItem(id==='cen100'?'cen100-contact-choice-v1':id+'-section-v1')||'null')}catch{}const section=Number(id==='cen100'?profile?.section:pro",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "click",
+                    "capture": true,
+                    "once": false,
+                    "source": "e=>{if(e.isTrusted)userGesture=true;}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "click",
+                    "capture": false,
+                    "once": false,
+                    "source": "e=>{if(e.target.closest('[data-ns-section]'))$('.workspace-section')?.click();else if(e.target.closest('[data-ns-motion]'))toggleMotion();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "click",
+                    "capture": true,
+                    "once": false,
+                    "source": "event=>{ const target=event.target?.closest?.('a,button,input'); const row={time:performance.now(),tag:target?.tagName,id:target?.id,route:target?.dataset.courseLink,completion:target?.dataset.quickComplete,view:target?.dataset.workspaceVie",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "click",
+                    "capture": true,
+                    "once": false,
+                    "source": "event=>{ const target=event.target.closest?.('[data-ns-search],.workspace-search');if(!target||bypass)return; event.preventDefault();event.stopImmediatePropagation();open(target); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "click",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{if(event.target.closest?.('.hub-theme'))queueMicrotask(reindex);}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "course-schedule",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>reindex()",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "course-view-change",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>reindex()",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "DOMContentLoaded",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(e,n){if(Qe=Z.documentElement,K=Z.body,kr=[W,Z,Qe,K],nt&&!e&&!Ci){xe(F,\"scrollEnd\",Tn);return}Rn(),Ue=F.isRefreshing=!0,Ci||Cn();var t=jt(\"refreshInit\");pn&&F.sort(),n||Nr(),N.forEach(function(i){Le(i)&&(i.smooth&&(i.target.style.sc",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "guide-completion",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>reindex()",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "guide-motion-change",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>motionLabel(motion)",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "guide-motion-change",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>reindex()",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "guide-motion-change",
+                    "capture": false,
+                    "once": false,
+                    "source": "function gateChange(){if(runnable()){last=0;requestFrame();}else{cancel();last=0;sleep();}}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "guide-motion-change",
+                    "capture": false,
+                    "once": false,
+                    "source": "function policyChanged(event){ if(active&&(event.type==='night-hold'&&event.detail===true||transitionPolicy({window,url:active.url,fromURL:active.fromURL})!==active.policy))cancel(); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "guide-motion-change",
+                    "capture": false,
+                    "once": false,
+                    "source": "function syncRoot(){const root=document.documentElement;root.classList.toggle('ns-still',!ambientAllowed());root.classList.toggle('ns-held',held());}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "keydown",
+                    "capture": true,
+                    "once": false,
+                    "source": "e=>{if(e.isTrusted)userGesture=true;}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "keydown",
+                    "capture": true,
+                    "once": false,
+                    "source": "event=>{ if(event.key==='Escape'&&event.target.closest?.('#workspace-search')){ const button=document.querySelector('.workspace-search');if(button?.getAttribute('aria-expanded')==='true'){event.preventDefault();event.stopPropagation();bypas",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "mousedown",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){return cr=1}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "mouseup",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){return cr=0}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "night-hold",
+                    "capture": false,
+                    "once": false,
+                    "source": "function gateChange(){if(runnable()){last=0;requestFrame();}else{cancel();last=0;sleep();}}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "night-hold",
+                    "capture": false,
+                    "once": false,
+                    "source": "function policyChanged(event){ if(active&&(event.type==='night-hold'&&event.detail===true||transitionPolicy({window,url:active.url,fromURL:active.fromURL})!==active.policy))cancel(); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "night-hold",
+                    "capture": false,
+                    "once": false,
+                    "source": "function syncRoot(){const root=document.documentElement;root.classList.toggle('ns-still',!ambientAllowed());root.classList.toggle('ns-held',held());}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "night-sound",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>reindex()",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "night-tier",
+                    "capture": false,
+                    "once": false,
+                    "source": "e=>fn(e.detail.tier)",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "pointerdown",
+                    "capture": true,
+                    "once": false,
+                    "source": "e=>{if(e.isTrusted)userGesture=true;}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "pointerdown",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){return cr=1}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "pointerup",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){return cr=0}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "route-changed",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>{close(false);reindex();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "route-changed",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>{if(routeLife?.root!==document.querySelector('.wrap,.math-wrap'))unbindRoute();mount();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "route-changed",
+                    "capture": false,
+                    "once": false,
+                    "source": "e=>{if(e.detail?.route==='desk'){dock.hidden=true;dock.inert=true;document.documentElement.classList.remove('ns-docked');}}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "route-changed",
+                    "capture": false,
+                    "once": false,
+                    "source": "e=>setRoute(e.detail?.route)",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "route-changed",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{window.__qaRouteCompleted=event.detail?.route;}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "route-changed",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>append(state.routes,{time:performance.now(),route:event.detail?.route,from:event.detail?.from,url:location.href,shell:document.documentElement.dataset.shellId})",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "route-changed",
+                    "capture": false,
+                    "once": false,
+                    "source": "function refresh(){const route=document.body.dataset.page==='desk'?'desk':document.body.dataset.course;const utilities=root.querySelector('.workspace-utilities');if(utilities){utilities.hidden=route==='desk';if(route==='desk')root.querySele",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "route-will-change",
+                    "capture": false,
+                    "once": false,
+                    "source": "function willChange(event){ const detail=event.detail;if(typeof detail?.waitUntil!=='function')return; cancel(); // Let every navigation guard veto first. The router starts its fetch in this // same turn, rather than waiting for either anim",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "scroll",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){(!Xe||!Xe.isPressed||Xe.startX>K.clientWidth)&&(N.cache++,Xe?Oi||(Oi=requestAnimationFrame(Ct)):Ct(),nt||jt(\"scrollStart\"),nt=Ne())}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "touchcancel",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(e){return e}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "touchend",
+                    "capture": true,
+                    "once": false,
+                    "source": "e=>{if(e.isTrusted)userGesture=true;}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "touchend",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){return cr=0}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "touchstart",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){return cr=1}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "visibilitychange",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>{if(document.hidden)clearTimeout(state.timer);else render();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "visibilitychange",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>{if(document.visibilityState==='hidden')hide();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "visibilitychange",
+                    "capture": false,
+                    "once": false,
+                    "source": "function gateChange(){if(runnable()){last=0;requestFrame();}else{cancel();last=0;sleep();}}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "visibilitychange",
+                    "capture": false,
+                    "once": false,
+                    "source": "function policyChanged(event){ if(active&&(event.type==='night-hold'&&event.detail===true||transitionPolicy({window,url:active.url,fromURL:active.fromURL})!==active.policy))cancel(); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "visibilitychange",
+                    "capture": false,
+                    "once": false,
+                    "source": "function syncRoot(){const root=document.documentElement;root.classList.toggle('ns-still',!ambientAllowed());root.classList.toggle('ns-held',held());}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "visibilitychange",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){var S=W.innerWidth,_=W.innerHeight;Z.hidden?(Kr=S,jr=_):(Kr!==S||jr!==_)&&Ti()}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "workspace-changed",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>reindex()",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "document",
+                    "type": "workspace-changed",
+                    "capture": false,
+                    "once": false,
+                    "source": "function mount(){ const nav=document.querySelector('.workspace-nav');if(!nav||nav.hidden||routeLife)return;const life=routeLife=scope();life.root=document.querySelector('.wrap,.math-wrap');const queue=fn=>queueMicrotask(()=>{if(!life.signal",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "html",
+                    "type": "scroll",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){return bt&&bt.isPressed||N.cache++}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "input#ns-palette-input",
+                    "type": "input",
+                    "capture": false,
+                    "once": false,
+                    "source": "(preserve=false)=>{ const previous=preserve===true?results[active]?.id:null,query=input.value.trim(),found=searchIndex(index,input.value); // The guide-search suggestion closes every non-empty query on a course page; it has no group heading",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "MediaQueryList",
+                    "type": "change",
+                    "capture": false,
+                    "once": false,
+                    "source": "function policyChanged(event){ if(active&&(event.type==='night-hold'&&event.detail===true||transitionPolicy({window,url:active.url,fromURL:active.fromURL})!==active.policy))cancel(); }",
+                    "status": "other",
+                    "count": 1
+                  },
+                  {
+                    "target": "MediaQueryList",
+                    "type": "change",
+                    "capture": false,
+                    "once": false,
+                    "source": "function updatePreference(){document.documentElement.dataset.motion=motionAllowed()?'on':'off';if(!motionAllowed())for(const owner of [...tracks.keys()])cancel(owner);document.dispatchEvent(new CustomEvent('guide-motion-change',{detail:{ena",
+                    "status": "other",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "__playwright_global_listeners_check__",
+                    "capture": false,
+                    "once": false,
+                    "source": "() => seenEvent = true",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "auxclick",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "click",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "click",
+                    "capture": true,
+                    "once": false,
+                    "source": "event=>{const a=linkFromEvent(event);if(isRouteLink(event,a,{base,currentURL:window.location.href})){event.preventDefault();navigate(a.href,{origin:transitionOrigin(window,event.detail>0?a:null)});}}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "contextmenu",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "dblclick",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "focus",
+                    "capture": true,
+                    "once": false,
+                    "source": "event=>{if(lastPointerType!=='touch')warm(event);}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "focus",
+                    "capture": false,
+                    "once": false,
+                    "source": "function render(){ if(!live)return; clearTimeout(live.timer); const {root,data}=live,now=Date.now(),targets=[]; for(const course of COURSE_IDS){ const records=data[course];if(!records)continue; // records unavailable: that card keeps its pl",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "hashchange",
+                    "capture": true,
+                    "once": false,
+                    "source": "event=>{ if(dispatchingHash)return; if(suppressHash!==null&&event.newURL===suppressHash){suppressHash=null;event.stopImmediatePropagation();return;} if(swapping){event.stopImmediatePropagation();return;} // Bookkeeping for a traversal belon",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "keydown",
+                    "capture": true,
+                    "once": false,
+                    "source": "()=>{lastPointerType=null;}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "load",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(e,n){if(Qe=Z.documentElement,K=Z.body,kr=[W,Z,Qe,K],nt&&!e&&!Ci){xe(F,\"scrollEnd\",Tn);return}Rn(),Ue=F.isRefreshing=!0,Ci||Cn();var t=jt(\"refreshInit\");pn&&F.sort(),n||Nr(),N.forEach(function(i){Le(i)&&(i.smooth&&(i.target.style.sc",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "mousedown",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "mousemove",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "mouseup",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "pagehide",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>{latestRequest?.cancel();hide();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "pagehide",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>active?.cancel()",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "pagehide",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{if(event.persisted){sleeping=true;cancel();last=0;}else release('unloaded');}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "pageshow",
+                    "capture": false,
+                    "once": false,
+                    "source": "e=>{if(e.persisted)render();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "pageshow",
+                    "capture": false,
+                    "once": false,
+                    "source": "event=>{if(event.persisted&&sleeping){sleeping=false;requestFrame();}}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "pointerdown",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "pointerdown",
+                    "capture": true,
+                    "once": false,
+                    "source": "event=>{lastPointerType=event.pointerType||'mouse';}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "pointerenter",
+                    "capture": true,
+                    "once": false,
+                    "source": "event=>{if(event.pointerType!=='touch'&&fineHover())warm(event);}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "pointerup",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "popstate",
+                    "capture": true,
+                    "once": false,
+                    "source": "event=>{ browserEntry=event.state?.[STATE_KEY]; if(restoring){ if(browserEntry?.id===restoring.id){const done=restoring.resolve;restoring=null;done();} else{event.stopImmediatePropagation();const delta=restoring.index-browserEntry?.index;if",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "resize",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(e){N.cache++,(e===!0||!Oe&&!dn&&!Z.fullscreenElement&&!Z.webkitFullscreenElement&&(!yr||_n!==W.innerWidth||Math.abs(W.innerHeight-gn)>W.innerHeight*.25))&&or.restart(!0)}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "scroll",
+                    "capture": false,
+                    "once": false,
+                    "source": "()=>{ if(swapping||settle)return; positions.set(activeEntry,scroll()); persistTimer??=window.setTimeout(persistScroll,Math.max(250,1000-(Date.now()-lastPersist))); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "storage",
+                    "capture": false,
+                    "once": false,
+                    "source": "e=>{if(e.key==='guide-motion-paused'){scenePaused=e.newValue==='true';document.dispatchEvent(new Event('guide-motion-change'));}}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "storage",
+                    "capture": false,
+                    "once": false,
+                    "source": "e=>{if(e.key===null||watched.has(e.key))render();}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "storage",
+                    "capture": false,
+                    "once": false,
+                    "source": "function refreshProfiles(){for(const [id] of courses){let profile;try{profile=JSON.parse(localStorage.getItem(id==='cen100'?'cen100-contact-choice-v1':id+'-section-v1')||'null')}catch{}const section=Number(id==='cen100'?profile?.section:pro",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "touchcancel",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "touchend",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "touchstart",
+                    "capture": true,
+                    "once": false,
+                    "source": "(event) => { var _a; return (_a = this._hitTargetInterceptor) == null ? void 0 : _a.call(this, event); }",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "wheel",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){(!Xe||!Xe.isPressed||Xe.startX>K.clientWidth)&&(N.cache++,Xe?Oi||(Oi=requestAnimationFrame(Ct)):Ct(),nt||jt(\"scrollStart\"),nt=Ne())}",
+                    "status": "connected",
+                    "count": 1
+                  },
+                  {
+                    "target": "window",
+                    "type": "wheel",
+                    "capture": false,
+                    "once": false,
+                    "source": "function(){return s.tween&&s.tween.kill()&&(s.tween=0)}",
+                    "status": "connected",
+                    "count": 2
+                  }
+                ]
+              },
+              "observers": {
+                "total": 1,
+                "intersection": {
+                  "active": 0,
+                  "instances": 0,
+                  "targets": 0,
+                  "connectedTargets": 0
+                },
+                "mutation": {
+                  "active": 1,
+                  "instances": 1,
+                  "targets": 1,
+                  "connectedTargets": 1
+                },
+                "resize": {
+                  "active": 0,
+                  "instances": 0,
+                  "targets": 0,
+                  "connectedTargets": 0
+                }
+              },
+              "raf": {
+                "pending": 3,
+                "recurring": 2
+              },
+              "canvases": {
+                "connected": 1,
+                "contexts": 1,
+                "drawCalls": 1434,
+                "drawCalls2d": 690
+              },
+              "webgl": {
+                "active": 1,
+                "lost": 0,
+                "total": 1,
+                "connected": 1,
+                "drawCalls": 744
+              },
+              "gsap": {
+                "available": true,
+                "tickerCallbacks": 2,
+                "scrollTriggers": 0
+              }
+            },
+            "shell": "3a04f276-7a4a-4394-a9ef-f557e75526e8"
+          }
+        ],
+        "runnerErrors": []
+      },
+      "skipped": [],
+      "durationMs": 319114,
+      "failures": 1
+    }
+  ],
+  "runErrors": []
+}
