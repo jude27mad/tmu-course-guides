@@ -9,6 +9,7 @@ import {META,$,escape,TERM,today,dateLabel,dayLabel,addDays,scheduleRows,onSched
 import {currentBookState,currentBookHost} from '../book/book-state.mjs';
 import {weekIndexFor} from '../book/weeks.mjs';
 import {currentTarget,onTarget} from './deadline.mjs?v=20261013-shift2';
+import {targetDate} from './targets.mjs?v=20261013-shift1';
 
 const ms=d=>Date.parse(d+'T12:00:00Z');
 const span=ms(TERM.end)-ms(TERM.start);
@@ -107,10 +108,13 @@ const allDone=view=>!!view?.entries?.length&&view.entries.every(entry=>entry.com
 /** The pending spread's index, or -1. */
 const pendingIndex=list=>list.findIndex(spread=>spread?.pending||!spread?.start);
 
-/** Which spread holds the dock's target: its date or week, the pending spread for an undated final. */
+/** Which spread holds the dock's target: its date or week, the pending spread for an undated final.
+    An exact target (a quiz once a section is chosen, the midterm) carries its date only in `at`; targetDate()
+    reads it as a Toronto date. A "by end of day" due counts down to the next Toronto midnight, so it is dated
+    a moment earlier, on its own day. */
 export function targetWeek(target,list){
  if(!target||!Array.isArray(list)||!list.length||target.precision==='empty')return -1;
- const date=target.date||target.week||null;
+ const date=targetDate(target.endOfDay&&Number.isFinite(target.at)?{...target,at:target.at-1}:target)||target.week||null;
  if(!date||target.precision==='pending'){const pending=pendingIndex(list);return pending>=0?pending:list.length-1;}
  return weekIndexFor(date,list);
 }
@@ -147,22 +151,25 @@ export function mountRail(header,state,{signal,setFocus=()=>{},slot=null}={}){
    tickCount=list.length;
    ticks.innerHTML=list.map((spread,i)=>{const pending=spread.pending||!spread.start;return `<button type="button" role="radio" class="ns-tick${pending?' ns-tick-pending':''}" data-index="${i}" aria-checked="false" tabindex="-1"><i class="ns-tick-bar" aria-hidden="true"></i><span class="ns-tick-n" aria-hidden="true">${pending?'Ex':i+1}</span></button>`;}).join('');
   }
-  const s=state.snapshot();
+  const s=state.snapshot(),now=today(),spread=list[s.today];
+  // Before and after the term, s.today is clamped to the first or the pending spread (weekIndexFor), which does
+  // not contain today: no tick is "today" then, and the note never names a semester week.
+  const inWeek=!!spread?.start&&now>=spread.start&&now<=spread.end;
   [...ticks.children].forEach((tick,i)=>{
    const view=state.view(i);
    if(view&&tick.getAttribute('aria-label')!==view.aria)tick.setAttribute('aria-label',view.aria);
    tick.dataset.kind=landmark(view)||'none';
    tick.toggleAttribute('data-done',allDone(view));
    tick.toggleAttribute('data-past',i<s.today);
-   const isToday=i===s.today;
+   const isToday=inWeek&&i===s.today;
    if(isToday){tick.setAttribute('aria-current','date');tick.setAttribute('aria-describedby',todayNote.id);}
    else{tick.removeAttribute('aria-current');tick.removeAttribute('aria-describedby');}
    tick.toggleAttribute('data-today',isToday);
   });
-  const spread=list[s.today];
-  todayNote.textContent=spread?.start?`Today, ${longDate(today())}. Semester week ${s.today+1}`:'';
-  // The ruler's elapsed line runs to the middle of today's week.
-  ticks.style.setProperty('--elapsed',((s.today+.5)/Math.max(1,list.length)*100).toFixed(3)+'%');
+  todayNote.textContent=inWeek?`Today, ${longDate(now)}. Semester week ${s.today+1}`:'';
+  // The ruler's elapsed line runs to the middle of today's week; before the term nothing has elapsed.
+  const before=!inWeek&&!!spread?.start&&now<spread.start;
+  ticks.style.setProperty('--elapsed',before?'0%':((s.today+.5)/Math.max(1,list.length)*100).toFixed(3)+'%');
   select(s.index);
  }
  function select(index){
@@ -284,6 +291,14 @@ export function mountRail(header,state,{signal,setFocus=()=>{},slot=null}={}){
   for(const row of body.querySelectorAll('.ns-spread-item'))row.toggleAttribute('data-hover',row.dataset.id===hovered);
  });
  if('ResizeObserver' in window)own.observer(new ResizeObserver(()=>centreTick(state.snapshot().index)),scroller);
+ /* A caption that wraps (a long week, a narrow column) changes the rail's height. The pinned header keeps the
+    height ScrollTrigger measured, which would clip the action bar, so a pinned rail asks scroll.mjs to measure
+    again; unpinned, the main column's own resize observer already does. */
+ if('ResizeObserver' in window){let height=0;own.observer(new ResizeObserver(([entry])=>{
+  const h=Math.round(entry.contentRect.height);
+  if(height&&h!==height&&section.closest('.pin-spacer'))document.dispatchEvent(new CustomEvent('night-refresh'));
+  height=h;
+ }),section);}
 
  const dispose=()=>{own.dispose();section.remove();};
  return {element:section,dispose,render};
@@ -310,9 +325,12 @@ function mountWeekView(panel,state){
    // Each spread owns an equal slot; a date sits at its weekday inside its week's slot.
    const x=date=>{const days=Math.round((ms(date)-ms(anchor))/86400000);return Math.max(0,Math.min(count-1,Math.floor(days/7)))*slot+(days%7+.5)/7*slot;};
    const todayX=list[s.today]?.start&&now>=list[0].start?x(now):list[s.today]?.start?0:(s.today+.5)*slot;
+   // s.today is clamped outside the term (weekIndexFor): only a week that contains today is counted or marked.
+   const inWeek=!!list[s.today]?.start&&now>=list[s.today].start&&now<=list[s.today].end;
+   const term=inWeek?`<b>${s.today+1}</b> of ${dated.length} weeks`:first&&now<first?'Before term':first&&now>dated.at(-1).end?'After term':'';
    const records=list.flatMap((spread,i)=>(spread.records||[]).map(record=>({record,i,view:views[i]})));
    const done=records.filter(r=>r.record.completed).length;
-   root.querySelector('.ns-tl-stats').innerHTML=`<span><b>${s.today+1}</b> of ${dated.length} weeks</span><span><b>${done}</b>/${records.length} recorded</span>`;
+   root.querySelector('.ns-tl-stats').innerHTML=`<span>${term}</span><span><b>${done}</b>/${records.length} recorded</span>`;
    track.style.setProperty('--elapsed',todayX.toFixed(2)+'%');track.style.setProperty('--slot',slot.toFixed(4)+'%');
    track.style.minWidth=Math.max(720,count*52)+'px';
    const monthMarks=[];let last='';
@@ -327,7 +345,7 @@ function mountWeekView(panel,state){
     return `<button type="button" class="ns-tl-node${record.completed?' is-done':''}${i<s.today?' is-past':''}${entry?.chip&&!record.completed&&entry.chip!=='PASSED'?' is-next':''}${day?'':' is-week'}" style="left:${left.toFixed(3)}%" data-open="${escape(record.open||'')}" aria-label="${escape(label)}"><i aria-hidden="true">${record.completed?'✓':''}</i><span class="ns-tl-tip" aria-hidden="true"><b>${escape(entry?.when||'Date pending')}</b>${escape(entry?.title||record.title)}</span></button>`;
    }).join('');
    track.innerHTML=`<div class="ns-tl-rail"><span class="ns-tl-fill"></span></div><span class="ns-wv-band" aria-hidden="true"></span>`+
-    list.map((spread,i)=>`<button type="button" class="ns-wv-week${spread.start?'':' is-pending'}${i===s.today?' is-today':''}" style="left:${(i*slot).toFixed(3)}%;width:${slot.toFixed(3)}%" data-index="${i}" aria-label="${escape(views[i]?.aria||'')}"${i===s.today?' aria-current="date"':''}><span aria-hidden="true">${spread.start?i+1:'Ex'}</span></button>`).join('')+
+    list.map((spread,i)=>`<button type="button" class="ns-wv-week${spread.start?'':' is-pending'}${inWeek&&i===s.today?' is-today':''}" style="left:${(i*slot).toFixed(3)}%;width:${slot.toFixed(3)}%" data-index="${i}" aria-label="${escape(views[i]?.aria||'')}"${inWeek&&i===s.today?' aria-current="date"':''}><span aria-hidden="true">${spread.start?i+1:'Ex'}</span></button>`).join('')+
     monthMarks.map(([left,label])=>`<span class="ns-tl-month" style="left:${left.toFixed(3)}%" aria-hidden="true">${escape(label)}</span>`).join('')+
     (list[s.today]?.start?`<span class="ns-tl-today" style="left:${todayX.toFixed(3)}%"><i aria-hidden="true"></i><span>Today</span></span>`:'')+nodes;
   }

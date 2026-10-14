@@ -186,6 +186,10 @@ function createService(core){
  };
  const openWeek=async entry=>{
   const route=core.route(),week=index.weeks[entry.index];
+  // The palette has released its own hold, but the page's hold for an open modal (scroll.mjs) lets go in a
+  // microtask after the dialog closes. Yield one task first, so the book's policy() is no longer held and
+  // the week turns in full motion instead of cutting (semester-book spec §6.9).
+  await new Promise(resolve=>setTimeout(resolve,0));if(core.route()!==route)return;
   const event=new CustomEvent('book-open-week',{detail:{index:entry.index},cancelable:true});document.dispatchEvent(event);if(event.defaultPrevented||core.route()!==route)return;
   window.CourseWorkspace?.show('assignments',true);await core.frames(2);if(core.route()!==route)return;
   const timeline=document.querySelector('.ns-timeline');if(!timeline)return;

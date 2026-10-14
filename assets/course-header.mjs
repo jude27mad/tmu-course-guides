@@ -52,7 +52,9 @@ export function bookPolicy(){
  const p=preference()||{};
  return p.reduced&&!p.forced&&!p.scenePaused&&!p.paused&&!held()?'fade':'cut';
 }
-const HINT_SEEN='night-dragged'; // the session flag hero.mjs already keeps for the art's drag hint
+// The book's own session flag (spec §6.2). hero.mjs keeps 'night-dragged' for the CEN100/MTH141 art: rotating
+// that art is a different gesture, so neither hint may clear the other.
+const HINT_SEEN='tmu-book-hint-v1';
 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 
 function mountBook(ctx,life,header,course){
@@ -127,9 +129,11 @@ function mountBook(ctx,life,header,course){
   window.CourseWorkspace?.show('assignments');
   // The pin rebases on this jump instead of turning pages (scroll.mjs).
   document.dispatchEvent(new CustomEvent('night-teleport',{detail:{source:'skip'}}));
-  const view=document.getElementById('workspace-assignments')||target;
-  if(window.NightScroll)window.NightScroll.scrollTo(view,{immediate:true,offset:-skipOffset()});
-  else window.scrollTo({top:view.getBoundingClientRect().top+window.scrollY-skipOffset(),behavior:'instant'});
+  // The jump shows the coursework view from its heading, unless that leaves the focused panel below the fold.
+  const offset=skipOffset();let view=document.getElementById('workspace-assignments');
+  if(!view?.contains(target)||target.getBoundingClientRect().top-view.getBoundingClientRect().top+offset>innerHeight-64)view=target;
+  if(window.NightScroll)window.NightScroll.scrollTo(view,{immediate:true,offset:-offset});
+  else window.scrollTo({top:view.getBoundingClientRect().top+window.scrollY-offset,behavior:'instant'});
   if(!target.hasAttribute('tabindex'))target.setAttribute('tabindex','-1');
   target.focus({preventScroll:true});
  });
@@ -143,7 +147,9 @@ function mountBook(ctx,life,header,course){
 
  /* §6.10: data refresh. Every source becomes setWeeks(); views recompute lazily from the new context. */
  const refresh=reason=>{if(life.signal.aborted)return;recompute();book.setWeeks(context.weeks,{reason});};
- life.on(document,'guide-completion',()=>queueMicrotask(()=>refresh('completion')));
+ // guide-motion fires guide-completion from a capture-phase microtask, which for real input runs before
+ // math-guide's bubble handler saves Mark done / Undo / the checkbox. A task reads the committed record.
+ life.on(document,'guide-completion',()=>life.timeout(()=>refresh('completion'),0));
  life.on(document,'change',event=>{if(event.target?.id==='section-select')queueMicrotask(()=>refresh('section'));});
  life.on(window,'storage',event=>{if(event.key===course+'-progress-v1'||event.key===course+'-section-v1')refresh('storage');});
  let day=torontoToday();
@@ -179,16 +185,25 @@ function mountBook(ctx,life,header,course){
   notice.hidden=reason==='tier-low'||reason==='aborted';retry.hidden=reason!=='error';
   publish({});
  };
+ // The engine's first frame, on the first mount and on the one remount after a context restore (§5.9): the
+ // fallback leaves and the host is republished as webgl2, so scroll.mjs rebinds the pin and swipe. Idempotent.
+ const showBook=()=>{
+  if(life.signal.aborted||header.dataset.bookView==='webgl2')return;
+  header.dataset.bookView='webgl2';notice.hidden=true;retry.hidden=true;publish({});
+ };
+ life.on(art,'book-ready',()=>{if(state.book)showBook();});
+ // A module whose fetch failed stays failed in this document's module map: only a reload fetches it again.
+ let loadFailed=false;const unloaded=error=>{loadFailed=true;throw error;};
  let attempt=0;
  async function start(){
   const ticket=++attempt;
   header.dataset.bookView='pending';
   try{
-   const stage=await import('./app/stage.mjs?v=20261013-stage1');
+   const stage=await import('./app/stage.mjs?v=20261013-stage1').catch(unloaded);
    if(ticket!==attempt||life.signal.aborted)return;
    const status=stage.probe();
    if(!status.ok){showFallback(status.reason);return;}
-   const scene=await import('./book/book-scene.mjs');
+   const scene=await import('./book/book-scene.mjs').catch(unloaded);
    if(ticket!==attempt||life.signal.aborted)return;
    const controller=await scene.mountBook(art,{course,state:book,getView:i=>book.view(i),signal:life.signal,arrival,
     onOpen:open=>openItem(open),onFallback:reason=>showFallback(reason),
@@ -197,25 +212,27 @@ function mountBook(ctx,life,header,course){
    state.book=controller;publish({});
    const renderer=await controller.ready;
    if(ticket!==attempt||life.signal.aborted)return;
-   if(renderer==='webgl2'){header.dataset.bookView='webgl2';notice.hidden=true;publish({});}
+   if(renderer==='webgl2')showBook();
    else showFallback(art.dataset.rendererReason||'unavailable');
   }catch(error){
    if(ticket!==attempt||life.signal.aborted)return;
    console.warn('Semester book unavailable',error);showFallback('error');
   }
  }
- life.on(retry,'click',()=>{state.book?.dispose?.();state.book=null;notice.hidden=true;art.dataset.renderer='pending';publish({});start();});
+ life.on(retry,'click',()=>{
+  if(loadFailed){location.reload();return;}
+  // Hiding the notice would drop focus to <body>: hand it to the current week, the control the notice points to.
+  if(notice.contains(document.activeElement))header.querySelector('.ns-tick[aria-checked="true"]')?.focus({preventScroll:true});
+  state.book?.dispose?.();state.book=null;notice.hidden=true;art.dataset.renderer='pending';publish({});start();
+ });
  if(window.requestIdleCallback){const id=requestIdleCallback(()=>start(),{timeout:900});life.own(()=>window.cancelIdleCallback?.(id));}
  else life.timeout(()=>start(),120);
  life.own(()=>{attempt++;const controller=state.book;state.book=null;controller?.dispose?.();detachBookState(book);book.dispose();});
 }
 
-/* Skip to coursework lands on the Assignments heading, the first thing in the coursework view; without a
-   workspace (no JS module), the link's own #panel-assessments anchor still works natively. */
-function skipTarget(){
- const view=document.getElementById('workspace-assignments');
- return view?.querySelector(':scope > .workspace-page-title')||document.getElementById('panel-assessments');
-}
+/* Skip to coursework lands focus in the assessments panel (spec §6.6, §10.2), the link's own anchor, which
+   also works natively without a workspace (no JS module). */
+function skipTarget(){return document.getElementById('panel-assessments');}
 /* Below the header the dock comes down over the column: land the heading just under it. */
 function skipOffset(){
  const bar=document.querySelector('.ns-dock-bar');

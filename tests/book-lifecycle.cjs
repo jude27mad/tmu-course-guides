@@ -411,7 +411,7 @@ test('a shader failure, a throwing scene and an unloading page each end cleanly'
  }finally{g.close();}
 });
 
-test('sustained slow busy frames lower the resolution once, then drop a tier',async()=>{
+test('sustained slow busy frames lower the resolution once; a tier forced with ?tier= is not dropped',async()=>{
  const f=await fixture();
  try{
   const stage=f.book.getStage(),scene=sceneController(Infinity),quality=[];stage.onQuality(q=>quality.push(q));stage.attach(f.slot,scene);
@@ -419,8 +419,9 @@ test('sustained slow busy frames lower the resolution once, then drop a tier',as
   for(let i=0;i<60;i++)f.tick(40);
   assert.equal(stage.quality,.8);assert.equal(scene.calls.resize.at(-1)[2],.8,'DPR ×0.8');
   for(let i=0;i<60;i++)f.tick(40);
-  assert.deepEqual({...tiers[0]},{tier:'mid',reason:'book frames'});
-  assert.ok(quality.length>=2);
+  // ?tier= is the QA override for software renderers; fix-engine.cjs covers the tier drop without it.
+  assert.deepEqual(tiers,[]);assert.equal(stage.quality,.8);
+  assert.equal(quality.length,1);
  }finally{f.close();}
 });
 

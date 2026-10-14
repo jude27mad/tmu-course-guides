@@ -238,7 +238,10 @@ export function createRouter({window=globalThis.window,moduleURL=import.meta.url
   const root=document.querySelector('main[data-route-region]'),skip=document.querySelector('body > .skip-link');
   let target;
   try{const id=skip&&new URL(skip.href).hash.slice(1);target=id&&document.getElementById(decodeURIComponent(id));}catch{}
-  target=target&&root.contains(target)?target:root.querySelector('h1')||root;
+  // A new page starts at its top: the skip target takes focus only when it is the region itself. A deeper one
+  // (MTH140's Skip to coursework) would put focus far below the unscrolled view and pass over the hero and
+  // the rail; the route heading takes it instead. The Skip link keeps its href for its own click and no-JS.
+  target=target===root?root:root.querySelector('h1')||root;
   if(!target.hasAttribute('tabindex'))target.setAttribute('tabindex','-1');
   target.focus({preventScroll:true});
   announce();

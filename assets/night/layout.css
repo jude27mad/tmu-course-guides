@@ -11,7 +11,7 @@
 /* Desk and stage (semester-book spec §6.2): the desk the course book lies on, and the type that sits on it.
    Light is a daylit desk, dark a lamp-lit one; posters are transparent over this same CSS desk. */
 :root{--ns-desk:#e6dfd1;--ns-desk-2:#d5cbb8;--ns-desk-light:rgb(255 252 243 / .9);--ns-desk-vignette:rgb(70 52 24 / .14);
- --ns-stage-ink:#151c1f;--ns-stage-muted:#4e5855;--ns-stage-soon:#8a4f12;--ns-stage-hot:#9a3a20;--ns-grain:.015;--ns-dock-h:64px}
+ --ns-stage-ink:#151c1f;--ns-stage-muted:#434c49;--ns-stage-soon:#8a4f12;--ns-stage-hot:#9a3a20;--ns-grain:.015;--ns-dock-h:64px}
 :root[data-theme=dark]{--ns-desk:#162024;--ns-desk-2:#0b1113;--ns-desk-light:rgb(255 196 138 / .16);--ns-desk-vignette:rgb(0 0 0 / .55);
  --ns-stage-ink:#eef0ea;--ns-stage-muted:#a1b0ae;--ns-stage-soon:#ffc9a3;--ns-stage-hot:#ff9a7c;--ns-grain:.025}
 @media(prefers-color-scheme:dark){:root:not([data-theme=light]){--ns-desk:#162024;--ns-desk-2:#0b1113;--ns-desk-light:rgb(255 196 138 / .16);--ns-desk-vignette:rgb(0 0 0 / .55);
@@ -23,6 +23,12 @@ body.workspace{--ns-accent:var(--accent);--ns-tint:color-mix(in srgb,var(--accen
  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 :root[data-theme=dark] body.workspace[data-course]{--strong:var(--accent)}
 @media(prefers-color-scheme:dark){:root:not([data-theme=light]) body.workspace[data-course]{--strong:var(--accent)}}
+/* The course accent as small type on the daylit desk: --strong deepened toward the stage ink, so the 9-11 px eyebrow
+   and HUD labels keep 4.5:1 over the desk's darker corners and vignette. It is set where --strong is (body), and the
+   lamp-lit desk keeps --strong itself. */
+body.workspace{--ns-stage-strong:color-mix(in srgb,var(--strong) 75%,var(--ns-stage-ink))}
+:root[data-theme=dark] body.workspace{--ns-stage-strong:var(--strong)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) body.workspace{--ns-stage-strong:var(--strong)}}
 
 /* ---------- Frame ---------- */
 .course-workspace{max-width:1840px}
@@ -321,12 +327,12 @@ html[data-book] body.workspace .header-upgraded>.hero-copy{grid-row:1;grid-colum
  max-width:31%;padding:0 0 calc(var(--book-stage) * .1) var(--page-gutter);margin:0;box-sizing:content-box;pointer-events:none}
 html[data-book] body.workspace .header-upgraded>.hero-copy a,html[data-book] body.workspace .header-upgraded>.hero-copy button{pointer-events:auto}
 html[data-book] body.workspace .header-upgraded h1{color:var(--ns-stage-ink)}
-html[data-book] body.workspace .header-upgraded .hero-copy :is(.team,.eyebrow){color:var(--strong)}
+html[data-book] body.workspace .header-upgraded .hero-copy :is(.team,.eyebrow){color:var(--ns-stage-strong)}
 html[data-book] body.workspace .header-upgraded .hero-copy :is(.subline,.hero-organization){display:none}
 html[data-book] .ns-hud{color:var(--ns-stage-muted)}
 html[data-book] .ns-hud [data-ns-title]{color:var(--ns-stage-ink)}
-html[data-book] .ns-hud .ns-hud-k,html[data-book] .ns-hud [data-ns-chip]{color:var(--strong)}
-html[data-book] .ns-hud .ns-hud-k{border-color:color-mix(in srgb,var(--strong) 45%,transparent)}
+html[data-book] .ns-hud .ns-hud-k,html[data-book] .ns-hud [data-ns-chip]{color:var(--ns-stage-strong)}
+html[data-book] .ns-hud .ns-hud-k{border-color:color-mix(in srgb,var(--ns-stage-strong) 45%,transparent)}
 html[data-book] body.workspace .header-upgraded>.workspace-actions{grid-row:3;grid-column:1;position:relative;z-index:3}
 /* Hidden feeds: visuals.js keeps CourseVisuals.rows for the palette; its strip never shows beside a book. */
 html[data-book] .semester-rail{display:none!important}
@@ -352,8 +358,10 @@ html[data-book] .ns-book-pause{margin-left:auto;border-color:color-mix(in srgb,v
 /* ---------- The rail: caption for the selected spread and the week controls (§6.3) ---------- */
 .ns-spread{grid-row:2;grid-column:1;position:relative;z-index:3;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"caption jump" "weeks weeks";
  column-gap:clamp(20px,3vw,40px);row-gap:18px;align-items:center;padding:16px var(--page-gutter) 14px;
- background:var(--hub-bg);border-top:1px solid var(--hub-line);color:var(--hub-ink)}
-.ns-spread-caption{grid-area:caption;display:flex;align-items:center;gap:clamp(16px,1.6vw,22px);min-width:0;min-height:48px}
+ background:var(--hub-bg);border-top:1px solid var(--hub-line);color:var(--hub-ink);container:ns-spread / inline-size}
+/* The caption never runs under the jump group: its rows wrap inside their column (an entry's when text first, then
+   its section button), and if even that cannot fit, the entries drop below the week heading. */
+.ns-spread-caption{grid-area:caption;display:flex;flex-wrap:wrap;align-items:center;gap:clamp(16px,1.6vw,22px);min-width:0;min-height:48px}
 .ns-spread-head{flex:none;display:grid;gap:5px}
 .ns-spread-kicker{margin:0;font:500 11px/1.25 var(--ns-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--strong);white-space:nowrap}
 .ns-spread-kicker b{font-weight:500;color:var(--hub-ink)}
@@ -361,14 +369,14 @@ html[data-book] .ns-book-pause{margin-left:auto;border-color:color-mix(in srgb,v
 .ns-spread-dates time{white-space:nowrap}
 .ns-spread-dates .ns-dash{color:var(--hub-muted);font-weight:400}
 .ns-spread-note{margin-left:.5em;font:500 .8rem/1 Archivo,system-ui,sans-serif;letter-spacing:0;color:var(--hub-muted);white-space:nowrap}
-.ns-spread-body{flex:1;min-width:0;align-self:stretch;display:flex;align-items:center;padding-left:clamp(16px,1.6vw,22px);border-left:1px solid var(--hub-line)}
+.ns-spread-body{flex:1;min-width:auto;align-self:stretch;display:flex;align-items:center;padding-left:clamp(16px,1.6vw,22px);border-left:1px solid var(--hub-line)}
 .ns-spread-items{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;align-items:center;gap:4px 22px;min-width:0}
-.ns-spread-item{display:flex;align-items:center;gap:10px 14px;min-width:0;border-radius:12px}
-.ns-spread-open{display:grid;align-content:center;row-gap:3px;min-height:48px;min-width:44px;padding:4px 10px 4px 0;margin:0;border:0;background:none;color:var(--hub-ink);font:inherit;text-align:left;cursor:pointer;border-radius:10px}
-.ns-item-line{display:flex;align-items:baseline;gap:10px;min-width:0}
+.ns-spread-item{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;min-width:0;border-radius:12px}
+.ns-spread-open{flex:1 1 12em;display:grid;align-content:center;row-gap:3px;min-height:48px;min-width:44px;padding:4px 10px 4px 0;margin:0;border:0;background:none;color:var(--hub-ink);font:inherit;text-align:left;cursor:pointer;border-radius:10px}
+.ns-item-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;min-width:0}
 .ns-item-kind{font:500 10px/1 var(--ns-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--strong)}
 .ns-item-title{position:relative;font:650 1rem/1.2 Archivo,system-ui,sans-serif;letter-spacing:-.01em}
-.ns-item-when{font:450 1rem/1.2 Archivo,system-ui,sans-serif;color:var(--hub-muted);white-space:nowrap}
+.ns-item-when{font:450 1rem/1.2 Archivo,system-ui,sans-serif;color:var(--hub-muted);text-wrap:pretty}
 .ns-spread-item:is([data-chip=NEXT],[data-chip=SOON],[data-chip=NOW]) .ns-item-title{padding-right:14px}
 .ns-spread-item:is([data-chip=NEXT],[data-chip=SOON],[data-chip=NOW]) .ns-item-title::after{content:'';position:absolute;right:0;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:var(--strong)}
 .ns-spread-item[data-urgency=soon] .ns-item-title::after{background:var(--ns-stage-soon)}
@@ -379,7 +387,9 @@ html[data-book] .ns-book-pause{margin-left:auto;border-color:color-mix(in srgb,v
 .ns-spread-item[data-done] .ns-item-status,.ns-spread-item[data-passed] .ns-item-status{background:var(--hub-soft);color:var(--hub-muted)}
 @media(hover:hover){.ns-spread-open:hover .ns-item-title{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}}
 .ns-spread-item[data-hover] .ns-item-title{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
-.ns-spread-open:focus-visible{outline:2px solid var(--hub-focus);outline-offset:2px}
+/* Rail focus rings are scoped under .ns-spread so they outrank the shared button:focus-visible rings
+   (course-header.css, guide-motion.css: offset 4px), which the tick scroller would clip. */
+.ns-spread .ns-spread-open:focus-visible{outline:2px solid var(--hub-focus);outline-offset:2px}
 .ns-spread .ns-spread-cta{margin:0;min-height:44px;padding:0 15px;font-size:.78rem;white-space:nowrap}
 .ns-spread-empty{margin:0;font:450 1rem/1.3 Archivo,system-ui,sans-serif;color:var(--hub-muted)}
 .ns-spread-more{position:relative}
@@ -401,7 +411,7 @@ html[data-book] .ns-book-pause{margin-left:auto;border-color:color-mix(in srgb,v
 .ns-week-next[data-mode=open]{background:color-mix(in srgb,var(--accent) 26%,var(--hub-panel));border-color:color-mix(in srgb,var(--strong) 40%,transparent)}
 .ns-week-step b{font-weight:400;font-size:1.05rem;line-height:1;color:var(--hub-muted)}
 .ns-week-step[aria-disabled=true]{opacity:.45;cursor:default}
-.ns-spread-jump button:focus-visible,.ns-week-step:focus-visible{outline:2px solid var(--hub-focus);outline-offset:2px}
+.ns-spread .ns-spread-jump button:focus-visible,.ns-spread .ns-week-step:focus-visible{outline:2px solid var(--hub-focus);outline-offset:2px}
 @media(hover:hover){.ns-spread-jump button:not([aria-disabled=true]):hover,.ns-week-step:not([aria-disabled=true]):hover{border-color:color-mix(in srgb,var(--hub-ink) 45%,transparent)}.ns-week-next[data-mode=open]:hover{border-color:var(--hub-ink)}}
 
 /* Week ticks: a semester ruler. Each mark rises with the spread's tallest pop-up (final > midterm > quiz >
@@ -433,7 +443,7 @@ html[data-book] .ns-book-pause{margin-left:auto;border-color:color-mix(in srgb,v
 .ns-tick[aria-checked=true] .ns-tick-n{font-weight:700}
 .ns-tick[aria-checked=true]::after{content:'';position:absolute;left:50%;width:18px;margin-left:-9px;bottom:0;height:2px;border-radius:2px;background:var(--hub-ink)}
 @media(hover:hover){.ns-tick:hover{background:color-mix(in srgb,var(--hub-ink) 5%,transparent)}}
-.ns-tick:focus-visible{outline:2px solid var(--hub-focus);outline-offset:-2px}
+.ns-spread .ns-tick:focus-visible{outline:2px solid var(--hub-focus);outline-offset:-2px}
 
 /* Desktop wide enough for the whole ruler: it spans the rail. */
 @media(min-width:761px) and (max-width:1000px){
@@ -442,6 +452,15 @@ html[data-book] .ns-book-pause{margin-left:auto;border-color:color-mix(in srgb,v
  .ns-spread{grid-template-columns:minmax(0,1fr);grid-template-areas:"caption" "jump" "weeks"}
  .ns-spread-jump{justify-content:flex-start}
 }
+/* A desktop column too narrow for the widest caption minimum (week heading plus a section button, about 465 px)
+   beside the widest jump group (Today plus a Next capped at 380 px, about 505 px, and the 40 px gap) stacks them like
+   the tablet rail. A container query, so the sidebar and zoom are already accounted for; the rail's own grid cannot
+   change from inside it, so its children are placed instead. */
+@media(min-width:1001px){@container ns-spread (max-width:1009.98px){
+ .ns-spread-caption{grid-area:auto;grid-column:1 / -1;grid-row:1}
+ .ns-spread-jump{grid-area:auto;grid-column:1 / -1;grid-row:2;justify-content:flex-start}
+ .ns-weeks{grid-area:auto;grid-column:1 / -1;grid-row:3}
+}}
 /* Phone: copy above the stage on the same desk, then the rail and the action bar. */
 @media(max-width:760px){
  html[data-book] body.workspace .header-upgraded{--book-stage:300px;--book-pool:50% 70%;grid-template-rows:auto auto var(--book-stage) auto auto}
@@ -484,7 +503,7 @@ html[data-book] .ns-book-pause{margin-left:auto;border-color:color-mix(in srgb,v
 .ns-wv-week[data-selected]{color:var(--hub-ink);font-weight:700}
 .ns-wv-week[data-selected]::after{content:'';position:absolute;left:30%;right:30%;bottom:4px;height:2px;border-radius:2px;background:var(--hub-ink)}
 @media(hover:hover){.ns-wv-week:hover{background:color-mix(in srgb,var(--hub-ink) 5%,transparent)}}
-.ns-wv-week:focus-visible{outline:2px solid var(--hub-focus);outline-offset:-2px}
+.ns-weekview .ns-wv-week:focus-visible{outline:2px solid var(--hub-focus);outline-offset:-2px}
 .ns-wv-band{position:absolute;top:46px;bottom:28px;left:var(--selected,0);width:var(--slot,0);border-radius:10px;background:color-mix(in srgb,var(--accent) 14%,transparent);pointer-events:none}
 .ns-weekview .ns-tl-rail{top:76px}
 .ns-weekview .ns-tl-node{top:77px}
@@ -495,6 +514,11 @@ html[data-book] .ns-book-pause{margin-left:auto;border-color:color-mix(in srgb,v
 .ns-weekview .ns-tl-today>i{top:27px}
 @media print{html[data-book] .header-upgraded::before,html[data-book] .header-upgraded::after,.ns-spread .ns-weeks,.ns-spread-jump{display:none!important}}
 
+/* ScrollTrigger measures the pin's height with its margins zeroed. With an auto width the header would lose its full
+   bleed for that moment, and the rail, which wraps to its width, would be measured taller than it lays out (the
+   pinned header then keeps blank rows). An explicit full-bleed width keeps the measured height the real one (on
+   screen only: print drops the bleed margins). */
+@media screen{html[data-book] body.workspace .header-upgraded{width:calc(100% + 2 * var(--page-gutter))}}
 /* The book pin (pinType transform) leaves the header in flow inside its spacer. GSAP copies the header's
    width without its full-bleed margins, which would leave a strip on the right; let it fill the spacer. */
 html[data-book] body.workspace .pin-spacer>.course-heading.ns-scrub{width:auto!important;max-width:none!important}

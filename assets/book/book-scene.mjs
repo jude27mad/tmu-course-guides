@@ -39,6 +39,7 @@ const DEG=Math.PI/180;
 const now=()=>globalThis.performance?.now?.()??Date.now();
 const rectFrom=(left,top,width,height)=>({x:left,y:top,left,top,width,height,right:left+width,bottom:top+height});
 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+const DRIFT_QUIET_MS=2000;
 
 /* ---------------------------------------------------------------- motion policy (§4.1) ------------------- */
 /** full: scene motion allowed and no hold. fade: OS reduced motion is the only reason. cut: everything else
@@ -122,16 +123,27 @@ async function createBookController(slot,options,stage,style){
   report(reason);
  };
  const offLost=stage.onLost(reason=>{if(!disposed&&engine)fail(reason==='context'?'lost':reason);});
- const offRestored=stage.onRestored(()=>{
+ const offRestored=stage.onRestored(remount);
+ function remount(){
   if(disposed||engine||remounts>=1||currentTier()==='low'||fallbackReason!=='lost')return;
   remounts++;fallbackReason=null;
-  build().then(()=>{if(!disposed&&engine){engine.setHandoff(handoff);engine.setFocus(focus);engine.attach();}})
-   .catch(error=>{console.warn('Book remount failed',error);report('lost');});
- });
+  const losses=stage.stats().losses;
+  build().then(()=>attachEngine(losses)).catch(error=>{console.warn('Book remount failed',error);report('lost');});
+ }
  async function build(){
   const next=await createEngine(slot,{...options,style,onReady:()=>settleReady('webgl2'),isRemount:remounts>0});
   if(disposed){next.dispose();return;}
   engine=next;
+ }
+ /* The stage reports a shader failure or a context loss only to an attached scene, so one that came while
+    the engine compiled is caught here (§5.9): the poster takes over, a restore remounts once, and a loss
+    already restored during the build costs that one remount (the environment and targets went with it). */
+ function attachEngine(losses){
+  if(disposed||!engine)return;
+  if(stage.available&&stage.stats().losses===losses){engine.setHandoff(handoff);engine.setFocus(focus);engine.attach();return;}
+  const restored=stage.available;
+  fail(restored?'lost':stage.reason||'unavailable');
+  if(restored)remount();
  }
  const dispose=()=>{
   if(disposed)return;disposed=true;
@@ -141,10 +153,11 @@ async function createBookController(slot,options,stage,style){
   data.awake='false';settleReady('poster');
  };
  signal?.addEventListener?.('abort',dispose,{once:true});
+ const losses=stage.stats().losses;
  try{await build();}
  catch(error){console.warn('Book scene unavailable',error);engine=null;report(/shader/i.test(String(error?.message))?'shader':'error');}
  if(disposed||signal?.aborted){dispose();return posterController(slot,options,'aborted',{silent:true});}
- engine?.attach();
+ attachEngine(losses);
  const fallbackMetrics=()=>{const r=slot.getBoundingClientRect(),s=spreadLayout(r.width,r.height,globalThis.innerWidth||r.width);
   return {pageWidthPx:s.pageWidth,spreadRect:rectFrom(r.left+s.left,r.top+s.top,s.width,s.height),stageRect:rectFrom(r.left,r.top,r.width,r.height)};};
  return {
@@ -183,6 +196,8 @@ async function createEngine(slot,options){
  };
  const faceId=(side,i)=>side==='L'?(i<=0?'endpaper':'L'+i):'R'+i;
  const motionNow=()=>motionMode();
+ /* Attached, on screen (the stage's 100 px margin) and the tab visible: otherwise no frame runs (§4.1). */
+ const renderable=()=>{const g=stage.gates();return attached&&g.visible&&!g.hidden;};
 
  /* ---- textures (A2) ---- */
  const textures=(options.createTextures||createBookTextures)({getView:view,tier:tierName,renderer,poster,onChange:()=>requestFrame()});
@@ -401,7 +416,9 @@ async function createEngine(slot,options){
    endRun();
    return new Promise(resolve=>{
     const live=motionNow(),integral=Math.abs(from-Math.round(from))<1e-4&&Math.abs(to-Math.round(to))<1e-4;
-    if(mode==='cut'||live==='cut'||disposed){resolve();return;}
+    // Offscreen, hidden or not attached yet, the week lands at once (the state settles and announces it)
+    // instead of turning later, out of context, when the reader comes back.
+    if(mode==='cut'||live==='cut'||disposed||!renderable()){resolve();return;}
     let run;
     if(mode==='fade'||live==='fade')run={kind:'fade',from:Math.round(from),to:Math.round(to),duration:TIMING.fade};
     else if(!integral||Math.abs(to-from)<=1)run={kind:'turn',from,to,duration:(duration??TIMING.turn*1000)/1000,ease:ease(easeName||style.ease.turn)};
@@ -414,6 +431,7 @@ async function createEngine(slot,options){
   cancel(){endRun();}
  };
  function endRun(){const run=motion.run;if(!run)return;motion.run=null;run.resolve?.();}
+ function landRun(){const run=motion.run;if(!run)return;motion.run=null;run.p=1;run.resolve?.();emitTurn('land',run.from,run.to);}
  function emitTurn(phase,from,to){try{slot.dispatchEvent(new CustomEvent('book-turn',{detail:{phase,from,to}}));}catch{}}
  /* The faces a turn shows are painted as it starts (the settle prefetch has usually done it already). */
  function paintFor(run){
@@ -435,13 +453,13 @@ async function createEngine(slot,options){
     try{textures.refresh();}catch(error){fault('refresh',error);}
     blockFor=-1;refit();
    }
-   if(change.kind==='select'){refit();lastInput=clock;}
+   if(change.kind==='select'){refit();touched();}
    if(change.kind==='settle'){
     dragVelocity=0;refit();
     if(motion.run?.kind==='turn')motion.run=null;
     if(!poster)prefetch(s.index);
    }
-   if(change.kind==='turn')lastInput=clock;
+   if(change.kind==='turn')touched();
    data.week=String(s.index);data.turn=Number(s.turn).toFixed(2);
    requestFrame();
   },{continuous:true})??null;
@@ -471,7 +489,7 @@ async function createEngine(slot,options){
   const index=Math.round(poster?restIndex():snap().index);
   const r=fitCamera(camera,size.w,size.h,fit.viewport,fitPoints(index),{H});
   fit.pose=r.pose;fit.limit=r.limit;
-  if(fit.distance==null||motionNow()!=='full'||!firstFrame){fit.distance=fit.target=r.distance;fit.from=null;}
+  if(fit.distance==null||motionNow()!=='full'||!firstFrame||!renderable()){fit.distance=fit.target=r.distance;fit.from=null;}
   else if(Math.abs(r.distance-(fit.target??r.distance))>1e-6){fit.from=fit.distance;fit.target=r.distance;fit.start=clock;}
   requestFrame();
  }
@@ -479,9 +497,14 @@ async function createEngine(slot,options){
  const spreadPoints=()=>[[-W-o,-o,0],[W+o,-o,0],[-W-o,H+o,0],[W+o,H+o,0]];
 
  /* ---- choreography state (stage clock, seconds) ---- */
- let clock=0,lastInput=-10,readyAt=null,canvasAlpha=0,develop=poster?0:1,arrivalPlan=null,dolly=1;
+ let clock=0,lastInput=-Infinity,readyAt=null,canvasAlpha=0,develop=poster?0:1,arrivalPlan=null,dolly=1;
  const drift={amount:0,yaw:0,pitch:0,dolly:1,px:0,py:0,tx:0,ty:0,phase:0};
  let handoff=0,focus=null,hoverId=null,closing=null,themeTween=null,bandSnap=null,bandClosed=false;
+ /* Drift waits 2 s after the last turn, drag or scrub (§5.7). The stage clock stops with the frames, so the
+    wait is wall time, and one timer wakes the stage when it ends (nothing else would ask for that frame). */
+ let wakeTimer=0;
+ function touched(){lastInput=now();if(wakeTimer){clearTimeout(wakeTimer);wakeTimer=0;}}
+ function wakeAfter(ms){if(!wakeTimer&&!disposed)wakeTimer=setTimeout(()=>{wakeTimer=0;requestFrame();},Math.ceil(ms)+20);}
 
  /* ---- input: hover, corner drag, clicks (§5.10; mouse) ---- */
  const raycaster=new T.Raycaster(),inverse=new T.Matrix4(),ndcPoint=new T.Vector2(),pointer={x:0,y:0,inside:false,dirty:false};
@@ -524,6 +547,7 @@ async function createEngine(slot,options){
  }
  function onPointerLeave(){pointer.inside=false;drift.tx=drift.ty=0;if(!drag){setHover(null);setCursor('');}}
  function onPointerDown(event){
+  suppressClick=false; // a gesture whose click never came must not swallow this press's click
   if(event.pointerType!=='mouse'||event.button!==0||handoff>0||closing||disposed||poster)return;
   const hit=pick(event.clientX,event.clientY);
   if(!hit||hit.kind==='item'||!canDrag(hit,W,H))return;
@@ -539,21 +563,23 @@ async function createEngine(slot,options){
   const max=count()-1,base=Math.floor(drag.startTurn+1e-6);
   const turn=clamp(drag.startTurn+(drag.x0-event.clientX)/drag.width,Math.max(0,base-1),Math.min(max,base+1));
   const [ta,xa]=drag.samples[0];dragVelocity=time>ta?((xa-event.clientX)/drag.width)/((time-ta)/1000):0;
-  state.scrub(turn,'drag');lastInput=clock;requestFrame();
+  state.scrub(turn,'drag');touched();requestFrame();
  }
  function endDrag(event,cancelled=false){
   if(!drag||(event&&event.pointerId!==drag.id))return;
   const d=drag;drag=null;try{slot.releasePointerCapture?.(d.id);}catch{}
   const time=event?.timeStamp||now(),x=event?.clientX??d.x0,dx=x-d.x0,moved=Math.hypot(dx,(event?.clientY??d.y0)-d.y0);
   const click=moved<6&&time-d.t0<300;
+  // Anything but a click is a gesture, turned or not (clamped at the last spread, short of a discrete step):
+  // the click the browser sends after it must not open the item under the release point (§5.10).
+  if(!click)suppressClick=true;
   data.dragging='false';setCursor('');
   if(d.grabbed){
    const [ta,xa]=d.samples[0],velocity=cancelled||time<=ta?0:((xa-x)/d.width)/((time-ta)/1000);
    state.release('drag',{velocity});
-   if(!click&&Math.abs(snap().turn-d.startTurn)>1e-3)suppressClick=true;
   }else if(!cancelled&&!click){
    // Without full motion a drag past a quarter page is one discrete step (§4.1).
-   if(Math.abs(dx)>.25*metricsNow().pageWidthPx){state?.step?.(dx<0?1:-1,{source:'drag'});suppressClick=true;}
+   if(Math.abs(dx)>.25*metricsNow().pageWidthPx)state?.step?.(dx<0?1:-1,{source:'drag'});
   }
   requestFrame();
  }
@@ -578,7 +604,8 @@ async function createEngine(slot,options){
  const listen=(target,type,fn,opts)=>{target.addEventListener(type,fn,opts);cleanup.push(()=>target.removeEventListener(type,fn,opts));};
  listen(slot,'pointermove',onPointerMove);listen(slot,'pointerleave',onPointerLeave);listen(slot,'pointerdown',onPointerDown);
  listen(slot,'pointerup',e=>endDrag(e));listen(slot,'pointercancel',e=>endDrag(e,true));
- listen(slot,'lostpointercapture',e=>{if(drag&&e.pointerId===drag.id)endDrag(e,true);});
+ // Only the slot's own capture: a child's (a touch pointer's implicit canvas capture) bubbles here too.
+ listen(slot,'lostpointercapture',e=>{if(e.target===slot&&drag&&e.pointerId===drag.id)endDrag(e,true);});
  listen(slot,'click',onClick);
 
  /* ---- theme and tier ---- */
@@ -616,7 +643,7 @@ async function createEngine(slot,options){
     const sum=run.plan.local.reduce((a,x)=>a+run.ease(x),0)/run.plan.m;
     state?.scrub?.(run.from+(run.to-run.from)*sum,'animation');
    }
-   if(run.p>=1){motion.run=null;run.resolve?.();emitTurn('land',run.from,run.to);}
+   if(run.p>=1)landRun();
    busy=true;
   }
   // Theme tween (360 ms power2.inOut): lights, paper, ink, shadows, exposure, environment; no repaint.
@@ -668,7 +695,9 @@ async function createEngine(slot,options){
   busy=updatePopups(p,dt,still,zL,zR)||busy;
   busy=poseBook(still,zL,zR)||busy;
   // Drift and parallax: high tier, fine pointer, ambient allowed, ≥ 50% visible, full mode, 2 s after input.
-  const driftOn=!poster&&tierName==='high'&&finePointer()&&gates.ambient&&(gates.ratio??1)>=.5&&mode==='full'&&clock-lastInput>2&&!drag&&handoff===0&&!closing&&!motion.run&&s.settled;
+  const driftAllowed=!poster&&tierName==='high'&&finePointer()&&gates.ambient&&(gates.ratio??1)>=.5&&mode==='full'&&!drag&&handoff===0&&!closing&&!motion.run&&s.settled;
+  const quiet=now()-lastInput,driftOn=driftAllowed&&quiet>DRIFT_QUIET_MS;
+  if(driftAllowed&&!driftOn)wakeAfter(DRIFT_QUIET_MS-quiet);
   drift.amount=still?0:clamp(drift.amount+(driftOn?dt:-dt)/.25,0,1);
   if(drift.amount>0){
    drift.phase+=dt;const k=1-Math.exp(-dt/.45);drift.px+=(drift.tx-drift.px)*k;drift.py+=(drift.ty-drift.py)*k;
@@ -822,7 +851,7 @@ async function createEngine(slot,options){
  function setHandoff(p){
   if(p===handoff)return;handoff=p;
   if(p>0){setHover(null);setCursor('');}
-  lastInput=clock;requestFrame();
+  touched();requestFrame();
  }
  function close({ms=TIMING.close*1000}={}){
   if(disposed||motionNow()!=='full'||!firstFrame)return Promise.resolve();
@@ -838,6 +867,8 @@ async function createEngine(slot,options){
  const controller={
   resize(w,h,dpr){size={w,h,dpr};fit.viewport=globalThis.innerWidth||w;refit();if(fit.from!=null){fit.distance=fit.target;fit.from=null;}},
   update(dt,gates){data.awake=String(gates.visible&&!gates.hidden);return update(dt,gates);},
+  /* The stage stopped scheduling: a turn in progress lands now; the paper shows it on the next frame. */
+  sleep(gates){data.awake=String(gates.visible&&!gates.hidden);landRun();},
   render(r,post){
    syncPopupCamera();
    const emitting=theme==='dark'&&(popupSets.some(set=>set.group.visible&&set.emitting?.())||spineMaterial.emissive.r>0);
@@ -909,6 +940,7 @@ async function createEngine(slot,options){
   },
   dispose(){
    if(disposed)return;disposed=true;
+   clearTimeout(wakeTimer);wakeTimer=0;
    endRun();if(closing){const c=closing;closing=null;c.resolve();}
    if(drag){try{if(drag.grabbed)state?.release?.('drag',{velocity:0});}catch{}drag=null;}
    try{state?.setAnimator?.(null);}catch{}

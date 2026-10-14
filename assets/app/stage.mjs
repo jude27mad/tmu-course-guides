@@ -11,6 +11,8 @@
                                       gates.motion false the controller jumps to end states and says false,
                                       except for the short fades it owns in reduced-motion mode.
      render(renderer, post)           post is null except at high tier; post.render() then draws the frame
+     sleep?(gates)                    optional: the stage stopped scheduling (offscreen, hidden, held). No
+                                      frame will finish an animation until the gates open, so land it now
      dispose()                        called by the controller's owner, never by the stage
 
    Scheduling: requestAnimationFrame runs only while a controller is attached, its slot is on screen (100 px
@@ -24,7 +26,7 @@ const DPR_CAP={high:2,mid:1.5};
 const ENVIRONMENT={sigma:.04,size:{high:256,mid:128}};
 const BLOOM={strength:.35,radius:.4,threshold:1};
 const ABERRATION_PX=.6; // CSS px at the far corner; zero over the book (§5.6)
-const SLOW={frameMs:25,share:.45,windowMs:2000,minFrames:20,hitchMs:250};
+const SLOW={frameMs:25,share:.45,windowMs:2000,hitchMs:250};
 const MAX_DT=.1;
 
 let probed=null;   // {gl, canvas, reason}: the probe's context, reused by the renderer
@@ -112,7 +114,7 @@ function createStage(){
  listen(canvas,'webglcontextlost',contextLost);
  listen(canvas,'webglcontextrestored',contextRestored);
  for(const type of ['visibilitychange','guide-motion-change','night-hold'])listen(document,type,gateChange);
- listen(window,'pagehide',event=>{if(event.persisted){sleeping=true;cancel();}else release('unloaded');});
+ listen(window,'pagehide',event=>{if(event.persisted){sleeping=true;cancel();last=0;}else release('unloaded');});
  listen(window,'pageshow',event=>{if(event.persisted&&sleeping){sleeping=false;requestFrame();}});
  shell.push(onTier(tierChanged));
  return api;
@@ -169,16 +171,20 @@ function createStage(){
   resize(true);emit(listeners.quality,quality);
  }
  /* Busy frames only: more than 45% over 25 ms across 2 s of busy time lowers the resolution once, then
-    drops a tier through the shared watchdog path (core.downgrade), which every Night Shift layer obeys. */
+    drops a tier through the shared watchdog path (core.downgrade), which every Night Shift layer obeys.
+    A frame over 250 ms is slow too (a device under 10 fps must be caught) but adds at most 250 ms to the
+    window, so a window holds at least 8 frames and one hitch (a first-frame upload, a long task) cannot
+    decide it alone. Wakes zero `last`, so time asleep is never a frame. A tier forced with ?tier= is the
+    QA and capture override that lets software renderers run the engine: it keeps its tier, and only the
+    resolution step applies. */
  function measure(elapsed){
-  if(elapsed>SLOW.hitchMs){slow={time:0,total:0,count:0};return;}
-  slow.time+=elapsed;slow.total++;if(elapsed>SLOW.frameMs)slow.count++;
+  slow.time+=Math.min(elapsed,SLOW.hitchMs);slow.total++;if(elapsed>SLOW.frameMs)slow.count++;
   if(slow.time<SLOW.windowMs)return;
-  const tooSlow=slow.total>=SLOW.minFrames&&slow.count/slow.total>SLOW.share;
+  const tooSlow=slow.count/slow.total>SLOW.share;
   slow={time:0,total:0,count:0};
   if(!tooSlow)return;
   if(quality===1){quality=.8;resize(true);emit(listeners.quality,quality);}
-  else downgrade('book frames');
+  else if(!forcedTier())downgrade('book frames');
  }
 
  /* ---- scheduler ---- */
@@ -190,7 +196,13 @@ function createStage(){
  function requestFrame(){requested=true;schedule();}
  function schedule(){if(raf||!runnable()||!(requested||busy))return;rafs++;raf=requestAnimationFrame(frame);}
  function cancel(){if(raf)cancelAnimationFrame(raf);raf=0;}
- function gateChange(){if(runnable()){last=0;requestFrame();}else{cancel();last=0;}}
+ function gateChange(){if(runnable()){last=0;requestFrame();}else{cancel();last=0;sleep();}}
+ /* Offscreen, hidden or held, no frame runs until a gate opens, so the controller lands what it was
+    animating now instead of playing it out of context later (§4.1). */
+ function sleep(){
+  const entry=current;if(!entry||typeof entry.controller.sleep!=='function')return;
+  try{entry.controller.sleep(gates());}catch(error){fail(error);}
+ }
  function frame(now){
   raf=0;
   if(!runnable()){last=0;return;}

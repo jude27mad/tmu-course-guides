@@ -7,7 +7,7 @@
    - teleports (Skip to coursework, hashes, item opening, big jumps) rebase the pin instead of turning pages.
    Shared surface for other modules (this file is imported with a query string, so never import it):
    window.NightScroll = {refresh(), scrollTo(target,{immediate,offset}), lenis()}, or dispatch 'night-refresh'.
-   The pure scrub plan (scrubPlan, scrubAt, rebase) is exported for tests. */
+   The pure scrub plan (scrubPlan, scrubAt, rebase, forward) is exported for tests. */
 import {scope} from '../route-lifecycle.mjs';
 import {vendor,META,TERM,escape,$,$$,motionAllowed,sceneMotionAllowed,ambientAllowed,onAmbient,hold,release,held,finePointer,atLeast,onTier,track,dispose,view,frames} from './core.mjs?v=20261013-shift2';
 import {currentBookHost} from '../book/book-state.mjs';
@@ -218,6 +218,9 @@ export function scrubAt(p,plan){
     offsets) in either direction are whole turns away, so dwells stay on whole spreads. */
 export function rebase(offset){return Object.freeze({lo:Math.floor(offset+1e-9),hi:Math.ceil(offset-1e-9)});}
 export function relative(offset,base){return Math.min(0,offset-base.lo)+Math.max(0,offset-base.hi);}
+/** The pin's rebase: as rebase(offset) but floored at the plan's start, so relative() is never negative and
+    scrolling back up from a teleport never turns pages behind the anchor. */
+export function forward(offset){return Object.freeze({lo:0,hi:rebase(offset).hi});}
 /** A jump the pin should rebase on rather than scrub through. */
 export function isTeleport({dp=0,dy=0,viewport=800,smoothed=false,flagged=false}={}){
  return flagged||Math.abs(dp)>.35||!smoothed&&Math.abs(dy)>.5*viewport;
@@ -238,6 +241,15 @@ function pinEligible(host){
  return host.header.offsetHeight<=innerHeight-dockOffset();
 }
 function signal(type,detail){document.dispatchEvent(new CustomEvent(type,{detail}));}
+/* ScrollTrigger re-parents the pinned header: it wraps it in its spacer on bind and on every refresh, and unwraps
+   it on kill. Moving a node blurs whatever is focused inside it, so a rail control would drop focus to <body> on a
+   resize, a zoom or a GPU fallback. The control takes focus back once the move is done (never from another one). */
+const focusedIn=node=>{const a=document.activeElement;return a&&a!==document.body&&node?.contains(a)?a:null;};
+const refocus=el=>{const a=document.activeElement;if(el?.isConnected&&el!==a&&(!a||a===document.body))el.focus({preventScroll:true});};
+function keepFocus(node,fn){const el=focusedIn(node);try{return fn();}finally{refocus(el);}}
+/* Where the pin starts, in page pixels: the header's top under the dock (ScrollTrigger's 'top top+=offset'),
+   never above the page's own top, which the reader can always reach. */
+const pinStart=host=>Math.max(0,pageTop(host.header)-dockOffset());
 
 function bindPin(host){
  const {state,header,controller}=host;
@@ -249,21 +261,25 @@ function bindPin(host){
   if(Math.abs(h-lastH)<1e-4&&!(h===0||h===1)||h===lastH)return;
   lastH=h;controller.setHandoff(h);header.style.setProperty('--hero-p',h.toFixed(4));signal('night-handoff',h);
  };
- const st=ST.create({trigger:header,start:'top top+='+offset,end:()=>'+='+Math.round(plan.vh/100*innerHeight),pin:header,pinType:'transform',
+ const st=keepFocus(header,()=>ST.create({trigger:header,start:'top top+='+offset,end:()=>'+='+Math.round(plan.vh/100*innerHeight),pin:header,pinType:'transform',
   pinSpacing:true,scrub:true,invalidateOnRefresh:true,refreshPriority:1,
   onUpdate:safe(self=>{
    const p=self.progress,y=window.scrollY,at=scrubAt(p,plan);
    const jumped=isTeleport({dp:p-lastP,dy:y-lastY,viewport:innerHeight,smoothed:!!lenis,flagged:teleportFlag});
    teleportFlag=false;lastP=p;lastY=y;
-   if(jumped||state.consumeAnchorDirty()){anchor=anchorAt();base=rebase(at.offset);}
+   // A rebase never reaches behind the anchor: the pin scrubs from the selected week forward (§6.4), so after
+   // a teleport past it (Skip, a hash, a command below the pin) scrolling back up keeps the reader's week.
+   // Back in the lead dwell the paper is at the anchor again, and the next pass turns forward from it.
+   if(jumped||state.consumeAnchorDirty()){anchor=anchorAt();base=forward(at.offset);}
    else{
+    if(at.offset===0&&base.hi>0)base=forward(0);
     const s=state.snapshot();
     state.scrub(clamp(anchor+relative(at.offset,base),0,s.count-1),'scroll');
    }
    setHandoff(at.handoff);
   }),
   onLeaveBack:safe(()=>{if(pin?.st===st&&pin.stale)G.delayedCall(0,safe(()=>{if(pin?.st===st)rebindPin();}));})
- });
+ }));
  // A choice made while the stage rests above the pin changes how far the pin can turn: rebuild it then,
  // never while the reader is inside or past it (that would move the page under them).
  const offState=state.subscribe(safe((snap,change)=>{
@@ -281,7 +297,7 @@ function unbindPin({compensate=true}={}){
  const {st,host,offState}=pin;pin=null;
  offState();
  const y=window.scrollY,start=st.start,length=Math.max(0,st.end-st.start);
- st.kill(true);
+ keepFocus(host.header,()=>st.kill(true));
  if(compensate&&length){const to=y>start&&y<start+length?start:y>=start+length?y-length:null;if(to!==null)jumpTo(to);}
  host.controller?.setHandoff?.(0);host.header.style.removeProperty('--hero-p');signal('night-handoff',0);
  const s=host.state.snapshot();
@@ -299,6 +315,9 @@ function bindSwipe(host){
  const {slot,state,controller}=host,own=scope({signal:life.signal});
  let g=null;
  const width=()=>Math.max(120,Number(controller.metrics?.().pageWidthPx)||slot.clientWidth/2||300);
+ // One swipe turns one leaf: the paper follows the finger at most one spread either side of the selected week,
+ // so a long or fast swipe lands on the neighbouring week, never two weeks on.
+ const leaf=()=>{const s=state.snapshot();return [Math.max(0,s.index-1),Math.min(s.count-1,s.index+1)];};
  const clear=()=>setTimeout(()=>{if(slot.dataset.gesture==='swipe')delete slot.dataset.gesture;},0);
  own.on(slot,'pointerdown',event=>{
   if(event.pointerType==='mouse'||!event.isPrimary||host.renderer!=='webgl2')return;
@@ -311,12 +330,12 @@ function bindSwipe(host){
    if(Math.hypot(dx,dy)<10)return;
    // Vertical intent stays native: the browser pans (touch-action: pan-y) and cancels this pointer.
    if(Math.abs(dx)<=1.4*Math.abs(dy)){g=null;return;}
-   g.phase='track';g.grabbed=state.grab('swipe');g.start=state.snapshot().turn;
+   g.phase='track';g.grabbed=state.grab('swipe');g.start=state.snapshot().turn;g.range=leaf();
    try{slot.setPointerCapture(event.pointerId);}catch{}
    slot.dataset.gesture='swipe';
   }
   g.samples.push([event.timeStamp,event.clientX]);while(g.samples.length>2&&event.timeStamp-g.samples[0][0]>100)g.samples.shift();
-  if(g.grabbed)state.scrub(g.start-dx/(.8*width()),'swipe');
+  if(g.grabbed)state.scrub(clamp(g.start-dx/(.8*width()),...g.range),'swipe');
  },{passive:true});
  const end=(event,cancelled)=>{
   if(!g||event.pointerId!==g.id)return;
@@ -330,19 +349,35 @@ function bindSwipe(host){
  };
  own.on(slot,'pointerup',event=>end(event,false));
  own.on(slot,'pointercancel',event=>end(event,true));
- own.on(slot,'lostpointercapture',event=>{if(g&&event.pointerId===g.id)end(event,true);});
+ // Only the slot's own capture ending cancels. A touch pointer is implicitly captured by the canvas it lands
+ // on; taking capture for the slot above ends that one, and its lostpointercapture bubbles up here.
+ own.on(slot,'lostpointercapture',event=>{if(event.target===slot&&g&&event.pointerId===g.id)end(event,true);});
  track(SWIPE,()=>{if(g?.grabbed)state.release('swipe',{velocity:0});g=null;own.dispose();delete slot.dataset.gesture;});
 }
+
+/* A pin that becomes possible while the reader is past its start (Play motion, a tier or pointer change, a
+   resize, a deep link) waits for them to come back above it: its spacer would land above the page they are
+   reading, scroll anchoring would carry them down by its length and the header would miss its end position.
+   One scroll listener at a time, owned by the mount. */
+let pinWait=null;
+function awaitPinStart(){
+ if(pinWait)return;
+ const own=pinWait=scope({signal:life.signal});
+ own.on(window,'scroll',safe(()=>{const host=currentBookHost();if(host&&window.scrollY>pinStart(host)+1)return;stopPinWait();syncBook();}),{passive:true});
+}
+function stopPinWait(){const own=pinWait;pinWait=null;own?.dispose();}
 
 /* One place decides what the book's scroll input should be right now. Idempotent. */
 function syncBook(){
  const host=currentBookHost();
- if(!host||!host.state){if(pin)unbindPin({compensate:false});dispose(SWIPE);bookOn=false;return;}
+ if(!host||!host.state){stopPinWait();if(pin)unbindPin({compensate:false});dispose(SWIPE);bookOn=false;return;}
  // Swipe lives as long as the scene runs.
  if(host.renderer==='webgl2'&&!bookOn){bookOn=true;bindSwipe(host);}
  else if(host.renderer!=='webgl2'&&bookOn){bookOn=false;dispose(SWIPE);}
  if(pin&&pin.host!==host)unbindPin({compensate:false});
  const want=pinEligible(host);
+ if(want&&!pin&&window.scrollY>pinStart(host)+1){awaitPinStart();return;}
+ stopPinWait();
  if(want&&!pin){bindPin(host);refreshSoon(.05);}
  else if(!want&&pin)unbindPin();
 }
@@ -374,6 +409,10 @@ export async function mount(ctx={}){
 function start(){
  syncLenis();
  const onRefresh=safe(()=>{measure();progress();});ST?.addEventListener?.('refresh',onRefresh);life.own(()=>ST?.removeEventListener?.('refresh',onRefresh));
+ // Every refresh swaps the pinned header out of its spacer and back: a focused rail control keeps focus.
+ let kept=null;const keepInit=()=>{kept=focusedIn(pin?.host.header);},keepDone=()=>{const el=kept;kept=null;refocus(el);};
+ ST?.addEventListener?.('refreshInit',keepInit);ST?.addEventListener?.('refresh',keepDone);
+ life.own(()=>{ST?.removeEventListener?.('refreshInit',keepInit);ST?.removeEventListener?.('refresh',keepDone);});
  const capture={capture:true,passive:true};
  life.on(window,'pointerdown',safe(settle),capture);life.on(window,'keydown',safe(settle),capture);
  // Window capture runs before GuideMotion's Flip capture on document: reveals finish first, so Flip
@@ -408,7 +447,7 @@ function start(){
 
 export function unmount(){
  if(!mounted)return;
- unbindPin({compensate:false});dispose(SWIPE);bookOn=false;teleportFlag=false;
+ stopPinWait();unbindPin({compensate:false});dispose(SWIPE);bookOn=false;teleportFlag=false;
  life?.dispose();dispose(SCOPE);flushWhere(()=>true);finishRunning();G?.ticker.remove(lenisRaf);lenis?.destroy();lenis=null;
  refreshCall?.kill();refreshCall=null;clearTimeout(sweepTimer);release('sheet');sheetHeld=false;
  delete window.NightScroll;document.documentElement.style.removeProperty('--ns-progress');mounted=false;life=null;lastProgress=-1;G=ST=Split=LenisClass=null;
