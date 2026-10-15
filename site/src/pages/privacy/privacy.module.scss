@@ -1,0 +1,61 @@
+@import '@src/styles/functions';
+
+// Title block (the original /projects index title).
+.titleContainer {
+  display: block;
+  position: relative;
+  width: 100%;
+  background-color: var(--white);
+  padding-top: calc(var(--layout-columns-gap) * 4);
+  padding-bottom: calc(var(--layout-columns-gap) * 1);
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+  .heading {
+    position: relative;
+    width: max-content;
+    max-width: 100%;
+  }
+}
+
+// The original /about Overview: statement 5/16, label 5/8, text column 8/16.
+.root {
+  position: relative;
+  background-color: var(--white);
+  padding-bottom: calc(var(--layout-columns-gap) * 6);
+
+  .title {
+    grid-column: 5 / 16;
+    @include mobile {
+      grid-column: 1 / 7;
+    }
+  }
+  .myStory {
+    padding-top: calc(var(--layout-columns-gap) * 2);
+    grid-column: 5 / 8;
+    @include mobile {
+      grid-column: 1 / 7;
+    }
+  }
+  .desc {
+    padding-top: calc(var(--layout-columns-gap) * 2);
+    grid-column: 8 / 16;
+
+    @include mobile {
+      grid-column: 1 / 7;
+    }
+    .paddingTop {
+      display: inline-block;
+      padding-top: var(--layout-columns-gap);
+    }
+  }
+  .link {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+}

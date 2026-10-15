@@ -1,0 +1,107 @@
+@import '@src/styles/functions';
+
+.desc {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-columns-gap);
+  > p:empty {
+    display: none;
+  }
+}
+
+.muted {
+  opacity: 0.7;
+}
+
+.subheading {
+  padding-top: var(--layout-columns-gap);
+}
+
+.pair {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 0.25);
+}
+
+.pairLabel {
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.link {
+  width: fit-content;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  @include hover {
+    &:hover {
+      text-decoration-thickness: 2px;
+    }
+  }
+}
+
+.rows {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  column-gap: var(--layout-columns-gap);
+  padding: calc(var(--layout-columns-gap) * 0.6) 0;
+  border-top: 1px solid rgba(40, 40, 43, 0.12);
+  @include mobile {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: calc(var(--layout-columns-gap) * 0.25);
+  }
+}
+
+// The old "red" rules (late work, headers, notebook): marked with the course colour.
+.rowStrong {
+  box-shadow: inset 0.3vw 0 0 0 var(--menuColor);
+  padding-left: calc(var(--layout-columns-gap) * 0.75);
+  @include mobile {
+    box-shadow: inset 3px 0 0 0 var(--menuColor);
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 0.5);
+  padding-top: var(--layout-columns-gap);
+  border-top: 1px solid rgba(40, 40, 43, 0.12);
+}
+
+.lines {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 0.4);
+}
+
+.line {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--layout-columns-gap) * 0.5);
+}
+
+.bullet {
+  flex: 0 0 auto;
+  width: 0.6vw;
+  height: 0.6vw;
+  fill: var(--black);
+  transform: rotate(-90deg);
+  @include mobile {
+    width: max(1.6vw, 7px);
+    height: max(1.6vw, 7px);
+  }
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--layout-columns-gap) * 0.5);
+}

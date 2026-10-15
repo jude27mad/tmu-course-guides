@@ -1,0 +1,18 @@
+@import '@src/styles/functions';
+
+// The original /projects title block.
+.titleContainer {
+  display: block;
+  position: relative;
+  width: 100%;
+  background-color: var(--white);
+  padding-top: calc(var(--layout-columns-gap) * 4);
+  padding-bottom: calc(var(--layout-columns-gap) * 1);
+  align-items: center;
+
+  .title {
+    position: relative;
+    width: max-content;
+    max-width: 100%;
+  }
+}

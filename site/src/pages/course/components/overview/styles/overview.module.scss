@@ -1,0 +1,115 @@
+@import '@src/styles/functions';
+
+// The original overview.module.scss, plus a three-column line list for rows.
+.root {
+  position: relative;
+  background-color: var(--white);
+
+  .title {
+    grid-column: 5 / 16;
+    @include mobile {
+      grid-column: 1 / 7;
+    }
+  }
+  .myStory {
+    padding-top: calc(var(--layout-columns-gap) * 2);
+    grid-column: 5 / 8;
+    @include mobile {
+      grid-column: 1 / 7;
+    }
+  }
+  .desc {
+    padding-top: calc(var(--layout-columns-gap) * 2);
+    grid-column: 8 / 16;
+    min-width: 0;
+
+    @include mobile {
+      grid-column: 1 / 7;
+      padding-top: var(--layout-columns-gap);
+    }
+    .paddingTop {
+      display: block;
+      padding-top: var(--layout-columns-gap);
+    }
+  }
+}
+
+.rows {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.rowHead,
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(5.5vw, auto);
+  column-gap: var(--layout-columns-gap);
+  align-items: baseline;
+  @include mobile {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+.rowHead {
+  opacity: 0.7;
+  padding-bottom: calc(var(--layout-columns-gap) * 0.5);
+  text-transform: uppercase;
+  @include mobile {
+    > span:nth-child(2) {
+      display: none;
+    }
+  }
+}
+
+.row {
+  padding: calc(var(--layout-columns-gap) * 0.5) 0;
+  border-top: 1px solid rgba(40, 40, 43, 0.12);
+  @include mobile {
+    padding: calc(var(--layout-columns-gap) * 0.4) 0;
+  }
+}
+
+.rowWide {
+  grid-template-columns: minmax(0, 1fr) minmax(5.5vw, auto);
+  @include mobile {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+.rowTotal {
+  border-top-color: rgba(40, 40, 43, 0.4);
+}
+
+.rowTitle {
+  width: fit-content;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  @include hover {
+    &:hover {
+      text-decoration-thickness: 2px;
+    }
+  }
+}
+
+.rowDate {
+  white-space: nowrap;
+  @include mobile {
+    // phone: the date goes under the name, the weight stays on the right
+    grid-column: 1 / 2;
+    grid-row: 2;
+    white-space: normal;
+    opacity: 0.75;
+  }
+}
+
+.rowWeight {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  @include mobile {
+    grid-column: 2 / 3;
+    grid-row: 1;
+  }
+}

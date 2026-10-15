@@ -1,0 +1,149 @@
+@import '@src/styles/functions';
+
+// A window (the original NextProject frame: side insets of paper, a rounded inner
+// container ringed with paper) holding menuLinks.module.scss rows: white text
+// over the dark background shader.
+.root {
+  position: relative;
+  padding-top: 0;
+  padding-bottom: 0;
+  display: block;
+  width: 100%;
+  contain: paint;
+  outline: none;
+  box-shadow:
+    inset calc(var(--layout-margin) * -1.0065) 0 0 0 var(--white),
+    inset calc(var(--layout-margin) * 1.0065) 0 0 0 var(--white);
+  @include mobile {
+    box-shadow:
+      0 0 0 calc(var(--layout-columns-gap) * 0.5) var(--white),
+      inset calc(var(--layout-margin) * -1.0065) 0 0 0 var(--white),
+      inset calc(var(--layout-margin) * 1.0065) 0 0 0 var(--white);
+  }
+  &:focus-visible .window {
+    outline: 2px solid #f0f4f1;
+    outline-offset: -6px;
+  }
+}
+
+.window {
+  background-color: transparent;
+  border-radius: var(--layout-columns-gap);
+  box-shadow: 0 0 0 calc(var(--layout-columns-gap) * 1) var(--white);
+  padding: calc(var(--layout-columns-gap) * 2);
+  color: #f0f4f1;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 2);
+  @include mobile {
+    border-radius: calc(var(--layout-columns-gap) * 0.5);
+    padding: var(--layout-columns-gap);
+  }
+}
+
+.heading {
+  display: block;
+  font-size: 2.3vw;
+  line-height: 130%;
+  font-weight: 700;
+  color: #f9f9f9;
+  margin-bottom: var(--layout-columns-gap);
+  @include mobile {
+    font-size: 5.9vw;
+    line-height: 140%;
+  }
+}
+
+.rows {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: calc(var(--layout-columns-gap) * 0.75) var(--layout-columns-gap);
+  @include mobile {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 var(--layout-columns-gap);
+  }
+}
+
+.groupRows {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  @include mobile {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+// menuLinks.module.scss .menuListItem
+.item {
+  font-weight: 450;
+  position: relative;
+  min-width: 0;
+
+  > button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    color: #f0f4f1;
+    @include mobile {
+      min-height: 44px;
+      padding: 0.4em 0;
+    }
+    &[disabled] {
+      cursor: default;
+    }
+  }
+
+  span:first-child {
+    position: relative;
+    display: block;
+    width: fit-content;
+    font-size: 1.5vw;
+    line-height: 140%;
+    @include mobile {
+      font-size: max(3.7vw, 16px);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 89%;
+      left: 0;
+      width: 100%;
+      height: max(0.25vw, 2px);
+      background: #f0f4f1;
+      transform: scale3d(0.001, 1, 1);
+      opacity: 0;
+      transform-origin: 0% 50%;
+      transition:
+        transform 0.3s cubic-bezier(0.2, 1, 0.3, 1),
+        opacity 0.1s 0.2s linear;
+    }
+  }
+
+  @include hover {
+    &:hover span:first-child::after {
+      opacity: 1;
+      transform: scale3d(0.15, 1, 1);
+      transition:
+        transform 0.7s cubic-bezier(0.2, 1, 0.3, 1),
+        opacity 0.1s linear;
+    }
+  }
+}
+
+.itemActive span:first-child::after,
+.itemActive:hover span:first-child::after {
+  opacity: 1 !important;
+  transform: scale3d(1, 1, 1) !important;
+}
+
+.meta {
+  display: block;
+  padding-top: calc(var(--layout-columns-gap) * 0.2);
+  opacity: 0.7;
+}
+
+.prompt,
+.note {
+  color: #f0f4f1;
+  opacity: 0.8;
+}

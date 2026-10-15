@@ -1,0 +1,187 @@
+@import '@src/styles/reset.scss';
+@import '@src/styles/fonts.scss';
+@import '@src/styles/colors.scss';
+@import '@src/styles/functions.scss';
+@import '@src/styles/layout.scss';
+@import '@src/styles/utils.scss';
+@import '@src/styles/fontStyle.scss';
+@import '@src/styles/scroll.scss';
+
+html {
+  font-weight: bolder;
+  font-family: var(--font-primary), sans-serif;
+  color-scheme: light;
+  background-color: #09050c;
+
+  scrollbar-width: thin;
+  &.nav {
+    overflow: hidden;
+  }
+}
+
+main.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  max-height: 100%;
+  overflow: hidden;
+  // Long-press link previews and copying deadline text, rooms and sections
+  // stay available (the original switched both off for the whole page).
+
+  > canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+  }
+}
+
+// Chrome-like controls (pills, the menu, the loader) are not text to copy.
+header,
+#loader,
+#menu,
+#search button {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+// The site's own film grain (public/other/grain.png, generated for this site).
+// Static: the original referenced an undefined `noise` animation.
+#layout::before {
+  content: '';
+  position: fixed;
+  left: 0;
+  z-index: 9999;
+  top: 0;
+  width: calc(100% + 20rem);
+  height: calc(100% + 20rem);
+  background-image: url('#{$base-path}/other/grain.png');
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+a,
+button,
+input,
+label,
+textarea,
+select,
+summary {
+  color: inherit;
+  cursor: pointer;
+}
+
+input,
+textarea {
+  cursor: text;
+}
+
+// Visible focus for keyboard users (the reset's `all: unset` removed outlines).
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+section {
+  padding-top: calc(var(--layout-columns-gap) * 2);
+  padding-bottom: calc(var(--layout-columns-gap) * 2);
+  box-shadow:
+    inset 0 calc(var(--layout-columns-gap) * 2.1) 0 0 var(--white),
+    inset calc(var(--layout-margin) * -1.05) 0 0 0 var(--white),
+    inset 0 calc(var(--layout-columns-gap) * -2.1) 0 0 var(--white),
+    inset calc(var(--layout-margin) * 1.05) 0 0 0 var(--white),
+    0 0 0 calc(var(--layout-columns-gap) * 0.045) var(--white);
+
+  background-color: transparent;
+  @include mobile {
+    box-shadow:
+      inset 0 calc(var(--layout-columns-gap) * 2.1) 0 0 var(--white),
+      inset calc(var(--layout-margin) * -1.0265) 0 0 0 var(--white),
+      inset 0 calc(var(--layout-columns-gap) * -2.1) 0 0 var(--white),
+      inset calc(var(--layout-margin) * 1.0265) 0 0 0 var(--white),
+      0 0 0 calc(var(--layout-columns-gap) * 0.04) var(--white);
+  }
+}
+
+main > div > section:nth-last-child(1) {
+  border-bottom-left-radius: var(--layout-columns-gap);
+  border-bottom-right-radius: var(--layout-columns-gap);
+  @include mobile {
+    border-bottom-left-radius: calc(var(--layout-columns-gap) * 0.5);
+    border-bottom-right-radius: calc(var(--layout-columns-gap) * 0.5);
+  }
+}
+
+// Screen-reader-only text (route announcements, labels next to split headings).
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+// Skip link: the first tab stop, visible only when focused.
+.skip-link {
+  position: fixed;
+  z-index: 10001;
+  top: var(--layout-columns-gap);
+  left: var(--layout-margin);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 1.25vw;
+  border-radius: 9vw;
+  background-color: var(--menuColor);
+  color: var(--menuFontColor);
+  transform: translateY(-200%);
+  @include mobile {
+    padding: 0 4vw;
+  }
+  &:focus,
+  &:focus-visible {
+    transform: none;
+  }
+}
+
+// No JavaScript (or a script error before hydration): the original hides main, the
+// header and the content behind the loader until JS reveals them. Only do that
+// when JS is running (_document adds `js` to <html> before first paint).
+html:not(.js) {
+  #loader {
+    display: none !important;
+  }
+  header,
+  main {
+    opacity: 1 !important;
+  }
+}
+
+// Motion off (prefers-reduced-motion, or the saved "Pause motion"):
+// _app sets html[data-motion='off']; CSS transitions and animations end at once.
+@mixin motion-off {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+html[data-motion='off'] {
+  @include motion-off;
+}
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-motion='on']) {
+    @include motion-off;
+  }
+}

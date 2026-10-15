@@ -1,0 +1,113 @@
+@import '@src/styles/functions';
+
+.row {
+  list-style: none;
+  display: block;
+}
+
+.label {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: calc(var(--layout-columns-gap) * 0.5);
+  cursor: pointer;
+  @include mobile {
+    min-height: 44px;
+    align-items: center;
+    padding: 0.35em 0;
+  }
+}
+
+// The real checkbox: invisible but focusable, and announced as a checkbox.
+.input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  pointer-events: none;
+}
+
+.glyph {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2vw;
+  height: 1.6vw;
+  fill: var(--black);
+  @include mobile {
+    width: max(3vw, 14px);
+    height: max(3vw, 14px);
+  }
+}
+
+.input:focus-visible + .glyph {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.arrow {
+  width: 0.8vw;
+  height: 0.8vw;
+  transform: rotate(-90deg);
+  @include mobile {
+    width: max(1.8vw, 8px);
+    height: max(1.8vw, 8px);
+  }
+}
+
+.tick {
+  width: 1.05vw;
+  height: 1.05vw;
+  @include mobile {
+    width: max(2.8vw, 12px);
+    height: max(2.8vw, 12px);
+  }
+}
+
+.text {
+  position: relative;
+  display: block;
+  width: fit-content;
+  transition: opacity 0.35s ease-in-out;
+
+  // the menu's underline (.menuListItemActive), in ink
+  &::after {
+    content: '';
+    position: absolute;
+    top: 92%;
+    left: 0;
+    width: 100%;
+    height: max(0.15vw, 1.5px);
+    background: var(--black);
+    transform: scale3d(0.001, 1, 1);
+    opacity: 0;
+    transform-origin: 0% 50%;
+    transition:
+      transform 0.3s cubic-bezier(0.2, 1, 0.3, 1),
+      opacity 0.1s 0.2s linear;
+  }
+}
+
+.checked .text {
+  opacity: 0.45;
+  &::after {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+    transition:
+      transform 0.7s cubic-bezier(0.2, 1, 0.3, 1),
+      opacity 0.1s linear;
+  }
+}
+
+@include hover {
+  .row:not(.checked) .label:hover .text::after {
+    opacity: 1;
+    transform: scale3d(0.15, 1, 1);
+    transition:
+      transform 0.7s cubic-bezier(0.2, 1, 0.3, 1),
+      opacity 0.1s linear;
+  }
+}

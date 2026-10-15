@@ -1,3 +1,6 @@
 node_modules/
 .DS_Store
 tools/qa/reports/
+site/node_modules/
+site/.next/
+site/out/

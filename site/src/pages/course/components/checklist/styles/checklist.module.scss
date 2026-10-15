@@ -1,0 +1,182 @@
+@import '@src/styles/functions';
+
+// The original process.module.scss (row: the box column is on the left).
+.topContainer {
+  width: 100%;
+  background-color: var(--white);
+  @include mobile {
+    padding-bottom: calc(var(--layout-columns-gap) * 2);
+  }
+}
+.text {
+  color: var(--black);
+  z-index: 2;
+  position: relative;
+  box-shadow: 0 0 0 calc(var(--layout-columns-gap) * 0.04) var(--white);
+}
+.root {
+  padding-bottom: calc(var(--layout-columns-gap) * 5);
+  position: relative;
+  fill: var(--black);
+  transition: 0.35s ease-in-out fill;
+  box-shadow:
+    inset 0 calc(var(--layout-columns-gap) * 2.1) 0 0 var(--white),
+    inset calc(var(--layout-margin) * -2.0065) 0 0 0 var(--white),
+    inset 0 calc(var(--layout-columns-gap) * -2.1) 0 0 var(--white),
+    inset calc(var(--layout-margin) * 1.0065) 0 0 0 var(--white);
+  @include mobile {
+    box-shadow:
+      inset 0 calc(var(--layout-columns-gap) * 2.1) 0 0 var(--white),
+      inset calc(var(--layout-margin) * -1.0265) 0 0 0 var(--white),
+      inset 0 calc(var(--layout-columns-gap) * -2.1) 0 0 var(--white),
+      inset calc(var(--layout-margin) * 1.0265) 0 0 0 var(--white);
+    padding-bottom: calc(var(--layout-columns-gap) * 2);
+  }
+  .processContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    @include mobile {
+      flex-direction: column;
+    }
+    .leftContainer {
+      width: 50%;
+      // the window (27vw at 5vw) and its paper ring; the original used a full 100svh
+      height: min(100svh, 40vw) !important;
+      position: relative;
+      @include mobile {
+        display: none;
+        height: 0svh;
+        width: 0%;
+      }
+      .spacing {
+        position: absolute;
+        top: 35vw;
+        width: 100%;
+        height: 100%;
+        background-color: var(--white);
+      }
+      .shapesContainer {
+        border-radius: var(--layout-columns-gap);
+
+        box-shadow: 0 0 0 calc(var(--layout-columns-gap) * 6) var(--white);
+        position: absolute;
+        top: 5vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        left: 0%;
+        width: 80%;
+        height: 27vw;
+
+        .shape {
+          width: 100% !important;
+          height: 100% !important;
+          position: relative;
+        }
+      }
+    }
+    .rightContainer {
+      @include mobile {
+        width: 100%;
+        background-color: transparent;
+        box-shadow: none;
+      }
+      background-color: var(--white);
+      box-shadow: 0 0 0 calc(var(--layout-columns-gap) * 5) var(--white);
+
+      width: 50%;
+      .category {
+        padding: calc(var(--layout-columns-gap) * 4) 0;
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--layout-columns-gap) * 2);
+        @include mobile {
+          padding: 0px 0px;
+          gap: 0px;
+        }
+        .shape {
+          width: 100%;
+          height: 450px;
+          position: relative;
+          @include mobile {
+            border-radius: calc(var(--layout-columns-gap) * 0.5);
+            box-shadow: 0 0 0 calc(var(--layout-columns-gap) * 0.5) var(--white);
+            height: 79vw;
+          }
+        }
+        .innerContainer {
+          display: flex;
+          background-color: var(--white);
+          flex-direction: column;
+          gap: calc(var(--layout-columns-gap) * 2);
+          width: 100%;
+          @include mobile {
+            padding: calc(var(--layout-columns-gap) * 2) 0px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.ball,
+.view {
+  width: 100%;
+  height: 100%;
+}
+
+.options {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 0.6);
+  list-style: none;
+  width: 90%;
+  @include mobile {
+    width: 100%;
+    gap: 0;
+  }
+}
+
+.group {
+  list-style: none;
+  text-transform: uppercase;
+  opacity: 0.7;
+  padding-top: calc(var(--layout-columns-gap) * 0.5);
+  &:first-child {
+    padding-top: 0;
+  }
+}
+
+.desc {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 0.25);
+}
+
+.meta {
+  opacity: 0.7;
+}
+
+.records {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-columns-gap);
+}
+
+.record {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 0.5);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(var(--layout-columns-gap) * 0.5);
+  > span:empty {
+    display: none;
+  }
+}

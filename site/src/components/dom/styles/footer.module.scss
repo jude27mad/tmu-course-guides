@@ -1,0 +1,277 @@
+@import '@src/styles/functions';
+
+.root {
+  height: auto;
+  width: 100%;
+  translate: inherit !important;
+  box-shadow: none;
+
+  @include mobile {
+    padding-top: var(--layout-columns-gap);
+    padding-bottom: var(--layout-columns-gap);
+  }
+  .linksContainer {
+    padding-top: calc(var(--layout-columns-gap) * 4);
+    @include mobile {
+      padding-top: calc(var(--layout-columns-gap) * 1.5);
+    }
+
+    width: 100%;
+    > div {
+      width: 100%;
+    }
+    .title {
+      color: var(--white);
+      padding-bottom: var(--layout-columns-gap);
+    }
+
+    .linkTextContainer {
+      padding-top: calc(var(--layout-columns-gap) * 0.5);
+      @include mobile {
+        padding-top: 0;
+      }
+      .linkText {
+        cursor: pointer;
+        overflow: unset;
+        display: flex;
+        align-items: center;
+        position: relative;
+        @include mobile {
+          // 44 px tap targets (15 px text, 140 % line height)
+          padding: 11px 0;
+        }
+        > svg {
+          height: 0.75vw;
+          width: 0.75vw;
+          top: auto;
+          overflow: unset;
+          fill: var(--white);
+          stroke: var(--white);
+          @include mobile {
+            height: 2vw;
+            width: 2vw;
+            left: -2vw;
+          }
+        }
+
+        @include hover {
+        &:hover {
+          svg {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.1, 1) !important;
+            transform: translate3d(1vw, 0, 0) rotate(-150deg) !important;
+            @include mobile {
+              transform: translate3d(2vw, 0, 0) rotate(-150deg) !important;
+            }
+          }
+
+          span {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.1, 1) !important;
+            transform: translate3d(0.6vw, 0, 0);
+            @include mobile {
+              transform: translate3d(1.8vw, 0, 0);
+            }
+          }
+        }
+        }
+      }
+    }
+  }
+
+  .emailContaineer {
+    @include mobile {
+      grid-column: 1 / 7;
+      padding-top: var(--layout-columns-gap);
+    }
+
+    padding-top: calc(var(--layout-columns-gap) * 4);
+    width: 100%;
+    grid-column: 9 / 17;
+    .workWithMe {
+      color: var(--white);
+    }
+    .link {
+      color: var(--white);
+      font-size: 2.5vw;
+      line-height: 4.1vw;
+      position: relative;
+      width: fit-content;
+      max-width: 100%;
+      overflow: hidden;
+      // course item titles are longer than an email address
+      white-space: normal;
+      @include mobile {
+        line-height: 140%;
+      }
+
+      cursor: pointer;
+      .email {
+        color: var(--white);
+      }
+    }
+    .link::before,
+    .link::after {
+      position: absolute !important;
+      width: 100%;
+      height: 1px;
+      top: 100%;
+      left: 0;
+      pointer-events: none;
+    }
+    .link::before {
+      content: '';
+      /* show by default */
+    }
+    .link:hover path {
+      // stroke-dashoffset: 0;
+      // transition-timing-function: cubic-bezier(0.8, 1, 0.7, 1);
+      // transition-duration: 0.3s;
+    }
+    @include hover {
+      .link:hover .linkGraphic {
+        transform: translate3d(-65.5%, 0, 0);
+      }
+    }
+    .linkGraphic {
+      position: absolute !important;
+      left: 0;
+      pointer-events: none;
+      fill: none;
+      stroke: var(--white);
+      bottom: 0;
+      stroke-width: 0.03em;
+      transition: transform 0.7s;
+      transition-timing-function: cubic-bezier(0, 0.25, 0.5, 1);
+    }
+  }
+
+  .middleText {
+    padding-top: calc(var(--layout-columns-gap) * 0.5);
+  }
+  .nextWhen {
+    color: var(--white);
+    padding-top: calc(var(--layout-columns-gap) * 0.75);
+    opacity: 0.8;
+    white-space: normal;
+  }
+  .inlineLink {
+    color: var(--white);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+    display: inline-block;
+    @include mobile {
+      // a comfortable tap area without changing the line
+      padding: 0.6em 0;
+      margin: -0.6em 0;
+    }
+  }
+  .middleContainer {
+    @include mobile {
+      grid-column: 1 / 7 !important;
+      padding-top: var(--layout-columns-gap);
+    }
+
+    > span > span > span {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  div {
+    color: var(--white);
+  }
+
+  .wordmark {
+    @include mobile {
+      grid-column: 1 / 6;
+      // "GUIDES" is a letter longer than the original wordmark
+      font-size: 19vw;
+      line-height: 15vw;
+    }
+    align-self: flex-end;
+    grid-column: 1 / 13;
+
+    font-size: 15.2vw;
+    line-height: 12.628vw;
+    transform: translate(-0.3vw, 2.1vw);
+    color: var(--white);
+    > span {
+      display: inherit;
+    }
+  }
+  .goToTop {
+    position: relative;
+
+    @include mobile {
+      grid-column: 6 / 7;
+    }
+    align-self: flex-end;
+    justify-self: flex-end;
+    grid-column: 13 / 17;
+  }
+}
+.circleButton {
+  z-index: 2;
+  box-shadow:
+    0 0.32vw 0.52vw #0000000a,
+    0 0.12vw 0.22vw #0000000a;
+  @include mobile {
+    // 44 px tap target
+    width: max(10vw, 44px);
+    height: max(10vw, 44px);
+  }
+  width: 4vw;
+  height: 4vw;
+  background-color: var(--white);
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+
+  .arrowClassic {
+    z-index: 2;
+    @include mobile {
+      width: 4vw;
+      height: 4vw;
+      top: calc(50% - 2vw);
+      left: calc(50% - 2vw);
+    }
+    position: absolute;
+    top: 1.25vw;
+    left: 1.25vw;
+    height: 1.5vw;
+    width: 1.5vw;
+    fill: var(--black);
+    stroke: var(--black);
+    transform: translateY(0vw) rotate(180deg);
+  }
+
+  .ball {
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-radius: 40vw;
+    background-color: var(--fillColor);
+    -webkit-transition:
+      width 0.6s cubic-bezier(0.4, 0, 0.1, 1),
+      height 0.6s cubic-bezier(0.4, 0, 0.1, 1);
+    transition:
+      width 0.6s cubic-bezier(0.4, 0, 0.1, 1),
+      height 0.6s cubic-bezier(0.4, 0, 0.1, 1);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+}
+@include hover {
+  .circleButton:hover {
+    .ball {
+      width: 25vw;
+      height: 25vw;
+      z-index: 1;
+      @include mobile {
+        width: 80vw;
+        height: 80vw;
+      }
+    }
+  }
+}

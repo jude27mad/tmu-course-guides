@@ -1,0 +1,47 @@
+@import '@src/styles/functions';
+
+.root {
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  padding: var(--layout-columns-gap) var(--layout-margin) 0px
+    var(--layout-margin);
+  width: 100%;
+  pointer-events: none;
+  scale: 1;
+  .innerHeader {
+    height: 3.1vw;
+    @include mobile {
+      // 44 px tap targets for the pills on phones
+      height: max(6.5vw, 44px);
+    }
+
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    > a {
+      pointer-events: all;
+    }
+    .wordmark {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+    }
+    .rightContainer {
+      pointer-events: all;
+
+      display: flex;
+      gap: var(--layout-columns-gap);
+      align-items: center;
+    }
+  }
+}
+
+// Hidden until the loader reveals it, only when JS runs (no-JS shows it).
+:global(html.js) .root {
+  opacity: 0;
+}

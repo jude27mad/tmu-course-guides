@@ -1,0 +1,101 @@
+@import '@src/styles/functions';
+
+.background {
+  height: 100%;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  > div {
+    width: 100% !important;
+    height: 100% !important;
+
+    > div {
+      > canvas {
+        width: 100% !important;
+        height: 100% !important;
+      }
+    }
+  }
+}
+.root {
+  display: flex;
+  align-items: center;
+  height: 100svh;
+  width: 100vw;
+}
+.layout {
+  background-color: transparent;
+  opacity: 1;
+  height: 100svh;
+
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  .main {
+    flex-grow: 1;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    position: fixed;
+    transition: 0.35s ease-in-out color;
+    color: var(--black);
+    // `main` is the scroller. The original had overflow: hidden (Lenis only); a real
+    // scroll container restores keyboard scrolling, find-in-page, focus
+    // scrolling and native momentum on touch. Lenis still smooths the wheel and
+    // adds .lenis-stopped (overflow hidden) while the loader or a panel is up.
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    max-height: 100svh;
+    height: 100svh !important;
+    width: 100%;
+    outline: none;
+
+    // Hide the scrollbar (the original draws its own, #scrollbar).
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox, Chrome 121+ */
+    &::-webkit-scrollbar {
+      display: none; /* Safari, older Chrome */
+    }
+
+    .mainContainer {
+      height: auto;
+
+      width: 100%;
+    }
+  }
+  .canvasContainer {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    height: 100% !important;
+    overflow: hidden;
+    background-color: transparent;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 1;
+    > div {
+      width: 100% !important;
+      height: 100% !important;
+
+      > canvas {
+        width: 100% !important;
+        height: 100% !important;
+      }
+    }
+  }
+  // The fluid canvas: hidden (not just transparent) while idle on touch
+  // screens, so the full-screen difference blend is not composited.
+  .fluidIdle {
+    visibility: hidden;
+  }
+}
+
+// Hidden until the loader reveals it, only when JS runs (see global.scss).
+:global(html.js) .layout .main {
+  opacity: 0;
+}

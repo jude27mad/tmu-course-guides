@@ -1,0 +1,85 @@
+@import '@src/styles/functions';
+
+.desc {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-columns-gap);
+}
+
+.options {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-columns-gap);
+  @include mobile {
+    gap: calc(var(--layout-columns-gap) * 0.5);
+  }
+}
+
+.option {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 0.25);
+}
+
+.badge {
+  flex: 0 0 auto;
+  padding: 0.2em 0.8em;
+  border-radius: 9vw;
+  background-color: var(--menuColor);
+  color: var(--menuFontColor);
+  white-space: nowrap;
+}
+
+// On desktop the description is the hover Portal; phones read it under the row.
+.inlineDesc {
+  opacity: 0.7;
+  padding-left: calc(0.8vw + var(--layout-columns-gap) * 0.5);
+  @include desktop {
+    @media (hover: hover) and (pointer: fine) {
+      display: none;
+    }
+  }
+  @include mobile {
+    padding-left: calc(max(1.8vw, 8px) + var(--layout-columns-gap) * 0.5);
+  }
+}
+
+.status {
+  padding-left: calc(0.8vw + var(--layout-columns-gap) * 0.5);
+  &:empty {
+    display: none;
+  }
+  @include mobile {
+    padding-left: calc(max(1.8vw, 8px) + var(--layout-columns-gap) * 0.5);
+  }
+}
+
+.updates {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-columns-gap);
+  padding: calc(var(--layout-columns-gap) * 0.5) 0 0 calc(0.8vw + var(--layout-columns-gap) * 0.5);
+  @include mobile {
+    padding-left: calc(max(1.8vw, 8px) + var(--layout-columns-gap) * 0.5);
+  }
+}
+
+.update {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 0.25);
+}
+
+.muted {
+  opacity: 0.7;
+}
+
+.file {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}

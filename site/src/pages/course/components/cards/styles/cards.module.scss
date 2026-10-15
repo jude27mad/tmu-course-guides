@@ -1,0 +1,258 @@
+@import '@src/styles/functions';
+
+.root {
+  scroll-margin-top: 10vh;
+}
+
+.cards {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.card {
+  border-top: 1px solid rgba(40, 40, 43, 0.15);
+  &:last-child {
+    border-bottom: 1px solid rgba(40, 40, 43, 0.15);
+  }
+  &:focus {
+    outline: none;
+  }
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+}
+
+.cardHead {
+  display: grid;
+  grid-template-columns: 5.5vw minmax(0, 1fr) auto;
+  column-gap: var(--layout-columns-gap);
+  align-items: baseline;
+  width: 100%;
+  text-align: left;
+  padding: var(--layout-columns-gap) 0;
+  @include mobile {
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: calc(var(--layout-columns-gap) * 0.25);
+    min-height: 44px;
+    padding: calc(var(--layout-columns-gap) * 0.75) 0;
+  }
+}
+
+.cardIndex {
+  text-transform: uppercase;
+  opacity: 0.7;
+  white-space: nowrap;
+  @include mobile {
+    grid-column: 1 / 2;
+    grid-row: 1;
+  }
+}
+
+.cardTitleWrap {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 0.25);
+  min-width: 0;
+  @include mobile {
+    grid-column: 1 / 2;
+    grid-row: 2;
+  }
+}
+
+.cardPreview {
+  opacity: 0.8;
+}
+
+.cardMeta {
+  opacity: 0.7;
+  &:empty {
+    display: none;
+  }
+}
+
+.cardArrow {
+  width: 0.8vw;
+  height: 0.8vw;
+  fill: var(--black);
+  transform: rotate(-90deg);
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.1, 1);
+  align-self: center;
+  @include mobile {
+    width: max(1.8vw, 8px);
+    height: max(1.8vw, 8px);
+    grid-column: 2 / 3;
+    grid-row: 1 / 3;
+  }
+}
+.cardArrowOpen {
+  transform: rotate(0deg);
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-columns-gap);
+  padding: 0 0 calc(var(--layout-columns-gap) * 2) calc(5.5vw + var(--layout-columns-gap));
+  @include mobile {
+    padding: 0 0 calc(var(--layout-columns-gap) * 1.5) 0;
+  }
+  &[hidden] {
+    display: none;
+  }
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 0.5);
+}
+
+.heading {
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 0.4);
+  padding-top: calc(var(--layout-columns-gap) * 0.25);
+}
+
+.groupHeading {
+  font-weight: 650;
+}
+
+.checks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 0.5);
+  @include mobile {
+    gap: 0;
+  }
+}
+
+.lines {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 0.4);
+}
+
+.line {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--layout-columns-gap) * 0.5);
+}
+
+.bullet {
+  flex: 0 0 auto;
+  width: 0.6vw;
+  height: 0.6vw;
+  fill: var(--black);
+  transform: rotate(-90deg);
+  @include mobile {
+    width: max(1.6vw, 7px);
+    height: max(1.6vw, 7px);
+  }
+}
+
+.muted {
+  opacity: 0.7;
+  &:empty {
+    display: none;
+  }
+}
+
+.pill {
+  width: fit-content;
+  padding: 0.2em 0.8em;
+  border-radius: 9vw;
+  background-color: var(--fillColor);
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--layout-columns-gap) calc(var(--layout-columns-gap) * 2);
+  dt {
+    opacity: 0.7;
+  }
+}
+
+.practice {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(var(--layout-columns-gap) * 0.75) var(--layout-columns-gap);
+  @include mobile {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  dt {
+    font-weight: 650;
+  }
+}
+
+.practiceLabel {
+  opacity: 0.7;
+}
+
+.fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 0.5);
+}
+
+.legend {
+  padding: 0 0 calc(var(--layout-columns-gap) * 0.5);
+}
+
+.plan {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 0.5);
+  padding-top: calc(var(--layout-columns-gap) * 0.5);
+}
+
+.fieldLabel {
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+.textarea,
+.dateInput {
+  display: block;
+  width: 100%;
+  max-width: 36vw;
+  color: var(--black);
+  background: transparent;
+  border-bottom: 1px solid var(--black);
+  padding: 0.3em 0;
+  @include mobile {
+    max-width: 100%;
+    min-height: 44px;
+  }
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 4.5em;
+}
+
+.dateInput {
+  width: fit-content;
+  min-width: 12em;
+}
+
+.reviewCount {
+  padding-bottom: var(--layout-columns-gap);
+}

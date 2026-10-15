@@ -1,0 +1,1 @@
+Static export of site/ (Next.js). Rebuild with `npm run export:preview` in site/.

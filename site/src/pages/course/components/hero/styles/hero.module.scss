@@ -1,0 +1,91 @@
+@import '@src/styles/functions';
+
+// The original home hero frame (paper insets under the header, a rounded window
+// ringed with paper) holding his /about hero: a white title at the bottom of
+// the window and, instead of his photo, the course marble with parallax.
+.root {
+  position: relative;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--layout-columns-gap) + 3.1vw) var(--layout-margin) calc(var(--layout-columns-gap) * 2);
+
+  box-shadow:
+    inset 0 calc(var(--layout-columns-gap) + 3.2vw) 0 0 var(--white),
+    inset calc(var(--layout-margin) * -1.05) 0 0 0 var(--white),
+    inset 0 calc(var(--layout-columns-gap) * -1.0065 * 2) 0 0 var(--white),
+    inset calc(var(--layout-margin) * 1.05) 0 0 0 var(--white);
+
+  @include mobile {
+    height: 93svh;
+    // the phone header row is 44 px tall (tap targets), more than the original 6.5vw
+    padding: calc(var(--layout-columns-gap) + max(6.5vw, 44px) + 1.5vw) var(--layout-margin) calc(var(--layout-columns-gap) * 2);
+    box-shadow:
+      inset 0 calc(var(--layout-columns-gap) + max(6.5vw, 44px) + 1.6vw) 0 0 var(--white),
+      inset calc(var(--layout-margin) * -1.1001) 0 0 0 var(--white),
+      inset 0 calc(var(--layout-columns-gap) * -1.04 * 2) 0 0 var(--white),
+      inset calc(var(--layout-margin) * 1.1001) 0 0 0 var(--white);
+  }
+}
+
+.window {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: calc(var(--layout-columns-gap) * 2);
+  box-shadow: 0 0 0 1vw var(--white);
+  border-radius: var(--layout-columns-gap);
+  @include mobile {
+    padding: var(--layout-columns-gap);
+    box-shadow: 0 0 0 2vw var(--white);
+    border-radius: calc(var(--layout-columns-gap) * 0.5);
+  }
+}
+
+.titleContainer {
+  position: relative;
+  z-index: 1;
+  max-width: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 0.5);
+  @include mobile {
+    max-width: 100%;
+  }
+  .context {
+    color: var(--white);
+    opacity: 0.7;
+  }
+  .title {
+    color: var(--white);
+  }
+}
+
+.wrapper {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ballContainer {
+  position: absolute;
+  top: 6%;
+  right: 4%;
+  width: 46%;
+  height: 78%;
+  @include mobile {
+    top: 4%;
+    right: 0;
+    width: 100%;
+    height: 62%;
+  }
+  .ball,
+  .view {
+    width: 100%;
+    height: 100%;
+  }
+}

@@ -1,0 +1,171 @@
+@import '@src/styles/functions';
+
+// The original projectImages.module.scss: a nested grid that is a window (the dark
+// shader shows between the media), with the same insets. The media are now
+// solid palette panels.
+.root {
+  position: relative;
+  background-color: transparent;
+
+  padding-top: calc(var(--layout-columns-gap) * 6);
+  border-radius: var(--layout-columns-gap);
+  box-shadow:
+    inset 0 calc(var(--layout-columns-gap) * 4.2) 0 0 var(--white),
+    0 0 0 calc(var(--layout-columns-gap) * 1.2) var(--white);
+  @include mobile {
+    padding-top: calc(var(--layout-columns-gap) * 2);
+    border-radius: calc(var(--layout-columns-gap) * 0.5);
+    box-shadow:
+      0 calc(var(--layout-columns-gap) * 3) 0 0 var(--white),
+      0 0 0 calc(var(--layout-columns-gap) * 0.5) var(--white);
+  }
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-columns-gap);
+  padding: calc(var(--layout-columns-gap) * 2);
+  border-radius: calc(var(--layout-columns-gap) * 0.5);
+  color: var(--black);
+  background-color: var(--white);
+  min-width: 0;
+  overflow-wrap: break-word;
+  @include mobile {
+    padding: var(--layout-columns-gap);
+    gap: calc(var(--layout-columns-gap) * 0.75);
+    border-radius: calc(var(--layout-columns-gap) * 0.25);
+  }
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+// "big" (the original: 190/101, full width)
+.big {
+  grid-column: 1 / 17;
+  min-height: calc(100vw * 0.42 * 101 / 190);
+  background-color: var(--fillColor);
+  @include mobile {
+    grid-column: 1 / 7;
+    min-height: 0;
+  }
+  .nextTitle {
+    max-width: 90%;
+  }
+  .countdown {
+    font-variant-numeric: tabular-nums;
+  }
+  .requirement {
+    max-width: 75%;
+    @include mobile {
+      max-width: 100%;
+    }
+  }
+}
+
+// "small" (the original: portrait, 1/9 and 9/17; side by side on phones too)
+.small {
+  grid-column: 1 / 9;
+  aspect-ratio: 1 / 1.05;
+  justify-content: space-between;
+  & + .small {
+    grid-column: 9 / 17;
+  }
+  @include mobile {
+    grid-column: 1 / 4;
+    aspect-ratio: auto;
+    min-height: 44vw;
+    & + .small {
+      grid-column: 4 / 7;
+    }
+  }
+  .counter {
+    font-variant-numeric: tabular-nums;
+    line-height: 100%;
+  }
+  // phone: two tiles side by side, so their lines use the meta size
+  .line {
+    @include mobile {
+      font-size: max(2.8vw, 13px);
+    }
+  }
+}
+
+.loud {
+  background-color: var(--menuColor);
+  color: var(--menuFontColor);
+}
+
+.soft {
+  background-color: var(--accentColor);
+}
+
+// "medium" (the original: 16/9, full width)
+.medium {
+  grid-column: 1 / 17;
+  @include mobile {
+    grid-column: 1 / 7;
+  }
+}
+
+.actions,
+.rangePills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--layout-columns-gap) * 0.5);
+}
+
+.pillActive {
+  background-color: var(--menuColor) !important;
+  color: var(--menuFontColor) !important;
+  svg {
+    fill: var(--menuFontColor) !important;
+    stroke: var(--menuFontColor) !important;
+  }
+}
+
+.status:empty,
+.note:empty {
+  display: none;
+}
+
+.note {
+  opacity: 0.7;
+}
+
+.workTitle {
+  max-width: 80%;
+}
+
+.workList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-columns-gap);
+}
+
+.workItem {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 0.25);
+  padding-top: calc(var(--layout-columns-gap) * 0.75);
+  border-top: 1px solid rgba(40, 40, 43, 0.15);
+}
+
+.workLink {
+  width: fit-content;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  @include mobile {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.workMeta {
+  opacity: 0.75;
+}
