@@ -159,7 +159,7 @@ test('cen100 hide filter and release badge use the old JSON values', () => {
   assert.equal(storage.data.get('cen100-hide-completed-v1'), 'false');
   assert.equal(hasUnseenUpdates('cen100', storage), true);
   markUpdatesSeen('cen100', storage);
-  assert.equal(storage.data.get('cen100-last-seen-update-v1'), '"2026-10-12-subject-privacy"');
+  assert.equal(storage.data.get('cen100-last-seen-update-v1'), '"2026-10-15-new-design"');
   assert.equal(hasUnseenUpdates('cen100', storage), false);
   assert.equal(hasUnseenUpdates('cen100', memoryStorage({ 'cen100-last-seen-update-v1': '"2026-10-01-older"' })), true);
 });
@@ -221,7 +221,7 @@ for (const courseId of ['mth140', 'mth141']) {
     }
     const seen = memoryStorage();
     markUpdatesSeen(courseId, seen);
-    assert.equal(seen.data.get(`${courseId}-last-seen-update-v1`), '"2026-10-12-assessments2"');
+    assert.equal(seen.data.get(`${courseId}-last-seen-update-v1`), '"2026-10-15-new-design"');
   });
 }
 

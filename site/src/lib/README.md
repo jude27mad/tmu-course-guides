@@ -35,10 +35,10 @@ The data layer every page uses. Pages import from `@src/lib` (plain functions) a
 | `cen100-contact-choice-v1` | `{"section":29,"group":9}`, `{"section":29,"group":null}` or `null` | `setSection`, `setGroup` |
 | `cen100-personal-plan-v1` | `{"completed":{"integrity":1},"notes":{"m2":"…"},"targets":{"m7":"2026-11-30"}}` (the old `cleanPlan()` output) | `markDone`, `undo`, `setDone`, `setNote`, `setTarget`, `importBackup` |
 | `cen100-hide-completed-v1` | `true` / `false` | `setHideCompleted` |
-| `cen100-last-seen-update-v1` | `"2026-10-12-subject-privacy"` | `markUpdatesSeen` |
+| `cen100-last-seen-update-v1` | `"2026-10-15-new-design"` | `markUpdatesSeen` |
 | `mth140-progress-v1`, `mth141-progress-v1` | `{"checks":{"quiz-1-0":true},"completed":{"quiz-1":true},"notes":{},"targets":{},"topics":{"limits-0":true}}` (the old `cleanProgress()` output) | `markDone`, `undo`, `setDone`, `toggleTick`, `setNote`, `setTarget`, `importBackup` |
 | `mth140-section-v1`, `mth141-section-v1` | `31`; `0` when none | `setSection` |
-| `mth140-last-seen-update-v1`, `mth141-last-seen-update-v1` | `"2026-10-12-assessments2"` | `markUpdatesSeen` |
+| `mth140-last-seen-update-v1`, `mth141-last-seen-update-v1` | `"2026-10-15-new-design"` | `markUpdatesSeen` |
 | `guide-motion-paused` | raw `true` / `false` | `setMotionPaused` |
 | `guide-motion-level` | legacy; removed on load | `useMotionPaused` |
 

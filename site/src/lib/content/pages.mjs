@@ -292,6 +292,18 @@ export const CEN={
  "updatesBadge": "New updates",
  "updates": [
   {
+   "date": "October 15, 2026",
+   "title": "New website design",
+   "text": "The guides have a new design, with full-screen 3D sections, page transitions and smooth scrolling.",
+   "items": [
+    "The Desk shows your next deadline across all courses with a live countdown, Mark done and Undo, and a card for each course.",
+    "Each guide opens with your next deadline, then lists deadlines under This week, Next week and Later, followed by the weekly checklist, assessments and course information.",
+    "Search is in the top bar on larger screens and in the menu on phones. Ctrl K or ⌘ K still opens it from a keyboard.",
+    "Pause motion is in the menu, and your device’s reduced-motion setting is respected. The new design uses a light appearance only."
+   ],
+   "after": "Your saved sections, ticks, completion records, notes and target dates carry over unchanged."
+  },
+  {
    "date": "October 12, 2026",
    "title": "Subject headers and privacy",
    "items": [
@@ -652,6 +664,18 @@ export const MATH={mth140:{
  "updatesBadge": "New updates",
  "updates": [
   {
+   "date": "October 15, 2026",
+   "title": "New website design",
+   "text": "The guides have a new design, with full-screen 3D sections, page transitions and smooth scrolling.",
+   "items": [
+    "The Desk shows your next deadline across all courses with a live countdown, Mark done and Undo, and a card for each course.",
+    "Each guide opens with your next deadline, then lists deadlines under This week, Next week and Later, followed by the weekly checklist, assessments and course information.",
+    "Search is in the top bar on larger screens and in the menu on phones. Ctrl K or ⌘ K still opens it from a keyboard.",
+    "Pause motion is in the menu, and your device’s reduced-motion setting is respected. The new design uses a light appearance only."
+   ],
+   "after": "Your saved sections, ticks, completion records, notes and target dates carry over unchanged."
+  },
+  {
    "date": "October 12, 2026",
    "title": "Confirmed Quiz 2 coverage and Monday make-up",
    "items": [
@@ -883,6 +907,18 @@ mth141:{
  "updatesSummary": "What's changed?",
  "updatesBadge": "New updates",
  "updates": [
+  {
+   "date": "October 15, 2026",
+   "title": "New website design",
+   "text": "The guides have a new design, with full-screen 3D sections, page transitions and smooth scrolling.",
+   "items": [
+    "The Desk shows your next deadline across all courses with a live countdown, Mark done and Undo, and a card for each course.",
+    "Each guide opens with your next deadline, then lists deadlines under This week, Next week and Later, followed by the weekly checklist, assessments and course information.",
+    "Search is in the top bar on larger screens and in the menu on phones. Ctrl K or ⌘ K still opens it from a keyboard.",
+    "Pause motion is in the menu, and your device’s reduced-motion setting is respected. The new design uses a light appearance only."
+   ],
+   "after": "Your saved sections, ticks, completion records, notes and target dates carry over unchanged."
+  },
   {
    "date": "October 12, 2026",
    "title": "Midterm scope and public privacy",

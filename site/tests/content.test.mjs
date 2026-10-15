@@ -10,9 +10,12 @@ import { cenOracle, mathOracle, htmlText, blocksText, toronto } from './helpers.
 const old = await cenOracle();
 
 test('CEN100 content is the old closure’s literals, word for word and in order', () => {
-  for (const name of ['I', 'WHO', 'TEAM', 'YOU', 'RULES', 'CONFIRMED', 'OPEN', 'STAFFING', 'SOURCE_INFO', 'PROFILE_KEY', 'FILTER_KEY', 'PLAN_KEY', 'SEEN_KEY', 'GUIDE_VERSION']) {
+  for (const name of ['I', 'WHO', 'TEAM', 'YOU', 'RULES', 'CONFIRMED', 'OPEN', 'STAFFING', 'SOURCE_INFO', 'PROFILE_KEY', 'FILTER_KEY', 'PLAN_KEY', 'SEEN_KEY']) {
     assert.deepEqual(CEN[name], old[name], name);
   }
+  // The release version moves on with each "What's changed?" entry, so the unread badge shows for the new design.
+  assert.equal(CEN.GUIDE_VERSION, '2026-10-15-new-design');
+  assert.notEqual(CEN.GUIDE_VERSION, old.GUIDE_VERSION);
   assert.equal(CEN.KEY, 'cen100-g9-ticks');
   for (const item of old.allItems) assert.deepEqual(CEN.sourceFor(item), old.sourceFor(item), item.id);
   assert.deepEqual(
@@ -119,7 +122,8 @@ for (const courseId of ['mth140', 'mth141']) {
         assert.equal([tile.top, tile.main, tile.bottom].filter(Boolean).join(' '), htmlText(page.dateTile(e)));
       }
       for (const lab of course.labs) assert.equal(MATH.labSummary(lab), page.labSummary(lab));
-      assert.equal(MATH.GUIDE_VERSION, page.GUIDE_VERSION);
+      assert.equal(MATH.GUIDE_VERSION, '2026-10-15-new-design');
+      assert.notEqual(MATH.GUIDE_VERSION, page.GUIDE_VERSION);
       assert.deepEqual(
         MATH.ruleCards(course, courseId).map((card) => [card.title, blocksText(card.blocks)]),
         page.cards.map(([title, body]) => [title, htmlText(body)]),

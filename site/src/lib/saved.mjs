@@ -5,11 +5,11 @@
      cen100-contact-choice-v1   {"section":n,"group":n|null} or null
      cen100-personal-plan-v1    cleanPlan() output: {"completed":{id:1},"notes":{item:text},"targets":{item:date}}
      cen100-hide-completed-v1   true | false
-     cen100-last-seen-update-v1 "2026-10-12-subject-privacy"
+     cen100-last-seen-update-v1 "2026-10-15-new-design"
    MTH140 / MTH141 (assets/math-guide.mjs)
      <course>-progress-v1       cleanProgress() output: {"checks","completed","notes","targets","topics"}
      <course>-section-v1        a lab section number, 0 when none
-     <course>-last-seen-update-v1 "2026-10-12-assessments2"
+     <course>-last-seen-update-v1 "2026-10-15-new-design"
    Shared: guide-motion-paused  raw "true" | "false"
 
    Every write re-reads storage first, applies one change and writes the whole cleaned record, which is exactly
