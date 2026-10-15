@@ -1,6 +1,8 @@
 /* Static text of the old pages, generated from their HTML in document order (tags stripped, entities decoded,
    words unchanged): index.html (DESK), cen100/index.html (CEN), mth140/ and mth141/index.html (MATH),
-   privacy.html (PRIVACY). Regenerate with site/tests/extract/pages.mjs rather than editing. */
+   privacy.html (PRIVACY). Regenerate with site/tests/extract/pages.mjs rather than editing, except for the
+   "updates" entries dated October 15, 2026 or later: those are maintained here by hand, and regenerating
+   would remove them. */
 export const DESK={
  "title": "TMU Course Guides | Fall 2026",
  "description": "TMU Fall 2026 course guides: CEN100 assignment deadlines, requirements and contacts, plus MTH140 and MTH141 assessment and section guides.",
@@ -299,9 +301,9 @@ export const CEN={
     "The Desk shows your next deadline across all courses with a live countdown, Mark done and Undo, and a card for each course.",
     "Each guide opens with your next deadline, then lists deadlines under This week, Next week and Later, followed by the weekly checklist, assessments and course information.",
     "Search is in the top bar on larger screens and in the menu on phones. Ctrl K or ⌘ K still opens it from a keyboard.",
-    "Pause motion is in the menu, and your device’s reduced-motion setting is respected. The new design uses a light appearance only."
-   ],
-   "after": "Your saved sections, ticks, completion records, notes and target dates carry over unchanged."
+    "Pause motion is in the menu, and your device’s reduced-motion setting is respected. The new design uses a light appearance only.",
+    "Your saved sections, ticks, completion records, notes and target dates carry over unchanged."
+   ]
   },
   {
    "date": "October 12, 2026",
@@ -671,9 +673,9 @@ export const MATH={mth140:{
     "The Desk shows your next deadline across all courses with a live countdown, Mark done and Undo, and a card for each course.",
     "Each guide opens with your next deadline, then lists deadlines under This week, Next week and Later, followed by the weekly checklist, assessments and course information.",
     "Search is in the top bar on larger screens and in the menu on phones. Ctrl K or ⌘ K still opens it from a keyboard.",
-    "Pause motion is in the menu, and your device’s reduced-motion setting is respected. The new design uses a light appearance only."
-   ],
-   "after": "Your saved sections, ticks, completion records, notes and target dates carry over unchanged."
+    "Pause motion is in the menu, and your device’s reduced-motion setting is respected. The new design uses a light appearance only.",
+    "Your saved sections, ticks, completion records, notes and target dates carry over unchanged."
+   ]
   },
   {
    "date": "October 12, 2026",
@@ -915,9 +917,9 @@ mth141:{
     "The Desk shows your next deadline across all courses with a live countdown, Mark done and Undo, and a card for each course.",
     "Each guide opens with your next deadline, then lists deadlines under This week, Next week and Later, followed by the weekly checklist, assessments and course information.",
     "Search is in the top bar on larger screens and in the menu on phones. Ctrl K or ⌘ K still opens it from a keyboard.",
-    "Pause motion is in the menu, and your device’s reduced-motion setting is respected. The new design uses a light appearance only."
-   ],
-   "after": "Your saved sections, ticks, completion records, notes and target dates carry over unchanged."
+    "Pause motion is in the menu, and your device’s reduced-motion setting is respected. The new design uses a light appearance only.",
+    "Your saved sections, ticks, completion records, notes and target dates carry over unchanged."
+   ]
   },
   {
    "date": "October 12, 2026",
