@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { DESK_TEXT } from '@src/lib';
-import FloatingMeshes from '@src/pages/components/home/components/floatingMeshes/Index';
+import SignalField from '@src/components/artwork/SignalField';
 import InfiniteText from '@src/components/animationComponents/infiniteText/Index';
 import clsx from 'clsx';
 import { gsap } from 'gsap';
@@ -76,9 +76,9 @@ const performMoves = (rectangles, gridWidth, gridHeight) => {
 };
 
 // The Desk masthead: the original hero (headline, lede, the masked hole grid over
-// the floating spheres, the "Scroll Down" marquee) carrying the old Desk's
+// the continuous signal field, the "Scroll Down" marquee) carrying the old Desk's
 // h1 and lede. The holes shuffle only while the hero is on screen and motion
-// is on; the spheres' accents are the three course menu colours.
+// is on. Kairo's artwork sits beneath the unchanged moving window mask.
 function Home() {
   const isMobile = useIsMobile();
   const still = useStill();
@@ -88,8 +88,6 @@ function Home() {
   const svgRef = useRef();
   const divWrapper = useRef();
   const infiniteTextRef = useRef();
-  // "near" mounts and feeds the glass spheres' transmission pass; "visible" runs physics.
-  const near = useInView(rootRef, { rootMargin: '25% 0px' });
   const visible = useInView(rootRef);
   const active = visible && !still;
 
@@ -247,7 +245,7 @@ function Home() {
       </div>
 
       <div className={styles.bottomContainer} aria-hidden="true">
-        <FloatingMeshes active={active} near={near} />
+        <SignalField />
         <div onPointerEnter={onPointerEnter} onPointerLeave={onPointerLeave} className={styles.svgWrapper}>
           <svg ref={svgRef} width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
             <rect x="0" y="0" className={styles.mask2} width="100%" height="100.3%" />

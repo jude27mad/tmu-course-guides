@@ -1,0 +1,125 @@
+{
+  "date": "2026-10-15T22:42:20.855Z",
+  "browser": "154.0.8037.57",
+  "emulation": "Headless Chromium desktop 1440 × 900, motion enabled",
+  "runs": [
+    {
+      "name": "baseline",
+      "url": "http://127.0.0.1:4174/tmu-course-guides/next/",
+      "states": [
+        {
+          "label": "initial Desk",
+          "url": "http://127.0.0.1:4174/tmu-course-guides/next/",
+          "title": "TMU Course GuidesFall 2026",
+          "header": {
+            "visibility": "visible",
+            "opacity": "1",
+            "inert": false
+          },
+          "mainX": 0,
+          "menuHidden": "true",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        },
+        {
+          "label": "CEN100 after menu navigation",
+          "url": "http://127.0.0.1:4174/tmu-course-guides/next/cen100/",
+          "title": "Introduction to Engineering",
+          "header": {
+            "visibility": "visible",
+            "opacity": "1",
+            "inert": false
+          },
+          "mainX": 0,
+          "menuHidden": "true",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        },
+        {
+          "label": "Desk after menu navigation",
+          "url": "http://127.0.0.1:4174/tmu-course-guides/next/",
+          "title": "TMU Course GuidesFall 2026",
+          "header": {
+            "visibility": "visible",
+            "opacity": "1",
+            "inert": false
+          },
+          "mainX": 0,
+          "menuHidden": "true",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        }
+      ],
+      "errors": [],
+      "canReopenMenu": true
+    },
+    {
+      "name": "new",
+      "url": "http://127.0.0.1:4173/tmu-course-guides/next/",
+      "states": [
+        {
+          "label": "initial Desk",
+          "url": "http://127.0.0.1:4173/tmu-course-guides/next/",
+          "title": "TMU Course GuidesFall 2026",
+          "header": {
+            "visibility": "visible",
+            "opacity": "1",
+            "inert": false
+          },
+          "mainX": 0,
+          "menuHidden": "true",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        },
+        {
+          "label": "CEN100 after menu navigation",
+          "url": "http://127.0.0.1:4173/tmu-course-guides/next/cen100/",
+          "title": "Introduction to Engineering",
+          "header": {
+            "visibility": "visible",
+            "opacity": "1",
+            "inert": false
+          },
+          "mainX": 0,
+          "menuHidden": "true",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        },
+        {
+          "label": "Desk after menu navigation",
+          "url": "http://127.0.0.1:4173/tmu-course-guides/next/",
+          "title": "TMU Course GuidesFall 2026",
+          "header": {
+            "visibility": "visible",
+            "opacity": "1",
+            "inert": false
+          },
+          "mainX": 0,
+          "menuHidden": "true",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        }
+      ],
+      "errors": [],
+      "canReopenMenu": true
+    }
+  ]
+}

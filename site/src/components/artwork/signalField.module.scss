@@ -1,0 +1,29 @@
+.field {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  // A quiet point field remains even without JavaScript or Canvas2D.
+  background:
+    radial-gradient(
+        circle at center,
+        rgba(235, 233, 226, 0.3) 0.8px,
+        transparent 1px
+      )
+      0 0 / 26px 26px,
+    #0b0c0b;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 767px) {
+  .field {
+    background-size: 22px 22px;
+  }
+}

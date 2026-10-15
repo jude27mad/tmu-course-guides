@@ -1,0 +1,294 @@
+{
+  "date": "2026-10-15T22:48:01.281Z",
+  "browser": "154.0.8037.57",
+  "emulation": "Headless Chromium desktop 1440 × 900, motion enabled, same lifecycle instrumentation and rapid timings as verify-artwork.mjs",
+  "runs": [
+    {
+      "name": "current-control",
+      "url": "http://127.0.0.1:4173/tmu-course-guides/next/",
+      "states": [
+        {
+          "label": "initial Desk",
+          "url": "http://127.0.0.1:4173/tmu-course-guides/next/",
+          "title": "TMU Course GuidesFall 2026",
+          "header": {
+            "visibility": "visible",
+            "opacity": "1",
+            "inert": false
+          },
+          "mainX": 0,
+          "menuHidden": "true",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        },
+        {
+          "label": "first CEN100 after settled helper",
+          "url": "http://127.0.0.1:4173/tmu-course-guides/next/cen100/",
+          "title": "Introduction to Engineering",
+          "header": {
+            "visibility": "visible",
+            "opacity": "1",
+            "inert": false
+          },
+          "mainX": 0,
+          "menuHidden": "true",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        },
+        {
+          "label": "first returned Desk after settled helper",
+          "url": "http://127.0.0.1:4173/tmu-course-guides/next/",
+          "title": "TMU Course GuidesFall 2026",
+          "header": {
+            "visibility": "visible",
+            "opacity": "1",
+            "inert": false
+          },
+          "mainX": 0,
+          "menuHidden": "true",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        },
+        {
+          "label": "after GC and 350ms snapshot",
+          "url": "http://127.0.0.1:4173/tmu-course-guides/next/",
+          "title": "TMU Course GuidesFall 2026",
+          "header": {
+            "visibility": "visible",
+            "opacity": "1",
+            "inert": false
+          },
+          "mainX": 0,
+          "menuHidden": "true",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        },
+        {
+          "label": "after attempted next menu opening",
+          "url": "http://127.0.0.1:4173/tmu-course-guides/next/",
+          "title": "TMU Course GuidesFall 2026",
+          "header": {
+            "visibility": "visible",
+            "opacity": "1",
+            "inert": true
+          },
+          "mainX": 0,
+          "menuHidden": "false",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        },
+        {
+          "label": "five seconds later",
+          "url": "http://127.0.0.1:4173/tmu-course-guides/next/",
+          "title": "TMU Course GuidesFall 2026",
+          "header": {
+            "visibility": "hidden",
+            "opacity": "0",
+            "inert": true
+          },
+          "mainX": -504,
+          "menuHidden": "false",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        }
+      ],
+      "errors": [],
+      "metrics": {
+        "listeners": 419,
+        "observers": 42,
+        "raf": {
+          "pending": 4,
+          "recurring": 4
+        }
+      },
+      "canReopenMenu": true
+    },
+    {
+      "name": "current-overwrite-auto",
+      "url": "http://127.0.0.1:4173/tmu-course-guides/next/",
+      "states": [
+        {
+          "label": "initial Desk",
+          "url": "http://127.0.0.1:4173/tmu-course-guides/next/",
+          "title": "TMU Course GuidesFall 2026",
+          "header": {
+            "visibility": "visible",
+            "opacity": "1",
+            "inert": false
+          },
+          "mainX": 0,
+          "menuHidden": "true",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        },
+        {
+          "label": "first CEN100 after settled helper",
+          "url": "http://127.0.0.1:4173/tmu-course-guides/next/cen100/",
+          "title": "Introduction to Engineering",
+          "header": {
+            "visibility": "visible",
+            "opacity": "1",
+            "inert": false
+          },
+          "mainX": 0,
+          "menuHidden": "true",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        },
+        {
+          "label": "first returned Desk after settled helper",
+          "url": "http://127.0.0.1:4173/tmu-course-guides/next/",
+          "title": "TMU Course GuidesFall 2026",
+          "header": {
+            "visibility": "visible",
+            "opacity": "1",
+            "inert": false
+          },
+          "mainX": 0,
+          "menuHidden": "true",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        },
+        {
+          "label": "after GC and 350ms snapshot",
+          "url": "http://127.0.0.1:4173/tmu-course-guides/next/",
+          "title": "TMU Course GuidesFall 2026",
+          "header": {
+            "visibility": "visible",
+            "opacity": "1",
+            "inert": false
+          },
+          "mainX": 0,
+          "menuHidden": "true",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        },
+        {
+          "label": "repeat roundtrip 1",
+          "url": "http://127.0.0.1:4173/tmu-course-guides/next/",
+          "title": "TMU Course GuidesFall 2026",
+          "header": {
+            "visibility": "visible",
+            "opacity": "1",
+            "inert": false
+          },
+          "mainX": 0,
+          "menuHidden": "true",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        },
+        {
+          "label": "repeat roundtrip 2",
+          "url": "http://127.0.0.1:4173/tmu-course-guides/next/",
+          "title": "TMU Course GuidesFall 2026",
+          "header": {
+            "visibility": "visible",
+            "opacity": "1",
+            "inert": false
+          },
+          "mainX": 0,
+          "menuHidden": "true",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        },
+        {
+          "label": "repeat roundtrip 3",
+          "url": "http://127.0.0.1:4173/tmu-course-guides/next/",
+          "title": "TMU Course GuidesFall 2026",
+          "header": {
+            "visibility": "visible",
+            "opacity": "1",
+            "inert": false
+          },
+          "mainX": 0,
+          "menuHidden": "true",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        },
+        {
+          "label": "after attempted next menu opening",
+          "url": "http://127.0.0.1:4173/tmu-course-guides/next/",
+          "title": "TMU Course GuidesFall 2026",
+          "header": {
+            "visibility": "visible",
+            "opacity": "1",
+            "inert": true
+          },
+          "mainX": 0,
+          "menuHidden": "false",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        },
+        {
+          "label": "five seconds later",
+          "url": "http://127.0.0.1:4173/tmu-course-guides/next/",
+          "title": "TMU Course GuidesFall 2026",
+          "header": {
+            "visibility": "hidden",
+            "opacity": "0",
+            "inert": true
+          },
+          "mainX": -504,
+          "menuHidden": "false",
+          "loader": {
+            "x": -1368,
+            "width": 1296,
+            "visibility": "visible"
+          }
+        }
+      ],
+      "errors": [],
+      "metrics": {
+        "listeners": 419,
+        "observers": 42,
+        "raf": {
+          "pending": 4,
+          "recurring": 4
+        }
+      },
+      "canReopenMenu": true
+    }
+  ]
+}

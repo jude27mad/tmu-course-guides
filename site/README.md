@@ -48,5 +48,21 @@ No analytics and no requests to other hosts. Each exported page carries a Conten
 
 - Design based on the open-source portfolio by Evangelos Giatsidis ([giats.me](https://giats.me)), used under the MIT licence in [`LICENSE`](LICENSE). The licence notice must stay with the code, and the credit line stays in the site footer. The original project's README asks for that credit line and for no commercial use without permission.
 - Inter Display (The Inter Project Authors), SIL Open Font License 1.1: `public/fonts/OFL.txt`.
-- `public/other/warehouse.hdr`: Poly Haven "Empty Warehouse 01", CC0.
 - `public/other/grain.png`, the icons and the course-code textures are generated for this website.
+
+## Artwork replacements
+
+Giats's layout, moving window masks, typography, transitions and scrolling remain
+the application shell. The home windows contain one continuous signal field
+adapted from Pixels71's Kairo (`97426fdfa1f3bd812cf0acc364273c28a89f871e`).
+Next Up and course artwork use locally stored photographs with the canvas
+pixel-to-sharp reveal from Kaisei Sadatoki's Atelier North for Codrops
+(`6703fc3f15ec92979964070814a99855d0baa38f`). Both respect the existing Pause
+motion and reduced-motion preferences.
+
+See [animation code provenance and notices](public/licenses/README.md) and
+[individual artwork sources and permissions](public/licenses/ARTWORK-CREDITS.md). Kairo's
+code licence is MIT; its photographs are expressly excluded. Atelier North's
+README declares MIT but its linked licence file is absent at the checked revision,
+so the included notice comes from Codrops' official licensing page. Neither
+template's photographs are reused.

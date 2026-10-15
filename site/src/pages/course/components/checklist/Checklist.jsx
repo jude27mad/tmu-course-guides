@@ -3,7 +3,7 @@ import { Fragment, useRef } from 'react';
 import AppearByWords from '@src/components/animationComponents/appearByWords/Index';
 import AppearTitle from '@src/components/animationComponents/appearTitle/Index';
 import CheckRow from '@src/pages/course/components/CheckRow';
-import MagicBall from '@src/pages/course/components/magicball/MagicBall';
+import CourseArtwork from '@src/components/courseArtwork/CourseArtwork';
 import RecordActions from '@src/pages/course/components/RecordActions';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import clsx from 'clsx';
@@ -17,12 +17,12 @@ import useStill from '@src/hooks/useStill';
 import { useStore } from '@src/store';
 import { useWindowSize } from '@darkroom.engineering/hamo';
 
-// The original Process section (pinned rounded-box MagicBall on the left, sliding
+// The original Process section (pinned artwork window on the left, sliding
 // sideways as you scroll; category list on the right), carrying this week's
 // checklist: one category per item due this week, one real checkbox per
 // preparation step, and MARK DONE / UNDO kept apart from the ticks.
 function Checklist() {
-  const { courseId, course, live, progress, copy } = useCourse();
+  const { courseId, live, progress, copy } = useCourse();
   const [isLoading] = useStore(useShallow((state) => [state.isLoading]));
   const isMobile = useIsMobile();
   const still = useStill();
@@ -33,12 +33,8 @@ function Checklist() {
   const categoriesRef = useRef([]);
   const shapesRef = useRef([]);
 
-  const { palette } = course;
-  const colors = [palette.primary, palette.fillColor];
   const list = live?.week || null;
-  const weekNumber = list?.week?.number;
-  const ballLabel = weekNumber ? `WEEK ${weekNumber}` : course.code;
-  // One placeholder category keeps the window and its ball when nothing is due.
+  // One placeholder category keeps the window and its artwork when nothing is due.
   const entries = list && list.length ? list : [null];
   const count = entries.length;
 
@@ -130,7 +126,7 @@ function Checklist() {
                     }}
                     className={styles.shape}
                   >
-                    <MagicBall isSphere={false} color={colors[index % colors.length]} label={ballLabel} palette={palette} roughness={0.4} className={styles.ball} viewClassName={styles.view} />
+                    <CourseArtwork courseId={courseId} className={styles.artwork} sizes="(max-width: 800px) 100vw, 40vw" />
                   </div>
                 </div>
               ))}
@@ -154,7 +150,7 @@ function Checklist() {
               >
                 {isMobile ? (
                   <div className={styles.shape}>
-                    <MagicBall isSphere={false} color={colors[index % colors.length]} label={ballLabel} palette={palette} roughness={0.5} className={styles.ball} viewClassName={styles.view} />
+                    <CourseArtwork courseId={courseId} className={styles.artwork} sizes="(max-width: 800px) 100vw, 40vw" />
                   </div>
                 ) : null}
 

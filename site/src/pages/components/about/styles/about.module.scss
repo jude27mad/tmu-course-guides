@@ -102,8 +102,9 @@
       }
     }
 
-    // A window (the dark shader) holding the next item's MagicBall.
+    // The existing window now holds the next course's photograph.
     .imageContainer {
+      overflow: hidden;
       height: 53vw;
       position: relative;
       grid-column: 9 / 17;

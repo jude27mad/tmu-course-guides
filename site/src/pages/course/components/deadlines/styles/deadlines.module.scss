@@ -1,6 +1,6 @@
 @import '@src/styles/functions';
 
-// The original services.module.scss (row-reverse: the ball column is on the right).
+// The original services.module.scss (row-reverse: the artwork column is on the right).
 .topContainer {
   width: 100%;
   background-color: var(--white);
@@ -57,6 +57,7 @@
         background-color: var(--white);
       }
       .shapesContainer {
+        overflow: hidden;
         border-radius: var(--layout-columns-gap);
 
         box-shadow: 0 0 0 calc(var(--layout-columns-gap) * 6) var(--white);
@@ -70,6 +71,7 @@
         height: 27vw;
 
         .shape {
+          border-radius: inherit;
           width: 100% !important;
           height: 100% !important;
           position: relative;
@@ -96,6 +98,7 @@
           gap: 0px;
         }
         .shape {
+          border-radius: inherit;
           width: 100%;
           height: 450px;
           position: relative;
@@ -120,8 +123,7 @@
   }
 }
 
-.ball,
-.view {
+.artwork {
   width: 100%;
   height: 100%;
 }

@@ -1,0 +1,79 @@
+{
+  "buildId": "lMK_JvjVNpFTFtpP9cphE",
+  "at": "2026-10-15T22:55:58.356Z",
+  "checks": [
+    {
+      "name": "phone390: homepage navbar visible",
+      "pass": true,
+      "detail": {
+        "visibility": "visible",
+        "opacity": 1,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 65.125,
+          "top": 0,
+          "right": 390,
+          "bottom": 65.125,
+          "left": 0
+        }
+      }
+    },
+    {
+      "name": "phone430: homepage navbar visible",
+      "pass": true,
+      "detail": {
+        "visibility": "visible",
+        "opacity": 1,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 430,
+          "height": 67.296875,
+          "top": 0,
+          "right": 430,
+          "bottom": 67.296875,
+          "left": 0
+        }
+      }
+    },
+    {
+      "name": "tablet: homepage navbar visible",
+      "pass": true,
+      "detail": {
+        "visibility": "visible",
+        "opacity": 1,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 820,
+          "height": 36.78125,
+          "top": 0,
+          "right": 820,
+          "bottom": 36.78125,
+          "left": 0
+        }
+      }
+    },
+    {
+      "name": "desktop: homepage navbar visible",
+      "pass": true,
+      "detail": {
+        "visibility": "visible",
+        "opacity": 1,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 64.625,
+          "top": 0,
+          "right": 1440,
+          "bottom": 64.625,
+          "left": 0
+        }
+      }
+    }
+  ],
+  "errors": []
+}

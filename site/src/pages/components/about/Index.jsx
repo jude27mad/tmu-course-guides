@@ -1,14 +1,13 @@
-import { DEFAULT_PALETTE, DESK_TEXT, countdown, courseCopy, getCourse } from '@src/lib';
+import { DESK_TEXT, countdown, courseCopy, getCourse } from '@src/lib';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import AppearTitle from '@src/components/animationComponents/appearTitle/Index';
 import ButtonLink from '@src/components/animationComponents/buttonLink/Index';
-import Marble from '@src/pages/components/about/components/Marble';
+import CourseArtwork from '@src/components/courseArtwork/CourseArtwork';
 import clsx from 'clsx';
 import { entryFor } from '@src/pages/components/useDesk';
 import { gsap } from 'gsap';
 import styles from '@src/pages/components/about/styles/about.module.scss';
-import useInView from '@src/hooks/useInView';
 import useIsMobile from '@src/hooks/useIsMobile';
 import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
 import { useNow } from '@src/lib/react';
@@ -20,8 +19,6 @@ const EMPTY_TITLE = 'No upcoming deadlines';
 const EMPTY_TEXT = 'No course has a dated deadline left in your records.';
 const NO_SECTION = 'No section saved';
 const NEXT_UP = 'Next up';
-// The marble when nothing is due: the original default palette, labelled with the old kicker's "TMU".
-const DESK_MARBLE = { id: 'desk', code: 'TMU', palette: DEFAULT_PALETTE };
 const pad = (n) => String(n).padStart(2, '0');
 
 function copyFor(courseId) {
@@ -78,12 +75,10 @@ function About({ desk }) {
   const still = useStill();
   const rootRef = useRef();
   const animatedImageRef = useRef();
-  const windowRef = useRef();
   const markRef = useRef();
   const undoRef = useRef();
   const focusNext = useRef(null);
   const [message, setMessage] = useState('');
-  const inView = useInView(windowRef, { rootMargin: '10% 0px' });
 
   const { ready, now, next, progress } = desk;
   const course = next ? getCourse(next.courseId) : null;
@@ -155,7 +150,7 @@ function About({ desk }) {
   let lines = [DESK_TEXT.nextStatic];
   if (ready && !next) lines = [EMPTY_TEXT];
   if (ready && next) {
-    lines = [`${course.code} · ${course.name}`, next.when, [next.label, next.target?.note].filter(Boolean).join(' · ')];
+    lines = [[course?.code, course?.name].filter(Boolean).join(' · '), next.when, [next.label, next.target?.note].filter(Boolean).join(' · ')];
     if (!next.cta) lines.push(entry?.section || NO_SECTION);
   }
 
@@ -163,8 +158,8 @@ function About({ desk }) {
   const forRecords = copy.forYourRecords;
 
   const renderImageContainer = () => (
-    <div ref={windowRef} className={styles.imageContainer} aria-hidden="true">
-      <Marble course={ready ? course || DESK_MARBLE : null} active={inView && !still} isMobile={isMobile} />
+    <div className={styles.imageContainer} aria-hidden="true">
+      <CourseArtwork courseId={ready ? course?.id : undefined} />
     </div>
   );
 
@@ -201,7 +196,7 @@ function About({ desk }) {
             </AppearTitle>
           )}
           <div className={clsx(styles.buttonContainer)}>
-            {ready && next && <ButtonLink href={next.href} label={`VIEW IN ${course.code}`} />}
+            {ready && next && <ButtonLink href={next.href} label={course ? `VIEW IN ${course.code}` : 'VIEW ASSESSMENT'} />}
             {ready && next?.cta && <ButtonLink href={`/${next.courseId}/#course-info`} label={next.cta.toUpperCase()} />}
             {ready && next?.markable && !next.done && (
               <ButtonLink ref={markRef} onClick={onMarkDone} label={(copy.markDone || copy.next?.markDone || 'Mark done').toUpperCase()} ariaLabel={markLabel ? markLabel(next.title) : undefined} />

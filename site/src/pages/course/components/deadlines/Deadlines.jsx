@@ -6,7 +6,7 @@ import AppearTitle from '@src/components/animationComponents/appearTitle/Index';
 import Arrow from '@src/components/imageComponents/Arrow';
 import ButtonLink from '@src/components/animationComponents/buttonLink/Index';
 import HoverText, { dimPage, hidePortal, showPortal } from '@src/pages/course/components/portal/HoverText';
-import MagicBall from '@src/pages/course/components/magicball/MagicBall';
+import CourseArtwork from '@src/components/courseArtwork/CourseArtwork';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import clsx from 'clsx';
 import { countdown } from '@src/lib';
@@ -19,14 +19,14 @@ import useStill from '@src/hooks/useStill';
 import { useStore } from '@src/store';
 import { useWindowSize } from '@darkroom.engineering/hamo';
 
-// The original Services section (pinned MagicBall window + category list + hover
+// The original Services section (pinned artwork window + category list + hover
 // Portal), carrying the deadlines: one category per time bucket, one option
 // per deadline with its countdown. Desktop hover shows the Portal; a tap or
 // Enter opens the details inline under the row (phones never get the page dim).
 const BUCKETS = [
-  { key: 'thisWeek', title: 'This week', ball: 'NOW' },
-  { key: 'nextWeek', title: 'Next week', ball: 'NEXT' },
-  { key: 'later', title: 'Later', ball: 'LATER' },
+  { key: 'thisWeek', title: 'This week' },
+  { key: 'nextWeek', title: 'Next week' },
+  { key: 'later', title: 'Later' },
 ];
 
 const finePointer = () => typeof window !== 'undefined' && window.matchMedia?.('(hover: hover) and (pointer: fine)').matches;
@@ -51,7 +51,7 @@ function Details({ item, now }) {
   );
 }
 
-const Other = memo(({ setPortals, groups, now, palette, sectionRef }) => {
+const Other = memo(({ setPortals, groups, now, courseId, sectionRef }) => {
   const [isLoading] = useStore(useShallow((state) => [state.isLoading]));
   const isMobile = useIsMobile();
   const still = useStill();
@@ -63,7 +63,6 @@ const Other = memo(({ setPortals, groups, now, palette, sectionRef }) => {
   const shapesRef = useRef([]);
   const titlesRef = useRef({});
   const windowSize = useWindowSize();
-  const colors = [palette.menuColor, palette.fluidColor, palette.primary];
 
   useIsomorphicLayoutEffect(() => {
     const vw = (coef) => windowSize.width * (coef / 100);
@@ -175,7 +174,7 @@ const Other = memo(({ setPortals, groups, now, palette, sectionRef }) => {
                     }}
                     className={styles.shape}
                   >
-                    <MagicBall isSphere color={colors[index]} label={bucket.ball} palette={palette} roughness={0.4} className={styles.ball} viewClassName={styles.view} />
+                    <CourseArtwork courseId={courseId} className={styles.artwork} sizes="(max-width: 800px) 100vw, 40vw" />
                   </div>
                 </div>
               ))}
@@ -195,7 +194,7 @@ const Other = memo(({ setPortals, groups, now, palette, sectionRef }) => {
             >
               {isMobile ? (
                 <div className={styles.shape}>
-                  <MagicBall isSphere color={colors[index]} label={group.ball} palette={palette} roughness={0.5} className={styles.ball} viewClassName={styles.view} />
+                  <CourseArtwork courseId={courseId} className={styles.artwork} sizes="(max-width: 800px) 100vw, 40vw" />
                 </div>
               ) : null}
 
@@ -254,7 +253,7 @@ function Deadlines() {
 
   return (
     <section ref={sectionRef} id="assignments" className={clsx(styles.root, 'layout-block-inner')}>
-      <Other setPortals={setPortals} groups={groups} now={live?.now || null} palette={course.palette} sectionRef={sectionRef} />
+      <Other setPortals={setPortals} groups={groups} now={live?.now || null} courseId={course.id} sectionRef={sectionRef} />
       <HoverText portals={portals} className={styles.hoverTextContainer} textClassName={styles.hoverText} />
     </section>
   );

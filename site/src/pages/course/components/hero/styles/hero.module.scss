@@ -2,7 +2,7 @@
 
 // The original home hero frame (paper insets under the header, a rounded window
 // ringed with paper) holding his /about hero: a white title at the bottom of
-// the window and, instead of his photo, the course marble with parallax.
+// the window and course artwork with the same parallax.
 .root {
   position: relative;
   height: 100svh;
@@ -29,6 +29,7 @@
 }
 
 .window {
+  overflow: hidden;
   position: relative;
   flex: 1 1 auto;
   min-height: 0;
@@ -58,7 +59,7 @@
   }
   .context {
     color: var(--white);
-    opacity: 0.7;
+    opacity: 0.9;
   }
   .title {
     color: var(--white);
@@ -69,23 +70,19 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 20%, rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0.84) 100%);
+  }
 }
 
-.ballContainer {
+.artworkContainer {
   position: absolute;
-  top: 6%;
-  right: 4%;
-  width: 46%;
-  height: 78%;
-  @include mobile {
-    top: 4%;
-    right: 0;
-    width: 100%;
-    height: 62%;
-  }
-  .ball,
-  .view {
-    width: 100%;
-    height: 100%;
-  }
+  top: -40%;
+  left: 0;
+  width: 100%;
+  height: 160%;
 }

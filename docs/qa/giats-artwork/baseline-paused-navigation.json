@@ -1,0 +1,19 @@
+{
+  "sourceCommit": "1eaf4df6a7476762d2bd04af7e288e4b3f2685da",
+  "method": "Original committed next/ exported using git archive into /tmp, served independently. Chromium1440x900; saved guide-motion-paused=true; open home then menu\u2192MTH140; observe after5seconds. No product files changed.",
+  "original": {
+    "route": "/tmu-course-guides/next/mth140/",
+    "heading": "Calculus I",
+    "mainX": -576,
+    "mainLeft": "-576px",
+    "menuAriaHidden": "true"
+  },
+  "artworkExport": {
+    "route": "/tmu-course-guides/next/mth140/",
+    "heading": "Calculus I",
+    "mainX": -576,
+    "mainLeft": "-576px",
+    "menuAriaHidden": "true"
+  },
+  "conclusion": "Pre-existing paused menu-route shell failure, preserved outside artwork scope. Reproductions can leave menu open or closed; shell remains displaced in either state."
+}

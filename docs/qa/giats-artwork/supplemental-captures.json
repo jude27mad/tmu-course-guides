@@ -1,0 +1,23 @@
+{
+  "buildId": "lMK_JvjVNpFTFtpP9cphE",
+  "at": "2026-10-15T22:53:41.575Z",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "orangeSignalPixelsAfterPointerPulse": 2234,
+  "errors": [],
+  "screenshots": [
+    "screenshots/desktop-signal-pointer.jpg",
+    "screenshots/desktop-next-up.jpg",
+    "screenshots/phone390-pixel-reveal.jpg"
+  ],
+  "method": "Real Chromium mouse click on signal host; pointer moved outside to restore original mask, then screenshot. Next Up reveal allowed to finish before ordinary main scrolling restores heading inset. No DOM styles or artwork changed.",
+  "pixelRevealCapture": {
+    "visible": "visible",
+    "width": 390,
+    "height": 390,
+    "transform": "matrix(1.0822, 0, 0, 1.0822, 0, 0)",
+    "method": "Ordinary main scroll moves Next Up into view; screenshot250ms later during actual canvas reveal, no DOM/style edits."
+  }
+}
