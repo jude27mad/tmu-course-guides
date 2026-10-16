@@ -4,8 +4,8 @@ export function openGuideTools(doc = globalThis.document) {
   doc?.dispatchEvent(new Event(OPEN_EVENT));
 }
 
-// Native dialog owns the top layer, focus trap and Escape key. Keep only the
-// page's scroll/focus lifecycle here, so opening tools never moves the page.
+// Native dialog owns the top layer, background inertness and Escape key.
+// Keep the page still and cycle Tab inside the tools rather than browser chrome.
 export function bindGuideTools(dialog, { getLenis = () => null } = {}) {
   if (!dialog) return () => {};
   const doc = dialog.ownerDocument;
@@ -67,16 +67,40 @@ export function bindGuideTools(dialog, { getLenis = () => null } = {}) {
     const box = dialog.getBoundingClientRect();
     return event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom;
   };
-  const onPointerDown = (event) => { backdropDown = outside(event); };
+  const onPointerDown = (event) => {
+    backdropDown = outside(event);
+  };
   const onClick = (event) => {
     if (backdropDown && outside(event)) close();
     backdropDown = false;
   };
-  const onPointerCancel = () => { backdropDown = false; };
+  const onPointerCancel = () => {
+    backdropDown = false;
+  };
+  const onKeyDown = (event) => {
+    if (event.key !== 'Tab' || !dialog.open) return;
+    const controls = [...dialog.querySelectorAll('a[href], button, input, select, textarea, [tabindex]')].filter(
+      (element) => element.tabIndex >= 0 && !element.matches(':disabled') && element.getClientRects().length > 0,
+    );
+    const first = controls[0];
+    const last = controls[controls.length - 1];
+    if (!first) {
+      event.preventDefault();
+      return;
+    }
+    if (event.shiftKey && doc.activeElement === first) {
+      event.preventDefault();
+      last.focus({ preventScroll: true });
+    } else if (!event.shiftKey && doc.activeElement === last) {
+      event.preventDefault();
+      first.focus({ preventScroll: true });
+    }
+  };
   const bindings = [
     [doc, OPEN_EVENT, open],
     [doc, 'guide-hash', onHash],
     [dialog, 'close', onClose],
+    [dialog, 'keydown', onKeyDown],
     [dialog, 'pointerdown', onPointerDown],
     [dialog, 'pointercancel', onPointerCancel],
     [dialog, 'click', onClick],
