@@ -7,8 +7,8 @@ import {recordsForCourse,semesterWeeks,currentWeekIndex} from './book/weeks.mjs'
 import {COURSES} from './course-data.mjs?v=20261012-assessments2';
 import {held,openItem,today as torontoToday,addDays,timestamp} from './night/core.mjs?v=20261014-book1';
 import {readSaved} from './night/targets.mjs?v=20261014-book1';
-import {currentTarget} from './night/deadline.mjs?v=20261014-book1';
-import {mountRail} from './night/timeline.mjs?v=20261014-book1';
+import {currentTarget} from './night/deadline.mjs?v=20261016-perf';
+import {mountRail} from './night/timeline.mjs?v=20261016-perf';
 let live;
 export function mount(ctx={}){
  unmount();

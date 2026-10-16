@@ -3,8 +3,8 @@
    course (body[data-course]): static structure mounts with the workspace; motion modules load after first paint.
    Each feature module is independent: one failing to load never affects the guide or the others. */
 import {setRoute,isDesk,course,META,$$,asset,VERSION,loadCSS,tier} from './core.mjs?v=20261014-book1';
-import * as deadline from './deadline.mjs?v=20261014-book1';
-import * as timeline from './timeline.mjs?v=20261014-book1';
+import * as deadline from './deadline.mjs?v=20261016-perf';
+import * as timeline from './timeline.mjs?v=20261016-perf';
 import {scope} from '../route-lifecycle.mjs';
 
 const FEATURES=['palette','hero','scroll'];

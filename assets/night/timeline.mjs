@@ -8,7 +8,7 @@ import {scope} from '../route-lifecycle.mjs';
 import {META,$,escape,TERM,today,dateLabel,dayLabel,addDays,scheduleRows,onSchedule,openItem,atLeast,onTier,motionAllowed} from './core.mjs?v=20261014-book1';
 import {currentBookState,currentBookHost} from '../book/book-state.mjs';
 import {weekIndexFor} from '../book/weeks.mjs';
-import {currentTarget,onTarget} from './deadline.mjs?v=20261014-book1';
+import {currentTarget,onTarget} from './deadline.mjs?v=20261016-perf';
 import {targetDate} from './targets.mjs?v=20261014-book1';
 
 const ms=d=>Date.parse(d+'T12:00:00Z');
