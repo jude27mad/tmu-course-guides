@@ -1,20 +1,16 @@
 import { calendarFile, exportBackup, hasUnseenUpdates, importBackup, markUpdatesSeen } from '@src/lib';
 import { useEffect, useId, useRef, useState } from 'react';
 
-import AppearTitle from '@src/components/animationComponents/appearTitle/Index';
 import Arrow from '@src/components/imageComponents/Arrow';
-import HoverText, { dimPage, hidePortal, showPortal } from '@src/pages/course/components/portal/HoverText';
+// eslint-disable-next-line import/extensions
+import { bindGuideTools } from '@src/pages/course/components/tools/dialog.mjs';
 import clsx from 'clsx';
-import deadlineStyles from '@src/pages/course/components/deadlines/styles/deadlines.module.scss';
-import overview from '@src/pages/course/components/overview/styles/overview.module.scss';
 import styles from '@src/pages/course/components/tools/styles/guideTools.module.scss';
 import { useCourse } from '@src/pages/course/hooks/useCourseState';
+import { useStore } from '@src/store';
 
-// Guide tools as a Services options list (arrow rows): each row is a button;
-// its description shows in the Portal on desktop hover and under the row on
-// phones. Files are built by '@src/lib' in the old formats and saved here.
-const finePointer = () => typeof window !== 'undefined' && window.matchMedia?.('(hover: hover) and (pointer: fine)').matches;
-
+// The existing calendar, backup and update actions, now in a native modal.
+// Files and saved progress keep the same formats and '@src/lib' functions.
 function download(file) {
   const blob = new Blob([file.text], { type: file.type });
   const url = URL.createObjectURL(blob);
@@ -29,12 +25,11 @@ function download(file) {
 
 function GuideTools() {
   const { courseId, info, copy, progress, section, live, version } = useCourse();
-  const [portals, setPortals] = useState([]);
   const [status, setStatus] = useState({ key: null, message: '' });
   const [updatesOpen, setUpdatesOpen] = useState(false);
   const [unseen, setUnseen] = useState(false);
   const fileRef = useRef(null);
-  const sectionRef = useRef(null);
+  const dialogRef = useRef(null);
   const fileId = useId();
   const cen = courseId === 'cen100';
   const page = info.page || {};
@@ -46,7 +41,7 @@ function GuideTools() {
     if (progress.ready) setUnseen(hasUnseenUpdates(courseId));
   }, [progress.ready, version, courseId]);
 
-  useEffect(() => () => dimPage(false, sectionRef.current), []);
+  useEffect(() => bindGuideTools(dialogRef.current, { getLenis: () => useStore.getState().lenis }), [courseId]);
 
   const say = (key, message) => setStatus({ key, message: message || '' });
 
@@ -127,56 +122,33 @@ function GuideTools() {
   };
 
   return (
-    <section ref={sectionRef} id="guide-tools" className={clsx(overview.root, styles.root, 'layout-grid-inner')}>
-      <div className={overview.title}>
-        <AppearTitle key={`tools-${courseId}`}>
-          <h2 className="h3">{page.tools?.summary}</h2>
-        </AppearTitle>
+    <dialog ref={dialogRef} id="guide-tools" className={styles.dialog} aria-labelledby="guide-tools-title" data-lenis-prevent>
+      <div className={styles.header}>
+        <h2 id="guide-tools-title" className={styles.title}>{page.tools?.summary || 'Guide tools'}</h2>
+        <button type="button" className={styles.close} data-close-tools aria-label="Close guide tools">Close</button>
       </div>
-      <div className={clsx(overview.text, 'p-l', overview.myStory)}>
-        <AppearTitle key={`tools-label-${courseId}`}>
-          <span>{page.tools?.updated || page.tools?.note || tools.note}</span>
-        </AppearTitle>
-      </div>
-      <div className={clsx(overview.desc, styles.desc)}>
+      <div className={styles.body} data-lenis-prevent>
+        <p className={styles.note}>{page.tools?.updated || page.tools?.note || tools.note}</p>
         <ul className={styles.options}>
           {rows.map((row) => (
             <li key={row.key} className={styles.option}>
-              <button
-                type="button"
-                className={deadlineStyles.optionButton}
-                aria-expanded={row.expanded}
-                onClick={row.run}
-                onPointerEnter={(event) => {
-                  if (event.pointerType !== 'mouse' || !finePointer() || !row.desc) return;
-                  dimPage(true, sectionRef.current);
-                  showPortal(setPortals, row.key, [row.title, row.desc]);
-                }}
-                onPointerLeave={() => {
-                  dimPage(false, sectionRef.current);
-                  hidePortal(setPortals, row.key);
-                }}
-              >
-                <Arrow className={clsx(deadlineStyles.arrow, row.expanded && deadlineStyles.arrowOpen)} />
-                <span className={clsx('p-l', deadlineStyles.optionTitle)}>{row.title}</span>
-                {row.badge ? <span className={clsx('p-x', styles.badge)}>{row.badge}</span> : null}
+              <button type="button" className={styles.optionButton} aria-expanded={row.expanded} aria-controls={row.key === 'updates' ? 'tools-updates' : undefined} onClick={row.run}>
+                <Arrow className={clsx(styles.arrow, row.expanded && styles.arrowOpen)} />
+                <span className={styles.optionTitle}>{row.title}</span>
+                {row.badge ? <span className={styles.badge}>{row.badge}</span> : null}
               </button>
-              {row.desc ? <p className={clsx('p-x', styles.inlineDesc)}>{row.desc}</p> : null}
-              <p className={clsx('p-l', styles.status)} role="status">
+              {row.desc ? <p className={styles.inlineDesc}>{row.desc}</p> : null}
+              <p className={styles.status} role="status">
                 {status.key === row.key ? status.message : ''}
               </p>
-              {row.key === 'updates' && updatesOpen ? (
-                <ol className={styles.updates}>
+              {row.key === 'updates' ? (
+                <ol id="tools-updates" className={styles.updates} hidden={!updatesOpen}>
                   {updateEntries.map((entry) => (
                     <li key={`${entry.date}-${entry.title}`} className={styles.update}>
-                      <span className={clsx('p-x', styles.muted)}>{entry.date}</span>
-                      <span className="h6">{entry.title}</span>
-                      {entry.text ? <span className="p-l">{entry.text}</span> : null}
-                      {(entry.items || []).map((line) => (
-                        <span key={line} className="p-l">
-                          {line}
-                        </span>
-                      ))}
+                      <span className={styles.muted}>{entry.date}</span>
+                      <h3 className={styles.updateTitle}>{entry.title}</h3>
+                      {entry.text ? <span>{entry.text}</span> : null}
+                      {(entry.items || []).map((line) => <span key={line}>{line}</span>)}
                     </li>
                   ))}
                 </ol>
@@ -184,14 +156,11 @@ function GuideTools() {
             </li>
           ))}
         </ul>
-        <label htmlFor={fileId} className="sr-only">
-          {tools.backup?.importLabel}
-        </label>
+        <label htmlFor={fileId} className="sr-only">{tools.backup?.importLabel}</label>
         <input id={fileId} ref={fileRef} type="file" accept="application/json,.json" className={styles.file} tabIndex={-1} onChange={onFile} />
-        {page.tools?.updated ? <p className={clsx('p-x', styles.muted)}>{tools.note || page.tools?.note}</p> : null}
+        {page.tools?.updated ? <p className={styles.note}>{tools.note || page.tools?.note}</p> : null}
       </div>
-      <HoverText portals={portals} className={deadlineStyles.hoverTextContainer} textClassName={deadlineStyles.hoverText} />
-    </section>
+    </dialog>
   );
 }
 

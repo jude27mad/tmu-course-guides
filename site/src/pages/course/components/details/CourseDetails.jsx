@@ -2,6 +2,8 @@ import { openPicker, useCourse } from '@src/pages/course/hooks/useCourseState';
 
 import ButtonLink from '@src/components/animationComponents/buttonLink/Index';
 import clsx from 'clsx';
+// eslint-disable-next-line import/extensions
+import { openGuideTools } from '@src/pages/course/components/tools/dialog.mjs';
 import styles from '@src/pages/course/components/details/styles/courseDetails.module.scss';
 
 // The original ProjectDetails (the pinned left column of a project page): code,
@@ -35,6 +37,7 @@ function CourseDetails() {
         <div className={styles.buttonContainer}>
           {d2l ? <ButtonLink target href={d2l.href} label="OPEN D2L" /> : null}
           <ButtonLink onClick={openPicker} label="CHANGE SECTION" ariaControls="section-picker" />
+          <ButtonLink onClick={() => openGuideTools()} label="GUIDE TOOLS" ariaHaspopup="dialog" ariaControls="guide-tools" />
         </div>
       </div>
     </div>

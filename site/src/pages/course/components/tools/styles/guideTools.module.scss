@@ -1,85 +1,98 @@
-@import '@src/styles/functions';
-
-.desc {
-  display: flex;
-  flex-direction: column;
-  gap: var(--layout-columns-gap);
+.dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(42rem, calc(100vw - 2rem));
+  max-width: none;
+  max-height: min(85svh, 52rem);
+  padding: 0;
+  border: 0;
+  border-radius: 20px;
+  background: var(--white);
+  color: var(--black);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
-.options {
-  list-style: none;
+.dialog:not([open]) { display: none; }
+.dialog[open] { display: flex; flex-direction: column; }
+.dialog::backdrop { background: rgba(0, 0, 0, 0.48); }
+
+.header {
   display: flex;
-  flex-direction: column;
-  gap: var(--layout-columns-gap);
-  @include mobile {
-    gap: calc(var(--layout-columns-gap) * 0.5);
-  }
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
-.option {
-  display: flex;
-  flex-direction: column;
-  gap: calc(var(--layout-columns-gap) * 0.25);
+.title { margin: 0; font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 500; line-height: 1.2; }
+.close {
+  flex: 0 0 auto;
+  min-width: 64px;
+  min-height: 44px;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
 }
 
+.body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.note, .muted { opacity: 0.7; font-size: 0.875rem; }
+.note:empty { display: none; }
+.options { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; margin: 0; padding: 0; }
+.option { display: flex; flex-direction: column; gap: 0.25rem; }
+.optionButton {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 44px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.optionTitle { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
+.arrow { flex: 0 0 auto; width: 0.6rem; height: 0.6rem; fill: currentColor; transform: rotate(-90deg); }
+.arrowOpen { transform: rotate(0deg); }
 .badge {
   flex: 0 0 auto;
-  padding: 0.2em 0.8em;
-  border-radius: 9vw;
+  padding: 0.2em 0.7em;
+  border-radius: 999px;
   background-color: var(--menuColor);
   color: var(--menuFontColor);
-  white-space: nowrap;
+  font-size: 0.75rem;
 }
+.inlineDesc { opacity: 0.7; padding-left: 1.35rem; font-size: 0.875rem; }
+.status { padding-left: 1.35rem; font-size: 0.875rem; }
+.status:empty { display: none; }
+.updates { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; margin: 0; padding: 1rem 0 0 1.35rem; }
+.updates[hidden] { display: none; }
+.update { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem; }
+.updateTitle { font-size: 1rem; font-weight: 500; }
+.file { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 
-// On desktop the description is the hover Portal; phones read it under the row.
-.inlineDesc {
-  opacity: 0.7;
-  padding-left: calc(0.8vw + var(--layout-columns-gap) * 0.5);
-  @include desktop {
-    @media (hover: hover) and (pointer: fine) {
-      display: none;
-    }
-  }
-  @include mobile {
-    padding-left: calc(max(1.8vw, 8px) + var(--layout-columns-gap) * 0.5);
-  }
-}
+.close:focus-visible, .optionButton:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
 
-.status {
-  padding-left: calc(0.8vw + var(--layout-columns-gap) * 0.5);
-  &:empty {
-    display: none;
-  }
-  @include mobile {
-    padding-left: calc(max(1.8vw, 8px) + var(--layout-columns-gap) * 0.5);
-  }
-}
-
-.updates {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: var(--layout-columns-gap);
-  padding: calc(var(--layout-columns-gap) * 0.5) 0 0 calc(0.8vw + var(--layout-columns-gap) * 0.5);
-  @include mobile {
-    padding-left: calc(max(1.8vw, 8px) + var(--layout-columns-gap) * 0.5);
-  }
-}
-
-.update {
-  display: flex;
-  flex-direction: column;
-  gap: calc(var(--layout-columns-gap) * 0.25);
-}
-
-.muted {
-  opacity: 0.7;
-}
-
-.file {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: none;
+@media (max-width: 480px) {
+  .header { padding: 1rem; }
+  .body { padding: 1rem; }
 }

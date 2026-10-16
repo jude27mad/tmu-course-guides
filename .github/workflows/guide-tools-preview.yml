@@ -1,0 +1,69 @@
+name: Verify and export Guide Tools popup
+on:
+  push:
+    branches: ['chatgpt/guide-tools-popup']
+    paths:
+      - 'site/**'
+      - '.github/workflows/guide-tools-preview.yml'
+permissions:
+  contents: write
+concurrency:
+  group: guide-tools-preview
+  cancel-in-progress: true
+jobs:
+  verify-export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: chatgpt/guide-tools-popup
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
+        working-directory: site
+      - name: Format changed components
+        working-directory: site
+        run: >-
+          npx prettier --write --print-width 200
+          src/pages/course/components/details/CourseDetails.jsx
+          src/pages/course/components/tools/GuideTools.jsx
+          src/pages/course/components/tools/dialog.mjs
+          src/pages/course/components/tools/styles/guideTools.module.scss
+          src/utils/scrollToHash.js
+          tests/guide-tools-dialog.test.mjs
+          scripts/check-guide-tools-popup.mjs
+      - run: npm test
+        working-directory: site
+      - run: npm run export:preview
+        working-directory: site
+      - name: Install QA browser
+        run: |
+          npm install --prefix "$RUNNER_TEMP/guide-tools-playwright" --no-save --package-lock=false playwright@1.64.0
+          node "$RUNNER_TEMP/guide-tools-playwright/node_modules/playwright/cli.js" install --with-deps chromium
+      - name: Check actual course pages
+        working-directory: site
+        env:
+          QA_REPORT_DIR: ${{ runner.temp }}/guide-tools-qa
+        run: |
+          export PLAYWRIGHT_PATH="$RUNNER_TEMP/guide-tools-playwright/node_modules/playwright"
+          node scripts/check-guide-tools-popup.mjs
+      - name: Save screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: guide-tools-popup-qa
+          path: ${{ runner.temp }}/guide-tools-qa/
+          if-no-files-found: ignore
+      - name: Commit verified preview to the feature branch only
+        run: |
+          git config user.name Judecodex
+          git config user.email '229519885+jude27mad@users.noreply.github.com'
+          git add site/src/pages/course/components/details/CourseDetails.jsx site/src/pages/course/components/tools/ site/src/utils/scrollToHash.js site/tests/guide-tools-dialog.test.mjs site/scripts/check-guide-tools-popup.mjs next/
+          if ! git diff --cached --quiet; then
+            git commit -m "Build and verify Guide Tools popup preview"
+            git push origin HEAD:chatgpt/guide-tools-popup
+          fi
