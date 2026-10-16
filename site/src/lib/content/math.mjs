@@ -6,7 +6,7 @@ import {DAY_NAMES,today,daysUntil,dateLabel,clock,addDays,resolveAssessment,asse
 
 // math-guide.mjs:31-33: the course's storage keys and release version.
 export const keysFor=courseId=>({progress:courseId+'-progress-v1',section:courseId+'-section-v1',view:courseId+'-view-v1',seen:courseId+'-last-seen-update-v1'});
-export const GUIDE_VERSION='2026-10-15-new-design';
+export const GUIDE_VERSION='2026-10-16-course-artwork';
 
 // math-guide.mjs:49-54. The order of each list defines the check keys `${assessmentId}-${index}`.
 export function prep(assessment,courseId){

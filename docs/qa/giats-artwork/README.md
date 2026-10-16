@@ -3,8 +3,18 @@
 Review branch: `codex/giats-artwork`, based on `main` at
 `2668ada`. Work began from `1eaf4df` after fetching on 2026-10-15; main's later
 documentation/release-note updates were incorporated before the final build.
-This is a review export;
-the live Pages `/next/` site changes only after merge and deployment.
+The artwork was merged to `main` and deployed on October 16, 2026 at
+`5c96c3c5adc72558195716c54ead30cb3f96fa8f`.
+**[Open the live Giats preview](https://jude27mad.github.io/tmu-course-guides/next/).**
+The previous website remains at the root address.
+
+The [Pages deployment](https://github.com/jude27mad/tmu-course-guides/actions/runs/38844400771)
+succeeded. [Main CI](https://github.com/jude27mad/tmu-course-guides/actions/runs/38844402096)
+succeeded on attempt 2 after retrying one legacy-root browser job; no assertions
+were weakened. Post-deployment checks passed **35/35** on the public site at
+phone and desktop sizes with no browser errors or external runtime requests.
+The public HTML build ID and all three full-size image hashes matched the approved
+export. These counts describe the artwork deployment, not future documentation builds.
 
 The current revision replaces the initial satellite artwork with photographs
 that directly reflect each course: a steel bridge mechanism for CEN100, a worked

@@ -2,6 +2,18 @@
 
 Latest first. Course-specific student-facing notes remain under **What's changed?** above each course footer. Older entries record the behaviour at the time; later releases supersede them.
 
+## October 16, 2026 — Course artwork and signal field
+
+Published at [`/next/`](https://jude27mad.github.io/tmu-course-guides/next/). The previous website remains at the root address.
+
+- Replaced the home spheres with Kairo's charcoal signal field, fine light points, orange pulses and pointer response beneath the existing moving windows.
+- Replaced Next Up and course hero, deadline and checklist marbles with subject photographs: a steel bridge mechanism for CEN100, a worked integral for MTH140 and linear equations for MTH141. Atelier North's pixel-to-sharp reveal preserves the existing frames. The bridge image also covers unresolved or empty Next Up states.
+- Pause motion and reduced motion show a static signal composition and finished photographs. Real HTML images remain available when canvas or JavaScript is unavailable. Effects pause offscreen and in hidden documents and clean up on navigation.
+- Kept the Giats layout, transitions, typography and course tools. Fixed a navbar animation conflict exposed by faster artwork mounting. Course content, deadline rules and saved-progress formats are unchanged.
+- Bundled optimized photographs locally with individual Unsplash permissions and credits; retained Giats, Kairo and Atelier North code notices. Removed unused sphere/marble code and the unused warehouse lighting asset.
+- Updated all three guides' **What's changed?** entries and unread release markers.
+- Artwork verification: 79 unit tests passed, export succeeded, 159 focused subject-image browser assertions passed, and 35 public-site checks passed after deployment. The earlier full lifecycle run passed 133/134 checks; its pre-existing saved-Pause menu offset remains documented. See the [QA record and screenshots](docs/qa/giats-artwork/README.md). Browser checks use Chromium emulation, not physical iPhone testing.
+
 ## October 15, 2026 — New website design (preview)
 
 The new design is available for review at [`/next/`](https://jude27mad.github.io/tmu-course-guides/next/). The previous version remains at the site root until the switch. Both read the same saved progress.

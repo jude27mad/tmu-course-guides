@@ -6,7 +6,7 @@ An unofficial course companion for Toronto Metropolitan University students. It 
 
 No account, installation or download is needed.
 
-> **The new design is in preview.** It lives at [`/next/`](https://jude27mad.github.io/tmu-course-guides/next/) while it is being reviewed. The previous version stays at the [main address](https://jude27mad.github.io/tmu-course-guides/) until the switch. Both versions read the same saved progress.
+> **The Giats preview is live, including the October 16 artwork update.** Open it at [`/next/`](https://jude27mad.github.io/tmu-course-guides/next/). The previous version stays at the [main address](https://jude27mad.github.io/tmu-course-guides/) until the switch. Both versions read the same saved progress.
 
 ## Getting started
 
@@ -59,7 +59,7 @@ Progress saved by earlier versions of the website carries over automatically.
 
 ## Motion and accessibility
 
-- The website uses full-screen 3D sections, a pointer effect, page transitions and smooth scrolling. **Pause motion** in the Menu stops the animations, holds the 3D sections still, removes the pointer effect and skips page transitions, and it stays on in this browser. Mouse-wheel scrolling is still smoothed. Your device's reduced-motion setting has the same effect.
+- The website uses a signal field inside moving windows, course photographs with a pixel reveal, a pointer effect, page transitions and smooth scrolling. **Pause motion** in the Menu stops the animations, shows a static signal field and finished photographs, removes the pointer effect and skips page transitions, and it stays on in this browser. Mouse-wheel scrolling is still smoothed. Your device's reduced-motion setting has the same effect.
 - If the effects feel slow on an older phone, turn on **Pause motion**.
 - Pinch zoom, text selection, keyboard navigation and visible focus all work.
 - Without JavaScript, course information, rules, grading and contacts are still readable; deadlines, countdowns, checklists and item details need JavaScript.
@@ -77,7 +77,8 @@ This is an **unofficial student-built companion**, not a replacement for D2L or 
 
 - Design based on the open-source portfolio by Evangelos Giatsidis ([giats.me](https://giats.me)), used under the MIT licence. See [`site/LICENSE`](site/LICENSE).
 - Typeface: Inter Display, SIL Open Font License 1.1.
-- Lighting environment: Poly Haven "Empty Warehouse 01", CC0.
+- Signal field: Pixels71’s Kairo; pixel reveal: Kaisei Sadatoki’s Atelier North for Codrops. See [code notices and provenance](site/public/licenses/README.md).
+- Course photographs: Tj Holowaychuk (engineering), Jeswin Thomas (calculus) and Antoine Dautry (linear algebra), under the Unsplash License. See [individual sources and permissions](site/public/licenses/ARTWORK-CREDITS.md).
 
 ## More
 

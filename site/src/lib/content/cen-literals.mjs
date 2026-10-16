@@ -236,4 +236,4 @@ export const SOURCE_INFO={
 export const sourceFor=item=>SOURCE_INFO[item.id]||["Outline + guide summary","Course outline, p. 9: assessment weight and date. Detailed checklist: this guide's summary of assignment requirements; check the assignment instructions on D2L."];
 
 // assets/cen-guide.mjs:623
-export const PLAN_KEY="cen100-personal-plan-v1", SEEN_KEY="cen100-last-seen-update-v1", GUIDE_VERSION="2026-10-15-new-design";
+export const PLAN_KEY="cen100-personal-plan-v1", SEEN_KEY="cen100-last-seen-update-v1", GUIDE_VERSION="2026-10-16-course-artwork";

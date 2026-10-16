@@ -294,6 +294,17 @@ export const CEN={
  "updatesBadge": "New updates",
  "updates": [
   {
+   "date": "October 16, 2026",
+   "title": "Course artwork and signal field",
+   "text": "New artwork keeps the same layout, moving windows and course tools.",
+   "items": [
+    "The home windows now reveal a charcoal signal field with light points and travelling orange pulses.",
+    "Course images now reflect the subjects: a steel bridge mechanism for Introduction to Engineering, a worked integral for Calculus I, and linear equations for Linear Algebra.",
+    "Next Up and the course windows reveal the photographs from pixels to a sharp image. Pause motion and reduced motion show the finished images immediately.",
+    "Your course dates, sections, checklists, completion records, notes and target dates are unchanged."
+   ]
+  },
+  {
    "date": "October 15, 2026",
    "title": "New website design",
    "text": "The guides have a new design, with full-screen 3D sections, page transitions and smooth scrolling.",
@@ -666,6 +677,17 @@ export const MATH={mth140:{
  "updatesBadge": "New updates",
  "updates": [
   {
+   "date": "October 16, 2026",
+   "title": "Course artwork and signal field",
+   "text": "New artwork keeps the same layout, moving windows and course tools.",
+   "items": [
+    "The home windows now reveal a charcoal signal field with light points and travelling orange pulses.",
+    "Course images now reflect the subjects: a steel bridge mechanism for Introduction to Engineering, a worked integral for Calculus I, and linear equations for Linear Algebra.",
+    "Next Up and the course windows reveal the photographs from pixels to a sharp image. Pause motion and reduced motion show the finished images immediately.",
+    "Your course dates, sections, checklists, completion records, notes and target dates are unchanged."
+   ]
+  },
+  {
    "date": "October 15, 2026",
    "title": "New website design",
    "text": "The guides have a new design, with full-screen 3D sections, page transitions and smooth scrolling.",
@@ -909,6 +931,17 @@ mth141:{
  "updatesSummary": "What's changed?",
  "updatesBadge": "New updates",
  "updates": [
+  {
+   "date": "October 16, 2026",
+   "title": "Course artwork and signal field",
+   "text": "New artwork keeps the same layout, moving windows and course tools.",
+   "items": [
+    "The home windows now reveal a charcoal signal field with light points and travelling orange pulses.",
+    "Course images now reflect the subjects: a steel bridge mechanism for Introduction to Engineering, a worked integral for Calculus I, and linear equations for Linear Algebra.",
+    "Next Up and the course windows reveal the photographs from pixels to a sharp image. Pause motion and reduced motion show the finished images immediately.",
+    "Your course dates, sections, checklists, completion records, notes and target dates are unchanged."
+   ]
+  },
   {
    "date": "October 15, 2026",
    "title": "New website design",
