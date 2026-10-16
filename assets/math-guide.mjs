@@ -11,7 +11,7 @@ const courseId=ctx.route||((ctx.direct!==false)?document.body.dataset.course:nul
 if(!root||!course||ctx.signal?.aborted)return;
 const controller=new AbortController(),signal=controller.signal;
 let disposed=false,minuteTimer=0;
-const downloads=new Map(),sectionOptions=[],ownedAssessments=new Set();
+const downloads=new Map(),sectionOptions=[],ownedAssessments=new Set(),topicCounts=new Map();
 const owns=node=>root.contains(node)||ownedAssessments.has(node?.closest?.('.assessment'));
 const $=id=>root.querySelector(`[id="${id}"]`)||[...ownedAssessments].flatMap(card=>[card,...card.querySelectorAll('[id]')]).find(node=>node.id===id);
 function listen(target,type,handler){target.addEventListener(type,handler,{signal});}
@@ -23,6 +23,7 @@ function cleanup(){
   window.CourseVisuals?.close(true);
   for(const option of sectionOptions)option.remove();
   ownedAssessments.clear();
+  topicCounts.clear();
 }
 function onAbort(){if(activeCleanup===cleanup)activeCleanup=null;cleanup();}
 activeCleanup=cleanup;ctx.signal?.addEventListener('abort',onAbort,{once:true});
@@ -105,10 +106,11 @@ function renderAssessments(){
 }
 function renderTopics(){
   $('topic-grid').innerHTML=course.topics.map((t,index)=>`<details class="topic" id="topic-${t.id}" data-search="${escape(t.title+' '+t.sections+' '+t.description)}"><summary><span class="topic-index">${String(index+1).padStart(2,'0')}</span><span><span class="topic-title">${escape(t.title)}</span><span class="topic-sub">${escape(t.sections)} · about ${t.hours} lecture hours</span>${t.midterm?'<span class="pill active">On the midterm</span>':''}<span class="topic-sub topic-count"></span></span></summary><div class="topic-body"><p>${escape(t.description)}</p><h3>My skill review</h3><ul class="check-list">${t.skills.map((s,i)=>`<li><label><input type="checkbox" data-topic="${t.id}-${i}" ${progress.topics[t.id+'-'+i]?'checked':''}><span>${escape(s)}</span></label></li>`).join('')}</ul><h3>Recommended practice</h3><p class="muted">Ungraded. These references follow the official recommended problem sheet.</p><div class="practice-rows">${course.practice.filter(r=>t.practiceSections.includes(r.section)).map(r=>`<div class="practice-row"><strong>Section ${escape(r.section)}</strong>${courseId==='mth140'?`<p>${escape(r.exercises)}</p>`:`<p><b>Kuttler:</b> ${escape(r.kuttler||'No exercises listed for this section.')}</p><p><b>Nicholson:</b> ${escape(r.nicholson||'No exercises listed for this section.')}</p>`}</div>`).join('')}</div><p class="source-note">Outline section range and approximate lecture hours: Course Management Form, ${courseId==='mth140'?'p. 5':'p. 4'}. Exercise references: official Recommended Problems document. Skill checklists are this guide’s study prompts, not an official marking rubric.</p></div></details>`).join('');
+  topicCounts.clear();for(const t of course.topics){topicCounts.set(t.id, $('topic-'+t.id).querySelector('.topic-count'));}
   updateTopicCounts();
 }
 function updateAssessmentCounts(){for(const a of course.assessments){const total=prep(a).length,count=prep(a).filter((_,i)=>progress.checks[a.id+'-'+i]).length,el=$('assessment-'+a.id).querySelector('.assessment-progress');el.textContent=`${count}/${total} prepared`;el.hidden=count===0;} $('assessment-count').textContent=`${Object.keys(progress.completed).length}/${course.assessments.length} completed in my records`;}
-function updateTopicCounts(){let count=0,total=0;for(const t of course.topics){const checked=t.skills.filter((_,i)=>progress.topics[t.id+'-'+i]).length;count+=checked;total+=t.skills.length;$('topic-'+t.id).querySelector('.topic-count').textContent=checked?`${checked}/${t.skills.length} skill checks`:'';}$('review-count').textContent=`${count}/${total} skill checks`;$('review-bar').max=total;$('review-bar').value=count;}
+function updateTopicCounts(){let count=0,total=0;for(const t of course.topics){const checked=t.skills.filter((_,i)=>progress.topics[t.id+'-'+i]).length;count+=checked;total+=t.skills.length;topicCounts.get(t.id).textContent=checked?`${checked}/${t.skills.length} skill checks`:'';}$('review-count').textContent=`${count}/${total} skill checks`;$('review-bar').max=total;$('review-bar').value=count;}
 function renderRules(){
   const cards=[
     ['Assessment rules',`<ul><li>At least 50% of total course marks is required to pass.</li><li>Quizzes and exams are individual work, closed book, with no calculator, formula sheet or other aids.</li><li>${escape(course.quizPolicy)}</li><li>Recommended homework is practice and is not submitted for grading.</li></ul><p class="source-note">Source: Course Management Form and course FAQ.</p>`],
