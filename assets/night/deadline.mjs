@@ -71,6 +71,7 @@ function mountBlock(){
   // The guide's "nothing dated ahead" card has no slot for a countdown; it keeps its own layout.
   const slot=isMath()?card.querySelector('.next-bottom'):card.querySelector('.next-open');if(!slot)return;
   block=document.createElement('div');block.className='ns-count';slot.after(block);card.classList.add('ns-next');
+  lastMinute='';
  }
  block.dataset.precision=target.precision;block.dataset.key=target.id+target.precision+(target.at||target.date||'');
  block.innerHTML=blockHTML(target);
@@ -91,10 +92,12 @@ function paint(){
  }else if(block&&t.precision==='exact'&&block.querySelector('.ns-digits'))mountBlock();
  else if(block&&t.precision==='day')paintRing(block,p.progress??0);
  const minute=text+t.id;
- if(minute!==lastMinute){lastMinute=minute;const sr=block?.querySelector('.ns-sr');if(sr)sr.textContent=sentence(t);}
- for(const chip of document.querySelectorAll('[data-ns-chip]'))chip.textContent=text;
- for(const name of document.querySelectorAll('[data-ns-title]'))name.textContent=t.title;
- for(const when of document.querySelectorAll('[data-ns-when]'))when.textContent=t.when;
+ if(minute!==lastMinute){
+  lastMinute=minute;const sr=block?.querySelector('.ns-sr');if(sr)sr.textContent=sentence(t);
+  for(const chip of document.querySelectorAll('[data-ns-chip]'))chip.textContent=text;
+  for(const name of document.querySelectorAll('[data-ns-title]'))name.textContent=t.title;
+  for(const when of document.querySelectorAll('[data-ns-when]'))when.textContent=t.when;
+ }
 }
 
 export async function resolve(){
@@ -127,7 +130,7 @@ function schedule(){
 function hud(){
  const copy=$('.header-upgraded .hero-copy');if(!copy||!target)return;
  let line=copy.querySelector('.ns-hud');
- if(!line){line=document.createElement('p');line.className='ns-hud';line.innerHTML='<span class="ns-hud-k">Next</span><span data-ns-title></span><span class="ns-hud-sep" aria-hidden="true">·</span><span data-ns-chip></span>';copy.append(line);}
+ if(!line){line=document.createElement('p');line.className='ns-hud';line.innerHTML='<span class="ns-hud-k">Next</span><span data-ns-title></span><span class="ns-hud-sep" aria-hidden="true">·</span><span data-ns-chip></span>';copy.append(line);lastMinute='';}
  paint();
 }
 
@@ -145,6 +148,7 @@ export function mountDock(){
  dock=document.createElement('div');dock.className='ns-dock';dock.setAttribute('role','region');dock.setAttribute('aria-label','Course quick bar');
  dock.innerHTML=`<div class="ns-dock-bar"><span class="ns-dock-progress" aria-hidden="true"></span><a class="ns-dock-id" href="#top"><i aria-hidden="true"></i><b></b><span></span></a><a class="ns-dock-desk" href="${asset('../../')}" aria-label="Go to Course Desk">Desk</a><div class="ns-dock-next"><span class="ns-dock-k">Next</span><span class="ns-dock-title" data-ns-title></span><span class="ns-dock-chip" data-ns-chip></span></div><div class="ns-dock-actions"><button type="button" class="ns-dock-section" data-ns-section></button><button type="button" class="ns-dock-motion" data-ns-motion aria-pressed="false"><i aria-hidden="true"></i><span>Pause motion</span></button><button type="button" class="ns-dock-search" data-ns-search aria-label="Search the guide. Shortcut: Command K"><span>Search</span><kbd>⌘K</kbd></button></div></div>`;
  document.body.append(dock);
+ lastMinute='';
  dockLife=scope();
  dockLife.on(dock.querySelector('.ns-dock-id'),'click',e=>{e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});});
  dockLife.on(document,'click',e=>{if(e.target.closest('[data-ns-section]'))$('.workspace-section')?.click();else if(e.target.closest('[data-ns-motion]'))toggleMotion();});
