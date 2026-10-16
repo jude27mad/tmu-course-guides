@@ -37,5 +37,5 @@ export function bootDocument(options={}){
  boots.set(window.document,promise);return promise;
 }
 if(typeof window!=='undefined'&&window.document){
- bootDocument({...window.TMU_BOOT_OPTIONS,window}).catch(error=>console.warn('Course route bootstrap unavailable',error));
+ bootDocument({...window.TMU_BOOT_OPTIONS,window});
 }
