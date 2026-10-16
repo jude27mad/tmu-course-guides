@@ -55,8 +55,9 @@ No analytics and no requests to other hosts. Each exported page carries a Conten
 Giats's layout, moving window masks, typography, transitions and scrolling remain
 the application shell. The home windows contain one continuous signal field
 adapted from Pixels71's Kairo (`97426fdfa1f3bd812cf0acc364273c28a89f871e`).
-Next Up and course artwork use locally stored photographs with the canvas
-pixel-to-sharp reveal from Kaisei Sadatoki's Atelier North for Codrops
+Next Up and course artwork use locally stored photographs of a steel bridge
+mechanism (CEN100), a worked integral (MTH140) and a system of linear equations
+(MTH141), with the canvas pixel-to-sharp reveal from Kaisei Sadatoki's Atelier North for Codrops
 (`6703fc3f15ec92979964070814a99855d0baa38f`). Both respect the existing Pause
 motion and reduced-motion preferences.
 

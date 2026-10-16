@@ -1,0 +1,224 @@
+# Subject-photography browser verification
+
+2026-10-16T00:43:33.687Z
+
+Export build `Lf7huoI52ENR_yZhAKMgI`. Chromium 154.0.8037.57. Chromium headless with software rendering; browser-emulated viewports, not physical iPhone testing.
+
+159/159 assertions passed.
+
+- PASS: phone390-normal: actual export matches expected build
+- PASS: phone390-normal Next Up: correct local subject photo and stable frame
+- PASS: phone390-normal Next Up: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-normal Next Up: HTML heading visible and no horizontal overflow
+- PASS: phone390-normal cen100: correct local subject photo and stable frame
+- PASS: phone390-normal cen100: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-normal cen100: HTML heading visible and no horizontal overflow
+- PASS: phone390-normal mth140: correct local subject photo and stable frame
+- PASS: phone390-normal mth140: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-normal mth140: HTML heading visible and no horizontal overflow
+- PASS: phone390-normal mth141: correct local subject photo and stable frame
+- PASS: phone390-normal mth141: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-normal mth141: HTML heading visible and no horizontal overflow
+- PASS: phone430-normal: actual export matches expected build
+- PASS: phone430-normal Next Up: correct local subject photo and stable frame
+- PASS: phone430-normal Next Up: finished image without decorative canvas or duplicate accessible text
+- PASS: phone430-normal Next Up: HTML heading visible and no horizontal overflow
+- PASS: phone430-normal cen100: correct local subject photo and stable frame
+- PASS: phone430-normal cen100: finished image without decorative canvas or duplicate accessible text
+- PASS: phone430-normal cen100: HTML heading visible and no horizontal overflow
+- PASS: phone430-normal mth140: correct local subject photo and stable frame
+- PASS: phone430-normal mth140: finished image without decorative canvas or duplicate accessible text
+- PASS: phone430-normal mth140: HTML heading visible and no horizontal overflow
+- PASS: phone430-normal mth141: correct local subject photo and stable frame
+- PASS: phone430-normal mth141: finished image without decorative canvas or duplicate accessible text
+- PASS: phone430-normal mth141: HTML heading visible and no horizontal overflow
+- PASS: tablet-normal: actual export matches expected build
+- PASS: tablet-normal Next Up: correct local subject photo and stable frame
+- PASS: tablet-normal Next Up: finished image without decorative canvas or duplicate accessible text
+- PASS: tablet-normal Next Up: HTML heading visible and no horizontal overflow
+- PASS: tablet-normal cen100: correct local subject photo and stable frame
+- PASS: tablet-normal cen100: finished image without decorative canvas or duplicate accessible text
+- PASS: tablet-normal cen100: HTML heading visible and no horizontal overflow
+- PASS: tablet-normal mth140: correct local subject photo and stable frame
+- PASS: tablet-normal mth140: finished image without decorative canvas or duplicate accessible text
+- PASS: tablet-normal mth140: HTML heading visible and no horizontal overflow
+- PASS: tablet-normal mth141: correct local subject photo and stable frame
+- PASS: tablet-normal mth141: finished image without decorative canvas or duplicate accessible text
+- PASS: tablet-normal mth141: HTML heading visible and no horizontal overflow
+- PASS: desktop-normal: actual export matches expected build
+- PASS: desktop-normal Next Up: correct local subject photo and stable frame
+- PASS: desktop-normal Next Up: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-normal Next Up: HTML heading visible and no horizontal overflow
+- PASS: desktop-normal cen100: correct local subject photo and stable frame
+- PASS: desktop-normal cen100: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-normal cen100: HTML heading visible and no horizontal overflow
+- PASS: desktop-normal mth140: correct local subject photo and stable frame
+- PASS: desktop-normal mth140: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-normal mth140: HTML heading visible and no horizontal overflow
+- PASS: desktop-normal mth141: correct local subject photo and stable frame
+- PASS: desktop-normal mth141: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-normal mth141: HTML heading visible and no horizontal overflow
+- PASS: phone390-saved-pause: actual export matches expected build
+- PASS: phone390-saved-pause Next Up: correct local subject photo and stable frame
+- PASS: phone390-saved-pause Next Up: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-saved-pause Next Up: HTML heading visible and no horizontal overflow
+- PASS: phone390-saved-pause cen100: correct local subject photo and stable frame
+- PASS: phone390-saved-pause cen100: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-saved-pause cen100: HTML heading visible and no horizontal overflow
+- PASS: phone390-saved-pause mth140: correct local subject photo and stable frame
+- PASS: phone390-saved-pause mth140: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-saved-pause mth140: HTML heading visible and no horizontal overflow
+- PASS: phone390-saved-pause mth141: correct local subject photo and stable frame
+- PASS: phone390-saved-pause mth141: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-saved-pause mth141: HTML heading visible and no horizontal overflow
+- PASS: desktop-saved-pause: actual export matches expected build
+- PASS: desktop-saved-pause Next Up: correct local subject photo and stable frame
+- PASS: desktop-saved-pause Next Up: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-saved-pause Next Up: HTML heading visible and no horizontal overflow
+- PASS: desktop-saved-pause cen100: correct local subject photo and stable frame
+- PASS: desktop-saved-pause cen100: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-saved-pause cen100: HTML heading visible and no horizontal overflow
+- PASS: desktop-saved-pause mth140: correct local subject photo and stable frame
+- PASS: desktop-saved-pause mth140: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-saved-pause mth140: HTML heading visible and no horizontal overflow
+- PASS: desktop-saved-pause mth141: correct local subject photo and stable frame
+- PASS: desktop-saved-pause mth141: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-saved-pause mth141: HTML heading visible and no horizontal overflow
+- PASS: phone390-reduced: actual export matches expected build
+- PASS: phone390-reduced Next Up: correct local subject photo and stable frame
+- PASS: phone390-reduced Next Up: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-reduced Next Up: HTML heading visible and no horizontal overflow
+- PASS: phone390-reduced cen100: correct local subject photo and stable frame
+- PASS: phone390-reduced cen100: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-reduced cen100: HTML heading visible and no horizontal overflow
+- PASS: phone390-reduced mth140: correct local subject photo and stable frame
+- PASS: phone390-reduced mth140: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-reduced mth140: HTML heading visible and no horizontal overflow
+- PASS: phone390-reduced mth141: correct local subject photo and stable frame
+- PASS: phone390-reduced mth141: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-reduced mth141: HTML heading visible and no horizontal overflow
+- PASS: desktop-reduced: actual export matches expected build
+- PASS: desktop-reduced Next Up: correct local subject photo and stable frame
+- PASS: desktop-reduced Next Up: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-reduced Next Up: HTML heading visible and no horizontal overflow
+- PASS: desktop-reduced cen100: correct local subject photo and stable frame
+- PASS: desktop-reduced cen100: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-reduced cen100: HTML heading visible and no horizontal overflow
+- PASS: desktop-reduced mth140: correct local subject photo and stable frame
+- PASS: desktop-reduced mth140: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-reduced mth140: HTML heading visible and no horizontal overflow
+- PASS: desktop-reduced mth141: correct local subject photo and stable frame
+- PASS: desktop-reduced mth141: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-reduced mth141: HTML heading visible and no horizontal overflow
+- PASS: phone390-canvas-failure: actual export matches expected build
+- PASS: phone390-canvas-failure Next Up: correct local subject photo and stable frame
+- PASS: phone390-canvas-failure Next Up: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-canvas-failure Next Up: HTML heading visible and no horizontal overflow
+- PASS: phone390-canvas-failure cen100: correct local subject photo and stable frame
+- PASS: phone390-canvas-failure cen100: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-canvas-failure cen100: HTML heading visible and no horizontal overflow
+- PASS: phone390-canvas-failure mth140: correct local subject photo and stable frame
+- PASS: phone390-canvas-failure mth140: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-canvas-failure mth140: HTML heading visible and no horizontal overflow
+- PASS: phone390-canvas-failure mth141: correct local subject photo and stable frame
+- PASS: phone390-canvas-failure mth141: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-canvas-failure mth141: HTML heading visible and no horizontal overflow
+- PASS: desktop-canvas-failure: actual export matches expected build
+- PASS: desktop-canvas-failure Next Up: correct local subject photo and stable frame
+- PASS: desktop-canvas-failure Next Up: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-canvas-failure Next Up: HTML heading visible and no horizontal overflow
+- PASS: desktop-canvas-failure cen100: correct local subject photo and stable frame
+- PASS: desktop-canvas-failure cen100: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-canvas-failure cen100: HTML heading visible and no horizontal overflow
+- PASS: desktop-canvas-failure mth140: correct local subject photo and stable frame
+- PASS: desktop-canvas-failure mth140: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-canvas-failure mth140: HTML heading visible and no horizontal overflow
+- PASS: desktop-canvas-failure mth141: correct local subject photo and stable frame
+- PASS: desktop-canvas-failure mth141: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-canvas-failure mth141: HTML heading visible and no horizontal overflow
+- PASS: phone390-no-js: actual export matches expected build
+- PASS: phone390-no-js Next Up: correct local subject photo and stable frame
+- PASS: phone390-no-js Next Up: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-no-js Next Up: HTML heading visible and no horizontal overflow
+- PASS: phone390-no-js: unresolved Next Up uses engineering fallback
+- PASS: phone390-no-js cen100: correct local subject photo and stable frame
+- PASS: phone390-no-js cen100: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-no-js cen100: HTML heading visible and no horizontal overflow
+- PASS: phone390-no-js mth140: correct local subject photo and stable frame
+- PASS: phone390-no-js mth140: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-no-js mth140: HTML heading visible and no horizontal overflow
+- PASS: phone390-no-js mth141: correct local subject photo and stable frame
+- PASS: phone390-no-js mth141: finished image without decorative canvas or duplicate accessible text
+- PASS: phone390-no-js mth141: HTML heading visible and no horizontal overflow
+- PASS: desktop-no-js: actual export matches expected build
+- PASS: desktop-no-js Next Up: correct local subject photo and stable frame
+- PASS: desktop-no-js Next Up: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-no-js Next Up: HTML heading visible and no horizontal overflow
+- PASS: desktop-no-js: unresolved Next Up uses engineering fallback
+- PASS: desktop-no-js cen100: correct local subject photo and stable frame
+- PASS: desktop-no-js cen100: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-no-js cen100: HTML heading visible and no horizontal overflow
+- PASS: desktop-no-js mth140: correct local subject photo and stable frame
+- PASS: desktop-no-js mth140: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-no-js mth140: HTML heading visible and no horizontal overflow
+- PASS: desktop-no-js mth141: correct local subject photo and stable frame
+- PASS: desktop-no-js mth141: finished image without decorative canvas or duplicate accessible text
+- PASS: desktop-no-js mth141: HTML heading visible and no horizontal overflow
+- PASS: no browser errors or third-party runtime requests
+
+## Screenshots
+
+- [phone390-normal-home.jpg](screenshots/phone390-normal-home.jpg)
+- [phone390-normal-next-up.jpg](screenshots/phone390-normal-next-up.jpg)
+- [phone390-normal-cen100.jpg](screenshots/phone390-normal-cen100.jpg)
+- [phone390-normal-mth140.jpg](screenshots/phone390-normal-mth140.jpg)
+- [phone390-normal-mth141.jpg](screenshots/phone390-normal-mth141.jpg)
+- [phone430-normal-home.jpg](screenshots/phone430-normal-home.jpg)
+- [phone430-normal-next-up.jpg](screenshots/phone430-normal-next-up.jpg)
+- [phone430-normal-cen100.jpg](screenshots/phone430-normal-cen100.jpg)
+- [phone430-normal-mth140.jpg](screenshots/phone430-normal-mth140.jpg)
+- [phone430-normal-mth141.jpg](screenshots/phone430-normal-mth141.jpg)
+- [tablet-normal-home.jpg](screenshots/tablet-normal-home.jpg)
+- [tablet-normal-next-up.jpg](screenshots/tablet-normal-next-up.jpg)
+- [tablet-normal-cen100.jpg](screenshots/tablet-normal-cen100.jpg)
+- [tablet-normal-mth140.jpg](screenshots/tablet-normal-mth140.jpg)
+- [tablet-normal-mth141.jpg](screenshots/tablet-normal-mth141.jpg)
+- [desktop-normal-home.jpg](screenshots/desktop-normal-home.jpg)
+- [desktop-normal-next-up.jpg](screenshots/desktop-normal-next-up.jpg)
+- [desktop-normal-cen100.jpg](screenshots/desktop-normal-cen100.jpg)
+- [desktop-normal-mth140.jpg](screenshots/desktop-normal-mth140.jpg)
+- [desktop-normal-mth141.jpg](screenshots/desktop-normal-mth141.jpg)
+- [phone390-saved-pause-next-up.jpg](screenshots/phone390-saved-pause-next-up.jpg)
+- [phone390-saved-pause-cen100.jpg](screenshots/phone390-saved-pause-cen100.jpg)
+- [phone390-saved-pause-mth140.jpg](screenshots/phone390-saved-pause-mth140.jpg)
+- [phone390-saved-pause-mth141.jpg](screenshots/phone390-saved-pause-mth141.jpg)
+- [desktop-saved-pause-next-up.jpg](screenshots/desktop-saved-pause-next-up.jpg)
+- [desktop-saved-pause-cen100.jpg](screenshots/desktop-saved-pause-cen100.jpg)
+- [desktop-saved-pause-mth140.jpg](screenshots/desktop-saved-pause-mth140.jpg)
+- [desktop-saved-pause-mth141.jpg](screenshots/desktop-saved-pause-mth141.jpg)
+- [phone390-reduced-next-up.jpg](screenshots/phone390-reduced-next-up.jpg)
+- [phone390-reduced-cen100.jpg](screenshots/phone390-reduced-cen100.jpg)
+- [phone390-reduced-mth140.jpg](screenshots/phone390-reduced-mth140.jpg)
+- [phone390-reduced-mth141.jpg](screenshots/phone390-reduced-mth141.jpg)
+- [desktop-reduced-next-up.jpg](screenshots/desktop-reduced-next-up.jpg)
+- [desktop-reduced-cen100.jpg](screenshots/desktop-reduced-cen100.jpg)
+- [desktop-reduced-mth140.jpg](screenshots/desktop-reduced-mth140.jpg)
+- [desktop-reduced-mth141.jpg](screenshots/desktop-reduced-mth141.jpg)
+- [phone390-canvas-failure-next-up.jpg](screenshots/phone390-canvas-failure-next-up.jpg)
+- [phone390-canvas-failure-cen100.jpg](screenshots/phone390-canvas-failure-cen100.jpg)
+- [phone390-canvas-failure-mth140.jpg](screenshots/phone390-canvas-failure-mth140.jpg)
+- [phone390-canvas-failure-mth141.jpg](screenshots/phone390-canvas-failure-mth141.jpg)
+- [desktop-canvas-failure-next-up.jpg](screenshots/desktop-canvas-failure-next-up.jpg)
+- [desktop-canvas-failure-cen100.jpg](screenshots/desktop-canvas-failure-cen100.jpg)
+- [desktop-canvas-failure-mth140.jpg](screenshots/desktop-canvas-failure-mth140.jpg)
+- [desktop-canvas-failure-mth141.jpg](screenshots/desktop-canvas-failure-mth141.jpg)
+- [phone390-no-js-next-up.jpg](screenshots/phone390-no-js-next-up.jpg)
+- [phone390-no-js-cen100.jpg](screenshots/phone390-no-js-cen100.jpg)
+- [phone390-no-js-mth140.jpg](screenshots/phone390-no-js-mth140.jpg)
+- [phone390-no-js-mth141.jpg](screenshots/phone390-no-js-mth141.jpg)
+- [desktop-no-js-next-up.jpg](screenshots/desktop-no-js-next-up.jpg)
+- [desktop-no-js-cen100.jpg](screenshots/desktop-no-js-cen100.jpg)
+- [desktop-no-js-mth140.jpg](screenshots/desktop-no-js-mth140.jpg)
+- [desktop-no-js-mth141.jpg](screenshots/desktop-no-js-mth141.jpg)
+
+Scope: normal motion at 390 × 844, 430 × 932, 820 × 1180 and 1440 × 900; saved Pause, reduced motion, scoped Canvas2D failure and no JavaScript at 390 × 844 and 1440 × 900. Direct route loads keep crop/fallback inspection independent of the known pre-existing saved-Pause menu offset documented in the preceding full QA. No invented dates or completion data, no physical-device/Safari claim, no production deployment. Lifecycle/progress/navigation were not exhaustively repeated for this image-only revision; preceding full results remain separately labelled.

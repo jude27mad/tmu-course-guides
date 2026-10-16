@@ -1,0 +1,2978 @@
+{
+  "buildId": "Lf7huoI52ENR_yZhAKMgI",
+  "date": "2026-10-16T00:43:33.687Z",
+  "browser": "154.0.8037.57",
+  "emulation": "Chromium headless with software rendering; browser-emulated viewports, not physical iPhone testing",
+  "scope": "Focused subject-image revision; preceding complete lifecycle run is retained separately at ../results.json",
+  "checks": [
+    {
+      "name": "phone390-normal: actual export matches expected build",
+      "pass": true,
+      "detail": "Lf7huoI52ENR_yZhAKMgI"
+    },
+    {
+      "name": "phone390-normal Next Up: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 347.75,
+        "height": 390,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-normal Next Up: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-normal Next Up: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Next up",
+        "x": 21.125,
+        "y": 109.53125,
+        "right": 368.875,
+        "bottom": 157.1875,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone390-normal cen100: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "cen100",
+        "width": 347.75,
+        "height": 1074.671875,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-normal cen100: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-normal cen100: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Introduction to Engineering",
+        "x": 42.25,
+        "y": 650.390625,
+        "right": 347.75,
+        "bottom": 721.515625,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone390-normal mth140: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 347.75,
+        "height": 1074.671875,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-normal mth140: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-normal mth140: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Calculus I",
+        "x": 42.25,
+        "y": 685.953125,
+        "right": 347.75,
+        "bottom": 721.515625,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone390-normal mth141: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth141",
+        "width": 347.75,
+        "height": 1074.671875,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-normal mth141: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-normal mth141: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Linear Algebra",
+        "x": 42.25,
+        "y": 685.953125,
+        "right": 347.75,
+        "bottom": 721.515625,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone430-normal: actual export matches expected build",
+      "pass": true,
+      "detail": "Lf7huoI52ENR_yZhAKMgI"
+    },
+    {
+      "name": "phone430-normal Next Up: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 383.40625,
+        "height": 430,
+        "imageWidth": 429,
+        "imageHeight": 429,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone430-normal Next Up: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone430-normal Next Up: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Next up",
+        "x": 23.296875,
+        "y": 110.1875,
+        "right": 406.703125,
+        "bottom": 162.734375,
+        "viewportWidth": 430,
+        "viewportHeight": 932,
+        "documentWidth": 430,
+        "mainWidth": 430,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone430-normal cen100: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "cen100",
+        "width": 383.40625,
+        "height": 1194.25,
+        "imageWidth": 429,
+        "imageHeight": 429,
+        "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone430-normal cen100: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone430-normal cen100: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Introduction to Engineering",
+        "x": 46.59375,
+        "y": 718.421875,
+        "right": 383.40625,
+        "bottom": 796.859375,
+        "viewportWidth": 430,
+        "viewportHeight": 932,
+        "documentWidth": 430,
+        "mainWidth": 430,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone430-normal mth140: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 383.40625,
+        "height": 1194.25,
+        "imageWidth": 429,
+        "imageHeight": 429,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone430-normal mth140: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone430-normal mth140: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Calculus I",
+        "x": 46.59375,
+        "y": 757.640625,
+        "right": 383.40625,
+        "bottom": 796.859375,
+        "viewportWidth": 430,
+        "viewportHeight": 932,
+        "documentWidth": 430,
+        "mainWidth": 430,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone430-normal mth141: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth141",
+        "width": 383.40625,
+        "height": 1194.25,
+        "imageWidth": 429,
+        "imageHeight": 429,
+        "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone430-normal mth141: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone430-normal mth141: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Linear Algebra",
+        "x": 46.59375,
+        "y": 757.640625,
+        "right": 383.40625,
+        "bottom": 796.859375,
+        "viewportWidth": 430,
+        "viewportHeight": 932,
+        "documentWidth": 430,
+        "mainWidth": 430,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "tablet-normal: actual export matches expected build",
+      "pass": true,
+      "detail": "Lf7huoI52ENR_yZhAKMgI"
+    },
+    {
+      "name": "tablet-normal Next Up: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 376.984375,
+        "height": 434.59375,
+        "imageWidth": 410,
+        "imageHeight": 410,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "tablet-normal Next Up: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "tablet-normal Next Up: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Next up",
+        "x": 27.328125,
+        "y": 110.328125,
+        "right": 792.671875,
+        "bottom": 176.25,
+        "viewportWidth": 820,
+        "viewportHeight": 1180,
+        "documentWidth": 820,
+        "mainWidth": 820,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "tablet-normal cen100: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "cen100",
+        "width": 765.34375,
+        "height": 1792.6875,
+        "imageWidth": 820,
+        "imageHeight": 820,
+        "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "tablet-normal cen100: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "tablet-normal cen100: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Introduction to Engineering",
+        "x": 50.09375,
+        "y": 1088.21875,
+        "right": 553.953125,
+        "bottom": 1134.46875,
+        "viewportWidth": 820,
+        "viewportHeight": 1180,
+        "documentWidth": 820,
+        "mainWidth": 820,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "tablet-normal mth140: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 765.34375,
+        "height": 1792.6875,
+        "imageWidth": 820,
+        "imageHeight": 820,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "tablet-normal mth140: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "tablet-normal mth140: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Calculus I",
+        "x": 50.09375,
+        "y": 1088.21875,
+        "right": 553.953125,
+        "bottom": 1134.46875,
+        "viewportWidth": 820,
+        "viewportHeight": 1180,
+        "documentWidth": 820,
+        "mainWidth": 820,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "tablet-normal mth141: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth141",
+        "width": 765.34375,
+        "height": 1792.6875,
+        "imageWidth": 820,
+        "imageHeight": 820,
+        "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "tablet-normal mth141: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "tablet-normal mth141: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Linear Algebra",
+        "x": 50.09375,
+        "y": 1088.21875,
+        "right": 553.953125,
+        "bottom": 1134.46875,
+        "viewportWidth": 820,
+        "viewportHeight": 1180,
+        "documentWidth": 820,
+        "mainWidth": 820,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-normal: actual export matches expected build",
+      "pass": true,
+      "detail": "Lf7huoI52ENR_yZhAKMgI"
+    },
+    {
+      "name": "desktop-normal Next Up: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 662,
+        "height": 763.1875,
+        "imageWidth": 720,
+        "imageHeight": 720,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-normal Next Up: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-normal Next Up: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Next up",
+        "x": 48,
+        "y": 110,
+        "right": 1392,
+        "bottom": 225.78125,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-normal cen100: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "cen100",
+        "width": 1344,
+        "height": 1272.59375,
+        "imageWidth": 1440,
+        "imageHeight": 1440,
+        "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-normal cen100: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-normal cen100: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Introduction to Engineering",
+        "x": 88,
+        "y": 738.78125,
+        "right": 972.796875,
+        "bottom": 820,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-normal mth140: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 1344,
+        "height": 1272.59375,
+        "imageWidth": 1440,
+        "imageHeight": 1440,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-normal mth140: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-normal mth140: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Calculus I",
+        "x": 88,
+        "y": 738.78125,
+        "right": 972.796875,
+        "bottom": 820,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-normal mth141: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth141",
+        "width": 1344,
+        "height": 1272.59375,
+        "imageWidth": 1440,
+        "imageHeight": 1440,
+        "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-normal mth141: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-normal mth141: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Linear Algebra",
+        "x": 88,
+        "y": 738.78125,
+        "right": 972.796875,
+        "bottom": 820,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone390-saved-pause: actual export matches expected build",
+      "pass": true,
+      "detail": "Lf7huoI52ENR_yZhAKMgI"
+    },
+    {
+      "name": "phone390-saved-pause Next Up: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 347.75,
+        "height": 390,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-saved-pause Next Up: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-saved-pause Next Up: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Next up",
+        "x": 21.125,
+        "y": 109.53125,
+        "right": 368.875,
+        "bottom": 157.1875,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone390-saved-pause cen100: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "cen100",
+        "width": 347.75,
+        "height": 1074.671875,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-saved-pause cen100: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-saved-pause cen100: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Introduction to Engineering",
+        "x": 42.25,
+        "y": 650.390625,
+        "right": 347.75,
+        "bottom": 721.515625,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone390-saved-pause mth140: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 347.75,
+        "height": 1074.671875,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-saved-pause mth140: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-saved-pause mth140: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Calculus I",
+        "x": 42.25,
+        "y": 685.953125,
+        "right": 347.75,
+        "bottom": 721.515625,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone390-saved-pause mth141: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth141",
+        "width": 347.75,
+        "height": 1074.671875,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-saved-pause mth141: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-saved-pause mth141: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Linear Algebra",
+        "x": 42.25,
+        "y": 685.953125,
+        "right": 347.75,
+        "bottom": 721.515625,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-saved-pause: actual export matches expected build",
+      "pass": true,
+      "detail": "Lf7huoI52ENR_yZhAKMgI"
+    },
+    {
+      "name": "desktop-saved-pause Next Up: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 662,
+        "height": 763.1875,
+        "imageWidth": 720,
+        "imageHeight": 720,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-saved-pause Next Up: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-saved-pause Next Up: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Next up",
+        "x": 48,
+        "y": 110,
+        "right": 1392,
+        "bottom": 225.78125,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-saved-pause cen100: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "cen100",
+        "width": 1344,
+        "height": 1272.59375,
+        "imageWidth": 1440,
+        "imageHeight": 1440,
+        "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-saved-pause cen100: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-saved-pause cen100: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Introduction to Engineering",
+        "x": 88,
+        "y": 738.78125,
+        "right": 972.796875,
+        "bottom": 820,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-saved-pause mth140: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 1344,
+        "height": 1272.59375,
+        "imageWidth": 1440,
+        "imageHeight": 1440,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-saved-pause mth140: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-saved-pause mth140: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Calculus I",
+        "x": 88,
+        "y": 738.78125,
+        "right": 972.796875,
+        "bottom": 820,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-saved-pause mth141: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth141",
+        "width": 1344,
+        "height": 1272.59375,
+        "imageWidth": 1440,
+        "imageHeight": 1440,
+        "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-saved-pause mth141: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-saved-pause mth141: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Linear Algebra",
+        "x": 88,
+        "y": 738.78125,
+        "right": 972.796875,
+        "bottom": 820,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone390-reduced: actual export matches expected build",
+      "pass": true,
+      "detail": "Lf7huoI52ENR_yZhAKMgI"
+    },
+    {
+      "name": "phone390-reduced Next Up: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 347.75,
+        "height": 390,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-reduced Next Up: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-reduced Next Up: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Next up",
+        "x": 21.125,
+        "y": 109.53125,
+        "right": 368.875,
+        "bottom": 157.1875,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone390-reduced cen100: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "cen100",
+        "width": 347.75,
+        "height": 1074.671875,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-reduced cen100: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-reduced cen100: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Introduction to Engineering",
+        "x": 42.25,
+        "y": 650.390625,
+        "right": 347.75,
+        "bottom": 721.515625,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone390-reduced mth140: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 347.75,
+        "height": 1074.671875,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-reduced mth140: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-reduced mth140: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Calculus I",
+        "x": 42.25,
+        "y": 685.953125,
+        "right": 347.75,
+        "bottom": 721.515625,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone390-reduced mth141: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth141",
+        "width": 347.75,
+        "height": 1074.671875,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-reduced mth141: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-reduced mth141: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Linear Algebra",
+        "x": 42.25,
+        "y": 685.953125,
+        "right": 347.75,
+        "bottom": 721.515625,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-reduced: actual export matches expected build",
+      "pass": true,
+      "detail": "Lf7huoI52ENR_yZhAKMgI"
+    },
+    {
+      "name": "desktop-reduced Next Up: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 662,
+        "height": 763.1875,
+        "imageWidth": 720,
+        "imageHeight": 720,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-reduced Next Up: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-reduced Next Up: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Next up",
+        "x": 48,
+        "y": 110,
+        "right": 1392,
+        "bottom": 225.78125,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-reduced cen100: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "cen100",
+        "width": 1344,
+        "height": 1272.59375,
+        "imageWidth": 1440,
+        "imageHeight": 1440,
+        "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-reduced cen100: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-reduced cen100: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Introduction to Engineering",
+        "x": 88,
+        "y": 738.78125,
+        "right": 972.796875,
+        "bottom": 820,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-reduced mth140: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 1344,
+        "height": 1272.59375,
+        "imageWidth": 1440,
+        "imageHeight": 1440,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-reduced mth140: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-reduced mth140: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Calculus I",
+        "x": 88,
+        "y": 738.78125,
+        "right": 972.796875,
+        "bottom": 820,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-reduced mth141: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth141",
+        "width": 1344,
+        "height": 1272.59375,
+        "imageWidth": 1440,
+        "imageHeight": 1440,
+        "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-reduced mth141: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-reduced mth141: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Linear Algebra",
+        "x": 88,
+        "y": 738.78125,
+        "right": 972.796875,
+        "bottom": 820,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone390-canvas-failure: actual export matches expected build",
+      "pass": true,
+      "detail": "Lf7huoI52ENR_yZhAKMgI"
+    },
+    {
+      "name": "phone390-canvas-failure Next Up: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 347.75,
+        "height": 390,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-canvas-failure Next Up: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-canvas-failure Next Up: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Next up",
+        "x": 21.125,
+        "y": 109.53125,
+        "right": 368.875,
+        "bottom": 157.1875,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone390-canvas-failure cen100: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "cen100",
+        "width": 347.75,
+        "height": 1074.671875,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-canvas-failure cen100: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-canvas-failure cen100: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Introduction to Engineering",
+        "x": 42.25,
+        "y": 650.390625,
+        "right": 347.75,
+        "bottom": 721.515625,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone390-canvas-failure mth140: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 347.75,
+        "height": 1074.671875,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-canvas-failure mth140: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-canvas-failure mth140: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Calculus I",
+        "x": 42.25,
+        "y": 685.953125,
+        "right": 347.75,
+        "bottom": 721.515625,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone390-canvas-failure mth141: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth141",
+        "width": 347.75,
+        "height": 1074.671875,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-canvas-failure mth141: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-canvas-failure mth141: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Linear Algebra",
+        "x": 42.25,
+        "y": 685.953125,
+        "right": 347.75,
+        "bottom": 721.515625,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-canvas-failure: actual export matches expected build",
+      "pass": true,
+      "detail": "Lf7huoI52ENR_yZhAKMgI"
+    },
+    {
+      "name": "desktop-canvas-failure Next Up: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 662,
+        "height": 763.1875,
+        "imageWidth": 720,
+        "imageHeight": 720,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-canvas-failure Next Up: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-canvas-failure Next Up: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Next up",
+        "x": 48,
+        "y": 110,
+        "right": 1392,
+        "bottom": 225.78125,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-canvas-failure cen100: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "cen100",
+        "width": 1344,
+        "height": 1272.59375,
+        "imageWidth": 1440,
+        "imageHeight": 1440,
+        "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-canvas-failure cen100: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-canvas-failure cen100: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Introduction to Engineering",
+        "x": 88,
+        "y": 738.78125,
+        "right": 972.796875,
+        "bottom": 820,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-canvas-failure mth140: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 1344,
+        "height": 1272.59375,
+        "imageWidth": 1440,
+        "imageHeight": 1440,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-canvas-failure mth140: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-canvas-failure mth140: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Calculus I",
+        "x": 88,
+        "y": 738.78125,
+        "right": 972.796875,
+        "bottom": 820,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-canvas-failure mth141: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth141",
+        "width": 1344,
+        "height": 1272.59375,
+        "imageWidth": 1440,
+        "imageHeight": 1440,
+        "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-canvas-failure mth141: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-canvas-failure mth141: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Linear Algebra",
+        "x": 88,
+        "y": 738.78125,
+        "right": 972.796875,
+        "bottom": 820,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone390-no-js: actual export matches expected build",
+      "pass": true,
+      "detail": "Lf7huoI52ENR_yZhAKMgI"
+    },
+    {
+      "name": "phone390-no-js Next Up: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "fallback",
+        "width": 347.75,
+        "height": 390,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-no-js Next Up: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-no-js Next Up: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Next up",
+        "x": 21.125,
+        "y": 109.53125,
+        "right": 368.875,
+        "bottom": 157.1875,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone390-no-js: unresolved Next Up uses engineering fallback",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "phone390-no-js cen100: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "cen100",
+        "width": 347.75,
+        "height": 1074.671875,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-no-js cen100: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-no-js cen100: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Introduction to Engineering",
+        "x": 42.25,
+        "y": 650.390625,
+        "right": 347.75,
+        "bottom": 721.515625,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone390-no-js mth140: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 347.75,
+        "height": 1074.671875,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-no-js mth140: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-no-js mth140: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Calculus I",
+        "x": 42.25,
+        "y": 685.953125,
+        "right": 347.75,
+        "bottom": 721.515625,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "phone390-no-js mth141: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth141",
+        "width": 347.75,
+        "height": 1074.671875,
+        "imageWidth": 390,
+        "imageHeight": 390,
+        "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "phone390-no-js mth141: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "phone390-no-js mth141: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Linear Algebra",
+        "x": 42.25,
+        "y": 685.953125,
+        "right": 347.75,
+        "bottom": 721.515625,
+        "viewportWidth": 390,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "mainWidth": 390,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-no-js: actual export matches expected build",
+      "pass": true,
+      "detail": "Lf7huoI52ENR_yZhAKMgI"
+    },
+    {
+      "name": "desktop-no-js Next Up: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "fallback",
+        "width": 662,
+        "height": 763.1875,
+        "imageWidth": 720,
+        "imageHeight": 720,
+        "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge-800.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-no-js Next Up: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-no-js Next Up: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Next up",
+        "x": 48,
+        "y": 110,
+        "right": 1392,
+        "bottom": 225.78125,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-no-js: unresolved Next Up uses engineering fallback",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "desktop-no-js cen100: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "cen100",
+        "width": 1344,
+        "height": 1272.59375,
+        "imageWidth": 1440,
+        "imageHeight": 1440,
+        "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-no-js cen100: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-no-js cen100: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Introduction to Engineering",
+        "x": 88,
+        "y": 738.78125,
+        "right": 972.796875,
+        "bottom": 820,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-no-js mth140: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth140",
+        "width": 1344,
+        "height": 1272.59375,
+        "imageWidth": 1440,
+        "imageHeight": 1440,
+        "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-no-js mth140: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-no-js mth140: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Calculus I",
+        "x": 88,
+        "y": 738.78125,
+        "right": 972.796875,
+        "bottom": 820,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "desktop-no-js mth141: correct local subject photo and stable frame",
+      "pass": true,
+      "detail": {
+        "key": "mth141",
+        "width": 1344,
+        "height": 1272.59375,
+        "imageWidth": 1440,
+        "imageHeight": 1440,
+        "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+        "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations.webp",
+        "alt": "",
+        "ariaHidden": "true",
+        "canvasVisibility": "hidden",
+        "objectFit": "cover",
+        "objectPosition": "50% 50%"
+      }
+    },
+    {
+      "name": "desktop-no-js mth141: finished image without decorative canvas or duplicate accessible text",
+      "pass": true,
+      "detail": {
+        "canvasVisibility": "hidden",
+        "alt": "",
+        "ariaHidden": "true"
+      }
+    },
+    {
+      "name": "desktop-no-js mth141: HTML heading visible and no horizontal overflow",
+      "pass": true,
+      "detail": {
+        "text": "Linear Algebra",
+        "x": 88,
+        "y": 738.78125,
+        "right": 972.796875,
+        "bottom": 820,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "documentWidth": 1440,
+        "mainWidth": 1440,
+        "visibility": "visible",
+        "opacity": "1"
+      }
+    },
+    {
+      "name": "no browser errors or third-party runtime requests",
+      "pass": true,
+      "detail": []
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    "screenshots/phone390-normal-home.jpg",
+    "screenshots/phone390-normal-next-up.jpg",
+    "screenshots/phone390-normal-cen100.jpg",
+    "screenshots/phone390-normal-mth140.jpg",
+    "screenshots/phone390-normal-mth141.jpg",
+    "screenshots/phone430-normal-home.jpg",
+    "screenshots/phone430-normal-next-up.jpg",
+    "screenshots/phone430-normal-cen100.jpg",
+    "screenshots/phone430-normal-mth140.jpg",
+    "screenshots/phone430-normal-mth141.jpg",
+    "screenshots/tablet-normal-home.jpg",
+    "screenshots/tablet-normal-next-up.jpg",
+    "screenshots/tablet-normal-cen100.jpg",
+    "screenshots/tablet-normal-mth140.jpg",
+    "screenshots/tablet-normal-mth141.jpg",
+    "screenshots/desktop-normal-home.jpg",
+    "screenshots/desktop-normal-next-up.jpg",
+    "screenshots/desktop-normal-cen100.jpg",
+    "screenshots/desktop-normal-mth140.jpg",
+    "screenshots/desktop-normal-mth141.jpg",
+    "screenshots/phone390-saved-pause-next-up.jpg",
+    "screenshots/phone390-saved-pause-cen100.jpg",
+    "screenshots/phone390-saved-pause-mth140.jpg",
+    "screenshots/phone390-saved-pause-mth141.jpg",
+    "screenshots/desktop-saved-pause-next-up.jpg",
+    "screenshots/desktop-saved-pause-cen100.jpg",
+    "screenshots/desktop-saved-pause-mth140.jpg",
+    "screenshots/desktop-saved-pause-mth141.jpg",
+    "screenshots/phone390-reduced-next-up.jpg",
+    "screenshots/phone390-reduced-cen100.jpg",
+    "screenshots/phone390-reduced-mth140.jpg",
+    "screenshots/phone390-reduced-mth141.jpg",
+    "screenshots/desktop-reduced-next-up.jpg",
+    "screenshots/desktop-reduced-cen100.jpg",
+    "screenshots/desktop-reduced-mth140.jpg",
+    "screenshots/desktop-reduced-mth141.jpg",
+    "screenshots/phone390-canvas-failure-next-up.jpg",
+    "screenshots/phone390-canvas-failure-cen100.jpg",
+    "screenshots/phone390-canvas-failure-mth140.jpg",
+    "screenshots/phone390-canvas-failure-mth141.jpg",
+    "screenshots/desktop-canvas-failure-next-up.jpg",
+    "screenshots/desktop-canvas-failure-cen100.jpg",
+    "screenshots/desktop-canvas-failure-mth140.jpg",
+    "screenshots/desktop-canvas-failure-mth141.jpg",
+    "screenshots/phone390-no-js-next-up.jpg",
+    "screenshots/phone390-no-js-cen100.jpg",
+    "screenshots/phone390-no-js-mth140.jpg",
+    "screenshots/phone390-no-js-mth141.jpg",
+    "screenshots/desktop-no-js-next-up.jpg",
+    "screenshots/desktop-no-js-cen100.jpg",
+    "screenshots/desktop-no-js-mth140.jpg",
+    "screenshots/desktop-no-js-mth141.jpg"
+  ],
+  "images": [
+    {
+      "label": "phone390-normal Next Up",
+      "key": "mth140",
+      "width": 347.75,
+      "height": 390,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone390-normal cen100",
+      "key": "cen100",
+      "width": 347.75,
+      "height": 1074.671875,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone390-normal mth140",
+      "key": "mth140",
+      "width": 347.75,
+      "height": 1074.671875,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone390-normal mth141",
+      "key": "mth141",
+      "width": 347.75,
+      "height": 1074.671875,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone430-normal Next Up",
+      "key": "mth140",
+      "width": 383.40625,
+      "height": 430,
+      "imageWidth": 429,
+      "imageHeight": 429,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone430-normal cen100",
+      "key": "cen100",
+      "width": 383.40625,
+      "height": 1194.25,
+      "imageWidth": 429,
+      "imageHeight": 429,
+      "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone430-normal mth140",
+      "key": "mth140",
+      "width": 383.40625,
+      "height": 1194.25,
+      "imageWidth": 429,
+      "imageHeight": 429,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone430-normal mth141",
+      "key": "mth141",
+      "width": 383.40625,
+      "height": 1194.25,
+      "imageWidth": 429,
+      "imageHeight": 429,
+      "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "tablet-normal Next Up",
+      "key": "mth140",
+      "width": 376.984375,
+      "height": 434.59375,
+      "imageWidth": 410,
+      "imageHeight": 410,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "tablet-normal cen100",
+      "key": "cen100",
+      "width": 765.34375,
+      "height": 1792.6875,
+      "imageWidth": 820,
+      "imageHeight": 820,
+      "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "tablet-normal mth140",
+      "key": "mth140",
+      "width": 765.34375,
+      "height": 1792.6875,
+      "imageWidth": 820,
+      "imageHeight": 820,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "tablet-normal mth141",
+      "key": "mth141",
+      "width": 765.34375,
+      "height": 1792.6875,
+      "imageWidth": 820,
+      "imageHeight": 820,
+      "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-normal Next Up",
+      "key": "mth140",
+      "width": 662,
+      "height": 763.1875,
+      "imageWidth": 720,
+      "imageHeight": 720,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-normal cen100",
+      "key": "cen100",
+      "width": 1344,
+      "height": 1272.59375,
+      "imageWidth": 1440,
+      "imageHeight": 1440,
+      "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-normal mth140",
+      "key": "mth140",
+      "width": 1344,
+      "height": 1272.59375,
+      "imageWidth": 1440,
+      "imageHeight": 1440,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-normal mth141",
+      "key": "mth141",
+      "width": 1344,
+      "height": 1272.59375,
+      "imageWidth": 1440,
+      "imageHeight": 1440,
+      "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone390-saved-pause Next Up",
+      "key": "mth140",
+      "width": 347.75,
+      "height": 390,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone390-saved-pause cen100",
+      "key": "cen100",
+      "width": 347.75,
+      "height": 1074.671875,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone390-saved-pause mth140",
+      "key": "mth140",
+      "width": 347.75,
+      "height": 1074.671875,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone390-saved-pause mth141",
+      "key": "mth141",
+      "width": 347.75,
+      "height": 1074.671875,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-saved-pause Next Up",
+      "key": "mth140",
+      "width": 662,
+      "height": 763.1875,
+      "imageWidth": 720,
+      "imageHeight": 720,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-saved-pause cen100",
+      "key": "cen100",
+      "width": 1344,
+      "height": 1272.59375,
+      "imageWidth": 1440,
+      "imageHeight": 1440,
+      "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-saved-pause mth140",
+      "key": "mth140",
+      "width": 1344,
+      "height": 1272.59375,
+      "imageWidth": 1440,
+      "imageHeight": 1440,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-saved-pause mth141",
+      "key": "mth141",
+      "width": 1344,
+      "height": 1272.59375,
+      "imageWidth": 1440,
+      "imageHeight": 1440,
+      "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone390-reduced Next Up",
+      "key": "mth140",
+      "width": 347.75,
+      "height": 390,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone390-reduced cen100",
+      "key": "cen100",
+      "width": 347.75,
+      "height": 1074.671875,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone390-reduced mth140",
+      "key": "mth140",
+      "width": 347.75,
+      "height": 1074.671875,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone390-reduced mth141",
+      "key": "mth141",
+      "width": 347.75,
+      "height": 1074.671875,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-reduced Next Up",
+      "key": "mth140",
+      "width": 662,
+      "height": 763.1875,
+      "imageWidth": 720,
+      "imageHeight": 720,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-reduced cen100",
+      "key": "cen100",
+      "width": 1344,
+      "height": 1272.59375,
+      "imageWidth": 1440,
+      "imageHeight": 1440,
+      "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-reduced mth140",
+      "key": "mth140",
+      "width": 1344,
+      "height": 1272.59375,
+      "imageWidth": 1440,
+      "imageHeight": 1440,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-reduced mth141",
+      "key": "mth141",
+      "width": 1344,
+      "height": 1272.59375,
+      "imageWidth": 1440,
+      "imageHeight": 1440,
+      "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone390-canvas-failure Next Up",
+      "key": "mth140",
+      "width": 347.75,
+      "height": 390,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone390-canvas-failure cen100",
+      "key": "cen100",
+      "width": 347.75,
+      "height": 1074.671875,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone390-canvas-failure mth140",
+      "key": "mth140",
+      "width": 347.75,
+      "height": 1074.671875,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone390-canvas-failure mth141",
+      "key": "mth141",
+      "width": 347.75,
+      "height": 1074.671875,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-canvas-failure Next Up",
+      "key": "mth140",
+      "width": 662,
+      "height": 763.1875,
+      "imageWidth": 720,
+      "imageHeight": 720,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-canvas-failure cen100",
+      "key": "cen100",
+      "width": 1344,
+      "height": 1272.59375,
+      "imageWidth": 1440,
+      "imageHeight": 1440,
+      "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-canvas-failure mth140",
+      "key": "mth140",
+      "width": 1344,
+      "height": 1272.59375,
+      "imageWidth": 1440,
+      "imageHeight": 1440,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-canvas-failure mth141",
+      "key": "mth141",
+      "width": 1344,
+      "height": 1272.59375,
+      "imageWidth": 1440,
+      "imageHeight": 1440,
+      "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone390-no-js Next Up",
+      "key": "fallback",
+      "width": 347.75,
+      "height": 390,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone390-no-js cen100",
+      "key": "cen100",
+      "width": 347.75,
+      "height": 1074.671875,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone390-no-js mth140",
+      "key": "mth140",
+      "width": 347.75,
+      "height": 1074.671875,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "phone390-no-js mth141",
+      "key": "mth141",
+      "width": 347.75,
+      "height": 1074.671875,
+      "imageWidth": 390,
+      "imageHeight": 390,
+      "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-no-js Next Up",
+      "key": "fallback",
+      "width": 662,
+      "height": 763.1875,
+      "imageWidth": 720,
+      "imageHeight": 720,
+      "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge-800.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-no-js cen100",
+      "key": "cen100",
+      "width": 1344,
+      "height": 1272.59375,
+      "imageWidth": 1440,
+      "imageHeight": 1440,
+      "src": "/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/engineering-bridge.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-no-js mth140",
+      "key": "mth140",
+      "width": 1344,
+      "height": 1272.59375,
+      "imageWidth": 1440,
+      "imageHeight": 1440,
+      "src": "/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/calculus-integral.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    },
+    {
+      "label": "desktop-no-js mth141",
+      "key": "mth141",
+      "width": 1344,
+      "height": 1272.59375,
+      "imageWidth": 1440,
+      "imageHeight": 1440,
+      "src": "/tmu-course-guides/next/images/courses/linear-equations.webp",
+      "currentSrc": "http://127.0.0.1:33707/tmu-course-guides/next/images/courses/linear-equations.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "canvasVisibility": "hidden",
+      "objectFit": "cover",
+      "objectPosition": "50% 50%"
+    }
+  ],
+  "summary": {
+    "passed": 159,
+    "failed": 0,
+    "total": 159
+  }
+}

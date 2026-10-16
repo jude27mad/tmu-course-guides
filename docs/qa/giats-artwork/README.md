@@ -6,6 +6,15 @@ documentation/release-note updates were incorporated before the final build.
 This is a review export;
 the live Pages `/next/` site changes only after merge and deployment.
 
+The current revision replaces the initial satellite artwork with photographs
+that directly reflect each course: a steel bridge mechanism for CEN100, a worked
+integral for MTH140, and linear equations for MTH141. See the
+[current image review](subject-imagery/README.md) for the rebuilt preview captures.
+That export, `Lf7huoI52ENR_yZhAKMgI`, passed all **159 focused browser assertions**
+with no browser errors or third-party runtime requests.
+The original full lifecycle/behavior verification below predates this image-only
+revision and remains available as historical evidence.
+
 ## Implementation
 
 - The existing moving SVG window mask now exposes one continuous canvas adapted
@@ -22,9 +31,10 @@ the live Pages `/next/` site changes only after merge and deployment.
   `main` scroller control the reveal. HTML images remain underneath the decorative
   canvas; reduced motion, initialization/drawing failure and completion expose
   the finished image. Cleanup kills timelines/triggers and removes listeners.
-- Three individually verified public-domain USGS Landsat artworks are bundled
-  at 1600 and 800 pixels. Lambert Glacier is also the unresolved/empty Next Up
-  fallback. [Individual image credits](../../../site/public/licenses/ARTWORK-CREDITS.md)
+- Three subject-specific photographs, each individually verified under the
+  Unsplash License, are bundled at 1600 and 800 pixels. The engineering structure
+  is also the unresolved/empty Next Up fallback.
+  [Individual image credits](../../../site/public/licenses/ARTWORK-CREDITS.md)
   and [code notices/provenance](../../../site/public/licenses/README.md) accompany
   both source and exported preview. Existing Giats credits remain.
 - Unused FloatingMeshes/FloatRigidBody, both marble implementations, their texture
@@ -85,7 +95,8 @@ Playwright (override `PLAYWRIGHT_PATH` when needed) and Chromium. The detailed
 [browser results](results.md), [machine-readable observations](results.json) and
 [screenshots](screenshots/) document the checked build.
 
-Final export `lMK_JvjVNpFTFtpP9cphE`: **133 of 134 browser assertions passed**
+Original full-verification export `lMK_JvjVNpFTFtpP9cphE`:
+**133 of 134 browser assertions passed**
 (130 in the fresh full run, plus four explicitly recorded same-build homepage
 navbar checks). There were no browser/page/HTTP errors or third-party runtime
 requests. The only failed assertion is the existing saved-Pause offset below.
@@ -98,7 +109,8 @@ canvases at 5. Pause motion, reduced motion, canvas failure and no-JavaScript
 checks all retain the real images. The hidden-document check uses a synthetic
 visibility event; it does not claim to test mobile operating-system suspension.
 
-Selected captures: [phone windows](screenshots/phone390-home.jpg),
+Original implementation captures (before the subject-image revision):
+[phone windows](screenshots/phone390-home.jpg),
 [desktop windows](screenshots/desktop-home.jpg),
 [Next Up](screenshots/desktop-next-up.jpg),
 [pixel reveal in progress](screenshots/phone390-pixel-reveal.jpg),

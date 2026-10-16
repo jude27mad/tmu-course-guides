@@ -1,5 +1,10 @@
 # Giats artwork browser verification
 
+This is the original implementation verification, before the subject-specific
+photo revision. See [the current image review](subject-imagery/README.md) for
+current course imagery and its verification. The behavior/lifecycle results below
+belong to the build stated here.
+
 Final export build `lMK_JvjVNpFTFtpP9cphE`, based on `main` at `2668ada`.
 
 **133/134 assertions passed.** All artwork, responsive, touch-scroll, motion, image fallback, saved-progress and lifecycle checks passed. The one retained failure is an existing paused-menu offset, reproduced in the original committed preview: after a menu route change with saved Pause motion, the page can remain shifted left. See [baseline evidence](baseline-paused-navigation.json) and [final reproduction](screenshots/desktop-paused-menu-known-issue.jpg). A normal browser reload was used to continue independent checks; the failure remains recorded.

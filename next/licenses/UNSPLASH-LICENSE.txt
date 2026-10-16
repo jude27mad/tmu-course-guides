@@ -1,0 +1,21 @@
+Unsplash License
+Source: https://unsplash.com/license
+Verified: 2026-10-16
+
+The following longform licence text appears on the source page:
+
+Unsplash grants you an irrevocable, nonexclusive, worldwide copyright license to
+download, copy, modify, distribute, perform, and use images from Unsplash for free,
+including for commercial purposes, without permission from or attributing the
+photographer or Unsplash. This license does not include the right to compile
+images from Unsplash to replicate a similar or competing service.
+
+The same source page also states under "What is not permitted":
+
+- Images cannot be sold without significant modification.
+- Compiling images from Unsplash to replicate a similar or competing service.
+
+The page states that downloading and use are free for commercial and
+non-commercial purposes, and that no permission is needed, though attribution is
+appreciated. See ARTWORK-CREDITS.md for the individually verified source pages and
+voluntary photographer credits for the three photographs used in this site.

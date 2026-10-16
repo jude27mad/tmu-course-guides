@@ -1,5 +1,5 @@
-// USGS / NASA Landsat 7, Earth as Art. Public domain; individual records,
-// source URLs, image dates and crop details are in public/licenses/ARTWORK-CREDITS.md.
+// Subject-specific photographs: engineering structures, integration and linear
+// systems. Individual permissions/creators: public/licenses/ARTWORK-CREDITS.md.
 const artwork = (id, name) =>
   Object.freeze({
     id,
@@ -11,14 +11,14 @@ const artwork = (id, name) =>
   });
 
 const ARTWORKS = Object.freeze({
-  cen100: artwork('cen100', 'namib-desert'),
-  mth140: artwork('mth140', 'lambert-glacier'),
-  mth141: artwork('mth141', 'lena-delta'),
+  cen100: artwork('cen100', 'engineering-bridge'),
+  mth140: artwork('mth140', 'calculus-integral'),
+  mth141: artwork('mth141', 'linear-equations'),
 });
 
-// The glacier's broad spatial composition also fills the Desk before a course
-// has resolved, or when no assessment remains. It asserts no course/date data.
-export const FALLBACK_ARTWORK = ARTWORKS.mth140;
+// The engineering structure also fills the Desk before a course has resolved,
+// or when no assessment remains. It asserts no course/date data.
+export const FALLBACK_ARTWORK = ARTWORKS.cen100;
 export function artworkFor(courseId) {
   return ARTWORKS[typeof courseId === 'string' ? courseId.toLowerCase() : ''] || FALLBACK_ARTWORK;
 }
