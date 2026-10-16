@@ -124,8 +124,12 @@ function GuideTools() {
   return (
     <dialog ref={dialogRef} id="guide-tools" className={styles.dialog} aria-labelledby="guide-tools-title" data-lenis-prevent>
       <div className={styles.header}>
-        <h2 id="guide-tools-title" className={styles.title}>{page.tools?.summary || 'Guide tools'}</h2>
-        <button type="button" className={styles.close} data-close-tools aria-label="Close guide tools">Close</button>
+        <h2 id="guide-tools-title" className={styles.title}>
+          {page.tools?.summary || 'Guide tools'}
+        </h2>
+        <button type="button" className={styles.close} data-close-tools aria-label="Close guide tools">
+          Close
+        </button>
       </div>
       <div className={styles.body} data-lenis-prevent>
         <p className={styles.note}>{page.tools?.updated || page.tools?.note || tools.note}</p>
@@ -148,7 +152,9 @@ function GuideTools() {
                       <span className={styles.muted}>{entry.date}</span>
                       <h3 className={styles.updateTitle}>{entry.title}</h3>
                       {entry.text ? <span>{entry.text}</span> : null}
-                      {(entry.items || []).map((line) => <span key={line}>{line}</span>)}
+                      {(entry.items || []).map((line) => (
+                        <span key={line}>{line}</span>
+                      ))}
                     </li>
                   ))}
                 </ol>
@@ -156,7 +162,9 @@ function GuideTools() {
             </li>
           ))}
         </ul>
-        <label htmlFor={fileId} className="sr-only">{tools.backup?.importLabel}</label>
+        <label htmlFor={fileId} className="sr-only">
+          {tools.backup?.importLabel}
+        </label>
         <input id={fileId} ref={fileRef} type="file" accept="application/json,.json" className={styles.file} tabIndex={-1} onChange={onFile} />
         {page.tools?.updated ? <p className={styles.note}>{tools.note || page.tools?.note}</p> : null}
       </div>

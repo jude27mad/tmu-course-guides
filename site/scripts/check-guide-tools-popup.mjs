@@ -12,17 +12,35 @@ const { chromium } = require(process.env.PLAYWRIGHT_PATH || 'playwright');
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../out');
 const reports = process.env.QA_REPORT_DIR || '/tmp/guide-tools-qa';
 const base = '/tmu-course-guides/next';
-const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp' };
+const types = {
+  '.html': 'text/html',
+  '.js': 'text/javascript',
+  '.css': 'text/css',
+  '.json': 'application/json',
+  '.svg': 'image/svg+xml',
+  '.woff2': 'font/woff2',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.webp': 'image/webp',
+};
 const server = createServer(async (req, res) => {
   try {
     const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
-    if (!pathname.startsWith(`${base}/`)) { res.writeHead(404).end(); return; }
+    if (!pathname.startsWith(`${base}/`)) {
+      res.writeHead(404).end();
+      return;
+    }
     let path = resolve(root, `.${pathname.slice(base.length)}`);
-    if (path !== root && !path.startsWith(`${root}${sep}`)) { res.writeHead(403).end(); return; }
+    if (path !== root && !path.startsWith(`${root}${sep}`)) {
+      res.writeHead(403).end();
+      return;
+    }
     if ((await stat(path)).isDirectory()) path = join(path, 'index.html');
     res.writeHead(200, { 'Content-Type': types[extname(path)] || 'application/octet-stream' });
     res.end(await readFile(path));
-  } catch { res.writeHead(404).end(); }
+  } catch {
+    res.writeHead(404).end();
+  }
 });
 await new Promise((done) => server.listen(0, '127.0.0.1', done));
 const origin = `http://127.0.0.1:${server.address().port}${base}`;

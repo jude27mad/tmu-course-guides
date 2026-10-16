@@ -13,24 +13,53 @@ function fixture({ stopped = false } = {}) {
     style: {
       getPropertyValue: (key) => values.get(key) || '',
       getPropertyPriority: (key) => priorities.get(key) || '',
-      setProperty: (key, value, priority = '') => { values.set(key, value); priorities.set(key, priority); },
-      removeProperty: (key) => { values.delete(key); priorities.delete(key); },
+      setProperty: (key, value, priority = '') => {
+        values.set(key, value);
+        priorities.set(key, priority);
+      },
+      removeProperty: (key) => {
+        values.delete(key);
+        priorities.delete(key);
+      },
     },
   };
-  const opener = { isConnected: true, focus: () => { doc.activeElement = opener; } };
+  const opener = {
+    isConnected: true,
+    focus: () => {
+      doc.activeElement = opener;
+    },
+  };
   const close = new EventTarget();
-  close.focus = () => { doc.activeElement = close; };
+  close.focus = () => {
+    doc.activeElement = close;
+  };
   const dialog = new EventTarget();
   Object.assign(dialog, {
-    ownerDocument: doc, open: false, isConnected: true,
-    showModal() { this.open = true; doc.activeElement = close; },
-    close() { this.open = false; this.dispatchEvent(new Event('close')); },
-    querySelector: (selector) => selector === '[data-close-tools]' ? close : null,
+    ownerDocument: doc,
+    open: false,
+    isConnected: true,
+    showModal() {
+      this.open = true;
+      doc.activeElement = close;
+    },
+    close() {
+      this.open = false;
+      this.dispatchEvent(new Event('close'));
+    },
+    querySelector: (selector) => (selector === '[data-close-tools]' ? close : null),
     getBoundingClientRect: () => ({ left: 100, right: 500, top: 100, bottom: 600 }),
   });
   doc.activeElement = opener;
-  doc.querySelector = (selector) => selector === 'main' ? main : null;
-  const lenis = { isStopped: stopped, stop() { this.isStopped = true; }, start() { this.isStopped = false; } };
+  doc.querySelector = (selector) => (selector === 'main' ? main : null);
+  const lenis = {
+    isStopped: stopped,
+    stop() {
+      this.isStopped = true;
+    },
+    start() {
+      this.isStopped = false;
+    },
+  };
   const dispose = bindGuideTools(dialog, { getLenis: () => lenis });
   return { doc, main, opener, close, dialog, lenis, dispose };
 }
