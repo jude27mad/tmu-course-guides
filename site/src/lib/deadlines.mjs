@@ -432,15 +432,7 @@ function assessmentsNow(courseId, { section } = {}) {
     let label = 'Date pending';
     if (e.date) label = short(e.date);
     else if (e.week) label = `Week of ${dateLabel(e.week)}`;
-    return {
-      title: a.title,
-      dateLabel: label,
-      weight: a.kind === 'midterm' ? course.weights[1] : a.kind === 'final' ? course.weights[2] : null,
-      weightLabel: MATH.weight(a, course),
-      ids: [a.id],
-      item: a.id,
-      anchor: `assessment-${a.id}`,
-    };
+    return { title: a.title, dateLabel: label, weight: a.kind === 'midterm' ? course.weights[1] : a.kind === 'final' ? course.weights[2] : null, weightLabel: MATH.weight(a, course), ids: [a.id], item: a.id, anchor: `assessment-${a.id}` };
   });
   const labels = ['Lab quizzes', 'Midterm test', 'Final exam'];
   return Object.assign(rows, {

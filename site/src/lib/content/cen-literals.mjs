@@ -5,635 +5,235 @@
    site/tests/extract/cen-literals.mjs rather than editing. */
 
 // assets/cen-guide.mjs:46-67
-export const I = {
-  team: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.5" cy="9" r="2.6"/><path d="M16 14.2c3 .3 5 2.7 5 5.8"/></svg>',
-  sub: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="7" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M2 20c0-3 2.2-5 5-5s5 2 5 5M12 20c0-3 2.2-5 5-5s5 2 5 5"/></svg>',
-  you: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="8" r="3.8"/><path d="M4.5 21c0-4.1 3.4-7.5 7.5-7.5s7.5 3.4 7.5 7.5"/></svg>',
-  flag: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h12l-2.5 4L17 12H5"/></svg>',
-  cal: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
-  up: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5"/><path d="M4 15v4a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 20 19v-4"/></svg>',
-  pin: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>',
-  check: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>',
-  warn: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"><path d="M12 3.5 2.5 20h19z"/><path d="M12 10v4.5M12 17.2v.1"/></svg>',
-  x: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
-  clock:
-    '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>',
-  doc: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg>',
-  book: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg>',
-  eye: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
-  loop: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 0 1-13.7 5.6M4 12a8 8 0 0 1 13.7-5.6"/><path d="M18 2.5v4h-4M6 21.5v-4h4"/></svg>',
-  mail: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 7 8.5-7"/></svg>',
-  question:
-    '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.3 9.3a2.8 2.8 0 1 1 3.7 2.6c-.7.3-1 .9-1 1.6v.5M12 17v.1"/></svg>',
-  chat: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>',
-  down: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
-  forward:
-    '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>',
+export const I={
+ team:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.5" cy="9" r="2.6"/><path d="M16 14.2c3 .3 5 2.7 5 5.8"/></svg>',
+ sub:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="7" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M2 20c0-3 2.2-5 5-5s5 2 5 5M12 20c0-3 2.2-5 5-5s5 2 5 5"/></svg>',
+ you:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="8" r="3.8"/><path d="M4.5 21c0-4.1 3.4-7.5 7.5-7.5s7.5 3.4 7.5 7.5"/></svg>',
+ flag:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h12l-2.5 4L17 12H5"/></svg>',
+ cal:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
+ up:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5"/><path d="M4 15v4a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 20 19v-4"/></svg>',
+ pin:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>',
+ check:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>',
+ warn:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"><path d="M12 3.5 2.5 20h19z"/><path d="M12 10v4.5M12 17.2v.1"/></svg>',
+ x:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+ clock:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>',
+ doc:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round" stroke-linecap="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg>',
+ book:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg>',
+ eye:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+ loop:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 0 1-13.7 5.6M4 12a8 8 0 0 1 13.7-5.6"/><path d="M18 2.5v4h-4M6 21.5v-4h4"/></svg>',
+ mail:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 7 8.5-7"/></svg>',
+ question:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.3 9.3a2.8 2.8 0 1 1 3.7 2.6c-.7.3-1 .9-1 1.6v.5M12 17v.1"/></svg>',
+ chat:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>',
+ down:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
+ forward:'<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>'
 };
 
 // assets/cen-guide.mjs:68
-export const WHO = { team: ['team', 'Full team'], sub: ['sub', 'Sub-teams'], you: ['you', 'Individual'], pair: ['you', 'Pairs'] };
+export const WHO={team:["team","Full team"],sub:["sub","Sub-teams"],you:["you","Individual"],pair:["you","Pairs"]};
 
 // assets/cen-guide.mjs:70-146
 export const TEAM = [
-  {
-    id: 'm1',
-    date: '2026-09-23',
-    name: 'Team Contract + Task Outline',
-    who: 'team',
-    pct: '2%',
-    preview: 'One team upload to D2L. Keep the task outline updated.',
-    what: 'How we work together, and the list of what needs doing and when.',
-    facts: [['up', 'D2L, one upload']],
-    groups: [['', ['Keep a copy of the contract in the notebook', 'Keep the Task Outline updated all semester']]],
-    traps: [],
-  },
-  {
-    id: 'm2',
-    date: '2026-10-02',
-    name: 'Project Outline + User Research',
-    who: 'team',
-    pct: '4%',
-    preview: '2–3 pages, with research from at least 5 real people.',
-    what: 'Say who has the problem, talk to real people about it, then break the need into small pieces you can test. 2 to 3 pages, one connected story.',
-    facts: [
-      ['cal', 'Friday Oct 2, end of day'],
-      ['up', 'D2L, one upload'],
-      ['doc', '5 parts, 4 points each'],
-    ],
-    groups: [
-      [
-        'Problem statement',
-        [
-          'Names every group affected, not just the obvious one',
-          'Lists real limits: cost, time, materials, safety, rules',
-          'Uses \u201c[Who] often [problem], leading to [impact], especially [when/where]\u201d, then in our own words',
-        ],
-      ],
-      [
-        'User research',
-        [
-          '3 to 5 research questions',
-          'At least 5 real people',
-          'Each person logged by role, method, and a key quote',
-          "Told everyone it's CEN100 and voluntary",
-          'Notes written during the talk',
-          'Patterns and surprises, plus a revised problem statement',
-        ],
-      ],
-      ['Needs tree', ['Big need broken into small, testable needs', 'No need names a solution']],
-      ['Early direction', ['2 to 4 truly different ideas', "Each says what's promising and what's uncertain", 'No idea presented as already chosen']],
-      ['Work division', ['Every member has named tasks, not just the leaders', 'Matches the Task Outline', 'At least one internal deadline before Nov 4']],
-      ['Before uploading', ['CEWIL box ticked Yes or No', 'Header with team number and section']],
-    ],
-    traps: [
-      'Fewer than 5 people',
-      'Made-up or AI-written participants: zero, plus an integrity case',
-      'One idea presented as decided: zero for that part',
-      'Work division that only names 2 or 3 people',
-    ],
-  },
-  {
-    id: 'm3',
-    date: '2026-10-21',
-    name: 'Failure Analysis Labs',
-    who: 'team',
-    pct: '6%',
-    preview: 'Part 1: disaster review + fishbone. Part 2: FMEA + design insight.',
-    what: "Part 1: study a real engineering disaster. Part 2: predict how our own project could fail, score each risk, and say what we'll change.",
-    facts: [
-      ['cal', 'Both parts due Wed Oct 21'],
-      ['pin', 'Part 1 worked on in the Oct 14 lab'],
-      ['up', 'D2L'],
-    ],
-    groups: [
-      [
-        'Part 1 (2%), sub-teams of 4 to 5',
-        [
-          'A real, documented disaster from any field',
-          '1 to 2 pages answering only 4 questions: what happened, why it failed, lessons learned, how to prevent it',
-          'Fishbone diagram grouping the causes',
-          '2 to 3 credible sources from the TMU library',
-        ],
-      ],
-      [
-        'Part 2 (4%), full team',
-        [
-          'Failure modes in all 5 groups: technical, human, environmental, ethical, business',
-          'Every failure mode is specific to our project',
-          'Example rows 1 to 3 cleared, rows kept',
-          'Likelihood, severity, detectability scored 1 to 5',
-          'Detectability: 1 = easy to spot, 5 = hard',
-          'Nothing typed in the grey columns',
-          'A fix for every risk scoring 50 or more',
-          'Sorted by risk',
-        ],
-      ],
-      [
-        'Design insight',
-        [
-          'One paragraph: top 2 to 3 risks and a specific change',
-          'Presented briefly in the lab, no full presentation',
-          'Explain why those risks rank highest',
-          'Several people speak, inside the time limit',
-          'Everyone ready for GA questions',
-        ],
-      ],
-    ],
-    traps: ['Failure modes that could fit any project', 'Detectability scored backwards', 'Deleting the example rows and breaking the formulas', 'One or two people doing all the talking'],
-  },
-  {
-    id: 'm4',
-    date: '2026-11-04',
-    name: 'Midterm Design Review',
-    who: 'team',
-    pct: '8%',
-    preview: 'Live in your lab: 5-minute presentation + 3-minute Q&A.',
-    what: 'A live 5-minute presentation to a panel, then 3 minutes of questions. It judges how we got to our idea.',
-    facts: [
-      ['pin', 'Live, Week 9 lab'],
-      ['clock', '5 min talk + 3 min Q&A'],
-      ['doc', '5 parts, 20 points each'],
-    ],
-    groups: [
-      ['Bring all five', ['Needs tree', 'Problem statement + boundary diagram', 'Decision matrix, weights add to 100%', 'Assumption log: top 2 to 3 guesses', 'FMEA top risks + what we changed']],
-      [
-        'The five minutes',
-        [
-          'Min 1: problem and who has it',
-          'Min 2: boundary diagram',
-          'Min 3: why this concept won',
-          'Min 4: top risks and what we changed',
-          'Min 5: prototype plan',
-          'Speakers and a timekeeper assigned',
-          'Practised out loud as a full team',
-        ],
-      ],
-      ['Every member', ['Can explain the problem and the concept', 'Has a dated notebook entry and can talk about it', 'Notebook open on a device', 'Dressed professionally']],
-    ],
-    traps: [
-      'Quietly skipping an unfinished piece: say it and give the plan',
-      'Starting with the solution instead of the problem',
-      'Running over time',
-      'Any member without a notebook entry: 20 points ride on this',
-    ],
-  },
-  {
-    id: 'y6',
-    date: '2026-11-04',
-    date2: 'Dec 2',
-    name: 'Team design notebook',
-    who: 'team',
-    pct: '4%',
-    preview: 'PDF at both checkpoints. Every member needs a dated entry.',
-    what: 'One team notebook, but if even one member has no entry since the last checkpoint, the whole team loses marks.',
-    facts: [['cal', 'PDF export due Nov 4 and Dec 2, 3:00 PM']],
-    groups: [['', ['My entry before Nov 4', 'I can talk about my entry', 'My entry before Dec 2']]],
-    traps: ['Writing everything at the end instead of as you go'],
-  },
-  {
-    id: 'm5',
-    date: '2026-11-25',
-    name: 'Low-Fidelity Prototype',
-    who: 'team',
-    pct: '4%',
-    preview: 'Build and test the core idea. Record your test results.',
-    what: "A rough version that tests the core idea: a physical item, 3D model, CAD model or simulation. It doesn't have to work perfectly.",
-    facts: [
-      ['cal', 'Due Nov 25, 3:00 PM'],
-      ['pin', 'Plan Nov 11 lab, build Nov 18 lab'],
-      ['warn', 'WHMIS needed for the makerspace'],
-    ],
-    groups: [
-      ['The plan', ['Concept in 1 to 2 sentences, tied to panel feedback', 'Materials and rough cost', 'Build steps, roles, timeline', 'Success criteria you can check (never \u201cit works\u201d)']],
-      ['While building', ['Photos at every stage', 'Changes from the plan, with the reason', 'Every member has a notebook entry']],
-      ['Testing', ['Tested against every success criterion', 'Result recorded: pass, partial or fail']],
-      ['On the day', ['Ready and tested right before presenting']],
-    ],
-    traps: ['\u201cIt works\u201d as a success criterion', 'Only photos of the finished product', 'No test at all: an honest failed test scores higher'],
-  },
-  {
-    id: 'm6',
-    date: '2026-11-25',
-    date2: 'Dec 2',
-    name: 'Final Presentations',
-    who: 'team',
-    pct: '6%',
-    preview: 'Two live pitches with a prototype demo: 5 minutes + 2-minute Q&A.',
-    what: 'Pitch the project and demo the prototype live, twice. Use the Nov 25 feedback to make Dec 2 better.',
-    facts: [
-      ['clock', '5 min + 2 min Q&A, each time'],
-      ['cal', 'Nov 25 and Dec 2'],
-      ['warn', 'Competition sign-up two weeks before Dec 2'],
-    ],
-    groups: [
-      ['The five minutes', ['Min 1: problem and key need', 'Min 2\u20133: what we built and why', 'Min 4: live demo against our criteria', "Min 5: what worked, what we'd change"]],
-      [
-        'Delivery',
-        ['Several members speak', 'Everyone can explain the project', "Talk to the room, don't read slides", 'Slides show diagrams, photos, results', 'Practised with someone outside the team'],
-      ],
-      ['Bring', ['Prototype, tested right before', 'Slides + a backup copy', 'The notebook', 'Slides uploaded to D2L']],
-    ],
-    traps: ['One or two speakers carrying it', 'Hiding a failed demo: explain it instead', 'Missing the competition sign-up'],
-  },
-  {
-    id: 'm7',
-    date: '2026-12-02',
-    name: 'Final Report',
-    who: 'team',
-    pct: '8%',
-    preview: '8–12 pages connecting the project, including MATLAB analysis.',
-    what: "The whole project in one 8 to 12 page document. Rewrite and connect the earlier milestones, don't paste them.",
-    facts: [
-      ['cal', 'Dec 2, 11:59 PM'],
-      ['up', 'D2L, one upload'],
-      ['doc', 'MATLAB 20 pts, writing 20 pts'],
-    ],
-    groups: [
-      [
-        'The ten sections',
-        [
-          '1 Executive summary',
-          '2 Problem, stakeholders, needs tree',
-          '3 User research',
-          '4 Existing product comparison',
-          '5 Boundary diagram, matrix, why this concept',
-          '6 MATLAB analysis',
-          '7 Failure Analysis (titled exactly that)',
-          '8 Prototype and test results',
-          '9 Reflection',
-          '10 References',
-        ],
-      ],
-      ['MATLAB', ['2+ analyses that each changed a decision', 'Only skills taught in CEN100', 'Figures in Section 6, referenced from 5 and 8', 'Code runs, submitted with a README']],
-      ['Finishing', ['Figures inside the sections', 'IEEE citations throughout', 'Name the tool behind each decision', 'Header with team number and section']],
-    ],
-    traps: ["MATLAB plots that don't decide anything", "Code that doesn't run", '\u201cOurs is better\u201d with no comparison', 'Hiding failed tests'],
-  },
+ {id:"m1", date:"2026-09-23", name:"Team Contract + Task Outline", who:"team", pct:"2%",
+  preview:"One team upload to D2L. Keep the task outline updated.",
+  what:"How we work together, and the list of what needs doing and when.",
+  facts:[["up","D2L, one upload"]],
+  groups:[["",["Keep a copy of the contract in the notebook","Keep the Task Outline updated all semester"]]], traps:[]},
+ {id:"m2", date:"2026-10-02", name:"Project Outline + User Research", who:"team", pct:"4%",
+  preview:"2–3 pages, with research from at least 5 real people.",
+  what:"Say who has the problem, talk to real people about it, then break the need into small pieces you can test. 2 to 3 pages, one connected story.",
+  facts:[["cal","Friday Oct 2, end of day"],["up","D2L, one upload"],["doc","5 parts, 4 points each"]],
+  groups:[
+   ["Problem statement",["Names every group affected, not just the obvious one","Lists real limits: cost, time, materials, safety, rules","Uses \u201c[Who] often [problem], leading to [impact], especially [when/where]\u201d, then in our own words"]],
+   ["User research",["3 to 5 research questions","At least 5 real people","Each person logged by role, method, and a key quote","Told everyone it's CEN100 and voluntary","Notes written during the talk","Patterns and surprises, plus a revised problem statement"]],
+   ["Needs tree",["Big need broken into small, testable needs","No need names a solution"]],
+   ["Early direction",["2 to 4 truly different ideas","Each says what's promising and what's uncertain","No idea presented as already chosen"]],
+   ["Work division",["Every member has named tasks, not just the leaders","Matches the Task Outline","At least one internal deadline before Nov 4"]],
+   ["Before uploading",["CEWIL box ticked Yes or No","Header with team number and section"]]
+  ],
+  traps:["Fewer than 5 people","Made-up or AI-written participants: zero, plus an integrity case","One idea presented as decided: zero for that part","Work division that only names 2 or 3 people"]},
+ {id:"m3", date:"2026-10-21", name:"Failure Analysis Labs", who:"team", pct:"6%",
+  preview:"Part 1: disaster review + fishbone. Part 2: FMEA + design insight.",
+  what:"Part 1: study a real engineering disaster. Part 2: predict how our own project could fail, score each risk, and say what we'll change.",
+  facts:[["cal","Both parts due Wed Oct 21"],["pin","Part 1 worked on in the Oct 14 lab"],["up","D2L"]],
+  groups:[
+   ["Part 1 (2%), sub-teams of 4 to 5",["A real, documented disaster from any field","1 to 2 pages answering only 4 questions: what happened, why it failed, lessons learned, how to prevent it","Fishbone diagram grouping the causes","2 to 3 credible sources from the TMU library"]],
+   ["Part 2 (4%), full team",["Failure modes in all 5 groups: technical, human, environmental, ethical, business","Every failure mode is specific to our project","Example rows 1 to 3 cleared, rows kept","Likelihood, severity, detectability scored 1 to 5","Detectability: 1 = easy to spot, 5 = hard","Nothing typed in the grey columns","A fix for every risk scoring 50 or more","Sorted by risk"]],
+   ["Design insight",["One paragraph: top 2 to 3 risks and a specific change","Presented briefly in the lab, no full presentation","Explain why those risks rank highest","Several people speak, inside the time limit","Everyone ready for GA questions"]]
+  ],
+  traps:["Failure modes that could fit any project","Detectability scored backwards","Deleting the example rows and breaking the formulas","One or two people doing all the talking"]},
+ {id:"m4", date:"2026-11-04", name:"Midterm Design Review", who:"team", pct:"8%",
+  preview:"Live in your lab: 5-minute presentation + 3-minute Q&A.",
+  what:"A live 5-minute presentation to a panel, then 3 minutes of questions. It judges how we got to our idea.",
+  facts:[["pin","Live, Week 9 lab"],["clock","5 min talk + 3 min Q&A"],["doc","5 parts, 20 points each"]],
+  groups:[
+   ["Bring all five",["Needs tree","Problem statement + boundary diagram","Decision matrix, weights add to 100%","Assumption log: top 2 to 3 guesses","FMEA top risks + what we changed"]],
+   ["The five minutes",["Min 1: problem and who has it","Min 2: boundary diagram","Min 3: why this concept won","Min 4: top risks and what we changed","Min 5: prototype plan","Speakers and a timekeeper assigned","Practised out loud as a full team"]],
+   ["Every member",["Can explain the problem and the concept","Has a dated notebook entry and can talk about it","Notebook open on a device","Dressed professionally"]]
+  ],
+  traps:["Quietly skipping an unfinished piece: say it and give the plan","Starting with the solution instead of the problem","Running over time","Any member without a notebook entry: 20 points ride on this"]},
+ {id:"y6", date:"2026-11-04", date2:"Dec 2", name:"Team design notebook", who:"team", pct:"4%",
+  preview:"PDF at both checkpoints. Every member needs a dated entry.",
+  what:"One team notebook, but if even one member has no entry since the last checkpoint, the whole team loses marks.",
+  facts:[["cal","PDF export due Nov 4 and Dec 2, 3:00 PM"]],
+  groups:[["",["My entry before Nov 4","I can talk about my entry","My entry before Dec 2"]]],
+  traps:["Writing everything at the end instead of as you go"]},
+ {id:"m5", date:"2026-11-25", name:"Low-Fidelity Prototype", who:"team", pct:"4%",
+  preview:"Build and test the core idea. Record your test results.",
+  what:"A rough version that tests the core idea: a physical item, 3D model, CAD model or simulation. It doesn't have to work perfectly.",
+  facts:[["cal","Due Nov 25, 3:00 PM"],["pin","Plan Nov 11 lab, build Nov 18 lab"],["warn","WHMIS needed for the makerspace"]],
+  groups:[
+   ["The plan",["Concept in 1 to 2 sentences, tied to panel feedback","Materials and rough cost","Build steps, roles, timeline","Success criteria you can check (never \u201cit works\u201d)"]],
+   ["While building",["Photos at every stage","Changes from the plan, with the reason","Every member has a notebook entry"]],
+   ["Testing",["Tested against every success criterion","Result recorded: pass, partial or fail"]],
+   ["On the day",["Ready and tested right before presenting"]]
+  ],
+  traps:["\u201cIt works\u201d as a success criterion","Only photos of the finished product","No test at all: an honest failed test scores higher"]},
+ {id:"m6", date:"2026-11-25", date2:"Dec 2", name:"Final Presentations", who:"team", pct:"6%",
+  preview:"Two live pitches with a prototype demo: 5 minutes + 2-minute Q&A.",
+  what:"Pitch the project and demo the prototype live, twice. Use the Nov 25 feedback to make Dec 2 better.",
+  facts:[["clock","5 min + 2 min Q&A, each time"],["cal","Nov 25 and Dec 2"],["warn","Competition sign-up two weeks before Dec 2"]],
+  groups:[
+   ["The five minutes",["Min 1: problem and key need","Min 2\u20133: what we built and why","Min 4: live demo against our criteria","Min 5: what worked, what we'd change"]],
+   ["Delivery",["Several members speak","Everyone can explain the project","Talk to the room, don't read slides","Slides show diagrams, photos, results","Practised with someone outside the team"]],
+   ["Bring",["Prototype, tested right before","Slides + a backup copy","The notebook","Slides uploaded to D2L"]]
+  ],
+  traps:["One or two speakers carrying it","Hiding a failed demo: explain it instead","Missing the competition sign-up"]},
+ {id:"m7", date:"2026-12-02", name:"Final Report", who:"team", pct:"8%",
+  preview:"8–12 pages connecting the project, including MATLAB analysis.",
+  what:"The whole project in one 8 to 12 page document. Rewrite and connect the earlier milestones, don't paste them.",
+  facts:[["cal","Dec 2, 11:59 PM"],["up","D2L, one upload"],["doc","MATLAB 20 pts, writing 20 pts"]],
+  groups:[
+   ["The ten sections",["1 Executive summary","2 Problem, stakeholders, needs tree","3 User research","4 Existing product comparison","5 Boundary diagram, matrix, why this concept","6 MATLAB analysis","7 Failure Analysis (titled exactly that)","8 Prototype and test results","9 Reflection","10 References"]],
+   ["MATLAB",["2+ analyses that each changed a decision","Only skills taught in CEN100","Figures in Section 6, referenced from 5 and 8","Code runs, submitted with a README"]],
+   ["Finishing",["Figures inside the sections","IEEE citations throughout","Name the tool behind each decision","Header with team number and section"]]
+  ],
+  traps:["MATLAB plots that don't decide anything","Code that doesn't run","\u201cOurs is better\u201d with no comparison","Hiding failed tests"]}
 ];
 
 // assets/cen-guide.mjs:148-198
 export const YOU = [
-  {
-    id: 'y1',
-    date: '2026-09-23',
-    big: 'SEP',
-    small: 'Orientation',
-    name: 'September items',
-    who: 'you',
-    pct: '6%',
-    preview: 'Introduction, entry survey, syllabus quiz and professional email.',
-    what: 'Personal Introduction (1%), entry survey (1%), Course Syllabus Quiz (2%) and Professional Email Assignment (2%): 6% in total. All were due in September.',
-    facts: [['eye', 'Check D2L that each shows as submitted']],
-    groups: [['', ['Personal introduction', 'Entry survey', 'Syllabus quiz', 'Email assignment']]],
-    traps: [],
-  },
-  {
-    id: 'y2',
-    date: '2026-10-07',
-    date2: 'Nov 4',
-    name: 'MATLAB assignments',
-    who: 'pair',
-    pct: '10%',
-    preview: 'Two lab assignments, normally completed in pairs.',
-    what: 'Two assignments from the MATLAB labs. Normally completed in pairs; if the class has an odd number of students, the unpaired student may work solo or join a group of 3.',
-    facts: [
-      ['cal', 'Oct 7 and Nov 4'],
-      ['warn', 'If the class size is odd, the unpaired student may work solo or join a group of 3.'],
-    ],
-    groups: [['', ['Working arrangement confirmed', 'Assignment 1 submitted', 'Assignment 2 submitted']]],
-    traps: [],
-  },
-  {
-    id: 'y3',
-    date: '2026-10-14',
-    name: 'WHMIS certification',
-    who: 'you',
-    pct: '2%',
-    preview: '80%+ on all 3 quizzes, then generate and save your certificate.',
-    what: 'Safety certificate. Required for the makerspace.',
-    facts: [
-      ['cal', 'Due Wed Oct 14'],
-      ['warn', 'Missing it can make your whole course INCOMPLETE'],
-    ],
-    groups: [['', ['80%+ on all 3 module quizzes (5 attempts each)', 'Certificate generated from Awards in the WHMIS D2L course', 'Certificate saved']]],
-    traps: [],
-  },
-  {
-    id: 'y4',
-    date: '2026-10-14',
-    name: 'Academic Integrity Quiz',
-    who: 'you',
-    pct: '2%',
-    preview: 'Mandatory D2L quiz. Up to 10 attempts; due at 3:00 PM.',
-    what: 'Mandatory quiz, 10 attempts.',
-    facts: [
-      ['cal', 'Due Oct 14, 3:00 PM'],
-      ['warn', 'Missing it can make your whole course INCOMPLETE'],
-    ],
-    groups: [['', ['Completed']]],
-    traps: [],
-  },
-  {
-    id: 'y5',
-    date: '2026-10-28',
-    date2: 'Dec 2',
-    name: 'Personal Reflections',
-    who: 'you',
-    pct: '4%',
-    preview: 'Two individual reflections, emailed to your Project Manager.',
-    what: 'Your own writing about the project, two pieces. Email each Personal Reflection directly to your assigned Project Manager.',
-    facts: [
-      ['cal', 'Oct 28 and Dec 2'],
-      ['warn', 'Email directly to your Project Manager — no D2L submission box'],
-    ],
-    groups: [['', ['Project Manager confirmed', 'Reflection 1 emailed to PM', 'Reflection 2 emailed to PM']]],
-    traps: [],
-  },
-  {
-    id: 'y7',
-    date: '2026-12-02',
-    big: 'LAB',
-    small: 'Weekly',
-    name: 'Tutorial attendance quizzes',
-    who: 'you',
-    pct: '5%',
-    preview: 'In-person quiz during your assigned tutorial. Check D2L for timing.',
-    what: 'Attendance quizzes take place during your assigned tutorial. Section 29: Wednesday, 5:45 to 6:00 PM, one attempt. Other sections: check D2L for your assigned tutorial schedule.',
-    facts: [['pin', 'Section 29: Wednesday, 5:45 to 6:00 PM; other sections: check D2L']],
-    groups: [['', ['I attend my assigned tutorial in person']]],
-    traps: [
-      'Answering for another student, or having someone answer for you while you are absent, violates TMU Senate Policy 60: Academic Integrity. Zero for the entire 5% participation component; further penalties may apply.',
-      'Taking a quiz while absent from your assigned tutorial earns no credit for that quiz and may raise an academic integrity concern.',
-    ],
-  },
-  {
-    id: 'y8',
-    date: '2026-12-02',
-    name: 'Exit survey',
-    who: 'you',
-    pct: '2%',
-    preview: 'Short Google Form in Week 13.',
-    what: 'A short Google Form in Week 13.',
-    facts: [],
-    groups: [['', ['Submitted']]],
-    traps: [],
-  },
-  {
-    id: 'm8',
-    date: '2026-12-02',
-    name: 'Peer Evaluation',
-    who: 'you',
-    pct: '3%',
-    preview: 'Private D2L submission. Rate every member, including yourself.',
-    what: 'Everyone privately rates every member, including themselves. Nobody sees your answers.',
-    facts: [['up', 'D2L, private']],
-    groups: [
-      ["You're rated on", ['Attending meetings on time', 'Contributing to discussions', 'Finishing assigned tasks on time', 'Quality of work', 'Being cooperative', 'Contributing to the result']],
-      ['To submit', ['Score everyone 0 to 100 on all six', 'Work out the averages', 'Answer the 3 written questions', 'List your contributions, pointing to notebook entries', 'Sign and date']],
-    ],
-    traps: ['A vague list of contributions'],
-  },
-  {
-    id: 'y9',
-    date: '2026-12-09',
-    big: 'DEC',
-    small: 'Exam period',
-    name: 'Final exam',
-    who: 'you',
-    pct: '24%',
-    preview: '2-hour in-person exam. Exact schedule awaits the Registrar.',
-    what: '2 hours, in person. The date comes from the Registrar.',
-    facts: [['clock', '2 hours, in person']],
-    groups: [['', ["Exam date noted when it's released"]]],
-    traps: ['Booking travel before the exam schedule is out'],
-  },
+ {id:"y1", date:"2026-09-23", big:"SEP", small:"Orientation", name:"September items", who:"you", pct:"6%",
+  preview:"Introduction, entry survey, syllabus quiz and professional email.",
+  what:"Personal Introduction (1%), entry survey (1%), Course Syllabus Quiz (2%) and Professional Email Assignment (2%): 6% in total. All were due in September.",
+  facts:[["eye","Check D2L that each shows as submitted"]],
+  groups:[["",["Personal introduction","Entry survey","Syllabus quiz","Email assignment"]]], traps:[]},
+ {id:"y2", date:"2026-10-07", date2:"Nov 4", name:"MATLAB assignments", who:"pair", pct:"10%",
+  preview:"Two lab assignments, normally completed in pairs.",
+  what:"Two assignments from the MATLAB labs. Normally completed in pairs; if the class has an odd number of students, the unpaired student may work solo or join a group of 3.",
+  facts:[["cal","Oct 7 and Nov 4"],["warn","If the class size is odd, the unpaired student may work solo or join a group of 3."]],
+  groups:[["",["Working arrangement confirmed","Assignment 1 submitted","Assignment 2 submitted"]]], traps:[]},
+ {id:"y3", date:"2026-10-14", name:"WHMIS certification", who:"you", pct:"2%",
+  preview:"80%+ on all 3 quizzes, then generate and save your certificate.",
+  what:"Safety certificate. Required for the makerspace.",
+  facts:[["cal","Due Wed Oct 14"],["warn","Missing it can make your whole course INCOMPLETE"]],
+  groups:[["",["80%+ on all 3 module quizzes (5 attempts each)","Certificate generated from Awards in the WHMIS D2L course","Certificate saved"]]], traps:[]},
+ {id:"y4", date:"2026-10-14", name:"Academic Integrity Quiz", who:"you", pct:"2%",
+  preview:"Mandatory D2L quiz. Up to 10 attempts; due at 3:00 PM.",
+  what:"Mandatory quiz, 10 attempts.",
+  facts:[["cal","Due Oct 14, 3:00 PM"],["warn","Missing it can make your whole course INCOMPLETE"]],
+  groups:[["",["Completed"]]], traps:[]},
+ {id:"y5", date:"2026-10-28", date2:"Dec 2", name:"Personal Reflections", who:"you", pct:"4%",
+  preview:"Two individual reflections, emailed to your Project Manager.",
+  what:"Your own writing about the project, two pieces. Email each Personal Reflection directly to your assigned Project Manager.",
+  facts:[["cal","Oct 28 and Dec 2"],["warn","Email directly to your Project Manager — no D2L submission box"]],
+  groups:[["",["Project Manager confirmed","Reflection 1 emailed to PM","Reflection 2 emailed to PM"]]], traps:[]},
+ {id:"y7", date:"2026-12-02", big:"LAB", small:"Weekly", name:"Tutorial attendance quizzes", who:"you", pct:"5%",
+  preview:"In-person quiz during your assigned tutorial. Check D2L for timing.",
+  what:"Attendance quizzes take place during your assigned tutorial. Section 29: Wednesday, 5:45 to 6:00 PM, one attempt. Other sections: check D2L for your assigned tutorial schedule.",
+  facts:[["pin","Section 29: Wednesday, 5:45 to 6:00 PM; other sections: check D2L"]],
+  groups:[["",["I attend my assigned tutorial in person"]]],
+  traps:["Answering for another student, or having someone answer for you while you are absent, violates TMU Senate Policy 60: Academic Integrity. Zero for the entire 5% participation component; further penalties may apply.","Taking a quiz while absent from your assigned tutorial earns no credit for that quiz and may raise an academic integrity concern."]},
+ {id:"y8", date:"2026-12-02", name:"Exit survey", who:"you", pct:"2%",
+  preview:"Short Google Form in Week 13.",
+  what:"A short Google Form in Week 13.", facts:[], groups:[["",["Submitted"]]], traps:[]},
+ {id:"m8", date:"2026-12-02", name:"Peer Evaluation", who:"you", pct:"3%",
+  preview:"Private D2L submission. Rate every member, including yourself.",
+  what:"Everyone privately rates every member, including themselves. Nobody sees your answers.",
+  facts:[["up","D2L, private"]],
+  groups:[
+   ["You're rated on",["Attending meetings on time","Contributing to discussions","Finishing assigned tasks on time","Quality of work","Being cooperative","Contributing to the result"]],
+   ["To submit",["Score everyone 0 to 100 on all six","Work out the averages","Answer the 3 written questions","List your contributions, pointing to notebook entries","Sign and date"]]
+  ],
+  traps:["A vague list of contributions"]},
+ {id:"y9", date:"2026-12-09", big:"DEC", small:"Exam period", name:"Final exam", who:"you", pct:"24%",
+  preview:"2-hour in-person exam. Exact schedule awaits the Registrar.",
+  what:"2 hours, in person. The date comes from the Registrar.",
+  facts:[["clock","2 hours, in person"]],
+  groups:[["",["Exam date noted when it's released"]]],
+  traps:["Booking travel before the exam schedule is out"]}
 ];
 
 // assets/cen-guide.mjs:200-210
-export const RULES = [
-  ['red', 'doc', 'Header on every team submission', 'Team name or number and section. No signature needed every time.'],
-  ['red', 'x', 'Late means zero', 'No late work without valid documentation. Use the submission method listed for each assignment.'],
-  ['red', 'book', 'One missing notebook entry costs the team', 'Every member needs a dated entry before each checkpoint.'],
-  ['', 'book', 'Write in the notebook as you go', "Date it and put your name on it. It's your proof for the peer evaluation."],
-  ['', 'eye', 'Real people, real data', "Log people by role, never by name. AI can't make data or decisions for us."],
-  ['', 'clock', 'Finish two days early', 'Reviewers get 48 hours, so a Wednesday deadline means done by Monday.'],
-  ['', 'loop', 'Everything gets graded again', 'The needs tree, FMEA, photos and test results come back at the review and in the report.'],
-  ['', 'team', 'New roles each phase', 'Phase 2 starts Sept 28, Phase 3 Nov 2, Phase 4 Nov 23.'],
-  ['', 'mail', 'Emailing the GA or instructor', 'TMU email, F2026CEN100 in the subject, your name and student number.'],
+export const RULES=[
+ ["red","doc","Header on every team submission","Team name or number and section. No signature needed every time."],
+ ["red","x","Late means zero","No late work without valid documentation. Use the submission method listed for each assignment."],
+ ["red","book","One missing notebook entry costs the team","Every member needs a dated entry before each checkpoint."],
+ ["","book","Write in the notebook as you go","Date it and put your name on it. It's your proof for the peer evaluation."],
+ ["","eye","Real people, real data","Log people by role, never by name. AI can't make data or decisions for us."],
+ ["","clock","Finish two days early","Reviewers get 48 hours, so a Wednesday deadline means done by Monday."],
+ ["","loop","Everything gets graded again","The needs tree, FMEA, photos and test results come back at the review and in the report."],
+ ["","team","New roles each phase","Phase 2 starts Sept 28, Phase 3 Nov 2, Phase 4 Nov 23."],
+ ["","mail","Emailing the GA or instructor","TMU email, F2026CEN100 in the subject, your name and student number."]
 ];
 
 // assets/cen-guide.mjs:211-221
-export const CONFIRMED = [
-  ['Notebook checkpoints', 'Two. Whole notebook as a PDF, Nov 4 and Dec 2, 3:00 PM.'],
-  ['Failure Analysis', 'Part 1: lit review + fishbone. Part 2: FMEA + paragraph, presented briefly. Both due Oct 21.'],
-  ['Headers', 'Team and section on every team submission. No signature needed.'],
-  ['Citations', 'IEEE. Confirm the current guidance with your GA.'],
-  ['WHMIS', 'Due Oct 14. 80%+ on all 3 quizzes, then generate the certificate.'],
-  ['Academic Integrity Quiz', 'Due Oct 14, 3:00 PM.'],
-  ['Attendance quizzes', 'Section 29: Wednesday, 5:45 to 6:00 PM, one attempt. Other sections: check your assigned tutorial on D2L.'],
-  ['Personal Reflections', 'No D2L submission box. Email directly to your assigned Project Manager.'],
-  ['MATLAB assignments', 'Normally pairs. If the class size is odd, the unpaired student may work solo or join a group of 3.'],
+export const CONFIRMED=[
+ ["Notebook checkpoints","Two. Whole notebook as a PDF, Nov 4 and Dec 2, 3:00 PM."],
+ ["Failure Analysis","Part 1: lit review + fishbone. Part 2: FMEA + paragraph, presented briefly. Both due Oct 21."],
+ ["Headers","Team and section on every team submission. No signature needed."],
+ ["Citations","IEEE. Confirm the current guidance with your GA."],
+ ["WHMIS","Due Oct 14. 80%+ on all 3 quizzes, then generate the certificate."],
+ ["Academic Integrity Quiz","Due Oct 14, 3:00 PM."],
+ ["Attendance quizzes","Section 29: Wednesday, 5:45 to 6:00 PM, one attempt. Other sections: check your assigned tutorial on D2L."],
+ ["Personal Reflections","No D2L submission box. Email directly to your assigned Project Manager."],
+ ["MATLAB assignments","Normally pairs. If the class size is odd, the unpaired student may work solo or join a group of 3."]
 ];
 
 // assets/cen-guide.mjs:222-224
-export const OPEN = [['FMEA \u201cEnvironmental\u201d', 'Real-world conditions, or impact on the environment? Escalated to the Head GA. Official clarification pending.']];
+export const OPEN=[
+ ["FMEA \u201cEnvironmental\u201d","Real-world conditions, or impact on the environment? Escalated to the Head GA. Official clarification pending."]
+];
 
 // assets/cen-guide.mjs:226
-export const KEY = 'cen100-g9-ticks';
+export const KEY="cen100-g9-ticks";
 
 // assets/cen-guide.mjs:370-384
-export const STAFFING = [
-  {
-    sections: [1, 14, 27],
-    ga: 'See your section’s staff list on D2L',
-    location: 'KHE321B',
-    groups: [
-      [1, 'See your group’s Project Manager on D2L'],
-      [2, 'See your group’s Project Manager on D2L'],
-      [3, 'See your group’s Project Manager on D2L'],
-      [4, 'See your group’s Project Manager on D2L'],
-    ],
-  },
-  {
-    sections: [2, 15, 28],
-    ga: 'See your section’s staff list on D2L',
-    location: 'KHE323',
-    groups: [
-      [5, 'See your group’s Project Manager on D2L'],
-      [6, 'See your group’s Project Manager on D2L'],
-      [7, 'See your group’s Project Manager on D2L'],
-      [8, 'See your group’s Project Manager on D2L'],
-    ],
-  },
-  {
-    sections: [3, 17, 29],
-    ga: 'See your section’s staff list on D2L',
-    location: 'KHS134',
-    groups: [
-      [9, 'See your group’s Project Manager on D2L'],
-      [10, 'See your group’s Project Manager on D2L'],
-      [11, 'See your group’s Project Manager on D2L'],
-      [12, 'See your group’s Project Manager on D2L'],
-    ],
-  },
-  {
-    sections: [4, 16, 30],
-    ga: 'See your section’s staff list on D2L',
-    location: 'VIC110',
-    groups: [
-      [13, 'See your group’s Project Manager on D2L'],
-      [14, 'See your group’s Project Manager on D2L'],
-      [15, 'See your group’s Project Manager on D2L'],
-      [16, 'See your group’s Project Manager on D2L'],
-    ],
-  },
-  {
-    sections: [5, 18, 31],
-    ga: 'See your section’s staff list on D2L',
-    location: 'VIC206',
-    groups: [
-      [17, 'See your group’s Project Manager on D2L'],
-      [18, 'See your group’s Project Manager on D2L'],
-      [19, 'See your group’s Project Manager on D2L'],
-      [20, 'See your group’s Project Manager on D2L'],
-    ],
-  },
-  {
-    sections: [6, 19, 32],
-    ga: 'See your section’s staff list on D2L',
-    location: 'VIC210',
-    groups: [
-      [21, 'See your group’s Project Manager on D2L'],
-      [22, 'See your group’s Project Manager on D2L'],
-      [23, 'See your group’s Project Manager on D2L'],
-      [24, 'See your group’s Project Manager on D2L'],
-    ],
-  },
-  {
-    sections: [7, 20, 33],
-    ga: 'See your section’s staff list on D2L',
-    location: 'VIC300',
-    groups: [
-      [25, 'See your group’s Project Manager on D2L'],
-      [26, 'See your group’s Project Manager on D2L'],
-      [27, 'See your group’s Project Manager on D2L'],
-      [28, 'See your group’s Project Manager on D2L'],
-    ],
-  },
-  {
-    sections: [8, 21, 34],
-    ga: 'See your section’s staff list on D2L',
-    location: 'VIC306',
-    groups: [
-      [29, 'See your group’s Project Manager on D2L'],
-      [30, 'See your group’s Project Manager on D2L'],
-      [31, 'See your group’s Project Manager on D2L'],
-      [32, 'See your group’s Project Manager on D2L'],
-    ],
-  },
-  {
-    sections: [9, 22, 35],
-    ga: 'See your section’s staff list on D2L',
-    location: 'VIC503',
-    groups: [
-      [33, 'See your group’s Project Manager on D2L'],
-      [34, 'See your group’s Project Manager on D2L'],
-      [35, 'See your group’s Project Manager on D2L'],
-      [36, 'See your group’s Project Manager on D2L'],
-    ],
-  },
-  {
-    sections: [10, 23, 36],
-    ga: 'See your section’s staff list on D2L',
-    location: 'ILC100',
-    groups: [
-      [37, 'See your group’s Project Manager on D2L'],
-      [38, 'See your group’s Project Manager on D2L'],
-      [39, 'See your group’s Project Manager on D2L'],
-      [40, 'See your group’s Project Manager on D2L'],
-    ],
-  },
-  {
-    sections: [11, 24, 37],
-    ga: 'See your section’s staff list on D2L',
-    location: 'ILC102',
-    groups: [
-      [41, 'See your group’s Project Manager on D2L'],
-      [42, 'See your group’s Project Manager on D2L'],
-      [43, 'See your group’s Project Manager on D2L'],
-      [44, 'See your group’s Project Manager on D2L'],
-    ],
-  },
-  {
-    sections: [12, 25, 38],
-    ga: 'See your section’s staff list on D2L',
-    location: 'VIC106',
-    groups: [
-      [45, 'See your group’s Project Manager on D2L'],
-      [46, 'See your group’s Project Manager on D2L'],
-      [47, 'See your group’s Project Manager on D2L'],
-      [48, 'See your group’s Project Manager on D2L'],
-    ],
-  },
-  {
-    sections: [13, 26, 39],
-    ga: 'See your section’s staff list on D2L',
-    location: 'VIC200',
-    groups: [
-      [49, 'See your group’s Project Manager on D2L'],
-      [50, 'See your group’s Project Manager on D2L'],
-      [51, 'See your group’s Project Manager on D2L'],
-      [52, 'See your group’s Project Manager on D2L'],
-    ],
-  },
+export const STAFFING=[
+ {"sections":[1,14,27],"ga":"See your section’s staff list on D2L","location":"KHE321B","groups":[[1,"See your group’s Project Manager on D2L"],[2,"See your group’s Project Manager on D2L"],[3,"See your group’s Project Manager on D2L"],[4,"See your group’s Project Manager on D2L"]]},
+ {"sections":[2,15,28],"ga":"See your section’s staff list on D2L","location":"KHE323","groups":[[5,"See your group’s Project Manager on D2L"],[6,"See your group’s Project Manager on D2L"],[7,"See your group’s Project Manager on D2L"],[8,"See your group’s Project Manager on D2L"]]},
+ {"sections":[3,17,29],"ga":"See your section’s staff list on D2L","location":"KHS134","groups":[[9,"See your group’s Project Manager on D2L"],[10,"See your group’s Project Manager on D2L"],[11,"See your group’s Project Manager on D2L"],[12,"See your group’s Project Manager on D2L"]]},
+ {"sections":[4,16,30],"ga":"See your section’s staff list on D2L","location":"VIC110","groups":[[13,"See your group’s Project Manager on D2L"],[14,"See your group’s Project Manager on D2L"],[15,"See your group’s Project Manager on D2L"],[16,"See your group’s Project Manager on D2L"]]},
+ {"sections":[5,18,31],"ga":"See your section’s staff list on D2L","location":"VIC206","groups":[[17,"See your group’s Project Manager on D2L"],[18,"See your group’s Project Manager on D2L"],[19,"See your group’s Project Manager on D2L"],[20,"See your group’s Project Manager on D2L"]]},
+ {"sections":[6,19,32],"ga":"See your section’s staff list on D2L","location":"VIC210","groups":[[21,"See your group’s Project Manager on D2L"],[22,"See your group’s Project Manager on D2L"],[23,"See your group’s Project Manager on D2L"],[24,"See your group’s Project Manager on D2L"]]},
+ {"sections":[7,20,33],"ga":"See your section’s staff list on D2L","location":"VIC300","groups":[[25,"See your group’s Project Manager on D2L"],[26,"See your group’s Project Manager on D2L"],[27,"See your group’s Project Manager on D2L"],[28,"See your group’s Project Manager on D2L"]]},
+ {"sections":[8,21,34],"ga":"See your section’s staff list on D2L","location":"VIC306","groups":[[29,"See your group’s Project Manager on D2L"],[30,"See your group’s Project Manager on D2L"],[31,"See your group’s Project Manager on D2L"],[32,"See your group’s Project Manager on D2L"]]},
+ {"sections":[9,22,35],"ga":"See your section’s staff list on D2L","location":"VIC503","groups":[[33,"See your group’s Project Manager on D2L"],[34,"See your group’s Project Manager on D2L"],[35,"See your group’s Project Manager on D2L"],[36,"See your group’s Project Manager on D2L"]]},
+ {"sections":[10,23,36],"ga":"See your section’s staff list on D2L","location":"ILC100","groups":[[37,"See your group’s Project Manager on D2L"],[38,"See your group’s Project Manager on D2L"],[39,"See your group’s Project Manager on D2L"],[40,"See your group’s Project Manager on D2L"]]},
+ {"sections":[11,24,37],"ga":"See your section’s staff list on D2L","location":"ILC102","groups":[[41,"See your group’s Project Manager on D2L"],[42,"See your group’s Project Manager on D2L"],[43,"See your group’s Project Manager on D2L"],[44,"See your group’s Project Manager on D2L"]]},
+ {"sections":[12,25,38],"ga":"See your section’s staff list on D2L","location":"VIC106","groups":[[45,"See your group’s Project Manager on D2L"],[46,"See your group’s Project Manager on D2L"],[47,"See your group’s Project Manager on D2L"],[48,"See your group’s Project Manager on D2L"]]},
+ {"sections":[13,26,39],"ga":"See your section’s staff list on D2L","location":"VIC200","groups":[[49,"See your group’s Project Manager on D2L"],[50,"See your group’s Project Manager on D2L"],[51,"See your group’s Project Manager on D2L"],[52,"See your group’s Project Manager on D2L"]]}
 ];
 
 // assets/cen-guide.mjs:412
-export const PROFILE_KEY = 'cen100-contact-choice-v1';
-export const FILTER_KEY = 'cen100-hide-completed-v1';
+export const PROFILE_KEY="cen100-contact-choice-v1", FILTER_KEY="cen100-hide-completed-v1";
 
 // assets/cen-guide.mjs:416-428
-export const SOURCE_INFO = {
-  y1: ['Course outline', 'Course outline, p. 9: assessment weights and individual September dates.'],
-  y2: [
-    'Outline + clarification',
-    'Course outline, pp. 9–10: weight, dates and pair work. Confirmed course-team clarification: the unpaired student in an odd-sized class may work solo or join a group of 3.',
-  ],
-  y3: ['Outline + clarification', 'Course outline, p. 9: weight, Oct 14 date and mandatory completion. Quiz requirements and certificate steps: course-team clarification recorded in this guide.'],
-  y4: ['Outline + clarification', 'Course outline, p. 9: weight, Oct 14 date and mandatory completion. The 3 PM deadline and attempt limit: course-team clarification recorded in this guide.'],
-  y5: ['Outline + clarification', 'Course outline, p. 9: weight and dates. Confirmed course-team clarification: email your assigned Project Manager; there is no D2L submission box.'],
-  y6: [
-    'Outline + guide summary',
-    "Course outline, pp. 9–11: weight, checkpoint dates and shared notebook requirements. The PDF format and 3 PM deadline are recorded in the guide's Confirmed section.",
-  ],
-  y7: [
-    'Outline + clarification',
-    'Course outline, pp. 9–10: participation weight and in-person attendance. The Wednesday 5:45–6 PM quiz window and one attempt are confirmed for Section 29 only. Check D2L for other sections.',
-  ],
-  y9: ['Course outline', "Course outline, pp. 9 and 12: weight, two-hour in-person format and Dec 9–20 exam period. The exact date is pending the Registrar's schedule."],
-  m3: [
-    'Outline + guide summary',
-    "Course outline, pp. 9–11: weight, date, two-part failure analysis and team sizes. Detailed checklist: this guide's summary of assignment requirements; check the assignment instructions on D2L.",
-  ],
-  m6: [
-    'Outline + guide summary',
-    "Course outline, pp. 9 and 12: weight, presentation dates and Innovation Showcase. Detailed checklist: this guide's summary of assignment requirements; check the assignment instructions on D2L.",
-  ],
-  m5: [
-    'Outline + guide summary',
-    "Course outline, p. 9: weight and Nov 25 / Dec 2 prototype activities. The Nov 25, 3 PM submission and detailed checklist are this guide's assignment summary; check the assignment instructions on D2L.",
-  ],
+export const SOURCE_INFO={
+  y1:["Course outline","Course outline, p. 9: assessment weights and individual September dates."],
+  y2:["Outline + clarification","Course outline, pp. 9–10: weight, dates and pair work. Confirmed course-team clarification: the unpaired student in an odd-sized class may work solo or join a group of 3."],
+  y3:["Outline + clarification","Course outline, p. 9: weight, Oct 14 date and mandatory completion. Quiz requirements and certificate steps: course-team clarification recorded in this guide."],
+  y4:["Outline + clarification","Course outline, p. 9: weight, Oct 14 date and mandatory completion. The 3 PM deadline and attempt limit: course-team clarification recorded in this guide."],
+  y5:["Outline + clarification","Course outline, p. 9: weight and dates. Confirmed course-team clarification: email your assigned Project Manager; there is no D2L submission box."],
+  y6:["Outline + guide summary","Course outline, pp. 9–11: weight, checkpoint dates and shared notebook requirements. The PDF format and 3 PM deadline are recorded in the guide's Confirmed section."],
+  y7:["Outline + clarification","Course outline, pp. 9–10: participation weight and in-person attendance. The Wednesday 5:45–6 PM quiz window and one attempt are confirmed for Section 29 only. Check D2L for other sections."],
+  y9:["Course outline","Course outline, pp. 9 and 12: weight, two-hour in-person format and Dec 9–20 exam period. The exact date is pending the Registrar's schedule."],
+  m3:["Outline + guide summary","Course outline, pp. 9–11: weight, date, two-part failure analysis and team sizes. Detailed checklist: this guide's summary of assignment requirements; check the assignment instructions on D2L."],
+  m6:["Outline + guide summary","Course outline, pp. 9 and 12: weight, presentation dates and Innovation Showcase. Detailed checklist: this guide's summary of assignment requirements; check the assignment instructions on D2L."],
+  m5:["Outline + guide summary","Course outline, p. 9: weight and Nov 25 / Dec 2 prototype activities. The Nov 25, 3 PM submission and detailed checklist are this guide's assignment summary; check the assignment instructions on D2L."]
 };
 
 // assets/cen-guide.mjs:429
-export const sourceFor = (item) =>
-  SOURCE_INFO[item.id] || [
-    'Outline + guide summary',
-    "Course outline, p. 9: assessment weight and date. Detailed checklist: this guide's summary of assignment requirements; check the assignment instructions on D2L.",
-  ];
+export const sourceFor=item=>SOURCE_INFO[item.id]||["Outline + guide summary","Course outline, p. 9: assessment weight and date. Detailed checklist: this guide's summary of assignment requirements; check the assignment instructions on D2L."];
 
 // assets/cen-guide.mjs:623
-export const PLAN_KEY = 'cen100-personal-plan-v1';
-export const SEEN_KEY = 'cen100-last-seen-update-v1';
-export const GUIDE_VERSION = '2026-10-16-course-artwork';
+export const PLAN_KEY="cen100-personal-plan-v1", SEEN_KEY="cen100-last-seen-update-v1", GUIDE_VERSION="2026-10-16-course-artwork";

@@ -25,10 +25,7 @@ function doneMessage(courseId, itemId, saved) {
     const event = SCHEDULE.find((row) => row.id === itemId) || { title: CEN.byId.get(String(itemId).replace(/^item:/, ''))?.name || itemId };
     return CEN.COPY.markedDone(event, saved);
   }
-  return MATH.COPY.markedDone(
-    DATA[courseId].assessments.find((a) => a.id === itemId),
-    saved,
-  );
+  return MATH.COPY.markedDone(DATA[courseId].assessments.find((a) => a.id === itemId), saved);
 }
 /** Which math map a step belongs to: an assessment's preparation checks or a topic's skill checks. */
 function mathMap(courseId, itemId, stepId) {

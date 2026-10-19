@@ -9,11 +9,7 @@ import { KEYS, resolveStorage, readJSON, writeJSON } from './storage.mjs';
 import { isMath, readTicks, writeTicks, readPlan, writePlan, readMath, writeMath, readMathSection, readMotionPaused, writeMotionPaused } from './saved.mjs';
 
 const toDate = (now) => (now == null ? new Date() : new Date(+now));
-const stampOf = (date) =>
-  date
-    .toISOString()
-    .replace(/[-:]/g, '')
-    .replace(/\.\d{3}/, '');
+const stampOf = (date) => date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
 
 /**
  * An .ics file. CEN100: { item: 'all' | item id, upcomingOnly = true, reminderDays = 1 } (cen100-deadlines-2026.ics,
@@ -49,12 +45,7 @@ function exportBackupNow(courseId, { now, storage } = {}) {
   if (courseId === 'cen100') {
     const ticks = readTicks(store);
     // The old page exported the checked boxes in card order.
-    const checked = Object.fromEntries(
-      CEN.allItems
-        .flatMap(CEN.checkKeys)
-        .filter((key) => ticks[key])
-        .map((key) => [key, 1]),
-    );
+    const checked = Object.fromEntries(CEN.allItems.flatMap(CEN.checkKeys).filter((key) => ticks[key]).map((key) => [key, 1]));
     const data = { format: 'cen100-guide-backup', version: 2, exportedAt: date.toISOString(), ticks: checked, personal: readPlan(store) };
     return { name: `cen100-progress-${today(date)}.json`, type: 'application/json', text: `${JSON.stringify(data, null, 2)}\n`, message: CEN.COPY.backupReady };
   }
@@ -109,8 +100,7 @@ export function importBackup(courseId, raw, { storage } = {}) {
   try {
     if (typeof raw !== 'string' || raw.length > 300000) throw new Error(MATH.COPY.backupTooLarge);
     const data = JSON.parse(raw);
-    if (data.format !== 'tmu-math-guide' || data.version !== 1 || data.course !== courseId || !data.progress || typeof data.progress !== 'object')
-      throw new Error(MATH.COPY.backupInvalid(DATA[courseId].code));
+    if (data.format !== 'tmu-math-guide' || data.version !== 1 || data.course !== courseId || !data.progress || typeof data.progress !== 'object') throw new Error(MATH.COPY.backupInvalid(DATA[courseId].code));
     const imported = MATH.cleanProgress(data.progress, DATA[courseId], courseId);
     const progress = readMath(courseId, store);
     let conflicts = 0;
