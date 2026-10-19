@@ -297,6 +297,13 @@ test('backups: export the old file formats and import them back with the old mer
   const fresh = memoryStorage();
   assert.equal(importBackup('mth140', mathFile.text, { storage: fresh }).message, 'Progress imported.');
   assert.equal(fresh.data.get('mth140-progress-v1'), '{"checks":{"quiz-1-0":true},"completed":{"quiz-1":true},"notes":{},"targets":{},"topics":{}}');
+
+  // Math: error paths
+  const invalidJsonResult = importBackup('mth140', '{', { storage: fresh });
+  assert.equal(invalidJsonResult.ok, false);
+  assert.equal(invalidJsonResult.saved, false);
+  assert.equal(typeof invalidJsonResult.message, 'string');
+  assert.deepEqual(importBackup('mth140', 'x'.repeat(300001), { storage: fresh }), { ok: false, saved: false, message: 'This file is too large for a course-progress backup.' });
 });
 
 test('calendar files are the old pages’ .ics files', async () => {
