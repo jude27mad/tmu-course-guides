@@ -1,0 +1,16 @@
+// Preview-only reading scale. Course facts, global theme and other courses stay unchanged.
+.readable {
+  :global(.p-l), :global(.p) { font-size: clamp(18px, 1.25vw, 22px); line-height: 1.55; }
+  :global(.p-x) { font-size: clamp(16px, 1.05vw, 19px); line-height: 1.5; }
+  :global(.p-xs) { font-size: max(15px, 0.95vw); line-height: 1.5; }
+  :global(.h6) { font-size: clamp(23px, 1.8vw, 32px); line-height: 1.3; }
+  :global(.h5) { font-size: clamp(24px, 1.9vw, 34px); }
+  :global(.h4) { font-size: clamp(25px, 2.3vw, 42px); }
+  :global(.h3) { font-size: clamp(28px, 3.8vw, 65px); }
+  :global(#rules-help) { scroll-margin-top: 100px; }
+  @media (min-width: 813px) and (max-width: 1099px) {
+    :global(#rules-help), :global(#textbooks), :global(#contacts), :global(#course-info), :global(#course-grading), :global(#panel-assessments), :global(#study) {
+      > div { grid-column: 1 / -1; max-width: 100%; }
+    }
+  }
+}

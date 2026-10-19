@@ -6,7 +6,7 @@ on:
       - 'site/**'
       - '.github/workflows/mth140-window-preview.yml'
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: mth140-window-preview
   cancel-in-progress: true
@@ -16,29 +16,69 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6
-        with:
-          persist-credentials: false
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: npm
           cache-dependency-path: site/package-lock.json
+      - name: Apply isolated preview integration
+        run: |
+          if test -f site/scripts/apply-window-preview.py; then
+            python site/scripts/apply-window-preview.py
+          fi
       - run: npm ci
         working-directory: site
+      - name: Match repository formatting and lint
+        working-directory: site
+        run: |
+          npx prettier --write --print-width 200 src/pages/course/components/windows/ src/pages/course/components/deadlines/ src/pages/course/components/checklist/ src/pages/course/components/info/CourseInfo.jsx src/pages/course/components/info/styles/courseInfo.module.scss src/pages/course/course.module.scss 'src/pages/[course].page.jsx' tests/window-preview.test.mjs scripts/check-window-preview.mjs
+          npx eslint --fix 'src/pages/[course].page.jsx' src/pages/course/components/windows/*.jsx src/pages/course/components/windows/*.mjs src/pages/course/components/deadlines/Deadlines.jsx src/pages/course/components/checklist/Checklist.jsx src/pages/course/components/info/CourseInfo.jsx
       - run: npm test
         working-directory: site
-      - name: Prepare isolated offline QA workspace
+      - run: npm run build
+        working-directory: site
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+      - name: Install QA browser
         run: |
-          git archive --format=tar.gz HEAD > "$RUNNER_TEMP/source.tar.gz"
-          npm install --prefix "$RUNNER_TEMP/preview-qa" --no-save --package-lock=false playwright@1.64.0
-          tar -czf "$RUNNER_TEMP/site-dependencies.tar.gz" site/node_modules
-          tar -czf "$RUNNER_TEMP/qa-dependencies.tar.gz" -C "$RUNNER_TEMP" preview-qa/node_modules
-      - name: Save workspace for this preview only
+          npm install --prefix "$RUNNER_TEMP/window-qa" --no-save --package-lock=false playwright@1.64.0
+          node "$RUNNER_TEMP/window-qa/node_modules/playwright/cli.js" install --with-deps chromium
+      - name: Check phones, tablets and desktops
+        working-directory: site
+        env:
+          QA_REPORT_DIR: ${{ runner.temp }}/mth140-qa
+        run: |
+          export PLAYWRIGHT_PATH="$RUNNER_TEMP/window-qa/node_modules/playwright"
+          node scripts/check-window-preview.mjs
+      - name: Save review evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: mth140-preview-workspace
-          path: |
-            ${{ runner.temp }}/source.tar.gz
-            ${{ runner.temp }}/site-dependencies.tar.gz
-            ${{ runner.temp }}/qa-dependencies.tar.gz
-          retention-days: 1
+          name: mth140-window-qa
+          path: ${{ runner.temp }}/mth140-qa/
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Save exact tested source and export
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/mth140-review"
+          tar --exclude=node_modules --exclude=.next --exclude=out -czf "$RUNNER_TEMP/mth140-review/site-source.tar.gz" site
+          if test -d site/out; then tar -czf "$RUNNER_TEMP/mth140-review/preview-export.tar.gz" -C site out; fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mth140-review-build
+          path: ${{ runner.temp }}/mth140-review/
+          retention-days: 3
+      - name: Commit verified preview only to its feature branch
+        if: success()
+        run: |
+          test "${{ github.ref }}" = 'refs/heads/codex/mth140-window-preview'
+          rm -f site/scripts/apply-window-preview.py
+          git config user.name 'Jude'
+          git config user.email '229519885+jude27mad@users.noreply.github.com'
+          git add site/src site/tests/window-preview.test.mjs site/scripts/check-window-preview.mjs site/scripts/apply-window-preview.py
+          if ! git diff --cached --quiet; then
+            git commit -m 'Verify MTH140 window and reading preview across responsive layouts'
+            git push origin HEAD:codex/mth140-window-preview
+          fi
