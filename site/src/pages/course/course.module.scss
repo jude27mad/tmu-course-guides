@@ -25,3 +25,18 @@
     }
   }
 }
+
+// MTH140 window preview
+@media (min-width: 813px) and (max-width: 1099px) {
+  .root.preview {
+    .leftContainer {
+      height: auto;
+      box-shadow: none;
+    }
+    .leftContainer,
+    .rightContainer {
+      grid-column: 1 / -1;
+      width: 100%;
+    }
+  }
+}

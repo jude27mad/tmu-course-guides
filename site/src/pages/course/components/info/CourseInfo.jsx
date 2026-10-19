@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import overview from '@src/pages/course/components/overview/styles/overview.module.scss';
 import styles from '@src/pages/course/components/info/styles/courseInfo.module.scss';
 import { PICKER_ID, openPicker, useCourse } from '@src/pages/course/hooks/useCourseState';
+import { helpQuestion, isWindowPreview } from '../windows/window-model.mjs';
 
 // Course info: the original Overview blocks (h3 title, small label, a column of
 // lines) for the section brief, who to ask, the rules and the help, with the
@@ -60,10 +61,18 @@ function Rows({ rows, marked }) {
   );
 }
 
-function RuleCard({ card }) {
+function RuleCard({ card, collapsible = false }) {
+  const Element = collapsible ? 'details' : 'div';
   return (
-    <div className={styles.card}>
-      <h3 className="h6">{card.title}</h3>
+    <Element className={clsx(styles.card, collapsible && styles.helpDisclosure)}>
+      {collapsible ? (
+        <summary>
+          {helpQuestion(card.title)}
+          <span aria-hidden="true">+</span>
+        </summary>
+      ) : (
+        <h3 className="h6">{card.title}</h3>
+      )}
       {card.blocks.map((block, index) => {
         const key = `${card.title}-${index}`;
         if (block.type === 'list') {
@@ -84,7 +93,7 @@ function RuleCard({ card }) {
           </p>
         );
       })}
-    </div>
+    </Element>
   );
 }
 
@@ -130,7 +139,8 @@ function CenInfo() {
 }
 
 function MathInfo() {
-  const { info } = useCourse();
+  const { info, courseId } = useCourse();
+  const preview = isWindowPreview(courseId);
   const page = info.page || {};
   const { contacts, section } = info;
   const help = (page.tabs || []).find((tab) => tab.id === 'help')?.label;
@@ -155,7 +165,7 @@ function MathInfo() {
       <Block id="rules-help" title={help}>
         {info.notice ? <RuleCard card={info.notice} /> : null}
         {info.rules.map((card) => (
-          <RuleCard key={card.title} card={card} />
+          <RuleCard key={card.title} card={card} collapsible={preview && card.title !== 'Dates that still need confirmation'} />
         ))}
       </Block>
       <Block id="textbooks" title={info.textbooks.heading}>

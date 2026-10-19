@@ -7,6 +7,7 @@ import Arrow from '@src/components/imageComponents/Arrow';
 import ButtonLink from '@src/components/animationComponents/buttonLink/Index';
 import HoverText, { dimPage, hidePortal, showPortal } from '@src/pages/course/components/portal/HoverText';
 import CourseArtwork from '@src/components/courseArtwork/CourseArtwork';
+import useMediaQuery from '@src/hooks/useMediaQuery';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import clsx from 'clsx';
 import { countdown } from '@src/lib';
@@ -18,6 +19,8 @@ import { useShallow } from 'zustand/react/shallow';
 import useStill from '@src/hooks/useStill';
 import { useStore } from '@src/store';
 import { useWindowSize } from '@darkroom.engineering/hamo';
+import { isWindowPreview } from '../windows/window-model.mjs';
+import { DeadlineWindow } from '../windows/WindowSummary';
 
 // The original Services section (pinned artwork window + category list + hover
 // Portal), carrying the deadlines: one category per time bucket, one option
@@ -31,15 +34,15 @@ const BUCKETS = [
 
 const finePointer = () => typeof window !== 'undefined' && window.matchMedia?.('(hover: hover) and (pointer: fine)').matches;
 
-function Details({ item, now }) {
+function Details({ item, now, concise = false }) {
   const { markDone, undo, pendingUndo } = useCourse();
   const time = countdown(item, now);
   return (
     <div className={styles.details}>
-      <p className="p-l">{[item.when || item.dateLabel, item.label].filter(Boolean).join(' · ')}</p>
+      {!concise ? <p className="p-l">{[item.when || item.dateLabel, item.label].filter(Boolean).join(' · ')}</p> : null}
       {time.status && time.status !== time.label ? <p className="p-l">{time.status}</p> : null}
-      <p className={clsx('p-x', styles.meta)}>{[item.who, item.weightLabel].filter(Boolean).join(' · ')}</p>
-      {item.requirement ? <p className="p-l">{item.requirement}</p> : null}
+      {!concise ? <p className={clsx('p-x', styles.meta)}>{[item.who, item.weightLabel].filter(Boolean).join(' · ')}</p> : null}
+      {!concise && item.requirement ? <p className="p-l">{item.requirement}</p> : null}
       {item.detail && item.detail !== item.requirement ? <p className={clsx('p-x', styles.meta)}>{item.detail}</p> : null}
       <div className={styles.actions}>
         {item.cta ? <ButtonLink onClick={openPicker} label={item.cta.toUpperCase()} /> : null}
@@ -53,9 +56,14 @@ function Details({ item, now }) {
 
 const Other = memo(({ setPortals, groups, now, courseId, sectionRef }) => {
   const [isLoading] = useStore(useShallow((state) => [state.isLoading]));
-  const isMobile = useIsMobile();
+  const originalMobile = useIsMobile();
+  const preview = isWindowPreview(courseId);
+  const narrow = useMediaQuery('(max-width: 1099px)');
+  const isMobile = preview ? narrow : originalMobile;
   const still = useStill();
   const [open, setOpen] = useState(null);
+  const [selected, setSelected] = useState({});
+  const select = (key, id) => setSelected((previous) => (previous[key] === id ? previous : { ...previous, [key]: id }));
 
   const rightContainerRef = useRef();
   const leftContainerRef = useRef();
@@ -162,7 +170,7 @@ const Other = memo(({ setPortals, groups, now, courseId, sectionRef }) => {
         </h2>
       </div>
 
-      <div className={styles.servicesContainer}>
+      <div className={clsx(styles.servicesContainer, preview && styles.preview)}>
         <div ref={leftContainerRef} className={styles.leftContainer}>
           {!isMobile ? (
             <>
@@ -174,7 +182,11 @@ const Other = memo(({ setPortals, groups, now, courseId, sectionRef }) => {
                     }}
                     className={styles.shape}
                   >
-                    <CourseArtwork courseId={courseId} className={styles.artwork} sizes="(max-width: 800px) 100vw, 40vw" />
+                    {preview ? (
+                      <DeadlineWindow group={groups[index]} index={index} selectedId={selected[groups[index].key]} now={now} />
+                    ) : (
+                      <CourseArtwork courseId={courseId} className={styles.artwork} sizes="(max-width: 800px) 100vw, 40vw" />
+                    )}
                   </div>
                 </div>
               ))}
@@ -194,7 +206,11 @@ const Other = memo(({ setPortals, groups, now, courseId, sectionRef }) => {
             >
               {isMobile ? (
                 <div className={styles.shape}>
-                  <CourseArtwork courseId={courseId} className={styles.artwork} sizes="(max-width: 800px) 100vw, 40vw" />
+                  {preview ? (
+                    <DeadlineWindow group={group} index={index} selectedId={selected[group.key]} now={now} />
+                  ) : (
+                    <CourseArtwork courseId={courseId} className={styles.artwork} sizes="(max-width: 800px) 100vw, 40vw" />
+                  )}
                 </div>
               ) : null}
 
@@ -212,11 +228,24 @@ const Other = memo(({ setPortals, groups, now, courseId, sectionRef }) => {
                         <button
                           type="button"
                           className={styles.optionButton}
+                          data-assessment-id={preview ? item.id : undefined}
                           aria-expanded={isOpen}
                           aria-controls={`deadline-details-${item.id}`}
-                          onClick={() => setOpen(isOpen ? null : item.id)}
-                          onPointerEnter={(event) => handleEnter(event, item)}
-                          onPointerLeave={(event) => handleLeave(event, item)}
+                          onClick={() => {
+                            setOpen(isOpen ? null : item.id);
+                            if (preview) select(group.key, item.id);
+                          }}
+                          onFocus={() => {
+                            if (preview) select(group.key, item.id);
+                          }}
+                          onPointerEnter={(event) => {
+                            if (preview) {
+                              if (event.pointerType === 'mouse') select(group.key, item.id);
+                            } else handleEnter(event, item);
+                          }}
+                          onPointerLeave={(event) => {
+                            if (!preview) handleLeave(event, item);
+                          }}
                         >
                           <Arrow className={clsx(styles.arrow, isOpen && styles.arrowOpen)} />
                           <span
@@ -226,11 +255,13 @@ const Other = memo(({ setPortals, groups, now, courseId, sectionRef }) => {
                             }}
                           >
                             {item.title}
+                            {preview ? <span className={styles.previewMeta}>{[item.when || item.dateLabel, item.weightLabel].filter(Boolean).join(' · ')}</span> : null}
+                            {preview && item.requirement ? <span className={styles.previewScope}>{item.requirement}</span> : null}
                           </span>
                           <span className={clsx('p-x', styles.countdown)}>{time.label}</span>
                         </button>
                         <div id={`deadline-details-${item.id}`} hidden={!isOpen}>
-                          {isOpen ? <Details item={item} now={now} /> : null}
+                          {isOpen ? <Details item={item} now={now} concise={preview} /> : null}
                         </div>
                       </li>
                     );

@@ -11,6 +11,9 @@ import CustomHead from '@src/components/dom/CustomHead';
 import Deadlines from '@src/pages/course/components/deadlines/Deadlines';
 import GuideTools from '@src/pages/course/components/tools/GuideTools';
 import Hero from '@src/pages/course/components/hero/Hero';
+import PreviewFrame from '@src/pages/course/components/windows/PreviewFrame';
+import { isWindowPreview } from '@src/pages/course/components/windows/window-model.mjs';
+import useMediaQuery from '@src/hooks/useMediaQuery';
 import ItemCards from '@src/pages/course/components/cards/ItemCards';
 import NextCourse from '@src/pages/course/components/nextCourse/NextCourse';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
@@ -30,7 +33,10 @@ import { useWindowSize } from '@darkroom.engineering/hamo';
 function Page({ id }) {
   const state = useCourseState(id);
   const { course, info } = state;
-  const isMobile = useIsMobile();
+  const originalMobile = useIsMobile();
+  const preview = isWindowPreview(id);
+  const narrow = useMediaQuery('(max-width: 1099px)');
+  const isMobile = preview ? narrow : originalMobile;
   const rightContainerRef = useRef();
   const leftContainerRef = useRef();
   const [isLoading] = useStore(useShallow((s) => [s.isLoading]));
@@ -71,22 +77,24 @@ function Page({ id }) {
   return (
     <CourseContext.Provider value={state}>
       <CustomHead title={title} description={course.description} />
-      <Hero />
-      <section className={clsx(styles.root, 'layout-grid-inner')}>
-        <div ref={leftContainerRef} className={styles.leftContainer}>
-          <CourseDetails />
-        </div>
-        <div ref={rightContainerRef} className={styles.rightContainer}>
-          <CourseTiles />
-        </div>
-      </section>
-      <Deadlines />
-      <Checklist />
-      <Assessments />
-      <ItemCards />
-      <CourseInfo />
-      <GuideTools />
-      <NextCourse />
+      <PreviewFrame enabled={preview}>
+        <Hero />
+        <section className={clsx(styles.root, preview && styles.preview, 'layout-grid-inner')}>
+          <div ref={leftContainerRef} className={styles.leftContainer}>
+            <CourseDetails />
+          </div>
+          <div ref={rightContainerRef} className={styles.rightContainer}>
+            <CourseTiles />
+          </div>
+        </section>
+        <Deadlines />
+        <Checklist />
+        <Assessments />
+        <ItemCards />
+        <CourseInfo />
+        <GuideTools />
+        <NextCourse />
+      </PreviewFrame>
     </CourseContext.Provider>
   );
 }

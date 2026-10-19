@@ -4,6 +4,7 @@ import AppearByWords from '@src/components/animationComponents/appearByWords/Ind
 import AppearTitle from '@src/components/animationComponents/appearTitle/Index';
 import CheckRow from '@src/pages/course/components/CheckRow';
 import CourseArtwork from '@src/components/courseArtwork/CourseArtwork';
+import useMediaQuery from '@src/hooks/useMediaQuery';
 import RecordActions from '@src/pages/course/components/RecordActions';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import clsx from 'clsx';
@@ -16,6 +17,8 @@ import { useShallow } from 'zustand/react/shallow';
 import useStill from '@src/hooks/useStill';
 import { useStore } from '@src/store';
 import { useWindowSize } from '@darkroom.engineering/hamo';
+import { isWindowPreview } from '../windows/window-model.mjs';
+import { PreparationWindow } from '../windows/WindowSummary';
 
 // The original Process section (pinned artwork window on the left, sliding
 // sideways as you scroll; category list on the right), carrying this week's
@@ -24,7 +27,10 @@ import { useWindowSize } from '@darkroom.engineering/hamo';
 function Checklist() {
   const { courseId, live, progress, copy } = useCourse();
   const [isLoading] = useStore(useShallow((state) => [state.isLoading]));
-  const isMobile = useIsMobile();
+  const originalMobile = useIsMobile();
+  const preview = isWindowPreview(courseId);
+  const narrow = useMediaQuery('(max-width: 1099px)');
+  const isMobile = preview ? narrow : originalMobile;
   const still = useStill();
   const windowSize = useWindowSize();
 
@@ -104,7 +110,7 @@ function Checklist() {
     };
   }, [isMobile, isLoading, windowSize.width, still, count]);
 
-  const title = "This week's work";
+  const title = preview && list?.upcoming ? 'Upcoming preparation' : "This week's work";
 
   return (
     <section id={courseId === 'cen100' ? 'study' : undefined} className={clsx(styles.root, 'layout-block-inner')}>
@@ -114,7 +120,7 @@ function Checklist() {
         </h2>
       </div>
 
-      <div className={styles.processContainer}>
+      <div className={clsx(styles.processContainer, preview && styles.preview)}>
         <div ref={leftContainerRef} className={styles.leftContainer}>
           {!isMobile ? (
             <>
@@ -126,7 +132,11 @@ function Checklist() {
                     }}
                     className={styles.shape}
                   >
-                    <CourseArtwork courseId={courseId} className={styles.artwork} sizes="(max-width: 800px) 100vw, 40vw" />
+                    {preview ? (
+                      <PreparationWindow entry={entry} counts={entry ? progress.tickCount(courseId, entry.item || entry.itemId) : null} ready={progress.ready && !!live} />
+                    ) : (
+                      <CourseArtwork courseId={courseId} className={styles.artwork} sizes="(max-width: 800px) 100vw, 40vw" />
+                    )}
                   </div>
                 </div>
               ))}
@@ -147,10 +157,15 @@ function Checklist() {
                 }}
                 key={entry ? entry.itemId : 'empty'}
                 className={styles.category}
+                data-preparation-item={preview ? entry?.itemId : undefined}
               >
                 {isMobile ? (
                   <div className={styles.shape}>
-                    <CourseArtwork courseId={courseId} className={styles.artwork} sizes="(max-width: 800px) 100vw, 40vw" />
+                    {preview ? (
+                      <PreparationWindow entry={entry} counts={counts} ready={progress.ready && !!live} />
+                    ) : (
+                      <CourseArtwork courseId={courseId} className={styles.artwork} sizes="(max-width: 800px) 100vw, 40vw" />
+                    )}
                   </div>
                 ) : null}
 
