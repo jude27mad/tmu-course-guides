@@ -20,8 +20,8 @@ test('script source is a classic script with no module syntax',()=>{
 });
 
 test('site base is the directory above assets/, for both the preview and Pages bases',()=>{
-  assert.equal(siteBase('http://127.0.0.1:4320/assets/legacy-route.js?v=20261019-desk1'),'http://127.0.0.1:4320/');
-  assert.equal(siteBase('https://jude27mad.github.io/tmu-course-guides/assets/legacy-route.js?v=20261019-desk1'),'https://jude27mad.github.io/tmu-course-guides/');
+  assert.equal(siteBase('http://127.0.0.1:4320/assets/legacy-route.js?v=20261020-desk1'),'http://127.0.0.1:4320/');
+  assert.equal(siteBase('https://jude27mad.github.io/tmu-course-guides/assets/legacy-route.js?v=20261020-desk1'),'https://jude27mad.github.io/tmu-course-guides/');
 });
 
 test('each allowlisted CEN hash forwards to <base>cen100/ with the entire query and hash',()=>{
@@ -66,7 +66,7 @@ test('hash patterns match the inventory allowlist',()=>{
 test('loaded on the Desk it replaces the location once; elsewhere it does nothing',()=>{
   for(const base of BASES){
     const calls=[],location={href:base+'?motion=off#assignment-y4',replace:href=>calls.push(href)};
-    load({window:{location},document:{currentScript:{src:base+'assets/legacy-route.js?v=20261019-desk1'}}});
+    load({window:{location},document:{currentScript:{src:base+'assets/legacy-route.js?v=20261020-desk1'}}});
     assert.deepEqual(calls,[base+'cen100/?motion=off#assignment-y4']);
     const stay=[],desk={href:base+'?motion=off',replace:href=>stay.push(href)};
     load({window:{location:desk},document:{currentScript:{src:base+'assets/legacy-route.js'}}});
