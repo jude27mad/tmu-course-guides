@@ -2,6 +2,12 @@
 
 How to use the website is in the [main README](../README.md). How to build it is in [site/README.md](../site/README.md). This folder keeps the reference material behind the course data and the records of earlier versions.
 
+## Plans
+
+| Document | What it covers |
+|---|---|
+| [plans/remove-repetition.md](plans/remove-repetition.md) | The staged plan to remove repeated content and photos from the course pages, add a deadline calendar and a collapsible course-info section, and raise minimum text sizes. Not started. |
+
 ## Current reference
 
 These still describe how the website behaves today.
