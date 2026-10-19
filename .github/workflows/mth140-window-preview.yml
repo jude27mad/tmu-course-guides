@@ -1,0 +1,44 @@
+name: MTH140 window preview
+on:
+  push:
+    branches: ['codex/mth140-window-preview']
+    paths:
+      - 'site/**'
+      - '.github/workflows/mth140-window-preview.yml'
+permissions:
+  contents: read
+concurrency:
+  group: mth140-window-preview
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
+        working-directory: site
+      - run: npm test
+        working-directory: site
+      - name: Prepare isolated offline QA workspace
+        run: |
+          git archive --format=tar.gz HEAD > "$RUNNER_TEMP/source.tar.gz"
+          npm install --prefix "$RUNNER_TEMP/preview-qa" --no-save --package-lock=false playwright@1.64.0
+          tar -czf "$RUNNER_TEMP/site-dependencies.tar.gz" site/node_modules
+          tar -czf "$RUNNER_TEMP/qa-dependencies.tar.gz" -C "$RUNNER_TEMP" preview-qa/node_modules
+      - name: Save workspace for this preview only
+        uses: actions/upload-artifact@v4
+        with:
+          name: mth140-preview-workspace
+          path: |
+            ${{ runner.temp }}/source.tar.gz
+            ${{ runner.temp }}/site-dependencies.tar.gz
+            ${{ runner.temp }}/qa-dependencies.tar.gz
+          retention-days: 1
