@@ -57,7 +57,6 @@ const CEN_SHARED = {
 export const CEN_GRADE_TABLE = CEN_PAGE.grading.tables[1];
 const GRADE = new Map(CEN_GRADE_TABLE.rows.map((row) => [row.label, parseFloat(row.weight)]));
 export const CEN_GRADE_LABELS = { ...CEN_GRADED, ...CEN_SHARED };
-const SCHEDULE_BY_ID = new Map(SCHEDULE.map((record) => [record.id, record]));
 
 function cenWeight(id) {
   if (CEN_GRADED[id]) {
@@ -415,7 +414,7 @@ function assessmentsNow(courseId, { section } = {}) {
     const idsFor = (label) => Object.keys(CEN_GRADE_LABELS).filter((id) => CEN_GRADE_LABELS[id] === label);
     const rows = CEN_GRADE_TABLE.rows.map((row) => {
       const ids = idsFor(row.label);
-      const dated = ids.map((id) => SCHEDULE_BY_ID.get(id)).filter(Boolean);
+      const dated = ids.map((id) => SCHEDULE.find((record) => record.id === id)).filter(Boolean);
       const undated = ids.find((id) => id.startsWith('item:'));
       let label = dated.map((record) => short(record.date)).join(' · ');
       if (!label) label = undated === 'item:y7' ? CEN.byId.get('y7').small : 'Date pending';
