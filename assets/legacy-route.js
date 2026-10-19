@@ -4,25 +4,25 @@
 (function(global){
  'use strict';
  // Hashes the old root guide read or generated (docs/qa/night-shift/inventory.md §2). Raw and case-sensitive.
- var HASHES=[/^#assignment-[a-z]\d+$/,/^#(assignments|course-info|guide-tools|guide-search|workspace-timeline)$/,/^#(nextsign|board|course-main)$/,/^#(t|p)-(team|you|rules)$/,/^#guide-item-[a-z]\d+$/];
+ const HASHES=[/^#assignment-[a-z]\d+$/,/^#(assignments|course-info|guide-tools|guide-search|workspace-timeline)$/,/^#(nextsign|board|course-main)$/,/^#(t|p)-(team|you|rules)$/,/^#guide-item-[a-z]\d+$/];
  // The old guide read no query key of its own; generic flags (motion, tier, theme, v, utm_*) alone keep the Desk.
- var QUERY_KEYS=[];
+ const QUERY_KEYS=[];
  // The site base is the directory above assets/: / on the local preview, /tmu-course-guides/ on Pages.
  function siteBase(scriptSrc){return new URL('../',scriptSrc).href;}
  // Pure decision: the URL to replace the current one with, or null to stay.
  function decide(href,base){
-  var url,root;try{url=new URL(href);root=new URL(base);}catch(e){return null;}
+  let url,root;try{url=new URL(href);root=new URL(base);}catch(e){return null;}
   // Only the Desk itself forwards, so cen100/ and every other page can never loop.
   if(url.origin!==root.origin||(url.pathname!==root.pathname&&url.pathname!==root.pathname+'index.html'))return null;
-  var cen=HASHES.some(function(re){return re.test(url.hash);})||QUERY_KEYS.some(function(key){return url.searchParams.has(key);});
+  const cen=HASHES.some(function(re){return re.test(url.hash);})||QUERY_KEYS.some(function(key){return url.searchParams.has(key);});
   if(!cen)return null;
   // Fixed destination; the query and hash are carried verbatim (raw tail of the href), never read as a target.
-  var tail=/[?#]/.exec(href);
+  const tail=/[?#]/.exec(href);
   return new URL('cen100/',root).href+(tail?href.slice(tail.index):'');
  }
  function run(doc,loc){
-  var script=doc&&doc.currentScript;if(!script||!script.src||!loc)return null;
-  var to=decide(loc.href,siteBase(script.src));if(to)loc.replace(to);
+  const script=doc&&doc.currentScript;if(!script||!script.src||!loc)return null;
+  const to=decide(loc.href,siteBase(script.src));if(to)loc.replace(to);
   return to;
  }
  global.TMULegacyRoute={HASHES:HASHES,QUERY_KEYS:QUERY_KEYS,siteBase:siteBase,decide:decide,run:run};
