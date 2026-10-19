@@ -1,0 +1,129 @@
+--- a/site/src/pages/course/components/windows/window-model.mjs
++++ b/site/src/pages/course/components/windows/window-model.mjs
+@@ -27,3 +27,6 @@
+   'Dates that still need confirmation': 'Which dates and details are still unconfirmed?',
+ };
+ export const helpQuestion = (title) => QUESTIONS[title] || title;
++
++// The full timing distinguishes the lab start from a quiz in its second hour.
++export const windowTiming = (item) => item?.timing || item?.when || item?.dateLabel || 'Date pending';
+--- a/site/src/pages/course/components/windows/WindowSummary.jsx
++++ b/site/src/pages/course/components/windows/WindowSummary.jsx
+@@ -1,5 +1,5 @@
+ import { countdown } from '@src/lib';
+-import { dateBadge, preparationSummary, selectWindowItem } from './window-model.mjs';
++import { dateBadge, preparationSummary, selectWindowItem, windowTiming } from './window-model.mjs';
+ import styles from './windows.module.scss';
+ 
+ // Display panels mirror the accessible rows. No controls can be trapped in translated windows.
+@@ -21,7 +21,7 @@
+           </div>
+           <div className={styles.subject}>
+             <p className={styles.title}>{item.title}</p>
+-            <p className={styles.when}>{item.when || item.dateLabel}</p>
++            <p className={styles.when}>{windowTiming(item)}</p>
+           </div>
+           <div className={styles.footer}>
+             <span className={styles.status}>{time?.status || time?.label || item.label}</span>
+--- a/site/src/pages/course/components/deadlines/Deadlines.jsx
++++ b/site/src/pages/course/components/deadlines/Deadlines.jsx
+@@ -19,7 +19,7 @@
+ import useStill from '@src/hooks/useStill';
+ import { useStore } from '@src/store';
+ import { useWindowSize } from '@darkroom.engineering/hamo';
+-import { isWindowPreview } from '../windows/window-model.mjs';
++import { isWindowPreview, windowTiming } from '../windows/window-model.mjs';
+ import { DeadlineWindow } from '../windows/WindowSummary';
+ 
+ // The original Services section (pinned artwork window + category list + hover
+@@ -255,7 +255,7 @@
+                             }}
+                           >
+                             {item.title}
+-                            {preview ? <span className={styles.previewMeta}>{[item.when || item.dateLabel, item.weightLabel].filter(Boolean).join(' · ')}</span> : null}
++                            {preview ? <span className={styles.previewMeta}>{[windowTiming(item), item.weightLabel].filter(Boolean).join(' · ')}</span> : null}
+                             {preview && item.requirement ? <span className={styles.previewScope}>{item.requirement}</span> : null}
+                           </span>
+                           <span className={clsx('p-x', styles.countdown)}>{time.label}</span>
+--- a/site/src/pages/course/components/deadlines/styles/deadlines.module.scss
++++ b/site/src/pages/course/components/deadlines/styles/deadlines.module.scss
+@@ -241,16 +241,16 @@
+ 
+ .root .servicesContainer.preview {
+   .leftContainer {
+-    height: min(100svh, max(47vw, 530px)) !important;
++    height: min(100svh, max(50vw, 590px)) !important;
+     .shapesContainer {
+-      height: max(33vw, 430px);
++      height: max(36vw, 500px);
+     }
+     .spacing {
+-      top: max(40vw, calc(5vw + 430px));
++      top: max(40vw, calc(5vw + 500px));
+     }
+   }
+   .rightContainer .category {
+-    min-height: max(35vw, 440px);
++    min-height: max(39vw, 500px);
+     .shape {
+       height: auto;
+       min-height: 340px;
+--- a/site/src/pages/course/components/checklist/styles/checklist.module.scss
++++ b/site/src/pages/course/components/checklist/styles/checklist.module.scss
+@@ -187,16 +187,16 @@
+ 
+ .root .processContainer.preview {
+   .leftContainer {
+-    height: min(100svh, max(47vw, 530px)) !important;
++    height: min(100svh, max(50vw, 590px)) !important;
+     .shapesContainer {
+-      height: max(33vw, 430px);
++      height: max(36vw, 500px);
+     }
+     .spacing {
+-      top: max(40vw, calc(5vw + 430px));
++      top: max(40vw, calc(5vw + 500px));
+     }
+   }
+   .rightContainer .category {
+-    min-height: max(35vw, 440px);
++    min-height: max(39vw, 500px);
+     .shape {
+       height: auto;
+       min-height: 360px;
+--- a/site/tests/window-preview.test.mjs
++++ b/site/tests/window-preview.test.mjs
+@@ -49,3 +49,11 @@
+   assert.equal(call('helpQuestion', 'Assessment rules'), 'What are the assessment rules?');
+   assert.equal(call('helpQuestion', 'A future rule'), 'A future rule');
+ });
++
++
++test('window timing preserves second-hour wording instead of presenting the lab start as the quiz time', () => {
++  const item = { when: 'Thu Oct 15 · 4:00 PM · VIC106', timing: 'Thursday, Oct 15 · second hour of your 4:00 PM–6:00 PM lab' };
++  assert.equal(call('windowTiming', item), item.timing);
++  assert.equal(call('windowTiming', { when: 'Fri Oct 23 · 6:30 PM' }), 'Fri Oct 23 · 6:30 PM');
++  assert.equal(call('windowTiming', { dateLabel: 'Date pending' }), 'Date pending');
++});
+--- a/site/src/pages/course/components/windows/preview.module.scss
++++ b/site/src/pages/course/components/windows/preview.module.scss
+@@ -44,3 +44,19 @@
+     }
+   }
+ }
++
++@media (max-width: 599px) {
++  .readable :global([data-assessment-id]) {
++    display: grid !important;
++    grid-template-columns: 12px minmax(0, 1fr);
++    gap: 8px 8px !important;
++    > span:last-child { grid-column: 2; }
++  }
++}
++@media (max-width: 1099px) {
++  .readable :global(div:has(> [data-window-kind])) {
++    border-radius: 0 !important;
++    background: var(--white) !important;
++    > [data-window-kind] { border-radius: 14px; }
++  }
++}

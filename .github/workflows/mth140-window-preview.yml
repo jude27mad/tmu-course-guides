@@ -21,6 +21,13 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: site/package-lock.json
+      - name: Apply reviewed timing and layout correction
+        run: |
+          if test -f site/scripts/window-timing.patch; then
+            git apply --check site/scripts/window-timing.patch
+            git apply site/scripts/window-timing.patch
+            rm site/scripts/window-timing.patch
+          fi
       - run: npm ci
         working-directory: site
       - name: Match repository formatting and lint

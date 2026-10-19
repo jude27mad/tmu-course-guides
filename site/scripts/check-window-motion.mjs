@@ -44,13 +44,22 @@ const screenshot=async(page,name)=>page.screenshot({path:join(reports,`${name}.p
 try{
  const desktop=await open();
  check('normal motion enabled',await desktop.page.locator('html').getAttribute('data-motion')==='on');
+ check('visible timing retains the quiz second-hour qualification',(await desktop.page.locator('[data-selected-assessment="quiz-2"]').innerText()).includes('second hour'));
  const headings=desktop.page.locator('#assignments h3');
  const expected=['quiz-2','midterm','quiz-3'];
  for(let i=0;i<3;i++){
   await moveTo(desktop.page,headings.nth(i),300);
   const win=desktop.page.locator(`[data-window-kind="deadline"][data-selected-assessment="${expected[i]}"]`);
-  const visible=await win.evaluate(el=>{const r=el.getBoundingClientRect();const p=document.elementFromPoint(r.left+r.width*0.45,r.top+r.height*0.5);return r.top>=0&&r.bottom<=innerHeight+2&&p&&el.contains(p);});
-  check(`normal desktop scroll reveals ${expected[i]} in pinned window`,visible);
+  // These mirrored panels are decorative, not hit targets. Inspect intersection with
+  // the actual window clip, not elementFromPoint (which can hit the pointer layer).
+  const geometry=await win.evaluate(el=>{
+   const r=el.getBoundingClientRect(),c=el.parentElement.parentElement.getBoundingClientRect();
+   const width=Math.max(0,Math.min(r.right,c.right,innerWidth)-Math.max(r.left,c.left,0));
+   const height=Math.max(0,Math.min(r.bottom,c.bottom,innerHeight)-Math.max(r.top,c.top,0));
+   return {visibleFraction:width*height/(r.width*r.height),rect:r.toJSON(),clip:c.toJSON()};
+  });
+  await writeFile(join(reports,`motion-group-${i+1}-geometry.json`),JSON.stringify(geometry,null,2));
+  check(`normal desktop scroll reveals ${expected[i]} in pinned window`,geometry.visibleFraction>0.95);
   await screenshot(desktop.page,`motion-desktop-group-${i+1}`);
  }
  const laterFinal=desktop.page.locator('[data-assessment-id="final"]');await laterFinal.focus();
