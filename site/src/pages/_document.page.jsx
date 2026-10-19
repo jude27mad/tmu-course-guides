@@ -26,7 +26,7 @@ const FAVICON =
 // Runs before first paint: marks JS as available (so the original "hidden until the
 // loader reveals it" styles apply only with JS) and applies the motion setting
 // early (prefers-reduced-motion or the saved 'guide-motion-paused' = 'true').
-const BOOT = `(function(d){var r=d.documentElement;r.classList.add('js');try{var q=new URLSearchParams(location.search).get('motion'),p=localStorage.getItem('guide-motion-paused')==='true',m=!!window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;if(q==='off'||p||(m&&q!=='full'))r.setAttribute('data-motion','off');}catch(e){}})(document);`;
+const BOOT = `(function(d){let r=d.documentElement;r.classList.add('js');try{let q=new URLSearchParams(location.search).get('motion'),p=localStorage.getItem('guide-motion-paused')==='true',m=!!window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;if(q==='off'||p||(m&&q!=='full'))r.setAttribute('data-motion','off');}catch(e){}})(document);`;
 
 export default class MyDocument extends Document {
   render() {
