@@ -1,6 +1,8 @@
 # Remove the repetition, then add only the components that bring something new
 
 > **Status:** plan only, saved on 2026-10-19 from a full read of `origin/main` (`e1f8be4`). No stage has started. Each stage needs the owner's go-ahead.
+>
+> **Codex tasks:** the code-only parts are briefed in [docs/codex/remove-repetition/](../codex/remove-repetition/README.md) (R1–R5).
 
 ---
 
