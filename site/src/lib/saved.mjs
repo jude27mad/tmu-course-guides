@@ -56,7 +56,7 @@ export const writeMathSection = (courseId, storage, section) => writeJSON(storag
 /** The completed map for any course: CEN cleanPlan().completed ({id:1}) or math cleanProgress().completed ({id:true}). */
 export const readCompletedMap = (courseId, storage) => (courseId === 'cen100' ? readPlan(storage).completed : readMath(courseId, storage).completed);
 /** The saved section number for any course, 0 when none. */
-export const readSectionNumber = (courseId, storage) => (courseId === 'cen100' ? readProfile(storage)?.section ?? 0 : readMathSection(courseId, storage));
+export const readSectionNumber = (courseId, storage) => (courseId === 'cen100' ? (readProfile(storage)?.section ?? 0) : readMathSection(courseId, storage));
 
 export const readMotionPaused = (storage) => readRaw(storage, KEYS.motion) === 'true';
 export const writeMotionPaused = (storage, value) => writeRaw(storage, KEYS.motion, String(!!value));

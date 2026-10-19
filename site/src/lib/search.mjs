@@ -51,7 +51,7 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
   for (const id of order) {
     const ctx = context(id, { now: ms, storage: store });
     const next = resolveTarget({ course: id, data: dataFor(id), section: ctx.section, completed: ctx.completed, now: ms });
-    const code = getCourse(id).code;
+    const { code } = getCourse(id);
     for (const item of deadlines(id, { now: ms, storage: store })) {
       allDeadlines.push(item);
       const t = item.target;
@@ -76,7 +76,9 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
   const weeks = semesterWeeks({ records });
   for (const week of weeks) {
     const copy = weekCopy(week);
-    const due = week.start ? allDeadlines.filter((item) => (item.date || item.week) && (item.date || item.week) >= week.start && (item.date || item.week) <= week.end) : allDeadlines.filter((item) => item.kind === 'final' && item.precision === 'pending');
+    const due = week.start
+      ? allDeadlines.filter((item) => (item.date || item.week) && (item.date || item.week) >= week.start && (item.date || item.week) <= week.end)
+      : allDeadlines.filter((item) => item.kind === 'final' && item.precision === 'pending');
     const first = (current && due.find((item) => item.courseId === current.id)) || due[0] || null;
     add('Weeks', {
       id: `week-${week.index}`,
@@ -95,7 +97,16 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
 
   // Topics: both math courses.
   for (const id of COURSE_IDS.filter(isMath)) {
-    for (const topic of DATA[id].topics) add('Topics', { id: `topic-${id}-${topic.id}`, type: 'topic', title: topic.title, detail: `${getCourse(id).code} · ${topic.sections}`, href: `/${id}/#topic-${topic.id}`, keywords: topic.description, courseId: id });
+    for (const topic of DATA[id].topics)
+      add('Topics', {
+        id: `topic-${id}-${topic.id}`,
+        type: 'topic',
+        title: topic.title,
+        detail: `${getCourse(id).code} · ${topic.sections}`,
+        href: `/${id}/#topic-${topic.id}`,
+        keywords: topic.description,
+        courseId: id,
+      });
   }
 
   // Actions.
@@ -105,7 +116,15 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
     add('Actions', { id: 'action-calendar', type: 'action', action: 'calendar', title: 'Export calendar', href: `${current.href}#course-info`, default: true, courseId: current.id });
   }
   const paused = readMotionPaused(store);
-  add('Actions', { id: 'action-motion', type: 'action', action: 'motion', title: paused ? 'Play motion' : 'Pause motion', disabled: motionForced, detail: motionForced ? 'Reduced motion is enabled by your device or page setting' : '', default: true });
+  add('Actions', {
+    id: 'action-motion',
+    type: 'action',
+    action: 'motion',
+    title: paused ? 'Play motion' : 'Pause motion',
+    disabled: motionForced,
+    detail: motionForced ? 'Reduced motion is enabled by your device or page setting' : '',
+    default: true,
+  });
   add('Actions', { id: 'action-d2l', type: 'action', action: 'external', title: 'Open D2L', href: D2L, external: true, default: true });
 
   return Object.assign(entries, { weeks, itemTitles: Object.fromEntries(CEN.allItems.map((item) => [item.id, item.name])) });
@@ -129,7 +148,13 @@ const normalise = (text) => String(text).normalize('NFD').replace(/[̀-ͯ]/g, ''
 const GUIDE_ENTRIES = (() => {
   const out = [];
   for (const item of CEN.allItems) {
-    out.push({ courseId: 'cen100', title: item.name, tab: CEN.COPY.tabs[CEN.listOf(item)], href: `/cen100/#assignment-${item.id}`, text: [item.name, item.preview, item.what, JSON.stringify(item.facts), JSON.stringify(item.groups), JSON.stringify(item.traps), ...CEN.sourceFor(item)].join(' ') });
+    out.push({
+      courseId: 'cen100',
+      title: item.name,
+      tab: CEN.COPY.tabs[CEN.listOf(item)],
+      href: `/cen100/#assignment-${item.id}`,
+      text: [item.name, item.preview, item.what, JSON.stringify(item.facts), JSON.stringify(item.groups), JSON.stringify(item.traps), ...CEN.sourceFor(item)].join(' '),
+    });
   }
   for (const [rows, offset] of [
     [CEN.RULES, 2],
@@ -147,7 +172,8 @@ const GUIDE_ENTRIES = (() => {
   });
   for (const id of COURSE_IDS.filter(isMath)) {
     for (const a of DATA[id].assessments) out.push({ courseId: id, title: a.title, tab: 'Assessment', href: `/${id}/#assessment-${a.id}`, text: `${a.title} ${a.scope} ${a.kind} ${a.source}` });
-    for (const t of DATA[id].topics) out.push({ courseId: id, title: t.title, tab: 'Topic map', href: `/${id}/#topic-${t.id}`, text: `${t.title} ${t.sections} ${t.description} ${t.skills.join(' ')}` });
+    for (const t of DATA[id].topics)
+      out.push({ courseId: id, title: t.title, tab: 'Topic map', href: `/${id}/#topic-${t.id}`, text: `${t.title} ${t.sections} ${t.description} ${t.skills.join(' ')}` });
   }
   return out;
 })();

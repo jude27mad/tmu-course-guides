@@ -59,7 +59,7 @@ export function readRaw(storage, key) {
   const memory = memoryFor(storage);
   if (memory.has(key)) return memory.get(key);
   try {
-    return storage ? storage.getItem(key) ?? null : null;
+    return storage ? (storage.getItem(key) ?? null) : null;
   } catch {
     return null;
   }

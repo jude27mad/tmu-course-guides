@@ -84,7 +84,7 @@ export function setSection(courseId, value, storage) {
 }
 
 /** CEN100 only: the saved group number, or null. */
-export const getGroup = (courseId, storage) => (courseId === 'cen100' ? readProfile(resolveStorage(storage))?.group ?? null : null);
+export const getGroup = (courseId, storage) => (courseId === 'cen100' ? (readProfile(resolveStorage(storage))?.group ?? null) : null);
 /** CEN100 only: save a group for the saved section ({"section":n,"group":g}); an invalid group saves null. */
 export function setGroup(courseId, value, storage) {
   if (courseId !== 'cen100') return false;
