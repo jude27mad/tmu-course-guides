@@ -295,6 +295,8 @@ test('backups: export the old file formats and import them back with the old mer
   assert.equal(mathFile.text, JSON.stringify({ format: 'tmu-math-guide', version: 1, course: 'mth140', exported: NOW.toISOString(), progress: { checks: { 'quiz-1-0': true }, completed: { 'quiz-1': true }, notes: {}, targets: {}, topics: {} } }, null, 2));
   assert.equal(importBackup('mth141', mathFile.text, { storage: math }).message, 'Choose a valid progress backup for MTH141.');
   const fresh = memoryStorage();
+  assert.match(importBackup('mth140', '{', { storage: fresh }).message, /JSON/);
+  assert.equal(importBackup('mth140', '{}', { storage: fresh }).message, 'Choose a valid progress backup for MTH140.');
   assert.equal(importBackup('mth140', mathFile.text, { storage: fresh }).message, 'Progress imported.');
   assert.equal(fresh.data.get('mth140-progress-v1'), '{"checks":{"quiz-1-0":true},"completed":{"quiz-1":true},"notes":{},"targets":{},"topics":{}}');
 });
