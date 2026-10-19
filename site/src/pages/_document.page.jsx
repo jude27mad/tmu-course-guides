@@ -35,8 +35,8 @@ export default class MyDocument extends Document {
         <Head>
           <meta httpEquiv="Content-Security-Policy" content={CSP} />
           <meta name="referrer" content="no-referrer" />
-          {/* eslint-disable-next-line react/no-danger */}
-          <script dangerouslySetInnerHTML={{ __html: BOOT }} />
+
+          <script>{BOOT}</script>
           <meta name="theme-color" content="#f0f4f1" />
           <meta name="format-detection" content="telephone=no" />
           <link rel="icon" href={FAVICON} />
