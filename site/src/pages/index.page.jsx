@@ -33,10 +33,9 @@ const LEGACY_HASHES = [
 function useLegacyForward() {
   useIsomorphicLayoutEffect(() => {
     if (useStore.getState().introOut) return;
-    const { hash, href } = window.location;
+    const { hash, search } = window.location;
     if (!LEGACY_HASHES.some((pattern) => pattern.test(hash))) return;
-    const tail = /[?#]/.exec(href);
-    window.location.replace(`${withBasePath('/cen100/')}${tail ? href.slice(tail.index) : ''}`);
+    window.location.replace(`${withBasePath('/cen100/')}${search}${hash}`);
   }, []);
 }
 
