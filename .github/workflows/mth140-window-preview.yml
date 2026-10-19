@@ -21,17 +21,12 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: site/package-lock.json
-      - name: Apply isolated preview integration
-        run: |
-          if test -f site/scripts/apply-window-preview.py; then
-            python site/scripts/apply-window-preview.py
-          fi
       - run: npm ci
         working-directory: site
       - name: Match repository formatting and lint
         working-directory: site
         run: |
-          npx prettier --write --print-width 200 src/pages/course/components/windows/ src/pages/course/components/deadlines/ src/pages/course/components/checklist/ src/pages/course/components/info/CourseInfo.jsx src/pages/course/components/info/styles/courseInfo.module.scss src/pages/course/course.module.scss 'src/pages/[course].page.jsx' tests/window-preview.test.mjs scripts/check-window-preview.mjs
+          npx prettier --write --print-width 200 src/pages/course/components/windows/ src/pages/course/components/deadlines/ src/pages/course/components/checklist/ src/pages/course/components/info/CourseInfo.jsx src/pages/course/components/info/styles/courseInfo.module.scss src/pages/course/course.module.scss 'src/pages/[course].page.jsx' tests/window-preview.test.mjs scripts/check-window-preview.mjs scripts/check-window-motion.mjs
           npx eslint --fix 'src/pages/[course].page.jsx' src/pages/course/components/windows/*.jsx src/pages/course/components/windows/*.mjs src/pages/course/components/deadlines/Deadlines.jsx src/pages/course/components/checklist/Checklist.jsx src/pages/course/components/info/CourseInfo.jsx
       - run: npm test
         working-directory: site
@@ -50,6 +45,7 @@ jobs:
         run: |
           export PLAYWRIGHT_PATH="$RUNNER_TEMP/window-qa/node_modules/playwright"
           node scripts/check-window-preview.mjs
+          node scripts/check-window-motion.mjs
       - name: Save review evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -70,15 +66,17 @@ jobs:
           name: mth140-review-build
           path: ${{ runner.temp }}/mth140-review/
           retention-days: 3
-      - name: Commit verified preview only to its feature branch
+      - name: Commit verified source and screenshots to the feature branch only
         if: success()
         run: |
           test "${{ github.ref }}" = 'refs/heads/codex/mth140-window-preview'
-          rm -f site/scripts/apply-window-preview.py
+          mkdir -p docs/qa/mth140-window-preview
+          cp "$RUNNER_TEMP/mth140-qa/"*.json docs/qa/mth140-window-preview/
+          cp "$RUNNER_TEMP/mth140-qa/phone390-assignments.png" "$RUNNER_TEMP/mth140-qa/phone390-help.png" "$RUNNER_TEMP/mth140-qa/tablet820-preparation.png" "$RUNNER_TEMP/mth140-qa/laptop1440-assignments.png" "$RUNNER_TEMP/mth140-qa/motion-desktop-group-2.png" docs/qa/mth140-window-preview/
           git config user.name 'Jude'
           git config user.email '229519885+jude27mad@users.noreply.github.com'
-          git add site/src site/tests/window-preview.test.mjs site/scripts/check-window-preview.mjs site/scripts/apply-window-preview.py
+          git add -A site/src site/tests site/scripts docs/qa/mth140-window-preview
           if ! git diff --cached --quiet; then
-            git commit -m 'Verify MTH140 window and reading preview across responsive layouts'
+            git commit -m 'Verify responsive windows, scrolling, motion preferences and saved progress'
             git push origin HEAD:codex/mth140-window-preview
           fi
