@@ -78,6 +78,9 @@ test('cen100-g9-ticks: {"key":1}, unticked keys deleted, other saved keys kept a
 test('cen100-contact-choice-v1: {"section":n,"group":n|null} or null, written as the old selects wrote it', () => {
   const storage = memoryStorage();
   assert.equal(getSection('cen100', storage), null);
+  assert.equal(setGroup('cen100', 9, storage), false, 'cannot set group without a profile');
+  assert.equal(setGroup('mth140', 9, storage), false, 'cannot set group for non-cen100 courses');
+  assert.deepEqual(storage.writes(), [], 'failed setGroup should not write anything');
   assert.equal(setSection('cen100', 29, storage), true);
   assert.equal(storage.data.get('cen100-contact-choice-v1'), '{"section":29,"group":null}');
   assert.equal(setGroup('cen100', 9, storage), true);
