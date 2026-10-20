@@ -409,14 +409,12 @@ function weeklyChecklistNow(courseId, { now, section, storage } = {}) {
  * null and `weightLabel` says "15% quiz category"). The array carries `totalWeight` (100) and `count`, plus
  * `categories` for math and `table` (the old grouping table) for CEN.
  */
-const SCHEDULE_BY_ID = new Map(SCHEDULE.map((record) => [record.id, record]));
-
 function assessmentsNow(courseId, { section } = {}) {
   if (courseId === 'cen100') {
     const idsFor = (label) => Object.keys(CEN_GRADE_LABELS).filter((id) => CEN_GRADE_LABELS[id] === label);
     const rows = CEN_GRADE_TABLE.rows.map((row) => {
       const ids = idsFor(row.label);
-      const dated = ids.map((id) => SCHEDULE_BY_ID.get(id)).filter(Boolean);
+      const dated = ids.map((id) => SCHEDULE.find((record) => record.id === id)).filter(Boolean);
       const undated = ids.find((id) => id.startsWith('item:'));
       let label = dated.map((record) => short(record.date)).join(' · ');
       if (!label) label = undated === 'item:y7' ? CEN.byId.get('y7').small : 'Date pending';
