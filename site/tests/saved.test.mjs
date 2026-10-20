@@ -31,6 +31,7 @@ test('readTicks and writeTicks', () => {
   assert.deepEqual(readTicks(storage), {});
 
   assert.equal(writeTicks(storage, { 'm2-1-3': 1 }), true);
+  assert.equal(storage.data.get('cen100-g9-ticks'), '{"m2-1-3":1}');
   assert.deepEqual(readTicks(storage), { 'm2-1-3': 1 });
 
   storage.data.set('cen100-g9-ticks', '{oops');
@@ -47,9 +48,6 @@ test('readPlan and writePlan', () => {
   const storage = memoryStorage();
   assert.deepEqual(readPlan(storage), { completed: {}, notes: {}, targets: {} });
 
-  // Note: the notes/targets properties shouldn't strictly retain values that aren't expected by `cleanPlan`
-  // so let's verify what `writePlan` writes, then assert what it retrieves.
-  // Let's ensure the object structure aligns.
   const plan = { completed: {}, notes: {}, targets: {} };
   assert.equal(writePlan(storage, plan), true);
   assert.deepEqual(readPlan(storage), plan);
@@ -91,8 +89,9 @@ test('readMathSection and writeMathSection', () => {
   assert.equal(writeMathSection('mth140', storage, 31), true);
   assert.equal(readMathSection('mth140', storage), 31);
 
-  assert.equal(writeMathSection('mth140', storage, 999), true);
-  assert.equal(readMathSection('mth140', storage), 0); // Invalid section
+  // A saved section with no MTH140 lab reads as no section.
+  storage.data.set('mth140-section-v1', '999');
+  assert.equal(readMathSection('mth140', storage), 0);
 
   storage.data.set('mth140-section-v1', '"31"');
   assert.equal(readMathSection('mth140', storage), 31);
@@ -125,4 +124,25 @@ test('readMotionPaused and writeMotionPaused', () => {
 
   assert.equal(writeMotionPaused(storage, false), true);
   assert.equal(readMotionPaused(storage), false);
+});
+
+test('readers never write to storage', () => {
+  const storage = memoryStorage({
+    'cen100-g9-ticks': '{oops',
+    'cen100-personal-plan-v1': '{"completed":{"integrity":1,"bogus":1},"notes":{},"targets":{}}',
+    'cen100-contact-choice-v1': '{"section":"29","group":"9"}',
+    'mth140-progress-v1': '{"completed":{"quiz-1":1},"checks":{"bogus":true}}',
+    'mth140-section-v1': '999',
+  });
+  readTicks(storage);
+  readPlan(storage);
+  readProfile(storage);
+  readMath('mth140', storage);
+  readMathSection('mth140', storage);
+  readCompletedMap('cen100', storage);
+  readCompletedMap('mth140', storage);
+  readSectionNumber('cen100', storage);
+  readSectionNumber('mth140', storage);
+  readMotionPaused(storage);
+  assert.deepEqual(storage.writes(), []);
 });
