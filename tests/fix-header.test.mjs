@@ -53,7 +53,10 @@ async function fixture({session={},engine={}}={}){
  w.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}});
  for(const name of ['ResizeObserver','IntersectionObserver'])w[name]=class{observe(){}unobserve(){}disconnect(){}};
  w.HTMLElement.prototype.scrollIntoView=()=>{};
-const now = Date.parse('2026-10-14T18:30:00Z'); w.eval(`(()=>{const Real=Date,now=${now};class FixedDate extends Real{constructor(...a){super(...(a.length?a:[now]));}static now(){return now;}}window.Date=FixedDate;})();`);
+ // A fixed clock (as fix-rail.test.mjs does): on Oct 14, 2:30 PM Toronto, Lab Quiz 2 is MTH140's next item,
+ // which the Mark done / Undo test below relies on. The real clock would move past it.
+ const now=Date.parse('2026-10-14T18:30:00Z');
+ w.eval(`(()=>{const Real=Date,now=${now};class FixedDate extends Real{constructor(...a){super(...(a.length?a:[now]));}static now(){return now;}}window.Date=FixedDate;})();`);
  const scrolls=[];w.scrollTo=options=>scrolls.push(options);
  w.requestIdleCallback=fn=>setTimeout(fn,0);w.cancelIdleCallback=id=>clearTimeout(id);
  const warnings=[];w.console.warn=(...args)=>warnings.push(args.join(' '));
