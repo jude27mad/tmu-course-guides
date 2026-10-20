@@ -16,6 +16,7 @@ The data layer every page uses. Pages import from `@src/lib` (plain functions) a
 | `react.js` | Hooks: `useNow`, `useProgress`, `useSection`, `useMotionPaused`. |
 | `courses.mjs` | `COURSES`, palettes, links, sections, saved section/group. |
 | `deadlines.mjs` | `deadlines`, `buckets`, `nextDeadline`, `countdown`, `weeklyChecklist`, `assessments`, `deskSnapshot`, `workList`. |
+| `assignments.mjs` | `assignmentList`, `calendarEvents`: one entry per content item and one event per dated deadline row. |
 | `info.mjs` | `courseInfo`. |
 | `progress.mjs` | `createProgress` (Mark done, Undo, ticks, notes, targets, subscribe). |
 | `search.mjs` | `searchIndex`, `searchEntries`, `searchGuide`. |
@@ -188,6 +189,33 @@ deskSnapshot({ now })[0];
 
 **`workList(courseId, { now, range: 'week' | 'all', storage?, section? })`** → "What should I work on?" in the old wording: `{ items: [{ itemId, title, dates, progress, target, anchor, href }], status, empty }`.
 
+### Assignment list and calendar events
+
+**`assignmentList(courseId, { now, items? })`** → `{ pastDue, thisWeek, nextWeek, later, done, entries, today, focus }`. Omitted `items` uses `deadlines(courseId, { now })`; pass already-resolved rows to use an explicit section or storage. `now` accepts a `Date` or epoch milliseconds.
+
+```js
+const items = deadlines('cen100', { now, section: 29, storage });
+const list = assignmentList('cen100', { now, items });
+list.entries.length; // 17 (MTH140: 6, MTH141: 7), in content order
+list.entries[0];
+// { id, courseId, anchor, title, list: 'team' | 'you' | null,
+//   rows: [all deadline rows, including reminders], records: [markable rows], recorded,
+//   lead, done, pastDue, group: 'pastDue' | 'thisWeek' | 'nextWeek' | 'later' | 'done' }
+```
+
+Every content item remains present, including undated items and items with no supplied rows. Anchors match `courseInfo()`. The lead is the earliest unfinished record in deadline order, or the last record when all are done (`null` when there are no records). An item is done only when it has records and all are done; reminders never block completion. Any overdue record puts an unfinished item in `pastDue` before Toronto Monday–Sunday week grouping. Group entries sort by their lead's `sortKey`, with content order breaking ties.
+
+`today` is Toronto `YYYY-MM-DD`. `focus` holds the earliest past-due lead date, today for `thisWeek`, next Monday for `nextWeek`, the first dated lead in `later`, and `null` for `done`. A group with no dated lead has `null` focus.
+
+**`calendarEvents(courseId, items)`** → `[{ id: '<courseId>:<rowId>', rowId, anchor, title, qualifier, style, allDay, start, end }]`. Pass the same deadline rows used for the list. Several rows may link to one assignment anchor. This function only maps the supplied rows; section filtering stays in `deadlines()`.
+
+- Timed events use epoch milliseconds from the resolved target. Only `endOfDay` subtracts a minute, placing the point at 23:59 on the due day.
+- Math lab quizzes with an end use the full lab window (`style: 'window'`). A `quizSecondHour` assessment adds " · in your lab's second hour" to the title and explains this in the qualifier; no quiz start time is calculated. Other exact rows use `style: 'due'`, with equal start/end for a point event.
+- Day events use the date for both start/end, `allDay: true`, `style: 'day'`, and "Time not posted". Week events use Monday through Friday (`target.week` to `target.weekEnd`, inclusive), `style: 'week'`, "Quiz week · <title>", and "Date depends on your lab section" ("Date needs confirmation" for holiday weeks).
+- Pending/empty rows produce no event. Reminders use `style: 'reminder'`; done rows override other styles with `style: 'done'`. Ordinary exact events have an empty qualifier; lab windows say "Lab window" or "Quiz is in your lab's second hour".
+
+Both functions are wrapped in `fast()`, leave their inputs unchanged, and never write storage. They add no React or DOM behaviour.
+
 ### Course information
 
 **`courseInfo(courseId, { section?, group? })`** → the old page's guidance as data. Static apart from the section/group.
@@ -328,6 +356,7 @@ The vendored date code builds a new `Intl.DateTimeFormat` (or calls `toLocaleDat
 - `vendor.test.mjs`: the vendored files are the old ones with only `?v=` removed; no DOM or globals at import.
 - `content.test.mjs`: extracted content and helpers equal the old closures' (literals, cleanPlan/validProfile/cleanProgress, completion text, section texts, calendar, backup parsing, work list, math checklists, rules and notices).
 - `deadlines.test.mjs`: the Toronto cases of the old `tests/targets.test.mjs`; next deadline per course and overall, every item's target and countdown wording over ~230 clocks × saved states; buckets; weekly checklist; the Desk snapshot against the old `deskSummary()`.
+- `assignments.test.mjs`: content partitions and anchors, completion and reminder grouping, Toronto week edges and focus dates, calendar precision, lab windows, end-of-day/DST boundaries, section filtering, and unchanged inputs.
 - `boundaries.test.mjs`: the 40 Toronto boundary fixtures (`docs/qa/toronto-deadline-test-cases.json`) through `countdown()`, also with the computer in UTC, Los Angeles and Tokyo.
 - `storage.test.mjs`: round trips for every key, including values written by the old site, byte-equal to the old pages' writes; readers never write; backups and calendar files.
 - `progress.test.mjs`: Mark done / Undo, ticks separate from completion, cross-tab events and Undo cancellation.
