@@ -1,0 +1,2239 @@
+{
+  "browser": "154.0.8037.57",
+  "date": "2026-10-20T04:24:19.880Z",
+  "widths": [
+    {
+      "responsive": true,
+      "requestedWidth": 360,
+      "containerWidth": 360,
+      "calendarWidth": 360,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-agenda",
+      "isSmall": true,
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'",
+      "pickerViews": [
+        "Month",
+        "Day"
+      ]
+    },
+    {
+      "responsive": true,
+      "requestedWidth": 420,
+      "containerWidth": 420,
+      "calendarWidth": 420,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-agenda",
+      "isSmall": true,
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'",
+      "pickerViews": [
+        "Month",
+        "Day"
+      ]
+    },
+    {
+      "responsive": true,
+      "requestedWidth": 480,
+      "containerWidth": 480,
+      "calendarWidth": 480,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-agenda",
+      "isSmall": true,
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'",
+      "pickerViews": [
+        "Month",
+        "Day"
+      ]
+    },
+    {
+      "responsive": true,
+      "requestedWidth": 520,
+      "containerWidth": 520,
+      "calendarWidth": 520,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-agenda",
+      "isSmall": true,
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'",
+      "pickerViews": [
+        "Month",
+        "Day"
+      ]
+    },
+    {
+      "responsive": true,
+      "requestedWidth": 600,
+      "containerWidth": 600,
+      "calendarWidth": 600,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-agenda",
+      "isSmall": true,
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'",
+      "pickerViews": [
+        "Month",
+        "Day"
+      ]
+    },
+    {
+      "responsive": true,
+      "requestedWidth": 700,
+      "containerWidth": 700,
+      "calendarWidth": 700,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-grid",
+      "isSmall": false,
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'",
+      "pickerViews": [
+        "Month",
+        "Week",
+        "Day"
+      ]
+    },
+    {
+      "responsive": true,
+      "requestedWidth": 800,
+      "containerWidth": 800,
+      "calendarWidth": 800,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-grid",
+      "isSmall": false,
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'",
+      "pickerViews": [
+        "Month",
+        "Week",
+        "Day"
+      ]
+    },
+    {
+      "responsive": true,
+      "requestedWidth": 1000,
+      "containerWidth": 1000,
+      "calendarWidth": 1000,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-grid",
+      "isSmall": false,
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'",
+      "pickerViews": [
+        "Month",
+        "Week",
+        "Day"
+      ]
+    },
+    {
+      "responsive": false,
+      "requestedWidth": 360,
+      "containerWidth": 360,
+      "calendarWidth": 360,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-grid",
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'",
+      "pickerViews": [
+        "Month",
+        "Week",
+        "Day"
+      ]
+    },
+    {
+      "responsive": false,
+      "requestedWidth": 420,
+      "containerWidth": 420,
+      "calendarWidth": 420,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-grid",
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'",
+      "pickerViews": [
+        "Month",
+        "Week",
+        "Day"
+      ]
+    },
+    {
+      "responsive": false,
+      "requestedWidth": 480,
+      "containerWidth": 480,
+      "calendarWidth": 480,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-grid",
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'",
+      "pickerViews": [
+        "Month",
+        "Week",
+        "Day"
+      ]
+    },
+    {
+      "responsive": false,
+      "requestedWidth": 520,
+      "containerWidth": 520,
+      "calendarWidth": 520,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-grid",
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'",
+      "pickerViews": [
+        "Month",
+        "Week",
+        "Day"
+      ]
+    },
+    {
+      "responsive": false,
+      "requestedWidth": 600,
+      "containerWidth": 600,
+      "calendarWidth": 600,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-grid",
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'",
+      "pickerViews": [
+        "Month",
+        "Week",
+        "Day"
+      ]
+    },
+    {
+      "responsive": false,
+      "requestedWidth": 700,
+      "containerWidth": 700,
+      "calendarWidth": 700,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-grid",
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'",
+      "pickerViews": [
+        "Month",
+        "Week",
+        "Day"
+      ]
+    },
+    {
+      "responsive": false,
+      "requestedWidth": 800,
+      "containerWidth": 800,
+      "calendarWidth": 800,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-grid",
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'",
+      "pickerViews": [
+        "Month",
+        "Week",
+        "Day"
+      ]
+    },
+    {
+      "responsive": false,
+      "requestedWidth": 1000,
+      "containerWidth": 1000,
+      "calendarWidth": 1000,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-grid",
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'",
+      "pickerViews": [
+        "Month",
+        "Week",
+        "Day"
+      ]
+    }
+  ],
+  "rendering": {
+    "grid": [
+      {
+        "title": "Quiz week · Quiz 2 · date depends on your lab section",
+        "width": 703.515625,
+        "scrollWidth": 700,
+        "clientWidth": 700,
+        "whiteSpace": "nowrap",
+        "overflow": "hidden",
+        "style": "grid-row: 1; width: calc(500% - 5px); border-inline-start: 4px solid var(--sx-color-primary); color: var(--sx-color-on-primary-container); background-color: var(--sx-color-primary-container);",
+        "parent": null
+      }
+    ],
+    "moreBefore": {
+      "containerWidth": 1000,
+      "calendarWidth": 1000,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-grid",
+      "isSmall": false,
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'"
+    },
+    "moreText": "+ 2 events",
+    "moreAfter": {
+      "containerWidth": 1000,
+      "calendarWidth": 1000,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "day",
+      "isSmall": false,
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'"
+    },
+    "narrowGrid": [
+      {
+        "title": "Quiz week · Quiz 2 · date depends on your lab section",
+        "width": 360.703125,
+        "clientWidth": 357,
+        "scrollWidth": 357,
+        "whiteSpace": "nowrap",
+        "overflow": "hidden"
+      }
+    ],
+    "moreOverride": {
+      "containerWidth": 1000,
+      "calendarWidth": 1000,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-grid",
+      "isSmall": false,
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'",
+      "clicks": [
+        "2026-10-22"
+      ]
+    },
+    "agenda": [
+      {
+        "date": "2026-10-19",
+        "text": "Quiz week · Quiz 2 · date depends on your lab section\nOctober 19, 2026 – October 23, 2026"
+      },
+      {
+        "date": "2026-10-20",
+        "text": "Quiz week · Quiz 2 · date depends on your lab section\nOctober 19, 2026 – October 23, 2026\nQuiz 2 · in your lab's second hour\nOctober 20, 2026 ⋅ 8:00 AM – 10:00 AM"
+      },
+      {
+        "date": "2026-10-21",
+        "text": "Quiz week · Quiz 2 · date depends on your lab section\nOctober 19, 2026 – October 23, 2026\nTime not posted · All-day sample\nOctober 21, 2026"
+      },
+      {
+        "date": "2026-10-22",
+        "text": "Quiz week · Quiz 2 · date depends on your lab section\nOctober 19, 2026 – October 23, 2026\nBusy-day event 1\nOctober 22, 2026\nBusy-day event 2\nOctober 22, 2026\nBusy-day event 3\nOctober 22, 2026\nBusy-day event 4\nOctober 22, 2026\nBusy-day event 5\nOctober 22, 2026"
+      },
+      {
+        "date": "2026-10-23",
+        "text": "Quiz week · Quiz 2 · date depends on your lab section\nOctober 19, 2026 – October 23, 2026"
+      },
+      {
+        "date": "2026-10-24",
+        "text": "No events"
+      }
+    ],
+    "agendaTitle": [
+      {
+        "text": "Quiz week · Quiz 2 · date depends on your lab section",
+        "clientWidth": 322,
+        "scrollWidth": 322,
+        "height": 17,
+        "whiteSpace": "normal",
+        "lineHeight": "normal"
+      },
+      {
+        "text": "Busy-day event 1",
+        "clientWidth": 322,
+        "scrollWidth": 322,
+        "height": 17,
+        "whiteSpace": "normal",
+        "lineHeight": "normal"
+      },
+      {
+        "text": "Busy-day event 2",
+        "clientWidth": 322,
+        "scrollWidth": 322,
+        "height": 17,
+        "whiteSpace": "normal",
+        "lineHeight": "normal"
+      },
+      {
+        "text": "Busy-day event 3",
+        "clientWidth": 322,
+        "scrollWidth": 322,
+        "height": 17,
+        "whiteSpace": "normal",
+        "lineHeight": "normal"
+      },
+      {
+        "text": "Busy-day event 4",
+        "clientWidth": 322,
+        "scrollWidth": 322,
+        "height": 17,
+        "whiteSpace": "normal",
+        "lineHeight": "normal"
+      },
+      {
+        "text": "Busy-day event 5",
+        "clientWidth": 322,
+        "scrollWidth": 322,
+        "height": 17,
+        "whiteSpace": "normal",
+        "lineHeight": "normal"
+      }
+    ]
+  },
+  "touch": [
+    {
+      "prevent": true,
+      "hasTouch": true,
+      "method": "Chromium CDP native Input.dispatchTouchEvent swipe",
+      "before": {
+        "main": 120,
+        "containers": [
+          {
+            "className": "sx__view-container ",
+            "scrollTop": 0,
+            "clientHeight": 509,
+            "scrollHeight": 1790,
+            "overflowY": "auto"
+          }
+        ],
+        "lenis": {
+          "wrapperClasses": "app_main__yf5R5 lenis"
+        }
+      },
+      "after": {
+        "main": 120,
+        "containers": [
+          {
+            "className": "sx__view-container ",
+            "scrollTop": 165,
+            "clientHeight": 509,
+            "scrollHeight": 1790,
+            "overflowY": "auto"
+          }
+        ],
+        "lenis": {
+          "wrapperClasses": "app_main__yf5R5 lenis"
+        }
+      }
+    },
+    {
+      "prevent": false,
+      "hasTouch": true,
+      "method": "Chromium CDP native Input.dispatchTouchEvent swipe",
+      "before": {
+        "main": 120,
+        "containers": [
+          {
+            "className": "sx__view-container ",
+            "scrollTop": 0,
+            "clientHeight": 509,
+            "scrollHeight": 1790,
+            "overflowY": "auto"
+          }
+        ],
+        "lenis": {
+          "wrapperClasses": "app_main__yf5R5 lenis"
+        }
+      },
+      "after": {
+        "main": 120,
+        "containers": [
+          {
+            "className": "sx__view-container ",
+            "scrollTop": 165,
+            "clientHeight": 509,
+            "scrollHeight": 1790,
+            "overflowY": "auto"
+          }
+        ],
+        "lenis": {
+          "wrapperClasses": "app_main__yf5R5 lenis lenis-scrolling"
+        }
+      }
+    }
+  ],
+  "health": [
+    {
+      "query": "width=360&responsive=true",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=360&responsive=true",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Bold.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=420&responsive=true",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=420&responsive=true",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Bold.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=480&responsive=true",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=480&responsive=true",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Bold.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=520&responsive=true",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=520&responsive=true",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Bold.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=600&responsive=true",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=600&responsive=true",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Bold.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=700&responsive=true",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=700&responsive=true",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=800&responsive=true",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=800&responsive=true",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=1000&responsive=true",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=1000&responsive=true",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=360&responsive=false",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=360&responsive=false",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=420&responsive=false",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=420&responsive=false",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=480&responsive=false",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=480&responsive=false",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=520&responsive=false",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=520&responsive=false",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=600&responsive=false",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=600&responsive=false",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=700&responsive=false",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=700&responsive=false",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=800&responsive=false",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=800&responsive=false",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=1000&responsive=false",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=1000&responsive=false",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=1000&responsive=true",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=1000&responsive=true",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Bold.woff2"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=1000&responsive=true",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=1000&responsive=true",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Bold.woff2"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=520&responsive=false",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=520&responsive=false",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=1000&more=override",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=1000&more=override",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=360&view=month-agenda",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=360&view=month-agenda",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Bold.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=360&view=month-agenda&prevent=true",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=360&view=month-agenda&prevent=true",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Bold.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    },
+    {
+      "query": "width=360&view=month-agenda&prevent=false",
+      "pageErrors": [],
+      "csp": [],
+      "requests": [
+        "ORIGIN/tmu-course-guides/next/spike/?motion=off&width=360&view=month-agenda&prevent=false",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Regular.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/a261b3313625d3e3.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/webpack-01960a18338ba10a.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/framework-06b7b33409802422.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/main-905a6bcb4fed202b.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/_app-198f958987e827c1.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/396-066e378d4ba06cbc.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_buildManifest.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/MdUy1dmXBhhGqw6Jxz046/_ssgManifest.js",
+        "ORIGIN/tmu-course-guides/next/other/grain.png",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-ExtraBold.woff2",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Light.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/981.bf14d48100385e8f.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/459.a8cbfa4221598a0e.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/e48b2852e9f744cd.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/895.d8c98a7f18b90b26.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/cen100.json?course=cen100",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth140.json?course=mth140",
+        "ORIGIN/tmu-course-guides/next/_next/data/MdUy1dmXBhhGqw6Jxz046/mth141.json?course=mth141",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/fonts/InterDisplay-Bold.woff2",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/452-433a4f2fb9c766f2.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/%5Bcourse%5D-8ecb1bc588ace118.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/6cf608b7c10ea4b0.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/27dbecca-af65d486439948a6.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/515-c6546b7b36300174.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/566-30be7cdbdc729c59.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/index-41c79e0a6a3cbc80.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/8cfe6715c118d52e.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/courses-ea68b242fa15d071.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/ded4229a6c63ba9a.css",
+        "ORIGIN/tmu-course-guides/next/_next/static/chunks/pages/privacy-0d8ac6bac2ed90cb.js",
+        "ORIGIN/tmu-course-guides/next/_next/static/css/615e3d1fb294f3e1.css"
+      ],
+      "externalRequests": [],
+      "consoleErrors": []
+    }
+  ],
+  "failure": {
+    "blockedChunk": "static/chunks/239.c2fcb3519321bf13.js",
+    "caught": {
+      "name": "ChunkLoadError",
+      "message": "Loading chunk 239 failed.\n(error: http://127.0.0.1:45609/tmu-course-guides/next/_next/static/chunks/239.c2fcb3519321bf13.js)"
+    },
+    "pageErrors": [],
+    "fallback": "Calendar unavailable — every date is in the list",
+    "counter": "Page still works: 1",
+    "staticDates": "October 19–23: Quiz week · Quiz 2 · date depends on your lab section.\n\nOctober 20, 08:00–10:00: lab window; quiz in its second hour.\n\nOctober 21: all-day sample; time not posted. October 22: five busy-day samples.",
+    "expandedPanels": 3
+  },
+  "containerResize": {
+    "before": {
+      "containerWidth": 1000,
+      "calendarWidth": 1000,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-grid",
+      "isSmall": false,
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'"
+    },
+    "afterContainerOnly": {
+      "containerWidth": 420,
+      "calendarWidth": 420,
+      "calendarHeight": 680,
+      "windowWidth": 1440,
+      "rootFontSize": "16px",
+      "view": "month-grid",
+      "isSmall": false,
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'"
+    },
+    "afterWindowResize": {
+      "containerWidth": 420,
+      "calendarWidth": 420,
+      "calendarHeight": 680,
+      "windowWidth": 1439,
+      "rootFontSize": "16px",
+      "view": "month-agenda",
+      "isSmall": true,
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'"
+    },
+    "programmaticNarrowGrid": {
+      "containerWidth": 420,
+      "calendarWidth": 420,
+      "calendarHeight": 680,
+      "windowWidth": 1439,
+      "rootFontSize": "16px",
+      "view": "month-grid",
+      "isSmall": true,
+      "configuredViews": [
+        {
+          "name": "month-grid",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "month-agenda",
+          "small": true,
+          "wide": false
+        },
+        {
+          "name": "week",
+          "small": false,
+          "wide": true
+        },
+        {
+          "name": "day",
+          "small": true,
+          "wide": true
+        }
+      ],
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'"
+    }
+  }
+}

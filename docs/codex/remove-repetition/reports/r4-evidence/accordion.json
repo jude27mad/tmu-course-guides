@@ -1,0 +1,1798 @@
+{
+  "measuredAt": "2026-10-20T04:24:17.828Z",
+  "target": "http://127.0.0.1:4174/tmu-course-guides/next/spike/",
+  "method": "Actual exported page, browser-native window.find and text fragments; no dispatched beforematch events.",
+  "browserUiFind": "Measured separately by spike-native-find-measurements.mjs using a headed browser under Xvfb and native xdotool Ctrl+F input; see native-find.json. window.find below is a different API.",
+  "caveat": "Playwright WebKit is not iPhone Safari. These measurements do not replace a real iPhone test.",
+  "browsers": {
+    "chromium": {
+      "modes": {
+        "naive": {
+          "pageErrors": [],
+          "initial": {
+            "jsMarker": true,
+            "mode": "naive",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "",
+            "mainScrollTop": 0,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": "",
+                "hiddenProperty": true,
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1030,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": "",
+                "hiddenProperty": true,
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1068,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": "",
+                "hiddenProperty": true,
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1106,
+                "textHeight": 19,
+                "expanded": "false"
+              }
+            ]
+          },
+          "windowFind": {
+            "returnValue": true,
+            "after": {
+              "jsMarker": true,
+              "mode": "naive",
+              "beforematchSupported": true,
+              "contentVisibilitySupported": true,
+              "beforematchCount": "0",
+              "trustedBeforematchCount": "0",
+              "nativeEvents": [],
+              "selection": "R4PANELBRAVO",
+              "mainScrollTop": 0,
+              "documentScrollTop": 0,
+              "panels": [
+                {
+                  "id": "alpha",
+                  "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                  "hiddenAttribute": "",
+                  "hiddenProperty": true,
+                  "state": "closed",
+                  "display": "block",
+                  "contentVisibility": "visible",
+                  "height": 19,
+                  "top": 1030,
+                  "textHeight": 19,
+                  "expanded": "false"
+                },
+                {
+                  "id": "bravo",
+                  "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                  "hiddenAttribute": "",
+                  "hiddenProperty": true,
+                  "state": "closed",
+                  "display": "block",
+                  "contentVisibility": "visible",
+                  "height": 19,
+                  "top": 1068,
+                  "textHeight": 19,
+                  "expanded": "false"
+                },
+                {
+                  "id": "charlie",
+                  "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                  "hiddenAttribute": "",
+                  "hiddenProperty": true,
+                  "state": "closed",
+                  "display": "block",
+                  "contentVisibility": "visible",
+                  "height": 19,
+                  "top": 1106,
+                  "textHeight": 19,
+                  "expanded": "false"
+                }
+              ]
+            }
+          },
+          "expandAll": {
+            "jsMarker": true,
+            "mode": "naive",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "R4PANELBRAVO",
+            "mainScrollTop": 11,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1019,
+                "textHeight": 19,
+                "expanded": "true"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1057,
+                "textHeight": 19,
+                "expanded": "true"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1095,
+                "textHeight": 19,
+                "expanded": "true"
+              }
+            ]
+          },
+          "collapseAll": {
+            "jsMarker": true,
+            "mode": "naive",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "R4PANELBRAVO",
+            "mainScrollTop": 11,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": "",
+                "hiddenProperty": true,
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1019,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": "",
+                "hiddenProperty": true,
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1057,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": "",
+                "hiddenProperty": true,
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1095,
+                "textHeight": 19,
+                "expanded": "false"
+              }
+            ]
+          },
+          "textFragmentLink": {
+            "jsMarker": true,
+            "mode": "naive",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "",
+            "mainScrollTop": 589,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": "",
+                "hiddenProperty": true,
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 460,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": "",
+                "hiddenProperty": true,
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 498,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": "",
+                "hiddenProperty": true,
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 536,
+                "textHeight": 19,
+                "expanded": "false"
+              }
+            ],
+            "location": "http://127.0.0.1:4174/tmu-course-guides/next/spike/?accordion=naive&motion=off",
+            "trustedEventsAdded": 0
+          }
+        },
+        "until-found": {
+          "pageErrors": [],
+          "initial": {
+            "jsMarker": true,
+            "mode": "until-found",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "",
+            "mainScrollTop": 0,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1030,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1049,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1068,
+                "textHeight": 19,
+                "expanded": "false"
+              }
+            ]
+          },
+          "windowFind": {
+            "returnValue": false,
+            "after": {
+              "jsMarker": true,
+              "mode": "until-found",
+              "beforematchSupported": true,
+              "contentVisibilitySupported": true,
+              "beforematchCount": "0",
+              "trustedBeforematchCount": "0",
+              "nativeEvents": [],
+              "selection": "",
+              "mainScrollTop": 0,
+              "documentScrollTop": 0,
+              "panels": [
+                {
+                  "id": "alpha",
+                  "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                  "hiddenAttribute": "until-found",
+                  "hiddenProperty": "until-found",
+                  "state": "closed",
+                  "display": "block",
+                  "contentVisibility": "hidden",
+                  "height": 0,
+                  "top": 1030,
+                  "textHeight": 19,
+                  "expanded": "false"
+                },
+                {
+                  "id": "bravo",
+                  "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                  "hiddenAttribute": "until-found",
+                  "hiddenProperty": "until-found",
+                  "state": "closed",
+                  "display": "block",
+                  "contentVisibility": "hidden",
+                  "height": 0,
+                  "top": 1049,
+                  "textHeight": 19,
+                  "expanded": "false"
+                },
+                {
+                  "id": "charlie",
+                  "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                  "hiddenAttribute": "until-found",
+                  "hiddenProperty": "until-found",
+                  "state": "closed",
+                  "display": "block",
+                  "contentVisibility": "hidden",
+                  "height": 0,
+                  "top": 1068,
+                  "textHeight": 19,
+                  "expanded": "false"
+                }
+              ]
+            }
+          },
+          "expandAll": {
+            "jsMarker": true,
+            "mode": "until-found",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "",
+            "mainScrollTop": 11,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1019,
+                "textHeight": 19,
+                "expanded": "true"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1057,
+                "textHeight": 19,
+                "expanded": "true"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1095,
+                "textHeight": 19,
+                "expanded": "true"
+              }
+            ]
+          },
+          "collapseAll": {
+            "jsMarker": true,
+            "mode": "until-found",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "",
+            "mainScrollTop": 11,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1019,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1038,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1057,
+                "textHeight": 19,
+                "expanded": "false"
+              }
+            ]
+          },
+          "textFragmentLink": {
+            "jsMarker": true,
+            "mode": "until-found",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "1",
+            "trustedBeforematchCount": "1",
+            "nativeEvents": [
+              {
+                "trusted": true,
+                "panel": "bravo",
+                "hidden": "until-found"
+              }
+            ],
+            "selection": "",
+            "mainScrollTop": 570,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 479,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 498,
+                "textHeight": 19,
+                "expanded": "true"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 536,
+                "textHeight": 19,
+                "expanded": "false"
+              }
+            ],
+            "location": "http://127.0.0.1:4174/tmu-course-guides/next/spike/?accordion=until-found&motion=off",
+            "trustedEventsAdded": 1
+          }
+        },
+        "no-js-safe": {
+          "pageErrors": [],
+          "initial": {
+            "jsMarker": true,
+            "mode": "no-js-safe",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "",
+            "mainScrollTop": 0,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1030,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1049,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1068,
+                "textHeight": 19,
+                "expanded": "false"
+              }
+            ]
+          },
+          "windowFind": {
+            "returnValue": false,
+            "after": {
+              "jsMarker": true,
+              "mode": "no-js-safe",
+              "beforematchSupported": true,
+              "contentVisibilitySupported": true,
+              "beforematchCount": "0",
+              "trustedBeforematchCount": "0",
+              "nativeEvents": [],
+              "selection": "",
+              "mainScrollTop": 0,
+              "documentScrollTop": 0,
+              "panels": [
+                {
+                  "id": "alpha",
+                  "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                  "hiddenAttribute": "until-found",
+                  "hiddenProperty": "until-found",
+                  "state": "closed",
+                  "display": "block",
+                  "contentVisibility": "hidden",
+                  "height": 0,
+                  "top": 1030,
+                  "textHeight": 19,
+                  "expanded": "false"
+                },
+                {
+                  "id": "bravo",
+                  "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                  "hiddenAttribute": "until-found",
+                  "hiddenProperty": "until-found",
+                  "state": "closed",
+                  "display": "block",
+                  "contentVisibility": "hidden",
+                  "height": 0,
+                  "top": 1049,
+                  "textHeight": 19,
+                  "expanded": "false"
+                },
+                {
+                  "id": "charlie",
+                  "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                  "hiddenAttribute": "until-found",
+                  "hiddenProperty": "until-found",
+                  "state": "closed",
+                  "display": "block",
+                  "contentVisibility": "hidden",
+                  "height": 0,
+                  "top": 1068,
+                  "textHeight": 19,
+                  "expanded": "false"
+                }
+              ]
+            }
+          },
+          "expandAll": {
+            "jsMarker": true,
+            "mode": "no-js-safe",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "",
+            "mainScrollTop": 11,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1019,
+                "textHeight": 19,
+                "expanded": "true"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1057,
+                "textHeight": 19,
+                "expanded": "true"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1095,
+                "textHeight": 19,
+                "expanded": "true"
+              }
+            ]
+          },
+          "collapseAll": {
+            "jsMarker": true,
+            "mode": "no-js-safe",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "",
+            "mainScrollTop": 11,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1019,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1038,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1057,
+                "textHeight": 19,
+                "expanded": "false"
+              }
+            ]
+          },
+          "textFragmentLink": {
+            "jsMarker": true,
+            "mode": "no-js-safe",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "",
+            "mainScrollTop": 11,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1038,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1057,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1076,
+                "textHeight": 19,
+                "expanded": "false"
+              }
+            ],
+            "location": "http://127.0.0.1:4174/tmu-course-guides/next/spike/?accordion=no-js-safe&motion=off",
+            "trustedEventsAdded": 0
+          }
+        }
+      },
+      "version": "154.0.8037.57",
+      "noJavaScript": {
+        "jsMarker": false,
+        "mode": "no-js-safe",
+        "beforematchSupported": true,
+        "contentVisibilitySupported": true,
+        "beforematchCount": "0",
+        "trustedBeforematchCount": "0",
+        "nativeEvents": [],
+        "selection": "",
+        "mainScrollTop": 0,
+        "documentScrollTop": 0,
+        "panels": [
+          {
+            "id": "alpha",
+            "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+            "hiddenAttribute": null,
+            "hiddenProperty": false,
+            "state": "closed",
+            "display": "block",
+            "contentVisibility": "visible",
+            "height": 19,
+            "top": 350,
+            "textHeight": 19,
+            "expanded": "false"
+          },
+          {
+            "id": "bravo",
+            "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+            "hiddenAttribute": null,
+            "hiddenProperty": false,
+            "state": "closed",
+            "display": "block",
+            "contentVisibility": "visible",
+            "height": 19,
+            "top": 388,
+            "textHeight": 19,
+            "expanded": "false"
+          },
+          {
+            "id": "charlie",
+            "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+            "hiddenAttribute": null,
+            "hiddenProperty": false,
+            "state": "closed",
+            "display": "block",
+            "contentVisibility": "visible",
+            "height": 19,
+            "top": 426,
+            "textHeight": 19,
+            "expanded": "false"
+          }
+        ],
+        "playwrightVisible": {
+          "alpha": true,
+          "bravo": true,
+          "charlie": true
+        }
+      }
+    },
+    "webkit": {
+      "modes": {
+        "naive": {
+          "pageErrors": [],
+          "initial": {
+            "jsMarker": true,
+            "mode": "naive",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "",
+            "mainScrollTop": 0,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": "",
+                "hiddenProperty": true,
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1030,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": "",
+                "hiddenProperty": true,
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1068,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": "",
+                "hiddenProperty": true,
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1106,
+                "textHeight": 19,
+                "expanded": "false"
+              }
+            ]
+          },
+          "windowFind": {
+            "returnValue": true,
+            "after": {
+              "jsMarker": true,
+              "mode": "naive",
+              "beforematchSupported": true,
+              "contentVisibilitySupported": true,
+              "beforematchCount": "0",
+              "trustedBeforematchCount": "0",
+              "nativeEvents": [],
+              "selection": "R4PANELBRAVO",
+              "mainScrollTop": 578,
+              "documentScrollTop": 0,
+              "panels": [
+                {
+                  "id": "alpha",
+                  "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                  "hiddenAttribute": "",
+                  "hiddenProperty": true,
+                  "state": "closed",
+                  "display": "block",
+                  "contentVisibility": "visible",
+                  "height": 19,
+                  "top": 452,
+                  "textHeight": 19,
+                  "expanded": "false"
+                },
+                {
+                  "id": "bravo",
+                  "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                  "hiddenAttribute": "",
+                  "hiddenProperty": true,
+                  "state": "closed",
+                  "display": "block",
+                  "contentVisibility": "visible",
+                  "height": 19,
+                  "top": 490,
+                  "textHeight": 19,
+                  "expanded": "false"
+                },
+                {
+                  "id": "charlie",
+                  "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                  "hiddenAttribute": "",
+                  "hiddenProperty": true,
+                  "state": "closed",
+                  "display": "block",
+                  "contentVisibility": "visible",
+                  "height": 19,
+                  "top": 528,
+                  "textHeight": 19,
+                  "expanded": "false"
+                }
+              ]
+            }
+          },
+          "expandAll": {
+            "jsMarker": true,
+            "mode": "naive",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "R4PANELBRAVO",
+            "mainScrollTop": 578,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 452,
+                "textHeight": 19,
+                "expanded": "true"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 490,
+                "textHeight": 19,
+                "expanded": "true"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 528,
+                "textHeight": 19,
+                "expanded": "true"
+              }
+            ]
+          },
+          "collapseAll": {
+            "jsMarker": true,
+            "mode": "naive",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "R4PANELBRAVO",
+            "mainScrollTop": 578,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": "",
+                "hiddenProperty": true,
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 452,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": "",
+                "hiddenProperty": true,
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 490,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": "",
+                "hiddenProperty": true,
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 528,
+                "textHeight": 19,
+                "expanded": "false"
+              }
+            ]
+          },
+          "textFragmentLink": {
+            "jsMarker": true,
+            "mode": "naive",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "",
+            "mainScrollTop": 597,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": "",
+                "hiddenProperty": true,
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 452,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": "",
+                "hiddenProperty": true,
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 490,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": "",
+                "hiddenProperty": true,
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 528,
+                "textHeight": 19,
+                "expanded": "false"
+              }
+            ],
+            "location": "http://127.0.0.1:4174/tmu-course-guides/next/spike/?accordion=naive&motion=off",
+            "trustedEventsAdded": 0
+          }
+        },
+        "until-found": {
+          "pageErrors": [],
+          "initial": {
+            "jsMarker": true,
+            "mode": "until-found",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "",
+            "mainScrollTop": 0,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1030,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1049,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1068,
+                "textHeight": 19,
+                "expanded": "false"
+              }
+            ]
+          },
+          "windowFind": {
+            "returnValue": true,
+            "after": {
+              "jsMarker": true,
+              "mode": "until-found",
+              "beforematchSupported": true,
+              "contentVisibilitySupported": true,
+              "beforematchCount": "0",
+              "trustedBeforematchCount": "0",
+              "nativeEvents": [],
+              "selection": "",
+              "mainScrollTop": 0,
+              "documentScrollTop": 0,
+              "panels": [
+                {
+                  "id": "alpha",
+                  "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                  "hiddenAttribute": "until-found",
+                  "hiddenProperty": "until-found",
+                  "state": "closed",
+                  "display": "block",
+                  "contentVisibility": "hidden",
+                  "height": 0,
+                  "top": 1030,
+                  "textHeight": 19,
+                  "expanded": "false"
+                },
+                {
+                  "id": "bravo",
+                  "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                  "hiddenAttribute": "until-found",
+                  "hiddenProperty": "until-found",
+                  "state": "closed",
+                  "display": "block",
+                  "contentVisibility": "hidden",
+                  "height": 0,
+                  "top": 1049,
+                  "textHeight": 19,
+                  "expanded": "false"
+                },
+                {
+                  "id": "charlie",
+                  "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                  "hiddenAttribute": "until-found",
+                  "hiddenProperty": "until-found",
+                  "state": "closed",
+                  "display": "block",
+                  "contentVisibility": "hidden",
+                  "height": 0,
+                  "top": 1068,
+                  "textHeight": 19,
+                  "expanded": "false"
+                }
+              ]
+            }
+          },
+          "expandAll": {
+            "jsMarker": true,
+            "mode": "until-found",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "R4PANELBRAVO",
+            "mainScrollTop": 11,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1019,
+                "textHeight": 19,
+                "expanded": "true"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1057,
+                "textHeight": 19,
+                "expanded": "true"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1095,
+                "textHeight": 19,
+                "expanded": "true"
+              }
+            ]
+          },
+          "collapseAll": {
+            "jsMarker": true,
+            "mode": "until-found",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "",
+            "mainScrollTop": 11,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1019,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1038,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1057,
+                "textHeight": 19,
+                "expanded": "false"
+              }
+            ]
+          },
+          "textFragmentLink": {
+            "jsMarker": true,
+            "mode": "until-found",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "1",
+            "trustedBeforematchCount": "1",
+            "nativeEvents": [
+              {
+                "trusted": true,
+                "panel": "bravo",
+                "hidden": "until-found"
+              }
+            ],
+            "selection": "",
+            "mainScrollTop": 578,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 471,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 490,
+                "textHeight": 19,
+                "expanded": "true"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 528,
+                "textHeight": 19,
+                "expanded": "false"
+              }
+            ],
+            "location": "http://127.0.0.1:4174/tmu-course-guides/next/spike/?accordion=until-found&motion=off",
+            "trustedEventsAdded": 1
+          }
+        },
+        "no-js-safe": {
+          "pageErrors": [],
+          "initial": {
+            "jsMarker": true,
+            "mode": "no-js-safe",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "",
+            "mainScrollTop": 0,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1030,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1049,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1068,
+                "textHeight": 19,
+                "expanded": "false"
+              }
+            ]
+          },
+          "windowFind": {
+            "returnValue": true,
+            "after": {
+              "jsMarker": true,
+              "mode": "no-js-safe",
+              "beforematchSupported": true,
+              "contentVisibilitySupported": true,
+              "beforematchCount": "0",
+              "trustedBeforematchCount": "0",
+              "nativeEvents": [],
+              "selection": "",
+              "mainScrollTop": 0,
+              "documentScrollTop": 0,
+              "panels": [
+                {
+                  "id": "alpha",
+                  "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                  "hiddenAttribute": "until-found",
+                  "hiddenProperty": "until-found",
+                  "state": "closed",
+                  "display": "block",
+                  "contentVisibility": "hidden",
+                  "height": 0,
+                  "top": 1030,
+                  "textHeight": 19,
+                  "expanded": "false"
+                },
+                {
+                  "id": "bravo",
+                  "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                  "hiddenAttribute": "until-found",
+                  "hiddenProperty": "until-found",
+                  "state": "closed",
+                  "display": "block",
+                  "contentVisibility": "hidden",
+                  "height": 0,
+                  "top": 1049,
+                  "textHeight": 19,
+                  "expanded": "false"
+                },
+                {
+                  "id": "charlie",
+                  "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                  "hiddenAttribute": "until-found",
+                  "hiddenProperty": "until-found",
+                  "state": "closed",
+                  "display": "block",
+                  "contentVisibility": "hidden",
+                  "height": 0,
+                  "top": 1068,
+                  "textHeight": 19,
+                  "expanded": "false"
+                }
+              ]
+            }
+          },
+          "expandAll": {
+            "jsMarker": true,
+            "mode": "no-js-safe",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "R4PANELBRAVO",
+            "mainScrollTop": 11,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1019,
+                "textHeight": 19,
+                "expanded": "true"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1057,
+                "textHeight": 19,
+                "expanded": "true"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 1095,
+                "textHeight": 19,
+                "expanded": "true"
+              }
+            ]
+          },
+          "collapseAll": {
+            "jsMarker": true,
+            "mode": "no-js-safe",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "0",
+            "trustedBeforematchCount": "0",
+            "nativeEvents": [],
+            "selection": "",
+            "mainScrollTop": 11,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1019,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1038,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 1057,
+                "textHeight": 19,
+                "expanded": "false"
+              }
+            ]
+          },
+          "textFragmentLink": {
+            "jsMarker": true,
+            "mode": "no-js-safe",
+            "beforematchSupported": true,
+            "contentVisibilitySupported": true,
+            "beforematchCount": "1",
+            "trustedBeforematchCount": "1",
+            "nativeEvents": [
+              {
+                "trusted": true,
+                "panel": "bravo",
+                "hidden": "until-found"
+              }
+            ],
+            "selection": "",
+            "mainScrollTop": 578,
+            "documentScrollTop": 0,
+            "panels": [
+              {
+                "id": "alpha",
+                "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 471,
+                "textHeight": 19,
+                "expanded": "false"
+              },
+              {
+                "id": "bravo",
+                "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+                "hiddenAttribute": null,
+                "hiddenProperty": false,
+                "state": "open",
+                "display": "block",
+                "contentVisibility": "visible",
+                "height": 19,
+                "top": 490,
+                "textHeight": 19,
+                "expanded": "true"
+              },
+              {
+                "id": "charlie",
+                "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+                "hiddenAttribute": "until-found",
+                "hiddenProperty": "until-found",
+                "state": "closed",
+                "display": "block",
+                "contentVisibility": "hidden",
+                "height": 0,
+                "top": 528,
+                "textHeight": 19,
+                "expanded": "false"
+              }
+            ],
+            "location": "http://127.0.0.1:4174/tmu-course-guides/next/spike/?accordion=no-js-safe&motion=off",
+            "trustedEventsAdded": 1
+          }
+        }
+      },
+      "version": "26.5",
+      "noJavaScript": {
+        "jsMarker": false,
+        "mode": "no-js-safe",
+        "beforematchSupported": true,
+        "contentVisibilitySupported": true,
+        "beforematchCount": "0",
+        "trustedBeforematchCount": "0",
+        "nativeEvents": [],
+        "selection": "",
+        "mainScrollTop": 0,
+        "documentScrollTop": 0,
+        "panels": [
+          {
+            "id": "alpha",
+            "text": "R4PANELALPHA: this explanation must remain in the exported HTML.",
+            "hiddenAttribute": null,
+            "hiddenProperty": false,
+            "state": "closed",
+            "display": "block",
+            "contentVisibility": "visible",
+            "height": 19,
+            "top": 350,
+            "textHeight": 19,
+            "expanded": "false"
+          },
+          {
+            "id": "bravo",
+            "text": "R4PANELBRAVO: browser find should reveal this initially closed explanation.",
+            "hiddenAttribute": null,
+            "hiddenProperty": false,
+            "state": "closed",
+            "display": "block",
+            "contentVisibility": "visible",
+            "height": 19,
+            "top": 388,
+            "textHeight": 19,
+            "expanded": "false"
+          },
+          {
+            "id": "charlie",
+            "text": "R4PANELCHARLIE: without JavaScript every explanation must remain readable.",
+            "hiddenAttribute": null,
+            "hiddenProperty": false,
+            "state": "closed",
+            "display": "block",
+            "contentVisibility": "visible",
+            "height": 19,
+            "top": 426,
+            "textHeight": 19,
+            "expanded": "false"
+          }
+        ],
+        "playwrightVisible": {
+          "alpha": true,
+          "bravo": true,
+          "charlie": true
+        }
+      }
+    }
+  },
+  "staticHtml": {
+    "allTermsPresent": true,
+    "panelCount": 3,
+    "untilFoundAttributeCount": 0,
+    "jsMarkerAddedByBootScript": true,
+    "sourceMode": "no-js-safe (query settings are applied after hydration)"
+  }
+}

@@ -1,0 +1,56 @@
+
+> portofoliomigration@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.29
+
+   Linting and checking validity of types ...
+
+./src/components/canvas/fluid/effect/Fluid.jsx
+7:56  Warning: React Hook useMemo has a missing dependency: 'props'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+7:57  Warning: React Hook useMemo has a complex expression in the dependency array. Extract it to a separate variable so it can be statically checked.  react-hooks/exhaustive-deps
+
+./src/components/canvas/fluid/hooks/useOpts.jsx
+28:5  Warning: React Hook useMemo has missing dependencies: 'coarse' and 'isMobile'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/components/canvas/fluid/hooks/usePointerEvents.jsx
+12:7  Warning: Unexpected console statement.  no-console
+
+./src/pages/course/components/portal/Portal.jsx
+27:6  Warning: React Hook useEffect has a missing dependency: 'handleVisibility'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Collecting page data ...
+   Generating static pages (0/9) ...
+   Generating static pages (2/9)
+   Generating static pages (4/9)
+   Generating static pages (6/9)
+ ✓ Generating static pages (9/9)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (pages)                              Size     First Load JS
+┌ ○ /                                      785 kB         1.23 MB
+├   └ css/8cfe6715c118d52e.css             3.39 kB
+├   /_app                                  0 B             439 kB
+├ ● /[course]                              18 kB           461 kB
+├   └ css/6cf608b7c10ea4b0.css             7 kB
+├   ├ /cen100
+├   ├ /mth140
+├   └ /mth141
+├ ○ /404                                   463 B           440 kB
+├ ○ /courses                               2.14 kB         442 kB
+├   └ css/ded4229a6c63ba9a.css             1.19 kB
+├ ○ /privacy                               1.12 kB         440 kB
+├   └ css/615e3d1fb294f3e1.css             425 B
+└ ○ /spike                                 10.6 kB         450 kB
++ First Load JS shared by all              445 kB
+  ├ chunks/framework-06b7b33409802422.js   44.9 kB
+  ├ chunks/main-905a6bcb4fed202b.js        34.1 kB
+  ├ chunks/pages/_app-198f958987e827c1.js  358 kB
+  └ other shared chunks (total)            8.43 kB
+
+○  (Static)  prerendered as static content
+●  (SSG)     prerendered as static HTML (uses getStaticProps)

@@ -1,0 +1,2858 @@
+TAP version 13
+# Subtest: inside the shared route document every asset has exactly one URL
+ok 1 - inside the shared route document every asset has exactly one URL
+  ---
+  duration_ms: 14.629202
+  type: 'test'
+  ...
+# Subtest: the four route documents name the same shell scripts
+ok 2 - the four route documents name the same shell scripts
+  ---
+  duration_ms: 0.956884
+  type: 'test'
+  ...
+# Subtest: changed assets never reuse a URL the deployed site served
+ok 3 - changed assets never reuse a URL the deployed site served
+  ---
+  duration_ms: 1861.183717
+  type: 'test'
+  ...
+# Subtest: the patched shader replaces the stock vertex chunks with bendPosition and bendNormal, keyed by BEND_KEY
+ok 4 - the patched shader replaces the stock vertex chunks with bendPosition and bendNormal, keyed by BEND_KEY
+  ---
+  duration_ms: 32.839386
+  type: 'test'
+  ...
+# Subtest: applyBend is idempotent and every bent material shares one program key per variant
+ok 5 - applyBend is idempotent and every bent material shares one program key per variant
+  ---
+  duration_ms: 0.775747
+  type: 'test'
+  ...
+# Subtest: R(t, v) stays within [W·MIN_RADIUS_RATIO, W/π], tight at the ends, the W/π hood mid-turn, tighter when fast
+ok 6 - R(t, v) stays within [W·MIN_RADIUS_RATIO, W/π], tight at the ends, the W/π hood mid-turn, tighter when fast
+  ---
+  duration_ms: 11.281784
+  type: 'test'
+  ...
+# Subtest: the segments used by Sheet.hit equal the mesh x segments per tier, and hits land on the drawn chords
+ok 7 - the segments used by Sheet.hit equal the mesh x segments per tier, and hits land on the drawn chords
+  ---
+  duration_ms: 23.818724
+  type: 'test'
+  ...
+# Subtest: a sheet is endpoint-safe: anchors, normals and bounds stay finite at turn 0 and 1 and every radius
+ok 8 - a sheet is endpoint-safe: anchors, normals and bounds stay finite at turn 0 and 1 and every radius
+  ---
+  duration_ms: 6.863904
+  type: 'test'
+  ...
+# Subtest: the gutter valley is capped by the half-block and fades out on a turning sheet
+ok 9 - the gutter valley is capped by the half-block and fades out on a turning sheet
+  ---
+  duration_ms: 0.46012
+  type: 'test'
+  ...
+# Subtest: bendPoint samples projected through the scene camera pick back to the same face and (x, y) within half a segment
+ok 10 - bendPoint samples projected through the scene camera pick back to the same face and (x, y) within half a segment
+  ---
+  duration_ms: 268.459134
+  type: 'test'
+  ...
+# Subtest: a static page under a sheet never wins, and with no sheet the static pages pick analytically
+ok 11 - a static page under a sheet never wins, and with no sheet the static pages pick analytically
+  ---
+  duration_ms: 25.793802
+  type: 'test'
+  ...
+# Subtest: corners and drag zones follow the flat page coordinates
+ok 12 - corners and drag zones follow the flat page coordinates
+  ---
+  duration_ms: 0.222499
+  type: 'test'
+  ...
+# Subtest: hidden, folded or non-interactive pop-ups never win; a shown, settled pop-up does
+ok 13 - hidden, folded or non-interactive pop-ups never win; a shown, settled pop-up does
+  ---
+  duration_ms: 23.467844
+  type: 'test'
+  ...
+# Subtest: the arc table keeps the spec sizes and the wave meets its flat-fold condition
+ok 14 - the arc table keeps the spec sizes and the wave meets its flat-fold condition
+  ---
+  duration_ms: 3.889464
+  type: 'test'
+  ...
+# Subtest: heights follow final > midterm > quiz > minor, with weight only a bounded cue inside a category
+ok 15 - heights follow final > midterm > quiz > minor, with weight only a bounded cue inside a category
+  ---
+  duration_ms: 1.221084
+  type: 'test'
+  ...
+# Subtest: a hinge sweep stays finite over θ in [0, π] (1/1000 steps and ±1e−6 at both ends)
+ok 16 - a hinge sweep stays finite over θ in [0, π] (1/1000 steps and ±1e−6 at both ends)
+  ---
+  duration_ms: 362.583928
+  type: 'test'
+  ...
+# Subtest: everything is coplanar when the book is closed (θ = 0)
+ok 17 - everything is coplanar when the book is closed (θ = 0)
+  ---
+  duration_ms: 0.478617
+  type: 'test'
+  ...
+# Subtest: design heights hold within 1% when the book lies open (θ = π)
+ok 18 - design heights hold within 1% when the book lies open (θ = π)
+  ---
+  duration_ms: 2.967797
+  type: 'test'
+  ...
+# Subtest: chords stay exact while flat = 0: |LM| and |RM| constant to 1e−9 over the sweep
+ok 19 - chords stay exact while flat = 0: |LM| and |RM| constant to 1e−9 over the sweep
+  ---
+  duration_ms: 27.412504
+  type: 'test'
+  ...
+# Subtest: completed pieces lie flat: flat = 1 keeps every strip point within 0.5 mm of its pages at any θ
+ok 20 - completed pieces lie flat: flat = 1 keeps every strip point within 0.5 mm of its pages at any θ
+  ---
+  duration_ms: 23.586485
+  type: 'test'
+  ...
+# Subtest: a spread holds at most three pieces, highest rank toward the head, footprints never overlapping
+ok 21 - a spread holds at most three pieces, highest rank toward the head, footprints never overlapping
+  ---
+  duration_ms: 1.017193
+  type: 'test'
+  ...
+# Subtest: hood clearance: outgoing and incoming pieces stay on their side of the turning sheet (≤ 0.5 mm)
+ok 22 - hood clearance: outgoing and incoming pieces stay on their side of the turning sheet (≤ 0.5 mm)
+  ---
+  duration_ms: 11717.75254
+  type: 'test'
+  ...
+# Subtest: the analytic sheet side test agrees with sampled bendPoint geometry
+ok 23 - the analytic sheet side test agrees with sampled bendPoint geometry
+  ---
+  duration_ms: 129.319459
+  type: 'test'
+  ...
+# Subtest: without a sheet the linkage is never pressed, and pressing reports how much
+ok 24 - without a sheet the linkage is never pressed, and pressing reports how much
+  ---
+  duration_ms: 0.462353
+  type: 'test'
+  ...
+# Subtest: stamp angles are deterministic and within −10° to −4°
+ok 25 - stamp angles are deterministic and within −10° to −4°
+  ---
+  duration_ms: 0.242188
+  type: 'test'
+  ...
+# Subtest: a popup set shows ≤ 3 pieces whose pickable meshes are the visible geometry
+ok 26 - a popup set shows ≤ 3 pieces whose pickable meshes are the visible geometry
+  ---
+  duration_ms: 9.450078
+  type: 'test'
+  ...
+# Subtest: completion animates flat → desaturate → stamp with motion, and cuts without it
+ok 27 - completion animates flat → desaturate → stamp with motion, and cuts without it
+  ---
+  duration_ms: 16.564552
+  type: 'test'
+  ...
+# Subtest: arrival rises largest first; urgency glows only in the dark theme at high tier
+ok 28 - arrival rises largest first; urgency glows only in the dark theme at high tier
+  ---
+  duration_ms: 13.717374
+  type: 'test'
+  ...
+# Subtest: a new pose re-solves when block heights or the sheet change, even at the same θ
+ok 29 - a new pose re-solves when block heights or the sheet change, even at the same θ
+  ---
+  duration_ms: 3.134072
+  type: 'test'
+  ...
+# Subtest: MTH140 check values (now 2026-10-12, no section): resolver strings verbatim
+ok 30 - MTH140 check values (now 2026-10-12, no section): resolver strings verbatim
+  ---
+  duration_ms: 97.900304
+  type: 'test'
+  ...
+# Subtest: with section 1, quiz 2 has its day and a row time copied from the resolver
+ok 31 - with section 1, quiz 2 has its day and a row time copied from the resolver
+  ---
+  duration_ms: 100.247022
+  type: 'test'
+  ...
+# Subtest: no composed times: never 23:59, never countdown digits, quiz weeks without a section have no time
+ok 32 - no composed times: never 23:59, never countdown digits, quiz weeks without a section have no time
+  ---
+  duration_ms: 2684.38834
+  type: 'test'
+  ...
+# Subtest: pending spread: EXAMS, Date pending, no days and no numeral
+ok 33 - pending spread: EXAMS, Date pending, no days and no numeral
+  ---
+  duration_ms: 40.644422
+  type: 'test'
+  ...
+# Subtest: partial weeks and week labels follow the interface copy
+ok 34 - partial weeks and week labels follow the interface copy
+  ---
+  duration_ms: 118.791219
+  type: 'test'
+  ...
+# Subtest: relative kickers, including BEFORE TERM and AFTER TERM
+ok 35 - relative kickers, including BEFORE TERM and AFTER TERM
+  ---
+  duration_ms: 482.317801
+  type: 'test'
+  ...
+# Subtest: chips and urgency: DONE, PASSED, and NOW / SOON / NEXT for the target only
+ok 36 - chips and urgency: DONE, PASSED, and NOW / SOON / NEXT for the target only
+  ---
+  duration_ms: 373.294833
+  type: 'test'
+  ...
+# Subtest: completed entries keep their pop-up slot and are announced as recorded in this browser
+ok 37 - completed entries keep their pop-up slot and are announced as recorded in this browser
+  ---
+  duration_ms: 60.314603
+  type: 'test'
+  ...
+# Subtest: at most three pop-ups by rank; the rest are counted and printed as more
+ok 38 - at most three pop-ups by rank; the rest are counted and printed as more
+  ---
+  duration_ms: 12.870402
+  type: 'test'
+  ...
+# Subtest: CEN100: every entry is the resolver’s, and the undated final keeps “Date pending”
+ok 39 - CEN100: every entry is the resolver’s, and the undated final keeps “Date pending”
+  ---
+  duration_ms: 121.164718
+  type: 'test'
+  ...
+# Subtest: signature is stable, ignores the clock between meaningful changes, and changes on completion or section
+ok 40 - signature is stable, ignores the clock between meaningful changes, and changes on completion or section
+  ---
+  duration_ms: 249.746228
+  type: 'test'
+  ...
+# Subtest: views are frozen and accept a spread index
+ok 41 - views are frozen and accept a spread index
+  ---
+  duration_ms: 11.7249
+  type: 'test'
+  ...
+# Subtest: paletteEntries: one week command per spread, labelled with the copy
+ok 42 - paletteEntries: one week command per spread, labelled with the copy
+  ---
+  duration_ms: 20.604994
+  type: 'test'
+  ...
+# Subtest: book-state is pure: no document, storage, timers or Three
+ok 43 - book-state is pure: no document, storage, timers or Three
+  ---
+  duration_ms: 17.74723
+  type: 'test'
+  ...
+# Subtest: initial snapshot: today selected, settled, frozen and cached until something changes
+ok 44 - initial snapshot: today selected, settled, frozen and cached until something changes
+  ---
+  duration_ms: 0.632785
+  type: 'test'
+  ...
+# Subtest: commands clamp their target to whole spreads
+ok 45 - commands clamp their target to whole spreads
+  ---
+  duration_ms: 0.543633
+  type: 'test'
+  ...
+# Subtest: cut policy, animate:false and a missing animator all swap synchronously
+ok 46 - cut policy, animate:false and a missing animator all swap synchronously
+  ---
+  duration_ms: 0.421483
+  type: 'test'
+  ...
+# Subtest: fade policy crossfades through the animator and settles when it resolves
+ok 47 - fade policy crossfades through the animator and settles when it resolves
+  ---
+  duration_ms: 0.250661
+  type: 'test'
+  ...
+# Subtest: full policy turns through the animator; animation frames reach continuous subscribers only
+ok 48 - full policy turns through the animator; animation frames reach continuous subscribers only
+  ---
+  duration_ms: 9.033512
+  type: 'test'
+  ...
+# Subtest: a new command retargets: the old promise resolves cancelled and key repeats collapse
+ok 49 - a new command retargets: the old promise resolves cancelled and key repeats collapse
+  ---
+  duration_ms: 23.838092
+  type: 'test'
+  ...
+# Subtest: asking again for the page already turning there joins that turn
+ok 50 - asking again for the page already turning there joins that turn
+  ---
+  duration_ms: 0.706404
+  type: 'test'
+  ...
+# Subtest: lock precedence: a drag or swipe owns the paper over scroll; grab needs full motion
+ok 51 - lock precedence: a drag or swipe owns the paper over scroll; grab needs full motion
+  ---
+  duration_ms: 4.406352
+  type: 'test'
+  ...
+# Subtest: a grab catches a turning page; a command cancels a gesture
+ok 52 - a grab catches a turning page; a command cancels a gesture
+  ---
+  duration_ms: 0.31805
+  type: 'test'
+  ...
+# Subtest: index timing: commands at once, scroll at a dwell, gestures at landing
+ok 53 - index timing: commands at once, scroll at a dwell, gestures at landing
+  ---
+  duration_ms: 0.71691
+  type: 'test'
+  ...
+# Subtest: landing rules: velocity picks the side, duration is clamp(|Δ|·900, 180, 600)
+ok 54 - landing rules: velocity picks the side, duration is clamp(|Δ|·900, 180, 600)
+  ---
+  duration_ms: 0.935834
+  type: 'test'
+  ...
+# Subtest: anchorDirty is set by commands and releases and read once
+ok 55 - anchorDirty is set by commands and releases and read once
+  ---
+  duration_ms: 0.241207
+  type: 'test'
+  ...
+# Subtest: discrete subscribers hear select, settle and weeks; continuous ones also hear turn
+ok 56 - discrete subscribers hear select, settle and weeks; continuous ones also hear turn
+  ---
+  duration_ms: 0.563513
+  type: 'test'
+  ...
+# Subtest: a throwing subscriber is reported and does not silence the others
+ok 57 - a throwing subscriber is reported and does not silence the others
+  ---
+  duration_ms: 0.566567
+  type: 'test'
+  ...
+# Subtest: setWeeks keeps the selection, clamps it, and accepts the same array to force a refresh
+ok 58 - setWeeks keeps the selection, clamps it, and accepts the same array to force a refresh
+  ---
+  duration_ms: 24.814816
+  type: 'test'
+  ...
+# Subtest: removing the animator mid-turn lands the page where it was going
+ok 59 - removing the animator mid-turn lands the page where it was going
+  ---
+  duration_ms: 0.382175
+  type: 'test'
+  ...
+# Subtest: a failing animator never traps the book
+ok 60 - a failing animator never traps the book
+  ---
+  duration_ms: 0.423967
+  type: 'test'
+  ...
+# Subtest: attach wires book-state, book-week and the palette book-open-week; detach unwires
+ok 61 - attach wires book-state, book-week and the palette book-open-week; detach unwires
+  ---
+  duration_ms: 1.242006
+  type: 'test'
+  ...
+# Subtest: dispose stops everything and later calls are harmless
+ok 62 - dispose stops everything and later calls are harmless
+  ---
+  duration_ms: 0.156251
+  type: 'test'
+  ...
+# Subtest: the controller stub plays the engine side of the contract on fake timers
+ok 63 - the controller stub plays the engine side of the contract on fake timers
+  ---
+  duration_ms: 14.165746
+  type: 'test'
+  ...
+# Subtest: faces are masks: only black and pure R, G or B fills, inked additively
+ok 64 - faces are masks: only black and pure R, G or B fills, inked additively
+  ---
+  duration_ms: 512.075052
+  type: 'test'
+  ...
+# Subtest: channels: printed ink in G, accent in B, pencil in R
+ok 65 - channels: printed ink in G, accent in B, pencil in R
+  ---
+  duration_ms: 31.214664
+  type: 'test'
+  ...
+# Subtest: wording comes from the view verbatim: no 23:59, no countdown digits, honest pending and quiz weeks
+ok 66 - wording comes from the view verbatim: no 23:59, no countdown digits, honest pending and quiz weeks
+  ---
+  duration_ms: 1010.800157
+  type: 'test'
+  ...
+# Subtest: a dated item without a time keeps "Time not posted"; completion and passed states print their words
+ok 67 - a dated item without a time keeps "Time not posted"; completion and passed states print their words
+  ---
+  duration_ms: 134.867611
+  type: 'test'
+  ...
+# Subtest: poster faces print no words and no digits (ink 0)
+ok 68 - poster faces print no words and no digits (ink 0)
+  ---
+  duration_ms: 64.065457
+  type: 'test'
+  ...
+# Subtest: keep-out: verso text ends and recto text starts clear of the pop-up feet
+ok 69 - keep-out: verso text ends and recto text starts clear of the pop-up feet
+  ---
+  duration_ms: 204.030091
+  type: 'test'
+  ...
+# Subtest: informational text is at least 28 px; only caps labels and folios go smaller
+ok 70 - informational text is at least 28 px; only caps labels and folios go smaller
+  ---
+  duration_ms: 881.603127
+  type: 'test'
+  ...
+# Subtest: manual tracking works when the context has no letterSpacing
+ok 71 - manual tracking works when the context has no letterSpacing
+  ---
+  duration_ms: 57.012994
+  type: 'test'
+  ...
+# Subtest: repaints happen only when a signature changes; a theme change paints nothing
+ok 72 - repaints happen only when a signature changes; a theme change paints nothing
+  ---
+  duration_ms: 155.060084
+  type: 'test'
+  ...
+# Subtest: the bucket follows the on-screen page and the tier; compact below 260 css px; fonts bump the signature
+ok 73 - the bucket follows the on-screen page and the tier; compact below 260 css px; fonts bump the signature
+  ---
+  duration_ms: 77.858061
+  type: 'test'
+  ...
+# Subtest: picking regions: items, outer corners and the page
+ok 74 - picking regions: items, outer corners and the page
+  ---
+  duration_ms: 32.666731
+  type: 'test'
+  ...
+# Subtest: label slots keep the tag aspect, share one atlas and repaint only their own slot
+ok 75 - label slots keep the tag aspect, share one atlas and repaint only their own slot
+  ---
+  duration_ms: 102.420704
+  type: 'test'
+  ...
+# Subtest: LRU, pool and dispose keep memory bounded
+ok 76 - LRU, pool and dispose keep memory bounded
+  ---
+  duration_ms: 334.565027
+  type: 'test'
+  ...
+# Subtest: normal maps are unit length and seeded
+ok 77 - normal maps are unit length and seeded
+  ---
+  duration_ms: 33.265556
+  type: 'test'
+  ...
+# Subtest: CEN preserves saved ticks, personal records, profile and all assessment handles
+ok 78 - CEN preserves saved ticks, personal records, profile and all assessment handles
+  ---
+  duration_ms: 2671.913201
+  type: 'test'
+  ...
+# Subtest: CEN search, deep links, filters, calendar identifiers and Mark done/Undo retain their behavior
+ok 79 - CEN search, deep links, filters, calendar identifiers and Mark done/Undo retain their behavior
+  ---
+  duration_ms: 1673.648858
+  type: 'test'
+  ...
+# Subtest: importing the guide is inert until mount
+ok 80 - importing the guide is inert until mount
+  ---
+  duration_ms: 45.2918
+  type: 'test'
+  ...
+# Subtest: repeated CEN mount/unmount disposes every route owner and avoids duplicate action handlers
+ok 81 - repeated CEN mount/unmount disposes every route owner and avoids duplicate action handlers
+  ---
+  duration_ms: 2564.584341
+  type: 'test'
+  ...
+# Subtest: CEN owns its assessment controls when visuals moves a row outside the route region
+ok 82 - CEN owns its assessment controls when visuals moves a row outside the route region
+  ---
+  duration_ms: 953.523877
+  type: 'test'
+  ...
+# Subtest: an unfinished backup read cannot alter a remounted CEN route
+ok 83 - an unfinished backup read cannot alter a remounted CEN route
+  ---
+  duration_ms: 1753.757083
+  type: 'test'
+  ...
+# Subtest: CEN remains usable when access to local storage itself is denied
+ok 84 - CEN remains usable when access to local storage itself is denied
+  ---
+  duration_ms: 900.280282
+  type: 'test'
+  ...
+# Subtest: the colour preview initializes its guide before applying preview controls
+ok 85 - the colour preview initializes its guide before applying preview controls
+  ---
+  duration_ms: 734.91288
+  type: 'test'
+  ...
+# Subtest: extracted records are byte-for-byte the original records
+ok 86 - extracted records are byte-for-byte the original records
+  ---
+  duration_ms: 1.581007
+  type: 'test'
+  ...
+# Subtest: extracted records deep-equal the array in the pre-move root guide
+ok 87 - extracted records deep-equal the array in the pre-move root guide
+  ---
+  duration_ms: 21.318037
+  type: 'test'
+  ...
+# Subtest: one copy: pure module records also feed the asynchronous classic compatibility script
+ok 88 - one copy: pure module records also feed the asynchronous classic compatibility script
+  ---
+  duration_ms: 8.923498
+  type: 'test'
+  ...
+# Subtest: the CEN page mounts its guide first and keeps schedule/calendar code in the route module
+ok 89 - the CEN page mounts its guide first and keeps schedule/calendar code in the route module
+  ---
+  duration_ms: 1.095679
+  type: 'test'
+  ...
+# Subtest: each challenge accepts only its first incorrect step and lets other selections retry
+ok 90 - each challenge accepts only its first incorrect step and lets other selections retry
+  ---
+  duration_ms: 0.892609
+  type: 'test'
+  ...
+# Subtest: calculus correction examples and their plotted points agree
+ok 91 - calculus correction examples and their plotted points agree
+  ---
+  duration_ms: 0.210761
+  type: 'test'
+  ...
+# Subtest: linear algebra visual examples preserve their stated products and area
+ok 92 - linear algebra visual examples preserve their stated products and area
+  ---
+  duration_ms: 0.789527
+  type: 'test'
+  ...
+# Subtest: column-vector composition applies the rightmost matrix first
+ok 93 - column-vector composition applies the rightmost matrix first
+  ---
+  duration_ms: 2.095768
+  type: 'test'
+  ...
+# Subtest: every composition agrees with applying the operations in sequence
+ok 94 - every composition agrees with applying the operations in sequence
+  ---
+  duration_ms: 29.019461
+  type: 'test'
+  ...
+# Subtest: rotation playback preserves lengths and area rather than shrinking through a chord
+ok 95 - rotation playback preserves lengths and area rather than shrinking through a chord
+  ---
+  duration_ms: 0.442644
+  type: 'test'
+  ...
+# Subtest: playback stages meet continuously and end at the actual product
+ok 96 - playback stages meet continuously and end at the actual product
+  ---
+  duration_ms: 0.528601
+  type: 'test'
+  ...
+# Subtest: collapse makes zero area, reflection reverses orientation, and commuting pairs are recognized
+ok 97 - collapse makes zero area, reflection reverses orientation, and commuting pairs are recognized
+  ---
+  duration_ms: 0.258402
+  type: 'test'
+  ...
+# Subtest: shared camera stays finite and contains unit-square corners through all operation orders
+ok 98 - shared camera stays finite and contains unit-square corners through all operation orders
+  ---
+  duration_ms: 10.48118
+  type: 'test'
+  ...
+# circuit: 19 meshes, 30948 triangles
+# calculus: 4 meshes, 23470 triangles
+# algebra: 9 meshes, 8076 triangles
+# Subtest: animated secants join two curve points and idle tangents have derivative 2x
+ok 99 - animated secants join two curve points and idle tangents have derivative 2x
+  ---
+  duration_ms: 1.791338
+  type: 'test'
+  ...
+# Subtest: header shear and rotation preserve oriented unit area through entire loop
+ok 100 - header shear and rotation preserve oriented unit area through entire loop
+  ---
+  duration_ms: 12.418144
+  type: 'test'
+  ...
+# Subtest: signals travel by distance and reach route endpoints
+ok 101 - signals travel by distance and reach route endpoints
+  ---
+  duration_ms: 1.06198
+  type: 'test'
+  ...
+# Subtest: circuit scene stays finite and within geometry budget
+ok 102 - circuit scene stays finite and within geometry budget
+  ---
+  duration_ms: 400.862074
+  type: 'test'
+  ...
+# Subtest: calculus scene stays finite and within geometry budget
+ok 103 - calculus scene stays finite and within geometry budget
+  ---
+  duration_ms: 175.396099
+  type: 'test'
+  ...
+# Subtest: algebra scene stays finite and within geometry budget
+ok 104 - algebra scene stays finite and within geometry budget
+  ---
+  duration_ms: 56.871033
+  type: 'test'
+  ...
+# Subtest: Planetary mechanism and signals stay bounded through repeated interaction and all deadline states
+ok 105 - Planetary mechanism and signals stay bounded through repeated interaction and all deadline states
+  ---
+  duration_ms: 102.09943
+  type: 'test'
+  ...
+# Subtest: flowing curves reuses finite geometry through maximum impulses and quality changes
+ok 106 - flowing curves reuses finite geometry through maximum impulses and quality changes
+  ---
+  duration_ms: 3069.650379
+  type: 'test'
+  ...
+# Subtest: transforming sphere reuses finite geometry through maximum impulses and quality changes
+ok 107 - transforming sphere reuses finite geometry through maximum impulses and quality changes
+  ---
+  duration_ms: 886.557993
+  type: 'test'
+  ...
+# Subtest: T01 [system time zone UTC]
+ok 108 - T01 [system time zone UTC]
+  ---
+  duration_ms: 33.024344
+  type: 'test'
+  ...
+# Subtest: T02 [system time zone UTC]
+ok 109 - T02 [system time zone UTC]
+  ---
+  duration_ms: 1.143631
+  type: 'test'
+  ...
+# Subtest: T03 [system time zone UTC]
+ok 110 - T03 [system time zone UTC]
+  ---
+  duration_ms: 1.272821
+  type: 'test'
+  ...
+# Subtest: T04 [system time zone UTC]
+ok 111 - T04 [system time zone UTC]
+  ---
+  duration_ms: 2.568836
+  type: 'test'
+  ...
+# Subtest: T05 [system time zone UTC]
+ok 112 - T05 [system time zone UTC]
+  ---
+  duration_ms: 1.900508
+  type: 'test'
+  ...
+# Subtest: T06 [system time zone UTC]
+ok 113 - T06 [system time zone UTC]
+  ---
+  duration_ms: 1.293782
+  type: 'test'
+  ...
+# Subtest: T07 [system time zone UTC]
+ok 114 - T07 [system time zone UTC]
+  ---
+  duration_ms: 5.31134
+  type: 'test'
+  ...
+# Subtest: T08 [system time zone UTC]
+ok 115 - T08 [system time zone UTC]
+  ---
+  duration_ms: 1.11683
+  type: 'test'
+  ...
+# Subtest: T09 [system time zone UTC]
+ok 116 - T09 [system time zone UTC]
+  ---
+  duration_ms: 1.562279
+  type: 'test'
+  ...
+# Subtest: T10 [system time zone UTC]
+ok 117 - T10 [system time zone UTC]
+  ---
+  duration_ms: 2.79445
+  type: 'test'
+  ...
+# Subtest: T11 [system time zone UTC]
+ok 118 - T11 [system time zone UTC]
+  ---
+  duration_ms: 3.393255
+  type: 'test'
+  ...
+# Subtest: T12 [system time zone UTC]
+ok 119 - T12 [system time zone UTC]
+  ---
+  duration_ms: 6.286221
+  type: 'test'
+  ...
+# Subtest: T13 [system time zone UTC]
+ok 120 - T13 [system time zone UTC]
+  ---
+  duration_ms: 1.429293
+  type: 'test'
+  ...
+# Subtest: T14 [system time zone UTC]
+ok 121 - T14 [system time zone UTC]
+  ---
+  duration_ms: 1.02839
+  type: 'test'
+  ...
+# Subtest: T15 [system time zone UTC]
+ok 122 - T15 [system time zone UTC]
+  ---
+  duration_ms: 0.747084
+  type: 'test'
+  ...
+# Subtest: T16 [system time zone UTC]
+ok 123 - T16 [system time zone UTC]
+  ---
+  duration_ms: 1.715526
+  type: 'test'
+  ...
+# Subtest: T17 [system time zone UTC]
+ok 124 - T17 [system time zone UTC]
+  ---
+  duration_ms: 3.461786
+  type: 'test'
+  ...
+# Subtest: T18 [system time zone UTC]
+ok 125 - T18 [system time zone UTC]
+  ---
+  duration_ms: 1.403244
+  type: 'test'
+  ...
+# Subtest: T19 [system time zone UTC]
+ok 126 - T19 [system time zone UTC]
+  ---
+  duration_ms: 1.756706
+  type: 'test'
+  ...
+# Subtest: T20 [system time zone UTC]
+ok 127 - T20 [system time zone UTC]
+  ---
+  duration_ms: 1.64463
+  type: 'test'
+  ...
+# Subtest: T21 [system time zone UTC]
+ok 128 - T21 [system time zone UTC]
+  ---
+  duration_ms: 0.884957
+  type: 'test'
+  ...
+# Subtest: T22 [system time zone UTC]
+ok 129 - T22 [system time zone UTC]
+  ---
+  duration_ms: 1.318308
+  type: 'test'
+  ...
+# Subtest: T23 [system time zone UTC]
+ok 130 - T23 [system time zone UTC]
+  ---
+  duration_ms: 0.881383
+  type: 'test'
+  ...
+# Subtest: T24 [system time zone UTC]
+ok 131 - T24 [system time zone UTC]
+  ---
+  duration_ms: 0.803097
+  type: 'test'
+  ...
+# Subtest: T25 [system time zone UTC]
+ok 132 - T25 [system time zone UTC]
+  ---
+  duration_ms: 0.764029
+  type: 'test'
+  ...
+# Subtest: T26 [system time zone UTC]
+ok 133 - T26 [system time zone UTC]
+  ---
+  duration_ms: 0.702599
+  type: 'test'
+  ...
+# Subtest: T27 [system time zone UTC]
+ok 134 - T27 [system time zone UTC]
+  ---
+  duration_ms: 1.699952
+  type: 'test'
+  ...
+# Subtest: T28 [system time zone UTC]
+ok 135 - T28 [system time zone UTC]
+  ---
+  duration_ms: 0.903836
+  type: 'test'
+  ...
+# Subtest: T29 [system time zone UTC]
+ok 136 - T29 [system time zone UTC]
+  ---
+  duration_ms: 1.345588
+  type: 'test'
+  ...
+# Subtest: T30 [system time zone UTC]
+ok 137 - T30 [system time zone UTC]
+  ---
+  duration_ms: 2.018443
+  type: 'test'
+  ...
+# Subtest: T31 [system time zone UTC]
+ok 138 - T31 [system time zone UTC]
+  ---
+  duration_ms: 0.901592
+  type: 'test'
+  ...
+# Subtest: T32 [system time zone UTC]
+ok 139 - T32 [system time zone UTC]
+  ---
+  duration_ms: 1.047147
+  type: 'test'
+  ...
+# Subtest: T33 [system time zone UTC]
+ok 140 - T33 [system time zone UTC]
+  ---
+  duration_ms: 0.419139
+  type: 'test'
+  ...
+# Subtest: T34 [system time zone UTC]
+ok 141 - T34 [system time zone UTC]
+  ---
+  duration_ms: 1.058414
+  type: 'test'
+  ...
+# Subtest: T35 [system time zone UTC]
+ok 142 - T35 [system time zone UTC]
+  ---
+  duration_ms: 1.060497
+  type: 'test'
+  ...
+# Subtest: T36 [system time zone UTC]
+ok 143 - T36 [system time zone UTC]
+  ---
+  duration_ms: 0.867382
+  type: 'test'
+  ...
+# Subtest: T37 [system time zone UTC]
+ok 144 - T37 [system time zone UTC]
+  ---
+  duration_ms: 0.592746
+  type: 'test'
+  ...
+# Subtest: T38 [system time zone UTC]
+ok 145 - T38 [system time zone UTC]
+  ---
+  duration_ms: 0.843697
+  type: 'test'
+  ...
+# Subtest: T39 [system time zone UTC]
+ok 146 - T39 [system time zone UTC]
+  ---
+  duration_ms: 0.933129
+  type: 'test'
+  ...
+# Subtest: T40 [system time zone UTC]
+ok 147 - T40 [system time zone UTC]
+  ---
+  duration_ms: 0.880301
+  type: 'test'
+  ...
+# Subtest: all fixtures pass with system time zone America/Toronto
+ok 148 - all fixtures pass with system time zone America/Toronto
+  ---
+  duration_ms: 435.178367
+  type: 'test'
+  ...
+# Subtest: all fixtures pass with system time zone UTC
+ok 149 - all fixtures pass with system time zone UTC
+  ---
+  duration_ms: 347.609634
+  type: 'test'
+  ...
+# Subtest: all fixtures pass with system time zone America/Los_Angeles
+ok 150 - all fixtures pass with system time zone America/Los_Angeles
+  ---
+  duration_ms: 592.083801
+  type: 'test'
+  ...
+# Subtest: all course targets and presentation fields agree with the existing Desk resolver across the term
+ok 151 - all course targets and presentation fields agree with the existing Desk resolver across the term
+  ---
+  duration_ms: 1337.155985
+  type: 'test'
+  ...
+# Subtest: section labels exactly match the real Desk list and unsaved/invalid sections remain null
+ok 152 - section labels exactly match the real Desk list and unsaved/invalid sections remain null
+  ---
+  duration_ms: 439.277711
+  type: 'test'
+  ...
+# Subtest: progress uses strict saved completion records, excludes CEN reminders, and counts work for this Toronto week
+ok 153 - progress uses strict saved completion records, excludes CEN reminders, and counts work for this Toronto week
+  ---
+  duration_ms: 307.89835
+  type: 'test'
+  ...
+# Subtest: week numbers and book indices use Toronto boundaries, partial weeks, DST and the pending exam spread
+ok 154 - week numbers and book indices use Toronto boundaries, partial weeks, DST and the pending exam spread
+  ---
+  duration_ms: 2241.689045
+  type: 'test'
+  ...
+# Subtest: upcoming landmark kinds use shared rank categories and exclude completed, past and reminder rows
+ok 155 - upcoming landmark kinds use shared rank categories and exclude completed, past and reminder rows
+  ---
+  duration_ms: 379.376178
+  type: 'test'
+  ...
+# Subtest: denied, corrupt and stale storage yield no invented saved progress or sections and never write
+ok 156 - denied, corrupt and stale storage yield no invented saved progress or sections and never write
+  ---
+  duration_ms: 527.187556
+  type: 'test'
+  ...
+# Subtest: only the overall exact hot target has an urgent spine; competing hot items remain static
+ok 157 - only the overall exact hot target has an urgent spine; competing hot items remain static
+  ---
+  duration_ms: 80.743488
+  type: 'test'
+  ...
+# Subtest: day-only, week, pending, live, passed and empty targets never receive an urgent pulse
+ok 158 - day-only, week, pending, live, passed and empty targets never receive an urgent pulse
+  ---
+  duration_ms: 478.041088
+  type: 'test'
+  ...
+# Subtest: empty injected data and all completed counted records are honest, with no mutation or extra source assumptions
+ok 159 - empty injected data and all completed counted records are honest, with no mutation or extra source assumptions
+  ---
+  duration_ms: 151.022183
+  type: 'test'
+  ...
+# Subtest: snapshots do not mutate frozen data, saved state, clocks or other snapshots
+ok 160 - snapshots do not mutate frozen data, saved state, clocks or other snapshots
+  ---
+  duration_ms: 327.268002
+  type: 'test'
+  ...
+# Subtest: holiday uncertainty, Monday make-up dates and sectionless quizzes retain authoritative precision
+ok 161 - holiday uncertainty, Monday make-up dates and sectionless quizzes retain authoritative precision
+  ---
+  duration_ms: 225.709086
+  type: 'test'
+  ...
+# Subtest: actual Desk list rendering agrees with adapter targets, chips, sections and the overall winner
+ok 162 - actual Desk list rendering agrees with adapter targets, chips, sections and the overall winner
+  ---
+  duration_ms: 4136.190235
+  type: 'test'
+  ...
+# Subtest: after a context loss, the restored book leaves the fallback and is republished as webgl2 (§5.9)
+ok 163 - after a context loss, the restored book leaves the fallback and is republished as webgl2 (§5.9)
+  ---
+  duration_ms: 904.997679
+  type: 'test'
+  ...
+# Subtest: Mark done and Undo reach the book from the committed record, though guide-completion fires before the save (§6.10)
+not ok 164 - Mark done and Undo reach the book from the committed record, though guide-completion fires before the save (§6.10)
+  ---
+  duration_ms: 400.153856
+  type: 'test'
+  location: '/workspace/tmu-course-guides/tests/fix-header.test.mjs:92:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /^quiz-2:false:/. Input:
+
+    'midterm:false:null'
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: 'midterm:false:null'
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///workspace/tmu-course-guides/tests/fix-header.test.mjs:96:32)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: Try again reloads after a failed module fetch, and an in-place retry keeps focus off <body>
+ok 165 - Try again reloads after a failed module fetch, and an in-place retry keeps focus off <body>
+  ---
+  duration_ms: 702.419031
+  type: 'test'
+  ...
+# Subtest: Skip to coursework focuses \#panel-assessments and keeps it on screen (§6.6, §10.2)
+ok 166 - Skip to coursework focuses \#panel-assessments and keeps it on screen (§6.6, §10.2)
+  ---
+  duration_ms: 110.073907
+  type: 'test'
+  ...
+# Subtest: the book's drag hint uses its own session key, tmu-book-hint-v1 (§6.2)
+ok 167 - the book's drag hint uses its own session key, tmu-book-hint-v1 (§6.2)
+  ---
+  duration_ms: 287.606754
+  type: 'test'
+  ...
+# Subtest: the Next assessment button opens the week that holds an exact-time target, never the date-pending spread (§6.3)
+ok 168 - the Next assessment button opens the week that holds an exact-time target, never the date-pending spread (§6.3)
+  ---
+  duration_ms: 316.89703
+  type: 'test'
+  ...
+# Subtest: the rail button names and opens the target week for a chosen section
+ok 169 - the rail button names and opens the target week for a chosen section
+  ---
+  duration_ms: 487.182609
+  type: 'test'
+  ...
+# Subtest: outside the term no tick claims today and the note never names a semester week (§6.3)
+ok 170 - outside the term no tick claims today and the note never names a semester week (§6.3)
+  ---
+  duration_ms: 510.432181
+  type: 'test'
+  ...
+# Subtest: the fallback week view counts weeks only inside the term (§6.8)
+ok 171 - the fallback week view counts weeks only inside the term (§6.8)
+  ---
+  duration_ms: 471.612217
+  type: 'test'
+  ...
+# Subtest: a pinned rail that changes height asks scroll.mjs to measure again (night-refresh)
+ok 172 - a pinned rail that changes height asks scroll.mjs to measure again (night-refresh)
+  ---
+  duration_ms: 194.837757
+  type: 'test'
+  ...
+# Subtest: rail and week view focus rings keep their offsets against the shared button rings
+ok 173 - rail and week view focus rings keep their offsets against the shared button rings
+  ---
+  duration_ms: 800.525482
+  type: 'test'
+  ...
+# Subtest: light stage labels keep 4.5:1 on the desk for every course accent
+ok 174 - light stage labels keep 4.5:1 on the desk for every course accent
+  ---
+  duration_ms: 1.397726
+  type: 'test'
+  ...
+# Subtest: the rail caption is never covered by its buttons, 390-1920 px and at 200% zoom, in both themes (§6.3)
+ok 175 - the rail caption is never covered by its buttons, 390-1920 px and at 200% zoom, in both themes (§6.3)
+  ---
+  duration_ms: 11520.394626
+  type: 'test'
+  ...
+# Subtest: the pin keeps a focused rail control focused when it binds, refreshes and unbinds
+ok 176 - the pin keeps a focused rail control focused when it binds, refreshes and unbinds
+  ---
+  duration_ms: 612.400955
+  type: 'test'
+  ...
+# Subtest: a pin that becomes possible below its start waits until the reader is back above it
+ok 177 - a pin that becomes possible below its start waits until the reader is back above it
+  ---
+  duration_ms: 32.865935
+  type: 'test'
+  ...
+# Subtest: scrolling back up after a teleport past the pin keeps the selected week; the next pass turns forward
+ok 178 - scrolling back up after a teleport past the pin keeps the selected week; the next pass turns forward
+  ---
+  duration_ms: 59.014483
+  type: 'test'
+  ...
+# Subtest: a touch swipe on the stage turns exactly one week, forward or back
+ok 179 - a touch swipe on the stage turns exactly one week, forward or back
+  ---
+  duration_ms: 24.220047
+  type: 'test'
+  ...
+# Subtest: the discrete swipe (reduced motion) also survives the canvas losing its implicit capture
+ok 180 - the discrete swipe (reduced motion) also survives the canvas losing its implicit capture
+  ---
+  duration_ms: 25.344129
+  type: 'test'
+  ...
+# Subtest: a palette week jump turns in full motion: the modal hold is gone before book-open-week
+ok 181 - a palette week jump turns in full motion: the modal hold is gone before book-open-week
+  ---
+  duration_ms: 214.919988
+  type: 'test'
+  ...
+# Subtest: a router swap to MTH140 focuses the route heading; the Skip link keeps \#panel-assessments
+ok 182 - a router swap to MTH140 focuses the route heading; the Skip link keeps \#panel-assessments
+  ---
+  duration_ms: 125.504704
+  type: 'test'
+  ...
+# Subtest: future look releases its generated textures once after repeated updates and quality changes
+ok 183 - future look releases its generated textures once after repeated updates and quality changes
+  ---
+  duration_ms: 26.693392
+  type: 'test'
+  ...
+# Subtest: balanced optics reduce cost while retaining the same material and surface identity
+ok 184 - balanced optics reduce cost while retaining the same material and surface identity
+  ---
+  duration_ms: 5.667908
+  type: 'test'
+  ...
+# Subtest: header secant goes through both points on the actual parabola
+ok 185 - header secant goes through both points on the actual parabola
+  ---
+  duration_ms: 0.876636
+  type: 'test'
+  ...
+# Subtest: header secant has a finite tangent limit with slope 2 at x=1
+ok 186 - header secant has a finite tangent limit with slope 2 at x=1
+  ---
+  duration_ms: 0.171413
+  type: 'test'
+  ...
+# Subtest: header shear preserves area and the parallelogram follows the basis vectors
+ok 187 - header shear preserves area and the parallelogram follows the basis vectors
+  ---
+  duration_ms: 0.66929
+  type: 'test'
+  ...
+# Subtest: illustration projections preserve straight lines and finite coordinates
+ok 188 - illustration projections preserve straight lines and finite coordinates
+  ---
+  duration_ms: 0.197462
+  type: 'test'
+  ...
+# Subtest: header mount lets later route modules run before shader compilation resolves
+ok 189 - header mount lets later route modules run before shader compilation resolves
+  ---
+  duration_ms: 1083.63171
+  type: 'test'
+  ...
+# Subtest: header teardown releases a scene while shader compilation is still pending
+ok 190 - header teardown releases a scene while shader compilation is still pending
+  ---
+  duration_ms: 999.610223
+  type: 'test'
+  ...
+# Subtest: direct mth140 keeps Skip before the shared hub at both deployment bases
+ok 191 - direct mth140 keeps Skip before the shared hub at both deployment bases
+  ---
+  duration_ms: 627.596471
+  type: 'test'
+  ...
+# Subtest: direct mth141 keeps Skip before the shared hub at both deployment bases
+ok 192 - direct mth141 keeps Skip before the shared hub at both deployment bases
+  ---
+  duration_ms: 106.718346
+  type: 'test'
+  ...
+# Subtest: Desk Skip and shell identity survive repeat initialization and route refresh
+ok 193 - Desk Skip and shell identity survive repeat initialization and route refresh
+  ---
+  duration_ms: 85.212081
+  type: 'test'
+  ...
+# Subtest: function shifts, reflections and square-root domain are respected
+ok 194 - function shifts, reflections and square-root domain are respected
+  ---
+  duration_ms: 0.938457
+  type: 'test'
+  ...
+# Subtest: complex products rotate and scale, including zero multiplier
+ok 195 - complex products rotate and scale, including zero multiplier
+  ---
+  duration_ms: 0.615159
+  type: 'test'
+  ...
+# Subtest: matrix interpolation reaches exact endpoints and tracks signed area
+ok 196 - matrix interpolation reaches exact endpoints and tracks signed area
+  ---
+  duration_ms: 0.193025
+  type: 'test'
+  ...
+# Subtest: systems distinguish unique, parallel and coincident lines
+ok 197 - systems distinguish unique, parallel and coincident lines
+  ---
+  duration_ms: 0.193466
+  type: 'test'
+  ...
+# Subtest: secants approach the derivative from both sides without dividing by zero
+ok 198 - secants approach the derivative from both sides without dividing by zero
+  ---
+  duration_ms: 1.034799
+  type: 'test'
+  ...
+# Subtest: limit examples distinguish function value, one-sided limits and poles
+ok 199 - limit examples distinguish function value, one-sided limits and poles
+  ---
+  duration_ms: 0.193386
+  type: 'test'
+  ...
+# Subtest: script source is a classic script with no module syntax
+ok 200 - script source is a classic script with no module syntax
+  ---
+  duration_ms: 1.834801
+  type: 'test'
+  ...
+# Subtest: site base is the directory above assets/, for both the preview and Pages bases
+ok 201 - site base is the directory above assets/, for both the preview and Pages bases
+  ---
+  duration_ms: 0.344689
+  type: 'test'
+  ...
+# Subtest: each allowlisted CEN hash forwards to <base>cen100/ with the entire query and hash
+ok 202 - each allowlisted CEN hash forwards to <base>cen100/ with the entire query and hash
+  ---
+  duration_ms: 31.605973
+  type: 'test'
+  ...
+# Subtest: Desk hashes and generic query flags alone stay on the Desk
+ok 203 - Desk hashes and generic query flags alone stay on the Desk
+  ---
+  duration_ms: 5.613736
+  type: 'test'
+  ...
+# Subtest: forwarded URLs and every other route never forward again (no loop)
+ok 204 - forwarded URLs and every other route never forward again (no loop)
+  ---
+  duration_ms: 2.586803
+  type: 'test'
+  ...
+# Subtest: the destination is always the fixed same-origin cen100/ under the base, never origin-root or query-supplied
+ok 205 - the destination is always the fixed same-origin cen100/ under the base, never origin-root or query-supplied
+  ---
+  duration_ms: 0.468803
+  type: 'test'
+  ...
+# Subtest: hash patterns match the inventory allowlist
+ok 206 - hash patterns match the inventory allowlist
+  ---
+  duration_ms: 0.291932
+  type: 'test'
+  ...
+# Subtest: loaded on the Desk it replaces the location once; elsewhere it does nothing
+ok 207 - loaded on the Desk it replaces the location once; elsewhere it does nothing
+  ---
+  duration_ms: 12.039504
+  type: 'test'
+  ...
+# Subtest: the Desk loads the forwarder synchronously first in <head>; CEN100 never loads it
+ok 208 - the Desk loads the forwarder synchronously first in <head>; CEN100 never loads it
+  ---
+  duration_ms: 3.464411
+  type: 'test'
+  ...
+# Subtest: the Desk keeps plain links to all three guides and reuses no allowlisted id
+ok 209 - the Desk keeps plain links to all three guides and reuses no allowlisted id
+  ---
+  duration_ms: 0.745331
+  type: 'test'
+  ...
+# Subtest: math modules import without reading the DOM, saved state, or starting route resources
+ok 210 - math modules import without reading the DOM, saved state, or starting route resources
+  ---
+  duration_ms: 607.99763
+  type: 'test'
+  ...
+# Subtest: one guide module restores separate course state and preserves release badges through math round trips
+ok 211 - one guide module restores separate course state and preserves release badges through math round trips
+  ---
+  duration_ms: 766.401948
+  type: 'test'
+  ...
+# Subtest: guide handlers act once on owned controls and stop on unmount even before the router aborts
+ok 212 - guide handlers act once on owned controls and stop on unmount even before the router aborts
+  ---
+  duration_ms: 340.813203
+  type: 'test'
+  ...
+# Subtest: guide preserves hash links and completion controls moved into an owned detail sheet
+ok 213 - guide preserves hash links and completion controls moved into an owned detail sheet
+  ---
+  duration_ms: 436.38075
+  type: 'test'
+  ...
+# Subtest: unmount releases pending downloads and ignores backups completing for a retired route
+ok 214 - unmount releases pending downloads and ignores backups completing for a retired route
+  ---
+  duration_ms: 320.66228
+  type: 'test'
+  ...
+# Subtest: labs remove expansion, topic observers, callbacks and animation frames across math mounts
+ok 215 - labs remove expansion, topic observers, callbacks and animation frames across math mounts
+  ---
+  duration_ms: 769.355348
+  type: 'test'
+  ...
+# Subtest: composition playback and challenge state are released when the algebra lab unmounts
+ok 216 - composition playback and challenge state are released when the algebra lab unmounts
+  ---
+  duration_ms: 362.336037
+  type: 'test'
+  ...
+# Subtest: aborting the route signal tears down guide and lab resources without a separate unmount call
+ok 217 - aborting the route signal tears down guide and lab resources without a separate unmount call
+  ---
+  duration_ms: 146.78219
+  type: 'test'
+  ...
+# Subtest: invalid saved math state falls back without rewriting the stored values on mount
+ok 218 - invalid saved math state falls back without rewriting the stored values on mount
+  ---
+  duration_ms: 88.545909
+  type: 'test'
+  ...
+# Subtest: remount resets transient search and quick-completion state while keeping saved progress
+ok 219 - remount resets transient search and quick-completion state while keeping saved progress
+  ---
+  duration_ms: 233.526096
+  type: 'test'
+  ...
+# Subtest: a later visuals mount receives the current math schedule once and stops receiving it after unmount
+ok 220 - a later visuals mount receives the current math schedule once and stops receiving it after unmount
+  ---
+  duration_ms: 79.171894
+  type: 'test'
+  ...
+# Subtest: loadCSS reactivates a retained feature sheet without loading it again
+ok 221 - loadCSS reactivates a retained feature sheet without loading it again
+  ---
+  duration_ms: 375.803152
+  type: 'test'
+  ...
+# Subtest: CEN100 no-JavaScript coursework retains every published schedule record and exact date
+ok 222 - CEN100 no-JavaScript coursework retains every published schedule record and exact date
+  ---
+  duration_ms: 940.795066
+  type: 'test'
+  ...
+# Subtest: MTH141 no-JavaScript coursework retains each assessment, announced week, scope and pending final
+ok 223 - MTH141 no-JavaScript coursework retains each assessment, announced week, scope and pending final
+  ---
+  duration_ms: 122.292019
+  type: 'test'
+  ...
+# Subtest: static course fallbacks keep native deployment-base-relative guide links
+ok 224 - static course fallbacks keep native deployment-base-relative guide links
+  ---
+  duration_ms: 271.505378
+  type: 'test'
+  ...
+# Subtest: the pure bend module exports the CPU and shader contract
+ok 225 - the pure bend module exports the CPU and shader contract
+  ---
+  duration_ms: 3.424051
+  type: 'test'
+  ...
+# Subtest: 1001 turns and both endpoint neighbourhoods stay finite and above the block
+ok 226 - 1001 turns and both endpoint neighbourhoods stay finite and above the block
+  ---
+  duration_ms: 224.183995
+  type: 'test'
+  ...
+# Subtest: the two endpoints are exactly flat and mirrored, with outward normals
+ok 227 - the two endpoints are exactly flat and mirrored, with outward normals
+  ---
+  duration_ms: 2.426266
+  type: 'test'
+  ...
+# Subtest: a moving cylindrical fold has circular curvature and parallel flat tails
+ok 228 - a moving cylindrical fold has circular curvature and parallel flat tails
+  ---
+  duration_ms: 0.324659
+  type: 'test'
+  ...
+# Subtest: sampled arclength is preserved to 0.001 of the width throughout the turn
+ok 229 - sampled arclength is preserved to 0.001 of the width throughout the turn
+  ---
+  duration_ms: 327.724913
+  type: 'test'
+  ...
+# Subtest: positions and normals are continuous through turns and both fold joins
+ok 230 - positions and normals are continuous through turns and both fold joins
+  ---
+  duration_ms: 2.534396
+  type: 'test'
+  ...
+# Subtest: normals agree with the tangent of the deformed surface
+ok 231 - normals agree with the tangent of the deformed surface
+  ---
+  duration_ms: 0.463305
+  type: 'test'
+  ...
+# Subtest: analytic bounds contain the entire page including interior curve extrema
+ok 232 - analytic bounds contain the entire page including interior curve extrema
+  ---
+  duration_ms: 272.361658
+  type: 'test'
+  ...
+# Subtest: bounds remain continuous when the fold crosses page edges and its extremum
+ok 233 - bounds remain continuous when the fold crosses page edges and its extremum
+  ---
+  duration_ms: 1.977443
+  type: 'test'
+  ...
+# Subtest: picking returns physical distance and flat coordinates from both endpoint faces
+ok 234 - picking returns physical distance and flat coordinates from both endpoint faces
+  ---
+  duration_ms: 0.708036
+  type: 'test'
+  ...
+# Subtest: picking uses the sampled chord geometry for a curved page and a sloped ray
+ok 235 - picking uses the sampled chord geometry for a curved page and a sloped ray
+  ---
+  duration_ms: 0.254736
+  type: 'test'
+  ...
+# Subtest: overlapping flat tails select the nearest visible fold from either side
+ok 236 - overlapping flat tails select the nearest visible fold from either side
+  ---
+  duration_ms: 0.652495
+  type: 'test'
+  ...
+# Subtest: picking misses finite strip extensions, rays facing away, and invalid rays
+ok 237 - picking misses finite strip extensions, rays facing away, and invalid rays
+  ---
+  duration_ms: 0.218073
+  type: 'test'
+  ...
+# Subtest: rays landing exactly on sampled vertices and page borders keep their hits
+ok 238 - rays landing exactly on sampled vertices and page borders keep their hits
+  ---
+  duration_ms: 93.382345
+  type: 'test'
+  ...
+# Subtest: radii and segment options clamp to the supported ranges
+ok 239 - radii and segment options clamp to the supported ranges
+  ---
+  duration_ms: 5.404327
+  type: 'test'
+  ...
+# Subtest: the exported GLSL positions and normals match CPU values across sampled turns
+ok 240 - the exported GLSL positions and normals match CPU values across sampled turns
+  ---
+  duration_ms: 9.426953
+  type: 'test'
+  ...
+# Subtest: fuzzy matching is a case-insensitive subsequence with prefix and word-start preference
+ok 241 - fuzzy matching is a case-insensitive subsequence with prefix and word-start preference
+  ---
+  duration_ms: 4.711413
+  type: 'test'
+  ...
+# Subtest: math index preserves real IDs and shared deadline precision without filtering completed work
+ok 242 - math index preserves real IDs and shared deadline precision without filtering completed work
+  ---
+  duration_ms: 138.137282
+  type: 'test'
+  ...
+# Subtest: CEN index keeps calendar IDs distinct from opening item handles and includes undated titles
+ok 243 - CEN index keeps calendar IDs distinct from opening item handles and includes undated titles
+  ---
+  duration_ms: 455.53163
+  type: 'test'
+  ...
+# Subtest: week rows use the week wording of the copy, read in full by screen readers
+ok 244 - week rows use the week wording of the copy, read in full by screen readers
+  ---
+  duration_ms: 83.268037
+  type: 'test'
+  ...
+# Subtest: week query aliases route through the shared week model before fuzzy results
+ok 245 - week query aliases route through the shared week model before fuzzy results
+  ---
+  duration_ms: 63.460937
+  type: 'test'
+  ...
+# Subtest: Desk has router places, disabled weeks and only available actions
+ok 246 - Desk has router places, disabled weeks and only available actions
+  ---
+  duration_ms: 25.273172
+  type: 'test'
+  ...
+# Subtest: palette wording matches the interface copy document
+ok 247 - palette wording matches the interface copy document
+  ---
+  duration_ms: 161.120208
+  type: 'test'
+  ...
+# Subtest: base normalization
+ok 248 - base normalization
+  ---
+  duration_ms: 0.746854
+  type: 'test'
+  ...
+# Subtest: paths map inside the base only
+ok 249 - paths map inside the base only
+  ---
+  duration_ms: 0.395144
+  type: 'test'
+  ...
+# Subtest: a project-base server 404s outside the base, serves the Desk at its root and redirects bare directories
+ok 250 - a project-base server 404s outside the base, serves the Desk at its root and redirects bare directories
+  ---
+  duration_ms: 154.392801
+  type: 'test'
+  ...
+# Subtest: the default root server still serves the site at /
+ok 251 - the default root server still serves the site at /
+  ---
+  duration_ms: 60.497562
+  type: 'test'
+  ...
+# Subtest: desk at /: shared hub keeps the authored Skip link first
+ok 252 - desk at /: shared hub keeps the authored Skip link first
+  ---
+  duration_ms: 156.064191
+  type: 'test'
+  ...
+# Subtest: mth140 at /: shared hub keeps the authored Skip link first
+ok 253 - mth140 at /: shared hub keeps the authored Skip link first
+  ---
+  duration_ms: 56.707
+  type: 'test'
+  ...
+# Subtest: mth141 at /: shared hub keeps the authored Skip link first
+ok 254 - mth141 at /: shared hub keeps the authored Skip link first
+  ---
+  duration_ms: 33.352464
+  type: 'test'
+  ...
+# Subtest: desk at /tmu-course-guides/: shared hub keeps the authored Skip link first
+ok 255 - desk at /tmu-course-guides/: shared hub keeps the authored Skip link first
+  ---
+  duration_ms: 59.322506
+  type: 'test'
+  ...
+# Subtest: mth140 at /tmu-course-guides/: shared hub keeps the authored Skip link first
+ok 256 - mth140 at /tmu-course-guides/: shared hub keeps the authored Skip link first
+  ---
+  duration_ms: 24.140949
+  type: 'test'
+  ...
+# Subtest: mth141 at /tmu-course-guides/: shared hub keeps the authored Skip link first
+ok 257 - mth141 at /tmu-course-guides/: shared hub keeps the authored Skip link first
+  ---
+  duration_ms: 58.548662
+  type: 'test'
+  ...
+# Subtest: course chrome gives .hub-brand a 44px target independent of text metrics
+ok 258 - course chrome gives .hub-brand a 44px target independent of text metrics
+  ---
+  duration_ms: 659.031514
+  type: 'test'
+  ...
+# Subtest: course chrome gives footer a a 44px target independent of text metrics
+ok 259 - course chrome gives footer a a 44px target independent of text metrics
+  ---
+  duration_ms: 143.078775
+  type: 'test'
+  ...
+# Subtest: course chrome gives footer .reset a 44px target independent of text metrics
+ok 260 - course chrome gives footer .reset a 44px target independent of text metrics
+  ---
+  duration_ms: 151.478749
+  type: 'test'
+  ...
+# Subtest: course chrome gives .workspace-categories button a 44px target independent of text metrics
+ok 261 - course chrome gives .workspace-categories button a 44px target independent of text metrics
+  ---
+  duration_ms: 266.439645
+  type: 'test'
+  ...
+# Subtest: the existing .35-second arrival settles even when the animation clock stalls
+ok 262 - the existing .35-second arrival settles even when the animation clock stalls
+  ---
+  duration_ms: 783.007049
+  type: 'test'
+  ...
+# Subtest: an old arrival deadline cannot complete a newer exit on the same owner
+ok 263 - an old arrival deadline cannot complete a newer exit on the same owner
+  ---
+  duration_ms: 805.979531
+  type: 'test'
+  ...
+# Subtest: mth140 accepts another tab's completion, Undo and section without echoing storage writes
+ok 264 - mth140 accepts another tab's completion, Undo and section without echoing storage writes
+  ---
+  duration_ms: 1100.207112
+  type: 'test'
+  ...
+# Subtest: mth141 accepts another tab's completion, Undo and section without echoing storage writes
+ok 265 - mth141 accepts another tab's completion, Undo and section without echoing storage writes
+  ---
+  duration_ms: 725.534317
+  type: 'test'
+  ...
+# Subtest: CEN accepts another tab's completion, Undo and profile without echoing storage writes
+ok 266 - CEN accepts another tab's completion, Undo and profile without echoing storage writes
+  ---
+  duration_ms: 2249.121776
+  type: 'test'
+  ...
+# Subtest: cen100 refreshes its card on persisted pageshow after the wall clock changes
+ok 267 - cen100 refreshes its card on persisted pageshow after the wall clock changes
+  ---
+  duration_ms: 822.306193
+  type: 'test'
+  ...
+# Subtest: mth140 refreshes its card on persisted pageshow after the wall clock changes
+ok 268 - mth140 refreshes its card on persisted pageshow after the wall clock changes
+  ---
+  duration_ms: 81.053525
+  type: 'test'
+  ...
+# Subtest: mth141 refreshes its card on persisted pageshow after the wall clock changes
+ok 269 - mth141 refreshes its card on persisted pageshow after the wall clock changes
+  ---
+  duration_ms: 87.241499
+  type: 'test'
+  ...
+# Subtest: Desk refreshes its visible deadline within one minute after a backwards clock jump at an exact minute
+ok 270 - Desk refreshes its visible deadline within one minute after a backwards clock jump at an exact minute
+  ---
+  duration_ms: 1041.203406
+  type: 'test'
+  ...
+# Subtest: direct routes enable navigation before their header scene is ready
+ok 271 - direct routes enable navigation before their header scene is ready
+  ---
+  duration_ms: 1336.920373
+  type: 'test'
+  ...
+# Subtest: a pending course scene cannot block the next route in the navigation queue
+ok 272 - a pending course scene cannot block the next route in the navigation queue
+  ---
+  duration_ms: 132.95428
+  type: 'test'
+  ...
+# Subtest: deriveBase and route roots work at origin and project bases
+ok 273 - deriveBase and route roots work at origin and project bases
+  ---
+  duration_ms: 5.765811
+  type: 'test'
+  ...
+# Subtest: eligible links preserve native modified, external, download, targets and same-route hashes
+ok 274 - eligible links preserve native modified, external, download, targets and same-route hashes
+  ---
+  duration_ms: 196.434776
+  type: 'test'
+  ...
+# Subtest: navigation disposes in reverse order, aborts old handlers and preserves the shell
+ok 275 - navigation disposes in reverse order, aborts old handlers and preserves the shell
+  ---
+  duration_ms: 597.514249
+  type: 'test'
+  ...
+# Subtest: head sync keeps outgoing styles until incoming sheets load and follows destination CSS order
+ok 276 - head sync keeps outgoing styles until incoming sheets load and follows destination CSS order
+  ---
+  duration_ms: 203.859175
+  type: 'test'
+  ...
+# Subtest: warmed routes reuse loaded stylesheet nodes when the browser goes offline
+ok 277 - warmed routes reuse loaded stylesheet nodes when the browser goes offline
+  ---
+  duration_ms: 510.272744
+  type: 'test'
+  ...
+# Subtest: prefetch deduplicates requests and bounds parsed document cache
+ok 278 - prefetch deduplicates requests and bounds parsed document cache
+  ---
+  duration_ms: 132.866301
+  type: 'test'
+  ...
+# Subtest: fetch, region, reload-required, transition and mount errors fall back to full navigation
+ok 279 - fetch, region, reload-required, transition and mount errors fall back to full navigation
+  ---
+  duration_ms: 375.120938
+  type: 'test'
+  ...
+# Subtest: a stalled document fetch falls back once with the whole destination URL
+ok 280 - a stalled document fetch falls back once with the whole destination URL
+  ---
+  duration_ms: 111.933784
+  type: 'test'
+  ...
+# Subtest: a stalled document body falls back once with the whole destination URL
+ok 281 - a stalled document body falls back once with the whole destination URL
+  ---
+  duration_ms: 103.622231
+  type: 'test'
+  ...
+# Subtest: HTTP 500 and aborted requests each navigate normally once with query and hash
+ok 282 - HTTP 500 and aborted requests each navigate normally once with query and hash
+  ---
+  duration_ms: 76.630247
+  type: 'test'
+  ...
+# Subtest: back and forward restore each entry scroll and destination hashes are read at mount as on a direct load
+ok 283 - back and forward restore each entry scroll and destination hashes are read at mount as on a direct load
+  ---
+  duration_ms: 92.258956
+  type: 'test'
+  ...
+# Subtest: capture interception prevents the old departure handler before document bubbling
+ok 284 - capture interception prevents the old departure handler before document bubbling
+  ---
+  duration_ms: 21.183148
+  type: 'test'
+  ...
+# Not implemented: navigation to another Document
+# Not implemented: navigation to another Document
+# Not implemented: navigation to another Document
+# Subtest: all real documents opt into ordered route boot and same-origin connect policy
+ok 285 - all real documents opt into ordered route boot and same-origin connect policy
+  ---
+  duration_ms: 487.915354
+  type: 'test'
+  ...
+# Subtest: direct boot waits for DOM readiness, initializes shell once and mounts route scripts in order
+ok 286 - direct boot waits for DOM readiness, initializes shell once and mounts route scripts in order
+  ---
+  duration_ms: 24.695189
+  type: 'test'
+  ...
+# Subtest: canceling a route transition retains the outgoing module and document
+ok 287 - canceling a route transition retains the outgoing module and document
+  ---
+  duration_ms: 33.690352
+  type: 'test'
+  ...
+# Subtest: a failed direct-load module is reported and skipped; the guide and the other modules stay mounted
+ok 288 - a failed direct-load module is reported and skipped; the guide and the other modules stay mounted
+  ---
+  duration_ms: 41.167044
+  type: 'test'
+  ...
+# Subtest: a reload or Back/Forward document load returns to the saved position; a new load reveals a mounted fragment
+ok 289 - a reload or Back/Forward document load returns to the saved position; a new load reveals a mounted fragment
+  ---
+  duration_ms: 73.840028
+  type: 'test'
+  ...
+# Subtest: twenty route round trips leave one shell and only current signal active
+ok 290 - twenty route round trips leave one shell and only current signal active
+  ---
+  duration_ms: 306.435468
+  type: 'test'
+  ...
+# Subtest: guide-created hash history entries keep distinct scroll positions
+ok 291 - guide-created hash history entries keep distinct scroll positions
+  ---
+  duration_ms: 80.295844
+  type: 'test'
+  ...
+# Subtest: canceling Back restores the outgoing history entry without adding or replacing an entry
+ok 292 - canceling Back restores the outgoing history entry without adding or replacing an entry
+  ---
+  duration_ms: 35.023494
+  type: 'test'
+  ...
+# Subtest: Back supersedes a pending push fetch so URL and mounted route finish on the traversed entry
+ok 293 - Back supersedes a pending push fetch so URL and mounted route finish on the traversed entry
+  ---
+  duration_ms: 70.318549
+  type: 'test'
+  ...
+# Subtest: same-route Back preserves focus chosen by the guide hash handler
+ok 294 - same-route Back preserves focus chosen by the guide hash handler
+  ---
+  duration_ms: 25.993327
+  type: 'test'
+  ...
+# Subtest: canceling the latest of queued Back traversals restores the mounted entry
+ok 295 - canceling the latest of queued Back traversals restores the mounted entry
+  ---
+  duration_ms: 91.848739
+  type: 'test'
+  ...
+# Subtest: same-route aliases and course roots preserve the shell without remounting
+ok 296 - same-route aliases and course roots preserve the shell without remounting
+  ---
+  duration_ms: 30.015302
+  type: 'test'
+  ...
+# Not implemented: Window's scrollTo() method
+# Not implemented: Window's scrollTo() method
+# Subtest: head sync never moves a loaded sheet, keeps incoming sheets inert until commit and survives a reload followed by Back/Forward
+ok 297 - head sync never moves a loaded sheet, keeps incoming sheets inert until commit and survives a reload followed by Back/Forward
+  ---
+  duration_ms: 57.278325
+  type: 'test'
+  ...
+# Subtest: scrolling keeps positions in memory and writes history at most once a second or when the page is hidden
+ok 298 - scrolling keeps positions in memory and writes history at most once a second or when the page is hidden
+  ---
+  duration_ms: 5124.161159
+  type: 'test'
+  ...
+# Subtest: Back/Forward restore waits for the destination layout to grow instead of clamping
+ok 299 - Back/Forward restore waits for the destination layout to grow instead of clamping
+  ---
+  duration_ms: 142.60136
+  type: 'test'
+  ...
+# Subtest: same-route Back reaches the guide once; a cross-route Back leaves the outgoing guide alone
+ok 300 - same-route Back reaches the guide once; a cross-route Back leaves the outgoing guide alone
+  ---
+  duration_ms: 93.874478
+  type: 'test'
+  ...
+# Subtest: the public navigate() only moves between the four routes
+ok 301 - the public navigate() only moves between the four routes
+  ---
+  duration_ms: 8.014666
+  type: 'test'
+  ...
+# Subtest: a destination from another deploy (different shell modules) gets a real document load
+ok 302 - a destination from another deploy (different shell modules) gets a real document load
+  ---
+  duration_ms: 39.375245
+  type: 'test'
+  ...
+# Subtest: scene poster settles, pauses, sleeps offscreen, resumes, and disposes
+ok 303 - scene poster settles, pauses, sleeps offscreen, resumes, and disposes
+  ---
+  duration_ms: 1179.308681
+  type: 'test'
+  ...
+# Subtest: context loss shows the authored poster and releases the scene frame loop
+ok 304 - context loss shows the authored poster and releases the scene frame loop
+  ---
+  duration_ms: 609.727538
+  type: 'test'
+  ...
+# Subtest: unsupported rendering uses an immediate poster without a busy animation loop
+ok 305 - unsupported rendering uses an immediate poster without a busy animation loop
+  ---
+  duration_ms: 294.24858
+  type: 'test'
+  ...
+# Subtest: nonthrowing shader link failure returns to the poster and stops the GPU frame loop
+ok 306 - nonthrowing shader link failure returns to the poster and stops the GPU frame loop
+  ---
+  duration_ms: 273.989878
+  type: 'test'
+  ...
+# Subtest: adaptive GPU frame scheduling keeps advancing after downgrade and sleeps while paused or offscreen
+ok 307 - adaptive GPU frame scheduling keeps advancing after downgrade and sleeps while paused or offscreen
+  ---
+  duration_ms: 352.067244
+  type: 'test'
+  ...
+# Subtest: touch drag rotates through movement, releases with inertia, and pointer cancellation clears it
+ok 308 - touch drag rotates through movement, releases with inertia, and pointer cancellation clears it
+  ---
+  duration_ms: 182.847393
+  type: 'test'
+  ...
+# Subtest: pausing mid-drag releases the gesture so a later touch can start
+ok 309 - pausing mid-drag releases the gesture so a later touch can start
+  ---
+  duration_ms: 206.291252
+  type: 'test'
+  ...
+# Subtest: each course covers all 34 sections with one matching instructor and lab
+ok 310 - each course covers all 34 sections with one matching instructor and lab
+  ---
+  duration_ms: 2.329943
+  type: 'test'
+  ...
+# Subtest: quiz dates follow the section and the announced Monday Thanksgiving make-up
+ok 311 - quiz dates follow the section and the announced Monday Thanksgiving make-up
+  ---
+  duration_ms: 3.29489
+  type: 'test'
+  ...
+# Subtest: confirmed scope, make-up day and exam-format privacy are represented in course data
+ok 312 - confirmed scope, make-up day and exam-format privacy are represented in course data
+  ---
+  duration_ms: 0.367182
+  type: 'test'
+  ...
+# Subtest: next assessment respects the lab day and separate completion records
+ok 313 - next assessment respects the lab day and separate completion records
+  ---
+  duration_ms: 36.805077
+  type: 'test'
+  ...
+# Subtest: Toronto calendar dates and daylight-saving offsets are preserved
+ok 314 - Toronto calendar dates and daylight-saving offsets are preserved
+  ---
+  duration_ms: 0.41885
+  type: 'test'
+  ...
+# Subtest: calendar export avoids invented quiz times, missing final dates and holiday dates
+ok 315 - calendar export avoids invented quiz times, missing final dates and holiday dates
+  ---
+  duration_ms: 34.847654
+  type: 'test'
+  ...
+# Subtest: practice references retain the source editions and wrapped ranges without page footers
+ok 316 - practice references retain the source editions and wrapped ranges without page footers
+  ---
+  duration_ms: 3.491109
+  type: 'test'
+  ...
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Subtest: shared route imports leave the document untouched
+ok 317 - shared route imports leave the document untouched
+  ---
+  duration_ms: 420.624635
+  type: 'test'
+  ...
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Subtest: shared modules restore nodes and release resources across 20 paused route round trips
+ok 318 - shared modules restore nodes and release resources across 20 paused route round trips
+  ---
+  duration_ms: 3150.39604
+  type: 'test'
+  ...
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Night Shift: palette unavailable Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file and data are supported by the default ESM loader. Received protocol 'https:'
+#     at getSourceSync (node:internal/modules/esm/load:50:11)
+#     at defaultLoadSync (node:internal/modules/esm/load:156:34)
+#     at \#loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+#     at \#loadSync (node:internal/modules/esm/loader:834:53)
+#     at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+#     at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+#     at \#getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+#     at afterResolve (node:internal/modules/esm/loader:607:52)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+#     at node:internal/modules/esm/loader:632:32 {
+#   code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+# }
+# Subtest: shared modules release animated resources across 20 fine-pointer route round trips
+ok 319 - shared modules release animated resources across 20 fine-pointer route round trips
+  ---
+  duration_ms: 3120.638453
+  type: 'test'
+  ...
+# Subtest: hub and motion services keep shell identity while course identity and saved labels change
+ok 320 - hub and motion services keep shell identity while course identity and saved labels change
+  ---
+  duration_ms: 23.787969
+  type: 'test'
+  ...
+# Subtest: sound stays off by default and enabling it persists silently until an allowed play
+ok 321 - sound stays off by default and enabling it persists silently until an allowed play
+  ---
+  duration_ms: 109.408858
+  type: 'test'
+  ...
+# Subtest: saved opt-in still requires a user gesture before creating the shared context
+ok 322 - saved opt-in still requires a user gesture before creating the shared context
+  ---
+  duration_ms: 26.369453
+  type: 'test'
+  ...
+# Subtest: paper sound obeys reduced/off policy {"reduced":true}
+ok 323 - paper sound obeys reduced/off policy {"reduced":true}
+  ---
+  duration_ms: 12.365516
+  type: 'test'
+  ...
+# Subtest: paper sound obeys reduced/off policy {"motion":"off"}
+ok 324 - paper sound obeys reduced/off policy {"motion":"off"}
+  ---
+  duration_ms: 19.820133
+  type: 'test'
+  ...
+# Subtest: paper sound obeys reduced/off policy {"controller":false,"reduced":true}
+ok 325 - paper sound obeys reduced/off policy {"controller":false,"reduced":true}
+  ---
+  duration_ms: 8.167021
+  type: 'test'
+  ...
+# Subtest: motion controller and saved scene pause gate later plays without recreating audio
+ok 326 - motion controller and saved scene pause gate later plays without recreating audio
+  ---
+  duration_ms: 8.393505
+  type: 'test'
+  ...
+# Subtest: five paper actions synthesize bounded sounds and reject retired or unknown names
+ok 327 - five paper actions synthesize bounded sounds and reject retired or unknown names
+  ---
+  duration_ms: 8.848078
+  type: 'test'
+  ...
+# Subtest: page turns allow at most one sound per 120 ms and per changed spread
+ok 328 - page turns allow at most one sound per 120 ms and per changed spread
+  ---
+  duration_ms: 8.930809
+  type: 'test'
+  ...
+# Subtest: intensity controls output volume, clamps excess and avoids allocation for silence
+ok 329 - intensity controls output volume, clamps excess and avoids allocation for silence
+  ---
+  duration_ms: 9.720457
+  type: 'test'
+  ...
+# Subtest: unsupported WebAudio leaves the opt-in service usable
+ok 330 - unsupported WebAudio leaves the opt-in service usable
+  ---
+  duration_ms: 8.60612
+  type: 'test'
+  ...
+# Subtest: fixed-ring planetary gears maintain both no-slip ratios
+ok 331 - fixed-ring planetary gears maintain both no-slip ratios
+  ---
+  duration_ms: 1.841212
+  type: 'test'
+  ...
+# Subtest: sphere transforms include identity and rank-two projection without moving the origin
+ok 332 - sphere transforms include identity and rank-two projection without moving the origin
+  ---
+  duration_ms: 1.315805
+  type: 'test'
+  ...
+# Subtest: drag follows a finger continuously, releases with bounded inertia and cancels cleanly
+ok 333 - drag follows a finger continuously, releases with bounded inertia and cancels cleanly
+  ---
+  duration_ms: 2.002099
+  type: 'test'
+  ...
+# Subtest: animated art and basis tips remain visible at extreme drag rotations
+ok 334 - animated art and basis tips remain visible at extreme drag rotations
+  ---
+  duration_ms: 117.86507
+  type: 'test'
+  ...
+# Subtest: the moving tangent endpoints fit in addition to the ribbon surface
+ok 335 - the moving tangent endpoints fit in addition to the ribbon surface
+  ---
+  duration_ms: 0.92046
+  type: 'test'
+  ...
+# Subtest: CEN Academic Integrity quiz resolves to Oct 14, 3:00 PM Toronto, exact
+ok 336 - CEN Academic Integrity quiz resolves to Oct 14, 3:00 PM Toronto, exact
+  ---
+  duration_ms: 4.585817
+  type: 'test'
+  ...
+# Subtest: MTH140 midterm resolves to Oct 23, 6:30 PM Toronto, with its end
+ok 337 - MTH140 midterm resolves to Oct 23, 6:30 PM Toronto, with its end
+  ---
+  duration_ms: 1.601657
+  type: 'test'
+  ...
+# Subtest: a quiz week without a section: week precision, the section CTA and no timer
+ok 338 - a quiz week without a section: week precision, the section CTA and no timer
+  ---
+  duration_ms: 3.70749
+  type: 'test'
+  ...
+# Subtest: a quiz week with a saved section: exact lab start, the lab room and the timetable caveat
+ok 339 - a quiz week with a saved section: exact lab start, the lab room and the timetable caveat
+  ---
+  duration_ms: 2.231839
+  type: 'test'
+  ...
+# Subtest: Thanksgiving: the announced Monday make-up is exact; without one the date needs confirmation
+ok 340 - Thanksgiving: the announced Monday make-up is exact; without one the date needs confirmation
+  ---
+  duration_ms: 1.676689
+  type: 'test'
+  ...
+# Subtest: a dated submission without a time counts down to 11:59 PM Toronto; a dated in-class event keeps its date only
+ok 341 - a dated submission without a time counts down to 11:59 PM Toronto; a dated in-class event keeps its date only
+  ---
+  duration_ms: 7.915499
+  type: 'test'
+  ...
+# Subtest: an undated final is pending once nothing dated is left; with nothing open the state is honestly empty
+ok 342 - an undated final is pending once nothing dated is left; with nothing open the state is honestly empty
+  ---
+  duration_ms: 1.341062
+  type: 'test'
+  ...
+# Subtest: completed items are skipped, including reminders whose item is fully recorded
+ok 343 - completed items are skipped, including reminders whose item is fully recorded
+  ---
+  duration_ms: 5.715217
+  type: 'test'
+  ...
+# Subtest: an event in progress is never skipped just because two hours passed
+ok 344 - an event in progress is never skipped just because two hours passed
+  ---
+  duration_ms: 2.838806
+  type: 'test'
+  ...
+# Subtest: Toronto/UTC date boundaries decide eligibility and day counts
+ok 345 - Toronto/UTC date boundaries decide eligibility and day counts
+  ---
+  duration_ms: 5.273253
+  type: 'test'
+  ...
+# Subtest: the CEN rules are the guide page’s own upcomingSchedule, case for case
+ok 346 - the CEN rules are the guide page’s own upcomingSchedule, case for case
+  ---
+  duration_ms: 2430.655842
+  type: 'test'
+  ...
+# Subtest: readers are non-destructive on denied, missing and corrupt storage
+ok 347 - readers are non-destructive on denied, missing and corrupt storage
+  ---
+  duration_ms: 1.526436
+  type: 'test'
+  ...
+# Subtest: the overall next deadline never manufactures a timer from an uncertain target
+ok 348 - the overall next deadline never manufactures a timer from an uncertain target
+  ---
+  duration_ms: 3.915316
+  type: 'test'
+  ...
+# Subtest: the Desk’s first-paint course accents mirror COURSE_META
+ok 349 - the Desk’s first-paint course accents mirror COURSE_META
+  ---
+  duration_ms: 0.546458
+  type: 'test'
+  ...
+# Subtest: Three vendor retains every existing export and supplies the book engine exports
+ok 350 - Three vendor retains every existing export and supplies the book engine exports
+  ---
+  duration_ms: 1.15002
+  type: 'test'
+  ...
+# Subtest: bundled addons construct resources from the exported Three core
+ok 351 - bundled addons construct resources from the exported Three core
+  ---
+  duration_ms: 5.143181
+  type: 'test'
+  ...
+# Subtest: registration validates descriptors, chooses one most-specific match and unregisters safely
+ok 352 - registration validates descriptors, chooses one most-specific match and unregisters safely
+  ---
+  duration_ms: 75.988803
+  type: 'test'
+  ...
+# Subtest: motion policy prioritizes off, pause and holds, then OS reduce, with no storage writes
+ok 353 - motion policy prioritizes off, pause and holds, then OS reduce, with no storage writes
+  ---
+  duration_ms: 11.706361
+  type: 'test'
+  ...
+# Subtest: origin snapshots an element rect and defaults to the viewport centre
+ok 354 - origin snapshots an element rect and defaults to the viewport centre
+  ---
+  duration_ms: 7.881439
+  type: 'test'
+  ...
+# Subtest: outgoing animation overlaps document fetching and hands its pose to all incoming mounts and shell event
+ok 355 - outgoing animation overlaps document fetching and hands its pose to all incoming mounts and shell event
+  ---
+  duration_ms: 141.021725
+  type: 'test'
+  ...
+# Subtest: the hard cap aborts a non-cooperating animation; late resolution cannot create a handoff
+ok 356 - the hard cap aborts a non-cooperating animation; late resolution cannot create a handoff
+  ---
+  duration_ms: 28.904902
+  type: 'test'
+  ...
+# Subtest: the default navigation cap is 1200 ms even when an animation never settles
+ok 357 - the default navigation cap is 1200 ms even when an animation never settles
+  ---
+  duration_ms: 1232.403073
+  type: 'test'
+  ...
+# Subtest: reduced motion passes a 150 ms fade budget and aborts a longer fade
+ok 358 - reduced motion passes a 150 ms fade budget and aborts a longer fade
+  ---
+  duration_ms: 162.794188
+  type: 'test'
+  ...
+# Subtest: failed scene animations never force a reload or block semantic navigation
+ok 359 - failed scene animations never force a reload or block semantic navigation
+  ---
+  duration_ms: 81.00474
+  type: 'test'
+  ...
+# Subtest: cut skips animation callbacks, including an off destination and saved pause
+ok 360 - cut skips animation callbacks, including an off destination and saved pause
+  ---
+  duration_ms: 99.438853
+  type: 'test'
+  ...
+# Subtest: a second navigation aborts the first signal and never transfers its late pose
+ok 361 - a second navigation aborts the first signal and never transfers its late pose
+  ---
+  duration_ms: 25.689359
+  type: 'test'
+  ...
+# Subtest: pagehide aborts both animation and pending navigation before a swap
+ok 362 - pagehide aborts both animation and pending navigation before a swap
+  ---
+  duration_ms: 14.646227
+  type: 'test'
+  ...
+# Subtest: Back/Forward plays the matching reverse/dive without disturbing focus, hashes or scroll
+ok 363 - Back/Forward plays the matching reverse/dive without disturbing focus, hashes or scroll
+  ---
+  duration_ms: 38.544288
+  type: 'test'
+  ...
+# Subtest: Back during an unfinished outgoing move aborts it, then restores the visited Desk
+ok 364 - Back during an unfinished outgoing move aborts it, then restores the visited Desk
+  ---
+  duration_ms: 34.991045
+  type: 'test'
+  ...
+# Subtest: policy changes abort an in-flight move and invalidate a completed but unconsumed pose
+ok 365 - policy changes abort an in-flight move and invalidate a completed but unconsumed pose
+  ---
+  duration_ms: 44.527281
+  type: 'test'
+  ...
+# Subtest: handoffs require the exact request, destination, freshness and a pose; no storage is needed
+ok 366 - handoffs require the exact request, destination, freshness and a pose; no storage is needed
+  ---
+  duration_ms: 10.136172
+  type: 'test'
+  ...
+# Subtest: direct loads deliver continuing:false and never add a cover or consume legacy storage
+ok 367 - direct loads deliver continuing:false and never add a cover or consume legacy storage
+  ---
+  duration_ms: 14.013321
+  type: 'test'
+  ...
+# Subtest: native clicks capture a pointer rect; keyboard and palette navigation use the centre
+ok 368 - native clicks capture a pointer rect; keyboard and palette navigation use the centre
+  ---
+  duration_ms: 49.350129
+  type: 'test'
+  ...
+# Subtest: modified/new-tab/download/external clicks and same-route hashes do not invoke the controller
+ok 369 - modified/new-tab/download/external clicks and same-route hashes do not invoke the controller
+  ---
+  duration_ms: 9.443127
+  type: 'test'
+  ...
+# Subtest: a vetoed navigation never runs a scene or unmounts content
+ok 370 - a vetoed navigation never runs a scene or unmounts content
+  ---
+  duration_ms: 7.643337
+  type: 'test'
+  ...
+# Subtest: weeks exports the pure semester contract
+ok 371 - weeks exports the pure semester contract
+  ---
+  duration_ms: 0.951657
+  type: 'test'
+  ...
+# Subtest: first spread is Tuesday through Sunday and later spreads retain Monday anchors
+ok 372 - first spread is Tuesday through Sunday and later spreads retain Monday anchors
+  ---
+  duration_ms: 14.888194
+  type: 'test'
+  ...
+# Subtest: every announced quiz week selects its unchanged Monday spread
+ok 373 - every announced quiz week selects its unchanged Monday spread
+  ---
+  duration_ms: 25.121018
+  type: 'test'
+  ...
+# Subtest: Toronto dates and Monday boundaries determine current week, including DST
+ok 374 - Toronto dates and Monday boundaries determine current week, including DST
+  ---
+  duration_ms: 3.227791
+  type: 'test'
+  ...
+# Subtest: selection clamps before and after the term without invalid indices
+ok 375 - selection clamps before and after the term without invalid indices
+  ---
+  duration_ms: 1.121778
+  type: 'test'
+  ...
+# Subtest: dated exam records extend the range while undated finals retain pending precision
+ok 376 - dated exam records extend the range while undated finals retain pending precision
+  ---
+  duration_ms: 4.3167
+  type: 'test'
+  ...
+# Subtest: reading weeks require dated source evidence, not guessed calendar gaps
+ok 377 - reading weeks require dated source evidence, not guessed calendar gaps
+  ---
+  duration_ms: 3.481926
+  type: 'test'
+  ...
+# Subtest: math normalization preserves section dates, make-up and holiday uncertainty
+ok 378 - math normalization preserves section dates, make-up and holiday uncertainty
+  ---
+  duration_ms: 4.720416
+  type: 'test'
+  ...
+# Subtest: weights preserve published values and never divide an aggregate quiz grade
+ok 379 - weights preserve published values and never divide an aggregate quiz grade
+  ---
+  duration_ms: 1.784438
+  type: 'test'
+  ...
+# Subtest: CEN mapping excludes reminders and distinguishes schedule ids from item handles
+ok 380 - CEN mapping excludes reminders and distinguishes schedule ids from item handles
+  ---
+  duration_ms: 3.74856
+  type: 'test'
+  ...
+# Subtest: CEN final project landmarks retain teaching spreads before the exam period
+ok 381 - CEN final project landmarks retain teaching spreads before the exam period
+  ---
+  duration_ms: 50.36627
+  type: 'test'
+  ...
+# Subtest: completion accepts the guides saved envelopes and strict entry flags only
+ok 382 - completion accepts the guides saved envelopes and strict entry flags only
+  ---
+  duration_ms: 7.269434
+  type: 'test'
+  ...
+# Subtest: popup rank keeps categories dominant and real weight secondary
+ok 383 - popup rank keeps categories dominant and real weight secondary
+  ---
+  duration_ms: 0.236379
+  type: 'test'
+  ...
+# Subtest: palette queries resolve numbers and real calendar dates with no false matches
+ok 384 - palette queries resolve numbers and real calendar dates with no false matches
+  ---
+  duration_ms: 26.669156
+  type: 'test'
+  ...
+1..384
+# tests 384
+# suites 0
+# pass 383
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 48383.121955

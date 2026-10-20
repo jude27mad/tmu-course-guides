@@ -1,0 +1,227 @@
+{
+  "measuredAt": "2026-10-20T04:24:19.628Z",
+  "node": "v24.19.0",
+  "zlib": "1.3.2.1-motley-3246f1b",
+  "buildId": "MdUy1dmXBhhGqw6Jxz046",
+  "buildSources": {
+    "reactLoadableManifestSha256": "2a80b46d959fb47b1e75ae7e75d72dc0096c58a686dec045e83fa16fe173e082",
+    "buildManifestSha256": "7244fe0b88dffa55c6ebee8050a052c2236f6f2e4c784b45e8dbf13ce86989ab",
+    "spikeExportHtmlSha256": "352cd19eda112c39c6c1b8888b850d86ddc8e1e3b23bfe659ae79ce622d51cfd"
+  },
+  "method": "Raw UTF-8 emitted file bytes and gzipSync(level:9), summed per individually compressed file. Export bytes verified equal to .next/static bytes. Shared /_app React/Next/site-shell chunks are excluded; this measures the incremental spike payload, not total page transfer size.",
+  "calendar": {
+    "manifestKey": "pages/spike.page.jsx -> @src/spike/CalendarProbe",
+    "definition": "Every file associated with the next/dynamic CalendarProbe import in react-loadable-manifest.json. Includes core, React adapter, Preact/signals, Temporal polyfill, calendar controls/events service and the sample fixture wherever Webpack put them. It is not a package-only tree-shaking estimate.",
+    "javaScript": {
+      "files": [
+        "static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "static/chunks/895.d8c98a7f18b90b26.js",
+        "static/chunks/239.c2fcb3519321bf13.js"
+      ],
+      "rawBytes": 256337,
+      "gzip9Bytes": 72986
+    },
+    "css": {
+      "files": [
+        "static/css/e48b2852e9f744cd.css"
+      ],
+      "rawBytes": 31903,
+      "gzip9Bytes": 5671
+    },
+    "combined": {
+      "files": [
+        "static/css/e48b2852e9f744cd.css",
+        "static/chunks/83073b0a.a76ecd99cef27ecf.js",
+        "static/chunks/895.d8c98a7f18b90b26.js",
+        "static/chunks/239.c2fcb3519321bf13.js"
+      ],
+      "rawBytes": 288240,
+      "gzip9Bytes": 78657
+    }
+  },
+  "accordion": {
+    "definition": "Entire separate emitted accordion/Radix-dependency chunk identified by its AccordionTrigger/AccordionContent string literals in a statically parsed Webpack module factory. Shared React is excluded. The three-panel fixture, controls, error boundary and dynamic-loader glue live in the separately reported route fixture.",
+    "chunk": {
+      "files": [
+        "static/chunks/396-066e378d4ba06cbc.js"
+      ],
+      "rawBytes": 25560,
+      "gzip9Bytes": 8471
+    },
+    "routeFixture": {
+      "files": [
+        "static/chunks/pages/spike-34f3e87a21759713.js"
+      ],
+      "rawBytes": 5214,
+      "gzip9Bytes": 2148
+    },
+    "allRouteIncrement": {
+      "files": [
+        "static/chunks/396-066e378d4ba06cbc.js",
+        "static/chunks/pages/spike-34f3e87a21759713.js"
+      ],
+      "rawBytes": 30774,
+      "gzip9Bytes": 10619
+    }
+  },
+  "files": [
+    {
+      "file": "site/out/_next/static/css/e48b2852e9f744cd.css",
+      "manifestFile": "static/css/e48b2852e9f744cd.css",
+      "rawBytes": 31903,
+      "gzip9Bytes": 5671,
+      "sha256": "e8b3475304f6a9c0222d3cbb517f68afc02b5f12c88ebc5d0e1d1ca128e6a488"
+    },
+    {
+      "file": "site/out/_next/static/chunks/83073b0a.a76ecd99cef27ecf.js",
+      "manifestFile": "static/chunks/83073b0a.a76ecd99cef27ecf.js",
+      "rawBytes": 153230,
+      "gzip9Bytes": 38105,
+      "sha256": "aeeead333b70318be2c5b0b7a0dbcd2c27ff27e281ba104347d973f38468c85b",
+      "scan": {
+        "parser": "acorn",
+        "scope": "Parsed AST: direct calls/new expressions named eval or Function, including named member access. This does not prove the absence of deliberately aliased/obfuscated dynamic code; runtime CSP observations are separate evidence.",
+        "evalOrFunctionSites": [],
+        "moduleFactories": [
+          {
+            "id": "3999",
+            "rawBytes": 153145,
+            "namedMarkers": []
+          }
+        ]
+      }
+    },
+    {
+      "file": "site/out/_next/static/chunks/895.d8c98a7f18b90b26.js",
+      "manifestFile": "static/chunks/895.d8c98a7f18b90b26.js",
+      "rawBytes": 101716,
+      "gzip9Bytes": 34118,
+      "sha256": "cd819a6ec5d497bcb6e9620668bb257cda0745ef2a1467ec5a18687d16c8a73b",
+      "scan": {
+        "parser": "acorn",
+        "scope": "Parsed AST: direct calls/new expressions named eval or Function, including named member access. This does not prove the absence of deliberately aliased/obfuscated dynamic code; runtime CSP observations are separate evidence.",
+        "evalOrFunctionSites": [],
+        "moduleFactories": [
+          {
+            "id": "5073",
+            "rawBytes": 8510,
+            "namedMarkers": []
+          },
+          {
+            "id": "2531",
+            "rawBytes": 4585,
+            "namedMarkers": []
+          },
+          {
+            "id": "405",
+            "rawBytes": 9829,
+            "namedMarkers": []
+          },
+          {
+            "id": "2643",
+            "rawBytes": 12,
+            "namedMarkers": []
+          },
+          {
+            "id": "8661",
+            "rawBytes": 6459,
+            "namedMarkers": []
+          },
+          {
+            "id": "6400",
+            "rawBytes": 11745,
+            "namedMarkers": []
+          },
+          {
+            "id": "396",
+            "rawBytes": 3512,
+            "namedMarkers": []
+          },
+          {
+            "id": "6584",
+            "rawBytes": 486,
+            "namedMarkers": []
+          },
+          {
+            "id": "8383",
+            "rawBytes": 1203,
+            "namedMarkers": []
+          },
+          {
+            "id": "9798",
+            "rawBytes": 55251,
+            "namedMarkers": []
+          }
+        ]
+      }
+    },
+    {
+      "file": "site/out/_next/static/chunks/239.c2fcb3519321bf13.js",
+      "manifestFile": "static/chunks/239.c2fcb3519321bf13.js",
+      "rawBytes": 1391,
+      "gzip9Bytes": 763,
+      "sha256": "f8ae54e497ad98b2fd12d8db5240de131358b773fe29a6447daf5c01beacd5bf",
+      "scan": {
+        "parser": "acorn",
+        "scope": "Parsed AST: direct calls/new expressions named eval or Function, including named member access. This does not prove the absence of deliberately aliased/obfuscated dynamic code; runtime CSP observations are separate evidence.",
+        "evalOrFunctionSites": [],
+        "moduleFactories": [
+          {
+            "id": "5239",
+            "rawBytes": 1306,
+            "namedMarkers": []
+          }
+        ]
+      }
+    },
+    {
+      "file": "site/out/_next/static/chunks/396-066e378d4ba06cbc.js",
+      "manifestFile": "static/chunks/396-066e378d4ba06cbc.js",
+      "rawBytes": 25560,
+      "gzip9Bytes": 8471,
+      "sha256": "34cde35c89490b25003c200c36d88bb261eced29033c39022f3c99f0359d4c9a",
+      "scan": {
+        "parser": "acorn",
+        "scope": "Parsed AST: direct calls/new expressions named eval or Function, including named member access. This does not prove the absence of deliberately aliased/obfuscated dynamic code; runtime CSP observations are separate evidence.",
+        "evalOrFunctionSites": [],
+        "moduleFactories": [
+          {
+            "id": "5396",
+            "rawBytes": 25475,
+            "namedMarkers": [
+              "Accordion",
+              "AccordionItem",
+              "AccordionTrigger",
+              "AccordionContent",
+              "Collapsible"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "file": "site/out/_next/static/chunks/pages/spike-34f3e87a21759713.js",
+      "manifestFile": "static/chunks/pages/spike-34f3e87a21759713.js",
+      "rawBytes": 5214,
+      "gzip9Bytes": 2148,
+      "sha256": "bb554a68d6e886c52ff8e5e43b9e534b402b8e3d37cb3fe92c9acbb1c7e0961f",
+      "scan": {
+        "parser": "acorn",
+        "scope": "Parsed AST: direct calls/new expressions named eval or Function, including named member access. This does not prove the absence of deliberately aliased/obfuscated dynamic code; runtime CSP observations are separate evidence.",
+        "evalOrFunctionSites": [],
+        "moduleFactories": [
+          {
+            "id": "1416",
+            "rawBytes": 98,
+            "namedMarkers": []
+          },
+          {
+            "id": "1214",
+            "rawBytes": 4958,
+            "namedMarkers": []
+          }
+        ]
+      }
+    }
+  ]
+}

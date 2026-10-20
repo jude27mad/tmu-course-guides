@@ -1,0 +1,235 @@
+{
+  "method": "Headed Chromium native browser Ctrl+F, typed with xdotool X11 input; no synthetic beforematch dispatch or window.find.",
+  "url": "http://127.0.0.1:4174/tmu-course-guides/next/spike/?motion=off&width=1000&accordion=no-js-safe",
+  "display": ":92",
+  "query": "R4PANELBRAVO",
+  "browser": "154.0.8037.57",
+  "before": {
+    "hidden": "until-found",
+    "state": "closed",
+    "display": "block",
+    "contentVisibility": "hidden",
+    "expanded": "false",
+    "beforematchCount": 0,
+    "trustedBeforematchCount": 0,
+    "nativeEvents": []
+  },
+  "windowIds": [
+    "2097155"
+  ],
+  "after": {
+    "hidden": "until-found",
+    "state": "closed",
+    "display": "block",
+    "contentVisibility": "hidden",
+    "expanded": "false",
+    "beforematchCount": 0,
+    "trustedBeforematchCount": 0,
+    "nativeEvents": []
+  },
+  "revealedByNativeFind": false,
+  "controls": [
+    {
+      "name": "parsed-token-with-reset-and-state-css",
+      "parsedToken": true,
+      "css": "*{all:unset;display:revert}[data-state=closed]{content-visibility:hidden;display:block}",
+      "setup": {
+        "initialContentVisibility": "hidden",
+        "afterTokenContentVisibility": "hidden"
+      },
+      "before": {
+        "hidden": "until-found",
+        "state": "closed",
+        "display": "block",
+        "contentVisibility": "hidden",
+        "expanded": "false",
+        "beforematchCount": 0,
+        "trustedBeforematchCount": 0,
+        "nativeEvents": []
+      },
+      "after": {
+        "hidden": null,
+        "state": "open",
+        "display": "block",
+        "contentVisibility": "visible",
+        "expanded": "true",
+        "beforematchCount": 1,
+        "trustedBeforematchCount": 1,
+        "nativeEvents": [
+          {
+            "isTrusted": true,
+            "panel": "bravo"
+          }
+        ]
+      },
+      "revealedByNativeFind": true
+    },
+    {
+      "name": "parsed-token-with-reset-and-token-css",
+      "parsedToken": true,
+      "css": "*{all:unset;display:revert}[data-state=closed]:not([hidden]),[hidden=until-found]{content-visibility:hidden;display:block}",
+      "setup": {
+        "initialContentVisibility": "hidden",
+        "afterTokenContentVisibility": "hidden"
+      },
+      "before": {
+        "hidden": "until-found",
+        "state": "closed",
+        "display": "block",
+        "contentVisibility": "hidden",
+        "expanded": "false",
+        "beforematchCount": 0,
+        "trustedBeforematchCount": 0,
+        "nativeEvents": []
+      },
+      "after": {
+        "hidden": null,
+        "state": "open",
+        "display": "block",
+        "contentVisibility": "visible",
+        "expanded": "true",
+        "beforematchCount": 1,
+        "trustedBeforematchCount": 1,
+        "nativeEvents": [
+          {
+            "isTrusted": true,
+            "panel": "bravo"
+          }
+        ]
+      },
+      "revealedByNativeFind": true
+    },
+    {
+      "name": "dynamic-token-after-computing-hidden-state-css",
+      "dynamicToken": true,
+      "css": "*{all:unset;display:revert}[data-state=closed]{content-visibility:hidden;display:block}",
+      "setup": {
+        "initialContentVisibility": "hidden",
+        "afterTokenContentVisibility": "hidden"
+      },
+      "before": {
+        "hidden": "until-found",
+        "state": "closed",
+        "display": "block",
+        "contentVisibility": "hidden",
+        "expanded": "false",
+        "beforematchCount": 0,
+        "trustedBeforematchCount": 0,
+        "nativeEvents": []
+      },
+      "after": {
+        "hidden": "until-found",
+        "state": "closed",
+        "display": "block",
+        "contentVisibility": "hidden",
+        "expanded": "false",
+        "beforematchCount": 0,
+        "trustedBeforematchCount": 0,
+        "nativeEvents": []
+      },
+      "revealedByNativeFind": false
+    },
+    {
+      "name": "dynamic-token-after-computing-hidden-token-css",
+      "dynamicToken": true,
+      "css": "*{all:unset;display:revert}[data-state=closed]:not([hidden]),[hidden=until-found]{content-visibility:hidden;display:block}",
+      "setup": {
+        "initialContentVisibility": "hidden",
+        "afterTokenContentVisibility": "hidden"
+      },
+      "before": {
+        "hidden": "until-found",
+        "state": "closed",
+        "display": "block",
+        "contentVisibility": "hidden",
+        "expanded": "false",
+        "beforematchCount": 0,
+        "trustedBeforematchCount": 0,
+        "nativeEvents": []
+      },
+      "after": {
+        "hidden": "until-found",
+        "state": "closed",
+        "display": "block",
+        "contentVisibility": "hidden",
+        "expanded": "false",
+        "beforematchCount": 0,
+        "trustedBeforematchCount": 0,
+        "nativeEvents": []
+      },
+      "revealedByNativeFind": false
+    },
+    {
+      "name": "dynamic-token-from-visible-control",
+      "dynamicToken": true,
+      "css": "",
+      "setup": {
+        "initialContentVisibility": "visible",
+        "afterTokenContentVisibility": "hidden"
+      },
+      "before": {
+        "hidden": "until-found",
+        "state": "closed",
+        "display": "block",
+        "contentVisibility": "hidden",
+        "expanded": "false",
+        "beforematchCount": 0,
+        "trustedBeforematchCount": 0,
+        "nativeEvents": []
+      },
+      "after": {
+        "hidden": null,
+        "state": "open",
+        "display": "block",
+        "contentVisibility": "visible",
+        "expanded": "true",
+        "beforematchCount": 1,
+        "trustedBeforematchCount": 1,
+        "nativeEvents": [
+          {
+            "isTrusted": true,
+            "panel": "bravo"
+          }
+        ]
+      },
+      "revealedByNativeFind": true
+    },
+    {
+      "name": "dynamic-token-with-temporary-visible-style-reset",
+      "dynamicToken": true,
+      "temporaryVisibleReset": true,
+      "css": "*{all:unset;display:revert}[data-state=closed]:not([hidden]),[hidden=until-found]{content-visibility:hidden;display:block}",
+      "setup": {
+        "initialContentVisibility": "hidden",
+        "afterTokenContentVisibility": "hidden"
+      },
+      "before": {
+        "hidden": "until-found",
+        "state": "closed",
+        "display": "block",
+        "contentVisibility": "hidden",
+        "expanded": "false",
+        "beforematchCount": 0,
+        "trustedBeforematchCount": 0,
+        "nativeEvents": []
+      },
+      "after": {
+        "hidden": null,
+        "state": "open",
+        "display": "block",
+        "contentVisibility": "visible",
+        "expanded": "true",
+        "beforematchCount": 1,
+        "trustedBeforematchCount": 1,
+        "nativeEvents": [
+          {
+            "isTrusted": true,
+            "panel": "bravo"
+          }
+        ]
+      },
+      "revealedByNativeFind": true
+    }
+  ],
+  "controlLimitation": "Isolated DOM controls diagnose the observed style/token sequence. The temporary visible-style reset was not integrated into Radix or proposed as a proven production fix."
+}

@@ -1,0 +1,3100 @@
+{
+  "measuredAt": "2026-10-20T04:24:16.842Z",
+  "node": "v24.19.0",
+  "packages": [
+    {
+      "name": "@schedule-x/react",
+      "version": "4.1.0",
+      "declaredLicense": "MIT",
+      "licenseReadFromFile": "MIT",
+      "licenseFile": "site/node_modules/@schedule-x/react/LICENSE",
+      "licenseSha256": "c38937352e57d6e95aca6506641c3319ab4fe26ecb71350021c35a3bc29c14f9",
+      "copyright": [
+        "Copyright 2023 Tom Österlund"
+      ],
+      "licenseText": "Copyright 2023 Tom Österlund\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+      "peerDependencies": {
+        "@schedule-x/calendar": "^3.1.0 || ^4.0.0",
+        "react": "^16.7.0 || ^17 || ^18 || ^19",
+        "react-dom": "^16.7.0 || ^17 || ^18 || ^19"
+      }
+    },
+    {
+      "name": "@schedule-x/calendar",
+      "version": "4.9.1",
+      "declaredLicense": "MIT",
+      "licenseReadFromFile": "MIT",
+      "licenseFile": "site/node_modules/@schedule-x/calendar/LICENSE",
+      "licenseSha256": "c38937352e57d6e95aca6506641c3319ab4fe26ecb71350021c35a3bc29c14f9",
+      "copyright": [
+        "Copyright 2023 Tom Österlund"
+      ],
+      "licenseText": "Copyright 2023 Tom Österlund\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+      "peerDependencies": {
+        "@preact/signals": "^2.0.2",
+        "preact": "^10.19.2",
+        "temporal-polyfill": "0.3.2"
+      }
+    },
+    {
+      "name": "@schedule-x/calendar-controls",
+      "version": "4.9.1",
+      "declaredLicense": "MIT",
+      "licenseReadFromFile": "MIT",
+      "licenseFile": "site/node_modules/@schedule-x/calendar-controls/LICENSE",
+      "licenseSha256": "c38937352e57d6e95aca6506641c3319ab4fe26ecb71350021c35a3bc29c14f9",
+      "copyright": [
+        "Copyright 2023 Tom Österlund"
+      ],
+      "licenseText": "Copyright 2023 Tom Österlund\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+      "peerDependencies": {}
+    },
+    {
+      "name": "@schedule-x/events-service",
+      "version": "4.9.1",
+      "declaredLicense": "MIT",
+      "licenseReadFromFile": "MIT",
+      "licenseFile": "site/node_modules/@schedule-x/events-service/LICENSE",
+      "licenseSha256": "c38937352e57d6e95aca6506641c3319ab4fe26ecb71350021c35a3bc29c14f9",
+      "copyright": [
+        "Copyright 2023 Tom Österlund"
+      ],
+      "licenseText": "Copyright 2023 Tom Österlund\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+      "peerDependencies": {}
+    },
+    {
+      "name": "@schedule-x/theme-default",
+      "version": "4.9.1",
+      "declaredLicense": "MIT",
+      "licenseReadFromFile": "MIT",
+      "licenseFile": "site/node_modules/@schedule-x/theme-default/LICENSE",
+      "licenseSha256": "c38937352e57d6e95aca6506641c3319ab4fe26ecb71350021c35a3bc29c14f9",
+      "copyright": [
+        "Copyright 2023 Tom Österlund"
+      ],
+      "licenseText": "Copyright 2023 Tom Österlund\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+      "peerDependencies": {}
+    },
+    {
+      "name": "temporal-polyfill",
+      "version": "0.3.2",
+      "declaredLicense": "MIT",
+      "licenseReadFromFile": "MIT",
+      "licenseFile": "site/node_modules/temporal-polyfill/LICENSE",
+      "licenseSha256": "cfc9b4163a202ffe37c834e7d63bd455f78809868549457da5f0db75f3f2c98e",
+      "copyright": [
+        "Copyright (c) 2024 Adam Shaw"
+      ],
+      "licenseText": "MIT License\n\nCopyright (c) 2024 Adam Shaw\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n",
+      "peerDependencies": {}
+    },
+    {
+      "name": "preact",
+      "version": "10.29.8",
+      "declaredLicense": "MIT",
+      "licenseReadFromFile": "MIT",
+      "licenseFile": "site/node_modules/preact/LICENSE",
+      "licenseSha256": "1fe6958409c8c257a70c587a18b6f7f412b179b456630790d30b2ec9a8e4b7d4",
+      "copyright": [
+        "Copyright (c) 2015-present Jason Miller"
+      ],
+      "licenseText": "The MIT License (MIT)\n\nCopyright (c) 2015-present Jason Miller\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n",
+      "peerDependencies": {
+        "preact-render-to-string": ">=5"
+      }
+    },
+    {
+      "name": "@preact/signals",
+      "version": "2.11.3",
+      "declaredLicense": "MIT",
+      "licenseReadFromFile": "MIT",
+      "licenseFile": "site/node_modules/@preact/signals/LICENSE",
+      "licenseSha256": "a11fc89e4c6b118854c7a667734a0b2e6bf2af5e45c6686de31adbccc8f3ae8d",
+      "copyright": [
+        "Copyright (c) 2022-present Preact Team"
+      ],
+      "licenseText": "The MIT License (MIT)\n\nCopyright (c) 2022-present Preact Team\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n",
+      "peerDependencies": {
+        "preact": ">= 10.25.0 || >=11.0.0-0"
+      }
+    },
+    {
+      "name": "@radix-ui/react-accordion",
+      "version": "1.3.1",
+      "declaredLicense": "MIT",
+      "licenseReadFromFile": "MIT",
+      "licenseFile": "site/node_modules/@radix-ui/react-accordion/LICENSE",
+      "licenseSha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138",
+      "copyright": [
+        "Copyright (c) 2022 WorkOS"
+      ],
+      "licenseText": "MIT License\n\nCopyright (c) 2022 WorkOS\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n",
+      "peerDependencies": {
+        "@types/react": "*",
+        "@types/react-dom": "*",
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc"
+      }
+    }
+  ],
+  "react": "18.2.0",
+  "reactDom": "18.2.0",
+  "npmLs": {
+    "selected": {
+      "command": "npm ls react react-dom @schedule-x/react @schedule-x/calendar @schedule-x/calendar-controls @schedule-x/events-service @schedule-x/theme-default temporal-polyfill preact @preact/signals @radix-ui/react-accordion",
+      "exitCode": 0,
+      "signal": null,
+      "error": "spawnSync npm EPERM",
+      "stderr": "",
+      "warningLines": [],
+      "stdout": ""
+    },
+    "all": {
+      "command": "npm ls --all",
+      "exitCode": 0,
+      "signal": null,
+      "error": "spawnSync npm EPERM",
+      "stderr": "",
+      "warningLines": []
+    }
+  },
+  "theme": {
+    "cssSources": {
+      "calendar.css": {
+        "sha256": "a9618cb7c839d8f0aac4b7966d64024bcbc5f7cc9503ae3a0a6acefae60ac45c",
+        "bytes": 37208
+      },
+      "date-picker.css": {
+        "sha256": "85aa4ffa834d3c0acc72c718b860a93a9b354104317e5601c68e0d3af9e4648f",
+        "bytes": 12318
+      },
+      "index.css": {
+        "sha256": "2f7054eecb6283e1ffd1caa31ac218060adc8eefe90fb2631cca9deaa8c9bc10",
+        "bytes": 37208
+      },
+      "time-picker.css": {
+        "sha256": "dacb19c806baa6777c3403f418903fc1425730f211e3dad933df8c6f689865c0",
+        "bytes": 11187
+      }
+    },
+    "definedNames": [
+      "--sx-border",
+      "--sx-box-shadow-level3",
+      "--sx-calendar-header-input-font-size",
+      "--sx-calendar-header-popup-z-index",
+      "--sx-calendar-week-grid-padding-left",
+      "--sx-color-background",
+      "--sx-color-neutral",
+      "--sx-color-neutral-variant",
+      "--sx-color-on-background",
+      "--sx-color-on-primary",
+      "--sx-color-on-primary-container",
+      "--sx-color-on-secondary",
+      "--sx-color-on-secondary-container",
+      "--sx-color-on-surface",
+      "--sx-color-on-tertiary",
+      "--sx-color-on-tertiary-container",
+      "--sx-color-outline",
+      "--sx-color-outline-variant",
+      "--sx-color-primary",
+      "--sx-color-primary-container",
+      "--sx-color-secondary",
+      "--sx-color-secondary-container",
+      "--sx-color-shadow",
+      "--sx-color-surface",
+      "--sx-color-surface-bright",
+      "--sx-color-surface-container",
+      "--sx-color-surface-container-high",
+      "--sx-color-surface-container-low",
+      "--sx-color-surface-dim",
+      "--sx-color-surface-tint",
+      "--sx-color-tertiary",
+      "--sx-color-tertiary-container",
+      "--sx-color-time-input-bg",
+      "--sx-font-extra-large",
+      "--sx-font-extra-small",
+      "--sx-font-large",
+      "--sx-font-small",
+      "--sx-internal-color-gray-ripple-background",
+      "--sx-internal-color-light-gray",
+      "--sx-internal-color-text",
+      "--sx-rounding-extra-large",
+      "--sx-rounding-extra-small",
+      "--sx-rounding-small",
+      "--sx-spacing-modal-padding",
+      "--sx-spacing-padding1",
+      "--sx-spacing-padding2",
+      "--sx-spacing-padding3",
+      "--sx-spacing-padding4",
+      "--sx-spacing-padding6",
+      "--sx-time-axis-height",
+      "--sx-week-grid-height",
+      "--sx-week-grid-hour-height",
+      "--sx-week-grid-offset-top",
+      "--sx-z-index-event-modal",
+      "--sx-z-index-week-header"
+    ],
+    "definedCount": 55,
+    "indexDefinitions": [
+      {
+        "name": "--sx-color-primary",
+        "value": "#6750a4",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 25
+      },
+      {
+        "name": "--sx-color-on-primary",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 26
+      },
+      {
+        "name": "--sx-color-primary-container",
+        "value": "#eaddff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 27
+      },
+      {
+        "name": "--sx-color-on-primary-container",
+        "value": "#21005e",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 28
+      },
+      {
+        "name": "--sx-color-secondary",
+        "value": "#625b71",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 29
+      },
+      {
+        "name": "--sx-color-on-secondary",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 30
+      },
+      {
+        "name": "--sx-color-secondary-container",
+        "value": "#e8def8",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 31
+      },
+      {
+        "name": "--sx-color-on-secondary-container",
+        "value": "#1e192b",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 32
+      },
+      {
+        "name": "--sx-color-tertiary",
+        "value": "#7d5260",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 33
+      },
+      {
+        "name": "--sx-color-on-tertiary",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 34
+      },
+      {
+        "name": "--sx-color-tertiary-container",
+        "value": "#ffd8e4",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 35
+      },
+      {
+        "name": "--sx-color-on-tertiary-container",
+        "value": "#370b1e",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 36
+      },
+      {
+        "name": "--sx-color-surface",
+        "value": "#fef7ff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 37
+      },
+      {
+        "name": "--sx-color-surface-dim",
+        "value": "#ded8e1",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 38
+      },
+      {
+        "name": "--sx-color-surface-bright",
+        "value": "#fef7ff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 39
+      },
+      {
+        "name": "--sx-color-on-surface",
+        "value": "#1c1b1f",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 40
+      },
+      {
+        "name": "--sx-color-surface-container",
+        "value": "#f3edf7",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 41
+      },
+      {
+        "name": "--sx-color-surface-container-low",
+        "value": "#f7f2fa",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 42
+      },
+      {
+        "name": "--sx-color-surface-container-high",
+        "value": "#ece6f0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 43
+      },
+      {
+        "name": "--sx-color-background",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 44
+      },
+      {
+        "name": "--sx-color-on-background",
+        "value": "#1c1b1f",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 45
+      },
+      {
+        "name": "--sx-color-outline",
+        "value": "#79747e",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 46
+      },
+      {
+        "name": "--sx-color-outline-variant",
+        "value": "#c4c7c5",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 47
+      },
+      {
+        "name": "--sx-color-shadow",
+        "value": "#000",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 48
+      },
+      {
+        "name": "--sx-color-surface-tint",
+        "value": "#6750a4",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 49
+      },
+      {
+        "name": "--sx-color-neutral",
+        "value": "var(--sx-color-outline)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 50
+      },
+      {
+        "name": "--sx-color-neutral-variant",
+        "value": "var(--sx-color-outline-variant)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 51
+      },
+      {
+        "name": "--sx-internal-color-gray-ripple-background",
+        "value": "#e0e0e0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 52
+      },
+      {
+        "name": "--sx-internal-color-light-gray",
+        "value": "#fafafa",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 53
+      },
+      {
+        "name": "--sx-internal-color-text",
+        "value": "#000",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 54
+      },
+      {
+        "name": "--sx-color-primary",
+        "value": "#d0bcff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 58
+      },
+      {
+        "name": "--sx-color-on-primary",
+        "value": "#371e73",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 59
+      },
+      {
+        "name": "--sx-color-primary-container",
+        "value": "#4f378b",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 60
+      },
+      {
+        "name": "--sx-color-on-primary-container",
+        "value": "#eaddff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 61
+      },
+      {
+        "name": "--sx-color-secondary",
+        "value": "#ccc2dc",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 62
+      },
+      {
+        "name": "--sx-color-on-secondary",
+        "value": "#332d41",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 63
+      },
+      {
+        "name": "--sx-color-secondary-container",
+        "value": "#4a4458",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 64
+      },
+      {
+        "name": "--sx-color-on-secondary-container",
+        "value": "#e8def8",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 65
+      },
+      {
+        "name": "--sx-color-tertiary",
+        "value": "#efb8c8",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 66
+      },
+      {
+        "name": "--sx-color-on-tertiary",
+        "value": "#492532",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 67
+      },
+      {
+        "name": "--sx-color-tertiary-container",
+        "value": "#633b48",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 68
+      },
+      {
+        "name": "--sx-color-on-tertiary-container",
+        "value": "#ffd8e4",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 69
+      },
+      {
+        "name": "--sx-color-surface",
+        "value": "#141218",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 70
+      },
+      {
+        "name": "--sx-color-surface-dim",
+        "value": "#141218",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 71
+      },
+      {
+        "name": "--sx-color-surface-bright",
+        "value": "#3b383e",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 72
+      },
+      {
+        "name": "--sx-color-on-surface",
+        "value": "#e6e1e5",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 73
+      },
+      {
+        "name": "--sx-color-surface-container",
+        "value": "#211f26",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 74
+      },
+      {
+        "name": "--sx-color-surface-container-low",
+        "value": "#1d1b20",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 75
+      },
+      {
+        "name": "--sx-color-surface-container-high",
+        "value": "#2b2930",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 76
+      },
+      {
+        "name": "--sx-color-background",
+        "value": "#141218",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 77
+      },
+      {
+        "name": "--sx-color-on-background",
+        "value": "#e6e1e5",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 78
+      },
+      {
+        "name": "--sx-color-outline",
+        "value": "#938f99",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 79
+      },
+      {
+        "name": "--sx-color-outline-variant",
+        "value": "#444746",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 80
+      },
+      {
+        "name": "--sx-color-shadow",
+        "value": "#000",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 81
+      },
+      {
+        "name": "--sx-color-surface-tint",
+        "value": "#d0bcff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 82
+      },
+      {
+        "name": "--sx-internal-color-text",
+        "value": "#fff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 83
+      },
+      {
+        "name": "--sx-spacing-padding1",
+        "value": "4px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 87
+      },
+      {
+        "name": "--sx-spacing-padding2",
+        "value": "8px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 88
+      },
+      {
+        "name": "--sx-spacing-padding3",
+        "value": "12px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 89
+      },
+      {
+        "name": "--sx-spacing-padding4",
+        "value": "16px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 90
+      },
+      {
+        "name": "--sx-spacing-padding6",
+        "value": "24px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 91
+      },
+      {
+        "name": "--sx-spacing-modal-padding",
+        "value": "16px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 92
+      },
+      {
+        "name": "--sx-box-shadow-level3",
+        "value": "0 3px 6px 0 rgb(0 0 0 / 16%), 0 3px 6px 0 rgb(0 0 0 / 23%)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 96
+      },
+      {
+        "name": "--sx-rounding-extra-small",
+        "value": "4px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 98
+      },
+      {
+        "name": "--sx-rounding-small",
+        "value": "8px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 99
+      },
+      {
+        "name": "--sx-rounding-extra-large",
+        "value": "28px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 100
+      },
+      {
+        "name": "--sx-border",
+        "value": "1px solid var(--sx-color-outline-variant)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 101
+      },
+      {
+        "name": "--sx-border",
+        "value": "1px solid var(--sx-color-outline-variant)",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 105
+      },
+      {
+        "name": "--sx-font-small",
+        "value": "0.875rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 109
+      },
+      {
+        "name": "--sx-font-extra-small",
+        "value": "0.75rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 110
+      },
+      {
+        "name": "--sx-font-large",
+        "value": "1.125rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 111
+      },
+      {
+        "name": "--sx-font-extra-large",
+        "value": "1.25rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 112
+      },
+      {
+        "name": "--sx-z-index-week-header",
+        "value": "100",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 116
+      },
+      {
+        "name": "--sx-z-index-event-modal",
+        "value": "101",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 117
+      },
+      {
+        "name": "--sx-calendar-header-popup-z-index",
+        "value": "102",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 118
+      },
+      {
+        "name": "--sx-calendar-header-input-font-size",
+        "value": "clamp(12px, 0.875rem, 28px)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 518
+      },
+      {
+        "name": "--sx-calendar-week-grid-padding-left",
+        "value": "75px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 519
+      },
+      {
+        "name": "--sx-week-grid-height",
+        "value": "0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 1560
+      },
+      {
+        "name": "--sx-time-axis-height",
+        "value": "0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 1561
+      },
+      {
+        "name": "--sx-week-grid-hour-height",
+        "value": "0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 1562
+      },
+      {
+        "name": "--sx-week-grid-offset-top",
+        "value": "0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 1563
+      }
+    ],
+    "allExportDefinitions": [
+      {
+        "name": "--sx-color-primary",
+        "value": "#6750a4",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 25
+      },
+      {
+        "name": "--sx-color-on-primary",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 26
+      },
+      {
+        "name": "--sx-color-primary-container",
+        "value": "#eaddff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 27
+      },
+      {
+        "name": "--sx-color-on-primary-container",
+        "value": "#21005e",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 28
+      },
+      {
+        "name": "--sx-color-secondary",
+        "value": "#625b71",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 29
+      },
+      {
+        "name": "--sx-color-on-secondary",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 30
+      },
+      {
+        "name": "--sx-color-secondary-container",
+        "value": "#e8def8",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 31
+      },
+      {
+        "name": "--sx-color-on-secondary-container",
+        "value": "#1e192b",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 32
+      },
+      {
+        "name": "--sx-color-tertiary",
+        "value": "#7d5260",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 33
+      },
+      {
+        "name": "--sx-color-on-tertiary",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 34
+      },
+      {
+        "name": "--sx-color-tertiary-container",
+        "value": "#ffd8e4",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 35
+      },
+      {
+        "name": "--sx-color-on-tertiary-container",
+        "value": "#370b1e",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 36
+      },
+      {
+        "name": "--sx-color-surface",
+        "value": "#fef7ff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 37
+      },
+      {
+        "name": "--sx-color-surface-dim",
+        "value": "#ded8e1",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 38
+      },
+      {
+        "name": "--sx-color-surface-bright",
+        "value": "#fef7ff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 39
+      },
+      {
+        "name": "--sx-color-on-surface",
+        "value": "#1c1b1f",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 40
+      },
+      {
+        "name": "--sx-color-surface-container",
+        "value": "#f3edf7",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 41
+      },
+      {
+        "name": "--sx-color-surface-container-low",
+        "value": "#f7f2fa",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 42
+      },
+      {
+        "name": "--sx-color-surface-container-high",
+        "value": "#ece6f0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 43
+      },
+      {
+        "name": "--sx-color-background",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 44
+      },
+      {
+        "name": "--sx-color-on-background",
+        "value": "#1c1b1f",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 45
+      },
+      {
+        "name": "--sx-color-outline",
+        "value": "#79747e",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 46
+      },
+      {
+        "name": "--sx-color-outline-variant",
+        "value": "#c4c7c5",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 47
+      },
+      {
+        "name": "--sx-color-shadow",
+        "value": "#000",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 48
+      },
+      {
+        "name": "--sx-color-surface-tint",
+        "value": "#6750a4",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 49
+      },
+      {
+        "name": "--sx-color-neutral",
+        "value": "var(--sx-color-outline)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 50
+      },
+      {
+        "name": "--sx-color-neutral-variant",
+        "value": "var(--sx-color-outline-variant)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 51
+      },
+      {
+        "name": "--sx-internal-color-gray-ripple-background",
+        "value": "#e0e0e0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 52
+      },
+      {
+        "name": "--sx-internal-color-light-gray",
+        "value": "#fafafa",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 53
+      },
+      {
+        "name": "--sx-internal-color-text",
+        "value": "#000",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 54
+      },
+      {
+        "name": "--sx-color-primary",
+        "value": "#d0bcff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 58
+      },
+      {
+        "name": "--sx-color-on-primary",
+        "value": "#371e73",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 59
+      },
+      {
+        "name": "--sx-color-primary-container",
+        "value": "#4f378b",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 60
+      },
+      {
+        "name": "--sx-color-on-primary-container",
+        "value": "#eaddff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 61
+      },
+      {
+        "name": "--sx-color-secondary",
+        "value": "#ccc2dc",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 62
+      },
+      {
+        "name": "--sx-color-on-secondary",
+        "value": "#332d41",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 63
+      },
+      {
+        "name": "--sx-color-secondary-container",
+        "value": "#4a4458",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 64
+      },
+      {
+        "name": "--sx-color-on-secondary-container",
+        "value": "#e8def8",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 65
+      },
+      {
+        "name": "--sx-color-tertiary",
+        "value": "#efb8c8",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 66
+      },
+      {
+        "name": "--sx-color-on-tertiary",
+        "value": "#492532",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 67
+      },
+      {
+        "name": "--sx-color-tertiary-container",
+        "value": "#633b48",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 68
+      },
+      {
+        "name": "--sx-color-on-tertiary-container",
+        "value": "#ffd8e4",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 69
+      },
+      {
+        "name": "--sx-color-surface",
+        "value": "#141218",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 70
+      },
+      {
+        "name": "--sx-color-surface-dim",
+        "value": "#141218",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 71
+      },
+      {
+        "name": "--sx-color-surface-bright",
+        "value": "#3b383e",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 72
+      },
+      {
+        "name": "--sx-color-on-surface",
+        "value": "#e6e1e5",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 73
+      },
+      {
+        "name": "--sx-color-surface-container",
+        "value": "#211f26",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 74
+      },
+      {
+        "name": "--sx-color-surface-container-low",
+        "value": "#1d1b20",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 75
+      },
+      {
+        "name": "--sx-color-surface-container-high",
+        "value": "#2b2930",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 76
+      },
+      {
+        "name": "--sx-color-background",
+        "value": "#141218",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 77
+      },
+      {
+        "name": "--sx-color-on-background",
+        "value": "#e6e1e5",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 78
+      },
+      {
+        "name": "--sx-color-outline",
+        "value": "#938f99",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 79
+      },
+      {
+        "name": "--sx-color-outline-variant",
+        "value": "#444746",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 80
+      },
+      {
+        "name": "--sx-color-shadow",
+        "value": "#000",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 81
+      },
+      {
+        "name": "--sx-color-surface-tint",
+        "value": "#d0bcff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 82
+      },
+      {
+        "name": "--sx-internal-color-text",
+        "value": "#fff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 83
+      },
+      {
+        "name": "--sx-spacing-padding1",
+        "value": "4px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 87
+      },
+      {
+        "name": "--sx-spacing-padding2",
+        "value": "8px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 88
+      },
+      {
+        "name": "--sx-spacing-padding3",
+        "value": "12px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 89
+      },
+      {
+        "name": "--sx-spacing-padding4",
+        "value": "16px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 90
+      },
+      {
+        "name": "--sx-spacing-padding6",
+        "value": "24px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 91
+      },
+      {
+        "name": "--sx-spacing-modal-padding",
+        "value": "16px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 92
+      },
+      {
+        "name": "--sx-box-shadow-level3",
+        "value": "0 3px 6px 0 rgb(0 0 0 / 16%), 0 3px 6px 0 rgb(0 0 0 / 23%)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 96
+      },
+      {
+        "name": "--sx-rounding-extra-small",
+        "value": "4px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 98
+      },
+      {
+        "name": "--sx-rounding-small",
+        "value": "8px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 99
+      },
+      {
+        "name": "--sx-rounding-extra-large",
+        "value": "28px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 100
+      },
+      {
+        "name": "--sx-border",
+        "value": "1px solid var(--sx-color-outline-variant)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 101
+      },
+      {
+        "name": "--sx-border",
+        "value": "1px solid var(--sx-color-outline-variant)",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 105
+      },
+      {
+        "name": "--sx-font-small",
+        "value": "0.875rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 109
+      },
+      {
+        "name": "--sx-font-extra-small",
+        "value": "0.75rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 110
+      },
+      {
+        "name": "--sx-font-large",
+        "value": "1.125rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 111
+      },
+      {
+        "name": "--sx-font-extra-large",
+        "value": "1.25rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 112
+      },
+      {
+        "name": "--sx-z-index-week-header",
+        "value": "100",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 116
+      },
+      {
+        "name": "--sx-z-index-event-modal",
+        "value": "101",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 117
+      },
+      {
+        "name": "--sx-calendar-header-popup-z-index",
+        "value": "102",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 118
+      },
+      {
+        "name": "--sx-calendar-header-input-font-size",
+        "value": "clamp(12px, 0.875rem, 28px)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 122
+      },
+      {
+        "name": "--sx-calendar-week-grid-padding-left",
+        "value": "75px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 123
+      },
+      {
+        "name": "--sx-week-grid-height",
+        "value": "0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 1560
+      },
+      {
+        "name": "--sx-time-axis-height",
+        "value": "0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 1561
+      },
+      {
+        "name": "--sx-week-grid-hour-height",
+        "value": "0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 1562
+      },
+      {
+        "name": "--sx-week-grid-offset-top",
+        "value": "0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/calendar.css",
+        "line": 1563
+      },
+      {
+        "name": "--sx-color-primary",
+        "value": "#6750a4",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 25
+      },
+      {
+        "name": "--sx-color-on-primary",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 26
+      },
+      {
+        "name": "--sx-color-primary-container",
+        "value": "#eaddff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 27
+      },
+      {
+        "name": "--sx-color-on-primary-container",
+        "value": "#21005e",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 28
+      },
+      {
+        "name": "--sx-color-secondary",
+        "value": "#625b71",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 29
+      },
+      {
+        "name": "--sx-color-on-secondary",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 30
+      },
+      {
+        "name": "--sx-color-secondary-container",
+        "value": "#e8def8",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 31
+      },
+      {
+        "name": "--sx-color-on-secondary-container",
+        "value": "#1e192b",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 32
+      },
+      {
+        "name": "--sx-color-tertiary",
+        "value": "#7d5260",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 33
+      },
+      {
+        "name": "--sx-color-on-tertiary",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 34
+      },
+      {
+        "name": "--sx-color-tertiary-container",
+        "value": "#ffd8e4",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 35
+      },
+      {
+        "name": "--sx-color-on-tertiary-container",
+        "value": "#370b1e",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 36
+      },
+      {
+        "name": "--sx-color-surface",
+        "value": "#fef7ff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 37
+      },
+      {
+        "name": "--sx-color-surface-dim",
+        "value": "#ded8e1",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 38
+      },
+      {
+        "name": "--sx-color-surface-bright",
+        "value": "#fef7ff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 39
+      },
+      {
+        "name": "--sx-color-on-surface",
+        "value": "#1c1b1f",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 40
+      },
+      {
+        "name": "--sx-color-surface-container",
+        "value": "#f3edf7",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 41
+      },
+      {
+        "name": "--sx-color-surface-container-low",
+        "value": "#f7f2fa",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 42
+      },
+      {
+        "name": "--sx-color-surface-container-high",
+        "value": "#ece6f0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 43
+      },
+      {
+        "name": "--sx-color-background",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 44
+      },
+      {
+        "name": "--sx-color-on-background",
+        "value": "#1c1b1f",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 45
+      },
+      {
+        "name": "--sx-color-outline",
+        "value": "#79747e",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 46
+      },
+      {
+        "name": "--sx-color-outline-variant",
+        "value": "#c4c7c5",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 47
+      },
+      {
+        "name": "--sx-color-shadow",
+        "value": "#000",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 48
+      },
+      {
+        "name": "--sx-color-surface-tint",
+        "value": "#6750a4",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 49
+      },
+      {
+        "name": "--sx-color-neutral",
+        "value": "var(--sx-color-outline)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 50
+      },
+      {
+        "name": "--sx-color-neutral-variant",
+        "value": "var(--sx-color-outline-variant)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 51
+      },
+      {
+        "name": "--sx-internal-color-gray-ripple-background",
+        "value": "#e0e0e0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 52
+      },
+      {
+        "name": "--sx-internal-color-light-gray",
+        "value": "#fafafa",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 53
+      },
+      {
+        "name": "--sx-internal-color-text",
+        "value": "#000",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 54
+      },
+      {
+        "name": "--sx-color-primary",
+        "value": "#d0bcff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 58
+      },
+      {
+        "name": "--sx-color-on-primary",
+        "value": "#371e73",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 59
+      },
+      {
+        "name": "--sx-color-primary-container",
+        "value": "#4f378b",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 60
+      },
+      {
+        "name": "--sx-color-on-primary-container",
+        "value": "#eaddff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 61
+      },
+      {
+        "name": "--sx-color-secondary",
+        "value": "#ccc2dc",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 62
+      },
+      {
+        "name": "--sx-color-on-secondary",
+        "value": "#332d41",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 63
+      },
+      {
+        "name": "--sx-color-secondary-container",
+        "value": "#4a4458",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 64
+      },
+      {
+        "name": "--sx-color-on-secondary-container",
+        "value": "#e8def8",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 65
+      },
+      {
+        "name": "--sx-color-tertiary",
+        "value": "#efb8c8",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 66
+      },
+      {
+        "name": "--sx-color-on-tertiary",
+        "value": "#492532",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 67
+      },
+      {
+        "name": "--sx-color-tertiary-container",
+        "value": "#633b48",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 68
+      },
+      {
+        "name": "--sx-color-on-tertiary-container",
+        "value": "#ffd8e4",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 69
+      },
+      {
+        "name": "--sx-color-surface",
+        "value": "#141218",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 70
+      },
+      {
+        "name": "--sx-color-surface-dim",
+        "value": "#141218",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 71
+      },
+      {
+        "name": "--sx-color-surface-bright",
+        "value": "#3b383e",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 72
+      },
+      {
+        "name": "--sx-color-on-surface",
+        "value": "#e6e1e5",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 73
+      },
+      {
+        "name": "--sx-color-surface-container",
+        "value": "#211f26",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 74
+      },
+      {
+        "name": "--sx-color-surface-container-low",
+        "value": "#1d1b20",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 75
+      },
+      {
+        "name": "--sx-color-surface-container-high",
+        "value": "#2b2930",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 76
+      },
+      {
+        "name": "--sx-color-background",
+        "value": "#141218",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 77
+      },
+      {
+        "name": "--sx-color-on-background",
+        "value": "#e6e1e5",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 78
+      },
+      {
+        "name": "--sx-color-outline",
+        "value": "#938f99",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 79
+      },
+      {
+        "name": "--sx-color-outline-variant",
+        "value": "#444746",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 80
+      },
+      {
+        "name": "--sx-color-shadow",
+        "value": "#000",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 81
+      },
+      {
+        "name": "--sx-color-surface-tint",
+        "value": "#d0bcff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 82
+      },
+      {
+        "name": "--sx-internal-color-text",
+        "value": "#fff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 83
+      },
+      {
+        "name": "--sx-spacing-padding1",
+        "value": "4px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 87
+      },
+      {
+        "name": "--sx-spacing-padding2",
+        "value": "8px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 88
+      },
+      {
+        "name": "--sx-spacing-padding3",
+        "value": "12px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 89
+      },
+      {
+        "name": "--sx-spacing-padding4",
+        "value": "16px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 90
+      },
+      {
+        "name": "--sx-spacing-padding6",
+        "value": "24px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 91
+      },
+      {
+        "name": "--sx-spacing-modal-padding",
+        "value": "16px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 92
+      },
+      {
+        "name": "--sx-box-shadow-level3",
+        "value": "0 3px 6px 0 rgb(0 0 0 / 16%), 0 3px 6px 0 rgb(0 0 0 / 23%)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 96
+      },
+      {
+        "name": "--sx-rounding-extra-small",
+        "value": "4px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 98
+      },
+      {
+        "name": "--sx-rounding-small",
+        "value": "8px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 99
+      },
+      {
+        "name": "--sx-rounding-extra-large",
+        "value": "28px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 100
+      },
+      {
+        "name": "--sx-border",
+        "value": "1px solid var(--sx-color-outline-variant)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 101
+      },
+      {
+        "name": "--sx-border",
+        "value": "1px solid var(--sx-color-outline-variant)",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 105
+      },
+      {
+        "name": "--sx-font-small",
+        "value": "0.875rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 109
+      },
+      {
+        "name": "--sx-font-extra-small",
+        "value": "0.75rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 110
+      },
+      {
+        "name": "--sx-font-large",
+        "value": "1.125rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 111
+      },
+      {
+        "name": "--sx-font-extra-large",
+        "value": "1.25rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 112
+      },
+      {
+        "name": "--sx-z-index-week-header",
+        "value": "100",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 116
+      },
+      {
+        "name": "--sx-z-index-event-modal",
+        "value": "101",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 117
+      },
+      {
+        "name": "--sx-calendar-header-popup-z-index",
+        "value": "102",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/date-picker.css",
+        "line": 118
+      },
+      {
+        "name": "--sx-color-primary",
+        "value": "#6750a4",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 25
+      },
+      {
+        "name": "--sx-color-on-primary",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 26
+      },
+      {
+        "name": "--sx-color-primary-container",
+        "value": "#eaddff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 27
+      },
+      {
+        "name": "--sx-color-on-primary-container",
+        "value": "#21005e",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 28
+      },
+      {
+        "name": "--sx-color-secondary",
+        "value": "#625b71",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 29
+      },
+      {
+        "name": "--sx-color-on-secondary",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 30
+      },
+      {
+        "name": "--sx-color-secondary-container",
+        "value": "#e8def8",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 31
+      },
+      {
+        "name": "--sx-color-on-secondary-container",
+        "value": "#1e192b",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 32
+      },
+      {
+        "name": "--sx-color-tertiary",
+        "value": "#7d5260",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 33
+      },
+      {
+        "name": "--sx-color-on-tertiary",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 34
+      },
+      {
+        "name": "--sx-color-tertiary-container",
+        "value": "#ffd8e4",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 35
+      },
+      {
+        "name": "--sx-color-on-tertiary-container",
+        "value": "#370b1e",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 36
+      },
+      {
+        "name": "--sx-color-surface",
+        "value": "#fef7ff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 37
+      },
+      {
+        "name": "--sx-color-surface-dim",
+        "value": "#ded8e1",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 38
+      },
+      {
+        "name": "--sx-color-surface-bright",
+        "value": "#fef7ff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 39
+      },
+      {
+        "name": "--sx-color-on-surface",
+        "value": "#1c1b1f",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 40
+      },
+      {
+        "name": "--sx-color-surface-container",
+        "value": "#f3edf7",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 41
+      },
+      {
+        "name": "--sx-color-surface-container-low",
+        "value": "#f7f2fa",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 42
+      },
+      {
+        "name": "--sx-color-surface-container-high",
+        "value": "#ece6f0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 43
+      },
+      {
+        "name": "--sx-color-background",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 44
+      },
+      {
+        "name": "--sx-color-on-background",
+        "value": "#1c1b1f",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 45
+      },
+      {
+        "name": "--sx-color-outline",
+        "value": "#79747e",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 46
+      },
+      {
+        "name": "--sx-color-outline-variant",
+        "value": "#c4c7c5",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 47
+      },
+      {
+        "name": "--sx-color-shadow",
+        "value": "#000",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 48
+      },
+      {
+        "name": "--sx-color-surface-tint",
+        "value": "#6750a4",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 49
+      },
+      {
+        "name": "--sx-color-neutral",
+        "value": "var(--sx-color-outline)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 50
+      },
+      {
+        "name": "--sx-color-neutral-variant",
+        "value": "var(--sx-color-outline-variant)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 51
+      },
+      {
+        "name": "--sx-internal-color-gray-ripple-background",
+        "value": "#e0e0e0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 52
+      },
+      {
+        "name": "--sx-internal-color-light-gray",
+        "value": "#fafafa",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 53
+      },
+      {
+        "name": "--sx-internal-color-text",
+        "value": "#000",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 54
+      },
+      {
+        "name": "--sx-color-primary",
+        "value": "#d0bcff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 58
+      },
+      {
+        "name": "--sx-color-on-primary",
+        "value": "#371e73",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 59
+      },
+      {
+        "name": "--sx-color-primary-container",
+        "value": "#4f378b",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 60
+      },
+      {
+        "name": "--sx-color-on-primary-container",
+        "value": "#eaddff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 61
+      },
+      {
+        "name": "--sx-color-secondary",
+        "value": "#ccc2dc",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 62
+      },
+      {
+        "name": "--sx-color-on-secondary",
+        "value": "#332d41",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 63
+      },
+      {
+        "name": "--sx-color-secondary-container",
+        "value": "#4a4458",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 64
+      },
+      {
+        "name": "--sx-color-on-secondary-container",
+        "value": "#e8def8",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 65
+      },
+      {
+        "name": "--sx-color-tertiary",
+        "value": "#efb8c8",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 66
+      },
+      {
+        "name": "--sx-color-on-tertiary",
+        "value": "#492532",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 67
+      },
+      {
+        "name": "--sx-color-tertiary-container",
+        "value": "#633b48",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 68
+      },
+      {
+        "name": "--sx-color-on-tertiary-container",
+        "value": "#ffd8e4",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 69
+      },
+      {
+        "name": "--sx-color-surface",
+        "value": "#141218",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 70
+      },
+      {
+        "name": "--sx-color-surface-dim",
+        "value": "#141218",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 71
+      },
+      {
+        "name": "--sx-color-surface-bright",
+        "value": "#3b383e",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 72
+      },
+      {
+        "name": "--sx-color-on-surface",
+        "value": "#e6e1e5",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 73
+      },
+      {
+        "name": "--sx-color-surface-container",
+        "value": "#211f26",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 74
+      },
+      {
+        "name": "--sx-color-surface-container-low",
+        "value": "#1d1b20",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 75
+      },
+      {
+        "name": "--sx-color-surface-container-high",
+        "value": "#2b2930",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 76
+      },
+      {
+        "name": "--sx-color-background",
+        "value": "#141218",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 77
+      },
+      {
+        "name": "--sx-color-on-background",
+        "value": "#e6e1e5",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 78
+      },
+      {
+        "name": "--sx-color-outline",
+        "value": "#938f99",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 79
+      },
+      {
+        "name": "--sx-color-outline-variant",
+        "value": "#444746",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 80
+      },
+      {
+        "name": "--sx-color-shadow",
+        "value": "#000",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 81
+      },
+      {
+        "name": "--sx-color-surface-tint",
+        "value": "#d0bcff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 82
+      },
+      {
+        "name": "--sx-internal-color-text",
+        "value": "#fff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 83
+      },
+      {
+        "name": "--sx-spacing-padding1",
+        "value": "4px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 87
+      },
+      {
+        "name": "--sx-spacing-padding2",
+        "value": "8px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 88
+      },
+      {
+        "name": "--sx-spacing-padding3",
+        "value": "12px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 89
+      },
+      {
+        "name": "--sx-spacing-padding4",
+        "value": "16px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 90
+      },
+      {
+        "name": "--sx-spacing-padding6",
+        "value": "24px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 91
+      },
+      {
+        "name": "--sx-spacing-modal-padding",
+        "value": "16px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 92
+      },
+      {
+        "name": "--sx-box-shadow-level3",
+        "value": "0 3px 6px 0 rgb(0 0 0 / 16%), 0 3px 6px 0 rgb(0 0 0 / 23%)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 96
+      },
+      {
+        "name": "--sx-rounding-extra-small",
+        "value": "4px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 98
+      },
+      {
+        "name": "--sx-rounding-small",
+        "value": "8px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 99
+      },
+      {
+        "name": "--sx-rounding-extra-large",
+        "value": "28px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 100
+      },
+      {
+        "name": "--sx-border",
+        "value": "1px solid var(--sx-color-outline-variant)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 101
+      },
+      {
+        "name": "--sx-border",
+        "value": "1px solid var(--sx-color-outline-variant)",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 105
+      },
+      {
+        "name": "--sx-font-small",
+        "value": "0.875rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 109
+      },
+      {
+        "name": "--sx-font-extra-small",
+        "value": "0.75rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 110
+      },
+      {
+        "name": "--sx-font-large",
+        "value": "1.125rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 111
+      },
+      {
+        "name": "--sx-font-extra-large",
+        "value": "1.25rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 112
+      },
+      {
+        "name": "--sx-z-index-week-header",
+        "value": "100",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 116
+      },
+      {
+        "name": "--sx-z-index-event-modal",
+        "value": "101",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 117
+      },
+      {
+        "name": "--sx-calendar-header-popup-z-index",
+        "value": "102",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 118
+      },
+      {
+        "name": "--sx-calendar-header-input-font-size",
+        "value": "clamp(12px, 0.875rem, 28px)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 518
+      },
+      {
+        "name": "--sx-calendar-week-grid-padding-left",
+        "value": "75px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 519
+      },
+      {
+        "name": "--sx-week-grid-height",
+        "value": "0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 1560
+      },
+      {
+        "name": "--sx-time-axis-height",
+        "value": "0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 1561
+      },
+      {
+        "name": "--sx-week-grid-hour-height",
+        "value": "0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 1562
+      },
+      {
+        "name": "--sx-week-grid-offset-top",
+        "value": "0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/index.css",
+        "line": 1563
+      },
+      {
+        "name": "--sx-color-primary",
+        "value": "#6750a4",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 25
+      },
+      {
+        "name": "--sx-color-on-primary",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 26
+      },
+      {
+        "name": "--sx-color-primary-container",
+        "value": "#eaddff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 27
+      },
+      {
+        "name": "--sx-color-on-primary-container",
+        "value": "#21005e",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 28
+      },
+      {
+        "name": "--sx-color-secondary",
+        "value": "#625b71",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 29
+      },
+      {
+        "name": "--sx-color-on-secondary",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 30
+      },
+      {
+        "name": "--sx-color-secondary-container",
+        "value": "#e8def8",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 31
+      },
+      {
+        "name": "--sx-color-on-secondary-container",
+        "value": "#1e192b",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 32
+      },
+      {
+        "name": "--sx-color-tertiary",
+        "value": "#7d5260",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 33
+      },
+      {
+        "name": "--sx-color-on-tertiary",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 34
+      },
+      {
+        "name": "--sx-color-tertiary-container",
+        "value": "#ffd8e4",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 35
+      },
+      {
+        "name": "--sx-color-on-tertiary-container",
+        "value": "#370b1e",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 36
+      },
+      {
+        "name": "--sx-color-surface",
+        "value": "#fef7ff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 37
+      },
+      {
+        "name": "--sx-color-surface-dim",
+        "value": "#ded8e1",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 38
+      },
+      {
+        "name": "--sx-color-surface-bright",
+        "value": "#fef7ff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 39
+      },
+      {
+        "name": "--sx-color-on-surface",
+        "value": "#1c1b1f",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 40
+      },
+      {
+        "name": "--sx-color-surface-container",
+        "value": "#f3edf7",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 41
+      },
+      {
+        "name": "--sx-color-surface-container-low",
+        "value": "#f7f2fa",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 42
+      },
+      {
+        "name": "--sx-color-surface-container-high",
+        "value": "#ece6f0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 43
+      },
+      {
+        "name": "--sx-color-background",
+        "value": "#fff",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 44
+      },
+      {
+        "name": "--sx-color-on-background",
+        "value": "#1c1b1f",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 45
+      },
+      {
+        "name": "--sx-color-outline",
+        "value": "#79747e",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 46
+      },
+      {
+        "name": "--sx-color-outline-variant",
+        "value": "#c4c7c5",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 47
+      },
+      {
+        "name": "--sx-color-shadow",
+        "value": "#000",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 48
+      },
+      {
+        "name": "--sx-color-surface-tint",
+        "value": "#6750a4",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 49
+      },
+      {
+        "name": "--sx-color-neutral",
+        "value": "var(--sx-color-outline)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 50
+      },
+      {
+        "name": "--sx-color-neutral-variant",
+        "value": "var(--sx-color-outline-variant)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 51
+      },
+      {
+        "name": "--sx-internal-color-gray-ripple-background",
+        "value": "#e0e0e0",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 52
+      },
+      {
+        "name": "--sx-internal-color-light-gray",
+        "value": "#fafafa",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 53
+      },
+      {
+        "name": "--sx-internal-color-text",
+        "value": "#000",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 54
+      },
+      {
+        "name": "--sx-color-primary",
+        "value": "#d0bcff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 58
+      },
+      {
+        "name": "--sx-color-on-primary",
+        "value": "#371e73",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 59
+      },
+      {
+        "name": "--sx-color-primary-container",
+        "value": "#4f378b",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 60
+      },
+      {
+        "name": "--sx-color-on-primary-container",
+        "value": "#eaddff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 61
+      },
+      {
+        "name": "--sx-color-secondary",
+        "value": "#ccc2dc",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 62
+      },
+      {
+        "name": "--sx-color-on-secondary",
+        "value": "#332d41",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 63
+      },
+      {
+        "name": "--sx-color-secondary-container",
+        "value": "#4a4458",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 64
+      },
+      {
+        "name": "--sx-color-on-secondary-container",
+        "value": "#e8def8",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 65
+      },
+      {
+        "name": "--sx-color-tertiary",
+        "value": "#efb8c8",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 66
+      },
+      {
+        "name": "--sx-color-on-tertiary",
+        "value": "#492532",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 67
+      },
+      {
+        "name": "--sx-color-tertiary-container",
+        "value": "#633b48",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 68
+      },
+      {
+        "name": "--sx-color-on-tertiary-container",
+        "value": "#ffd8e4",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 69
+      },
+      {
+        "name": "--sx-color-surface",
+        "value": "#141218",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 70
+      },
+      {
+        "name": "--sx-color-surface-dim",
+        "value": "#141218",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 71
+      },
+      {
+        "name": "--sx-color-surface-bright",
+        "value": "#3b383e",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 72
+      },
+      {
+        "name": "--sx-color-on-surface",
+        "value": "#e6e1e5",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 73
+      },
+      {
+        "name": "--sx-color-surface-container",
+        "value": "#211f26",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 74
+      },
+      {
+        "name": "--sx-color-surface-container-low",
+        "value": "#1d1b20",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 75
+      },
+      {
+        "name": "--sx-color-surface-container-high",
+        "value": "#2b2930",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 76
+      },
+      {
+        "name": "--sx-color-background",
+        "value": "#141218",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 77
+      },
+      {
+        "name": "--sx-color-on-background",
+        "value": "#e6e1e5",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 78
+      },
+      {
+        "name": "--sx-color-outline",
+        "value": "#938f99",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 79
+      },
+      {
+        "name": "--sx-color-outline-variant",
+        "value": "#444746",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 80
+      },
+      {
+        "name": "--sx-color-shadow",
+        "value": "#000",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 81
+      },
+      {
+        "name": "--sx-color-surface-tint",
+        "value": "#d0bcff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 82
+      },
+      {
+        "name": "--sx-internal-color-text",
+        "value": "#fff",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 83
+      },
+      {
+        "name": "--sx-spacing-padding1",
+        "value": "4px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 87
+      },
+      {
+        "name": "--sx-spacing-padding2",
+        "value": "8px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 88
+      },
+      {
+        "name": "--sx-spacing-padding3",
+        "value": "12px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 89
+      },
+      {
+        "name": "--sx-spacing-padding4",
+        "value": "16px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 90
+      },
+      {
+        "name": "--sx-spacing-padding6",
+        "value": "24px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 91
+      },
+      {
+        "name": "--sx-spacing-modal-padding",
+        "value": "16px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 92
+      },
+      {
+        "name": "--sx-box-shadow-level3",
+        "value": "0 3px 6px 0 rgb(0 0 0 / 16%), 0 3px 6px 0 rgb(0 0 0 / 23%)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 96
+      },
+      {
+        "name": "--sx-rounding-extra-small",
+        "value": "4px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 98
+      },
+      {
+        "name": "--sx-rounding-small",
+        "value": "8px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 99
+      },
+      {
+        "name": "--sx-rounding-extra-large",
+        "value": "28px",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 100
+      },
+      {
+        "name": "--sx-border",
+        "value": "1px solid var(--sx-color-outline-variant)",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 101
+      },
+      {
+        "name": "--sx-border",
+        "value": "1px solid var(--sx-color-outline-variant)",
+        "selector": ".is-dark",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 105
+      },
+      {
+        "name": "--sx-font-small",
+        "value": "0.875rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 109
+      },
+      {
+        "name": "--sx-font-extra-small",
+        "value": "0.75rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 110
+      },
+      {
+        "name": "--sx-font-large",
+        "value": "1.125rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 111
+      },
+      {
+        "name": "--sx-font-extra-large",
+        "value": "1.25rem",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 112
+      },
+      {
+        "name": "--sx-z-index-week-header",
+        "value": "100",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 116
+      },
+      {
+        "name": "--sx-z-index-event-modal",
+        "value": "101",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 117
+      },
+      {
+        "name": "--sx-calendar-header-popup-z-index",
+        "value": "102",
+        "selector": ":root",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 118
+      },
+      {
+        "name": "--sx-color-time-input-bg",
+        "value": "#f1f0f0",
+        "selector": ".sx__time-input",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 425
+      },
+      {
+        "name": "--sx-color-time-input-bg",
+        "value": "#444141",
+        "selector": ".is-dark .sx__time-input",
+        "file": "site/node_modules/@schedule-x/theme-default/dist/time-picker.css",
+        "line": 436
+      }
+    ],
+    "referencedOnly": [
+      "--sx-draw-plugin-spacer",
+      "--sx-draw-plugin-spacer-display",
+      "--sx-event-modal-animation-start",
+      "--sx-event-modal-left",
+      "--sx-event-modal-top"
+    ]
+  },
+  "sourceObservations": {
+    "classification": "Installed-source observations only; verify behavior in the browser separately.",
+    "file": "site/node_modules/@schedule-x/calendar/dist/core.js",
+    "sha256": "bf07a495958df664cceac2eb9b88db04649a26de3bfa4ff7191c945366392cbf",
+    "responsive": {
+      "finding": "Uses calendarWrapper.clientWidth against a root-font-relative 43.75rem threshold (700px at 16px root). Runs once when mounted and on window.resize only; no container ResizeObserver drives this check. A callbacks.isCalendarSmall hook overrides the size predicate.",
+      "excerpts": [
+        {
+          "file": "site/node_modules/@schedule-x/calendar/dist/core.js",
+          "firstLine": 2839,
+          "lastLine": 2863,
+          "text": "const handleWindowResize = ($app) => {\n    const documentRoot = document.documentElement;\n    const calendarRoot = $app.elements.calendarWrapper;\n    const documentFontSize = +window\n        .getComputedStyle(documentRoot)\n        .fontSize.split('p')[0];\n    const breakPointFor1RemEquals16px = 700;\n    const multiplier = 16 / documentFontSize;\n    const smallCalendarBreakpoint = breakPointFor1RemEquals16px / multiplier; // For 16px root font-size, break point is at 43.75rem\n    if (!calendarRoot)\n        return;\n    const isSmall = $app.config.callbacks.isCalendarSmall\n        ? $app.config.callbacks.isCalendarSmall($app)\n        : calendarRoot.clientWidth < smallCalendarBreakpoint;\n    const didIsSmallScreenChange = isSmall !== $app.calendarState.isCalendarSmall.value;\n    if (!didIsSmallScreenChange)\n        return;\n    $app.calendarState.isCalendarSmall.value = isSmall;\n    setScreenSizeCompatibleView($app, isSmall);\n};\n\nconst getClassForView = ($app) => {\n    return `is-${$app.calendarState.view.value}-view`;\n};\nfunction useWrapperClasses($app) {"
+        },
+        {
+          "file": "site/node_modules/@schedule-x/calendar/dist/core.js",
+          "firstLine": 2988,
+          "lastLine": 2999,
+          "text": "    const onResize = () => {\n        handleWindowResize($app);\n    };\n    useEffect(() => {\n        if ($app.config.isResponsive) {\n            onResize();\n            window.addEventListener('resize', onResize);\n            return () => window.removeEventListener('resize', onResize);\n        }\n    }, []);\n    const wrapperClasses = useWrapperClasses($app);\n    const [currentView, setCurrentView] = useState();"
+        },
+        {
+          "file": "site/node_modules/@schedule-x/calendar/dist/core.js",
+          "firstLine": 2820,
+          "lastLine": 2841,
+          "text": "const setScreenSizeCompatibleView = ($app, isSmall) => {\n    const currentView = $app.config.views.value.find((view) => view.name === $app.calendarState.view.value);\n    if (isSmall) {\n        if (currentView.hasSmallScreenCompat)\n            return;\n        const smallScreenCompatibleView = $app.config.views.value.find((view) => view.hasSmallScreenCompat);\n        if (smallScreenCompatibleView) {\n            $app.calendarState.setView(smallScreenCompatibleView.name, $app.datePickerState.selectedDate.value);\n        }\n    }\n    else {\n        if (currentView.hasWideScreenCompat)\n            return;\n        const wideScreenCompatibleView = $app.config.views.value.find((view) => view.hasWideScreenCompat);\n        if (wideScreenCompatibleView) {\n            $app.calendarState.setView(wideScreenCompatibleView.name, $app.datePickerState.selectedDate.value);\n        }\n    }\n};\nconst handleWindowResize = ($app) => {\n    const documentRoot = document.documentElement;\n    const calendarRoot = $app.elements.calendarWrapper;"
+        }
+      ]
+    },
+    "viewPicker": {
+      "finding": "Picker filters by hasSmallScreenCompat when isCalendarSmall, otherwise by hasWideScreenCompat. isResponsive:false disables the responsive observer, not this picker filtering. Month-grid is wide-only; month-agenda is small-only; Day supports both; Week is wide-only.",
+      "excerpts": [
+        {
+          "file": "site/node_modules/@schedule-x/calendar/dist/core.js",
+          "firstLine": 1341,
+          "lastLine": 1355,
+          "text": "function ViewSelection() {\n    const $app = useContext(AppContext);\n    const viewSelectId = randomStringId();\n    const viewLabelId = randomStringId();\n    const [availableViews, setAvailableViews] = useState([]);\n    useSignalEffect(() => {\n        if ($app.calendarState.isCalendarSmall.value) {\n            setAvailableViews($app.config.views.value.filter((view) => view.hasSmallScreenCompat));\n        }\n        else {\n            setAvailableViews($app.config.views.value.filter((view) => view.hasWideScreenCompat));\n        }\n    });\n    // Get initial selected view label to prevent layout shift\n    const getInitialSelectedViewLabel = () => {"
+        },
+        {
+          "file": "site/node_modules/@schedule-x/calendar/dist/core.js",
+          "firstLine": 6684,
+          "lastLine": 6693,
+          "text": "const config$4 = {\n    name: InternalViewName.MonthGrid,\n    label: 'Month',\n    setDateRange: setRangeForMonth,\n    Component: MonthGridWrapper,\n    hasWideScreenCompat: true,\n    hasSmallScreenCompat: false,\n    backwardForwardFn: addMonths,\n    backwardForwardUnits: 1,\n};"
+        },
+        {
+          "file": "site/node_modules/@schedule-x/calendar/dist/core.js",
+          "firstLine": 6921,
+          "lastLine": 6930,
+          "text": "const config$3 = {\n    name: InternalViewName.MonthAgenda,\n    label: 'Month',\n    setDateRange: setRangeForMonth,\n    Component: MonthAgendaWrapper,\n    hasSmallScreenCompat: true,\n    hasWideScreenCompat: false,\n    backwardForwardFn: addMonths,\n    backwardForwardUnits: 1,\n};"
+        }
+      ]
+    },
+    "plusEvents": {
+      "finding": "Default nEventsPerDay is 4. More control calls callbacks.onClickPlusEvents(date,event) when supplied and returns immediately; otherwise it switches to configured Day view after 250ms. Without a configured Day view it does nothing. monthGridOptions.nEventsPerDay controls the number initially rendered.",
+      "excerpts": [
+        {
+          "file": "site/node_modules/@schedule-x/calendar/dist/core.js",
+          "firstLine": 6440,
+          "lastLine": 6457,
+          "text": "    const handleClickAdditionalEvents = (e) => {\n        e.stopPropagation();\n        if ($app.config.callbacks.onClickPlusEvents) {\n            $app.config.callbacks.onClickPlusEvents(day.date, e);\n            return;\n        }\n        if (!$app.config.views.value.find((view) => view.name === InternalViewName.Day))\n            return;\n        // Timeout to display the ripple effect\n        setTimeout(() => {\n            $app.datePickerState.selectedDate.value = day.date;\n            $app.calendarState.setView(InternalViewName.Day, day.date);\n        }, 250);\n    };\n    const dateClassNames = ['sx__month-grid-day__header-date'];\n    const dayDate = day.date;\n    if (isToday(dayDate.toZonedDateTime($app.config.timezone.value), $app.config.timezone.value))\n        dateClassNames.push('sx__is-today');"
+        },
+        {
+          "file": "site/node_modules/@schedule-x/calendar/dist/core.js",
+          "firstLine": 5261,
+          "lastLine": 5265,
+          "text": "    constructor(locale = DEFAULT_LOCALE, firstDayOfWeek = DEFAULT_FIRST_DAY_OF_WEEK, defaultView = InternalViewName.Week, views = [], dayBoundaries = DEFAULT_DAY_BOUNDARIES, weekOptions, calendars = {}, plugins = {}, isDark = false, isResponsive = true, callbacks = {}, _customComponentFns = {}, minDate = undefined, maxDate = undefined, monthGridOptions = {\n        nEventsPerDay: 4,\n    }, monthAgendaOptions = {\n        nEventIndicatorsPerDay: 3,\n    }, yearGridOptions = {"
+        }
+      ]
+    },
+    "multiDayEnd": {
+      "finding": "All-day end is inclusive in month-grid (<= lastDateOfEvent) and month-agenda (getAllEventDates includes end). A Monday–Friday span ends on Friday, not Saturday.",
+      "excerpts": [
+        {
+          "file": "site/node_modules/@schedule-x/calendar/dist/core.js",
+          "firstLine": 6567,
+          "lastLine": 6596,
+          "text": "const positionInMonthWeek = (sortedEvents, week) => {\n    const weekDates = Object.keys(week).sort();\n    const firstDateOfWeek = weekDates[0];\n    const lastDateOfWeek = weekDates[weekDates.length - 1];\n    const occupiedLevels = new Set();\n    for (const event of sortedEvents) {\n        const eventOriginalStartDate = dateFromDateTime(event.start.toString());\n        const eventOriginalEndDate = dateFromDateTime(event.end.toString());\n        const isEventStartInWeek = !!week[eventOriginalStartDate];\n        let isEventInWeek = isEventStartInWeek;\n        if (!isEventStartInWeek &&\n            eventOriginalStartDate < firstDateOfWeek &&\n            eventOriginalEndDate >= firstDateOfWeek) {\n            isEventInWeek = true;\n        }\n        if (!isEventInWeek)\n            continue;\n        const firstDateOfEvent = isEventStartInWeek\n            ? eventOriginalStartDate\n            : firstDateOfWeek;\n        const lastDateOfEvent = eventOriginalEndDate <= lastDateOfWeek\n            ? eventOriginalEndDate\n            : lastDateOfWeek;\n        const eventDays = Object.values(week).filter((day) => {\n            const plainDate = Temporal.PlainDate.from(day.date).toString();\n            return plainDate >= firstDateOfEvent && plainDate <= lastDateOfEvent;\n        });\n        let levelInWeekForEvent;\n        let testLevel = 0;\n        while (levelInWeekForEvent === undefined) {"
+        },
+        {
+          "file": "site/node_modules/@schedule-x/calendar/dist/core.js",
+          "firstLine": 6851,
+          "lastLine": 6867,
+          "text": "const getAllEventDates = (startDate, endDate) => {\n    let currentDate = startDate;\n    const dates = [currentDate];\n    while (currentDate < endDate) {\n        currentDate = addDays(Temporal.PlainDate.from(currentDate), 1).toString();\n        dates.push(currentDate);\n    }\n    return dates;\n};\nconst placeEventInDay = (allDaysMap) => (event) => {\n    getAllEventDates(dateFromDateTime(event.start.toString()), dateFromDateTime(event.end.toString())).forEach((date) => {\n        if (allDaysMap[date]) {\n            allDaysMap[date].events.push(event);\n        }\n    });\n};\nconst positionEventsInAgenda = (agenda, eventsSortedByStart) => {"
+        }
+      ]
+    }
+  }
+}

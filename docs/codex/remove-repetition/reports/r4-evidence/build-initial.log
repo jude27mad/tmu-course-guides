@@ -1,0 +1,33 @@
+
+> portofoliomigration@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.29
+
+   Linting and checking validity of types ...
+
+Failed to compile.
+
+./src/components/canvas/fluid/effect/Fluid.jsx
+7:56  Warning: React Hook useMemo has a missing dependency: 'props'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+7:57  Warning: React Hook useMemo has a complex expression in the dependency array. Extract it to a separate variable so it can be statically checked.  react-hooks/exhaustive-deps
+
+./src/components/canvas/fluid/hooks/useOpts.jsx
+28:5  Warning: React Hook useMemo has missing dependencies: 'coarse' and 'isMobile'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/components/canvas/fluid/hooks/usePointerEvents.jsx
+12:7  Warning: Unexpected console statement.  no-console
+
+./src/pages/course/components/portal/Portal.jsx
+27:6  Warning: React Hook useEffect has a missing dependency: 'handleVisibility'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/pages/spike.page.jsx
+28:9  Error: Must use destructuring state assignment  react/destructuring-assignment
+29:12  Error: Must use destructuring props assignment  react/destructuring-assignment
+
+./src/spike/CalendarProbe.jsx
+12:27  Error: 'Temporal' is not defined.  no-undef
+13:27  Error: 'Temporal' is not defined.  no-undef
+29:21  Error: 'Temporal' is not defined.  no-undef
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
