@@ -13,7 +13,7 @@ const toLink = (item) => ({
   href: item.href || hrefFor(item.courseId, item.anchor),
 });
 
-// The next `count` open items across the three courses (menu "This week"), in
+// The next `count` open items across the three courses (menu "Coming up"), in
 // the data layer's due order: not done, not passed, dated (exact, day or quiz week).
 export function upcomingAcrossCourses({ now = new Date(), count = 3 } = {}) {
   const storage = safeStorage();

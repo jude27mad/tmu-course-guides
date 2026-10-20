@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
 
-const THIS_WEEK_SLOTS = 3;
+const COMING_UP_SLOTS = 3;
 
 function MenuLinks() {
   const timeline = useRef(null);
@@ -25,9 +25,9 @@ function MenuLinks() {
   const openerRef = useRef(null);
   const router = useRouter();
   const current = pathKey(router.asPath);
-  const [thisWeek, setThisWeek] = useState([]);
+  const [comingUp, setComingUp] = useState([]);
 
-  // Rows are fixed (three "This week" slots), so the timeline is built once per layout.
+  // Rows are fixed (three "Coming up" slots), so the timeline is built once per layout.
   useEffect(() => {
     const menu = menuRef.current;
     const items = menu.querySelectorAll('[data-menu-anim]');
@@ -45,7 +45,7 @@ function MenuLinks() {
     tl.timeScale(still ? 30 : 1);
     if (isMenuOpen) {
       openerRef.current = document.activeElement;
-      setThisWeek(upcomingAcrossCourses({ now: new Date(), count: THIS_WEEK_SLOTS }));
+      setComingUp(upcomingAcrossCourses({ now: new Date(), count: COMING_UP_SLOTS }));
       tl.play();
       const target = firstFocusable(menuRef.current);
       // after the panel becomes visible (autoAlpha sets visibility on the first tick)
@@ -118,13 +118,13 @@ function MenuLinks() {
         </div>
 
         <div data-menu-anim="" className={styles.menuList}>
-          <h2 className={styles.menuHeading}>This week</h2>
-          {Array.from({ length: THIS_WEEK_SLOTS }, (_, index) => {
-            const item = thisWeek[index];
+          <h2 className={styles.menuHeading}>Coming up</h2>
+          {Array.from({ length: COMING_UP_SLOTS }, (_, index) => {
+            const item = comingUp[index];
             if (!item) {
               return renderRow(
                 `slot-${index}`,
-                index === 0 && thisWeek.length === 0 ? (
+                index === 0 && comingUp.length === 0 ? (
                   <p>
                     <span>No upcoming deadlines</span>
                   </p>

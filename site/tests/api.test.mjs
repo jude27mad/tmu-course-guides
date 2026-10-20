@@ -131,6 +131,20 @@ test('courseInfo: rules, contacts, topic map and notes as data', async () => {
   }
 });
 
+test('courseInfo: math rules keep four cards without repeating the grading pass mark or quiz policy', () => {
+  for (const id of ['mth140', 'mth141']) {
+    const info = lib.courseInfo(id);
+    const rulesText = JSON.stringify(info.rules);
+    assert.equal(info.rules.length, 4, id);
+    assert.equal(rulesText.includes('50% of total'), false, id);
+    assert.equal(rulesText.includes(info.grading.quizPolicy), false, id);
+    assert.deepEqual(info.rules.find((card) => card.title === 'Assessment rules').blocks[0].items, [
+      'Quizzes and exams are individual work, closed book, with no calculator, formula sheet or other aids.',
+      'Recommended homework is practice and is not submitted for grading.',
+    ]);
+  }
+});
+
 test('searchIndex: the old palette’s groups, copy and ranking across all courses', () => {
   const entries = lib.searchIndex({ now: NOW, storage: null, course: 'mth140' });
   assert.deepEqual([...new Set(entries.map((e) => e.group))], ['Courses', 'Assessments', 'Weeks', 'Topics', 'Actions']);
@@ -158,6 +172,14 @@ test('searchIndex: the old palette’s groups, copy and ranking across all cours
   assert.equal(lib.searchIndex({ now: NOW, storage: memoryStorage({ 'guide-motion-paused': 'true' }) }).find((e) => e.id === 'action-motion').title, 'Play motion');
 });
 
+test('searchIndex: course actions target the calendar dialog and contacts block', () => {
+  for (const id of ['cen100', 'mth140', 'mth141']) {
+    const entries = lib.searchIndex({ now: NOW, storage: null, course: id });
+    assert.equal(entries.find((entry) => entry.id === 'action-calendar').href, `/${id}/#guide-tools`);
+    assert.equal(entries.find((entry) => entry.id === 'action-contacts').href, `/${id}/#contacts`);
+  }
+});
+
 test('searchGuide: the old pages’ full-text search', () => {
   const { results, status } = lib.searchGuide('fishbone');
   assert.deepEqual(
@@ -169,6 +191,25 @@ test('searchGuide: the old pages’ full-text search', () => {
   assert.equal(lib.searchGuide('').results.length, 0);
   assert.equal(lib.searchGuide('quiz', { course: 'mth141' }).results[0].courseId, 'mth141');
   assert.ok(lib.searchGuide('KHS134').results.some((r) => r.title === 'Who to ask: section and group lookup'));
+});
+
+test('searchGuide: rules and contact lookup target their rendered course blocks', () => {
+  const cen = lib.courseInfo('cen100');
+  for (const row of [...cen.rules, ...cen.confirmed, ...cen.open]) {
+    const results = lib.searchGuide(row.title, { course: 'cen100', limit: Infinity }).results;
+    assert.ok(results.some((result) => result.title === row.title && result.href === '/cen100/#p-rules'), row.title);
+  }
+  const contacts = lib.searchGuide('KHS134', { course: 'cen100' }).results.find((result) => result.title === 'Who to ask: section and group lookup');
+  assert.equal(contacts.href, '/cen100/#contacts');
+});
+
+test('searchGuide: math rules target the rendered help block', () => {
+  for (const id of ['mth140', 'mth141']) {
+    for (const card of lib.courseInfo(id).rules) {
+      const results = lib.searchGuide(card.title, { course: id }).results;
+      assert.ok(results.some((result) => result.title === card.title && result.href === `/${id}/#rules-help`), `${id}: ${card.title}`);
+    }
+  }
 });
 
 test('workList: "What should I work on?" in the old wording', () => {

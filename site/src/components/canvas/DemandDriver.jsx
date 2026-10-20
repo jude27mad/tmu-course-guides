@@ -34,7 +34,7 @@ function DemandDriver() {
         lenis = state.lenis;
         lenis?.on('scroll', kick);
       }
-      if (state.isMenuOpen !== previous.isMenuOpen || state.isSearchOpen !== previous.isSearchOpen || state.isLoading !== previous.isLoading || state.isAbout !== previous.isAbout) kick();
+      if (state.isMenuOpen !== previous.isMenuOpen || state.isSearchOpen !== previous.isSearchOpen || state.isLoading !== previous.isLoading) kick();
     });
     window.addEventListener('resize', kick);
     const main = document.querySelector('main');

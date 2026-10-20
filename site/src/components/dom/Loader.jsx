@@ -6,10 +6,8 @@ import gsap from 'gsap';
 import { scrollToHash } from '@src/utils/scrollToHash';
 import styles from '@src/components/dom/styles/loader.module.scss';
 import { useProgress } from '@react-three/drei';
-import { useRouter } from 'next/router';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
-import { wantsSRGB } from '@src/utils/routes';
 
 // The original counted 0 -> 100 % over a fixed 5 s. The counter now follows what the
 // page is really waiting for (fonts, the window load event, and every three.js
@@ -28,17 +26,15 @@ function readiness(state) {
 }
 
 function Loader() {
-  const [lenis, introOut, setIntroOut, setIsLoading, setIsAbout] = useStore(useShallow((state) => [state.lenis, state.introOut, state.setIntroOut, state.setIsLoading, state.setIsAbout]));
+  const [lenis, introOut, setIntroOut, setIsLoading] = useStore(useShallow((state) => [state.lenis, state.introOut, state.setIntroOut, state.setIsLoading]));
 
   const progressRef = useRef(null);
   const fullNameRef = useRef(null);
   const shortNameRef = useRef(null);
   const root = useRef(null);
-  const router = useRouter();
 
   useEffect(() => {
     if (introOut || !lenis) return undefined;
-    setIsAbout(wantsSRGB(router.pathname));
 
     const state = { fonts: false, loaded: document.readyState === 'complete', loadedAt: performance.now() };
     let cancelled = false;

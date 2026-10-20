@@ -104,7 +104,7 @@ function useBodyKeyScroll() {
 }
 
 function MyApp({ Component, pageProps, router }) {
-  const [lenis, setLenis, fluidColor, isAbout, still] = useStore(useShallow((state) => [state.lenis, state.setLenis, state.fluidColor, state.isAbout, state.still]));
+  const [lenis, setLenis, fluidColor, still] = useStore(useShallow((state) => [state.lenis, state.setLenis, state.fluidColor, state.still]));
   const coarse = useCoarsePointer();
   const maxDpr = coarse ? MAX_DPR_TOUCH : MAX_DPR_DESKTOP;
   const [dpr, setDpr] = useState(null);
@@ -169,7 +169,8 @@ function MyApp({ Component, pageProps, router }) {
     () => (
       <Canvas
         gl={{
-          outputColorSpace: isAbout === false ? THREE.LinearSRGBColorSpace : THREE.SRGBColorSpace,
+          // Keep the Desk badges' existing output colour space on the shared canvas.
+          outputColorSpace: THREE.LinearSRGBColorSpace,
           powerPreference: 'high-performance',
         }}
         style={{ zIndex: 0 }}
@@ -184,13 +185,13 @@ function MyApp({ Component, pageProps, router }) {
         <PerformanceMonitor flipflops={3} onDecline={() => setDpr(1)} onIncline={() => setDpr(null)} onFallback={() => setDpr(1)} />
         {/* A view that is loading (or never loads) must stay inside the canvas: without
             this boundary R3F suspends the <Canvas> DOM component itself, and its next
-            re-render (dpr, colour space) would hold every update of the page. */}
+            re-render (dpr, motion) would hold every update of the page. */}
         <Suspense fallback={null}>
           <View.Port />
         </Suspense>
       </Canvas>
     ),
-    [isAbout, dpr, maxDpr, still],
+    [dpr, maxDpr, still],
   );
 
   return (

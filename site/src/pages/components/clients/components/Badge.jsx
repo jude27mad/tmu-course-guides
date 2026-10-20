@@ -216,7 +216,7 @@ function BadgeCard({ body, offsetX, look, idle, maxSpeed = 50, minSpeed = 10 }) 
       <group ref={card}>
         {materials && (
           <mesh material={materials}>
-            {/* three's RoundedBoxGeometry (as the MagicBall boxes): per-face UVs, so the back reads the right way round */}
+            {/* three's RoundedBoxGeometry: per-face UVs, so the back reads the right way round */}
             <roundedBoxGeometry args={[1.6, 2.25, 0.02, 2, 0.01]} />
           </mesh>
         )}

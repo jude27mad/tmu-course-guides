@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Transition as ReactTransition, SwitchTransition } from 'react-transition-group';
-import { pathKey, wantsSRGB } from '@src/utils/routes';
+import { pathKey } from '@src/utils/routes';
 
 import Footer from '@src/components/dom/Footer';
 import PreFooter from '@src/components/dom/PreFooter';
@@ -33,8 +33,8 @@ function landOnPage() {
 }
 
 function Layout({ children, layoutRef, mainRef, router }) {
-  const [lenis, introOut, setIsLoading, isMenuOpen, isSearchOpen, setIsAbout, still] = useStore(
-    useShallow((state) => [state.lenis, state.introOut, state.setIsLoading, state.isMenuOpen, state.isSearchOpen, state.setIsAbout, state.still]),
+  const [lenis, introOut, setIsLoading, isMenuOpen, isSearchOpen, still] = useStore(
+    useShallow((state) => [state.lenis, state.introOut, state.setIsLoading, state.isMenuOpen, state.isSearchOpen, state.still]),
   );
 
   const enterTimelineRef = useRef();
@@ -53,7 +53,6 @@ function Layout({ children, layoutRef, mainRef, router }) {
   };
 
   const finishEnter = () => {
-    setIsAbout(wantsSRGB(router.pathname));
     useStore.getState().setIsTransitioning(false);
     setIsLoading(false);
     lenis.start();
@@ -90,7 +89,6 @@ function Layout({ children, layoutRef, mainRef, router }) {
           height: '90%',
           opacity: 1,
           onComplete: () => {
-            setIsAbout(wantsSRGB(router.pathname));
             setIsEntering(false);
           },
         },

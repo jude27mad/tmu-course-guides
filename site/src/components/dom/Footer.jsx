@@ -52,15 +52,16 @@ function Footer() {
   const inView = useInView(footerRef, { rootMargin: '25% 0px' });
   const [next, setNext] = useState(undefined); // undefined = not computed yet (static HTML)
 
-  // Next deadline: on the minute, on route changes, whenever the footer comes into
-  // view (progress may have changed on the page above) and on other tabs' saves.
+  // Outside course pages, refresh the next deadline on the minute, on route
+  // changes, when the footer comes into view and on other tabs' saves.
   useEffect(() => {
-    if (!now) return;
-    setNext(nextAcrossCourses({ now: new Date(), courseId: courseId || undefined }));
+    if (courseId || !now) return;
+    setNext(nextAcrossCourses({ now: new Date() }));
   }, [now, courseId, inView]);
 
   useEffect(() => {
-    const onStorage = () => setNext(nextAcrossCourses({ now: new Date(), courseId: courseId || undefined }));
+    if (courseId) return undefined;
+    const onStorage = () => setNext(nextAcrossCourses({ now: new Date() }));
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
   }, [courseId]);
@@ -149,22 +150,24 @@ function Footer() {
           ))}
         </AppearTitle>
       </div>
-      <div className={styles.emailContaineer}>
-        <AppearTitle isFooter>
-          <h2 className={clsx(styles.workWithMe, 'h4')}>Next deadline:</h2>
-          <div>
-            <div className={styles.link}>
-              {nextContent}
-              {next && (
-                <svg className={clsx(styles.linkGraphic)} width="300%" height="100%" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
-                  <path d="M0,56.5c0,0,298.666,0,399.333,0C448.336,56.5,513.994,46,597,46c77.327,0,135,10.5,200.999,10.5c95.996,0,402.001,0,402.001,0" />
-                </svg>
-              )}
+      {!courseId && (
+        <div className={styles.emailContaineer}>
+          <AppearTitle isFooter>
+            <h2 className={clsx(styles.workWithMe, 'h4')}>Next deadline:</h2>
+            <div>
+              <div className={styles.link}>
+                {nextContent}
+                {next && (
+                  <svg className={clsx(styles.linkGraphic)} width="300%" height="100%" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
+                    <path d="M0,56.5c0,0,298.666,0,399.333,0C448.336,56.5,513.994,46,597,46c77.327,0,135,10.5,200.999,10.5c95.996,0,402.001,0,402.001,0" />
+                  </svg>
+                )}
+              </div>
+              {next && <p className={clsx('p-x', styles.nextWhen)}>{[next.code, next.when].filter(Boolean).join(' · ')}</p>}
             </div>
-            {next && <p className={clsx('p-x', styles.nextWhen)}>{[next.code, next.when].filter(Boolean).join(' · ')}</p>}
-          </div>
-        </AppearTitle>
-      </div>
+          </AppearTitle>
+        </div>
+      )}
 
       <div className={styles.middleContainer} style={{ gridColumn: '1 / 9' }}>
         <AppearTitle isFooter>

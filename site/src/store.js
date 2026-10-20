@@ -24,11 +24,6 @@ export const useStore = create((set, get) => ({
   setIsTransitioning: (isTransitioning) => set({ isTransitioning }),
   fluidColor: DEFAULT_FLUID_COLOR,
   setFluidColor: (fluidColor) => set({ fluidColor }),
-  // true = the shared View.Port canvas outputs sRGB (the original used it on /about
-  // for the MagicBalls); Layout sets it per route, pages may override.
-  isAbout: false,
-  setIsAbout: (isAbout) => set({ isAbout }),
-
   // Motion. `still` is true when the device asks for reduced motion or the
   // student saved "Pause motion" (localStorage 'guide-motion-paused').
   // _app.page.jsx keeps these in sync with useMotionPaused() from @src/lib/react.

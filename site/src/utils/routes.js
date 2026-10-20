@@ -15,11 +15,6 @@ export const courseIdFromPath = (asPath) => {
   return COURSE_IDS.includes(first) ? first : null;
 };
 
-// Pages whose 3D (MagicBall) the original rendered with sRGB output on the shared canvas:
-// /about in the original; the course pages carry the /about sections now.
-const SRGB_PAGES = ['/[course]'];
-export const wantsSRGB = (pathname) => SRGB_PAGES.includes(pathname);
-
 // Item deep links look like '/cen100/#assignment-m2', 'cen100/#…', '#…' or a bare anchor id.
 export const hrefFor = (courseId, anchor) => {
   const base = courseId ? `/${courseId}/` : '/';

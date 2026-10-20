@@ -11,6 +11,7 @@ import { resolveStorage } from './storage.mjs';
 import { isMath, readMotionPaused } from './saved.mjs';
 import { COURSE_IDS, COURSES, dataFor, getCourse } from './courses.mjs';
 import { context, deadlines, nextDeadline, toMs } from './deadlines.mjs';
+import { courseInfo } from './info.mjs';
 
 export { COPY as SEARCH_COPY, GROUPS as SEARCH_GROUPS };
 const D2L = 'https://courses.torontomu.ca/';
@@ -101,8 +102,8 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
   // Actions.
   if (current) {
     add('Actions', { id: 'action-work', type: 'action', action: 'work', title: "This week's work", href: `${current.href}#assignments`, default: true, courseId: current.id });
-    add('Actions', { id: 'action-contacts', type: 'action', action: 'contacts', title: 'Contacts', href: `${current.href}#course-info`, default: true, courseId: current.id });
-    add('Actions', { id: 'action-calendar', type: 'action', action: 'calendar', title: 'Export calendar', href: `${current.href}#course-info`, default: true, courseId: current.id });
+    add('Actions', { id: 'action-contacts', type: 'action', action: 'contacts', title: 'Contacts', href: `${current.href}#contacts`, default: true, courseId: current.id });
+    add('Actions', { id: 'action-calendar', type: 'action', action: 'calendar', title: 'Export calendar', href: `${current.href}#guide-tools`, default: true, courseId: current.id });
   }
   const paused = readMotionPaused(store);
   add('Actions', { id: 'action-motion', type: 'action', action: 'motion', title: paused ? 'Play motion' : 'Pause motion', disabled: motionForced, detail: motionForced ? 'Reduced motion is enabled by your device or page setting' : '', default: true });
@@ -124,7 +125,8 @@ function searchEntriesNow(entries, query) {
 
 /* The old pages' own "Search the guide" (inline search): every word must appear (accents ignored) in an item's
    full text. CEN100: assignment cards (name, preview, what, facts, checklists, traps, sources), rule rows and the
-   contact lookup (cen-guide.mjs:504-535). Math: assessment and topic cards (math-guide.mjs:128-136). */
+   contact lookup (cen-guide.mjs:504-535). Math: assessment and topic cards (math-guide.mjs:128-136),
+   plus the rules cards shown in Course info. */
 const normalise = (text) => String(text).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 const GUIDE_ENTRIES = (() => {
   const out = [];
@@ -136,18 +138,21 @@ const GUIDE_ENTRIES = (() => {
     [CEN.CONFIRMED, 0],
     [CEN.OPEN, 0],
   ]) {
-    for (const row of rows) out.push({ courseId: 'cen100', title: row[offset], tab: CEN.COPY.tabs.rules, href: '/cen100/#course-info', text: row.slice(offset).join(' ') });
+    for (const row of rows) out.push({ courseId: 'cen100', title: row[offset], tab: CEN.COPY.tabs.rules, href: '/cen100/#p-rules', text: row.slice(offset).join(' ') });
   }
   out.push({
     courseId: 'cen100',
     title: CEN.COPY.contactsSearchTitle,
     tab: CEN.COPY.tabs.rules,
-    href: '/cen100/#course-info',
+    href: '/cen100/#contacts',
     text: `Who to ask contacts section group GA Graduate Assistant Project Manager lab room location ${CEN.STAFFING.map((s) => [s.ga, s.location, ...s.groups.map((g) => g[1])].join(' ')).join(' ')}`,
   });
   for (const id of COURSE_IDS.filter(isMath)) {
     for (const a of DATA[id].assessments) out.push({ courseId: id, title: a.title, tab: 'Assessment', href: `/${id}/#assessment-${a.id}`, text: `${a.title} ${a.scope} ${a.kind} ${a.source}` });
     for (const t of DATA[id].topics) out.push({ courseId: id, title: t.title, tab: 'Topic map', href: `/${id}/#topic-${t.id}`, text: `${t.title} ${t.sections} ${t.description} ${t.skills.join(' ')}` });
+    const info = courseInfo(id);
+    const rulesTab = info.page.tabs.find((tab) => tab.id === 'help').label;
+    for (const card of info.rules) out.push({ courseId: id, title: card.title, tab: rulesTab, href: `/${id}/#rules-help`, text: [card.title, ...card.blocks.flatMap((block) => block.items || [block.text])].join(' ') });
   }
   return out;
 })();

@@ -104,7 +104,13 @@ function mathInfo(courseId, { section } = {}) {
       anchor: `topic-${t.id}`,
     })),
     review: page.review,
-    rules: MATH.ruleCards(course, courseId),
+    rules: MATH.ruleCards(course, courseId).map((card) => ({
+      ...card,
+      blocks: card.blocks.map((block) => (block.type === 'list' ? {
+        ...block,
+        items: block.items.filter((line) => line !== 'At least 50% of total course marks is required to pass.' && line !== course.quizPolicy),
+      } : block)),
+    })),
     notice: MATH.courseNotice(courseId),
     contacts: { heading: page.contact.heading, coordinatorLabel: page.contact.coordinator, coordinator: course.coordinator, note: page.contact.note, links: page.contact.links, section: text.contacts, prompt: text.contactsPrompt },
     textbooks: { ...page.textbooks, books: course.textbooks },

@@ -9,8 +9,8 @@ import { useMemo } from 'react';
 // The original /about Overview (h3 title lines, a small label, a column of lines),
 // carrying the graded assessments with their weights and dates.
 function Assessments() {
-  const { courseId, info } = useCourse();
-  const rows = useMemo(() => assessments(courseId), [courseId]);
+  const { courseId, info, section } = useCourse();
+  const rows = useMemo(() => assessments(courseId, { section }), [courseId, section]);
   const cen = courseId === 'cen100';
   const grading = info.grading || info.page?.grading || {};
 
