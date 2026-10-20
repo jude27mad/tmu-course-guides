@@ -300,6 +300,16 @@ test('backups: export the old file formats and import them back with the old mer
   const fresh = memoryStorage();
   assert.equal(importBackup('mth140', mathFile.text, { storage: fresh }).message, 'Progress imported.');
   assert.equal(fresh.data.get('mth140-progress-v1'), '{"checks":{"quiz-1-0":true},"completed":{"quiz-1":true},"notes":{},"targets":{},"topics":{}}');
+  // Math: a broken, empty or oversized file is rejected and leaves saved progress untouched. Like the old
+  // math page, an unreadable file reports the JSON parser's own message.
+  const saved = fresh.data.get('mth140-progress-v1');
+  const broken = importBackup('mth140', '{', { storage: fresh });
+  assert.equal(broken.ok, false);
+  assert.equal(broken.saved, false);
+  assert.match(broken.message, /JSON/);
+  assert.deepEqual(importBackup('mth140', '{}', { storage: fresh }), { ok: false, saved: false, message: 'Choose a valid progress backup for MTH140.' });
+  assert.deepEqual(importBackup('mth140', 'x'.repeat(300001), { storage: fresh }), { ok: false, saved: false, message: 'This file is too large for a course-progress backup.' });
+  assert.equal(fresh.data.get('mth140-progress-v1'), saved);
 });
 
 test('calendar files are the old pages’ .ics files', async () => {
