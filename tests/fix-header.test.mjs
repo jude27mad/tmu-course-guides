@@ -93,13 +93,13 @@ test('Mark done and Undo reach the book from the committed record, though guide-
  const f=await fixture();
  try{
   await started(f);f.w.engine.frame();await flush();
-  const before=f.view();assert.match(before,/^midterm:false:/);
+  const before=f.view();assert.match(before,/^quiz-2:false:/);
   const key='mth140-progress-v1',record=completed=>JSON.stringify({checks:{},completed,notes:{},targets:{},topics:{}});
   // Real input: guide-motion's capture-phase microtask announces the completion, then math-guide's bubble
   // handler saves. Model that order: the event, a microtask drain, then the save in the same task.
   const markDone=async completed=>{f.w.document.dispatchEvent(new f.w.Event('guide-completion'));await flush();f.w.localStorage.setItem(key,record(completed));await turn();await flush();};
-  await markDone({'midterm':true});
-  assert.equal(f.view(),'midterm:true:DONE','Mark done flattens and stamps Lab Quiz 2 in the same interaction');
+  await markDone({'quiz-2':true});
+  assert.equal(f.view(),'quiz-2:true:DONE','Mark done flattens and stamps Lab Quiz 2 in the same interaction');
   await markDone({});
   assert.equal(f.view(),before,'Undo restores the raised pop-up instead of stamping it');
  }finally{f.close();}
