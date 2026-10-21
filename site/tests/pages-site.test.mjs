@@ -25,7 +25,16 @@ function fixture(files) {
 }
 
 function exportFixture(base = BASE) {
-  const files = { 'index.html': nextPage(base), '404.html': nextPage(base), '404/index.html': nextPage(base), '_next/static/chunks/main.js': '' };
+  const files = {
+    'index.html': nextPage(base),
+    '404.html': nextPage(base),
+    '404/index.html': nextPage(base),
+    '_next/static/chunks/main.js': '',
+    // Asset folders from public/, and an underscore folder, are not page routes.
+    'images/courses/a.webp': '',
+    'licenses/README.md': '',
+    '_hidden/index.html': nextPage(base),
+  };
   for (const route of ROUTES) files[`${route}/index.html`] = nextPage(base);
   return fixture(files);
 }

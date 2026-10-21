@@ -9,7 +9,7 @@ The current design now opens at the [main address](https://jude27mad.github.io/t
 - **One website.** The main address and `cen100/`, `mth140/` and `mth141/` open the current design. The previous version's Privacy page (`privacy.html`) and the CEN100 colour preview forward to the current Privacy page and the CEN100 guide.
 - **Old links keep working.** Links to the earlier preview at `/next/` open the same page at the main address, keeping any section link such as `#assignment-m2`. Links to the original `cen100-guide` address and old CEN100 links to the main address still reach the right guide.
 - **Saved progress.** Unchanged. Both versions use the same browser storage at the same address, so sections, ticks, completion records, notes and target dates carry over.
-- **Calendar files.** Events in calendar files downloaded earlier link to `…/cen100/`, which now opens the current CEN100 guide.
+- **Calendar files.** Events in CEN100 calendar files downloaded earlier link to `…/cen100/`, which now opens the current CEN100 guide. Files from October 11–12 and from the colour preview link to the main address, which opens the Desk.
 - **Previous version kept.** Its files stay in the repository and are still tested by CI, but they are no longer published. Development pages and repository documents are no longer reachable on the website either.
 - **Publishing.** A GitHub Actions workflow now builds the website, checks it in a browser, deploys it and checks the live address on every change to the site.
 

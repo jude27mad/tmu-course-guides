@@ -216,7 +216,7 @@
 1. Fetch the latest `origin/main` and merge it in.
 2. Change only the files listed for the stage.
 3. Run `cd site && npm test` and the root suite (`node --test tests/*.test.mjs tests/scene-*.cjs`).
-4. Build from that exact merged source and run the stage's checks against that build. Also check the publish build: `SITE_BASE_PATH=/tmu-course-guides npm run build`, then `scripts/pages-site.mjs build` and `check`, then `scripts/check-pages-site.mjs --local`.
+4. Build from that exact merged source and run the stage's checks against that build. Also check the publish build with the commands under "Checking a publish locally" in `site/README.md`.
 5. Commit the source only. The Pages workflow builds what is published; `next/` is the earlier preview and is no longer updated.
 6. Merge to `main`, then confirm the Pages workflow's three jobs (build, deploy, live check) passed for that commit and check the live `https://jude27mad.github.io/tmu-course-guides/`.
 7. Report the deployed commit and what visibly changed.

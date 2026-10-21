@@ -5,6 +5,8 @@ name: Pages
 # Nothing else in the repository is published. The previous website's files stay in the repository,
 # where ci.yml still tests them. Requires Settings -> Pages -> Source: GitHub Actions; with any other
 # source the deploy is skipped, so switching the source back to the main branch is a full rollback.
+# Changing the source does not start a run: after switching to GitHub Actions, run this workflow on
+# main once (Actions -> Pages -> Run workflow) unless a push to site/ follows.
 
 on:
   push:
@@ -102,8 +104,17 @@ jobs:
         run: |
           # Deploy only when Pages publishes from GitHub Actions. While it still publishes the main
           # branch (before the switch, or after a rollback), a deploy here would replace that site
-          # until the next push, and the two would take turns.
-          source="$(gh api "repos/$GITHUB_REPOSITORY/pages" --jq .build_type 2>/dev/null || true)"
+          # until the next push, and the two would take turns. Pages not enabled (404) skips; any
+          # other API failure fails the run, so a deploy is never skipped without a red run.
+          if source="$(gh api "repos/$GITHUB_REPOSITORY/pages" --jq .build_type 2>"$RUNNER_TEMP/pages-api.err")"; then
+            :
+          elif grep -q 'HTTP 404' "$RUNNER_TEMP/pages-api.err"; then
+            source='not enabled'
+          else
+            cat "$RUNNER_TEMP/pages-api.err" >&2
+            echo '::error::Could not read the Pages source; re-run this workflow.'
+            exit 1
+          fi
           if [[ "$source" == workflow ]]; then
             echo deploy=true >> "$GITHUB_OUTPUT"
           else

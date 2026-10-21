@@ -10,11 +10,13 @@ npm test                    # data, storage, artwork, lifecycle and publishing t
 npm run build               # static export in out/
 ```
 
-- **Publishing.** `.github/workflows/pages.yml` publishes the website at https://jude27mad.github.io/tmu-course-guides/ on every push to `main` that changes `site/`. It runs the tests, builds with `SITE_BASE_PATH=/tmu-course-guides`, adds the forwarding pages (`scripts/pages-site.mjs`), checks the result in Chromium (`scripts/check-pages-site.mjs --local`), deploys it, and then checks the live address (`--live`). GitHub Pages must be set to **Source: GitHub Actions**; with any other source the workflow builds and checks but does not deploy.
+- **Publishing.** `.github/workflows/pages.yml` publishes the website at https://jude27mad.github.io/tmu-course-guides/ on every push to `main` that changes `site/`. It runs the tests, builds with `SITE_BASE_PATH=/tmu-course-guides`, adds the forwarding pages (`scripts/pages-site.mjs`), checks the result in Chromium (`scripts/check-pages-site.mjs --local`), deploys it, and then checks the live address (`--live`). GitHub Pages must be set to **Source: GitHub Actions**; with any other source the workflow builds and checks but does not deploy. Changing the source does not start a run, so after switching to GitHub Actions run the workflow on `main` once (Actions → Pages → Run workflow) unless a push to `site/` follows.
 - **What is published.** Only this site. The previous version's addresses (`privacy.html`, `colour-preview.html`) and the earlier preview (`/next/` and its pages) forward to the matching page, keeping the query and hash; `cen100/`, `mth140/` and `mth141/` are the same addresses as before. The previous version's files at the repository root, `docs/`, `tests/` and `tools/` are not published.
 - **Checking a publish locally:**
   ```sh
-  SITE_BASE_PATH=/tmu-course-guides npm run build
+  export SITE_BASE_PATH=/tmu-course-guides
+  npm run build
+  rm -rf /tmp/pages
   node scripts/pages-site.mjs build --out out --dest /tmp/pages
   node scripts/pages-site.mjs check /tmp/pages
   PLAYWRIGHT_PATH=/path/to/node_modules/playwright node scripts/check-pages-site.mjs --local /tmp/pages

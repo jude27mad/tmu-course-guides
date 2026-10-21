@@ -52,6 +52,14 @@ const PROGRESS = {
   'guide-motion-paused': 'true',
 };
 
+// Text each page shows only when it has read the saved progress above.
+const SHOWN = [
+  ['', null],
+  ['cen100/', /\b1\/\d+ submission/],
+  ['mth140/', /\b1\/\d+ completed in my records/],
+  ['mth141/', /Section 3 ·/],
+];
+
 const TYPES = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript',
@@ -125,9 +133,12 @@ async function checkLocal(folder) {
     page.on('request', (request) => {
       const url = request.url();
       if (url.startsWith('data:') || url.startsWith('blob:')) return;
-      if (!url.startsWith(origin)) strays.push(url);
-      else if (url.startsWith(`${site}next/_next/`)) strays.push(url);
+      if (!url.startsWith(site) || url.startsWith(`${site}next/`)) strays.push(url);
     });
+    page.on('response', (response) => {
+      if (response.status() >= 400) strays.push(`${response.status()} ${response.url()}`);
+    });
+    page.on('requestfailed', (request) => strays.push(`failed ${request.url()}`));
     return { context, page, errors, strays };
   };
   const landed = async (page, expected) => {
@@ -145,7 +156,7 @@ async function checkLocal(folder) {
           assert.equal(await page.locator('#__next').count(), 1, 'Next root');
           assert.equal(await page.locator('script[src*="legacy-route"], script[src*="/assets/"]').count(), 0, 'no previous-design scripts');
           assert.deepEqual(errors, [], 'page errors');
-          assert.deepEqual(strays, [], 'requests outside the site');
+          assert.deepEqual(strays, [], 'requests outside the site, or failed');
           await page.screenshot({ path: join(reports, `${(path || 'desk/').replace(/\/$/, '')}-${width}.png`) });
           await context.close();
         });
@@ -203,14 +214,16 @@ async function checkLocal(folder) {
     }
 
     await check('saved progress is read and left unchanged', async () => {
-      const { context, page, errors } = await open();
+      // No reduced-motion preference here, so data-motion="off" can only come from the saved Pause motion.
+      const { context, page, errors } = await open({ reducedMotion: 'no-preference' });
       await page.goto(`${site}privacy/`, { waitUntil: 'networkidle' });
       await page.evaluate((entries) => {
         for (const [key, value] of Object.entries(entries)) localStorage.setItem(key, value);
       }, PROGRESS);
-      for (const path of ['', 'cen100/', 'mth140/', 'mth141/']) {
+      for (const [path, shown] of SHOWN) {
         await page.goto(`${site}${path}`, { waitUntil: 'networkidle' });
         assert.equal(await page.evaluate(() => document.documentElement.getAttribute('data-motion')), 'off', `Pause motion kept on /${path}`);
+        if (shown) await page.waitForFunction((source) => new RegExp(source).test(document.body.innerText), shown.source, { timeout: 15000 });
       }
       const after = await page.evaluate((keys) => Object.fromEntries(keys.map((key) => [key, localStorage.getItem(key)])), Object.keys(PROGRESS));
       assert.deepEqual(after, PROGRESS);
