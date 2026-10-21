@@ -216,25 +216,25 @@
 1. Fetch the latest `origin/main` and merge it in.
 2. Change only the files listed for the stage.
 3. Run `cd site && npm test` and the root suite (`node --test tests/*.test.mjs tests/scene-*.cjs`).
-4. Build the export from that exact merged source (`npm run export:preview`) and run the stage's checks against that build.
-5. Commit the source and the matching `next/` export together.
-6. Push, then check the live `https://jude27mad.github.io/tmu-course-guides/next/`. Also confirm the Pages deploy finished for that commit.
+4. Build from that exact merged source and run the stage's checks against that build. Also check the publish build: `SITE_BASE_PATH=/tmu-course-guides npm run build`, then `scripts/pages-site.mjs build` and `check`, then `scripts/check-pages-site.mjs --local`.
+5. Commit the source only. The Pages workflow builds what is published; `next/` is the earlier preview and is no longer updated.
+6. Merge to `main`, then confirm the Pages workflow's three jobs (build, deploy, live check) passed for that commit and check the live `https://jude27mad.github.io/tmu-course-guides/`.
 7. Report the deployed commit and what visibly changed.
 
-**If `main` moves after the export was built:** fetch, merge, rebuild, retest, and only then push. Never merge onto a stale export.
+**If `main` moves after the build was checked:** fetch, merge, rebuild, retest, and only then push. Never merge a build that was not checked from the merged source.
 
 **Integration owner.**
-- One agent owns the shared files and the generated output for the whole project: `next/`, `site/package.json` and its lockfile, `lib/content/pages.mjs`, `[course].page.jsx` and `hooks/useCourseState.js`.
+- One agent owns the shared files for the whole project: `site/package.json` and its lockfile, `lib/content/pages.mjs`, `[course].page.jsx`, `hooks/useCourseState.js` and the publishing files (`.github/workflows/pages.yml`, `scripts/pages-site.mjs`, `scripts/check-pages-site.mjs`).
 - Default owner: Claude in this session. The owner can reassign it.
 - Other agents work on branches and hand them over. They do not push these files to `main`.
 
 **Scope.**
-- The root website (`index.html`, `cen100/`, `mth140/`, `mth141/`, `assets/`) is not touched.
+- The previous website's files at the repository root (`index.html`, `cen100/`, `mth140/`, `mth141/`, `assets/`) and the frozen `next/` folder are not touched.
 - No unrelated refactoring.
 - A stage with no visible change is reported as groundwork, not as a website update.
 
 **Rollback.**
-- Each stage lands as one merge commit containing the source and `next/`. Reverting it restores the previous `/next/`.
+- Each stage lands as one merge commit. Reverting it publishes the previous website build again.
 - Saved-progress formats never change, so a revert loses no student data.
 
 ---

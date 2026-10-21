@@ -25,7 +25,7 @@ These still describe how the website behaves today.
 
 ## Previous version (archived)
 
-Records of the design that the current website replaced. They are kept for history and are not maintained.
+Records of the design that the current website replaced, and that design's own files. They are kept for history and are not maintained.
 
 | Document | What it was |
 |---|---|
@@ -35,6 +35,8 @@ Records of the design that the current website replaced. They are kept for histo
 | [qa/device-checklist.md](qa/device-checklist.md) | Device checks written for the previous interface. |
 | [qa/night-shift/](qa/night-shift/), [qa/subject-headers/](qa/subject-headers/) | Review reports for the previous design's stages (`night-shift`) and screenshots from the subject-header review (`subject-headers`). |
 | [codex/](codex/) | Coding task briefs used to build the previous version. |
+| Repository root: `index.html`, `cen100/`, `mth140/`, `mth141/`, `privacy.html`, `colour-preview.html`, `assets/` | The previous website itself. It is no longer published (only `site/` is, through `.github/workflows/pages.yml`), but CI still tests it. View it locally with `npm run dev` at the repository root (port 4173). |
+| [../next/](../next/) | The earlier `/next/` preview export, kept as it was and no longer published. |
 | [superpowers/](superpowers/) | Design plans for the previous subject headers. |
 | [../NIGHT-SHIFT-PLAN.md](../NIGHT-SHIFT-PLAN.md), [../design-qa.md](../design-qa.md) | The previous version's implementation plan and header review. |
 
