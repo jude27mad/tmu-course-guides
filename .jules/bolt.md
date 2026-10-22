@@ -1,0 +1,3 @@
+## 2023-11-20 - React Dependency Array and Three.js Objects Anti-pattern
+**Learning:** Serializing complex Three.js objects (like `Texture`) inside hook dependency arrays (e.g., using `JSON.stringify(props)` for a `useMemo` block where `props` includes `tFluid`) is highly dangerous. It causes severe main-thread blocking, delays render cycles, defeats React's shallow comparisons, and can easily crash if objects are not strictly serializable or contain circular references.
+**Action:** When working with Three.js objects passed as properties or state, destructure the primitive or stable properties needed by the effect/memo and pass those individually to the dependency array. Avoid using `JSON.stringify` on object graphs containing WebGL components.
