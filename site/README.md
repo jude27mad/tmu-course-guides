@@ -44,6 +44,7 @@ The repository root keeps its `.nojekyll` file for the case where Pages is switc
 
 - Course navigation resolves old and new hashes through `workspace/location.mjs`. All assignment entry points use the same detail renderer. History snapshots retain list filters, scroll and focus without adding progress storage keys.
 - Notes save on every edit, including immediately before navigation. Checklist preparation and submission records remain separate.
+- Course controls become available after hydration and a brief entrance, independently of fonts, photographs and 3D downloads. Tabs acknowledge navigation immediately and accept input during the new view's entrance. Page navigation shows status while Next fetches a route; failed navigation offers a normal-link retry. `scripts/check-interaction-feedback.mjs` exercises these cases with delayed image and route downloads in Pages CI.
 - Schedule-X is loaded only when the calendar is displayed. The independent deadline list stays usable if its chunk fails. React 18 compatibility, date precision, Toronto time and the pinned MIT dependencies are documented in [the redesign QA record](../docs/qa/shorter-course-views/README.md).
 
 - Deadlines and course content come from the same data as the previous version, copied into `src/lib/vendor/` and `src/lib/content/`. Deadline results are tested against the previous modules.

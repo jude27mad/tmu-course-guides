@@ -16,10 +16,10 @@ export const DESK={
  "courses": [
   {
    "id": "cen100",
-   "ariaLabel": "Open CEN100 guide, Engineering",
+   "ariaLabel": "Open CEN100 guide, Intro to Engineering",
    "index": "01",
    "code": "CEN100",
-   "name": "Engineering",
+   "name": "Intro to Engineering",
    "summary": "Assignment deadlines, requirements, checklists and section/group contacts."
   },
   {

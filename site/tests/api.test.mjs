@@ -11,7 +11,7 @@ test('COURSES: the three courses keep their names and links and share the Desk p
   assert.deepEqual(
     lib.COURSES.map((c) => [c.id, c.code, c.name, c.title, c.index]),
     [
-      ['cen100', 'CEN100', 'Engineering', 'Introduction to Engineering', '01'],
+      ['cen100', 'CEN100', 'Intro to Engineering', 'Introduction to Engineering', '01'],
       ['mth140', 'MTH140', 'Calculus I', 'Calculus I', '02'],
       ['mth141', 'MTH141', 'Linear Algebra', 'Linear Algebra', '03'],
     ],
@@ -138,7 +138,7 @@ test('searchIndex: the old palette’s groups, copy and ranking across all cours
   assert.deepEqual(lib.SEARCH_GROUPS, PALETTE.GROUPS);
   assert.equal(lib.SEARCH_COPY.placeholder, PALETTE.COPY.placeholder);
   for (const entry of entries) for (const field of ['group', 'title', 'detail', 'href', 'keywords']) assert.ok(field in entry, `${entry.id} ${field}`);
-  assert.ok(entries.some((e) => e.title === 'CEN100 · Engineering' && e.href === '/cen100/'));
+  assert.ok(entries.some((e) => e.title === 'CEN100 · Intro to Engineering' && e.href === '/cen100/'));
   assert.ok(entries.some((e) => e.title === 'Work' && e.href === '/mth140/#work'));
   const defaults = lib.searchEntries(entries, '');
   assert.ok(defaults.every((e) => e.default));

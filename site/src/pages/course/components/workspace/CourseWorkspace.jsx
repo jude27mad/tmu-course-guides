@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { assignmentList, groups, sections } from '@src/lib';
 import CourseArtwork from '@src/components/courseArtwork/CourseArtwork';
@@ -39,11 +40,29 @@ export default function CourseWorkspace() {
       </div>
       <nav className={styles.navigation} aria-label="Course views">
         {views.map(([view, label]) => (
-          <Link key={view} href={`/${courseId}/#${view === 'info' ? 'course-info' : view}`} scroll={false} aria-current={navigation.view === view ? 'page' : undefined}>
+          <Link
+            key={view}
+            href={`/${courseId}/#${view === 'info' ? 'course-info' : view}`}
+            scroll={false}
+            aria-current={navigation.selectedView === view ? 'page' : undefined}
+            onClick={(event) => {
+              // Acknowledge the tap before Next finishes its asynchronous hash update.
+              if (!event.defaultPrevented && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+                navigation.acknowledge(view === 'info' ? 'course-info' : view);
+              }
+            }}
+          >
             {label}
           </Link>
         ))}
       </nav>
+      {navigation.opening &&
+        createPortal(
+          <p className={styles.viewStatus} role="status" data-view-status>
+            {`Opening ${navigation.opening.item?.title || views.find(([view]) => view === navigation.opening.view)?.[1] || 'details'}…`}
+          </p>,
+          document.body,
+        )}
       <div className={styles.utilities}>
         <div className={styles.sectionControls}>
           <label className={styles.selectLabel} htmlFor="course-section">

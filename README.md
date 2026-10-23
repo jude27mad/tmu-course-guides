@@ -46,7 +46,7 @@ Use **Guide tools** beside D2L at the top of each guide:
 
 - **Download calendar (.ics):** adds upcoming course dates to your calendar app. In MTH140 and MTH141, lab quiz dates are included once you choose your section. The file is a snapshot; it does not update itself when dates change.
 - **Export my progress / Import a backup:** saves this course's ticks, completion records, notes and target dates to a file, and adds them to the same course in another browser or on another device. Section and group choices are not included.
-- **Clear my ticks** (CEN100): removes CEN100's checklist ticks.
+- **Clear my ticks** (CEN100): confirm to remove CEN100's checklist ticks. A confirmation appears when they are cleared; completion records, notes, targets and section choices stay saved. Untick a completion record in its assignment to undo it.
 - **Course updates:** changes to the course's dates, coverage and grading. A badge appears when there is something new. Changes to the website itself are on the **Website updates** page, linked from the menu and the footer.
 
 ## Saving your progress
