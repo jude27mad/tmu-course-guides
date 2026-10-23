@@ -9,7 +9,7 @@ import { resolveCourseLocation } from './location.mjs';
 
 const hashOf = () => window.location.hash.replace(/^#/, '');
 // Match the shell's power2 slide easing, at a shorter pace for in-course moves.
-const VIEW_MOTION = { duration: 0.4, ease: 'power2.inOut' };
+const VIEW_MOTION = { duration: 0.26, ease: 'power2.inOut' };
 const viewKey = (location) => location.item?.anchor || (location.infoDetail && location.panel) || location.view;
 const isDetail = (location) => location?.item || location?.infoDetail;
 const resetContent = (content) => {
@@ -44,6 +44,7 @@ export default function useCourseNavigation(courseId, info) {
     focus: null,
     returnTo: null,
   });
+  const [requested, setRequested] = useState(null);
   const active = useRef(null);
   const restoring = useRef(false);
   const transition = useRef(null);
@@ -115,6 +116,7 @@ export default function useCourseNavigation(courseId, info) {
       const animate = previous && content && !state.still && !state.isLoading && !['guide-tools', 'math-tools'].includes(hash) && viewKey(from) !== viewKey(target);
       reveal.current = !!animate;
       pending.current = next;
+      setRequested(animate ? target : null);
       const commit = () => {
         pending.current = null;
         setEntry(next);
@@ -128,8 +130,8 @@ export default function useCourseNavigation(courseId, info) {
         });
         transition.current = gsap.to(content, {
           ...VIEW_MOTION,
-          duration: 0.18,
-          x: -20,
+          duration: 0.12,
+          x: -12,
           opacity: 0,
           onComplete: commit,
         });
@@ -213,22 +215,26 @@ export default function useCourseNavigation(courseId, info) {
         lenis?.resize();
         if (lenis) lenis.scrollTo(top, { immediate: true, force: true });
         else main.scrollTop = top;
-        // Restore geometry while the new content is hidden; then reveal and focus
-        // it. This keeps Back's exact position and never scrolls a moving element.
+        // Only the outgoing view is inert. Newly mounted controls must accept
+        // the first tap, even while their entrance animation is still running.
+        content.inert = false;
+        content.removeAttribute('aria-busy');
+        gsap.set(content, { clearProps: 'pointerEvents' });
+        setRequested(null);
+        // Restore focus with interactivity, not at the end of the cosmetic tween.
+        // A user may already have picked a control during the two layout frames.
+        const focusMoved = document.activeElement !== focusAtNavigation.current && document.activeElement !== content && content.contains(document.activeElement);
+        if ((!entry.initial || entry.hash) && !focusMoved) {
+          const focus = (entry.restore && document.getElementById(entry.focus)) || target || content;
+          focus.focus({ preventScroll: true });
+        }
+        restoring.current = false;
         const finish = () => {
           if (active.current?.key !== entry.key || active.current?.hash !== entry.hash) return;
           resetContent(content);
-          // A keyboard user may already have focused a control in the new view
-          // (especially with motion off). Do not steal that focus after two RAFs.
-          const focusMoved = document.activeElement !== focusAtNavigation.current && document.activeElement !== content && content.contains(document.activeElement);
-          if ((!entry.initial || entry.hash) && !focusMoved) {
-            const focus = (entry.restore && document.getElementById(entry.focus)) || target || content;
-            focus.focus({ preventScroll: true });
-          }
-          restoring.current = false;
         };
         if (reveal.current && !useStore.getState().still) {
-          gsap.set(content, { x: 20, opacity: 0 });
+          gsap.set(content, { x: 12, opacity: 0 });
           transition.current = gsap.to(content, {
             ...VIEW_MOTION,
             x: 0,
@@ -257,6 +263,12 @@ export default function useCourseNavigation(courseId, info) {
   };
   return {
     ...location,
+    selectedView: requested?.view || location.view,
+    opening: requested,
+    acknowledge: (hash) => {
+      const target = resolveCourseLocation(hash, courseId, info);
+      setRequested(viewKey(target) === viewKey(location) ? null : target);
+    },
     navigate,
     back,
     remember,

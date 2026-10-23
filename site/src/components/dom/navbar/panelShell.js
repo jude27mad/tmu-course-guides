@@ -5,9 +5,8 @@ import { TOKENS } from '@src/lib/palette.mjs';
 // - the shell (main slides left as a rounded card, the layout dims, the header
 //   and scrollbar follow, the fluid hides) is one timeline owned by the navbar;
 // - each panel (#menu, #search) fades in and slides its rows on its own timeline.
-// Both use the original defaults (0.92 s, expo.inOut, everything at position 0), so
-// opening one panel looks exactly like the original menu.
-export const PANEL_DEFAULTS = { duration: 0.92, ease: 'expo.inOut' };
+// Both keep the original easing and geometry with a shorter response time.
+export const PANEL_DEFAULTS = { duration: 0.45, ease: 'expo.inOut' };
 // The page's edge while it is shrunk behind a panel.
 const PAGE_EDGE = `2px solid ${TOKENS.page}`;
 
