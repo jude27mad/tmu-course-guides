@@ -6,7 +6,7 @@ export function openGuideTools(doc = globalThis.document) {
 
 // Native dialog owns the top layer, background inertness and Escape key.
 // Keep the page still and cycle Tab inside the tools rather than browser chrome.
-export function bindGuideTools(dialog, { getLenis = () => null } = {}) {
+export function bindGuideTools(dialog, { getLenis = () => null, animate = (_opening, complete) => complete() } = {}) {
   if (!dialog) return () => {};
   const doc = dialog.ownerDocument;
   const main = doc.querySelector('main');
@@ -18,6 +18,20 @@ export function bindGuideTools(dialog, { getLenis = () => null } = {}) {
   let overflow = '';
   let overflowPriority = '';
   let backdropDown = false;
+  let phase = 'closed';
+  let generation = 0;
+  let cancelAnimation;
+
+  const transition = (opening, complete) => {
+    const current = ++generation;
+    cancelAnimation?.();
+    phase = opening ? 'opening' : 'closing';
+    cancelAnimation = animate(opening, () => {
+      if (current !== generation) return;
+      phase = opening ? 'open' : 'closed';
+      complete?.();
+    });
+  };
 
   const release = (restoreFocus = true) => {
     if (!active) return;
@@ -34,7 +48,10 @@ export function bindGuideTools(dialog, { getLenis = () => null } = {}) {
   };
 
   const open = () => {
-    if (dialog.open) return;
+    if (dialog.open) {
+      if (phase === 'closing') transition(true);
+      return;
+    }
     opener = doc.activeElement;
     dialog.showModal();
     active = true;
@@ -47,11 +64,19 @@ export function bindGuideTools(dialog, { getLenis = () => null } = {}) {
     wasStopped = !!lenis?.isStopped;
     if (lenis && !wasStopped) lenis.stop();
     closeButton?.focus({ preventScroll: true });
+    transition(true);
   };
 
   const close = () => {
-    if (dialog.open) dialog.close();
-    release();
+    if (!dialog.open || phase === 'closing') return;
+    transition(false, () => {
+      dialog.close();
+      release();
+    });
+  };
+  const onCancel = (event) => {
+    event.preventDefault();
+    close();
   };
   const onClose = () => {
     // A native close event may arrive after the dialog has already reopened.
@@ -100,6 +125,7 @@ export function bindGuideTools(dialog, { getLenis = () => null } = {}) {
     [doc, OPEN_EVENT, open],
     [doc, 'guide-hash', onHash],
     [dialog, 'close', onClose],
+    [dialog, 'cancel', onCancel],
     [dialog, 'keydown', onKeyDown],
     [dialog, 'pointerdown', onPointerDown],
     [dialog, 'pointercancel', onPointerCancel],
@@ -108,6 +134,8 @@ export function bindGuideTools(dialog, { getLenis = () => null } = {}) {
   ];
   bindings.forEach(([target, type, handler]) => target?.addEventListener(type, handler));
   return () => {
+    generation += 1;
+    cancelAnimation?.();
     bindings.forEach(([target, type, handler]) => target?.removeEventListener(type, handler));
     if (dialog.open) dialog.close();
     release(false);

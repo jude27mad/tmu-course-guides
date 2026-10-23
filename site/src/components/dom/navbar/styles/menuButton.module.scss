@@ -1,6 +1,6 @@
 @import '@src/styles/functions';
 .button {
-  height: 2.5vw;
+  height: max(44px, 2.5vw);
   @include mobile {
     height: max(6vw, 44px);
   }
@@ -20,9 +20,10 @@
       0 0.12vw 0.22vw rgba(var(--inkRgb), 0.04);
   }
   .label {
+    font-size: max(16px, 0.85vw);
     @include mobile {
       padding: 0 max(3vw, 16px) 0 max(3vw, 16px);
     }
-    padding: 0 1.25vw 0 1.25vw;
+    padding: 0 max(16px, 1.25vw);
   }
 }

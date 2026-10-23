@@ -108,6 +108,12 @@ jobs:
           PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
           QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/palette
         run: node site/scripts/check-palette-site.mjs "$RUNNER_TEMP/pages"
+      - name: Check shared controls, navigation and information answers
+        if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' }}
+        env:
+          PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
+          QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/consistency
+        run: node site/scripts/check-consistency.mjs
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4

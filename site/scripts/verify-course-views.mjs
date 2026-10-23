@@ -364,14 +364,14 @@ try {
     for (const [fragment, selector] of [
       ['topic-limits', '#topic-limits[data-assignment-detail]'],
       ['assessment-midterm', '#assessment-midterm[data-assignment-detail]'],
-      ['t-help', '#rules-help[open]'],
+      ['t-help', '#info-policy-missed-assessment'],
       ['panel-assessments', '[data-assignment-link]'],
     ]) {
       await ready(page, `mth140/#${fragment}`);
       await page.locator(selector).first().waitFor();
     }
     await ready(page, 'cen100/#t-rules');
-    await page.locator('#p-rules[open]').waitFor();
+    await page.locator('#info-policy-late-work').waitFor();
     await ready(page, 'cen100/#math-tools');
     await page.locator('dialog[open]').waitFor();
     await page.getByRole('button', { name: 'Close guide tools' }).click();
@@ -419,33 +419,30 @@ try {
     await page.keyboard.press('Control+k');
     await page.locator('#search-input').fill('Contacts');
     await page.keyboard.press('Enter');
-    await page.locator('#contacts[open]').waitFor();
-    const summary = page.locator('#contacts > summary');
-    await summary.focus();
+    await page.locator('#contacts[data-info-detail]').waitFor();
+    const back = page.getByRole('button', { name: '← Back to Study', exact: true }).first();
+    await back.focus();
     await page.keyboard.press('Enter');
-    assert.equal(await page.locator('#contacts').getAttribute('open'), null);
-    await page.keyboard.press('Enter');
-    assert.notEqual(await page.locator('#contacts').getAttribute('open'), null);
+    await page.getByRole('heading', { name: 'Study', exact: true }).waitFor();
   });
   await check('navigation does not steal focus chosen inside the newly opened view', async () => {
     await ready(page, 'mth140/#work');
     await page.evaluate(() => {
       const observer = new MutationObserver(() => {
-        const contacts = document.getElementById('contacts');
-        if (!contacts.open || !contacts.getClientRects().length) return;
+        const contacts = document.querySelector('#contacts[data-info-detail]');
+        if (!contacts?.getClientRects().length) return;
         observer.disconnect();
-        // Reproduce a keyboard user reaching the summary before deferred scroll
-        // restoration finishes, without waiting for navigation to move focus.
-        contacts.querySelector('summary').focus();
+        // Reach a control before deferred scroll restoration finishes.
+        contacts.querySelector('button').focus();
       });
-      observer.observe(document.getElementById('course-content'), { attributes: true, subtree: true });
+      observer.observe(document.getElementById('course-content'), { childList: true, attributes: true, subtree: true });
       window.location.hash = 'contacts';
     });
-    await page.locator('#contacts[open]').waitFor();
+    await page.locator('#contacts[data-info-detail]').waitFor();
     await page.waitForTimeout(600);
-    assert.equal(await page.evaluate(() => document.activeElement.matches('#contacts > summary')), true);
+    assert.equal(await page.evaluate(() => document.activeElement.matches('#contacts button')), true);
     await page.keyboard.press('Enter');
-    assert.equal(await page.locator('#contacts').getAttribute('open'), null);
+    await page.getByRole('heading', { name: 'Work', exact: true }).waitFor();
   });
   await check('backup export and import retain separate records, notes, targets and checks', async () => {
     await ready(page, 'cen100/#assignment-m2');
@@ -569,10 +566,10 @@ try {
     try {
       const staticPage = await staticContext.newPage();
       await staticPage.goto(url + 'cen100/');
-      await staticPage.locator('#course-grading > summary').click();
+      await staticPage.getByRole('link', { name: 'Grading', exact: true }).click();
       await staticPage.locator('#course-grading table').first().waitFor();
-      await staticPage.locator('#p-rules > summary').click();
-      await staticPage.locator('#p-rules[open]').waitFor();
+      await staticPage.getByRole('link', { name: 'Late means zero', exact: true }).click();
+      assert.match(await staticPage.locator('#policy-late-work').innerText(), /valid documentation/);
     } finally {
       await staticContext.close();
     }

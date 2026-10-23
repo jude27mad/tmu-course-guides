@@ -8,6 +8,8 @@
   min-height: 75svh;
   overflow-wrap: anywhere;
   --workspace-gap: clamp(16px, 2vw, 28px);
+  --course-nav-top: 64px;
+  --course-nav-height: 56px;
   :global(.p-l),
   :global(.p),
   :global(.p-x),
@@ -109,11 +111,25 @@
   background: var(--black);
 }
 .navigation {
+  position: sticky;
+  top: var(--course-nav-top);
+  z-index: 1;
+  background: var(--white);
   display: flex;
   flex-wrap: wrap;
   border-top: 1px solid var(--black);
   border-bottom: 1px solid var(--black);
   gap: 4px 24px;
+  &[data-stuck='true']::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    height: calc(var(--course-nav-top) + 2px);
+    left: calc(-1 * clamp(18px, 4vw, 64px));
+    right: calc(-1 * clamp(18px, 4vw, 64px));
+    background: var(--white);
+    pointer-events: none;
+  }
   a {
     min-height: 54px;
     display: flex;
@@ -239,7 +255,7 @@
 }
 .content {
   min-height: 230px;
-  scroll-margin-top: 84px;
+  scroll-margin-top: calc(var(--course-nav-top) + var(--course-nav-height) + 12px);
 }
 .viewHeading {
   display: flex;
@@ -402,6 +418,9 @@
   }
 }
 .information {
+  section {
+    padding: 0;
+  }
   details {
     border-top: 1px solid var(--border);
   }
@@ -447,6 +466,23 @@
   a {
     text-decoration: underline;
   }
+}
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  min-height: 56px;
+  padding: 12px 8px 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 18px;
+  transition: background-color 0.3s;
+  &:hover {
+    background: var(--fillColor);
+  }
+}
+.information .infoRow {
+  text-decoration: none;
 }
 .infoBlock {
   margin-bottom: 20px;

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { assignmentList, groups, sections } from '@src/lib';
 import CourseArtwork from '@src/components/courseArtwork/CourseArtwork';
@@ -17,14 +17,49 @@ import styles from './workspace.module.scss';
 export default function CourseWorkspace() {
   const { courseId, course, info, live, section, setSection, group, setGroup, progress } = useCourse();
   const navigation = useCourseNavigation(courseId, info);
-  const [schedule, setSchedule] = useState({ choice: null, range: 'upcoming', day: null, selectedDate: null });
+  const root = useRef(null);
+  const nav = useRef(null);
+  useEffect(() => {
+    const header = document.querySelector('header');
+    const main = document.querySelector('main');
+    const previousPadding = main?.style.scrollPaddingTop;
+    const updateStuck = () => {
+      if (!nav.current) return;
+      const stuck = String(nav.current.getBoundingClientRect().top <= (header?.getBoundingClientRect().bottom || 64) + 1);
+      if (nav.current.dataset.stuck !== stuck) nav.current.dataset.stuck = stuck;
+    };
+    const measure = () => {
+      const top = Math.ceil(header?.getBoundingClientRect().bottom || 64);
+      const height = nav.current?.offsetHeight || 56;
+      root.current?.style.setProperty('--course-nav-top', `${top}px`);
+      root.current?.style.setProperty('--course-nav-height', `${height}px`);
+      if (main) main.style.scrollPaddingTop = `${top + height + 12}px`;
+      updateStuck();
+    };
+    const observer = new ResizeObserver(measure);
+    if (header) observer.observe(header);
+    if (nav.current) observer.observe(nav.current);
+    main?.addEventListener('scroll', updateStuck, { passive: true });
+    measure();
+    return () => {
+      observer.disconnect();
+      main?.removeEventListener('scroll', updateStuck);
+      if (main) main.style.scrollPaddingTop = previousPadding;
+    };
+  }, []);
+  const [schedule, setSchedule] = useState({
+    choice: null,
+    range: 'upcoming',
+    day: null,
+    selectedDate: null,
+  });
   const assignments = useMemo(() => (live ? assignmentList(courseId, { now: live.now, items: live.items }) : null), [live, courseId]);
   const views = [['work', 'Work'], ['schedule', 'Schedule'], ...(courseId === 'cen100' ? [] : [['study', 'Study']]), ['info', 'Course info']];
   const next = live?.next;
   const completed = live?.progress?.completed || 0;
   const total = live?.progress?.total || 0;
   return (
-    <div className={styles.root}>
+    <div ref={root} className={styles.root}>
       <div className={styles.courseHeader}>
         <div className={styles.headingCopy}>
           <p className={styles.eyebrow}>
@@ -37,7 +72,7 @@ export default function CourseWorkspace() {
           <CourseArtwork courseId={courseId} priority sizes="(max-width: 600px) 104px, 300px" />
         </div>
       </div>
-      <nav className={styles.navigation} aria-label="Course views">
+      <nav ref={nav} className={styles.navigation} aria-label="Course views">
         {views.map(([view, label]) => (
           <Link key={view} href={`/${courseId}/#${view === 'info' ? 'course-info' : view}`} scroll={false} aria-current={navigation.view === view ? 'page' : undefined}>
             {label}
@@ -105,7 +140,7 @@ export default function CourseWorkspace() {
         {!navigation.item && navigation.view === 'schedule' ? <Schedule navigate={navigation.navigate} state={schedule} setState={setSchedule} /> : null}
         {!navigation.item && navigation.view === 'study' ? <Study /> : null}
         <div className={navigation.item || navigation.view !== 'info' ? styles.infoInactive : undefined}>
-          <CourseInformation panel={navigation.panel} />
+          <CourseInformation panel={navigation.panel} back={navigation.back} returnView={navigation.returnView} />
         </div>
       </div>
       <GuideTools />

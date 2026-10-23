@@ -13,7 +13,7 @@
 
 .field {
   // leave room for the close button on the right
-  padding-right: calc(var(--layout-margin) + 2.5vw);
+  padding-right: calc(var(--layout-margin) + max(44px, 2.5vw));
   @include mobile {
     padding-right: calc(var(--layout-margin) + max(6vw, 44px));
   }
