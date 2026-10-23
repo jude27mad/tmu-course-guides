@@ -153,7 +153,6 @@ export default function useCourseNavigation(courseId, info) {
       // current URL owns navigation; replaying its old id creates history loops.
       sync();
     };
-    const main = document.querySelector('main');
     router.events.on('hashChangeStart', remember);
     router.events.on('routeChangeStart', remember);
     router.events.on('hashChangeComplete', sync);

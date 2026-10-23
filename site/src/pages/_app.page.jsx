@@ -123,8 +123,8 @@ function MyApp({ Component, pageProps, router }) {
     // Giats's synchronized touch scrolling keeps pointer moves flowing to the
     // fluid during a swipe. Native panning otherwise cancels that input stream.
     // Keep pinch zoom native and `main` scrollable for keys and find-in-page.
-    // eslint-disable-next-line no-shadow
     const ios = nativeIOSScroll();
+    // eslint-disable-next-line no-shadow
     const lenis = new Lenis({
       smoothWheel: true,
       syncTouch: !ios && !useStore.getState().still,

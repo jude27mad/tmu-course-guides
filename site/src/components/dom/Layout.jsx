@@ -1,4 +1,4 @@
-import { nativeIOSScroll, scrollTop } from '@src/utils/scrollRoot';
+import { nativeIOSScroll } from '@src/utils/scrollRoot';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Transition as ReactTransition, SwitchTransition } from 'react-transition-group';
 import { courseIdFromPath, pathKey, wantsSRGB } from '@src/utils/routes';

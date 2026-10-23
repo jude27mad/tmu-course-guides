@@ -45,9 +45,13 @@ const usePointerEvents = (mainRef, size, force) => {
       if (event.touches.length !== 1) return;
       handlePointerMove({ clientX: event.touches[0].clientX, clientY: event.touches[0].clientY });
     };
-    const reset = () => { hasMoved.current = false; };
+    const reset = () => {
+      hasMoved.current = false;
+    };
     const ios = nativeIOSScroll();
-    const pointerMove = (event) => { if (!ios || event.pointerType !== 'touch') handlePointerMove(event); };
+    const pointerMove = (event) => {
+      if (!ios || event.pointerType !== 'touch') handlePointerMove(event);
+    };
     element.addEventListener('pointermove', pointerMove, { passive: true });
     if (ios) {
       element.addEventListener('touchstart', reset, { passive: true });
