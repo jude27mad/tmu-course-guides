@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import Link from 'next/link';
 import { assessments } from '@src/lib';
 import { useCourse } from '@src/pages/course/hooks/useCourseState';
+import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
 import styles from './workspace.module.scss';
 
 function Blocks({ card }) {
@@ -40,8 +41,9 @@ export default function CourseInformation({ panel }) {
   let sectionText = 'Choose your section and group above for your lab and contacts.';
   if (cen && info.profile?.value) sectionText = info.profile.summary;
   if (!cen) sectionText = info.section?.brief ? `${info.section.brief.section} · ${info.section.brief.detail}` : info.section?.briefPrompt;
-  useEffect(() => {
-    const target = root.current?.querySelector(`#${panel === 'panel-help' || panel === 't-help' ? 'rules-help' : panel}`);
+  // Expand the destination before the workspace measures its scroll range.
+  useIsomorphicLayoutEffect(() => {
+    const target = root.current?.querySelector(`#course-view-${panel === 'panel-help' || panel === 't-help' ? 'rules-help' : panel}`);
     if (target?.tagName === 'DETAILS') target.open = true;
   }, [panel]);
   const expand = (open) =>
@@ -61,13 +63,13 @@ export default function CourseInformation({ panel }) {
           </button>
         </div>
       </div>
-      <div id="section-picker" className={styles.infoBlock} tabIndex={-1}>
+      <div id="course-view-section-picker" className={styles.infoBlock} tabIndex={-1}>
         <h3>Your section</h3>
         <p>{sectionText}</p>
         {info.organization ? <p>{info.organization}</p> : null}
         <p className={styles.meta}>{cen ? info.page.profile.note : 'Change your section using the selector above.'}</p>
       </div>
-      <details id="course-grading" tabIndex={-1}>
+      <details id="course-view-course-grading" tabIndex={-1}>
         <summary>
           Grading <span>{cen ? '20 graded items · 100%' : grading.pass}</span>
         </summary>
@@ -153,7 +155,7 @@ export default function CourseInformation({ panel }) {
           ) : null}
         </div>
       </details>
-      <details id="contacts" tabIndex={-1}>
+      <details id="course-view-contacts" tabIndex={-1}>
         <summary>
           Contacts <span>Who to ask</span>
         </summary>
@@ -195,7 +197,7 @@ export default function CourseInformation({ panel }) {
           <p>{contacts.note}</p>
         </div>
       </details>
-      <details id={cen ? 'p-rules' : 'rules-help'} tabIndex={-1}>
+      <details id={cen ? 'course-view-p-rules' : 'course-view-rules-help'} tabIndex={-1}>
         <summary>
           Policies & help <span>Rules, missed work and confirmations</span>
         </summary>
@@ -233,7 +235,7 @@ export default function CourseInformation({ panel }) {
         </div>
       </details>
       {!cen ? (
-        <details id="textbooks" tabIndex={-1}>
+        <details id="course-view-textbooks" tabIndex={-1}>
           <summary>
             Textbooks & sources <span>Practice and reference</span>
           </summary>

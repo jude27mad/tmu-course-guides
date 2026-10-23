@@ -38,6 +38,80 @@ async function check(name, run) {
   }
 }
 try {
+  await check('top-level course tabs keep the page and shared header in place', async (page) => {
+    const snapshots = [];
+    for (const reducedMotion of ['no-preference', 'reduce']) {
+      await page.emulateMedia({ reducedMotion });
+      await page.goto(`${url}mth140/`);
+      await ready(page);
+      await page.locator('main').evaluate((main, top) => { main.scrollTop = top; }, reducedMotion === 'reduce' ? 80 : 0);
+      await page.waitForTimeout(100);
+      for (const [hash, title] of [['study', 'Study'], ['course-info', 'Course info'], ['schedule', 'Schedule'], ['work', 'Work']]) {
+        const before = await page.evaluate(() => {
+          window.tabPositions = [];
+          const sample = () => {
+            window.tabPositions.push({ scroll: document.querySelector('main').scrollTop, nav: document.querySelector('nav[aria-label="Course views"]').getBoundingClientRect().top });
+            window.tabFrame = requestAnimationFrame(sample);
+          };
+          sample();
+          return window.tabPositions[0];
+        });
+        await page.locator(`nav[aria-label="Course views"] a[href$="#${hash}"]`).tap();
+        await page.getByRole('heading', { name: title, exact: true }).waitFor();
+        await page.waitForFunction(() => {
+          const content = document.getElementById('course-content');
+          return !content.inert && getComputedStyle(content).opacity === '1' && getComputedStyle(content).transform === 'none';
+        });
+        // Also catch the shell's delayed hash-scroll notification.
+        await page.waitForTimeout(550);
+        const positions = await page.evaluate(() => { cancelAnimationFrame(window.tabFrame); return window.tabPositions; });
+        assert.ok(positions.every((position) => Math.abs(position.scroll - before.scroll) < 2 && Math.abs(position.nav - before.nav) < 2), `${title} moved the page: ${JSON.stringify({ before, after: positions.at(-1) })}`);
+        snapshots.push({ reducedMotion, title, scroll: positions.at(-1).scroll });
+      }
+    }
+    await page.screenshot({ path: path.join(report, 'tabs-stay-put-390.png') });
+    return snapshots;
+  });
+  await check('the menu scrolls away with the page and works again at the top', async (page) => {
+    for (const route of ['', 'cen100/', 'mth140/', 'mth141/']) {
+      await page.goto(url + route);
+      await page.waitForFunction(() => {
+        const main = document.querySelector('main');
+        return getComputedStyle(main).opacity === '1' && !main.classList.contains('lenis-stopped');
+      });
+      const button = page.getByRole('button', { name: 'Open menu', exact: true });
+      const start = await button.boundingBox();
+      await page.locator('main').evaluate((main) => { main.scrollTop = 20; });
+      await page.waitForTimeout(150);
+      const moved = await button.boundingBox();
+      assert.ok(moved && moved.y < start.y - 15, `menu floats over ${route || 'Desk'} instead of scrolling away`);
+      await page.locator('main').evaluate((main) => { main.scrollTop = 500; });
+      await button.waitFor({ state: 'hidden', timeout: 2000 });
+      assert.equal(await page.evaluate(() => document.querySelector('#menu-button').closest('[inert]') !== null), true, 'offscreen header must not keep keyboard focus targets');
+      await page.locator('main').evaluate((main) => { main.scrollTop = 0; });
+      await button.tap();
+      await page.getByRole('button', { name: 'Close menu', exact: true }).tap();
+    }
+  });
+  await check('scrolling does not continuously rewrite browser history', async (page) => {
+    await page.goto(`${url}cen100/`);
+    await ready(page);
+    const writes = await page.evaluate(async () => {
+      const original = history.replaceState;
+      let count = 0;
+      history.replaceState = function (...args) { count += 1; return original.apply(this, args); };
+      try {
+        const main = document.querySelector('main');
+        for (let i = 0; i < 80; i += 1) {
+          main.scrollTop = 100 + i * 3;
+          await new Promise(requestAnimationFrame);
+        }
+        return count;
+      } finally { history.replaceState = original; }
+    });
+    assert.ok(writes <= 2, `scrolling rewrote browser history ${writes} times`);
+    return { historyWritesDuringScroll: writes };
+  });
   await check('course controls become usable while decorative images are still downloading', async (page) => {
     let release;
     const held = new Promise((resolve) => { release = resolve; });

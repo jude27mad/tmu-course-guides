@@ -12,7 +12,7 @@ export default function AssignmentDetail({ item, kind, assignments, back, return
     info: 'Course info',
   }[returnView];
   return (
-    <article id={item.anchor} className={styles.detail} tabIndex={-1} data-assignment-detail>
+    <article id={`course-view-${item.anchor}`} className={styles.detail} tabIndex={-1} data-assignment-detail>
       <button type="button" onClick={back} className={styles.back}>
         ← Back to {returnLabel}
       </button>

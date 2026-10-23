@@ -9,16 +9,6 @@
   box-shadow:
     0 0.32vw 0.52vw rgba(var(--inkRgb), 0.04),
     0 0.12vw 0.22vw rgba(var(--inkRgb), 0.04);
-  // over a dark window: a light pill with an ink label and a hairline border (inset, so nothing moves)
-  &.overDark {
-    --menuFontColor: var(--black);
-    --focus: var(--onDark); // the ring is drawn on the dark panel around the pill
-    background-color: var(--card);
-    box-shadow:
-      inset 0 0 0 1px var(--border),
-      0 0.32vw 0.52vw rgba(var(--inkRgb), 0.04),
-      0 0.12vw 0.22vw rgba(var(--inkRgb), 0.04);
-  }
   .label {
     @include mobile {
       padding: 0 max(3vw, 16px) 0 max(3vw, 16px);

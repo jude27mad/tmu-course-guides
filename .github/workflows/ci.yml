@@ -138,6 +138,12 @@ jobs:
           cache-dependency-path: .github/workflows/ci.yml
       - name: Install Playwright and Chromium
         run: |
+          # Keep runner setup off the Azure HTTP mirror, which has exhausted the job timeout.
+          for apt_source in /etc/apt/sources.list /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d/*.sources; do
+            if [[ -f "$apt_source" ]]; then
+              sudo sed -i 's|http://azure.archive.ubuntu.com/ubuntu|https://archive.ubuntu.com/ubuntu|g' "$apt_source"
+            fi
+          done
           # Keep QA-only dependencies outside the checkout and site manifests.
           npm install --prefix "$RUNNER_TEMP/qa-playwright" --no-save --package-lock=false "playwright@$PLAYWRIGHT_VERSION"
           node "$RUNNER_TEMP/qa-playwright/node_modules/playwright/cli.js" install --with-deps chromium

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import gsap from 'gsap';
 import { useStore } from '@src/store';
+import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
 // eslint-disable-next-line import/extensions
 import { openGuideTools } from '@src/pages/course/components/tools/dialog.mjs';
 // eslint-disable-next-line import/extensions
@@ -22,10 +23,10 @@ const resetContent = (content) => {
 // Next strips custom history fields during popstate; keep a bounded in-memory copy
 // keyed by its entry key, including across course route unmounts. No progress keys change.
 const snapshots = new Map();
-const saveEntry = (entry) => {
+const saveEntry = (entry, persist = true) => {
   snapshots.set(entry.key, entry);
   if (snapshots.size > 100) snapshots.delete(snapshots.keys().next().value);
-  window.history.replaceState({ ...window.history.state, courseWorkspace: entry }, '');
+  if (persist) window.history.replaceState({ ...window.history.state, courseWorkspace: entry }, '');
 };
 
 // Keep snapshots on each browser-history entry, never in progress storage.
@@ -52,7 +53,7 @@ export default function useCourseNavigation(courseId, info) {
   const focusAtNavigation = useRef(null);
   const location = resolveCourseLocation(entry.hash, courseId, info);
 
-  const remember = useCallback(() => {
+  const remember = useCallback((event) => {
     const previous = active.current;
     if (!previous || restoring.current || previous.hash !== hashOf()) return;
     const focus = document.activeElement;
@@ -62,7 +63,9 @@ export default function useCourseNavigation(courseId, info) {
       focus: focus?.id || previous.focus,
     };
     active.current = next;
-    saveEntry(next);
+    // Scroll frames only update memory. Persist when navigating/leaving instead
+    // of serializing history on every frame (and hitting browser write limits).
+    saveEntry(next, event?.type !== 'scroll');
   }, []);
 
   const navigate = useCallback(
@@ -78,9 +81,10 @@ export default function useCourseNavigation(courseId, info) {
       const hash = hashOf();
       const key = window.history.state?.key || hash;
       if (active.current?.key === key && active.current?.hash === hash) return;
-      const saved = window.history.state?.courseWorkspace || snapshots.get(key);
+      const saved = snapshots.get(key) || window.history.state?.courseWorkspace;
       const previous = active.current;
       const target = resolveCourseLocation(hash, courseId, info);
+      const inPlace = !target.item && (!target.panel || target.panel === 'course-info');
       const validSaved = saved?.courseId === courseId && saved.hash === hash;
       const from = previous && resolveCourseLocation(previous.hash, courseId, info);
       let returnTo = null;
@@ -99,7 +103,8 @@ export default function useCourseNavigation(courseId, info) {
             hash,
             key,
             initial: !previous,
-            scroll: 0,
+            scroll: inPlace ? document.querySelector('main')?.scrollTop || 0 : 0,
+            inPlace,
             focus: null,
             returnTo,
           };
@@ -154,6 +159,7 @@ export default function useCourseNavigation(courseId, info) {
     router.events.on('routeChangeComplete', sync);
     window.addEventListener('hashchange', sync);
     window.addEventListener('popstate', sync);
+    window.addEventListener('pagehide', remember);
     document.addEventListener('guide-hash', onGuideHash);
     main?.addEventListener('scroll', remember, { passive: true });
     sync();
@@ -164,6 +170,7 @@ export default function useCourseNavigation(courseId, info) {
       router.events.off('routeChangeComplete', sync);
       window.removeEventListener('hashchange', sync);
       window.removeEventListener('popstate', sync);
+      window.removeEventListener('pagehide', remember);
       document.removeEventListener('guide-hash', onGuideHash);
       main?.removeEventListener('scroll', remember);
     };
@@ -190,63 +197,62 @@ export default function useCourseNavigation(courseId, info) {
     [],
   );
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (isLoading) return undefined;
     if (['guide-tools', 'math-tools'].includes(entry.hash)) {
       openGuideTools();
       restoring.current = false;
       return undefined;
     }
-    let second = 0;
-    const first = requestAnimationFrame(() => {
-      second = requestAnimationFrame(() => {
-        if (active.current?.key !== entry.key || active.current?.hash !== entry.hash) return;
-        const main = document.querySelector('main');
-        const content = document.getElementById('course-content');
-        if (!main || !content) return;
-        const target = document.getElementById(location.item?.anchor || location.panel || 'course-content');
-        const header = document.querySelector('header');
-        let top = Math.max(0, main.scrollTop + (target || content).getBoundingClientRect().top - main.getBoundingClientRect().top - (header?.offsetHeight || 0) - 12);
-        if (entry.initial && !entry.hash) top = 0;
-        if (entry.restore) top = entry.scroll;
-        const { lenis } = useStore.getState();
-        lenis?.resize();
-        if (lenis) lenis.scrollTo(top, { immediate: true, force: true });
-        else main.scrollTop = top;
-        // Only the outgoing view is inert. Newly mounted controls must accept
-        // the first tap, even while their entrance animation is still running.
-        content.inert = false;
-        content.removeAttribute('aria-busy');
-        gsap.set(content, { clearProps: 'pointerEvents' });
-        setRequested(null);
-        // Restore focus with interactivity, not at the end of the cosmetic tween.
-        // A user may already have picked a control during the two layout frames.
-        const focusMoved = document.activeElement !== focusAtNavigation.current && document.activeElement !== content && content.contains(document.activeElement);
-        if ((!entry.initial || entry.hash) && !focusMoved) {
-          const focus = (entry.restore && document.getElementById(entry.focus)) || target || content;
-          focus.focus({ preventScroll: true });
-        }
-        restoring.current = false;
-        const finish = () => {
-          if (active.current?.key !== entry.key || active.current?.hash !== entry.hash) return;
-          resetContent(content);
-        };
-        if (reveal.current && !useStore.getState().still) {
-          gsap.set(content, { x: 12, opacity: 0 });
-          transition.current = gsap.to(content, {
-            ...VIEW_MOTION,
-            x: 0,
-            opacity: 1,
-            onComplete: finish,
-          });
-        } else finish();
-        reveal.current = false;
-      });
-    });
-    return () => {
-      cancelAnimationFrame(first);
-      cancelAnimationFrame(second);
+    // Finish scroll and focus before painting the new view. Deferring this by
+    // two frames lets a visible checkbox move underneath the first tap.
+    if (active.current?.key !== entry.key || active.current?.hash !== entry.hash) return undefined;
+    const main = document.querySelector('main');
+    const content = document.getElementById('course-content');
+    if (!main || !content) return undefined;
+    // URL fragments select workspace views, not browser scroll anchors. Next's
+    // own delayed hash scroll must not override our position/focus restoration.
+    const targetId = location.item?.anchor || location.panel;
+    const target = (targetId && document.getElementById(`course-view-${targetId}`)) || content;
+    // The header now leaves with the page. Only detail/deep links move the
+    // scroller; tabs and filters replace their panel at the current position.
+    let top = Math.max(0, main.scrollTop + (target || content).getBoundingClientRect().top - main.getBoundingClientRect().top - 12);
+    if (entry.inPlace) top = entry.scroll;
+    if (entry.initial && !entry.hash) top = 0;
+    if (entry.restore) top = entry.scroll;
+    const { lenis } = useStore.getState();
+    lenis?.resize();
+    if (lenis) lenis.scrollTo(top, { immediate: true, force: true });
+    else main.scrollTop = top;
+    // Only the outgoing view is inert. Newly mounted controls must accept
+    // the first tap, even while their entrance animation is still running.
+    content.inert = false;
+    content.removeAttribute('aria-busy');
+    gsap.set(content, { clearProps: 'pointerEvents' });
+    setRequested(null);
+    // Restore focus with interactivity, not at the end of the cosmetic tween.
+    // Respect a control that a child selected during this commit.
+    const focusMoved = document.activeElement !== focusAtNavigation.current && document.activeElement !== content && content.contains(document.activeElement);
+    if ((!entry.initial || entry.hash) && !focusMoved) {
+      const focus = (entry.restore && document.getElementById(entry.focus)) || target || content;
+      focus.focus({ preventScroll: true });
+    }
+    restoring.current = false;
+    const finish = () => {
+      if (active.current?.key !== entry.key || active.current?.hash !== entry.hash) return;
+      resetContent(content);
     };
+    if (reveal.current && !useStore.getState().still) {
+      gsap.set(content, { x: 12, opacity: 0 });
+      transition.current = gsap.to(content, {
+        ...VIEW_MOTION,
+        x: 0,
+        opacity: 1,
+        onComplete: finish,
+      });
+    } else finish();
+    reveal.current = false;
+    return undefined;
     // Content/progress changes should never reset the reader's scroll.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entry.key, entry.hash, isLoading]);
