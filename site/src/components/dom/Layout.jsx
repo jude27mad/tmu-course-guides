@@ -49,6 +49,8 @@ function Layout({ children, layoutRef, mainRef, router }) {
   const menuTime = useMemo(() => (panelOpen ? PANEL_CLOSE : 0), [panelOpen]);
   const animated = introOut && !still;
   const documentScroll = nativeIOSScroll();
+  const enterDuration = documentScroll ? DOCUMENT_ENTER * 1000 : ENTER_MS;
+  const exitDuration = documentScroll ? Math.max(DOCUMENT_EXIT, menuTime) * 1000 : EXIT_MS + menuTime * 1000;
 
   const closePanels = () => {
     const state = useStore.getState();
@@ -270,8 +272,8 @@ function Layout({ children, layoutRef, mainRef, router }) {
           in={false}
           unmountOnExit
           timeout={{
-            enter: animated ? (documentScroll ? DOCUMENT_ENTER * 1000 : ENTER_MS) : 0,
-            exit: animated ? (documentScroll ? Math.max(DOCUMENT_EXIT, menuTime) * 1000 : EXIT_MS + menuTime * 1000) : 0,
+            enter: animated ? enterDuration : 0,
+            exit: animated ? exitDuration : 0,
           }}
           onEnter={handleEnter}
           onExit={handleExit}

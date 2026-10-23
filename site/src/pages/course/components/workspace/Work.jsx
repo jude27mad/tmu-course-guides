@@ -74,6 +74,9 @@ export default function Work({ assignments, filter, navigate }) {
   const content = info.items || info.assessments;
   const count = assignments?.entries.length || content.length;
   const done = assignments?.done.length || 0;
+  let summary = `${count - done} open ${count - done === 1 ? 'assignment' : 'assignments'}`;
+  if (filter === 'all') summary = `All ${count} assignments · ${done} marked done`;
+  if (filter === 'done') summary = `${done} ${done === 1 ? 'assignment' : 'assignments'} marked done`;
   return (
     <>
       <div className={styles.viewHeading}>
@@ -101,11 +104,7 @@ export default function Work({ assignments, filter, navigate }) {
         </div>
       </div>
       <p className={styles.workSummary} data-work-summary role="status" aria-live="polite" aria-atomic="true">
-        {filter === 'all'
-          ? `All ${count} assignments · ${done} marked done`
-          : filter === 'done'
-            ? `${done} ${done === 1 ? 'assignment' : 'assignments'} marked done`
-            : `${count - done} open ${count - done === 1 ? 'assignment' : 'assignments'}`}
+        {summary}
       </p>
       <div ref={resultsRef} id="work-results" className={styles.workResults} data-work-results>
         {!assignments ? (
