@@ -69,7 +69,8 @@ try {
         await page.getByRole('heading', { name: 'Study', exact: true }).waitFor();
         await page.waitForTimeout(180);
         const box = await nav.boundingBox();
-        assert.ok(box.y >= 0 && box.y + box.height < 250, `navigation bounds ${JSON.stringify(box)}`);
+        // #46 keeps the tabs in place when switching views, so they stay where they were: on screen.
+        assert.ok(box.y >= 0 && box.y + box.height <= page.viewportSize().height, `navigation bounds ${JSON.stringify(box)}`);
         await nav.getByRole('link', { name: 'Work', exact: true }).click();
         await page.getByRole('heading', { name: 'Work', exact: true }).waitFor();
         assert.equal(await page.locator('main').evaluate((e) => e.scrollWidth > e.clientWidth + 1), false);
