@@ -29,6 +29,13 @@ html {
   }
 }
 
+// Match the surrounding Safari chrome to the visible dark menu/search overlay.
+// The page stays on the Desk's light colour when those panels are closed.
+html[data-browser-surface='dark'],
+html[data-browser-surface='dark'] body {
+  background-color: #09050c;
+}
+
 main.lenis-stopped {
   overflow: hidden;
 }
