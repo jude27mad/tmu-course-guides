@@ -72,4 +72,8 @@ Files: `site/scripts/verify-course-views.mjs`, docs/QA report, README updates.
 - [x] Verify search/old links, navigation/history, backup/import, saved-state reload, multi-submission completion, blocked calendar and pause/touch regressions.
 - [x] Run site tests, production build, applicable publishing/touch checks and root tests; distinguish pre-existing failures.
 - [x] Fresh whole-branch review; fix material findings and re-run affected checks.
-- [ ] Fetch concurrent changes, reconcile if needed, push only isolated branch and open draft PR with results/limitations. No merge or publish.
+- [x] Fetch concurrent changes, reconcile if needed, push only isolated branch and open draft PR with results/limitations. No merge or publish.
+
+## Delivery
+
+Draft PR [#36](https://github.com/jude27mad/tmu-course-guides/pull/36). All review findings received reproducing tests and fixes. Later main commits through `d6e5624` (search, Safari viewport and fluid allocation improvements) were incorporated into the isolated branch. No PR merge or production publication.

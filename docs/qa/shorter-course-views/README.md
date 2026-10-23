@@ -1,6 +1,6 @@
 # Shorter course views — verification record
 
-Date: October 23, 2026. Isolated branch: `codex/shorter-course-views`. No merge or production publish.
+Date: October 23, 2026. Isolated branch: `codex/shorter-course-views`. [Draft PR #36](https://github.com/jude27mad/tmu-course-guides/pull/36). No PR merge or production publish.
 
 ## What changed
 
@@ -12,10 +12,10 @@ The Giats shell, fonts, motion, Desk palette and touch-fluid effects remain. Tab
 
 ## Reconciliation and concurrency
 
-- Started at `7b47c97`; rebased onto `2ec8624`, retaining the concurrently merged search normalization (#31) and Safari viewport fix (#35).
+- Started at `7b47c97`; rebased onto `2ec8624`, retaining the concurrently merged search normalization (#31) and Safari viewport fix (#35). Main then advanced to `d6e5624` with fluid allocation optimization (#32); that change was integrated into the draft branch and the combined site tests, build and touch checks rerun.
 - `docs/plans/remove-repetition.md` remains historical. Its data/deep-link contracts are retained; its older long-scroll and pinned-calendar decisions are superseded by the owner's focused-view brief.
 - Reused R2 assignment/calendar model (`ef64a8a`) and R3 deep-link groundwork (`401fe0c`). Selected relevant R1 search/section/content fixes. R5's old layout assumptions were replaced with focused-view browser checks.
-- Read R4's calendar evaluation without merging its disposable spike. Fluid optimization PR #32 code is untouched.
+- Read R4's calendar evaluation without merging its disposable spike. Fluid optimization PR #32 was subsequently integrated unchanged from main.
 
 ## Calendar decision
 
@@ -31,15 +31,15 @@ Primary documentation used: [React integration](https://schedule-x.dev/docs/fram
 
 ## Verification
 
-Results below cover the review fixes and the concurrent changes retained from main.
+Results below cover the review fixes and the concurrent changes retained from main. The GitHub integration published the exact verified tree (matching Git tree SHA), since shell Git has no write credentials. Original local commit history is retained in a separate local branch.
 
 | Check | Result |
 |---|---|
-| Site Node tests | 198 passed; 0 failed, 0 skipped |
+| Site Node tests | 203 passed; 0 failed, 0 skipped |
 | Production build with `SITE_BASE_PATH=/tmu-course-guides` | Passed |
 | Focused course-view browser scenarios | 23 passed; 0 failed; no application errors |
 | Local GitHub Pages/legacy URL checks | 34 passed |
-| Giats palette, fluid and touch checks | 29 passed in isolated final run |
+| Giats palette, fluid and touch checks | 29 passed |
 | Root Node/scene tests | 384 passed; 0 failed, 0 skipped |
 | Root UI vendor build and integration tests | Passed |
 
@@ -47,7 +47,7 @@ The browser harness covers compact opening, single detail, immediate note persis
 
 Widths inspected: 360, 390, 430, 768, 834, 1024 and 1440 CSS pixels. Enlarged-layout testing uses a 720 × 500 CSS viewport at 2× rendering, equivalent to the reflow area of a 1440 × 1000 screen at 200% zoom. This is not a claim of testing a browser's native zoom UI.
 
-One earlier concurrent browser run missed the saved-pause pointer-cancel probe even though the page scrolled. The unchanged probe passed in the isolated final 29-check run; this is recorded as an emulation timing limitation, not a physical-device claim.
+An intermittent saved-pause test failure was traced to the gesture starting on the loading overlay during its reveal. Capturing all pointer targets confirmed native panning and a pointer-cancel outside `main`; the original probe only listened inside `main`. The harness now waits for the swipe point to hit course content before sending input, with the original native-panning assertion retained. The final 29-check run and eight additional saved-pause repetitions passed; none of the repetitions intercepted native touch input.
 
 All browser checks used headless Chromium 153 with SwiftShader where needed. Touch checks send Chromium touch input through CDP. These are browser-emulation results, **not physical iPhone/iPad/Android or native Safari testing**.
 
@@ -55,7 +55,7 @@ All browser checks used headless Chromium 153 with SwiftShader where needed. Tou
 
 A fresh reviewer found a stale-hash navigation loop, missing Schedule/grading opener focus IDs and omitted topic lecture-hour estimates. All three received reproducing browser tests before fixes. The hour-estimate omission was treated as a required content-preservation fix. Final green results are recorded above after the fix pass.
 
-No requirement or storage format was intentionally dropped. The main remaining validation gap is physical-device/native-Safari testing. The build retains existing lint warnings in fluid pointer/portal code and a Browserslist data-age notice; no new lint error is accepted.
+No requirement or storage format was intentionally dropped. The main remaining validation gap is physical-device/native-Safari testing. The build retains existing lint warnings in pointer/portal code and a Browserslist data-age notice; no new lint error is accepted.
 
 ## Reproduce
 
