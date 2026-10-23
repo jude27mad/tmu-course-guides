@@ -4,7 +4,7 @@
 //      calendar theme (its dialog shadows and --sx-* shadow variables); those third-party hits are listed in
 //      the report, not failed.
 //   2. In Chromium as a 390 px phone: the three course cards are identical, the pills, round button and
-//      countdown follow the palette, the MENU pill turns light over dark windows and back, the accent stays on
+//      countdown follow the palette, the MENU pill leaves with the header, the accent stays on
 //      small elements, and no page shows an old colour, a yellow or a second accent.
 //   3. Screenshots of the Desk (badges, course cards), the course list and the three course pages, named as the
 //      before set in docs/qa/neutral-palette/before/.
@@ -134,8 +134,7 @@ async function checkBrowser(site) {
   };
   const shot = (name) => page.screenshot({ path: join(reports, `${name}.png`) });
 
-  // The MENU pill and whether its centre is over a dark window or a dark masthead cell (the rule
-  // src/components/dom/navbar/components/MenuButton.jsx implements), measured here from the page itself.
+  // Check the MENU pill against the surface behind it at the top of the page.
   const menu = () =>
     page.evaluate(() => {
       const button = document.querySelector('#menu-button');
@@ -166,64 +165,14 @@ async function checkBrowser(site) {
     }
     return state;
   };
-  const menuOver = async (selector) => {
-    let state;
-    for (let attempt = 0; attempt < 3; attempt += 1) {
-      const found = await page.evaluate((sel) => {
-        const target = document.querySelector(sel);
-        if (!target) return false;
-        const main = document.querySelector('main');
-        const box = document.querySelector('#menu-button').getBoundingClientRect();
-        const area = target.getBoundingClientRect();
-        main.scrollTo({ top: main.scrollTop + area.top - (box.top + box.height / 2) + Math.min(60, area.height / 2), behavior: 'instant' });
-        return true;
-      }, selector);
-      assert.ok(found, `${selector} is on the page`);
-      await page.waitForTimeout(800);
-      state = await menu();
-      if (state.over) break;
-    }
-    assert.ok(state.over, `could not bring a dark window under the MENU pill (${selector})`);
-    state = await settledMenu();
-    assert.ok(pillFits(state), `MENU pill over ${selector}: ${JSON.stringify(state)}`);
-  };
-  // Scrolls so the MENU pill sits over a dark masthead cell (dark = true) or a light part of the masthead grid.
-  const menuOverMasthead = async (dark) => {
-    const placed = await page.evaluate((wantDark) => {
-      const grid = document.querySelector('[data-surface="cells"]');
-      if (!grid) return 'the masthead grid is missing';
-      const main = document.querySelector('main');
-      const button = document.querySelector('#menu-button').getBoundingClientRect();
-      const x = button.left + button.width / 2;
-      const y = button.top + button.height / 2;
-      const area = grid.getBoundingClientRect();
-      if (x < area.left || x > area.right) return 'the masthead grid is not under the MENU pill';
-      const part = (cell, name, size) => (parseFloat(cell.getAttribute(name)) / 100) * size;
-      const spans = Array.from(grid.querySelectorAll('[data-cell]'))
-        .map((cell) => {
-          const left = area.left + part(cell, 'x', area.width);
-          const top = area.top + part(cell, 'y', area.height);
-          return { left, right: left + part(cell, 'width', area.width), top, bottom: top + part(cell, 'height', area.height) };
-        })
-        .filter((span) => x >= span.left + 4 && x <= span.right - 4);
-      for (let py = area.top + 8; py < area.bottom - 8; py += 4) {
-        const inDark = spans.some((span) => py >= span.top + 6 && py <= span.bottom - 6);
-        const inLight = !spans.some((span) => py >= span.top - 6 && py <= span.bottom + 6);
-        if ((wantDark && inDark) || (!wantDark && inLight)) {
-          main.scrollTo({ top: main.scrollTop + py - y, behavior: 'instant' });
-          return 'placed';
-        }
-      }
-      return `no ${wantDark ? 'dark' : 'light'} masthead cell under the MENU pill`;
-    }, dark);
-    if (placed !== 'placed') {
-      notes.push(`Masthead MENU check skipped (${dark ? 'dark' : 'light'} cell): ${placed}.`);
-      return;
-    }
-    await page.waitForTimeout(800);
-    const state = await settledMenu();
-    assert.equal(state.over, dark, `the MENU pill is over a ${dark ? 'dark' : 'light'} masthead cell`);
-    assert.ok(pillFits(state), `MENU pill over a ${dark ? 'dark' : 'light'} masthead cell: ${JSON.stringify(state)}`);
+  const menuLeavesContent = async (selector) => {
+    await scrollTo(selector, -70);
+    const clear = await page.evaluate(() => {
+      const button = document.querySelector('#menu-button');
+      const rect = button.getBoundingClientRect();
+      return getComputedStyle(button).visibility === 'hidden' || rect.bottom <= 0;
+    });
+    assert.ok(clear, `MENU still covers content at ${selector}`);
   };
   const menuOnLight = async () => {
     await scrollTo(null);
@@ -347,10 +296,8 @@ async function checkBrowser(site) {
       await shot(name);
     }
     await check('Desk: the MENU pill is ink on the light page', menuOnLight);
-    await check('Desk: the MENU pill turns light over a dark masthead cell', () => menuOverMasthead(true));
-    await check('Desk: the MENU pill stays ink over a light masthead cell', () => menuOverMasthead(false));
-    await check('Desk: the MENU pill turns light over a badge window', () => menuOver('[class*="clients_first"]'));
-    await check('Desk: the MENU pill turns light over a course card panel', () => menuOver('[class*="projects_canvas"]'));
+    await check('Desk: MENU does not cover the badge window', () => menuLeavesContent('[class*="clients_first"]'));
+    await check('Desk: MENU does not cover a course card panel', () => menuLeavesContent('[class*="projects_canvas"]'));
     await check('Desk: the MENU pill is ink again back on the light page', menuOnLight);
     await check('Desk: the three course cards are identical apart from their text', courseCards);
     await check('Desk: secondary and primary pills', async () => {

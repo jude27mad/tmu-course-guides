@@ -1,3 +1,4 @@
+import { scrollRoot } from '@src/utils/scrollRoot';
 import { useEffect } from 'react';
 import { useThree } from '@react-three/fiber';
 import { useStore } from '@src/store';
@@ -37,7 +38,7 @@ function DemandDriver() {
       if (state.isMenuOpen !== previous.isMenuOpen || state.isSearchOpen !== previous.isSearchOpen || state.isLoading !== previous.isLoading || state.isAbout !== previous.isAbout) kick();
     });
     window.addEventListener('resize', kick);
-    const main = document.querySelector('main');
+    const main = scrollRoot();
     main?.addEventListener('scroll', kick, { passive: true });
 
     return () => {

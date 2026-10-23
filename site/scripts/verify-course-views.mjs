@@ -139,7 +139,7 @@ try {
     assert.ok(Math.abs(before - after) < 8, `${before} -> ${after}`);
     assert.equal(await page.evaluate(() => document.activeElement.id), 'open-assignment-y9');
     await page.goForward();
-    await page.locator('#assignment-y9[data-assignment-detail]').waitFor();
+    await page.locator('#course-view-assignment-y9[data-assignment-detail]').waitFor();
   });
   await check('rapid view changes with motion never replay stale navigation', async () => {
     const rapidContext = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, reducedMotion: 'no-preference' });
@@ -308,16 +308,16 @@ try {
       assert.ok(Math.abs(before - after) < 8, `${before} -> ${after}`);
       assert.equal(await motion.evaluate(() => document.activeElement.id), 'open-assignment-y9');
       await motion.goForward();
-      await motion.locator('#assignment-y9[data-assignment-detail]').waitFor();
+      await motion.locator('#course-view-assignment-y9[data-assignment-detail]').waitFor();
       await motion.waitForFunction(() => !document.getElementById('course-content').inert);
-      assert.equal(await motion.evaluate(() => document.activeElement.id), 'assignment-y9');
+      assert.equal(await motion.evaluate(() => document.activeElement.id), 'course-view-assignment-y9');
     } finally {
       await motionContext.close();
     }
   });
   for (const [view, selector] of [
     ['schedule', '[data-schedule-link]'],
-    ['course-grading', '#course-grading a[href*="#assignment-"]'],
+    ['course-grading', '#course-view-course-grading a[href*="#assignment-"]'],
   ]) {
     await check(`${view} restores keyboard focus and scroll to the detail opener`, async () => {
       await ready(page, `cen100/#${view}`);
@@ -362,8 +362,8 @@ try {
   });
   await check('math Study and legacy links open the shared content', async () => {
     for (const [fragment, selector] of [
-      ['topic-limits', '#topic-limits[data-assignment-detail]'],
-      ['assessment-midterm', '#assessment-midterm[data-assignment-detail]'],
+      ['topic-limits', '#course-view-topic-limits[data-assignment-detail]'],
+      ['assessment-midterm', '#course-view-assessment-midterm[data-assignment-detail]'],
       ['t-help', '#info-policy-missed-assessment'],
       ['panel-assessments', '[data-assignment-link]'],
     ]) {
@@ -382,7 +382,7 @@ try {
     await page.getByRole('button', { name: 'All dates', exact: true }).click();
     const link = page.locator('[data-schedule-link][href$="#assessment-midterm"]');
     await link.click();
-    await page.locator('#assessment-midterm[data-assignment-detail]').waitFor();
+    await page.locator('#course-view-assessment-midterm[data-assignment-detail]').waitFor();
     await page
       .getByRole('button', { name: /Back to Schedule/ })
       .first()
@@ -394,7 +394,7 @@ try {
     await page.locator('.sx__calendar').waitFor();
     await page.screenshot({ path: path.join(report, 'mth140-calendar-390.png') });
     await page.locator('.sx__event[data-event-id="mth140-midterm"]').first().click();
-    await page.locator('#assessment-midterm[data-assignment-detail]').waitFor();
+    await page.locator('#course-view-assessment-midterm[data-assignment-detail]').waitFor();
     await page
       .getByRole('button', { name: /Back to Schedule/ })
       .first()
@@ -413,13 +413,13 @@ try {
     await page.locator('#search-input').fill('Project Outline');
     await page.getByRole('option').first().waitFor();
     await page.keyboard.press('Enter');
-    await page.locator('#assignment-m2[data-assignment-detail]').waitFor();
+    await page.locator('#course-view-assignment-m2[data-assignment-detail]').waitFor();
     await page.goBack();
     await page.getByRole('heading', { name: 'Study', exact: true }).waitFor();
     await page.keyboard.press('Control+k');
     await page.locator('#search-input').fill('Contacts');
     await page.keyboard.press('Enter');
-    await page.locator('#contacts[data-info-detail]').waitFor();
+    await page.locator('#course-view-contacts[data-info-detail]').waitFor();
     const back = page.getByRole('button', { name: '← Back to Study', exact: true }).first();
     await back.focus();
     await page.keyboard.press('Enter');
@@ -429,7 +429,7 @@ try {
     await ready(page, 'mth140/#work');
     await page.evaluate(() => {
       const observer = new MutationObserver(() => {
-        const contacts = document.querySelector('#contacts[data-info-detail]');
+        const contacts = document.querySelector('#course-view-contacts[data-info-detail]');
         if (!contacts?.getClientRects().length) return;
         observer.disconnect();
         // Reach a control before deferred scroll restoration finishes.
@@ -438,9 +438,9 @@ try {
       observer.observe(document.getElementById('course-content'), { childList: true, attributes: true, subtree: true });
       window.location.hash = 'contacts';
     });
-    await page.locator('#contacts[data-info-detail]').waitFor();
+    await page.locator('#course-view-contacts[data-info-detail]').waitFor();
     await page.waitForTimeout(600);
-    assert.equal(await page.evaluate(() => document.activeElement.matches('#contacts button')), true);
+    assert.equal(await page.evaluate(() => document.activeElement.matches('#course-view-contacts button')), true);
     await page.keyboard.press('Enter');
     await page.getByRole('heading', { name: 'Work', exact: true }).waitFor();
   });

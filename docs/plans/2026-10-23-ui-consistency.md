@@ -5,7 +5,7 @@ Approved by the owner's “Make it consistent” instruction after the consisten
 Base: `3154ec9` (includes the neutral palette, course-view motion and the merged Safari footer tint fix). Branch: `codex/consistent-course-ui`. Keep the Giats shell, new palette, touch effect, data, dates and saved-state formats. PR #42 merged during implementation and was incorporated before final checks. PR #37 still owns the independent fluid allocation work; its files were left unchanged.
 
 - [x] Give shared text and action controls readable minimum sizes at phone, tablet and desktop widths; retain the existing typeface, proportions and hover treatment.
-- [x] Keep course navigation reachable while working. Account for the sticky bar in hash navigation, focus and scroll restoration, including zoom/reflow.
+- [x] Keep course navigation reachable while working. Account for the sticky bar in hash navigation, focus and scroll restoration, including zoom/reflow. (Superseded when merging main: #46 keeps the course tabs in place and lets the header scroll away, so the sticky bar was removed.)
 - [x] Animate Guide tools with the existing GSAP motion character. Preserve native modal semantics, Escape, backdrop dismissal, focus, scrolling, interrupted animations and reduced motion.
 - [x] Put recommended practice before skills. Give Course info questions individual destinations and Back, using existing facts and qualifications; preserve legacy hashes, search and no-JavaScript reference access.
 - [x] Present shared backup guidance once and label upcoming menu deadlines accurately.

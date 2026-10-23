@@ -204,3 +204,45 @@ html[data-motion='off'] {
     @include motion-off;
   }
 }
+
+html[data-scroll-mode='document'] {
+  overflow-x: clip; overflow-y: auto;
+  body { overflow: visible; max-height: none; }
+  #layout::before { position: absolute; width: 100%; height: 100%; }
+}
+
+/* Safari 26 samples fixed edge renderers, not the theme-color meta tag.
+ * Text clipping keeps real opaque background colors in computed style without
+ * visibly painting either strip over the page or intercepting gestures. */
+.safari-chrome-edge {
+  display: none;
+}
+@supports (-webkit-touch-callout: none) {
+  html[data-scroll-mode='document'] .safari-chrome-edge {
+    display: block;
+    position: fixed;
+    z-index: 2147483647;
+    height: 12px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    pointer-events: none;
+    border: 0;
+    outline: 0;
+    box-shadow: none;
+    background-clip: text;
+    -webkit-background-clip: text;
+    transition: none;
+  }
+  html[data-scroll-mode='document'] [data-safari-edge='top'] {
+    top: 0;
+    background-color: var(--safari-edge-top, var(--white));
+  }
+  html[data-scroll-mode='document'] [data-safari-edge='bottom'] {
+    bottom: 0;
+    background-color: var(--safari-edge-bottom, var(--white));
+  }
+  html[data-scroll-mode='document'][data-safari-edge-refresh] .safari-chrome-edge {
+    height: 13px;
+  }
+}

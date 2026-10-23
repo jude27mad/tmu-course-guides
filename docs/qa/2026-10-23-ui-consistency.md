@@ -5,7 +5,7 @@ Branch: `codex/consistent-course-ui`, based on `3154ec9` (including PR #42).
 ## Changes checked
 
 - Shared body text has a 16 px floor; secondary metadata has a 14 px floor. Primary action labels are at least 16 px, with 44 px targets on phones, tablets and desktops.
-- Course tabs remain visible below the header. Fragment navigation accounts for both bars; history still restores the previous filter, scroll position and focused opener.
+- Course tabs remain visible below the header. Fragment navigation accounts for both bars; history still restores the previous filter, scroll position and focused opener. (Superseded when merging main: #46 keeps the course tabs in place and lets the header scroll away, so the sticky bar was removed.)
 - Guide tools uses the course transition's `power2.inOut` easing, 0.4 s entrance and 0.18 s exit. Native modal focus and background locking last through the exit. Reopening, Escape, route cleanup and a motion-preference change cancel or finish animations safely.
 - Course info is a question index with one full-width answer and Back. Grading, contacts, rules, confirmations, textbooks and sources keep their content. The source blocks supply both the answer and search index. A no-JavaScript reference preserves every policy answer.
 - Both searches resolve policy questions and exercise references directly. Existing assignment, assessment, topic and broad help links still resolve.

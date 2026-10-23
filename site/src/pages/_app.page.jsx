@@ -1,3 +1,4 @@
+import { nativeIOSScroll } from '@src/utils/scrollRoot';
 /* eslint-disable react/jsx-props-no-spreading */
 
 import '@src/styles/global.scss';
@@ -122,13 +123,14 @@ function MyApp({ Component, pageProps, router }) {
     // Giats's synchronized touch scrolling keeps pointer moves flowing to the
     // fluid during a swipe. Native panning otherwise cancels that input stream.
     // Keep pinch zoom native and `main` scrollable for keys and find-in-page.
+    const ios = nativeIOSScroll();
     // eslint-disable-next-line no-shadow
     const lenis = new Lenis({
       smoothWheel: true,
-      syncTouch: !useStore.getState().still,
+      syncTouch: !ios && !useStore.getState().still,
       virtualScroll: createTouchScrollFilter(),
-      wrapper: mainRef.current || undefined,
-      content: mainContainerRef.current || undefined,
+      wrapper: ios ? window : mainRef.current || undefined,
+      content: ios ? document.documentElement : mainContainerRef.current || undefined,
     });
 
     setLenis(lenis);
@@ -144,7 +146,7 @@ function MyApp({ Component, pageProps, router }) {
   useEffect(() => {
     // Pause Motion and reduced motion restore native touch scrolling without
     // recreating Lenis or resetting the reader's position.
-    if (lenis) lenis.options.syncTouch = !still;
+    if (lenis) lenis.options.syncTouch = !nativeIOSScroll() && !still;
   }, [lenis, still]);
 
   useIsomorphicLayoutEffect(() => {
@@ -206,6 +208,10 @@ function MyApp({ Component, pageProps, router }) {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </Head>
+      {/* Safari samples the computed background of these invisible fixed edge boxes.
+          Empty text clipping paints no visible strip over the real content. */}
+      <div aria-hidden="true" data-safari-edge="top" className="safari-chrome-edge" />
+      <div aria-hidden="true" data-safari-edge="bottom" className="safari-chrome-edge" />
       <MotionSync />
       <NavigationFeedback />
       {SHOW_STATS && <Stats />}
@@ -235,7 +241,7 @@ function MyApp({ Component, pageProps, router }) {
               }}
               // R3F's wrapper takes pointer events unless told otherwise; the
               // fluid reads pointer moves from <main> itself.
-              style={{ mixBlendMode: 'difference', background: 'black', pointerEvents: 'none' }}
+              style={{ mixBlendMode: 'difference', background: nativeIOSScroll() ? 'transparent' : 'black', pointerEvents: 'none' }}
               linear
               className={styles.canvasContainer}
               dpr={[0.1, 0.5]}

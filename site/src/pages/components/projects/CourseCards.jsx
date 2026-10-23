@@ -4,6 +4,7 @@ import Link from 'next/link';
 import clsx from 'clsx';
 import { entryFor } from '@src/pages/components/useDesk';
 import { gsap } from 'gsap';
+import { scrollRoot } from '@src/utils/scrollRoot';
 import styles from '@src/pages/components/projects/styles/projects.module.scss';
 import useIsMobile from '@src/hooks/useIsMobile';
 import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
@@ -54,7 +55,7 @@ function CourseCards({ desk, variant = 'desk', children }) {
                 start: `top+=${windowSize.height * index}`,
                 end: () => `+=${(cardRefs.current.length - 1) * windowSize.height}`,
                 scrub: true,
-                scroller: document?.querySelector('main'),
+                scroller: scrollRoot(),
                 invalidateOnRefresh: true,
               },
             })

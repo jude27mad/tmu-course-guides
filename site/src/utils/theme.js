@@ -26,14 +26,38 @@ function setThemeColor(color) {
   if (meta && color && document.documentElement.dataset.browserSurface !== 'dark') meta.setAttribute('content', color);
 }
 
-// The site's browser-edge surface follows dark full-screen menu/search panels.
-// Route palette updates must not overwrite the active dark browser tint.
-export function setBrowserSurface(mode) {
+// Safari 26 samples real fixed-edge computed colors rather than theme-color.
+// The menu changes both bars; a dark footer only changes the bottom bar.
+let sampleRefreshFrame = 0;
+export function setBrowserSurfaces(topMode, bottomMode = topMode) {
   if (typeof document === 'undefined') return;
-  const dark = mode === 'dark';
-  document.documentElement.dataset.browserSurface = dark ? 'dark' : 'light';
+  const root = document.documentElement;
+  const topDark = topMode === 'dark';
+  const bottomDark = bottomMode === 'dark';
+  const top = topDark ? 'dark' : 'light';
+  const bottom = bottomDark ? 'dark' : 'light';
+  const changed = root.dataset.browserSurface !== top || root.dataset.browserBottom !== bottom;
+  root.dataset.browserSurface = top;
+  root.dataset.browserBottom = bottom;
+  root.style.setProperty('--safari-edge-top', topDark ? TOKENS.ink : DEFAULT_PALETTE.secondary);
+  root.style.setProperty('--safari-edge-bottom', bottomDark ? TOKENS.ink : DEFAULT_PALETTE.secondary);
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', dark ? TOKENS.ink : DEFAULT_PALETTE.secondary);
+  if (meta) meta.setAttribute('content', topDark ? TOKENS.ink : DEFAULT_PALETTE.secondary);
+  if (changed && root.dataset.scrollMode === 'document') {
+    if (sampleRefreshFrame) cancelAnimationFrame(sampleRefreshFrame);
+    root.setAttribute('data-safari-edge-refresh', '');
+    sampleRefreshFrame = requestAnimationFrame(() => {
+      sampleRefreshFrame = requestAnimationFrame(() => {
+        root.removeAttribute('data-safari-edge-refresh');
+        sampleRefreshFrame = 0;
+      });
+    });
+  }
+}
+
+// Compatibility for callers requiring the same color at both ends.
+export function setBrowserSurface(mode) {
+  setBrowserSurfaces(mode, mode);
 }
 
 // Sets the CSS variables on <html> and the fluid tint. Safe to call on the server (no-op).

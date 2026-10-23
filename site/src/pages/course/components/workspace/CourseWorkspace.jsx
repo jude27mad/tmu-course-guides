@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { assignmentList, groups, sections } from '@src/lib';
@@ -18,36 +18,6 @@ import styles from './workspace.module.scss';
 export default function CourseWorkspace() {
   const { courseId, course, info, live, section, setSection, group, setGroup, progress } = useCourse();
   const navigation = useCourseNavigation(courseId, info);
-  const root = useRef(null);
-  const nav = useRef(null);
-  useEffect(() => {
-    const header = document.querySelector('header');
-    const main = document.querySelector('main');
-    const previousPadding = main?.style.scrollPaddingTop;
-    const updateStuck = () => {
-      if (!nav.current) return;
-      const stuck = String(nav.current.getBoundingClientRect().top <= (header?.getBoundingClientRect().bottom || 64) + 1);
-      if (nav.current.dataset.stuck !== stuck) nav.current.dataset.stuck = stuck;
-    };
-    const measure = () => {
-      const top = Math.ceil(header?.getBoundingClientRect().bottom || 64);
-      const height = nav.current?.offsetHeight || 56;
-      root.current?.style.setProperty('--course-nav-top', `${top}px`);
-      root.current?.style.setProperty('--course-nav-height', `${height}px`);
-      if (main) main.style.scrollPaddingTop = `${top + height + 12}px`;
-      updateStuck();
-    };
-    const observer = new ResizeObserver(measure);
-    if (header) observer.observe(header);
-    if (nav.current) observer.observe(nav.current);
-    main?.addEventListener('scroll', updateStuck, { passive: true });
-    measure();
-    return () => {
-      observer.disconnect();
-      main?.removeEventListener('scroll', updateStuck);
-      if (main) main.style.scrollPaddingTop = previousPadding;
-    };
-  }, []);
   const [schedule, setSchedule] = useState({
     choice: null,
     range: 'upcoming',
@@ -60,7 +30,7 @@ export default function CourseWorkspace() {
   const completed = live?.progress?.completed || 0;
   const total = live?.progress?.total || 0;
   return (
-    <div ref={root} className={styles.root}>
+    <div className={styles.root}>
       <div className={styles.courseHeader}>
         <div className={styles.headingCopy}>
           <p className={styles.eyebrow}>
@@ -73,7 +43,7 @@ export default function CourseWorkspace() {
           <CourseArtwork courseId={courseId} priority sizes="(max-width: 600px) 104px, 300px" />
         </div>
       </div>
-      <nav ref={nav} className={styles.navigation} aria-label="Course views">
+      <nav className={styles.navigation} aria-label="Course views">
         {views.map(([view, label]) => (
           <Link
             key={view}

@@ -87,7 +87,7 @@ export function createPixelReveal({ image, canvas, element, gsap, ScrollTrigger,
       timeline.to(state, { progress: 1, duration: 1.5, onUpdate: render }).to(canvas, { scale: 1, duration: 1.5 }, 0);
       trigger = ScrollTrigger.create({
         trigger: element,
-        scroller: document.querySelector('main'),
+        scroller: document.documentElement?.dataset?.scrollMode === 'document' ? document.defaultView : document.querySelector('main'),
         start: 'top center',
         onEnter: () => {
           started = true;

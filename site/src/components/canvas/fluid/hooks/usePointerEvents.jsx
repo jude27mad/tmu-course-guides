@@ -1,3 +1,4 @@
+import { nativeIOSScroll } from '@src/utils/scrollRoot';
 import { useEffect, useRef } from 'react';
 
 import { Vector2 } from 'three';
@@ -40,10 +41,31 @@ const usePointerEvents = (mainRef, size, force) => {
       });
     };
 
-    element.addEventListener('pointermove', handlePointerMove, { passive: true });
+    const touchMove = (event) => {
+      if (event.touches.length !== 1) return;
+      handlePointerMove({ clientX: event.touches[0].clientX, clientY: event.touches[0].clientY });
+    };
+    const reset = () => {
+      hasMoved.current = false;
+    };
+    const ios = nativeIOSScroll();
+    const pointerMove = (event) => {
+      if (!ios || event.pointerType !== 'touch') handlePointerMove(event);
+    };
+    element.addEventListener('pointermove', pointerMove, { passive: true });
+    if (ios) {
+      element.addEventListener('touchstart', reset, { passive: true });
+      element.addEventListener('touchmove', touchMove, { passive: true });
+      element.addEventListener('touchend', reset, { passive: true });
+      element.addEventListener('touchcancel', reset, { passive: true });
+    }
 
     return () => {
-      element.removeEventListener('pointermove', handlePointerMove);
+      element.removeEventListener('pointermove', pointerMove);
+      element.removeEventListener('touchstart', reset);
+      element.removeEventListener('touchmove', touchMove);
+      element.removeEventListener('touchend', reset);
+      element.removeEventListener('touchcancel', reset);
     };
   }, [mainRef, size, force]);
 

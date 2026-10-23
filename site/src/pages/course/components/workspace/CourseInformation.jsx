@@ -202,7 +202,7 @@ export default function CourseInformation({ panel, back, returnView = 'info' }) 
   return (
     <div className={styles.information}>
       {selected ? (
-        <article id={selected.id} tabIndex={-1} data-info-detail className={styles.detail}>
+        <article id={`course-view-${selected.id}`} tabIndex={-1} data-info-detail className={styles.detail}>
           {backButton}
           <div className={styles.detailHeading}>
             <span className={styles.eyebrow}>{selected.group}</span>
@@ -216,7 +216,7 @@ export default function CourseInformation({ panel, back, returnView = 'info' }) 
           <div className={styles.viewHeading}>
             <h2>Course info</h2>
           </div>
-          <div id="section-picker" className={styles.infoBlock} tabIndex={-1}>
+          <div id="course-view-section-picker" className={styles.infoBlock} tabIndex={-1}>
             <h3>Your section</h3>
             <p>{sectionText}</p>
             {info.organization ? <p>{info.organization}</p> : null}

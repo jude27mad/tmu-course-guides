@@ -1,3 +1,4 @@
+import { nativeIOSScroll, scrollTop } from '@src/utils/scrollRoot';
 import gsap from 'gsap';
 import { TOKENS } from '@src/lib/palette.mjs';
 
@@ -17,15 +18,26 @@ export function buildShellTimeline({ isMobile }) {
   const header = document.querySelector('header');
   const main = document.querySelector('main');
 
+  const ios = nativeIOSScroll();
   const tl = gsap.timeline({
     paused: true,
     defaults: PANEL_DEFAULTS,
-    onStart: () => gsap.set([main, header], { willChange: 'transform, opacity' }),
-    onReverseComplete: () => gsap.set([main, header], { willChange: 'auto' }),
+    onStart: () => {
+      gsap.set([main, header], { willChange: 'transform, opacity' });
+      if (ios) gsap.set(main, { transformOrigin: `50% ${scrollTop() + window.innerHeight / 2}px` });
+    },
+    onReverseComplete: () => {
+      gsap.set([main, header], { willChange: 'auto' });
+      if (ios) gsap.set(main, { clearProps: 'transform,transformOrigin,left,border,borderRadius' });
+    },
   });
 
   if (fluidCanvas) tl.to(fluidCanvas, { duration: 0, opacity: 0 }, 0);
-  tl.to(main, { borderRadius: '1.3888888889vw', border: PAGE_EDGE, scale: 0.9, pointerEvents: 'none', left: '-40vw' }, 0).to(layout, { opacity: isMobile ? 0.05 : 0.3, height: '90svh' }, 0);
+  tl.to(main, { borderRadius: '1.3888888889vw', border: PAGE_EDGE, scale: 0.9, pointerEvents: 'none', left: '-40vw' }, 0).to(
+    layout,
+    { opacity: isMobile ? 0.05 : 0.3, ...(ios ? {} : { height: '90svh' }) },
+    0,
+  );
   if (scrollbar) tl.to(scrollbar, { opacity: 0, right: '46vw', scale: 0.9 }, 0);
   // This timeline is also prepared during route entry. Eager overwrite would
   // cancel the route's header reveal even while this menu timeline is paused.

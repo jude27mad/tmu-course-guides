@@ -1,3 +1,4 @@
+import { scrollRoot } from '@src/utils/scrollRoot';
 import SplitType from 'split-type';
 import gsap from 'gsap';
 import styles from '@src/components/animationComponents/textOpacity/textOpacity.module.scss';
@@ -36,7 +37,7 @@ function TextOpacity({ children, trigger }) {
           start: 'top top',
           end: 'bottom bottom',
           scrub: true,
-          scroller: document?.querySelector('main'),
+          scroller: scrollRoot(),
           invalidateOnRefresh: true,
         },
         stagger: {
