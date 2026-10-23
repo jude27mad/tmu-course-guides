@@ -95,6 +95,20 @@ jobs:
           PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
           QA_REPORT_DIR: ${{ runner.temp }}/pages-qa
         run: node site/scripts/check-pages-site.mjs --local "$RUNNER_TEMP/pages"
+      - name: Check route transitions and Work filters
+        if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' }}
+        env:
+          PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
+          QA_REPORT_DIR: ${{ runner.temp }}/route-filter-qa
+        run: node site/scripts/check-route-filter-motion.mjs
+      - name: Upload route transition and filter recordings
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: route-filter-qa
+          path: ${{ runner.temp }}/route-filter-qa/
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Check touch scrolling and fluid motion
         if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' }}
         working-directory: site
