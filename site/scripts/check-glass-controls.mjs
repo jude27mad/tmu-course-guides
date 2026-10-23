@@ -23,7 +23,9 @@ const nav = 'nav[aria-label="Course views"]';
 const ready = (page) => page.waitForFunction(() => {
   const main = document.querySelector('main');
   const section = document.querySelector('#course-section');
+  const loader = document.querySelector('#loader');
   return main && getComputedStyle(main).opacity === '1' && document.documentElement.dataset.motion &&
+    (!loader || getComputedStyle(loader).display === 'none') &&
     !main.classList.contains('lenis-stopped') && (!section || !section.disabled) &&
     (!section || document.querySelector('nav[data-selection-ready="true"]'));
 });
@@ -122,6 +124,26 @@ try {
     await page.goForward();
     await page.getByRole('heading', { name: 'Study', exact: true }).waitFor();
     await aligned(page);
+  });
+
+  await check('header controls leave the reading area in the active scroll mode', async (page) => {
+    await page.goto(url + 'mth140/');
+    await ready(page);
+    await page.evaluate(() => {
+      const scroller = document.documentElement.dataset.scrollMode === 'document' ? window : document.querySelector('main');
+      scroller.scrollTo(0, 300);
+    });
+    try {
+      await page.locator('#menu-button').waitFor({ state: 'hidden', timeout: 3000 });
+    } catch (error) {
+      const state = await page.evaluate(() => {
+        const button = document.querySelector('#menu-button');
+        const controls = button.closest('header > div');
+        return { mode: document.documentElement.dataset.scrollMode, scrollY, mainScroll: document.querySelector('main').scrollTop,
+          buttonTop: button.getBoundingClientRect().top, transform: controls.style.transform, inert: controls.inert, scrolledAway: controls.dataset.scrolledAway };
+      });
+      throw new Error('Header still covers reading content: ' + JSON.stringify(state));
+    }
   });
 
   await check('keyboard focus and 200% zoom retain the selection', async (page) => {

@@ -153,7 +153,7 @@ function MenuLinks() {
           )}
           {renderRow(
             'motion',
-            <button type="button" onClick={toggleMotion} disabled={motionReduced} aria-pressed={motionSaved} aria-describedby="menu-motion-note">
+            <button type="button" onClick={toggleMotion} disabled={motionReduced} aria-label={motionLabel} aria-pressed={motionSaved} aria-describedby="menu-motion-note">
               <span>{motionLabel}</span>
               <small id="menu-motion-note" className={clsx('p-x', styles.menuListItemMeta)}>
                 {motionReduced ? 'Reduced motion is enabled by your device or page setting' : motionHint}
