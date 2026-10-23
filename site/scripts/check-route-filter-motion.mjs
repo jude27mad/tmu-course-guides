@@ -180,6 +180,7 @@ try {
         await page.screenshot({ path: path.join(report, `${label}-work-filters.png`) });
         if (label === 'iphone') {
           await page.locator('#open-assignment-y1').click();
+          await page.locator('#course-view-assignment-y1[data-assignment-detail]').waitFor();
           await settled(page);
           const records = page.locator('[data-assignment-detail] fieldset input[type="checkbox"]');
           assert.equal(await records.count(), 4, 'September items has four separate submission records');
@@ -193,6 +194,7 @@ try {
           assert.match(await page.locator('#open-assignment-y1').innerText(), /1\/4 recorded/);
           assert.equal(await page.getByRole('button', { name: 'Done (0)', exact: true }).count(), 1, 'preparation ticks and one record do not finish an assignment');
           await page.locator('#open-assignment-y1').click();
+          await page.locator('#course-view-assignment-y1[data-assignment-detail]').waitFor();
           await settled(page);
           for (let i = 1; i < 4; i += 1) await records.nth(i).locator('..').click();
           await page.getByRole('button', { name: /Back to Work/ }).first().click();
