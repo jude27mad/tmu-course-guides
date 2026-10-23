@@ -51,12 +51,39 @@ function Navbar() {
     }
   }, [router.pathname, scrollToPosition]);
 
-  // Safari's exposed toolbar region follows the currently visible overlay.
-  // This is independent of route palettes; both Menu and Search use the same shell.
+  // The footer is an actual dark full-bleed surface. The previous browser-edge
+  // fix considered only Menu/Search, leaving an off-white Safari bar at the
+  // bottom of every course when the footer scrolled into view.
   useEffect(() => {
-    setBrowserSurface(isOpen ? 'dark' : 'light');
-    return () => setBrowserSurface('light');
-  }, [isOpen]);
+    let frame = 0;
+    const main = document.querySelector('main');
+    if (!main) return undefined;
+    const update = () => {
+      frame = 0;
+      const current = useStore.getState();
+      const overlay = current.isMenuOpen || current.isSearchOpen;
+      const footer = main.querySelector('footer');
+      const scrollerRect = main.getBoundingClientRect();
+      const footerRect = footer?.getBoundingClientRect();
+      // Sample what reaches the BOTTOM of the real scroll viewport, rather
+      // than the route or menu state. This works across all course pages.
+      const darkFooter = !!footerRect && footerRect.top < scrollerRect.bottom - 1
+        && footerRect.bottom >= scrollerRect.bottom - 1;
+      setBrowserSurface(overlay || darkFooter ? 'dark' : 'light');
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    main.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule, { passive: true });
+    const observer = new MutationObserver(schedule);
+    observer.observe(main, { childList: true, subtree: false });
+    schedule();
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      observer.disconnect();
+      main.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+    };
+  }, [isOpen, router.asPath]);
 
   // The shared "main slides left" animation for the menu and the search panel.
   useEffect(() => {
