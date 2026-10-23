@@ -210,7 +210,10 @@ export default function useCourseNavigation(courseId, info) {
     const main = document.querySelector('main');
     const content = document.getElementById('course-content');
     if (!main || !content) return undefined;
-    const target = document.getElementById(location.item?.anchor || location.panel || 'course-content');
+    // URL fragments select workspace views, not browser scroll anchors. Next's
+    // own delayed hash scroll must not override our position/focus restoration.
+    const targetId = location.item?.anchor || location.panel;
+    const target = (targetId && document.getElementById(`course-view-${targetId}`)) || content;
     // The header now leaves with the page. Only detail/deep links move the
     // scroller; tabs and filters replace their panel at the current position.
     let top = Math.max(0, main.scrollTop + (target || content).getBoundingClientRect().top - main.getBoundingClientRect().top - 12);

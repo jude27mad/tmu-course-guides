@@ -139,7 +139,7 @@ try {
     assert.ok(Math.abs(before - after) < 8, `${before} -> ${after}`);
     assert.equal(await page.evaluate(() => document.activeElement.id), 'open-assignment-y9');
     await page.goForward();
-    await page.locator('#assignment-y9[data-assignment-detail]').waitFor();
+    await page.locator('#course-view-assignment-y9[data-assignment-detail]').waitFor();
   });
   await check('rapid view changes with motion never replay stale navigation', async () => {
     const rapidContext = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, reducedMotion: 'no-preference' });
@@ -308,16 +308,16 @@ try {
       assert.ok(Math.abs(before - after) < 8, `${before} -> ${after}`);
       assert.equal(await motion.evaluate(() => document.activeElement.id), 'open-assignment-y9');
       await motion.goForward();
-      await motion.locator('#assignment-y9[data-assignment-detail]').waitFor();
+      await motion.locator('#course-view-assignment-y9[data-assignment-detail]').waitFor();
       await motion.waitForFunction(() => !document.getElementById('course-content').inert);
-      assert.equal(await motion.evaluate(() => document.activeElement.id), 'assignment-y9');
+      assert.equal(await motion.evaluate(() => document.activeElement.id), 'course-view-assignment-y9');
     } finally {
       await motionContext.close();
     }
   });
   for (const [view, selector] of [
     ['schedule', '[data-schedule-link]'],
-    ['course-grading', '#course-grading a[href*="#assignment-"]'],
+    ['course-grading', '#course-view-course-grading a[href*="#assignment-"]'],
   ]) {
     await check(`${view} restores keyboard focus and scroll to the detail opener`, async () => {
       await ready(page, `cen100/#${view}`);
@@ -328,18 +328,6 @@ try {
       const href = await opener.getAttribute('href');
       await page.waitForTimeout(150);
       const before = await page.locator('main').evaluate((el) => el.scrollTop);
-      await page.evaluate(() => {
-        const main = document.querySelector('main');
-        window.restoreTrace = [];
-        const record = (type, element, options) => window.restoreTrace.push({ type, id: element.id, options, scroll: main.scrollTop, height: main.scrollHeight, hash: location.hash, saved: history.state?.courseWorkspace?.scroll, routerOptions: history.state?.options, stack: new Error().stack?.split('\n').slice(1, 6) });
-        const scrollTo = main.scrollTo;
-        const scrollIntoView = Element.prototype.scrollIntoView;
-        main.scrollTo = function (...args) { record('scrollTo', this, args); return scrollTo.apply(this, args); };
-        Element.prototype.scrollIntoView = function (...args) { if (main.contains(this)) record('scrollIntoView', this, args); return scrollIntoView.apply(this, args); };
-        const onScroll = () => record('native-scroll', main, null);
-        main.addEventListener('scroll', onScroll);
-        window.stopRestoreTrace = () => { main.scrollTo = scrollTo; Element.prototype.scrollIntoView = scrollIntoView; main.removeEventListener('scroll', onScroll); };
-      });
       await page.keyboard.press('Enter');
       await page.locator('[data-assignment-detail]').waitFor();
       await page
@@ -350,9 +338,6 @@ try {
       await page.waitForTimeout(600);
       assert.equal(await page.evaluate(() => document.activeElement.getAttribute('href')), href);
       const after = await page.locator('main').evaluate((el) => el.scrollTop);
-      const trace = await page.evaluate(() => { window.stopRestoreTrace(); return window.restoreTrace; });
-      await writeFile(path.join(report, `restore-${view}-trace.json`), JSON.stringify({ before, after, trace }, null, 2));
-      if (Math.abs(before - after) >= 8) console.log('RESTORE TRACE', JSON.stringify({ view, before, after, trace }));
       assert.ok(Math.abs(before - after) < 8, `${before} -> ${after}`);
     });
   }
@@ -377,16 +362,16 @@ try {
   });
   await check('math Study and legacy links open the shared content', async () => {
     for (const [fragment, selector] of [
-      ['topic-limits', '#topic-limits[data-assignment-detail]'],
-      ['assessment-midterm', '#assessment-midterm[data-assignment-detail]'],
-      ['t-help', '#rules-help[open]'],
+      ['topic-limits', '#course-view-topic-limits[data-assignment-detail]'],
+      ['assessment-midterm', '#course-view-assessment-midterm[data-assignment-detail]'],
+      ['t-help', '#course-view-rules-help[open]'],
       ['panel-assessments', '[data-assignment-link]'],
     ]) {
       await ready(page, `mth140/#${fragment}`);
       await page.locator(selector).first().waitFor();
     }
     await ready(page, 'cen100/#t-rules');
-    await page.locator('#p-rules[open]').waitFor();
+    await page.locator('#course-view-p-rules[open]').waitFor();
     await ready(page, 'cen100/#math-tools');
     await page.locator('dialog[open]').waitFor();
     await page.getByRole('button', { name: 'Close guide tools' }).click();
@@ -397,7 +382,7 @@ try {
     await page.getByRole('button', { name: 'All dates', exact: true }).click();
     const link = page.locator('[data-schedule-link][href$="#assessment-midterm"]');
     await link.click();
-    await page.locator('#assessment-midterm[data-assignment-detail]').waitFor();
+    await page.locator('#course-view-assessment-midterm[data-assignment-detail]').waitFor();
     await page
       .getByRole('button', { name: /Back to Schedule/ })
       .first()
@@ -409,7 +394,7 @@ try {
     await page.locator('.sx__calendar').waitFor();
     await page.screenshot({ path: path.join(report, 'mth140-calendar-390.png') });
     await page.locator('.sx__event[data-event-id="mth140-midterm"]').first().click();
-    await page.locator('#assessment-midterm[data-assignment-detail]').waitFor();
+    await page.locator('#course-view-assessment-midterm[data-assignment-detail]').waitFor();
     await page
       .getByRole('button', { name: /Back to Schedule/ })
       .first()
@@ -428,25 +413,25 @@ try {
     await page.locator('#search-input').fill('Project Outline');
     await page.getByRole('option').first().waitFor();
     await page.keyboard.press('Enter');
-    await page.locator('#assignment-m2[data-assignment-detail]').waitFor();
+    await page.locator('#course-view-assignment-m2[data-assignment-detail]').waitFor();
     await page.goBack();
     await page.getByRole('heading', { name: 'Study', exact: true }).waitFor();
     await page.keyboard.press('Control+k');
     await page.locator('#search-input').fill('Contacts');
     await page.keyboard.press('Enter');
-    await page.locator('#contacts[open]').waitFor();
-    const summary = page.locator('#contacts > summary');
+    await page.locator('#course-view-contacts[open]').waitFor();
+    const summary = page.locator('#course-view-contacts > summary');
     await summary.focus();
     await page.keyboard.press('Enter');
-    assert.equal(await page.locator('#contacts').getAttribute('open'), null);
+    assert.equal(await page.locator('#course-view-contacts').getAttribute('open'), null);
     await page.keyboard.press('Enter');
-    assert.notEqual(await page.locator('#contacts').getAttribute('open'), null);
+    assert.notEqual(await page.locator('#course-view-contacts').getAttribute('open'), null);
   });
   await check('navigation does not steal focus chosen inside the newly opened view', async () => {
     await ready(page, 'mth140/#work');
     await page.evaluate(() => {
       const observer = new MutationObserver(() => {
-        const contacts = document.getElementById('contacts');
+        const contacts = document.getElementById('course-view-contacts');
         if (!contacts.open || !contacts.getClientRects().length) return;
         observer.disconnect();
         // Reproduce a keyboard user reaching the summary before deferred scroll
@@ -456,11 +441,11 @@ try {
       observer.observe(document.getElementById('course-content'), { attributes: true, subtree: true });
       window.location.hash = 'contacts';
     });
-    await page.locator('#contacts[open]').waitFor();
+    await page.locator('#course-view-contacts[open]').waitFor();
     await page.waitForTimeout(600);
-    assert.equal(await page.evaluate(() => document.activeElement.matches('#contacts > summary')), true);
+    assert.equal(await page.evaluate(() => document.activeElement.matches('#course-view-contacts > summary')), true);
     await page.keyboard.press('Enter');
-    assert.equal(await page.locator('#contacts').getAttribute('open'), null);
+    assert.equal(await page.locator('#course-view-contacts').getAttribute('open'), null);
   });
   await check('backup export and import retain separate records, notes, targets and checks', async () => {
     await ready(page, 'cen100/#assignment-m2');
@@ -584,10 +569,10 @@ try {
     try {
       const staticPage = await staticContext.newPage();
       await staticPage.goto(url + 'cen100/');
-      await staticPage.locator('#course-grading > summary').click();
-      await staticPage.locator('#course-grading table').first().waitFor();
-      await staticPage.locator('#p-rules > summary').click();
-      await staticPage.locator('#p-rules[open]').waitFor();
+      await staticPage.locator('#course-view-course-grading > summary').click();
+      await staticPage.locator('#course-view-course-grading table').first().waitFor();
+      await staticPage.locator('#course-view-p-rules > summary').click();
+      await staticPage.locator('#course-view-p-rules[open]').waitFor();
     } finally {
       await staticContext.close();
     }
