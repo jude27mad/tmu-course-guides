@@ -1,0 +1,55 @@
+name: Mobile document scrolling
+on:
+  push:
+    branches: [codex/safari-document-scrolling]
+  pull_request:
+    branches: [main]
+    paths: ['site/**', '.github/workflows/mobile-document.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mobile-document-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+env:
+  CI: true
+  NEXT_TELEMETRY_DISABLED: 1
+  SITE_BASE_PATH: /tmu-course-guides
+jobs:
+  mobile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Capture source for structural review
+        run: git archive --format=zip -o "$RUNNER_TEMP/source.zip" HEAD
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mobile-source
+          path: ${{ runner.temp }}/source.zip
+          retention-days: 1
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci && npm test && npm run build
+        working-directory: site
+      - name: Install browser
+        run: |
+          npm install --prefix "$RUNNER_TEMP/mobile-browser" --no-save --package-lock=false playwright@1.64.0
+          node "$RUNNER_TEMP/mobile-browser/node_modules/playwright/cli.js" install --with-deps chromium webkit
+      - name: Verify document scroll and interaction
+        env:
+          PLAYWRIGHT_PATH: ${{ runner.temp }}/mobile-browser/node_modules/playwright
+          QA_REPORT_DIR: ${{ runner.temp }}/mobile-document
+        run: node site/scripts/check-mobile-document.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mobile-document-evidence
+          path: ${{ runner.temp }}/mobile-document/
+          if-no-files-found: ignore
+          retention-days: 7
