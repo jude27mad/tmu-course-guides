@@ -5,9 +5,7 @@
   top: 0;
   z-index: 5;
   width: 100vw;
-  height: 100vh;
-  height: calc(100 * var(--svh, 1vh));
-  height: 100svh;
+  height: var(--app-viewport-height);
   color: #28282b;
   background-color: #f0f4f1;
   .innerContainer {
