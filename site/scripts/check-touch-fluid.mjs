@@ -211,6 +211,9 @@ async function toggleMotion(page, label) {
 }
 
 async function swipe(context, page, screenshotName) {
+  // The motion-off reveal can update main before the compositor stops hitting
+  // the loader. Start on course content so its pointer-cancel is observable.
+  await waitOnPage(page, () => Boolean(document.elementFromPoint(195, 650)?.closest('main')));
   await page.evaluate(() => window.__touchFluidQA.reset());
   const start = await snapshot(page);
   const cdp = await context.newCDPSession(page);
@@ -320,7 +323,7 @@ try {
         assert.equal(await page.locator('#fluidCanvas').count(), 0);
         const trace = await swipe(context, page);
         assert.ok(trace.after.scrollTop > trace.before.scrollTop);
-        assert.equal(trace.after.events.some(event => event.type === 'pointercancel'), true, 'paused motion should retain native touch panning');
+        assert.equal(trace.after.events.some(event => event.type === 'pointercancel'), true, `paused motion should retain native touch panning: ${JSON.stringify(trace)}`);
         assert.deepEqual(errors, []);
         return trace;
       });

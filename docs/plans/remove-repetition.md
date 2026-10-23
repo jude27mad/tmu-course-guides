@@ -1,6 +1,8 @@
 # Remove the repetition, then add only the components that bring something new
 
-> **Status:** plan only, saved on 2026-10-19 from a full read of `origin/main` (`e1f8be4`). No stage has started. Each stage needs the owner's go-ahead.
+> **Superseded for course layout (2026-10-23):** The owner authorized [shorter focused course views](2026-10-23-shorter-course-views.md). That brief replaces the long-scroll/pinned layout, side-by-side Work calendar, and staged approval/integration ownership below. Data, date precision and preservation requirements still apply.
+>
+> **Historical status:** plan only, saved on 2026-10-19 from a full read of `origin/main` (`e1f8be4`). No stage has started. Each stage needs the owner's go-ahead.
 >
 > **Codex tasks:** the code-only parts are briefed in [docs/codex/remove-repetition/](../codex/remove-repetition/README.md) (R1–R5).
 

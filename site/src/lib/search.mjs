@@ -37,7 +37,8 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
   for (const place of places) add('Courses', { id: `place-${place.id}`, type: 'place', default: place.id !== 'privacy', ...place });
   const current = getCourse(course);
   if (current) {
-    add('Courses', { id: 'view-assignments', type: 'view', title: 'Assignments', href: `${current.href}#assignments`, default: true, courseId: current.id });
+    add('Courses', { id: 'view-assignments', type: 'view', title: 'Work', href: `${current.href}#work`, default: true, courseId: current.id });
+    add('Courses', { id: 'view-schedule', type: 'view', title: 'Schedule', href: `${current.href}#schedule`, courseId: current.id });
     if (isMath(current.id)) add('Courses', { id: 'view-study', type: 'view', title: 'Study', href: `${current.href}#study`, default: true, courseId: current.id });
     add('Courses', { id: 'view-info', type: 'view', title: 'Course info', href: `${current.href}#course-info`, default: true, courseId: current.id });
   }
@@ -100,9 +101,9 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
 
   // Actions.
   if (current) {
-    add('Actions', { id: 'action-work', type: 'action', action: 'work', title: "This week's work", href: `${current.href}#assignments`, default: true, courseId: current.id });
-    add('Actions', { id: 'action-contacts', type: 'action', action: 'contacts', title: 'Contacts', href: `${current.href}#course-info`, default: true, courseId: current.id });
-    add('Actions', { id: 'action-calendar', type: 'action', action: 'calendar', title: 'Export calendar', href: `${current.href}#course-info`, default: true, courseId: current.id });
+    add('Actions', { id: 'action-work', type: 'action', action: 'work', title: 'Work', href: `${current.href}#work`, default: true, courseId: current.id });
+    add('Actions', { id: 'action-contacts', type: 'action', action: 'contacts', title: 'Contacts', href: `${current.href}#contacts`, default: true, courseId: current.id });
+    add('Actions', { id: 'action-calendar', type: 'action', action: 'calendar', title: 'Export calendar', href: `${current.href}#guide-tools`, default: true, courseId: current.id });
   }
   const paused = readMotionPaused(store);
   add('Actions', { id: 'action-motion', type: 'action', action: 'motion', title: paused ? 'Play motion' : 'Pause motion', disabled: motionForced, detail: motionForced ? 'Reduced motion is enabled by your device or page setting' : '', default: true });
@@ -136,13 +137,13 @@ const GUIDE_ENTRIES = (() => {
     [CEN.CONFIRMED, 0],
     [CEN.OPEN, 0],
   ]) {
-    for (const row of rows) out.push({ courseId: 'cen100', title: row[offset], tab: CEN.COPY.tabs.rules, href: '/cen100/#course-info', text: row.slice(offset).join(' ') });
+    for (const row of rows) out.push({ courseId: 'cen100', title: row[offset], tab: CEN.COPY.tabs.rules, href: '/cen100/#p-rules', text: row.slice(offset).join(' ') });
   }
   out.push({
     courseId: 'cen100',
     title: CEN.COPY.contactsSearchTitle,
     tab: CEN.COPY.tabs.rules,
-    href: '/cen100/#course-info',
+    href: '/cen100/#contacts',
     text: `Who to ask contacts section group GA Graduate Assistant Project Manager lab room location ${CEN.STAFFING.map((s) => [s.ga, s.location, ...s.groups.map((g) => g[1])].join(' ')).join(' ')}`,
   });
   for (const id of COURSE_IDS.filter(isMath)) {

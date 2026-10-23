@@ -3,8 +3,9 @@ import { useStore } from '@src/store';
 // Brings the element named by location.hash (or `hash`) into view inside
 // `main` (the scroller) with Lenis, under the fixed header, and moves focus to
 // it for keyboard and screen-reader users. Dispatches 'guide-hash'
-// ({ detail: { id, element } }) on document first, so a page can open the item
+// ({ detail: { id, element, immediate } }) on document first, so a page can open the item
 // before it is scrolled to. A modal cancels the event to keep the page still.
+// Event detail includes paused/reduced motion in its effective immediate flag.
 // Returns true when a destination was found or a modal handled the request.
 export function scrollToHash({ hash, immediate = false } = {}) {
   if (typeof window === 'undefined') return false;
@@ -16,7 +17,8 @@ export function scrollToHash({ hash, immediate = false } = {}) {
   } catch (error) {
     id = raw;
   }
-  const handled = !document.dispatchEvent(new CustomEvent('guide-hash', { cancelable: true, detail: { id, element: document.getElementById(id) } }));
+  const instant = immediate || useStore.getState().still;
+  const handled = !document.dispatchEvent(new CustomEvent('guide-hash', { cancelable: true, detail: { id, element: document.getElementById(id), immediate: instant } }));
   if (handled) return true;
   const element = document.getElementById(id);
   if (!element) return false;

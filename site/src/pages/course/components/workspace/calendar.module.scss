@@ -1,0 +1,85 @@
+.calendar {
+  height: min(680px, 82svh);
+  min-height: 520px;
+  margin: 24px 0;
+  color: var(--black);
+  --sx-color-primary: #28282b;
+  --sx-color-on-primary: #f0f4f1;
+  --sx-color-primary-container: #f2ffbd;
+  --sx-color-on-primary-container: #28282b;
+  --sx-color-background: #f0f4f1;
+  --sx-color-on-background: #28282b;
+  --sx-color-surface: #f0f4f1;
+  --sx-color-surface-container: #f0f4f1;
+  --sx-color-on-surface: #28282b;
+  --sx-color-outline: #777778;
+  --sx-color-outline-variant: #c9cdca;
+  --sx-font-small: 14px;
+  --sx-font-extra-small: 13px;
+  :global(.sx-react-calendar-wrapper) {
+    height: 100%;
+    width: 100%;
+  }
+  :global(.sx__calendar) {
+    font-family: var(--font-primary), sans-serif;
+    font-weight: 550;
+  }
+  :global(.sx__calendar-header) {
+    background: var(--white);
+  }
+  :global(.sx__view-selection) {
+    display: none;
+  }
+  :global(.sx__month-grid-event) {
+    font-size: 14px;
+  }
+  :global(.sx__month-agenda-event) {
+    font-size: 16px;
+  }
+  :global(.sx__button) {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  :global(.sx__month-agenda-event__title) {
+    white-space: normal;
+  }
+  :global(header) {
+    user-select: auto;
+  }
+}
+.agenda {
+  margin-top: 24px;
+}
+.agendaRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) 24px;
+  gap: 20px;
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(40, 40, 43, 0.25);
+  &:hover {
+    background: var(--fillColor);
+  }
+}
+@media (max-width: 700px) {
+  .calendar {
+    min-height: 520px;
+    height: 620px;
+    :global(.sx__calendar-header) {
+      padding: 12px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+  }
+  .agendaRow {
+    grid-template-columns: minmax(0, 1fr) 20px;
+    gap: 8px;
+    > :nth-child(2) {
+      grid-column: 1;
+    }
+    > :last-child {
+      grid-column: 2;
+      grid-row: 1 / 3;
+    }
+  }
+}

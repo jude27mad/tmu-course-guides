@@ -137,7 +137,7 @@ test('searchIndex: the old palette’s groups, copy and ranking across all cours
   assert.equal(lib.SEARCH_COPY.placeholder, PALETTE.COPY.placeholder);
   for (const entry of entries) for (const field of ['group', 'title', 'detail', 'href', 'keywords']) assert.ok(field in entry, `${entry.id} ${field}`);
   assert.ok(entries.some((e) => e.title === 'CEN100 · Engineering' && e.href === '/cen100/'));
-  assert.ok(entries.some((e) => e.title === 'Assignments' && e.href === '/mth140/#assignments'));
+  assert.ok(entries.some((e) => e.title === 'Work' && e.href === '/mth140/#work'));
   const defaults = lib.searchEntries(entries, '');
   assert.ok(defaults.every((e) => e.default));
   assert.equal(defaults.find((e) => e.group === 'Assessments')?.title, 'Lab Quiz 2', 'the real next assessment is a default');

@@ -34,6 +34,7 @@ The repository root keeps its `.nojekyll` file for the case where Pages is switc
 |---|---|
 | `src/lib/` | Course data, deadlines, progress, search index and the motion preference. Pages import only `@src/lib` and `@src/lib/react`. Documented in [`src/lib/README.md`](src/lib/README.md). |
 | `src/pages/` | Routes: the Desk (`index`), `courses`, the course guides (`[course]`, built for `cen100`, `mth140` and `mth141`), `privacy` and `404`. |
+| `src/pages/course/components/workspace/` | Compact Work, Schedule, Study and Course info views; shared assignment details; hash/history restoration. |
 | `src/components/` | The shared shell: loader, navbar, menu, search panel, pre-footer, footer, background and fluid canvases, and the animation components. |
 | `src/utils/theme.js` | Per-course colour schemes: `applyPalette`, `resetPalette` and `usePalette` set the CSS variables and the fluid tint. |
 | `src/hooks/` | `useIsMobile`, `useInView`, `useStill` (reduced motion or the saved Pause motion setting) and `useScroll`. |
@@ -41,10 +42,16 @@ The repository root keeps its `.nojekyll` file for the case where Pages is switc
 
 ## Data and saved progress
 
+- Course navigation resolves old and new hashes through `workspace/location.mjs`. All assignment entry points use the same detail renderer. History snapshots retain list filters, scroll and focus without adding progress storage keys.
+- Notes save on every edit, including immediately before navigation. Checklist preparation and submission records remain separate.
+- Schedule-X is loaded only when the calendar is displayed. The independent deadline list stays usable if its chunk fails. React 18 compatibility, date precision, Toronto time and the pinned MIT dependencies are documented in [the redesign QA record](../docs/qa/shorter-course-views/README.md).
+
 - Deadlines and course content come from the same data as the previous version, copied into `src/lib/vendor/` and `src/lib/content/`. Deadline results are tested against the previous modules.
 - Progress uses the previous version's `localStorage` keys and value formats, so existing progress carries over. The key table is in `src/lib/README.md`.
 - Bumping `GUIDE_VERSION` (CEN100 in `src/lib/content/cen-literals.mjs`, the math guides in `src/lib/content/math.mjs`) shows the **What's changed?** unread badge until the notes are opened. Update the expected version in `tests/content.test.mjs` and `tests/storage.test.mjs` as well.
 - Add the matching entry (`date`, `title`, `text`, `items`) at the top of `updates` in `src/lib/content/pages.mjs`. Do not regenerate that file with `tests/extract/pages.mjs`: it would remove entries added since the move to this design.
+
+After building, run `PLAYWRIGHT_PATH=/path/to/playwright node scripts/verify-course-views.mjs` for focused-view browser checks. `QA_CHROMIUM_PATH` can select an installed Chromium binary; `QA_REPORT_DIR` selects the report directory. The script reads the build's base path and tests browser emulation, not physical devices.
 
 ## Motion and accessibility
 

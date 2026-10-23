@@ -1,4 +1,4 @@
-# Artwork animation code provenance
+# Code provenance and licences
 
 The existing Giats licence and attribution remain in effect; the complete
 notice is included in [`Giats-MIT.txt`](Giats-MIT.txt). The following upstream source
@@ -51,3 +51,11 @@ No Atelier North photography, fonts, branding, other page sections or global
 initializer is copied. The code licence is not used as permission for photographs.
 Each locally bundled course photograph is documented separately in
 [`ARTWORK-CREDITS.md`](ARTWORK-CREDITS.md) alongside these notices.
+
+## Schedule calendar
+
+Schedule uses Schedule-X calendar, calendar-controls, events-service and
+theme-default 4.9.1, React adapter 4.1.0, Preact 10.29.8, @preact/signals 2.11.3
+and signals-core 1.14.4, and temporal-polyfill 0.3.2. These packages use MIT
+licences; temporal-spec 0.3.1 (type declarations) uses ISC. Their complete
+installed notices are included in [Calendar-dependencies.txt](Calendar-dependencies.txt).

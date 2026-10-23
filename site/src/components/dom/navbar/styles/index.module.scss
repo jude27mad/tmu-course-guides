@@ -12,6 +12,7 @@
   scale: 1;
   .innerHeader {
     height: 3.1vw;
+    min-height: 44px;
     @include mobile {
       // 44 px tap targets for the pills on phones
       height: max(6.5vw, 44px);
@@ -44,6 +45,13 @@
       display: flex;
       gap: var(--layout-columns-gap);
       align-items: center;
+      > button {
+        min-height: 44px;
+        min-width: 44px;
+      }
+      :global(.p-x) {
+        font-size: max(14px, 0.85vw);
+      }
     }
   }
 }

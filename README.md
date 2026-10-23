@@ -12,10 +12,10 @@ No account, installation or download is needed.
 
 1. **Start at the Desk.** The home page shows the next deadline across all your courses, with a live countdown, and a card for each course.
 2. **Open a guide.** Choose **Open guide** next to a course in the Courses list, tap a course card, or use the **Menu**.
-3. **Set your section.** In **Course info**, pick your section (and your Innovation Challenge group in CEN100). Quiz dates, lab times, rooms and contacts then match your section. The choice is remembered in this browser.
-4. **See what's due.** Each guide opens with your next deadline. Below it, deadlines are listed under **This week**, **Next week** and **Later**. Tap a deadline to see its details.
-5. **Work through the checklist.** The weekly checklist shows the preparation steps for what's due. Tick steps as you finish them.
-6. **Record what you've done.** Use **Mark done** when an item is complete or submitted. **Undo** appears straight afterwards if you change your mind; later, clear the completion box under **My plan & completion** in the item's details.
+3. **Set your section at the top.** Choose your section (and your Innovation Challenge group in CEN100). Quiz dates, lab times, rooms and contacts then match your section. The choice is remembered in this browser.
+4. **Open your work.** Each guide starts with a compact **Work** list. Use **Open**, **All** or **Done**, then open an assignment for its dates, requirements, checklist and notes. **Back** restores your filter and place in the list. Past-due and undated work stay visible.
+5. **Check the schedule.** **Schedule** has an agenda for phones and a calendar on wider screens. Both open the same assignment details. **All dates** includes earlier deadlines. Times are in Toronto; a quiz week or unconfirmed date is labelled as such.
+6. **Record progress in the details.** Tick preparation steps as you finish them, and mark each submission separately under **My plan & completion**. Math guides also have **Study** for topic material; **Course info** holds grading, contacts and policies.
 
 ## Pages
 
@@ -23,7 +23,7 @@ No account, installation or download is needed.
 |---|---|
 | **Desk** | Your next deadline across all courses, a card for each course, and links to every guide. |
 | **Courses** | All three course guides in one list. |
-| **CEN100, MTH140, MTH141** | One guide per course: next deadline, deadlines by week, weekly checklist, assessments with weights and dates, course information and guide tools. |
+| **CEN100, MTH140, MTH141** | Work, Schedule and Course info, with Study in the math courses. One detail view per assignment, plus section selection and guide tools at the top. |
 | **Privacy** | What the website stores and what it never collects. |
 
 ## Finding things
@@ -37,12 +37,12 @@ No account, installation or download is needed.
 These controls are separate on purpose:
 
 - **Ticking a checklist step** tracks your preparation. It does not mark the item complete.
-- **Mark done** records that you have completed or submitted an item. It is your own record: the website does not submit work or confirm anything with the course.
+- **Submission/completion boxes** record that you have completed or submitted each required part. An assignment stays Open until every submission is marked. Clear a box to undo a record. The website does not submit work or confirm anything with the course.
 - **Notes and target dates** are private reminders that stay on the item.
 
 ## Guide tools
 
-Near the bottom of each guide:
+Use **Guide tools** beside D2L at the top of each guide:
 
 - **Download calendar (.ics):** adds upcoming course dates to your calendar app. In MTH140 and MTH141, lab quiz dates are included once you choose your section. The file is a snapshot; it does not update itself when dates change.
 - **Export my progress / Import a backup:** saves this course's ticks, completion records, notes and target dates to a file, and adds them to the same course in another browser or on another device. Section and group choices are not included.
