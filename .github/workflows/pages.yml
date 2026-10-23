@@ -96,6 +96,11 @@ jobs:
           PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
           QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/touch
         run: npm run test:touch
+      - name: Check course views and saved work
+        env:
+          PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
+          QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/course-views
+        run: node site/scripts/verify-course-views.mjs
       - name: Check the palette and take 390 px screenshots
         # Runs even when an earlier browser check failed, so one run reports everything.
         if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' }}
