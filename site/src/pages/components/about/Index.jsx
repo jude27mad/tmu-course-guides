@@ -216,7 +216,13 @@ function About({ desk }) {
             {ready && next && <ButtonLink href={next.href} label={course ? `VIEW IN ${course.code}` : 'VIEW ASSESSMENT'} />}
             {ready && next?.cta && <ButtonLink href={`/${next.courseId}/#course-info`} label={next.cta.toUpperCase()} />}
             {ready && next?.markable && !next.done && (
-              <ButtonLink ref={markRef} primary onClick={onMarkDone} label={(copy.markDone || copy.next?.markDone || 'Mark done').toUpperCase()} ariaLabel={markLabel ? markLabel(next.title) : undefined} />
+              <ButtonLink
+                ref={markRef}
+                primary
+                onClick={onMarkDone}
+                label={(copy.markDone || copy.next?.markDone || 'Mark done').toUpperCase()}
+                ariaLabel={markLabel ? markLabel(next.title) : undefined}
+              />
             )}
             {canUndo && <ButtonLink ref={undoRef} onClick={onUndo} label="UNDO" />}
             {!ready && <ButtonLink href="/courses/" label={DESK_TEXT.openGuide.toUpperCase()} />}

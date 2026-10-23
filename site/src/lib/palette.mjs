@@ -37,8 +37,7 @@ export const DISC = Object.freeze({ background: TOKENS.ink, color: TOKENS.onDark
 
 /* "r, g, b" for canvases and translucent CSS (rgba(var(--inkRgb), 0.2)). */
 export function rgbOf(hex) {
-  const value = Number.parseInt(hex.slice(1), 16);
-  return `${(value >> 16) & 255}, ${(value >> 8) & 255}, ${value & 255}`;
+  return [1, 3, 5].map((start) => Number.parseInt(hex.slice(start, start + 2), 16)).join(', ');
 }
 
 /* The countdown's status from the time left (ms) or completion; null when nothing is counting down. */

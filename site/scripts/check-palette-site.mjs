@@ -1,7 +1,8 @@
 // Checks the site palette (src/lib/palette.mjs) in what GitHub Pages publishes (.github/workflows/pages.yml),
 // after `pages-site.mjs build`:
 //   1. No old colour is left in any published file. Black with alpha is allowed only in Schedule-X's own
-//      calendar theme (its dialog shadows); those third-party hits are listed in the report, not failed.
+//      calendar theme (its dialog shadows and --sx-* shadow variables); those third-party hits are listed in
+//      the report, not failed.
 //   2. In Chromium as a 390 px phone: the three course cards are identical, the pills, round button and
 //      countdown follow the palette, the MENU pill turns light over dark windows and back, the accent stays on
 //      small elements, and no page shows an old colour, a yellow or a second accent.
@@ -79,7 +80,8 @@ async function scanFiles() {
     for (const match of text.matchAll(BLACK_ALPHA)) {
       if (extname(path) === '.css') {
         const selector = selectorAt(text, match.index);
-        if (/(^|[\s,>+~])\.sx__/.test(selector)) thirdParty.push(`${name}: ${match[0]} in Schedule-X \`${selector.slice(0, 80)}\``);
+        const declaration = text.slice(Math.max(text.lastIndexOf(';', match.index), text.lastIndexOf('{', match.index)) + 1, match.index);
+        if (/(^|[\s,>+~])\.sx__/.test(selector) || /^\s*--sx-[\w-]+\s*:/.test(declaration)) thirdParty.push(`${name}: ${match[0]} in Schedule-X \`${selector.slice(0, 80)}\``);
         else black.push(`${name}: ${match[0]} in \`${selector.slice(0, 80)}\``);
       } else {
         // Script bundles: the site's own sources hold none (tests/palette.test.mjs), so these are libraries.
@@ -119,17 +121,26 @@ async function checkBrowser(site) {
   };
   const shot = (name) => page.screenshot({ path: join(reports, `${name}.png`) });
 
-  // The MENU pill and whether its centre is over a dark window, measured independently of the button's own logic.
+  // The MENU pill and whether its centre is over a dark window or a dark masthead cell (the rule
+  // src/components/dom/navbar/components/MenuButton.jsx implements), measured here from the page itself.
   const menu = () =>
     page.evaluate(() => {
       const button = document.querySelector('#menu-button');
       const box = button.getBoundingClientRect();
       const x = box.left + box.width / 2;
       const y = box.top + box.height / 2;
-      const over = Array.from(document.querySelectorAll('[data-surface="dark"]')).some((node) => {
-        const area = node.getBoundingClientRect();
-        return x >= area.left && x <= area.right && y >= area.top && y <= area.bottom;
-      });
+      const hit = (area) => x >= area.left && x <= area.right && y >= area.top && y <= area.bottom;
+      let over = Array.from(document.querySelectorAll('[data-surface="dark"]')).some((node) => hit(node.getBoundingClientRect()));
+      const grid = Array.from(document.querySelectorAll('[data-surface="cells"]')).find((node) => hit(node.getBoundingClientRect()));
+      if (!over && grid) {
+        const area = grid.getBoundingClientRect();
+        const part = (cell, name, size) => (parseFloat(cell.getAttribute(name)) / 100) * size;
+        over = Array.from(grid.querySelectorAll('[data-cell]')).some((cell) => {
+          const left = area.left + part(cell, 'x', area.width);
+          const top = area.top + part(cell, 'y', area.height);
+          return hit({ left, top, right: left + part(cell, 'width', area.width), bottom: top + part(cell, 'height', area.height) });
+        });
+      }
       const style = getComputedStyle(button);
       return { over, background: style.backgroundColor, shadow: style.boxShadow, label: getComputedStyle(button.querySelector('p:not([aria-hidden])')).color };
     });
@@ -162,6 +173,44 @@ async function checkBrowser(site) {
     assert.ok(state.over, `could not bring a dark window under the MENU pill (${selector})`);
     state = await settledMenu();
     assert.ok(pillFits(state), `MENU pill over ${selector}: ${JSON.stringify(state)}`);
+  };
+  // Scrolls so the MENU pill sits over a dark masthead cell (dark = true) or a light part of the masthead grid.
+  const menuOverMasthead = async (dark) => {
+    const placed = await page.evaluate((wantDark) => {
+      const grid = document.querySelector('[data-surface="cells"]');
+      if (!grid) return 'the masthead grid is missing';
+      const main = document.querySelector('main');
+      const button = document.querySelector('#menu-button').getBoundingClientRect();
+      const x = button.left + button.width / 2;
+      const y = button.top + button.height / 2;
+      const area = grid.getBoundingClientRect();
+      if (x < area.left || x > area.right) return 'the masthead grid is not under the MENU pill';
+      const part = (cell, name, size) => (parseFloat(cell.getAttribute(name)) / 100) * size;
+      const spans = Array.from(grid.querySelectorAll('[data-cell]'))
+        .map((cell) => {
+          const left = area.left + part(cell, 'x', area.width);
+          const top = area.top + part(cell, 'y', area.height);
+          return { left, right: left + part(cell, 'width', area.width), top, bottom: top + part(cell, 'height', area.height) };
+        })
+        .filter((span) => x >= span.left + 4 && x <= span.right - 4);
+      for (let py = area.top + 8; py < area.bottom - 8; py += 4) {
+        const inDark = spans.some((span) => py >= span.top + 6 && py <= span.bottom - 6);
+        const inLight = !spans.some((span) => py >= span.top - 6 && py <= span.bottom + 6);
+        if ((wantDark && inDark) || (!wantDark && inLight)) {
+          main.scrollTo({ top: main.scrollTop + py - y, behavior: 'instant' });
+          return 'placed';
+        }
+      }
+      return `no ${wantDark ? 'dark' : 'light'} masthead cell under the MENU pill`;
+    }, dark);
+    if (placed !== 'placed') {
+      notes.push(`Masthead MENU check skipped (${dark ? 'dark' : 'light'} cell): ${placed}.`);
+      return;
+    }
+    await page.waitForTimeout(800);
+    const state = await settledMenu();
+    assert.equal(state.over, dark, `the MENU pill is over a ${dark ? 'dark' : 'light'} masthead cell`);
+    assert.ok(pillFits(state), `MENU pill over a ${dark ? 'dark' : 'light'} masthead cell: ${JSON.stringify(state)}`);
   };
   const menuOnLight = async () => {
     await scrollTo(null);
@@ -285,6 +334,8 @@ async function checkBrowser(site) {
       await shot(name);
     }
     await check('Desk: the MENU pill is ink on the light page', menuOnLight);
+    await check('Desk: the MENU pill turns light over a dark masthead cell', () => menuOverMasthead(true));
+    await check('Desk: the MENU pill stays ink over a light masthead cell', () => menuOverMasthead(false));
     await check('Desk: the MENU pill turns light over a badge window', () => menuOver('[class*="clients_first"]'));
     await check('Desk: the MENU pill turns light over a course card panel', () => menuOver('[class*="projects_canvas"]'));
     await check('Desk: the MENU pill is ink again back on the light page', menuOnLight);

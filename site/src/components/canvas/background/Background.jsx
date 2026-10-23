@@ -15,7 +15,10 @@ const OFFSET_MAX = 5.0;
 const OFFSET_MIN = 0.1;
 
 // The dark panels' light sweep, built only from the panel greys: ink -> raised -> sheen (the brightest point).
-const unitRgb = (hex) => rgbOf(hex).split(', ').map((channel) => Number(channel) / 255);
+const unitRgb = (hex) =>
+  rgbOf(hex)
+    .split(', ')
+    .map((channel) => Number(channel) / 255);
 
 function updateOffset(uniform, isIncreasing, step, min, max) {
   if (uniform.value >= max && isIncreasing.current) {

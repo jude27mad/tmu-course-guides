@@ -7,9 +7,9 @@ import { ScheduleXCalendar, useCalendarApp } from '@schedule-x/react';
 import { createViewMonthAgenda, createViewMonthGrid } from '@schedule-x/calendar';
 import { createEventsServicePlugin } from '@schedule-x/events-service';
 import { createCalendarControlsPlugin } from '@schedule-x/calendar-controls';
-import styles from './calendar.module.scss';
 // eslint-disable-next-line import/extensions
 import { TOKENS } from '@src/lib/palette.mjs';
+import styles from './calendar.module.scss';
 // eslint-disable-next-line import/extensions
 import { toScheduleXEvent } from './calendarAdapter.mjs';
 

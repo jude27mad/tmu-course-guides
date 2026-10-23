@@ -68,9 +68,9 @@
           .projectsWrap {
             .container {
               .projectsDetails {
+                // the text stays light: ink on the darkened ink panel would vanish
                 > * {
-                  color: var(--black);
-                  text-shadow: 0.1vw 0.1vw 0.1vw var(--white);
+                  color: var(--onDark);
                 }
               }
             }

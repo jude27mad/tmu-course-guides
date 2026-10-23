@@ -29,7 +29,7 @@ export default function SignalField() {
   }, [visible, still]);
 
   return (
-    <div className={styles.field} aria-hidden="true" data-surface="dark">
+    <div className={styles.field} aria-hidden="true">
       <canvas ref={canvasRef} data-signal-field className={styles.canvas} />
     </div>
   );

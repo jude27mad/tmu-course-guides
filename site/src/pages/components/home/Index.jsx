@@ -230,7 +230,7 @@ function Home() {
 
   const renderRects = useMemo(
     // eslint-disable-next-line no-return-assign
-    () => initialPositions.map(({ index, x, y }) => <rect key={index} ref={(ref) => (rectRefs.current[index] = ref)} x={x} y={y} width={`${gridWidth}%`} height={`${gridHeight}%`} />),
+    () => initialPositions.map(({ index, x, y }) => <rect key={index} ref={(ref) => (rectRefs.current[index] = ref)} data-cell x={x} y={y} width={`${gridWidth}%`} height={`${gridHeight}%`} />),
     [initialPositions, gridWidth, gridHeight],
   );
 
@@ -247,7 +247,7 @@ function Home() {
       <div className={styles.bottomContainer} aria-hidden="true">
         <SignalField />
         <div onPointerEnter={onPointerEnter} onPointerLeave={onPointerLeave} className={styles.svgWrapper}>
-          <svg ref={svgRef} width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <svg ref={svgRef} width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none" data-surface="cells">
             <rect x="0" y="0" className={styles.mask2} width="100%" height="100.3%" />
             <mask id="mask" x="0" y="0">
               <rect className={styles.mask1} x="0" y="0" width="100%" height="100.3%" />

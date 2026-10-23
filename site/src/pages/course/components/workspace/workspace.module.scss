@@ -258,6 +258,7 @@
     min-height: 44px;
     border-radius: 999px;
     border: 1px solid var(--border);
+    background: var(--card);
     font-size: 16px;
   }
   button[aria-pressed='true'] {

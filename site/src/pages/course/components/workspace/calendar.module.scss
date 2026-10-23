@@ -3,17 +3,36 @@
   min-height: 520px;
   margin: 24px 0;
   color: var(--black);
+  // Every Schedule-X colour from the palette (its theme's own values are Material purples). The calendar is a
+  // white card, so its muted day names reach AA (#71717A on #FFFFFF is 4.83:1; on the page it would be 4.40:1).
   --sx-color-primary: var(--black);
   --sx-color-on-primary: var(--onDark);
-  --sx-color-primary-container: var(--card);
+  --sx-color-primary-container: var(--white);
   --sx-color-on-primary-container: var(--black);
-  --sx-color-background: var(--white);
+  --sx-color-secondary: var(--muted);
+  --sx-color-on-secondary: var(--card);
+  --sx-color-secondary-container: var(--border);
+  --sx-color-on-secondary-container: var(--black);
+  --sx-color-tertiary: var(--muted);
+  --sx-color-on-tertiary: var(--card);
+  --sx-color-tertiary-container: var(--border);
+  --sx-color-on-tertiary-container: var(--black);
+  --sx-color-background: var(--card);
   --sx-color-on-background: var(--black);
-  --sx-color-surface: var(--white);
-  --sx-color-surface-container: var(--white);
+  --sx-color-surface: var(--card);
+  --sx-color-surface-dim: var(--border);
+  --sx-color-surface-bright: var(--card);
+  --sx-color-surface-container-low: var(--card);
+  --sx-color-surface-container: var(--card);
+  --sx-color-surface-container-high: var(--white);
+  --sx-color-surface-tint: var(--black);
   --sx-color-on-surface: var(--black);
   --sx-color-outline: var(--muted);
   --sx-color-outline-variant: var(--border);
+  --sx-color-neutral: var(--muted);
+  --sx-color-neutral-variant: var(--border);
+  --sx-color-shadow: var(--black);
+  --sx-internal-color-text: var(--black);
   --sx-font-small: 14px;
   --sx-font-extra-small: 13px;
   :global(.sx-react-calendar-wrapper) {
@@ -25,7 +44,7 @@
     font-weight: 550;
   }
   :global(.sx__calendar-header) {
-    background: var(--white);
+    background: var(--card);
   }
   :global(.sx__view-selection) {
     display: none;
