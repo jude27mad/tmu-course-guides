@@ -31,11 +31,12 @@
       background-color: var(--glass-backing);
       -webkit-backdrop-filter: blur($blur) saturate(110%);
       backdrop-filter: blur($blur) saturate(110%);
-      // Paired WebKit diagnostics showed a cost for the larger kernel on
-      // phones. Retain the material while limiting that compositing work.
+      // Repeated WebKit comparisons still showed a cost at a 4px kernel.
+      // Phones keep the translucent backing, rim and sheen without the
+      // extra backdrop pass. Wider screens retain the bounded blur.
       @media (max-width: 600px) {
-        -webkit-backdrop-filter: blur(4px) saturate(110%);
-        backdrop-filter: blur(4px) saturate(110%);
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
       }
     }
   }

@@ -4,7 +4,7 @@
 
 Started from `164a8ee` (merged #43, #44 and #46), then incorporated `dab3008` (#47) when Safari scrolling merged during implementation. Glass is confined to the course navigation, Menu/Search and Guide tools trigger. The dialog uses a matching rim/header and solid body. The current palette, Giats hover/fluid effects, routing, scroll restoration, native dialog behaviour and saved-data keys remain in place.
 
-Shared SCSS defines the material, 8–12px blur (capped at 4px on phones after repeated WebKit cost comparisons) and opaque fallback. The moving tab selection uses the existing GSAP instance and only measures on selection/resize/font changes; it never delays routing. Wrapping changes use a fade, and reduced motion settles immediately. Pause motion also removes the blur using the existing `data-motion` preference bridge. Menu and Search share a 16px minimum for their helper text.
+Shared SCSS defines the material, 8–12px blur on wider screens and opaque preference fallbacks. Repeated WebKit comparisons still showed rendering overhead with a reduced 4px kernel, so screens up to 600px keep the translucent backing, rim and sheen without backdrop blur. The moving tab selection uses the existing GSAP instance and only measures on selection/resize/font changes; it never delays routing. Wrapping changes use a fade, and reduced motion settles immediately. Pause motion makes all controls solid using the existing `data-motion` preference bridge. Menu and Search share a 16px minimum for their helper text.
 
 ## Concurrent work
 

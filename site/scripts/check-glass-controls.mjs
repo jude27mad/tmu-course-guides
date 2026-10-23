@@ -94,7 +94,7 @@ try {
           return (s.backdropFilter || s.webkitBackdropFilter || 'none') !== 'none';
         }).map((el) => ({ glass: el.dataset.glass, parentGlass: !!el.parentElement.closest('[data-glass]'), filter: getComputedStyle(el).backdropFilter || getComputedStyle(el).webkitBackdropFilter })));
         assert.ok(filtered.length <= 4 && filtered.every((el) => el.glass && !el.parentGlass), JSON.stringify(filtered));
-        if (width <= 500) assert.ok(filtered.every((el) => el.filter.includes('blur(4px)')), 'phone blur exceeds the measured material budget');
+        if (width <= 500) assert.equal(filtered.length, 0, 'phones must not pay for a backdrop-filter pass');
         await page.screenshot({ path: path.join(report, course + '-' + width + '.png') });
       }
       const opener = page.getByRole('button', { name: /Guide tools/ });
@@ -358,7 +358,7 @@ try {
           if (override) await override.evaluate((el) => el.remove());
         }
       }
-      await writeFile(path.join(report, 'performance.json'), JSON.stringify({ note: 'Paired CI diagnostics, not physical-device FPS. Paused samples are solid in both variants; actualFilter records the effective material. State acknowledgement and two-frame response are separate timings.', samples }, null, 2));
+      await writeFile(path.join(report, 'performance.json'), JSON.stringify({ note: 'Paired CI diagnostics, not physical-device FPS. Phones omit backdrop blur; default vs override compares translucent vs solid backing. Paused samples are solid in both variants. actualFilter records the effective material; state acknowledgement and two-frame response are separate timings.', samples }, null, 2));
       return samples;
     } finally { await context.tracing.stop({ path: path.join(report, 'interaction-trace.zip') }); }
   });
