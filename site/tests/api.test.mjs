@@ -7,7 +7,7 @@ import { memoryStorage, oldModule, toronto, htmlText, cenOracle } from './helper
 const NOW = new Date(toronto('2026-10-15', '12:00'));
 const PALETTE = await oldModule('night/palette.mjs');
 
-test('COURSES: the three courses in order, with the brief’s palettes and the old pages’ names and links', () => {
+test('COURSES: the three courses keep their names and links and share the Desk palette', () => {
   assert.deepEqual(
     lib.COURSES.map((c) => [c.id, c.code, c.name, c.title, c.index]),
     [
@@ -18,10 +18,9 @@ test('COURSES: the three courses in order, with the brief’s palettes and the o
   );
   assert.equal(lib.COURSES[0].summary, 'Assignment deadlines, requirements, checklists and section/group contacts.');
   assert.equal(lib.COURSES[1].summary, 'Assessment dates, section labs, announced coverage and practice.');
-  assert.deepEqual(lib.getCourse('cen100').palette, { primary: '#000000', accentColor: '#f0f4f1', secondary: '#F9F9F9', fillColor: '#ebfaf8', menuColor: '#00a8c1', menuFontColor: '#f0f4f1', fluidColor: '#FF573E' });
-  assert.deepEqual(lib.getCourse('mth140').palette, { primary: '#263745', accentColor: '#f0f4f1', secondary: '#F3F5F7', fillColor: '#E0DFFC', menuColor: '#5C58EB', menuFontColor: '#f0f4f1', fluidColor: '#A3A714' });
-  assert.deepEqual(lib.getCourse('mth141').palette, { primary: '#2D2D2D', accentColor: '#FCFBF7', secondary: '#F2EEE7', fillColor: '#F2F3F4', menuColor: 'gold', menuFontColor: '#2D2D2D', fluidColor: '#0028FF' });
   for (const course of lib.COURSES) {
+    // This record feeds CSS, card panels and generated badge/disc textures.
+    assert.deepEqual(course.palette, { primary: '#28282b', accentColor: '#f9f9f9', secondary: '#f0f4f1', fillColor: '#f2ffbd', menuColor: '#28282b', menuFontColor: '#f0f4f1', fluidColor: '#d7d7d4' }, course.id);
     assert.ok(course.links.length > 0);
     for (const link of course.links) assert.match(link.href, /^https:\/\//);
     assert.equal(course.links[0].href, 'https://courses.torontomu.ca/');

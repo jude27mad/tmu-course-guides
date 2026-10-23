@@ -65,13 +65,13 @@ getCourse('mth141');
 //   summary: 'Assessment dates, section labs, announced coverage and practice.', description: '…',
 //   term: 'Fall 2026', organization: '4 hours of lectures + 1 hour of lab each week', href: '/mth141/',
 //   ariaLabel: 'Open MTH141 guide, Linear Algebra',
-//   palette: { primary: '#2D2D2D', accentColor: '#FCFBF7', secondary: '#F2EEE7', fillColor: '#F2F3F4',
-//              menuColor: 'gold', menuFontColor: '#2D2D2D', fluidColor: '#0028FF' },
+//   palette: { primary: '#28282b', accentColor: '#f9f9f9', secondary: '#f0f4f1', fillColor: '#f2ffbd',
+//              menuColor: '#28282b', menuFontColor: '#f0f4f1', fluidColor: '#d7d7d4' },
 //   links: [{ label: 'Open D2L', href: 'https://courses.torontomu.ca/', external: true }, …textbooks] }
 getCourse('nope'); // null
 ```
 
-**`PALETTES`**, **`DEFAULT_PALETTE`**: the brief's project palettes per course, and the original default (Desk, Courses, Privacy). Apply them with the original `updateCSSVariables` mapping (`--black` = `primary`, `--white` = `secondary`, …) and `setFluidColor(palette.fluidColor)`.
+**`PALETTES`**, **`DEFAULT_PALETTE`**: every course shares the Desk palette. The same values colour page CSS, course cards and generated 3D textures. Apply them with the original `updateCSSVariables` mapping (`--black` = `primary`, `--white` = `secondary`, …) and `setFluidColor(palette.fluidColor)`. The fluid tint is Giats's homepage value, `#d7d7d4`, on every route; the original difference blending and background uniform are unchanged.
 
 ### Sections and groups
 

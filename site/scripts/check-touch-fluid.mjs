@@ -27,8 +27,28 @@ let browser;
 
 function instrumentTouch() {
   const draws = new WeakMap();
+  const locations = new WeakMap();
+  const colours = new WeakMap();
   for (const Context of [window.WebGLRenderingContext, window.WebGL2RenderingContext]) {
     if (!Context) continue;
+    const getUniformLocation = Context.prototype.getUniformLocation;
+    Context.prototype.getUniformLocation = function (program, name) {
+      const location = getUniformLocation.call(this, program, name);
+      if (location) locations.set(location, name);
+      return location;
+    };
+    for (const method of ['uniform3f', 'uniform3fv']) {
+      const original = Context.prototype[method];
+      Context.prototype[method] = function (location, ...args) {
+        const name = locations.get(location);
+        if (name && /u(?:Background)?Color$/i.test(name)) {
+          const values = colours.get(this.canvas) || {};
+          values[name] = method === 'uniform3f' ? args : Array.from(args[0]);
+          colours.set(this.canvas, values);
+        }
+        return original.call(this, location, ...args);
+      };
+    }
     for (const method of ['drawArrays', 'drawElements']) {
       const original = Context.prototype[method];
       Context.prototype[method] = function (...args) {
@@ -61,6 +81,7 @@ function instrumentTouch() {
         touches: [...touches],
         draws: canvas ? draws.get(canvas) || 0 : 0,
         fluid: Boolean(canvas),
+        colours: canvas ? colours.get(canvas) || {} : {},
         visibility: wrapper ? getComputedStyle(wrapper).visibility : null,
         scrollTop: document.querySelector('main')?.scrollTop || 0,
       };
@@ -129,6 +150,51 @@ async function waitOnPage(page, predicate, argument) {
 
 const snapshot = page => page.evaluate(() => window.__touchFluidQA.snapshot());
 
+async function assertDeskPalette(page) {
+  const expected = { '--black': '#28282b', '--white': '#f0f4f1', '--accentColor': '#f9f9f9', '--fillColor': '#f2ffbd', '--menuColor': '#28282b', '--menuFontColor': '#f0f4f1' };
+  const shown = await page.evaluate(names => {
+    const root = getComputedStyle(document.documentElement);
+    const menu = getComputedStyle(document.querySelector('#menu-button'));
+    const fluid = getComputedStyle(document.querySelector('#fluidCanvas'));
+    return {
+      palette: Object.fromEntries(names.map(name => [name, root.getPropertyValue(name).trim().toLowerCase()])),
+      ink: getComputedStyle(document.querySelector('main')).color,
+      menu: menu.backgroundColor,
+      menuInk: getComputedStyle(document.querySelector('#menu-button p:not([aria-hidden])')).color,
+      theme: document.querySelector('meta[name="theme-color"]').content,
+      blend: fluid.mixBlendMode,
+      fluidBackground: fluid.backgroundColor,
+      panels: Array.from(document.querySelectorAll('[style*="--card-menu"], [style*="--cardMenu"]'), node => {
+        const style = getComputedStyle(node);
+        const value = (a, b) => (style.getPropertyValue(a) || style.getPropertyValue(b)).trim().toLowerCase();
+        return { ink: value('--card-ink', '--cardInk'), menu: value('--card-menu', '--cardMenu'), fill: value('--card-fill', '--cardFill') };
+      }),
+    };
+  }, Object.keys(expected));
+  assert.deepEqual(shown.palette, expected, 'the route must not replace the Desk palette');
+  assert.equal(shown.ink, 'rgb(40, 40, 43)');
+  assert.equal(shown.menu, 'rgb(40, 40, 43)');
+  assert.equal(shown.menuInk, 'rgb(240, 244, 241)');
+  assert.equal(shown.theme.toLowerCase(), '#f0f4f1');
+  for (const panel of shown.panels) assert.deepEqual(panel, { ink: '#28282b', menu: '#28282b', fill: '#f2ffbd' });
+  assert.equal(shown.blend, 'difference');
+  assert.equal(shown.fluidBackground, 'rgb(0, 0, 0)');
+  // Giats's deployed homepage: #d7d7d4 dye, #070410 background, converted
+  // from sRGB to linear RGB by Three.Color before upload to the shader.
+  const linear = bytes => bytes.map(byte => {
+    const channel = byte / 255;
+    return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+  });
+  await waitOnPage(page, () => Object.keys(window.__touchFluidQA.snapshot().colours).some(name => /uColor$/i.test(name)));
+  const { colours } = await snapshot(page);
+  for (const [suffix, bytes] of [['uColor', [215, 215, 212]], ['uBackgroundColor', [7, 4, 16]]]) {
+    const value = Object.entries(colours).find(([name]) => name.toLowerCase().endsWith(suffix.toLowerCase()))?.[1];
+    assert.ok(value, `missing fluid shader uniform: ${suffix}`);
+    linear(bytes).forEach((channel, i) => assert.ok(Math.abs(channel - value[i]) < 0.000001, `${suffix}[${i}] differs from Giats: ${value[i]} vs ${channel}`));
+  }
+  return { ...shown, colours };
+}
+
 function assertFluidSwipe(trace) {
   const moves = trace.after.events.filter(event => event.type === 'pointermove');
   assert.ok(moves.length >= 8, `too few movement samples: ${JSON.stringify(trace)}`);
@@ -170,11 +236,12 @@ try {
     args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'],
   });
 
-  for (const route of ['', 'cen100/']) {
+  for (const route of ['', 'cen100/', 'mth140/', 'mth141/', 'courses/', 'privacy/']) {
     const { context, page, errors } = await open();
     const label = route || 'home';
     try {
       await ready(page, route);
+      await check(`${label}: Desk palette and exact Giats homepage fluid colours`, () => assertDeskPalette(page));
       // Deliberately cross the former 2.2 s cutoff: this is the behaviour under test.
       await page.waitForTimeout(2500);
       await check(`${label}: fluid remains visible and renders after idle`, async () => {
@@ -190,7 +257,7 @@ try {
         assertFluidSwipe(trace);
         return trace;
       });
-      if (route) {
+      if (route === 'cen100/') {
         await check('Pause / Play Motion changes touch mode without a reload', async () => {
           await toggleMotion(page, 'Pause motion');
           assert.equal(await page.locator('html').getAttribute('data-motion'), 'off');

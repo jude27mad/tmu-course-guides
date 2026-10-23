@@ -1,21 +1,14 @@
-import { DEFAULT_FLUID_COLOR, useStore } from '@src/store';
+import { DEFAULT_PALETTE } from '@src/lib/courses.mjs';
+import { useStore } from '@src/store';
 
 import { useEffect } from 'react';
 
-// The original per-project theming (pages/projects/[id]), reused per course.
-// A palette has his project shape:
+// The original theme mapping, now using the same Desk palette on every course.
+// A palette keeps the original project shape:
 //   { primary, secondary, accentColor, fillColor, menuColor, menuFontColor, fluidColor }
 // primary -> --black (ink), secondary -> --white (paper), the rest map 1:1.
-// Desk, Courses and Privacy use DEFAULT_PALETTE (styles/colors.scss).
-export const DEFAULT_PALETTE = Object.freeze({
-  primary: '#28282b',
-  secondary: '#f0f4f1',
-  accentColor: '#f9f9f9',
-  fillColor: '#f2ffbd',
-  menuColor: '#28282b',
-  menuFontColor: '#f0f4f1',
-  fluidColor: DEFAULT_FLUID_COLOR,
-});
+// Course records and generated 3D textures consume this same shared definition.
+export { DEFAULT_PALETTE };
 
 const VARIABLES = [
   ['--black', 'primary'],

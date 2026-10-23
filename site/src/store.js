@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
-// The original default fluid tint. Course pages change it through applyPalette()
-// (src/utils/theme.js) and put it back with resetPalette().
+// Giats's original homepage fluid tint, retained on every page. The shared
+// Desk palette applies this same tint when courses mount and unmount.
 export const DEFAULT_FLUID_COLOR = '#d7d7d4';
 
 // eslint-disable-next-line import/prefer-default-export
