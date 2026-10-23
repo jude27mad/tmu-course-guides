@@ -12,7 +12,7 @@ import styles from '@src/components/animationComponents/buttonLink/buttonLink.mo
 // (SEARCH, MARK DONE, UNDO...). The original nested a <button> in an <a>.
 // `primary` is the one accent pill per view, the main action (MARK DONE); the rest are secondary.
 const ButtonLink = forwardRef(
-  ({ href, label, target = false, onClick, ariaLabel, ariaHaspopup, ariaControls, ariaPressed, disabled = false, primary = false, className, type = 'button', children }, ref) => {
+  ({ href, label, target = false, onClick, ariaLabel, ariaHaspopup, ariaControls, ariaPressed, disabled = false, primary = false, glass = false, className, type = 'button', children }, ref) => {
     const buttonRef = useRef(null);
     const spanRef = useRef(null);
     const relsRef = useRef({ relX: 0, relY: 0 });
@@ -69,7 +69,8 @@ const ButtonLink = forwardRef(
 
     const shared = {
       ref: setRefs,
-      className: clsx('p-xs', styles.btnPosnawr, primary && styles.primary, className),
+      className: clsx('p-xs', styles.btnPosnawr, primary && styles.primary, glass && styles.glass, className),
+      'data-glass': glass ? 'dark' : undefined,
       onPointerEnter: handleMouseEnter,
       onPointerLeave: handleMouseLeave,
       'aria-label': ariaLabel,

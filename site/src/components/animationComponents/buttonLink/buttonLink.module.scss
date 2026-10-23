@@ -1,3 +1,4 @@
+@use '@src/styles/glass';
 @import '@src/styles/functions';
 
 .btnPosnawr {
@@ -51,13 +52,11 @@
       }
 
       .arrowClassic {
-        transform: translate3d(calc(var(--layout-columns-gap) * -1.3), 0, 0)
-          rotate(-90deg);
+        transform: translate3d(calc(var(--layout-columns-gap) * -1.3), 0, 0) rotate(-90deg);
         fill: var(--black);
         stroke: var(--black);
         @include mobile {
-          transform: translate3d(calc(var(--layout-columns-gap) * -1.2), 0, 0)
-            rotate(-90deg);
+          transform: translate3d(calc(var(--layout-columns-gap) * -1.2), 0, 0) rotate(-90deg);
         }
       }
     }
@@ -124,6 +123,20 @@
 
     .ball {
       background-color: rgba(var(--inkRgb), 0.25);
+    }
+  }
+  &.glass {
+    @include glass.surface(dark);
+    @include glass.press;
+    min-height: 44px;
+    min-width: 44px;
+    .ball {
+      background-color: rgba(var(--cardRgb), 0.08);
+    }
+    .arrowClassic,
+    &:hover .arrowClassic {
+      fill: currentColor;
+      stroke: currentColor;
     }
   }
 }

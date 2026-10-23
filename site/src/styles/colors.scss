@@ -33,7 +33,7 @@ html {
     // --#{$name}-transparent: #{color.change($color, $alpha: 0)};
   }
   // Channels for translucent use: rgba(var(--inkRgb), 0.25).
-  @each $name, $key in ('inkRgb': 'black', 'pageRgb': 'white', 'onDarkRgb': 'onDark', 'mutedOnDarkRgb': 'mutedOnDark') {
+  @each $name, $key in ('inkRgb': 'black', 'pageRgb': 'white', 'cardRgb': 'card', 'onDarkRgb': 'onDark', 'mutedOnDarkRgb': 'mutedOnDark') {
     $c: map.get($colors, $key);
     --#{$name}: #{color.channel($c, 'red', $space: rgb)}, #{color.channel($c, 'green', $space: rgb)}, #{color.channel($c, 'blue', $space: rgb)};
   }

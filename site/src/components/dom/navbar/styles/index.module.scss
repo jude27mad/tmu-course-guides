@@ -5,8 +5,7 @@
   z-index: 2;
   top: 0;
   left: 0;
-  padding: var(--layout-columns-gap) var(--layout-margin) 0px
-    var(--layout-margin);
+  padding: var(--layout-columns-gap) var(--layout-margin) 0px var(--layout-margin);
   width: 100%;
   pointer-events: none;
   scale: 1;
@@ -46,7 +45,7 @@
         min-width: 44px;
       }
       :global(.p-x) {
-        font-size: max(14px, 0.85vw);
+        font-size: max(16px, 0.85vw);
       }
     }
   }

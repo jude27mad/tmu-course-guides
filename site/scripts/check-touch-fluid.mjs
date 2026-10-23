@@ -185,7 +185,11 @@ async function assertDeskPalette(page) {
   shown.palette = Object.fromEntries(Object.entries(shown.palette).map(([name, value]) => [name, longHex(value)]));
   assert.deepEqual(shown.palette, expected, 'the route must not replace the Desk palette');
   assert.equal(shown.ink, 'rgb(24, 24, 27)');
-  assert.equal(shown.menu, 'rgb(24, 24, 27)');
+  // This named control now uses the same ink with a high-opacity glass backing.
+  // Keep every palette channel and the text contract exact; content remains opaque.
+  const menuChannels = shown.menu.match(/[\d.]+/g).map(Number);
+  assert.deepEqual(menuChannels.slice(0, 3), [24, 24, 27]);
+  assert.ok((menuChannels[3] ?? 1) >= 0.9, `MENU backing lost its contrast: ${shown.menu}`);
   assert.equal(shown.menuInk, 'rgb(250, 250, 250)');
   assert.equal(shown.theme.toLowerCase(), shown.footerReachesBottom ? '#18181b' : '#f4f4f5');
   assert.equal(shown.browserSurface, shown.footerReachesBottom ? 'dark' : 'light');
