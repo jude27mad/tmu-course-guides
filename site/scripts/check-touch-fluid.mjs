@@ -171,6 +171,9 @@ async function assertDeskPalette(page) {
       }),
     };
   }, Object.keys(expected));
+  // The CSS minifier writes #ffffff as #fff; inline values set by usePalette keep six digits.
+  const longHex = (value) => (/^#[0-9a-f]{3}$/.test(value) ? `#${[...value.slice(1)].map((digit) => digit + digit).join('')}` : value);
+  shown.palette = Object.fromEntries(Object.entries(shown.palette).map(([name, value]) => [name, longHex(value)]));
   assert.deepEqual(shown.palette, expected, 'the route must not replace the Desk palette');
   assert.equal(shown.ink, 'rgb(24, 24, 27)');
   assert.equal(shown.menu, 'rgb(24, 24, 27)');

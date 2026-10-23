@@ -5,17 +5,16 @@
 //   --live <url>       after a deploy: waits until <url> serves --build-id, then checks the published
 //                      addresses with plain requests.
 import assert from 'node:assert/strict';
-import { createServer } from 'node:http';
 import { createRequire } from 'node:module';
-import { mkdir, readFile, stat } from 'node:fs/promises';
-import { extname, join, resolve, sep } from 'node:path';
+import { mkdir } from 'node:fs/promises';
+import { join } from 'node:path';
+import { servePages } from './pages-server.mjs';
 
 const args = process.argv.slice(2);
 const option = (name) => {
   const index = args.indexOf(`--${name}`);
   return index === -1 ? undefined : args[index + 1];
 };
-const base = '/tmu-course-guides';
 
 const PAGES = [
   ['', 'TMU Course Guides | Fall 2026'],
@@ -60,59 +59,12 @@ const SHOWN = [
   ['mth141/', null],
 ];
 
-const TYPES = {
-  '.html': 'text/html; charset=utf-8',
-  '.js': 'text/javascript',
-  '.css': 'text/css',
-  '.json': 'application/json',
-  '.webmanifest': 'application/manifest+json',
-  '.svg': 'image/svg+xml',
-  '.woff2': 'font/woff2',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.webp': 'image/webp',
-  '.txt': 'text/plain',
-};
-
-// Like GitHub Pages for a project site: a folder without its trailing slash redirects, a folder serves its
-// index.html, and anything missing gets the site's 404.html with status 404.
-function pagesServer(root) {
-  return createServer(async (req, res) => {
-    const url = new URL(req.url, 'http://localhost');
-    const notFound = async () => {
-      res.writeHead(404, { 'Content-Type': TYPES['.html'] });
-      res.end(await readFile(join(root, '404.html')));
-    };
-    try {
-      const pathname = decodeURIComponent(url.pathname);
-      if (pathname !== base && !pathname.startsWith(`${base}/`)) return notFound();
-      let path = resolve(root, `.${pathname.slice(base.length)}`);
-      if (path !== root && !path.startsWith(`${root}${sep}`)) return notFound();
-      if ((await stat(path)).isDirectory()) {
-        if (!pathname.endsWith('/')) {
-          res.writeHead(301, { Location: `${url.pathname}/${url.search}` });
-          return res.end();
-        }
-        path = join(path, 'index.html');
-      }
-      const body = await readFile(path);
-      res.writeHead(200, { 'Content-Type': TYPES[extname(path)] || 'application/octet-stream' });
-      return res.end(body);
-    } catch {
-      return notFound();
-    }
-  });
-}
-
 async function checkLocal(folder) {
   const require = createRequire(import.meta.url);
   const { chromium } = require(process.env.PLAYWRIGHT_PATH || 'playwright');
   const reports = process.env.QA_REPORT_DIR || '/tmp/pages-site-qa';
   await mkdir(reports, { recursive: true });
-  const server = pagesServer(resolve(folder));
-  await new Promise((done) => server.listen(0, '127.0.0.1', done));
-  const origin = `http://127.0.0.1:${server.address().port}`;
-  const site = `${origin}${base}/`;
+  const { server, site } = await servePages(folder);
   const browser = await chromium.launch({ headless: true, executablePath: process.env.QA_CHROMIUM_PATH || undefined });
   const failures = [];
   const check = async (name, run) => {

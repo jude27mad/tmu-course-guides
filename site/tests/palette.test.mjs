@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
+import { extname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { BADGE, DISC, STATUS, TOKENS, countdownStatus, rgbOf } from '../src/lib/palette.mjs';
 import { DEFAULT_PALETTE, PALETTES } from '../src/lib/courses.mjs';
@@ -99,4 +101,27 @@ test('text pairs meet WCAG AA', () => {
   for (const [name, fg, bg] of body) assert.ok(contrast(fg, bg) >= 4.5, `${name}: ${contrast(fg, bg).toFixed(2)}`);
   // #71717A on the #F4F4F5 page is 4.40:1: large text only, so muted body text sits on white cards.
   assert.ok(contrast(TOKENS.muted, TOKENS.page) >= 3);
+});
+
+// The previous palette: none of it may remain in the site's source, nor black with alpha as a surface.
+const OLD = /#(?:f0f4f1|28282b|f2ffbd|d7d7d4|292928|0b0c0b|020002|09050c|070410|f9f9f9)(?![0-9a-f])|rgba?\(\s*40\s*,\s*40\s*,\s*43\b|rgba?\(\s*0\s*,\s*0\s*,\s*0\s*,|#000000[0-9a-f]{2}(?![0-9a-f])/gi;
+const SOURCE = new Set(['.js', '.jsx', '.mjs', '.cjs', '.scss', '.css', '.json', '.html', '.svg', '.webmanifest', '.md', '.frag', '.vert', '.glsl']);
+async function* sourceFiles(dir) {
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    const path = join(dir, entry.name);
+    if (entry.isDirectory()) yield* sourceFiles(path);
+    else if (SOURCE.has(extname(entry.name))) yield path;
+  }
+}
+
+test('no old colour remains in the site source', async () => {
+  const site = fileURLToPath(new URL('..', import.meta.url));
+  const hits = [];
+  const scan = async (path) => {
+    const text = await readFile(path, 'utf8');
+    for (const match of text.matchAll(OLD)) hits.push(`${path.slice(site.length)}: ${match[0]}`);
+  };
+  for (const dir of ['src', 'public']) for await (const path of sourceFiles(join(site, dir))) await scan(path);
+  await scan(join(site, 'scripts', 'pages-site.mjs'));
+  assert.deepEqual(hits, []);
 });
