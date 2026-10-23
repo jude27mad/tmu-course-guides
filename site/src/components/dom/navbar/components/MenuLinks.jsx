@@ -152,13 +152,11 @@ function MenuLinks() {
           )}
           {renderRow(
             'motion',
-            <button type="button" onClick={toggleMotion} disabled={motionReduced} aria-pressed={motionSaved} aria-describedby={motionReduced ? 'menu-motion-note' : undefined}>
+            <button type="button" onClick={toggleMotion} disabled={motionReduced} aria-pressed={motionSaved} aria-describedby="menu-motion-note">
               <span>{motionLabel}</span>
-              {motionReduced && (
-                <small id="menu-motion-note" className={clsx('p-x', styles.menuListItemMeta)}>
-                  Reduced motion is enabled by your device or page setting
-                </small>
-              )}
+              <small id="menu-motion-note" className={clsx('p-x', styles.menuListItemMeta)}>
+                {motionReduced ? 'Reduced motion is enabled by your device or page setting' : 'Stops animation and makes glass controls solid'}
+              </small>
             </button>,
           )}
         </div>

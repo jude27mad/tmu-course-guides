@@ -56,6 +56,9 @@ After building, run `PLAYWRIGHT_PATH=/path/to/playwright node scripts/verify-cou
 
 ## Motion and accessibility
 
+- Glass is limited to course navigation and small utility controls. `styles/glass.scss` provides the shared material and fallback; the decorative selection in `CourseNavigation.jsx` follows the existing routing state. No new rendering loop or runtime dependency is added. Reading content and the Guide tools body stay solid.
+- The Pages workflow runs `scripts/check-glass-controls.mjs` in Chromium and WebKit, uploads screenshots, interaction traces and paired glass on/off timing diagnostics, and provides a `site-preview` artifact for pull requests. These are browser-emulated checks; physical iPhone/iPad Safari testing is separate. Development for this change uses GitHub CI for tests and builds.
+
 - `prefers-reduced-motion` and the saved Pause motion setting (`guide-motion-paused`) turn off the loader curtain, route transitions, appear animations, background drift, fluid effect, pre-footer physics and marquee, and render the 3D scenes on demand so they hold still. Lenis wheel smoothing stays on.
 - Pinch zoom, text selection, keyboard scrolling, visible focus, a skip link and 44 px tap targets for buttons and controls on phones. Without JavaScript the static course content renders; deadlines, checklists, card details and What's changed? need JavaScript.
 
