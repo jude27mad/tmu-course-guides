@@ -20,15 +20,27 @@ const url = 'http://127.0.0.1:' + server.address().port + basePath + '/';
 const browser = await playwright[engine].launch({ headless: true, ...(engine === 'chromium' && process.env.QA_CHROMIUM_PATH ? { executablePath: process.env.QA_CHROMIUM_PATH } : {}) });
 const results = [];
 const nav = 'nav[aria-label="Course views"]';
-const ready = (page) => page.waitForFunction(() => {
-  const main = document.querySelector('main');
-  const section = document.querySelector('#course-section');
-  const loader = document.querySelector('#loader');
-  return main && getComputedStyle(main).opacity === '1' && document.documentElement.dataset.motion &&
-    (!loader || getComputedStyle(loader).display === 'none') &&
-    !main.classList.contains('lenis-stopped') && (!section || !section.disabled) &&
-    (!section || document.querySelector('nav[data-selection-ready="true"]'));
-});
+const ready = async (page) => {
+  await page.waitForFunction(() => {
+    const main = document.querySelector('main');
+    const section = document.querySelector('#course-section');
+    const loader = document.querySelector('#loader');
+    const header = document.getElementById('menu-button')?.closest('header');
+    return main && getComputedStyle(main).opacity === '1' && document.documentElement.dataset.motion &&
+      header && getComputedStyle(header).opacity === '1' && getComputedStyle(header).visibility === 'visible' &&
+      (!loader || getComputedStyle(loader).display === 'none') &&
+      !main.classList.contains('lenis-stopped') && (!section || !section.disabled) &&
+      (!section || document.querySelector('nav[data-selection-ready="true"]'));
+  });
+  // JS-ready is not paint-ready in WebKit: the first capture can precede the
+  // header's text paint, while the next capture is correct with no DOM change.
+  // Settle fonts and a paint boundary before visual/pixel assertions. This is
+  // test capture readiness only; the application does not wait for fonts.
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  });
+};
 const settled = (page) => page.waitForFunction(() => {
   const content = document.querySelector('#course-content');
   return content && !content.inert && getComputedStyle(content).opacity === '1' && getComputedStyle(content).transform === 'none';
@@ -58,7 +70,7 @@ const luminance = (color) => color.slice(0, 3).map((v) => v / 255).map((v) => v 
 const contrast = (a, b) => { const x = luminance(a); const y = luminance(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
 const composite = (front, back) => front.slice(0, 3).map((v, i) => v * (front[3] ?? 1) + back[i] * (1 - (front[3] ?? 1)));
 async function assertMenuPaint(page, screenshot) {
-  // DOM visibility alone misses WebKit dropping the face of a 3D text layer.
+  // DOM visibility alone does not prove that a label is actually painted.
   // Inspect the actual captured pill, excluding its edge and surrounding page.
   const lightPixels = await page.evaluate(async (base64) => {
     const bytes = Uint8Array.from(atob(base64), (char) => char.charCodeAt(0));
