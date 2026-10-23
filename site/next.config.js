@@ -1,10 +1,11 @@
 /** @type {import('next').NextConfig} */
 
 // Static export for GitHub Pages. The site is served from a sub-path of the
-// Pages project, so every route and asset URL carries a basePath. The default
-// is the preview location (/tmu-course-guides/next); set SITE_BASE_PATH (or
-// NEXT_PUBLIC_BASE_PATH) to build for another location, e.g.
-// SITE_BASE_PATH=/tmu-course-guides for the Pages root, '' for a domain root.
+// Pages project, so every route and asset URL carries a basePath. The published
+// build sets SITE_BASE_PATH=/tmu-course-guides (.github/workflows/pages.yml).
+// Without it the default is the earlier preview location, /tmu-course-guides/next,
+// which the QA scripts in scripts/ expect. NEXT_PUBLIC_BASE_PATH works too, and
+// '' builds for a domain root.
 const rawBasePath = process.env.SITE_BASE_PATH ?? process.env.NEXT_PUBLIC_BASE_PATH ?? '/tmu-course-guides/next';
 const basePath = rawBasePath === '/' ? '' : rawBasePath.replace(/\/+$/, '');
 

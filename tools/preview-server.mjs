@@ -1,4 +1,5 @@
-// Development preview only; GitHub Pages still serves the unbuilt static files.
+// Development preview of the previous website at the repository root, which is no longer published
+// (GitHub Pages publishes only site/, through .github/workflows/pages.yml).
 // --base /tmu-course-guides/ reproduces the Pages project subpath: requests outside the base 404.
 import http from 'node:http';import {readFile,stat} from 'node:fs/promises';import path from 'node:path';import {fileURLToPath} from 'node:url';
 const mime={'.html':'text/html','.mjs':'text/javascript','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.webp':'image/webp','.png':'image/png','.woff2':'font/woff2','.json':'application/json'};
