@@ -23,6 +23,7 @@ const PAGES = [
   ['mth140/', 'MTH140: Calculus I | TMU Course Guides'],
   ['mth141/', 'MTH141: Linear Algebra | TMU Course Guides'],
   ['privacy/', 'Privacy | TMU Course Guides'],
+  ['updates/', 'Website updates | TMU Course Guides'],
 ];
 
 // Old address -> where a visitor must land (path, query and hash).

@@ -162,9 +162,15 @@ test('cen100 hide filter and release badge use the old JSON values', () => {
   assert.equal(storage.data.get('cen100-hide-completed-v1'), 'false');
   assert.equal(hasUnseenUpdates('cen100', storage), true);
   markUpdatesSeen('cen100', storage);
-  assert.equal(storage.data.get('cen100-last-seen-update-v1'), '"2026-10-16-course-artwork"');
+  assert.equal(storage.data.get('cen100-last-seen-update-v1'), '"2026-09-30-grading-by-working-arrangement"');
   assert.equal(hasUnseenUpdates('cen100', storage), false);
-  assert.equal(hasUnseenUpdates('cen100', memoryStorage({ 'cen100-last-seen-update-v1': '"2026-10-01-older"' })), true);
+  assert.equal(hasUnseenUpdates('cen100', memoryStorage({ 'cen100-last-seen-update-v1': '"2026-09-26-deadline-links"' })), true);
+  assert.equal(hasUnseenUpdates('cen100', memoryStorage({ 'cen100-last-seen-update-v1': '"garbage"' })), true);
+  // Students who opened the last release's notes see no badge: their saved id is dated after the newest course update.
+  const opened = memoryStorage({ 'cen100-last-seen-update-v1': '"2026-10-16-course-artwork"' });
+  assert.equal(hasUnseenUpdates('cen100', opened), false);
+  markUpdatesSeen('cen100', opened);
+  assert.deepEqual(opened.writes(), [], 'a newer saved value is never replaced by an older one');
 });
 
 for (const courseId of ['mth140', 'mth141']) {
@@ -224,7 +230,10 @@ for (const courseId of ['mth140', 'mth141']) {
     }
     const seen = memoryStorage();
     markUpdatesSeen(courseId, seen);
-    assert.equal(seen.data.get(`${courseId}-last-seen-update-v1`), '"2026-10-16-course-artwork"');
+    const latest = courseId === 'mth140' ? '"2026-10-12-confirmed-quiz-2-coverage-and-monday-make-up"' : '"2026-10-12-midterm-scope-and-public-privacy"';
+    assert.equal(seen.data.get(`${courseId}-last-seen-update-v1`), latest);
+    assert.equal(hasUnseenUpdates(courseId, seen), false);
+    assert.equal(hasUnseenUpdates(courseId, memoryStorage({ [`${courseId}-last-seen-update-v1`]: '"2026-10-16-course-artwork"' })), false);
   });
 }
 

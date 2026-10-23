@@ -13,7 +13,7 @@ test('CEN100 content is the old closure’s literals, word for word and in order
   for (const name of ['I', 'WHO', 'TEAM', 'YOU', 'RULES', 'CONFIRMED', 'OPEN', 'STAFFING', 'SOURCE_INFO', 'PROFILE_KEY', 'FILTER_KEY', 'PLAN_KEY', 'SEEN_KEY']) {
     assert.deepEqual(CEN[name], old[name], name);
   }
-  // The release version moves on with each "What's changed?" entry, so the unread badge shows for the new design.
+  // The last release version of the old badge. The badge now follows the newest course update (content/updates.mjs).
   assert.equal(CEN.GUIDE_VERSION, '2026-10-16-course-artwork');
   assert.notEqual(CEN.GUIDE_VERSION, old.GUIDE_VERSION);
   assert.equal(CEN.KEY, 'cen100-g9-ticks');

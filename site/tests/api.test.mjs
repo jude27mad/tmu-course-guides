@@ -114,7 +114,9 @@ test('courseInfo: rules, contacts, topic map and notes as data', async () => {
   assert.equal(cen.items.find((item) => item.id === 'y7').what, old.sectionContent({ section: 29, group: 9 })['b-y7 .what']);
   assert.equal(cen.items.flatMap((item) => item.groups.flatMap((g) => g.checks)).length, 126);
   assert.equal(cen.grading.tables[1].rows.length, 20);
-  assert.ok(cen.updates.entries.length > 10);
+  assert.equal(cen.updates.summary, 'Course updates');
+  assert.equal(cen.updates.entries.length, 4);
+  assert.equal(cen.updates.version, cen.updates.entries[0].id);
   const none = lib.courseInfo('cen100');
   assert.equal(none.profile.summary, 'Choose your section & group');
   assert.equal(none.contacts.ga, null);
