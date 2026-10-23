@@ -22,7 +22,17 @@ const VARIABLES = [
 
 function setThemeColor(color) {
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta && color) meta.setAttribute('content', color);
+  if (meta && color && document.documentElement.dataset.browserSurface !== 'dark') meta.setAttribute('content', color);
+}
+
+// The site's browser-edge surface follows dark full-screen menu/search panels.
+// Route palette updates must not overwrite the active dark browser tint.
+export function setBrowserSurface(mode) {
+  if (typeof document === 'undefined') return;
+  const dark = mode === 'dark';
+  document.documentElement.dataset.browserSurface = dark ? 'dark' : 'light';
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', dark ? '#09050c' : DEFAULT_PALETTE.secondary);
 }
 
 // Sets the CSS variables on <html> and the fluid tint. Safe to call on the server (no-op).
