@@ -4,8 +4,9 @@
 .btnPosnawr {
   position: relative;
   overflow: hidden;
-  height: 2.5vw;
-  padding: 0 1.25vw 0 1.25vw;
+  min-height: 44px;
+  height: max(44px, 2.5vw);
+  padding: 0 max(16px, 1.25vw);
   border-radius: 9vw;
   text-decoration: none;
   background-color: var(--accentColor);
@@ -64,7 +65,8 @@
 
   .labelClassic {
     z-index: 2;
-    line-height: 46%;
+    font-size: max(16px, 0.85vw);
+    line-height: 1.2;
     white-space: nowrap;
     @include mobile {
       line-height: 100%;
@@ -73,8 +75,8 @@
   }
 
   .arrowClassic {
-    width: 0.6vw;
-    height: 0.6vw;
+    width: max(10px, 0.6vw);
+    height: max(10px, 0.6vw);
     fill: var(--black);
     stroke: var(--black);
     transform: rotate(-90deg);

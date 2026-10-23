@@ -11,9 +11,10 @@
   }
   border-radius: 9vw;
   .label {
+    font-size: max(16px, 0.85vw);
     @include mobile {
       padding: 0 max(3vw, 16px) 0 max(3vw, 16px);
     }
-    padding: 0 1.25vw 0 1.25vw;
+    padding: 0 max(16px, 1.25vw);
   }
 }

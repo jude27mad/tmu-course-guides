@@ -29,7 +29,9 @@ const ready = async (page) => {
 };
 const settled = (page) => page.waitForFunction(() => {
   const content = document.querySelector('#course-content');
-  return content && !content.inert && getComputedStyle(content).opacity === '1';
+  const results = document.querySelector('[data-work-results]');
+  return content && !content.inert && getComputedStyle(content).opacity === '1' &&
+    (!results || (!results.inert && getComputedStyle(results).opacity === '1'));
 });
 
 async function check(browser, options, name, run) {
@@ -101,6 +103,7 @@ try {
 
   for (const [engine, options, label] of [
     [webkit, devices['iPhone 13'], 'iphone'],
+    [webkit, { ...devices['iPhone 13'], reducedMotion: 'reduce' }, 'iphone-still'],
     [chromium, { viewport: { width: 834, height: 1024 }, hasTouch: true }, 'tablet'],
     [chromium, { viewport: { width: 1440, height: 900 } }, 'desktop'],
   ]) {
@@ -115,6 +118,7 @@ try {
         await page.locator('#course-section:not(:disabled)').waitFor();
         const rows = await page.locator('[data-assignment-link]').count();
         await page.clock.pauseAt(new Date(await page.evaluate(() => Date.now() + 1000)));
+        assert.equal(await page.locator('[data-filter-selection]').count(), 1, 'the selected Work filter has a visible moving indicator');
         const before = await page.locator('[data-filter-selection]').boundingBox();
         assert.ok(before, 'the selected Work filter has a visible moving indicator');
         const all = page.getByRole('button', { name: /^All \(/ });
@@ -123,28 +127,68 @@ try {
         await page.clock.runFor(48);
         assert.equal(await all.getAttribute('aria-pressed'), 'true', 'selection acknowledges the click immediately');
         const during = await page.locator('[data-filter-selection]').boundingBox();
-        assert.ok(during.x > before.x + 1 && during.x < allBox.x - 1, `the selection moves between filters: ${JSON.stringify({ before, during, allBox })}`);
+        if (options.reducedMotion === 'reduce') assert.ok(Math.abs(during.x - allBox.x) < 2, 'reduced motion selects immediately');
+        else assert.ok(during.x > before.x + 1 && during.x < allBox.x - 1, `the selection moves between filters: ${JSON.stringify({ before, during, allBox })}`);
         await page.clock.runFor(400);
         assert.equal(await page.locator('[data-assignment-link]').count(), rows, 'All and Open correctly match before anything is marked done');
         assert.match(await page.locator('[data-work-summary]').innerText(), /all|total/i, 'a visible summary identifies the chosen result set');
         await page.getByRole('button', { name: /^Done \(/ }).evaluate((button) => button.click());
+        await page.clock.runFor(48);
+        if (options.reducedMotion !== 'reduce') {
+          const opacity = await page.locator('[data-work-results]').evaluate((node) => Number(getComputedStyle(node).opacity));
+          assert.ok(opacity > 0 && opacity < 1, 'changed results fade out before replacement');
+        }
         await page.clock.runFor(500);
         assert.equal(await page.locator('[data-assignment-link]').count(), 0);
         const empty = page.locator('[data-work-empty]');
         assert.match(await empty.innerText(), /mark|completion/i, 'empty Done explains how assignments arrive here');
+        await page.screenshot({ path: path.join(report, `${label}-done-empty.png`) });
         const backToWork = empty.getByRole('button', { name: /open|work/i });
         await backToWork.evaluate((button) => button.click());
         await page.clock.runFor(500);
         assert.equal(await page.locator('[data-assignment-link]').count(), rows);
+        await page.getByRole('button', { name: /^Done \(/ }).evaluate((button) => button.click());
+        await page.clock.runFor(32);
+        await all.evaluate((button) => button.click());
+        await page.clock.runFor(500);
+        assert.equal(await page.locator('[data-assignment-link]').count(), rows, 'a newer filter cancels an outgoing result transition');
+        await page.getByRole('button', { name: /^Open \(/ }).evaluate((button) => button.click());
+        await page.clock.runFor(400);
         await page.clock.resume();
         await page.getByRole('button', { name: /^All \(/ }).focus();
         await page.keyboard.press('Enter');
         await page.waitForFunction(() => location.hash === '#work/all');
         await settled(page);
+        assert.equal(await all.evaluate((button) => button === document.activeElement), true, 'keyboard focus stays on the selected filter');
         await page.goBack();
         await page.waitForFunction(() => !location.hash || location.hash === '#work');
         await settled(page);
         await page.screenshot({ path: path.join(report, `${label}-work-filters.png`) });
+        if (label === 'iphone') {
+          await page.locator('#open-assignment-y1').click();
+          await settled(page);
+          const records = page.locator('[data-assignment-detail] fieldset input[type="checkbox"]');
+          assert.equal(await records.count(), 4, 'September items has four separate submission records');
+          await page.locator('[data-assignment-detail] input[type="checkbox"]').first().check();
+          await records.first().check();
+          await page.getByRole('button', { name: /Back to Work/ }).first().click();
+          await settled(page);
+          assert.match(await page.locator('#open-assignment-y1').innerText(), /1\/4 recorded/);
+          assert.equal(await page.getByRole('button', { name: 'Done (0)', exact: true }).count(), 1, 'preparation ticks and one record do not finish an assignment');
+          await page.locator('#open-assignment-y1').click();
+          await settled(page);
+          for (let i = 1; i < 4; i += 1) await records.nth(i).check();
+          await page.getByRole('button', { name: /Back to Work/ }).first().click();
+          await settled(page);
+          await page.getByRole('button', { name: 'Done (1)', exact: true }).click();
+          await page.locator('#open-assignment-y1').waitFor();
+          assert.equal(await page.locator('[data-assignment-link]').count(), 1);
+          await page.reload();
+          await ready(page);
+          await page.locator('#open-assignment-y1').waitFor();
+          assert.equal(await page.getByRole('button', { name: 'Done (1)', exact: true }).getAttribute('aria-pressed'), 'true');
+          await page.screenshot({ path: path.join(report, 'iphone-done-recorded.png') });
+        }
         return { rows, keyboardAndHistory: true };
       });
     } finally { await browser.close(); }

@@ -3,18 +3,21 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 const read = (name) => readFileSync(new URL(name, import.meta.url), 'utf8');
 
-test('Safari uses paintless fixed edge samplers, independently at the top and bottom', () => {
+test('Safari transparency is not replaced by opaque fixed edge colour samples', () => {
   const page = read('../src/pages/_app.page.jsx');
   const css = read('../src/styles/global.scss');
-  assert.match(page, /data-safari-edge="top"/);
-  assert.match(page, /data-safari-edge="bottom"/);
-  assert.match(css, /background-clip:\s*text/);
-  assert.match(css, /-webkit-background-clip:\s*text/);
-  assert.match(css, /--safari-edge-top/);
-  assert.match(css, /--safari-edge-bottom/);
+  assert.doesNotMatch(page, /data-safari-edge=/);
+  assert.doesNotMatch(css, /--safari-edge-(top|bottom)/);
+  assert.doesNotMatch(css, /background-clip:\s*text/);
+  assert.match(page, /data-safari-blend="top"/);
+  assert.match(page, /data-safari-blend="bottom"/);
+  assert.ok(page.indexOf('data-safari-blend="top"') < page.indexOf('id="layout"'));
+  assert.ok(page.indexOf('data-safari-blend="bottom"') > page.indexOf('<Component'));
+  assert.match(css, /\.safari-toolbar-blend\s*\{[^}]*position:\s*sticky;[^}]*background(?:-color)?:\s*transparent;/);
+  assert.match(css, /bottom:\s*-2px/);
 });
 
-test('Safari browser top stays paper on normal pages, while dark overlay tints both bars', () => {
+test('Safari browser surface state remains compatible with menus and the dark footer', () => {
   const theme = read('../src/utils/theme.js');
   const navbar = read('../src/components/dom/navbar/Index.jsx');
   assert.match(theme, /setBrowserSurfaces/);
