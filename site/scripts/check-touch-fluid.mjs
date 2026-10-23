@@ -162,6 +162,15 @@ async function assertDeskPalette(page) {
       menu: menu.backgroundColor,
       menuInk: getComputedStyle(document.querySelector('#menu-button p:not([aria-hidden])')).color,
       theme: document.querySelector('meta[name="theme-color"]').content,
+      browserSurface: document.documentElement.dataset.browserSurface,
+      footerReachesBottom: (() => {
+        const main = document.querySelector("main");
+        const footer = main?.querySelector("footer");
+        if (!main || !footer) return false;
+        const mainRect = main.getBoundingClientRect();
+        const footerRect = footer.getBoundingClientRect();
+        return footerRect.top < mainRect.bottom - 1 && footerRect.bottom >= mainRect.bottom - 1;
+      })(),
       blend: fluid.mixBlendMode,
       fluidBackground: fluid.backgroundColor,
       panels: Array.from(document.querySelectorAll('[style*="--card-menu"], [style*="--cardMenu"]'), node => {
@@ -178,7 +187,8 @@ async function assertDeskPalette(page) {
   assert.equal(shown.ink, 'rgb(24, 24, 27)');
   assert.equal(shown.menu, 'rgb(24, 24, 27)');
   assert.equal(shown.menuInk, 'rgb(250, 250, 250)');
-  assert.equal(shown.theme.toLowerCase(), '#f4f4f5');
+  assert.equal(shown.theme.toLowerCase(), shown.footerReachesBottom ? '#18181b' : '#f4f4f5');
+  assert.equal(shown.browserSurface, shown.footerReachesBottom ? 'dark' : 'light');
   for (const panel of shown.panels) assert.deepEqual(panel, { ink: '#18181b', menu: '#18181b', fill: '#ffffff' });
   assert.equal(shown.blend, 'difference');
   assert.equal(shown.fluidBackground, 'rgb(0, 0, 0)');
