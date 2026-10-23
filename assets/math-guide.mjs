@@ -1,4 +1,4 @@
-import {COURSES} from './course-data.mjs?v=20261012-assessments2';
+import {COURSES} from './course-data.mjs?v=20261023-mth141';
 import {DAY_NAMES,today,daysUntil,dateLabel,clock,resolveAssessment,assessmentPassed,upcoming,timing,calendar,addDays} from './schedule.mjs';
 
 let activeCleanup=null;

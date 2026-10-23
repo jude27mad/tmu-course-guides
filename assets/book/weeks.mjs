@@ -11,7 +11,7 @@
  * an individual record. CEN's y9 date is the start of an exam period, not an
  * exam date: its guide completion key is item:y9 and its date stays pending.
  */
-import {COURSES} from '../course-data.mjs?v=20261012-assessments2';
+import {COURSES} from '../course-data.mjs?v=20261023-mth141';
 import {today, addDays, dateLabel, dayLabel, resolveAssessment, timestamp} from '../schedule.mjs';
 
 const WEEKDAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
