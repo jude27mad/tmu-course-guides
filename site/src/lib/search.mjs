@@ -149,7 +149,8 @@ const GUIDE_ENTRIES = (() => {
     for (const a of DATA[id].assessments) out.push({ courseId: id, title: a.title, tab: 'Assessment', href: `/${id}/#assessment-${a.id}`, text: `${a.title} ${a.scope} ${a.kind} ${a.source}` });
     for (const t of DATA[id].topics) out.push({ courseId: id, title: t.title, tab: 'Topic map', href: `/${id}/#topic-${t.id}`, text: `${t.title} ${t.sections} ${t.description} ${t.skills.join(' ')}` });
   }
-  return out;
+  // Normalised once here rather than for every entry on every keystroke.
+  return out.map((entry) => ({ ...entry, normalisedTitle: normalise(entry.title), normalisedText: normalise(entry.text) }));
 })();
 
 /**
@@ -164,11 +165,11 @@ function searchGuideNow(query, { course = null, limit = 12 } = {}) {
     .filter(Boolean);
   if (!words.length) return { results: [], status: '' };
   const q = normalise(query).trim();
-  const matches = GUIDE_ENTRIES.filter((entry) => (!course || entry.courseId === course) && words.every((word) => normalise(entry.text).includes(word))).sort(
-    (a, b) => Number(normalise(b.title).includes(q)) - Number(normalise(a.title).includes(q)),
+  const matches = GUIDE_ENTRIES.filter((entry) => (!course || entry.courseId === course) && words.every((word) => entry.normalisedText.includes(word))).sort(
+    (a, b) => Number(b.normalisedTitle.includes(q)) - Number(a.normalisedTitle.includes(q)),
   );
   const status = matches.length ? CEN.COPY.searchStatus(matches.length) : CEN.COPY.searchNone;
-  return { results: matches.slice(0, limit).map(({ text, ...entry }) => entry), status, total: matches.length };
+  return { results: matches.slice(0, limit).map(({ text, normalisedTitle, normalisedText, ...entry }) => entry), status, total: matches.length };
 }
 
 // Public entry points run with cached Toronto-time formatting (see perf.mjs).
