@@ -46,21 +46,19 @@ const usePointerEvents = (mainRef, size, force) => {
     };
     const pointerEnd = (event) => positions.delete(pointerKey(event));
     const touchStart = (event) => {
-      Array.from(event.changedTouches || event.targetTouches || event.touches).forEach((touch) => {
+      Array.from(event.changedTouches || event.touches).forEach((touch) => {
         sample(`touch:${touch.identifier}`, touch.clientX, touch.clientY, true);
       });
     };
     const touchMove = (event) => {
-      Array.from(event.targetTouches || event.touches).forEach((touch) => {
+      // targetTouches excludes fingers that began on different child elements.
+      Array.from(event.changedTouches || event.touches).forEach((touch) => {
         sample(`touch:${touch.identifier}`, touch.clientX, touch.clientY);
       });
     };
     const touchEnd = (event) => {
-      // Removing one finger must not reset the remaining fingers' velocity.
-      const active = new Set(Array.from(event.targetTouches || event.touches, (touch) => `touch:${touch.identifier}`));
-      positions.forEach((position, key) => {
-        if (key.startsWith('touch:') && !active.has(key)) positions.delete(key);
-      });
+      // Remove only the released/cancelled identities, never other fingers.
+      Array.from(event.changedTouches || []).forEach((touch) => positions.delete(`touch:${touch.identifier}`));
     };
 
     const listeners = [
