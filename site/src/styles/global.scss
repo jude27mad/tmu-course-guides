@@ -204,3 +204,9 @@ html[data-motion='off'] {
     @include motion-off;
   }
 }
+
+html[data-scroll-mode='document'] {
+  overflow-x: clip; overflow-y: auto;
+  body { overflow: visible; max-height: none; }
+  #layout::before { position: absolute; width: 100%; height: 100%; }
+}

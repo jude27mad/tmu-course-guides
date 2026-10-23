@@ -1,3 +1,4 @@
+import { scrollRoot, scrollTop, scrollViewport } from '@src/utils/scrollRoot';
 import { buildShellTimeline } from '@src/components/dom/navbar/panelShell';
 import { setBrowserSurface } from '@src/utils/theme';
 import ButtonLink from '@src/components/animationComponents/buttonLink/Index';
@@ -46,7 +47,7 @@ function Navbar() {
     if (!header) return undefined;
     const measure = () => {
       headerHeight.current = header.offsetHeight;
-      scrollHeader({ scroll: document.querySelector('main')?.scrollTop || 0 });
+      scrollHeader({ scroll: scrollTop() });
     };
     const observer = new ResizeObserver(measure);
     observer.observe(header);
@@ -83,13 +84,14 @@ function Navbar() {
   useEffect(() => {
     let frame = 0;
     const main = document.querySelector('main');
-    if (!main) return undefined;
+    const scroller = scrollRoot();
+    if (!main || !scroller) return undefined;
     const update = () => {
       frame = 0;
       const current = useStore.getState();
       const overlay = current.isMenuOpen || current.isSearchOpen;
       const footer = main.querySelector('footer');
-      const scrollerRect = main.getBoundingClientRect();
+      const scrollerRect = scrollViewport();
       const footerRect = footer?.getBoundingClientRect();
       // Sample what reaches the BOTTOM of the real scroll viewport, rather
       // than the route or menu state. This works across all course pages.
@@ -99,7 +101,7 @@ function Navbar() {
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(update);
     };
-    main.addEventListener('scroll', schedule, { passive: true });
+    scroller.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule, { passive: true });
     const observer = new MutationObserver(schedule);
     observer.observe(main, { childList: true, subtree: true });
@@ -115,7 +117,7 @@ function Navbar() {
       if (frame) cancelAnimationFrame(frame);
       observer.disconnect();
       resizeObserver.disconnect();
-      main.removeEventListener('scroll', schedule);
+      scroller.removeEventListener('scroll', schedule);
       window.removeEventListener('resize', schedule);
     };
   }, [isOpen, isLoading, router.asPath]);

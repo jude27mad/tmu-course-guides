@@ -1,3 +1,4 @@
+import { nativeIOSScroll } from '@src/utils/scrollRoot';
 import { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import gsap from 'gsap';
@@ -21,8 +22,9 @@ function Loader() {
     const main = document.querySelector('main');
     const layout = document.getElementById('layout');
     const reveal = () => {
-      gsap.set(root.current, { autoAlpha: 0 });
+      gsap.set(root.current, { autoAlpha: 0, display: 'none' });
       gsap.set(main, { willChange: 'auto', pointerEvents: 'auto' });
+      if (nativeIOSScroll()) gsap.set(main, { clearProps: 'transform,transformOrigin' });
       setIntroOut(true);
       setIsLoading(false);
       lenis.start();
