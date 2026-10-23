@@ -76,15 +76,23 @@ function Navbar() {
     main.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule, { passive: true });
     const observer = new MutationObserver(schedule);
-    observer.observe(main, { childList: true, subtree: false });
+    observer.observe(main, { childList: true, subtree: true });
+    // Course content can expand after hydration and its route transition.
+    // Recheck when layout geometry changes even without a scroll event.
+    const resizeObserver = new ResizeObserver(schedule);
+    resizeObserver.observe(main);
+    if (main.firstElementChild) resizeObserver.observe(main.firstElementChild);
+    const footer = main.querySelector('footer');
+    if (footer) resizeObserver.observe(footer);
     schedule();
     return () => {
       if (frame) cancelAnimationFrame(frame);
       observer.disconnect();
+      resizeObserver.disconnect();
       main.removeEventListener('scroll', schedule);
       window.removeEventListener('resize', schedule);
     };
-  }, [isOpen, router.asPath]);
+  }, [isOpen, isLoading, router.asPath]);
 
   // The shared "main slides left" animation for the menu and the search panel.
   useEffect(() => {
