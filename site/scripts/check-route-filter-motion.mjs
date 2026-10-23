@@ -142,7 +142,7 @@ try {
         assert.equal(await page.locator('[data-assignment-link]').count(), 0);
         const empty = page.locator('[data-work-empty]');
         assert.match(await empty.innerText(), /mark|completion/i, 'empty Done explains how assignments arrive here');
-        await page.screenshot({ path: path.join(report, `${label}-done-empty.png`) });
+        await page.screenshot({ path: path.join(report, `${label}-done-empty.png`), fullPage: true });
         const backToWork = empty.getByRole('button', { name: /open|work/i });
         await backToWork.evaluate((button) => button.click());
         await page.clock.runFor(500);
@@ -163,6 +163,11 @@ try {
         await page.goBack();
         await page.waitForFunction(() => !location.hash || location.hash === '#work');
         await settled(page);
+        await page.waitForFunction(() => {
+          const selected = document.querySelector('[data-work-filters] [aria-pressed="true"]').getBoundingClientRect();
+          const indicator = document.querySelector('[data-filter-selection]').getBoundingClientRect();
+          return Math.abs(selected.x - indicator.x) < 2 && Math.abs(selected.width - indicator.width) < 2;
+        });
         await page.screenshot({ path: path.join(report, `${label}-work-filters.png`) });
         if (label === 'iphone') {
           await page.locator('#open-assignment-y1').click();
