@@ -218,7 +218,9 @@ html[data-scroll-mode='document'] {
 .safari-toolbar-blend {
   display: none;
 }
-@supports (-webkit-touch-callout: none) {
+// data-scroll-mode already selects iOS. Test the actual positioning feature,
+// not the unrelated platform-specific -webkit-touch-callout property.
+@supports (position: sticky) {
   html[data-scroll-mode='document'] .safari-toolbar-blend {
     display: block;
     position: sticky;
