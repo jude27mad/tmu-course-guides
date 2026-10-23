@@ -397,4 +397,3 @@ try {
   await new Promise((resolve) => server.close(resolve));
 }
 if (results.some((result) => !result.pass)) process.exitCode = 1;
-
