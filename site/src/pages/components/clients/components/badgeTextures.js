@@ -3,6 +3,7 @@ import { CanvasTexture, RepeatWrapping } from 'three';
 // The lanyard badge's printed faces, drawn on 2D canvases from the course
 // palette (the original used client-branded PNGs on a GLB card). The card carries the
 // course index, code, name and next date; the band repeats the course code.
+// Every colour comes from the look (BADGE in lib/palette.mjs); none is set here.
 // Colours stay in the canvas's own values: the shared canvas outputs linear
 // colour on the Desk, so untagged textures show exactly what is drawn (as his
 // PNG textures did).
@@ -32,7 +33,7 @@ function fitFont(ctx, text, weight, size, maxWidth) {
 }
 
 // Draws (or redraws) the card face onto `canvas`.
-export function drawCard(canvas, { index, code, name, term, nextLabel, nextValue, background, color }) {
+export function drawCard(canvas, { index, code, name, term, nextLabel, nextValue, background, color, secondary, divider, slot }) {
   const ctx = canvas.getContext('2d');
   const w = CARD_WIDTH;
   const h = CARD_HEIGHT;
@@ -46,13 +47,13 @@ export function drawCard(canvas, { index, code, name, term, nextLabel, nextValue
 
   // the clip slot
   roundRect(ctx, w / 2 - 52, 26, 104, 18, 9);
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.28)';
+  ctx.fillStyle = slot;
   ctx.fill();
 
-  ctx.fillStyle = color;
   ctx.textBaseline = 'alphabetic';
 
   // index and term, like the footer's meta pairs
+  ctx.fillStyle = secondary;
   ctx.textAlign = 'left';
   ctx.font = `550 30px ${FONT_FAMILY}`;
   ctx.fillText(index, pad, 104);
@@ -62,18 +63,20 @@ export function drawCard(canvas, { index, code, name, term, nextLabel, nextValue
   // course code and name
   ctx.textAlign = 'left';
   fitFont(ctx, code, 750, 132, w - pad * 2);
+  ctx.fillStyle = color;
   ctx.fillText(code, pad - 4, 380);
   fitFont(ctx, name, 550, 50, w - pad * 2);
+  ctx.fillStyle = secondary;
   ctx.fillText(name, pad, 448);
 
   // hairline, then the next date
-  ctx.globalAlpha = 0.35;
+  ctx.fillStyle = divider;
   ctx.fillRect(pad, 560, w - pad * 2, 2);
-  ctx.globalAlpha = 0.7;
+  ctx.fillStyle = secondary;
   ctx.font = `550 28px ${FONT_FAMILY}`;
   ctx.fillText(nextLabel, pad, 610);
-  ctx.globalAlpha = 1;
   fitFont(ctx, nextValue, 650, 44, w - pad * 2);
+  ctx.fillStyle = color;
   ctx.fillText(nextValue, pad, 664);
 }
 
@@ -94,14 +97,14 @@ export function redrawCard(texture, look) {
 }
 
 // The lanyard print: the course code repeated along the band.
-export function bandTexture({ code, background, color }) {
+export function bandTexture({ code, strap, strapColor }) {
   const canvas = document.createElement('canvas');
   canvas.width = 1024;
   canvas.height = 256;
   const ctx = canvas.getContext('2d');
-  ctx.fillStyle = background;
+  ctx.fillStyle = strap;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = color;
+  ctx.fillStyle = strapColor;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.font = `750 120px ${FONT_FAMILY}`;

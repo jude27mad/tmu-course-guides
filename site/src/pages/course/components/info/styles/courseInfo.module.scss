@@ -51,7 +51,7 @@
   grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
   column-gap: var(--layout-columns-gap);
   padding: calc(var(--layout-columns-gap) * 0.6) 0;
-  border-top: 1px solid rgba(40, 40, 43, 0.12);
+  border-top: 1px solid var(--border);
   @include mobile {
     grid-template-columns: minmax(0, 1fr);
     row-gap: calc(var(--layout-columns-gap) * 0.25);
@@ -72,7 +72,7 @@
   flex-direction: column;
   gap: calc(var(--layout-columns-gap) * 0.5);
   padding-top: var(--layout-columns-gap);
-  border-top: 1px solid rgba(40, 40, 43, 0.12);
+  border-top: 1px solid var(--border);
 }
 
 .lines {

@@ -152,7 +152,7 @@
   flex-direction: column;
   gap: calc(var(--layout-columns-gap) * 0.25);
   padding-top: calc(var(--layout-columns-gap) * 0.75);
-  border-top: 1px solid rgba(40, 40, 43, 0.15);
+  border-top: 1px solid var(--border);
 }
 
 .workLink {

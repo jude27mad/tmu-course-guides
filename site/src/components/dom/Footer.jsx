@@ -124,7 +124,7 @@ function Footer() {
   }
 
   return (
-    <section ref={footerRef} className={clsx(styles.root, 'layout-grid-inner')}>
+    <section ref={footerRef} className={clsx(styles.root, 'layout-grid-inner')} data-surface="dark">
       <div style={{ gridColumn: isMobile ? '1 / 3' : '1 / 5' }} className={styles.linksContainer}>
         <AppearTitle isFooter>
           <h2 className={clsx(styles.title, 'h6')}>Sitemap</h2>

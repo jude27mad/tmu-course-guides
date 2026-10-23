@@ -99,6 +99,35 @@
       .word {
         font-variant-numeric: tabular-nums;
         line-height: 100%;
+        color: var(--status, inherit);
+      }
+    }
+
+    // Status colours, from the time left: only the countdown and its badge use them.
+    [data-status='onTrack'] {
+      --status: var(--statusOnTrack);
+    }
+    [data-status='soon'] {
+      --status: var(--statusSoon);
+    }
+    [data-status='urgent'] {
+      --status: var(--statusUrgent);
+    }
+    [data-status='done'] {
+      --status: var(--statusDone);
+    }
+    .statusBadge {
+      width: fit-content;
+      margin-top: calc(var(--layout-columns-gap) * -0.5);
+      margin-bottom: var(--layout-columns-gap);
+      padding: 0.3em 0.8em;
+      border-radius: 999px;
+      color: var(--status);
+      background-color: var(--card);
+      box-shadow: inset 0 0 0 1px var(--border);
+      &[data-status='onTrack'] {
+        background-color: var(--accentTint);
+        box-shadow: none;
       }
     }
 

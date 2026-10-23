@@ -2,12 +2,14 @@
 /*
  * Adapted from Pixels71/kairo-astro signal-field.ts at 97426fdfa1f3bd812cf0acc364273c28a89f871e.
  * Copyright (c) 2026 Pixels71 — MIT; see public/licenses/Kairo-MIT.txt.
- * The point wave, repulsion, pulse bands, colours and timing are Kairo's.
+ * The point wave, repulsion, pulse bands and timing are Kairo's; the colours are the site palette's.
  * This adapter replaces its global intro/initialization with a disposable controller
  * driven by Giats's existing Tempus clock, visibility and motion preferences.
  */
-const BONE = '235, 233, 226';
-const SIGNAL = '255, 91, 31';
+import { TOKENS, rgbOf } from '../../lib/palette.mjs';
+
+const BONE = rgbOf(TOKENS.mutedOnDark);
+const SIGNAL = rgbOf(TOKENS.onDark);
 const PULSE_LIFE = 2.8;
 const PULSE_SPEED = 240;
 const REPEL = 170;
@@ -56,7 +58,7 @@ export function mountSignalField(canvas, { subscribe, host = canvas.parentElemen
     mouse.power += (mouse.target - mouse.power) * 0.08;
     ctx.clearRect(0, 0, width, height);
     ctx.globalAlpha = 1;
-    ctx.fillStyle = '#0b0c0b';
+    ctx.fillStyle = TOKENS.ink;
     ctx.fillRect(0, 0, width, height);
 
     const hot = [];

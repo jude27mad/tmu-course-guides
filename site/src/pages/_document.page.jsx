@@ -1,4 +1,5 @@
 import Document, { Head, Html, Main, NextScript } from 'next/document';
+import { TOKENS } from '@src/lib/palette.mjs';
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
@@ -39,7 +40,7 @@ export default class MyDocument extends Document {
           <script dangerouslySetInnerHTML={{ __html: BOOT }} />
           {/* Light only, and no automatic dark mode: forced darkening inverts the design (see global.scss). */}
           <meta name="color-scheme" content="only light" />
-          <meta name="theme-color" content="#f0f4f1" />
+          <meta name="theme-color" content={TOKENS.page} />
           <meta name="format-detection" content="telephone=no" />
           <link rel="icon" href={FAVICON} />
           <link rel="apple-touch-icon" sizes="180x180" href={`${BASE_PATH}/apple-touch-icon.png`} />

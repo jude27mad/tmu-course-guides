@@ -9,6 +9,7 @@ import HoverText, { dimPage, hidePortal, showPortal } from '@src/pages/course/co
 import CourseArtwork from '@src/components/courseArtwork/CourseArtwork';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import clsx from 'clsx';
+import { TOKENS } from '@src/lib/palette.mjs';
 import { countdown } from '@src/lib';
 import { gsap } from 'gsap';
 import styles from '@src/pages/course/components/deadlines/styles/deadlines.module.scss';
@@ -44,7 +45,7 @@ function Details({ item, now }) {
       <div className={styles.actions}>
         {item.cta ? <ButtonLink onClick={openPicker} label={item.cta.toUpperCase()} /> : null}
         <ButtonLink href={`#${item.anchor}`} label="VIEW REQUIREMENTS" ariaLabel={`View requirements for ${item.title}`} />
-        {item.markable && !item.done && pendingUndo !== item.id ? <ButtonLink onClick={() => markDone(item.id)} label="MARK DONE" ariaLabel={`Mark ${item.title} done`} /> : null}
+        {item.markable && !item.done && pendingUndo !== item.id ? <ButtonLink primary onClick={() => markDone(item.id)} label="MARK DONE" ariaLabel={`Mark ${item.title} done`} /> : null}
         {pendingUndo === item.id ? <ButtonLink onClick={undo} label="UNDO" /> : null}
       </div>
     </div>
@@ -137,7 +138,7 @@ const Other = memo(({ setPortals, groups, now, courseId, sectionRef }) => {
     (event, item) => {
       if (event.pointerType !== 'mouse' || !finePointer()) return;
       const title = titlesRef.current[item.id];
-      if (title) gsap.to(title, { color: '#28282b', duration: 0.35, ease: 'none' });
+      if (title) gsap.to(title, { color: TOKENS.ink, duration: 0.35, ease: 'none' });
       dimPage(true, sectionRef.current);
       showPortal(setPortals, item.id, [item.title, [item.when || item.dateLabel, item.weightLabel].filter(Boolean).join(' · '), item.requirement].filter(Boolean));
     },

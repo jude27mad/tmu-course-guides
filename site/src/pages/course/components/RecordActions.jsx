@@ -44,6 +44,7 @@ function RecordActions({ record, className, showStatus = true }) {
           }}
           label="MARK DONE"
           ariaLabel={`Mark ${record.title} done`}
+          primary
         />
       ) : null}
       {showStatus ? (

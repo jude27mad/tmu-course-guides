@@ -13,9 +13,11 @@
   gap: calc(var(--layout-columns-gap) / 2);
   align-items: center;
   justify-content: center;
+  // the hairline is inset, so the pill keeps its size
   box-shadow:
-    0 0.32vw 0.52vw #0000000a,
-    0 0.12vw 0.22vw #0000000a;
+    inset 0 0 0 1px var(--border),
+    0 0.32vw 0.52vw rgba(var(--inkRgb), 0.04),
+    0 0.12vw 0.22vw rgba(var(--inkRgb), 0.04);
   @include mobile {
     // 44 px tap target on phones (the original: 9vw = 35 px)
     height: max(9vw, 44px);
@@ -93,7 +95,7 @@
     width: 0;
     height: 0;
     border-radius: 40vw;
-    background-color: var(--fillColor);
+    background-color: var(--border);
     -webkit-transition:
       width 0.6s cubic-bezier(0.4, 0, 0.1, 1),
       height 0.6s cubic-bezier(0.4, 0, 0.1, 1);
@@ -104,5 +106,24 @@
     transform: translate(-50%, -50%);
     z-index: 1;
     pointer-events: none;
+  }
+
+  // the primary action: TMU Blue with white text
+  &.primary {
+    background-color: var(--accent);
+    color: var(--card);
+    box-shadow:
+      0 0.32vw 0.52vw rgba(var(--inkRgb), 0.04),
+      0 0.12vw 0.22vw rgba(var(--inkRgb), 0.04);
+
+    .arrowClassic,
+    &:hover .arrowClassic {
+      fill: var(--card);
+      stroke: var(--card);
+    }
+
+    .ball {
+      background-color: rgba(var(--inkRgb), 0.25);
+    }
   }
 }

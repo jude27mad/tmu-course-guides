@@ -3,17 +3,17 @@
   min-height: 520px;
   margin: 24px 0;
   color: var(--black);
-  --sx-color-primary: #28282b;
-  --sx-color-on-primary: #f0f4f1;
-  --sx-color-primary-container: #f2ffbd;
-  --sx-color-on-primary-container: #28282b;
-  --sx-color-background: #f0f4f1;
-  --sx-color-on-background: #28282b;
-  --sx-color-surface: #f0f4f1;
-  --sx-color-surface-container: #f0f4f1;
-  --sx-color-on-surface: #28282b;
-  --sx-color-outline: #777778;
-  --sx-color-outline-variant: #c9cdca;
+  --sx-color-primary: var(--black);
+  --sx-color-on-primary: var(--onDark);
+  --sx-color-primary-container: var(--card);
+  --sx-color-on-primary-container: var(--black);
+  --sx-color-background: var(--white);
+  --sx-color-on-background: var(--black);
+  --sx-color-surface: var(--white);
+  --sx-color-surface-container: var(--white);
+  --sx-color-on-surface: var(--black);
+  --sx-color-outline: var(--muted);
+  --sx-color-outline-variant: var(--border);
   --sx-font-small: 14px;
   --sx-font-extra-small: 13px;
   :global(.sx-react-calendar-wrapper) {
@@ -56,7 +56,7 @@
   gap: 20px;
   align-items: center;
   padding: 18px 0;
-  border-bottom: 1px solid rgba(40, 40, 43, 0.25);
+  border-bottom: 1px solid var(--border);
   &:hover {
     background: var(--fillColor);
   }

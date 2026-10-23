@@ -82,6 +82,7 @@
         }
       }
       &:focus-visible {
+        --focus: var(--onDark); // drawn inside the dark panel
         outline-offset: -6px;
         .canvas {
           opacity: 0.85;
@@ -149,7 +150,7 @@
             justify-content: center;
             background-color: var(--card-fill);
             color: var(--card-ink);
-            box-shadow: 0 0 0 0.01vw rgb(40, 40, 43, 0.3);
+            box-shadow: 0 0 0 0.01vw var(--border);
             border-radius: calc(var(--layout-columns-gap) * 0.5);
             @include mobile {
               width: 83%;
@@ -158,6 +159,10 @@
               left: 50%;
               transform: translate(-50%, -50%);
               border-radius: calc(var(--layout-columns-gap) * 0.25);
+            }
+            // the course name under the code
+            > :last-child {
+              color: var(--muted);
             }
           }
         }

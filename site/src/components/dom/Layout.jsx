@@ -10,6 +10,7 @@ import { scrollToHash } from '@src/utils/scrollToHash';
 import styles from '@src/components/dom/styles/layout.module.scss';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
+import { TOKENS } from '@src/lib/palette.mjs';
 
 // The original route curtain (main shrinks to a card and slides out left while the
 // "Loading" card slides in, then the reverse), retimed from ~6.35 s to ~2.2 s:
@@ -169,7 +170,7 @@ function Layout({ children, layoutRef, mainRef, router }) {
               ease: 'power2.inOut',
               scale: 0.9,
               opacity: 1,
-              border: '2px solid #f0f4f1',
+              border: `2px solid ${TOKENS.page}`,
               borderRadius: '1.3888888889vw',
               duration: STEP,
             },

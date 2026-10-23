@@ -10,7 +10,8 @@ import styles from '@src/components/animationComponents/buttonLink/buttonLink.mo
 // The original pill with the hover "ball". One element now: a link when `href` is
 // given (new tab with `target`), otherwise a <button> calling `onClick`
 // (SEARCH, MARK DONE, UNDO...). The original nested a <button> in an <a>.
-const ButtonLink = forwardRef(({ href, label, target = false, onClick, ariaLabel, ariaHaspopup, ariaControls, ariaPressed, disabled = false, className, type = 'button', children }, ref) => {
+// `primary` is the one accent pill per view, the main action (MARK DONE); the rest are secondary.
+const ButtonLink = forwardRef(({ href, label, target = false, onClick, ariaLabel, ariaHaspopup, ariaControls, ariaPressed, disabled = false, primary = false, className, type = 'button', children }, ref) => {
   const buttonRef = useRef(null);
   const spanRef = useRef(null);
   const relsRef = useRef({ relX: 0, relY: 0 });
@@ -67,7 +68,7 @@ const ButtonLink = forwardRef(({ href, label, target = false, onClick, ariaLabel
 
   const shared = {
     ref: setRefs,
-    className: clsx('p-xs', styles.btnPosnawr, className),
+    className: clsx('p-xs', styles.btnPosnawr, primary && styles.primary, className),
     onPointerEnter: handleMouseEnter,
     onPointerLeave: handleMouseLeave,
     'aria-label': ariaLabel,

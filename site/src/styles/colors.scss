@@ -1,12 +1,29 @@
 @use 'sass:color';
+@use 'sass:map';
 
+// The site palette as CSS variables. Source of truth: src/lib/palette.mjs (tests/palette.test.mjs keeps these
+// equal). The first six keep the original project's names: --white is the page, --black the ink.
 $colors: (
-  'white': #f0f4f1,
-  'black': #28282b,
-  'menuColor': #28282b,
-  'accentColor': #f9f9f9,
-  'fillColor': #f2ffbd,
-  'menuFontColor': #f0f4f1,
+  'white': #f4f4f5,
+  'black': #18181b,
+  'menuColor': #18181b,
+  'accentColor': #ffffff,
+  'fillColor': #ffffff,
+  'menuFontColor': #fafafa,
+  'raised': #27272a,
+  'sheen': #3f3f46,
+  'card': #ffffff,
+  'onDark': #fafafa,
+  'muted': #71717a,
+  'mutedOnDark': #a1a1aa,
+  'border': #e4e4e7,
+  'borderOnDark': #3f3f46,
+  'accent': #004c9b,
+  'accentTint': #e6eef7,
+  'statusOnTrack': #004c9b,
+  'statusSoon': #b45309,
+  'statusUrgent': #b91c1c,
+  'statusDone': #15803d,
 );
 
 html {
@@ -15,4 +32,11 @@ html {
     // for safari use case: https://ambientimpact.com/web/snippets/safari-bug-with-gradients-that-fade-to-transparent
     // --#{$name}-transparent: #{color.change($color, $alpha: 0)};
   }
+  // Channels for translucent use: rgba(var(--inkRgb), 0.25).
+  @each $name, $key in ('inkRgb': 'black', 'pageRgb': 'white', 'onDarkRgb': 'onDark', 'mutedOnDarkRgb': 'mutedOnDark') {
+    $c: map.get($colors, $key);
+    --#{$name}: #{color.channel($c, 'red', $space: rgb)}, #{color.channel($c, 'green', $space: rgb)}, #{color.channel($c, 'blue', $space: rgb)};
+  }
+  // Focus rings: the accent on light surfaces; dark panels set it to --onDark so the ring stays visible.
+  --focus: var(--accent);
 }

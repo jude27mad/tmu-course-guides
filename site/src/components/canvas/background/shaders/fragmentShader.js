@@ -101,6 +101,8 @@ void main() {
   vec2 uvRandom = vUv;
   uvRandom.y *= random(vec2(uvRandom.y, 0.5));
   finalCol.rgb += random(uvRandom) * uNoise;
+  // the grain never lifts the sheen past its brightest grey (uColor1)
+  finalCol = min(finalCol, uColor1);
 
   gl_FragColor = vec4(finalCol, 1.0);
 }

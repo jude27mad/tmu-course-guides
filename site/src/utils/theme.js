@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 
 // The original theme mapping, now using the same Desk palette on every course.
 // A palette keeps the original project shape:
-//   { primary, secondary, accentColor, fillColor, menuColor, menuFontColor, fluidColor }
+//   { primary, secondary, accentColor, fillColor, menuColor, menuFontColor, fluidColor, accent }
 // primary -> --black (ink), secondary -> --white (paper), the rest map 1:1.
 // Course records and generated 3D textures consume this same shared definition.
 export { DEFAULT_PALETTE };
@@ -17,6 +17,7 @@ const VARIABLES = [
   ['--fillColor', 'fillColor'],
   ['--menuColor', 'menuColor'],
   ['--menuFontColor', 'menuFontColor'],
+  ['--accent', 'accent'],
 ];
 
 function setThemeColor(color) {

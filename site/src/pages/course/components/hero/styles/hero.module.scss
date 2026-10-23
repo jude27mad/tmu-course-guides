@@ -75,7 +75,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, transparent 20%, rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0.84) 100%);
+    background: linear-gradient(180deg, transparent 20%, rgba(var(--inkRgb), 0.1) 40%, rgba(var(--inkRgb), 0.84) 100%);
   }
 }
 

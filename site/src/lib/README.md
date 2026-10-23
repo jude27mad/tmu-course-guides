@@ -66,13 +66,15 @@ getCourse('mth141');
 //   summary: 'Assessment dates, section labs, announced coverage and practice.', description: '…',
 //   term: 'Fall 2026', organization: '4 hours of lectures + 1 hour of lab each week', href: '/mth141/',
 //   ariaLabel: 'Open MTH141 guide, Linear Algebra',
-//   palette: { primary: '#28282b', accentColor: '#f9f9f9', secondary: '#f0f4f1', fillColor: '#f2ffbd',
-//              menuColor: '#28282b', menuFontColor: '#f0f4f1', fluidColor: '#d7d7d4' },
+//   palette: { primary: '#18181B', accentColor: '#FFFFFF', secondary: '#F4F4F5', fillColor: '#FFFFFF',
+//              menuColor: '#18181B', menuFontColor: '#FAFAFA', fluidColor: '#E4E4E7', accent: '#004C9B' },
 //   links: [{ label: 'Open D2L', href: 'https://courses.torontomu.ca/', external: true }, …textbooks] }
 getCourse('nope'); // null
 ```
 
-**`PALETTES`**, **`DEFAULT_PALETTE`**: every course shares the Desk palette. The same values colour page CSS, course cards and generated 3D textures. Apply them with the original `updateCSSVariables` mapping (`--black` = `primary`, `--white` = `secondary`, …) and `setFluidColor(palette.fluidColor)`. The fluid tint is Giats's homepage value, `#d7d7d4`, on every route; the original difference blending and background uniform are unchanged.
+**`PALETTES`**, **`DEFAULT_PALETTE`**: every course shares one palette, built from **`TOKENS`** in `palette.mjs` (neutral zinc with one TMU Blue accent; `styles/colors.scss` mirrors it as CSS variables and `tests/palette.test.mjs` keeps the two equal). The same values colour page CSS, course cards and generated 3D textures. Apply them with the original `updateCSSVariables` mapping (`--black` = `primary`, `--white` = `secondary`, `--accent` = `accent`, …) and `setFluidColor(palette.fluidColor)`. The fluid dye is `#E4E4E7` on every route over a black difference-blend base, so the page colour shows unchanged.
+
+**`BADGE`**, **`DISC`**: the printed colours of the lanyard ID badge and the prefooter discs, identical for every course. **`countdownStatus({ ms, done })`** → `'onTrack' | 'soon' | 'urgent' | 'done' | null` (more than 72 h, 72 h or less, 24 h or less, completed); **`STATUS[key]`** gives its colour and badge label. Only the Desk countdown uses these colours.
 
 ### Sections and groups
 

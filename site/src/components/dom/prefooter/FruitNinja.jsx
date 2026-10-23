@@ -1,7 +1,7 @@
 import { discTexture, loadDiscFont, slicedDiscTexture } from '@src/components/dom/prefooter/discTextures';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { COURSES } from '@src/lib';
+import { COURSES, DISC } from '@src/lib';
 import { PerspectiveCamera } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import Sticker from '@src/components/dom/prefooter/Sticker';
@@ -35,7 +35,7 @@ function useDiscTextures() {
     loadDiscFont().then(() => {
       if (cancelled) return;
       made = COURSES.map((course) => {
-        const look = { code: course.code, background: course.palette?.menuColor || '#28282b', color: course.palette?.menuFontColor || '#f0f4f1' };
+        const look = { code: course.code, ...DISC };
         return { whole: discTexture(look), sliced: slicedDiscTexture(look) };
       });
       setTextures(made);

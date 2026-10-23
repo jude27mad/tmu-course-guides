@@ -64,7 +64,7 @@
 
 .row {
   padding: calc(var(--layout-columns-gap) * 0.5) 0;
-  border-top: 1px solid rgba(40, 40, 43, 0.12);
+  border-top: 1px solid var(--border);
   @include mobile {
     padding: calc(var(--layout-columns-gap) * 0.4) 0;
   }
@@ -78,7 +78,7 @@
 }
 
 .rowTotal {
-  border-top-color: rgba(40, 40, 43, 0.4);
+  border-top-color: var(--muted);
 }
 
 .rowTitle {

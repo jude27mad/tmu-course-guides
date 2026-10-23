@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 
+import { TOKENS, rgbOf } from '@src/lib/palette.mjs';
 import fragmentShader from '@src/components/canvas/background/shaders/fragmentShader';
 import { useWindowSize } from '@darkroom.engineering/hamo';
 import vertexShader from '@src/components/canvas/background/shaders/vertexShader';
@@ -12,6 +13,9 @@ import vertexShader from '@src/components/canvas/background/shaders/vertexShader
 const OFFSET_STEP_PER_SECOND = 0.00005 * 60;
 const OFFSET_MAX = 5.0;
 const OFFSET_MIN = 0.1;
+
+// The dark panels' light sweep, built only from the panel greys: ink -> raised -> sheen (the brightest point).
+const unitRgb = (hex) => rgbOf(hex).split(', ').map((channel) => Number(channel) / 255);
 
 function updateOffset(uniform, isIncreasing, step, min, max) {
   if (uniform.value >= max && isIncreasing.current) {
@@ -34,9 +38,9 @@ function Background({ still = false }) {
   const uniforms = useMemo(
     () => ({
       uTime: { value: 0 },
-      uColor1: { value: [63 / 255, 63 / 255, 63 / 255] },
-      uColor2: { value: [38 / 255, 38 / 255, 38 / 255] },
-      uColor3: { value: [9 / 255, 5 / 255, 12 / 255] },
+      uColor1: { value: unitRgb(TOKENS.sheen) },
+      uColor2: { value: unitRgb(TOKENS.raised) },
+      uColor3: { value: unitRgb(TOKENS.ink) },
       uColorAccent: { value: new THREE.Color(20.0, 20.0, 20.0) },
       uLinesBlur: { value: 0.49 },
       uNoise: { value: 0.02 },

@@ -30,7 +30,7 @@
   summary:focus-visible,
   textarea:focus-visible,
   input:focus-visible {
-    outline: 2px solid currentColor;
+    outline: 2px solid var(--focus);
     outline-offset: 4px;
   }
   button:disabled,
@@ -185,12 +185,14 @@
     align-items: center;
     border-bottom: 1px solid currentColor;
     font-size: 16px;
+    color: var(--accent);
   }
 }
 .summary {
   padding: 16px 20px;
   border-radius: 12px;
   background: var(--fillColor);
+  box-shadow: inset 0 0 0 1px var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -202,6 +204,7 @@
   a {
     display: block;
     margin-top: 4px;
+    color: var(--accent);
     strong {
       display: block;
       font-size: 18px;
@@ -220,18 +223,18 @@
     display: block;
     width: 100%;
     height: 4px;
-    background: rgba(40, 40, 43, 0.16);
+    background: var(--border);
     margin-top: 8px;
     border: none;
   }
   progress::-webkit-progress-bar {
-    background: rgba(40, 40, 43, 0.16);
+    background: var(--border);
   }
   progress::-webkit-progress-value {
-    background: var(--black);
+    background: var(--accent);
   }
   progress::-moz-progress-bar {
-    background: var(--black);
+    background: var(--accent);
   }
 }
 .content {
@@ -254,7 +257,7 @@
     padding: 9px 16px;
     min-height: 44px;
     border-radius: 999px;
-    border: 1px solid rgba(40, 40, 43, 0.25);
+    border: 1px solid var(--border);
     font-size: 16px;
   }
   button[aria-pressed='true'] {
@@ -284,7 +287,7 @@
   grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 0.75fr) 24px;
   gap: 20px;
   align-items: center;
-  border-bottom: 1px solid rgba(40, 40, 43, 0.25);
+  border-bottom: 1px solid var(--border);
   padding: 18px 8px 18px 0;
   transition: background-color 0.3s;
   &:hover {
@@ -336,6 +339,7 @@
   border-bottom: 1px solid currentColor;
   margin: 4px 0 24px;
   font-size: 16px;
+  color: var(--accent);
 }
 .detailHeading {
   margin-bottom: 28px;
@@ -347,14 +351,15 @@
 .status {
   display: inline-block;
   margin-top: 14px;
-  background: var(--fillColor);
+  background: var(--accentTint);
+  color: var(--accent);
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 16px;
 }
 .dates {
   border-top: 1px solid var(--black);
-  border-bottom: 1px solid rgba(40, 40, 43, 0.25);
+  border-bottom: 1px solid var(--border);
   padding: 20px 0;
   margin-bottom: 28px;
   h3 {
@@ -389,7 +394,7 @@
   }
   details {
     max-width: 80ch;
-    border-top: 1px solid rgba(40, 40, 43, 0.25);
+    border-top: 1px solid var(--border);
   }
   :global(.p-x) {
     opacity: 1;
@@ -397,10 +402,10 @@
 }
 .information {
   details {
-    border-top: 1px solid rgba(40, 40, 43, 0.3);
+    border-top: 1px solid var(--border);
   }
   details:last-child {
-    border-bottom: 1px solid rgba(40, 40, 43, 0.3);
+    border-bottom: 1px solid var(--border);
   }
   summary {
     font-weight: 650;
@@ -423,7 +428,7 @@
   th,
   td {
     padding: 12px 12px 12px 0;
-    border-bottom: 1px solid rgba(40, 40, 43, 0.25);
+    border-bottom: 1px solid var(--border);
     text-align: left;
     vertical-align: top;
     overflow-wrap: anywhere;
@@ -479,7 +484,7 @@
   background: var(--white);
   color: var(--black);
   padding: 24px clamp(18px, 4vw, 64px) 36px;
-  border-top: 1px solid rgba(40, 40, 43, 0.25);
+  border-top: 1px solid var(--border);
   font-size: 14px;
   line-height: 1.5;
   div {

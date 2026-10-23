@@ -3,6 +3,7 @@
 // Shared by the menu (#menu) and the search panel (#search).
 
 .menu {
+  --focus: var(--onDark); // the panel sits on the dark background
   position: fixed;
   right: 0;
   top: 0;

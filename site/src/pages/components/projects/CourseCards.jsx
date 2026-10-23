@@ -118,7 +118,7 @@ function CourseCards({ desk, variant = 'desk', children }) {
                   </div>
                 </div>
               </div>
-              <div ref={(el) => (cardRefs.current[index] = el)} className={clsx(styles.canvas, index === 0 && styles.firstCard, index === last && styles.lastCard)} />
+              <div ref={(el) => (cardRefs.current[index] = el)} className={clsx(styles.canvas, index === 0 && styles.firstCard, index === last && styles.lastCard)} data-surface="dark" />
             </Link>
           );
         })}
