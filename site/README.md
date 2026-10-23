@@ -49,8 +49,7 @@ The repository root keeps its `.nojekyll` file for the case where Pages is switc
 
 - Deadlines and course content come from the same data as the previous version, copied into `src/lib/vendor/` and `src/lib/content/`. Deadline results are tested against the previous modules.
 - Progress uses the previous version's `localStorage` keys and value formats, so existing progress carries over. The key table is in `src/lib/README.md`.
-- Bumping `GUIDE_VERSION` (CEN100 in `src/lib/content/cen-literals.mjs`, the math guides in `src/lib/content/math.mjs`) shows the **What's changed?** unread badge until the notes are opened. Update the expected version in `tests/content.test.mjs` and `tests/storage.test.mjs` as well.
-- Add the matching entry (`date`, `title`, `text`, `items`) at the top of `updates` in `src/lib/content/pages.mjs`. Do not regenerate that file with `tests/extract/pages.mjs`: it would remove entries added since the move to this design.
+- Updates are kept in two lists in `src/lib/content/updates.mjs`. `COURSE_UPDATES` holds changes to a course's information (dates, coverage, policy, grading), shown under **Course updates** in that course's Guide tools; a new entry shows the unread badge until the list is opened. `WEBSITE_UPDATES` holds changes to the website itself, shown on the **Website updates** page (`/updates/`, linked from the menu, the footers and Course updates); these never show the badge. Add an entry (`id` starting with today's ISO date, `date`, `title`, `text`, `items`, and `courses` for a website change that affects only some guides) at the top of the right list. `GUIDE_VERSION` no longer drives the badge.
 
 After building, run `PLAYWRIGHT_PATH=/path/to/playwright node scripts/verify-course-views.mjs` for focused-view browser checks. `QA_CHROMIUM_PATH` can select an installed Chromium binary; `QA_REPORT_DIR` selects the report directory. The script reads the build's base path and tests browser emulation, not physical devices.
 

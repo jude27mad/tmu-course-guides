@@ -81,7 +81,7 @@ try {
       const calendar = await calendarPending;
       assert.match(await readFile(await calendar.path(), 'utf8'), /BEGIN:VCALENDAR/);
 
-      const updates = dialog.getByRole('button', { name: /what.s changed/i });
+      const updates = dialog.getByRole('button', { name: /course updates/i });
       await updates.click();
       assert.equal(await updates.getAttribute('aria-expanded'), 'true');
       await dialog.locator('#tools-updates').waitFor({ state: 'visible' });

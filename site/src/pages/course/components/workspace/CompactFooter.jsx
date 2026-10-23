@@ -14,6 +14,9 @@ export default function CompactFooter() {
         <Link href="/privacy/" scroll={false}>
           Privacy
         </Link>
+        <Link href="/updates/" scroll={false}>
+          Website updates
+        </Link>
       </div>
       <p>Unofficial TMU course companion · Check D2L for updates.</p>
       <p>Progress stays in this browser. Back up with Guide tools.</p>

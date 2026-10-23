@@ -6,6 +6,7 @@ import { today, calendar } from './vendor/schedule.mjs';
 import * as CEN from './content/cen.mjs';
 import * as MATH from './content/math.mjs';
 import { KEYS, resolveStorage, readJSON, writeJSON } from './storage.mjs';
+import { COURSE_UPDATES } from './content/updates.mjs';
 import { isMath, readTicks, writeTicks, readPlan, writePlan, readMath, writeMath, readMathSection, readMotionPaused, writeMotionPaused } from './saved.mjs';
 
 const toDate = (now) => (now == null ? new Date() : new Date(+now));
@@ -117,11 +118,25 @@ export function importBackup(courseId, raw, { storage } = {}) {
   }
 }
 
-const VERSIONS = { cen100: CEN.GUIDE_VERSION, mth140: MATH.GUIDE_VERSION, mth141: MATH.GUIDE_VERSION };
-/** "What's changed?": true while the course's last-seen version differs from its release (show the "New updates" badge). */
-export const hasUnseenUpdates = (courseId, storage) => !!VERSIONS[courseId] && readJSON(resolveStorage(storage), KEYS[courseId].seen, '') !== VERSIONS[courseId];
-/** Record that the release notes were opened (writes the JSON string version). */
-export const markUpdatesSeen = (courseId, storage) => !!VERSIONS[courseId] && writeJSON(resolveStorage(storage), KEYS[courseId].seen, VERSIONS[courseId]);
+// "Course updates": the saved value is the id of the newest entry the student has opened (a JSON string, as
+// before). Every id ever saved starts with an ISO date, including the old releases' ('2026-10-16-course-artwork'),
+// so a saved value dated after the newest course entry also counts as seen.
+const latestUpdate = (courseId) => COURSE_UPDATES[courseId]?.[0]?.id || '';
+const savedDate = (value) => (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value) ? value.slice(0, 10) : '');
+const seenLatest = (saved, latest) => saved === latest || savedDate(saved) > latest.slice(0, 10);
+/** True while the course has a course update the student has not opened (show the "New updates" badge). */
+export const hasUnseenUpdates = (courseId, storage) => {
+  const latest = latestUpdate(courseId);
+  return !!latest && !seenLatest(readJSON(resolveStorage(storage), KEYS[courseId].seen, ''), latest);
+};
+/** Record that the course updates were opened: saves the newest entry's id, never an older value than the saved one. */
+export const markUpdatesSeen = (courseId, storage) => {
+  const latest = latestUpdate(courseId);
+  if (!latest) return false;
+  const target = resolveStorage(storage);
+  if (seenLatest(readJSON(target, KEYS[courseId].seen, ''), latest)) return true;
+  return writeJSON(target, KEYS[courseId].seen, latest);
+};
 
 /** CEN100 "Hide fully checked items" (JSON boolean). */
 export const getHideCompleted = (storage) => readJSON(resolveStorage(storage), KEYS.cen100.hideCompleted, false) === true;

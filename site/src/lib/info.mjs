@@ -6,10 +6,14 @@ import { resolveAssessment, timing } from './vendor/schedule.mjs';
 import * as CEN from './content/cen.mjs';
 import * as MATH from './content/math.mjs';
 import { CEN as CEN_PAGE, MATH as MATH_PAGE } from './content/pages.mjs';
+import { COURSE_UPDATES } from './content/updates.mjs';
 import { getCourse, sections } from './courses.mjs';
 import { isMath } from './saved.mjs';
 
 const SEVERITY = { red: 'red', '': 'neutral' };
+
+// Guide tools' "Course updates": this course's information changes, newest first (website changes are on /updates/).
+const courseUpdates = (courseId, page) => ({ summary: 'Course updates', badge: page.updatesBadge, version: COURSE_UPDATES[courseId][0]?.id || '', entries: COURSE_UPDATES[courseId] });
 
 function cenInfo({ section, group } = {}) {
   const profile = CEN.validProfile(section ? { section, group } : null);
@@ -55,7 +59,7 @@ function cenInfo({ section, group } = {}) {
     sections: sections('cen100'),
     grading: CEN_PAGE.grading,
     tools: { work: CEN_PAGE.work, calendar: { ...CEN_PAGE.calendar, items: CEN.calendarItems() }, backup: CEN_PAGE.backup, note: CEN_PAGE.tools.note, updated: CEN_PAGE.tools.updated },
-    updates: { summary: CEN_PAGE.updatesSummary, badge: CEN_PAGE.updatesBadge, version: CEN.GUIDE_VERSION, entries: CEN_PAGE.updates },
+    updates: courseUpdates('cen100', CEN_PAGE),
     footer: CEN_PAGE.footer,
   };
 }
@@ -111,7 +115,7 @@ function mathInfo(courseId, { section } = {}) {
     sources: { ...page.sources, entries: course.sources },
     grading: { ...page.grading, weights: course.weights, quizPolicy: course.quizPolicy },
     tools: { work: page.work, calendar: page.calendar, backup: page.backup, note: page.tools.note },
-    updates: { summary: page.updatesSummary, badge: page.updatesBadge, version: MATH.GUIDE_VERSION, entries: page.updates },
+    updates: courseUpdates(courseId, page),
     footer: page.footer,
   };
 }
