@@ -11,15 +11,15 @@
 }
 
 .card {
-  border-top: 1px solid rgba(40, 40, 43, 0.15);
+  border-top: 1px solid var(--border);
   &:last-child {
-    border-bottom: 1px solid rgba(40, 40, 43, 0.15);
+    border-bottom: 1px solid var(--border);
   }
   &:focus {
     outline: none;
   }
   &:focus-visible {
-    outline: 2px solid currentColor;
+    outline: 2px solid var(--focus);
     outline-offset: 3px;
   }
 }
@@ -171,7 +171,8 @@
   width: fit-content;
   padding: 0.2em 0.8em;
   border-radius: 9vw;
-  background-color: var(--fillColor);
+  background-color: var(--accentTint);
+  color: var(--accent);
 }
 
 .facts {
@@ -238,7 +239,7 @@
     min-height: 44px;
   }
   &:focus-visible {
-    outline: 2px solid currentColor;
+    outline: 2px solid var(--focus);
     outline-offset: 3px;
   }
 }

@@ -69,8 +69,8 @@
           .container {
             .projectsDetails {
               > p {
-                color: #28282b;
-                text-shadow: 0.1vw 0.1vw 0.1vw #f0f4f1;
+                color: var(--black);
+                text-shadow: 0.1vw 0.1vw 0.1vw var(--white);
               }
             }
           }
@@ -115,7 +115,7 @@
             }
             > p {
               transition: all 0.6s cubic-bezier(0.4, 0, 0.1, 1);
-              color: #f0f4f1;
+              color: var(--onDark);
               text-shadow: unset;
             }
           }
@@ -132,7 +132,7 @@
             padding: calc(var(--layout-columns-gap) * 1.5);
             background-color: var(--cardMenu);
             color: var(--cardMenuFont);
-            box-shadow: 0 0 0 0.01vw rgb(40, 40, 43, 0.3);
+            box-shadow: 0 0 0 0.01vw var(--border);
             border-radius: calc(var(--layout-columns-gap) * 0.5);
             @include mobile {
               width: 83%;

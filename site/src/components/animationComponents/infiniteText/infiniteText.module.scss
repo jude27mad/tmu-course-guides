@@ -28,6 +28,6 @@
     color: transparent;
     text-shadow: none;
 
-    -webkit-text-stroke: 0.12vw rgba(0, 0, 0, 0.2);
+    -webkit-text-stroke: 0.12vw rgba(var(--inkRgb), 0.2);
   }
 }

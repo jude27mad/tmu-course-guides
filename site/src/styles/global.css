@@ -47,10 +47,10 @@
 }
 
 .color-change {
-  color: rgba(40, 40, 43, 0.1) !important;
+  color: rgba(var(--inkRgb), 0.1) !important;
 }
 .fill-change {
-  fill: rgba(40, 40, 43, 0.1) !important;
+  fill: rgba(var(--inkRgb), 0.1) !important;
 }
 
 /* will-change is set by the loader, route transitions and the menu/search

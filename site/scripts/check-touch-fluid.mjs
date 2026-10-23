@@ -151,7 +151,7 @@ async function waitOnPage(page, predicate, argument) {
 const snapshot = page => page.evaluate(() => window.__touchFluidQA.snapshot());
 
 async function assertDeskPalette(page) {
-  const expected = { '--black': '#28282b', '--white': '#f0f4f1', '--accentColor': '#f9f9f9', '--fillColor': '#f2ffbd', '--menuColor': '#28282b', '--menuFontColor': '#f0f4f1' };
+  const expected = { '--black': '#18181b', '--white': '#f4f4f5', '--accentColor': '#ffffff', '--fillColor': '#ffffff', '--menuColor': '#18181b', '--menuFontColor': '#fafafa', '--accent': '#004c9b' };
   const shown = await page.evaluate(names => {
     const root = getComputedStyle(document.documentElement);
     const menu = getComputedStyle(document.querySelector('#menu-button'));
@@ -171,26 +171,29 @@ async function assertDeskPalette(page) {
       }),
     };
   }, Object.keys(expected));
+  // The CSS minifier writes #ffffff as #fff; inline values set by usePalette keep six digits.
+  const longHex = (value) => (/^#[0-9a-f]{3}$/.test(value) ? `#${[...value.slice(1)].map((digit) => digit + digit).join('')}` : value);
+  shown.palette = Object.fromEntries(Object.entries(shown.palette).map(([name, value]) => [name, longHex(value)]));
   assert.deepEqual(shown.palette, expected, 'the route must not replace the Desk palette');
-  assert.equal(shown.ink, 'rgb(40, 40, 43)');
-  assert.equal(shown.menu, 'rgb(40, 40, 43)');
-  assert.equal(shown.menuInk, 'rgb(240, 244, 241)');
-  assert.equal(shown.theme.toLowerCase(), '#f0f4f1');
-  for (const panel of shown.panels) assert.deepEqual(panel, { ink: '#28282b', menu: '#28282b', fill: '#f2ffbd' });
+  assert.equal(shown.ink, 'rgb(24, 24, 27)');
+  assert.equal(shown.menu, 'rgb(24, 24, 27)');
+  assert.equal(shown.menuInk, 'rgb(250, 250, 250)');
+  assert.equal(shown.theme.toLowerCase(), '#f4f4f5');
+  for (const panel of shown.panels) assert.deepEqual(panel, { ink: '#18181b', menu: '#18181b', fill: '#ffffff' });
   assert.equal(shown.blend, 'difference');
   assert.equal(shown.fluidBackground, 'rgb(0, 0, 0)');
-  // Giats's deployed homepage: #d7d7d4 dye, #070410 background, converted
-  // from sRGB to linear RGB by Three.Color before upload to the shader.
+  // The palette's #E4E4E7 dye over a black base (the difference blend leaves the page as it is),
+  // converted from sRGB to linear RGB by Three.Color before upload to the shader.
   const linear = bytes => bytes.map(byte => {
     const channel = byte / 255;
     return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
   });
   await waitOnPage(page, () => Object.keys(window.__touchFluidQA.snapshot().colours).some(name => /uColor$/i.test(name)));
   const { colours } = await snapshot(page);
-  for (const [suffix, bytes] of [['uColor', [215, 215, 212]], ['uBackgroundColor', [7, 4, 16]]]) {
+  for (const [suffix, bytes] of [['uColor', [228, 228, 231]], ['uBackgroundColor', [0, 0, 0]]]) {
     const value = Object.entries(colours).find(([name]) => name.toLowerCase().endsWith(suffix.toLowerCase()))?.[1];
     assert.ok(value, `missing fluid shader uniform: ${suffix}`);
-    linear(bytes).forEach((channel, i) => assert.ok(Math.abs(channel - value[i]) < 0.000001, `${suffix}[${i}] differs from Giats: ${value[i]} vs ${channel}`));
+    linear(bytes).forEach((channel, i) => assert.ok(Math.abs(channel - value[i]) < 0.000001, `${suffix}[${i}] differs from the palette: ${value[i]} vs ${channel}`));
   }
   return { ...shown, colours };
 }
@@ -244,7 +247,7 @@ try {
     const label = route || 'home';
     try {
       await ready(page, route);
-      await check(`${label}: Desk palette and exact Giats homepage fluid colours`, () => assertDeskPalette(page));
+      await check(`${label}: Desk palette and fluid colours`, () => assertDeskPalette(page));
       // Deliberately cross the former 2.2 s cutoff: this is the behaviour under test.
       await page.waitForTimeout(2500);
       await check(`${label}: fluid remains visible and renders after idle`, async () => {

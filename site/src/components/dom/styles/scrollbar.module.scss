@@ -12,7 +12,7 @@
   mix-blend-mode: difference;
   border-radius: 0.15vw;
 
-  background-color: #f0f4f11a;
+  background-color: rgba(var(--pageRgb), 0.1);
 
   @include mobile {
     width: 0.65vw;

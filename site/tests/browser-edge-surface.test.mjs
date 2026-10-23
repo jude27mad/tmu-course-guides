@@ -10,13 +10,13 @@ test('menu and search choose the same dynamic Safari browser surface', () => {
   assert.ok(navbar.includes('const isOpen = isMenuOpen || isSearchOpen'));
   const theme = read('../src/utils/theme.js');
   assert.ok(theme.includes('document.documentElement.dataset.browserSurface'));
-  assert.ok(theme.includes("dark ? '#09050c' : DEFAULT_PALETTE.secondary"));
+  assert.ok(theme.includes('dark ? TOKENS.ink : DEFAULT_PALETTE.secondary'));
   assert.ok(theme.includes("document.documentElement.dataset.browserSurface !== 'dark'"));
 });
 
 test('page edge matches dark overlay but remains paper when closed', () => {
   const global = read('../src/styles/global.scss');
   assert.ok(global.includes("html[data-browser-surface='dark'] body"));
-  assert.ok(global.includes('background-color: #09050c'));
+  assert.match(global, /html\[data-browser-surface='dark'\] body \{\s*background-color: var\(--black\);/);
   assert.ok(global.includes('background-color: var(--white)'));
 });

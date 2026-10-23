@@ -1,4 +1,4 @@
-import { DESK_TEXT, countdown, courseCopy, getCourse } from '@src/lib';
+import { DESK_TEXT, STATUS, countdown, countdownStatus, courseCopy, getCourse } from '@src/lib';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import AppearTitle from '@src/components/animationComponents/appearTitle/Index';
@@ -41,15 +41,29 @@ function progressLine(courseId, progress) {
 // The original loader-counter typography for the old countdown face: d/h/m/s
 // digits for a confirmed time that is still ahead (seconds only while motion
 // is on, as on the old course pages), otherwise the old honest wording.
+// The number takes the status colour for the time left (lib/palette.mjs), with its badge below.
+function StatusBadge({ status }) {
+  if (!status) return null;
+  return (
+    <p className={clsx('p-x', styles.statusBadge)} data-status={status}>
+      {STATUS[status].label}
+    </p>
+  );
+}
+
 function Countdown({ item, still }) {
   const now = useNow(still ? 60000 : 1000);
   if (!now || !item) return <div className={styles.countdown} />;
   const left = countdown(item, now);
+  const status = countdownStatus({ ms: left.ms, done: item.done });
   if (left.days === undefined) {
     return (
-      <div className={styles.countdown}>
-        <p className={clsx('h3', styles.word)}>{item.target?.range || left.label}</p>
-      </div>
+      <>
+        <div className={styles.countdown} data-status={status || undefined}>
+          <p className={clsx('h3', styles.word)}>{item.target?.range || left.label}</p>
+        </div>
+        <StatusBadge status={status} />
+      </>
     );
   }
   const units = [
@@ -59,14 +73,17 @@ function Countdown({ item, still }) {
   ];
   if (!still) units.push([left.seconds, 'sec']);
   return (
-    <div className={styles.countdown} aria-hidden="true">
-      {units.map(([value, unit]) => (
-        <span key={unit} className={styles.unit}>
-          <b className={clsx('h3', styles.digits)}>{pad(value)}</b>
-          <i className="p-x">{unit}</i>
-        </span>
-      ))}
-    </div>
+    <>
+      <div className={styles.countdown} aria-hidden="true" data-status={status || undefined}>
+        {units.map(([value, unit]) => (
+          <span key={unit} className={styles.unit}>
+            <b className={clsx('h3', styles.digits)}>{pad(value)}</b>
+            <i className="p-x">{unit}</i>
+          </span>
+        ))}
+      </div>
+      <StatusBadge status={status} />
+    </>
   );
 }
 
@@ -199,7 +216,13 @@ function About({ desk }) {
             {ready && next && <ButtonLink href={next.href} label={course ? `VIEW IN ${course.code}` : 'VIEW ASSESSMENT'} />}
             {ready && next?.cta && <ButtonLink href={`/${next.courseId}/#course-info`} label={next.cta.toUpperCase()} />}
             {ready && next?.markable && !next.done && (
-              <ButtonLink ref={markRef} onClick={onMarkDone} label={(copy.markDone || copy.next?.markDone || 'Mark done').toUpperCase()} ariaLabel={markLabel ? markLabel(next.title) : undefined} />
+              <ButtonLink
+                ref={markRef}
+                primary
+                onClick={onMarkDone}
+                label={(copy.markDone || copy.next?.markDone || 'Mark done').toUpperCase()}
+                ariaLabel={markLabel ? markLabel(next.title) : undefined}
+              />
             )}
             {canUndo && <ButtonLink ref={undoRef} onClick={onUndo} label="UNDO" />}
             {!ready && <ButtonLink href="/courses/" label={DESK_TEXT.openGuide.toUpperCase()} />}

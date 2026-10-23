@@ -11,7 +11,7 @@
   border-radius: 20px;
   background: var(--white);
   color: var(--black);
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 24px 80px rgba(var(--inkRgb), 0.25);
   overflow: hidden;
   font-size: 1rem;
   font-weight: 550;
@@ -26,7 +26,9 @@
   flex-direction: column;
 }
 .dialog::backdrop {
-  background: rgba(0, 0, 0, 0.48);
+  // The ink (#18181B) as literal channels: ::backdrop does not inherit custom properties before
+  // Safari 17.4, Chrome 122 and Firefox 120.
+  background: rgba(24, 24, 27, 0.48);
 }
 
 .header {
@@ -36,7 +38,7 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  border-bottom: 1px solid var(--border);
 }
 
 .title {
@@ -50,9 +52,9 @@
   min-width: 64px;
   min-height: 44px;
   padding: 0.5rem 0.9rem;
-  border: 1px solid rgba(0, 0, 0, 0.18);
+  border: 1px solid var(--border);
   border-radius: 999px;
-  background: transparent;
+  background: var(--card);
   color: inherit;
   font: inherit;
   cursor: pointer;
@@ -121,8 +123,8 @@
   flex: 0 0 auto;
   padding: 0.2em 0.7em;
   border-radius: 999px;
-  background-color: var(--menuColor);
-  color: var(--menuFontColor);
+  background-color: var(--accentTint);
+  color: var(--accent);
   font-size: 0.75rem;
 }
 .inlineDesc {
@@ -168,7 +170,7 @@
 
 .close:focus-visible,
 .optionButton:focus-visible {
-  outline: 2px solid currentColor;
+  outline: 2px solid var(--focus);
   outline-offset: 3px;
 }
 

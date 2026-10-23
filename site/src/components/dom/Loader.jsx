@@ -9,6 +9,7 @@ import { useProgress } from '@react-three/drei';
 import { useRouter } from 'next/router';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
+import { TOKENS } from '@src/lib/palette.mjs';
 import { wantsSRGB } from '@src/utils/routes';
 
 // The original counted 0 -> 100 % over a fixed 5 s. The counter now follows what the
@@ -105,7 +106,7 @@ function Loader() {
           x: '100%',
           scale: 0.9,
           opacity: 1,
-          border: '2px solid #f0f4f1',
+          border: `2px solid ${TOKENS.page}`,
           borderRadius: '1.3888888889vw',
           willChange: 'transform',
         });

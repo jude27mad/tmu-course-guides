@@ -3,7 +3,7 @@
 .background {
   // The dark artwork belongs inside the site, not in Safari's document inset.
   height: var(--app-viewport-height);
-  background-color: #09050c;
+  background-color: var(--black);
   width: 100vw;
   position: fixed;
   top: 0;

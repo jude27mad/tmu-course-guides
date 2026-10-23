@@ -1,5 +1,5 @@
 import Badge, { createBadgeRig } from '@src/pages/components/clients/components/Badge';
-import { COURSES, DESK_TEXT, countdown } from '@src/lib';
+import { BADGE, COURSES, DESK_TEXT, countdown } from '@src/lib';
 import { Fragment, useMemo, useRef } from 'react';
 
 import AppearByWords from '@src/components/animationComponents/appearByWords/Index';
@@ -53,8 +53,7 @@ function badgeLook(course, entry) {
     term: course.term,
     nextLabel: 'Next',
     nextValue,
-    background: course.palette.menuColor,
-    color: course.palette.menuFontColor,
+    ...BADGE,
   };
 }
 
@@ -148,7 +147,7 @@ function Clients({ desk }) {
 
   const badge = (i) => (
     // the badge windows are pictures of the text beside them
-    <div aria-hidden="true" className={[styles.first, styles.second, styles.third][i]}>
+    <div aria-hidden="true" className={[styles.first, styles.second, styles.third][i]} data-surface="dark">
       <Badge index={i} rig={rig} look={looks[i]} world={i === 0} paused={!visible || still} rest={still} />
     </div>
   );

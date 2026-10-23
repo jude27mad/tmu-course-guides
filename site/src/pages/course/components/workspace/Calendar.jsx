@@ -7,6 +7,8 @@ import { ScheduleXCalendar, useCalendarApp } from '@schedule-x/react';
 import { createViewMonthAgenda, createViewMonthGrid } from '@schedule-x/calendar';
 import { createEventsServicePlugin } from '@schedule-x/events-service';
 import { createCalendarControlsPlugin } from '@schedule-x/calendar-controls';
+// eslint-disable-next-line import/extensions
+import { TOKENS } from '@src/lib/palette.mjs';
 import styles from './calendar.module.scss';
 // eslint-disable-next-line import/extensions
 import { toScheduleXEvent } from './calendarAdapter.mjs';
@@ -26,8 +28,8 @@ export default function Calendar({ events, navigate, onDate, selectedDate, onSel
     events: events.map(toScheduleXEvent),
     plugins: [eventsService, controls],
     calendars: {
-      due: { colorName: 'due', lightColors: { main: '#28282b', container: '#f2ffbd', onContainer: '#28282b' } },
-      done: { colorName: 'done', lightColors: { main: '#28282b', container: '#f0f4f1', onContainer: '#28282b' } },
+      due: { colorName: 'due', lightColors: { main: TOKENS.accent, container: TOKENS.card, onContainer: TOKENS.ink } },
+      done: { colorName: 'done', lightColors: { main: TOKENS.muted, container: TOKENS.border, onContainer: TOKENS.ink } },
     },
     callbacks: {
       onEventClick: (event) => callbacks.current.navigate(event.anchor),

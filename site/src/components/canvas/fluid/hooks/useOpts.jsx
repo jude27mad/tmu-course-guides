@@ -1,3 +1,4 @@
+import { TOKENS } from '@src/lib/palette.mjs';
 import { useMemo } from 'react';
 
 const useOpts = () => {
@@ -14,8 +15,9 @@ const useOpts = () => {
       densityDissipation: isMobile ? 0.96 : 0.965,
       velocityDissipation: 0.93,
 
-      fluidColor: '#f0f4f1',
-      backgroundColor: '#070410',
+      fluidColor: TOKENS.fluid,
+      // black under the difference blend leaves the page colour exactly as it is
+      backgroundColor: '#000000',
 
       showBackground: false,
 

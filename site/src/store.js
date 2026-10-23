@@ -1,8 +1,10 @@
 import { create } from 'zustand';
 
-// Giats's original homepage fluid tint, retained on every page. The shared
-// Desk palette applies this same tint when courses mount and unmount.
-export const DEFAULT_FLUID_COLOR = '#d7d7d4';
+import { TOKENS } from './lib/palette.mjs';
+
+// The pointer fluid's dye, retained on every page. The shared Desk palette
+// applies this same tint when courses mount and unmount.
+export const DEFAULT_FLUID_COLOR = TOKENS.fluid;
 
 // eslint-disable-next-line import/prefer-default-export
 export const useStore = create((set, get) => ({

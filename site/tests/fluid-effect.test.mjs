@@ -38,7 +38,7 @@ const compiled = transformSync(wrapperSource, {
 const { default: Fluid } = await import(moduleURL(compiled));
 
 test('steady fluid frames reuse the colour values already supplied to the shader', () => {
-  const effect = new FluidEffect({ fluidColor: '#d7d7d4', backgroundColor: '#070410' });
+  const effect = new FluidEffect({ fluidColor: '#E4E4E7', backgroundColor: '#000000' });
   try {
     const dye = effect.uniforms.get('uColor').value;
     const background = effect.uniforms.get('uBackgroundColor').value;

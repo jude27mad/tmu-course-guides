@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { TOKENS } from '@src/lib/palette.mjs';
 
 // The original menu animation, split in two so the SEARCH panel can share it:
 // - the shell (main slides left as a rounded card, the layout dims, the header
@@ -7,6 +8,8 @@ import gsap from 'gsap';
 // Both use the original defaults (0.92 s, expo.inOut, everything at position 0), so
 // opening one panel looks exactly like the original menu.
 export const PANEL_DEFAULTS = { duration: 0.92, ease: 'expo.inOut' };
+// The page's edge while it is shrunk behind a panel.
+const PAGE_EDGE = `2px solid ${TOKENS.page}`;
 
 export function buildShellTimeline({ isMobile }) {
   const fluidCanvas = document.getElementById('fluidCanvas');
@@ -23,7 +26,7 @@ export function buildShellTimeline({ isMobile }) {
   });
 
   if (fluidCanvas) tl.to(fluidCanvas, { duration: 0, opacity: 0 }, 0);
-  tl.to(main, { borderRadius: '1.3888888889vw', border: '2px solid #f0f4f1', scale: 0.9, pointerEvents: 'none', left: '-40vw' }, 0).to(layout, { opacity: isMobile ? 0.05 : 0.3, height: '90svh' }, 0);
+  tl.to(main, { borderRadius: '1.3888888889vw', border: PAGE_EDGE, scale: 0.9, pointerEvents: 'none', left: '-40vw' }, 0).to(layout, { opacity: isMobile ? 0.05 : 0.3, height: '90svh' }, 0);
   if (scrollbar) tl.to(scrollbar, { opacity: 0, right: '46vw', scale: 0.9 }, 0);
   // This timeline is also prepared during route entry. Eager overwrite would
   // cancel the route's header reveal even while this menu timeline is paused.

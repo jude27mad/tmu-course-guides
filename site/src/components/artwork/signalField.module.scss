@@ -9,11 +9,11 @@
   background:
     radial-gradient(
         circle at center,
-        rgba(235, 233, 226, 0.3) 0.8px,
+        rgba(var(--mutedOnDarkRgb), 0.3) 0.8px,
         transparent 1px
       )
       0 0 / 26px 26px,
-    #0b0c0b;
+    var(--black);
 }
 
 .canvas {

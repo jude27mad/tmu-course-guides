@@ -11,6 +11,7 @@
   width: 100%;
   contain: paint;
   outline: none;
+  --focus: var(--onDark);
   box-shadow:
     inset calc(var(--layout-margin) * -1.0065) 0 0 0 var(--white),
     inset calc(var(--layout-margin) * 1.0065) 0 0 0 var(--white);
@@ -21,7 +22,7 @@
       inset calc(var(--layout-margin) * 1.0065) 0 0 0 var(--white);
   }
   &:focus-visible .window {
-    outline: 2px solid #f0f4f1;
+    outline: 2px solid var(--focus);
     outline-offset: -6px;
   }
 }
@@ -31,7 +32,7 @@
   border-radius: var(--layout-columns-gap);
   box-shadow: 0 0 0 calc(var(--layout-columns-gap) * 1) var(--white);
   padding: calc(var(--layout-columns-gap) * 2);
-  color: #f0f4f1;
+  color: var(--onDark);
   display: flex;
   flex-direction: column;
   gap: calc(var(--layout-columns-gap) * 2);
@@ -46,7 +47,7 @@
   font-size: 2.3vw;
   line-height: 130%;
   font-weight: 700;
-  color: #f9f9f9;
+  color: var(--onDark);
   margin-bottom: var(--layout-columns-gap);
   @include mobile {
     font-size: 5.9vw;
@@ -82,7 +83,7 @@
     display: block;
     width: 100%;
     text-align: left;
-    color: #f0f4f1;
+    color: var(--onDark);
     @include mobile {
       min-height: 44px;
       padding: 0.4em 0;
@@ -109,7 +110,7 @@
       left: 0;
       width: 100%;
       height: max(0.25vw, 2px);
-      background: #f0f4f1;
+      background: var(--onDark);
       transform: scale3d(0.001, 1, 1);
       opacity: 0;
       transform-origin: 0% 50%;
@@ -144,6 +145,6 @@
 
 .prompt,
 .note {
-  color: #f0f4f1;
+  color: var(--onDark);
   opacity: 0.8;
 }

@@ -6,11 +6,21 @@ import * as MATH from './content/math.mjs';
 import { DESK, CEN as CEN_PAGE, MATH as MATH_PAGE } from './content/pages.mjs';
 import { resolveStorage } from './storage.mjs';
 import { isMath, readProfile, writeProfile, readMathSection, writeMathSection } from './saved.mjs';
+import { TOKENS } from './palette.mjs';
 
 export const COURSE_IDS = ['cen100', 'mth140', 'mth141'];
 
-/** The Desk palette, including Giats's original homepage fluid tint. */
-export const DEFAULT_PALETTE = Object.freeze({ primary: '#28282b', accentColor: '#f9f9f9', secondary: '#f0f4f1', fillColor: '#f2ffbd', menuColor: '#28282b', menuFontColor: '#f0f4f1', fluidColor: '#d7d7d4' });
+/** The site palette (lib/palette.mjs) in the original project's keys; `accent` is the one TMU Blue accent. */
+export const DEFAULT_PALETTE = Object.freeze({
+  primary: TOKENS.ink,
+  accentColor: TOKENS.card,
+  secondary: TOKENS.page,
+  fillColor: TOKENS.card,
+  menuColor: TOKENS.ink,
+  menuFontColor: TOKENS.onDark,
+  fluidColor: TOKENS.fluid,
+  accent: TOKENS.accent,
+});
 /** One shared palette for every page, course card and generated 3D texture. */
 export const PALETTES = Object.freeze(Object.fromEntries(COURSE_IDS.map((id) => [id, DEFAULT_PALETTE])));
 

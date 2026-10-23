@@ -20,7 +20,7 @@ function SectionPicker() {
 
   return (
     <section id={PICKER_ID} className={clsx(styles.root, 'layout-block-inner')} tabIndex={-1} aria-label={heading}>
-      <div className={styles.window}>
+      <div className={styles.window} data-surface="dark">
         <div className={styles.list} role="group" aria-labelledby={`${PICKER_ID}-heading`}>
           <h3 id={`${PICKER_ID}-heading`} className={styles.heading}>
             {heading}

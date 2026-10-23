@@ -1,12 +1,12 @@
 import { CanvasTexture, SRGBColorSpace } from 'three';
 
-// FruitNinja "fruit": a course-code disc in the course's menu colours,
+// FruitNinja "fruit": a course-code disc in the shared DISC colours (lib/palette.mjs),
 // drawn on a 2D canvas (the original used third-party logo images). The "sliced"
 // version is the same disc cut in two halves that drift apart.
 const SIZE = 256;
 const FONT_FAMILY = '"Inter Display", system-ui, sans-serif';
 
-function drawDisc(ctx, { code, background, color }) {
+function drawDisc(ctx, { code, background, color, ring }) {
   const r = SIZE * 0.47;
   ctx.beginPath();
   ctx.arc(0, 0, r, 0, Math.PI * 2);
@@ -14,7 +14,7 @@ function drawDisc(ctx, { code, background, color }) {
   ctx.fill();
   // The original hairline ring
   ctx.lineWidth = SIZE * 0.012;
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+  ctx.strokeStyle = ring;
   ctx.beginPath();
   ctx.arc(0, 0, r - SIZE * 0.035, 0, Math.PI * 2);
   ctx.stroke();

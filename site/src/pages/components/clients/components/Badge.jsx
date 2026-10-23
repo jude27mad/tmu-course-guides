@@ -145,7 +145,7 @@ function useBadgeTextures(look) {
       made?.card.dispose();
       made?.band.dispose();
     };
-  }, [look.code, look.background, look.color]);
+  }, [look.code, look.background, look.color, look.strap, look.strapColor]);
 
   // the next date changes on the card face without a new texture
   useEffect(() => {
@@ -223,11 +223,11 @@ function BadgeCard({ body, offsetX, look, idle, maxSpeed = 50, minSpeed = 10 }) 
         {/* clamp and clip ring */}
         <mesh position={[0, 1.2, 0]}>
           <boxGeometry args={[0.42, 0.16, 0.07]} />
-          <meshStandardMaterial color="#bdbdbd" metalness={0.6} roughness={0.35} />
+          <meshStandardMaterial color={look.clip} metalness={0.6} roughness={0.35} />
         </mesh>
         <mesh position={[0, 1.36, 0]}>
           <torusGeometry args={[0.1, 0.028, 12, 24]} />
-          <meshStandardMaterial color="#bdbdbd" metalness={0.6} roughness={0.35} />
+          <meshStandardMaterial color={look.clip} metalness={0.6} roughness={0.35} />
         </mesh>
       </group>
       <mesh ref={band}>

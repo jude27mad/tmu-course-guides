@@ -65,6 +65,7 @@ function NextTile() {
             }}
             label="MARK DONE"
             ariaLabel={`Mark ${next.title} done`}
+            primary
           />
         ) : null}
         {pendingUndo ? (

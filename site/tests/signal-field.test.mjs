@@ -50,15 +50,15 @@ function fixture() {
   return { canvas, host, doc, observers, drawing, frames, subscribe, tick };
 }
 
-test('Kairo draws a deliberate bone/orange static field and caps high-DPR canvas allocation', async () => {
+test('Kairo draws a deliberate palette-coloured static field and caps high-DPR canvas allocation', async () => {
   const { mountSignalField } = await implementation();
   const f = fixture();
   const field = mountSignalField(f.canvas, { subscribe: f.subscribe, still: true, visible: true });
   assert.equal(f.frames.size, 0);
   assert.ok(f.canvas.width <= 2048 && f.canvas.height <= 1536);
   assert.ok(f.canvas.width * f.canvas.height <= 2_000_000);
-  assert.ok(f.drawing.some((draw) => draw[0] === 'point' && draw[1] === 'rgb(235, 233, 226)'));
-  assert.ok(f.drawing.some((draw) => draw[0] === 'point' && draw[1] === 'rgb(255, 91, 31)'));
+  assert.ok(f.drawing.some((draw) => draw[0] === 'point' && draw[1] === 'rgb(161, 161, 170)'));
+  assert.ok(f.drawing.some((draw) => draw[0] === 'point' && draw[1] === 'rgb(250, 250, 250)'));
   assert.ok(f.drawing.some((draw) => draw[0] === 'arc' && draw[3] > 100));
   field.destroy();
 });
