@@ -1,0 +1,21 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+const file = name => readFileSync(new URL(name, import.meta.url), 'utf8');
+
+test('Safari document background uses the Desk paper instead of exposed black', () => {
+  const css = file('../src/styles/global.scss');
+  assert.ok(css.includes('background-color: var(--white)'));
+  assert.ok(css.includes('min-height: var(--app-viewport-height)'));
+});
+
+test('Full-screen shell and loader share dynamic viewport height', () => {
+  const global = file('../src/styles/global.scss');
+  const app = file('../src/pages/app.module.scss');
+  const loader = file('../src/components/dom/styles/loader.module.scss');
+  assert.ok(global.includes('--app-viewport-height: 100dvh'));
+  assert.ok(app.includes('max-height: var(--app-viewport-height)'));
+  assert.ok(app.includes('height: var(--app-viewport-height) !important'));
+  assert.ok(app.includes('height: var(--app-viewport-height)'));
+  assert.ok(loader.includes('height: var(--app-viewport-height)'));
+});

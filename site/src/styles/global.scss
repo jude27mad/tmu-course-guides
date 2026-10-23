@@ -8,12 +8,20 @@
 @import '@src/styles/scroll.scss';
 
 html {
+  // Only the full-screen shell follows Safari's changing visible viewport.
+  // Individual scroll sections keep stable svh sizes to avoid reflow.
+  --app-viewport-height: 100vh;
+  @supports (height: 100dvh) {
+    --app-viewport-height: 100dvh;
+  }
+
   font-weight: bolder;
   font-family: var(--font-primary), sans-serif;
   // 'only' opts out of browsers' automatic dark modes (Chrome's Auto Dark Theme,
   // Samsung Internet), which invert the light design and leave MENU dark on dark.
   color-scheme: only light;
-  background-color: #09050c;
+  // Match Safari's exposed document/inset area to the Desk paper.
+  background-color: var(--white);
 
   scrollbar-width: thin;
   &.nav {
@@ -26,6 +34,8 @@ main.lenis-stopped {
 }
 
 body {
+  background-color: var(--white);
+  min-height: var(--app-viewport-height);
   max-height: 100%;
   overflow: hidden;
   // Long-press link previews and copying deadline text, rooms and sections
