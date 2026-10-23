@@ -100,7 +100,7 @@ export const CEN={
  "contactNote": "For contact details, check D2L or the official Section GAs and PMs document.",
  "tools": {
   "summary": "Guide tools",
-  "updated": "Updated Oct 9, 2026",
+  "updated": "Updated Oct 23, 2026",
   "note": "Your saved section, group and checklist settings stay on this device."
  },
  "grading": {
@@ -579,3 +579,4 @@ export const PRIVACY={
  ],
  "updated": "Updated October 12, 2026."
 };
+

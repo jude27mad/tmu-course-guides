@@ -133,22 +133,22 @@ test('multi-record items lead with the first unfinished record, then the final r
     assert.deepEqual(notebook.records.map((row) => row.id), ['notebook-1', 'notebook-2']);
   }
   const list = lib.assignmentList('cen100', { now: NOW, items: rowsFor('cen100') });
-  assert.deepEqual(entry(list, 'y1').records.map((row) => row.id), ['entry', 'intro', 'syllabus', 'email']);
+  assert.deepEqual(entry(list, 'y1').records.map((row) => row.id), ['intro', 'entry', 'syllabus', 'email']);
   assert.equal(entry(list, 'y1').records.length, 4);
 });
 
 test('reminders are retained as rows but never lead, count as records, or block done', () => {
-  const items = rowsFor('cen100', { section: 29, completed: { failure: 1 } });
+  const items = rowsFor('cen100', { section: 29, completed: { failure: 1, 'failure-2': 1 } });
   /* Keep a reminder explicitly open: the list must use markable records, independently of reminder retirement. */
   const reminder = items.find((row) => row.id === 'failure-lab');
   reminder.done = false;
   reminder.overdue = true;
   const list = lib.assignmentList('cen100', { now: NOW, items });
   const failure = entry(list, 'm3');
-  assert.deepEqual(failure.rows.map((row) => row.id), ['failure-lab', 'failure']);
-  assert.deepEqual(failure.records.map((row) => row.id), ['failure']);
-  assert.equal(failure.recorded, 1);
-  assert.equal(failure.lead.id, 'failure');
+  assert.deepEqual(failure.rows.map((row) => row.id), ['failure-lab', 'failure', 'failure-2']);
+  assert.deepEqual(failure.records.map((row) => row.id), ['failure', 'failure-2']);
+  assert.equal(failure.recorded, 2);
+  assert.equal(failure.lead.id, 'failure-2');
   assert.equal(failure.done, true);
   assert.equal(failure.pastDue, false);
   assert.equal(failure.group, 'done');
@@ -387,7 +387,7 @@ test('done style overrides due, day, week, lab-window and reminder styles withou
       assert.deepEqual({ ...result, style: original.style }, original);
     }
   }
-  const rows = rowsFor('cen100', { section: 29, completed: { failure: 1, 'notebook-1': 1 } });
+  const rows = rowsFor('cen100', { section: 29, completed: { failure: 1, 'failure-2': 1, 'notebook-1': 1 } });
   const events = lib.calendarEvents('cen100', rows);
   assert.equal(event(events, 'notebook-1').style, 'done');
   assert.equal(event(events, 'notebook-2').style, 'due');
@@ -407,4 +407,24 @@ test('both functions preserve frozen supplied rows and perform no storage access
     assert.deepEqual(items, before, courseId);
     assert.deepEqual(storage.calls, [], 'supplied rows make both computations independent of saved state');
   }
+});
+
+
+// A legacy completion must never silently mark the newly separated FMEA as submitted.
+test('FMEA remains actionable after a saved Part 1 completion', () => {
+  const now = toronto('2026-10-23', '12:00');
+  const items = rowsFor('cen100', { now, section: 29, completed: { failure: 1 } });
+  const failure = entry(lib.assignmentList('cen100', { now, items }), 'm3');
+  assert.equal(failure.done, false);
+  assert.equal(failure.recorded, 1);
+  assert.equal(failure.records.length, 2);
+  assert.equal(failure.lead.id, 'failure-2');
+  assert.equal(failure.lead.date, '2026-10-28');
+  assert.equal(failure.lead.weight, 4);
+  assert.equal(failure.lead.precision, 'day');
+  assert.equal(items.find(row => row.id === 'failure').weight, 2);
+  const assessment = lib.assessments('cen100').find(row => row.item === 'm3');
+  assert.equal(assessment.weight, 6);
+  assert.match(assessment.dateLabel, /Oct 21.*Oct 28/);
+  assert.ok(event(lib.calendarEvents('cen100', items), 'failure-2'));
 });
