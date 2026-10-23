@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Transition as ReactTransition, SwitchTransition } from 'react-transition-group';
-import { pathKey, wantsSRGB } from '@src/utils/routes';
+import { courseIdFromPath, pathKey, wantsSRGB } from '@src/utils/routes';
 
 import Footer from '@src/components/dom/Footer';
+import CompactFooter from '@src/pages/course/components/workspace/CompactFooter';
 import PreFooter from '@src/components/dom/PreFooter';
 import gsap from 'gsap';
 import { scrollToHash } from '@src/utils/scrollToHash';
@@ -186,13 +187,31 @@ function Layout({ children, layoutRef, mainRef, router }) {
   // In-page anchors (#assignment-m2 from the menu, search or a link) never run the
   // curtain: close any open panel and glide to the item.
   useEffect(() => {
+    let pending;
+    const cancel = () => clearTimeout(pending);
     const onHash = (url) => {
+      cancel();
       closePanels();
       const hash = String(url).split('#')[1];
-      if (hash) setTimeout(() => scrollToHash({ hash }), useStore.getState().still ? 0 : 450);
+      if (hash) {
+        pending = setTimeout(
+          () => {
+            // A later click or browser Back can overtake the panel-close delay.
+            if (window.location.hash.slice(1) === hash) scrollToHash({ hash });
+          },
+          useStore.getState().still ? 0 : 450,
+        );
+      }
     };
+    router.events.on('hashChangeStart', cancel);
+    router.events.on('routeChangeStart', cancel);
     router.events.on('hashChangeComplete', onHash);
-    return () => router.events.off('hashChangeComplete', onHash);
+    return () => {
+      cancel();
+      router.events.off('hashChangeStart', cancel);
+      router.events.off('routeChangeStart', cancel);
+      router.events.off('hashChangeComplete', onHash);
+    };
   }, [router]);
 
   return (
@@ -213,10 +232,16 @@ function Layout({ children, layoutRef, mainRef, router }) {
         </ReactTransition>
       </SwitchTransition>
 
-      <PreFooter />
-      <footer className={styles.footer}>
-        <Footer />
-      </footer>
+      {courseIdFromPath(router.asPath) ? (
+        <CompactFooter />
+      ) : (
+        <>
+          <PreFooter />
+          <footer className={styles.footer}>
+            <Footer />
+          </footer>
+        </>
+      )}
     </>
   );
 }

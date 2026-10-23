@@ -55,9 +55,9 @@ const PROGRESS = {
 // Text each page shows only when it has read the saved progress above.
 const SHOWN = [
   ['', null],
-  ['cen100/', /\b1\/\d+ submission/],
-  ['mth140/', /\b1\/\d+ completed in my records/],
-  ['mth141/', /Section 3 ·/],
+  ['cen100/', /\b1\/\d+ records done/],
+  ['mth140/', /\b1\/\d+ records done/],
+  ['mth141/', null],
 ];
 
 const TYPES = {
@@ -113,7 +113,7 @@ async function checkLocal(folder) {
   await new Promise((done) => server.listen(0, '127.0.0.1', done));
   const origin = `http://127.0.0.1:${server.address().port}`;
   const site = `${origin}${base}/`;
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, executablePath: process.env.QA_CHROMIUM_PATH || undefined });
   const failures = [];
   const check = async (name, run) => {
     try {
@@ -225,6 +225,7 @@ async function checkLocal(folder) {
         await page.goto(`${site}${path}`, { waitUntil: 'networkidle' });
         assert.equal(await page.evaluate(() => document.documentElement.getAttribute('data-motion')), 'off', `Pause motion kept on /${path}`);
         if (shown) await page.waitForFunction((source) => new RegExp(source).test(document.body.innerText), shown.source, { timeout: 15000 });
+        if (path === 'mth141/') await page.waitForFunction(() => document.querySelector('#course-section')?.value === '3');
       }
       const after = await page.evaluate((keys) => Object.fromEntries(keys.map((key) => [key, localStorage.getItem(key)])), Object.keys(PROGRESS));
       assert.deepEqual(after, PROGRESS);

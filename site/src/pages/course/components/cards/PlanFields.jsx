@@ -13,7 +13,6 @@ function PlanFields({ itemId, notesLabel, targetLabel, notes }) {
   const [note, setNote] = useState('');
   const [target, setTarget] = useState('');
   const editing = useRef(false);
-  const timer = useRef(0);
 
   // Follow saved values (another tab, an import) unless the field is being typed in.
   useEffect(() => {
@@ -22,10 +21,7 @@ function PlanFields({ itemId, notesLabel, targetLabel, notes }) {
     setTarget(progress.getTarget(courseId, itemId));
   }, [progress, version, courseId, itemId]);
 
-  useEffect(() => () => clearTimeout(timer.current), []);
-
   const saveNote = (value) => {
-    clearTimeout(timer.current);
     progress.setNote(courseId, itemId, value);
   };
 
@@ -47,8 +43,7 @@ function PlanFields({ itemId, notesLabel, targetLabel, notes }) {
         onChange={(event) => {
           const { value } = event.target;
           setNote(value);
-          clearTimeout(timer.current);
-          timer.current = setTimeout(() => saveNote(value), 500);
+          saveNote(value);
         }}
         onBlur={(event) => {
           editing.current = false;

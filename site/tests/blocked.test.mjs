@@ -28,6 +28,8 @@ function readEverything(storage) {
     };
     out[course].buckets = lib.buckets(out[course].deadlines, NOW);
     out[course].countdown = lib.countdown(out[course].next, NOW);
+    out[course].assignments = lib.assignmentList(course, { now: NOW, items: out[course].deadlines });
+    out[course].events = lib.calendarEvents(course, out[course].deadlines);
   }
   return out;
 }
@@ -59,9 +61,39 @@ test('a storage getter that throws (blocked site data) is treated as no storage'
     assert.equal(lib.nextDeadline({ now: NOW }).courseId, 'mth140');
     assert.equal(lib.deskSnapshot({ now: NOW }).length, 3);
     assert.equal(lib.motionPaused(), false);
+    for (const course of COURSES) {
+      const items = lib.deadlines(course, { now: NOW });
+      assert.equal(lib.assignmentList(course, { now: NOW }).entries.length, course === 'cen100' ? 17 : course === 'mth140' ? 6 : 7);
+      assert.equal(lib.calendarEvents(course, items).length > 0, true);
+    }
     const progress = lib.createProgress(undefined, { events: null });
     assert.equal(progress.isDone('cen100', 'integrity'), false);
     assert.equal(progress.markDone('cen100', 'integrity').saved, false);
+  } finally {
+    if (descriptor) Object.defineProperty(globalThis, 'localStorage', descriptor);
+    else delete globalThis.localStorage;
+  }
+});
+
+test('assignment lists and calendar events use empty saved state when default storage methods are blocked', () => {
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'localStorage');
+  const expected = Object.fromEntries(COURSES.map((course) => {
+    const items = lib.deadlines(course, { now: NOW, storage: memoryStorage() });
+    return [course, {
+      assignments: lib.assignmentList(course, { now: NOW, items }),
+      events: lib.calendarEvents(course, items),
+    }];
+  }));
+  try {
+    for (const storage of [deniedStorage(), fullStorage()]) {
+      Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: storage });
+      for (const course of COURSES) {
+        const items = lib.deadlines(course, { now: NOW });
+        assert.deepEqual(lib.assignmentList(course, { now: NOW }), expected[course].assignments);
+        assert.deepEqual(lib.calendarEvents(course, items), expected[course].events);
+      }
+      if (storage.writes) assert.deepEqual(storage.writes(), [], 'readers never attempt a write');
+    }
   } finally {
     if (descriptor) Object.defineProperty(globalThis, 'localStorage', descriptor);
     else delete globalThis.localStorage;

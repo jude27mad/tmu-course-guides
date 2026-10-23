@@ -63,7 +63,7 @@ function Lines({ items, className = 'p-l' }) {
   );
 }
 
-function CenBody({ item }) {
+export function CenBody({ item }) {
   const { courseId, progress, copy } = useCourse();
   const records = item.records || [];
   const doneCount = records.filter((record) => progress.isDone(courseId, record.id)).length;
@@ -100,10 +100,10 @@ function CenBody({ item }) {
         </div>
       ) : null}
       {item.source ? (
-        <div className={styles.block}>
-          <h4 className={clsx('p-x', styles.heading)}>{item.source.summary}</h4>
-          <p className={clsx('p-x', styles.muted)}>{item.source.note}</p>
-        </div>
+        <details className={styles.block}>
+          <summary className="p-l">{item.source.summary}</summary>
+          <p className="p-l">{item.source.note}</p>
+        </details>
       ) : null}
       {records.length ? (
         <div className={styles.block}>
@@ -127,11 +127,10 @@ function CenBody({ item }) {
   );
 }
 
-function AssessmentBody({ item }) {
+export function AssessmentBody({ item }) {
   const { courseId, progress } = useCourse();
   return (
     <>
-      <p className="p-l">{item.timing}</p>
       <dl className={styles.facts}>
         {item.room ? (
           <div>
@@ -169,7 +168,10 @@ function AssessmentBody({ item }) {
           ))}
         </ul>
       </div>
-      <p className={clsx('p-x', styles.muted)}>{`${item.sourceLabel} ${item.source}`}</p>
+      <details>
+        <summary className="p-l">{item.sourceLabel}</summary>
+        <p className="p-l">{item.source}</p>
+      </details>
       <div className={styles.block}>
         <h4 className={clsx('p-x', styles.heading)}>{item.personalSummary}</h4>
         <ul className={styles.checks}>
@@ -184,7 +186,7 @@ function AssessmentBody({ item }) {
   );
 }
 
-function TopicBody({ item, review }) {
+export function TopicBody({ item, review }) {
   const { courseId, progress } = useCourse();
   return (
     <>

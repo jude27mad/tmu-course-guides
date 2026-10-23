@@ -1,0 +1,108 @@
+{
+  "results": [
+    {
+      "name": "compact opening exposes navigation and first assignment in one screen",
+      "pass": true,
+      "detail": {
+        "firstAssignmentBottom": 794.03125
+      }
+    },
+    {
+      "name": "assignment is a single detail, Back restores filter",
+      "pass": true
+    },
+    {
+      "name": "note, target and checklist survive immediate navigation and reload",
+      "pass": true
+    },
+    {
+      "name": "multi-submission assignment stays Open until every record is marked",
+      "pass": true
+    },
+    {
+      "name": "browser Back/Forward restores All filter, scroller and opener focus",
+      "pass": true
+    },
+    {
+      "name": "rapid view changes with motion never replay stale navigation",
+      "pass": true,
+      "detail": {
+        "hash": "#work",
+        "entries": 4
+      }
+    },
+    {
+      "name": "schedule restores keyboard focus and scroll to the detail opener",
+      "pass": true
+    },
+    {
+      "name": "course-grading restores keyboard focus and scroll to the detail opener",
+      "pass": true
+    },
+    {
+      "name": "Study retains every published lecture-hour estimate in list and detail",
+      "pass": true
+    },
+    {
+      "name": "math Study and legacy links open the shared content",
+      "pass": true
+    },
+    {
+      "name": "Schedule agenda and calendar open the same assignment",
+      "pass": true
+    },
+    {
+      "name": "keyboard search opens the same detail across courses, then returns",
+      "pass": true
+    },
+    {
+      "name": "backup export and import retain separate records, notes, targets and checks",
+      "pass": true
+    },
+    {
+      "name": "calendar code stays off Work and a blocked chunk leaves a usable deadline list",
+      "pass": true,
+      "detail": {
+        "blockedCalendarChunks": 3
+      }
+    },
+    {
+      "name": "tablet header controls remain readable and easy to activate",
+      "pass": true
+    },
+    {
+      "name": "layout and readable detail at 360px",
+      "pass": true
+    },
+    {
+      "name": "layout and readable detail at 430px",
+      "pass": true
+    },
+    {
+      "name": "layout and readable detail at 768px",
+      "pass": true
+    },
+    {
+      "name": "layout and readable detail at 834px",
+      "pass": true
+    },
+    {
+      "name": "layout and readable detail at 1024px",
+      "pass": true
+    },
+    {
+      "name": "layout and readable detail at 1440px",
+      "pass": true
+    },
+    {
+      "name": "200 percent equivalent reflow keeps details and navigation usable",
+      "pass": true
+    },
+    {
+      "name": "course information remains readable without JavaScript",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "environment": "Chromium 153 browser emulation; production base /tmu-course-guides; not physical-device testing"
+}

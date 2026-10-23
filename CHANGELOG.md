@@ -1,6 +1,15 @@
 # Release history
 
-Latest first. Course-specific student-facing notes remain under **What's changed?** above each course footer. Older entries record the behaviour at the time; later releases supersede them.
+Latest first. Course-specific student-facing notes remain under **What's changed?** in Guide tools. Older entries record the behaviour at the time; later releases supersede them.
+
+## Unreleased — Shorter course views
+
+- Courses open in a compact Work list, with Open, All and Done filters. Schedule, math Study and Course info have separate views.
+- Work, calendar, search and old assignment links open one full-width detail. Back restores the list filter, scroll and focus; browser Back/Forward remains available.
+- One course photograph, a small deadline/progress summary and a compact ending replace repeated images, pinned sequences and duplicate overview sections. Requirements stay visible; optional references and course information use native disclosures.
+- Section/group selection, D2L and Guide tools stay near the top. Notes save immediately on edit. Existing progress formats, checklist IDs, backups and multi-submission records are preserved.
+- Schedule provides a phone agenda, a lazily loaded Schedule-X calendar on wider screens, and a deadline list that works when the calendar cannot load. Official date precision and Toronto time are retained.
+- Verification and browser-emulated screenshots: [redesign QA record](docs/qa/shorter-course-views/README.md). This branch has not been merged or published.
 
 ## October 21, 2026 — Current design at the main address
 
