@@ -69,6 +69,17 @@ function selectorAt(css, index) {
   return css.slice(start, open).trim();
 }
 
+// The alpha of a BLACK_ALPHA match: rgba(0,0,0,<alpha>), #000000<aa> or #000<a>.
+function alphaAt(text, match) {
+  if (match[0].startsWith('#')) {
+    const hex = match[0].slice(match[0].length === 9 ? 7 : 4);
+    return Number.parseInt(hex.length === 1 ? hex + hex : hex, 16) / 255;
+  }
+  const rest = text.slice(match.index + match[0].length, text.indexOf(')', match.index));
+  const value = rest.trim();
+  return value.endsWith('%') ? Number.parseFloat(value) / 100 : Number.parseFloat(value);
+}
+
 async function scanFiles() {
   const old = [];
   const thirdParty = [];
@@ -78,6 +89,8 @@ async function scanFiles() {
     const name = relative(folder, path);
     for (const match of text.matchAll(OLD_TEXT)) old.push(`${name}: ${match[0]} … ${text.slice(Math.max(0, match.index - 40), match.index + 40)}`);
     for (const match of text.matchAll(BLACK_ALPHA)) {
+      // Zero alpha is no colour at all: the minifier writes `transparent` as rgba(0,0,0,0).
+      if (alphaAt(text, match) === 0) continue;
       if (extname(path) === '.css') {
         const selector = selectorAt(text, match.index);
         const declaration = text.slice(Math.max(text.lastIndexOf(';', match.index), text.lastIndexOf('{', match.index)) + 1, match.index);
