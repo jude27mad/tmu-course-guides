@@ -92,6 +92,54 @@ test('the reveal waits for its trigger, pauses outside view and while hidden, an
   reveal.destroy();
 });
 
+test('the reveal holds while a page change or the loader animates, then plays', async () => {
+  const { createPixelReveal } = await revealModule();
+  const f = fixture();
+  const reveal = createPixelReveal({ ...f, active: true, held: true });
+  const timeline = f.timelines[0];
+  f.triggers[0].options.onEnter();
+  assert.equal(timeline.playing, false);
+  const drawsWhileHeld = f.draws.length;
+  reveal.setHeld(false);
+  assert.equal(timeline.playing, true);
+  reveal.setHeld(true);
+  assert.equal(timeline.playing, false);
+  assert.equal(f.draws.length, drawsWhileHeld, 'holding draws nothing beyond the first frame');
+  reveal.destroy();
+});
+
+test('the photo is decoded before the first draw, and a late decode after destroy does nothing', async () => {
+  const { createPixelReveal } = await revealModule();
+  const f = fixture();
+  let resolveDecode;
+  f.image.decode = () => new Promise((resolve) => { resolveDecode = resolve; });
+  const reveal = createPixelReveal({ ...f, active: true });
+  assert.equal(f.draws.length, 0, 'no synchronous draw before decoding');
+  assert.equal(f.timelines.length, 0);
+  resolveDecode();
+  await new Promise((done) => setImmediate(done));
+  assert.ok(f.draws.length > 0);
+  assert.equal(f.timelines.length, 1);
+  reveal.destroy();
+
+  const g = fixture();
+  let resolveLate;
+  g.image.decode = () => new Promise((resolve) => { resolveLate = resolve; });
+  const late = createPixelReveal({ ...g, active: true });
+  late.destroy();
+  resolveLate();
+  await new Promise((done) => setImmediate(done));
+  assert.equal(g.draws.length, 0);
+  assert.equal(g.timelines.length, 0);
+
+  const h = fixture();
+  h.image.decode = () => Promise.reject(new Error('EncodingError'));
+  const rejected = createPixelReveal({ ...h, active: true });
+  await new Promise((done) => setImmediate(done));
+  assert.equal(h.timelines.length, 1, 'a decoded-elsewhere image still reveals when decode() rejects');
+  rejected.destroy();
+});
+
 test('completion reveals the untouched real image and cannot restart the animation', async () => {
   const { createPixelReveal } = await revealModule();
   const f = fixture();
