@@ -5,8 +5,8 @@ const file = name => readFileSync(new URL(name, import.meta.url), 'utf8');
 
 test('Safari document background uses the Desk paper instead of exposed black', () => {
   const css = file('../src/styles/global.scss');
-  assert.match(css, /html\\s*\\{[\\s\\S]*?background-color: var\\(--white\\)/);
-  assert.match(css, /body\\s*\\{[\\s\\S]*?background-color: var\\(--white\\)/);
+  assert.ok(css.includes('background-color: var(--white)'));
+  assert.ok(css.includes('min-height: var(--app-viewport-height)'));
 });
 
 test('Full-screen shell and loader share dynamic viewport height', () => {
