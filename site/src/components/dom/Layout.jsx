@@ -55,12 +55,18 @@ function Layout({ children, layoutRef, mainRef, router }) {
 
   const finishEnter = () => {
     setIsAbout(wantsSRGB(router.pathname));
-    useStore.getState().setIsTransitioning(false);
-    setIsLoading(false);
-    lenis.start();
     gsap.set(mainRef.current, { willChange: 'auto' });
     gsap.set('#loader', { autoAlpha: 0, display: 'none' });
     if (nativeIOSScroll()) gsap.set(mainRef.current, { clearProps: 'transform,transformOrigin,left' });
+
+    // The old page's removal and the final transform cleanup can move Safari's
+    // document scroll after the exit reset. Read the incoming page's actual
+    // position first: Lenis skips scrollTo(0) if its cached target is already 0.
+    lenis.start();
+    lenis.resize();
+    lenis.scrollTo(0, { force: true, immediate: true });
+    useStore.getState().setIsTransitioning(false);
+    setIsLoading(false);
     landOnPage();
     scrollToHash({ immediate: true });
   };
