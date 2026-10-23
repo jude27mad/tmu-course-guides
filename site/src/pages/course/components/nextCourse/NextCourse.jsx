@@ -9,7 +9,7 @@ import { useMemo } from 'react';
 
 // The original NextProject: one 100svh window card to the next course
 // (CEN100 -> MTH140 -> MTH141 -> CEN100). His project images become solid
-// panels in the shared Desk palette, with the original typography.
+// panels in the next course's own palette, with the original typography.
 function NextCourse() {
   const { courseId, live } = useCourse();
   const index = COURSES.findIndex((course) => course.id === courseId);

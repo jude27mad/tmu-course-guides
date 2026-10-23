@@ -30,13 +30,6 @@
       display: flex;
       align-items: center;
       min-height: 44px;
-      transition:
-        opacity 0.3s ease,
-        visibility 0.3s;
-      &.wordmarkHidden {
-        opacity: 0;
-        visibility: hidden;
-      }
     }
     .rightContainer {
       pointer-events: all;

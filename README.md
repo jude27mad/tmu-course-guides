@@ -2,11 +2,11 @@
 
 An unofficial course companion for Toronto Metropolitan University students. It brings deadlines, requirements, checklists and your own progress into one place, and works on phones, tablets and desktops.
 
-**[Open the website →](https://jude27mad.github.io/tmu-course-guides/)**
+**[Open the website →](https://jude27mad.github.io/tmu-course-guides/next/)**
 
 No account, installation or download is needed.
 
-> **The current design is live at the main address.** Links to the previous version's pages and to the earlier `/next/` preview open the matching page of the current design, and saved progress carries over. The previous version's files stay in this repository for reference but are no longer published.
+> **The Giats preview is live, including the October 16 artwork update.** Open it at [`/next/`](https://jude27mad.github.io/tmu-course-guides/next/). The previous version stays at the [main address](https://jude27mad.github.io/tmu-course-guides/) until the switch. Both versions read the same saved progress.
 
 ## Getting started
 
@@ -67,7 +67,7 @@ Progress saved by earlier versions of the website carries over automatically.
 
 ## Privacy
 
-The website has no analytics, tracking cookies or session recording, and it makes no requests to other websites. Fonts and graphics are served from the website itself. See the [Privacy page](https://jude27mad.github.io/tmu-course-guides/privacy/) for details, including how GitHub Pages hosting works.
+The website has no analytics, tracking cookies or session recording, and it makes no requests to other websites. Fonts and graphics are served from the website itself. See the [Privacy page](https://jude27mad.github.io/tmu-course-guides/next/privacy/) for details, including how GitHub Pages hosting works.
 
 ## Important
 

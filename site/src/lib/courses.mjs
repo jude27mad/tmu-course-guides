@@ -9,10 +9,14 @@ import { isMath, readProfile, writeProfile, readMathSection, writeMathSection } 
 
 export const COURSE_IDS = ['cen100', 'mth140', 'mth141'];
 
-/** The Desk palette, including Giats's original homepage fluid tint. */
-export const DEFAULT_PALETTE = Object.freeze({ primary: '#28282b', accentColor: '#f9f9f9', secondary: '#f0f4f1', fillColor: '#f2ffbd', menuColor: '#28282b', menuFontColor: '#f0f4f1', fluidColor: '#d7d7d4' });
-/** One shared palette for every page, course card and generated 3D texture. */
-export const PALETTES = Object.freeze(Object.fromEntries(COURSE_IDS.map((id) => [id, DEFAULT_PALETTE])));
+/** The original design's own project palettes, applied with its per-project CSS variables and setFluidColor (brief, decision 3). */
+export const PALETTES = {
+  cen100: { primary: '#000000', accentColor: '#f0f4f1', secondary: '#F9F9F9', fillColor: '#ebfaf8', menuColor: '#00a8c1', menuFontColor: '#f0f4f1', fluidColor: '#FF573E' },
+  mth140: { primary: '#263745', accentColor: '#f0f4f1', secondary: '#F3F5F7', fillColor: '#E0DFFC', menuColor: '#5C58EB', menuFontColor: '#f0f4f1', fluidColor: '#A3A714' },
+  mth141: { primary: '#2D2D2D', accentColor: '#FCFBF7', secondary: '#F2EEE7', fillColor: '#F2F3F4', menuColor: 'gold', menuFontColor: '#2D2D2D', fluidColor: '#0028FF' },
+};
+/** The original default palette (Desk, Courses, Privacy): the values its project page restores on leave. */
+export const DEFAULT_PALETTE = { primary: '#28282b', accentColor: '#f9f9f9', secondary: '#f0f4f1', fillColor: '#f2ffbd', menuColor: '#28282b', menuFontColor: '#f0f4f1', fluidColor: '#d7d7d4' };
 
 const D2L = 'https://courses.torontomu.ca/';
 const mathLinks = (id) => [...MATH_PAGE[id].contact.links.map((link) => ({ ...link, external: true })), ...DATA[id].textbooks.map((book) => ({ label: book.title, href: book.url, external: true }))];

@@ -45,9 +45,8 @@
     color: var(--black);
     // `main` is the scroller. The original had overflow: hidden (Lenis only); a real
     // scroll container restores keyboard scrolling, find-in-page, focus
-    // scrolling and native touch panning when motion is paused. Lenis smooths
-    // wheel/touch input while motion is enabled and adds .lenis-stopped
-    // (overflow hidden) while the loader or a panel is up.
+    // scrolling and native momentum on touch. Lenis still smooths the wheel and
+    // adds .lenis-stopped (overflow hidden) while the loader or a panel is up.
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -88,6 +87,11 @@
         height: 100% !important;
       }
     }
+  }
+  // The fluid canvas: hidden (not just transparent) while idle on touch
+  // screens, so the full-screen difference blend is not composited.
+  .fluidIdle {
+    visibility: hidden;
   }
 }
 

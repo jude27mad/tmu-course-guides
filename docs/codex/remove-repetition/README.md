@@ -2,7 +2,7 @@
 
 These are the code-only parts of [docs/plans/remove-repetition.md](../../plans/remove-repetition.md). Each task file is self-contained: paste the whole file into Codex.
 
-No task here involves visual design. Claude does the visible work (text sizes, the Desk and tiles, the assignment list on the page, fitting the calendar and the accordion), merges the Codex branches into `main`, and the Pages workflow publishes the website.
+No task here involves visual design. Claude does the visible work (text sizes, the Desk and tiles, the assignment list on the page, fitting the calendar and the accordion), merges the Codex branches, rebuilds `/next/` and publishes.
 
 | Task | Branch | Start | Depends on |
 |---|---|---|---|
@@ -19,7 +19,7 @@ The five tasks touch different files, so they can run at the same time.
 - **Repository:** `jude27mad/tmu-course-guides`. Work in `site/` (the Next.js app). Start your branch from the latest `origin/main`.
 - **Never push to `main`.** Push only your own branch. Claude merges it.
 - **Do not touch:**
-  - `next/` (the earlier preview export, frozen) and `.github/workflows/pages.yml`;
+  - `next/` (the generated export);
   - `site/package.json` and `site/package-lock.json` (except on the R4 spike branch);
   - `site/src/lib/content/pages.mjs`;
   - `site/src/pages/[course].page.jsx`;

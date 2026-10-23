@@ -6,27 +6,16 @@ This folder holds the source of the TMU Course Guides website, a Next.js app exp
 
 ```sh
 npm ci
-npm test                    # data, storage, artwork, lifecycle and publishing tests (node --test)
-npm run build               # static export in out/
+npm test                    # data, storage, artwork and lifecycle tests (node --test)
+npm run export:preview      # static export, copied to ../next
 ```
 
-- **Publishing.** `.github/workflows/pages.yml` publishes the website at https://jude27mad.github.io/tmu-course-guides/ on every push to `main` that changes `site/`. It runs the tests, builds with `SITE_BASE_PATH=/tmu-course-guides`, adds the forwarding pages (`scripts/pages-site.mjs`), checks the result in Chromium (`scripts/check-pages-site.mjs --local`), deploys it, and then checks the live address (`--live`). GitHub Pages must be set to **Source: GitHub Actions**; with any other source the workflow builds and checks but does not deploy. Changing the source does not start a run, so after switching to GitHub Actions run the workflow on `main` once (Actions → Pages → Run workflow) unless a push to `site/` follows.
-- **What is published.** Only this site. The previous version's addresses (`privacy.html`, `colour-preview.html`) and the earlier preview (`/next/` and its pages) forward to the matching page, keeping the query and hash; `cen100/`, `mth140/` and `mth141/` are the same addresses as before. The previous version's files at the repository root, `docs/`, `tests/` and `tools/` are not published.
-- **Checking a publish locally:**
-  ```sh
-  export SITE_BASE_PATH=/tmu-course-guides
-  npm run build
-  rm -rf /tmp/pages
-  node scripts/pages-site.mjs build --out out --dest /tmp/pages
-  node scripts/pages-site.mjs check /tmp/pages
-  PLAYWRIGHT_PATH=/path/to/node_modules/playwright node scripts/check-pages-site.mjs --local /tmp/pages
-  ```
-- `SITE_BASE_PATH` (or `NEXT_PUBLIC_BASE_PATH`) sets the base path. Without it, builds use `/tmu-course-guides/next`, which the QA scripts (`check-guide-tools-popup.mjs`, `verify-*.mjs`) expect. Use an empty value for a domain root.
-- `npm run export:preview` copies a build to `../next` and only replaces a folder it created itself (marked with `.site-export`). The committed `next/` folder is the earlier preview, kept as it was and no longer published.
+- `SITE_BASE_PATH` (or `NEXT_PUBLIC_BASE_PATH`) sets the base path. The default is `/tmu-course-guides/next`, the preview address. Use `SITE_BASE_PATH=/tmu-course-guides` for the Pages root, or an empty value for a domain root.
+- `export:preview` only replaces an output folder it created itself (marked with `.site-export`).
 - `npm run fonts` rebuilds the Inter Display subsets (needs Python fontTools).
 - Add `?stats` to any page URL for a frame-rate panel.
 
-The repository root keeps its `.nojekyll` file for the case where Pages is switched back to publishing the `main` branch. CI runs `npm test` and `npm run build` for this folder on every push to `main`.
+The repository root has a `.nojekyll` file so GitHub Pages serves the `_next` folder. CI runs `npm test` and `npm run build` for this folder on every push to `main`.
 
 ## Structure
 
@@ -80,6 +69,6 @@ so the included notice comes from Codrops' official licensing page. Neither
 template's photographs are reused.
 
 
-The artwork is published on the [website](https://jude27mad.github.io/tmu-course-guides/). See the [QA record](../docs/qa/giats-artwork/README.md) and [subject-image screenshot gallery](../docs/qa/giats-artwork/subject-imagery/README.md).
+The artwork is published on the live [`/next/`](https://jude27mad.github.io/tmu-course-guides/next/) preview. See the [QA record](../docs/qa/giats-artwork/README.md) and [subject-image screenshot gallery](../docs/qa/giats-artwork/subject-imagery/README.md).
 
 Implementation lives in `src/components/artwork/` (signal field) and `src/components/courseArtwork/` (image mapping and reveal). Update `artworks.mjs` and the individual asset credits together when changing photographs. The engineering image is the unresolved/empty Next Up fallback. Source images are local 800/1600-pixel WebPs; no image host is contacted at runtime.

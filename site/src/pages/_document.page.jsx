@@ -37,8 +37,6 @@ export default class MyDocument extends Document {
           <meta name="referrer" content="no-referrer" />
           {/* eslint-disable-next-line react/no-danger */}
           <script dangerouslySetInnerHTML={{ __html: BOOT }} />
-          {/* Light only, and no automatic dark mode: forced darkening inverts the design (see global.scss). */}
-          <meta name="color-scheme" content="only light" />
           <meta name="theme-color" content="#f0f4f1" />
           <meta name="format-detection" content="telephone=no" />
           <link rel="icon" href={FAVICON} />

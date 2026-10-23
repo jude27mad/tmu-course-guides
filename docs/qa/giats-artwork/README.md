@@ -5,10 +5,8 @@ Review branch: `codex/giats-artwork`, based on `main` at
 documentation/release-note updates were incorporated before the final build.
 The artwork was merged to `main` and deployed on October 16, 2026 at
 `5c96c3c5adc72558195716c54ead30cb3f96fa8f`.
-At the time it was published at the `/next/` preview, and the previous website
-remained at the root address. Since October 21, 2026 the website is published at
-the [main address](https://jude27mad.github.io/tmu-course-guides/) by
-`.github/workflows/pages.yml`, and `/next/` forwards there.
+**[Open the live Giats preview](https://jude27mad.github.io/tmu-course-guides/next/).**
+The previous website remains at the root address.
 
 The [Pages deployment](https://github.com/jude27mad/tmu-course-guides/actions/runs/38844400771)
 succeeded. [Main CI](https://github.com/jude27mad/tmu-course-guides/actions/runs/38844402096)

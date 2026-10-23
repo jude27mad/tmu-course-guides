@@ -68,5 +68,4 @@ node site/scripts/verify-subject-imagery.mjs Lf7huoI52ENR_yZhAKMgI
 ```
 
 The script requires an explicit matching build ID and writes only this review
-directory. It checks the committed `next/` preview, which is no longer published:
-since October 21, 2026 the Pages workflow publishes `main` at the main address.
+directory. The live Pages `/next/` preview changes only after merge and deployment.

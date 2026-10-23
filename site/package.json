@@ -8,8 +8,7 @@
     "export:preview": "next build && node scripts/copy-export.mjs ../next",
     "fonts": "python3 scripts/build-fonts.py",
     "lint": "next lint",
-    "test": "node --test tests/",
-    "test:touch": "node scripts/check-touch-fluid.mjs"
+    "test": "node --test tests/"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

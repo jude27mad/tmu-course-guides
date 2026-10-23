@@ -6,9 +6,8 @@ import MenuLinks from '@src/components/dom/navbar/components/MenuLinks';
 import SearchPanel from '@src/components/dom/navbar/components/SearchPanel';
 import clsx from 'clsx';
 import styles from '@src/components/dom/navbar/styles/index.module.scss';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import useIsMobile from '@src/hooks/useIsMobile';
-import useScroll from '@src/hooks/useScroll';
 import { useRouter } from 'next/router';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
@@ -21,11 +20,6 @@ function Navbar() {
   );
   const shellRef = useRef(null);
   const isOpen = isMenuOpen || isSearchOpen;
-  const [atTop, setAtTop] = useState(true);
-
-  // The wordmark has no backing, so page text scrolling under it ran into it.
-  // It shows at the top of each page and fades out once the page scrolls.
-  useScroll(({ scroll }) => setAtTop(scroll < 24));
 
   const scrollToPosition = useCallback(
     (position, duration = 1.5) => {
@@ -115,7 +109,7 @@ function Navbar() {
 
       <header className={styles.root}>
         <div className={styles.innerHeader}>
-          <Link onClick={goToTop} aria-label="TMU Course Guides, Desk" scroll={false} href="/" className={clsx(styles.wordmark, !atTop && styles.wordmarkHidden)}>
+          <Link onClick={goToTop} aria-label="TMU Course Guides, Desk" scroll={false} href="/" className={styles.wordmark}>
             <span className={clsx('bold', 'h4')}>GUIDES</span>
           </Link>
 

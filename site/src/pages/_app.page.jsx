@@ -11,9 +11,9 @@ import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import Background from '@src/components/canvas/background/Index';
 import DemandDriver from '@src/components/canvas/DemandDriver';
 import { Canvas } from '@react-three/fiber';
-import { createTouchScrollFilter } from '@src/components/canvas/fluid/touch-scroll.mjs';
 import { EffectComposer } from '@react-three/postprocessing';
 import Fluid from '@src/components/canvas/fluid/Fluid';
+import FluidDriver from '@src/components/canvas/fluid/FluidDriver';
 import Head from 'next/head';
 import Layout from '@src/components/dom/Layout';
 import Lenis from 'lenis';
@@ -118,14 +118,13 @@ function MyApp({ Component, pageProps, router }) {
   useScroll(() => ScrollTrigger.update());
 
   useIsomorphicLayoutEffect(() => {
-    // Giats's synchronized touch scrolling keeps pointer moves flowing to the
-    // fluid during a swipe. Native panning otherwise cancels that input stream.
-    // Keep pinch zoom native and `main` scrollable for keys and find-in-page.
+    // Wheel and trackpad are smoothed (the original); touch scrolls natively (no
+    // syncTouch: iOS keeps its own momentum, rubber-banding and status-bar tap),
+    // and `main` stays a real scroll container for keys and find-in-page.
     // eslint-disable-next-line no-shadow
     const lenis = new Lenis({
       smoothWheel: true,
-      syncTouch: !useStore.getState().still,
-      virtualScroll: createTouchScrollFilter(),
+      syncTouch: false,
       wrapper: mainRef.current || undefined,
       content: mainContainerRef.current || undefined,
     });
@@ -139,12 +138,6 @@ function MyApp({ Component, pageProps, router }) {
       setLenis(null);
     };
   }, []);
-
-  useEffect(() => {
-    // Pause Motion and reduced motion restore native touch scrolling without
-    // recreating Lenis or resetting the reader's position.
-    if (lenis) lenis.options.syncTouch = !still;
-  }, [lenis, still]);
 
   useIsomorphicLayoutEffect(() => {
     if (lenis) {
@@ -225,11 +218,12 @@ function MyApp({ Component, pageProps, router }) {
             <Canvas
               id="fluidCanvas"
               flat
-              frameloop="always"
+              frameloop="demand"
               gl={{
                 antialias: false,
                 stencil: false,
                 depth: false,
+                powerPreference: 'low-power',
               }}
               // R3F's wrapper takes pointer events unless told otherwise; the
               // fluid reads pointer moves from <main> itself.
@@ -239,6 +233,7 @@ function MyApp({ Component, pageProps, router }) {
               dpr={[0.1, 0.5]}
               aria-hidden="true"
             >
+              <FluidDriver mainRef={mainRef} hideWhenIdle={coarse} idleClassName={styles.fluidIdle} />
               <EffectComposer multisampling={0}>
                 <Fluid fluidColor={fluidColor} mainRef={mainRef} />
               </EffectComposer>

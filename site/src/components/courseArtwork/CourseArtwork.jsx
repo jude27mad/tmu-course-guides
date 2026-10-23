@@ -5,7 +5,6 @@ import { gsap } from 'gsap';
 import clsx from 'clsx';
 import useInView from '@src/hooks/useInView';
 import useStill from '@src/hooks/useStill';
-import { useStore } from '@src/store';
 import { withBasePath } from '@src/utils/basePath';
 import { artworkFor, FALLBACK_ARTWORK } from './artworks.mjs';
 import { createPixelReveal } from './pixelReveal.mjs';
@@ -24,10 +23,6 @@ export default function CourseArtwork({ courseId, className, priority = false, s
   const finishedSource = useRef(null);
   const inView = useInView(rootRef);
   const still = useStill();
-  // Wait for the loader or page-change animation to finish before revealing.
-  const held = useStore((state) => state.isLoading || state.isTransitioning);
-  const heldRef = useRef(held);
-  heldRef.current = held;
 
   useEffect(() => {
     const reveal = createPixelReveal({
@@ -39,7 +34,6 @@ export default function CourseArtwork({ courseId, className, priority = false, s
       document,
       still: still || typeof IntersectionObserver === 'undefined' || finishedSource.current === artwork.src,
       active: inView,
-      held: heldRef.current,
       onComplete: () => {
         finishedSource.current = artwork.src;
       },
@@ -56,10 +50,6 @@ export default function CourseArtwork({ courseId, className, priority = false, s
   useEffect(() => {
     revealRef.current?.setActive(inView);
   }, [inView]);
-
-  useEffect(() => {
-    revealRef.current?.setHeld(held);
-  }, [held]);
 
   return (
     <div ref={rootRef} className={clsx(styles.root, className)} style={{ '--artwork-position': artwork.position }} data-course-artwork={courseId || 'fallback'} aria-hidden="true">
