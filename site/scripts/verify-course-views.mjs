@@ -36,7 +36,10 @@ async function ready(page, route = 'cen100/') {
   await page.goto(url + route);
   await page.locator('main h1').first().waitFor();
   await page.locator('#course-section:not(:disabled)').waitFor();
-  await page.waitForFunction(() => getComputedStyle(document.querySelector('main')).pointerEvents === 'auto');
+  await page.waitForFunction(() => {
+    const main = document.querySelector('main');
+    return getComputedStyle(main).pointerEvents === 'auto' && (!main.classList.contains('lenis-stopped') || document.querySelector('dialog[open]'));
+  });
   await page.waitForTimeout(700);
 }
 const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, reducedMotion: 'reduce' });
@@ -158,6 +161,160 @@ try {
       await rapidContext.close();
     }
   });
+  await check('course view motion eases the outgoing and incoming content', async () => {
+    const motionContext = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+      isMobile: true,
+      hasTouch: true,
+      reducedMotion: 'no-preference',
+    });
+    try {
+      const motion = await motionContext.newPage();
+      motion.on('pageerror', (error) => errors.push(error.message));
+      await ready(motion, 'mth140/');
+      const changes = [];
+      for (const [width, from, to] of [
+        [390, 'Work', 'Study'],
+        [834, 'Study', 'Schedule'],
+        [1440, 'Schedule', 'Course info'],
+        [1440, 'Course info', 'Work'],
+      ]) {
+        await motion.setViewportSize({ width, height: 900 });
+        // Let responsive canvas/layout work settle before sampling this transition.
+        await motion.waitForTimeout(300);
+        await motion.evaluate(() => {
+          window.viewMotionSamples = [];
+          const sample = () => {
+            const content = document.getElementById('course-content');
+            const style = getComputedStyle(content);
+            window.viewMotionSamples.push({
+              time: performance.now(),
+              heading: content.querySelector('h2')?.textContent,
+              opacity: Number(style.opacity),
+              transform: style.transform,
+            });
+            window.viewMotionFrame = requestAnimationFrame(sample);
+          };
+          sample();
+        });
+        const link = motion.getByRole('navigation', { name: 'Course views' }).getByRole('link', { name: to, exact: true });
+        await link.focus();
+        await motion.keyboard.press('Enter');
+        await motion.getByRole('heading', { name: to, exact: true }).waitFor();
+        await motion.waitForTimeout(800);
+        const samples = await motion.evaluate(() => {
+          cancelAnimationFrame(window.viewMotionFrame);
+          return window.viewMotionSamples;
+        });
+        const moving = (heading) => samples.filter((sample) => sample.heading === heading && sample.opacity > 0 && sample.opacity < 1 && sample.transform !== 'none');
+        await writeFile(path.join(report, `motion-${width}-${to}.json`), JSON.stringify(samples, null, 2));
+        assert.ok(moving(from).length > 0, `${from} disappeared without an outgoing transition`);
+        assert.ok(moving(to).length > 0, `${to} appeared without an incoming transition`);
+        const final = samples.at(-1);
+        assert.equal(final.heading, to);
+        assert.equal(final.opacity, 1);
+        assert.equal(final.transform, 'none');
+        assert.equal(await motion.locator('#course-content').evaluate((el) => el.inert), false);
+        assert.equal(await motion.evaluate(() => document.activeElement.id), 'course-content');
+        assert.equal(await motion.locator('main').evaluate((el) => el.scrollWidth > el.clientWidth + 1), false);
+        await motion.screenshot({ path: path.join(report, `motion-${width}-${to}.png`) });
+        changes.push({
+          width,
+          from,
+          to,
+          outgoingFrames: moving(from).length,
+          incomingFrames: moving(to).length,
+        });
+      }
+      return changes;
+    } finally {
+      await motionContext.close();
+    }
+  });
+  await check('course view motion handles interrupted navigation, notes, history and preference changes', async () => {
+    const motionContext = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, reducedMotion: 'no-preference' });
+    try {
+      const motion = await motionContext.newPage();
+      motion.on('pageerror', (error) => errors.push(error.message));
+      const settled = () => motion.waitForFunction(() => {
+        const content = document.getElementById('course-content');
+        return !content.inert && getComputedStyle(content).opacity === '1' && getComputedStyle(content).transform === 'none';
+      });
+      await ready(motion, 'cen100/#assignment-m2');
+      await motion.locator('textarea').fill('Keep this note through a rapid transition.');
+      const before = await motion.evaluate(() => history.length);
+      await motion.evaluate(() => document.querySelector('nav[aria-label="Course views"] a[href$="#schedule"]').click());
+      await motion.waitForTimeout(50);
+      await motion.evaluate(() => document.querySelector('nav[aria-label="Course views"] a[href$="#work"]').click());
+      await motion.getByRole('heading', { name: 'Work', exact: true }).waitFor();
+      await settled();
+      assert.deepEqual(await motion.evaluate(() => ({ hash: location.hash, entries: history.length })), { hash: '#work', entries: before + 2 });
+      await motion.goBack();
+      await motion.getByRole('heading', { name: 'Schedule', exact: true }).waitFor();
+      await settled();
+      await motion.goBack();
+      await motion.locator('textarea').waitFor();
+      await settled();
+      assert.equal(await motion.locator('textarea').inputValue(), 'Keep this note through a rapid transition.');
+      await motion.goForward();
+      await motion.getByRole('heading', { name: 'Schedule', exact: true }).waitFor();
+      await settled();
+      // Stop motion while the old content is leaving, not only before a visit.
+      await motion.evaluate(() => document.querySelector('nav[aria-label="Course views"] a[href$="#work"]').click());
+      await motion.waitForTimeout(50);
+      await motion.emulateMedia({ reducedMotion: 'reduce' });
+      await motion.getByRole('heading', { name: 'Work', exact: true }).waitFor();
+      await settled();
+      assert.equal(await motion.locator('#course-content').getAttribute('aria-busy'), null);
+      // Reduced motion must leave no hidden/translated frames on the next move.
+      await motion.evaluate(() => {
+        window.stillFrames = [];
+        const sample = () => {
+          const style = getComputedStyle(document.getElementById('course-content'));
+          window.stillFrames.push({ opacity: style.opacity, transform: style.transform });
+          window.stillFrame = requestAnimationFrame(sample);
+        };
+        sample();
+        document.querySelector('nav[aria-label="Course views"] a[href$="#schedule"]').click();
+      });
+      await motion.getByRole('heading', { name: 'Schedule', exact: true }).waitFor();
+      await settled();
+      const frames = await motion.evaluate(() => {
+        cancelAnimationFrame(window.stillFrame);
+        return window.stillFrames;
+      });
+      assert.ok(frames.length > 0);
+      assert.ok(frames.every((frame) => frame.opacity === '1' && frame.transform === 'none'), JSON.stringify(frames));
+    } finally {
+      await motionContext.close();
+    }
+  });
+  await check('course view motion restores the list position and opener after an animated detail', async () => {
+    const motionContext = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, reducedMotion: 'no-preference' });
+    try {
+      const motion = await motionContext.newPage();
+      motion.on('pageerror', (error) => errors.push(error.message));
+      await ready(motion, 'cen100/#work/all');
+      const row = motion.locator('#open-assignment-y9');
+      await row.scrollIntoViewIfNeeded();
+      await row.focus();
+      await motion.waitForTimeout(150);
+      const before = await motion.locator('main').evaluate((el) => el.scrollTop);
+      await motion.keyboard.press('Enter');
+      await motion.getByRole('button', { name: '← Back to Work', exact: true }).first().click();
+      await motion.getByRole('button', { name: /^All \(/, pressed: true }).waitFor();
+      await motion.waitForFunction(() => !document.getElementById('course-content').inert);
+      const after = await motion.locator('main').evaluate((el) => el.scrollTop);
+      assert.ok(Math.abs(before - after) < 8, `${before} -> ${after}`);
+      assert.equal(await motion.evaluate(() => document.activeElement.id), 'open-assignment-y9');
+      await motion.goForward();
+      await motion.locator('#assignment-y9[data-assignment-detail]').waitFor();
+      await motion.waitForFunction(() => !document.getElementById('course-content').inert);
+      assert.equal(await motion.evaluate(() => document.activeElement.id), 'assignment-y9');
+    } finally {
+      await motionContext.close();
+    }
+  });
   for (const [view, selector] of [
     ['schedule', '[data-schedule-link]'],
     ['course-grading', '#course-grading a[href*="#assignment-"]'],
@@ -269,6 +426,26 @@ try {
     assert.equal(await page.locator('#contacts').getAttribute('open'), null);
     await page.keyboard.press('Enter');
     assert.notEqual(await page.locator('#contacts').getAttribute('open'), null);
+  });
+  await check('navigation does not steal focus chosen inside the newly opened view', async () => {
+    await ready(page, 'mth140/#work');
+    await page.evaluate(() => {
+      const observer = new MutationObserver(() => {
+        const contacts = document.getElementById('contacts');
+        if (!contacts.open || !contacts.getClientRects().length) return;
+        observer.disconnect();
+        // Reproduce a keyboard user reaching the summary before deferred scroll
+        // restoration finishes, without waiting for navigation to move focus.
+        contacts.querySelector('summary').focus();
+      });
+      observer.observe(document.getElementById('course-content'), { attributes: true, subtree: true });
+      window.location.hash = 'contacts';
+    });
+    await page.locator('#contacts[open]').waitFor();
+    await page.waitForTimeout(600);
+    assert.equal(await page.evaluate(() => document.activeElement.matches('#contacts > summary')), true);
+    await page.keyboard.press('Enter');
+    assert.equal(await page.locator('#contacts').getAttribute('open'), null);
   });
   await check('backup export and import retain separate records, notes, targets and checks', async () => {
     await ready(page, 'cen100/#assignment-m2');

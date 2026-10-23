@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
+import gsap from 'gsap';
 import { useStore } from '@src/store';
 // eslint-disable-next-line import/extensions
 import { openGuideTools } from '@src/pages/course/components/tools/dialog.mjs';
@@ -7,6 +8,17 @@ import { openGuideTools } from '@src/pages/course/components/tools/dialog.mjs';
 import { resolveCourseLocation } from './location.mjs';
 
 const hashOf = () => window.location.hash.replace(/^#/, '');
+// Match the shell's power2 slide easing, at a shorter pace for in-course moves.
+const VIEW_MOTION = { duration: 0.4, ease: 'power2.inOut' };
+const viewKey = (location) => location.item?.anchor || location.view;
+const resetContent = (content) => {
+  if (!content) return;
+  gsap.set(content, {
+    clearProps: 'transform,opacity,willChange,pointerEvents',
+  });
+  content.inert = false;
+  content.removeAttribute('aria-busy');
+};
 // Next strips custom history fields during popstate; keep a bounded in-memory copy
 // keyed by its entry key, including across course route unmounts. No progress keys change.
 const snapshots = new Map();
@@ -21,6 +33,7 @@ const saveEntry = (entry) => {
 export default function useCourseNavigation(courseId, info) {
   const router = useRouter();
   const isLoading = useStore((state) => state.isLoading);
+  const still = useStore((state) => state.still);
   const [entry, setEntry] = useState({
     courseId,
     hash: '',
@@ -32,6 +45,10 @@ export default function useCourseNavigation(courseId, info) {
   });
   const active = useRef(null);
   const restoring = useRef(false);
+  const transition = useRef(null);
+  const pending = useRef(null);
+  const reveal = useRef(false);
+  const focusAtNavigation = useRef(null);
   const location = resolveCourseLocation(entry.hash, courseId, info);
 
   const remember = useCallback(() => {
@@ -67,7 +84,11 @@ export default function useCourseNavigation(courseId, info) {
       const from = previous && resolveCourseLocation(previous.hash, courseId, info);
       let returnTo = null;
       if (target.item && from) {
-        if (from.item && previous.returnTo) returnTo = { ...previous.returnTo, depth: (previous.returnTo.depth || 1) + 1 };
+        if (from.item && previous.returnTo)
+          returnTo = {
+            ...previous.returnTo,
+            depth: (previous.returnTo.depth || 1) + 1,
+          };
         if (!from.item) returnTo = { hash: previous.hash, view: from.view, depth: 1 };
       }
       const next = validSaved
@@ -83,8 +104,38 @@ export default function useCourseNavigation(courseId, info) {
           };
       active.current = next;
       restoring.current = true;
+      focusAtNavigation.current = document.activeElement;
       saveEntry(next);
-      setEntry(next);
+      // Keep the outgoing view mounted until it has left. The URL remains the
+      // source of truth; another click/Back cancels this tween and wins immediately.
+      transition.current?.kill();
+      const content = document.getElementById('course-content');
+      const state = useStore.getState();
+      const animate = previous && content && !state.still && !state.isLoading && !['guide-tools', 'math-tools'].includes(hash) && viewKey(from) !== viewKey(target);
+      reveal.current = !!animate;
+      pending.current = next;
+      const commit = () => {
+        pending.current = null;
+        setEntry(next);
+      };
+      if (animate) {
+        content.inert = true;
+        content.setAttribute('aria-busy', 'true');
+        gsap.set(content, {
+          willChange: 'transform, opacity',
+          pointerEvents: 'none',
+        });
+        transition.current = gsap.to(content, {
+          ...VIEW_MOTION,
+          duration: 0.18,
+          x: -20,
+          opacity: 0,
+          onComplete: commit,
+        });
+      } else {
+        resetContent(content);
+        commit();
+      }
     };
     const onGuideHash = (event) => {
       const id = event.detail?.id;
@@ -116,6 +167,27 @@ export default function useCourseNavigation(courseId, info) {
     };
   }, [courseId, info, router.events, remember]);
 
+  // Changing the motion preference mid-flight must never leave hidden content.
+  useEffect(() => {
+    if (!still) return;
+    if (pending.current) {
+      transition.current?.kill();
+      const next = pending.current;
+      pending.current = null;
+      reveal.current = false;
+      setEntry(next);
+    } else transition.current?.progress(1);
+  }, [still]);
+
+  useEffect(
+    () => () => {
+      transition.current?.kill();
+      pending.current = null;
+      resetContent(document.getElementById('course-content'));
+    },
+    [],
+  );
+
   useEffect(() => {
     if (isLoading) return undefined;
     if (['guide-tools', 'math-tools'].includes(entry.hash)) {
@@ -126,6 +198,7 @@ export default function useCourseNavigation(courseId, info) {
     let second = 0;
     const first = requestAnimationFrame(() => {
       second = requestAnimationFrame(() => {
+        if (active.current?.key !== entry.key || active.current?.hash !== entry.hash) return;
         const main = document.querySelector('main');
         const content = document.getElementById('course-content');
         if (!main || !content) return;
@@ -138,11 +211,30 @@ export default function useCourseNavigation(courseId, info) {
         lenis?.resize();
         if (lenis) lenis.scrollTo(top, { immediate: true, force: true });
         else main.scrollTop = top;
-        if (!entry.initial || entry.hash) {
-          const focus = (entry.restore && document.getElementById(entry.focus)) || target || content;
-          focus.focus({ preventScroll: true });
-        }
-        restoring.current = false;
+        // Restore geometry while the new content is hidden; then reveal and focus
+        // it. This keeps Back's exact position and never scrolls a moving element.
+        const finish = () => {
+          if (active.current?.key !== entry.key || active.current?.hash !== entry.hash) return;
+          resetContent(content);
+          // A keyboard user may already have focused a control in the new view
+          // (especially with motion off). Do not steal that focus after two RAFs.
+          const focusMoved = document.activeElement !== focusAtNavigation.current && document.activeElement !== content && content.contains(document.activeElement);
+          if ((!entry.initial || entry.hash) && !focusMoved) {
+            const focus = (entry.restore && document.getElementById(entry.focus)) || target || content;
+            focus.focus({ preventScroll: true });
+          }
+          restoring.current = false;
+        };
+        if (reveal.current && !useStore.getState().still) {
+          gsap.set(content, { x: 20, opacity: 0 });
+          transition.current = gsap.to(content, {
+            ...VIEW_MOTION,
+            x: 0,
+            opacity: 1,
+            onComplete: finish,
+          });
+        } else finish();
+        reveal.current = false;
       });
     });
     return () => {
