@@ -119,9 +119,12 @@
               position: absolute;
               height: 100%;
               gap: calc(var(--layout-columns-gap) * 0.5);
-              margin-bottom: calc(var(--layout-columns-gap) * 2);
-              align-items: center;
+              margin-bottom: 0;
+              bottom: var(--layout-columns-gap);
+              padding: 0 var(--layout-columns-gap);
+              align-items: flex-start;
               justify-content: flex-end;
+              height: auto;
               grid-column: none;
               width: 100%;
             }
@@ -155,7 +158,7 @@
             @include mobile {
               width: 83%;
 
-              top: 50%;
+              top: 29%;
               left: 50%;
               transform: translate(-50%, -50%);
               border-radius: calc(var(--layout-columns-gap) * 0.25);

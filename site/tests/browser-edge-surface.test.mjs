@@ -6,11 +6,11 @@ const read = (name) => readFileSync(new URL(name, import.meta.url), 'utf8');
 
 test('menu and search choose the same dynamic Safari browser surface', () => {
   const navbar = read('../src/components/dom/navbar/Index.jsx');
-  assert.ok(navbar.includes("setBrowserSurface(overlay || darkFooter ? 'dark' : 'light')"));
+  assert.ok(navbar.includes("setBrowserSurfaces(overlay ? 'dark' : 'light', overlay || darkFooter ? 'dark' : 'light')"));
   assert.ok(navbar.includes('const isOpen = isMenuOpen || isSearchOpen'));
   const theme = read('../src/utils/theme.js');
   assert.ok(theme.includes('document.documentElement.dataset.browserSurface'));
-  assert.ok(theme.includes('dark ? TOKENS.ink : DEFAULT_PALETTE.secondary'));
+  assert.ok(theme.includes('bottomDark ? TOKENS.ink : DEFAULT_PALETTE.secondary'));
   assert.ok(theme.includes("document.documentElement.dataset.browserSurface !== 'dark'"));
 });
 

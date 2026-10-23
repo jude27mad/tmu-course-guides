@@ -1,3 +1,4 @@
+import { scrollRoot } from '@src/utils/scrollRoot';
 import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { DESK_TEXT } from '@src/lib';
@@ -202,7 +203,7 @@ function Home() {
             start: 'top+=3%',
             end: 'top+=5%',
             toggleActions: 'play none reverse none',
-            scroller: document.querySelector('main'),
+            scroller: scrollRoot(),
             invalidateOnRefresh: true,
           },
         })
