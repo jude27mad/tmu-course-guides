@@ -1,3 +1,4 @@
+import { scrollRoot } from '@src/utils/scrollRoot';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import AppearTitle from '@src/components/animationComponents/appearTitle/Index';
@@ -87,7 +88,7 @@ function Footer() {
               end: '+=100%',
               animation: uncover,
               scrub: true,
-              scroller: document?.querySelector('main'),
+              scroller: scrollRoot(),
             });
           } else {
             gsap.set(footerRef.current, { transform: 'translate(0%, 0%)', height: 'auto' });

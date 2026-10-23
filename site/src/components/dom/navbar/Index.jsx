@@ -1,6 +1,6 @@
 import { scrollRoot, scrollTop, scrollViewport } from '@src/utils/scrollRoot';
 import { buildShellTimeline } from '@src/components/dom/navbar/panelShell';
-import { setBrowserSurface } from '@src/utils/theme';
+import { setBrowserSurfaces } from '@src/utils/theme';
 import ButtonLink from '@src/components/animationComponents/buttonLink/Index';
 import Link from 'next/link';
 import MenuButton from '@src/components/dom/navbar/components/MenuButton';
@@ -90,13 +90,13 @@ function Navbar() {
       frame = 0;
       const current = useStore.getState();
       const overlay = current.isMenuOpen || current.isSearchOpen;
-      const footer = main.querySelector('footer');
+      const footer = main.querySelector('footer [data-surface="dark"]');
       const scrollerRect = scrollViewport();
       const footerRect = footer?.getBoundingClientRect();
       // Sample what reaches the BOTTOM of the real scroll viewport, rather
       // than the route or menu state. This works across all course pages.
       const darkFooter = !!footerRect && footerRect.top < scrollerRect.bottom - 1 && footerRect.bottom >= scrollerRect.bottom - 1;
-      setBrowserSurface(overlay || darkFooter ? 'dark' : 'light');
+      setBrowserSurfaces(overlay ? 'dark' : 'light', overlay || darkFooter ? 'dark' : 'light');
     };
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(update);
@@ -110,7 +110,7 @@ function Navbar() {
     const resizeObserver = new ResizeObserver(schedule);
     resizeObserver.observe(main);
     if (main.firstElementChild) resizeObserver.observe(main.firstElementChild);
-    const footer = main.querySelector('footer');
+    const footer = main.querySelector('footer [data-surface="dark"]');
     if (footer) resizeObserver.observe(footer);
     schedule();
     return () => {

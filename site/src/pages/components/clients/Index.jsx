@@ -1,3 +1,4 @@
+import { scrollRoot } from '@src/utils/scrollRoot';
 import Badge, { createBadgeRig } from '@src/pages/components/clients/components/Badge';
 import { BADGE, COURSES, DESK_TEXT, countdown } from '@src/lib';
 import { Fragment, useMemo, useRef } from 'react';
@@ -126,7 +127,7 @@ function Clients({ desk }) {
                 end: index === 0 ? `bottom-=${vw(35 + 5.5555556 * index)}` : `bottom+=${vw(25)}`,
                 toggleActions: 'play none reverse none',
                 scrub: true,
-                scroller: document?.querySelector('main'),
+                scroller: scrollRoot(),
                 invalidateOnRefresh: true,
               },
             })

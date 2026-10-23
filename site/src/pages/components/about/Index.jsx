@@ -1,3 +1,4 @@
+import { scrollRoot } from '@src/utils/scrollRoot';
 import { DESK_TEXT, STATUS, countdown, countdownStatus, courseCopy, getCourse } from '@src/lib';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
@@ -115,7 +116,7 @@ function About({ desk }) {
             start: 'top bottom',
             end: 'bottom top',
             scrub: true,
-            scroller: document?.querySelector('main'),
+            scroller: scrollRoot(),
             invalidateOnRefresh: true,
           },
         });

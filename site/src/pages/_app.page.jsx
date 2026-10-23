@@ -208,6 +208,10 @@ function MyApp({ Component, pageProps, router }) {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </Head>
+      {/* Safari samples the computed background of these invisible fixed edge boxes.
+          Empty text clipping paints no visible strip over the real content. */}
+      <div aria-hidden="true" data-safari-edge="top" className="safari-chrome-edge" />
+      <div aria-hidden="true" data-safari-edge="bottom" className="safari-chrome-edge" />
       <MotionSync />
       <NavigationFeedback />
       {SHOW_STATS && <Stats />}
