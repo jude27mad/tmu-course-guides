@@ -48,3 +48,15 @@
     }
   }
 }
+
+// The flip is already pointer-only. Keeping a hidden 3D face on touch screens
+// can drop the front label in WebKit when the surrounding material is unfiltered.
+@media (hover: none), (pointer: coarse) {
+  .perspectiveText {
+    transform-style: flat;
+    p:nth-of-type(2),
+    a:nth-of-type(2) {
+      display: none;
+    }
+  }
+}

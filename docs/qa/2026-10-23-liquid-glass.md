@@ -16,7 +16,7 @@ Shared SCSS defines the material, 8–12px blur on wider screens and opaque pref
 
 Tests and production builds run in GitHub Actions only, per the owner's instruction. Existing data/storage, course views, publishing, touch and interaction-feedback checks remain enabled.
 
-The new glass browser checks cover 320/390/834/1440px layouts, labels/targets, one selection per bar, rapid taps, history, keyboard focus, 200% CSS zoom, note persistence, dialog focus return, reduced motion, saved Pause motion, available contrast/transparency emulation and a simulated unsupported-filter fallback. Contrast is calculated against black and white backdrops and the endpoints of the sheen. Native browser zoom and physical-device GPU performance are not claimed.
+The new glass browser checks cover 320/390/834/1440px layouts, labels/targets, one selection per bar, rapid taps, history, keyboard focus, 200% CSS zoom, note persistence, dialog focus return, reduced motion, saved Pause motion, available contrast/transparency emulation and a simulated unsupported-filter fallback. Contrast is calculated against black and white backdrops and the endpoints of the sheen. A pixel-level check catches a missing Menu label that DOM visibility checks cannot see; the unused 3D hover face is removed on touch screens while desktop flipping stays intact. Native browser zoom and physical-device GPU performance are not claimed.
 
 CI uploads `pages-site-qa` (including screenshots and traces) and `site-preview` (the production export). Paired on/off timings on the same runner are diagnostics, not physical-device FPS or a guarantee about older phones.
 

@@ -57,6 +57,33 @@ const rgb = (value) => value.match(/[\d.]+/g).map(Number);
 const luminance = (color) => color.slice(0, 3).map((v) => v / 255).map((v) => v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4).reduce((sum, v, i) => sum + v * [0.2126, 0.7152, 0.0722][i], 0);
 const contrast = (a, b) => { const x = luminance(a); const y = luminance(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
 const composite = (front, back) => front.slice(0, 3).map((v, i) => v * (front[3] ?? 1) + back[i] * (1 - (front[3] ?? 1)));
+async function assertMenuPaint(page, screenshot) {
+  // DOM visibility alone misses WebKit dropping the face of a 3D text layer.
+  // Inspect the actual captured pill, excluding its edge and surrounding page.
+  const lightPixels = await page.evaluate(async (base64) => {
+    const bytes = Uint8Array.from(atob(base64), (char) => char.charCodeAt(0));
+    const bitmap = await createImageBitmap(new Blob([bytes], { type: 'image/png' }));
+    const canvas = document.createElement('canvas');
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    const context = canvas.getContext('2d');
+    context.drawImage(bitmap, 0, 0);
+    bitmap.close();
+    const scale = canvas.width / innerWidth;
+    const rect = document.querySelector('#menu-button').getBoundingClientRect();
+    const x = Math.ceil((rect.x + 8) * scale);
+    const y = Math.ceil((rect.y + 8) * scale);
+    const width = Math.floor((rect.width - 16) * scale);
+    const height = Math.floor((rect.height - 16) * scale);
+    const pixels = context.getImageData(x, y, width, height).data;
+    let count = 0;
+    for (let i = 0; i < pixels.length; i += 4) {
+      if (pixels[i] > 210 && pixels[i + 1] > 210 && pixels[i + 2] > 210) count += 1;
+    }
+    return count;
+  }, screenshot.toString('base64'));
+  assert.ok(lightPixels > 8, 'MENU label did not paint inside its dark pill: ' + lightPixels + ' light pixels');
+}
 async function check(name, run, options = {}) {
   const phone = engine === 'webkit' && (options.viewport?.width || 390) <= 500 ? playwright.devices['iPhone 13'] : {};
   const context = await browser.newContext({ ...phone, viewport: { width: 390, height: 844 }, hasTouch: true, reducedMotion: 'no-preference', ...options });
@@ -95,7 +122,8 @@ try {
         }).map((el) => ({ glass: el.dataset.glass, parentGlass: !!el.parentElement.closest('[data-glass]'), filter: getComputedStyle(el).backdropFilter || getComputedStyle(el).webkitBackdropFilter })));
         assert.ok(filtered.length <= 4 && filtered.every((el) => el.glass && !el.parentGlass), JSON.stringify(filtered));
         if (width <= 500) assert.equal(filtered.length, 0, 'phones must not pay for a backdrop-filter pass');
-        await page.screenshot({ path: path.join(report, course + '-' + width + '.png') });
+        const screenshot = await page.screenshot({ path: path.join(report, course + '-' + width + '.png') });
+        await assertMenuPaint(page, screenshot);
       }
       const opener = page.getByRole('button', { name: /Guide tools/ });
       await opener.click();
@@ -260,7 +288,8 @@ try {
     await check('Desk and Menu/Search retain their solid content at ' + width + 'px', async (page) => {
       await page.goto(url);
       await ready(page);
-      await page.screenshot({ path: path.join(report, 'desk-' + width + '.png') });
+      const screenshot = await page.screenshot({ path: path.join(report, 'desk-' + width + '.png') });
+      await assertMenuPaint(page, screenshot);
       await page.getByRole('button', { name: 'Open menu', exact: true }).click();
       await page.getByRole('button', { name: 'Close menu', exact: true }).waitFor();
       await panelSettled(page, '#menu');
