@@ -19,7 +19,12 @@ import styles from './workspace.module.scss';
 export default function CourseWorkspace() {
   const { courseId, course, info, live, section, setSection, group, setGroup, progress } = useCourse();
   const navigation = useCourseNavigation(courseId, info);
-  const [schedule, setSchedule] = useState({ choice: null, range: 'upcoming', day: null, selectedDate: null });
+  const [schedule, setSchedule] = useState({
+    choice: null,
+    range: 'upcoming',
+    day: null,
+    selectedDate: null,
+  });
   const assignments = useMemo(() => (live ? assignmentList(courseId, { now: live.now, items: live.items }) : null), [live, courseId]);
   const views = [['work', 'Work'], ['schedule', 'Schedule'], ...(courseId === 'cen100' ? [] : [['study', 'Study']]), ['info', 'Course info']];
   const next = live?.next;
@@ -108,7 +113,7 @@ export default function CourseWorkspace() {
         {!navigation.item && navigation.view === 'schedule' ? <Schedule navigate={navigation.navigate} state={schedule} setState={setSchedule} /> : null}
         {!navigation.item && navigation.view === 'study' ? <Study /> : null}
         <div className={navigation.item || navigation.view !== 'info' ? styles.infoInactive : undefined}>
-          <CourseInformation panel={navigation.panel} />
+          <CourseInformation panel={navigation.panel} back={navigation.back} returnView={navigation.returnView} />
         </div>
       </div>
       <GuideTools />

@@ -1,5 +1,7 @@
 /* The search panel's index, built from the old command palette's groups, copy and ranking (night/palette.mjs). */
 import { fast } from './perf.mjs';
+import { courseInfo } from './info.mjs';
+import { informationEntries, informationText } from './information.mjs';
 import { SCHEDULE } from './vendor/cen-schedule.mjs';
 import { resolveTarget } from './vendor/night/targets.mjs';
 import { recordsForCourse, semesterWeeks } from './vendor/book/weeks.mjs';
@@ -14,6 +16,7 @@ import { context, deadlines, nextDeadline, toMs } from './deadlines.mjs';
 
 export { COPY as SEARCH_COPY, GROUPS as SEARCH_GROUPS };
 const D2L = 'https://courses.torontomu.ca/';
+const REFERENCE = Object.fromEntries(COURSE_IDS.map((id) => [id, courseInfo(id)]));
 
 /**
  * Every searchable entry: [{ id, group, groupLabel, title, detail, href, keywords, type, ... }] in the old
@@ -94,9 +97,15 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
     });
   }
 
-  // Topics: both math courses.
-  for (const id of COURSE_IDS.filter(isMath)) {
-    for (const topic of DATA[id].topics) add('Topics', { id: `topic-${id}-${topic.id}`, type: 'topic', title: topic.title, detail: `${getCourse(id).code} · ${topic.sections}`, href: `/${id}/#topic-${topic.id}`, keywords: topic.description, courseId: id });
+  // Study and reference use the same destinations as the course workspace.
+  for (const id of order) {
+    const info = REFERENCE[id];
+    const code = getCourse(id).code;
+    for (const topic of info.topics || []) add('Topics', { id: `topic-${id}-${topic.id}`, type: 'topic', title: topic.title, detail: `${code} · ${topic.sections}`, href: `/${id}/#${topic.anchor}`, keywords: `${code} ${topic.description} ${JSON.stringify(topic.practice)}`, courseId: id });
+    for (const entry of informationEntries(id, info)) add('Courses', {
+      id: `info-${id}-${entry.id}`, type: 'information', title: entry.title, detail: `${code} · ${entry.group}`,
+      href: `/${id}/#${entry.id}`, keywords: `${code} ${informationText(entry, info)}`, courseId: id,
+    });
   }
 
   // Actions.
@@ -133,12 +142,9 @@ const GUIDE_ENTRIES = (() => {
   for (const item of CEN.allItems) {
     out.push({ courseId: 'cen100', title: item.name, tab: CEN.COPY.tabs[CEN.listOf(item)], href: `/cen100/#assignment-${item.id}`, text: [item.name, item.preview, item.what, JSON.stringify(item.facts), JSON.stringify(item.groups), JSON.stringify(item.traps), ...CEN.sourceFor(item)].join(' ') });
   }
-  for (const [rows, offset] of [
-    [CEN.RULES, 2],
-    [CEN.CONFIRMED, 0],
-    [CEN.OPEN, 0],
-  ]) {
-    for (const row of rows) out.push({ courseId: 'cen100', title: row[offset], tab: CEN.COPY.tabs.rules, href: '/cen100/#p-rules', text: row.slice(offset).join(' ') });
+  for (const id of COURSE_IDS) {
+    const info = REFERENCE[id];
+    for (const entry of informationEntries(id, info)) out.push({ courseId: id, title: entry.title, tab: 'Course info', href: `/${id}/#${entry.id}`, text: `${entry.title} ${informationText(entry, info)}` });
   }
   out.push({
     courseId: 'cen100',
@@ -149,7 +155,7 @@ const GUIDE_ENTRIES = (() => {
   });
   for (const id of COURSE_IDS.filter(isMath)) {
     for (const a of DATA[id].assessments) out.push({ courseId: id, title: a.title, tab: 'Assessment', href: `/${id}/#assessment-${a.id}`, text: `${a.title} ${a.scope} ${a.kind} ${a.source}` });
-    for (const t of DATA[id].topics) out.push({ courseId: id, title: t.title, tab: 'Topic map', href: `/${id}/#topic-${t.id}`, text: `${t.title} ${t.sections} ${t.description} ${t.skills.join(' ')}` });
+    for (const t of REFERENCE[id].topics) out.push({ courseId: id, title: t.title, tab: 'Study', href: `/${id}/#${t.anchor}`, text: `${t.title} ${t.sections} ${t.description} ${JSON.stringify(t.skills)} ${JSON.stringify(t.practice)}` });
   }
   // Normalised once here rather than for every entry on every keystroke.
   return out.map((entry) => ({ ...entry, normalisedTitle: normalise(entry.title), normalisedText: normalise(entry.text) }));

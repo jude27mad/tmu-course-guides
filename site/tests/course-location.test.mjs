@@ -28,3 +28,13 @@ test('canonical, encoded and legacy links open only a real item in this course',
     assert.equal(resolveCourseLocation(hash, 'cen100', cen).item, null);
   }
 });
+
+test('specific policy and source links resolve to their own information answer', () => {
+  const info = courseInfo('mth140');
+  for (const hash of ['policy-regrade', 'policy-missed-assessment', 'sources']) {
+    const location = resolveCourseLocation(`#${hash}`, 'mth140', info);
+    assert.equal(location.view, 'info');
+    assert.equal(location.panel, hash);
+  }
+  assert.equal(resolveCourseLocation('#policy-unknown', 'mth140', info).view, 'work');
+});

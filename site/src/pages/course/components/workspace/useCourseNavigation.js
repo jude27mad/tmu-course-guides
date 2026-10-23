@@ -12,7 +12,8 @@ import { resolveCourseLocation } from './location.mjs';
 const hashOf = () => window.location.hash.replace(/^#/, '');
 // Match the shell's power2 slide easing, at a shorter pace for in-course moves.
 const VIEW_MOTION = { duration: 0.26, ease: 'power2.inOut' };
-const viewKey = (location) => location.item?.anchor || location.view;
+const viewKey = (location) => location.item?.anchor || (location.infoDetail && location.panel) || location.view;
+const isDetail = (location) => location?.item || location?.infoDetail;
 const resetContent = (content) => {
   if (!content) return;
   gsap.set(content, {
@@ -89,13 +90,13 @@ export default function useCourseNavigation(courseId, info) {
       const validSaved = saved?.courseId === courseId && saved.hash === hash;
       const from = previous && resolveCourseLocation(previous.hash, courseId, info);
       let returnTo = null;
-      if (target.item && from) {
-        if (from.item && previous.returnTo)
+      if (isDetail(target) && from) {
+        if (isDetail(from) && previous.returnTo && !!from.item === !!target.item)
           returnTo = {
             ...previous.returnTo,
             depth: (previous.returnTo.depth || 1) + 1,
           };
-        if (!from.item) returnTo = { hash: previous.hash, view: from.view, depth: 1 };
+        else returnTo = { hash: previous.hash, view: from.view, depth: 1 };
       }
       const next = validSaved
         ? { ...saved, key, restore: true }
@@ -258,11 +259,13 @@ export default function useCourseNavigation(courseId, info) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entry.key, entry.hash, isLoading]);
 
+  let fallbackView = location.kind === 'topic' ? 'study' : 'work';
+  if (location.infoDetail) fallbackView = 'info';
   const back = () => {
     if (entry.returnTo) {
       remember();
       window.history.go(-(entry.returnTo.depth || 1));
-    } else navigate(location.kind === 'topic' ? 'study' : 'work');
+    } else navigate(fallbackView === 'info' ? 'course-info' : fallbackView);
   };
   return {
     ...location,
@@ -275,6 +278,6 @@ export default function useCourseNavigation(courseId, info) {
     navigate,
     back,
     remember,
-    returnView: entry.returnTo?.view || (location.kind === 'topic' ? 'study' : 'work'),
+    returnView: entry.returnTo?.view || fallbackView,
   };
 }

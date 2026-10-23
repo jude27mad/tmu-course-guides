@@ -4,7 +4,7 @@ import { bindGuideTools, openGuideTools } from '../src/pages/course/components/t
 
 // Small DOM boundary for the controller. Native focus trapping, Escape and
 // touch/desktop geometry are additionally checked in the browser smoke test.
-function fixture({ stopped = false } = {}) {
+function fixture({ stopped = false, animate } = {}) {
   const doc = new EventTarget();
   const values = new Map([['overflow', 'auto']]);
   const priorities = new Map([['overflow', 'important']]);
@@ -60,7 +60,7 @@ function fixture({ stopped = false } = {}) {
       this.isStopped = false;
     },
   };
-  const dispose = bindGuideTools(dialog, { getLenis: () => lenis });
+  const dispose = bindGuideTools(dialog, { getLenis: () => lenis, animate });
   return { doc, main, opener, close, dialog, lenis, dispose };
 }
 
@@ -172,4 +172,50 @@ test('a late native close event does not unlock a reopened dialog', () => {
   assert.equal(f.main.style.getPropertyValue('overflow'), 'hidden');
   assert.equal(f.lenis.isStopped, true);
   f.dispose();
+});
+
+test('an animated exit keeps the native modal and scroll lock until it finishes', () => {
+  let finish;
+  const f = fixture({ animate: (_opening, complete) => { finish = complete; return () => {}; } });
+  openGuideTools(f.doc);
+  assert.equal(typeof finish, 'function', 'opening participates in the motion lifecycle');
+  finish();
+  f.close.dispatchEvent(new Event('click'));
+  assert.equal(f.dialog.open, true);
+  assert.equal(f.main.style.getPropertyValue('overflow'), 'hidden');
+  assert.equal(f.doc.activeElement, f.close);
+  finish();
+  assert.equal(f.dialog.open, false);
+  assert.equal(f.doc.activeElement, f.opener);
+  assert.equal(f.lenis.isStopped, false);
+  f.dispose();
+});
+
+test('reopening during an animated exit invalidates its delayed close', () => {
+  const completions = [];
+  const f = fixture({ animate: (_opening, complete) => { completions.push(complete); return () => {}; } });
+  openGuideTools(f.doc);
+  f.close.dispatchEvent(new Event('click'));
+  assert.equal(completions.length, 2, 'opening and closing both participate in the motion lifecycle');
+  const delayedClose = completions.at(-1);
+  openGuideTools(f.doc);
+  delayedClose();
+  assert.equal(f.dialog.open, true);
+  assert.equal(f.main.style.getPropertyValue('overflow'), 'hidden');
+  f.close.dispatchEvent(new Event('click'));
+  completions.at(-1)();
+  assert.equal(f.doc.activeElement, f.opener);
+  f.dispose();
+});
+
+test('Escape uses the exit transition and route cleanup releases it immediately', () => {
+  const f = fixture({ animate: () => () => {} });
+  openGuideTools(f.doc);
+  const cancel = new Event('cancel', { cancelable: true });
+  f.dialog.dispatchEvent(cancel);
+  assert.equal(cancel.defaultPrevented, true);
+  assert.equal(f.dialog.open, true);
+  f.dispose();
+  assert.equal(f.dialog.open, false);
+  assert.equal(f.lenis.isStopped, false);
 });

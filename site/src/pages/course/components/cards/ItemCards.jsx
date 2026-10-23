@@ -187,22 +187,11 @@ export function AssessmentBody({ item }) {
 }
 
 export function TopicBody({ item, review }) {
-  const { courseId, progress } = useCourse();
+  const { courseId, progress, info } = useCourse();
   return (
     <>
       <p className="p-l">{item.description}</p>
       {item.midterm ? <p className={clsx('p-x', styles.pill)}>{item.midterm}</p> : null}
-      <div className={styles.block}>
-        <h4 className={clsx('p-x', styles.heading)}>{item.skillsHeading}</h4>
-        <ul className={styles.checks}>
-          {item.skills.map((skill) => (
-            <CheckRow key={skill.id} checked={progress.isTicked(courseId, item.id, skill.id)} disabled={!progress.ready} onChange={(value) => progress.toggleTick(courseId, item.id, skill.id, value)}>
-              {skill.text}
-            </CheckRow>
-          ))}
-        </ul>
-        {review?.note ? <p className={clsx('p-x', styles.muted)}>{review.note}</p> : null}
-      </div>
       <div className={styles.block}>
         <h4 className={clsx('p-x', styles.heading)}>{item.practiceHeading}</h4>
         <p className={clsx('p-x', styles.muted)}>{item.practiceNote}</p>
@@ -219,6 +208,28 @@ export function TopicBody({ item, review }) {
             </div>
           ))}
         </dl>
+      </div>
+      <div className={styles.block}>
+        <h4 className={clsx('p-x', styles.heading)}>Open textbook</h4>
+        {info.textbooks.books.map((book) => (
+          <div key={book.title} className={styles.group}>
+            <a className="p-l" href={book.url} target="_blank" rel="noopener noreferrer">
+              Textbook: {book.title} ↗
+            </a>
+            <p className="p-l">{book.note}</p>
+          </div>
+        ))}
+      </div>
+      <div className={styles.block}>
+        <h4 className={clsx('p-x', styles.heading)}>{item.skillsHeading}</h4>
+        <ul className={styles.checks}>
+          {item.skills.map((skill) => (
+            <CheckRow key={skill.id} checked={progress.isTicked(courseId, item.id, skill.id)} disabled={!progress.ready} onChange={(value) => progress.toggleTick(courseId, item.id, skill.id, value)}>
+              {skill.text}
+            </CheckRow>
+          ))}
+        </ul>
+        {review?.note ? <p className={clsx('p-x', styles.muted)}>{review.note}</p> : null}
       </div>
       <p className={clsx('p-x', styles.muted)}>{item.source}</p>
     </>
