@@ -67,11 +67,12 @@ function Navbar() {
       const footerRect = footer?.getBoundingClientRect();
       // Sample what reaches the BOTTOM of the real scroll viewport, rather
       // than the route or menu state. This works across all course pages.
-      const darkFooter = !!footerRect && footerRect.top < scrollerRect.bottom - 1
-        && footerRect.bottom >= scrollerRect.bottom - 1;
+      const darkFooter = !!footerRect && footerRect.top < scrollerRect.bottom - 1 && footerRect.bottom >= scrollerRect.bottom - 1;
       setBrowserSurface(overlay || darkFooter ? 'dark' : 'light');
     };
-    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
     main.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule, { passive: true });
     const observer = new MutationObserver(schedule);
