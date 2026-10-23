@@ -41,6 +41,14 @@ const aligned = (page) => page.waitForFunction(() => {
   const b = capsule.getBoundingClientRect();
   return ['x', 'y', 'width', 'height'].every((key) => Math.abs(a[key] - b[key]) < 2) && getComputedStyle(capsule).opacity === '1';
 });
+const panelSettled = (page, selector) => page.waitForFunction((selector) => {
+  const panel = document.querySelector(selector);
+  if (!panel || getComputedStyle(panel).opacity !== '1') return false;
+  return [...panel.querySelectorAll('[data-menu-anim]')].every((item) => {
+    const transform = getComputedStyle(item).transform;
+    return transform === 'none' || Math.abs(new DOMMatrixReadOnly(transform).m41) < 0.1;
+  });
+}, selector);
 const material = (page) => page.locator('[data-glass]').evaluateAll((elements) => elements.map((element) => {
   const style = getComputedStyle(element);
   return { tone: element.dataset.glass, filter: style.backdropFilter || style.webkitBackdropFilter || 'none', background: style.backgroundColor, color: style.color };
@@ -254,13 +262,18 @@ try {
       await page.screenshot({ path: path.join(report, 'desk-' + width + '.png') });
       await page.getByRole('button', { name: 'Open menu', exact: true }).click();
       await page.getByRole('button', { name: 'Close menu', exact: true }).waitFor();
+      await panelSettled(page, '#menu');
       await page.screenshot({ path: path.join(report, 'menu-' + width + '.png') });
+      const hintSize = await page.locator('#menu-motion-note').evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
       await page.getByRole('button', { name: 'Close menu', exact: true }).click();
+      await page.locator('#menu').waitFor({ state: 'hidden' });
       await page.keyboard.press('Control+k');
       const search = page.locator('#search');
       await search.getByRole('combobox').fill('quiz');
+      await panelSettled(page, '#search');
       await page.screenshot({ path: path.join(report, 'search-' + width + '.png') });
       assert.equal(await search.locator('[data-glass]').count(), 0);
+      assert.ok(hintSize >= 16, 'Motion-setting help is too small: ' + hintSize + 'px');
     }, { viewport: { width, height: width > 500 ? 1024 : 844 } });
   }
 
