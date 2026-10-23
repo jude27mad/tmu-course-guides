@@ -2,9 +2,6 @@ import { useMemo } from 'react';
 
 const useOpts = () => {
   const isMobile = window.innerWidth < 812;
-  // Touch screens hide the fluid canvas when idle; with a black background the
-  // difference blend is an exact no-op, so hiding it changes nothing on screen.
-  const coarse = !!window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
   const OPTS = useMemo(
     () => ({
       intensity: 5,
@@ -18,14 +15,14 @@ const useOpts = () => {
       velocityDissipation: 0.93,
 
       fluidColor: '#f0f4f1',
-      backgroundColor: coarse ? '#000000' : '#070410',
+      backgroundColor: '#070410',
 
       showBackground: false,
 
       dyeRes: isMobile ? 64 : 256,
       simRes: isMobile ? 16 : 50,
     }),
-    [],
+    [isMobile],
   );
   return OPTS;
 };

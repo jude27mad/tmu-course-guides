@@ -4,11 +4,13 @@
 // Source: codrops/atelier-north at 6703fc3f15ec92979964070814a99855d0baa38f.
 // Keep its 18-pixel downsample, progress^2.5 sharpening, unsmoothed upscale
 // and simultaneous 1.1 → 1 zoom. React owns the elements and their lifetime.
-export function createPixelReveal({ image, canvas, element, gsap, ScrollTrigger, document, active = false, still = false, onComplete = () => {} }) {
+export function createPixelReveal({ image, canvas, element, gsap, ScrollTrigger, document, active = false, held = false, still = false, onComplete = () => {} }) {
   let destroyed = false;
   let finished = false;
   let started = false;
   let visible = active;
+  // Held while a page change animates: per-frame redraws would make it stutter.
+  let holding = held;
   let timeline;
   let trigger;
   let temp;
@@ -18,7 +20,7 @@ export function createPixelReveal({ image, canvas, element, gsap, ScrollTrigger,
   canvas.style.visibility = 'hidden';
 
   function removeListeners() {
-    image.removeEventListener('load', initialize);
+    image.removeEventListener('load', prepare);
     image.removeEventListener('error', finish);
     document.removeEventListener('visibilitychange', sync);
   }
@@ -35,7 +37,7 @@ export function createPixelReveal({ image, canvas, element, gsap, ScrollTrigger,
 
   function sync() {
     if (!timeline || destroyed || finished) return;
-    if (started && visible && !document.hidden) timeline.play();
+    if (started && visible && !holding && !document.hidden) timeline.play();
     else timeline.pause();
   }
 
@@ -103,9 +105,24 @@ export function createPixelReveal({ image, canvas, element, gsap, ScrollTrigger,
     }
   }
 
+  // Decode the photo off the main thread before the first draw, which would
+  // otherwise decode it synchronously in the middle of a page change.
+  function prepare() {
+    if (destroyed || finished || timeline) return;
+    if (typeof image.decode !== 'function') {
+      initialize();
+      return;
+    }
+    image.decode().then(initialize, () => (image.naturalWidth ? initialize() : finish()));
+  }
+
   const controls = {
     setActive(next) {
       visible = next;
+      sync();
+    },
+    setHeld(next) {
+      holding = next;
       sync();
     },
     finish,
@@ -129,9 +146,9 @@ export function createPixelReveal({ image, canvas, element, gsap, ScrollTrigger,
     finish();
     return controls;
   }
-  image.addEventListener('load', initialize);
+  image.addEventListener('load', prepare);
   image.addEventListener('error', finish);
   document.addEventListener('visibilitychange', sync);
-  if (image.complete) initialize();
+  if (image.complete) prepare();
   return controls;
 }

@@ -14,8 +14,8 @@ import { useStore } from '@src/store';
 import { useWindowSize } from '@darkroom.engineering/hamo';
 
 // The original stacked project cards (home "Selected Projects" and the /projects
-// index), one per course. The original photos are replaced by the course's own
-// palette (decision 2): the full-card layer is a solid menu-colour panel over
+// index), one per course. The original photos are replaced by the shared Desk
+// palette: the full-card layer is a solid menu-colour panel over
 // the dark shader (.4 -> .85 on hover, as the photo was), and the small frame
 // is a fill-colour panel with the course code in the bold display face.
 const NO_DEADLINES = 'No upcoming deadlines';
