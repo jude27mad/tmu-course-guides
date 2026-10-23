@@ -160,6 +160,15 @@ try {
         await page.waitForFunction(() => location.hash === '#work/all');
         await settled(page);
         assert.equal(await all.evaluate((button) => button === document.activeElement), true, 'keyboard focus stays on the selected filter');
+        // A non-focusing link activation must still focus the new view after
+        // its filter controls unmount (Safari taps can retain the old focus).
+        await page.getByRole('navigation', { name: 'Course views' }).getByRole('link', { name: 'Schedule', exact: true }).evaluate((link) => link.click());
+        await page.getByRole('heading', { name: 'Schedule', exact: true }).waitFor();
+        await settled(page);
+        assert.equal(await page.evaluate(() => document.activeElement.id), 'course-content', 'leaving Work moves focus into the destination view');
+        await page.goBack();
+        await page.waitForFunction(() => location.hash === '#work/all');
+        await settled(page);
         await page.goBack();
         await page.waitForFunction(() => !location.hash || location.hash === '#work');
         await settled(page);
