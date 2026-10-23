@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import Link from 'next/link';
 import { assessments } from '@src/lib';
 import { useCourse } from '@src/pages/course/hooks/useCourseState';
+import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
 import styles from './workspace.module.scss';
 
 function Blocks({ card }) {
@@ -40,7 +41,8 @@ export default function CourseInformation({ panel }) {
   let sectionText = 'Choose your section and group above for your lab and contacts.';
   if (cen && info.profile?.value) sectionText = info.profile.summary;
   if (!cen) sectionText = info.section?.brief ? `${info.section.brief.section} · ${info.section.brief.detail}` : info.section?.briefPrompt;
-  useEffect(() => {
+  // Expand the destination before the workspace measures its scroll range.
+  useIsomorphicLayoutEffect(() => {
     const target = root.current?.querySelector(`#${panel === 'panel-help' || panel === 't-help' ? 'rules-help' : panel}`);
     if (target?.tagName === 'DETAILS') target.open = true;
   }, [panel]);
