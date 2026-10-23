@@ -86,7 +86,7 @@ function GuideTools() {
             // eslint-disable-next-line no-alert
             if (window.confirm(copy.clearTicksConfirm)) {
               const saved = progress.clearTicks();
-              say('reset', saved ? '' : copy.blocked);
+              say('reset', saved ? 'Checklist ticks cleared. Completion records and notes kept.' : copy.blocked);
             }
           },
         }
