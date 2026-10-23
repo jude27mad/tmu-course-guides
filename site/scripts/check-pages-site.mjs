@@ -154,6 +154,7 @@ async function checkLocal(folder) {
           assert.equal(response.status(), 200);
           assert.equal(await page.title(), title);
           assert.equal(await page.locator('#__next').count(), 1, 'Next root');
+          assert.equal(await page.locator('meta[name="color-scheme"]').getAttribute('content'), 'only light', 'opts out of automatic dark modes');
           assert.equal(await page.locator('script[src*="legacy-route"], script[src*="/assets/"]').count(), 0, 'no previous-design scripts');
           assert.deepEqual(errors, [], 'page errors');
           assert.deepEqual(strays, [], 'requests outside the site, or failed');
