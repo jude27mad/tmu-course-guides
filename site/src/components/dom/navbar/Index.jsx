@@ -1,4 +1,5 @@
 import { buildShellTimeline } from '@src/components/dom/navbar/panelShell';
+import { setBrowserSurface } from '@src/utils/theme';
 import ButtonLink from '@src/components/animationComponents/buttonLink/Index';
 import Link from 'next/link';
 import MenuButton from '@src/components/dom/navbar/components/MenuButton';
@@ -49,6 +50,13 @@ function Navbar() {
       scrollToPosition(0);
     }
   }, [router.pathname, scrollToPosition]);
+
+  // Safari's exposed toolbar region follows the currently visible overlay.
+  // This is independent of route palettes; both Menu and Search use the same shell.
+  useEffect(() => {
+    setBrowserSurface(isOpen ? 'dark' : 'light');
+    return () => setBrowserSurface('light');
+  }, [isOpen]);
 
   // The shared "main slides left" animation for the menu and the search panel.
   useEffect(() => {
