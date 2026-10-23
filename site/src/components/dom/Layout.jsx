@@ -1,3 +1,4 @@
+import { nativeIOSScroll, scrollTop } from '@src/utils/scrollRoot';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Transition as ReactTransition, SwitchTransition } from 'react-transition-group';
 import { courseIdFromPath, pathKey, wantsSRGB } from '@src/utils/routes';
@@ -58,6 +59,8 @@ function Layout({ children, layoutRef, mainRef, router }) {
     setIsLoading(false);
     lenis.start();
     gsap.set(mainRef.current, { willChange: 'auto' });
+    gsap.set('#loader', { autoAlpha: 0, display: 'none' });
+    if (nativeIOSScroll()) gsap.set(mainRef.current, { clearProps: 'transform,transformOrigin,left' });
     landOnPage();
     scrollToHash({ immediate: true });
   };
@@ -148,7 +151,8 @@ function Layout({ children, layoutRef, mainRef, router }) {
                 scale: 0.9,
                 x: '100%',
                 borderRadius: '1.3888888889vw',
-                autoAlpha: 1, // hidden if the intro ran with motion off
+                autoAlpha: 1,
+                display: 'block', // restore only during route transition
               });
               gsap.set('header', {
                 left: 0,
