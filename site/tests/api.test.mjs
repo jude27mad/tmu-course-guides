@@ -123,7 +123,7 @@ test('courseInfo: rules, contacts, topic map and notes as data', async () => {
   for (const id of ['mth140', 'mth141']) {
     const info = lib.courseInfo(id, { section: 24 });
     assert.equal(info.topics.length, 8);
-    assert.equal(info.rules.length, 4);
+    assert.equal(info.rules.length, id === 'mth141' ? 6 : 4);
     assert.match(info.section.brief.section, /^Section 24$/);
     assert.equal(info.contacts.coordinator, 'the coordinator listed on D2L');
     assert.equal(info.assessments[0].checklist.length, 5);

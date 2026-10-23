@@ -22,6 +22,8 @@ Staff names and office-hour details are omitted from the public guide; check cur
 
 ## MTH141
 
+Rechecked October 23, 2026 using the supplied V3 outline, FAQ, lab schedule, exercise list, lecture notes and Lab 1–4 files. Existing September 17, October 1 and October 5 announcement transcriptions were cross-checked with prior conversations. The original announcement images were not retrieved in this review, and there was no new Quiz 3–5 or final schedule announcement. This is a supplied-source review, not a live D2L verification. MTH140 is unchanged.
+
 | Item | Result | Source |
 | --- | --- | --- |
 | Lab quizzes | Five quiz weeks: September 21, October 5, November 2, November 16, November 30. Quiz category 20%; lowest dropped; no make-up. | Course Management Form V3, pp. 3 and 5. |
@@ -30,12 +32,16 @@ Staff names and office-hour details are omitted from the public guide; check cur
 | Midterm | October 16, 6:30–8:30 PM Toronto time; 35% of course. The official test format is available on D2L, not reproduced in this public guide. | Outline V3 p. 3 and October 5 D2L announcement. |
 | Midterm scope | 6.1–6.4; 1.1–1.2.4; 2.1.1–2.1.8; 3.1.1–3.1.3 and 3.1.5–3.2.2. Section 3.1.4 is not added. | October 5 announcement. |
 | Midterm logistics | Bring physical TMU ID and know your section; closed-book, no unauthorized aids; phones off and stored in bags. Follow the official D2L cover page for the remaining requirements. | October 5 D2L announcement. |
-| Test room / AAS | Rooms posted a few days before. AAS users must book through Test Centre by its applicable deadline; no deadline date supplied. | October 5 announcement. |
+| Test room / AAS | The original October 16 room/cover page remains on D2L; any approved make-up has separate staff instructions. AAS users book midterms/finals through the Test Centre by its deadline; no deadline date supplied. | October 5 announcement; FAQ 4.10; outline V3 p. 5. |
 | Sample test | D2L → Course Information → Midterm Test Materials, sample and solutions. No restricted questions published. | October 5 announcement. |
 | Final | December examination period, 45%; exact schedule and duration not supplied. FAQ says post-midterm content unless otherwise announced. | Outline V3 p. 3; FAQ 4.6. |
 | Study week | Lectures continue October 12–16 except Thanksgiving Monday October 12. | Outline V3 p. 3. |
 | Instructors / labs | All 34 sections, independent of the MTH140 mappings. | Outline V3 p. 1 and MTH141 Labs. |
-| Practice | 40 section rows from the official recommended sheet. Kuttler 2017 rev. A and Nicholson 2019 rev. A. | Recommended Problems MTH141 F26, pp. 1–3. |
+| Practice | All 40 exercise-reference rows rechecked, unchanged. Kuttler 2017 rev. A and Nicholson 2019 rev. A. | Recommended Problems MTH141 F26, pp. 1–3. |
+| Quiz timing | 10-minute standard writing time; everyone receives 15 minutes including 50% extra time. More time/other accommodations require instructor contact. | FAQ 4.10. |
+| Grade return | Up to 10 business days, barring unforeseen circumstances. Regrade requests within 10 working days of return. | Outline V3 pp. 3–4; FAQ 4.7. |
+| Lecture materials | Supplied notes span the earlier chapters plus 4.1–4.7, 4.8, 4.9 and 4.10.1–4.10.2. No inference of Quiz 3 scope or completed teaching. | Supplied section PDFs. |
+| Lab materials | Lab 1 questions and Lab 2–4 solutions used only for topic-level practice guidance; no questions or solutions published. | Supplied Lab 1–4 files. |
 
 The V3 outline links Kuttler 2021.A, while its recommended-problem document cites 2017 revision A. The guide displays this edition mismatch so users can confirm problem numbering through D2L. It does not silently translate exercise identifiers between editions.
 
