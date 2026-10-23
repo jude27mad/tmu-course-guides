@@ -208,10 +208,9 @@ function MyApp({ Component, pageProps, router }) {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </Head>
-      {/* Safari samples the computed background of these invisible fixed edge boxes.
-          Empty text clipping paints no visible strip over the real content. */}
-      <div aria-hidden="true" data-safari-edge="top" className="safari-chrome-edge" />
-      <div aria-hidden="true" data-safari-edge="bottom" className="safari-chrome-edge" />
+      {/* Transparent, non-interactive guards. No opaque browser-bar colour is
+          supplied; page content, rather than a sampled solid strip, stays behind it. */}
+      <div aria-hidden="true" data-safari-blend="top" className="safari-toolbar-blend" />
       <MotionSync />
       <NavigationFeedback />
       {SHOW_STATS && <Stats />}
@@ -261,6 +260,8 @@ function MyApp({ Component, pageProps, router }) {
           </main>
         </div>
       </div>
+      {/* Must follow the entire document, outside clipped/transformed scene roots. */}
+      <div aria-hidden="true" data-safari-blend="bottom" className="safari-toolbar-blend" />
     </>
   );
 }

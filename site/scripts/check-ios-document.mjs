@@ -28,6 +28,58 @@ async function ready(page) {
   );
 }
 
+// Tests actual exported CSS and geometry, not proprietary Safari toolbar UI.
+async function verifyTransparencyGuards(page) {
+  const state = await page.evaluate(() => {
+    const nodes = [...document.querySelectorAll('[data-safari-blend]')];
+    const main = document.querySelector('main');
+    const before = { height: document.scrollingElement.scrollHeight, top: main.getBoundingClientRect().top };
+    const guards = nodes.map((node) => {
+      const css = getComputedStyle(node);
+      const box = node.getBoundingClientRect();
+      return {
+        side: node.dataset.safariBlend,
+        position: css.position,
+        background: css.backgroundColor,
+        image: css.backgroundImage,
+        clip: css.backgroundClip,
+        pointerEvents: css.pointerEvents,
+        border: css.borderTopWidth,
+        shadow: css.boxShadow,
+        top: box.top,
+        bottom: box.bottom,
+        width: box.width,
+        empty: node.childNodes.length === 0,
+        hidden: node.getAttribute('aria-hidden'),
+      };
+    });
+    // Transparent guards must not introduce extra scrolling or move page text.
+    nodes.forEach((node) => { node.style.display = 'none'; });
+    const without = { height: document.scrollingElement.scrollHeight, top: main.getBoundingClientRect().top };
+    nodes.forEach((node) => { node.style.removeProperty('display'); });
+    return { guards, before, without, viewport: { width: innerWidth, height: innerHeight }, oldSamples: document.querySelectorAll('[data-safari-edge]').length };
+  });
+  assert.equal(state.oldSamples, 0, 'opaque edge samplers must not return');
+  assert.deepEqual(state.guards.map((guard) => guard.side), ['top', 'bottom']);
+  for (const guard of state.guards) {
+    assert.equal(guard.position, 'sticky', JSON.stringify(state));
+    assert.equal(guard.background, 'rgba(0, 0, 0, 0)', JSON.stringify(state));
+    assert.equal(guard.image, 'none');
+    assert.notEqual(guard.clip, 'text', 'opaque backgrounds must not be disguised with text clipping');
+    assert.equal(guard.pointerEvents, 'none');
+    assert.equal(guard.border, '0px');
+    assert.equal(guard.shadow, 'none');
+    assert.equal(guard.empty, true);
+    assert.equal(guard.hidden, 'true');
+    assert.ok(Math.abs(guard.width - state.viewport.width) < 2, JSON.stringify(state));
+  }
+  assert.ok(Math.abs(state.before.height - state.without.height) < 2, JSON.stringify(state));
+  assert.ok(Math.abs(state.before.top - state.without.top) < 2, JSON.stringify(state));
+  assert.ok(state.guards[0].top >= -3 && state.guards[0].top <= 1, JSON.stringify(state));
+  assert.ok(state.guards[1].bottom >= state.viewport.height - 7 && state.guards[1].bottom <= state.viewport.height + 3, JSON.stringify(state));
+  return state;
+}
+
 async function navigationState(page) {
   return page.evaluate(() => {
     const describe = (element) => {
@@ -209,6 +261,7 @@ try {
           assert.ok(!['hidden', 'scroll', 'auto'].includes(initial.overflow), JSON.stringify(initial));
           assert.ok(!['hidden', 'scroll', 'auto'].includes(initial.layoutOverflow), JSON.stringify(initial));
           assert.ok(initial.docHeight > initial.viewport + 100, JSON.stringify(initial));
+          const edgesAtTop = await verifyTransparencyGuards(page);
           await page.evaluate(() => window.scrollTo(0, 300));
           await page.waitForFunction(() => scrollY > 150, null, { timeout: 3000 });
           await page.waitForFunction(
@@ -219,9 +272,19 @@ try {
             null,
             { timeout: 3000 },
           );
+          const edgesAfterScroll = await verifyTransparencyGuards(page);
+          if (route === 'courses/') {
+            await page.evaluate(() => window.scrollTo(0, 0));
+            await page.getByRole('button', { name: 'Open menu', exact: true }).tap();
+            await page.getByRole('button', { name: 'Close menu', exact: true }).waitFor();
+            await verifyTransparencyGuards(page);
+            await page.getByRole('button', { name: 'Close menu', exact: true }).tap();
+            await ready(page);
+            await verifyTransparencyGuards(page);
+          }
           await page.screenshot({ path: path.join(report, `${motion}-${route.replaceAll('/', '') || 'desk'}.png`) });
           assert.deepEqual(errors, [], JSON.stringify({ route, motion, failedRequests }));
-          results.push({ route, motion, pass: true, initial });
+          results.push({ route, motion, pass: true, initial, edgesAtTop, edgesAfterScroll });
           console.log('PASS', motion, route || 'desk');
         } finally {
           await page.close();
@@ -234,6 +297,6 @@ try {
 } finally {
   await browser?.close();
   await new Promise((resolve) => server.close(resolve));
-  await writeFile(path.join(report, 'results.json'), JSON.stringify(results, null, 2));
+  await writeFile(path.join(report, 'results.json'), JSON.stringify({ limitation: 'Linux WebKit does not render iPhone Safari browser chrome. These results verify CSS, layout and page interaction only.', results }, null, 2));
 }
 assert.equal(navigationFailures.length, 0, navigationFailures.join('\n'));

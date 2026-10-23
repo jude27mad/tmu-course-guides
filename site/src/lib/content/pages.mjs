@@ -367,7 +367,7 @@ export const MATH={mth140:{
  },
  "sources": {
   "heading": "Sources & date checks",
-  "note": "Reviewed October 12, 2026. Course outlines and supplied D2L announcements provide the dates and rules. Newer official announcements take precedence."
+  "note": "Reviewed October 23, 2026, including the October 13 midterm announcement. Course documents and supplied D2L announcements provide the dates and rules. Newer official announcements take precedence."
  },
  "tools": {
   "summary": "Guide tools",
