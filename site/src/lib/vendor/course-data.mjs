@@ -3,7 +3,7 @@ export const COURSES = {
     "code": "MTH140",
     "name": "Calculus I",
     "term": "Fall 2026",
-    "updated": "2026-10-12",
+    "updated": "2026-10-23",
     "labs": [
       {
         "section": 1,
@@ -376,7 +376,7 @@ export const COURSES = {
           "1.4",
           "1.5"
         ],
-        "midterm": false
+        "midterm": true
       },
       {
         "id": "limits",
@@ -396,7 +396,7 @@ export const COURSES = {
           "2.3",
           "2.4"
         ],
-        "midterm": false
+        "midterm": true
       },
       {
         "id": "derivatives-1",
@@ -418,7 +418,7 @@ export const COURSES = {
           "3.5",
           "3.6"
         ],
-        "midterm": false
+        "midterm": true
       },
       {
         "id": "integration-1",
@@ -688,7 +688,7 @@ export const COURSES = {
         "week": "2026-10-12",
         "mondayMakeupDate": "2026-10-19",
         "quizSecondHour": true,
-        "scope": "Chapter 3: Sections 3.1–3.5.",
+        "scope": "One question from Chapter 3: Sections 3.1–3.5.",
         "source": "“Lab 5 Questions and Quiz 2,” Dr. Majed Alqasas, D2L, October 8, 2026: scope, second-hour timing and Monday October 19 make-up.",
         "confirmed": true
       },
@@ -718,9 +718,9 @@ export const COURSES = {
         "time": "18:30",
         "end": "20:30",
         "duration": "2 hours",
-        "scope": "Exact midterm coverage awaits the D2L announcement. The FAQ says scope is posted approximately one week before the test.",
-        "source": "Course Management Form, p. 3: date, time, duration and weight; FAQ, section C.4: coverage announcement timing.",
-        "confirmed": false
+        "scope": "Chapter 1: Sections 1.1–1.5 (functions and graphs); Chapter 2: Sections 2.1–2.4 (limits and continuity); Chapter 3: Sections 3.1–3.6 (derivatives, including Sections 3.3–3.4 and the chain rule). Antiderivatives and integration are outside this announced scope.",
+        "source": "“Midterm Exam Content,” D2L, October 13, 2026, 2:56 PM: date, time, coverage, question format and marking rules. Course Management Form, p. 3: 40% course weight; FAQ, C.1–2: no calculator or formula sheet.",
+        "confirmed": true
       },
       {
         "id": "final",
@@ -776,6 +776,10 @@ export const COURSES = {
       {
         "title": "Lab 5 Questions and Quiz 2",
         "detail": "D2L announcement, October 8, 2026: Chapter 3 Sections 3.1–3.5; second hour of the lab; Monday sections on October 19, other sections in their October 13–16 labs."
+      },
+      {
+        "title": "Midterm Exam Content",
+        "detail": "D2L announcement, October 13, 2026, 2:56 PM: October 23, 6:30–8:30 PM; Sections 1.1–1.5, 2.1–2.4 and 3.1–3.6; ten multiple-choice questions worth 5 marks each and three long-answer questions; written-work requirements. Room assignments are separate on D2L."
       }
     ]
   },
