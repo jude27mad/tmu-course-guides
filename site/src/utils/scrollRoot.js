@@ -1,7 +1,7 @@
 // iOS WebKit requires document scrolling to allow Safari's edge-to-edge browser chrome.
 // Decide before hydration; do not collect or transmit device information.
 export function nativeIOSScroll() {
-  return typeof document !== 'undefined' && document.documentElement.dataset.scrollMode === 'document';
+  return typeof document !== 'undefined' && document.documentElement?.dataset?.scrollMode === 'document';
 }
 export function scrollRoot() {
   if (typeof window === 'undefined') return null;
