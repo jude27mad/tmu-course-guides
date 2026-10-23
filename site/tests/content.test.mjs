@@ -29,9 +29,9 @@ test('CEN100 checklist keys and completion keys keep the old id schemes', () => 
   const keys = old.allItems.flatMap((item) => item.groups.flatMap((g, gi) => g[1].map((_, i) => `${item.id}-${gi}-${i}`)));
   assert.equal(keys.length, 126);
   assert.deepEqual([...CEN.TICK_KEYS], keys);
-  // 24 completion keys: 22 dated rows + item:y7 + item:y9.
+  // 25 completion keys: 23 dated rows + item:y7 + item:y9.
   assert.deepEqual([...CEN.completionKeys], [...old.completionKeys]);
-  assert.equal(CEN.completionKeys.size, 24);
+  assert.equal(CEN.completionKeys.size, 25);
   assert.ok(CEN.completionKeys.has('item:y7') && CEN.completionKeys.has('item:y9'));
   assert.ok(!CEN.completionKeys.has('failure-lab') && !CEN.completionKeys.has('showcase-signup'));
 });
@@ -143,3 +143,4 @@ for (const courseId of ['mth140', 'mth141']) {
     assert.equal(page.knownTopics.size, courseId === 'mth140' ? 30 : 31);
   });
 }
+

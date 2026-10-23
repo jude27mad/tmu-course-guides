@@ -132,7 +132,7 @@ test('pending and empty: an undated final is next once nothing dated is left; wi
 test('completed items are skipped, including reminders whose item is fully recorded; ticks never count', () => {
   assert.equal(cen(NOON_OCT12, 29).id, 'integrity');
   assert.equal(cen(NOON_OCT12, 29, { integrity: 1 }).id, 'failure-lab');
-  assert.equal(cen(NOON_OCT12, 29, { integrity: 1, failure: 1 }).id, 'whmis');
+  assert.equal(cen(NOON_OCT12, 29, { integrity: 1, failure: 1, 'failure-2': 1 }).id, 'whmis');
   assert.equal(cen(NOON_OCT12, 29, { integrity: 1, 'failure-lab': 1 }).id, 'failure-lab');
   assert.equal(cen(NOON_OCT12, 0, { integrity: 0 }).id, 'integrity');
   assert.equal(math('mth140', NOON_OCT12, 31, { 'quiz-2': 'yes' }).id, 'quiz-2');
@@ -248,7 +248,7 @@ test('deadlines are sorted by due time and flag done and overdue items', () => {
   const storage = cenStore({ section: 29, group: 9 }, { intro: 1, integrity: 1 });
   const now = toronto('2026-10-15', '09:00');
   const items = deadlines('cen100', { now, storage });
-  assert.equal(items.length, 22 + 2 + 2, '22 dated rows + the Section 29 lab reminder and the showcase reminder + 2 undated items');
+  assert.equal(items.length, 23 + 2 + 2, '23 dated rows + the Section 29 lab reminder and the showcase reminder + 2 undated items');
   const keys = items.map((item) => item.sortKey);
   assert.deepEqual(keys, [...keys].sort((a, b) => a - b));
   const byId = Object.fromEntries(items.map((item) => [item.id, item]));
@@ -349,3 +349,4 @@ test('the Desk snapshot is the old deskSummary(), course by course', () => {
   }
   assert.ok(cases > 200);
 });
+

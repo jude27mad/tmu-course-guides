@@ -99,7 +99,7 @@ test('completed items are skipped, including reminders whose item is fully recor
   assert.equal(math('mth141',at('2026-10-07T16:00:00Z'),3,{'quiz-2':true}).id,'midterm');
   assert.equal(cen(NOON_OCT12,29).id,'integrity');
   assert.equal(cen(NOON_OCT12,29,{integrity:1}).id,'failure-lab');
-  assert.equal(cen(NOON_OCT12,29,{integrity:1,failure:1}).id,'whmis','calendar:false reminder retires with its item');
+  assert.equal(cen(NOON_OCT12,29,{integrity:1,failure:1,'failure-2':1}).id,'whmis','calendar:false reminder retires with its item');
   // cleanPlan(): a calendar:false row is not a completion key, so recording it changes nothing.
   assert.equal(cen(NOON_OCT12,29,{integrity:1,'failure-lab':1}).id,'failure-lab');
   // Values other than 1/true are not completions.
@@ -210,3 +210,4 @@ test('the Desk’s first-paint course accents mirror COURSE_META',()=>{
     assert.match(css,new RegExp(`\\[data-course-card=${course}\\],\\[data-book=${course}\\]\\{--course:${accent};--course-strong:${strong}\\}`),course);
   }
 });
+
