@@ -1,4 +1,5 @@
 import { DEFAULT_PALETTE } from '@src/lib/courses.mjs';
+import { TOKENS } from '@src/lib/palette.mjs';
 import { useStore } from '@src/store';
 
 import { useEffect } from 'react';
@@ -32,7 +33,7 @@ export function setBrowserSurface(mode) {
   const dark = mode === 'dark';
   document.documentElement.dataset.browserSurface = dark ? 'dark' : 'light';
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', dark ? '#09050c' : DEFAULT_PALETTE.secondary);
+  if (meta) meta.setAttribute('content', dark ? TOKENS.ink : DEFAULT_PALETTE.secondary);
 }
 
 // Sets the CSS variables on <html> and the fluid tint. Safe to call on the server (no-op).
