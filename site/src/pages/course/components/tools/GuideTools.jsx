@@ -2,6 +2,7 @@ import { calendarFile, exportBackup, hasUnseenUpdates, importBackup, markUpdates
 import { useEffect, useId, useRef, useState } from 'react';
 
 import Arrow from '@src/components/imageComponents/Arrow';
+import Link from 'next/link';
 // eslint-disable-next-line import/extensions
 import { bindGuideTools } from '@src/pages/course/components/tools/dialog.mjs';
 import clsx from 'clsx';
@@ -148,7 +149,7 @@ function GuideTools() {
               {row.key === 'updates' ? (
                 <ol id="tools-updates" className={styles.updates} hidden={!updatesOpen}>
                   {updateEntries.map((entry) => (
-                    <li key={`${entry.date}-${entry.title}`} className={styles.update}>
+                    <li key={entry.id || `${entry.date}-${entry.title}`} className={styles.update}>
                       <span className={styles.muted}>{entry.date}</span>
                       <h3 className={styles.updateTitle}>{entry.title}</h3>
                       {entry.text ? <span>{entry.text}</span> : null}
@@ -158,6 +159,15 @@ function GuideTools() {
                     </li>
                   ))}
                 </ol>
+              ) : null}
+              {row.key === 'updates' ? (
+                <p className={styles.updatesLink} hidden={!updatesOpen}>
+                  Changes to the website itself are on the{' '}
+                  <Link href="/updates/" scroll={false} onClick={() => dialogRef.current?.close()}>
+                    Website updates
+                  </Link>{' '}
+                  page.
+                </p>
               ) : null}
             </li>
           ))}

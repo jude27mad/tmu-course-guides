@@ -20,7 +20,7 @@ The data layer every page uses. Pages import from `@src/lib` (plain functions) a
 | `info.mjs` | `courseInfo`. |
 | `progress.mjs` | `createProgress` (Mark done, Undo, ticks, notes, targets, subscribe). |
 | `search.mjs` | `searchIndex`, `searchEntries`, `searchGuide`. |
-| `tools.mjs` | Calendar files, backups, "What's changed?", hide filter, motion pause. |
+| `tools.mjs` | Calendar files, backups, the Course updates badge, hide filter, motion pause. |
 | `storage.mjs`, `saved.mjs` | Safe storage access, keys, readers and writers with the old validation. |
 | `perf.mjs` | `fast()`: caches Toronto-time formatting during a lib call (see Performance). |
 | `vendor/` | The old pure modules, byte for byte with only `?v=` cache queries removed: `course-data.mjs`, `cen-schedule.mjs`, `schedule.mjs`, `night/targets.mjs`, `book/weeks.mjs`, `desk/desk-data.mjs`, and the pure half of `night/palette.mjs` (everything above `mount()`). Do not edit; `tests/vendor.test.mjs` checks them against `assets/`. |
@@ -241,7 +241,7 @@ calc.section;      // { brief: { section: 'Section 24', detail: 'Thursday … ·
 calc.textbooks; calc.sources; calc.grading; calc.review; calc.tools; calc.updates; calc.footer
 ```
 
-`courseInfo()` is plain JSON (safe for `getStaticProps`). `updates.entries` are the old "What's changed?" notes (they describe the old site; show them only if wanted).
+`courseInfo()` is plain JSON (safe for `getStaticProps`). `updates.entries` are the course's own updates (dates, coverage, policy, grading) from `content/updates.mjs`, newest first; website changes are `WEBSITE_UPDATES`, shown on `/updates/`.
 
 **`courseCopy(courseId)`** → the old pages' interface strings, including those that take values (button labels, status lines, empty states): `courseCopy('cen100').filterStatus(3)` → `'3 fully checked items hidden. Uncheck the filter to show everything.'`, `courseCopy('mth140').counts.prepared(2, 5)` → `'2/5 prepared'`, `courseCopy('cen100').clearTicksConfirm`. Contains functions, so use it in components, not in props.
 
@@ -304,7 +304,7 @@ calendarFile('cen100', { now, item: 'all', upcomingOnly: true, reminderDays: 1 }
 calendarFile('mth140', { now, includeTentative: true, upcomingOnly: true }); // { ok: false, message: 'Choose your section first to include lab quiz dates.' } without a section
 exportBackup('cen100', { now });      // { name: 'cen100-progress-2026-10-15.json', type: 'application/json', text, message }
 importBackup('mth141', fileText);     // { ok, saved, message: 'Progress imported.' | the old error message }
-hasUnseenUpdates('mth140');           // true while "What's changed?" has not been opened since this release
+hasUnseenUpdates('mth140');           // true while the course has a course update newer than the one last opened
 markUpdatesSeen('mth140');
 getHideCompleted(); setHideCompleted(true); // CEN "Hide fully checked items"
 ```

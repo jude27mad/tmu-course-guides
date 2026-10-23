@@ -1,15 +1,22 @@
 # Release history
 
-Latest first. Course-specific student-facing notes remain under **What's changed?** in Guide tools. Older entries record the behaviour at the time; later releases supersede them.
+Latest first. Students see course changes under **Course updates** in each guide's Guide tools, and website changes on the **Website updates** page. Older entries record the behaviour at the time; later releases supersede them.
 
-## Unreleased — Shorter course views
+## Unreleased — Course updates and website updates in separate places
+
+- **What's changed?** is now two lists. **Course updates**, in each course's Guide tools, lists changes to that course's dates, coverage, policy and grading, and only these show the unread badge. The new **Website updates** page (`/updates/`) lists changes to the website itself; it is linked from the menu, the footers and the end of Course updates.
+- Every existing entry is kept: 8 course entries across the three guides, and the website entries, with duplicates shared by several guides shown once and labelled when they apply to only some guides. The 22 untitled CEN100 entries now have titles, and the October 21 and October 23 releases have entries.
+- Students who opened the October 16 notes see no new badge. Saved values keep their key and format, and a saved value is never replaced by an older one.
+- The entries moved from the generated `pages.mjs` to `site/src/lib/content/updates.mjs`; the extractor no longer emits them.
+
+## October 23, 2026 — Shorter course views
 
 - Courses open in a compact Work list, with Open, All and Done filters. Schedule, math Study and Course info have separate views.
 - Work, calendar, search and old assignment links open one full-width detail. Back restores the list filter, scroll and focus; browser Back/Forward remains available.
 - One course photograph, a small deadline/progress summary and a compact ending replace repeated images, pinned sequences and duplicate overview sections. Requirements stay visible; optional references and course information use native disclosures.
 - Section/group selection, D2L and Guide tools stay near the top. Notes save immediately on edit. Existing progress formats, checklist IDs, backups and multi-submission records are preserved.
 - Schedule provides a phone agenda, a lazily loaded Schedule-X calendar on wider screens, and a deadline list that works when the calendar cannot load. Official date precision and Toronto time are retained.
-- Verification and browser-emulated screenshots: [redesign QA record](docs/qa/shorter-course-views/README.md). This branch has not been merged or published.
+- Verification and browser-emulated screenshots: [redesign QA record](docs/qa/shorter-course-views/README.md).
 
 ## October 21, 2026 — Current design at the main address
 

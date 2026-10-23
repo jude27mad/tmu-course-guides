@@ -9,36 +9,6 @@ const text=html=>decode(html.replace(/<br\s*\/?>/g,' ').replace(/<[^>]+>/g,'')).
 function between(html,start,end,from=0){const i=html.indexOf(start,from);if(i<0)throw new Error('missing '+start);const j=html.indexOf(end,i+start.length);if(j<0)throw new Error('missing end '+end+' after '+start);return html.slice(i+start.length,j);}
 const all=(html,re)=>[...html.matchAll(re)];
 const one=(html,re)=>{const m=html.match(re);if(!m)throw new Error('no match '+re);return m;};
-// Release notes: <p><strong>TITLE</strong></p><ul><li>...</li></ul> pairs, then an optional <ul class="update-list">.
-function updates(html){
-  const block=between(html,'id="guide-updates">','</details>');
-  const body=block.slice(block.indexOf('</summary>')+10);
-  const list=body.indexOf('<ul class="update-list">');
-  const head=list<0?body:body.slice(0,list);
-  const groups=all(head,/<p><strong>([\s\S]*?)<\/strong><\/p>\s*<ul>([\s\S]*?)<\/ul>/g).map(m=>{
-    const [date,...title]=text(m[1]).split(' — ');
-    return {date,title:title.join(' — '),items:all(m[2],/<li>([\s\S]*?)<\/li>/g).map(x=>text(x[1]))};
-  });
-  if(list>=0){
-    const tail=body.slice(list+'<ul class="update-list">'.length,body.lastIndexOf('</ul>'));
-    // Top-level <li> entries; one of them nests a <ul>.
-    let depth=0,start=-1;const entries=[];
-    for(const m of tail.matchAll(/<(\/?)(li|ul)\b[^>]*>/g)){
-      if(m[2]==='li'&&!m[1]){if(depth===0)start=m.index+m[0].length;depth++;}
-      else if(m[2]==='li'&&m[1]){depth--;if(depth===0)entries.push(tail.slice(start,m.index));}
-    }
-    for(const entry of entries){
-      const b=one(entry,/^\s*<b>([\s\S]*?)<\/b>/);
-      const label=text(b[1]).replace(/:$/,'');const [date,...title]=label.split(' — ');
-      const nested=entry.match(/<ul>([\s\S]*?)<\/ul>/);
-      const rest=entry.slice(b[0].length);
-      const items=nested?all(nested[1],/<li>([\s\S]*?)<\/li>/g).map(x=>text(x[1])):[];
-      const lead=text(nested?rest.slice(0,rest.indexOf('<ul>')):rest),after=nested?text(rest.slice(rest.indexOf('</ul>')+5)):'';
-      groups.push({date,title:title.join(' — '),text:lead,items,after});
-    }
-  }
-  return groups;
-}
 const rows=table=>all(table,/<tr><th scope="row">([\s\S]*?)<\/th><td>([\s\S]*?)<\/td><\/tr>/g).map(m=>({label:text(m[1]),weight:text(m[2])}));
 const notes=html=>all(html,/<p class="tool-note"[^>]*>([\s\S]*?)<\/p>/g).map(m=>text(m[1]));
 
@@ -117,7 +87,6 @@ const CEN={
   backup:(b=>({summary:text(one(b,/<summary>([\s\S]*?)<\/summary>/)[1]),notes:notes(b),export:text(one(b,/id="backup-export"[^>]*>([\s\S]*?)<\/button>/)[1]),importLabel:text(one(b,/<label for="backup-import">([\s\S]*?)<\/label>/)[1])}))(between(cen,'id="backup-tools">','</details>')),
   updatesSummary:text(one(cen,/id="guide-updates">\s*<summary>([\s\S]*?)<span/)[1]),
   updatesBadge:text(one(cen,/id="updates-badge"[^>]*>([\s\S]*?)<\/span>/)[1]),
-  updates:updates(cen),
   footer:{source:text(one(cen,/<footer><span>([\s\S]*?)<\/span>/)[1]),reset:text(one(cen,/id="reset">([\s\S]*?)<\/button>/)[1]),privacy:'Privacy'},
 };
 
@@ -164,7 +133,6 @@ function math(id){
     backup:{summary:'Move or back up my progress',notes:notes(backup),export:text(one(backup,/id="backup-export">([\s\S]*?)<\/button>/)[1]),importLabel:text(one(backup,/<label for="backup-import">([\s\S]*?)<\/label>/)[1])},
     updatesSummary:text(one(h,/id="guide-updates">\s*<summary>([\s\S]*?)<span/)[1]),
     updatesBadge:text(one(h,/id="updates-badge"[^>]*>([\s\S]*?)<\/span>/)[1]),
-    updates:updates(h),
     footer:{companion:text(one(h,/<footer class="math-footer"><p>([\s\S]*?)<a/)[1]).replace(/\s*·$/,''),privacy:'Privacy',d2l:text(one(h,/<footer class="math-footer">[\s\S]*?<p><a [^>]*>([\s\S]*?)<\/a><\/p><\/footer>/)[1])},
     noscriptIntro:text(one(h,/<noscript>[\s\S]*?<p>([\s\S]*?)<\/p>/)[1]),
   };
@@ -181,6 +149,7 @@ const PRIVACY={
 
 const banner=`/* Static text of the old pages, generated from their HTML in document order (tags stripped, entities decoded,
    words unchanged): index.html (DESK), cen100/index.html (CEN), mth140/ and mth141/index.html (MATH),
-   privacy.html (PRIVACY). Regenerate with site/tests/extract/pages.mjs rather than editing. */\n`;
+   privacy.html (PRIVACY). Regenerate with site/tests/extract/pages.mjs rather than editing. The course and
+   website update lists are in content/updates.mjs. */\n`;
 const lit=v=>JSON.stringify(v,null,1);
 writeFileSync(out,banner+`export const DESK=${lit(DESK)};\n\nexport const CEN=${lit(CEN)};\n\nexport const MATH={mth140:${lit(math('mth140'))},\nmth141:${lit(math('mth141'))}};\n\nexport const PRIVACY=${lit(PRIVACY)};\n`);

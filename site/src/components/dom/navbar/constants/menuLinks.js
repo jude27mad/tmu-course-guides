@@ -24,5 +24,9 @@ const menuLinks = [
     title: 'Privacy',
     href: '/privacy/',
   },
+  {
+    title: 'Website updates',
+    href: '/updates/',
+  },
 ];
 export default menuLinks;
