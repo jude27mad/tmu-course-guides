@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import gsap from 'gsap';
 import { useStore } from '@src/store';
+import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
 // eslint-disable-next-line import/extensions
 import { openGuideTools } from '@src/pages/course/components/tools/dialog.mjs';
 // eslint-disable-next-line import/extensions
@@ -196,65 +197,59 @@ export default function useCourseNavigation(courseId, info) {
     [],
   );
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (isLoading) return undefined;
     if (['guide-tools', 'math-tools'].includes(entry.hash)) {
       openGuideTools();
       restoring.current = false;
       return undefined;
     }
-    let second = 0;
-    const first = requestAnimationFrame(() => {
-      second = requestAnimationFrame(() => {
-        if (active.current?.key !== entry.key || active.current?.hash !== entry.hash) return;
-        const main = document.querySelector('main');
-        const content = document.getElementById('course-content');
-        if (!main || !content) return;
-        const target = document.getElementById(location.item?.anchor || location.panel || 'course-content');
-        // The header now leaves with the page. Only detail/deep links move the
-        // scroller; tabs and filters replace their panel at the current position.
-        let top = Math.max(0, main.scrollTop + (target || content).getBoundingClientRect().top - main.getBoundingClientRect().top - 12);
-        if (entry.inPlace) top = entry.scroll;
-        if (entry.initial && !entry.hash) top = 0;
-        if (entry.restore) top = entry.scroll;
-        const { lenis } = useStore.getState();
-        lenis?.resize();
-        if (lenis) lenis.scrollTo(top, { immediate: true, force: true });
-        else main.scrollTop = top;
-        // Only the outgoing view is inert. Newly mounted controls must accept
-        // the first tap, even while their entrance animation is still running.
-        content.inert = false;
-        content.removeAttribute('aria-busy');
-        gsap.set(content, { clearProps: 'pointerEvents' });
-        setRequested(null);
-        // Restore focus with interactivity, not at the end of the cosmetic tween.
-        // A user may already have picked a control during the two layout frames.
-        const focusMoved = document.activeElement !== focusAtNavigation.current && document.activeElement !== content && content.contains(document.activeElement);
-        if ((!entry.initial || entry.hash) && !focusMoved) {
-          const focus = (entry.restore && document.getElementById(entry.focus)) || target || content;
-          focus.focus({ preventScroll: true });
-        }
-        restoring.current = false;
-        const finish = () => {
-          if (active.current?.key !== entry.key || active.current?.hash !== entry.hash) return;
-          resetContent(content);
-        };
-        if (reveal.current && !useStore.getState().still) {
-          gsap.set(content, { x: 12, opacity: 0 });
-          transition.current = gsap.to(content, {
-            ...VIEW_MOTION,
-            x: 0,
-            opacity: 1,
-            onComplete: finish,
-          });
-        } else finish();
-        reveal.current = false;
-      });
-    });
-    return () => {
-      cancelAnimationFrame(first);
-      cancelAnimationFrame(second);
+    // Finish scroll and focus before painting the new view. Deferring this by
+    // two frames lets a visible checkbox move underneath the first tap.
+    if (active.current?.key !== entry.key || active.current?.hash !== entry.hash) return undefined;
+    const main = document.querySelector('main');
+    const content = document.getElementById('course-content');
+    if (!main || !content) return undefined;
+    const target = document.getElementById(location.item?.anchor || location.panel || 'course-content');
+    // The header now leaves with the page. Only detail/deep links move the
+    // scroller; tabs and filters replace their panel at the current position.
+    let top = Math.max(0, main.scrollTop + (target || content).getBoundingClientRect().top - main.getBoundingClientRect().top - 12);
+    if (entry.inPlace) top = entry.scroll;
+    if (entry.initial && !entry.hash) top = 0;
+    if (entry.restore) top = entry.scroll;
+    const { lenis } = useStore.getState();
+    lenis?.resize();
+    if (lenis) lenis.scrollTo(top, { immediate: true, force: true });
+    else main.scrollTop = top;
+    // Only the outgoing view is inert. Newly mounted controls must accept
+    // the first tap, even while their entrance animation is still running.
+    content.inert = false;
+    content.removeAttribute('aria-busy');
+    gsap.set(content, { clearProps: 'pointerEvents' });
+    setRequested(null);
+    // Restore focus with interactivity, not at the end of the cosmetic tween.
+    // Respect a control that a child selected during this commit.
+    const focusMoved = document.activeElement !== focusAtNavigation.current && document.activeElement !== content && content.contains(document.activeElement);
+    if ((!entry.initial || entry.hash) && !focusMoved) {
+      const focus = (entry.restore && document.getElementById(entry.focus)) || target || content;
+      focus.focus({ preventScroll: true });
+    }
+    restoring.current = false;
+    const finish = () => {
+      if (active.current?.key !== entry.key || active.current?.hash !== entry.hash) return;
+      resetContent(content);
     };
+    if (reveal.current && !useStore.getState().still) {
+      gsap.set(content, { x: 12, opacity: 0 });
+      transition.current = gsap.to(content, {
+        ...VIEW_MOTION,
+        x: 0,
+        opacity: 1,
+        onComplete: finish,
+      });
+    } else finish();
+    reveal.current = false;
+    return undefined;
     // Content/progress changes should never reset the reader's scroll.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entry.key, entry.hash, isLoading]);
