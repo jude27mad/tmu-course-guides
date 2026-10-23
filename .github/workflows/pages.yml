@@ -78,18 +78,18 @@ jobs:
         run: |
           node site/scripts/pages-site.mjs build --out site/out --dest "$RUNNER_TEMP/pages"
           node site/scripts/pages-site.mjs check "$RUNNER_TEMP/pages"
-      - name: Install Playwright and Chromium
+      - name: Install Playwright, Chromium and WebKit
         id: playwright
         run: |
           # The Azure HTTP mirror has stalled browser dependency downloads for over 13 minutes.
-          for apt_source in /etc/apt/sources.list /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d/*.sources; do
+          for apt_source in /etc/apt/apt-mirrors.txt /etc/apt/sources.list /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d/*.sources; do
             if [[ -f "$apt_source" ]]; then
               sudo sed -i 's|http://azure.archive.ubuntu.com/ubuntu|https://archive.ubuntu.com/ubuntu|g' "$apt_source"
             fi
           done
           # Keep QA-only dependencies outside the checkout and site manifests, as ci.yml does.
           npm install --prefix "$RUNNER_TEMP/qa-playwright" --no-save --package-lock=false "playwright@$PLAYWRIGHT_VERSION"
-          node "$RUNNER_TEMP/qa-playwright/node_modules/playwright/cli.js" install --with-deps chromium
+          node "$RUNNER_TEMP/qa-playwright/node_modules/playwright/cli.js" install --with-deps chromium webkit
       - name: Check the site in a browser
         env:
           PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
@@ -127,6 +127,27 @@ jobs:
           PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
           QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/consistency
         run: node site/scripts/check-consistency.mjs
+      - name: Check glass controls in Chromium
+        if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' }}
+        env:
+          PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
+          QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/glass
+        run: node site/scripts/check-glass-controls.mjs
+      - name: Check glass controls in WebKit
+        if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' }}
+        env:
+          PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
+          QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/glass
+          QA_BROWSER: webkit
+        run: node site/scripts/check-glass-controls.mjs
+      - name: Upload reviewable site preview
+        if: ${{ github.event_name == 'pull_request' && !cancelled() && steps.build.outcome == 'success' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-preview
+          path: ${{ runner.temp }}/pages/
+          if-no-files-found: error
+          retention-days: 7
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4

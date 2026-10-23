@@ -59,7 +59,7 @@ Progress saved by earlier versions of the website carries over automatically.
 
 ## Motion and accessibility
 
-- The website uses a signal field inside moving windows, course photographs with a pixel reveal, a pointer effect, page transitions and smooth scrolling. **Pause motion** in the Menu stops the animations, shows a static signal field and finished photographs, removes the pointer effect and skips page transitions, and it stays on in this browser. Mouse-wheel scrolling is still smoothed. Your device's reduced-motion setting has the same effect.
+- Course tabs and utility controls use a subtle glass finish; instructions and notes have solid backgrounds. **Pause motion** makes these controls solid, stops animations, shows finished photographs, removes the pointer effect and skips page transitions. The preference stays on in this browser. Mouse-wheel scrolling is still smoothed. Your device's reduced-motion setting has the same effect; reduced transparency and increased contrast also make the controls solid where supported.
 - If the effects feel slow on an older phone, turn on **Pause motion**.
 - Pinch zoom, text selection, keyboard navigation and visible focus all work.
 - Without JavaScript, course information, rules, grading and contacts are still readable; deadlines, countdowns, checklists and item details need JavaScript.

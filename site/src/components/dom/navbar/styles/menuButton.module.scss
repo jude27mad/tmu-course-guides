@@ -1,14 +1,15 @@
+@use '@src/styles/glass';
 @import '@src/styles/functions';
 .button {
-  height: max(44px, 2.5vw);
+  @include glass.surface(dark);
+  @include glass.press;
+  height: 2.5vw;
+  min-height: 44px;
+  min-width: 44px;
   @include mobile {
     height: max(6vw, 44px);
   }
   border-radius: 9vw;
-  background-color: var(--menuColor);
-  box-shadow:
-    0 0.32vw 0.52vw rgba(var(--inkRgb), 0.04),
-    0 0.12vw 0.22vw rgba(var(--inkRgb), 0.04);
   .label {
     font-size: max(16px, 0.85vw);
     @include mobile {

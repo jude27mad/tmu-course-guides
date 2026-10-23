@@ -8,6 +8,7 @@ import GuideTools from '@src/pages/course/components/tools/GuideTools';
 import { openGuideTools } from '@src/pages/course/components/tools/dialog.mjs';
 import { useCourse } from '@src/pages/course/hooks/useCourseState';
 import useCourseNavigation from './useCourseNavigation';
+import CourseNavigation from './CourseNavigation';
 import Work from './Work';
 import AssignmentDetail from './AssignmentDetail';
 import Study from './Study';
@@ -43,24 +44,7 @@ export default function CourseWorkspace() {
           <CourseArtwork courseId={courseId} priority sizes="(max-width: 600px) 104px, 300px" />
         </div>
       </div>
-      <nav className={styles.navigation} aria-label="Course views">
-        {views.map(([view, label]) => (
-          <Link
-            key={view}
-            href={`/${courseId}/#${view === 'info' ? 'course-info' : view}`}
-            scroll={false}
-            aria-current={navigation.selectedView === view ? 'page' : undefined}
-            onClick={(event) => {
-              // Acknowledge the tap before Next finishes its asynchronous hash update.
-              if (!event.defaultPrevented && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-                navigation.acknowledge(view === 'info' ? 'course-info' : view);
-              }
-            }}
-          >
-            {label}
-          </Link>
-        ))}
-      </nav>
+      <CourseNavigation courseId={courseId} views={views} selectedView={navigation.selectedView} acknowledge={navigation.acknowledge} />
       {navigation.opening &&
         createPortal(
           <p className={styles.viewStatus} role="status" data-view-status>
@@ -99,7 +83,7 @@ export default function CourseWorkspace() {
           <a href="https://courses.torontomu.ca/" target="_blank" rel="noopener noreferrer">
             D2L ↗
           </a>
-          <button type="button" onClick={() => openGuideTools()} aria-haspopup="dialog" aria-controls="guide-tools">
+          <button type="button" className={styles.toolsButton} data-glass="light" onClick={() => openGuideTools()} aria-haspopup="dialog" aria-controls="guide-tools">
             Guide tools ↗
           </button>
         </div>

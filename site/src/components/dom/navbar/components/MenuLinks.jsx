@@ -100,6 +100,7 @@ function MenuLinks() {
   );
 
   const motionLabel = motionSaved ? 'Play motion' : 'Pause motion';
+  const motionHint = motionSaved ? 'Restores animation and glass effects' : 'Stops animation and makes glass controls solid';
 
   return (
     <nav id="menu" ref={menuRef} className={styles.menu} aria-label="Menu" aria-hidden={!isMenuOpen}>
@@ -152,13 +153,11 @@ function MenuLinks() {
           )}
           {renderRow(
             'motion',
-            <button type="button" onClick={toggleMotion} disabled={motionReduced} aria-pressed={motionSaved} aria-describedby={motionReduced ? 'menu-motion-note' : undefined}>
+            <button type="button" onClick={toggleMotion} disabled={motionReduced} aria-label={motionLabel} aria-pressed={motionSaved} aria-describedby="menu-motion-note">
               <span>{motionLabel}</span>
-              {motionReduced && (
-                <small id="menu-motion-note" className={clsx('p-x', styles.menuListItemMeta)}>
-                  Reduced motion is enabled by your device or page setting
-                </small>
-              )}
+              <small id="menu-motion-note" className={clsx('p-x', styles.menuListItemMeta)}>
+                {motionReduced ? 'Reduced motion is enabled by your device or page setting' : motionHint}
+              </small>
             </button>,
           )}
         </div>

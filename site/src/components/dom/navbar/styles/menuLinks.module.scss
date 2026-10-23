@@ -169,9 +169,11 @@
 }
 
 // Second line under a row (dates in "Coming up", hints in search results).
-.menuListItemMeta {
+.menuListItem .menuListItemMeta {
   display: block;
   padding-top: calc(var(--layout-columns-gap) * 0.25);
+  font-size: max(16px, 0.85vw);
+  line-height: 1.45;
   color: var(--white);
   opacity: 0.7;
   font-weight: 450;

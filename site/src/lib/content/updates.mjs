@@ -94,6 +94,13 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-10-23-glass-controls",
+  "date": "October 23, 2026",
+  "title": "Glass controls",
+  "text": "Course tabs, Menu, Search and Guide tools share a subtle glass finish. The selection follows your choice smoothly; assignment instructions and notes keep solid backgrounds.",
+  "items": ["Pause motion also makes glass controls solid. Reduced transparency and increased contrast use solid controls where supported."]
+ },
+ {
   "id": "2026-10-23-shorter-course-pages",
   "date": "October 23, 2026",
   "title": "Shorter course pages",

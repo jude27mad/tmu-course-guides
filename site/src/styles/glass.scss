@@ -1,0 +1,82 @@
+// One material for navigation and utility controls. Content surfaces stay solid.
+// These mixins are used in CSS modules, hence :global for the shared preference.
+@mixin solid {
+  background-color: var(--glass-solid);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+@mixin surface($tone: light, $blur: 8px, $filter: true) {
+  --glass-solid: var(--card);
+  --glass-backing: rgba(var(--cardRgb), 0.86);
+  --glass-highlight: rgba(var(--cardRgb), 0.65);
+  --glass-edge: rgba(var(--inkRgb), 0.18);
+  color: var(--black);
+  @if $tone == dark {
+    --glass-solid: var(--black);
+    --glass-backing: rgba(var(--inkRgb), 0.9);
+    --glass-highlight: rgba(var(--cardRgb), 0.12);
+    --glass-edge: rgba(var(--cardRgb), 0.24);
+    color: var(--onDark);
+  }
+  background-color: var(--glass-solid);
+  background-image: linear-gradient(155deg, var(--glass-highlight), transparent 48%);
+  border: 1px solid var(--glass-edge);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    0 3px 10px rgba(var(--inkRgb), 0.08);
+
+  @if $filter {
+    @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+      background-color: var(--glass-backing);
+      -webkit-backdrop-filter: blur($blur) saturate(110%);
+      backdrop-filter: blur($blur) saturate(110%);
+      // Repeated WebKit comparisons still showed a cost at a 4px kernel.
+      // Phones keep the translucent backing, rim and sheen without the
+      // extra backdrop pass. Wider screens retain the bounded blur.
+      @media (max-width: 600px) {
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+      }
+    }
+  }
+  :global(html[data-motion='off']) & {
+    @include solid;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(html:not([data-motion='on'])) & {
+      @include solid;
+    }
+  }
+  @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+    @include solid;
+    background-image: none;
+  }
+  @media (forced-colors: active) {
+    @include solid;
+    background: Canvas;
+    color: CanvasText;
+    border-color: ButtonText;
+    box-shadow: none;
+  }
+}
+
+@mixin press {
+  transition: transform 0.18s cubic-bezier(0.2, 1, 0.3, 1);
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+    opacity: 1;
+  }
+  &:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+  :global(html[data-motion='off']) &:active {
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(html:not([data-motion='on'])) &:active {
+      transform: none;
+    }
+  }
+}

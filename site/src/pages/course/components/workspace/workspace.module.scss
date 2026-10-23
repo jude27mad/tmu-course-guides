@@ -1,3 +1,5 @@
+@use '@src/styles/glass';
+
 .root {
   background: var(--white);
   color: var(--black);
@@ -114,38 +116,70 @@
   background: var(--black);
 }
 .navigation {
+  @include glass.surface(light, 12px);
+  position: relative;
   display: flex;
   flex-wrap: wrap;
-  border-top: 1px solid var(--black);
-  border-bottom: 1px solid var(--black);
-  gap: 4px 24px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 4px;
+  border-radius: 30px;
+  gap: 2px;
   a {
-    min-height: 54px;
+    min-height: 44px;
     display: flex;
     align-items: center;
     position: relative;
+    z-index: 1;
+    padding: 8px 16px;
+    border-radius: 24px;
     font-size: 18px;
     white-space: nowrap;
+    text-decoration: none;
   }
-  a::after {
-    content: '';
-    position: absolute;
-    height: 3px;
-    bottom: -1px;
-    left: 0;
-    right: 0;
-    background: currentColor;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+  a[aria-current] {
+    color: var(--accent);
+    background-color: var(--accentTint);
+    box-shadow: inset 0 0 0 1px var(--accent);
   }
-  a[aria-current]::after {
-    transform: scaleX(1);
+  &[data-selection-ready='true'] a[aria-current] {
+    background-color: transparent;
+    box-shadow: none;
+  }
+  a:active {
+    opacity: 1;
+  }
+  a:focus-visible {
+    outline-offset: 1px;
   }
   @media (hover: hover) and (pointer: fine) {
-    a:hover::after {
-      transform: scaleX(1);
+    a:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
     }
+  }
+  @media (forced-colors: active) {
+    a[aria-current] {
+      color: LinkText;
+      text-decoration: underline;
+    }
+  }
+}
+.selection {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  opacity: 0;
+  border-radius: 24px;
+  background-color: var(--accentTint);
+  box-shadow: inset 0 0 0 1px var(--accent);
+  pointer-events: none;
+  @media (forced-colors: active) {
+    background: Canvas;
+    outline: 1px solid Highlight;
+    outline-offset: -1px;
+    box-shadow: none;
   }
 }
 .viewStatus {
@@ -212,6 +246,17 @@
     border-bottom: 1px solid currentColor;
     font-size: 16px;
     color: var(--accent);
+  }
+  .toolsButton {
+    @include glass.surface;
+    @include glass.press;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 16px;
+    color: var(--accent);
+    @media (forced-colors: active) {
+      color: ButtonText;
+    }
   }
 }
 .summary {
@@ -573,10 +618,9 @@
     display: none;
   }
   .navigation {
-    gap: 2px 18px;
     a {
       font-size: 16px;
-      min-height: 48px;
+      padding: 8px;
     }
   }
   .summary {
@@ -647,12 +691,6 @@
   .artwork {
     width: 76px;
     height: 88px;
-  }
-  .navigation {
-    gap: 2px 13px;
-  }
-  .navigation a {
-    font-size: 15px;
   }
   .rowStatus .meta {
     max-width: 90px;
