@@ -328,6 +328,18 @@ try {
       const href = await opener.getAttribute('href');
       await page.waitForTimeout(150);
       const before = await page.locator('main').evaluate((el) => el.scrollTop);
+      await page.evaluate(() => {
+        const main = document.querySelector('main');
+        window.restoreTrace = [];
+        const record = (type, element, options) => window.restoreTrace.push({ type, id: element.id, options, scroll: main.scrollTop, height: main.scrollHeight, hash: location.hash, saved: history.state?.courseWorkspace?.scroll, routerOptions: history.state?.options, stack: new Error().stack?.split('\n').slice(1, 6) });
+        const scrollTo = main.scrollTo;
+        const scrollIntoView = Element.prototype.scrollIntoView;
+        main.scrollTo = function (...args) { record('scrollTo', this, args); return scrollTo.apply(this, args); };
+        Element.prototype.scrollIntoView = function (...args) { if (main.contains(this)) record('scrollIntoView', this, args); return scrollIntoView.apply(this, args); };
+        const onScroll = () => record('native-scroll', main, null);
+        main.addEventListener('scroll', onScroll);
+        window.stopRestoreTrace = () => { main.scrollTo = scrollTo; Element.prototype.scrollIntoView = scrollIntoView; main.removeEventListener('scroll', onScroll); };
+      });
       await page.keyboard.press('Enter');
       await page.locator('[data-assignment-detail]').waitFor();
       await page
@@ -338,6 +350,9 @@ try {
       await page.waitForTimeout(600);
       assert.equal(await page.evaluate(() => document.activeElement.getAttribute('href')), href);
       const after = await page.locator('main').evaluate((el) => el.scrollTop);
+      const trace = await page.evaluate(() => { window.stopRestoreTrace(); return window.restoreTrace; });
+      await writeFile(path.join(report, `restore-${view}-trace.json`), JSON.stringify({ before, after, trace }, null, 2));
+      if (Math.abs(before - after) >= 8) console.log('RESTORE TRACE', JSON.stringify({ view, before, after, trace }));
       assert.ok(Math.abs(before - after) < 8, `${before} -> ${after}`);
     });
   }
