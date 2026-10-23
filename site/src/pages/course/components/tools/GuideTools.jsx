@@ -1,5 +1,6 @@
 import { calendarFile, exportBackup, hasUnseenUpdates, importBackup, markUpdatesSeen } from '@src/lib';
 import { useEffect, useId, useRef, useState } from 'react';
+import gsap from 'gsap';
 
 import Arrow from '@src/components/imageComponents/Arrow';
 import Link from 'next/link';
@@ -42,7 +43,52 @@ function GuideTools() {
     if (progress.ready) setUnseen(hasUnseenUpdates(courseId));
   }, [progress.ready, version, courseId]);
 
-  useEffect(() => bindGuideTools(dialogRef.current, { getLenis: () => useStore.getState().lenis }), [courseId]);
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    let tween;
+    const unbind = bindGuideTools(dialog, {
+      getLenis: () => useStore.getState().lenis,
+      animate: (opening, complete) => {
+        if (useStore.getState().still) {
+          gsap.set(dialog, {
+            clearProps: 'transform,opacity,--tools-backdrop-opacity',
+          });
+          complete();
+          return undefined;
+        }
+        if (opening && !dialog.style.opacity)
+          gsap.set(dialog, {
+            y: 20,
+            opacity: 0,
+            '--tools-backdrop-opacity': 0,
+          });
+        tween = gsap.to(dialog, {
+          y: opening ? 0 : 12,
+          opacity: opening ? 1 : 0,
+          '--tools-backdrop-opacity': opening ? 1 : 0,
+          duration: opening ? 0.4 : 0.18,
+          ease: 'power2.inOut',
+          onComplete: () => {
+            complete();
+            gsap.set(dialog, {
+              clearProps: 'transform,opacity,--tools-backdrop-opacity',
+            });
+          },
+        });
+        return () => tween?.kill();
+      },
+    });
+    const unsubscribe = useStore.subscribe((state) => {
+      if (state.still) tween?.progress(1);
+    });
+    return () => {
+      unsubscribe();
+      unbind();
+      gsap.set(dialog, {
+        clearProps: 'transform,opacity,--tools-backdrop-opacity',
+      });
+    };
+  }, [courseId]);
 
   const say = (key, message) => setStatus({ key, message: message || '' });
 
@@ -54,7 +100,18 @@ function GuideTools() {
       run: () => {
         const file = calendarFile(
           courseId,
-          cen ? { now: live?.now || new Date(), item: 'all', upcomingOnly: true, reminderDays: 1 } : { now: live?.now || new Date(), includeTentative: !!section, upcomingOnly: true },
+          cen
+            ? {
+                now: live?.now || new Date(),
+                item: 'all',
+                upcomingOnly: true,
+                reminderDays: 1,
+              }
+            : {
+                now: live?.now || new Date(),
+                includeTentative: !!section,
+                upcomingOnly: true,
+              },
         );
         if (file.ok) download(file);
         say('calendar', file.message);
@@ -63,7 +120,6 @@ function GuideTools() {
     {
       key: 'export',
       title: tools.backup?.export,
-      desc: (tools.backup?.notes || []).join(' '),
       run: () => {
         const file = exportBackup(courseId, { now: new Date() });
         if (file) {

@@ -1,6 +1,4 @@
-// Phone floors: the original sizes everything in vw, which puts body copy at 12 px and
-// meta text at 11 px on a 390 px iPhone. Course text has to be read there, so the
-// small classes keep their vw size but never go below a readable floor.
+// Keep Giats's responsive scale, with readable floors on tablets as well as phones.
 .h1 {
   font-size: 6.7vw;
   line-height: 120%;
@@ -32,82 +30,82 @@
 }
 
 .h4 {
-  font-size: 2.3vw;
+  font-size: max(22px, 2.3vw);
   line-height: 130%;
   font-weight: 550;
   @include mobile {
-    font-size: 5.9vw;
+    font-size: max(22px, 5.9vw);
     line-height: 140%;
   }
 }
 
 .h5 {
-  font-size: 1.9vw;
+  font-size: max(20px, 1.9vw);
   line-height: 130%;
   font-weight: 550;
   @include mobile {
-    font-size: 3.7vw;
+    font-size: max(20px, 3.7vw);
     line-height: 140%;
   }
 }
 
 .h6 {
-  font-size: 1.5vw;
+  font-size: max(18px, 1.5vw);
   line-height: 140%;
   font-weight: 550;
   @include mobile {
-    font-size: max(3.4vw, 16px);
+    font-size: max(3.4vw, 18px);
     line-height: 140%;
   }
 }
 
 .p-l {
-  font-size: 1.15vw;
+  font-size: max(16px, 1.15vw);
   line-height: 140%;
   font-weight: 550;
   @include mobile {
-    font-size: max(3.1vw, 15px);
+    font-size: max(3.1vw, 16px);
     line-height: 140%;
   }
 }
 
 .p {
-  font-size: 0.95vw;
+  font-size: max(16px, 0.95vw);
   line-height: 140%;
   font-weight: 550;
   @include mobile {
-    font-size: max(2.9vw, 14px);
+    font-size: max(2.9vw, 16px);
     line-height: 140%;
   }
 }
 
 .p-x {
-  font-size: 0.85vw;
+  font-size: max(14px, 0.85vw);
   line-height: 140%;
   font-weight: 550;
   @include mobile {
-    font-size: max(2.8vw, 13px);
+    font-size: max(2.8vw, 14px);
     line-height: 140%;
   }
 }
 
 .p-xs {
-  font-size: 0.75vw;
+  font-size: max(14px, 0.75vw);
   line-height: 140%;
   font-weight: 550;
   @include mobile {
-    font-size: max(2.7vw, 12px);
+    font-size: max(2.7vw, 14px);
     line-height: 140%;
   }
 }
 
 .footer {
   color: var(--white);
-  font-size: 1.15vw;
+  font-size: max(16px, 1.15vw);
   line-height: 140%;
   font-weight: 550;
   @include mobile {
-    font-size: max(3.1vw, 15px);
+    font-size: max(3.1vw, 16px);
     line-height: 140%;
   }
 }

@@ -474,6 +474,9 @@
   }
 }
 .information {
+  section {
+    padding: 0;
+  }
   details {
     border-top: 1px solid var(--border);
   }
@@ -519,6 +522,23 @@
   a {
     text-decoration: underline;
   }
+}
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  min-height: 56px;
+  padding: 12px 8px 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 18px;
+  transition: background-color 0.3s;
+  &:hover {
+    background: var(--fillColor);
+  }
+}
+.information .infoRow {
+  text-decoration: none;
 }
 .infoBlock {
   margin-bottom: 20px;
