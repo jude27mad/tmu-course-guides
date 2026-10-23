@@ -316,7 +316,7 @@ export const WEBSITE_UPDATES = [
   ]
  },
  {
-  "id": "2026-10-07-three-course-guide",
+  "id": "2026-10-07-three-course-guide-cen100",
   "date": "October 7, 2026",
   "title": "Three-course guide",
   "text": "Added MTH140: Calculus I and MTH141: Linear Algebra alongside CEN100.",
