@@ -44,6 +44,8 @@ try {
       await page.emulateMedia({ reducedMotion });
       await page.goto(`${url}mth140/`);
       await ready(page);
+      await page.locator('main').evaluate((main, top) => { main.scrollTop = top; }, reducedMotion === 'reduce' ? 80 : 0);
+      await page.waitForTimeout(100);
       for (const [hash, title] of [['study', 'Study'], ['course-info', 'Course info'], ['schedule', 'Schedule'], ['work', 'Work']]) {
         const before = await page.evaluate(() => {
           window.tabPositions = [];

@@ -266,6 +266,7 @@
 .content {
   min-height: 230px;
   scroll-margin-top: 84px;
+  overflow-anchor: none;
 }
 .viewHeading {
   display: flex;

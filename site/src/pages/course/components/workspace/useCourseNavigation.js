@@ -22,10 +22,10 @@ const resetContent = (content) => {
 // Next strips custom history fields during popstate; keep a bounded in-memory copy
 // keyed by its entry key, including across course route unmounts. No progress keys change.
 const snapshots = new Map();
-const saveEntry = (entry) => {
+const saveEntry = (entry, persist = true) => {
   snapshots.set(entry.key, entry);
   if (snapshots.size > 100) snapshots.delete(snapshots.keys().next().value);
-  window.history.replaceState({ ...window.history.state, courseWorkspace: entry }, '');
+  if (persist) window.history.replaceState({ ...window.history.state, courseWorkspace: entry }, '');
 };
 
 // Keep snapshots on each browser-history entry, never in progress storage.
@@ -52,7 +52,7 @@ export default function useCourseNavigation(courseId, info) {
   const focusAtNavigation = useRef(null);
   const location = resolveCourseLocation(entry.hash, courseId, info);
 
-  const remember = useCallback(() => {
+  const remember = useCallback((event) => {
     const previous = active.current;
     if (!previous || restoring.current || previous.hash !== hashOf()) return;
     const focus = document.activeElement;
@@ -62,7 +62,9 @@ export default function useCourseNavigation(courseId, info) {
       focus: focus?.id || previous.focus,
     };
     active.current = next;
-    saveEntry(next);
+    // Scroll frames only update memory. Persist when navigating/leaving instead
+    // of serializing history on every frame (and hitting browser write limits).
+    saveEntry(next, event?.type !== 'scroll');
   }, []);
 
   const navigate = useCallback(
@@ -78,9 +80,10 @@ export default function useCourseNavigation(courseId, info) {
       const hash = hashOf();
       const key = window.history.state?.key || hash;
       if (active.current?.key === key && active.current?.hash === hash) return;
-      const saved = window.history.state?.courseWorkspace || snapshots.get(key);
+      const saved = snapshots.get(key) || window.history.state?.courseWorkspace;
       const previous = active.current;
       const target = resolveCourseLocation(hash, courseId, info);
+      const inPlace = !target.item && (!target.panel || target.panel === 'course-info');
       const validSaved = saved?.courseId === courseId && saved.hash === hash;
       const from = previous && resolveCourseLocation(previous.hash, courseId, info);
       let returnTo = null;
@@ -99,7 +102,8 @@ export default function useCourseNavigation(courseId, info) {
             hash,
             key,
             initial: !previous,
-            scroll: 0,
+            scroll: inPlace ? document.querySelector('main')?.scrollTop || 0 : 0,
+            inPlace,
             focus: null,
             returnTo,
           };
@@ -154,6 +158,7 @@ export default function useCourseNavigation(courseId, info) {
     router.events.on('routeChangeComplete', sync);
     window.addEventListener('hashchange', sync);
     window.addEventListener('popstate', sync);
+    window.addEventListener('pagehide', remember);
     document.addEventListener('guide-hash', onGuideHash);
     main?.addEventListener('scroll', remember, { passive: true });
     sync();
@@ -164,6 +169,7 @@ export default function useCourseNavigation(courseId, info) {
       router.events.off('routeChangeComplete', sync);
       window.removeEventListener('hashchange', sync);
       window.removeEventListener('popstate', sync);
+      window.removeEventListener('pagehide', remember);
       document.removeEventListener('guide-hash', onGuideHash);
       main?.removeEventListener('scroll', remember);
     };
@@ -205,8 +211,10 @@ export default function useCourseNavigation(courseId, info) {
         const content = document.getElementById('course-content');
         if (!main || !content) return;
         const target = document.getElementById(location.item?.anchor || location.panel || 'course-content');
-        const header = document.querySelector('header');
-        let top = Math.max(0, main.scrollTop + (target || content).getBoundingClientRect().top - main.getBoundingClientRect().top - (header?.offsetHeight || 0) - 12);
+        // The header now leaves with the page. Only detail/deep links move the
+        // scroller; tabs and filters replace their panel at the current position.
+        let top = Math.max(0, main.scrollTop + (target || content).getBoundingClientRect().top - main.getBoundingClientRect().top - 12);
+        if (entry.inPlace) top = entry.scroll;
         if (entry.initial && !entry.hash) top = 0;
         if (entry.restore) top = entry.scroll;
         const { lenis } = useStore.getState();

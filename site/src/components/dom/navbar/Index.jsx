@@ -7,7 +7,7 @@ import MenuLinks from '@src/components/dom/navbar/components/MenuLinks';
 import SearchPanel from '@src/components/dom/navbar/components/SearchPanel';
 import clsx from 'clsx';
 import styles from '@src/components/dom/navbar/styles/index.module.scss';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import useIsMobile from '@src/hooks/useIsMobile';
 import useScroll from '@src/hooks/useScroll';
 import { useRouter } from 'next/router';
@@ -21,12 +21,38 @@ function Navbar() {
     useShallow((state) => [state.lenis, state.isLoading, state.isMenuOpen, state.isSearchOpen, state.setIsSearchOpen, state.still]),
   );
   const shellRef = useRef(null);
+  const headerRef = useRef(null);
+  const controlsRef = useRef(null);
+  const headerHeight = useRef(0);
   const isOpen = isMenuOpen || isSearchOpen;
-  const [atTop, setAtTop] = useState(true);
 
-  // The wordmark has no backing, so page text scrolling under it ran into it.
-  // It shows at the top of each page and fades out once the page scrolls.
-  useScroll(({ scroll }) => setAtTop(scroll < 24));
+  // The shell owns the fixed outer header for its menu animation. Move its
+  // controls with the real scroller so no floating button covers page content.
+  const scrollHeader = useCallback(({ scroll }) => {
+    const controls = controlsRef.current;
+    if (!controls) return;
+    const height = headerHeight.current || headerRef.current?.offsetHeight || 0;
+    const transform = `translateY(${-Math.min(Math.max(0, scroll), height)}px)`;
+    if (controls.style.transform !== transform) controls.style.transform = transform;
+    const offscreen = height > 0 && scroll >= height;
+    if (controls.inert !== offscreen) {
+      controls.dataset.scrolledAway = String(offscreen);
+      controls.inert = offscreen;
+    }
+  }, []);
+  useScroll(scrollHeader);
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return undefined;
+    const measure = () => {
+      headerHeight.current = header.offsetHeight;
+      scrollHeader({ scroll: document.querySelector('main')?.scrollTop || 0 });
+    };
+    const observer = new ResizeObserver(measure);
+    observer.observe(header);
+    measure();
+    return () => observer.disconnect();
+  }, [scrollHeader]);
 
   const scrollToPosition = useCallback(
     (position, duration = 1.5) => {
@@ -157,9 +183,9 @@ function Navbar() {
       <MenuLinks />
       <SearchPanel />
 
-      <header className={styles.root}>
-        <div className={styles.innerHeader}>
-          <Link onClick={goToTop} aria-label="TMU Course Guides, Desk" scroll={false} href="/" className={clsx(styles.wordmark, !atTop && styles.wordmarkHidden)}>
+      <header ref={headerRef} className={styles.root}>
+        <div ref={controlsRef} className={styles.innerHeader}>
+          <Link onClick={goToTop} aria-label="TMU Course Guides, Desk" scroll={false} href="/" className={styles.wordmark}>
             <span className={clsx('bold', 'h4')}>GUIDES</span>
           </Link>
 

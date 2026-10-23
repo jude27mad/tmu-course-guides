@@ -217,6 +217,9 @@ function assertFluidSwipe(trace) {
 }
 
 async function toggleMotion(page, label) {
+  // Menu belongs to the header and leaves with the page instead of covering it.
+  await page.locator('main').evaluate(main => { main.scrollTop = 0; });
+  await waitOnPage(page, () => getComputedStyle(document.querySelector('#menu-button')).visibility === 'visible');
   await page.getByRole('button', { name: 'Open menu', exact: true }).tap();
   await page.getByRole('button', { name: label, exact: true }).tap();
   await page.getByRole('button', { name: 'Close menu', exact: true }).tap();
