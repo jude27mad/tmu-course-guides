@@ -39,6 +39,18 @@ export const COURSE_UPDATES = {
  ],
  "mth140": [
   {
+    "id": "2026-10-23-mth140-midterm-scope-and-format",
+    "date": "October 23, 2026",
+    "title": "Midterm coverage and marking confirmed",
+    "text": "Updated from the October 13 Midterm Exam Content announcement.",
+    "items": [
+      "The October 23 midterm runs 6:30–8:30 PM Toronto time and is worth 40%. It covers Sections 1.1–1.5, 2.1–2.4 and 3.1–3.6, including 3.3–3.4. Antiderivatives and integration are outside the announced scope.",
+      "Questions 1–10 are multiple choice worth 5 marks each: the correct choice must agree with a correct written solution, with no partial credit. Questions 11–13 are long answer with working required for partial or full credit.",
+      "Marked the three covered topic groups in Study, refreshed the preparation checklist and removed the outdated scope-pending notice. Quiz 2 is one question from Sections 3.1–3.5.",
+      "Reviewed the course weights, quiz weeks, quiz-drop rule and all 37 recommended exercise lists. Quiz 3–4 scope, the final schedule and room notices still require D2L confirmation."
+    ]
+  },
+  {
    "id": "2026-10-12-confirmed-quiz-2-coverage-and-monday-make-up",
    "date": "October 12, 2026",
    "title": "Confirmed Quiz 2 coverage and Monday make-up",

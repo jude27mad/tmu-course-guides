@@ -108,13 +108,20 @@ test('CEN100 calendar, backup parsing and work list match the old closure', () =
 });
 
 for (const courseId of ['mth140', 'mth141']) {
-  test(`${courseId} content is the old closure’s, word for word`, async () => {
+  test(`${courseId} unchanged content and saved keys match the old closure`, async () => {
     const course = DATA[courseId];
     for (const section of [0, 2, 3, 31]) {
       const page = await mathOracle(courseId, section);
       for (const a of course.assessments) {
-        assert.deepEqual(MATH.prep(a, courseId), page.prep(a), a.id);
-        assert.deepEqual(MATH.rulesForAssessment(a, courseId), page.rulesForAssessment(a), a.id);
+        if (courseId === 'mth140' && a.kind === 'midterm') {
+          // The October 13 announcement replaces the archived scope-pending copy.
+          assert.equal(MATH.prep(a, courseId).length, page.prep(a).length);
+          assert.match(MATH.prep(a, courseId)[0], /1\.1–1\.5.*2\.1–2\.4.*3\.1–3\.6/);
+          assert.match(MATH.rulesForAssessment(a, courseId).join(' '), /no partial credit.*written solution.*0 out of 5.*11–13.*partial or full credit/);
+        } else {
+          assert.deepEqual(MATH.prep(a, courseId), page.prep(a), a.id);
+          assert.deepEqual(MATH.rulesForAssessment(a, courseId), page.rulesForAssessment(a), a.id);
+        }
         assert.equal(MATH.weight(a, course), page.weight(a));
         const e = resolveAssessment(course, a, section);
         assert.equal(MATH.certainty(e), page.certainty(e));
@@ -125,8 +132,8 @@ for (const courseId of ['mth140', 'mth141']) {
       assert.equal(MATH.GUIDE_VERSION, '2026-10-16-course-artwork');
       assert.notEqual(MATH.GUIDE_VERSION, page.GUIDE_VERSION);
       assert.deepEqual(
-        MATH.ruleCards(course, courseId).map((card) => [card.title, blocksText(card.blocks)]),
-        page.cards.map(([title, body]) => [title, htmlText(body)]),
+        MATH.ruleCards(course, courseId).slice(0, courseId === 'mth140' ? 2 : undefined).map((card) => [card.title, blocksText(card.blocks)]),
+        page.cards.slice(0, courseId === 'mth140' ? 2 : undefined).map(([title, body]) => [title, htmlText(body)]),
       );
       const notice = MATH.courseNotice(courseId);
       assert.equal(`${notice.title} ${blocksText(notice.blocks)}`, htmlText(page.notice));
@@ -143,3 +150,20 @@ for (const courseId of ['mth140', 'mth141']) {
     assert.equal(page.knownTopics.size, courseId === 'mth140' ? 30 : 31);
   });
 }
+
+// Guard the current announcement at the public data boundary, including the Study labels.
+test('MTH140 midterm announcement reaches Work, Study and Course info without stale scope', async () => {
+  const { courseInfo } = await import('../src/lib/info.mjs');
+  const info = courseInfo('mth140');
+  const midterm = info.assessments.find((a) => a.id === 'midterm');
+  assert.match(midterm.scope, /1\.1–1\.5.*2\.1–2\.4.*3\.1–3\.6/);
+  assert.equal(midterm.unconfirmed, '');
+  assert.match(midterm.source, /October 13, 2026, 2:56 PM/);
+  assert.match(midterm.rules.join(' '), /50 marks total/);
+  assert.deepEqual(info.topics.filter((t) => t.midterm).map((t) => t.id), ['functions', 'limits', 'derivatives-1']);
+  assert.equal(info.topics.filter((t) => t.midterm).flatMap((t) => t.practice).length, 15);
+  const rules = MATH.ruleCards(DATA.mth140, 'mth140');
+  assert.doesNotMatch(JSON.stringify(rules), /exact midterm coverage|reviewed October 12/);
+  assert.match(JSON.stringify(rules), /Quiz 3–4 scope.*final-exam.*room assignments/);
+  assert.match(JSON.stringify(rules), /full week for a remarking email/);
+});
