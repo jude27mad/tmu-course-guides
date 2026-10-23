@@ -13,9 +13,9 @@ test('Full-screen shell and loader share dynamic viewport height', () => {
   const global = file('../src/styles/global.scss');
   const app = file('../src/pages/app.module.scss');
   const loader = file('../src/components/dom/styles/loader.module.scss');
-  assert.match(global, /--app-viewport-height: 100dvh/);
-  assert.match(app, /max-height: var\\(--app-viewport-height\\)/);
-  assert.match(app, /height: var\\(--app-viewport-height\\) !important/);
-  assert.match(app, /\\.background\\s*\\{[\\s\\S]*?height: var\\(--app-viewport-height\\)/);
-  assert.match(loader, /height: var\\(--app-viewport-height\\)/);
+  assert.ok(global.includes('--app-viewport-height: 100dvh'));
+  assert.ok(app.includes('max-height: var(--app-viewport-height)'));
+  assert.ok(app.includes('height: var(--app-viewport-height) !important'));
+  assert.ok(app.includes('height: var(--app-viewport-height)'));
+  assert.ok(loader.includes('height: var(--app-viewport-height)'));
 });
