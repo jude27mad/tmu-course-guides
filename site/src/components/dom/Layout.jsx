@@ -12,14 +12,12 @@ import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
 import { TOKENS } from '@src/lib/palette.mjs';
 
-// The original route curtain (main shrinks to a card and slides out left while the
-// "Loading" card slides in, then the reverse), retimed from ~6.35 s to ~2.2 s:
-// exit 0.8 s (+0.8 s when a panel has to close first), enter 1.3 s.
-const STEP = 0.4;
-const ENTER_DELAY = 0.25;
-const ENTER_MS = 1400;
-const EXIT_MS = 850;
-const PANEL_CLOSE = 0.8;
+// Keep the shell's card/slide choreography without a multi-second input lock.
+const STEP = 0.16;
+const ENTER_DELAY = 0;
+const ENTER_MS = 450;
+const EXIT_MS = 350;
+const PANEL_CLOSE = 0.45;
 
 // After a route change: focus the new page's heading (or main). Next's own
 // route announcer reads the new document title.

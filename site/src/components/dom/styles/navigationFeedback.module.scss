@@ -1,0 +1,24 @@
+.status {
+  &[hidden] {
+    display: none;
+  }
+  position: fixed;
+  z-index: 100;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: calc(100% - 32px);
+  padding: 10px 18px;
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--black);
+  font-size: 16px;
+  line-height: 1.4;
+  a {
+    margin-left: 12px;
+    color: var(--accent);
+    text-decoration: underline;
+  }
+}

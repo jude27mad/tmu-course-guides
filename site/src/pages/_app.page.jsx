@@ -19,6 +19,7 @@ import Layout from '@src/components/dom/Layout';
 import Lenis from 'lenis';
 import Loader from '@src/components/dom/Loader';
 import Navbar from '@src/components/dom/navbar/Index';
+import NavigationFeedback from '@src/components/dom/NavigationFeedback';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import Scrollbar from '@src/components/dom/Scrollbar';
 import Stats from '@src/components/stats/Index';
@@ -206,6 +207,7 @@ function MyApp({ Component, pageProps, router }) {
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </Head>
       <MotionSync />
+      <NavigationFeedback />
       {SHOW_STATS && <Stats />}
       <a
         className="skip-link"
