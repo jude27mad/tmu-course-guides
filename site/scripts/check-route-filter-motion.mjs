@@ -169,15 +169,18 @@ try {
           await settled(page);
           const records = page.locator('[data-assignment-detail] fieldset input[type="checkbox"]');
           assert.equal(await records.count(), 4, 'September items has four separate submission records');
-          await page.locator('[data-assignment-detail] input[type="checkbox"]').first().check();
-          await records.first().check();
+          // The visible label is the touch target; the accessible input is
+          // intentionally 1px with pointer-events:none in the existing design.
+          await page.locator('[data-assignment-detail] input[type="checkbox"]').first().locator('..').click();
+          await records.first().locator('..').click();
+          assert.equal(await records.first().isChecked(), true);
           await page.getByRole('button', { name: /Back to Work/ }).first().click();
           await settled(page);
           assert.match(await page.locator('#open-assignment-y1').innerText(), /1\/4 recorded/);
           assert.equal(await page.getByRole('button', { name: 'Done (0)', exact: true }).count(), 1, 'preparation ticks and one record do not finish an assignment');
           await page.locator('#open-assignment-y1').click();
           await settled(page);
-          for (let i = 1; i < 4; i += 1) await records.nth(i).check();
+          for (let i = 1; i < 4; i += 1) await records.nth(i).locator('..').click();
           await page.getByRole('button', { name: /Back to Work/ }).first().click();
           await settled(page);
           await page.getByRole('button', { name: 'Done (1)', exact: true }).click();

@@ -73,7 +73,12 @@ export default function useCourseNavigation(courseId, info) {
   const navigate = useCallback(
     (hash) => {
       remember();
-      return router.push({ pathname: router.pathname, query: router.query, hash }, undefined, { shallow: true, scroll: false });
+      return router.push({ pathname: router.pathname, query: router.query, hash }, undefined, { shallow: true, scroll: false }).catch((error) => {
+        // Next rejects the previous render when a newer filter wins. This is a
+        // successful interruption, not an unhandled page error.
+        if (error.cancelled) return false;
+        throw error;
+      });
     },
     [remember, router],
   );
