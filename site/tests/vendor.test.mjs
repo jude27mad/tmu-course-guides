@@ -8,11 +8,30 @@ const VENDOR = new URL('../src/lib/vendor/', import.meta.url);
 const COPIES = ['course-data.mjs', 'cen-schedule.mjs', 'schedule.mjs', 'night/targets.mjs', 'book/weeks.mjs', 'desk/desk-data.mjs'];
 const stripQueries = (text) => text.replace(/(\.mjs)\?v=[^'"]*(['"])/g, '$1$2');
 
-test('vendored modules are the old pure modules byte for byte, with only the ?v= cache queries removed', () => {
+test('vendored modules preserve the archive apart from the documented MTH140 content update', () => {
   for (const file of COPIES) {
     const old = readFileSync(new URL(file, OLD), 'utf8');
     const copy = readFileSync(new URL(file, VENDOR), 'utf8');
-    assert.equal(copy, stripQueries(old), file);
+    if (file === 'course-data.mjs') {
+      const parse = (text) => JSON.parse(text.replace(/^export const COURSES = /, '').trim().replace(/;$/, ''));
+      const previous = parse(old);
+      const current = parse(copy);
+      // Only the announcement fields may differ; preserve every other course value.
+      const before = previous.mth140;
+      const after = current.mth140;
+      after.updated = before.updated;
+      for (const topic of after.topics) topic.midterm = before.topics.find((t) => t.id === topic.id).midterm;
+      for (const item of after.assessments) {
+        const original = before.assessments.find((a) => a.id === item.id);
+        if (item.id === 'quiz-2') item.scope = original.scope;
+        if (item.id === 'midterm') for (const key of ['scope', 'source', 'confirmed']) item[key] = original[key];
+      }
+      assert.equal(after.sources.length, before.sources.length + 1);
+      assert.equal(after.sources.pop().title, 'Midterm Exam Content');
+      assert.deepEqual(current, previous);
+    } else {
+      assert.equal(copy, stripQueries(old), file);
+    }
     assert.doesNotMatch(copy, /\?v=/, `${file}: no cache queries left`);
   }
 });

@@ -338,11 +338,12 @@ test('calendar files retain legacy event identity and timing with current MTH140
     assert.equal(file.name, `${id}-fall-2026.ics`);
     const previous = schedule.calendar(COURSES[id], 3, { includeTentative: true, onlyUpcoming: true, now: NOW }).text;
     if (id === 'mth140') {
-      const withoutDescriptions = (text) => text.split(/\r?\n/).filter((line) => !line.startsWith('DESCRIPTION:')).join('\n');
+      const unfold = (text) => text.replace(/\r?\n[ \t]/g, '');
+      const withoutDescriptions = (text) => unfold(text).split(/\r?\n/).filter((line) => !line.startsWith('DESCRIPTION:')).join('\n');
       assert.equal(withoutDescriptions(file.text), withoutDescriptions(previous));
-      assert.match(file.text, /Chapter 1: Sections 1\.1–1\.5/);
-      assert.match(file.text, /Midterm Exam Content/);
-      assert.doesNotMatch(file.text, /Exact midterm coverage awaits/);
+      assert.match(unfold(file.text), /Chapter 1: Sections 1\.1–1\.5/);
+      assert.match(unfold(file.text), /Midterm Exam Content/);
+      assert.doesNotMatch(unfold(file.text), /Exact midterm coverage awaits/);
     } else {
       assert.equal(file.text, previous);
     }
