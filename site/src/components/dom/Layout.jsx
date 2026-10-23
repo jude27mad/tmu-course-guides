@@ -19,6 +19,8 @@ const ENTER_DELAY = 0;
 const ENTER_MS = 450;
 const EXIT_MS = 350;
 const PANEL_CLOSE = 0.45;
+const DOCUMENT_EXIT = 0.16;
+const DOCUMENT_ENTER = 0.22;
 
 // After a route change: focus the new page's heading (or main). Next's own
 // route announcer reads the new document title.
@@ -46,6 +48,9 @@ function Layout({ children, layoutRef, mainRef, router }) {
   const panelOpen = isMenuOpen || isSearchOpen;
   const menuTime = useMemo(() => (panelOpen ? PANEL_CLOSE : 0), [panelOpen]);
   const animated = introOut && !still;
+  const documentScroll = nativeIOSScroll();
+  const enterDuration = documentScroll ? DOCUMENT_ENTER * 1000 : ENTER_MS;
+  const exitDuration = documentScroll ? Math.max(DOCUMENT_EXIT, menuTime) * 1000 : EXIT_MS + menuTime * 1000;
 
   const closePanels = () => {
     const state = useStore.getState();
@@ -57,7 +62,11 @@ function Layout({ children, layoutRef, mainRef, router }) {
     setIsAbout(wantsSRGB(router.pathname));
     gsap.set(mainRef.current, { willChange: 'auto' });
     gsap.set('#loader', { autoAlpha: 0, display: 'none' });
-    if (nativeIOSScroll()) gsap.set(mainRef.current, { clearProps: 'transform,transformOrigin,left' });
+    if (nativeIOSScroll()) {
+      gsap.set(mainRef.current, { clearProps: 'transform,transformOrigin,left' });
+      const fluid = document.getElementById('fluidCanvas');
+      if (fluid) gsap.set(fluid, { opacity: 1 });
+    }
 
     // The old page's removal and the final transform cleanup can move Safari's
     // document scroll after the exit reset. Read the incoming page's actual
@@ -85,6 +94,28 @@ function Layout({ children, layoutRef, mainRef, router }) {
         gsap.set(mainRef.current, { x: 0, scale: 1, borderRadius: 0, border: 'none', height: 'auto', pointerEvents: 'auto', opacity: 1 });
         gsap.set('header', { autoAlpha: 1, left: 0, top: 0, scale: 1 });
         finishEnter();
+        return;
+      }
+
+      if (nativeIOSScroll()) {
+        // A native document can be thousands of pixels tall. Scaling it around
+        // its centre moves the heading far down the screen; sliding it also
+        // exposes a second loading card. Reveal the new page at its real size.
+        gsap.set('#loader', { autoAlpha: 0, display: 'none' });
+        gsap.set(layoutRef.current, { opacity: 1 });
+        gsap.set(mainRef.current, {
+          clearProps: 'transform,transformOrigin,left,border,borderRadius',
+          opacity: 0,
+          pointerEvents: 'auto',
+          willChange: 'opacity',
+        });
+        gsap.set('header', { left: 0, top: 0, scale: 1, autoAlpha: 0 });
+        lenis.resize();
+        lenis.scrollTo(0, { force: true, immediate: true });
+        enterTimelineRef.current = gsap
+          .timeline({ onComplete: finishEnter })
+          .to(mainRef.current, { opacity: 1, duration: DOCUMENT_ENTER, ease: 'power2.out' }, 0)
+          .to('header', { autoAlpha: 1, duration: DOCUMENT_ENTER, ease: 'power2.out' }, 0);
         return;
       }
 
@@ -119,7 +150,7 @@ function Layout({ children, layoutRef, mainRef, router }) {
   const handleExit = useCallback(
     () => {
       if (!introOut) return;
-      if (enterTimelineRef.current) enterTimelineRef.current.pause();
+      if (enterTimelineRef.current) enterTimelineRef.current.kill();
 
       useStore.getState().setIsTransitioning(true);
       lenis.stop();
@@ -128,6 +159,22 @@ function Layout({ children, layoutRef, mainRef, router }) {
       if (still) {
         setIsLoading(true);
         lenis.scrollTo(0, { force: true, immediate: true });
+        return;
+      }
+
+      if (nativeIOSScroll()) {
+        // Navbar pauses its shell while this route owns main/header. Menu rows
+        // can close without reversing the page back into view for one frame.
+        gsap.set('#loader', { autoAlpha: 0, display: 'none' });
+        gsap.set(mainRef.current, { pointerEvents: 'none', willChange: 'opacity' });
+        const tl = gsap.timeline({
+          onComplete: () => {
+            setIsLoading(true);
+            lenis.scrollTo(0, { force: true, immediate: true });
+          },
+        });
+        exitTimelineRef.current = tl;
+        tl.to(mainRef.current, { opacity: 0, duration: DOCUMENT_EXIT, ease: 'power2.inOut' }, 0).to('header', { autoAlpha: 0, duration: DOCUMENT_EXIT, ease: 'power2.inOut' }, 0);
         return;
       }
 
@@ -231,8 +278,8 @@ function Layout({ children, layoutRef, mainRef, router }) {
           in={false}
           unmountOnExit
           timeout={{
-            enter: animated ? ENTER_MS : 0,
-            exit: animated ? EXIT_MS + menuTime * 1000 : 0,
+            enter: animated ? enterDuration : 0,
+            exit: animated ? exitDuration : 0,
           }}
           onEnter={handleEnter}
           onExit={handleExit}

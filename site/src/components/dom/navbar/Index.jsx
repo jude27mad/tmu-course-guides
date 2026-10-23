@@ -1,4 +1,4 @@
-import { scrollRoot, scrollTop, scrollViewport } from '@src/utils/scrollRoot';
+import { nativeIOSScroll, scrollRoot, scrollTop, scrollViewport } from '@src/utils/scrollRoot';
 import { buildShellTimeline } from '@src/components/dom/navbar/panelShell';
 import { setBrowserSurfaces } from '@src/utils/theme';
 import ButtonLink from '@src/components/animationComponents/buttonLink/Index';
@@ -18,8 +18,8 @@ import { useStore } from '@src/store';
 function Navbar() {
   const isMobile = useIsMobile();
   const router = useRouter();
-  const [lenis, isLoading, isMenuOpen, isSearchOpen, setIsSearchOpen, still] = useStore(
-    useShallow((state) => [state.lenis, state.isLoading, state.isMenuOpen, state.isSearchOpen, state.setIsSearchOpen, state.still]),
+  const [lenis, isLoading, isMenuOpen, isSearchOpen, setIsSearchOpen, still, isTransitioning] = useStore(
+    useShallow((state) => [state.lenis, state.isLoading, state.isMenuOpen, state.isSearchOpen, state.setIsSearchOpen, state.still, state.isTransitioning]),
   );
   const shellRef = useRef(null);
   const headerRef = useRef(null);
@@ -136,7 +136,11 @@ function Navbar() {
     const tl = shellRef.current;
     if (!tl) return;
     tl.timeScale(still ? 30 : 1);
-    if (isOpen) {
+    if (isTransitioning && nativeIOSScroll()) {
+      // Route entry owns the document's opacity/geometry until it settles.
+      // Reversing the menu shell here would reveal the outgoing page again.
+      tl.pause();
+    } else if (isOpen) {
       tl.play();
     } else {
       tl.reverse();
@@ -151,12 +155,12 @@ function Navbar() {
       else node.removeAttribute('inert');
     });
 
-    const { lenis: currentLenis, isLoading: loading, isTransitioning } = useStore.getState();
-    if (currentLenis && !loading && !isTransitioning) {
+    const { lenis: currentLenis, isLoading: loading, isTransitioning: transitioning } = useStore.getState();
+    if (currentLenis && !loading && !transitioning) {
       if (isOpen) currentLenis.stop();
       else currentLenis.start();
     }
-  }, [isOpen, still]);
+  }, [isOpen, still, isTransitioning]);
 
   // Cmd/Ctrl-K toggles the search panel (the old palette's shortcut).
   useEffect(() => {

@@ -73,7 +73,12 @@ export default function useCourseNavigation(courseId, info) {
   const navigate = useCallback(
     (hash) => {
       remember();
-      return router.push({ pathname: router.pathname, query: router.query, hash }, undefined, { shallow: true, scroll: false });
+      return router.push({ pathname: router.pathname, query: router.query, hash }, undefined, { shallow: true, scroll: false }).catch((error) => {
+        // Next rejects the previous render when a newer filter wins. This is a
+        // successful interruption, not an unhandled page error.
+        if (error.cancelled) return false;
+        throw error;
+      });
     },
     [remember, router],
   );
@@ -235,7 +240,8 @@ export default function useCourseNavigation(courseId, info) {
     // Restore focus with interactivity, not at the end of the cosmetic tween.
     // Respect a control that a child selected during this commit.
     const focusMoved = document.activeElement !== focusAtNavigation.current && document.activeElement !== content && content.contains(document.activeElement);
-    if ((!entry.initial || entry.hash) && !focusMoved) {
+    const filterHasFocus = location.view === 'work' && entry.inPlace && !entry.restore && focusAtNavigation.current?.closest('[data-work-filters]');
+    if ((!entry.initial || entry.hash) && !focusMoved && !filterHasFocus) {
       const focus = (entry.restore && document.getElementById(entry.focus)) || target || content;
       focus.focus({ preventScroll: true });
     }

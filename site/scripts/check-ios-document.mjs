@@ -155,14 +155,16 @@ async function checkAllCoursesNavigation(context, motion, scenario = 'stable') {
         // Observe the real incoming route. No Lenis or production helper is invoked.
         // The injected native scroll models a late browser adjustment; it is a
         // resilience check, not a reproduction of Safari's physical browser chrome.
-        const loaderVisible = () => getComputedStyle(document.querySelector('#loader')).display !== 'none';
+        // Native iOS now fades the full-size page without a loader card. Use
+        // the route's actual busy state to inject during either choreography.
+        const entryActive = () => document.querySelector('[data-navigation-status]')?.hidden === false;
         const observer = new MutationObserver(() => {
-          if (document.querySelector('main h1')?.textContent !== 'All Courses' || !loaderVisible()) return;
+          if (document.querySelector('main h1')?.textContent !== 'All Courses' || !entryActive()) return;
           observer.disconnect();
-          const adjustment = { kind, triggered: true, before: { scrollY, height: innerHeight, duringEntry: loaderVisible() } };
+          const adjustment = { kind, triggered: true, before: { scrollY, height: innerHeight, duringEntry: entryActive() } };
           window.__allCoursesEntryAdjustment = adjustment;
           const complete = () => {
-            adjustment.after = { scrollY, height: innerHeight, duringEntry: loaderVisible() };
+            adjustment.after = { scrollY, height: innerHeight, duringEntry: entryActive() };
             adjustment.completed = true;
           };
           if (kind === 'revisit-viewport') window.__changeCourseViewport().then(complete);
@@ -190,7 +192,7 @@ async function checkAllCoursesNavigation(context, motion, scenario = 'stable') {
       }
     }
     await ready(page);
-    // Let the browser commit geometry after the curtain and its transforms clear.
+    // Let the browser commit geometry after route motion and transform cleanup.
     await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
     entry.after = await navigationState(page);
 
