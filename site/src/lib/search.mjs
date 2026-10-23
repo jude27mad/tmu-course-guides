@@ -106,7 +106,8 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
     add('Actions', { id: 'action-calendar', type: 'action', action: 'calendar', title: 'Export calendar', href: `${current.href}#guide-tools`, default: true, courseId: current.id });
   }
   const paused = readMotionPaused(store);
-  add('Actions', { id: 'action-motion', type: 'action', action: 'motion', title: paused ? 'Play motion' : 'Pause motion', disabled: motionForced, detail: motionForced ? 'Reduced motion is enabled by your device or page setting' : 'Stops animation and makes glass controls solid', default: true });
+  const motionHint = paused ? 'Restores animation and glass effects' : 'Stops animation and makes glass controls solid';
+  add('Actions', { id: 'action-motion', type: 'action', action: 'motion', title: paused ? 'Play motion' : 'Pause motion', disabled: motionForced, detail: motionForced ? 'Reduced motion is enabled by your device or page setting' : motionHint, default: true });
   add('Actions', { id: 'action-d2l', type: 'action', action: 'external', title: 'Open D2L', href: D2L, external: true, default: true });
 
   return Object.assign(entries, { weeks, itemTitles: Object.fromEntries(CEN.allItems.map((item) => [item.id, item.name])) });

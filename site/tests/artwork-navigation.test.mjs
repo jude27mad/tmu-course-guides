@@ -14,7 +14,8 @@ test('preparing the menu during a page transition preserves the navbar reveal', 
   // reproduce GSAP's eager overwrite of an unrelated, still-running timeline.
   const source = (await readFile(new URL('../src/components/dom/navbar/panelShell.js', import.meta.url), 'utf8'))
     .replace("import gsap from 'gsap';", `import { gsap } from '${pathToFileURL(require.resolve('gsap')).href}';`)
-    .replace("'@src/lib/palette.mjs'", `'${new URL('../src/lib/palette.mjs', import.meta.url).href}'`);
+    .replace("'@src/lib/palette.mjs'", `'${new URL('../src/lib/palette.mjs', import.meta.url).href}'`)
+    .replace("'@src/utils/scrollRoot'", `'${new URL('../src/utils/scrollRoot.js', import.meta.url).href}'`);
   const { buildShellTimeline } = await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
   const header = { autoAlpha: 0, left: 0, top: 0, scale: 1, willChange: 'auto' };
   const main = { borderRadius: 0, border: 'none', scale: 1, pointerEvents: 'auto', left: 0, willChange: 'auto' };

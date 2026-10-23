@@ -48,7 +48,8 @@ const luminance = (color) => color.slice(0, 3).map((v) => v / 255).map((v) => v 
 const contrast = (a, b) => { const x = luminance(a); const y = luminance(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
 const composite = (front, back) => front.slice(0, 3).map((v, i) => v * (front[3] ?? 1) + back[i] * (1 - (front[3] ?? 1)));
 async function check(name, run, options = {}) {
-  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, reducedMotion: 'no-preference', ...options });
+  const phone = engine === 'webkit' && (options.viewport?.width || 390) <= 500 ? playwright.devices['iPhone 13'] : {};
+  const context = await browser.newContext({ ...phone, viewport: { width: 390, height: 844 }, hasTouch: true, reducedMotion: 'no-preference', ...options });
   const page = await context.newPage();
   page.setDefaultTimeout(15000);
   try {
@@ -247,6 +248,7 @@ try {
     const note = page.locator('[data-assignment-detail] textarea').first();
     await note.fill('Glass must not lose this note.');
     await page.locator(nav + ' a[href$="#schedule"]').click();
+    await page.getByRole('heading', { name: 'Schedule', exact: true }).waitFor();
     await settled(page);
     await page.goBack();
     await note.waitFor();
@@ -266,15 +268,19 @@ try {
         await ready(page);
         for (let i = 0; i < 6; i += 1) {
           // Alternate order to reduce warm-up bias; same route/build/runner.
+          // Reset to the same content so both variants measure Work -> Study.
+          await page.locator(nav + ' a[href$="#work"]').click();
+          await settled(page);
+          await aligned(page);
           const glass = i % 2 === 0;
           const override = glass ? null : await page.addStyleTag({ content: '[data-glass] { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background-color: var(--glass-solid) !important; }' });
-          const result = await page.evaluate(async (index) => {
+          const result = await page.evaluate(async () => {
             const values = [];
             let previous = performance.now();
             let frame;
             const sample = (now) => { values.push(now - previous); previous = now; frame = requestAnimationFrame(sample); };
             frame = requestAnimationFrame(sample);
-            const hash = index % 2 ? '#work' : '#study';
+            const hash = '#study';
             const link = document.querySelector('nav[aria-label="Course views"] a[href$="' + hash + '"]');
             const start = performance.now();
             link.click();
@@ -292,7 +298,7 @@ try {
             cancelAnimationFrame(frame);
             values.sort((a, b) => a - b);
             return { selected, acknowledgementMs, frameP95Ms: values[Math.floor(values.length * 0.95)], longFrames: values.filter((v) => v > 50).length, frames: values.length };
-          }, i);
+          });
           assert.equal(result.selected, 'page');
           await settled(page);
           await aligned(page);

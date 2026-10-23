@@ -97,3 +97,16 @@
 :global(html.js) .layout .main {
   opacity: 0;
 }
+
+:global(html[data-scroll-mode='document']) {
+  .root { display: block; height: auto; min-height: var(--app-viewport-height); }
+  .layout {
+    display: block; height: auto !important; overflow: visible;
+    .main {
+      position: relative; height: auto !important; max-height: none;
+      min-height: var(--app-viewport-height); overflow: visible; overscroll-behavior: auto;
+    }
+    .canvasContainer { position: fixed !important; height: var(--app-viewport-height) !important; }
+  }
+  .background { background-color: transparent; pointer-events: none; }
+}

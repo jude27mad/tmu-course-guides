@@ -1,3 +1,4 @@
+import { scrollRoot, scrollTop, scrollViewport } from '@src/utils/scrollRoot';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import gsap from 'gsap';
@@ -59,7 +60,7 @@ export default function useCourseNavigation(courseId, info) {
     const focus = document.activeElement;
     const next = {
       ...previous,
-      scroll: document.querySelector('main')?.scrollTop || 0,
+      scroll: scrollTop(),
       focus: focus?.id || previous.focus,
     };
     active.current = next;
@@ -103,7 +104,7 @@ export default function useCourseNavigation(courseId, info) {
             hash,
             key,
             initial: !previous,
-            scroll: inPlace ? document.querySelector('main')?.scrollTop || 0 : 0,
+            scroll: inPlace ? scrollTop() : 0,
             inPlace,
             focus: null,
             returnTo,
@@ -152,7 +153,6 @@ export default function useCourseNavigation(courseId, info) {
       // current URL owns navigation; replaying its old id creates history loops.
       sync();
     };
-    const main = document.querySelector('main');
     router.events.on('hashChangeStart', remember);
     router.events.on('routeChangeStart', remember);
     router.events.on('hashChangeComplete', sync);
@@ -161,7 +161,7 @@ export default function useCourseNavigation(courseId, info) {
     window.addEventListener('popstate', sync);
     window.addEventListener('pagehide', remember);
     document.addEventListener('guide-hash', onGuideHash);
-    main?.addEventListener('scroll', remember, { passive: true });
+    scrollRoot()?.addEventListener('scroll', remember, { passive: true });
     sync();
     return () => {
       router.events.off('hashChangeStart', remember);
@@ -172,7 +172,7 @@ export default function useCourseNavigation(courseId, info) {
       window.removeEventListener('popstate', sync);
       window.removeEventListener('pagehide', remember);
       document.removeEventListener('guide-hash', onGuideHash);
-      main?.removeEventListener('scroll', remember);
+      scrollRoot()?.removeEventListener('scroll', remember);
     };
   }, [courseId, info, router.events, remember]);
 
@@ -216,13 +216,14 @@ export default function useCourseNavigation(courseId, info) {
     const target = (targetId && document.getElementById(`course-view-${targetId}`)) || content;
     // The header now leaves with the page. Only detail/deep links move the
     // scroller; tabs and filters replace their panel at the current position.
-    let top = Math.max(0, main.scrollTop + (target || content).getBoundingClientRect().top - main.getBoundingClientRect().top - 12);
+    let top = Math.max(0, scrollTop() + (target || content).getBoundingClientRect().top - scrollViewport().top - 12);
     if (entry.inPlace) top = entry.scroll;
     if (entry.initial && !entry.hash) top = 0;
     if (entry.restore) top = entry.scroll;
     const { lenis } = useStore.getState();
     lenis?.resize();
     if (lenis) lenis.scrollTo(top, { immediate: true, force: true });
+    else if (scrollRoot() === window) window.scrollTo(0, top);
     else main.scrollTop = top;
     // Only the outgoing view is inert. Newly mounted controls must accept
     // the first tap, even while their entrance animation is still running.
