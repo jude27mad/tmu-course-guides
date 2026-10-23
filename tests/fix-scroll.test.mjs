@@ -12,6 +12,8 @@ import {createRouter,routeForURL} from '../assets/app/router.mjs';
 const require=createRequire(new URL('../tools/ui-build/package.json',import.meta.url));
 const {JSDOM}=require('jsdom'),{build}=require('esbuild');
 const root=new URL('..',import.meta.url).pathname;
+// Match the production URL so the fixture publishes to the scrolling module's state.
+const BOOK_STATE='./assets/book/book-state.mjs'+((await readFile(new URL('../assets/night/scroll.mjs',import.meta.url),'utf8')).match(/book\/book-state\.mjs(\?v=[^'"]+)/)?.[1]||'');
 const turn=()=>new Promise(resolve=>setTimeout(resolve,0));
 const settle=async(n=4)=>{for(let i=0;i<n;i++)await turn();};
 
@@ -38,7 +40,7 @@ const plugin={name:'fix-scroll',setup(b){
  b.onLoad({filter:/night\/palette\.mjs$/},async args=>({contents:(await readFile(args.path,'utf8')).replaceAll('import.meta.url',JSON.stringify('https://guide.test/assets/night/palette.mjs')),loader:'js'}));
 }};
 let code;
-const bundle=async()=>code??=(await build({stdin:{contents:`import * as scroll from './assets/night/scroll.mjs';import * as palette from './assets/night/palette.mjs';import * as book from './assets/book/book-state.mjs';window.T={scroll,palette,book};`,resolveDir:root,sourcefile:'fix-scroll.mjs'},bundle:true,write:false,format:'iife',logLevel:'silent',plugins:[plugin]})).outputFiles[0].text;
+const bundle=async()=>code??=(await build({stdin:{contents:`import * as scroll from './assets/night/scroll.mjs';import * as palette from './assets/night/palette.mjs';import * as book from '${BOOK_STATE}';window.T={scroll,palette,book};`,resolveDir:root,sourcefile:'fix-scroll.mjs'},bundle:true,write:false,format:'iife',logLevel:'silent',plugins:[plugin]})).outputFiles[0].text;
 
 /* ScrollTrigger and GSAP, as far as the book pin uses them. */
 function fakeVendor(w){

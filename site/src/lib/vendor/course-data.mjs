@@ -787,7 +787,7 @@ export const COURSES = {
     "code": "MTH141",
     "name": "Linear Algebra",
     "term": "Fall 2026",
-    "updated": "2026-10-12",
+    "updated": "2026-10-23",
     "labs": [
       {
         "section": 1,
@@ -1210,7 +1210,7 @@ export const COURSES = {
         "title": "Determinants",
         "sections": "3.1.1–3.1.3, 3.1.5–3.2.2",
         "hours": 4,
-        "description": "Calculate determinants and use their properties.",
+        "description": "Cofactor expansion, determinant properties, the adjugate inverse formula and Cramer’s rule. Section 3.1.4 is outside the outline and announced midterm scope.",
         "skills": [
           "Calculate determinants using an appropriate expansion.",
           "Track the effect of row operations on a determinant.",
@@ -1228,7 +1228,7 @@ export const COURSES = {
         "title": "Vectors in ℝⁿ",
         "sections": "4.1–4.10.2, 4.10.4–4.11.4",
         "hours": 16,
-        "description": "Develop vector geometry, subspaces and bases.",
+        "description": "Vector algebra, length and distance, lines and planes, dot and cross products, projection, spans, independence, bases and orthogonality. The outline skips 4.10.3.",
         "skills": [
           "Calculate vector combinations and inner products.",
           "Work with spans and linear independence.",
@@ -1537,27 +1537,30 @@ export const COURSES = {
         "title": "Lab Quiz 3",
         "kind": "quiz",
         "week": "2026-11-02",
-        "scope": "Coverage awaits the course announcement on D2L.",
-        "source": "Course Management Form, p. 3: scheduled quiz week. Exact scope and any changes must be checked on D2L.",
-        "confirmed": false
+        "scope": "Exact coverage is not in the supplied announcements. Check D2L before preparing; the FAQ says quizzes generally cover the previous week’s lectures.",
+        "source": "Course Management Form V3, p. 3: tentative quiz week; FAQ 4.4 and 4.10: general coverage guidance and 15-minute writing allowance. No later scope announcement supplied as of October 23.",
+        "confirmed": false,
+        "duration": "15 minutes"
       },
       {
         "id": "quiz-4",
         "title": "Lab Quiz 4",
         "kind": "quiz",
         "week": "2026-11-16",
-        "scope": "Coverage awaits the course announcement on D2L.",
-        "source": "Course Management Form, p. 3: scheduled quiz week. Exact scope and any changes must be checked on D2L.",
-        "confirmed": false
+        "scope": "Exact coverage is not in the supplied announcements. Check D2L before preparing; the FAQ says quizzes generally cover the previous week’s lectures.",
+        "source": "Course Management Form V3, p. 3: tentative quiz week; FAQ 4.4 and 4.10: general coverage guidance and 15-minute writing allowance. No later scope announcement supplied as of October 23.",
+        "confirmed": false,
+        "duration": "15 minutes"
       },
       {
         "id": "quiz-5",
         "title": "Lab Quiz 5",
         "kind": "quiz",
         "week": "2026-11-30",
-        "scope": "Coverage awaits the course announcement on D2L.",
-        "source": "Course Management Form, p. 3: scheduled quiz week. Exact scope and any changes must be checked on D2L.",
-        "confirmed": false
+        "scope": "Exact coverage is not in the supplied announcements. Check D2L before preparing; the FAQ says quizzes generally cover the previous week’s lectures.",
+        "source": "Course Management Form V3, p. 3: tentative quiz week; FAQ 4.4 and 4.10: general coverage guidance and 15-minute writing allowance. No later scope announcement supplied as of October 23.",
+        "confirmed": false,
+        "duration": "15 minutes"
       },
       {
         "id": "midterm",
@@ -1567,7 +1570,7 @@ export const COURSES = {
         "time": "18:30",
         "end": "20:30",
         "duration": "2 hours",
-        "scope": "Complex numbers: 6.1–6.4; systems: 1.1–1.2.4; matrices: 2.1.1–2.1.8; determinants: 3.1.1–3.1.3 and 3.1.5–3.2.2.",
+        "scope": "Complex numbers: 6.1–6.4; systems: 1.1–1.2.4; matrices: 2.1.1–2.1.8; determinants: 3.1.1–3.1.3 and 3.1.5–3.2.2. Section 3.1.4 and Chapter 4 are excluded.",
         "source": "Course Management Form V3, p. 3; “MTH 141 Midterm Test Instructions,” Dr. Saeid Samiezadeh, October 5, 2026, 10:22 AM.",
         "confirmed": true
       },
@@ -1577,7 +1580,7 @@ export const COURSES = {
         "kind": "final",
         "date": null,
         "scope": "The FAQ says post-midterm material unless otherwise announced. Check D2L for the exact final topic list, date, time and room.",
-        "source": "Course Management Form, p. 3: December examination period and final-exam weight. No exact final-exam date was provided."
+        "source": "Course Management Form V3, p. 3: December examination period and 45% weight; FAQ 4.6: post-midterm material unless otherwise announced. Exact final schedule and topic list were not supplied as of October 23."
       }
     ],
     "weights": [
@@ -1587,7 +1590,7 @@ export const COURSES = {
     ],
     "coordinator": "the coordinator listed on D2L",
     "organization": "4 hours of lectures + 1 hour of lab each week",
-    "quizPolicy": "Five lab quizzes share 20% of the course grade. The lowest quiz is dropped. No quiz make-ups.",
+    "quizPolicy": "Five lab quizzes share 20% of the course grade. The lowest quiz is dropped, so the best four normally count. No quiz make-ups.",
     "textbooks": [
       {
         "title": "A First Course in Linear Algebra",
@@ -1603,11 +1606,11 @@ export const COURSES = {
     "sources": [
       {
         "title": "MTH141 Course Management Form F26, V3",
-        "detail": "p. 1: instructors; pp. 2–3: books, organization, study-week instruction, assessments and weights; pp. 4–5: content and evaluation rules."
+        "detail": "Reviewed October 23: pp. 2–3 cover books, organization, quiz weeks and 20% / 35% / 45% weights; pp. 4–5 cover exact topic ranges, regrading and missed evaluations."
       },
       {
         "title": "MTH141 Labs",
-        "detail": "All 34 section lab days, times, rooms and Academic Assistant names."
+        "detail": "All 34 section lab days, times and rooms rechecked October 23. Staff details remain on D2L."
       },
       {
         "title": "Recommended Problems MTH141 F26",
@@ -1615,7 +1618,7 @@ export const COURSES = {
       },
       {
         "title": "MTH141 FAQ, August 26, 2026",
-        "detail": "Assessment rules, support, missed evaluations and post-midterm final coverage unless otherwise announced."
+        "detail": "Reviewed October 23: quiz preparation and timing, accommodations, missed evaluations, staff-contact routes and post-midterm final coverage. Newer official announcements and the outline take precedence."
       },
       {
         "title": "Lab Quiz 1 reminder",
@@ -1628,6 +1631,14 @@ export const COURSES = {
       {
         "title": "MTH141 Midterm Test Instructions",
         "detail": "D2L announcement, October 5: date, exact scope and logistical requirements. Official assessment format and full cover-page instructions are available on D2L."
+      },
+      {
+        "title": "Lecture notes reviewed October 23",
+        "detail": "Sections 6.1–6.4; 1.1–1.2.4; 2.1.1–2.1.8; 3.1.1–3.1.5 and 3.2.1–3.2.2; 4.1–4.7, 4.8, 4.9 and 4.10.1–4.10.2. A file’s title does not expand an announced assessment scope. Read your instructor’s copies on D2L."
+      },
+      {
+        "title": "Lab practice reviewed October 23",
+        "detail": "Lab 1 questions and Lab 2–4 solutions were checked for practice-topic mapping. Use the original files on D2L; no questions or solutions are reproduced here."
       }
     ]
   }

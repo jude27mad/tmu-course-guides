@@ -5,6 +5,8 @@ const MATH_RULES = [
   ['missed-assessment', 'Missed an assessment?'],
   ['regrade', 'Request a regrade'],
   ['unconfirmed', 'Dates awaiting confirmation'],
+  ['quiz-accommodations', 'Quiz timing & accommodations'],
+  ['lecture-practice', 'Lecture notes & lab practice'],
 ];
 const CEN_RULES = [
   'headers',

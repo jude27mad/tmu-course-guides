@@ -228,7 +228,7 @@ try {
       await page.getByRole('link', { name: /Missed an assessment/ }).waitFor();
       await ready(page, 'mth141/#sources');
       await page.locator('#course-view-sources[data-info-detail]').waitFor();
-      assert.match(await page.locator('[data-info-detail]').innerText(), /Reviewed October 12, 2026/);
+      assert.match(await page.locator('[data-info-detail]').innerText(), /Reviewed October 23, 2026/);
       await page.screenshot({ path: path.join(report, 'sources-834.png') });
     } finally { await context.close(); }
   });

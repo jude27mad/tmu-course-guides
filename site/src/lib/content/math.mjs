@@ -95,7 +95,7 @@ export function assessmentCard(a,courseId){
     unconfirmed:!a.confirmed?'Check the latest D2L announcement before using this card to prepare.':'',
     rulesHeading:'Before you write',
     rules:rulesForAssessment(a,courseId),
-    roomNote:a.kind==='midterm'&&courseId==='mth140'?'The October 13 announcement says room assignments will follow separately. Check the current room notice on D2L.':a.kind==='midterm'&&courseId==='mth141'?'Room assignments will be posted on D2L a few days before the test. Read the cover-page attachment under the October 5 announcement. The sample midterm and solutions are under Course Information → Midterm Test Materials.':'',
+    roomNote:a.kind==='midterm'&&courseId==='mth140'?'The October 13 announcement says room assignments will follow separately. Check the current room notice on D2L.':a.kind==='midterm'&&courseId==='mth141'?'For the October 16 test, use the room assignment and cover-page attachment on D2L. The sample midterm and solutions are under Course Information → Midterm Test Materials. Any approved make-up has separate instructions from course staff.':'',
     checklistHeading:'My preparation checklist',
     checklist:prep(a,courseId),
     sourceLabel:'Source:',
@@ -133,14 +133,54 @@ export function ruleCards(course,courseId){
   return [
     {title:'Assessment rules',blocks:[{type:'list',items:['At least 50% of total course marks is required to pass.','Quizzes and exams are individual work, closed book, with no calculator, formula sheet or other aids.',course.quizPolicy,'Recommended homework is practice and is not submitted for grading.']},{type:'source',text:'Source: Course Management Form and course FAQ.'}]},
     {title:'If you miss an assessment',blocks:[{type:'p',text:'Your first missed lab quiz is handled by the dropped lowest grade; the course announcements say not to submit an ACR for that first missed quiz.'},{type:'p',text:courseId==='mth141'?'For a second missed lab quiz, email your instructor and submit an Academic Consideration Request within 3 business days. Once approved, the quiz average uses the remaining quizzes.':'For further missed quizzes, contact your instructor or TA and follow the current Academic Consideration procedure. There is no lab-quiz make-up.'},{type:'p',text:'For a missed midterm or final, contact your instructor promptly and follow the official ACR process. Make-ups require a valid, approved reason.'},{type:'source',text:'Source: Course Management Form, missed-evaluation rules, and quiz announcements.'}]},
-    {title:'Regrading & communication',blocks:[{type:'p',text:'Request regrading or recalculation within 10 working days after the graded assessment is returned, subject to the current University and course procedure. The whole assessment may be regraded and the mark may increase or decrease.'},{type:'p',text:courseId==='mth140'?'Use your official TMU email and include your name, student number, course and section. The FAQ says to wait at least one business day before escalating to the coordinator, or a full week for a remarking email.':'Use your official TMU email, include your name, student number, course and section. Check D2L first and allow at least one business day for a response.'},{type:'source',text:'Source: Course Management Form and FAQ.'}]},
-    {title:'Dates that still need confirmation',blocks:[{type:'list',items:[courseId==='mth140'?'Quiz 3–4 scope and any later quiz instructions.':'Quiz 3–5 coverage.','Exact final-exam date, time, room and announced topic list.','Any changes to the published section timetable.',courseId==='mth140'?'Midterm room assignments and any later changes to the October 13 instructions.':'Midterm room assignments and the applicable Test Centre booking deadline.']},{type:'source',text:courseId==='mth140'?'MTH140 course documents and supplied announcements through October 13 were reviewed October 23, 2026. Midterm coverage and format are confirmed; check D2L for subsequent changes.':'The guide includes supplied course documents and relevant announcements through October 8, reviewed October 12. Check D2L for newer changes.'}]},
+    {title:'Regrading & communication',blocks:[...(courseId==='mth141'?[{type:'p',text:"The V3 outline allows up to 10 business days for term-test grades, barring unforeseen circumstances. For midterm feedback, start with your AA, then contact your instructor if needed."}]:[]),{type:'p',text:'Request regrading or recalculation within 10 working days after the graded assessment is returned, subject to the current University and course procedure. The whole assessment may be regraded and the mark may increase or decrease.'},{type:'p',text:courseId==='mth140'?'Use your official TMU email and include your name, student number, course and section. The FAQ says to wait at least one business day before escalating to the coordinator, or a full week for a remarking email.':'Use your official TMU email, include your name, student number, course and section. Check D2L first and allow at least one business day for a response.'},{type:'source',text:'Source: Course Management Form and FAQ.'}]},
+    {title:'Dates that still need confirmation',blocks:[{type:'list',items:[courseId==='mth140'?'Quiz 3–4 scope and any later quiz instructions.':'Quiz 3–5 coverage.','Exact final-exam date, time, room and announced topic list.','Any changes to the published section timetable.',courseId==='mth140'?'Midterm room assignments and any later changes to the October 13 instructions.':'Later quiz instructions and the final-exam Test Centre booking deadline.']},{type:'source',text:courseId==='mth141'?"MTH141 sources reviewed October 23: V3 outline, August 26 FAQ, lab timetable, recommended problems and supplied lecture/lab files. Quiz 1–2 and midterm coverage comes from the September 17, October 1 and October 5 announcements. Check D2L for newer announcements.":'MTH140 course documents and supplied announcements through October 13 were reviewed October 23, 2026. Midterm coverage and format are confirmed; check D2L for subsequent changes.'}]},
+    ...(courseId==='mth141'?[
+        {
+          "title": "Quiz timing & accommodations",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The standard quiz writing time is 10 minutes; everyone receives 15 minutes, including the 50% extra-time allowance. A lab window is not the exact quiz start time."
+            },
+            {
+              "type": "p",
+              "text": "If your AAS plan requires more than 50% extra time or another accommodation, contact your instructor promptly. Book accommodated midterms and finals through the Test Centre by its deadline. If you are waiting for an AAS appointment, contact your instructor before the approaching test."
+            },
+            {
+              "type": "source",
+              "text": "Source: MTH141 FAQ 4.10. Follow any newer D2L instructions."
+            }
+          ]
+        },
+        {
+          "title": "Lecture notes & lab practice",
+          "blocks": [
+            {
+              "type": "list",
+              "items": [
+                "Chapter 4 notes supplied: 4.1–4.7 cover vectors, geometry and dot products; 4.8 covers plane equations; 4.9 covers cross products; 4.10.1–4.10.2 covers spanning, independence and bases.",
+                "For earlier material, Lab 1 practises complex arithmetic and polar form; Lab 2 practises complex roots, quadratics and reduced row-echelon form; Lab 3 covers rank, homogeneous systems and matrix operations; Lab 4 covers symmetric matrices, transposes and inverses.",
+                "Find the original notes and lab files in your instructor’s D2L materials. Open Study in this guide for all 40 rows of recommended Kuttler/Nicholson exercise references."
+              ]
+            },
+            {
+              "type": "p",
+              "text": "These are available practice materials, not confirmed Quiz 3 coverage. The announcement determines scope, even when a lab or slide file contains extra topics."
+            },
+            {
+              "type": "source",
+              "text": "Source: supplied lecture notes, Lab 1 questions, Lab 2–4 solutions and Recommended Problems MTH141 F26; reviewed October 23."
+            }
+          ]
+        }
+    ]:[])
   ];
 }
 export function courseNotice(courseId){
   return courseId==='mth140'
     ?{title:'Which quiz-drop rule applies?',blocks:[{type:'p',text:'The Fall 2026 outline lists four quizzes, one lowest quiz dropped, and a 15% category. The September 22 Quiz 1 announcement confirms the lowest-grade drop. The FAQ’s “two out of ten” wording conflicts with those documents and is not used here.'}]}
-    :{title:'Thanksgiving week & the final exam',blocks:[{type:'p',text:'The V3 outline says lectures continue October 12–16, except Monday, October 12, when TMU is closed. Do not assume the whole week is free of engineering classes.'},{type:'p',text:'The FAQ says the final covers post-midterm material unless otherwise announced. Use the official final topic list when it is posted.'}]};
+    :{"title": "Remaining quizzes & the final exam", "blocks": [{"type": "p", "text": "The V3 outline lists the remaining quiz weeks as November 2, November 16 and November 30. Write in your assigned lab; the final tutorial is in the week of November 30. Exact Quiz 3–5 coverage still needs the D2L announcements."}, {"type": "p", "text": "The final is worth 45% and is scheduled for the December examination period. The FAQ says post-midterm material unless otherwise announced. The exact final date, time, room and topic list were not supplied as of October 23."}]};
 }
 // math-guide.mjs:125: the three views, in tab order.
 export const VIEWS=['assessments','topics','help'];

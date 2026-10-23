@@ -78,6 +78,17 @@ export const COURSE_UPDATES = {
  ],
  "mth141": [
   {
+   "id": "2026-10-23-mth141-source-review",
+   "date": "October 23, 2026",
+   "title": "MTH141 source review",
+   "text": "Rechecked the V3 outline, FAQ, all 34 lab timetables and all 40 recommended-practice rows against the supplied files.",
+   "items": [
+     "Made the midterm exclusions explicit: section 3.1.4 and Chapter 4.",
+     "Added Chapter 4 note and Lab 1–4 practice guidance, quiz timing and accommodation details, and term-test grade-return guidance.",
+     "Updated the notice to the remaining quiz weeks and final exam. Later quiz scopes and the exact final schedule still need D2L announcements."
+   ]
+  },
+  {
    "id": "2026-10-12-midterm-scope-and-public-privacy",
    "date": "October 12, 2026",
    "title": "Midterm scope and public privacy",

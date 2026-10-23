@@ -230,10 +230,10 @@ for (const courseId of ['mth140', 'mth141']) {
     }
     const seen = memoryStorage();
     markUpdatesSeen(courseId, seen);
-    const latest = courseId === 'mth140' ? '"2026-10-23-mth140-midterm-scope-and-format"' : '"2026-10-12-midterm-scope-and-public-privacy"';
+    const latest = courseId === 'mth140' ? '"2026-10-23-mth140-midterm-scope-and-format"' : '"2026-10-23-mth141-source-review"';
     assert.equal(seen.data.get(`${courseId}-last-seen-update-v1`), latest);
     assert.equal(hasUnseenUpdates(courseId, seen), false);
-    assert.equal(hasUnseenUpdates(courseId, memoryStorage({ [`${courseId}-last-seen-update-v1`]: '"2026-10-16-course-artwork"' })), courseId === 'mth140');
+    assert.equal(hasUnseenUpdates(courseId, memoryStorage({ [`${courseId}-last-seen-update-v1`]: '"2026-10-16-course-artwork"' })), true);
   });
 }
 

@@ -72,7 +72,7 @@ test('deadline items carry everything the pages show', () => {
   for (const field of ['id', 'courseId', 'title', 'kind', 'weight', 'due', 'precision', 'dateLabel', 'timeLabel', 'requirement', 'detail', 'anchor', 'done', 'overdue']) assert.ok(field in item, field);
   assert.equal(item.dateLabel, 'Wed Nov 4');
   assert.equal(item.timeLabel, 'in your 3:00 PM–4:00 PM lab');
-  assert.equal(item.requirement, 'Coverage awaits the course announcement on D2L.');
+  assert.equal(item.requirement, 'Exact coverage is not in the supplied announcements. Check D2L before preparing; the FAQ says quizzes generally cover the previous week’s lectures.');
   assert.equal(item.href, '/mth141/#assessment-quiz-3');
   const reflection = lib.deadlineItem('cen100', 'reflection-1', { now: NOW, storage: null });
   assert.equal(reflection.weight, null, 'one date of a shared grade has no weight of its own');
@@ -123,7 +123,7 @@ test('courseInfo: rules, contacts, topic map and notes as data', async () => {
   for (const id of ['mth140', 'mth141']) {
     const info = lib.courseInfo(id, { section: 24 });
     assert.equal(info.topics.length, 8);
-    assert.equal(info.rules.length, 4);
+    assert.equal(info.rules.length, id === 'mth141' ? 6 : 4);
     assert.match(info.section.brief.section, /^Section 24$/);
     assert.equal(info.contacts.coordinator, 'the coordinator listed on D2L');
     assert.equal(info.assessments[0].checklist.length, 5);
