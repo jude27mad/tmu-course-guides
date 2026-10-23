@@ -88,6 +88,12 @@ jobs:
           PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
           QA_REPORT_DIR: ${{ runner.temp }}/pages-qa
         run: node site/scripts/check-pages-site.mjs --local "$RUNNER_TEMP/pages"
+      - name: Check touch scrolling and fluid motion
+        working-directory: site
+        env:
+          PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
+          QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/touch
+        run: npm run test:touch
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4
