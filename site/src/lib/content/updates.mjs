@@ -94,6 +94,13 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-10-23-all-courses-navigation",
+  "date": "October 23, 2026",
+  "title": "All courses opens at the top",
+  "text": "The All courses button on the Desk opens the course list at the top, with the heading and first course visible.",
+  "items": []
+ },
+ {
   "id": "2026-10-23-glass-controls",
   "date": "October 23, 2026",
   "title": "Glass controls",
