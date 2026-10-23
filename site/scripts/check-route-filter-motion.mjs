@@ -36,10 +36,10 @@ const settled = (page) => page.waitForFunction(() => {
 
 async function check(browser, options, name, run) {
   const context = await browser.newContext({ ...options, recordVideo: { dir: path.join(report, 'videos'), size: { width: 834, height: 1024 } } });
+  const errors = [];
+  context.on('page', (tab) => tab.on('pageerror', (error) => errors.push(error.message)));
   const page = await context.newPage();
   page.setDefaultTimeout(20000);
-  const errors = [];
-  page.on('pageerror', (error) => errors.push(error.message));
   try {
     const detail = await run(page);
     assert.deepEqual(errors, [], 'no page errors');
@@ -191,11 +191,16 @@ try {
           await page.getByRole('button', { name: 'Done (1)', exact: true }).click();
           await page.locator('#open-assignment-y1').waitFor();
           assert.equal(await page.locator('[data-assignment-link]').count(), 1);
-          await page.reload();
-          await ready(page);
-          await page.locator('#open-assignment-y1').waitFor();
-          assert.equal(await page.getByRole('button', { name: 'Done (1)', exact: true }).getAttribute('aria-pressed'), 'true');
-          await page.screenshot({ path: path.join(report, 'iphone-done-recorded.png') });
+          // Read storage in a fresh document. Reusing a WebKit page for a full
+          // navigation cancels Next's in-flight CSS prefetches (also avoided by
+          // check-ios-document). Leave the first tab alive until the assertions.
+          const reopened = await page.context().newPage();
+          await reopened.goto(page.url());
+          await ready(reopened);
+          await reopened.locator('#open-assignment-y1').waitFor();
+          assert.equal(await reopened.getByRole('button', { name: 'Done (1)', exact: true }).getAttribute('aria-pressed'), 'true');
+          await reopened.locator('[data-work-results]').scrollIntoViewIfNeeded();
+          await reopened.screenshot({ path: path.join(report, 'iphone-done-recorded.png') });
         }
         return { rows, keyboardAndHistory: true };
       });
