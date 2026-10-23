@@ -1,4 +1,4 @@
 
-## 2024-05-14 - [React & WebGL Fluid Canvas Performance Bottleneck]
+## 2026-10-21 - React & WebGL fluid canvas performance
 **Learning:** In Three.js render loops (e.g. `FluidEffect.jsx` `update()` method), creating new `Color`/`Vector3` objects and comparing them against cached ones using `!==` will ALWAYS be true (reference inequality). Additionally, using `JSON.stringify(props)` in a React hook dependency array (like in `useMemo`) when `props` contains WebGL Texture references (`tFluid`) is highly inefficient and causes significant UI thread blocking.
 **Action:** Always compare raw primitive values (like hex strings) before doing WebGL math or allocating memory inside a render loop. Use primitive destructuring (`intensity`, `fluidColor`, `backgroundColor`, `tFluid`) in React dependency arrays instead of `JSON.stringify` for props containing complex context objects.
