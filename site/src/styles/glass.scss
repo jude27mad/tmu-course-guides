@@ -31,6 +31,12 @@
       background-color: var(--glass-backing);
       -webkit-backdrop-filter: blur($blur) saturate(110%);
       backdrop-filter: blur($blur) saturate(110%);
+      // Paired WebKit diagnostics showed a cost for the larger kernel on
+      // phones. Retain the material while limiting that compositing work.
+      @media (max-width: 600px) {
+        -webkit-backdrop-filter: blur(4px) saturate(110%);
+        backdrop-filter: blur(4px) saturate(110%);
+      }
     }
   }
   :global(html[data-motion='off']) & {

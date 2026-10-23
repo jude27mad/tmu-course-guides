@@ -92,8 +92,9 @@ try {
         const filtered = await page.evaluate(() => [...document.querySelectorAll('*')].filter((el) => {
           const s = getComputedStyle(el);
           return (s.backdropFilter || s.webkitBackdropFilter || 'none') !== 'none';
-        }).map((el) => ({ glass: el.dataset.glass, parentGlass: !!el.parentElement.closest('[data-glass]') })));
+        }).map((el) => ({ glass: el.dataset.glass, parentGlass: !!el.parentElement.closest('[data-glass]'), filter: getComputedStyle(el).backdropFilter || getComputedStyle(el).webkitBackdropFilter })));
         assert.ok(filtered.length <= 4 && filtered.every((el) => el.glass && !el.parentGlass), JSON.stringify(filtered));
+        if (width <= 500) assert.ok(filtered.every((el) => el.filter.includes('blur(4px)')), 'phone blur exceeds the measured material budget');
         await page.screenshot({ path: path.join(report, course + '-' + width + '.png') });
       }
       const opener = page.getByRole('button', { name: /Guide tools/ });
@@ -274,6 +275,11 @@ try {
       await page.screenshot({ path: path.join(report, 'search-' + width + '.png') });
       assert.equal(await search.locator('[data-glass]').count(), 0);
       assert.ok(hintSize >= 16, 'Motion-setting help is too small: ' + hintSize + 'px');
+      await search.getByRole('combobox').fill('motion');
+      const motionHelp = search.getByRole('option').filter({ hasText: 'Stops animation and makes glass controls solid' }).locator('small');
+      await motionHelp.waitFor();
+      assert.ok(await motionHelp.evaluate((el) => parseFloat(getComputedStyle(el).fontSize) >= 16), 'Search motion help is too small');
+      await page.screenshot({ path: path.join(report, 'search-motion-' + width + '.png') });
     }, { viewport: { width, height: width > 500 ? 1024 : 844 } });
   }
 
@@ -302,12 +308,12 @@ try {
         await page.goto(url + 'mth140/?motion=' + (paused ? 'off' : 'full'));
         await ready(page);
         for (let i = 0; i < 6; i += 1) {
-          // Alternate order to reduce warm-up bias; same route/build/runner.
+          // Reverse the middle pair to reduce order bias; same route/build/runner.
           // Reset to the same content so both variants measure Work -> Study.
           await page.locator(nav + ' a[href$="#work"]').click();
           await settled(page);
           await aligned(page);
-          const glass = i % 2 === 0;
+          const glass = [true, false, false, true, true, false][i];
           const override = glass ? null : await page.addStyleTag({ content: '[data-glass] { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background-color: var(--glass-solid) !important; }' });
           const result = await page.evaluate(async () => {
             const values = [];
@@ -317,10 +323,21 @@ try {
             frame = requestAnimationFrame(sample);
             const hash = '#study';
             const link = document.querySelector('nav[aria-label="Course views"] a[href$="' + hash + '"]');
+            const materialStyle = getComputedStyle(link.closest('nav'));
+            const actualFilter = materialStyle.backdropFilter || materialStyle.webkitBackdropFilter || 'none';
+            let stateAcknowledgementMs = null;
             const start = performance.now();
+            const acknowledgement = new MutationObserver(() => {
+              if (link.getAttribute('aria-current') === 'page') {
+                stateAcknowledgementMs = performance.now() - start;
+                acknowledgement.disconnect();
+              }
+            });
+            acknowledgement.observe(link, { attributes: true, attributeFilter: ['aria-current'] });
             link.click();
             await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-            const acknowledgementMs = performance.now() - start;
+            const twoFrameResponseMs = performance.now() - start;
+            acknowledgement.disconnect();
             const selected = link.getAttribute('aria-current');
             // Exercise a small scroll and its return while the material is visible.
             const main = document.querySelector('main');
@@ -332,16 +349,16 @@ try {
             await new Promise((resolve) => setTimeout(resolve, 250));
             cancelAnimationFrame(frame);
             values.sort((a, b) => a - b);
-            return { selected, acknowledgementMs, frameP95Ms: values[Math.floor(values.length * 0.95)], longFrames: values.filter((v) => v > 50).length, frames: values.length };
+            return { selected, actualFilter, stateAcknowledgementMs, twoFrameResponseMs, frameP95Ms: values[Math.floor(values.length * 0.95)], longFrames: values.filter((v) => v > 50).length, frames: values.length };
           });
           assert.equal(result.selected, 'page');
           await settled(page);
           await aligned(page);
-          samples.push({ paused, glass, ...result });
+          samples.push({ paused, glassRequested: glass, ...result });
           if (override) await override.evaluate((el) => el.remove());
         }
       }
-      await writeFile(path.join(report, 'performance.json'), JSON.stringify({ note: 'Paired CI diagnostics; software-rendered browser timings are not physical-device FPS.', samples }, null, 2));
+      await writeFile(path.join(report, 'performance.json'), JSON.stringify({ note: 'Paired CI diagnostics, not physical-device FPS. Paused samples are solid in both variants; actualFilter records the effective material. State acknowledgement and two-frame response are separate timings.', samples }, null, 2));
       return samples;
     } finally { await context.tracing.stop({ path: path.join(report, 'interaction-trace.zip') }); }
   });
