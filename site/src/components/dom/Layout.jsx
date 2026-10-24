@@ -13,6 +13,7 @@ import styles from '@src/components/dom/styles/layout.module.scss';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
 import { TOKENS } from '@src/lib/palette.mjs';
+import { markPageShrunk } from '@src/components/dom/navbar/panelShell';
 
 // Giats's card (desktop and Android, except between courses): shrink, slide, slide, grow.
 // Two steps out and about two in keep a page change within 0.6 s.
@@ -169,6 +170,7 @@ function Layout({ children, layoutRef, mainRef, router }) {
     gsap.set(siteHeader(), { autoAlpha: 1 });
     if (nativeIOSScroll() || run.plan !== 'card') gsap.set(main, { clearProps: 'transform,transformOrigin,left' });
     if (nativeIOSScroll()) {
+      markPageShrunk(false);
       const fluid = document.getElementById('fluidCanvas');
       if (fluid) gsap.set(fluid, { opacity: 1 });
     }
@@ -348,6 +350,7 @@ function Layout({ children, layoutRef, mainRef, router }) {
     gsap.set('#loader', { autoAlpha: 0, display: 'none' });
     gsap.set(layoutRef.current, { height: '100%', opacity: 1 });
     gsap.set(main, { clearProps: 'transform,transformOrigin,left,border,borderRadius', opacity: 1, pointerEvents: 'auto', willChange: 'opacity, transform' });
+    markPageShrunk(false);
     gsap.set(paper, { display: 'block', autoAlpha: 1 });
     if (!run.steady) gsap.set(header, { left: 0, top: 0, scale: 1, autoAlpha: 1 });
     const anims = fading.map((el) => el.animate({ opacity: [0, 1] }, { duration: fade.in, easing: EASE.out, fill: 'both' }));

@@ -96,7 +96,8 @@
 // The pages' paper behind `main` during a page change: a fading page shows it
 // rather than the dark artwork (.background) beneath. It is in the page's flow,
 // never fixed or sticky, so Safari 26 never takes it for the colour of its bars,
-// and it is displayed only while a page changes.
+// and it is displayed only while a page changes. On iPhone its paper also
+// covers the reach under Safari's bars (below).
 .routePaper {
   display: none;
   position: absolute;
@@ -127,6 +128,21 @@
       height: calc(var(--app-viewport-height) + var(--edge-bleed-top) + var(--edge-bleed-bottom)) !important;
     }
   }
+  // The artwork reaches under Safari's bars (--edge-bleed-* in global.scss), and
+  // the paper caps that cover that reach belong to `main`, which fades during a
+  // page change. The page's paper covers the reach meanwhile: two strips outside
+  // the layout viewport, never where Safari samples the colour of its bars.
+  .routePaper::before,
+  .routePaper::after {
+    content: '';
+    position: fixed;
+    left: 0;
+    width: 100%;
+    background-color: var(--white);
+    pointer-events: none;
+  }
+  .routePaper::before { top: calc(-1 * var(--edge-bleed-top)); height: var(--edge-bleed-top); }
+  .routePaper::after { bottom: calc(-1 * var(--edge-bleed-bottom)); height: var(--edge-bleed-bottom); }
   .background {
     background-color: transparent;
     pointer-events: none;

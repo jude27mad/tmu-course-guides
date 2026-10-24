@@ -95,3 +95,69 @@ test('the parked skip link is invisible until it has focus', () => {
   assert.match(skip, /transform:\s*translateY\(-200%\);\s*[\s\S]*opacity:\s*0;/);
   assert.match(skip, /&:focus-visible\s*\{[^}]*opacity:\s*1;/);
 });
+
+test('the paper caps stand down while a panel shell shrinks the page (iPad, landscape iPhone)', () => {
+  // A transformed main holds its fixed caps, which would frame the shrunk page.
+  const shell = read('../src/components/dom/navbar/panelShell.js');
+  assert.match(shell, /export function markPageShrunk\(shrunk\)/);
+  assert.match(shell, /onStart: \(\) => \{[\s\S]*?if \(ios && !isMobile\) \{[\s\S]*?markPageShrunk\(true\);[\s\S]*?onReverseComplete/);
+  assert.match(shell, /onReverseComplete: \(\) => \{[\s\S]*?if \(ios && !isMobile\) \{[\s\S]*?markPageShrunk\(false\);/);
+  // Leaving from an open panel pauses the shell; the route entry restores main instead.
+  const layout = read('../src/components/dom/Layout.jsx');
+  assert.equal(layout.match(/markPageShrunk\(false\);/g)?.length, 2);
+  const global = read('../src/styles/global.scss');
+  const shown = global.indexOf("&:not([data-edge-top='open']) #main::before");
+  const hidden = global.search(/&\[data-page-shrunk\] #main::before,\s*&\[data-page-shrunk\] #main::after \{\s*display: none;/);
+  assert.ok(shown !== -1 && hidden > shown, 'the stand-down rule follows the rule that shows the caps (same specificity)');
+});
+
+test('the shared canvas drops a View\'s last frame once nothing draws', () => {
+  const app = read('../src/pages/_app.page.jsx');
+  assert.match(app, /<ClearViews \/>[\s\S]*<View\.Port \/>/);
+  // The production component, evaluated from its source against a stub renderer.
+  const source = read('../src/components/canvas/ClearViews.jsx')
+    .replace(/^import[\s\S]*?from ['"][^'"]+['"];?\s*$/gm, '')
+    .replace('export default ClearViews;', 'return ClearViews;');
+  let frame;
+  let priority;
+  const ClearViews = new Function('useRef', 'useFrame', source)(
+    (value) => ({ current: value }),
+    (callback, order) => {
+      frame = callback;
+      priority = order;
+    },
+  );
+  ClearViews();
+  // drei Views draw at priority 1 and up, after this.
+  assert.equal(priority, 0);
+  const gl = { info: { render: { frame: 0 } }, clears: 0, setScissorTest() {}, clear() { this.clears += 1; } };
+  const tick = (views) => {
+    frame({ gl });
+    gl.info.render.frame += views;
+  };
+  tick(1); // a badge on screen
+  tick(1);
+  assert.equal(gl.clears, 2);
+  tick(0); // its window leaves: the frame it left behind is cleared
+  assert.equal(gl.clears, 3);
+  tick(0); // nothing drew since: the empty canvas is left alone
+  tick(0);
+  assert.equal(gl.clears, 3);
+  tick(1); // a badge returns
+  tick(0);
+  assert.equal(gl.clears, 4);
+});
+
+test('the loader\'s paper continues under the bars', () => {
+  const loader = read('../src/components/dom/styles/loader.module.scss');
+  assert.match(loader, /:global\(html\[data-scroll-mode='document'\]\) & \{\s*box-shadow:\s*0 calc\(-1 \* var\(--edge-bleed-top\)\) 0 0 var\(--white\),\s*0 var\(--edge-bleed-bottom\) 0 0 var\(--white\);/);
+});
+
+test('a changing page fades into paper that covers the reach under the bars too', () => {
+  // main's own caps fade with it; #routePaper is in the page's flow and stops at its edges.
+  const app = read('../src/pages/app.module.scss');
+  const documentMode = app.slice(app.indexOf(":global(html[data-scroll-mode='document']) {"));
+  assert.match(documentMode, /\.routePaper::before,\s*\.routePaper::after \{[^}]*position: fixed;[^}]*background-color: var\(--white\);/);
+  assert.match(documentMode, /\.routePaper::before \{ top: calc\(-1 \* var\(--edge-bleed-top\)\); height: var\(--edge-bleed-top\); \}/);
+  assert.match(documentMode, /\.routePaper::after \{ bottom: calc\(-1 \* var\(--edge-bleed-bottom\)\); height: var\(--edge-bleed-bottom\); \}/);
+});

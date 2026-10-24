@@ -286,8 +286,71 @@ async function checkAllCoursesNavigation(context, motion, scenario = 'stable') {
   }
 }
 
+// iPad (and a landscape iPhone) opens Menu and Search through the shell that
+// shrinks the page. A transformed main holds its fixed paper caps, which would
+// then frame the shrunk page instead of covering the reach under Safari's bars.
+async function checkShrunkPage(context, motion) {
+  const page = await context.newPage();
+  const errors = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  const caps = () =>
+    page.evaluate(() => {
+      const main = document.querySelector('main');
+      return {
+        mode: document.documentElement.dataset.scrollMode,
+        width: innerWidth,
+        shrunk: 'pageShrunk' in document.documentElement.dataset,
+        edgeTop: document.documentElement.dataset.edgeTop,
+        topCap: getComputedStyle(main, '::before').display,
+        transform: getComputedStyle(main).transform,
+      };
+    });
+  try {
+    await page.goto(base);
+    await ready(page);
+    const atTop = await caps();
+    assert.deepEqual([atTop.mode, atTop.shrunk, atTop.edgeTop, atTop.topCap], ['document', false, 'closed', 'block'], JSON.stringify(atTop));
+    assert.ok(atTop.width >= 812, `the shell shrinks the page only from 812px: ${JSON.stringify(atTop)}`);
+    await page.getByRole('button', { name: 'Open menu', exact: true }).tap();
+    await page.getByRole('button', { name: 'Close menu', exact: true }).waitFor();
+    await page.waitForFunction(() => getComputedStyle(document.querySelector('main')).transform !== 'none');
+    const open = await caps();
+    assert.deepEqual([open.shrunk, open.topCap], [true, 'none'], JSON.stringify(open));
+    await page.getByRole('button', { name: 'Close menu', exact: true }).tap();
+    await page.waitForFunction(() => !('pageShrunk' in document.documentElement.dataset));
+    await ready(page);
+    const closed = await caps();
+    assert.deepEqual([closed.topCap, closed.transform], ['block', 'none'], JSON.stringify(closed));
+    // Leaving from the open menu: the route entry restores main, not the shell.
+    await page.getByRole('button', { name: 'Open menu', exact: true }).tap();
+    await page.getByRole('button', { name: 'Close menu', exact: true }).waitFor();
+    await page.waitForFunction(() => 'pageShrunk' in document.documentElement.dataset);
+    await page.locator('#menu').getByRole('link', { name: 'CEN100', exact: true }).click();
+    await page.waitForURL(`${base}cen100/`);
+    await ready(page);
+    const landed = await caps();
+    assert.deepEqual([landed.shrunk, landed.edgeTop, landed.topCap, landed.transform], [false, 'closed', 'block', 'none'], JSON.stringify(landed));
+    assert.deepEqual(errors, [], JSON.stringify({ motion, errors }));
+    results.push({ route: 'iPad menu', motion, pass: true, atTop, open, closed, landed });
+    console.log('PASS', motion, 'iPad menu shrinks the page without its paper caps');
+  } catch (error) {
+    await page.screenshot({ path: path.join(report, `${motion}-ipad-menu-failure.png`) }).catch(() => {});
+    throw error;
+  } finally {
+    await page.close();
+  }
+}
+
 try {
   browser = await webkit.launch({ headless: true });
+  for (const motion of ['no-preference', 'reduce']) {
+    const context = await browser.newContext({ ...devices['iPad Pro 11'], reducedMotion: motion });
+    try {
+      await checkShrunkPage(context, motion);
+    } finally {
+      await context.close();
+    }
+  }
   for (const motion of ['no-preference', 'reduce']) {
     const context = await browser.newContext({ ...devices['iPhone 13'], reducedMotion: motion });
     try {
