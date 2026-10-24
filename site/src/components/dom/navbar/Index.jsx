@@ -1,6 +1,6 @@
 import { nativeIOSScroll, scrollRoot, scrollTop, scrollViewport } from '@src/utils/scrollRoot';
 import { buildShellTimeline } from '@src/components/dom/navbar/panelShell';
-import { setBrowserSurfaces } from '@src/utils/theme';
+import { setBrowserSurfaces, setEdgeBleed } from '@src/utils/theme';
 import ButtonLink from '@src/components/animationComponents/buttonLink/Index';
 import Link from 'next/link';
 import MenuButton from '@src/components/dom/navbar/components/MenuButton';
@@ -98,7 +98,25 @@ function Navbar() {
       const darkFooter = !!footerRect && footerRect.top < scrollerRect.bottom - 1 && footerRect.bottom >= scrollerRect.bottom - 1;
       setBrowserSurfaces(overlay ? 'dark' : 'light', overlay || darkFooter ? 'dark' : 'light');
     };
+    // Pages that end in the dark footer continue it below their end; course
+    // pages end light. The top of every page is light, but a dark panel can
+    // start close to it (the cards on /courses/). Also run straight from the
+    // scroll event, so a route change's reset to the top paints with its paper.
+    // Only the document scroll mode (iPhone, iPad) reaches under browser bars.
+    const edges = () => {
+      if (!nativeIOSScroll()) return;
+      const scrolled = window.scrollY;
+      const viewport = window.innerHeight;
+      const scrollable = document.scrollingElement.scrollHeight - viewport;
+      const panels = Array.from(main.querySelectorAll('[data-surface="dark"]'))
+        .map((panel) => panel.getBoundingClientRect())
+        .filter((rect) => rect.height);
+      const darkFromStart = Math.min(Infinity, ...panels.map((rect) => scrolled + rect.top));
+      const darkFromEnd = Math.min(Infinity, ...panels.map((rect) => scrollable - scrolled + viewport - rect.bottom));
+      setEdgeBleed({ scrollTop: scrolled, maxScroll: scrollable, endsDark: !!main.querySelector('footer [data-surface="dark"]'), darkFromStart, darkFromEnd });
+    };
     const schedule = () => {
+      edges();
       if (!frame) frame = requestAnimationFrame(update);
     };
     scroller.addEventListener('scroll', schedule, { passive: true });

@@ -169,12 +169,16 @@ main > div > section:nth-last-child(1) {
   background-color: var(--menuColor);
   color: var(--menuFontColor);
   transform: translateY(-200%);
+  // Safari 26 shows the area above the page under its status bar, where the
+  // parked link appeared as a dark smudge. It stays focusable while invisible.
+  opacity: 0;
   @include mobile {
     padding: 0 4vw;
   }
   &:focus,
   &:focus-visible {
     transform: none;
+    opacity: 1;
   }
 }
 
@@ -216,8 +220,41 @@ html[data-motion='off'] {
 
 html[data-scroll-mode='document'] {
   overflow-x: clip; overflow-y: auto;
+  // Safari 26 shows the page under its translucent status bar and toolbar, but
+  // fixed layers stop at the layout viewport, so the dark artwork, the course
+  // cards and the grain ended in a hard line at both bars. They reach this far
+  // past each edge instead (more than either bar, in either toolbar layout).
+  --edge-bleed-top: 160px;
+  --edge-bleed-bottom: 160px;
   body { overflow: visible; max-height: none; }
-  #layout::before { position: absolute; width: 100%; height: 100%; }
+  // Fixed, like the contained shell, so the paper under the bars and above the
+  // page has the same texture as the page.
+  #layout::before {
+    top: calc(-1 * var(--edge-bleed-top));
+    width: 100%;
+    height: calc(100% + var(--edge-bleed-top) + var(--edge-bleed-bottom));
+  }
+  // Above the start of a page, and below the end of one that ends light, there
+  // is no page for the dark artwork to show through: paper covers its reach
+  // there (data-edge-top/-bottom, set by the navbar). Part of main, behind its
+  // content, so it fades with the page during route changes.
+  #main::before,
+  #main::after {
+    content: '';
+    display: none;
+    position: fixed;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+    background-color: var(--white);
+    pointer-events: none;
+  }
+  #main::before { top: calc(-1 * var(--edge-bleed-top)); height: var(--edge-bleed-top); }
+  #main::after { bottom: calc(-1 * var(--edge-bleed-bottom)); height: var(--edge-bleed-bottom); }
+  &:not([data-edge-top='open']) #main::before,
+  &[data-edge-bottom='closed'] #main::after {
+    display: block;
+  }
 }
 
 // The fluid's black base is invisible (it blends with `difference`), but it is a
@@ -236,8 +273,8 @@ html:not([data-scroll-mode='document']) #fluidCanvas {
 // that point ends the search for the edge with no colour, so the bar stays
 // transparent. They must not use `pointer-events: none`: WebKit then repeats the
 // search with the guard skipped and can pick up whatever sits underneath. They
-// are 8px tall to reach the sampled row, which leaves 6px at each edge that
-// taps do not pass through (except while a panel is open, see below).
+// are 8px tall to reach the sampled row, and only span the middle half, where
+// the row is sampled, so the corners and the outer quarters stay open to taps.
 // Evidence/limits: docs/qa/safari-toolbar-transparency.md.
 .safari-toolbar-blend {
   display: none;
@@ -251,8 +288,8 @@ html:not([data-scroll-mode='document']) #fluidCanvas {
     background-color: transparent;
     background-image: none;
     height: 8px;
-    width: 100%;
-    left: 0;
+    width: 50%;
+    margin-left: 25%;
     z-index: 2147483647;
     pointer-events: auto;
     border: 0;
@@ -266,11 +303,5 @@ html:not([data-scroll-mode='document']) #fluidCanvas {
   html[data-scroll-mode='document'] [data-safari-blend='bottom'] {
     bottom: -2px;
     margin-top: -8px;
-  }
-  // The menu and search panels cover the page, must receive input at every pixel
-  // including the edges, and are the colour the bars should take (Safari then
-  // finds the panel itself once the guards no longer take part).
-  html[data-scroll-mode='document'][data-browser-surface='dark'] .safari-toolbar-blend {
-    pointer-events: none;
   }
 }
