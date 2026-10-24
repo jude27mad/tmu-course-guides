@@ -72,6 +72,11 @@ async function verifyTransparencyGuards(page) {
         return { node: node.id ? `#${node.id}` : `${node.tagName.toLowerCase()}.${String(node.className).split(' ')[0]}`, background: css.backgroundColor, backdrop: css.backdropFilter };
       })
       .filter((layer) => layer.background !== 'rgba(0, 0, 0, 0)' || (layer.backdrop && layer.backdrop !== 'none'));
+    // The open menu and search panels are dark on purpose: the bars follow them, in the panel's own ink.
+    const panelOpen = ['#menu', '#search'].some((selector) => {
+      const panel = document.querySelector(selector);
+      return panel && getComputedStyle(panel).visibility !== 'hidden';
+    });
     const fluid = document.querySelector('#fluidCanvas');
     return {
       guards,
@@ -80,12 +85,14 @@ async function verifyTransparencyGuards(page) {
       viewport: { width: innerWidth, height: innerHeight },
       oldSamples: document.querySelectorAll('[data-safari-edge]').length,
       tintingLayers,
+      panelOpen,
       fluidBackground: fluid ? getComputedStyle(fluid).backgroundColor : null,
     };
   });
   assert.equal(state.oldSamples, 0, 'opaque edge samplers must not return');
   assert.deepEqual(state.guards.map((guard) => guard.side), ['top', 'bottom']);
-  assert.deepEqual(state.tintingLayers, [], `a viewport-sized fixed layer would colour Safari's bars: ${JSON.stringify(state)}`);
+  const stray = state.tintingLayers.filter((layer) => !(state.panelOpen && layer.background === 'rgb(24, 24, 27)' && (!layer.backdrop || layer.backdrop === 'none')));
+  assert.deepEqual(stray, [], `a viewport-sized fixed layer would colour Safari's bars: ${JSON.stringify(state)}`);
   // Hydration keeps the exported server style, so this fails if the colour comes back through inline style.
   assert.ok(state.fluidBackground === null || state.fluidBackground === 'rgba(0, 0, 0, 0)', JSON.stringify(state));
   for (const guard of state.guards) {
