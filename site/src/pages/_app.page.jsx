@@ -239,8 +239,11 @@ function MyApp({ Component, pageProps, router }) {
                 depth: false,
               }}
               // R3F's wrapper takes pointer events unless told otherwise; the
-              // fluid reads pointer moves from <main> itself.
-              style={{ mixBlendMode: 'difference', background: nativeIOSScroll() ? 'transparent' : 'black', pointerEvents: 'none' }}
+              // fluid reads pointer moves from <main> itself. Its black base lives in
+              // global.scss, keyed on the scroll mode: a value chosen here from the
+              // client-only scroll mode never reaches the page, because hydration keeps
+              // the exported server style (see docs/qa/safari-toolbar-transparency.md).
+              style={{ mixBlendMode: 'difference', pointerEvents: 'none' }}
               linear
               className={styles.canvasContainer}
               dpr={[0.1, 0.5]}

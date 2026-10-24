@@ -36,6 +36,15 @@ html[data-browser-surface='dark'] body {
   background-color: var(--black);
 }
 
+// On iPhone, Safari fills the area under its bottom bar with the document's
+// own background once the page ends there and no fixed layer supplies a colour.
+// With the dark footer at the bottom edge that must be the footer's ink, not
+// the paper. Document mode only: on desktop `main` covers the page.
+html[data-scroll-mode='document'][data-browser-bottom='dark'],
+html[data-scroll-mode='document'][data-browser-bottom='dark'] body {
+  background-color: var(--black);
+}
+
 main.lenis-stopped {
   overflow: hidden;
 }
@@ -211,9 +220,24 @@ html[data-scroll-mode='document'] {
   #layout::before { position: absolute; width: 100%; height: 100%; }
 }
 
+// The fluid's black base is invisible (it blends with `difference`), but it is a
+// full-viewport fixed layer with a solid background-color, which Safari 26.1+
+// reads as the colour of its status-bar and toolbar bands. Only the contained
+// shell needs it; in document mode (iPhone, iPad) the fluid has no background.
+html:not([data-scroll-mode='document']) #fluidCanvas {
+  background-color: black;
+}
+
 // Transparent sticky sampling, not opaque colours disguised with text clipping.
 // The bottom guard follows the complete document; neither guard paints a band,
-// affects document height, captures taps or changes the fluid canvas.
+// affects document height or changes the fluid canvas.
+// Safari 26 chooses an edge's colour from one hit-test point 4px inside the
+// layout viewport at the middle of the top and bottom edges. A guard that covers
+// that point ends the search for the edge with no colour, so the bar stays
+// transparent. They must not use `pointer-events: none`: WebKit then repeats the
+// search with the guard skipped and can pick up whatever sits underneath. They
+// are 8px tall to reach the sampled row, which leaves 6px at each edge that
+// taps do not pass through (except while a panel is open, see below).
 // Evidence/limits: docs/qa/safari-toolbar-transparency.md.
 .safari-toolbar-blend {
   display: none;
@@ -226,21 +250,27 @@ html[data-scroll-mode='document'] {
     position: sticky;
     background-color: transparent;
     background-image: none;
-    height: 6px;
+    height: 8px;
     width: 100%;
     left: 0;
     z-index: 2147483647;
-    pointer-events: none;
+    pointer-events: auto;
     border: 0;
     padding: 0;
     box-shadow: none;
   }
   html[data-scroll-mode='document'] [data-safari-blend='top'] {
     top: -2px;
-    margin-bottom: -6px;
+    margin-bottom: -8px;
   }
   html[data-scroll-mode='document'] [data-safari-blend='bottom'] {
     bottom: -2px;
-    margin-top: -6px;
+    margin-top: -8px;
+  }
+  // The menu and search panels cover the page, must receive input at every pixel
+  // including the edges, and are the colour the bars should take (Safari then
+  // finds the panel itself once the guards no longer take part).
+  html[data-scroll-mode='document'][data-browser-surface='dark'] .safari-toolbar-blend {
+    pointer-events: none;
   }
 }
