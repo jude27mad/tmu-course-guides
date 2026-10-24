@@ -1,6 +1,6 @@
 import { nativeIOSScroll, scrollRoot, scrollTop, scrollViewport } from '@src/utils/scrollRoot';
 import { buildShellTimeline } from '@src/components/dom/navbar/panelShell';
-import { setBrowserSurfaces } from '@src/utils/theme';
+import { setBrowserSurfaces, setEdgeBleed } from '@src/utils/theme';
 import ButtonLink from '@src/components/animationComponents/buttonLink/Index';
 import Link from 'next/link';
 import MenuButton from '@src/components/dom/navbar/components/MenuButton';
@@ -97,6 +97,11 @@ function Navbar() {
       // than the route or menu state. This works across all course pages.
       const darkFooter = !!footerRect && footerRect.top < scrollerRect.bottom - 1 && footerRect.bottom >= scrollerRect.bottom - 1;
       setBrowserSurfaces(overlay ? 'dark' : 'light', overlay || darkFooter ? 'dark' : 'light');
+      // Pages that end in the dark footer continue it below their end; course
+      // pages end light. The top of every page is light.
+      const scrolled = scrollTop();
+      const scrollable = nativeIOSScroll() ? document.scrollingElement.scrollHeight - window.innerHeight : main.scrollHeight - main.clientHeight;
+      setEdgeBleed({ scrollTop: scrolled, maxScroll: scrollable, endsDark: !!footer });
     };
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(update);

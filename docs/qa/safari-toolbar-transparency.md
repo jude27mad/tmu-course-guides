@@ -34,6 +34,22 @@ The shared browser-surface state and theme-color hint remain for the menu and no
 
 This is not a standardized Safari API. The source explicitly notes that a native dialog can keep the toolbar opaque while open and recover when it closes; the Guide tools dialog does the same here, by design.
 
+## Under the bars (24 October 2026, second report)
+
+With the black fill gone, the page showed through the bars but still looked boxed: on the dark footer a flat `#18181b` band sat under both bars with a hard line against the lit gradient, the course cards were cut where the toolbar began, a dark smudge appeared under the status bar once the page scrolled, and above the page at the very top the paper was flat `#f4f4f5` against the page's grained `#f1f1f1`.
+
+Cause: Safari lays fixed layers out in the layout viewport between the bars, but shows the document, and any fixed layer that reaches outside that viewport, under them. This site paints its light paper with the DOM, but its dark artwork (`.background`), the course cards and badges (the shared View.Port canvas) and the grain with fixed layers. Those stopped at the layout viewport, so only the DOM and the flat document background reached under the bars. The smudge was the skip link, parked by `translateY(-200%)` just above the viewport, which Safari shows under the status bar.
+
+Change, document mode only:
+
+- The background canvas, the shared scene canvas, the grain (fixed again, as in the contained shell) and the mobile panel backdrop reach `--edge-bleed-top` / `--edge-bleed-bottom` (160px) past each edge, more than either bar in either address-bar layout. Inside the page nothing moves; drei computes each view from the canvas's own rectangle.
+- Above the start of a page there is no page for the dark artwork to show through, so `clip-path` hides its upward reach until the page has scrolled 160px (`html[data-edge-top]`). Below the end of a page that ends light (the course pages) its downward reach is hidden in the same way (`html[data-edge-bottom]`). Pages that end in the dark footer keep it, so the footer continues under the toolbar. The navbar sets both flags in the same handler as the footer state.
+- The fluid keeps the viewport's size, because it maps touches from the viewport top.
+- The panel backdrop repeats the menu panel's radial highlight, placed at the panel's top right corner, so the open menu continues under the bars without a step.
+- The skip link has `opacity: 0` until it has focus.
+
+Checked with a Chromium emulation of Safari's geometry (62px status bar, 98px or 59px toolbar, fixed layers laid out between them): the footer, card and menu steps are gone, and the paper above the page has the page's texture. This remains an emulation; the device check below still applies.
+
 ## Automated checks
 
 - `site/tests/fluid-edge-colour.test.mjs`: no inline background on the fluid canvas, the CSS rule that gives it black only outside document mode, guard height and offsets, the open-panel exception and the ink rule. It fails on the old source.

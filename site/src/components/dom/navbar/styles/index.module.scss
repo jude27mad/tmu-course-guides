@@ -8,8 +8,19 @@
     display: block;
     position: fixed;
     inset: 0;
+    // On iPhone, continue under Safari's bars (see --edge-bleed-* in global.scss),
+    // including the panel's highlight: the same ellipse as `.menu` in
+    // menuLinks.module.scss (farthest-corner from its top right), placed at the
+    // panel's top right corner.
+    top: calc(-1 * var(--edge-bleed-top, 0px));
+    bottom: calc(-1 * var(--edge-bleed-bottom, 0px));
     z-index: 3;
     background-color: var(--black);
+    background-image: radial-gradient(
+      ellipse calc(100% * 1.41421) calc(var(--app-viewport-height) * 1.41421) at 100% var(--edge-bleed-top, 0px),
+      rgba(var(--onDarkRgb), 0.06),
+      transparent 65%
+    );
     // Continue catching taps during the closing fade after the panel is inert.
     pointer-events: auto;
     opacity: 0;

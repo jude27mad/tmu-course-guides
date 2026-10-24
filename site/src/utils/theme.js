@@ -55,6 +55,19 @@ export function setBrowserSurfaces(topMode, bottomMode = topMode) {
   }
 }
 
+// The fixed artwork reaches under Safari's bars (--edge-bleed-* in global.scss).
+// Its upward reach is shown once the page has scrolled at least that far, and its
+// downward reach unless the end of a light-ending page is that close.
+export function setEdgeBleed({ scrollTop, maxScroll, endsDark }) {
+  if (typeof document === 'undefined') return;
+  const root = document.documentElement;
+  const style = getComputedStyle(root);
+  const top = parseFloat(style.getPropertyValue('--edge-bleed-top')) || 0;
+  const bottom = parseFloat(style.getPropertyValue('--edge-bleed-bottom')) || 0;
+  root.dataset.edgeTop = scrollTop >= top ? 'open' : 'closed';
+  root.dataset.edgeBottom = endsDark || maxScroll - scrollTop >= bottom ? 'open' : 'closed';
+}
+
 // Compatibility for callers requiring the same color at both ends.
 export function setBrowserSurface(mode) {
   setBrowserSurfaces(mode, mode);

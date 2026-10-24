@@ -107,6 +107,21 @@
       min-height: var(--app-viewport-height); overflow: visible; overscroll-behavior: auto;
     }
     .canvasContainer { position: fixed !important; height: var(--app-viewport-height) !important; }
+    // The shared scene (course cards, badges) continues under Safari's bars; see
+    // --edge-bleed-* in global.scss. The fluid maps touches from the viewport
+    // top, so it keeps the viewport's size.
+    .canvasContainer:not(:global(#fluidCanvas)) {
+      top: calc(-1 * var(--edge-bleed-top));
+      height: calc(var(--app-viewport-height) + var(--edge-bleed-top) + var(--edge-bleed-bottom)) !important;
+      clip-path: inset(var(--edge-clip-top) 0 var(--edge-clip-bottom) 0);
+    }
   }
-  .background { background-color: transparent; pointer-events: none; }
+  .background {
+    background-color: transparent;
+    pointer-events: none;
+    // The dark artwork continues under Safari's bars as well.
+    top: calc(-1 * var(--edge-bleed-top));
+    height: calc(var(--app-viewport-height) + var(--edge-bleed-top) + var(--edge-bleed-bottom));
+    clip-path: inset(var(--edge-clip-top) 0 var(--edge-clip-bottom) 0);
+  }
 }
