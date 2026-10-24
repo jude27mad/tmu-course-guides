@@ -53,6 +53,22 @@ Change, document mode only:
 
 Checked with a Chromium emulation of Safari's geometry (62px status bar, 98px or 59px toolbar, fixed layers laid out between them): the footer, card and menu steps are gone, the paper above the page has the page's texture, the course cards stay dark under the status bar, and inside the viewport the artwork matches the previous build to within its grain. Chromium's default GPU path drops the bottom of a WebGL canvas while an opaque layer overlaps the viewport top, so the emulation runs on ANGLE's SwiftShader backend. This remains an emulation; the device check below still applies.
 
+## The flat fill past the page (24 October 2026, third report)
+
+After #61 and #65 the iPhone still showed a box at both ends. Measured on the owner's screenshots (3x, 440x956pt):
+
+- At the top of the Desk, the band under the status bar was flat 244 (`#f4f4f5`), with a hard edge at 61pt against the page, which reads 241 through its grain.
+- At the end of a page with the dark footer, the band under the bottom bar was flat: first 244 (paper), then 24 (`#18181b`) after a bounce, against the footer's artwork (25 to 64).
+- Neither band carried grain or artwork.
+
+Safari paints these areas in one flat colour: the document's background (`underPageBackgroundColor`; with `predominantColor` unavailable, WebKit's colour extension falls back to it too). In every screenshot the band was exactly the root background the page had set. Three changes follow:
+
+- In document mode the root background is `--pageUnderGrain` (`#f1f1f1`), the page as an iPhone shows it through the grain, and so is the light `theme-color`.
+- Safari stops the document's end above its bottom bar, inside the viewport. The old dark-footer state also required the footer's bottom to reach the viewport's bottom, which never happens at the end, so the end stayed paper until a bounce. On iPhone and iPad the bottom is now dark as soon as the footer fills most of the area under the bar (its top 40px inside the viewport).
+- The dark footer's last 160px fade into the ink in document mode, so the footer meets Safari's flat ink without an edge.
+
+check-ios-document now scrolls each route to its end and back, and requires the root colour to be the ink at a dark end and `#f1f1f1` otherwise.
+
 ## Automated checks
 
 - `site/tests/fluid-edge-colour.test.mjs`: no inline background on the fluid canvas, the CSS rule that gives it black only outside document mode, guard height, width and offsets, and the ink rule. It fails on the old source.

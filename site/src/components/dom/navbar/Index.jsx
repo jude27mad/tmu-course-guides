@@ -15,6 +15,10 @@ import { useRouter } from 'next/router';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
 
+// Safari 26's bottom bar covers about 56px of an iPhone's screen when collapsed
+// and 98px when expanded; the footer counts as under it from about half of that.
+const FOOTER_UNDER_BAR = 40;
+
 function Navbar() {
   const isMobile = useIsMobile();
   const router = useRouter();
@@ -95,7 +99,12 @@ function Navbar() {
       const footerRect = footer?.getBoundingClientRect();
       // Sample what reaches the BOTTOM of the real scroll viewport, rather
       // than the route or menu state. This works across all course pages.
-      const darkFooter = !!footerRect && footerRect.top < scrollerRect.bottom - 1 && footerRect.bottom >= scrollerRect.bottom - 1;
+      // On iPhone and iPad the footer ends the document, and Safari stops the
+      // document's end above its bottom bar, inside the viewport: the bottom is
+      // dark as soon as the footer fills most of the area under that bar.
+      const darkFooter = nativeIOSScroll()
+        ? !!footerRect && footerRect.top < scrollerRect.bottom - FOOTER_UNDER_BAR
+        : !!footerRect && footerRect.top < scrollerRect.bottom - 1 && footerRect.bottom >= scrollerRect.bottom - 1;
       setBrowserSurfaces(overlay ? 'dark' : 'light', overlay || darkFooter ? 'dark' : 'light');
     };
     // Pages that end in the dark footer continue it below their end; course

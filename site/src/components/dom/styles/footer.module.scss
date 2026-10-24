@@ -6,6 +6,13 @@
   width: 100%;
   translate: inherit !important;
   box-shadow: none;
+  // On iPhone and iPad Safari continues the page past its end, under the bottom
+  // bar, in one flat colour: the document's background, the ink while this footer
+  // reaches the bottom (global.scss). The artwork seen through the footer fades
+  // into that ink over its last stretch, so the two meet without an edge.
+  :global(html[data-scroll-mode='document']) & {
+    background-image: linear-gradient(to bottom, rgba(var(--inkRgb), 0) calc(100% - 160px), var(--black) calc(100% - 12px));
+  }
 
   @include mobile {
     padding-top: var(--layout-columns-gap);

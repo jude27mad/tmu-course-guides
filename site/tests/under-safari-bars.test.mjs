@@ -161,3 +161,18 @@ test('a changing page fades into paper that covers the reach under the bars too'
   assert.match(documentMode, /\.routePaper::before \{ top: calc\(-1 \* var\(--edge-bleed-top\)\); height: var\(--edge-bleed-top\); \}/);
   assert.match(documentMode, /\.routePaper::after \{ bottom: calc\(-1 \* var\(--edge-bleed-bottom\)\); height: var\(--edge-bleed-bottom\); \}/);
 });
+
+test('Safari\'s flat fill past the page and under its bottom bar is the page as seen through its grain', () => {
+  const global = read('../src/styles/global.scss');
+  assert.match(global, /html\[data-scroll-mode='document'\] \{\s*background-color: var\(--pageUnderGrain\);\s*\}/);
+  // The dark menu and a dark end still take the ink: those rules come later with equal or higher specificity.
+  assert.ok(global.indexOf("html[data-scroll-mode='document'] {\n  background-color: var(--pageUnderGrain)") < global.indexOf("html[data-browser-surface='dark'],"));
+  const theme = read('../src/utils/theme.js');
+  assert.match(theme, /const lightEdge = \(paper\) => \(document\.documentElement\.dataset\.scrollMode === 'document' \? TOKENS\.pageUnderGrain : paper\);/);
+  assert.match(theme, /meta\.setAttribute\('content', topDark \? TOKENS\.ink : lightEdge\(DEFAULT_PALETTE\.secondary\)\)/);
+});
+
+test('the dark footer fades into the ink Safari continues it in', () => {
+  const footer = read('../src/components/dom/styles/footer.module.scss');
+  assert.match(footer, /:global\(html\[data-scroll-mode='document'\]\) & \{\s*background-image: linear-gradient\(to bottom, rgba\(var\(--inkRgb\), 0\) calc\(100% - 160px\), var\(--black\) calc\(100% - 12px\)\);/);
+});
