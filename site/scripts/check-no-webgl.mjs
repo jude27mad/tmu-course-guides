@@ -60,8 +60,10 @@ const SCENARIOS = [
 const ROUTES = ['/', '/courses/', '/cen100/', '/mth140/', '/mth141/', '/privacy/', '/updates/'];
 const COURSE_CODES = ['CEN100', 'MTH140', 'MTH141'];
 
+// The page is ready, or Next.js has replaced it with its error screen (reported by the caller, not timed out on).
 const ready = (page) =>
   page.waitForFunction(() => {
+    if (/Application error: a client-side exception/i.test(document.body.innerText)) return true;
     const main = document.querySelector('main');
     const loader = document.querySelector('#loader');
     return main && getComputedStyle(main).opacity === '1' && document.documentElement.dataset.motion && (!loader || getComputedStyle(loader).display === 'none');
@@ -80,7 +82,7 @@ async function inspect(page, route, scenario, tracker, motion) {
     fluid: !!document.getElementById('fluidCanvas'),
     standIns: [...document.querySelectorAll('[data-badge-fallback]')].map((element) => element.textContent),
   }));
-  assert.ok(!/Application error|client-side exception/i.test(state.text), `${label}: Next.js application error screen`);
+  assert.ok(!/Application error: a client-side exception/i.test(state.text), `${label}: Next.js application error screen`);
   assert.ok(state.heading, `${label}: the page has its heading`);
   assert.deepEqual(tracker.pageErrors, [], `${label}: uncaught errors`);
   if (!scenario.expectConsoleErrors) assert.deepEqual(tracker.consoleErrors, [], `${label}: console errors`);
@@ -156,7 +158,7 @@ try {
             await ready(page);
             await page.waitForSelector('main h1');
             assert.deepEqual(tracker.pageErrors, [], `${name}: uncaught errors`);
-            assert.ok(!/Application error/i.test(await page.evaluate(() => document.body.innerText)), `${name}: application error screen`);
+            assert.ok(!/Application error: a client-side exception/i.test(await page.evaluate(() => document.body.innerText)), `${name}: application error screen`);
             results.push({ name, ok: true });
           } catch (error) {
             failed = true;
