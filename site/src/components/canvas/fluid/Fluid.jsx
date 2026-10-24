@@ -64,12 +64,12 @@ function Fluid({ mainRef, fluidColor }) {
     if (!meshRef.current || !postRef.current) return;
 
     while (splatStack.current.length > 0) {
-      const { mouseX, mouseY, velocityX, velocityY } = splatStack.current.pop();
+      const { mouseX, mouseY, velocityX, velocityY, dye = 10.0 } = splatStack.current.pop();
 
       setShaderMaterial('splat');
       setUniforms('splat', 'uTarget', FBOs.velocity.read.texture);
       setUniforms('splat', 'uPointer', new Vector2(mouseX, mouseY));
-      setUniforms('splat', 'uColor', new Vector3(velocityX, velocityY, 10.0));
+      setUniforms('splat', 'uColor', new Vector3(velocityX, velocityY, dye));
       setUniforms('splat', 'uRadius', radius / 100.0);
       setRenderTarget('velocity');
       setUniforms('splat', 'uTarget', FBOs.density.read.texture);

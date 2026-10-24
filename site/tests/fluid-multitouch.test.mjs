@@ -37,9 +37,11 @@ test('fluid follows one, then two, then three fingers with Giats shared swirls',
   const h = mount();
   try {
     touch(h, 'touchstart', [finger(7, 100, 400)]);
+    assert.equal(h.take().length, 1, 'touchstart creates its own contact bloom');
     touch(h, 'touchmove', [finger(7, 110, 390)]);
     assert.deepEqual(h.take(), [{ mouseX: 0.275, mouseY: 1 - 390 / 800, velocityX: 20, velocityY: 20 }]);
     touch(h, 'touchstart', [finger(7, 110, 390), finger(31, 280, 400)], [finger(31, 280, 400)]);
+    assert.equal(h.take().length, 1, 'new finger seeds its own bloom');
     // TouchList order may change. Identity, not the array index, owns a trail.
     touch(h, 'touchmove', [finger(31, 270, 390), finger(7, 120, 380)]);
     assert.deepEqual(sorted(h.take()), [
@@ -47,6 +49,7 @@ test('fluid follows one, then two, then three fingers with Giats shared swirls',
       { mouseX: 0.675, mouseY: 1 - 390 / 800, velocityX: 320, velocityY: -0 },
     ]);
     touch(h, 'touchstart', [finger(7, 120, 380), finger(31, 270, 390), finger(99, 200, 600)], [finger(99, 200, 600)]);
+    assert.equal(h.take().length, 1, 'third finger also receives bloom');
     touch(h, 'touchmove', [finger(99, 210, 590), finger(31, 260, 380), finger(7, 130, 370)]);
     assert.deepEqual(sorted(h.take()), [
       { mouseX: 0.325, mouseY: 1 - 370 / 800, velocityX: -260, velocityY: 20 },
@@ -75,6 +78,7 @@ test('touch coordinates at zero are valid and stationary fingers add no impulse'
   const h = mount();
   try {
     touch(h, 'touchstart', [finger(1, 10, 10)]);
+    h.take();
     touch(h, 'touchmove', [finger(1, 0, 0)]);
     assert.deepEqual(h.take(), [{ mouseX: 0, mouseY: 1, velocityX: -20, velocityY: 20 }]);
     touch(h, 'touchmove', [finger(1, 0, 0)]);
@@ -91,7 +95,7 @@ test('pointer-mode browsers share Giats momentum across moving fingers', () => {
     pointer('pointerdown', 5, 300, 600);
     pointer('pointermove', 5, 290, 590);
     pointer('pointermove', 2, 120, 220);
-    const splats = h.take();
+    const splats = h.take().filter(s => s.dye === undefined);
     assert.equal(splats.length, 3);
     assert.deepEqual(splats.map(s => [s.velocityX, s.velocityY]), [[20, -20], [360, -760], [-340, 740]]);
   } finally { h.cleanup(); }
@@ -101,6 +105,7 @@ test('iOS does not double-count pointer events and all input listeners are passi
   const h = mount();
   try {
     touch(h, 'touchstart', [finger(1, 100, 200)]);
+    h.take();
     h.emit('pointermove', { pointerId: 1, pointerType: 'touch', clientX: 110, clientY: 210 });
     touch(h, 'touchmove', [finger(1, 110, 210)]);
     assert.equal(h.take().length, 1);
@@ -115,7 +120,9 @@ test('unmount removes listeners and a new gesture does not reuse old positions',
   h.take();
   touch(h, 'touchend', [], [finger(1, 110, 210)]);
   touch(h, 'touchstart', [finger(1, 300, 600)]);
-  assert.deepEqual(h.take(), []);
+  const contact = h.take();
+  assert.equal(contact.length, 1);
+  assert.ok(contact[0].dye >= 16);
   touch(h, 'touchmove', [finger(1, 310, 610)]);
   assert.equal(h.take()[0]?.velocityX, 20);
   h.cleanup();
