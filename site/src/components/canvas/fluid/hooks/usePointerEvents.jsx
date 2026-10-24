@@ -30,6 +30,21 @@ const usePointerEvents = (mainRef, size, force) => {
       const previous = positions.get(key);
       if (!previous) {
         positions.set(key, new Vector2(clientX, clientY));
+        // Safari may deliver touchstart/touchend without any touchmove for an
+        // immediate retouch. Seed visible dye on contact, independently of
+        // direction or swipe velocity; movement keeps its original strength.
+        if (start) {
+          const { size: viewport } = input.current;
+          if (viewport.width > 0 && viewport.height > 0) {
+            splatStack.current.push({
+              mouseX: clientX / viewport.width,
+              mouseY: 1 - clientY / viewport.height,
+              velocityX: 0,
+              velocityY: 0,
+              dye: 32,
+            });
+          }
+        }
         return;
       }
       const deltaX = clientX - previous.x;

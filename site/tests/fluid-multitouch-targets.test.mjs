@@ -29,6 +29,8 @@ test('fingers on different child elements keep their trails when either finger l
     emit('touchstart', [first], [first], [first]);
     // The second finger began on another child node, so targetTouches differs.
     emit('touchstart', [first, second], [second], [second]);
+    assert.equal(queue.current.length, 2, 'both fingers started with contact ink');
+    queue.current.length = 0;
     const movedFirst = finger(11, 110, 210);
     const movedSecond = finger(42, 290, 590);
     emit('touchmove', [movedFirst, movedSecond], [movedFirst], [movedFirst, movedSecond]);
