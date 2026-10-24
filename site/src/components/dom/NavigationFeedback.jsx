@@ -24,13 +24,22 @@ export default function NavigationFeedback() {
       setPending(null);
       setError(!reason.cancelled);
     };
+    // Next rejects the render of a page change that a newer one replaced. Its
+    // Back/Forward handler (router.onPopState) leaves that rejection unhandled,
+    // so two quick Back presses raised an error. It is a successful
+    // interruption, as routeChangeError's `cancelled` above, not a page error.
+    const interrupted = (event) => {
+      if (event.reason?.cancelled) event.preventDefault();
+    };
     router.events.on('routeChangeStart', start);
     router.events.on('routeChangeComplete', complete);
     router.events.on('routeChangeError', failed);
+    window.addEventListener('unhandledrejection', interrupted);
     return () => {
       router.events.off('routeChangeStart', start);
       router.events.off('routeChangeComplete', complete);
       router.events.off('routeChangeError', failed);
+      window.removeEventListener('unhandledrejection', interrupted);
     };
   }, [router.events]);
   const busy = useDelayedFeedback(pending);

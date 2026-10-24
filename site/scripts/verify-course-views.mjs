@@ -171,7 +171,22 @@ try {
     try {
       const motion = await motionContext.newPage();
       motion.on('pageerror', (error) => errors.push(error.message));
+      // Install before application timers, then advance animation frames explicitly,
+      // as the Work filter check does: the outgoing fade lasts 120 ms, which one
+      // frame of a loaded CI runner can cover entirely.
+      await motion.clock.install();
       await ready(motion, 'mth140/');
+      const sample = () =>
+        motion.evaluate(() => {
+          const content = document.getElementById('course-content');
+          const style = getComputedStyle(content);
+          return {
+            time: performance.now(),
+            heading: content.querySelector('h2')?.textContent,
+            opacity: Number(style.opacity),
+            transform: style.transform,
+          };
+        });
       const changes = [];
       for (const [width, from, to] of [
         [390, 'Work', 'Study'],
@@ -182,30 +197,18 @@ try {
         await motion.setViewportSize({ width, height: 900 });
         // Let responsive canvas/layout work settle before sampling this transition.
         await motion.waitForTimeout(300);
-        await motion.evaluate(() => {
-          window.viewMotionSamples = [];
-          const sample = () => {
-            const content = document.getElementById('course-content');
-            const style = getComputedStyle(content);
-            window.viewMotionSamples.push({
-              time: performance.now(),
-              heading: content.querySelector('h2')?.textContent,
-              opacity: Number(style.opacity),
-              transform: style.transform,
-            });
-            window.viewMotionFrame = requestAnimationFrame(sample);
-          };
-          sample();
-        });
+        await motion.clock.pauseAt(new Date(await motion.evaluate(() => Date.now() + 1000)));
+        const samples = [await sample()];
         const link = motion.getByRole('navigation', { name: 'Course views' }).getByRole('link', { name: to, exact: true });
         await link.focus();
         await motion.keyboard.press('Enter');
+        // One 16 ms frame at a time, through both fades and well past them.
+        for (let elapsed = 0; elapsed < 1200; elapsed += 16) {
+          await motion.clock.runFor(16);
+          samples.push(await sample());
+        }
+        await motion.clock.resume();
         await motion.getByRole('heading', { name: to, exact: true }).waitFor();
-        await motion.waitForTimeout(800);
-        const samples = await motion.evaluate(() => {
-          cancelAnimationFrame(window.viewMotionFrame);
-          return window.viewMotionSamples;
-        });
         const moving = (heading) => samples.filter((sample) => sample.heading === heading && sample.opacity > 0 && sample.opacity < 1 && sample.transform !== 'none');
         await writeFile(path.join(report, `motion-${width}-${to}.json`), JSON.stringify(samples, null, 2));
         assert.ok(moving(from).length > 0, `${from} disappeared without an outgoing transition`);
