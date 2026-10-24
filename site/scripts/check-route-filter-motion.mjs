@@ -54,13 +54,135 @@ async function check(browser, options, name, run) {
   }
 }
 
+async function checkMobileMenu(page, name) {
+  const opener = page.getByRole('button', { name: 'Open menu', exact: true });
+  const close = page.getByRole('button', { name: 'Close menu', exact: true });
+  const firstLink = page.locator('#menu').getByRole('link', { name: 'Desk', exact: true });
+  // A small real scroll keeps the header reachable while making scroll
+  // preservation meaningful on both document and contained scroll layouts.
+  await page.evaluate(() => {
+    const scroller = document.documentElement.dataset.scrollMode === 'document' ? window : document.querySelector('main');
+    scroller.scrollTo(0, 12);
+  });
+  await page.waitForFunction(() => (document.documentElement.dataset.scrollMode === 'document' ? scrollY : document.querySelector('main').scrollTop) > 0);
+  await opener.focus();
+  const before = await page.evaluate(() => {
+    window.menuFrames = [];
+    window.menuPhase = 'before';
+    const sample = () => {
+      const main = document.querySelector('main');
+      const page = main.getBoundingClientRect();
+      const panel = document.querySelector('#menu');
+      const menu = panel.getBoundingClientRect();
+      window.menuFrames.push({
+        time: performance.now(), phase: window.menuPhase,
+        page: { left: page.left, top: page.top, width: page.width },
+        menu: { left: menu.left, top: menu.top, width: menu.width, height: menu.height },
+        viewport: { width: innerWidth, height: innerHeight },
+        opacity: Number(getComputedStyle(panel).opacity), scrollY, scrollTop: main.scrollTop,
+      });
+      window.menuFrame = requestAnimationFrame(sample);
+    };
+    sample();
+    return window.menuFrames[0];
+  });
+  assert.ok(before.scrollY > 0 || before.scrollTop > 0, 'the menu exercise starts from a scrolled page');
+  let frames;
+  try {
+    for (const closeWithEscape of [false, true]) {
+      await page.evaluate((reopened) => { window.menuPhase = reopened ? 'reopening' : 'opening'; }, closeWithEscape);
+      // Safari taps do not necessarily focus their button. Reopen from body
+      // focus as well as from the keyboard-focused opener used in the first pass.
+      if (closeWithEscape) await opener.evaluate((button) => button.blur());
+      await opener.click();
+      await page.waitForFunction(() => {
+        const menu = document.querySelector('#menu');
+        return getComputedStyle(menu).opacity === '1' &&
+          Array.from(menu.querySelectorAll('[data-menu-anim]')).every((item) => getComputedStyle(item).opacity === '1');
+      }, null, { timeout: 8000 }).catch(async () => {
+        const diagnostic = await page.evaluate(() => ({
+          open: document.querySelector('#menu').getAttribute('aria-hidden'),
+          opacity: getComputedStyle(document.querySelector('#menu')).opacity,
+          incomplete: Array.from(document.querySelectorAll('#menu [data-menu-anim]'))
+            .filter((item) => getComputedStyle(item).opacity !== '1')
+            .slice(0, 6)
+            .map((item) => ({ text: item.textContent.trim().slice(0, 40), opacity: getComputedStyle(item).opacity })),
+        }));
+        throw new Error(`Menu did not finish opening: ${JSON.stringify(diagnostic)}`);
+      });
+      // Reduced-motion iPhone Safari can leave focus on body after a touch
+      // gesture. Keyboard entry must still move directly into the modal.
+      await page.waitForTimeout(220);
+      if (!(await firstLink.evaluate((link) => link === document.activeElement))) await page.keyboard.press('Tab');
+      assert.equal(await firstLink.evaluate((link) => link === document.activeElement), true, 'phone menu receives focus automatically or on first Tab');
+      const coverage = await page.evaluate(() => {
+        const panel = document.querySelector('#menu');
+        // Resolve any CSS color syntax through the browser; the regression is
+        // transparency, so this intentionally does not pin a palette RGB value.
+        const canvas = document.createElement('canvas');
+        canvas.width = canvas.height = 1;
+        const context = canvas.getContext('2d');
+        context.fillStyle = getComputedStyle(panel).backgroundColor;
+        context.fillRect(0, 0, 1, 1);
+        return {
+          backgroundAlpha: context.getImageData(0, 0, 1, 1).data[3],
+          coversCorners: [[1, 1], [innerWidth - 1, 1], [1, innerHeight - 1], [innerWidth - 1, innerHeight - 1]]
+            .every(([x, y]) => panel.contains(document.elementFromPoint(x, y))),
+        };
+      });
+      assert.equal(coverage.backgroundAlpha, 255, 'the open phone menu has an opaque background');
+      assert.equal(coverage.coversCorners, true, 'the phone menu covers and receives input at every viewport corner');
+      if (!closeWithEscape) {
+        await page.screenshot({ path: path.join(report, `${name}-open.png`) });
+        await close.focus();
+        await page.keyboard.press('Tab');
+        assert.equal(await firstLink.evaluate((link) => link === document.activeElement), true, 'Tab from the final control wraps to the first menu link');
+        await page.keyboard.press('Shift+Tab');
+        assert.equal(await close.evaluate((button) => button === document.activeElement), true, 'Shift+Tab from the first link wraps to Close menu');
+      }
+      await page.evaluate((escape) => { window.menuPhase = escape ? 'closing-with-escape' : 'closing-with-button'; }, closeWithEscape);
+      if (closeWithEscape) await page.keyboard.press('Escape');
+      else await close.click();
+      await page.waitForFunction(() => getComputedStyle(document.querySelector('#menu')).visibility === 'hidden');
+      await page.waitForFunction(() => document.querySelector('#menu-button') === document.activeElement, null, { timeout: 8000 }).catch(async () => {
+        const diagnostic = await page.evaluate(() => ({
+          active: document.activeElement?.outerHTML.slice(0, 200),
+          openerInert: document.querySelector('#menu-button').inert,
+          headerInert: document.querySelector('header').inert,
+          headerVisibility: getComputedStyle(document.querySelector('header')).visibility,
+        }));
+        throw new Error(`Menu did not restore focus: ${JSON.stringify(diagnostic)}`);
+      });
+      assert.equal(await opener.evaluate((button) => button === document.activeElement), true, 'closing the phone menu returns focus to its opener');
+    }
+  } finally {
+    frames = await page.evaluate(() => { cancelAnimationFrame(window.menuFrame); return window.menuFrames; });
+    await writeFile(path.join(report, `${name}-frames.json`), JSON.stringify(frames, null, 2));
+  }
+  const moved = frames.filter((frame) => ['left', 'top', 'width'].some((key) => Math.abs(frame.page[key] - before.page[key]) >= 2));
+  assert.deepEqual(moved.slice(0, 4), [], 'opening, closing and reopening the phone menu never shifts or shrinks the page');
+  assert.ok(frames.every((frame) => frame.scrollY === before.scrollY && frame.scrollTop === before.scrollTop), 'the phone menu preserves the page scroll throughout both open/close cycles');
+  const visible = frames.filter((frame) => frame.opacity > 0);
+  assert.ok(visible.length, 'sample the phone menu while visible');
+  const uncovered = visible.filter(({ menu, viewport }) => Math.abs(menu.left) >= 2 || Math.abs(menu.top) >= 2 ||
+    Math.abs(menu.width - viewport.width) >= 2 || Math.abs(menu.height - viewport.height) >= 2);
+  assert.deepEqual(uncovered.slice(0, 4), [], 'the phone menu remains aligned with the complete viewport throughout its animation');
+  return { frames: frames.length, openCloseCycles: 2, scrollY: before.scrollY, scrollTop: before.scrollTop };
+}
+
 try {
   const safari = await webkit.launch({ headless: true });
   try {
     for (const reducedMotion of ['no-preference', 'reduce']) {
+      await check(safari, { ...devices['iPhone 13'], reducedMotion }, `iphone-desk-menu-${reducedMotion}`, async (page) => {
+        await page.goto(base);
+        await ready(page);
+        return checkMobileMenu(page, `iphone-desk-menu-${reducedMotion}`);
+      });
       await check(safari, { ...devices['iPhone 13'], reducedMotion }, `iphone-menu-route-${reducedMotion}`, async (page) => {
         await page.goto(`${base}mth140/`);
         await ready(page);
+        const menu = await checkMobileMenu(page, `iphone-course-menu-${reducedMotion}`);
         await page.getByRole('button', { name: 'Open menu', exact: true }).click();
         await page.waitForFunction(() => getComputedStyle(document.querySelector('#menu')).opacity === '1');
         await page.evaluate(() => {
@@ -96,10 +218,19 @@ try {
         await page.getByRole('dialog', { name: 'Guide tools' }).waitFor();
         await page.keyboard.press('Escape');
         await page.screenshot({ path: path.join(report, `route-${reducedMotion}.png`) });
-        return { incomingFrames: incoming.length, final: incoming.at(-1) };
+        return { menu, incomingFrames: incoming.length, final: incoming.at(-1) };
       });
     }
   } finally { await safari.close(); }
+
+  const chromePhone = await chromium.launch({ headless: true });
+  try {
+    await check(chromePhone, devices['Pixel 5'], 'android-desk-menu-paused', async (page) => {
+      await page.goto(`${base}?motion=off`);
+      await ready(page);
+      return checkMobileMenu(page, 'android-desk-menu-paused');
+    });
+  } finally { await chromePhone.close(); }
 
   for (const [engine, options, label] of [
     [webkit, devices['iPhone 13'], 'iphone'],

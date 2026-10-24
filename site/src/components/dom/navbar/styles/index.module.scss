@@ -1,5 +1,29 @@
 @import '@src/styles/functions';
 
+// Stay covered when Menu hands over to Search. Neither panel needs to move or
+// dim the page beneath it, and the backdrop can fade away on the final close.
+.panelBackdrop {
+  display: none;
+  @include mobile {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 3;
+    background-color: var(--black);
+    // Continue catching taps during the closing fade after the panel is inert.
+    pointer-events: auto;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.38s ease, visibility 0s 0.38s;
+
+    &[data-open='true'] {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.28s ease;
+    }
+  }
+}
+
 .root {
   position: fixed;
   z-index: 2;

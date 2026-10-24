@@ -9,7 +9,7 @@ import SearchPanel from '@src/components/dom/navbar/components/SearchPanel';
 import clsx from 'clsx';
 import styles from '@src/components/dom/navbar/styles/index.module.scss';
 import { useCallback, useEffect, useRef } from 'react';
-import useIsMobile from '@src/hooks/useIsMobile';
+import useIsMobile, { isMobileNow } from '@src/hooks/useIsMobile';
 import useScroll from '@src/hooks/useScroll';
 import { useRouter } from 'next/router';
 import { useShallow } from 'zustand/react/shallow';
@@ -122,12 +122,15 @@ function Navbar() {
     };
   }, [isOpen, isLoading, router.asPath]);
 
-  // The shared "main slides left" animation for the menu and the search panel.
+  // Shared panel shell: desktop moves the page, mobile leaves it stationary.
   useEffect(() => {
     const tl = buildShellTimeline({ isMobile });
     shellRef.current = tl;
     if (useStore.getState().isMenuOpen || useStore.getState().isSearchOpen) tl.progress(1);
     return () => {
+      // Restore the previous presentation before crossing a breakpoint. Route
+      // transitions keep owning main/header when only isLoading changes.
+      if (isMobile !== isMobileNow() && tl.progress() > 0) tl.progress(0);
       tl.kill();
     };
   }, [isLoading, isMobile]);
@@ -186,6 +189,7 @@ function Navbar() {
 
   return (
     <>
+      <div aria-hidden="true" className={styles.panelBackdrop} data-open={isOpen} />
       <MenuLinks />
       <SearchPanel />
 
