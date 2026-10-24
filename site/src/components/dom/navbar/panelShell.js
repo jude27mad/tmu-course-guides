@@ -17,7 +17,7 @@ export function buildShellTimeline({ isMobile }) {
   const main = document.querySelector('main');
 
   const ios = nativeIOSScroll();
-  const moving = isMobile ? [header] : [main, header];
+  const moving = isMobile ? [] : [main, header];
   const tl = gsap.timeline({
     paused: true,
     defaults: PANEL_DEFAULTS,
@@ -35,8 +35,10 @@ export function buildShellTimeline({ isMobile }) {
   if (isMobile) {
     // Do not transform main or its ancestors: iOS scrolls the whole document,
     // and moving it exposes a clipped page through the navigation surface.
+    // The full-screen panel covers the header, so leave its visibility alone;
+    // hiding and restoring it can drop keyboard focus on iPhone Safari.
     if (scrollbar) tl.to(scrollbar, { opacity: 0 }, 0);
-    return tl.to(header, { autoAlpha: 0, duration: 0.3, overwrite: 'auto' }, 0);
+    return tl;
   }
   tl.to(main, { borderRadius: '1.3888888889vw', border: PAGE_EDGE, scale: 0.9, pointerEvents: 'none', left: '-40vw' }, 0);
   tl.to(layout, { opacity: 0.3, ...(ios ? {} : { height: '90svh' }) }, 0);
