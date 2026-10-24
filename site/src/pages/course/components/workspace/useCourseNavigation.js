@@ -295,4 +295,3 @@ export default function useCourseNavigation(courseId, info) {
     returnView: entry.returnTo?.view || fallbackView,
   };
 }
-

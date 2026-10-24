@@ -122,4 +122,3 @@ export default function Schedule({ navigate, state, setState }) {
     </div>
   );
 }
-
