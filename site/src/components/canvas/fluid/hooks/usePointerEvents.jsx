@@ -14,6 +14,17 @@ const usePointerEvents = (mainRef, size, force) => {
     const ios = nativeIOSScroll();
     // Identity, not TouchList order, owns each finger's previous coordinates.
     const positions = new Map();
+    // Giats's original brush compares movement with the last moving pointer.
+    // Keep per-finger positions for clean releases, but let active fingers share
+    // momentum so two- and three-finger gestures retain the original swirls.
+    let sharedMove = null;
+    const forget = (key) => {
+      positions.delete(key);
+      if (sharedMove?.key === key) {
+        const next = positions.entries().next().value;
+        sharedMove = next ? { key: next[0], x: next[1].x, y: next[1].y } : null;
+      }
+    };
     const sample = (key, clientX, clientY, start = false) => {
       if (!Number.isFinite(clientX) || !Number.isFinite(clientY)) return;
       const previous = positions.get(key);
@@ -25,13 +36,17 @@ const usePointerEvents = (mainRef, size, force) => {
       const deltaY = clientY - previous.y;
       previous.set(clientX, clientY);
       if (start || (!deltaX && !deltaY)) return;
+      const shared = positions.size > 1 && sharedMove && sharedMove.key !== key;
+      const impulseX = shared ? clientX - sharedMove.x : deltaX;
+      const impulseY = shared ? clientY - sharedMove.y : deltaY;
+      sharedMove = { key, x: clientX, y: clientY };
       const { size: viewport, force: strength } = input.current;
       if (!(viewport.width > 0 && viewport.height > 0)) return;
       splatStack.current.push({
         mouseX: clientX / viewport.width,
         mouseY: 1 - clientY / viewport.height,
-        velocityX: deltaX * strength,
-        velocityY: -deltaY * strength,
+        velocityX: impulseX * strength,
+        velocityY: -impulseY * strength,
       });
     };
 
@@ -44,7 +59,7 @@ const usePointerEvents = (mainRef, size, force) => {
       // Do not inject the same movement twice when both streams are delivered.
       if (!ios || event.pointerType !== 'touch') sample(pointerKey(event), event.clientX, event.clientY);
     };
-    const pointerEnd = (event) => positions.delete(pointerKey(event));
+    const pointerEnd = (event) => forget(pointerKey(event));
     const touchStart = (event) => {
       Array.from(event.changedTouches || event.touches).forEach((touch) => {
         sample(`touch:${touch.identifier}`, touch.clientX, touch.clientY, true);
@@ -58,7 +73,7 @@ const usePointerEvents = (mainRef, size, force) => {
     };
     const touchEnd = (event) => {
       // Remove only the released/cancelled identities, never other fingers.
-      Array.from(event.changedTouches || []).forEach((touch) => positions.delete(`touch:${touch.identifier}`));
+      Array.from(event.changedTouches || []).forEach((touch) => forget(`touch:${touch.identifier}`));
     };
 
     const listeners = [
@@ -74,6 +89,7 @@ const usePointerEvents = (mainRef, size, force) => {
     return () => {
       listeners.forEach(([type, listener]) => element.removeEventListener(type, listener));
       positions.clear();
+      sharedMove = null;
       splatStack.current.length = 0;
     };
   }, [mainRef]);

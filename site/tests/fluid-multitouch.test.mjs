@@ -33,7 +33,7 @@ const finger = (identifier, clientX, clientY) => ({ identifier, clientX, clientY
 const touch = (h, type, touches, changedTouches = touches) => h.emit(type, { touches, changedTouches, targetTouches: touches });
 const sorted = splats => splats.sort((a, b) => a.mouseX - b.mouseX);
 
-test('fluid follows one, then two, then three fingers without resetting existing trails', () => {
+test('fluid follows one, then two, then three fingers with Giats shared swirls', () => {
   const h = mount();
   try {
     touch(h, 'touchstart', [finger(7, 100, 400)]);
@@ -43,15 +43,15 @@ test('fluid follows one, then two, then three fingers without resetting existing
     // TouchList order may change. Identity, not the array index, owns a trail.
     touch(h, 'touchmove', [finger(31, 270, 390), finger(7, 120, 380)]);
     assert.deepEqual(sorted(h.take()), [
-      { mouseX: 0.3, mouseY: 1 - 380 / 800, velocityX: 20, velocityY: 20 },
-      { mouseX: 0.675, mouseY: 1 - 390 / 800, velocityX: -20, velocityY: 20 },
+      { mouseX: 0.3, mouseY: 1 - 380 / 800, velocityX: -300, velocityY: 20 },
+      { mouseX: 0.675, mouseY: 1 - 390 / 800, velocityX: 320, velocityY: -0 },
     ]);
     touch(h, 'touchstart', [finger(7, 120, 380), finger(31, 270, 390), finger(99, 200, 600)], [finger(99, 200, 600)]);
     touch(h, 'touchmove', [finger(99, 210, 590), finger(31, 260, 380), finger(7, 130, 370)]);
     assert.deepEqual(sorted(h.take()), [
-      { mouseX: 0.325, mouseY: 1 - 370 / 800, velocityX: 20, velocityY: 20 },
-      { mouseX: 0.525, mouseY: 1 - 590 / 800, velocityX: 20, velocityY: 20 },
-      { mouseX: 0.65, mouseY: 1 - 380 / 800, velocityX: -20, velocityY: 20 },
+      { mouseX: 0.325, mouseY: 1 - 370 / 800, velocityX: -260, velocityY: 20 },
+      { mouseX: 0.525, mouseY: 1 - 590 / 800, velocityX: 180, velocityY: -420 },
+      { mouseX: 0.65, mouseY: 1 - 380 / 800, velocityX: 100, velocityY: 420 },
     ]);
     touch(h, 'touchend', [finger(7, 130, 370), finger(99, 210, 590)], [finger(31, 260, 380)]);
     touch(h, 'touchmove', [finger(7, 140, 360), finger(99, 220, 580)]);
@@ -82,7 +82,7 @@ test('touch coordinates at zero are valid and stationary fingers add no impulse'
   } finally { h.cleanup(); }
 });
 
-test('pointer-mode browsers keep independent finger positions too', () => {
+test('pointer-mode browsers share Giats momentum across moving fingers', () => {
   const h = mount(false);
   const pointer = (type, pointerId, clientX, clientY) => h.emit(type, { pointerId, pointerType: 'touch', clientX, clientY });
   try {
@@ -93,7 +93,7 @@ test('pointer-mode browsers keep independent finger positions too', () => {
     pointer('pointermove', 2, 120, 220);
     const splats = h.take();
     assert.equal(splats.length, 3);
-    assert.deepEqual(splats.map(s => [s.velocityX, s.velocityY]), [[20, -20], [-20, 20], [20, -20]]);
+    assert.deepEqual(splats.map(s => [s.velocityX, s.velocityY]), [[20, -20], [360, -760], [-340, 740]]);
   } finally { h.cleanup(); }
 });
 

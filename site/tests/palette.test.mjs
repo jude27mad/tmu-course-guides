@@ -103,7 +103,8 @@ test('text pairs meet WCAG AA', () => {
   assert.ok(contrast(TOKENS.muted, TOKENS.page) >= 3);
 });
 
-// The previous palette: none of it may remain in the site's source, nor black with alpha as a surface.
+// Old UI colours must stay out of the site. The original Giats fluid dye and
+// shader base are the two deliberate exceptions for the restored brush.
 const OLD = /#(?:f0f4f1|28282b|f2ffbd|d7d7d4|292928|0b0c0b|020002|09050c|070410|f9f9f9)(?![0-9a-f])|rgba?\(\s*40\s*,\s*40\s*,\s*43\b|rgba?\(\s*0\s*,\s*0\s*,\s*0\s*,|#000000[0-9a-f]{2}(?![0-9a-f])/gi;
 const SOURCE = new Set(['.js', '.jsx', '.mjs', '.cjs', '.scss', '.css', '.json', '.html', '.svg', '.webmanifest', '.md', '.frag', '.vert', '.glsl']);
 async function* sourceFiles(dir) {
@@ -117,9 +118,16 @@ async function* sourceFiles(dir) {
 test('no old colour remains in the site source', async () => {
   const site = fileURLToPath(new URL('..', import.meta.url));
   const hits = [];
+  const fluidExceptions = new Map([
+    ['src/lib/palette.mjs', new Set(['#D7D7D4'])],
+    ['src/components/canvas/fluid/hooks/useOpts.jsx', new Set(['#070410'])],
+  ]);
   const scan = async (path) => {
     const text = await readFile(path, 'utf8');
-    for (const match of text.matchAll(OLD)) hits.push(`${path.slice(site.length)}: ${match[0]}`);
+    const relative = path.slice(site.length).replaceAll('\\', '/');
+    for (const match of text.matchAll(OLD)) {
+      if (!fluidExceptions.get(relative)?.has(match[0].toUpperCase())) hits.push(`${path.slice(site.length)}: ${match[0]}`);
+    }
   };
   for (const dir of ['src', 'public']) for await (const path of sourceFiles(join(site, dir))) await scan(path);
   await scan(join(site, 'scripts', 'pages-site.mjs'));

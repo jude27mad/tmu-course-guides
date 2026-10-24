@@ -16,8 +16,8 @@ const useOpts = () => {
       velocityDissipation: 0.93,
 
       fluidColor: TOKENS.fluid,
-      // black under the difference blend leaves the page colour exactly as it is
-      backgroundColor: '#000000',
+      // Giats's original deep-violet shader base for the difference-blended brush
+      backgroundColor: '#070410',
 
       showBackground: false,
 
