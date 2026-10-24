@@ -83,6 +83,14 @@ Safari 26 paints the page under its bottom bar, but no fixed layer. So the fixed
 - The artwork fades into the ink over the 96px above the bar (a fixed gradient at the layout viewport's bottom, which is where the bar begins), so a panel crossing the bar has no edge.
 - The footer's own fade to ink from #66 is gone: while the page bounces, its artwork now runs on into the artwork below it.
 
+## The line at the bottom bar in dark panels (24 October 2026, fifth report)
+
+With #67 live, the paper ran under the bottom bar without a line (241 above it, 241 with Safari's slight blue below), but every dark panel had one: flat ink (24) just above the bar, lighter artwork (31 to 64) below it.
+
+The fourth report's premise was wrong for the artwork. The values under the bar follow the artwork, not Safari's bar. At the same screen position they grew lighter downward in one screenshot and darker in another. Where the faded artwork above the line can be traced back, it matches the value under the bar: at one point the fade read 27 at 39px above the bar, which puts the artwork at 31, and the bar showed 31. So Safari does show the artwork's reach (`--edge-bleed-bottom`) under its bottom bar. #67's fade to ink over the 96px above the bar therefore darkened the artwork only down to the bar and drew the line there. The fade is gone. The body stays ink, as the fallback inside a dark panel wherever the artwork is not painted.
+
+Under the bar Safari still shifts the colour a little (green about 2 levels below red, blue about 5 above). That is the bar's own material; on the paper it is invisible.
+
 ## Automated checks
 
 - `site/tests/fluid-edge-colour.test.mjs`: no inline background on the fluid canvas, the CSS rule that gives it black only outside document mode, guard height, width and offsets, and the ink rule. It fails on the old source.

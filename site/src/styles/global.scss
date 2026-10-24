@@ -36,10 +36,10 @@ html {
 html[data-scroll-mode='document'] {
   background-color: var(--pageUnderGrain);
 }
-// Safari 26 does not paint fixed layers under its bottom bar, but it does paint
-// the page there. Through the dark panels (the footer, the course cards, the
-// Desk's windows), which show the fixed artwork, the page then shows the body:
-// the ink, so a panel stays dark under the bar. Only those panels show it.
+// The dark panels (the footer, the course cards, the Desk's windows) show the
+// fixed artwork, which reaches under Safari's bars. Wherever it is not painted,
+// a panel shows the body instead: the ink, so it is never paper inside a dark
+// panel. Only those panels show it.
 html[data-scroll-mode='document'] body {
   background-color: var(--black);
 }

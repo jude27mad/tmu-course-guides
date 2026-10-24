@@ -171,12 +171,16 @@ test('Safari\'s flat fill past the page and under its bottom bar is the page as 
   assert.match(theme, /meta\.setAttribute\('content', topDark \? TOKENS\.ink : lightEdge\(DEFAULT_PALETTE\.secondary\)\)/);
 });
 
-test('under the bottom bar a dark panel shows the body\'s ink, and the artwork fades into it above the bar', () => {
+test('the artwork runs on unchanged under the bottom bar, over the body\'s ink', () => {
   const global = read('../src/styles/global.scss');
   assert.match(global, /html\[data-scroll-mode='document'\] body \{\s*background-color: var\(--black\);\s*\}/);
+  // Safari shows the artwork's reach under its bottom bar. A layer that shades it
+  // at the layout viewport's bottom edge (#67 faded it to ink there) ends in a
+  // line where the bar begins.
   const app = read('../src/pages/app.module.scss');
   const background = app.slice(app.indexOf("  .background {\n    background-color: transparent;"));
-  assert.match(background, /&::after \{[^}]*position: fixed;[^}]*bottom: 0;[^}]*height: 96px;[^}]*linear-gradient\(to bottom, rgba\(var\(--inkRgb\), 0\), var\(--black\)\)/);
+  assert.doesNotMatch(background, /&::(?:before|after)/);
+  assert.doesNotMatch(background, /gradient/);
   // The footer no longer fades to flat ink itself: when the page bounces past its
   // end, the artwork under it would meet that ink in a hard edge.
   const footer = read('../src/components/dom/styles/footer.module.scss');
