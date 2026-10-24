@@ -38,11 +38,8 @@ export function buildShellTimeline({ isMobile }) {
     if (scrollbar) tl.to(scrollbar, { opacity: 0 }, 0);
     return tl.to(header, { autoAlpha: 0, duration: 0.3, overwrite: 'auto' }, 0);
   }
-  tl.to(main, { borderRadius: '1.3888888889vw', border: PAGE_EDGE, scale: 0.9, pointerEvents: 'none', left: '-40vw' }, 0).to(
-    layout,
-    { opacity: 0.3, ...(ios ? {} : { height: '90svh' }) },
-    0,
-  );
+  tl.to(main, { borderRadius: '1.3888888889vw', border: PAGE_EDGE, scale: 0.9, pointerEvents: 'none', left: '-40vw' }, 0);
+  tl.to(layout, { opacity: 0.3, ...(ios ? {} : { height: '90svh' }) }, 0);
   if (scrollbar) tl.to(scrollbar, { opacity: 0, right: '46vw', scale: 0.9 }, 0);
   // This timeline is also prepared during route entry. Eager overwrite would
   // cancel the route's header reveal even while this menu timeline is paused.
