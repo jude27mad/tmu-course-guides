@@ -252,12 +252,14 @@ try {
           await startRouteFrames(page);
           await navigate();
           await page.waitForURL(`${base}${destination}`);
+          // Next changes the address before it renders the page: wait for the page itself.
+          await page.waitForFunction((heading) => document.querySelector('main h1')?.textContent?.startsWith(heading), title);
           await ready(page);
           const frames = await stopRouteFrames(page);
           await writeFile(path.join(report, `page-route-${label}-${reducedMotion}.json`), JSON.stringify(frames, null, 2));
           assertPaperFade(frames, label);
           const incoming = frames.filter((frame) => frame.title?.startsWith(title) && frame.opacity > 0.05);
-          assert.ok(incoming.length, `${label}: sample the visible destination`);
+          assert.ok(incoming.length, `${label}: sample the visible destination: ${JSON.stringify([...new Set(frames.map((frame) => `${frame.title}@${frame.opacity}`))].slice(-6))}`);
           assert.ok(incoming.every((frame) => Math.abs(frame.left) < 2 && Math.abs(frame.width - frame.viewport) < 2 && frame.loader === 'none'), `${label}: the arriving page stays full width with no loading card`);
           const fading = frames.filter((frame) => frame.opacity > 0.05 && frame.opacity < 0.95);
           if (reducedMotion === 'reduce') {
