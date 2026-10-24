@@ -149,5 +149,19 @@
     // The dark artwork continues under Safari's bars as well.
     top: calc(-1 * var(--edge-bleed-top));
     height: calc(var(--app-viewport-height) + var(--edge-bleed-top) + var(--edge-bleed-bottom));
+    // Safari 26 paints no fixed layer under its bottom bar, which sits on the
+    // layout viewport's bottom edge: a dark panel shows the body's ink there
+    // (global.scss). The artwork fades into that ink above the bar, so the
+    // panel has no edge where the bar begins.
+    &::after {
+      content: '';
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 96px;
+      background-image: linear-gradient(to bottom, rgba(var(--inkRgb), 0), var(--black));
+      pointer-events: none;
+    }
   }
 }

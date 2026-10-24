@@ -57,6 +57,36 @@ function instrumentTouch() {
       };
     }
   }
+  // What a PageDown led to on `main`: the key (read after dispatch, so any page
+  // handler's preventDefault shows), its scroll events, and page scripts moving it.
+  const keys = [];
+  const mainScroll = { events: 0, writes: 0, lastWrite: '' };
+  addEventListener('keydown', event => keys.push(event));
+  document.addEventListener('scroll', event => {
+    if (event.target instanceof Element && event.target.matches('main')) mainScroll.events += 1;
+  }, { capture: true, passive: true });
+  const wrote = (element, what) => {
+    if (element.tagName !== 'MAIN') return;
+    mainScroll.writes += 1;
+    mainScroll.lastWrite = what;
+  };
+  for (const property of ['scrollTop', 'scrollLeft']) {
+    const descriptor = Object.getOwnPropertyDescriptor(Element.prototype, property);
+    Object.defineProperty(Element.prototype, property, {
+      ...descriptor,
+      set(value) {
+        wrote(this, `${property}=${value}`);
+        descriptor.set.call(this, value);
+      },
+    });
+  }
+  for (const method of ['scroll', 'scrollTo', 'scrollBy']) {
+    const original = Element.prototype[method];
+    Element.prototype[method] = function (...args) {
+      wrote(this, method);
+      return original.apply(this, args);
+    };
+  }
   const events = [];
   const touches = [];
   for (const type of ['pointerdown', 'pointermove', 'pointercancel', 'pointerup']) {
@@ -84,6 +114,9 @@ function instrumentTouch() {
         colours: canvas ? colours.get(canvas) || {} : {},
         visibility: wrapper ? getComputedStyle(wrapper).visibility : null,
         scrollTop: document.querySelector('main')?.scrollTop || 0,
+        overflowY: document.querySelector('main') ? getComputedStyle(document.querySelector('main')).overflowY : null,
+        key: keys.length ? { key: keys.at(-1).key, prevented: keys.at(-1).defaultPrevented } : null,
+        mainScroll: { ...mainScroll },
       };
     },
   };
@@ -139,13 +172,17 @@ async function waitForMain(page) {
 
 // Poll from Node instead of page.waitForFunction, whose in-page eval is blocked
 // by this site's CSP in older Chromium. Keep the production CSP enabled.
-async function waitOnPage(page, predicate, argument) {
-  const deadline = Date.now() + 20000;
+async function pollOnPage(page, predicate, argument, timeout) {
+  const deadline = Date.now() + timeout;
   while (Date.now() < deadline) {
-    if (await page.evaluate(predicate, argument)) return;
+    if (await page.evaluate(predicate, argument)) return true;
     await page.waitForTimeout(100);
   }
-  throw new Error(`Page condition timed out: ${predicate.toString()}`);
+  return false;
+}
+
+async function waitOnPage(page, predicate, argument) {
+  if (!(await pollOnPage(page, predicate, argument, 20000))) throw new Error(`Page condition timed out: ${predicate.toString()}`);
 }
 
 const snapshot = page => page.evaluate(() => window.__touchFluidQA.snapshot());
@@ -358,10 +395,29 @@ try {
     await check('keyboard PageDown still scrolls the course', async () => {
       await page.locator('main').focus();
       const before = await snapshot(page);
-      await page.keyboard.press('PageDown');
-      await waitOnPage(page, top => document.querySelector('main').scrollTop > top + 30, before.scrollTop);
+      // Chromium can drop a key's smooth scroll when a long frame (the scene's first
+      // WebGL renders under SwiftShader) delays its commit: it ends the scroll without
+      // applying it, with no scroll event (about 1 run in 10, on main too). Only such a
+      // press is pressed again, as a reader would. A key the page prevents, a main that
+      // cannot scroll, or a scroll the page moves or undoes fails at once.
+      let presses = 0;
+      let scrolled = false;
+      while (presses < 3) {
+        const pressed = await snapshot(page);
+        await page.keyboard.press('PageDown');
+        presses += 1;
+        scrolled = await pollOnPage(page, top => document.querySelector('main').scrollTop > top + 30, before.scrollTop, 5000);
+        if (scrolled) break;
+        const dropped = await snapshot(page);
+        const detail = JSON.stringify({ presses, overflowY: pressed.overflowY, key: dropped.key, scrollTop: dropped.scrollTop, before: pressed.mainScroll, after: dropped.mainScroll });
+        assert.ok(['auto', 'scroll'].includes(pressed.overflowY), `main could not scroll when PageDown was pressed: ${detail}`);
+        assert.equal(dropped.key?.prevented, false, `the page prevented PageDown: ${detail}`);
+        assert.equal(dropped.mainScroll.writes, pressed.mainScroll.writes, `a page script moved main after PageDown: ${detail}`);
+        assert.equal(dropped.mainScroll.events, pressed.mainScroll.events, `PageDown scrolled the course and something moved it back: ${detail}`);
+      }
+      assert.ok(scrolled, `PageDown did not scroll the course in ${presses} presses`);
       assert.deepEqual(errors, []);
-      return { before, after: await snapshot(page) };
+      return { before, presses, after: await snapshot(page) };
     });
   } finally {
     await context.close();
