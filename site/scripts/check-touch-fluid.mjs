@@ -196,7 +196,7 @@ async function assertDeskPalette(page) {
   for (const panel of shown.panels) assert.deepEqual(panel, { ink: '#18181b', menu: '#18181b', fill: '#ffffff' });
   assert.equal(shown.blend, 'difference');
   assert.equal(shown.fluidBackground, 'rgb(0, 0, 0)');
-  // The palette's #E4E4E7 dye over a black base (the difference blend leaves the page as it is),
+  // Giats's original #D7D7D4 dye and deep-violet shader base, rendered with difference blending,
   // converted from sRGB to linear RGB by Three.Color before upload to the shader.
   const linear = bytes => bytes.map(byte => {
     const channel = byte / 255;
@@ -204,7 +204,7 @@ async function assertDeskPalette(page) {
   });
   await waitOnPage(page, () => Object.keys(window.__touchFluidQA.snapshot().colours).some(name => /uColor$/i.test(name)));
   const { colours } = await snapshot(page);
-  for (const [suffix, bytes] of [['uColor', [228, 228, 231]], ['uBackgroundColor', [0, 0, 0]]]) {
+  for (const [suffix, bytes] of [['uColor', [215, 215, 212]], ['uBackgroundColor', [7, 4, 16]]]) {
     const value = Object.entries(colours).find(([name]) => name.toLowerCase().endsWith(suffix.toLowerCase()))?.[1];
     assert.ok(value, `missing fluid shader uniform: ${suffix}`);
     linear(bytes).forEach((channel, i) => assert.ok(Math.abs(channel - value[i]) < 0.000001, `${suffix}[${i}] differs from the palette: ${value[i]} vs ${channel}`));
