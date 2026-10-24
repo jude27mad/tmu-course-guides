@@ -35,10 +35,13 @@ test('the transparent Safari guards can decide the edge search', () => {
   assert.match(rule(css, "html[data-scroll-mode='document'] [data-safari-blend='bottom']"), /bottom:\s*-2px;[\s\S]*margin-top:\s*-8px;/);
 });
 
-test('an open menu or search panel receives input at the very edges', () => {
+test('the guards leave the corners open to taps', () => {
   const css = read('../src/styles/global.scss');
-  // The panels cover the page and the guards would otherwise sit above their edge pixels.
-  assert.match(rule(css, "html[data-scroll-mode='document'][data-browser-surface='dark'] .safari-toolbar-blend"), /pointer-events:\s*none;/);
+  const guard = rule(css, "html[data-scroll-mode='document'] .safari-toolbar-blend");
+  // WebKit samples the middle of each edge; the open phone menu must receive input at the corners.
+  assert.match(guard, /width:\s*50%;/);
+  assert.match(guard, /margin-left:\s*25%;/);
+  assert.doesNotMatch(css, /\.safari-toolbar-blend\s*\{[^}]*pointer-events:\s*none/);
 });
 
 test('the dark footer at the bottom edge gives Safari an ink fallback under the toolbar', () => {

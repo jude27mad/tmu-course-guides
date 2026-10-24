@@ -30,7 +30,9 @@
     &[data-open='true'] {
       opacity: 1;
       visibility: visible;
-      transition: opacity 0.28s ease;
+      // The panel's own open tween (panelShell.js: 0.28s power3.out), so the
+      // part under Safari's bars darkens with the panel.
+      transition: opacity 0.28s cubic-bezier(0.215, 0.61, 0.355, 1);
     }
   }
 }

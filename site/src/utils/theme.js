@@ -55,17 +55,22 @@ export function setBrowserSurfaces(topMode, bottomMode = topMode) {
   }
 }
 
-// The fixed artwork reaches under Safari's bars (--edge-bleed-* in global.scss).
-// Its upward reach is shown once the page has scrolled at least that far, and its
-// downward reach unless the end of a light-ending page is that close.
-export function setEdgeBleed({ scrollTop, maxScroll, endsDark }) {
+// The fixed artwork reaches under Safari's bars (--edge-bleed-* in global.scss),
+// and paper covers that reach above the start of a page and below the end of a
+// page that ends light. The paper stays until the page is 480px from its start
+// or end, so a fast fling, scrolled by Safari ahead of this script, still finds
+// it in place. It steps aside sooner where a dark panel is that close (the
+// cards start 173px into /courses/): the panel shows the artwork through its
+// ink, and would turn grey over the paper under the bar. The rest of every page
+// is opaque, so the paper is never seen inside a page.
+const EDGE_SWITCH = 480;
+export function setEdgeBleed({ scrollTop, maxScroll, endsDark, darkFromStart = Infinity, darkFromEnd = Infinity }) {
   if (typeof document === 'undefined') return;
   const root = document.documentElement;
-  const style = getComputedStyle(root);
-  const top = parseFloat(style.getPropertyValue('--edge-bleed-top')) || 0;
-  const bottom = parseFloat(style.getPropertyValue('--edge-bleed-bottom')) || 0;
-  root.dataset.edgeTop = scrollTop >= top ? 'open' : 'closed';
-  root.dataset.edgeBottom = endsDark || maxScroll - scrollTop >= bottom ? 'open' : 'closed';
+  const top = scrollTop >= Math.min(EDGE_SWITCH, darkFromStart) ? 'open' : 'closed';
+  const bottom = endsDark || maxScroll - scrollTop >= Math.min(EDGE_SWITCH, darkFromEnd) ? 'open' : 'closed';
+  if (root.dataset.edgeTop !== top) root.dataset.edgeTop = top;
+  if (root.dataset.edgeBottom !== bottom) root.dataset.edgeBottom = bottom;
 }
 
 // Compatibility for callers requiring the same color at both ends.

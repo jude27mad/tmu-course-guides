@@ -48,6 +48,8 @@ async function verifyTransparencyGuards(page) {
         shadow: css.boxShadow,
         top: box.top,
         bottom: box.bottom,
+        left: box.left,
+        right: box.right,
         width: box.width,
         empty: node.childNodes.length === 0,
         hidden: node.getAttribute('aria-hidden'),
@@ -78,6 +80,15 @@ async function verifyTransparencyGuards(page) {
       return panel && getComputedStyle(panel).visibility !== 'hidden';
     });
     const fluid = document.querySelector('#fluidCanvas');
+    // The fixed artwork reaches past both edges, under Safari's bars; paper covers it
+    // above the start of the page until the page is well into its scroll, or a dark
+    // panel (which shows the artwork through its ink) reaches the status bar.
+    const art = document.querySelector('[class*="app_background"]')?.getBoundingClientRect();
+    const darkFromStart = Math.min(
+      Infinity,
+      ...[...main.querySelectorAll('[data-surface="dark"]')].map((panel) => panel.getBoundingClientRect()).filter((box) => box.height).map((box) => box.top + scrollY),
+    );
+    const skip = document.querySelector('.skip-link');
     return {
       guards,
       before,
@@ -88,6 +99,12 @@ async function verifyTransparencyGuards(page) {
       panelOpen,
       surface: document.documentElement.dataset.browserSurface,
       fluidBackground: fluid ? getComputedStyle(fluid).backgroundColor : null,
+      art: art ? { top: art.top, bottom: art.bottom } : null,
+      edgeTop: document.documentElement.dataset.edgeTop,
+      darkFromStart,
+      topCap: getComputedStyle(main, '::before').display,
+      scrollY: window.scrollY,
+      skipOpacity: skip && document.activeElement !== skip ? getComputedStyle(skip).opacity : null,
     };
   });
   assert.equal(state.oldSamples, 0, 'opaque edge samplers must not return');
@@ -102,14 +119,19 @@ async function verifyTransparencyGuards(page) {
     assert.equal(guard.image, 'none');
     assert.notEqual(guard.clip, 'text', 'opaque backgrounds must not be disguised with text clipping');
     // WebKit repeats its edge search with a pointer-events:none guard skipped, so the guard would not decide anything.
-    // Only an open menu or search panel, which must receive input at every edge pixel, turns that off.
-    assert.equal(guard.pointerEvents, state.surface === 'dark' ? 'none' : 'auto', JSON.stringify(state));
+    assert.equal(guard.pointerEvents, 'auto', JSON.stringify(state));
+    // WebKit samples the middle of each edge; the corners stay open to taps (the phone menu needs them).
+    assert.ok(guard.left <= state.viewport.width / 2 - 4 && guard.right >= state.viewport.width / 2 + 4, JSON.stringify(state));
+    assert.ok(guard.left >= 8 && guard.right <= state.viewport.width - 8, JSON.stringify(state));
     assert.equal(guard.border, '0px');
     assert.equal(guard.shadow, 'none');
     assert.equal(guard.empty, true);
     assert.equal(guard.hidden, 'true');
-    assert.ok(Math.abs(guard.width - state.viewport.width) < 2, JSON.stringify(state));
   }
+  assert.ok(state.art && state.art.top <= -100 && state.art.bottom >= state.viewport.height + 100, `the artwork must continue under the bars: ${JSON.stringify(state)}`);
+  assert.equal(state.edgeTop, state.scrollY >= Math.min(480, state.darkFromStart) ? 'open' : 'closed', JSON.stringify(state));
+  assert.equal(state.topCap, state.edgeTop === 'open' ? 'none' : 'block', JSON.stringify(state));
+  assert.ok(state.skipOpacity === null || state.skipOpacity === '0', `the parked skip link shows under the status bar: ${JSON.stringify(state)}`);
   assert.ok(Math.abs(state.before.height - state.without.height) < 2, JSON.stringify(state));
   assert.ok(Math.abs(state.before.top - state.without.top) < 2, JSON.stringify(state));
   assert.ok(state.guards[0].top >= -3 && state.guards[0].top <= 1, JSON.stringify(state));

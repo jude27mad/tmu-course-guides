@@ -97,13 +97,25 @@ function Navbar() {
       // than the route or menu state. This works across all course pages.
       const darkFooter = !!footerRect && footerRect.top < scrollerRect.bottom - 1 && footerRect.bottom >= scrollerRect.bottom - 1;
       setBrowserSurfaces(overlay ? 'dark' : 'light', overlay || darkFooter ? 'dark' : 'light');
-      // Pages that end in the dark footer continue it below their end; course
-      // pages end light. The top of every page is light.
+    };
+    // Pages that end in the dark footer continue it below their end; course
+    // pages end light. The top of every page is light, but a dark panel can
+    // start close to it (the cards on /courses/). Also run straight from the
+    // scroll event, so a route change's reset to the top paints with its paper.
+    const edges = () => {
       const scrolled = scrollTop();
-      const scrollable = nativeIOSScroll() ? document.scrollingElement.scrollHeight - window.innerHeight : main.scrollHeight - main.clientHeight;
-      setEdgeBleed({ scrollTop: scrolled, maxScroll: scrollable, endsDark: !!footer });
+      const native = nativeIOSScroll();
+      const scrollable = native ? document.scrollingElement.scrollHeight - window.innerHeight : main.scrollHeight - main.clientHeight;
+      const viewport = native ? window.innerHeight : main.clientHeight;
+      const panels = Array.from(main.querySelectorAll('[data-surface="dark"]'))
+        .map((panel) => panel.getBoundingClientRect())
+        .filter((rect) => rect.height);
+      const darkFromStart = Math.min(Infinity, ...panels.map((rect) => scrolled + rect.top));
+      const darkFromEnd = Math.min(Infinity, ...panels.map((rect) => scrollable - scrolled + viewport - rect.bottom));
+      setEdgeBleed({ scrollTop: scrolled, maxScroll: scrollable, endsDark: !!main.querySelector('footer [data-surface="dark"]'), darkFromStart, darkFromEnd });
     };
     const schedule = () => {
+      edges();
       if (!frame) frame = requestAnimationFrame(update);
     };
     scroller.addEventListener('scroll', schedule, { passive: true });

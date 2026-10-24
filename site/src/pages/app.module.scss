@@ -113,7 +113,6 @@
     .canvasContainer:not(:global(#fluidCanvas)) {
       top: calc(-1 * var(--edge-bleed-top));
       height: calc(var(--app-viewport-height) + var(--edge-bleed-top) + var(--edge-bleed-bottom)) !important;
-      clip-path: inset(var(--edge-clip-top) 0 var(--edge-clip-bottom) 0);
     }
   }
   .background {
@@ -122,6 +121,5 @@
     // The dark artwork continues under Safari's bars as well.
     top: calc(-1 * var(--edge-bleed-top));
     height: calc(var(--app-viewport-height) + var(--edge-bleed-top) + var(--edge-bleed-bottom));
-    clip-path: inset(var(--edge-clip-top) 0 var(--edge-clip-bottom) 0);
   }
 }

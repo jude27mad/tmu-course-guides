@@ -226,14 +226,6 @@ html[data-scroll-mode='document'] {
   // past each edge instead (more than either bar, in either toolbar layout).
   --edge-bleed-top: 160px;
   --edge-bleed-bottom: 160px;
-  // Above the start of the page there is no page for the dark artwork to show
-  // through, so its upward reach is cut there until the page has scrolled past
-  // it (data-edge-top, set by the navbar); the same below the end of a page that
-  // ends light (data-edge-bottom).
-  --edge-clip-top: var(--edge-bleed-top);
-  --edge-clip-bottom: 0px;
-  &[data-edge-top='open'] { --edge-clip-top: 0px; }
-  &[data-edge-bottom='closed'] { --edge-clip-bottom: var(--edge-bleed-bottom); }
   body { overflow: visible; max-height: none; }
   // Fixed, like the contained shell, so the paper under the bars and above the
   // page has the same texture as the page.
@@ -241,6 +233,27 @@ html[data-scroll-mode='document'] {
     top: calc(-1 * var(--edge-bleed-top));
     width: 100%;
     height: calc(100% + var(--edge-bleed-top) + var(--edge-bleed-bottom));
+  }
+  // Above the start of a page, and below the end of one that ends light, there
+  // is no page for the dark artwork to show through: paper covers its reach
+  // there (data-edge-top/-bottom, set by the navbar). Part of main, behind its
+  // content, so it fades with the page during route changes.
+  #main::before,
+  #main::after {
+    content: '';
+    display: none;
+    position: fixed;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+    background-color: var(--white);
+    pointer-events: none;
+  }
+  #main::before { top: calc(-1 * var(--edge-bleed-top)); height: var(--edge-bleed-top); }
+  #main::after { bottom: calc(-1 * var(--edge-bleed-bottom)); height: var(--edge-bleed-bottom); }
+  &:not([data-edge-top='open']) #main::before,
+  &[data-edge-bottom='closed'] #main::after {
+    display: block;
   }
 }
 
@@ -260,8 +273,8 @@ html:not([data-scroll-mode='document']) #fluidCanvas {
 // that point ends the search for the edge with no colour, so the bar stays
 // transparent. They must not use `pointer-events: none`: WebKit then repeats the
 // search with the guard skipped and can pick up whatever sits underneath. They
-// are 8px tall to reach the sampled row, which leaves 6px at each edge that
-// taps do not pass through (except while a panel is open, see below).
+// are 8px tall to reach the sampled row, and only span the middle half, where
+// the row is sampled, so the corners and the outer quarters stay open to taps.
 // Evidence/limits: docs/qa/safari-toolbar-transparency.md.
 .safari-toolbar-blend {
   display: none;
@@ -275,8 +288,8 @@ html:not([data-scroll-mode='document']) #fluidCanvas {
     background-color: transparent;
     background-image: none;
     height: 8px;
-    width: 100%;
-    left: 0;
+    width: 50%;
+    margin-left: 25%;
     z-index: 2147483647;
     pointer-events: auto;
     border: 0;
@@ -290,11 +303,5 @@ html:not([data-scroll-mode='document']) #fluidCanvas {
   html[data-scroll-mode='document'] [data-safari-blend='bottom'] {
     bottom: -2px;
     margin-top: -8px;
-  }
-  // The menu and search panels cover the page, must receive input at every pixel
-  // including the edges, and are the colour the bars should take (Safari then
-  // finds the panel itself once the guards no longer take part).
-  html[data-scroll-mode='document'][data-browser-surface='dark'] .safari-toolbar-blend {
-    pointer-events: none;
   }
 }

@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 import { useFrame, useThree } from '@react-three/fiber';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 import { TOKENS, rgbOf } from '@src/lib/palette.mjs';
 import fragmentShader from '@src/components/canvas/background/shaders/fragmentShader';
@@ -34,6 +34,8 @@ function Background({ still = false }) {
   const ref = useRef();
   const windowSize = useWindowSize();
   const { viewport } = useThree();
+  const canvasHeight = useThree((state) => state.size.height);
+  const invalidate = useThree((state) => state.invalidate);
 
   const isOffsetXIncreasing = useRef(true);
   const isOffsetYIncreasing = useRef(true);
@@ -53,9 +55,24 @@ function Background({ still = false }) {
       uPlaneRes: { value: new THREE.Vector2(windowSize.width, windowSize.height) },
       uMouse2D: { value: new THREE.Vector2(1.0, 1.0) },
       uBackgroundScale: { value: 3.0 },
+      uUvScaleY: { value: 1 },
+      uUvOffsetY: { value: 0 },
     }),
     [windowSize],
   );
+
+  // On iPhone the canvas reaches --edge-bleed-* past the layout viewport (see
+  // global.scss). Draw the viewport band exactly as before; the reach continues it.
+  useEffect(() => {
+    const style = getComputedStyle(document.documentElement);
+    const top = parseFloat(style.getPropertyValue('--edge-bleed-top')) || 0;
+    const bottom = parseFloat(style.getPropertyValue('--edge-bleed-bottom')) || 0;
+    const band = canvasHeight - top - bottom;
+    if (!(band > 0)) return;
+    uniforms.uUvScaleY.value = canvasHeight / band;
+    uniforms.uUvOffsetY.value = -bottom / band;
+    invalidate();
+  }, [canvasHeight, uniforms, invalidate]);
 
   useFrame((state, delta) => {
     if (still) return;
