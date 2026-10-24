@@ -1,6 +1,7 @@
 // Checks the site palette (src/lib/palette.mjs) in what GitHub Pages publishes (.github/workflows/pages.yml),
 // after `pages-site.mjs build`:
-//   1. No old colour is left in any published file. Black with alpha is allowed only in Schedule-X's own
+//   1. Only the two restored Giats fluid colours may survive from the old palette. Black with alpha
+//      is allowed only in Schedule-X's own
 //      calendar theme (its dialog shadows and --sx-* shadow variables); those third-party hits are listed in
 //      the report, not failed.
 //   2. In Chromium as a 390 px phone: the three course cards are identical, the pills, round button and
@@ -26,6 +27,9 @@ if (!folder) {
 // The previous palette, as authored and as a build can write it.
 const OLD = ['#F0F4F1', '#28282B', '#F2FFBD', '#D7D7D4', '#292928', '#0B0C0B', '#020002', '#09050C', '#070410', '#F9F9F9'];
 const OLD_TEXT = new RegExp(`(?:#|0x)(?:${OLD.map((hex) => hex.slice(1)).join('|')})(?![0-9a-f])|rgba?\\(\\s*40\\s*,\\s*40\\s*,\\s*43\\b`, 'gi');
+// Source tests permit these only in the fluid module and token. Next's bundle
+// combines sources, so the export scan must preserve that narrow exception.
+const ORIGINAL_GIATS_FLUID = new Set(['#D7D7D4', '#070410']);
 const BLACK_ALPHA = /rgba?\(\s*0\s*,\s*0\s*,\s*0\s*[,/]|#000000[0-9a-f]{2}(?![0-9a-f])|#000[0-9a-f](?![0-9a-f])/gi;
 const TEXT = new Set(['.html', '.js', '.css', '.json', '.txt', '.webmanifest', '.svg', '.xml']);
 
@@ -87,7 +91,11 @@ async function scanFiles() {
   for await (const path of files(folder)) {
     const text = await readFile(path, 'utf8');
     const name = relative(folder, path);
-    for (const match of text.matchAll(OLD_TEXT)) old.push(`${name}: ${match[0]} … ${text.slice(Math.max(0, match.index - 40), match.index + 40)}`);
+    for (const match of text.matchAll(OLD_TEXT)) {
+      const colour = `#${match[0].replace(/^(?:#|0x)/i, '').toUpperCase()}`;
+      if (ORIGINAL_GIATS_FLUID.has(colour)) continue;
+      old.push(`${name}: ${match[0]} … ${text.slice(Math.max(0, match.index - 40), match.index + 40)}`);
+    }
     for (const match of text.matchAll(BLACK_ALPHA)) {
       // Zero alpha is no colour at all: the minifier writes `transparent` as rgba(0,0,0,0).
       if (alphaAt(text, match) === 0) continue;
