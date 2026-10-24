@@ -21,7 +21,7 @@ async function ready(page) {
     () => {
       const main = document.querySelector('main');
       const loader = document.querySelector('#loader');
-      return main && getComputedStyle(main).opacity === '1' && !document.querySelector('#layout')?.hasAttribute('inert') && (!loader || getComputedStyle(loader).display === 'none');
+      return main && getComputedStyle(main).opacity === '1' && !document.querySelector('.lenis-stopped') && !document.querySelector('#layout')?.hasAttribute('inert') && (!loader || getComputedStyle(loader).display === 'none');
     },
     null,
     { timeout: 25000 },
@@ -156,8 +156,9 @@ async function checkAllCoursesNavigation(context, motion, scenario = 'stable') {
         // The injected native scroll models a late browser adjustment; it is a
         // resilience check, not a reproduction of Safari's physical browser chrome.
         // Native iOS now fades the full-size page without a loader card. Use
-        // the route's actual busy state to inject during either choreography.
-        const entryActive = () => document.querySelector('[data-navigation-status]')?.hidden === false;
+        // the route's actual scroll lock to inject during either choreography.
+        // Delayed loading feedback deliberately ends before cosmetic entry.
+        const entryActive = () => document.querySelector('.lenis-stopped') !== null;
         const observer = new MutationObserver(() => {
           if (document.querySelector('main h1')?.textContent !== 'All Courses' || !entryActive()) return;
           observer.disconnect();
@@ -302,3 +303,4 @@ try {
   await writeFile(path.join(report, 'results.json'), JSON.stringify({ limitation: 'Linux WebKit does not render iPhone Safari browser chrome. These results verify CSS, layout and page interaction only.', results }, null, 2));
 }
 assert.equal(navigationFailures.length, 0, navigationFailures.join('\n'));
+
