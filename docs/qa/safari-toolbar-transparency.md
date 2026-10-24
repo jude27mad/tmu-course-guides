@@ -69,6 +69,20 @@ Safari paints these areas in one flat colour: the document's background (`underP
 
 check-ios-document now scrolls each route to its end and back, and requires the root colour to be the ink at a dark end and `#f1f1f1` otherwise.
 
+## What Safari paints under its bottom bar (24 October 2026, fourth report)
+
+With #66 live, two things remained on the iPhone:
+
+- Mid-page, a line where the bottom bar begins. Above it the paper read 241 with the grain's noise; below it, under the bar, a flat 244 (`#f4f4f5`) with no noise at all, while the text went on under the bar.
+- At the end of the Desk, when the page bounced past its end, a block of artwork between the footer's end and the bar, against the footer's new flat-ink end.
+
+Safari 26 paints the page under its bottom bar, but no fixed layer. So the fixed grain (made fixed in #61) stopped at the bar, and through the footer and the other dark panels, which show the fixed artwork, the page showed the body's colour there. That was paper, so a white box under the bar, until the dark-footer state turned it black. The fixed artwork is still painted between the page's end and the bar while the page bounces, so a footer that ended in flat ink met it in a hard edge.
+
+- The grain is part of the page again in document mode (`position: absolute` over `#layout`, as before #61), so it continues under the bar with the page.
+- In document mode the body is the ink. Only the dark panels show it, and under the bar they stay dark. (A probe painting the body magenta found it nowhere else on any route.)
+- The artwork fades into the ink over the 96px above the bar (a fixed gradient at the layout viewport's bottom, which is where the bar begins), so a panel crossing the bar has no edge.
+- The footer's own fade to ink from #66 is gone: while the page bounces, its artwork now runs on into the artwork below it.
+
 ## Automated checks
 
 - `site/tests/fluid-edge-colour.test.mjs`: no inline background on the fluid canvas, the CSS rule that gives it black only outside document mode, guard height, width and offsets, and the ink rule. It fails on the old source.

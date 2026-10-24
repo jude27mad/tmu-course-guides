@@ -30,11 +30,18 @@ html {
 }
 
 // On iPhone and iPad Safari paints one flat colour, the document's background,
-// past the ends of the page and under its bottom bar. The page itself is seen
-// through the film grain (#layout::before), which never reaches there, so that
-// colour is the grained page's: #f4f4f5 under the grain shows as #f1f1f1.
+// past the ends of the page. The page itself is seen through the film grain
+// (#layout::before), which never reaches there, so that colour is the grained
+// page's: #f4f4f5 under the grain shows as #f1f1f1.
 html[data-scroll-mode='document'] {
   background-color: var(--pageUnderGrain);
+}
+// Safari 26 does not paint fixed layers under its bottom bar, but it does paint
+// the page there. Through the dark panels (the footer, the course cards, the
+// Desk's windows), which show the fixed artwork, the page then shows the body:
+// the ink, so a panel stays dark under the bar. Only those panels show it.
+html[data-scroll-mode='document'] body {
+  background-color: var(--black);
 }
 
 // Match the surrounding Safari chrome to the visible dark menu/search overlay.
@@ -229,19 +236,17 @@ html[data-motion='off'] {
 html[data-scroll-mode='document'] {
   overflow-x: clip; overflow-y: auto;
   // Safari 26 shows the page under its translucent status bar and toolbar, but
-  // fixed layers stop at the layout viewport, so the dark artwork, the course
-  // cards and the grain ended in a hard line at both bars. They reach this far
-  // past each edge instead (more than either bar, in either toolbar layout).
+  // fixed layers stop at the layout viewport, so the dark artwork and the course
+  // cards ended in a hard line at the status bar. They reach this far past each
+  // edge instead (more than either bar, in either toolbar layout). Under the
+  // bottom bar Safari paints no fixed layer at all; see the body and the
+  // artwork's fade below.
   --edge-bleed-top: 160px;
   --edge-bleed-bottom: 160px;
   body { overflow: visible; max-height: none; }
-  // Fixed, like the contained shell, so the paper under the bars and above the
-  // page has the same texture as the page.
-  #layout::before {
-    top: calc(-1 * var(--edge-bleed-top));
-    width: 100%;
-    height: calc(100% + var(--edge-bleed-top) + var(--edge-bleed-bottom));
-  }
+  // Part of the page, not fixed: Safari 26 paints the page under its bottom bar
+  // but no fixed layer, and a fixed grain ended in a line where the bar began.
+  #layout::before { position: absolute; top: 0; width: 100%; height: 100%; }
   // Above the start of a page, and below the end of one that ends light, there
   // is no page for the dark artwork to show through: paper covers its reach
   // there (data-edge-top/-bottom, set by the navbar). Part of main, behind its
