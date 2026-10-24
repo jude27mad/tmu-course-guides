@@ -11,6 +11,7 @@ import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 
 import Background from '@src/components/canvas/background/Index';
 import DemandDriver from '@src/components/canvas/DemandDriver';
+import ClearViews from '@src/components/canvas/ClearViews';
 import { Canvas } from '@react-three/fiber';
 import { createTouchScrollFilter } from '@src/components/canvas/fluid/touch-scroll.mjs';
 import { EffectComposer } from '@react-three/postprocessing';
@@ -192,6 +193,7 @@ function MyApp({ Component, pageProps, router }) {
         aria-hidden="true"
       >
         {still && <DemandDriver />}
+        <ClearViews />
         <PerformanceMonitor flipflops={3} onDecline={() => setDpr(1)} onIncline={() => setDpr(null)} onFallback={() => setDpr(1)} />
         {/* A view that is loading (or never loads) must stay inside the canvas: without
             this boundary R3F suspends the <Canvas> DOM component itself, and its next

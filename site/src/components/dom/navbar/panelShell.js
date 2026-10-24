@@ -9,6 +9,14 @@ export const PANEL_DEFAULTS = { duration: 0.45, ease: 'expo.inOut' };
 // The page's edge while it is shrunk behind a panel.
 const PAGE_EDGE = `2px solid ${TOKENS.page}`;
 
+// In document mode a transformed main holds its fixed paper caps (global.scss),
+// which would frame the shrunk page instead of covering the reach under
+// Safari's bars. They stand down until main is restored.
+export function markPageShrunk(shrunk) {
+  if (shrunk) document.documentElement.dataset.pageShrunk = '';
+  else delete document.documentElement.dataset.pageShrunk;
+}
+
 export function buildShellTimeline({ isMobile }) {
   const fluidCanvas = document.getElementById('fluidCanvas');
   const layout = document.getElementById('layout');
@@ -23,11 +31,17 @@ export function buildShellTimeline({ isMobile }) {
     defaults: PANEL_DEFAULTS,
     onStart: () => {
       gsap.set(moving, { willChange: isMobile ? 'opacity' : 'transform, opacity' });
-      if (ios && !isMobile) gsap.set(main, { transformOrigin: `50% ${scrollTop() + window.innerHeight / 2}px` });
+      if (ios && !isMobile) {
+        gsap.set(main, { transformOrigin: `50% ${scrollTop() + window.innerHeight / 2}px` });
+        markPageShrunk(true);
+      }
     },
     onReverseComplete: () => {
       gsap.set(moving, { willChange: 'auto' });
-      if (ios && !isMobile) gsap.set(main, { clearProps: 'transform,transformOrigin,left,border,borderRadius' });
+      if (ios && !isMobile) {
+        gsap.set(main, { clearProps: 'transform,transformOrigin,left,border,borderRadius' });
+        markPageShrunk(false);
+      }
     },
   });
 

@@ -255,6 +255,12 @@ html[data-scroll-mode='document'] {
   &[data-edge-bottom='closed'] #main::after {
     display: block;
   }
+  // A panel shell that shrinks the page (iPad, landscape iPhone) transforms
+  // main, which then holds the caps: they would frame the page, not the reach.
+  &[data-page-shrunk] #main::before,
+  &[data-page-shrunk] #main::after {
+    display: none;
+  }
 }
 
 // The fluid's black base is invisible (it blends with `difference`), but it is a
