@@ -29,6 +29,14 @@ html {
   }
 }
 
+// On iPhone and iPad Safari paints one flat colour, the document's background,
+// past the ends of the page and under its bottom bar. The page itself is seen
+// through the film grain (#layout::before), which never reaches there, so that
+// colour is the grained page's: #f4f4f5 under the grain shows as #f1f1f1.
+html[data-scroll-mode='document'] {
+  background-color: var(--pageUnderGrain);
+}
+
 // Match the surrounding Safari chrome to the visible dark menu/search overlay.
 // The page stays on the Desk's light colour when those panels are closed.
 html[data-browser-surface='dark'],

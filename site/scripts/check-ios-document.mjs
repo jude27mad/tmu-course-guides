@@ -398,6 +398,18 @@ try {
             { timeout: 3000 },
           );
           const edgesAfterScroll = await verifyTransparencyGuards(page);
+          // Safari fills past the page's ends and under its bottom bar with the
+          // document's background: the grained paper, and the footer's ink at a dark end.
+          const fill = () => page.evaluate(() => ({ colour: getComputedStyle(document.documentElement).backgroundColor, bottom: document.documentElement.dataset.browserBottom, scrollY }));
+          const endsDark = await page.evaluate(() => !!document.querySelector('main footer [data-surface="dark"]'));
+          await page.evaluate(() => window.scrollTo(0, document.scrollingElement.scrollHeight));
+          await page.waitForFunction((dark) => document.documentElement.dataset.browserBottom === (dark ? 'dark' : 'light'), endsDark, { timeout: 3000 });
+          const fillAtEnd = await fill();
+          assert.equal(fillAtEnd.colour, endsDark ? 'rgb(24, 24, 27)' : 'rgb(241, 241, 241)', JSON.stringify({ route, fillAtEnd }));
+          await page.evaluate(() => window.scrollTo(0, 0));
+          await page.waitForFunction(() => scrollY === 0 && document.documentElement.dataset.browserBottom === 'light', null, { timeout: 3000 });
+          const fillAtTop = await fill();
+          assert.equal(fillAtTop.colour, 'rgb(241, 241, 241)', JSON.stringify({ route, fillAtTop }));
           if (route === 'courses/') {
             await page.evaluate(() => window.scrollTo(0, 0));
             await page.getByRole('button', { name: 'Open menu', exact: true }).tap();
@@ -409,7 +421,7 @@ try {
           }
           await page.screenshot({ path: path.join(report, `${motion}-${route.replaceAll('/', '') || 'desk'}.png`) });
           assert.deepEqual(errors, [], JSON.stringify({ route, motion, failedRequests }));
-          results.push({ route, motion, pass: true, initial, edgesAtTop, edgesAfterScroll });
+          results.push({ route, motion, pass: true, initial, edgesAtTop, edgesAfterScroll, fillAtEnd, fillAtTop });
           console.log('PASS', motion, route || 'desk');
         } finally {
           await page.close();

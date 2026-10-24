@@ -27,6 +27,7 @@ const contrast = (a, b) => {
 test('colors.scss mirrors the palette tokens', () => {
   const pairs = {
     white: TOKENS.page,
+    pageUnderGrain: TOKENS.pageUnderGrain,
     black: TOKENS.ink,
     menuColor: TOKENS.ink,
     accentColor: TOKENS.card,

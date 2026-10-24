@@ -3,6 +3,7 @@
    two in step. Proportions: page 60%, ink panels 30%, accent 10% (small, meaningful elements only). */
 export const TOKENS = Object.freeze({
   page: '#F4F4F5', // page background
+  pageUnderGrain: '#F1F1F1', // the page as seen through its film grain (an iPhone shows #F4F4F5 under it as this)
   ink: '#18181B', // dark panels and primary text
   raised: '#27272A', // a raised tile on a dark panel
   sheen: '#3F3F46', // the brightest point of a dark panel's sheen

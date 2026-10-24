@@ -21,9 +21,13 @@ const VARIABLES = [
   ['--accent', 'accent'],
 ];
 
+// The page's light colour as Safari shows it beside the page. On iPhone and iPad
+// it is painted flat, without the film grain the page is seen through (global.scss).
+const lightEdge = (paper) => (document.documentElement.dataset.scrollMode === 'document' ? TOKENS.pageUnderGrain : paper);
+
 function setThemeColor(color) {
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta && color && document.documentElement.dataset.browserSurface !== 'dark') meta.setAttribute('content', color);
+  if (meta && color && document.documentElement.dataset.browserSurface !== 'dark') meta.setAttribute('content', lightEdge(color));
 }
 
 // Safari 26 samples real fixed-edge computed colors rather than theme-color.
@@ -42,7 +46,7 @@ export function setBrowserSurfaces(topMode, bottomMode = topMode) {
   root.style.setProperty('--safari-edge-top', topDark ? TOKENS.ink : DEFAULT_PALETTE.secondary);
   root.style.setProperty('--safari-edge-bottom', bottomDark ? TOKENS.ink : DEFAULT_PALETTE.secondary);
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', topDark ? TOKENS.ink : DEFAULT_PALETTE.secondary);
+  if (meta) meta.setAttribute('content', topDark ? TOKENS.ink : lightEdge(DEFAULT_PALETTE.secondary));
   if (changed && root.dataset.scrollMode === 'document') {
     if (sampleRefreshFrame) cancelAnimationFrame(sampleRefreshFrame);
     root.setAttribute('data-safari-edge-refresh', '');
