@@ -4,21 +4,41 @@
 
 The owner wants page content continuing behind Safari's translucent controls. Matching a solid bar to the page colour does not meet that requirement. The prior `data-safari-edge` layers had opaque computed backgrounds and text clipping; they deliberately caused solid background extension. Remove them rather than adding another colour case.
 
+On 24 October 2026 an iPhone showed pure `#000000` bands in the status-bar area (about 62 CSS px) and under the page at the bottom (about 98 px), around dark-grey content: the page "looked like a box". The guards below had not prevented it. The cause was found and fixed as follows.
+
+## Cause
+
+Safari 26.1 and later decides the colour of each inset band from one hit-test point per edge. The WebKit source (`LocalFrameView::fixedContainerEdges`, `PageColorSampler`, `WKWebView _updateFixedColorExtensionViews`) works like this:
+
+1. The point is the middle of the edge, 4px inside the layout viewport: the 1px row `[4, 5)` from the top and `[H-4, H-3)` from the bottom. Only viewport-constrained (fixed or sticky) layers take part. The first pass ignores CSS `pointer-events`.
+2. WebKit walks up from the hit node to the first fixed or sticky ancestor that qualifies. A layer that is roughly viewport-sized on both axes qualifies, and its computed `background-color` becomes the edge colour. `mix-blend-mode` and canvas pixels are never read.
+3. `WKWebView` then fills the obscured inset with that colour as an opaque view, hiding the content under the bar. If no container is found, no fill is drawn and the content (or, past the end of the page, the document background) shows through the translucent bar.
+4. An empty, transparent layer is classed "hidden or transparent" and never becomes the container. If it is `pointer-events: none`, WebKit repeats the whole search with such layers skipped, so a `pointer-events: none` guard cannot decide anything.
+5. A colour once found is kept while its layer still has a renderer and `visibility: visible`, so it must be right from the first sample.
+
+On iPhone (`html[data-scroll-mode='document']`) `#fluidCanvas` is a fixed, viewport-sized layer. The server render emitted `background: black` in its inline style, and React hydration keeps the server's attributes, so the `nativeIOSScroll() ? 'transparent' : 'black'` branch in `_app.page.jsx` never ran on a phone. It was the only element with a pure black background in the page (checked in 67 states), so it won at both edges. The old top guard (6px at `top: -2px`, covering `[-2, 4)` once scrolled) also ended one pixel before the sampled row, and every guard was `pointer-events: none`.
+
 ## Change
 
-Use empty, transparent sticky guards outside the animated application root. The bottom guard follows all page content; the top guard precedes it. Both have a 6px box, a -2px edge offset, no paint, and no pointer events. Negative margins compensate their flow height so they neither add a bottom gap nor move the page. The guards do not change fluid colours, intensity, input or rendering. Desktop remains unchanged.
+- The fluid's black base is CSS, `html:not([data-scroll-mode='document']) #fluidCanvas`, never inline style. In document mode the wrapper has no background. On desktop nothing changes; the fluid blends with `difference`, so a black base is invisible anyway.
+- The transparent sticky guards stay outside the animated application root (top before it, bottom after all content), but are now 8px tall with `pointer-events: auto`, so they cover the sampled row at every scroll position and end the search with no colour. Negative margins keep them out of the flow. Six pixels at each edge no longer receive taps. While the menu or search is open (`html[data-browser-surface='dark']`) the guards use `pointer-events: none`: the panels must receive input at every edge pixel, and the bars should then take the panel's own ink.
+- `html` and `body` take the ink colour while the dark footer is at the bottom edge on iPhone and iPad (`data-browser-bottom='dark'`, already set by the navbar). Past the end of the page that is what Safari shows under the toolbar. Desktop is unchanged.
 
-The shared browser-surface state and theme-color hint remain for existing menu and non-Safari compatibility. The old sampler CSS no longer consumes its opaque colour variables.
+The shared browser-surface state and theme-color hint remain for the menu and non-Safari compatibility. The old sampler CSS no longer consumes its opaque colour variables.
 
 ## Evidence and limitations
 
 - WebKit engineer explanation of fixed/sticky viewport-edge background extension: https://bugs.webkit.org/show_bug.cgi?id=301756#c2
 - Matt Fantinel, firsthand iPhone reproduction and transparent bottom-sticky workaround, 7 October 2026: https://fantinel.dev/blog/safari-floating-url-bar-background
+- The algorithm above was read from WebKit's source on GitHub (Safari 26.0, 26.1, 26.2, 26.4 and main). Safari 26.0 treats a full-viewport opaque layer as "too large", so the black appeared from 26.1.
 
-The bottom guard follows that documented workaround. The top guard is a symmetric adaptation, not a physically verified iPhone result. This is not a standardized Safari API. The source explicitly notes that a native dialog can keep the toolbar opaque while open and recover when it closes.
+This is not a standardized Safari API. The source explicitly notes that a native dialog can keep the toolbar opaque while open and recover when it closes; the Guide tools dialog does the same here, by design.
 
 ## Automated checks
 
-The old test asserted that opaque samples existed, so it could pass while the owner's visual requirement failed. The replacement regression rejects those samples and the text-clipping disguise. The existing WebKit iPhone-emulation script now checks the actual compiled CSS on all six routes with normal/reduced motion: transparent sticky backgrounds, edge geometry, no hit interception, no extra document height, preserved scrolling, and menu open/close. Existing Pages checks exercise touch fluid, saved work, navigation and glass controls.
+- `site/tests/fluid-edge-colour.test.mjs`: no inline background on the fluid canvas, the CSS rule that gives it black only outside document mode, guard height and offsets, the open-panel exception and the ink rule. It fails on the old source.
+- `site/scripts/check-ios-document.mjs` (WebKit, iPhone emulation, all six routes, normal and reduced motion): transparent sticky guards with `pointer-events: auto` (`none` only with a panel open), no extra document height, preserved scrolling, no viewport-sized fixed layer with a visible background (the open panels' own ink excepted), and `#fluidCanvas` transparent.
+- `check-route-filter-motion.mjs` requires the open phone menu to receive input at all four viewport corners.
+- Existing Pages checks exercise touch fluid, saved work, navigation and glass controls; desktop still asserts `#fluidCanvas` is `rgb(0, 0, 0)`.
 
-Linux WebKit does not render iPhone Safari's native browser UI. Passing these tests is evidence of correct page geometry, not proof that the toolbar blending is fixed. Physical acceptance remains: real content is visible behind Safari controls during scrolling, not merely a different solid bar colour; light pages, dark footer, menu open/close, expanded/collapsed controls, and route changes all need to be checked.
+Linux WebKit does not render iPhone Safari's native browser UI. Passing these tests is evidence of correct page geometry, not proof that the toolbar blending is fixed. Physical acceptance remains: real content is visible behind Safari controls during scrolling, not merely a different solid bar colour; the Desk top, the dark footer, a course page, menu and search open and closed, the Guide tools dialog, expanded and collapsed controls, and route changes all need to be checked after a reload. Known approximations: under the toolbar at the very end of the dark footer Safari shows the flat ink colour, which is a few levels darker than the footer's lit gradient; and on iPad the top bar may read the ink background for about one screen while the footer is being revealed.
