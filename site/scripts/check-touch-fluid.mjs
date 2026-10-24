@@ -139,8 +139,8 @@ async function waitForMain(page) {
 
 // Poll from Node instead of page.waitForFunction, whose in-page eval is blocked
 // by this site's CSP in older Chromium. Keep the production CSP enabled.
-async function waitOnPage(page, predicate, argument) {
-  const deadline = Date.now() + 20000;
+async function waitOnPage(page, predicate, argument, timeout = 20000) {
+  const deadline = Date.now() + timeout;
   while (Date.now() < deadline) {
     if (await page.evaluate(predicate, argument)) return;
     await page.waitForTimeout(100);
@@ -358,10 +358,19 @@ try {
     await check('keyboard PageDown still scrolls the course', async () => {
       await page.locator('main').focus();
       const before = await snapshot(page);
-      await page.keyboard.press('PageDown');
-      await waitOnPage(page, top => document.querySelector('main').scrollTop > top + 30, before.scrollTop);
+      // While the page is still loading, Chromium can drop the scroll of a key press
+      // (no scroll event, nothing on the page undoes it; about 1 run in 10). The next
+      // press scrolls, as a reader would press again. Broken keyboard scrolling fails all.
+      let presses = 0;
+      let scrolled = false;
+      while (!scrolled && presses < 3) {
+        await page.keyboard.press('PageDown');
+        presses += 1;
+        scrolled = await waitOnPage(page, top => document.querySelector('main').scrollTop > top + 30, before.scrollTop, 5000).then(() => true, () => false);
+      }
+      assert.ok(scrolled, `PageDown did not scroll the course in ${presses} presses`);
       assert.deepEqual(errors, []);
-      return { before, after: await snapshot(page) };
+      return { before, presses, after: await snapshot(page) };
     });
   } finally {
     await context.close();

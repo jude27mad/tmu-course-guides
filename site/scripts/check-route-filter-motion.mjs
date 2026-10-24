@@ -66,7 +66,13 @@ const startRouteFrames = (page) => page.evaluate(() => {
   };
   sample();
 });
-const stopRouteFrames = (page) => page.evaluate(() => { cancelAnimationFrame(window.routeFrame); return window.routeFrames; });
+// The page can be ready before the next animation frame. Let the sampler record the
+// arrived page (two frames) before stopping it; a busy runner otherwise had none.
+const stopRouteFrames = (page) => page.evaluate(async () => {
+  await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  cancelAnimationFrame(window.routeFrame);
+  return window.routeFrames;
+});
 const MAX_EXPOSURE = 0.1;
 function assertPaperFade(frames, label) {
   const exposed = frames.filter((frame) => frame.exposure > MAX_EXPOSURE);

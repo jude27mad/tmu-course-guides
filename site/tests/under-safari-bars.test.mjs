@@ -17,10 +17,9 @@ test('the fixed artwork, cards and grain continue under both bars on iPhone', ()
   const app = read('../src/pages/app.module.scss');
   assert.match(global, /--edge-bleed-top:\s*\d+px;/);
   assert.match(global, /--edge-bleed-bottom:\s*\d+px;/);
-  const documentMode = global.slice(global.indexOf("html[data-scroll-mode='document'] {"));
-  // The grain is fixed in document mode too, reaching past both edges.
-  assert.doesNotMatch(documentMode.slice(0, documentMode.indexOf('\n}')), /#layout::before\s*\{[^}]*position:\s*absolute/);
-  assert.match(documentMode, /#layout::before\s*\{[^}]*top:\s*calc\(-1 \* var\(--edge-bleed-top\)\)/);
+  const documentMode = global.slice(global.indexOf("html[data-scroll-mode='document'] {\n  overflow-x"));
+  // The grain is part of the page: Safari paints the page under its bottom bar, but no fixed layer.
+  assert.match(documentMode.slice(0, documentMode.indexOf('\n}')), /#layout::before \{ position: absolute; top: 0; width: 100%; height: 100%; \}/);
   // Background artwork and the shared scene, not the fluid (it maps touches from the viewport top).
   assert.match(app, /\.canvasContainer:not\(:global\(#fluidCanvas\)\)\s*\{[^}]*top:\s*calc\(-1 \* var\(--edge-bleed-top\)\)/);
   assert.match(app, /\.background\s*\{[^}]*top:\s*calc\(-1 \* var\(--edge-bleed-top\)\)/);
@@ -172,7 +171,14 @@ test('Safari\'s flat fill past the page and under its bottom bar is the page as 
   assert.match(theme, /meta\.setAttribute\('content', topDark \? TOKENS\.ink : lightEdge\(DEFAULT_PALETTE\.secondary\)\)/);
 });
 
-test('the dark footer fades into the ink Safari continues it in', () => {
+test('under the bottom bar a dark panel shows the body\'s ink, and the artwork fades into it above the bar', () => {
+  const global = read('../src/styles/global.scss');
+  assert.match(global, /html\[data-scroll-mode='document'\] body \{\s*background-color: var\(--black\);\s*\}/);
+  const app = read('../src/pages/app.module.scss');
+  const background = app.slice(app.indexOf("  .background {\n    background-color: transparent;"));
+  assert.match(background, /&::after \{[^}]*position: fixed;[^}]*bottom: 0;[^}]*height: 96px;[^}]*linear-gradient\(to bottom, rgba\(var\(--inkRgb\), 0\), var\(--black\)\)/);
+  // The footer no longer fades to flat ink itself: when the page bounces past its
+  // end, the artwork under it would meet that ink in a hard edge.
   const footer = read('../src/components/dom/styles/footer.module.scss');
-  assert.match(footer, /:global\(html\[data-scroll-mode='document'\]\) & \{\s*background-image: linear-gradient\(to bottom, rgba\(var\(--inkRgb\), 0\) calc\(100% - 160px\), var\(--black\) calc\(100% - 12px\)\);/);
+  assert.doesNotMatch(footer, /linear-gradient/);
 });
