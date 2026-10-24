@@ -171,6 +171,11 @@ try {
     try {
       const motion = await motionContext.newPage();
       motion.on('pageerror', (error) => errors.push(error.message));
+      // The clock runs timer and frame callbacks itself and reports what they throw
+      // to the console rather than as a page error: those must still fail the run.
+      motion.on('console', (message) => {
+        if (message.type() === 'error' && message.text().includes('ClockController')) errors.push(message.text());
+      });
       // Install before application timers, then advance animation frames explicitly,
       // as the Work filter check does: the outgoing fade lasts 120 ms, which one
       // frame of a loaded CI runner can cover entirely.
