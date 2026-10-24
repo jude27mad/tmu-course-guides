@@ -86,6 +86,7 @@ async function verifyTransparencyGuards(page) {
       oldSamples: document.querySelectorAll('[data-safari-edge]').length,
       tintingLayers,
       panelOpen,
+      surface: document.documentElement.dataset.browserSurface,
       fluidBackground: fluid ? getComputedStyle(fluid).backgroundColor : null,
     };
   });
@@ -101,7 +102,8 @@ async function verifyTransparencyGuards(page) {
     assert.equal(guard.image, 'none');
     assert.notEqual(guard.clip, 'text', 'opaque backgrounds must not be disguised with text clipping');
     // WebKit repeats its edge search with a pointer-events:none guard skipped, so the guard would not decide anything.
-    assert.equal(guard.pointerEvents, 'auto', JSON.stringify(state));
+    // Only an open menu or search panel, which must receive input at every edge pixel, turns that off.
+    assert.equal(guard.pointerEvents, state.surface === 'dark' ? 'none' : 'auto', JSON.stringify(state));
     assert.equal(guard.border, '0px');
     assert.equal(guard.shadow, 'none');
     assert.equal(guard.empty, true);

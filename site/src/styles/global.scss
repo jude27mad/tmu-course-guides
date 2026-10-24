@@ -237,7 +237,7 @@ html:not([data-scroll-mode='document']) #fluidCanvas {
 // transparent. They must not use `pointer-events: none`: WebKit then repeats the
 // search with the guard skipped and can pick up whatever sits underneath. They
 // are 8px tall to reach the sampled row, which leaves 6px at each edge that
-// taps do not pass through.
+// taps do not pass through (except while a panel is open, see below).
 // Evidence/limits: docs/qa/safari-toolbar-transparency.md.
 .safari-toolbar-blend {
   display: none;
@@ -266,5 +266,11 @@ html:not([data-scroll-mode='document']) #fluidCanvas {
   html[data-scroll-mode='document'] [data-safari-blend='bottom'] {
     bottom: -2px;
     margin-top: -8px;
+  }
+  // The menu and search panels cover the page, must receive input at every pixel
+  // including the edges, and are the colour the bars should take (Safari then
+  // finds the panel itself once the guards no longer take part).
+  html[data-scroll-mode='document'][data-browser-surface='dark'] .safari-toolbar-blend {
+    pointer-events: none;
   }
 }
