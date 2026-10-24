@@ -149,7 +149,15 @@ async function checkMobileMenu(page, name) {
       if (closeWithEscape) await page.keyboard.press('Escape');
       else await close.click();
       await page.waitForFunction(() => getComputedStyle(document.querySelector('#menu')).visibility === 'hidden');
-      await page.waitForFunction(() => document.querySelector('#menu-button') === document.activeElement);
+      await page.waitForFunction(() => document.querySelector('#menu-button') === document.activeElement, null, { timeout: 8000 }).catch(async () => {
+        const diagnostic = await page.evaluate(() => ({
+          active: document.activeElement?.outerHTML.slice(0, 200),
+          openerInert: document.querySelector('#menu-button').inert,
+          headerInert: document.querySelector('header').inert,
+          headerVisibility: getComputedStyle(document.querySelector('header')).visibility,
+        }));
+        throw new Error(`Menu did not restore focus: ${JSON.stringify(diagnostic)}`);
+      });
       assert.equal(await opener.evaluate((button) => button === document.activeElement), true, 'closing the phone menu returns focus to its opener');
     }
   } finally {

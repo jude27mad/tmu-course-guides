@@ -98,7 +98,20 @@ function MenuLinks() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMenuOpen]);
 
-  const close = () => setIsMenuOpen(false);
+  const close = () => {
+    if (isMobile) {
+      // Restore focus while Close/Escape is still the user's direct action.
+      // WebKit may ignore focus() from a later animation callback.
+      const header = document.querySelector('header');
+      if (header) {
+        header.inert = false;
+        header.style.visibility = 'visible';
+      }
+      const opener = openerRef.current || document.getElementById('menu-button');
+      if (opener?.isConnected) opener.focus({ preventScroll: true });
+    }
+    setIsMenuOpen(false);
+  };
 
   // Escape closes the menu; Tab stays within the modal until it closes.
   useEffect(() => {
