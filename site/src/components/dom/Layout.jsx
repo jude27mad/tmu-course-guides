@@ -1,5 +1,5 @@
-import { nativeIOSScroll } from '@src/utils/scrollRoot';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { nativeIOSScroll, scrollTop } from '@src/utils/scrollRoot';
+import React, { useEffect, useRef, useState } from 'react';
 import { Transition as ReactTransition, SwitchTransition } from 'react-transition-group';
 import { courseIdFromPath, pathKey, wantsSRGB } from '@src/utils/routes';
 
@@ -7,20 +7,43 @@ import Footer from '@src/components/dom/Footer';
 import CompactFooter from '@src/pages/course/components/workspace/CompactFooter';
 import PreFooter from '@src/components/dom/PreFooter';
 import gsap from 'gsap';
+import { isMobileNow } from '@src/hooks/useIsMobile';
 import { scrollToHash } from '@src/utils/scrollToHash';
 import styles from '@src/components/dom/styles/layout.module.scss';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
 import { TOKENS } from '@src/lib/palette.mjs';
 
-// Keep the shell's card/slide choreography without a multi-second input lock.
-const STEP = 0.16;
-const ENTER_DELAY = 0;
-const ENTER_MS = 450;
-const EXIT_MS = 350;
+// Giats's card (desktop and Android, except between courses): shrink, slide, slide, grow.
+// Two steps out and about two in keep a page change within 0.6 s.
+const STEP = 0.14;
 const PANEL_CLOSE = 0.45;
-const DOCUMENT_EXIT = 0.16;
-const DOCUMENT_ENTER = 0.22;
+// The paper fade (iPhone and iPad, and between courses on every screen): the page
+// dissolves into the paper behind it and the next page rises out of it. In ms: `paper`
+// is how fast the paper comes up, `out` the old page's fade, `in` the new page's,
+// `clear` when the paper starts to go; `rise` is in px.
+const FADE = {
+  page: { paper: 120, out: 180, in: 340, clear: 120, rise: 14 },
+  course: { paper: 80, out: 120, in: 220, clear: 80, rise: 0 },
+  // From an open phone menu or search: the swap happens unseen under the panel, which
+  // then dissolves straight into the new page.
+  panel: { hold: 240, in: 260, clear: 100, rise: 0 },
+};
+// GSAP's power2.in, power2.out, expo.out and power1.inOut as CSS curves.
+const EASE = {
+  in: 'cubic-bezier(0.32, 0, 0.67, 0)',
+  out: 'cubic-bezier(0.33, 1, 0.68, 1)',
+  rise: 'cubic-bezier(0.16, 1, 0.3, 1)',
+  inOut: 'cubic-bezier(0.45, 0, 0.55, 1)',
+};
+// react-transition-group's fallback when an animation never finishes (a hidden tab
+// stops them); normally each phase ends with its animations.
+const WATCHDOG_MS = 1500;
+const MODIFIER_KEYS = ['Shift', 'Control', 'Alt', 'Meta'];
+
+const siteHeader = () => document.querySelector('header');
+const routePaper = () => document.getElementById('routePaper');
+const viewCanvas = () => document.getElementById('viewCanvas');
 
 // After a route change: focus the new page's heading (or main). Next's own
 // route announcer reads the new document title.
@@ -35,22 +58,89 @@ function landOnPage() {
   }
 }
 
+// The paper fade runs as Web Animations, which the browser can play on its compositor:
+// they keep moving while the arriving page's effects hold the main thread. `end` runs
+// once, when every animation has finished or `run.end()` finishes the phase early.
+function playPhase(run, anims, end) {
+  const id = run.id + 1;
+  run.id = id;
+  run.anims = anims;
+  const finish = () => {
+    if (run.id !== id) return;
+    run.id += 1;
+    run.end = null;
+    end();
+  };
+  run.end = finish;
+  Promise.all(anims.map((anim) => anim.finished)).then(finish, () => {});
+}
+
+// Card timelines are built in the commit that mounts a page, so they would start "in
+// the past" (GSAP's clock is the last frame's) and lose the mount's time. Start them on
+// the next tick.
+function startNextTick(run, tl) {
+  run.start?.kill();
+  run.start = gsap.delayedCall(0, () => tl.play());
+}
+
 function Layout({ children, layoutRef, mainRef, router }) {
-  const [lenis, introOut, setIsLoading, isMenuOpen, isSearchOpen, setIsAbout, still] = useStore(
-    useShallow((state) => [state.lenis, state.introOut, state.setIsLoading, state.isMenuOpen, state.isSearchOpen, state.setIsAbout, state.still]),
-  );
+  const [introOut, setIsLoading, setIsAbout, still] = useStore(useShallow((state) => [state.introOut, state.setIsLoading, state.setIsAbout, state.still]));
+  // The footer belongs to the page on screen: it changes when the next page mounts,
+  // not under the outgoing page as soon as the address changes.
+  const [footerPath, setFooterPath] = useState(router.asPath);
 
-  const enterTimelineRef = useRef();
-  const exitTimelineRef = useRef();
+  // One page change at a time: its phase ('idle' | 'exit' | 'enter'), plan, card
+  // timeline or fade animations, and react-transition-group's done for the phase.
+  const runRef = useRef({ phase: 'idle', plan: null, tl: null, start: null, anims: [], end: null, id: 0, done: null, ready: false, skip: false, steady: true, from: router.asPath, swipe: null });
 
-  const [isEntering, setIsEntering] = useState(false);
-
-  const panelOpen = isMenuOpen || isSearchOpen;
-  const menuTime = useMemo(() => (panelOpen ? PANEL_CLOSE : 0), [panelOpen]);
   const animated = introOut && !still;
-  const documentScroll = nativeIOSScroll();
-  const enterDuration = documentScroll ? DOCUMENT_ENTER * 1000 : ENTER_MS;
-  const exitDuration = documentScroll ? Math.max(DOCUMENT_EXIT, menuTime) * 1000 : EXIT_MS + menuTime * 1000;
+
+  // Ends the current react-transition-group phase (or the next one to ask, if it has
+  // not asked yet).
+  const release = () => {
+    const run = runRef.current;
+    const { done } = run;
+    run.done = null;
+    if (done) done();
+    else run.ready = true;
+  };
+  const addEndListener = (node, done) => {
+    const run = runRef.current;
+    if (run.ready) {
+      run.ready = false;
+      done();
+    } else run.done = done;
+  };
+
+  // Stops whatever is playing. A stopped fade keeps its current look, so the next
+  // phase continues from where the page is.
+  const stopMotion = (run) => {
+    run.start?.kill();
+    run.tl?.kill();
+    run.anims.forEach((anim) => {
+      try {
+        anim.commitStyles();
+      } catch {
+        // an element that is no longer rendered has nothing to keep
+      }
+      anim.cancel();
+    });
+    run.start = null;
+    run.tl = null;
+    run.anims = [];
+    run.end = null;
+    run.id += 1;
+  };
+
+  // Finishes the current phase now: a tap, a key, Pause motion, or a page that
+  // mounted before the exit had played out.
+  const finishPhase = () => {
+    const run = runRef.current;
+    run.start?.kill();
+    if (run.tl) run.tl.progress(1);
+    run.anims.forEach((anim) => anim.finish());
+    run.end?.();
+  };
 
   const closePanels = () => {
     const state = useStore.getState();
@@ -58,15 +148,36 @@ function Layout({ children, layoutRef, mainRef, router }) {
     if (state.isSearchOpen) state.setIsSearchOpen(false);
   };
 
+  // The old page is gone from view: park the scroll and let the next page mount.
+  const covered = () => {
+    const run = runRef.current;
+    run.tl = null;
+    if (!run.steady) gsap.set(siteHeader(), { autoAlpha: 0 });
+    setIsLoading(true);
+    useStore.getState().lenis.scrollTo(0, { force: true, immediate: true });
+    release();
+  };
+
   const finishEnter = () => {
+    const run = runRef.current;
+    const main = mainRef.current;
+    const { lenis } = useStore.getState();
     setIsAbout(wantsSRGB(router.pathname));
-    gsap.set(mainRef.current, { willChange: 'auto' });
+    gsap.set(main, { willChange: 'auto' });
     gsap.set('#loader', { autoAlpha: 0, display: 'none' });
+    gsap.set(routePaper(), { display: 'none' });
+    gsap.set(siteHeader(), { autoAlpha: 1 });
+    if (nativeIOSScroll() || run.plan !== 'card') gsap.set(main, { clearProps: 'transform,transformOrigin,left' });
     if (nativeIOSScroll()) {
-      gsap.set(mainRef.current, { clearProps: 'transform,transformOrigin,left' });
       const fluid = document.getElementById('fluidCanvas');
       if (fluid) gsap.set(fluid, { opacity: 1 });
     }
+    // The finished fade's end state is already the page's own.
+    run.anims.forEach((anim) => anim.cancel());
+    run.anims = [];
+    run.tl = null;
+    run.phase = 'idle';
+    run.skip = false;
 
     // The old page's removal and the final transform cleanup can move Safari's
     // document scroll after the exit reset. Read the incoming page's actual
@@ -78,167 +189,224 @@ function Layout({ children, layoutRef, mainRef, router }) {
     setIsLoading(false);
     landOnPage();
     scrollToHash({ immediate: true });
+    release();
   };
 
-  const handleEnter = useCallback(
-    () => {
-      if (!introOut) return;
-      // The exit is timed to end just before the new page mounts; on a janky frame it
-      // may be a tick short, so finish it (its onComplete parks main and sets isLoading).
-      if (exitTimelineRef.current) exitTimelineRef.current.progress(1);
+  const handleExit = () => {
+    const state = useStore.getState();
+    if (!state.introOut) return;
+    const run = runRef.current;
+    const main = mainRef.current;
+    const header = siteHeader();
+    const ios = nativeIOSScroll();
+    const { from } = run;
+    const to = router.asPath;
+    // A change that replaces one still arriving (a second tap) leaves from where it is.
+    const superseding = run.phase === 'enter';
+    // Safari's own swipe-back animation already showed the change.
+    const swiped = run.swipe === pathKey(to);
+    const panelOpen = state.isMenuOpen || state.isSearchOpen;
 
-      if (still) {
-        // Motion off: no curtain; the new page is simply there.
-        gsap.set('#loader', { x: '100%' });
-        gsap.set(layoutRef.current, { height: '100%', opacity: 1 });
-        gsap.set(mainRef.current, { x: 0, scale: 1, borderRadius: 0, border: 'none', height: 'auto', pointerEvents: 'auto', opacity: 1 });
-        gsap.set('header', { autoAlpha: 1, left: 0, top: 0, scale: 1 });
-        finishEnter();
-        return;
-      }
+    stopMotion(run);
+    run.phase = 'exit';
+    run.ready = false;
+    run.skip = false;
+    run.swipe = null;
+    state.setIsTransitioning(true);
+    state.lenis.stop();
+    closePanels();
 
-      if (nativeIOSScroll()) {
-        // A native document can be thousands of pixels tall. Scaling it around
-        // its centre moves the heading far down the screen; sliding it also
-        // exposes a second loading card. Reveal the new page at its real size.
-        gsap.set('#loader', { autoAlpha: 0, display: 'none' });
-        gsap.set(layoutRef.current, { opacity: 1 });
-        gsap.set(mainRef.current, {
-          clearProps: 'transform,transformOrigin,left,border,borderRadius',
-          opacity: 0,
-          pointerEvents: 'auto',
-          willChange: 'opacity',
-        });
-        gsap.set('header', { left: 0, top: 0, scale: 1, autoAlpha: 0 });
-        lenis.resize();
-        lenis.scrollTo(0, { force: true, immediate: true });
-        enterTimelineRef.current = gsap
-          .timeline({ onComplete: finishEnter })
-          .to(mainRef.current, { opacity: 1, duration: DOCUMENT_ENTER, ease: 'power2.out' }, 0)
-          .to('header', { autoAlpha: 1, duration: DOCUMENT_ENTER, ease: 'power2.out' }, 0);
-        return;
-      }
+    if (state.still || swiped) {
+      // Motion off: no fade and no card; the old page stays where it is until the
+      // new one replaces it at its top.
+      run.plan = 'instant';
+      setIsLoading(true);
+      release();
+      return;
+    }
 
-      const tl = gsap.timeline({ onComplete: finishEnter });
+    const betweenCourses = !!(courseIdFromPath(from) && courseIdFromPath(to));
+    if (panelOpen && isMobileNow()) run.plan = 'panel';
+    else if (ios || (!panelOpen && (betweenCourses || superseding))) run.plan = betweenCourses ? 'course' : 'page';
+    else run.plan = 'card';
+    // The header stays put while it is on screen. Once scrolled away, or moved by a
+    // wide panel's shell (iPad), it fades with the page so it cannot pop back in.
+    run.steady = run.plan !== 'card' && scrollTop() < 1 && (!panelOpen || run.plan === 'panel') && Number(getComputedStyle(header).opacity) === 1;
 
-      enterTimelineRef.current = tl;
-      setIsEntering(true);
-
-      tl.set(
-        layoutRef.current,
+    if (run.plan === 'card') {
+      const menuTime = panelOpen ? PANEL_CLOSE : 0;
+      const scrollbar = document.getElementById('scrollbar');
+      const tl = gsap.timeline({ paused: true, onComplete: covered, defaults: { ease: 'power2.inOut', duration: STEP } });
+      tl.set(main, { willChange: 'transform', pointerEvents: 'none' }, 0);
+      if (scrollbar) tl.to(scrollbar, { autoAlpha: 0 }, menuTime);
+      tl.to(
+        header,
         {
-          height: '90%',
-          opacity: 1,
+          autoAlpha: 0,
           onComplete: () => {
-            setIsAbout(wantsSRGB(router.pathname));
-            setIsEntering(false);
-          },
-        },
-        ENTER_DELAY,
-      )
-        .to('#loader', { x: '-100%', ease: 'power2.inOut', duration: STEP }, ENTER_DELAY)
-        .to(mainRef.current, { ease: 'power2.inOut', x: '0px', duration: STEP }, ENTER_DELAY)
-        .to(mainRef.current, { ease: 'power2.inOut', borderRadius: 0, scale: 1, duration: STEP }, ENTER_DELAY + STEP)
-        .to(layoutRef.current, { ease: 'power2.inOut', height: '100%', opacity: 1, duration: STEP }, ENTER_DELAY + STEP)
-        .to('header', { ease: 'power2.inOut', autoAlpha: 1, duration: STEP }, ENTER_DELAY + STEP * 1.6)
-        .to(mainRef.current, { ease: 'power2.inOut', height: 'auto', border: 'none', pointerEvents: 'auto', duration: STEP }, ENTER_DELAY + STEP * 1.6);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [introOut, still],
-  );
-
-  const handleExit = useCallback(
-    () => {
-      if (!introOut) return;
-      if (enterTimelineRef.current) enterTimelineRef.current.kill();
-
-      useStore.getState().setIsTransitioning(true);
-      lenis.stop();
-      closePanels();
-
-      if (still) {
-        setIsLoading(true);
-        lenis.scrollTo(0, { force: true, immediate: true });
-        return;
-      }
-
-      if (nativeIOSScroll()) {
-        // Navbar pauses its shell while this route owns main/header. Menu rows
-        // can close without reversing the page back into view for one frame.
-        gsap.set('#loader', { autoAlpha: 0, display: 'none' });
-        gsap.set(mainRef.current, { pointerEvents: 'none', willChange: 'opacity' });
-        const tl = gsap.timeline({
-          onComplete: () => {
-            setIsLoading(true);
-            lenis.scrollTo(0, { force: true, immediate: true });
-          },
-        });
-        exitTimelineRef.current = tl;
-        tl.to(mainRef.current, { opacity: 0, duration: DOCUMENT_EXIT, ease: 'power2.inOut' }, 0).to('header', { autoAlpha: 0, duration: DOCUMENT_EXIT, ease: 'power2.inOut' }, 0);
-        return;
-      }
-
-      if (isEntering === false) {
-        const tl = gsap.timeline({
-          onComplete: () => {
-            setIsLoading(true);
-            lenis.scrollTo(0, { force: true, immediate: true });
-          },
-        });
-
-        exitTimelineRef.current = tl;
-        tl.set(mainRef.current, { willChange: 'transform' }, 0);
-
-        if (document?.getElementById('scrollbar')) {
-          tl.to(document.getElementById('scrollbar'), { ease: 'power2.inOut', autoAlpha: 0, duration: STEP }, menuTime);
-        }
-
-        tl.to(
-          'header',
-          {
-            ease: 'power2.inOut',
-            autoAlpha: 0,
-            duration: STEP,
-            onComplete: () => {
-              gsap.set('#loader', {
-                scale: 0.9,
-                x: '100%',
-                borderRadius: '1.3888888889vw',
-                autoAlpha: 1,
-                display: 'block', // restore only during route transition
-              });
-              gsap.set('header', {
-                left: 0,
-                top: 0,
-                scale: 1,
-                duration: 0,
-              });
-            },
-            overwrite: true,
-          },
-          menuTime,
-        )
-          .to(layoutRef.current, { ease: 'power2.inOut', height: '90svh', opacity: 1, duration: STEP }, menuTime)
-          .to(
-            mainRef.current,
-            {
-              ease: 'power2.inOut',
+            gsap.set('#loader', {
               scale: 0.9,
-              opacity: 1,
-              border: `2px solid ${TOKENS.page}`,
+              x: '100%',
               borderRadius: '1.3888888889vw',
-              duration: STEP,
-            },
-            menuTime,
-          )
-          .to(mainRef.current, { ease: 'power2.inOut', x: '-100%', duration: STEP }, STEP + menuTime)
-          .to('#loader', { ease: 'power2.inOut', x: '0px', duration: STEP }, STEP + menuTime)
-          .set(mainRef.current, { x: '100%' });
-      }
-    },
+              autoAlpha: 1,
+              display: 'block', // restore only during route transition
+            });
+            gsap.set(header, { left: 0, top: 0, scale: 1 });
+          },
+          overwrite: true,
+        },
+        menuTime,
+      )
+        .to(layoutRef.current, { height: '90svh', opacity: 1 }, menuTime)
+        .to(main, { scale: 0.9, opacity: 1, border: `2px solid ${TOKENS.page}`, borderRadius: '1.3888888889vw' }, menuTime)
+        .to(main, { x: '-100%' }, STEP + menuTime)
+        .to('#loader', { x: '0px' }, STEP + menuTime)
+        .set(main, { x: '100%' });
+      run.tl = tl;
+      startNextTick(run, tl);
+      return;
+    }
+
+    // The paper fade. It continues from the paper an interrupted arrival left, and
+    // takes over from a loader card still in flight at once.
+    const fade = FADE[run.plan];
+    const paper = routePaper();
+    const fading = [main, viewCanvas()].filter(Boolean);
+    const cardInFlight = getComputedStyle(document.getElementById('loader')).display !== 'none';
+    const paperShown = getComputedStyle(paper).display !== 'none';
+    let paperFrom = paperShown ? Number(getComputedStyle(paper).opacity) : 0;
+    if (cardInFlight) paperFrom = 1;
+    gsap.set('#loader', { autoAlpha: 0, display: 'none' });
+    gsap.set(main, { pointerEvents: 'none', willChange: 'opacity, transform' });
+    let anims;
+    if (run.plan === 'panel') {
+      // The open panel covers the screen: the old page gives way to paper beneath it.
+      gsap.set(paper, { display: 'block', autoAlpha: 1 });
+      const hide = { duration: fade.hold, fill: 'both' };
+      anims = fading.map((el) => el.animate({ opacity: [0, 0] }, hide));
+      if (!run.steady) anims.push(header.animate({ opacity: [0, 0] }, hide));
+    } else {
+      gsap.set(paper, { display: 'block', autoAlpha: 1 });
+      const out = { duration: fade.out, easing: EASE.in, fill: 'both' };
+      anims = [paper.animate({ opacity: [paperFrom, 1] }, { duration: fade.paper, easing: EASE.out, fill: 'both' }), ...fading.map((el) => el.animate({ opacity: 0 }, out))];
+      if (!run.steady) anims.push(header.animate({ opacity: 0 }, out));
+      // A wide panel's shell (iPad) dims the page; bring it up to the paper.
+      if (Number(gsap.getProperty(layoutRef.current, 'opacity')) < 1) anims.push(layoutRef.current.animate({ opacity: 1 }, { duration: fade.paper, easing: EASE.out, fill: 'both' }));
+      const scrollbar = document.getElementById('scrollbar');
+      if (scrollbar) anims.push(scrollbar.animate({ opacity: 0 }, out));
+    }
+    playPhase(run, anims, covered);
+  };
+
+  const handleEnter = () => {
+    const run = runRef.current;
+    run.from = router.asPath;
+    setFooterPath(router.asPath);
+    if (!useStore.getState().introOut) return;
+    // A skip or the watchdog can mount the page before the exit has played out.
+    if (run.phase === 'exit') finishPhase();
+    const exitAnims = run.anims;
+    run.start?.kill();
+    run.tl = null;
+    run.anims = [];
+    run.phase = 'enter';
+    run.ready = false;
+    const main = mainRef.current;
+    const header = siteHeader();
+    const paper = routePaper();
+    const { lenis } = useStore.getState();
+
+    if (run.plan === 'instant' || run.skip || useStore.getState().still) {
+      // The new page is simply there.
+      gsap.set('#loader', { autoAlpha: 0, display: 'none' });
+      gsap.set(layoutRef.current, { height: '100%', opacity: 1 });
+      gsap.set(main, { x: 0, y: 0, scale: 1, borderRadius: 0, border: 'none', height: 'auto', pointerEvents: 'auto', opacity: 1 });
+      gsap.set(header, { autoAlpha: 1, left: 0, top: 0, scale: 1 });
+      run.anims = exitAnims;
+      finishEnter();
+      return;
+    }
+
+    if (run.plan === 'card') {
+      const tl = gsap.timeline({ paused: true, onComplete: finishEnter, defaults: { ease: 'power2.inOut', duration: STEP } });
+      tl.set(layoutRef.current, { height: '90%', opacity: 1, onComplete: () => setIsAbout(wantsSRGB(router.pathname)) }, 0)
+        .to('#loader', { x: '-100%' }, 0)
+        .to(main, { x: '0px' }, 0)
+        .to(main, { borderRadius: 0, scale: 1 }, STEP)
+        .to(layoutRef.current, { height: '100%', opacity: 1 }, STEP)
+        .to(header, { autoAlpha: 1 }, STEP * 1.3)
+        .to(main, { height: 'auto', border: 'none', pointerEvents: 'auto' }, STEP * 1.3);
+      run.tl = tl;
+      startNextTick(run, tl);
+      return;
+    }
+
+    // The paper fade: the new page rises out of the paper, which clears once the
+    // page is nearly opaque, so the Desk's dark windows deepen last.
+    const fade = FADE[run.plan];
+    const fading = [main, viewCanvas()].filter(Boolean);
+    gsap.set('#loader', { autoAlpha: 0, display: 'none' });
+    gsap.set(layoutRef.current, { height: '100%', opacity: 1 });
+    gsap.set(main, { clearProps: 'transform,transformOrigin,left,border,borderRadius', opacity: 1, pointerEvents: 'auto', willChange: 'opacity, transform' });
+    gsap.set(paper, { display: 'block', autoAlpha: 1 });
+    if (!run.steady) gsap.set(header, { left: 0, top: 0, scale: 1, autoAlpha: 1 });
+    const anims = fading.map((el) => el.animate({ opacity: [0, 1] }, { duration: fade.in, easing: EASE.out, fill: 'both' }));
+    if (fade.rise) anims.push(main.animate({ transform: [`translateY(${fade.rise}px)`, 'none'] }, { duration: fade.in, easing: EASE.rise, fill: 'both' }));
+    anims.push(paper.animate({ opacity: [1, 0] }, { delay: fade.clear, duration: fade.in - fade.clear - 20, easing: EASE.inOut, fill: 'both' }));
+    if (!run.steady) anims.push(header.animate({ opacity: [0, 1] }, { delay: 40, duration: fade.in - 60, easing: EASE.out, fill: 'both' }));
+    // The new animations hold the same look the exit's held, so they can go now.
+    exitAnims.forEach((anim) => anim.cancel());
+    lenis.resize();
+    lenis.scrollTo(0, { force: true, immediate: true });
+    playPhase(run, anims, finishEnter);
+  };
+
+  useEffect(() => {
+    // A tap or key press during a page change finishes it at once; the tap then
+    // reaches the new page as usual.
+    const onInput = (event) => {
+      const run = runRef.current;
+      if (run.phase === 'idle') return;
+      if (event.type === 'keydown' && (event.repeat || MODIFIER_KEYS.includes(event.key))) return;
+      if (run.phase === 'exit') run.skip = true;
+      finishPhase();
+    };
+    // Safari's edge swipe plays its own animation; the page change then needs none.
+    const onPopState = (event) => {
+      runRef.current.swipe = event.hasUAVisualTransition ? pathKey(window.location.pathname.slice(router.basePath.length)) : null;
+    };
+    document.addEventListener('pointerdown', onInput, true);
+    document.addEventListener('keydown', onInput, true);
+    window.addEventListener('popstate', onPopState, true);
+    return () => {
+      document.removeEventListener('pointerdown', onInput, true);
+      document.removeEventListener('keydown', onInput, true);
+      window.removeEventListener('popstate', onPopState, true);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [introOut, menuTime, isEntering, still],
-  );
+  }, []);
+
+  // Pause motion switched on during a page change finishes it.
+  useEffect(() => {
+    const run = runRef.current;
+    if (!still || run.phase === 'idle') return;
+    if (run.phase === 'exit') run.skip = true;
+    finishPhase();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [still]);
+
+  // Back and Forward to another page: Next would scroll the outgoing page to its top
+  // as the change begins (for history entries it did not create with scroll: false),
+  // a visible jump before the fade. The arriving page is reset to its top anyway.
+  useEffect(() => {
+    router.beforePopState((state) => {
+      const as = String(state.as || '');
+      const path = as.startsWith(router.basePath) ? as.slice(router.basePath.length) : as;
+      if (pathKey(path) !== pathKey(router.asPath)) state.options.scroll = false;
+      return true;
+    });
+    return () => router.beforePopState(() => true);
+  }, [router]);
 
   // In-page anchors (#assignment-m2 from the menu, search or a link) never run the
   // curtain: close any open panel and glide to the item.
@@ -248,6 +416,7 @@ function Layout({ children, layoutRef, mainRef, router }) {
     const onHash = (url) => {
       cancel();
       closePanels();
+      runRef.current.swipe = null;
       const hash = String(url).split('#')[1];
       if (hash) {
         pending = setTimeout(
@@ -273,22 +442,12 @@ function Layout({ children, layoutRef, mainRef, router }) {
   return (
     <>
       <SwitchTransition>
-        <ReactTransition
-          key={pathKey(router.asPath)}
-          in={false}
-          unmountOnExit
-          timeout={{
-            enter: animated ? enterDuration : 0,
-            exit: animated ? exitDuration : 0,
-          }}
-          onEnter={handleEnter}
-          onExit={handleExit}
-        >
+        <ReactTransition key={pathKey(router.asPath)} in={false} unmountOnExit timeout={animated ? WATCHDOG_MS : 0} addEndListener={addEndListener} onEnter={handleEnter} onExit={handleExit}>
           {children}
         </ReactTransition>
       </SwitchTransition>
 
-      {courseIdFromPath(router.asPath) ? (
+      {courseIdFromPath(footerPath) ? (
         <CompactFooter />
       ) : (
         <>

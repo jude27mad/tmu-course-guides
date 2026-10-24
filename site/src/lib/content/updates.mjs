@@ -117,6 +117,13 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-10-24-smoother-page-changes",
+  "date": "October 24, 2026",
+  "title": "Smoother page changes",
+  "text": "Changing pages on iPhone and iPad no longer shows the dark background. The page fades into the paper and the next one rises in, while the top bar stays put. Switching between courses is a quicker fade, and the card slide on computers is shorter. A tap or key press finishes a page change at once, and Pause motion still changes pages instantly.",
+  "items": []
+ },
+ {
   "id": "2026-10-23-all-courses-navigation",
   "date": "October 23, 2026",
   "title": "All courses opens at the top",

@@ -178,6 +178,7 @@ function MyApp({ Component, pageProps, router }) {
   const canvasElements = useMemo(
     () => (
       <Canvas
+        id="viewCanvas"
         gl={{
           outputColorSpace: isAbout === false ? THREE.LinearSRGBColorSpace : THREE.SRGBColorSpace,
           powerPreference: 'high-performance',
@@ -227,6 +228,8 @@ function MyApp({ Component, pageProps, router }) {
       <div className={styles.root}>
         {domElements}
         <div ref={layoutRef} id="layout" className={styles.layout}>
+          {/* The paper a page fades into during a page change (Layout). */}
+          <div id="routePaper" className={styles.routePaper} aria-hidden="true" />
           {canvasElements}
           {!still && (
             <Canvas
