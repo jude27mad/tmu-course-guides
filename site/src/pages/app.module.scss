@@ -93,6 +93,18 @@
   }
 }
 
+// The pages' paper behind `main` during a page change: a fading page shows it
+// rather than the dark artwork (.background) beneath. It is in the page's flow,
+// never fixed or sticky, so Safari 26 never takes it for the colour of its bars,
+// and it is displayed only while a page changes.
+.routePaper {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background-color: var(--white);
+  pointer-events: none;
+}
+
 // Hidden until the loader reveals it, only when JS runs (see global.scss).
 :global(html.js) .layout .main {
   opacity: 0;

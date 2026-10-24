@@ -2,6 +2,14 @@
 
 Latest first. Students see course changes under **Course updates** in each guide's Guide tools, and website changes on the **Website updates** page. Older entries record the behaviour at the time; later releases supersede them.
 
+## Unreleased — Smoother page changes
+
+- **iPhone and iPad.** A page change no longer fades the page out over the dark background artwork. A paper layer sits behind the page during the change (`#routePaper`, in the page's flow and never fixed, so Safari's bars are unaffected). The page fades into it in 0.18 s and the next page rises 14 px out of it in 0.34 s. The header stays put while it is on screen. Leaving from an open Menu or Search, the swap happens under the panel, which dissolves into the new page.
+- **Between courses** every screen uses a quicker fade (0.12 s out, 0.22 s in). **Other changes on computers and Android** keep Giats's card slide, shortened from about 0.75 s to 0.6 s. The card's arrival no longer loses its first frames to the new page's setup.
+- The fades run as Web Animations, so they keep moving while a slower phone sets up the new page. A tap or key press finishes a change at once, Pause motion finishes one in progress, and Safari's swipe back changes pages without a second animation.
+- The footer now changes with the page instead of under the outgoing one, and Back no longer scrolls the outgoing page to its top before it fades.
+- `scripts/check-route-filter-motion.mjs` samples every frame of Desk → course, course → course, footer → Desk and Menu → course changes in iPhone WebKit. It fails if the dark artwork shows through more than 10% of a changing page, if the paper does not cover the screen, if a change does not fade with motion on, or if it fades with reduced motion.
+
 ## Unreleased — Course updates and website updates in separate places
 
 - **What's changed?** is now two lists. **Course updates**, in each course's Guide tools, lists changes to that course's dates, coverage, policy and grading, and only these show the unread badge. The new **Website updates** page (`/updates/`) lists changes to the website itself; it is linked from the menu, the footers and the end of Course updates.

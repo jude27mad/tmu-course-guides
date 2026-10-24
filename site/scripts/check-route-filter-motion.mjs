@@ -34,6 +34,46 @@ const settled = (page) => page.waitForFunction(() => {
     (!results || (!results.inert && getComputedStyle(results).opacity === '1'));
 });
 
+// Samples every frame of a page change: how much of the dark artwork behind the pages
+// shows through (the page fades into the paper layer, never into the artwork), and the
+// arriving page's geometry. The owner's iPhone showed the dark artwork full screen.
+const startRouteFrames = (page) => page.evaluate(() => {
+  window.routeFrames = [];
+  window.routeDocument = true;
+  const shown = (element) => {
+    if (!element) return 0;
+    const style = getComputedStyle(element);
+    return style.display === 'none' || style.visibility === 'hidden' ? 0 : Number(style.opacity);
+  };
+  const sample = () => {
+    const main = document.querySelector('main');
+    const rect = main.getBoundingClientRect();
+    const heading = main.querySelector('h1');
+    const paper = document.querySelector('#routePaper');
+    const area = paper.getBoundingClientRect();
+    const covers = area.top <= 0 && area.left <= 0 && area.bottom >= innerHeight && area.right >= innerWidth;
+    const opacity = shown(main);
+    const paperOpacity = shown(paper);
+    const layout = Number(getComputedStyle(document.querySelector('#layout')).opacity);
+    window.routeFrames.push({
+      time: performance.now(), title: heading?.textContent, left: rect.left, width: rect.width,
+      headingTop: heading?.getBoundingClientRect().top, opacity, paper: paperOpacity, paperCovers: covers,
+      exposure: 1 - layout * (1 - (1 - opacity) * (1 - (covers ? paperOpacity : 0))),
+      menu: Number(getComputedStyle(document.querySelector('#menu')).opacity), viewport: innerWidth,
+      loader: getComputedStyle(document.querySelector('#loader')).display,
+    });
+    window.routeFrame = requestAnimationFrame(sample);
+  };
+  sample();
+});
+const stopRouteFrames = (page) => page.evaluate(() => { cancelAnimationFrame(window.routeFrame); return window.routeFrames; });
+const MAX_EXPOSURE = 0.1;
+function assertPaperFade(frames, label) {
+  const exposed = frames.filter((frame) => frame.exposure > MAX_EXPOSURE);
+  assert.deepEqual(exposed.slice(0, 4), [], `${label}: the dark artwork must not show through a changing page`);
+  assert.ok(frames.every((frame) => !frame.paper || frame.paperCovers), `${label}: the paper covers the screen whenever it is shown`);
+}
+
 async function check(browser, options, name, run) {
   const context = await browser.newContext({ ...options, recordVideo: { dir: path.join(report, 'videos'), size: { width: 834, height: 1024 } } });
   const errors = [];
@@ -185,29 +225,13 @@ try {
         const menu = await checkMobileMenu(page, `iphone-course-menu-${reducedMotion}`);
         await page.getByRole('button', { name: 'Open menu', exact: true }).click();
         await page.waitForFunction(() => getComputedStyle(document.querySelector('#menu')).opacity === '1');
-        await page.evaluate(() => {
-          window.routeFrames = [];
-          window.routeDocument = true;
-          const sample = () => {
-            const main = document.querySelector('main');
-            const rect = main.getBoundingClientRect();
-            const style = getComputedStyle(main);
-            const heading = main.querySelector('h1');
-            window.routeFrames.push({
-              time: performance.now(), title: heading?.textContent, left: rect.left, width: rect.width,
-              headingTop: heading?.getBoundingClientRect().top, opacity: Number(style.opacity),
-              menu: Number(getComputedStyle(document.querySelector('#menu')).opacity), viewport: innerWidth,
-              loader: getComputedStyle(document.querySelector('#loader')).display,
-            });
-            window.routeFrame = requestAnimationFrame(sample);
-          };
-          sample();
-        });
+        await startRouteFrames(page);
         await page.locator('#menu').getByRole('link', { name: 'CEN100', exact: true }).click();
         await page.waitForURL(`${base}cen100/`);
         await ready(page);
-        const frames = await page.evaluate(() => { cancelAnimationFrame(window.routeFrame); return window.routeFrames; });
+        const frames = await stopRouteFrames(page);
         await writeFile(path.join(report, `route-${reducedMotion}.json`), JSON.stringify(frames, null, 2));
+        assertPaperFade(frames, 'from the menu');
         const incoming = frames.filter((frame) => frame.title === 'Intro to Engineering' && frame.opacity > 0.05);
         assert.ok(incoming.length, 'sample the visible destination');
         assert.ok(incoming.every((frame) => Math.abs(frame.left) < 2 && Math.abs(frame.width - frame.viewport) < 2),
@@ -219,6 +243,42 @@ try {
         await page.keyboard.press('Escape');
         await page.screenshot({ path: path.join(report, `route-${reducedMotion}.png`) });
         return { menu, incomingFrames: incoming.length, final: incoming.at(-1) };
+      });
+      await check(safari, { ...devices['iPhone 13'], reducedMotion }, `iphone-page-routes-${reducedMotion}`, async (page) => {
+        await page.goto(base);
+        await ready(page);
+        const routes = [];
+        const follow = async (label, destination, title, navigate) => {
+          await startRouteFrames(page);
+          await navigate();
+          await page.waitForURL(`${base}${destination}`);
+          await ready(page);
+          const frames = await stopRouteFrames(page);
+          await writeFile(path.join(report, `page-route-${label}-${reducedMotion}.json`), JSON.stringify(frames, null, 2));
+          assertPaperFade(frames, label);
+          const incoming = frames.filter((frame) => frame.title?.startsWith(title) && frame.opacity > 0.05);
+          assert.ok(incoming.length, `${label}: sample the visible destination`);
+          assert.ok(incoming.every((frame) => Math.abs(frame.left) < 2 && Math.abs(frame.width - frame.viewport) < 2 && frame.loader === 'none'), `${label}: the arriving page stays full width with no loading card`);
+          const fading = frames.filter((frame) => frame.opacity > 0.05 && frame.opacity < 0.95);
+          if (reducedMotion === 'reduce') {
+            assert.deepEqual(fading.slice(0, 4), [], `${label}: with reduced motion the page changes without a fade`);
+            assert.ok(frames.every((frame) => !frame.paper), `${label}: with reduced motion the paper never shows`);
+          } else assert.ok(fading.length, `${label}: the page change fades`);
+          assert.equal(await page.evaluate(() => window.routeDocument), true, `${label}: client-side navigation`);
+          routes.push({ label, frames: frames.length, worstExposure: Math.max(...frames.map((frame) => frame.exposure)) });
+        };
+        // A link on the Desk, at the top of the page.
+        await follow('desk-to-course', 'cen100/', 'Intro to Engineering', () => page.evaluate(() => document.querySelector('main a[href$="/cen100/"]').click()));
+        // Between courses (the quick fade).
+        await follow('course-to-course', 'mth140/', 'Calculus I', () => page.evaluate(() => window.next.router.push('/mth140/', undefined, { scroll: false })));
+        // The footer's Desk link at the end of the page, header scrolled away.
+        await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+        await page.waitForFunction(() => scrollY > 200);
+        await follow('footer-to-desk', '', 'TMU Course Guides', () => page.evaluate((desk) => [...document.querySelectorAll('main a[href]')].filter((link) => new URL(link.href).pathname === desk).at(-1).click(), new URL(base).pathname));
+        const top = await page.evaluate(() => ({ scrollY, header: getComputedStyle(document.querySelector('header')).opacity }));
+        assert.ok(top.scrollY <= 8, 'the Desk opens at its top');
+        assert.equal(top.header, '1', 'the header is back after the change');
+        return { routes };
       });
     }
   } finally { await safari.close(); }
