@@ -57,16 +57,44 @@ async function verifyTransparencyGuards(page) {
     nodes.forEach((node) => { node.style.display = 'none'; });
     const without = { height: document.scrollingElement.scrollHeight, top: main.getBoundingClientRect().top };
     nodes.forEach((node) => { node.style.removeProperty('display'); });
-    return { guards, before, without, viewport: { width: innerWidth, height: innerHeight }, oldSamples: document.querySelectorAll('[data-safari-edge]').length };
+    // Safari 26.1+ takes an edge's colour from a viewport-sized fixed or sticky layer with a visible
+    // background-color; the invisible fluid base once did, and showed as solid black bands.
+    const tintingLayers = [...document.querySelectorAll('body *')]
+      .filter((node) => {
+        if (node.hasAttribute('data-safari-blend')) return false;
+        const css = getComputedStyle(node);
+        if (!['fixed', 'sticky'].includes(css.position) || css.display === 'none' || css.visibility === 'hidden') return false;
+        const box = node.getBoundingClientRect();
+        return box.width >= innerWidth * 0.9 && box.height >= innerHeight * 0.9;
+      })
+      .map((node) => {
+        const css = getComputedStyle(node);
+        return { node: node.id ? `#${node.id}` : `${node.tagName.toLowerCase()}.${String(node.className).split(' ')[0]}`, background: css.backgroundColor, backdrop: css.backdropFilter };
+      })
+      .filter((layer) => layer.background !== 'rgba(0, 0, 0, 0)' || (layer.backdrop && layer.backdrop !== 'none'));
+    const fluid = document.querySelector('#fluidCanvas');
+    return {
+      guards,
+      before,
+      without,
+      viewport: { width: innerWidth, height: innerHeight },
+      oldSamples: document.querySelectorAll('[data-safari-edge]').length,
+      tintingLayers,
+      fluidBackground: fluid ? getComputedStyle(fluid).backgroundColor : null,
+    };
   });
   assert.equal(state.oldSamples, 0, 'opaque edge samplers must not return');
   assert.deepEqual(state.guards.map((guard) => guard.side), ['top', 'bottom']);
+  assert.deepEqual(state.tintingLayers, [], `a viewport-sized fixed layer would colour Safari's bars: ${JSON.stringify(state)}`);
+  // Hydration keeps the exported server style, so this fails if the colour comes back through inline style.
+  assert.ok(state.fluidBackground === null || state.fluidBackground === 'rgba(0, 0, 0, 0)', JSON.stringify(state));
   for (const guard of state.guards) {
     assert.equal(guard.position, 'sticky', JSON.stringify(state));
     assert.equal(guard.background, 'rgba(0, 0, 0, 0)', JSON.stringify(state));
     assert.equal(guard.image, 'none');
     assert.notEqual(guard.clip, 'text', 'opaque backgrounds must not be disguised with text clipping');
-    assert.equal(guard.pointerEvents, 'none');
+    // WebKit repeats its edge search with a pointer-events:none guard skipped, so the guard would not decide anything.
+    assert.equal(guard.pointerEvents, 'auto', JSON.stringify(state));
     assert.equal(guard.border, '0px');
     assert.equal(guard.shadow, 'none');
     assert.equal(guard.empty, true);
