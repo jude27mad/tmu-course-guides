@@ -1,28 +1,27 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useStore } from '@src/store';
+import useDelayedFeedback from '@src/hooks/useDelayedFeedback';
 import styles from './styles/navigationFeedback.module.scss';
 
-// Route events start before Next downloads a missing page chunk. The curtain
-// starts later, so it cannot acknowledge a tap during that network wait.
+// Report a real wait for Next's route request, not the cosmetic route entrance.
+// Fast requests stay quiet; an error still exposes its retry immediately.
 export default function NavigationFeedback() {
   const router = useRouter();
-  const transitioning = useStore((state) => state.isTransitioning);
-  const [pending, setPending] = useState(false);
+  const [pending, setPending] = useState(null);
   const [error, setError] = useState(false);
   const target = useRef(null);
   useEffect(() => {
     const start = (url) => {
       target.current = url;
       setError(false);
-      setPending(true);
+      setPending(url);
     };
     const complete = (url) => {
-      if (target.current === url) setPending(false);
+      if (target.current === url) setPending(null);
     };
     const failed = (reason, url) => {
       if (target.current !== url) return;
-      setPending(false);
+      setPending(null);
       setError(!reason.cancelled);
     };
     router.events.on('routeChangeStart', start);
@@ -34,7 +33,7 @@ export default function NavigationFeedback() {
       router.events.off('routeChangeError', failed);
     };
   }, [router.events]);
-  const busy = pending || transitioning;
+  const busy = useDelayedFeedback(pending);
   return (
     <div className={styles.status} role="status" data-navigation-status hidden={!busy && !error}>
       <span>{error ? 'Page could not open.' : 'Opening page…'}</span>
@@ -42,3 +41,4 @@ export default function NavigationFeedback() {
     </div>
   );
 }
+

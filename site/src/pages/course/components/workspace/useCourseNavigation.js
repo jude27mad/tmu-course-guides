@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import gsap from 'gsap';
 import { useStore } from '@src/store';
 import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
+import useDelayedFeedback from '@src/hooks/useDelayedFeedback';
 // eslint-disable-next-line import/extensions
 import { openGuideTools } from '@src/pages/course/components/tools/dialog.mjs';
 // eslint-disable-next-line import/extensions
@@ -54,6 +55,7 @@ export default function useCourseNavigation(courseId, info) {
   const reveal = useRef(false);
   const focusAtNavigation = useRef(null);
   const location = resolveCourseLocation(entry.hash, courseId, info);
+  const showOpening = useDelayedFeedback(requested ? `${courseId}:${viewKey(requested)}` : null);
 
   const remember = useCallback((event) => {
     const previous = active.current;
@@ -159,8 +161,14 @@ export default function useCourseNavigation(courseId, info) {
       // current URL owns navigation; replaying its old id creates history loops.
       sync();
     };
+    const onRouteStart = (url) => {
+      remember(url);
+      // The outgoing workspace can stay mounted during the route animation.
+      // Its old tab request must not announce itself while leaving the course.
+      setRequested(null);
+    };
     router.events.on('hashChangeStart', remember);
-    router.events.on('routeChangeStart', remember);
+    router.events.on('routeChangeStart', onRouteStart);
     router.events.on('hashChangeComplete', sync);
     router.events.on('routeChangeComplete', sync);
     window.addEventListener('hashchange', sync);
@@ -171,7 +179,7 @@ export default function useCourseNavigation(courseId, info) {
     sync();
     return () => {
       router.events.off('hashChangeStart', remember);
-      router.events.off('routeChangeStart', remember);
+      router.events.off('routeChangeStart', onRouteStart);
       router.events.off('hashChangeComplete', sync);
       router.events.off('routeChangeComplete', sync);
       window.removeEventListener('hashchange', sync);
@@ -276,7 +284,7 @@ export default function useCourseNavigation(courseId, info) {
   return {
     ...location,
     selectedView: requested?.view || location.view,
-    opening: requested,
+    opening: showOpening ? requested : null,
     acknowledge: (hash) => {
       const target = resolveCourseLocation(hash, courseId, info);
       setRequested(viewKey(target) === viewKey(location) ? null : target);
@@ -287,3 +295,4 @@ export default function useCourseNavigation(courseId, info) {
     returnView: entry.returnTo?.view || fallbackView,
   };
 }
+

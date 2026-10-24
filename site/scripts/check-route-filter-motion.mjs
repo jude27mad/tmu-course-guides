@@ -21,7 +21,7 @@ const ready = async (page) => {
   await page.waitForFunction(() => {
     const main = document.querySelector('main');
     return main && getComputedStyle(main).opacity === '1' &&
-      !document.querySelector('[data-navigation-status]:not([hidden])') &&
+      !document.querySelector('.lenis-stopped') &&
       !document.querySelector('#layout[inert]') &&
       getComputedStyle(document.querySelector('#loader')).display === 'none';
   });
@@ -222,3 +222,4 @@ try {
   await new Promise((resolve) => server.close(resolve));
 }
 if (results.some((result) => !result.pass)) process.exitCode = 1;
+

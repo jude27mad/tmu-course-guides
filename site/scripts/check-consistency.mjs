@@ -210,15 +210,28 @@ try {
     } finally { await context.close(); }
   });
   await check('information answers use the course motion and keep direct links usable', async () => {
-    const { context, page } = await open(834, 'no-preference');
+    // The 120ms exit can finish before a busy CI runner starts polling it.
+    // Own the animation clock so the same intermediate-state assertion cannot
+    // miss its observation window; no production timing is changed.
+    const context = await browser.newContext({ viewport: { width: 834, height: 900 }, reducedMotion: 'no-preference' });
+    const page = await context.newPage();
+    page.setDefaultTimeout(15000);
+    page.on('pageerror', (error) => errors.push(error.message));
+    await page.clock.install({ time: new Date('2026-10-23T16:00:00Z') });
     try {
       await ready(page, 'mth141/#course-info');
+      await page.getByRole('link', { name: /Missed an assessment/ }).waitFor();
+      await page.clock.pauseAt(new Date(await page.evaluate(() => Date.now() + 1000)));
       await page.getByRole('link', { name: /Missed an assessment/ }).evaluate((e) => e.click());
-      await page.waitForFunction(() => {
+      await page.clock.runFor(48);
+      const leaving = await page.evaluate(() => {
         const content = document.getElementById('course-content');
-        const opacity = Number(getComputedStyle(content).opacity);
-        return content.inert && opacity > 0 && opacity < 1;
+        return { inert: content.inert, opacity: Number(getComputedStyle(content).opacity) };
       });
+      assert.equal(leaving.inert, true, 'outgoing information stays inert during its exit');
+      assert.ok(leaving.opacity > 0 && leaving.opacity < 1, `information fades before replacement: ${JSON.stringify(leaving)}`);
+      await page.clock.runFor(500);
+      await page.clock.resume();
       await page.locator('#course-view-policy-missed-assessment[data-info-detail]').waitFor();
       await page.waitForFunction(() => !document.getElementById('course-content').inert);
       assert.match(await page.locator('[data-info-detail]').innerText(), /within 3 business days/);
@@ -237,3 +250,4 @@ try {
   await writeFile(path.join(report, 'results.json'), JSON.stringify({ results, errors }, null, 2));
 }
 process.exitCode = results.some((r) => !r.pass) || errors.length ? 1 : 0;
+
