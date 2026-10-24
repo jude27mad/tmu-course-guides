@@ -152,3 +152,12 @@ test('the loader\'s paper continues under the bars', () => {
   const loader = read('../src/components/dom/styles/loader.module.scss');
   assert.match(loader, /:global\(html\[data-scroll-mode='document'\]\) & \{\s*box-shadow:\s*0 calc\(-1 \* var\(--edge-bleed-top\)\) 0 0 var\(--white\),\s*0 var\(--edge-bleed-bottom\) 0 0 var\(--white\);/);
 });
+
+test('a changing page fades into paper that covers the reach under the bars too', () => {
+  // main's own caps fade with it; #routePaper is in the page's flow and stops at its edges.
+  const app = read('../src/pages/app.module.scss');
+  const documentMode = app.slice(app.indexOf(":global(html[data-scroll-mode='document']) {"));
+  assert.match(documentMode, /\.routePaper::before,\s*\.routePaper::after \{[^}]*position: fixed;[^}]*background-color: var\(--white\);/);
+  assert.match(documentMode, /\.routePaper::before \{ top: calc\(-1 \* var\(--edge-bleed-top\)\); height: var\(--edge-bleed-top\); \}/);
+  assert.match(documentMode, /\.routePaper::after \{ bottom: calc\(-1 \* var\(--edge-bleed-bottom\)\); height: var\(--edge-bleed-bottom\); \}/);
+});
