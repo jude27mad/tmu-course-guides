@@ -47,6 +47,8 @@ test('paper covers the reach above the start of a page and below a light end, fa
   // Set straight from the scroll event too, so a route change's reset to the top paints with its paper.
   const navbar = read('../src/components/dom/navbar/Index.jsx');
   assert.match(navbar, /const schedule = \(\) => \{\s*edges\(\);/);
+  // Elsewhere nothing reaches under a browser bar, so it costs no layout reads on each DOM change.
+  assert.match(navbar, /const edges = \(\) => \{\s*if \(!nativeIOSScroll\(\)\) return;/);
   assert.match(navbar, /Array\.from\(main\.querySelectorAll\('\[data-surface="dark"\]'\)\)/);
   assert.match(navbar, /setEdgeBleed\(\{ scrollTop: scrolled, maxScroll: scrollable, endsDark: !!main\.querySelector\('footer \[data-surface="dark"\]'\), darkFromStart, darkFromEnd \}\)/);
 });

@@ -102,11 +102,12 @@ function Navbar() {
     // pages end light. The top of every page is light, but a dark panel can
     // start close to it (the cards on /courses/). Also run straight from the
     // scroll event, so a route change's reset to the top paints with its paper.
+    // Only the document scroll mode (iPhone, iPad) reaches under browser bars.
     const edges = () => {
-      const scrolled = scrollTop();
-      const native = nativeIOSScroll();
-      const scrollable = native ? document.scrollingElement.scrollHeight - window.innerHeight : main.scrollHeight - main.clientHeight;
-      const viewport = native ? window.innerHeight : main.clientHeight;
+      if (!nativeIOSScroll()) return;
+      const scrolled = window.scrollY;
+      const viewport = window.innerHeight;
+      const scrollable = document.scrollingElement.scrollHeight - viewport;
       const panels = Array.from(main.querySelectorAll('[data-surface="dark"]'))
         .map((panel) => panel.getBoundingClientRect())
         .filter((rect) => rect.height);
