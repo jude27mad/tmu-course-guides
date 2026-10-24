@@ -98,6 +98,7 @@ function SearchPanel() {
     const tl = timeline.current;
     if (!tl) return undefined;
     let focusFrame = 0;
+    let focusTimer = 0;
     panelRef.current.inert = !isSearchOpen;
     tl.timeScale(still ? 30 : 1);
     if (isSearchOpen) {
@@ -106,12 +107,18 @@ function SearchPanel() {
       openerRef.current = focused && !focused.closest?.('#menu') && focused !== document.body ? focused : document.getElementById('menu-button');
       setQuery('');
       setGuideQuery(null);
-      tl.play();
+      if (still) tl.progress(1).pause();
+      else tl.play();
+      const enterSearch = () => {
+        const panel = panelRef.current;
+        if (useStore.getState().isSearchOpen && !panel?.contains(document.activeElement)) inputRef.current?.focus({ preventScroll: true });
+      };
       focusFrame = requestAnimationFrame(() => {
         focusFrame = requestAnimationFrame(() => {
-          if (useStore.getState().isSearchOpen) inputRef.current?.focus({ preventScroll: true });
+          enterSearch();
         });
       });
+      focusTimer = window.setTimeout(enterSearch, 180);
     } else {
       const opener = openerRef.current;
       openerRef.current = null;
@@ -123,11 +130,14 @@ function SearchPanel() {
         }
       };
       tl.eventCallback('onReverseComplete', restoreFocus);
+      if (still) tl.progress(0).pause();
+      else tl.reverse();
       if (tl.progress() === 0) focusFrame = requestAnimationFrame(restoreFocus);
-      tl.reverse();
+      focusTimer = window.setTimeout(restoreFocus, still ? 100 : 500);
     }
     return () => {
       cancelAnimationFrame(focusFrame);
+      clearTimeout(focusTimer);
       tl.eventCallback('onReverseComplete', null);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

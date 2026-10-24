@@ -43,6 +43,7 @@ function MenuLinks() {
     const tl = timeline.current;
     if (!tl) return undefined;
     let focusFrame = 0;
+    let focusTimer = 0;
     menuRef.current.inert = !isMenuOpen;
     tl.timeScale(still ? 30 : 1);
     if (isMenuOpen) {
@@ -51,14 +52,23 @@ function MenuLinks() {
       // to restore after Close or Escape, including a quick close/reopen.
       openerRef.current = focused && focused !== document.body && !menuRef.current.contains(focused) ? focused : document.getElementById('menu-button');
       setThisWeek(upcomingAcrossCourses({ now: new Date(), count: UPCOMING_SLOTS }));
-      tl.play();
+      // Finish immediately when motion is paused. A 30x tween can finish in
+      // the same frame as the tap, before Safari accepts focus in the panel.
+      if (still) tl.progress(1).pause();
+      else tl.play();
       const target = firstFocusable(menuRef.current);
-      // after the panel becomes visible (autoAlpha sets visibility on the first tick)
+      const enterMenu = () => {
+        const menu = menuRef.current;
+        if (useStore.getState().isMenuOpen && !menu?.contains(document.activeElement)) target?.focus({ preventScroll: true });
+      };
+      // Allow the modal to become visible and inert to be lifted. Recheck
+      // after rapid reduced-motion transitions or hydration settle.
       focusFrame = requestAnimationFrame(() => {
         focusFrame = requestAnimationFrame(() => {
-          if (useStore.getState().isMenuOpen) target?.focus({ preventScroll: true });
+          enterMenu();
         });
       });
+      focusTimer = window.setTimeout(enterMenu, 180);
     } else if (useStore.getState().isSearchOpen) {
       // Handing over to the search panel: the shell stays open, the menu goes at once.
       tl.pause(0);
@@ -75,11 +85,14 @@ function MenuLinks() {
         }
       };
       tl.eventCallback('onReverseComplete', restoreFocus);
+      if (still) tl.progress(0).pause();
+      else tl.reverse();
       if (tl.progress() === 0) focusFrame = requestAnimationFrame(restoreFocus);
-      tl.reverse();
+      focusTimer = window.setTimeout(restoreFocus, still ? 100 : 500);
     }
     return () => {
       cancelAnimationFrame(focusFrame);
+      clearTimeout(focusTimer);
       tl.eventCallback('onReverseComplete', null);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

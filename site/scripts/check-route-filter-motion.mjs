@@ -99,8 +99,26 @@ async function checkMobileMenu(page, name) {
         const menu = document.querySelector('#menu');
         return getComputedStyle(menu).opacity === '1' &&
           Array.from(menu.querySelectorAll('[data-menu-anim]')).every((item) => getComputedStyle(item).opacity === '1');
+      }, null, { timeout: 8000 }).catch(async () => {
+        const diagnostic = await page.evaluate(() => ({
+          open: document.querySelector('#menu').getAttribute('aria-hidden'),
+          opacity: getComputedStyle(document.querySelector('#menu')).opacity,
+          incomplete: Array.from(document.querySelectorAll('#menu [data-menu-anim]'))
+            .filter((item) => getComputedStyle(item).opacity !== '1')
+            .slice(0, 6)
+            .map((item) => ({ text: item.textContent.trim().slice(0, 40), opacity: getComputedStyle(item).opacity })),
+        }));
+        throw new Error(`Menu did not finish opening: ${JSON.stringify(diagnostic)}`);
       });
-      await page.waitForFunction(() => document.querySelector('#menu a[href]') === document.activeElement);
+      await page.waitForFunction(() => document.querySelector('#menu a[href]') === document.activeElement, null, { timeout: 8000 }).catch(async () => {
+        const diagnostic = await page.evaluate(() => ({
+          active: document.activeElement?.outerHTML.slice(0, 200),
+          inert: document.querySelector('#menu').inert,
+          visibility: getComputedStyle(document.querySelector('#menu')).visibility,
+          openerVisibility: getComputedStyle(document.querySelector('#menu-button')).visibility,
+        }));
+        throw new Error(`Menu did not receive focus: ${JSON.stringify(diagnostic)}`);
+      });
       assert.equal(await firstLink.evaluate((link) => link === document.activeElement), true, 'opening the phone menu focuses its first link');
       const coverage = await page.evaluate(() => {
         const panel = document.querySelector('#menu');
