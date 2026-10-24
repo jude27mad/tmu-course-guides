@@ -124,7 +124,7 @@ test('no old colour remains in the site source', async () => {
   ]);
   const scan = async (path) => {
     const text = await readFile(path, 'utf8');
-    const relative = path.slice(site.length + 1).replaceAll('\\', '/');
+    const relative = path.slice(site.length).replaceAll('\\', '/');
     for (const match of text.matchAll(OLD)) {
       if (!fluidExceptions.get(relative)?.has(match[0].toUpperCase())) hits.push(`${path.slice(site.length)}: ${match[0]}`);
     }

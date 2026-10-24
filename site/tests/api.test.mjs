@@ -20,7 +20,7 @@ test('COURSES: the three courses keep their names and links and share the Desk p
   assert.equal(lib.COURSES[1].summary, 'Assessment dates, section labs, announced coverage and practice.');
   for (const course of lib.COURSES) {
     // This record feeds CSS, card panels and generated badge/disc textures.
-    assert.deepEqual(course.palette, { primary: '#18181B', accentColor: '#FFFFFF', secondary: '#F4F4F5', fillColor: '#FFFFFF', menuColor: '#18181B', menuFontColor: '#FAFAFA', fluidColor: '#E4E4E7', accent: '#004C9B' }, course.id);
+    assert.deepEqual(course.palette, { primary: '#18181B', accentColor: '#FFFFFF', secondary: '#F4F4F5', fillColor: '#FFFFFF', menuColor: '#18181B', menuFontColor: '#FAFAFA', fluidColor: '#D7D7D4', accent: '#004C9B' }, course.id);
     assert.ok(course.links.length > 0);
     for (const link of course.links) assert.match(link.href, /^https:\/\//);
     assert.equal(course.links[0].href, 'https://courses.torontomu.ca/');

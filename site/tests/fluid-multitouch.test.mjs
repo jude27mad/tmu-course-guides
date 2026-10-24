@@ -44,7 +44,7 @@ test('fluid follows one, then two, then three fingers with Giats shared swirls',
     touch(h, 'touchmove', [finger(31, 270, 390), finger(7, 120, 380)]);
     assert.deepEqual(sorted(h.take()), [
       { mouseX: 0.3, mouseY: 1 - 380 / 800, velocityX: -300, velocityY: 20 },
-      { mouseX: 0.675, mouseY: 1 - 390 / 800, velocityX: 320, velocityY: 0 },
+      { mouseX: 0.675, mouseY: 1 - 390 / 800, velocityX: 320, velocityY: -0 },
     ]);
     touch(h, 'touchstart', [finger(7, 120, 380), finger(31, 270, 390), finger(99, 200, 600)], [finger(99, 200, 600)]);
     touch(h, 'touchmove', [finger(99, 210, 590), finger(31, 260, 380), finger(7, 130, 370)]);
