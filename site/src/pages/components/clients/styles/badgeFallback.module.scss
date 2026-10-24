@@ -1,0 +1,120 @@
+// The flat badge for browsers without WebGL (components/BadgeFallback.jsx). It sits in the badge window like
+// the 3D lanyard: the band from the top edge, the clip, then the card, laid out on the 512 x 720 texture
+// grid of badgeTextures.js. --u is one texture pixel; the window is the size container.
+.root {
+  container-type: size;
+  --u: calc(52cqh / 720);
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+  // the window used to look onto the dark background canvas; draw its own panel so it never depends on it
+  background-color: var(--black);
+  pointer-events: none;
+  user-select: none;
+}
+
+.strap {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: calc(100 * var(--u));
+  height: 33cqh;
+  transform: translateX(-50%);
+  background-color: var(--raised);
+  border-inline: 1px solid var(--borderOnDark);
+}
+
+.clip {
+  position: absolute;
+  top: 33cqh;
+  left: 50%;
+  width: calc(110 * var(--u));
+  height: calc(36 * var(--u));
+  transform: translateX(-50%);
+  border-radius: calc(8 * var(--u));
+  background-color: var(--mutedOnDark);
+}
+
+.card {
+  position: absolute;
+  top: calc(33cqh + 30 * var(--u));
+  left: 50%;
+  width: calc(512 * var(--u));
+  height: calc(720 * var(--u));
+  transform: translateX(-50%);
+  border: 1px solid var(--borderOnDark);
+  border-radius: calc(34 * var(--u));
+  background-image: linear-gradient(155deg, var(--raised), var(--black) 55%);
+  color: var(--onDark);
+  overflow: hidden;
+
+  // every printed line spans the card's padding (44px of the texture) on its own row
+  > span {
+    position: absolute;
+    left: calc(44 * var(--u));
+    right: calc(44 * var(--u));
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.1;
+  }
+
+  .slot {
+    top: calc(26 * var(--u));
+    left: calc(204 * var(--u));
+    right: calc(204 * var(--u));
+    height: calc(18 * var(--u));
+    border-radius: calc(9 * var(--u));
+    background-color: var(--black);
+  }
+
+  .index,
+  .term {
+    top: calc(78 * var(--u));
+    font-size: calc(30 * var(--u));
+    font-weight: 550;
+    color: var(--mutedOnDark);
+  }
+
+  .term {
+    text-align: right;
+  }
+
+  // The 3D card shrinks the code to fit (fitFont); six capitals at this size fit the card's width.
+  .code {
+    top: calc(268 * var(--u));
+    font-size: calc(104 * var(--u));
+    font-weight: 750;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    text-overflow: clip;
+  }
+
+  .name {
+    top: calc(408 * var(--u));
+    font-size: calc(50 * var(--u));
+    font-weight: 550;
+    color: var(--mutedOnDark);
+  }
+
+  .divider {
+    top: calc(560 * var(--u));
+    height: calc(2 * var(--u));
+    background-color: var(--borderOnDark);
+  }
+
+  .nextLabel {
+    top: calc(586 * var(--u));
+    font-size: calc(28 * var(--u));
+    font-weight: 550;
+    color: var(--mutedOnDark);
+  }
+
+  .nextValue {
+    top: calc(626 * var(--u));
+    font-size: calc(44 * var(--u));
+    font-weight: 650;
+  }
+}

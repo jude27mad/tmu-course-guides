@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import Background from '@src/components/canvas/background/Background';
 import { Canvas, useThree } from '@react-three/fiber';
+import WebGLGate from '@src/components/canvas/WebGLGate';
 import useStill from '@src/hooks/useStill';
 
 // The background drift is extremely slow (a full sweep takes ~27 min), so it
@@ -28,22 +29,25 @@ function Index() {
   const devicePixelRatio = typeof window !== 'undefined' ? Math.min(1, window.devicePixelRatio) : 1;
   const still = useStill();
 
+  // Without WebGL the panel behind the page keeps its solid ink colour (app.module.scss .background).
   return (
-    <Canvas
-      flat
-      linear
-      frameloop="demand"
-      dpr={[devicePixelRatio, 1]}
-      gl={{
-        antialias: false,
-        stencil: false,
-        depth: false,
-        powerPreference: 'low-power',
-      }}
-    >
-      <Ticker still={still} />
-      <Background still={still} />
-    </Canvas>
+    <WebGLGate>
+      <Canvas
+        flat
+        linear
+        frameloop="demand"
+        dpr={[devicePixelRatio, 1]}
+        gl={{
+          antialias: false,
+          stencil: false,
+          depth: false,
+          powerPreference: 'low-power',
+        }}
+      >
+        <Ticker still={still} />
+        <Background still={still} />
+      </Canvas>
+    </WebGLGate>
   );
 }
 export default Index;

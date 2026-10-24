@@ -25,6 +25,7 @@ import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import Scrollbar from '@src/components/dom/Scrollbar';
 import Stats from '@src/components/stats/Index';
 import Tempus from '@darkroom.engineering/tempus';
+import WebGLGate from '@src/components/canvas/WebGLGate';
 import { gsap } from 'gsap';
 import styles from '@src/pages/app.module.scss';
 import { useCoarsePointer } from '@src/hooks/useMediaQuery';
@@ -175,30 +176,34 @@ function MyApp({ Component, pageProps, router }) {
     [],
   );
 
+  // Every canvas sits in a WebGLGate: a browser without WebGL (turned off, blocked, no GPU) gets the page
+  // without its 3D layer instead of an application error. This one is `critical`: the course badges draw into it.
   const canvasElements = useMemo(
     () => (
-      <Canvas
-        gl={{
-          outputColorSpace: isAbout === false ? THREE.LinearSRGBColorSpace : THREE.SRGBColorSpace,
-          powerPreference: 'high-performance',
-        }}
-        style={{ zIndex: 0 }}
-        resize={{ debounce: { resize: 0, scroll: 0 }, polyfill: undefined }}
-        className={styles.canvasContainer}
-        dpr={dpr ?? [1, maxDpr]}
-        // motion off: draw only when something moves (scroll, resize, panels, curtain)
-        frameloop={still ? 'demand' : 'always'}
-        aria-hidden="true"
-      >
-        {still && <DemandDriver />}
-        <PerformanceMonitor flipflops={3} onDecline={() => setDpr(1)} onIncline={() => setDpr(null)} onFallback={() => setDpr(1)} />
-        {/* A view that is loading (or never loads) must stay inside the canvas: without
-            this boundary R3F suspends the <Canvas> DOM component itself, and its next
-            re-render (dpr, colour space) would hold every update of the page. */}
-        <Suspense fallback={null}>
-          <View.Port />
-        </Suspense>
-      </Canvas>
+      <WebGLGate critical>
+        <Canvas
+          gl={{
+            outputColorSpace: isAbout === false ? THREE.LinearSRGBColorSpace : THREE.SRGBColorSpace,
+            powerPreference: 'high-performance',
+          }}
+          style={{ zIndex: 0 }}
+          resize={{ debounce: { resize: 0, scroll: 0 }, polyfill: undefined }}
+          className={styles.canvasContainer}
+          dpr={dpr ?? [1, maxDpr]}
+          // motion off: draw only when something moves (scroll, resize, panels, curtain)
+          frameloop={still ? 'demand' : 'always'}
+          aria-hidden="true"
+        >
+          {still && <DemandDriver />}
+          <PerformanceMonitor flipflops={3} onDecline={() => setDpr(1)} onIncline={() => setDpr(null)} onFallback={() => setDpr(1)} />
+          {/* A view that is loading (or never loads) must stay inside the canvas: without
+              this boundary R3F suspends the <Canvas> DOM component itself, and its next
+              re-render (dpr, colour space) would hold every update of the page. */}
+          <Suspense fallback={null}>
+            <View.Port />
+          </Suspense>
+        </Canvas>
+      </WebGLGate>
     ),
     [isAbout, dpr, maxDpr, still],
   );
@@ -229,27 +234,29 @@ function MyApp({ Component, pageProps, router }) {
         <div ref={layoutRef} id="layout" className={styles.layout}>
           {canvasElements}
           {!still && (
-            <Canvas
-              id="fluidCanvas"
-              flat
-              frameloop="always"
-              gl={{
-                antialias: false,
-                stencil: false,
-                depth: false,
-              }}
-              // R3F's wrapper takes pointer events unless told otherwise; the
-              // fluid reads pointer moves from <main> itself.
-              style={{ mixBlendMode: 'difference', background: nativeIOSScroll() ? 'transparent' : 'black', pointerEvents: 'none' }}
-              linear
-              className={styles.canvasContainer}
-              dpr={[0.1, 0.5]}
-              aria-hidden="true"
-            >
-              <EffectComposer multisampling={0}>
-                <Fluid fluidColor={fluidColor} mainRef={mainRef} />
-              </EffectComposer>
-            </Canvas>
+            <WebGLGate>
+              <Canvas
+                id="fluidCanvas"
+                flat
+                frameloop="always"
+                gl={{
+                  antialias: false,
+                  stencil: false,
+                  depth: false,
+                }}
+                // R3F's wrapper takes pointer events unless told otherwise; the
+                // fluid reads pointer moves from <main> itself.
+                style={{ mixBlendMode: 'difference', background: nativeIOSScroll() ? 'transparent' : 'black', pointerEvents: 'none' }}
+                linear
+                className={styles.canvasContainer}
+                dpr={[0.1, 0.5]}
+                aria-hidden="true"
+              >
+                <EffectComposer multisampling={0}>
+                  <Fluid fluidColor={fluidColor} mainRef={mainRef} />
+                </EffectComposer>
+              </Canvas>
+            </WebGLGate>
           )}
           <main ref={mainRef} id="main" className={styles.main} tabIndex={-1}>
             <div ref={mainContainerRef} id="mainContainer" className={styles.mainContainer}>

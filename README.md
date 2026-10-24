@@ -61,6 +61,7 @@ Progress saved by earlier versions of the website carries over automatically.
 
 - Course tabs and utility controls use a subtle glass finish; instructions and notes have solid backgrounds. **Pause motion** makes these controls solid, stops animations, shows finished photographs, removes the pointer effect and skips page transitions. The preference stays on in this browser. Mouse-wheel scrolling is still smoothed. Your device's reduced-motion setting has the same effect; reduced transparency and increased contrast also make the controls solid where supported.
 - If the effects feel slow on an older phone, turn on **Pause motion**.
+- The 3D effects need WebGL. If it is turned off or unavailable in your browser, the website still opens and works: the moving background, pointer effect and pre-footer stickers are left out, and each course badge on the Desk becomes a flat card.
 - Pinch zoom, text selection, keyboard navigation and visible focus all work.
 - Without JavaScript, course information, rules, grading and contacts are still readable; deadlines, countdowns, checklists and item details need JavaScript.
 - The new design uses a light appearance only.

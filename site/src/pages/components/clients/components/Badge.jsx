@@ -8,9 +8,11 @@ import { bandTexture, cardTexture, loadBadgeFonts, redrawCard } from '@src/pages
 import { extend, useFrame } from '@react-three/fiber';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
+import BadgeFallback from '@src/pages/components/clients/components/BadgeFallback';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import useInView from '@src/hooks/useInView';
 import useScroll from '@src/hooks/useScroll';
+import useWebGL from '@src/hooks/useWebGL';
 
 extend({ MeshLineGeometry, MeshLineMaterial, RoundedBoxGeometry });
 
@@ -239,7 +241,7 @@ function BadgeCard({ body, offsetX, look, idle, maxSpeed = 50, minSpeed = 10 }) 
 }
 
 // A badge window. `world` mounts the shared Physics world in this View.
-export default function Badge({ index, rig, look, world = false, paused = false, rest = false }) {
+function BadgeView({ index, rig, look, world = false, paused = false, rest = false }) {
   const el = useRef();
   const swing = useInView(el, { threshold: 0.7 });
 
@@ -264,4 +266,12 @@ export default function Badge({ index, rig, look, world = false, paused = false,
       <directionalLight position={[0, 5, -5]} intensity={2} />
     </View>
   );
+}
+
+// The window the Desk draws: the 3D lanyard where WebGL works, the flat card where this browser has none
+// (a real `false`: the server render, hydration and the first moments of a WebGL browser stay empty, as before).
+export default function Badge({ look, ...rest }) {
+  const webgl = useWebGL();
+  if (webgl === false) return <BadgeFallback look={look} />;
+  return <BadgeView look={look} {...rest} />;
 }

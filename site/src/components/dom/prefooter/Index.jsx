@@ -1,5 +1,6 @@
 import { Canvas } from '@react-three/fiber';
 import { Suspense } from 'react';
+import WebGLGate from '@src/components/canvas/WebGLGate';
 import dynamic from 'next/dynamic';
 import { useCoarsePointer } from '@src/hooks/useMediaQuery';
 
@@ -12,30 +13,33 @@ const FruitNinja = dynamic(() => import('@src/components/dom/prefooter/FruitNinj
 function Index({ active }) {
   const coarse = useCoarsePointer();
 
+  // Without WebGL the section is its heading and line of text; the stickers are decoration.
   return (
-    <Canvas
-      frameloop={active ? 'always' : 'never'}
-      dpr={1}
-      gl={{
-        antialias: !coarse,
-        powerPreference: 'low-power',
-      }}
-      flat
-      style={{
-        position: 'relative',
-        display: 'block',
-        backgroundColor: 'transparent',
-        borderRadius: '1.3888888889vw',
-        height: '100%',
-        width: '100%',
-        touchAction: 'pan-y',
-      }}
-    >
-      {/* keeps a loading scene (the physics chunk, the disc font) inside the canvas */}
-      <Suspense fallback={null}>
-        <FruitNinja active={active} />
-      </Suspense>
-    </Canvas>
+    <WebGLGate>
+      <Canvas
+        frameloop={active ? 'always' : 'never'}
+        dpr={1}
+        gl={{
+          antialias: !coarse,
+          powerPreference: 'low-power',
+        }}
+        flat
+        style={{
+          position: 'relative',
+          display: 'block',
+          backgroundColor: 'transparent',
+          borderRadius: '1.3888888889vw',
+          height: '100%',
+          width: '100%',
+          touchAction: 'pan-y',
+        }}
+      >
+        {/* keeps a loading scene (the physics chunk, the disc font) inside the canvas */}
+        <Suspense fallback={null}>
+          <FruitNinja active={active} />
+        </Suspense>
+      </Canvas>
+    </WebGLGate>
   );
 }
 
