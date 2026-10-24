@@ -14,7 +14,14 @@
   z-index: 1;
   overflow: hidden;
   @include mobile {
-    width: 100vw;
+    inset: 0;
+    width: 100%;
+    height: var(--app-viewport-height);
+    // Above the page canvases and header. Feedback and the route loader keep
+    // their existing layers; a fully open menu never shows page text through it.
+    z-index: 4;
+    background-color: var(--black);
+    background-image: radial-gradient(ellipse at top right, rgba(var(--onDarkRgb), 0.06), transparent 65%);
   }
 }
 
@@ -35,6 +42,14 @@
   flex-direction: column;
   justify-content: space-between;
 
+  @include mobile {
+    justify-content: flex-start;
+    padding-top: calc(max(32px, var(--layout-columns-gap) * 2) + env(safe-area-inset-top, 0px));
+    padding-bottom: calc(max(24px, var(--layout-columns-gap) * 2) + env(safe-area-inset-bottom, 0px));
+    padding-left: max(var(--layout-margin), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--layout-margin), env(safe-area-inset-right, 0px));
+  }
+
   .menuClose {
     position: absolute;
     top: var(--layout-columns-gap);
@@ -53,6 +68,10 @@
       font-size: max(20px, 1.2vw);
     }
     @include mobile {
+      top: calc(var(--layout-columns-gap) + env(safe-area-inset-top, 0px));
+      right: max(var(--layout-margin), env(safe-area-inset-right, 0px));
+      z-index: 1;
+      background-color: var(--black);
       // 44 px tap target
       height: max(6vw, 44px);
       width: max(6vw, 44px);
@@ -66,6 +85,16 @@
 
 .menuList {
   margin-bottom: calc(var(--layout-columns-gap) * 2);
+  @include mobile {
+    flex-shrink: 0;
+  }
+}
+
+.upcomingList {
+  @include mobile {
+    padding-top: 24px;
+    border-top: 1px solid var(--borderOnDark);
+  }
 }
 
 // The original drew these as ::before content on each list; real headings now.

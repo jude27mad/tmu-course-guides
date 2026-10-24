@@ -16,7 +16,17 @@ function MenuButton() {
   }, [setIsMenuOpen]);
 
   return (
-    <button type="button" id="menu-button" data-glass="dark" onClick={handleClick} aria-label="Open menu" aria-expanded={isMenuOpen} aria-controls="menu" className={clsx('p-xs', styles.button)}>
+    <button
+      type="button"
+      id="menu-button"
+      data-glass="dark"
+      onClick={handleClick}
+      aria-label="Open menu"
+      aria-haspopup="dialog"
+      aria-expanded={isMenuOpen}
+      aria-controls="menu"
+      className={clsx('p-xs', styles.button)}
+    >
       <PerspectiveText label="Menu" className={clsx('p-x', styles.label)} />
     </button>
   );

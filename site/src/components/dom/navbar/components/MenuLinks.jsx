@@ -1,4 +1,4 @@
-import { buildPanelTimeline, firstFocusable } from '@src/components/dom/navbar/panelShell';
+import { buildPanelTimeline, firstFocusable, trapPanelFocus } from '@src/components/dom/navbar/panelShell';
 import { useEffect, useRef, useState } from 'react';
 
 import Link from 'next/link';
@@ -31,7 +31,7 @@ function MenuLinks() {
   useEffect(() => {
     const menu = menuRef.current;
     const items = menu.querySelectorAll('[data-menu-anim]');
-    const tl = buildPanelTimeline(menu, items);
+    const tl = buildPanelTimeline(menu, items, { isMobile });
     timeline.current = tl;
     if (useStore.getState().isMenuOpen) tl.progress(1);
     return () => {
@@ -41,41 +41,62 @@ function MenuLinks() {
 
   useEffect(() => {
     const tl = timeline.current;
-    if (!tl) return;
+    if (!tl) return undefined;
+    let focusFrame = 0;
+    menuRef.current.inert = !isMenuOpen;
     tl.timeScale(still ? 30 : 1);
     if (isMenuOpen) {
-      openerRef.current = document.activeElement;
+      const focused = document.activeElement;
+      // Safari taps need not focus the button. Always have a reachable opener
+      // to restore after Close or Escape, including a quick close/reopen.
+      openerRef.current = focused && focused !== document.body && !menuRef.current.contains(focused) ? focused : document.getElementById('menu-button');
       setThisWeek(upcomingAcrossCourses({ now: new Date(), count: UPCOMING_SLOTS }));
       tl.play();
       const target = firstFocusable(menuRef.current);
       // after the panel becomes visible (autoAlpha sets visibility on the first tick)
-      requestAnimationFrame(() => requestAnimationFrame(() => target?.focus({ preventScroll: true })));
+      focusFrame = requestAnimationFrame(() => {
+        focusFrame = requestAnimationFrame(() => {
+          if (useStore.getState().isMenuOpen) target?.focus({ preventScroll: true });
+        });
+      });
     } else if (useStore.getState().isSearchOpen) {
       // Handing over to the search panel: the shell stays open, the menu goes at once.
       tl.pause(0);
     } else {
-      tl.reverse();
       const opener = openerRef.current;
       openerRef.current = null;
       const menu = menuRef.current;
-      // after the navbar has made the header reachable again (inert is lifted in its effect)
-      requestAnimationFrame(() => {
-        if (opener && opener.isConnected && (menu?.contains(document.activeElement) || document.activeElement === document.body)) opener.focus({ preventScroll: true });
-      });
+      // The header must finish becoming visible as well as lifting inert before
+      // Safari will accept focus. Do this after the closing animation completes.
+      const restoreFocus = () => {
+        const state = useStore.getState();
+        if (!state.isMenuOpen && !state.isSearchOpen && !state.isTransitioning && opener?.isConnected && (menu?.contains(document.activeElement) || document.activeElement === document.body)) {
+          opener.focus({ preventScroll: true });
+        }
+      };
+      tl.eventCallback('onReverseComplete', restoreFocus);
+      if (tl.progress() === 0) focusFrame = requestAnimationFrame(restoreFocus);
+      tl.reverse();
     }
+    return () => {
+      cancelAnimationFrame(focusFrame);
+      tl.eventCallback('onReverseComplete', null);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMenuOpen]);
 
   const close = () => setIsMenuOpen(false);
 
-  // Escape closes the menu.
+  // Escape closes the menu; Tab stays within the modal until it closes.
   useEffect(() => {
     if (!isMenuOpen) return undefined;
     const onKeyDown = (event) => {
       if (event.key === 'Escape') {
         event.preventDefault();
         close();
+        return;
       }
+      trapPanelFocus(event, menuRef.current);
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
@@ -103,8 +124,8 @@ function MenuLinks() {
   const motionHint = motionSaved ? 'Restores animation and glass effects' : 'Stops animation and makes glass controls solid';
 
   return (
-    <nav id="menu" ref={menuRef} className={styles.menu} aria-label="Menu" aria-hidden={!isMenuOpen}>
-      <div className={clsx(styles.menuWrapper, 'layout-block-inner')} data-lenis-prevent="">
+    <div id="menu" ref={menuRef} className={styles.menu} role="dialog" aria-modal="true" aria-label="Menu" aria-hidden={!isMenuOpen}>
+      <nav className={clsx(styles.menuWrapper, 'layout-block-inner')} data-lenis-prevent="" aria-label="Site navigation">
         <div data-menu-anim="" className={styles.menuList}>
           <h2 className={styles.menuHeading}>Sitemap</h2>
           {menuLinks.map((link) =>
@@ -118,7 +139,7 @@ function MenuLinks() {
           )}
         </div>
 
-        <div data-menu-anim="" className={styles.menuList}>
+        <div data-menu-anim="" className={clsx(styles.menuList, styles.upcomingList)}>
           <h2 className={styles.menuHeading}>Coming up</h2>
           {Array.from({ length: UPCOMING_SLOTS }, (_, index) => {
             const item = thisWeek[index];
@@ -176,8 +197,8 @@ function MenuLinks() {
         <button type="button" onClick={close} className={styles.menuClose} aria-label="Close menu">
           <span aria-hidden="true">&#10005;</span>
         </button>
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
 }
 

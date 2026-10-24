@@ -1,5 +1,5 @@
 import { SEARCH_COPY as COPY, SEARCH_GROUPS as GROUPS, getCourse, searchEntries, searchGuide, searchIndex } from '@src/lib';
-import { buildPanelTimeline } from '@src/components/dom/navbar/panelShell';
+import { buildPanelTimeline, trapPanelFocus } from '@src/components/dom/navbar/panelShell';
 import { courseIdFromPath, pathKey } from '@src/utils/routes';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -76,7 +76,7 @@ function SearchPanel() {
 
   useEffect(() => {
     const panel = panelRef.current;
-    const tl = buildPanelTimeline(panel, panel.querySelectorAll('[data-menu-anim]'));
+    const tl = buildPanelTimeline(panel, panel.querySelectorAll('[data-menu-anim]'), { isMobile });
     timeline.current = tl;
     if (useStore.getState().isSearchOpen) tl.progress(1);
     return () => {
@@ -96,7 +96,9 @@ function SearchPanel() {
 
   useEffect(() => {
     const tl = timeline.current;
-    if (!tl) return;
+    if (!tl) return undefined;
+    let focusFrame = 0;
+    panelRef.current.inert = !isSearchOpen;
     tl.timeScale(still ? 30 : 1);
     if (isSearchOpen) {
       const focused = document.activeElement;
@@ -105,17 +107,29 @@ function SearchPanel() {
       setQuery('');
       setGuideQuery(null);
       tl.play();
-      requestAnimationFrame(() => requestAnimationFrame(() => inputRef.current?.focus({ preventScroll: true })));
+      focusFrame = requestAnimationFrame(() => {
+        focusFrame = requestAnimationFrame(() => {
+          if (useStore.getState().isSearchOpen) inputRef.current?.focus({ preventScroll: true });
+        });
+      });
     } else {
-      tl.reverse();
       const opener = openerRef.current;
       openerRef.current = null;
       const panel = panelRef.current;
-      // after the navbar has made the header reachable again (inert is lifted in its effect)
-      requestAnimationFrame(() => {
-        if (opener && opener.isConnected && (panel?.contains(document.activeElement) || document.activeElement === document.body)) opener.focus({ preventScroll: true });
-      });
+      const restoreFocus = () => {
+        const state = useStore.getState();
+        if (!state.isSearchOpen && !state.isMenuOpen && !state.isTransitioning && opener?.isConnected && (panel?.contains(document.activeElement) || document.activeElement === document.body)) {
+          opener.focus({ preventScroll: true });
+        }
+      };
+      tl.eventCallback('onReverseComplete', restoreFocus);
+      if (tl.progress() === 0) focusFrame = requestAnimationFrame(restoreFocus);
+      tl.reverse();
     }
+    return () => {
+      cancelAnimationFrame(focusFrame);
+      tl.eventCallback('onReverseComplete', null);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSearchOpen]);
 
@@ -171,6 +185,7 @@ function SearchPanel() {
 
   const onKeyDown = (event) => {
     if (event.nativeEvent.isComposing) return;
+    trapPanelFocus(event, panelRef.current);
     if (event.key === 'Escape') {
       event.preventDefault();
       event.stopPropagation();
