@@ -128,6 +128,12 @@ jobs:
           PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
           QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/interaction-feedback
         run: node site/scripts/check-interaction-feedback.mjs
+      - name: Check delayed feedback on fast and slow navigation
+        if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' }}
+        env:
+          PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
+          QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/delayed-feedback
+        run: node site/scripts/check-delayed-feedback.mjs
       - name: Check the palette and take 390 px screenshots
         # Runs even when an earlier browser check failed, so one run reports everything.
         if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' }}
@@ -239,3 +245,4 @@ jobs:
           PAGE_URL: ${{ needs.deploy.outputs.page_url }}
           BUILD_ID: ${{ needs.build.outputs.build_id }}
         run: node site/scripts/check-pages-site.mjs --live "$PAGE_URL" --build-id "$BUILD_ID"
+

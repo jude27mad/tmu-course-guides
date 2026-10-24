@@ -133,7 +133,7 @@ try {
       return { elapsed, heldImages: requested };
     } finally { release(); }
   });
-  await check('a tab acknowledges the tap before its content finishes leaving', async (page) => {
+  await check('a tab acknowledges the tap immediately without flashing loading feedback', async (page) => {
     await page.goto(`${url}cen100/`);
     await ready(page);
     const response = await page.evaluate(() => new Promise((resolve) => {
@@ -145,7 +145,7 @@ try {
       })));
     }));
     assert.equal(response.selected, 'page');
-    assert.match(response.feedback || '', /Opening Schedule/);
+    assert.equal(response.feedback || '', '', 'fast tab selection must not flash loading feedback');
     return response;
   });
   await check('the first visible frame of the new view accepts one tap', async (page) => {
@@ -218,3 +218,4 @@ try {
   await new Promise((resolve) => server.close(resolve));
 }
 if (results.some((result) => !result.pass)) process.exitCode = 1;
+

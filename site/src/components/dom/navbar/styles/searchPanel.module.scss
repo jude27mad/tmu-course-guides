@@ -4,6 +4,9 @@
 // footer email's input line.
 .root {
   z-index: 1;
+  @include mobile {
+    z-index: 4;
+  }
 }
 
 .wrapper {
