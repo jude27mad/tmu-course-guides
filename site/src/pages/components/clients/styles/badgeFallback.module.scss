@@ -82,10 +82,10 @@
     text-align: right;
   }
 
-  // The 3D card shrinks the code to fit (fitFont); six capitals at this size fit the card's width.
+  // --fit (set from the text's length in BadgeFallback.jsx) shrinks a long line instead of cutting it off.
   .code {
     top: calc(268 * var(--u));
-    font-size: calc(104 * var(--u));
+    font-size: calc(104 * var(--u) * var(--fit, 1));
     font-weight: 750;
     letter-spacing: -0.03em;
     line-height: 1;
@@ -94,7 +94,7 @@
 
   .name {
     top: calc(408 * var(--u));
-    font-size: calc(50 * var(--u));
+    font-size: calc(50 * var(--u) * var(--fit, 1));
     font-weight: 550;
     color: var(--mutedOnDark);
   }
@@ -114,7 +114,7 @@
 
   .nextValue {
     top: calc(626 * var(--u));
-    font-size: calc(44 * var(--u));
+    font-size: calc(44 * var(--u) * var(--fit, 1));
     font-weight: 650;
   }
 }

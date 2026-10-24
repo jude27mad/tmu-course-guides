@@ -17,15 +17,21 @@ export function createWebGLSupport(getDocument = () => (typeof document === 'und
   const listeners = new Set();
 
   const probe = (doc) => {
+    let gl;
     try {
-      const gl = doc.createElement('canvas').getContext('webgl2');
-      if (!gl) return false;
-      // give the context back at once: browsers keep only a handful alive
-      gl.getExtension('WEBGL_lose_context')?.loseContext();
-      return true;
+      gl = doc.createElement('canvas').getContext('webgl2');
+      // a context that is already lost (the GPU is gone) is as good as none
+      if (!gl || (gl.isContextLost && gl.isContextLost())) return false;
     } catch (error) {
       return false;
     }
+    try {
+      // give the context back at once: browsers keep only a handful alive
+      gl.getExtension('WEBGL_lose_context')?.loseContext();
+    } catch (error) {
+      // it was created; failing to release it does not make WebGL unavailable
+    }
+    return true;
   };
 
   return {

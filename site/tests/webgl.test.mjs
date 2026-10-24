@@ -56,6 +56,37 @@ test('a context without WEBGL_lose_context still counts as available', () => {
   assert.equal(support.available(), true);
 });
 
+test('a WebGL 1-only browser does not count: three.js r163+ would throw on it', () => {
+  const doc = {
+    createElement: () => ({ getContext: (kind) => (kind === 'webgl' || kind === 'experimental-webgl' ? context() : null) }),
+  };
+  assert.equal(createWebGLSupport(() => doc).available(), false);
+});
+
+test('a context that is already lost counts as no WebGL', () => {
+  const lost = { ...context(), isContextLost: () => true };
+  assert.equal(createWebGLSupport(() => fakeDocument(lost)).available(), false);
+  const fine = { ...context(), isContextLost: () => false };
+  assert.equal(createWebGLSupport(() => fakeDocument(fine)).available(), true);
+});
+
+test('failing to release the probe context does not make WebGL unavailable', () => {
+  const gl = {
+    getExtension() {
+      throw new Error('blocked by a privacy shim');
+    },
+  };
+  assert.equal(createWebGLSupport(() => fakeDocument(gl)).available(), true);
+  const loseThrows = {
+    getExtension: () => ({
+      loseContext() {
+        throw new Error('boom');
+      },
+    }),
+  };
+  assert.equal(createWebGLSupport(() => fakeDocument(loseThrows)).available(), true);
+});
+
 test('a browser that throws while creating a context reports false instead of throwing', () => {
   assert.equal(createWebGLSupport(() => fakeDocument(null, { throws: true })).available(), false);
   const broken = {

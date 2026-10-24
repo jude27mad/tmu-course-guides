@@ -120,7 +120,7 @@ export const WEBSITE_UPDATES = [
   "id": "2026-10-24-opens-without-webgl",
   "date": "October 24, 2026",
   "title": "Opens in browsers without WebGL",
-  "text": "The Desk and every other page now open when WebGL is turned off or unavailable, instead of showing an application error. The moving background, pointer effect and pre-footer stickers are left out, and each course badge becomes a flat card.",
+  "text": "The Desk and every other page now open when WebGL is turned off or unavailable, instead of showing an application error. The background's slow drift, the pointer effect and the pre-footer stickers are left out, and each course badge becomes a flat card.",
   "items": []
  },
  {

@@ -43,21 +43,31 @@ const blockWebGL = () => {
   };
 };
 // three.js always passes context attributes; the site's own probe never does.
+// It counts what was granted (the probe) and refused (renderers), so the scenario can prove it reached the error boundary.
 const failRenderer = () => {
   const original = HTMLCanvasElement.prototype.getContext;
+  window.__webglContexts = { granted: 0, refused: 0 };
   HTMLCanvasElement.prototype.getContext = function getContext(kind, attributes, ...rest) {
-    if (/webgl/i.test(kind) && attributes !== undefined) return null;
-    return original.call(this, kind, attributes, ...rest);
+    const webgl = /webgl/i.test(kind);
+    if (webgl && attributes !== undefined) {
+      window.__webglContexts.refused += 1;
+      return null;
+    }
+    const context = original.call(this, kind, attributes, ...rest);
+    if (webgl && context) window.__webglContexts.granted += 1;
+    return context;
   };
 };
 
 const SCENARIOS = [
   { name: 'disabled', engines: ['chromium'], args: WEBGL_OFF, webgl: false },
   { name: 'blocked', engines: ['chromium', 'webkit', 'firefox'], args: [], init: blockWebGL, webgl: false },
-  { name: 'late-failure', engines: ['chromium'], args: SOFTWARE_GL, init: failRenderer, webgl: false, expectConsoleErrors: true },
+  { name: 'late-failure', engines: ['chromium'], args: SOFTWARE_GL, init: failRenderer, webgl: false, expectConsoleErrors: true, lateFailure: true },
   { name: 'control', engines: ['chromium'], args: SOFTWARE_GL, webgl: true },
 ];
 const ROUTES = ['/', '/courses/', '/cen100/', '/mth140/', '/mth141/', '/privacy/', '/updates/'];
+// the routes that end in the pre-footer, whose own canvas (the stickers) mounts only when the end of the page is near
+const PREFOOTER_ROUTES = ['/', '/courses/', '/privacy/', '/updates/'];
 const COURSE_CODES = ['CEN100', 'MTH140', 'MTH141'];
 
 // The page is ready, or Next.js has replaced it with its error screen (reported by the caller, not timed out on).
@@ -101,6 +111,36 @@ async function inspect(page, route, scenario, tracker, motion) {
     } else {
       assert.deepEqual(state.standIns, [], `${label}: no stand-in outside the Desk`);
     }
+  }
+
+  if (scenario.lateFailure) {
+    const contexts = await page.evaluate(() => window.__webglContexts);
+    assert.ok(contexts.granted >= 1, `${label}: the capability probe got a context (${JSON.stringify(contexts)})`);
+    assert.ok(contexts.refused >= 1, `${label}: a renderer was refused, so the error boundary was reached (${JSON.stringify(contexts)})`);
+    assert.ok(tracker.consoleErrors.length > 0 && tracker.consoleErrors.every((text) => /webgl/i.test(text)), `${label}: only the expected WebGL errors are logged: ${tracker.consoleErrors.join(' | ')}`);
+  }
+
+  // The pre-footer's canvas (the stickers) mounts only near the end of the page: go there and look again.
+  // (it counts as near only while really on screen: the scroller clips it, so scrolling past it is not enough)
+  await page.evaluate(() => {
+    const heading = [...document.querySelectorAll('main h2')].find((element) => /Open a course guide below/.test(element.textContent));
+    if (heading) heading.scrollIntoView({ block: 'center' });
+    else document.querySelector('main').scrollTop = document.querySelector('main').scrollHeight;
+  });
+  if (scenario.webgl && motion !== 'reduce' && PREFOOTER_ROUTES.includes(route)) {
+    await page.waitForFunction(() => document.querySelectorAll('canvas[data-engine]').length >= 4, null, { timeout: 15000 }).catch(() => {});
+  } else {
+    await page.waitForTimeout(2000);
+  }
+  const end = await page.evaluate(() => ({ text: document.body.innerText, threeCanvases: document.querySelectorAll('canvas[data-engine]').length }));
+  assert.ok(!/Application error: a client-side exception/i.test(end.text), `${label}: Next.js application error screen at the end of the page`);
+  assert.deepEqual(tracker.pageErrors, [], `${label}: uncaught errors at the end of the page`);
+  if (!scenario.expectConsoleErrors) assert.deepEqual(tracker.consoleErrors, [], `${label}: console errors at the end of the page`);
+  if (scenario.webgl) {
+    const expected = motion !== 'reduce' && PREFOOTER_ROUTES.includes(route) ? 4 : 0;
+    if (expected) assert.ok(end.threeCanvases >= expected, `${label}: the pre-footer canvas joins the others (${end.threeCanvases})`);
+  } else {
+    assert.equal(end.threeCanvases, 0, `${label}: no three.js canvas at the end of the page either`);
   }
   return state;
 }
@@ -148,7 +188,17 @@ try {
             await ready(page);
             await page.mouse.move(640, 400);
             await page.mouse.wheel(0, 900);
-            await page.waitForFunction(() => document.querySelector('main').scrollTop > 100, null, { timeout: 8000 });
+            // Lenis is still easing after the wheel, and the course text moves with the scroll: click once it has settled
+            await page.waitForFunction(
+              () => {
+                const top = document.querySelector('main').scrollTop;
+                const settled = top > 100 && top === window.__lastScrollTop;
+                window.__lastScrollTop = top;
+                return settled;
+              },
+              null,
+              { polling: 300, timeout: 10000 },
+            );
             await page.locator('a', { hasText: /open guide/i }).first().click();
             await page.waitForURL(/\/(cen100|mth140|mth141)\/$/);
             await ready(page);

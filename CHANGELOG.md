@@ -4,9 +4,9 @@ Latest first. Students see course changes under **Course updates** in each guide
 
 ## Unreleased — The website opens without WebGL
 
-- **The Desk no longer crashes in browsers with WebGL turned off.** Chrome with WebGL disabled (a browser setting or policy, or no usable graphics) showed "Application error: a client-side exception has occurred" on the home page, and on every other page, because the 3D layer could not create its WebGL context. Every 3D canvas is now mounted only where WebGL works and sits inside an error boundary, so a browser without it gets the page without the moving background, pointer effect and pre-footer stickers.
+- **The Desk no longer crashes in browsers with WebGL turned off.** Chrome with WebGL disabled (a browser setting or policy, or no usable graphics) showed "Application error: a client-side exception has occurred" on the home page, and on every other page, because the 3D layer could not create its WebGL context. Every 3D canvas is now mounted only where WebGL works and sits inside an error boundary, so a browser without it gets the page without the background's slow drift, the pointer effect and the pre-footer stickers.
 - Each course badge on the Desk becomes a flat card with the same course code, name and next date. Everything else is unchanged, and browsers with WebGL get the same page as before.
-- Pages CI now loads every page with WebGL disabled, blocked and failing after the check passes, and with WebGL working as a control. The new `tests/webgl.test.mjs` fails on a 3D canvas that is not in the gate.
+- Pages CI now loads every route with WebGL disabled, blocked and failing after the capability probe passes, and with WebGL working as a control. The new `tests/webgl.test.mjs` fails on a 3D canvas that is not in the gate.
 
 ## Unreleased — Course updates and website updates in separate places
 
