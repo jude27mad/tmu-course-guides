@@ -200,10 +200,10 @@
   text-overflow: ellipsis;
 }
 .utilities {
-  display: grid;
-  // Existing groups share a row only when both have usable room.
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr));
+  display: flex;
+  // Wrap whole groups at their real width; retain the existing spacing.
   align-items: center;
+  justify-content: space-between;
   gap: 12px 20px;
   padding: 12px 0;
   flex-wrap: wrap;
@@ -235,7 +235,7 @@
   }
 }
 .actions {
-  justify-self: end;
+  margin-left: auto;
   display: flex;
   gap: 12px 20px;
   flex-wrap: nowrap;
