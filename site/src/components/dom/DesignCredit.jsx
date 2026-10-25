@@ -16,7 +16,9 @@ export default function DesignCredit({ tone = 'light', onToggle }) {
       <summary>
         Design credit <span aria-hidden="true">⌄</span>
       </summary>
-      <p>Original portfolio design and development by Evangelos Giatsidis.</p>
+      <p>
+        Original portfolio design and development by <span className={styles.author}>Evangelos Giatsidis.</span>
+      </p>
       <a href="https://giats.me" target="_blank" rel="noopener noreferrer">
         giats.me ↗
       </a>

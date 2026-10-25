@@ -18,6 +18,7 @@
   }
   &[open] summary span { transform: rotate(180deg); }
   p { max-width: 48ch; overflow-wrap: normal; }
+  .author { display: inline-block; max-width: 100%; }
   a {
     display: inline-flex;
     align-items: center;
