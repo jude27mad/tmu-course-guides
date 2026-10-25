@@ -91,12 +91,15 @@ function Deadline({ item, still }) {
   return (
     <div data-desk-deadline={item.id}>
       <div className={styles.deadlineHeading}>
-        <p className="p-l">
-          {item.target?.endOfDay ? <time dateTime={item.date}>{item.dateLabel}</time> : item.when}
-        </p>
+        <p className="p-l">{item.target?.endOfDay ? <time dateTime={item.date}>{item.dateLabel}</time> : item.when}</p>
         <p className="p-x">
           {item.label}
-          {item.target?.endOfDay && <> · <span className={styles.cutoff}>11:59 PM Toronto</span></>}
+          {item.target?.endOfDay && (
+            <>
+              {' · '}
+              <span className={styles.cutoff}>11:59 PM Toronto</span>
+            </>
+          )}
         </p>
         {item.target?.note && <p className={clsx('p-x', styles.note)}>{item.target.note}</p>}
       </div>
@@ -168,12 +171,15 @@ function About({ desk }) {
       </div>
 
       <div className={clsx(styles.container, 'layout-grid-inner')}>
-        {!empty && (ready && course ? (
-          <Link className={styles.imageContainer} href={`/${course.id}/`} scroll={false} aria-label={`Open ${course.code} course guide`} data-desk-course-link>
-            <CourseBadge instanceId="desk-next" courseId={course.id} next={next} />
-            <Arrow className={styles.cardArrow} />
-          </Link>
-        ) : <div className={styles.imageContainer} aria-hidden="true" />)}
+        {!empty &&
+          (ready && course ? (
+            <Link className={styles.imageContainer} href={`/${course.id}/`} scroll={false} aria-label={`Open ${course.code} course guide`} data-desk-course-link>
+              <CourseBadge instanceId="desk-next" courseId={course.id} next={next} />
+              <Arrow className={styles.cardArrow} />
+            </Link>
+          ) : (
+            <div className={styles.imageContainer} aria-hidden="true" />
+          ))}
         <div className={clsx(styles.descWrapperBottom)}>
           {ready && next ? <Deadline item={next} still={still} /> : <p className="p-l">{empty ? EMPTY_TEXT : DESK_TEXT.nextStatic}</p>}
           {ready && next && (
