@@ -42,6 +42,17 @@ carry each mounted position's appearance; the DOM badge no longer needs its own
 view tunnel or visibility subscription. No dependency patch, additional canvas,
 or additional physics engine is introduced. The directory retains its clipping.
 
+The rapid-scroll recording still exposed a second alignment issue after the
+first-return draw passed: a fixed canvas stays in screen coordinates while
+native scrolling moves the badge's DOM window between renderer frames. Browser
+documentation describes this asynchronous compositor/main-thread split. The
+shared badge surface therefore belongs to the scrolling document on iOS. Before
+painting, it is positioned around the current viewport; between paints, its
+pixels travel with the page. When all badges leave that region, its last painted
+surface stays at that document position until needed again. An absolute clipped
+wrapper keeps the viewport-sized surface from extending the document's scroll
+range. The fluid and background remain viewport effects.
+
 ## Verification
 
 The test-only commit `fd574cbc9304ff2fd04dd15f7b634bd2d04a517f` reproduced the
@@ -64,8 +75,15 @@ view, but the next real renderer frame made **zero** badge draw calls. The test
 advances the existing renderer deterministically; it does not replace physics,
 inject forces, or rely on a CI frame-rate threshold.
 
-`site/scripts/check-route-filter-motion.mjs` adds one focused iPhone WebKit check
-to the existing Pages workflow. It observes the real React Three Fiber stores
+The native-scroll alignment assertion then failed on `b1856293`: scrolling
+40 px between renderer frames moved the badge window by -40 px while its fixed
+painted surface moved 0 px. Its first-return draw already passed. This isolates
+the compositor alignment problem from physics or the earlier visibility gate.
+
+`site/scripts/check-route-filter-motion.mjs` adds two focused iPhone WebKit checks
+to the existing Pages workflow. The first also pauses renderer frames and checks
+that a native scroll moves the painted surface and its badge window together.
+The resize check observes the real React Three Fiber stores
 through React's test-installed instrumentation hook; production gains no debug
 globals. It records footer style resets, background-material identity, newly
 rendered fluid materials, and game-canvas position-only size updates while
@@ -109,4 +127,7 @@ issue resolved.
 - [GSAP ScrollTrigger configuration](https://gsap.com/docs/v3/Plugins/ScrollTrigger/static.config()/):
   mobile height refreshes can jump when start/end values are recalculated.
   Avoiding an application's own animation teardown is also necessary.
-
+- [Browser scrolling and main-thread effects](https://firefox-source-docs.mozilla.org/performance/scroll-linked_effects.html):
+  native scrolling can move visible content before JavaScript receives the
+  updated scroll position; relying on script to reposition a fixed visual
+  surface can make it lag behind the document.

@@ -37,6 +37,15 @@
   position: relative;
   width: 100%;
   overflow: hidden;
+  // Bound the shared drawing surface to the document without adding a scroll
+  // container or letting its viewport-sized buffer extend the page's length.
+  .badgeSurface {
+    position: absolute;
+    inset: 0;
+    overflow: clip;
+    pointer-events: none;
+    z-index: 0;
+  }
   .main {
     flex-grow: 1;
     z-index: 1;
@@ -135,7 +144,11 @@
     // --edge-bleed-* in global.scss. The fluid maps touches from the viewport
     // top, so it keeps the viewport's size.
     .canvasContainer:not(:global(#fluidCanvas)) {
+      // The last painted pixels follow native scrolling between JS frames.
+      // ClearViews recentres this viewport-sized buffer only before drawing.
+      position: absolute !important;
       top: calc(-1 * var(--edge-bleed-top));
+      transform: translateY(var(--badge-scroll-offset, 0px));
       height: calc(var(--app-viewport-height) + var(--edge-bleed-top) + var(--edge-bleed-bottom)) !important;
     }
   }

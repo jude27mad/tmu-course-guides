@@ -196,7 +196,7 @@ function MyApp({ Component, pageProps, router }) {
           powerPreference: 'high-performance',
         }}
         style={{ zIndex: 0 }}
-        resize={{ debounce: { resize: 0, scroll: 0 }, polyfill: undefined }}
+        resize={{ scroll: false, debounce: { resize: 0, scroll: 0 }, polyfill: undefined }}
         className={styles.canvasContainer}
         dpr={dpr ?? [1, maxDpr]}
         // motion off: draw only when something moves (scroll, resize, panels, curtain)
@@ -204,7 +204,7 @@ function MyApp({ Component, pageProps, router }) {
         aria-hidden="true"
       >
         {still && <DemandDriver />}
-        <ClearViews />
+        <ClearViews registry={badgeRegistry} />
         <PerformanceMonitor flipflops={3} onDecline={() => setDpr(1)} onIncline={() => setDpr(null)} onFallback={() => setDpr(1)} />
         {/* A view that is loading (or never loads) must stay inside the canvas: without
             this boundary R3F suspends the <Canvas> DOM component itself, and its next
@@ -246,7 +246,7 @@ function MyApp({ Component, pageProps, router }) {
         <div ref={layoutRef} id="layout" className={styles.layout}>
           {/* The paper a page fades into during a page change (Layout). */}
           <div id="routePaper" className={styles.routePaper} aria-hidden="true" />
-          {canvasElements}
+          <div className={styles.badgeSurface}>{canvasElements}</div>
           {!still && (
             <Canvas
               id="fluidCanvas"
