@@ -17,6 +17,18 @@ const server = createPreview({ root: path.join(site, 'out'), base: basePath });
 await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
 const base = `http://127.0.0.1:${server.address().port}${basePath}/`;
 const results = [];
+// Read the actual renderer stores without adding a production debug API.
+const observeCanvasStores = (page) => page.addInitScript(() => {
+  window.canvasStores = new Set();
+  window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = {
+    supportsFiber: true,
+    inject: () => 1,
+    onCommitFiberRoot: (_, root) => {
+      if (root.containerInfo?.getState) window.canvasStores.add(root.containerInfo);
+    },
+    onCommitFiberUnmount: () => {},
+  };
+});
 const ready = async (page) => {
   await page.waitForFunction(() => {
     const main = document.querySelector('main');
@@ -225,6 +237,53 @@ async function checkMobileMenu(page, name) {
 try {
   const safari = await webkit.launch({ headless: true });
   try {
+    await check(safari, devices['iPhone 13'], 'iphone-badge-first-return-frame', async (page) => {
+      await observeCanvasStores(page);
+      await page.goto(base);
+      await ready(page);
+      await page.locator('[data-course-badge]').first().scrollIntoViewIfNeeded();
+      await page.locator('[data-badge-rendered="true"]').first().waitFor();
+      const evidence = await page.evaluate(async () => {
+        const element = document.querySelector('[data-course-badge]');
+        const store = [...window.canvasStores].find(item => item.getState().gl?.domElement.closest('#viewCanvas'));
+        if (!store) throw new Error('Find the shared badge renderer');
+        const state = store.getState();
+        const render = state.gl.render;
+        let draws = 0;
+        state.gl.render = function (scene, camera) {
+          if (scene !== store.getState().scene) draws++;
+          return render.call(this, scene, camera);
+        };
+        const centre = scrollY + element.getBoundingClientRect().top - (innerHeight - element.offsetHeight) / 2;
+        const frame = () => store.getState().advance(store.getState().clock.elapsedTime + 1 / 60, false);
+        state.setFrameloop('never');
+        try {
+          window.scrollTo(0, centre + innerHeight * 2);
+          frame();
+          await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+          frame();
+          const outside = element.getBoundingClientRect().bottom < 0;
+          window.scrollTo(0, centre);
+          const bounds = element.getBoundingClientRect();
+          draws = 0;
+          // One real renderer frame after re-entry. Waiting for another React
+          // visibility commit is precisely the blank-frame regression.
+          frame();
+          return { outside, returned: bounds.top >= 0 && bounds.bottom <= innerHeight + 1, draws };
+        } finally {
+          state.gl.render = render;
+          state.setFrameloop('always');
+        }
+      });
+      await writeFile(path.join(report, 'iphone-badge-first-return-frame.json'), JSON.stringify(evidence, null, 2));
+      assert.equal(evidence.outside, true, 'the badge really left the screen');
+      assert.equal(evidence.returned, true, 'the badge really returned');
+      assert.ok(evidence.draws > 0, `the first returning frame draws the badge: ${JSON.stringify(evidence)}`);
+      return evidence;
+    });
+    // Fail fast on this drawing regression; avoid spending the entire browser
+    // run checking physics poses when the viewport is visibly empty.
+    assert.ok(results.at(-1).pass, 'the badge must draw on its first returning frame');
     for (const reducedMotion of ['no-preference', 'reduce']) {
       await check(safari, { ...devices['iPhone 13'], reducedMotion }, `iphone-desk-menu-${reducedMotion}`, async (page) => {
         await page.goto(base);
@@ -317,17 +376,7 @@ try {
       if (label === 'iphone') await check(browser, options, 'iphone-scroll-resize-continuity', async (page) => {
         // Observe the real renderers through React's instrumentation hook. No
         // production debug globals or replacement animation/physics objects.
-        await page.addInitScript(() => {
-          window.canvasStores = new Set();
-          window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = {
-            supportsFiber: true,
-            inject: () => 1,
-            onCommitFiberRoot: (_, root) => {
-              if (root.containerInfo?.getState) window.canvasStores.add(root.containerInfo);
-            },
-            onCommitFiberUnmount: () => {},
-          };
-        });
+        await observeCanvasStores(page);
         await page.goto(base);
         await ready(page);
         await page.locator('[data-companion-statement]').scrollIntoViewIfNeeded();
