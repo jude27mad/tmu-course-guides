@@ -35,9 +35,10 @@ function TextOpacity({ children, trigger }) {
         scrollTrigger: {
           id: 'companion-statement',
           trigger: scrollTrigger,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: true,
+          // Reveal during entry, so the game never leads a blank pinned panel.
+          start: 'top bottom',
+          end: 'top top',
+          scrub: 0.18,
           scroller: scrollRoot(),
           invalidateOnRefresh: true,
         },

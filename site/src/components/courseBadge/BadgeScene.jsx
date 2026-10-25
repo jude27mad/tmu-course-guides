@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property, react/jsx-props-no-spreading, import/extensions */
 import * as THREE from 'three';
 
-import { BallCollider, CuboidCollider, Physics, RigidBody, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
+import { BallCollider, CuboidCollider, Physics, RigidBody, useBeforePhysicsStep, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import { PerspectiveCamera, View } from '@react-three/drei';
 import { bandTexture, cardTexture, loadBadgeFonts, redrawCard } from '@src/components/courseBadge/badgeTextures';
@@ -14,19 +14,19 @@ import useScroll from '@src/hooks/useScroll';
 
 extend({ MeshLineGeometry, MeshLineMaterial, RoundedBoxGeometry });
 
-// Original lanyard geometry, materials, rope joints and scroll impulses.
+// Original lanyard geometry, materials and rope joints, with a gentler sway.
 // The world lives beside View.Port, independently of any particular window.
 const SPACING = 30; // world units between the lanyards (they never meet)
 const ANCHOR_Y = 4;
 const JOINT = 1.45; // card anchor above the card centre
-// The original start: the rope laid out to the right, so the card swings in. With
-// motion off the lanyard starts (and stays) hanging at rest.
+// Start almost hanging, with a small sideways offset instead of a full drop.
+// With motion off the lanyard starts (and stays) hanging at rest.
 const SWING_START = [
   [0, 0],
-  [0.5, 0],
-  [1, 0],
-  [1.5, 0],
-  [2, 0],
+  [0.1, -0.995],
+  [0.2, -1.99],
+  [0.3, -2.985],
+  [0.3, -2.985 - JOINT],
 ];
 const REST_START = [
   [0, 0],
@@ -35,7 +35,7 @@ const REST_START = [
   [0, -3],
   [0, -3 - JOINT],
 ];
-const segmentProps = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 2, linearDamping: 2 };
+const segmentProps = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 8, linearDamping: 5 };
 
 function Lanyard({ body, x, rest, swinging, paused, enabled }) {
   const scroll = useRef({ direction: 0, isScrolling: false, velocity: 0 });
@@ -57,11 +57,13 @@ function Lanyard({ body, x, rest, swinging, paused, enabled }) {
     scroll.current.velocity = velocity;
   });
 
-  useFrame(() => {
+  // Apply a bounded nudge once per fixed 60 Hz physics step, so a fast swipe
+  // or a high-refresh display cannot keep adding excessive swing energy.
+  useBeforePhysicsStep(() => {
     const card = body.card.current;
     if (paused || !card) return;
     if (scroll.current.isScrolling && swinging()) {
-      const moveDistance = Math.abs(scroll.current.velocity) * 0.005;
+      const moveDistance = Math.min(Math.abs(scroll.current.velocity) * 0.001, 0.008);
       const directionVector = scroll.current.direction === 1 ? 1 : -1;
       card.applyImpulse({ x: directionVector * moveDistance, y: 0, z: 0 }, true);
     }
