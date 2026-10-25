@@ -68,6 +68,9 @@
     .mainContainer {
       height: auto;
       padding-top: var(--navigation-extra-height, 0px);
+      // Only the extra header clearance is paper; course badge windows below
+      // must remain transparent to the shared canvas.
+      background-image: linear-gradient(to bottom, var(--white) 0 var(--navigation-extra-height, 0px), transparent var(--navigation-extra-height, 0px));
 
       width: 100%;
     }
