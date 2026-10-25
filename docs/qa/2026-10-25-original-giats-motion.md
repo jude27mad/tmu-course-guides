@@ -32,6 +32,9 @@ per-finger momentum calculations or resets. This adapter changes browser event
 transport, not the brush's calculations. The existing effect-wrapper resource
 caches are retained; they do not change shader values or simulation operations.
 The app retains its original Giats `#D7D7D4` fluid colour and difference blend.
+The source and published-bundle palette scans allow the unused `#F0F4F1`
+default from the verbatim upstream options. The visible-UI palette checks
+still reject that colour; no displayed colour changes.
 
 Reference fixtures preserve the upstream code independently of production.
 GitHub CI on bd14123752ea034f8cd1c9069286928ff25eab35 reproduced both regressions:
