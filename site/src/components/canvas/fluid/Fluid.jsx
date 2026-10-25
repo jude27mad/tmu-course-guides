@@ -28,7 +28,8 @@ function Fluid({ mainRef, fluidColor }) {
     (name) => {
       if (!meshRef.current) return;
       meshRef.current.material = materials[name];
-      meshRef.current.material.needsUpdate = true;
+      // These programs are compiled once; changing uniforms or choosing the
+      // next pass does not require invalidating the material every frame.
     },
     [materials],
   );

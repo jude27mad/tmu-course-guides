@@ -14,6 +14,9 @@ function Index({ active, eventSource }) {
 
   return (
     <Canvas
+      // Input already uses the stage's live bounds below. Scrolling changes
+      // its position, not its drawing size; only actual resizes need a commit.
+      resize={{ scroll: false }}
       eventSource={eventSource}
       events={(state) => ({
         ...events(state),

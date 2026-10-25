@@ -1,4 +1,4 @@
-import { scrollRoot } from '@src/utils/scrollRoot';
+import { nativeIOSScroll, scrollRoot } from '@src/utils/scrollRoot';
 import { useMemo, useRef, useState } from 'react';
 
 import DesignCredit from '@src/components/dom/DesignCredit';
@@ -42,6 +42,11 @@ function Footer() {
   const router = useRouter();
   const [isLoading] = useStore(useShallow((state) => [state.isLoading]));
   const windowSize = useWindowSize();
+  // The native Safari toolbar changes innerHeight during a swipe, while the
+  // footer's svh layout stays put. Rebuilding here resets its uncover transform
+  // and temporarily changes document height. Width/orientation and credit
+  // changes still rebuild; desktop window-height changes still do as well.
+  const resizeHeight = nativeIOSScroll() ? 0 : windowSize.height;
   const courseId = courseIdFromPath(router.asPath);
   const courseLinks = useCourseLinks(courseId);
   const [creditOpen, setCreditOpen] = useState(false);
@@ -54,7 +59,7 @@ function Footer() {
           const allSections = document.querySelectorAll('#mainContainer section');
           if (allSections.length > 1) {
             const lastSection = allSections[allSections.length - 2];
-            if (footerRef.current.offsetHeight <= windowSize.height) {
+            if (footerRef.current.offsetHeight <= window.innerHeight) {
               gsap.set(footerRef.current, { yPercent: -50 });
               const uncover = gsap.timeline({ paused: true });
               gsap.set(footerRef.current, { height: '100.5svh' });
@@ -77,11 +82,11 @@ function Footer() {
           }
         };
 
-        setupFooterAnimation(footerRef, windowSize);
+        setupFooterAnimation();
       }
     });
     return () => context.revert();
-  }, [isLoading, windowSize.height, creditOpen]);
+  }, [isLoading, windowSize.width, resizeHeight, creditOpen]);
 
   return (
     <section ref={footerRef} className={clsx(styles.root, 'layout-grid-inner')} data-surface="dark">
