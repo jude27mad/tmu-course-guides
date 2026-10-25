@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property, react/jsx-props-no-spreading, import/extensions */
 import * as THREE from 'three';
 
-import { BallCollider, CuboidCollider, Physics, RigidBody, useBeforePhysicsStep, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
+import { BallCollider, CuboidCollider, Physics, RigidBody, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import { PerspectiveCamera, View } from '@react-three/drei';
 import { bandTexture, cardTexture, loadBadgeFonts, redrawCard } from '@src/components/courseBadge/badgeTextures';
@@ -14,19 +14,20 @@ import useScroll from '@src/hooks/useScroll';
 
 extend({ MeshLineGeometry, MeshLineMaterial, RoundedBoxGeometry });
 
-// Original lanyard geometry, materials and rope joints, with a gentler sway.
+// Original Giats motion, copied from upstream 1e0b7b0. Page placement only
+// translates each rig; it must never tune the simulation (see giats-motion tests).
 // The world lives beside View.Port, independently of any particular window.
 const SPACING = 30; // world units between the lanyards (they never meet)
 const ANCHOR_Y = 4;
 const JOINT = 1.45; // card anchor above the card centre
-// Start almost hanging, with a small sideways offset instead of a full drop.
+// Giats starts all five bodies at the anchor height and lets the card drop.
 // With motion off the lanyard starts (and stays) hanging at rest.
 const SWING_START = [
   [0, 0],
-  [0.2, -0.98],
-  [0.4, -1.96],
-  [0.6, -2.94],
-  [0.6, -2.94 - JOINT],
+  [0.5, 0],
+  [1, 0],
+  [1.5, 0],
+  [2, 0],
 ];
 const REST_START = [
   [0, 0],
@@ -35,12 +36,13 @@ const REST_START = [
   [0, -3],
   [0, -3 - JOINT],
 ];
-const segmentProps = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 3, linearDamping: 2.5 };
-const IMPULSE_RESPONSE = 1 - Math.exp(-1 / (60 * 0.09));
+const segmentProps = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 2, linearDamping: 2 };
 
-function Lanyard({ body, x, rest, swinging, paused, enabled }) {
-  const scroll = useRef({ impulse: 0, updated: 0 });
-  const impulse = useRef(0);
+function Lanyard({ body, x, rest, intersected }) {
+  const { fixed, card } = body;
+  const scrollDirection = useRef(0);
+  const isScrolling = useRef(false);
+  const speed = useRef(0);
   const ang = useMemo(() => new THREE.Vector3(), []);
   const rot = useMemo(() => new THREE.Vector3(), []);
   const [start] = useState(() => (rest ? REST_START : SWING_START));
@@ -53,42 +55,27 @@ function Lanyard({ body, x, rest, swinging, paused, enabled }) {
     [0, JOINT, 0],
   ]);
 
-  useScroll(({ isScrolling, velocity }) => {
-    // Keep the sign through reversals; do not turn a zero direction into a
-    // leftward kick. A scroll sample expires instead of being replayed forever.
-    scroll.current.impulse = isScrolling && Number.isFinite(velocity) ? THREE.MathUtils.clamp(velocity * 0.0015, -0.012, 0.012) : 0;
-    scroll.current.updated = performance.now();
+  useScroll(({ direction, isScrolling: useScrolling, velocity }) => {
+    scrollDirection.current = direction;
+    isScrolling.current = useScrolling;
+    speed.current = velocity;
   });
 
-  useEffect(() => {
-    if (paused) {
-      impulse.current = 0;
-      scroll.current.impulse = 0;
+  // Original per-render-frame impulse and angular correction. No cap, smoothing,
+  // timeout, fixed-step substitution or location-dependent strength.
+  useFrame(() => {
+    if (rest || !card.current) return;
+    if (isScrolling.current && intersected) {
+      const moveDistance = Math.abs(speed.current) * 0.005;
+      const directionVector = scrollDirection.current === 1 ? 1 : -1;
+      card.current.applyImpulse({ x: directionVector * moveDistance, y: 0, z: 0 }, true);
     }
-  }, [paused]);
-
-  // Apply a bounded nudge once per fixed 60 Hz physics step, so a fast swipe
-  // or a high-refresh display cannot keep adding excessive swing energy.
-  useBeforePhysicsStep(() => {
-    const card = body.card.current;
-    if (paused || !card) return;
-    if (swinging()) {
-      const target = performance.now() - scroll.current.updated < 120 ? scroll.current.impulse : 0;
-      // A short, fixed-step response softens rapid up/down reversals without
-      // slowing the physics world or making the lanyard feel rigid.
-      impulse.current += (target - impulse.current) * IMPULSE_RESPONSE;
-      if (Math.abs(impulse.current) > 0.00001) card.applyImpulse({ x: impulse.current, y: 0, z: 0 }, true);
-    } else {
-      impulse.current = 0;
+    if (fixed.current) {
+      ang.copy(card.current.angvel());
+      rot.copy(card.current.rotation());
+      card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
     }
-    ang.copy(card.angvel());
-    rot.copy(card.rotation());
-    card.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
   });
-
-  useEffect(() => {
-    [body.fixed, body.j1, body.j2, body.j3, body.card].forEach((ref) => ref.current?.setEnabled(enabled));
-  }, [body, enabled]);
 
   const positions = useMemo(() => start.map(([dx, dy]) => [x + dx, ANCHOR_Y + dy, 0]), [x, start]);
 
@@ -117,11 +104,10 @@ export function BadgeWorld({ registry }) {
   const { entries } = useSyncExternalStore(registry.subscribe, registry.getState, registry.getState);
   const rest = useStill();
   if (!entries.length) return null;
-  const paused = rest || !entries.some((entry) => entry.visible);
   return (
-    <Physics paused={paused} interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
+    <Physics paused={rest} interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
       {entries.map((entry) => (
-        <Lanyard key={entry.id} body={entry.body} x={entry.slot * SPACING} rest={rest} paused={paused || !entry.visible} enabled={entry.visible || rest} swinging={() => entry.swing} />
+        <Lanyard key={entry.id} body={entry.body} x={entry.slot * SPACING} rest={rest} intersected={entry.swing} />
       ))}
     </Physics>
   );
@@ -195,7 +181,8 @@ function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed
   );
 
   useFrame((_, delta) => {
-    // the world is paused (off screen or motion off): nothing moves after the first pose
+    // The explicit Pause motion control retains its pose. Offscreen placement
+    // does not stop or restart the original simulation.
     if (textures && started.current && element?.dataset.badgeRendered !== 'true') element.dataset.badgeRendered = 'true';
     if (idle && started.current) return;
     const { fixed, j1, j2, j3, cardObject } = body;
@@ -209,8 +196,7 @@ function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed
       const t = ref.current.translation();
       if (!started.current) lerped[k].copy(t);
       const clampedDistance = Math.max(0.1, Math.min(1, lerped[k].distanceTo(t)));
-      // clamped to 1 (scaffold fix): at low frame rates the lerp overshot and the band went NaN
-      lerped[k].lerp(t, Math.min(1, delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed))));
+      lerped[k].lerp(t, delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed)));
     });
     started.current = true;
     curve.points[0].copy(j3.current.translation());
@@ -294,13 +280,12 @@ function ClipToCard({ element }) {
 export function BadgeView({ entry, look, rest }) {
   return (
     // View tracks its DOM rectangle every frame and culls it offscreen. The
-    // asynchronous observer pauses physics only: gating drawing on it too can
-    // leave a blank window during a quick return into view. Draw the last pose
-    // while that observer catches up and the same lanyard resumes.
+    // observer only gates the original scroll impulse. Physics and drawing
+    // stay independent of that observer so rapid re-entry cannot reset the rig.
     <View style={{ position: 'relative', display: 'block', backgroundColor: 'transparent', height: '100%', width: '100%' }}>
       <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={25} />
       <ambientLight intensity={Math.PI} />
-      <BadgeCard key={entry.id} body={entry.body} offsetX={entry.slot * SPACING} look={look} idle={!entry.visible || rest} element={entry.element} />
+      <BadgeCard key={entry.id} body={entry.body} offsetX={entry.slot * SPACING} look={look} idle={rest} element={entry.element} />
       <ClipToCard element={entry.element} />
       <ambientLight intensity={1.3} />
       <directionalLight position={[5, 5, 5]} intensity={1.5} />

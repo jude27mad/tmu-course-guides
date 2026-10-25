@@ -1,140 +1,46 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import { test } from 'node:test';
-import { Vector2 } from 'three';
+import test from 'node:test';
+import { mount, finger, touch } from './helpers/fluid-harness.mjs';
 
-// Run the production event handlers: only the React refs/effect are supplied.
-const source = readFileSync(new URL('../src/components/canvas/fluid/hooks/usePointerEvents.jsx', import.meta.url), 'utf8')
-  .replace(/^import[\s\S]*?from ['"][^'"]+['"];?\s*$/gm, '')
-  .replace('export default usePointerEvents;', 'return usePointerEvents;');
-
-function mount(ios = true) {
-  const target = new EventTarget();
-  let cleanup = () => {};
-  const hook = new Function('useEffect', 'useRef', 'Vector2', 'nativeIOSScroll', source)(
-    effect => { cleanup = effect(); },
-    value => ({ current: value }),
-    Vector2,
-    () => ios,
-  );
-  const stack = hook({ current: target }, { width: 400, height: 800 }, 1);
-  function emit(type, values = {}) {
-    const event = new Event(type, { cancelable: true });
-    Object.entries(values).forEach(([key, value]) => Object.defineProperty(event, key, { value }));
-    target.dispatchEvent(event);
-    assert.equal(event.defaultPrevented, false, 'liquid must not intercept native gestures');
-  }
-  const take = () => stack.current.splice(0);
-  return { emit, take, cleanup: () => cleanup() };
-}
-const finger = (id, x, y) => ({ identifier: id, clientX: x, clientY: y });
-function gesture(h, type, active, changed = active) {
-  h.emit(type, { touches: active, changedTouches: changed, targetTouches: active });
+// The request to restore Giats supersedes the guide's added contact blooms and
+// release impulses. Keep fast-retouch coverage against that original contract.
+for (const ios of [true, false]) {
+  test(`${ios ? 'native' : 'pointer'} contacts and releases do not invent fluid impulses`, () => {
+    const h = mount({ ios });
+    const emit = (phase, x, y) => ios
+      ? touch(h, `touch${phase}`, phase === 'end' ? [] : [finger(1, x, y)], [finger(1, x, y)])
+      : h.emit(`pointer${{ start: 'down', end: 'up' }[phase]}`, { pointerId: 1, pointerType: 'touch', clientX: x, clientY: y });
+    try {
+      for (let i = 0; i < 8; i++) {
+        emit('start', 120, i % 2 ? 300 : 650);
+        emit('end', 120, i % 2 ? 650 : 300);
+      }
+      assert.deepEqual(h.take(), []);
+    } finally { h.cleanup(); }
+  });
 }
 
-test('each immediate retouch creates visible liquid even if iOS sends no touchmove', () => {
+test('rapid retouch keeps the original shared last-movement history', () => {
   const h = mount();
   try {
-    gesture(h, 'touchstart', [finger(1, 120, 240)]);
-    const first = h.take();
-    assert.equal(first.length, 1, 'the first contact itself must seed the fluid');
-    assert.equal(first[0].mouseX, 120 / 400);
-    assert.equal(first[0].mouseY, 1 - 240 / 800);
-    assert.ok(first[0].dye >= 16, 'contact ink must be perceptible without finger movement');
-    assert.equal(first[0].velocityX, 0, 'a tap must not inject a preferred motion direction');
-    assert.equal(first[0].velocityY, 0);
-
-    gesture(h, 'touchend', [], [finger(1, 120, 240)]);
-    gesture(h, 'touchstart', [finger(1, 300, 520)]);
-    const second = h.take();
-    assert.equal(second.length, 1, 'immediate reuse of a finger identifier must create fresh fluid');
-    assert.equal(second[0].mouseX, 300 / 400);
-    assert.equal(second[0].mouseY, 1 - 520 / 800);
-    assert.ok(second[0].dye >= 16);
-  } finally { h.cleanup(); }
-});
-
-test('two very fast taps before a frame is drawn both survive in the queue', () => {
-  const h = mount();
-  try {
-    gesture(h, 'touchstart', [finger(3, 100, 100)]);
-    gesture(h, 'touchend', [], [finger(3, 100, 100)]);
-    gesture(h, 'touchstart', [finger(4, 200, 200)]);
-    assert.deepEqual(h.take().map(s => s.mouseX), [0.25, 0.5]);
-  } finally { h.cleanup(); }
-});
-
-test('a newly added second or third finger seeds ink and does not stop moving fingers', () => {
-  const h = mount();
-  try {
-    gesture(h, 'touchstart', [finger(10, 100, 100)]);
+    touch(h, 'touchmove', [finger(1, 100, 200)]);
+    touch(h, 'touchmove', [finger(1, 110, 210)]);
     h.take();
-    gesture(h, 'touchstart', [finger(10, 100, 100), finger(20, 200, 200)], [finger(20, 200, 200)]);
-    gesture(h, 'touchstart', [finger(10, 100, 100), finger(20, 200, 200), finger(30, 300, 300)], [finger(30, 300, 300)]);
-    assert.deepEqual(h.take().map(s => s.mouseX), [0.5, 0.75]);
-    gesture(h, 'touchmove', [finger(10, 105, 105), finger(20, 205, 205), finger(30, 305, 305)]);
-    assert.equal(h.take().length, 3, 'all three moving fingers still cause liquid motion');
+    touch(h, 'touchend', [], [finger(1, 120, 220)]);
+    touch(h, 'touchstart', [finger(1, 300, 600)]);
+    touch(h, 'touchmove', [finger(1, 310, 610)]);
+    assert.deepEqual(h.take(), [{ mouseX: 0.775, mouseY: 1 - 610 / 800, velocityX: 400, velocityY: -800 }]);
   } finally { h.cleanup(); }
 });
 
-test('non-iOS touch pointerdown makes a fresh contact too', () => {
-  const h = mount(false);
-  try {
-    h.emit('pointerdown', { pointerId: 7, pointerType: 'touch', clientX: 200, clientY: 400 });
-    assert.equal(h.take().length, 1);
-    h.emit('pointerup', { pointerId: 7, pointerType: 'touch', clientX: 200, clientY: 400 });
-    h.emit('pointerdown', { pointerId: 7, pointerType: 'touch', clientX: 100, clientY: 100 });
-    assert.equal(h.take().length, 1);
-  } finally { h.cleanup(); }
-});
-
-test('contact ink is forwarded into both shader passes for the visible touch bloom', () => {
-  const renderer = readFileSync(new URL('../src/components/canvas/fluid/Fluid.jsx', import.meta.url), 'utf8');
-  assert.match(renderer, /velocityX,\s*velocityY,\s*dye\s*=\s*10/);
-  assert.match(renderer, /\.set\(velocityX,\s*velocityY,\s*dye\)/);
-});
-
-test('a fast iOS release forwards the final movement before forgetting the finger', () => {
+test('successive fast movement reversals preserve the full original input strength', () => {
   const h = mount();
   try {
-    gesture(h, 'touchstart', [finger(1, 120, 650)]);
-    gesture(h, 'touchmove', [finger(1, 120, 300)]);
-    h.take();
-    // The last up/down movement may arrive on touchend, without another move.
-    gesture(h, 'touchend', [], [finger(1, 120, 620)]);
-    const release = h.take();
-    assert.equal(release.length, 1, 'the released finger final movement must reach the fluid');
-    assert.equal(release[0].mouseY, 1 - 620 / 800);
-    assert.equal(release[0].velocityY, -320);
-    gesture(h, 'touchstart', [finger(1, 120, 620)]);
-    assert.equal(h.take()[0].dye, 32, 'the released identity must still be reset for retouch');
-  } finally { h.cleanup(); }
-});
-
-test('successive fast gestures alternate direction even when only start/end arrive', () => {
-  const h = mount();
-  try {
+    touch(h, 'touchmove', [finger(1, 195, 650)]);
     for (let i = 0; i < 8; i++) {
-      const from = i % 2 ? 300 : 650;
       const to = i % 2 ? 650 : 300;
-      gesture(h, 'touchstart', [finger(1, 195, from)]);
-      h.take();
-      gesture(h, 'touchend', [], [finger(1, 195, to)]);
-      assert.equal(h.take()[0]?.velocityY, from - to, `gesture ${i} loses its final motion`);
+      touch(h, 'touchmove', [finger(1, 195, to)]);
+      assert.equal(h.take()[0].velocityY, i % 2 ? -700 : 700);
     }
-  } finally { h.cleanup(); }
-});
-
-test('pointer-mode release includes its final movement and cancellation adds no jump', () => {
-  const h = mount(false);
-  try {
-    h.emit('pointerdown', { pointerId: 7, pointerType: 'touch', clientX: 120, clientY: 650 });
-    h.take();
-    h.emit('pointerup', { pointerId: 7, pointerType: 'touch', clientX: 120, clientY: 300 });
-    assert.equal(h.take()[0]?.velocityY, 350);
-    h.emit('pointerdown', { pointerId: 8, pointerType: 'touch', clientX: 120, clientY: 300 });
-    h.take();
-    h.emit('pointercancel', { pointerId: 8, pointerType: 'touch', clientX: 0, clientY: 0 });
-    assert.equal(h.take().length, 0, 'cancellation coordinates must not create a spurious stroke');
   } finally { h.cleanup(); }
 });

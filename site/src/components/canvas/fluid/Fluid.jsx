@@ -1,6 +1,6 @@
 /* eslint-disable @react-three/no-new-in-loop */
 
-import { Camera, Scene, Texture } from 'three';
+import { Camera, Scene, Texture, Vector2, Vector3 } from 'three';
 import { createPortal, useFrame, useThree } from '@react-three/fiber';
 import { useCallback, useRef } from 'react';
 
@@ -64,38 +64,30 @@ function Fluid({ mainRef, fluidColor }) {
     if (!meshRef.current || !postRef.current) return;
 
     while (splatStack.current.length > 0) {
-      const { mouseX, mouseY, velocityX, velocityY, dye = 10.0 } = splatStack.current.pop();
+      const { mouseX, mouseY, velocityX, velocityY } = splatStack.current.pop();
 
       setShaderMaterial('splat');
       setUniforms('splat', 'uTarget', FBOs.velocity.read.texture);
-      // Reuse the uniforms object's values rather than allocating new Vectors
-      materials.splat.uniforms.uPointer.value.set(mouseX, mouseY);
-      materials.splat.uniforms.uColor.value.set(velocityX, velocityY, dye);
+      setUniforms('splat', 'uPointer', new Vector2(mouseX, mouseY));
+      setUniforms('splat', 'uColor', new Vector3(velocityX, velocityY, 10.0));
       setUniforms('splat', 'uRadius', radius / 100.0);
       setRenderTarget('velocity');
       setUniforms('splat', 'uTarget', FBOs.density.read.texture);
       setRenderTarget('density');
     }
 
-    // Unrolled shader updates to avoid array and object allocations on every frame
-    setShaderMaterial('curl');
-    setUniforms('curl', 'uVelocity', FBOs.velocity.read.texture);
-    setRenderTarget('curl');
+    const shaderUpdates = [
+      { material: 'curl', uniforms: { uVelocity: FBOs.velocity.read.texture }, target: 'curl' },
+      { material: 'vorticity', uniforms: { uVelocity: FBOs.velocity.read.texture, uCurl: FBOs.curl.texture, uCurlValue: curl }, target: 'velocity' },
+      { material: 'divergence', uniforms: { uVelocity: FBOs.velocity.read.texture }, target: 'divergence' },
+      { material: 'clear', uniforms: { uTexture: FBOs.pressure.read.texture, uClearValue: pressure }, target: 'pressure' },
+    ];
 
-    setShaderMaterial('vorticity');
-    setUniforms('vorticity', 'uVelocity', FBOs.velocity.read.texture);
-    setUniforms('vorticity', 'uCurl', FBOs.curl.texture);
-    setUniforms('vorticity', 'uCurlValue', curl);
-    setRenderTarget('velocity');
-
-    setShaderMaterial('divergence');
-    setUniforms('divergence', 'uVelocity', FBOs.velocity.read.texture);
-    setRenderTarget('divergence');
-
-    setShaderMaterial('clear');
-    setUniforms('clear', 'uTexture', FBOs.pressure.read.texture);
-    setUniforms('clear', 'uClearValue', pressure);
-    setRenderTarget('pressure');
+    shaderUpdates.forEach(({ material, uniforms, target }) => {
+      setShaderMaterial(material);
+      Object.entries(uniforms).forEach(([key, value]) => setUniforms(material, key, value));
+      setRenderTarget(target);
+    });
 
     setShaderMaterial('pressure');
     setUniforms('pressure', 'uDivergence', FBOs.divergence.texture);

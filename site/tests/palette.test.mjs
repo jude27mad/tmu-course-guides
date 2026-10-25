@@ -121,7 +121,7 @@ test('no old colour remains in the site source', async () => {
   const hits = [];
   const fluidExceptions = new Map([
     ['src/lib/palette.mjs', new Set(['#D7D7D4'])],
-    ['src/components/canvas/fluid/hooks/useOpts.jsx', new Set(['#070410'])],
+    ['src/components/canvas/fluid/hooks/useOpts.jsx', new Set(['#070410', '#F0F4F1'])],
   ]);
   const scan = async (path) => {
     const text = await readFile(path, 'utf8');

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
+import * as THREE from 'three';
 import { Vector2 } from 'three';
 import RAPIER from '@dimforge/rapier3d-compat';
 
@@ -97,4 +98,39 @@ test('the card drop and damping follow Giats at every shared-world position', ()
       assert.ok(Math.abs(value - reference[frame][axis]) < 0.002, `position ${offset}, frame ${frame}, axis ${axis}: ${value} vs ${reference[frame][axis]}`);
     }));
   }
+});
+
+// Run the actual frame callbacks, including the original angular correction.
+// The doubles sit at Rapier's boundary and record the forces sent to the body.
+function frameFor(source, { velocity, direction, scrolling = true, intersected = true }) {
+  const calls = [];
+  const point = (x, y) => ({ current: { translation: () => new THREE.Vector3(x, y, 0) } });
+  const fixed = point(0, 4);
+  const card = { current: {
+    applyImpulse: (value, wake) => calls.push(['impulse', value, wake]),
+    angvel: () => ({ x: 0.2, y: 0.8, z: -0.1 }),
+    rotation: () => ({ x: 0.1, y: 0.3, z: 0.2, w: 0.9 }),
+    setAngvel: value => calls.push(['angular', value]),
+  } };
+  const scope = {
+    THREE, card, fixed, j1: point(0, 3), j2: point(0, 2), j3: point(0, 1),
+    band: { current: { geometry: { setPoints() {} } } },
+    curve: new THREE.CatmullRomCurve3(Array.from({ length: 4 }, () => new THREE.Vector3())),
+    isScrolling: { current: scrolling }, speed: { current: velocity }, scrollDirection: { current: direction },
+    intersected, rest: false, maxSpeed: 50, minSpeed: 10, ang: new THREE.Vector3(), rot: new THREE.Vector3(),
+    useFrame: callback => callback({}, 1 / 60),
+  };
+  const start = source.indexOf('useFrame(');
+  const end = source.indexOf('\n  });', start) + 6;
+  new Function(...Object.keys(scope), source.slice(start, end))(...Object.values(scope));
+  return calls;
+}
+
+test('scroll reversals send the original uncapped per-frame forces to every card', () => {
+  for (const input of [
+    { velocity: 4, direction: 1 }, { velocity: 400, direction: 1 },
+    { velocity: -800, direction: -1 }, { velocity: 0, direction: 0 },
+    { velocity: 50, direction: 1, scrolling: false },
+    { velocity: -50, direction: -1, intersected: false },
+  ]) assert.deepEqual(frameFor(currentBadge, input), frameFor(originalBadge, input), JSON.stringify(input));
 });
