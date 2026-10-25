@@ -126,10 +126,10 @@ try {
     assert.doesNotMatch(await section.innerText(), /No section saved|Two individual reflections/);
     assert.match(await section.innerText(), /Email Reflection 1 directly/);
     await deadline.scrollIntoViewIfNeeded();
-    await settled(page);
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
     await page.screenshot({ path: path.join(report, 'desk-integrated-timer-390.png') });
     await link.scrollIntoViewIfNeeded();
-    await settled(page);
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
     // Tap the box's corner, outside the moving badge mesh: the whole window links.
     await link.tap({ position: { x: 12, y: 12 } });
     await page.waitForURL(url + 'cen100/');
