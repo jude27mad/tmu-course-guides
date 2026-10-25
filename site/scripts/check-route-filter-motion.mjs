@@ -29,13 +29,13 @@ const observeCanvasStores = (page) => page.addInitScript(() => {
     onCommitFiberUnmount: () => {},
   };
 });
-// Keep the sideways-scroll regression covered in the existing route suite now
-// that PR 79 has retired the separate native-document scrolling architecture.
+// Keep sideways-scroll coverage on both the Safari document shell and the
+// contained desktop/Android shell without resetting the vertical position.
 const assertPageWidth = async (page) => {
   const bounds = await page.evaluate(() => {
     const main = document.querySelector('main');
     main.scrollTo({ left: innerWidth * 0.6, top: main.scrollTop, behavior: 'instant' });
-    window.scrollTo({ left: innerWidth * 0.6, top: 0, behavior: 'instant' });
+    window.scrollTo({ left: innerWidth * 0.6, top: scrollY, behavior: 'instant' });
     const rect = main.getBoundingClientRect();
     return { rootX: scrollX, mainX: main.scrollLeft, width: innerWidth,
       contentWidth: document.documentElement.scrollWidth, left: rect.left, right: rect.right };
@@ -43,6 +43,50 @@ const assertPageWidth = async (page) => {
   assert.ok(bounds.contentWidth <= bounds.width + 1 && Math.abs(bounds.rootX) < 1 && Math.abs(bounds.mainX) < 1
     && Math.abs(bounds.left) < 1 && Math.abs(bounds.right - bounds.width) < 1,
   `the page cannot shift sideways: ${JSON.stringify(bounds)}`);
+};
+
+// These are compiled page-geometry checks. Linux WebKit does not render the
+// real iPhone browser bars; physical Safari still supplies final visual evidence.
+const assertSafariDocumentShell = async (page, darkEnd = false) => {
+  const state = await page.evaluate(() => {
+    const root = document.documentElement;
+    const main = document.querySelector('main');
+    const fluid = document.querySelector('#fluidCanvas');
+    const view = document.querySelector('#viewCanvas').getBoundingClientRect();
+    return {
+      mode: root.dataset.scrollMode,
+      mainPosition: getComputedStyle(main).position,
+      mainOverflow: getComputedStyle(main).overflowY,
+      mainScrollTop: main.scrollTop,
+      documentHeight: document.scrollingElement.scrollHeight,
+      viewport: innerHeight,
+      rootBackground: getComputedStyle(root).backgroundColor,
+      fluidBackground: fluid ? getComputedStyle(fluid).backgroundColor : null,
+      view: { top: view.top, bottom: view.bottom },
+      guards: [...document.querySelectorAll('[data-safari-blend]')].map(node => {
+        const css = getComputedStyle(node);
+        return { display: css.display, position: css.position, background: css.backgroundColor, pointerEvents: css.pointerEvents };
+      }),
+      edgeEnd: root.dataset.edgeEnd,
+    };
+  });
+  assert.equal(state.mode, 'document', 'iOS must activate Claude’s Safari integration');
+  assert.equal(state.mainPosition, 'relative');
+  assert.equal(state.mainOverflow, 'visible', 'main must not become a nested scroll box');
+  assert.equal(state.mainScrollTop, 0, 'the document owns iOS scroll position');
+  assert.ok(state.documentHeight > state.viewport, 'the document is the scrollable page');
+  assert.equal(state.rootBackground, darkEnd ? 'rgb(24, 24, 27)' : 'rgb(241, 241, 241)');
+  assert.ok(state.fluidBackground === null || state.fluidBackground === 'rgba(0, 0, 0, 0)', 'the fluid wrapper must not force a solid Safari band');
+  assert.ok(state.view.top < 0 && state.view.bottom > state.viewport, 'the shared artwork reaches beyond both browser edges');
+  assert.equal(state.guards.length, 2);
+  for (const guard of state.guards) {
+    assert.notEqual(guard.display, 'none');
+    assert.equal(guard.position, 'sticky');
+    assert.equal(guard.background, 'rgba(0, 0, 0, 0)');
+    assert.equal(guard.pointerEvents, 'auto');
+  }
+  assert.equal(state.edgeEnd, darkEnd ? 'dark' : 'none');
+  return state;
 };
 const ready = async (page) => {
   await page.waitForFunction(() => {
@@ -269,12 +313,15 @@ try {
           if (scene !== store.getState().scene) draws++;
           return render.call(this, scene, camera);
         };
-        const scroller = document.querySelector('main');
-        const centre = scroller.scrollTop + element.getBoundingClientRect().top - (scroller.clientHeight - element.offsetHeight) / 2;
+        const documentMode = document.documentElement.dataset.scrollMode === 'document';
+        const scroller = documentMode ? window : document.querySelector('main');
+        const viewport = documentMode ? innerHeight : scroller.clientHeight;
+        const top = documentMode ? scrollY : scroller.scrollTop;
+        const centre = top + element.getBoundingClientRect().top - (viewport - element.offsetHeight) / 2;
         const frame = () => store.getState().advance(store.getState().clock.elapsedTime + 1 / 60, false);
         state.setFrameloop('never');
         try {
-          scroller.scrollTo(0, centre + scroller.clientHeight * 2);
+          scroller.scrollTo(0, centre + viewport * 2);
           frame();
           await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
           frame();
@@ -285,7 +332,7 @@ try {
           // One real renderer frame after re-entry. Waiting for another React
           // visibility commit is precisely the blank-frame regression.
           frame();
-          return { outside, returned: bounds.top >= 0 && bounds.bottom <= scroller.clientHeight + 1, draws };
+          return { outside, returned: bounds.top >= 0 && bounds.bottom <= viewport + 1, draws };
         } finally {
           state.gl.render = render;
           state.setFrameloop('always');
@@ -334,6 +381,7 @@ try {
       await check(safari, { ...devices['iPhone 13'], reducedMotion }, `iphone-page-routes-${reducedMotion}`, async (page) => {
         await page.goto(base);
         await ready(page);
+        const safariTop = await assertSafariDocumentShell(page);
         const routes = [];
         const follow = async (label, destination, title, navigate) => {
           await startRouteFrames(page);
@@ -361,13 +409,26 @@ try {
         // Between courses (the quick fade).
         await follow('course-to-course', 'mth140/', 'Calculus I', () => page.evaluate(() => window.next.router.push('/mth140/', undefined, { scroll: false })));
         // The footer's Desk link at the end of the page, header scrolled away.
-        await page.evaluate(() => { const main = document.querySelector('main'); main.scrollTo(0, main.scrollHeight); });
-        await page.waitForFunction(() => document.querySelector('main').scrollTop > 200);
+        await page.evaluate(() => {
+          const documentMode = document.documentElement.dataset.scrollMode === 'document';
+          const scroller = documentMode ? window : document.querySelector('main');
+          scroller.scrollTo(0, documentMode ? document.scrollingElement.scrollHeight : scroller.scrollHeight);
+        });
+        await page.waitForFunction(() => (document.documentElement.dataset.scrollMode === 'document' ? scrollY : document.querySelector('main').scrollTop) > 200);
         await follow('footer-to-desk', '', 'TMU Course Guides', () => page.evaluate((desk) => [...document.querySelectorAll('main a[href]')].filter((link) => new URL(link.href).pathname === desk).at(-1).click(), new URL(base).pathname));
-        const top = await page.evaluate(() => ({ scrollTop: document.querySelector('main').scrollTop, header: getComputedStyle(document.querySelector('header')).opacity }));
+        const top = await page.evaluate(() => ({ scrollTop: document.documentElement.dataset.scrollMode === 'document' ? scrollY : document.querySelector('main').scrollTop, header: getComputedStyle(document.querySelector('header')).opacity }));
         assert.ok(top.scrollTop <= 8, 'the Desk opens at its top');
         assert.equal(top.header, '1', 'the header is back after the change');
-        return { routes };
+        // The reported box is at the dark Desk footer. Check the actual end
+        // state, where Claude's root fallback and end-only fade must activate.
+        await page.evaluate(() => window.scrollTo(0, document.scrollingElement.scrollHeight));
+        await page.waitForFunction(() => document.documentElement.dataset.browserBottom === 'dark' && document.documentElement.dataset.edgeEnd === 'dark');
+        const safariEnd = await assertSafariDocumentShell(page, true);
+        await page.screenshot({ path: path.join(report, `safari-dark-footer-${reducedMotion}.png`) });
+        await page.evaluate(() => window.scrollTo(0, 0));
+        await page.waitForFunction(() => document.documentElement.dataset.browserBottom === 'light' && document.documentElement.dataset.edgeEnd === 'none');
+        await assertSafariDocumentShell(page);
+        return { routes, safariTop, safariEnd };
       });
     }
   } finally { await safari.close(); }
@@ -418,25 +479,38 @@ try {
           window.backgroundBeforeResize = backgroundMaterial();
           if (!window.backgroundBeforeResize) throw new Error('Find the actual animated background');
         });
-        // Model toolbar-only innerHeight changes while the restored 100svh
-        // contained scroller keeps its actual layout size. Resizing Playwright's
-        // viewport would also resize svh and represent a real layout change.
-        await page.evaluate(async () => {
-          const descriptor = Object.getOwnPropertyDescriptor(window, 'innerHeight');
-          const height = innerHeight;
-          try {
-            for (const value of [height + 70, height, height + 70, height]) {
-              Object.defineProperty(window, 'innerHeight', { configurable: true, value });
-              window.dispatchEvent(new Event('resize'));
-              await new Promise(resolve => setTimeout(resolve, 240));
-            }
-          } finally {
-            if (descriptor) Object.defineProperty(window, 'innerHeight', descriptor);
-            else delete window.innerHeight;
-            window.dispatchEvent(new Event('resize'));
-            await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-          }
+        // Real viewport changes exercise dvh and ResizeObserver too. Playwright
+        // also changes svh; pin the footer's 100svh probe at its original size to
+        // model a Safari toolbar change. In contained mode main is another svh
+        // stage; document mode main stays auto-height and must not be pinned.
+        const originalViewport = page.viewportSize();
+        await page.evaluate(() => {
+          const probe = document.querySelector('[data-footer-viewport]');
+          if (!probe) throw new Error('Find the stable footer viewport measurement');
+          const stages = [probe];
+          if (document.documentElement.dataset.scrollMode !== 'document') stages.push(document.querySelector('main'));
+          window.stableViewportPins = stages.map(node => {
+            const saved = { node, height: node.style.getPropertyValue('height'), priority: node.style.getPropertyPriority('height') };
+            node.style.setProperty('height', `${node.getBoundingClientRect().height}px`, 'important');
+            return saved;
+          });
         });
+        try {
+          for (const height of [originalViewport.height + 70, originalViewport.height, originalViewport.height + 70, originalViewport.height]) {
+            await page.setViewportSize({ ...originalViewport, height });
+            await page.waitForTimeout(240);
+          }
+        } finally {
+          await page.setViewportSize(originalViewport);
+          await page.evaluate(async () => {
+            for (const { node, height, priority } of window.stableViewportPins) {
+              if (height) node.style.setProperty('height', height, priority);
+              else node.style.removeProperty('height');
+            }
+            delete window.stableViewportPins;
+            await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+          });
+        }
         await page.evaluate(() => {
           window.footerResizeObserver.disconnect();
           window.resizeEvidence.backgroundRetained = window.backgroundMaterial() === window.backgroundBeforeResize;
@@ -453,8 +527,10 @@ try {
         for (let step = 0; step < 6; step++) {
           await page.evaluate(offset => {
             const section = document.querySelector('[data-companion-statement]');
-            const main = document.querySelector('main');
-            main.scrollTo(0, main.scrollTop + section.getBoundingClientRect().top + offset);
+            const documentMode = document.documentElement.dataset.scrollMode === 'document';
+            const scroller = documentMode ? window : document.querySelector('main');
+            const top = documentMode ? scrollY : scroller.scrollTop;
+            scroller.scrollTo(0, top + section.getBoundingClientRect().top + offset);
           }, step % 2 ? 230 : 110);
           await page.waitForTimeout(110);
         }
@@ -860,4 +936,5 @@ try {
   await new Promise((resolve) => server.close(resolve));
 }
 if (results.some((result) => !result.pass)) process.exitCode = 1;
+
 
