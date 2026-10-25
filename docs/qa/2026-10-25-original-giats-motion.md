@@ -37,8 +37,12 @@ The native input adapter is covered for multiple fingers, different child
 nodes, mouse/pen input, rapid reversals, retouch, duplicate streams and cleanup.
 Browser checks retain rapid scrolling, finite connected bodies, rendered badge
 faces, course routes, pause, fluid shaders, native scrolling and navigation.
-The old 1.5-unit artificial sway limit is replaced by the actual rope/anchor
-reach because that artificial limit contradicts the restored original motion.
+The old artificial sway limit is replaced by a recovery check: after repeated
+instant full-screen jumps, the same finite bodies must return to a hanging
+position with low velocity. The original uncapped forces can temporarily stretch
+Rapier's soft constraints; limiting that excursion would restore the unwanted
+retuning. The full touch-fluid check and all iPhone WebKit routes passed in the
+first restoration run; that run exposed this obsolete bounded-sway assertion.
 
 All application tests, builds and browser checks run in GitHub CI. Physical
 iPhone frame pacing cannot be established by emulated browser checks.
