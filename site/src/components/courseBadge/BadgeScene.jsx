@@ -3,7 +3,8 @@ import * as THREE from 'three';
 
 import { BallCollider, CuboidCollider, Physics, RigidBody, useBeforePhysicsStep, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
-import { PerspectiveCamera, View } from '@react-three/drei';
+import { PerspectiveCamera } from '@react-three/drei';
+import BadgeViewport from '@src/components/courseBadge/BadgeViewport';
 import { bandTexture, cardTexture, loadBadgeFonts, redrawCard } from '@src/components/courseBadge/badgeTextures';
 import { extend, useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
@@ -110,20 +111,6 @@ function Lanyard({ body, x, rest, swinging, paused, enabled }) {
         <object3D ref={body.cardObject} />
       </RigidBody>
     </>
-  );
-}
-
-export function BadgeWorld({ registry }) {
-  const { entries } = useSyncExternalStore(registry.subscribe, registry.getState, registry.getState);
-  const rest = useStill();
-  if (!entries.length) return null;
-  const paused = rest || !entries.some((entry) => entry.visible);
-  return (
-    <Physics paused={paused} interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
-      {entries.map((entry) => (
-        <Lanyard key={entry.id} body={entry.body} x={entry.slot * SPACING} rest={rest} paused={paused || !entry.visible} enabled={entry.visible || rest} swinging={() => entry.swing} />
-      ))}
-    </Physics>
   );
 }
 
@@ -255,6 +242,7 @@ function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed
 function ClipToCard({ element }) {
   const { scene, gl } = useThree();
   const scissor = useMemo(() => new THREE.Vector4(), []);
+  const size = useMemo(() => new THREE.Vector2(), []);
   useEffect(() => {
     const previous = scene.onBeforeRender;
     scene.onBeforeRender = (...args) => {
@@ -263,17 +251,20 @@ function ClipToCard({ element }) {
       if (!clip) return;
       const bounds = clip.getBoundingClientRect();
       const canvas = gl.domElement.getBoundingClientRect();
+      gl.getSize(size);
+      const scaleX = size.x / canvas.width;
+      const scaleY = size.y / canvas.height;
       gl.getScissor(scissor);
-      const left = Math.max(scissor.x, bounds.left - canvas.left);
-      const bottom = Math.max(scissor.y, canvas.bottom - bounds.bottom);
-      const right = Math.min(scissor.x + scissor.z, bounds.right - canvas.left);
-      const top = Math.min(scissor.y + scissor.w, canvas.bottom - bounds.top);
+      const left = Math.max(scissor.x, (bounds.left - canvas.left) * scaleX);
+      const bottom = Math.max(scissor.y, (canvas.bottom - bounds.bottom) * scaleY);
+      const right = Math.min(scissor.x + scissor.z, (bounds.right - canvas.left) * scaleX);
+      const top = Math.min(scissor.y + scissor.w, (canvas.bottom - bounds.top) * scaleY);
       gl.setScissor(left, bottom, Math.max(0, right - left), Math.max(0, top - bottom));
     };
     return () => {
       scene.onBeforeRender = previous;
     };
-  }, [element, scene, gl, scissor]);
+  }, [element, scene, gl, scissor, size]);
 
   useFrame(() => {
     const backing = element?.closest('[data-badge-clip]')?.querySelector('[data-badge-backing]');
@@ -293,12 +284,10 @@ function ClipToCard({ element }) {
 
 export function BadgeView({ entry, look, rest }) {
   return (
-    // View tracks its DOM rectangle every frame and culls it offscreen. The
-    // asynchronous observer pauses physics only: gating drawing on it too can
-    // leave a blank window during a quick return into view. Draw the last pose
-    // while that observer catches up and the same lanyard resumes.
-    <View style={{ position: 'relative', display: 'block', backgroundColor: 'transparent', height: '100%', width: '100%' }}>
-      <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={25} />
+    // The asynchronous observer pauses physics only. The viewport draws the
+    // retained pose on the very first returning frame while physics resumes.
+    <BadgeViewport element={entry.element}>
+      <PerspectiveCamera manual makeDefault position={[0, 0, 10]} fov={25} />
       <ambientLight intensity={Math.PI} />
       <BadgeCard key={entry.id} body={entry.body} offsetX={entry.slot * SPACING} look={look} idle={!entry.visible || rest} element={entry.element} />
       <ClipToCard element={entry.element} />
@@ -306,6 +295,23 @@ export function BadgeView({ entry, look, rest }) {
       <directionalLight position={[5, 5, 5]} intensity={1.5} />
       <directionalLight position={[-5, 5, 5]} intensity={1} />
       <directionalLight position={[0, 5, -5]} intensity={2} />
-    </View>
+    </BadgeViewport>
+  );
+}
+
+export function BadgeWorld({ registry }) {
+  const { entries } = useSyncExternalStore(registry.subscribe, registry.getState, registry.getState);
+  const rest = useStill();
+  if (!entries.length) return null;
+  const paused = rest || !entries.some((entry) => entry.visible);
+  return (
+    <>
+      <Physics paused={paused} interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
+        {entries.map((entry) => (
+          <Lanyard key={entry.id} body={entry.body} x={entry.slot * SPACING} rest={rest} paused={paused || !entry.visible} enabled={entry.visible || rest} swinging={() => entry.swing} />
+        ))}
+      </Physics>
+      {entries.map((entry) => entry.look && <BadgeView key={entry.id} entry={entry} look={entry.look} rest={rest} />)}
+    </>
   );
 }

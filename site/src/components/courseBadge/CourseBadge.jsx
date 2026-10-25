@@ -1,20 +1,13 @@
 /* eslint-disable import/extensions */
 import { BADGE, getCourse } from '@src/lib';
-import { useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
-import dynamic from 'next/dynamic';
+import { useEffect, useMemo, useRef } from 'react';
 import clsx from 'clsx';
-import useStill from '@src/hooks/useStill';
 import { useBadgeRegistry } from './BadgeProvider';
 import styles from './badge.module.scss';
 
-const BadgeView = dynamic(() => import('./BadgeScene').then((module) => module.BadgeView), { ssr: false });
-
 export default function CourseBadge({ instanceId, courseId, next, ready = true, className }) {
   const registry = useBadgeRegistry();
-  const state = useSyncExternalStore(registry.subscribe, registry.getState, registry.getState);
-  const entry = state.entries.find((item) => item.id === instanceId);
   const root = useRef();
-  const still = useStill();
   const course = getCourse(courseId);
   const look = useMemo(
     () => ({
@@ -34,7 +27,7 @@ export default function CourseBadge({ instanceId, courseId, next, ready = true, 
     return () => registry.unregister(instanceId);
   }, [registry, instanceId]);
 
-  useEffect(() => registry.update(instanceId, { courseId }), [registry, instanceId, courseId]);
+  useEffect(() => registry.update(instanceId, { courseId, look }), [registry, instanceId, courseId, look]);
 
   useEffect(() => {
     let intersecting = false;
@@ -62,7 +55,6 @@ export default function CourseBadge({ instanceId, courseId, next, ready = true, 
         <strong>{course.code}</strong>
         <span>{course.name}</span>
       </div>
-      {entry && <BadgeView entry={entry} look={look} rest={still} />}
     </div>
   );
 }

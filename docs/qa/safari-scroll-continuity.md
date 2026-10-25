@@ -29,6 +29,19 @@ The open fluid allocation PRs (#37 and #62) propose vector reuse and unrolled
 render-loop operations already present in this baseline. They do not fix these
 resize lifetimes.
 
+Visual review of the first fix exposed a separate blank badge window during
+re-entry. In the installed Drei 9.122.0 `View`, the draw callback calculates the
+current offscreen flag but gates drawing on the previous React state, and a
+layout effect can clear the returning window. The physics can remain perfectly
+valid while that first returning frame draws nothing.
+
+`BadgeViewport.jsx` uses R3F's existing scene portals, the existing shared
+renderer, and the same badge camera/materials to draw from current DOM bounds
+in that frame. `BadgeWorld` still owns exactly one Rapier world. Registry entries
+carry each mounted position's appearance; the DOM badge no longer needs its own
+view tunnel or visibility subscription. No dependency patch, additional canvas,
+or additional physics engine is introduced. The directory retains its clipping.
+
 ## Verification
 
 The test-only commit `fd574cbc9304ff2fd04dd15f7b634bd2d04a517f` reproduced the
@@ -42,6 +55,14 @@ other 16 route/motion cases passed.
 | New fluid simulation materials rendered | 7 |
 | Background material retained | No |
 | Game canvas updates for position alone | 1 |
+
+The first fix (`85589369`) passed all 17 cases and reduced all reset/update counts
+to zero while retaining the background material. Its recordings revealed the
+separate badge blank described above. A first-return-frame check then failed on
+`4655471a`: the badge was confirmed outside the viewport, returned fully into
+view, but the next real renderer frame made **zero** badge draw calls. The test
+advances the existing renderer deterministically; it does not replace physics,
+inject forces, or rely on a CI frame-rate threshold.
 
 `site/scripts/check-route-filter-motion.mjs` adds one focused iPhone WebKit check
 to the existing Pages workflow. It observes the real React Three Fiber stores
@@ -81,6 +102,10 @@ issue resolved.
   react-use-measure; scroll measurement is enabled by default.
 - [react-use-measure source, installed version 2.1.7](https://github.com/pmndrs/react-use-measure/blob/v2.1.7/src/index.ts):
   bounds equality includes position as well as dimensions.
+- [Drei View source, installed version 9.122.0](https://github.com/pmndrs/drei/blob/v9.122.0/src/web/View.tsx):
+  the frame callback draws using the previous `isOffscreen` state, and the layout
+  effect clears on visibility changes. The badge-specific viewport removes that
+  asynchronous gate while keeping the existing renderer and geometry.
 - [GSAP ScrollTrigger configuration](https://gsap.com/docs/v3/Plugins/ScrollTrigger/static.config()/):
   mobile height refreshes can jump when start/end values are recalculated.
   Avoiding an application's own animation teardown is also necessary.
