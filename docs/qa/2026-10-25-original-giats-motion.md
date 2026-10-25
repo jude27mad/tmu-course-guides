@@ -10,11 +10,16 @@ for heavier cards and additional contact/release fluid effects.
 The card positions and course textures stay as they are. Their shared-world
 translation is independent of the motion: the original starting offsets,
 damping, gravity, timestep, colliders, rope/spherical joints, per-render-frame
-scroll impulse, angular correction and band interpolation are restored. There
+scroll impulse and angular correction are restored. There
 is no impulse cap, smoothing, expiry, altered timestep or near-hanging start.
 The visibility observer uses the original `isIntersecting` semantics at its
 0.7 threshold and only gates scroll input; it no longer freezes the simulation.
 The explicit Pause motion/reduced-motion control still freezes the scene.
+The existing render-only ribbon interpolation guard is retained: an unusually
+long render frame cannot extrapolate its display vertices to infinity. CI
+screenshots exposed disappearing ribbons without it. It does not affect any
+Rapier body, force, joint, timestep or normal-frame interpolation; a regression
+test exercises the production ribbon renderer through repeated 320 ms stalls.
 
 `Fluid.jsx` and `useOpts.jsx` are copied verbatim from the source above. The
 shaders, framebuffer setup and materials already match that source. The

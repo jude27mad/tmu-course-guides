@@ -196,7 +196,9 @@ function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed
       const t = ref.current.translation();
       if (!started.current) lerped[k].copy(t);
       const clampedDistance = Math.max(0.1, Math.min(1, lerped[k].distanceTo(t)));
-      lerped[k].lerp(t, delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed)));
+      // Display only: a delayed render must not extrapolate the ribbon to
+      // infinity. This never changes the Rapier bodies or original impulses.
+      lerped[k].lerp(t, Math.min(1, delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed))));
     });
     started.current = true;
     curve.points[0].copy(j3.current.translation());
