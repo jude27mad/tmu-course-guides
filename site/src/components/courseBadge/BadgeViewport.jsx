@@ -33,7 +33,7 @@ function DrawBadge({ element }) {
       camera.updateProjectionMatrix();
     }
 
-    const autoClear = gl.autoClear;
+    const { autoClear } = gl;
     gl.autoClear = false;
     gl.setViewport(left, bottom, width, height);
     gl.setScissor(left, bottom, width, height);
