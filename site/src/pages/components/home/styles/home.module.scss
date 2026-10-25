@@ -26,6 +26,9 @@
       inset 0 calc(var(--layout-columns-gap) * -1.04 * 2) 0 0 var(--white),
       inset calc(var(--layout-margin) * 1.1001) 0 0 0 var(--white);
   }
+  .introduction {
+    white-space: pre-line;
+  }
   .topContainer {
     padding: var(--layout-columns-gap) 0px;
     flex: 0 1 auto;

@@ -313,8 +313,25 @@ try {
         await page.goto(base);
         await ready(page);
         assert.equal(await page.locator('[data-companion-statement]').count(), 1);
-        assert.equal(await page.locator('[data-companion-statement] [data-companion-progress]').count(), 1);
-        assert.equal(await page.locator('[data-companion-progress]').innerText(), 'Progress stays in this browser.');
+        assert.equal(await page.locator('[data-companion-statement] [data-companion-progress]').count(), 0);
+        const intro = page.locator('[data-desk-introduction]:visible');
+        assert.equal(await intro.count(), 1);
+        const introLines = await intro.evaluate(element => {
+          const text = element.firstChild;
+          const copy = text.textContent;
+          const split = copy.indexOf('Progress stays in this browser.');
+          const previous = document.createRange();
+          previous.setStart(text, copy.indexOf('course.') + 'course.'.length - 1);
+          previous.setEnd(text, copy.indexOf('course.') + 'course.'.length);
+          const progress = document.createRange();
+          progress.setStart(text, split);
+          progress.setEnd(text, split + 'Progress'.length);
+          return { previousTop: previous.getBoundingClientRect().top, progressTop: progress.getBoundingClientRect().top, progressLeft: progress.getBoundingClientRect().left, left: element.getBoundingClientRect().left };
+        });
+        assert.ok(introLines.progressTop > introLines.previousTop + 1, 'the storage sentence starts after the course sentence');
+        assert.ok(Math.abs(introLines.progressLeft - introLines.left) < 1, 'the storage sentence starts at the left of its new line');
+        await intro.scrollIntoViewIfNeeded();
+        await page.screenshot({ path: path.join(report, `${label}-desk-progress-line.png`) });
         assert.equal(await page.getByText('Open a course guide below', { exact: true }).count(), 0);
         const position = async (fraction) => page.evaluate((fraction) => {
           const section = document.querySelector('[data-companion-statement]');
@@ -322,6 +339,12 @@ try {
           const scroller = documentMode ? window : document.querySelector('main');
           const top = documentMode ? scrollY : scroller.scrollTop;
           scroller.scrollTo(0, section.getBoundingClientRect().top + top + (section.offsetHeight - innerHeight) * fraction);
+        }, fraction);
+        const entry = async fraction => page.evaluate(fraction => {
+          const section = document.querySelector('[data-companion-statement]');
+          const scroller = document.documentElement.dataset.scrollMode === 'document' ? window : document.querySelector('main');
+          const top = scroller === window ? scrollY : scroller.scrollTop;
+          scroller.scrollTo(0, top + section.getBoundingClientRect().top - innerHeight * (1 - fraction));
         }, fraction);
         if (label === 'iphone-still') {
           await position(0);
@@ -333,12 +356,7 @@ try {
         }
         // Reproduce the blank panel in the reported screenshots: the scene is
         // half way into view while the preceding Desk controls are still above.
-        await page.evaluate(() => {
-          const section = document.querySelector('[data-companion-statement]');
-          const scroller = document.documentElement.dataset.scrollMode === 'document' ? window : document.querySelector('main');
-          const top = scroller === window ? scrollY : scroller.scrollTop;
-          scroller.scrollTo(0, top + section.getBoundingClientRect().top - innerHeight * 0.5);
-        });
+        await entry(0.5);
         await page.waitForFunction(() => {
           const words = [...document.querySelectorAll('[data-companion-statement] .word')];
           return words.length > 15 && words.filter(word => {
@@ -349,36 +367,41 @@ try {
         await page.screenshot({ path: path.join(report, `${label}-companion-entry.png`) });
         const sceneRatio = await page.locator('[data-companion-statement]').evaluate(el => el.offsetHeight / innerHeight);
         assert.ok(sceneRatio <= (label === 'iphone' ? 1.3 : 1.55), `the closing scene reserves ${sceneRatio} viewport heights`);
-        await position(0.35);
-        await page.waitForFunction(() => Number(document.querySelector('[data-game-discs]')?.dataset.gameDiscs) > 0);
+        await entry(0.1);
+        await page.waitForFunction(() => {
+          const words = [...document.querySelectorAll('[data-companion-statement] .word')];
+          return words.reduce((sum, word) => sum + Number(getComputedStyle(word).opacity), 0) / words.length < 0.8;
+        });
+        await page.locator('[data-companion-game] canvas').waitFor();
         assert.equal(await page.locator('[data-companion-game] canvas').count(), 1);
-        const caption = await page.locator('[data-companion-progress]').boundingBox();
-        const statement = await page.locator('[data-companion-statement] blockquote').boundingBox();
-        assert.ok(caption.y >= statement.y + statement.height, 'the progress note stays beneath the statement');
-        assert.ok(caption.y + caption.height <= await page.evaluate(() => innerHeight), 'the progress note fits in the game stage');
         const beforeStorage = await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort()));
         const words = await page.locator('[data-companion-statement] .word').count();
         assert.ok(words > 15);
         const before = await page.locator('[data-companion-statement] .word').evaluateAll(nodes => nodes.reduce((sum, node) => sum + Number(getComputedStyle(node).opacity), 0) / nodes.length);
         const frames = await page.evaluate(async () => {
-          const section = document.querySelector('[data-companion-statement]');
           const documentMode = document.documentElement.dataset.scrollMode === 'document';
           const scroller = documentMode ? window : document.querySelector('main');
           const initial = documentMode ? scrollY : scroller.scrollTop;
-          const travel = section.offsetHeight - innerHeight;
+          const travel = innerHeight;
           const records = [];
           let previous = performance.now();
           for (let step = 1; step <= 24; step += 1) {
             await new Promise(requestAnimationFrame);
             const now = performance.now();
-            scroller.scrollTo(0, initial + travel * 0.3 * step / 24);
+            scroller.scrollTo(0, initial + travel * 0.4 * step / 24);
             records.push(now - previous); previous = now;
           }
           return records;
         });
-        await page.waitForTimeout(100);
+        await page.waitForFunction(before => {
+          const words = [...document.querySelectorAll('[data-companion-statement] .word')];
+          return words.reduce((sum, word) => sum + Number(getComputedStyle(word).opacity), 0) / words.length > before + 0.05;
+        }, before);
         const after = await page.locator('[data-companion-statement] .word').evaluateAll(nodes => nodes.reduce((sum, node) => sum + Number(getComputedStyle(node).opacity), 0) / nodes.length);
         assert.ok(after > before, `word reveal follows scrolling: ${before} -> ${after}`);
+        await position(0.35);
+        await page.waitForFunction(() => [...document.querySelectorAll('[data-companion-statement] .word')].every(word => Number(getComputedStyle(word).opacity) > 0.99));
+        await page.waitForFunction(() => Number(document.querySelector('[data-game-discs]')?.dataset.gameDiscs) > 0);
         await page.screenshot({ path: path.join(report, `${label}-companion-and-game.png`) });
         // Interact with centre-launched discs on their actual shared DOM surface.
         // A software-rendered frame can outlast a flight. On iPhone, sample the

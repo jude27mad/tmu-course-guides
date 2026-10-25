@@ -12,6 +12,9 @@ import useIsMobile from '@src/hooks/useIsMobile';
 import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
 import useStill from '@src/hooks/useStill';
 
+// Keep the canonical copy, with the browser-storage sentence on its own line.
+const introduction = DESK_TEXT.lede.replace('. ', '.\n');
+
 const moveRect = (rect, direction, gridWidth, gridHeight) => {
   const moveMap = {
     left: () => {
@@ -242,7 +245,9 @@ function Home() {
           <span className="h2">{DESK_TEXT.heading}</span>
           <span className={clsx('h2', 'bold')}>{DESK_TEXT.headingTerm}</span>
         </h1>
-        <p className={clsx('h6', styles.rightContainer)}>{DESK_TEXT.lede}</p>
+        <p className={clsx('h6', styles.rightContainer, styles.introduction)} data-desk-introduction>
+          {introduction}
+        </p>
       </div>
 
       <div className={styles.bottomContainer} aria-hidden="true">
@@ -259,7 +264,9 @@ function Home() {
         </div>
       </div>
       <div className={styles.rightContainerMobile}>
-        <p className="h6">{DESK_TEXT.lede}</p>
+        <p className={clsx('h6', styles.introduction)} data-desk-introduction>
+          {introduction}
+        </p>
       </div>
 
       <div ref={infiniteTextRef} className={styles.infiniteContainer} aria-hidden="true">
