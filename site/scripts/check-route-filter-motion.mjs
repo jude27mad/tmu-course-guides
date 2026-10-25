@@ -308,6 +308,110 @@ try {
   ]) {
     const browser = await engine.launch({ headless: true });
     try {
+      if (label !== 'tablet') await check(browser, options, `${label}-companion-scene`, async (page) => {
+        await page.addInitScript(() => { Math.random = () => 0.5; });
+        await page.goto(base);
+        await ready(page);
+        assert.equal(await page.locator('[data-companion-statement]').count(), 1);
+        assert.equal(await page.getByText('Open a course guide below', { exact: true }).count(), 0);
+        const position = async (fraction) => page.evaluate((fraction) => {
+          const section = document.querySelector('[data-companion-statement]');
+          const documentMode = document.documentElement.dataset.scrollMode === 'document';
+          const scroller = documentMode ? window : document.querySelector('main');
+          const top = documentMode ? scrollY : scroller.scrollTop;
+          scroller.scrollTo(0, section.getBoundingClientRect().top + top + (section.offsetHeight - innerHeight) * fraction);
+        }, fraction);
+        if (label === 'iphone-still') {
+          await position(0);
+          await page.waitForFunction(() => document.documentElement.dataset.motion === 'off' && document.querySelector('[data-companion-statement]')?.offsetHeight < innerHeight);
+          assert.equal(await page.locator('[data-companion-game] canvas').count(), 0);
+          assert.equal(await page.locator('[data-companion-statement] .word').count(), 0);
+          await page.screenshot({ path: path.join(report, `${label}-companion.png`) });
+          return { reducedMotion: true };
+        }
+        await position(0.35);
+        await page.waitForFunction(() => Number(document.querySelector('[data-game-discs]')?.dataset.gameDiscs) > 0);
+        assert.equal(await page.locator('[data-companion-game] canvas').count(), 1);
+        const beforeStorage = await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort()));
+        const words = await page.locator('[data-companion-statement] .word').count();
+        assert.ok(words > 15);
+        const before = await page.locator('[data-companion-statement] .word').evaluateAll(nodes => nodes.reduce((sum, node) => sum + Number(getComputedStyle(node).opacity), 0) / nodes.length);
+        const frames = await page.evaluate(async () => {
+          const section = document.querySelector('[data-companion-statement]');
+          const documentMode = document.documentElement.dataset.scrollMode === 'document';
+          const scroller = documentMode ? window : document.querySelector('main');
+          const initial = documentMode ? scrollY : scroller.scrollTop;
+          const travel = section.offsetHeight - innerHeight;
+          const records = [];
+          let previous = performance.now();
+          for (let step = 1; step <= 24; step += 1) {
+            await new Promise(requestAnimationFrame);
+            const now = performance.now();
+            scroller.scrollTo(0, initial + travel * 0.3 * step / 24);
+            records.push(now - previous); previous = now;
+          }
+          return records;
+        });
+        await page.waitForTimeout(100);
+        const after = await page.locator('[data-companion-statement] .word').evaluateAll(nodes => nodes.reduce((sum, node) => sum + Number(getComputedStyle(node).opacity), 0) / nodes.length);
+        assert.ok(after > before, `word reveal follows scrolling: ${before} -> ${after}`);
+        await page.screenshot({ path: path.join(report, `${label}-companion-and-game.png`) });
+        // Interact with centre-launched discs on their actual shared DOM surface.
+        // A software-rendered frame can outlast a flight. On iPhone, sample the
+        // touch path within each painted frame so native pointer cancellation
+        // and a rapid mouse sweep cannot make this mobile check miss every disc.
+        // This dispatches input only: the real scene raycaster must slice a disc.
+        if (label === 'iphone') {
+          await page.evaluate(async () => {
+            const stage = document.querySelector('[data-game-discs]');
+            const deadline = performance.now() + 12000;
+            // Linux WebKit cannot construct Touch/TouchEvent. Dispatch the same
+            // touch-list fields on a DOM event; do not call scene callbacks.
+            const dispatchTouch = (type, touches, changedTouches) => {
+              const event = new Event(type, { bubbles: true, cancelable: true });
+              Object.assign(event, { touches, targetTouches: touches, changedTouches });
+              stage.dispatchEvent(event);
+            };
+            while (performance.now() < deadline && !Number(stage.dataset.gameSlices)) {
+              await new Promise(requestAnimationFrame);
+              const bounds = stage.getBoundingClientRect();
+              const clientX = bounds.left + bounds.width / 2;
+              let lastTouch;
+              for (let clientY = Math.max(1, bounds.top + 1); clientY < Math.min(innerHeight - 1, bounds.bottom); clientY += 8) {
+                const touch = { identifier: 1, target: stage, clientX, clientY, pageX: clientX + scrollX, pageY: clientY + scrollY };
+                lastTouch = touch;
+                const type = clientY === Math.max(1, bounds.top + 1) ? 'touchstart' : 'touchmove';
+                dispatchTouch(type, [touch], [touch]);
+              }
+              dispatchTouch('touchend', [], lastTouch ? [lastTouch] : []);
+            }
+          });
+        } else {
+          const stage = await page.locator('[data-game-discs]').boundingBox();
+          const sliceDeadline = Date.now() + 12000;
+          while (Date.now() < sliceDeadline && !Number(await page.locator('[data-game-discs]').getAttribute('data-game-slices'))) {
+            for (let step = 0; step <= 24; step += 1) {
+              await page.mouse.move(stage.x + stage.width / 2, stage.y + stage.height * step / 24);
+            }
+          }
+        }
+        assert.ok(Number(await page.locator('[data-game-discs]').getAttribute('data-game-slices')) > 0, 'visible discs respond to shared-surface input');
+        const count = Number(await page.locator('[data-game-discs]').getAttribute('data-game-discs'));
+        assert.ok(count <= (label === 'iphone' ? 6 : 10));
+        assert.equal(await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort())), beforeStorage, 'slicing does not change saved progress');
+        for (let repeat = 0; repeat < 2; repeat += 1) {
+          await page.emulateMedia({ reducedMotion: 'reduce' });
+          await page.waitForFunction(() => document.documentElement.dataset.motion === 'off');
+          assert.equal(await page.locator('[data-companion-statement] .word').count(), 0, 'SplitType restores plain text');
+          assert.equal(await page.locator('[data-companion-game]').getAttribute('data-active'), 'false');
+          await page.emulateMedia({ reducedMotion: 'no-preference' });
+          await page.waitForFunction(() => document.documentElement.dataset.motion === 'on');
+          assert.equal(await page.locator('[data-companion-statement] .word').count(), words);
+          assert.equal(await page.locator('[data-companion-statement] .word .word').count(), 0);
+        }
+        frames.sort((a, b) => a - b);
+        return { words, discs: count, reveal: { before, after }, frameP95Ms: frames[Math.floor(frames.length * 0.95)], note: 'CI diagnostics; not physical-device performance.' };
+      });
       await check(browser, options, `${label}-work-filters`, async (page) => {
         // Install before application timers, then advance animation frames explicitly.
         // This tests intermediate geometry without relying on a loaded CI runner's FPS.
