@@ -1,0 +1,71 @@
+name: Publish original Giats fluid (PR 79 only)
+
+# The owner explicitly requested this source restoration without tests.
+# Build/deploy only the already-merged, same-repository PR 79. Never execute
+# an unmerged PR head. Normal CI and Pages workflows are left unchanged.
+# This closed-event job is separate because the source/merge commits use
+# [skip ci] to honor that request for the usual push/pull_request tests.
+on:
+  pull_request_target:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  CI: true
+  NEXT_TELEMETRY_DISABLED: 1
+  npm_config_audit: false
+  npm_config_fund: false
+  SITE_BASE_PATH: /tmu-course-guides
+
+jobs:
+  build:
+    name: Build the copied fluid for publication
+    if: >-
+      github.event.pull_request.number == 79 &&
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'codex/giats-fluid-exact-input'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - name: Install build dependencies
+        working-directory: site
+        run: npm ci
+      - name: Build the static site (no tests)
+        working-directory: site
+        run: npm run build -- --no-lint
+      - name: Assemble the published site
+        run: node site/scripts/pages-site.mjs build --out site/out --dest "$RUNNER_TEMP/pages"
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: ${{ runner.temp }}/pages
+
+  deploy:
+    name: Publish to GitHub Pages
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: pages-deploy
+      cancel-in-progress: false
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
