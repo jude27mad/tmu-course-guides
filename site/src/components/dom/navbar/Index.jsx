@@ -54,12 +54,19 @@ function Navbar() {
     if (!header) return undefined;
     const measure = () => {
       headerHeight.current = header.offsetHeight;
+      const controls = controlsRef.current;
+      const baseline = parseFloat(getComputedStyle(controls).minHeight);
+      const extra = Math.max(0, controls.offsetHeight - baseline);
+      document.documentElement.style.setProperty('--navigation-extra-height', `${extra}px`);
       scrollHeader({ scroll: scrollTop() });
     };
     const observer = new ResizeObserver(measure);
     observer.observe(header);
     measure();
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.removeProperty('--navigation-extra-height');
+    };
   }, [scrollHeader]);
 
   const scrollToPosition = useCallback(

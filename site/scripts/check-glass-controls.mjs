@@ -200,8 +200,31 @@ try {
     // Visibility return must correct the clock, including the DST repeated hour.
     await page.clock.setFixedTime(new Date('2026-11-01T06:30:00Z'));
     await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
-    assert.equal(await page.locator('[data-toronto-clock] time').innerText(), '01:30');
+    await page.waitForFunction(() => document.querySelector('[data-toronto-clock] time')?.textContent === '01:30');
   }, { reducedMotion: 'reduce' });
+
+  await check('navigation reflows at 320px with doubled text', async (page) => {
+    await page.goto(url + 'cen100/');
+    await ready(page);
+    await page.locator('header .h4, header .p-x').evaluateAll(nodes => nodes.forEach(node => {
+      node.style.fontSize = `${parseFloat(getComputedStyle(node).fontSize) * 2}px`;
+    }));
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    const boxes = await page.locator('header > div > a, [data-toronto-clock], header [class*="rightContainer"]').evaluateAll(nodes => nodes.map(node => {
+      const r = node.getBoundingClientRect();
+      return { left: r.left, right: r.right, top: r.top, bottom: r.bottom };
+    }));
+    assert.equal(boxes.length, 3);
+    assert.ok(boxes.every(box => box.left >= 0 && box.right <= 320), JSON.stringify(boxes));
+    for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
+      const a = boxes[i], b = boxes[j];
+      assert.ok(a.right <= b.left + 1 || b.right <= a.left + 1 || a.bottom <= b.top + 1 || b.bottom <= a.top + 1, JSON.stringify(boxes));
+    }
+    assert.ok(await page.evaluate(() => document.querySelector('main h1').getBoundingClientRect().top >= document.querySelector('header').getBoundingClientRect().bottom));
+    await page.screenshot({ path: path.join(report, 'navigation-320-double-text.png') });
+    await page.getByRole('button', { name: 'Open menu', exact: true }).click();
+    await page.locator('#menu').waitFor();
+  }, { viewport: { width: 320, height: 844 }, reducedMotion: 'reduce' });
 
   await check('credit remains usable without JavaScript', async (page) => {
     await page.goto(url + 'mth141/');

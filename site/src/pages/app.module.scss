@@ -67,6 +67,7 @@
 
     .mainContainer {
       height: auto;
+      padding-top: var(--navigation-extra-height, 0px);
 
       width: 100%;
     }
