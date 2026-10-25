@@ -1,8 +1,13 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
-import * as THREE from 'three';
-import { MeshLineGeometry } from 'meshline';
+import { createRequire } from 'node:module';
+
+// Node loads meshline through CommonJS. Use its Three instance too: meshline
+// identifies input vectors with instanceof (the browser bundler shares it).
+const require = createRequire(import.meta.url);
+const THREE = require('three');
+const { MeshLineGeometry } = require('meshline');
 
 // Exercise the production renderer against a moving, finite physics pose.
 // The original unbounded render lerp lost the ribbon in CI screenshots after
@@ -23,7 +28,7 @@ test('delayed rendering keeps the ribbon finite without changing the physics pos
     textures: true, started: { current: false }, element: { dataset: {} }, idle: false,
     body, card: { current: new THREE.Object3D() }, band: { current: { geometry } }, offsetX: 0,
     lerped: [new THREE.Vector3(), new THREE.Vector3()], maxSpeed: 50, minSpeed: 10,
-    curve: new THREE.CatmullRomCurve3(Array.from({ length: 4 }, () => new THREE.Vector3())),
+    curve: Object.assign(new THREE.CatmullRomCurve3(Array.from({ length: 4 }, () => new THREE.Vector3())), { curveType: 'chordal' }),
     useFrame: frame => { callback = frame; },
   };
   new Function(...Object.keys(scope), source.slice(start, end))(...Object.values(scope));
