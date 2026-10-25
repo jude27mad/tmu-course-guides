@@ -258,6 +258,14 @@ try {
         const frame = () => store.getState().advance(store.getState().clock.elapsedTime + 1 / 60, false);
         state.setFrameloop('never');
         try {
+          // Native scrolling can move the document between WebGL frames. The
+          // last painted badge must travel with its DOM window during that gap.
+          const canvasBefore = state.gl.domElement.getBoundingClientRect().top;
+          const badgeBefore = element.getBoundingClientRect().top;
+          window.scrollBy(0, 40);
+          const canvasMoved = state.gl.domElement.getBoundingClientRect().top - canvasBefore;
+          const badgeMoved = element.getBoundingClientRect().top - badgeBefore;
+          const scrollAlignmentError = Math.abs(canvasMoved - badgeMoved);
           window.scrollTo(0, centre + innerHeight * 2);
           frame();
           await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
@@ -269,7 +277,7 @@ try {
           // One real renderer frame after re-entry. Waiting for another React
           // visibility commit is precisely the blank-frame regression.
           frame();
-          return { outside, returned: bounds.top >= 0 && bounds.bottom <= innerHeight + 1, draws };
+          return { outside, returned: bounds.top >= 0 && bounds.bottom <= innerHeight + 1, draws, canvasMoved, badgeMoved, scrollAlignmentError };
         } finally {
           state.gl.render = render;
           state.setFrameloop('always');
@@ -279,6 +287,7 @@ try {
       assert.equal(evidence.outside, true, 'the badge really left the screen');
       assert.equal(evidence.returned, true, 'the badge really returned');
       assert.ok(evidence.draws > 0, `the first returning frame draws the badge: ${JSON.stringify(evidence)}`);
+      assert.ok(evidence.scrollAlignmentError < 1, `painted badges follow native scrolling between renderer frames: ${JSON.stringify(evidence)}`);
       return evidence;
     });
     // Fail fast on this drawing regression; avoid spending the entire browser
