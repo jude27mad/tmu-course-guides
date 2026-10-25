@@ -317,13 +317,13 @@ try {
     args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'],
   });
 
-  await check('native iOS-style panning keeps feeding fluid through four rapid reversals', async () => {
+  await check('restored iPhone pointer input feeds fluid through four rapid reversals', async () => {
     const { context, page, errors } = await open({ ios: true });
     const cdp = await context.newCDPSession(page);
     try {
       await ready(page);
-      await waitOnPage(page, () => document.documentElement.dataset.scrollMode === 'document');
-      await page.evaluate(() => { window.scrollTo(0, 200); window.__touchFluidQA.reset(); });
+      await waitOnPage(page, () => document.documentElement.dataset.scrollMode === 'contained');
+      await page.evaluate(() => { document.querySelector('main').scrollTo(0, 200); window.__touchFluidQA.reset(); });
       await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 195, y: 620, radiusX: 5, radiusY: 5 }] });
       const directions = [];
       for (let leg = 0; leg < 4; leg++) {
@@ -342,8 +342,8 @@ try {
       await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
       await page.screenshot({ path: path.join(reports, 'fluid-rapid-reversals-ios.png') });
       const state = await snapshot(page);
-      assert.ok(state.touches.some(event => event.type === 'touchmove'), 'native panning must deliver the touch stream');
-      assert.ok(state.touches.every(event => !event.prevented), 'fluid must not block native panning');
+      assert.ok(state.events.some(event => event.type === 'pointermove'), 'synchronized scrolling must retain pointer movement');
+      assert.equal(state.events.some(event => event.type === 'pointercancel'), false, 'scrolling must not cancel the original fluid input');
       assert.deepEqual(errors, []);
       return { directions, pointerCancelled: state.events.some(event => event.type === 'pointercancel'), draws: state.draws };
     } finally {

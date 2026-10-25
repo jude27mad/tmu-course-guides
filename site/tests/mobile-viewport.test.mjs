@@ -9,13 +9,13 @@ test('Safari document background uses the Desk paper instead of exposed black', 
   assert.ok(css.includes('min-height: var(--app-viewport-height)'));
 });
 
-test('Full-screen shell and loader share dynamic viewport height', () => {
+test('the restored contained shell uses the stable small viewport', () => {
   const global = file('../src/styles/global.scss');
   const app = file('../src/pages/app.module.scss');
   const loader = file('../src/components/dom/styles/loader.module.scss');
-  assert.ok(global.includes('--app-viewport-height: 100dvh'));
-  assert.ok(app.includes('max-height: var(--app-viewport-height)'));
-  assert.ok(app.includes('height: var(--app-viewport-height) !important'));
-  assert.ok(app.includes('height: var(--app-viewport-height)'));
+  assert.ok(global.includes('--app-viewport-height: 100svh'));
+  assert.ok(app.includes('max-height: 100svh'));
+  assert.ok(app.includes('height: 100svh !important'));
+  assert.ok(app.includes('height: 100svh'));
   assert.ok(loader.includes('height: var(--app-viewport-height)'));
 });

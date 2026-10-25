@@ -1,18 +1,16 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { mount, finger, touch } from './helpers/fluid-harness.mjs';
+import { mount } from './helpers/fluid-harness.mjs';
 
-test('the adapter forwards changed fingers across different child targets after a lift', () => {
+test('pointer movement continues after another finger lifts', () => {
   const h = mount();
   try {
-    const first = finger(11, 100, 200);
-    const second = finger(42, 300, 600);
-    touch(h, 'touchmove', [first, second], [first, second], [first]);
+    h.emit('pointermove', { pointerType: 'touch', pointerId: 11, clientX: 100, clientY: 200 });
+    h.emit('pointermove', { pointerType: 'touch', pointerId: 42, clientX: 300, clientY: 600 });
     assert.equal(h.take().length, 1, 'the first point seeds history; the second produces the original shared swirl');
-    touch(h, 'touchend', [second], [first], []);
+    h.emit('pointerup', { pointerType: 'touch', pointerId: 11, clientX: 100, clientY: 200 });
     assert.deepEqual(h.take(), [], 'lifting a finger does not add a new stroke');
-    const next = finger(42, 280, 580);
-    touch(h, 'touchmove', [next], [next], [next]);
+    h.emit('pointermove', { pointerType: 'touch', pointerId: 42, clientX: 280, clientY: 580 });
     assert.deepEqual(h.take(), [{ mouseX: 0.7, mouseY: 1 - 580 / 800, velocityX: -40, velocityY: 40 }]);
   } finally { h.cleanup(); }
 });

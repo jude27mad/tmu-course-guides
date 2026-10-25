@@ -67,11 +67,18 @@ the data-test stage stopped before build/browser checks with nine failures:
 - four checks expecting the removed native-touch adapter;
 - the former dynamic-height shell requirement.
 
-The existing iOS document-scrolling workflow also describes the replaced
-architecture. These checks have not been weakened or skipped by this patch.
-Their expectations must be reconciled with PR #79 before the full validation
-pipeline can pass. This PR remains a draft; a successful final browser run and
-visual review are still required.
+The checks now follow PR #79's active contract: real pointer sequences, shader
+colour/texture values, the restored black base, and the stable contained
+viewport. They no longer require the removed allocation optimization or native
+touch adapter. The original fluid source is unchanged. Pinch zoom, keyboard
+scrolling, reduced motion, saved work, navigation, and control checks remain.
+
+The dedicated iOS document-scrolling workflow and script were retired with that
+architecture. The existing Pages route suite already checks iPhone WebKit,
+menus, transitions, all course badges, and the companion scene; it now also
+checks horizontal scrolling on those routes and during the word reveal. This
+avoids creating a second contained-scroll suite. Final CI and visual review
+remain required before this draft is ready.
 
 The added first-return check now scrolls the active contained main element.
 The resize-continuity check models changes to `innerHeight` while preserving the

@@ -29,6 +29,21 @@ const observeCanvasStores = (page) => page.addInitScript(() => {
     onCommitFiberUnmount: () => {},
   };
 });
+// Keep the sideways-scroll regression covered in the existing route suite now
+// that PR 79 has retired the separate native-document scrolling architecture.
+const assertPageWidth = async (page) => {
+  const bounds = await page.evaluate(() => {
+    const main = document.querySelector('main');
+    main.scrollTo({ left: innerWidth * 0.6, top: main.scrollTop, behavior: 'instant' });
+    window.scrollTo({ left: innerWidth * 0.6, top: 0, behavior: 'instant' });
+    const rect = main.getBoundingClientRect();
+    return { rootX: scrollX, mainX: main.scrollLeft, width: innerWidth,
+      contentWidth: document.documentElement.scrollWidth, left: rect.left, right: rect.right };
+  });
+  assert.ok(bounds.contentWidth <= bounds.width + 1 && Math.abs(bounds.rootX) < 1 && Math.abs(bounds.mainX) < 1
+    && Math.abs(bounds.left) < 1 && Math.abs(bounds.right - bounds.width) < 1,
+  `the page cannot shift sideways: ${JSON.stringify(bounds)}`);
+};
 const ready = async (page) => {
   await page.waitForFunction(() => {
     const main = document.querySelector('main');
@@ -518,6 +533,7 @@ try {
             return Math.abs(position.x - anchor.x) < 0.9 && position.y - anchor.y < -3
               && Math.hypot(velocity.x, velocity.y, velocity.z) < 0.5;
           }, null, { timeout: 15000 });
+          await assertPageWidth(page);
           await page.screenshot({ path: path.join(report, `${name}.png`) });
           if (!route) {
             // Model a delayed visibility observer after re-entry. Keeping the
@@ -614,6 +630,7 @@ try {
           }).length >= 3;
         }, null, { timeout: 8000 });
         await page.screenshot({ path: path.join(report, `${label}-companion-entry.png`) });
+        await assertPageWidth(page);
         const sceneRatio = await page.locator('[data-companion-statement]').evaluate(el => el.offsetHeight / innerHeight);
         assert.ok(sceneRatio <= (label === 'iphone' ? 1.3 : 1.55), `the closing scene reserves ${sceneRatio} viewport heights`);
         await entry(0.1);
