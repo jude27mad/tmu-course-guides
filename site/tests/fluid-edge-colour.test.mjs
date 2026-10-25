@@ -9,18 +9,17 @@ const rule = (css, selector) => {
   return css.slice(start, css.indexOf('}', start));
 };
 
-// Safari 26.1+ colours the bands under its status bar and toolbar from a viewport-sized fixed layer with a
-// visible background-color. On iPhone the fluid canvas is exactly that layer, and its black base was shipped
-// in the exported HTML (hydration keeps the server's inline style), so both bands were solid black.
-test('the fluid canvas gets its black base from CSS, never from client-only inline style', () => {
+// PR 79 restored Giats's contained scroller and fixed black fluid base on every
+// device. The former conditional native-iOS hydration contract no longer applies.
+test('the restored fluid has the same black base in exported and client markup', () => {
   const page = read('../src/pages/_app.page.jsx');
   const fluid = page.slice(page.indexOf('id="fluidCanvas"'), page.indexOf('</Canvas>', page.indexOf('id="fluidCanvas"')));
-  assert.doesNotMatch(fluid, /background\s*:/, 'an inline background is exported with the server value and is never corrected on the iPhone');
+  assert.match(fluid, /background:\s*['"]black['"]/);
   assert.doesNotMatch(fluid, /nativeIOSScroll\(\)\s*\?\s*['"]transparent['"]/);
 
   const css = read('../src/styles/global.scss');
   assert.match(rule(css, "html:not([data-scroll-mode='document']) #fluidCanvas"), /background-color:\s*black;/);
-  assert.doesNotMatch(css, /html\[data-scroll-mode='document'\][^{]*#fluidCanvas[^{]*\{[^}]*background(?:-color)?:\s*(?!transparent)/);
+  assert.match(read('../src/pages/_document.page.jsx'), /dataset\.scrollMode='contained'/);
 });
 
 test('the transparent Safari guards can decide the edge search', () => {

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { mount, referenceSource, finger, touch } from './helpers/fluid-harness.mjs';
 
-test('iOS feeds one, two and three moving fingers into the unmodified Giats calculation', () => {
+test('one, two and three pointers retain the unmodified Giats calculation', () => {
   const actual = mount();
   const reference = mount({ source: referenceSource, ios: false });
   try {
@@ -12,14 +12,14 @@ test('iOS feeds one, two and three moving fingers into the unmodified Giats calc
       [finger(3, 200, 400), finger(1, 130, 230), finger(2, 280, 580)],
       [finger(2, 270, 570), finger(3, 210, 410)],
     ]) {
-      touch(actual, 'touchmove', fingers);
+      fingers.forEach(point => actual.emit('pointermove', { ...point, pointerType: 'touch', pointerId: point.identifier }));
       fingers.forEach(point => reference.emit('pointermove', point));
       assert.deepEqual(actual.take(), reference.take());
     }
   } finally { actual.cleanup(); reference.cleanup(); }
 });
 
-test('native iOS touch movement is not counted again through pointer events', () => {
+test('legacy touch events do not double-count the restored pointer input', () => {
   const h = mount();
   try {
     h.emit('pointermove', { pointerType: 'touch', clientX: 100, clientY: 200 });
@@ -32,7 +32,7 @@ test('native iOS touch movement is not counted again through pointer events', ()
   } finally { h.cleanup(); }
 });
 
-test('the native-scroll adapter still accepts mouse and pen movement', () => {
+test('the original pointer input accepts mouse and pen movement', () => {
   const h = mount();
   try {
     h.emit('pointermove', { pointerType: 'mouse', clientX: 100, clientY: 200 });
@@ -41,9 +41,9 @@ test('the native-scroll adapter still accepts mouse and pen movement', () => {
   } finally { h.cleanup(); }
 });
 
-test('unmount detaches both input transports', () => {
+test('unmount detaches the pointer input', () => {
   const h = mount();
-  touch(h, 'touchmove', [finger(1, 100, 200)]);
+  h.emit('pointermove', { pointerType: 'touch', pointerId: 1, clientX: 100, clientY: 200 });
   h.cleanup();
   touch(h, 'touchmove', [finger(1, 120, 220)]);
   h.emit('pointermove', { pointerType: 'mouse', clientX: 140, clientY: 240 });

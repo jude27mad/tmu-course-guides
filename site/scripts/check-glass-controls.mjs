@@ -106,7 +106,7 @@ async function check(name, run, options = {}) {
     results.push({ name, pass: true, detail });
     console.log('PASS ' + name, detail || '');
   } catch (error) {
-    results.push({ name, pass: false, error: error.message });
+    results.push({ name, pass: false, error: error.message, stack: error.stack });
     console.error('FAIL ' + name + ': ' + error.message);
     await page.screenshot({ path: path.join(report, results.length + '-failure.png') }).catch(() => {});
   } finally { await context.close(); }
@@ -209,9 +209,18 @@ try {
       assert.equal(await credit.count(), 1);
       const summary = credit.locator('summary');
       const link = credit.locator('a');
+      // Touch dispatch can resolve before the browser's synthesized click has
+      // activated the native disclosure. Assert the resulting state, without
+      // retrying the input or adding a fixed delay.
+      const waitForDisclosure = async (open, input) => {
+        await page.waitForFunction((expected) => document.querySelector('[data-design-credit]')?.open === expected, open, { timeout: 1000 }).catch((error) => {
+          throw new Error(`${route} credit did not ${open ? 'open' : 'close'} after ${input}`, { cause: error });
+        });
+      };
       assert.equal(await link.isVisible(), false);
       await summary.focus();
       await page.keyboard.press('Enter');
+      await waitForDisclosure(true, 'Enter');
       assert.equal(await credit.evaluate(el => el.open), true);
       assert.equal(await link.getAttribute('href'), 'https://giats.me');
       assert.match(await credit.innerText(), /Evangelos Giatsidis/);
@@ -220,8 +229,10 @@ try {
       assert.ok(await link.evaluate(el => el === document.activeElement));
       await summary.focus();
       await page.keyboard.press('Space');
+      await waitForDisclosure(false, 'Space');
       assert.equal(await credit.evaluate(el => el.open), false);
       await summary.tap();
+      await waitForDisclosure(true, 'tap');
       assert.equal(await credit.evaluate(el => el.open), true);
       await page.screenshot({ path: path.join(report, 'credit-' + route.replace('/', '') + '.png') });
     }

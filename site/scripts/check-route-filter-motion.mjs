@@ -17,6 +17,33 @@ const server = createPreview({ root: path.join(site, 'out'), base: basePath });
 await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
 const base = `http://127.0.0.1:${server.address().port}${basePath}/`;
 const results = [];
+// Read the actual renderer stores without adding a production debug API.
+const observeCanvasStores = (page) => page.addInitScript(() => {
+  window.canvasStores = new Set();
+  window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = {
+    supportsFiber: true,
+    inject: () => 1,
+    onCommitFiberRoot: (_, root) => {
+      if (root.containerInfo?.getState) window.canvasStores.add(root.containerInfo);
+    },
+    onCommitFiberUnmount: () => {},
+  };
+});
+// Keep the sideways-scroll regression covered in the existing route suite now
+// that PR 79 has retired the separate native-document scrolling architecture.
+const assertPageWidth = async (page) => {
+  const bounds = await page.evaluate(() => {
+    const main = document.querySelector('main');
+    main.scrollTo({ left: innerWidth * 0.6, top: main.scrollTop, behavior: 'instant' });
+    window.scrollTo({ left: innerWidth * 0.6, top: 0, behavior: 'instant' });
+    const rect = main.getBoundingClientRect();
+    return { rootX: scrollX, mainX: main.scrollLeft, width: innerWidth,
+      contentWidth: document.documentElement.scrollWidth, left: rect.left, right: rect.right };
+  });
+  assert.ok(bounds.contentWidth <= bounds.width + 1 && Math.abs(bounds.rootX) < 1 && Math.abs(bounds.mainX) < 1
+    && Math.abs(bounds.left) < 1 && Math.abs(bounds.right - bounds.width) < 1,
+  `the page cannot shift sideways: ${JSON.stringify(bounds)}`);
+};
 const ready = async (page) => {
   await page.waitForFunction(() => {
     const main = document.querySelector('main');
@@ -225,6 +252,54 @@ async function checkMobileMenu(page, name) {
 try {
   const safari = await webkit.launch({ headless: true });
   try {
+    await check(safari, devices['iPhone 13'], 'iphone-badge-first-return-frame', async (page) => {
+      await observeCanvasStores(page);
+      await page.goto(base);
+      await ready(page);
+      await page.locator('[data-course-badge]').first().scrollIntoViewIfNeeded();
+      await page.locator('[data-badge-rendered="true"]').first().waitFor();
+      const evidence = await page.evaluate(async () => {
+        const element = document.querySelector('[data-course-badge]');
+        const store = [...window.canvasStores].find(item => item.getState().gl?.domElement.closest('#viewCanvas'));
+        if (!store) throw new Error('Find the shared badge renderer');
+        const state = store.getState();
+        const render = state.gl.render;
+        let draws = 0;
+        state.gl.render = function (scene, camera) {
+          if (scene !== store.getState().scene) draws++;
+          return render.call(this, scene, camera);
+        };
+        const scroller = document.querySelector('main');
+        const centre = scroller.scrollTop + element.getBoundingClientRect().top - (scroller.clientHeight - element.offsetHeight) / 2;
+        const frame = () => store.getState().advance(store.getState().clock.elapsedTime + 1 / 60, false);
+        state.setFrameloop('never');
+        try {
+          scroller.scrollTo(0, centre + scroller.clientHeight * 2);
+          frame();
+          await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+          frame();
+          const outside = element.getBoundingClientRect().bottom < 0;
+          scroller.scrollTo(0, centre);
+          const bounds = element.getBoundingClientRect();
+          draws = 0;
+          // One real renderer frame after re-entry. Waiting for another React
+          // visibility commit is precisely the blank-frame regression.
+          frame();
+          return { outside, returned: bounds.top >= 0 && bounds.bottom <= scroller.clientHeight + 1, draws };
+        } finally {
+          state.gl.render = render;
+          state.setFrameloop('always');
+        }
+      });
+      await writeFile(path.join(report, 'iphone-badge-first-return-frame.json'), JSON.stringify(evidence, null, 2));
+      assert.equal(evidence.outside, true, 'the badge really left the screen');
+      assert.equal(evidence.returned, true, 'the badge really returned');
+      assert.ok(evidence.draws > 0, `the first returning frame draws the badge: ${JSON.stringify(evidence)}`);
+      return evidence;
+    });
+    // Fail fast on this drawing regression; avoid spending the entire browser
+    // run checking physics poses when the viewport is visibly empty.
+    assert.ok(results.at(-1).pass, 'the badge must draw on its first returning frame');
     for (const reducedMotion of ['no-preference', 'reduce']) {
       await check(safari, { ...devices['iPhone 13'], reducedMotion }, `iphone-desk-menu-${reducedMotion}`, async (page) => {
         await page.goto(base);
@@ -286,11 +361,11 @@ try {
         // Between courses (the quick fade).
         await follow('course-to-course', 'mth140/', 'Calculus I', () => page.evaluate(() => window.next.router.push('/mth140/', undefined, { scroll: false })));
         // The footer's Desk link at the end of the page, header scrolled away.
-        await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
-        await page.waitForFunction(() => scrollY > 200);
+        await page.evaluate(() => { const main = document.querySelector('main'); main.scrollTo(0, main.scrollHeight); });
+        await page.waitForFunction(() => document.querySelector('main').scrollTop > 200);
         await follow('footer-to-desk', '', 'TMU Course Guides', () => page.evaluate((desk) => [...document.querySelectorAll('main a[href]')].filter((link) => new URL(link.href).pathname === desk).at(-1).click(), new URL(base).pathname));
-        const top = await page.evaluate(() => ({ scrollY, header: getComputedStyle(document.querySelector('header')).opacity }));
-        assert.ok(top.scrollY <= 8, 'the Desk opens at its top');
+        const top = await page.evaluate(() => ({ scrollTop: document.querySelector('main').scrollTop, header: getComputedStyle(document.querySelector('header')).opacity }));
+        assert.ok(top.scrollTop <= 8, 'the Desk opens at its top');
         assert.equal(top.header, '1', 'the header is back after the change');
         return { routes };
       });
@@ -314,6 +389,87 @@ try {
   ]) {
     const browser = await engine.launch({ headless: true });
     try {
+      if (label === 'iphone') await check(browser, options, 'iphone-scroll-resize-continuity', async (page) => {
+        // Observe the real renderers through React's instrumentation hook. No
+        // production debug globals or replacement animation/physics objects.
+        await observeCanvasStores(page);
+        await page.goto(base);
+        await ready(page);
+        await page.locator('[data-companion-statement]').scrollIntoViewIfNeeded();
+        await page.locator('[data-companion-game] canvas').waitFor();
+        await page.waitForFunction(() => [...window.canvasStores].some(store => store.getState().gl?.domElement.closest('[data-companion-game]')));
+        await page.waitForTimeout(400);
+        await page.evaluate(() => {
+          window.resizeEvidence = { footerResets: 0, gamePositionUpdates: 0 };
+          const footer = document.querySelector('footer > [data-surface="dark"]');
+          if (!footer?.matches('[data-surface="dark"]')) throw new Error('Find the actual footer');
+          window.footerResizeObserver = new MutationObserver(records => {
+            window.resizeEvidence.footerResets += records.filter(record => /height:\s*auto/.test(record.oldValue || '')).length;
+          });
+          window.footerResizeObserver.observe(footer, { attributes: true, attributeFilter: ['style'], attributeOldValue: true });
+          const backgroundMaterial = () => {
+            let found;
+            for (const store of window.canvasStores) store.getState().scene.traverse(object => {
+              if (object.material?.uniforms?.uOffsetX) found = object.material;
+            });
+            return found;
+          };
+          window.backgroundMaterial = backgroundMaterial;
+          window.backgroundBeforeResize = backgroundMaterial();
+          if (!window.backgroundBeforeResize) throw new Error('Find the actual animated background');
+        });
+        // Model toolbar-only innerHeight changes while the restored 100svh
+        // contained scroller keeps its actual layout size. Resizing Playwright's
+        // viewport would also resize svh and represent a real layout change.
+        await page.evaluate(async () => {
+          const descriptor = Object.getOwnPropertyDescriptor(window, 'innerHeight');
+          const height = innerHeight;
+          try {
+            for (const value of [height + 70, height, height + 70, height]) {
+              Object.defineProperty(window, 'innerHeight', { configurable: true, value });
+              window.dispatchEvent(new Event('resize'));
+              await new Promise(resolve => setTimeout(resolve, 240));
+            }
+          } finally {
+            if (descriptor) Object.defineProperty(window, 'innerHeight', descriptor);
+            else delete window.innerHeight;
+            window.dispatchEvent(new Event('resize'));
+            await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+          }
+        });
+        await page.evaluate(() => {
+          window.footerResizeObserver.disconnect();
+          window.resizeEvidence.backgroundRetained = window.backgroundMaterial() === window.backgroundBeforeResize;
+          const store = [...window.canvasStores].find(item => item.getState().gl?.domElement.closest('[data-companion-game]'));
+          window.gameSizeUpdates = [];
+          window.stopGameSizeWatch = store.subscribe((state, previous) => {
+            if (state.size.width === previous.size.width && state.size.height === previous.size.height &&
+              (state.size.top !== previous.size.top || state.size.left !== previous.size.left)) {
+              window.resizeEvidence.gamePositionUpdates++;
+              window.gameSizeUpdates.push({ previous: previous.size, current: state.size, viewport: innerHeight, time: performance.now() });
+            }
+          });
+        });
+        for (let step = 0; step < 6; step++) {
+          await page.evaluate(offset => {
+            const section = document.querySelector('[data-companion-statement]');
+            const main = document.querySelector('main');
+            main.scrollTo(0, main.scrollTop + section.getBoundingClientRect().top + offset);
+          }, step % 2 ? 230 : 110);
+          await page.waitForTimeout(110);
+        }
+        await page.waitForTimeout(150);
+        const evidence = await page.evaluate(() => {
+          window.stopGameSizeWatch();
+          return window.resizeEvidence;
+        });
+        await writeFile(path.join(report, 'iphone-scroll-resize-continuity.json'), JSON.stringify(evidence, null, 2));
+        await writeFile(path.join(report, 'iphone-game-size-updates.json'), JSON.stringify(await page.evaluate(() => window.gameSizeUpdates), null, 2));
+        await page.screenshot({ path: path.join(report, 'iphone-scroll-resize-continuity.png') });
+        assert.deepEqual(evidence, { footerResets: 0, gamePositionUpdates: 0, backgroundRetained: true },
+          'scrolling and toolbar resizing retain animation state without position-only canvas updates');
+        return evidence;
+      });
       if (label === 'iphone' || label === 'desktop') await check(browser, options, `${label}-badge-rapid-scroll`, async (page) => {
         const routes = [];
         for (const route of ['', 'cen100/', 'mth140/', 'mth141/', 'courses/']) {
@@ -377,6 +533,7 @@ try {
             return Math.abs(position.x - anchor.x) < 0.9 && position.y - anchor.y < -3
               && Math.hypot(velocity.x, velocity.y, velocity.z) < 0.5;
           }, null, { timeout: 15000 });
+          await assertPageWidth(page);
           await page.screenshot({ path: path.join(report, `${name}.png`) });
           if (!route) {
             // Model a delayed visibility observer after re-entry. Keeping the
@@ -473,6 +630,7 @@ try {
           }).length >= 3;
         }, null, { timeout: 8000 });
         await page.screenshot({ path: path.join(report, `${label}-companion-entry.png`) });
+        await assertPageWidth(page);
         const sceneRatio = await page.locator('[data-companion-statement]').evaluate(el => el.offsetHeight / innerHeight);
         assert.ok(sceneRatio <= (label === 'iphone' ? 1.3 : 1.55), `the closing scene reserves ${sceneRatio} viewport heights`);
         await entry(0.1);
@@ -530,13 +688,14 @@ try {
         await page.screenshot({ path: path.join(report, `${label}-companion-and-game.png`) });
         // Interact with centre-launched discs on their actual shared DOM surface.
         // A software-rendered frame can outlast a flight. On iPhone, sample the
-        // touch path within each painted frame so native pointer cancellation
-        // and a rapid mouse sweep cannot make this mobile check miss every disc.
+        // input path within each painted frame so a rapid mouse sweep cannot
+        // make this mobile check miss every disc under software rendering.
         // This dispatches input only: the real scene raycaster must slice a disc.
         if (label === 'iphone') {
           await page.evaluate(async () => {
             const stage = document.querySelector('[data-game-discs]');
             const deadline = performance.now() + 12000;
+            const nativeTouch = document.documentElement.dataset.scrollMode === 'document';
             // Linux WebKit cannot construct Touch/TouchEvent. Dispatch the same
             // touch-list fields on a DOM event; do not call scene callbacks.
             const dispatchTouch = (type, touches, changedTouches) => {
@@ -549,13 +708,17 @@ try {
               const bounds = stage.getBoundingClientRect();
               const clientX = bounds.left + bounds.width / 2;
               let lastTouch;
-              for (let clientY = Math.max(1, bounds.top + 1); clientY < Math.min(innerHeight - 1, bounds.bottom); clientY += 8) {
-                const touch = { identifier: 1, target: stage, clientX, clientY, pageX: clientX + scrollX, pageY: clientY + scrollY };
-                lastTouch = touch;
-                const type = clientY === Math.max(1, bounds.top + 1) ? 'touchstart' : 'touchmove';
-                dispatchTouch(type, [touch], [touch]);
+              for (let clientY = Math.max(1, bounds.top + 1); clientY < Math.min(innerHeight - 1, bounds.bottom); clientY += 32) {
+                if (nativeTouch) {
+                  const touch = { identifier: 1, target: stage, clientX, clientY, pageX: clientX + scrollX, pageY: clientY + scrollY };
+                  lastTouch = touch;
+                  const type = clientY === Math.max(1, bounds.top + 1) ? 'touchstart' : 'touchmove';
+                  dispatchTouch(type, [touch], [touch]);
+                } else {
+                  stage.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, pointerType: 'touch', pointerId: 1, isPrimary: true, clientX, clientY }));
+                }
               }
-              dispatchTouch('touchend', [], lastTouch ? [lastTouch] : []);
+              if (nativeTouch) dispatchTouch('touchend', [], lastTouch ? [lastTouch] : []);
             }
           });
         } else {

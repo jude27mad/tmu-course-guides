@@ -92,9 +92,17 @@
   }
 }
 
-// The guide's explicit Pause motion setting keeps ordinary scrolling usable.
+// Native scrolling must work before JavaScript as well as with motion paused.
+:global(html:not(.js)) .layout .main,
 :global(html[data-motion='off']) .layout .main:not(:global(.lenis-stopped)) {
   overflow-y: auto;
+}
+
+// Before hydration, R3F cannot resolve mainRef as the event source and gives
+// its canvas inline pointer-events:auto. Without JS that empty overlay never
+// connects, so keep it from blocking the native links and credit disclosure.
+:global(html:not(.js)) .layout .canvasContainer {
+  display: none;
 }
 
 // The pages' paper behind `main` during a page change: a fading page shows it

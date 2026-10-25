@@ -229,7 +229,9 @@ function Layout({ children, layoutRef, mainRef, router }) {
 
     const betweenCourses = !!(courseIdFromPath(from) && courseIdFromPath(to));
     if (panelOpen && isMobileNow()) run.plan = 'panel';
-    else if (ios || (!panelOpen && (betweenCourses || superseding))) run.plan = betweenCourses ? 'course' : 'page';
+    // Phone transitions stay full width with either scroll owner. Restoring
+    // Giats's contained input must not bring back the desktop loading card.
+    else if (isMobileNow() || ios || (!panelOpen && (betweenCourses || superseding))) run.plan = betweenCourses ? 'course' : 'page';
     else run.plan = 'card';
     // The header stays put while it is on screen. Once scrolled away, or moved by a
     // wide panel's shell (iPad), it fades with the page so it cannot pop back in.

@@ -13,6 +13,8 @@ import BadgeBoundary from '@src/components/courseBadge/BadgeBoundary';
 import { BadgeProvider } from '@src/components/courseBadge/BadgeProvider';
 // eslint-disable-next-line import/extensions
 import { createBadgeRegistry } from '@src/components/courseBadge/badgeRegistry.mjs';
+// eslint-disable-next-line import/extensions
+import { createTouchScrollFilter } from '@src/utils/touch-scroll.mjs';
 
 import Background from '@src/components/canvas/background/Index';
 import DemandDriver from '@src/components/canvas/DemandDriver';
@@ -85,16 +87,19 @@ function MotionSync() {
   return null;
 }
 
-// Keyboard scrolling while nothing has focus yet (focus on <body>): `main` is the
-// scroller, not the document, so the browser's own key scrolling would do
-// nothing. Inside main (or after the skip link) the browser handles keys itself.
+// The original contained scroller uses overflow:hidden during motion. Preserve
+// keyboard scrolling there as well as from body, without intercepting keys
+// belonging to form controls, native disclosures, or editable content.
 const SCROLL_KEYS = { ArrowDown: 1, ArrowUp: -1, PageDown: 2, PageUp: -2, ' ': 2, Home: -3, End: 3 };
 function useBodyKeyScroll() {
   useEffect(() => {
     const onKeyDown = (event) => {
       if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
       const active = document.activeElement;
-      if (active && active !== document.body && active !== document.documentElement) return;
+      const main = document.querySelector('main');
+      const containedFocus = main?.contains(active) && getComputedStyle(main).overflowY === 'hidden';
+      const control = active?.closest('input, textarea, select, button, summary, [contenteditable], [role="slider"], [role="spinbutton"], [role="combobox"], [role="listbox"]');
+      if (active && active !== document.body && active !== document.documentElement && (!containedFocus || control)) return;
       let step = SCROLL_KEYS[event.key];
       if (!step) return;
       const { lenis, isLoading, isMenuOpen, isSearchOpen, still } = useStore.getState();
@@ -129,14 +134,15 @@ function MyApp({ Component, pageProps, router }) {
   useScroll(() => ScrollTrigger.update());
 
   useIsomorphicLayoutEffect(() => {
-    // The original Giats input path on every device, including iPhone/iPad.
-    // Do not replace it with native document scrolling or filter its gestures:
-    // the original fluid listens to pointermove on this same main element.
+    // Keep the original contained single-finger input on every device. Only
+    // leave pinch gestures to the browser; the fluid's separate pointermove
+    // listener on this same main element remains unchanged.
     // eslint-disable-next-line no-shadow
     const lenis = new Lenis({
       smoothWheel: true,
       smoothTouch: true,
       syncTouch: true,
+      virtualScroll: createTouchScrollFilter(),
       wrapper: mainRef.current || undefined,
       content: mainContainerRef.current || undefined,
     });
@@ -193,7 +199,7 @@ function MyApp({ Component, pageProps, router }) {
           powerPreference: 'high-performance',
         }}
         style={{ zIndex: 0 }}
-        resize={{ debounce: { resize: 0, scroll: 0 }, polyfill: undefined }}
+        resize={{ scroll: false, debounce: { resize: 0, scroll: 0 }, polyfill: undefined }}
         className={styles.canvasContainer}
         dpr={dpr ?? [1, maxDpr]}
         // motion off: draw only when something moves (scroll, resize, panels, curtain)

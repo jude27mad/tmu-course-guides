@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { createTouchScrollFilter } from '../src/components/canvas/fluid/touch-scroll.mjs';
+import { createTouchScrollFilter } from '../src/utils/touch-scroll.mjs';
 
 const touch = (type, count) => ({ event: { type, touches: Array(count).fill({}) } });
 
