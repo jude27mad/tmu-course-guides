@@ -365,18 +365,25 @@ try {
           await page.evaluate(async () => {
             const stage = document.querySelector('[data-game-discs]');
             const deadline = performance.now() + 12000;
+            // Linux WebKit cannot construct Touch/TouchEvent. Dispatch the same
+            // touch-list fields on a DOM event; do not call scene callbacks.
+            const dispatchTouch = (type, touches, changedTouches) => {
+              const event = new Event(type, { bubbles: true, cancelable: true });
+              Object.assign(event, { touches, targetTouches: touches, changedTouches });
+              stage.dispatchEvent(event);
+            };
             while (performance.now() < deadline && !Number(stage.dataset.gameSlices)) {
               await new Promise(requestAnimationFrame);
               const bounds = stage.getBoundingClientRect();
               const clientX = bounds.left + bounds.width / 2;
               let lastTouch;
               for (let clientY = Math.max(1, bounds.top + 1); clientY < Math.min(innerHeight - 1, bounds.bottom); clientY += 8) {
-                const touch = new Touch({ identifier: 1, target: stage, clientX, clientY, pageX: clientX + scrollX, pageY: clientY + scrollY });
+                const touch = { identifier: 1, target: stage, clientX, clientY, pageX: clientX + scrollX, pageY: clientY + scrollY };
                 lastTouch = touch;
                 const type = clientY === Math.max(1, bounds.top + 1) ? 'touchstart' : 'touchmove';
-                stage.dispatchEvent(new TouchEvent(type, { bubbles: true, cancelable: true, touches: [touch], targetTouches: [touch], changedTouches: [touch] }));
+                dispatchTouch(type, [touch], [touch]);
               }
-              stage.dispatchEvent(new TouchEvent('touchend', { bubbles: true, touches: [], targetTouches: [], changedTouches: lastTouch ? [lastTouch] : [] }));
+              dispatchTouch('touchend', [], lastTouch ? [lastTouch] : []);
             }
           });
         } else {
