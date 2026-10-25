@@ -10,6 +10,7 @@ import { PerformanceMonitor, View } from '@react-three/drei';
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 
 import dynamic from 'next/dynamic';
+import BadgeBoundary from '@src/components/courseBadge/BadgeBoundary';
 import { BadgeProvider } from '@src/components/courseBadge/BadgeProvider';
 // eslint-disable-next-line import/extensions
 import { createBadgeRegistry } from '@src/components/courseBadge/badgeRegistry.mjs';
@@ -116,6 +117,7 @@ function useBodyKeyScroll() {
 function MyApp({ Component, pageProps, router }) {
   const [lenis, setLenis, fluidColor, still] = useStore(useShallow((state) => [state.lenis, state.setLenis, state.fluidColor, state.still]));
   const [badgeRegistry] = useState(createBadgeRegistry);
+  const badgeRoute = router.asPath.split(/[?#]/)[0];
   const coarse = useCoarsePointer();
   const maxDpr = coarse ? MAX_DPR_TOUCH : MAX_DPR_DESKTOP;
   const [dpr, setDpr] = useState(null);
@@ -207,13 +209,15 @@ function MyApp({ Component, pageProps, router }) {
         {/* A view that is loading (or never loads) must stay inside the canvas: without
             this boundary R3F suspends the <Canvas> DOM component itself, and its next
             re-render (dpr, colour space) would hold every update of the page. */}
-        <Suspense fallback={null}>
-          <BadgeWorld registry={badgeRegistry} />
-          <View.Port />
-        </Suspense>
+        <BadgeBoundary registry={badgeRegistry} route={badgeRoute}>
+          <Suspense fallback={null}>
+            <BadgeWorld registry={badgeRegistry} />
+            <View.Port />
+          </Suspense>
+        </BadgeBoundary>
       </Canvas>
     ),
-    [badgeRegistry, dpr, maxDpr, still],
+    [badgeRegistry, badgeRoute, dpr, maxDpr, still],
   );
 
   return (

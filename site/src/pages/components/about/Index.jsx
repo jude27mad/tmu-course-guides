@@ -100,14 +100,15 @@ function About({ desk }) {
 
   const { ready, now, next, progress } = desk;
   const course = next ? getCourse(next.courseId) : null;
+  const empty = ready && !next;
   const entry = next ? entryFor(desk, next.courseId) : null;
   const copy = useMemo(() => (next ? copyFor(next.courseId) : {}), [next]);
   const canUndo = ready && progress?.canUndo?.();
 
   const setupScrollAnimation = () => {
     const ctx = gsap.context(() => {
-      gsap.set(animatedImageRef.current, { top: !isMobile ? '-20vw' : '0' });
-      if (!isMobile && !still) {
+      gsap.set(animatedImageRef.current, { top: !isMobile && !empty ? '-20vw' : '0' });
+      if (!isMobile && !still && !empty) {
         gsap.to(animatedImageRef.current, {
           top: '20vw',
           ease: 'none',
@@ -128,8 +129,8 @@ function About({ desk }) {
 
   useIsomorphicLayoutEffect(() => {
     const ctx = setupScrollAnimation();
-    return () => ctx.kill();
-  }, [isMobile, still]);
+    return () => ctx.revert();
+  }, [isMobile, still, empty]);
 
   // Focus follows the old flow: Mark done -> Undo -> Mark done.
   useEffect(() => {
@@ -175,14 +176,15 @@ function About({ desk }) {
   const markLabel = next && (copy.markDoneLabel || copy.next?.markDoneLabel);
   const forRecords = copy.forYourRecords;
 
-  const renderImageContainer = () => (
-    <div className={styles.imageContainer} aria-hidden="true">
-      {ready && course && <CourseBadge instanceId="desk-next" courseId={course.id} next={next} />}
-    </div>
-  );
+  const renderImageContainer = () =>
+    !empty && (
+      <div className={styles.imageContainer} aria-hidden="true">
+        {ready && course && <CourseBadge instanceId="desk-next" courseId={course.id} next={next} />}
+      </div>
+    );
 
   return (
-    <section ref={rootRef} className={styles.root} aria-labelledby="desk-next-heading" data-next-course={course?.id || undefined}>
+    <section ref={rootRef} className={clsx(styles.root, empty && styles.empty)} aria-labelledby="desk-next-heading" data-next-course={course?.id || undefined}>
       <div className={clsx(styles.nameContainer, 'layout-block-inner')}>
         <AppearTitle isFooter key={ready ? 'ready' : 'static'}>
           <h2 id="desk-next-heading" className={clsx('h1', 'medium')}>

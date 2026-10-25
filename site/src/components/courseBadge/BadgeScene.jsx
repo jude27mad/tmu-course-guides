@@ -41,7 +41,7 @@ function Lanyard({ body, x, rest, swinging, paused, enabled }) {
   const scroll = useRef({ direction: 0, isScrolling: false, velocity: 0 });
   const ang = useMemo(() => new THREE.Vector3(), []);
   const rot = useMemo(() => new THREE.Vector3(), []);
-  const start = rest ? REST_START : SWING_START;
+  const [start] = useState(() => (rest ? REST_START : SWING_START));
 
   useRopeJoint(body.fixed, body.j1, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(body.j1, body.j2, [[0, 0, 0], [0, 0, 0], 1]);
@@ -74,21 +74,21 @@ function Lanyard({ body, x, rest, swinging, paused, enabled }) {
     [body.fixed, body.j1, body.j2, body.j3, body.card].forEach((ref) => ref.current?.setEnabled(enabled));
   }, [body, enabled]);
 
-  const at = (i) => [x + start[i][0], ANCHOR_Y + start[i][1], 0];
+  const positions = useMemo(() => start.map(([dx, dy]) => [x + dx, ANCHOR_Y + dy, 0]), [x, start]);
 
   return (
     <>
-      <RigidBody ref={body.fixed} {...segmentProps} type="fixed" position={at(0)} />
-      <RigidBody position={at(1)} ref={body.j1} {...segmentProps}>
+      <RigidBody ref={body.fixed} {...segmentProps} type="fixed" position={positions[0]} />
+      <RigidBody position={positions[1]} ref={body.j1} {...segmentProps}>
         <BallCollider args={[0.1]} />
       </RigidBody>
-      <RigidBody position={at(2)} ref={body.j2} {...segmentProps}>
+      <RigidBody position={positions[2]} ref={body.j2} {...segmentProps}>
         <BallCollider args={[0.1]} />
       </RigidBody>
-      <RigidBody position={at(3)} ref={body.j3} {...segmentProps}>
+      <RigidBody position={positions[3]} ref={body.j3} {...segmentProps}>
         <BallCollider args={[0.1]} />
       </RigidBody>
-      <RigidBody position={at(4)} ref={body.card} {...segmentProps} type="dynamic">
+      <RigidBody position={positions[4]} ref={body.card} {...segmentProps} type="dynamic">
         <CuboidCollider args={[0.8, 1.125, 0.01]} />
         {/* follows the card body (interpolated); the windows read it */}
         <object3D ref={body.cardObject} />
@@ -105,7 +105,7 @@ export function BadgeWorld({ registry }) {
   return (
     <Physics paused={paused} interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
       {entries.map((entry) => (
-        <Lanyard key={`${entry.id}-${rest}`} body={entry.body} x={entry.slot * SPACING} rest={rest} paused={paused || !entry.visible} enabled={entry.visible || rest} swinging={() => entry.swing} />
+        <Lanyard key={entry.id} body={entry.body} x={entry.slot * SPACING} rest={rest} paused={paused || !entry.visible} enabled={entry.visible || rest} swinging={() => entry.swing} />
       ))}
     </Physics>
   );
@@ -280,7 +280,7 @@ export function BadgeView({ entry, look, rest }) {
     <View visible={entry.visible} style={{ position: 'relative', display: 'block', backgroundColor: 'transparent', height: '100%', width: '100%' }}>
       <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={25} />
       <ambientLight intensity={Math.PI} />
-      <BadgeCard key={`${entry.id}-${rest}`} body={entry.body} offsetX={entry.slot * SPACING} look={look} idle={!entry.visible || rest} element={entry.element} />
+      <BadgeCard key={entry.id} body={entry.body} offsetX={entry.slot * SPACING} look={look} idle={!entry.visible || rest} element={entry.element} />
       <ClipToCard element={entry.element} />
       <ambientLight intensity={1.3} />
       <directionalLight position={[5, 5, 5]} intensity={1.5} />

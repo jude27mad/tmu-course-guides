@@ -12,6 +12,9 @@
   @include mobile {
     padding-top: calc(var(--layout-columns-gap) * 4);
   }
+  &.empty {
+    background-color: var(--white);
+  }
   .nameContainer {
     position: relative;
     z-index: 1;
