@@ -191,29 +191,20 @@ async function checkBrowser(site) {
 
   const courseCards = async () => {
     const cards = await page.evaluate(() =>
-      Array.from(document.querySelectorAll('[class*="projects_imageContainer"]'), (card) => {
-        const style = getComputedStyle(card);
-        const panel = card.closest('a')?.querySelector('[data-surface="dark"]');
-        return {
-          text: card.textContent,
-          background: style.backgroundColor,
-          code: getComputedStyle(card.firstElementChild).color,
-          subtitle: getComputedStyle(card.lastElementChild).color,
-          shadow: style.boxShadow,
-          radius: style.borderRadius,
-          panel: panel ? getComputedStyle(panel).backgroundColor : null,
-        };
+      Array.from(document.querySelectorAll('[data-badge-instance^="directory-"]'), (badge) => {
+        const fallback = badge.querySelector('[data-badge-fallback]');
+        const panel = badge.closest('a').querySelector('[data-badge-backing]');
+        return { course: badge.dataset.courseBadge, background: getComputedStyle(badge.parentElement).backgroundColor,
+          fallback: getComputedStyle(fallback).backgroundColor, ink: getComputedStyle(fallback).color, panel: getComputedStyle(panel).backgroundColor };
       }),
     );
-    assert.equal(cards.length, 3, 'three course cards');
-    const strip = ({ text, ...look }) => look;
+    assert.deepEqual(cards.map(card => card.course), ['cen100', 'mth140', 'mth141']);
     for (const card of cards) {
-      assert.deepEqual(
-        { background: card.background, code: card.code, subtitle: card.subtitle, panel: card.panel },
-        { background: CARD, code: INK, subtitle: MUTED, panel: INK },
-        `course card ${card.text}`,
-      );
-      assert.deepEqual(strip(card), strip(cards[0]), `${card.text} looks like ${cards[0].text}`);
+      assert.deepEqual({ background: card.background, fallback: card.fallback, ink: card.ink, panel: card.panel },
+        { background: 'rgba(0, 0, 0, 0)', fallback: CARD, ink: INK, panel: INK }, `course badge ${card.course}`);
+      await scrollTo(`[data-badge-instance="directory-${card.course}"]`, -160);
+      await page.locator(`[data-badge-instance="directory-${card.course}"][data-badge-rendered="true"]`).waitFor();
+      await shot(`directory-badge-${card.course}`);
     }
   };
 
@@ -294,20 +285,19 @@ async function checkBrowser(site) {
     for (const [name, selector, offset] of [
       ['01-desk-top', null, 0],
       ['02-desk-next-up', '[class*="about_container"]', -70],
-      ['03-desk-badge-cen100', '[class*="clients_first"]', -70],
-      ['04-desk-badge-mth140', '[class*="clients_second"]', -70],
-      ['05-desk-badge-mth141', '[class*="clients_third"]', -70],
-      ['06-desk-course-cards-1', '[class*="projects_innerContainer"]', -70],
-      ['07-desk-course-cards-2', '[class*="projects_card"]:nth-child(3)', -380],
+      ['03-desk-course-badge', '[class*="about_imageContainer"]', -70],
     ]) {
       await scrollTo(selector, offset);
       await shot(name);
     }
     await check('Desk: the MENU pill is ink on the light page', menuOnLight);
-    await check('Desk: MENU does not cover the badge window', () => menuLeavesContent('[class*="clients_first"]'));
-    await check('Desk: MENU does not cover a course card panel', () => menuLeavesContent('[class*="projects_canvas"]'));
+    await check('Desk: MENU does not cover the badge window', () => menuLeavesContent('[class*="about_imageContainer"]'));
     await check('Desk: the MENU pill is ink again back on the light page', menuOnLight);
-    await check('Desk: the three course cards are identical apart from their text', courseCards);
+    await check('Desk: no duplicated course directories or photographs', async () => {
+      assert.equal(await page.locator('[data-badge-instance^="directory-"], [data-course-artwork]').count(), 0);
+      assert.ok(await page.locator('[data-badge-instance="desk-next"]').count() <= 1);
+      assert.ok(await page.getByRole('link', { name: 'ALL COURSES', exact: true }).count());
+    });
     await check('Desk: secondary and primary pills', async () => {
       assert.ok((await pills()).length > 0, 'pills on the Desk');
     });

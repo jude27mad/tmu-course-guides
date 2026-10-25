@@ -4,25 +4,18 @@ import * as THREE from 'three';
 import { BallCollider, CuboidCollider, Physics, RigidBody, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import { PerspectiveCamera, View } from '@react-three/drei';
-import { bandTexture, cardTexture, loadBadgeFonts, redrawCard } from '@src/pages/components/clients/components/badgeTextures';
-import { extend, useFrame } from '@react-three/fiber';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { bandTexture, cardTexture, loadBadgeFonts, redrawCard } from '@src/components/courseBadge/badgeTextures';
+import { extend, useFrame, useThree } from '@react-three/fiber';
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
-import useInView from '@src/hooks/useInView';
+import useStill from '@src/hooks/useStill';
 import useScroll from '@src/hooks/useScroll';
 
 extend({ MeshLineGeometry, MeshLineMaterial, RoundedBoxGeometry });
 
-// The original lanyard badge (the pmndrs lanyard: a fixed anchor, three rope
-// joints and a card on a spherical joint, swinging with the scroll), with
-// two changes for phones and for rights:
-// - ONE Physics world for the three badges (he ran one per badge). The world
-//   lives in the first badge's View and simulates the three lanyards side by
-//   side, far apart; every window's View draws its own card and band from
-//   those bodies.
-// - The card is a RoundedBox with a generated face (course code, name, next
-//   date) and the band a generated print; no GLB, no client PNGs.
+// Original lanyard geometry, materials, rope joints and scroll impulses.
+// The world lives beside View.Port, independently of any particular window.
 const SPACING = 30; // world units between the lanyards (they never meet)
 const ANCHOR_Y = 4;
 const JOINT = 1.45; // card anchor above the card centre
@@ -44,26 +37,11 @@ const REST_START = [
 ];
 const segmentProps = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 2, linearDamping: 2 };
 
-export function createBadgeRig(count) {
-  return {
-    bodies: Array.from({ length: count }, () => ({
-      fixed: { current: null },
-      j1: { current: null },
-      j2: { current: null },
-      j3: { current: null },
-      card: { current: null },
-      cardObject: { current: null },
-    })),
-    // per badge: its window is at least 70 % visible (the original swing condition)
-    swing: Array.from({ length: count }, () => false),
-  };
-}
-
-function Lanyard({ body, x, rest, swinging, paused }) {
+function Lanyard({ body, x, rest, swinging, paused, enabled }) {
   const scroll = useRef({ direction: 0, isScrolling: false, velocity: 0 });
   const ang = useMemo(() => new THREE.Vector3(), []);
   const rot = useMemo(() => new THREE.Vector3(), []);
-  const start = rest ? REST_START : SWING_START;
+  const [start] = useState(() => (rest ? REST_START : SWING_START));
 
   useRopeJoint(body.fixed, body.j1, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(body.j1, body.j2, [[0, 0, 0], [0, 0, 0], 1]);
@@ -92,21 +70,25 @@ function Lanyard({ body, x, rest, swinging, paused }) {
     card.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
   });
 
-  const at = (i) => [x + start[i][0], ANCHOR_Y + start[i][1], 0];
+  useEffect(() => {
+    [body.fixed, body.j1, body.j2, body.j3, body.card].forEach((ref) => ref.current?.setEnabled(enabled));
+  }, [body, enabled]);
+
+  const positions = useMemo(() => start.map(([dx, dy]) => [x + dx, ANCHOR_Y + dy, 0]), [x, start]);
 
   return (
     <>
-      <RigidBody ref={body.fixed} {...segmentProps} type="fixed" position={at(0)} />
-      <RigidBody position={at(1)} ref={body.j1} {...segmentProps}>
+      <RigidBody ref={body.fixed} {...segmentProps} type="fixed" position={positions[0]} />
+      <RigidBody position={positions[1]} ref={body.j1} {...segmentProps}>
         <BallCollider args={[0.1]} />
       </RigidBody>
-      <RigidBody position={at(2)} ref={body.j2} {...segmentProps}>
+      <RigidBody position={positions[2]} ref={body.j2} {...segmentProps}>
         <BallCollider args={[0.1]} />
       </RigidBody>
-      <RigidBody position={at(3)} ref={body.j3} {...segmentProps}>
+      <RigidBody position={positions[3]} ref={body.j3} {...segmentProps}>
         <BallCollider args={[0.1]} />
       </RigidBody>
-      <RigidBody position={at(4)} ref={body.card} {...segmentProps} type="dynamic">
+      <RigidBody position={positions[4]} ref={body.card} {...segmentProps} type="dynamic">
         <CuboidCollider args={[0.8, 1.125, 0.01]} />
         {/* follows the card body (interpolated); the windows read it */}
         <object3D ref={body.cardObject} />
@@ -115,13 +97,15 @@ function Lanyard({ body, x, rest, swinging, paused }) {
   );
 }
 
-// The one world (mounted in the first badge's View).
-function BadgeWorld({ rig, paused, rest }) {
+export function BadgeWorld({ registry }) {
+  const { entries } = useSyncExternalStore(registry.subscribe, registry.getState, registry.getState);
+  const rest = useStill();
+  if (!entries.length) return null;
+  const paused = rest || !entries.some((entry) => entry.visible);
   return (
     <Physics paused={paused} interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
-      {rig.bodies.map((body, i) => (
-        // eslint-disable-next-line react/no-array-index-key
-        <Lanyard key={i} body={body} x={i * SPACING} rest={rest} paused={paused} swinging={() => rig.swing[i]} />
+      {entries.map((entry) => (
+        <Lanyard key={entry.id} body={entry.body} x={entry.slot * SPACING} rest={rest} paused={paused || !entry.visible} enabled={entry.visible || rest} swinging={() => entry.swing} />
       ))}
     </Physics>
   );
@@ -129,6 +113,7 @@ function BadgeWorld({ rig, paused, rest }) {
 
 function useBadgeTextures(look) {
   const [textures, setTextures] = useState(null);
+  const invalidate = useThree((state) => state.invalidate);
   const lookRef = useRef(look);
   lookRef.current = look;
 
@@ -137,31 +122,41 @@ function useBadgeTextures(look) {
     let made = null;
     loadBadgeFonts().then(() => {
       if (cancelled) return;
-      made = { card: cardTexture(lookRef.current), band: bandTexture(lookRef.current) };
+      made = { code: lookRef.current.code, card: cardTexture(lookRef.current), band: bandTexture(lookRef.current) };
       setTextures(made);
+      invalidate();
     });
     return () => {
       cancelled = true;
       made?.card.dispose();
       made?.band.dispose();
     };
-  }, [look.code, look.background, look.color, look.strap, look.strapColor]);
+  }, [look.code, look.background, look.color, look.strap, look.strapColor, invalidate]);
 
   // the next date changes on the card face without a new texture
   useEffect(() => {
-    if (textures) redrawCard(textures.card, look);
-  }, [textures, look.nextLabel, look.nextValue, look]);
+    if (textures?.code === look.code) {
+      redrawCard(textures.card, look);
+      invalidate();
+    }
+  }, [textures, look, invalidate]);
 
-  return textures;
+  return textures?.code === look.code ? textures : null;
 }
 
 // One window's card and band, drawn from its lanyard in the shared world.
-function BadgeCard({ body, offsetX, look, idle, maxSpeed = 50, minSpeed = 10 }) {
+function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed = 10 }) {
   const band = useRef();
   const card = useRef();
   const textures = useBadgeTextures(look);
   const lerped = useMemo(() => [new THREE.Vector3(), new THREE.Vector3()], []);
   const started = useRef(false);
+  useEffect(() => {
+    if (element) element.dataset.badgeRendered = 'false';
+    return () => {
+      if (element) element.dataset.badgeRendered = 'false';
+    };
+  }, [element, look.code]);
   const [curve] = useState(() => {
     const c = new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()]);
     c.curveType = 'chordal';
@@ -185,6 +180,7 @@ function BadgeCard({ body, offsetX, look, idle, maxSpeed = 50, minSpeed = 10 }) 
 
   useFrame((_, delta) => {
     // the world is paused (off screen or motion off): nothing moves after the first pose
+    if (textures && started.current && element?.dataset.badgeRendered !== 'true') element.dataset.badgeRendered = 'true';
     if (idle && started.current) return;
     const { fixed, j1, j2, j3, cardObject } = body;
     const object = cardObject.current?.parent;
@@ -238,26 +234,54 @@ function BadgeCard({ body, offsetX, look, idle, maxSpeed = 50, minSpeed = 10 }) 
   );
 }
 
-// A badge window. `world` mounts the shared Physics world in this View.
-export default function Badge({ index, rig, look, world = false, paused = false, rest = false }) {
-  const el = useRef();
-  const swing = useInView(el, { threshold: 0.7 });
-
+// View's scissor covers its own rectangle. Also clip to the stacked directory
+// card, which may cover part of that rectangle as cards slide past one another.
+function ClipToCard({ element }) {
+  const { scene, gl } = useThree();
+  const scissor = useMemo(() => new THREE.Vector4(), []);
   useEffect(() => {
-    rig.swing[index] = swing;
-  }, [rig, index, swing]);
+    const previous = scene.onBeforeRender;
+    scene.onBeforeRender = (...args) => {
+      previous?.apply(scene, args);
+      const clip = element?.closest('[data-badge-clip]');
+      if (!clip) return;
+      const bounds = clip.getBoundingClientRect();
+      const canvas = gl.domElement.getBoundingClientRect();
+      gl.getScissor(scissor);
+      const left = Math.max(scissor.x, bounds.left - canvas.left);
+      const bottom = Math.max(scissor.y, canvas.bottom - bounds.bottom);
+      const right = Math.min(scissor.x + scissor.z, bounds.right - canvas.left);
+      const top = Math.min(scissor.y + scissor.w, canvas.bottom - bounds.top);
+      gl.setScissor(left, bottom, Math.max(0, right - left), Math.max(0, top - bottom));
+    };
+    return () => {
+      scene.onBeforeRender = previous;
+    };
+  }, [element, scene, gl, scissor]);
 
+  useFrame(() => {
+    const backing = element?.closest('[data-badge-clip]')?.querySelector('[data-badge-backing]');
+    if (!backing) return;
+    const window = element.getBoundingClientRect();
+    const panel = backing.getBoundingClientRect();
+    const left = window.left - panel.left;
+    const top = window.top - panel.top;
+    const right = left + window.width;
+    const bottom = top + window.height;
+    // A hole in the original animated panel, so it cannot tint the badge.
+    const path = `polygon(evenodd, 0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, ${left}px ${top}px, ${right}px ${top}px, ${right}px ${bottom}px, ${left}px ${bottom}px, ${left}px ${top}px)`;
+    if (backing.style.clipPath !== path) backing.style.clipPath = path;
+  });
+  return null;
+}
+
+export function BadgeView({ entry, look, rest }) {
   return (
-    <View
-      ref={(node) => {
-        el.current = node;
-      }}
-      style={{ position: 'relative', display: 'block', backgroundColor: 'transparent', borderRadius: '1.3888888889vw', height: '100%', width: '100%' }}
-    >
+    <View visible={entry.visible} style={{ position: 'relative', display: 'block', backgroundColor: 'transparent', height: '100%', width: '100%' }}>
       <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={25} />
       <ambientLight intensity={Math.PI} />
-      {world && <BadgeWorld rig={rig} paused={paused} rest={rest} />}
-      <BadgeCard body={rig.bodies[index]} offsetX={index * SPACING} look={look} idle={paused} />
+      <BadgeCard key={entry.id} body={entry.body} offsetX={entry.slot * SPACING} look={look} idle={!entry.visible || rest} element={entry.element} />
+      <ClipToCard element={entry.element} />
       <ambientLight intensity={1.3} />
       <directionalLight position={[5, 5, 5]} intensity={1.5} />
       <directionalLight position={[-5, 5, 5]} intensity={1} />

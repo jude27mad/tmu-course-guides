@@ -9,6 +9,12 @@ import * as THREE from 'three';
 import { PerformanceMonitor, View } from '@react-three/drei';
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 
+import dynamic from 'next/dynamic';
+import BadgeBoundary from '@src/components/courseBadge/BadgeBoundary';
+import { BadgeProvider } from '@src/components/courseBadge/BadgeProvider';
+// eslint-disable-next-line import/extensions
+import { createBadgeRegistry } from '@src/components/courseBadge/badgeRegistry.mjs';
+
 import Background from '@src/components/canvas/background/Index';
 import DemandDriver from '@src/components/canvas/DemandDriver';
 import ClearViews from '@src/components/canvas/ClearViews';
@@ -50,6 +56,8 @@ if (typeof window !== 'undefined') {
   window.history.scrollRestoration = 'manual';
   ScrollTrigger.clearScrollMemory(window.history.scrollRestoration);
 }
+
+const BadgeWorld = dynamic(() => import('@src/components/courseBadge/BadgeScene').then((module) => module.BadgeWorld), { ssr: false });
 
 // The stats.js FPS panel is a development aid: show it only with ?stats in the URL.
 const SHOW_STATS = typeof window !== 'undefined' && /[?&]stats\b/.test(window.location.search);
@@ -107,7 +115,9 @@ function useBodyKeyScroll() {
 }
 
 function MyApp({ Component, pageProps, router }) {
-  const [lenis, setLenis, fluidColor, isAbout, still] = useStore(useShallow((state) => [state.lenis, state.setLenis, state.fluidColor, state.isAbout, state.still]));
+  const [lenis, setLenis, fluidColor, still] = useStore(useShallow((state) => [state.lenis, state.setLenis, state.fluidColor, state.still]));
+  const [badgeRegistry] = useState(createBadgeRegistry);
+  const badgeRoute = router.asPath.split(/[?#]/)[0];
   const coarse = useCoarsePointer();
   const maxDpr = coarse ? MAX_DPR_TOUCH : MAX_DPR_DESKTOP;
   const [dpr, setDpr] = useState(null);
@@ -180,8 +190,9 @@ function MyApp({ Component, pageProps, router }) {
     () => (
       <Canvas
         id="viewCanvas"
+        fallback={<span aria-hidden="true" />}
         gl={{
-          outputColorSpace: isAbout === false ? THREE.LinearSRGBColorSpace : THREE.SRGBColorSpace,
+          outputColorSpace: THREE.LinearSRGBColorSpace,
           powerPreference: 'high-performance',
         }}
         style={{ zIndex: 0 }}
@@ -198,16 +209,19 @@ function MyApp({ Component, pageProps, router }) {
         {/* A view that is loading (or never loads) must stay inside the canvas: without
             this boundary R3F suspends the <Canvas> DOM component itself, and its next
             re-render (dpr, colour space) would hold every update of the page. */}
-        <Suspense fallback={null}>
-          <View.Port />
-        </Suspense>
+        <BadgeBoundary registry={badgeRegistry} route={badgeRoute}>
+          <Suspense fallback={null}>
+            <BadgeWorld registry={badgeRegistry} />
+            <View.Port />
+          </Suspense>
+        </BadgeBoundary>
       </Canvas>
     ),
-    [isAbout, dpr, maxDpr, still],
+    [badgeRegistry, badgeRoute, dpr, maxDpr, still],
   );
 
   return (
-    <>
+    <BadgeProvider value={badgeRegistry}>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </Head>
@@ -270,7 +284,7 @@ function MyApp({ Component, pageProps, router }) {
       </div>
       {/* Must follow the entire document, outside clipped/transformed scene roots. */}
       <div aria-hidden="true" data-safari-blend="bottom" className="safari-toolbar-blend" />
-    </>
+    </BadgeProvider>
   );
 }
 
