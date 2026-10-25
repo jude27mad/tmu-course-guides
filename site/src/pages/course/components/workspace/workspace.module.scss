@@ -6,7 +6,8 @@
   overflow: clip;
   background: transparent;
   color: var(--black);
-  padding: clamp(90px, 9vw, 134px) clamp(18px, 4vw, 64px) 32px;
+  --workspace-side-padding: clamp(18px, 4vw, 64px);
+  padding: clamp(90px, 9vw, 134px) var(--workspace-side-padding) 32px;
   font-size: 16px;
   line-height: 1.5;
   font-weight: 550;
@@ -78,6 +79,20 @@
   }
   details[open] > summary {
     margin-bottom: 8px;
+  }
+}
+// The reading surface must cover the full content height, independently of
+// the header badge opening and without moving during course-view transitions.
+.body {
+  position: relative;
+  z-index: 0;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 calc(-1 * var(--workspace-side-padding)) -32px;
+    z-index: -1;
+    background: var(--white);
+    pointer-events: none;
   }
 }
 .courseHeader {

@@ -112,6 +112,34 @@ async function check(name, run, options = {}) {
   } finally { await context.close(); }
 }
 try {
+  await check('long course pages retain paper behind the final work rows', async (page) => {
+    await page.goto(url + 'cen100/');
+    await ready(page);
+    await settled(page);
+    await page.locator('footer').scrollIntoViewIfNeeded();
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    const screenshot = await page.screenshot({ path: path.join(report, 'course-paper-near-footer.png') });
+    const paper = await page.evaluate(async (base64) => {
+      const content = document.querySelector('#course-content').getBoundingClientRect();
+      const y = Math.floor(content.bottom) - 24;
+      if (y < 0 || y + 8 > innerHeight) throw new Error('Final course rows are outside the viewport');
+      const bytes = Uint8Array.from(atob(base64), char => char.charCodeAt(0));
+      const bitmap = await createImageBitmap(new Blob([bytes], { type: 'image/png' }));
+      const canvas = document.createElement('canvas');
+      canvas.width = bitmap.width;
+      canvas.height = bitmap.height;
+      const context = canvas.getContext('2d');
+      context.drawImage(bitmap, 0, 0);
+      bitmap.close();
+      const scale = canvas.width / innerWidth;
+      const pixels = context.getImageData(Math.floor(8 * scale), Math.floor(y * scale), Math.floor(8 * scale), Math.floor(8 * scale)).data;
+      let sum = 0;
+      for (let i = 0; i < pixels.length; i += 4) sum += (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
+      return sum / (pixels.length / 4);
+    }, screenshot.toString('base64'));
+    assert.ok(paper > 220, 'Dark artwork is exposed behind the final course rows: ' + paper);
+  }, { reducedMotion: 'reduce' });
+
   for (const width of [320, 390, 834, 1440]) {
     await check('compact controls and dialog at ' + width + 'px', async (page) => {
       for (const course of ['cen100', 'mth140', 'mth141']) {
