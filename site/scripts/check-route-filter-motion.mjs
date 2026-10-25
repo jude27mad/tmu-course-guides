@@ -429,14 +429,21 @@ try {
           await page.setViewportSize({ width: 390, height });
           await page.waitForTimeout(240);
         }
+        // ResizeObserver delivery and its React commit are frame based. Let
+        // those finish before measuring position-only updates from scrolling.
+        await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
         await page.evaluate(() => {
           window.footerResizeObserver.disconnect();
           window.resizeEvidence.backgroundRetained = window.backgroundMaterial() === window.backgroundBeforeResize;
           window.resizeEvidence.newFluidMaterials = window.fluidMaterials.size - window.fluidMaterialsBeforeResize;
           const store = [...window.canvasStores].find(item => item.getState().gl?.domElement.closest('[data-companion-game]'));
+          window.gameSizeUpdates = [];
           window.stopGameSizeWatch = store.subscribe((state, previous) => {
             if (state.size.width === previous.size.width && state.size.height === previous.size.height &&
-              (state.size.top !== previous.size.top || state.size.left !== previous.size.left)) window.resizeEvidence.gamePositionUpdates++;
+              (state.size.top !== previous.size.top || state.size.left !== previous.size.left)) {
+              window.resizeEvidence.gamePositionUpdates++;
+              window.gameSizeUpdates.push({ previous: previous.size, current: state.size, viewport: innerHeight, time: performance.now() });
+            }
           });
         });
         for (let step = 0; step < 6; step++) {
@@ -452,6 +459,7 @@ try {
           return window.resizeEvidence;
         });
         await writeFile(path.join(report, 'iphone-scroll-resize-continuity.json'), JSON.stringify(evidence, null, 2));
+        await writeFile(path.join(report, 'iphone-game-size-updates.json'), JSON.stringify(await page.evaluate(() => window.gameSizeUpdates), null, 2));
         await page.screenshot({ path: path.join(report, 'iphone-scroll-resize-continuity.png') });
         assert.deepEqual(evidence, { footerResets: 0, gamePositionUpdates: 0, backgroundRetained: true, newFluidMaterials: 0 },
           'scrolling and toolbar resizing retain animation state without position-only canvas updates');
