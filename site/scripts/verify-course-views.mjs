@@ -136,6 +136,42 @@ try {
       }, fixture.initial);
       await desk.goto(url);
       const badge = desk.locator('[data-badge-instance="desk-next"]');
+      const captureBadge = async (name) => {
+        await badge.scrollIntoViewIfNeeded();
+        let light = 0;
+        for (let attempt = 0; attempt < 12; attempt++) {
+          // Scrolling the DOM window and drawing the shared canvas are separate
+          // frames. Require actual printed badge pixels before capturing it.
+          await desk.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+          const png = await badge.screenshot({ path: path.join(report, `${name}-badge.png`) });
+          light = await desk.evaluate(async base64 => {
+            const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+            const bitmap = await createImageBitmap(new Blob([bytes], { type: 'image/png' }));
+            const canvas = document.createElement('canvas'); canvas.width = bitmap.width; canvas.height = bitmap.height;
+            const ctx = canvas.getContext('2d'); ctx.drawImage(bitmap, 0, 0);
+            const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+            let count = 0;
+            for (let y = Math.ceil(canvas.height * 0.1); y < canvas.height * 0.9; y++) {
+              for (let x = Math.ceil(canvas.width * 0.1); x < canvas.width * 0.9; x++) {
+                const i = (y * canvas.width + x) * 4;
+                if (Math.min(data[i], data[i + 1], data[i + 2]) > 150) count++;
+              }
+            }
+            bitmap.close(); return count;
+          }, png.toString('base64'));
+          if (light > 30) break;
+          await desk.waitForTimeout(150);
+        }
+        const pose = await badge.evaluate(element => {
+          let fiber = element[Object.keys(element).find(key => key.startsWith('__reactFiber$'))];
+          while (fiber && !fiber.memoizedProps?.value?.register) fiber = fiber.return;
+          const entry = fiber?.memoizedProps.value.getState().entries.find(entry => entry.id === 'desk-next');
+          return { visible: entry?.visible, position: entry?.body.card.current?.translation(), rendered: element.dataset.badgeRendered };
+        });
+        assert.ok(light > 30, `badge face must be drawn, not just flagged ready: ${JSON.stringify({ light, pose })}`);
+        await desk.screenshot({ path: path.join(report, `${name}.png`) });
+      };
+
       await badge.scrollIntoViewIfNeeded();
       await badge.locator('[data-badge-fallback]').waitFor({ state: 'hidden' });
       assert.equal(await badge.getAttribute('data-course-badge'), fixture.from.courseId);
@@ -148,13 +184,11 @@ try {
       await desk.screenshot({ path: path.join(report, 'desk-next-course-texture-loading.png') });
       await desk.evaluate(() => { window.releaseBadgeFonts(); window.holdBadgeFonts = null; });
       await badge.locator('[data-badge-fallback]').waitFor({ state: 'hidden' });
-      await badge.scrollIntoViewIfNeeded();
-      await desk.screenshot({ path: path.join(report, 'desk-next-course-after-done.png') });
+      await captureBadge('desk-next-course-after-done');
       await desk.getByRole('button', { name: 'UNDO', exact: true }).click();
       await desk.waitForFunction(course => document.querySelector('[data-badge-instance="desk-next"]')?.dataset.courseBadge === course, fixture.from.courseId);
       await badge.locator('[data-badge-fallback]').waitFor({ state: 'hidden' });
-      await badge.scrollIntoViewIfNeeded();
-      await desk.screenshot({ path: path.join(report, 'desk-next-course-after-undo.png') });
+      await captureBadge('desk-next-course-after-undo');
       const emptyStorage = memoryStorage(fixture.initial);
       const emptyProgress = createProgress(emptyStorage, { events: null });
       for (const course of ['cen100', 'mth140', 'mth141']) {
