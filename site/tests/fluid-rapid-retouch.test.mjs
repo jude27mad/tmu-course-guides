@@ -91,5 +91,5 @@ test('non-iOS touch pointerdown makes a fresh contact too', () => {
 test('contact ink is forwarded into both shader passes for the visible touch bloom', () => {
   const renderer = readFileSync(new URL('../src/components/canvas/fluid/Fluid.jsx', import.meta.url), 'utf8');
   assert.match(renderer, /velocityX,\s*velocityY,\s*dye\s*=\s*10/);
-  assert.match(renderer, /new Vector3\(velocityX,\s*velocityY,\s*dye\)/);
+  assert.match(renderer, /\.set\(velocityX,\s*velocityY,\s*dye\)/);
 });
