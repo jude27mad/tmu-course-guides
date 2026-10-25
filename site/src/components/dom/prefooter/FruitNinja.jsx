@@ -98,7 +98,11 @@ function FruitNinja({ active = true, eventSource }) {
   const isMobile = useIsMobile();
   const textures = useDiscTextures();
   const [fruits, remove] = useFruitSpawner({ viewport, textures, isMobile, active });
-  const { scene, camera, raycaster, pointer } = useThree();
+  const { scene, camera, raycaster, pointer, setEvents } = useThree();
+
+  useEffect(() => {
+    setEvents({ enabled: active });
+  }, [active, setEvents]);
 
   useEffect(() => {
     const element = eventSource.current;
@@ -147,6 +151,7 @@ function FruitNinja({ active = true, eventSource }) {
               viewportHeight={viewport.height}
               onDone={remove}
               eventSource={eventSource}
+              active={active}
             />
           ))}
       </Physics>

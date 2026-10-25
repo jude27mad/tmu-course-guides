@@ -358,10 +358,16 @@ try {
         await page.screenshot({ path: path.join(report, `${label}-companion-and-game.png`) });
         // Sweep deterministic, centre-launched discs through the shared input surface.
         const stage = await page.locator('[data-game-discs]').boundingBox();
-        for (let step = 0; step <= 24; step += 1) {
-          await page.mouse.move(stage.x + stage.width / 2, stage.y + stage.height * step / 24);
+        // A screenshot on a software-rendered runner can outlast a flight.
+        // Keep sweeping across two spawn intervals instead of assuming one disc
+        // is still at its photographed position. A real slice remains required.
+        const sliceDeadline = Date.now() + 12000;
+        while (Date.now() < sliceDeadline && !Number(await page.locator('[data-game-discs]').getAttribute('data-game-slices'))) {
+          for (let step = 0; step <= 24; step += 1) {
+            await page.mouse.move(stage.x + stage.width / 2, stage.y + stage.height * step / 24);
+          }
         }
-        await page.waitForFunction(() => Number(document.querySelector('[data-game-discs]')?.dataset.gameSlices) > 0);
+        assert.ok(Number(await page.locator('[data-game-discs]').getAttribute('data-game-slices')) > 0, 'visible discs respond to pointer slicing');
         const count = Number(await page.locator('[data-game-discs]').getAttribute('data-game-discs'));
         assert.ok(count <= (label === 'iphone' ? 6 : 10));
         assert.equal(await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort())), beforeStorage, 'slicing does not change saved progress');

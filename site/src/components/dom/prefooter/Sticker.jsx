@@ -18,7 +18,7 @@ const getRandomIntInclusive = (min, max) => Math.floor(Math.random() * (max - mi
 
 // Slicing is decoration only: it swaps the disc for its two halves and never
 // marks anything done (ticks and completion records live on the course pages).
-function Sticker({ id, positionX, image, imageSliced, isMobile, viewportHeight, onDone, eventSource }) {
+function Sticker({ id, positionX, image, imageSliced, isMobile, viewportHeight, onDone, eventSource, active }) {
   const bodyRef = useRef();
   const age = useRef(0);
   const gone = useRef(false);
@@ -56,7 +56,7 @@ function Sticker({ id, positionX, image, imageSliced, isMobile, viewportHeight, 
   });
 
   const handleFruitSliced = useCallback(() => {
-    if (sliced.current) return;
+    if (!active || sliced.current) return;
     sliced.current = true;
     const element = eventSource.current;
     if (element) element.dataset.gameSlices = String(Number(element.dataset.gameSlices || 0) + 1);
@@ -66,7 +66,7 @@ function Sticker({ id, positionX, image, imageSliced, isMobile, viewportHeight, 
       rigidBody.wakeUp();
     }
     setFruitSliced(true);
-  }, [eventSource]);
+  }, [eventSource, active]);
 
   const mobileConfig = isMobile ? { position: [positionX, -5, 0], scale: 0.8 } : { position: [positionX, -7, 0], scale: 1 };
   const map = fruitSliced ? imageSliced : image;
