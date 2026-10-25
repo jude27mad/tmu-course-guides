@@ -78,8 +78,8 @@
   }
 }
 .courseHeader {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 32px;
   padding-bottom: 24px;
@@ -200,9 +200,10 @@
   text-overflow: ellipsis;
 }
 .utilities {
-  display: flex;
+  display: grid;
+  // Existing groups share a row only when both have usable room.
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr));
   align-items: center;
-  justify-content: space-between;
   gap: 12px 20px;
   padding: 12px 0;
   flex-wrap: wrap;
@@ -234,9 +235,10 @@
   }
 }
 .actions {
+  justify-self: end;
   display: flex;
   gap: 12px 20px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   button,
   a {

@@ -55,8 +55,8 @@
     }
 
     position: relative;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     align-items: center;
     width: 100%;
     &[data-scrolled-away='true'] {
@@ -71,7 +71,21 @@
       align-items: center;
       min-height: 44px;
     }
+    .clock {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      line-height: 1.2;
+      time { min-width: 5ch; }
+      @include mobile {
+        flex-direction: column;
+        gap: 0;
+      }
+    }
     .rightContainer {
+      justify-self: end;
       pointer-events: all;
 
       display: flex;
