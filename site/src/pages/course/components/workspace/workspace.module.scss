@@ -96,8 +96,8 @@
   }
 }
 .courseHeader {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 32px;
   padding-bottom: 24px;
@@ -221,6 +221,7 @@
 }
 .utilities {
   display: flex;
+  // Wrap whole groups at their real width; retain the existing spacing.
   align-items: center;
   justify-content: space-between;
   gap: 12px 20px;
@@ -254,9 +255,10 @@
   }
 }
 .actions {
+  margin-left: auto;
   display: flex;
   gap: 12px 20px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   button,
   a {

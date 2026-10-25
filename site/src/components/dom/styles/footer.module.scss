@@ -79,84 +79,14 @@
     }
   }
 
-  .emailContaineer {
+  .metaContainer {
+    grid-column: 9 / 17;
+    align-self: start;
+    padding-top: calc(var(--layout-columns-gap) * 4);
     @include mobile {
       grid-column: 1 / 7;
       padding-top: var(--layout-columns-gap);
     }
-
-    padding-top: calc(var(--layout-columns-gap) * 4);
-    width: 100%;
-    grid-column: 9 / 17;
-    .workWithMe {
-      color: var(--white);
-    }
-    .link {
-      color: var(--white);
-      font-size: max(22px, 2.5vw);
-      line-height: 1.4;
-      min-height: 44px;
-      display: inline-flex;
-      align-items: center;
-      position: relative;
-      width: fit-content;
-      max-width: 100%;
-      overflow: hidden;
-      // course item titles are longer than an email address
-      white-space: normal;
-      @include mobile {
-        line-height: 140%;
-      }
-
-      cursor: pointer;
-      .email {
-        color: var(--white);
-      }
-    }
-    .link::before,
-    .link::after {
-      position: absolute !important;
-      width: 100%;
-      height: 1px;
-      top: 100%;
-      left: 0;
-      pointer-events: none;
-    }
-    .link::before {
-      content: '';
-      /* show by default */
-    }
-    .link:hover path {
-      // stroke-dashoffset: 0;
-      // transition-timing-function: cubic-bezier(0.8, 1, 0.7, 1);
-      // transition-duration: 0.3s;
-    }
-    @include hover {
-      .link:hover .linkGraphic {
-        transform: translate3d(-65.5%, 0, 0);
-      }
-    }
-    .linkGraphic {
-      position: absolute !important;
-      left: 0;
-      pointer-events: none;
-      fill: none;
-      stroke: var(--white);
-      bottom: 0;
-      stroke-width: 0.03em;
-      transition: transform 0.7s;
-      transition-timing-function: cubic-bezier(0, 0.25, 0.5, 1);
-    }
-  }
-
-  .middleText {
-    padding-top: calc(var(--layout-columns-gap) * 0.5);
-  }
-  .nextWhen {
-    color: var(--white);
-    padding-top: calc(var(--layout-columns-gap) * 0.75);
-    opacity: 0.8;
-    white-space: normal;
   }
   .inlineLink {
     color: var(--white);
@@ -168,17 +98,6 @@
       // a comfortable tap area without changing the line
       padding: 0.6em 0;
       margin: -0.6em 0;
-    }
-  }
-  .middleContainer {
-    @include mobile {
-      grid-column: 1 / 7 !important;
-      padding-top: var(--layout-columns-gap);
-    }
-
-    > span > span > span {
-      display: flex;
-      flex-direction: column;
     }
   }
   div {

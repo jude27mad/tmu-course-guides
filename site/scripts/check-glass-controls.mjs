@@ -146,6 +146,24 @@ try {
         await page.goto(url + course + '/');
         await ready(page);
         await aligned(page);
+        const headerGeometry = await page.evaluate(() => {
+          const box = (selector) => document.querySelector(selector).getBoundingClientRect();
+          const title = box('[class*="workspace_headingCopy"]');
+          const badge = box('[class*="workspace_artwork"]');
+          const navigation = box('nav[aria-label="Course views"]');
+          const selectors = box('[class*="workspace_sectionControls"]');
+          const actions = box('[class*="workspace_actions"]');
+          return { titleLeft: title.left, navLeft: navigation.left, selectorsLeft: selectors.left, badgeRight: badge.right, actionsRight: actions.right };
+        });
+        assert.ok(Math.abs(headerGeometry.titleLeft - headerGeometry.navLeft) < 1);
+        assert.ok(Math.abs(headerGeometry.titleLeft - headerGeometry.selectorsLeft) < 1);
+        assert.ok(Math.abs(headerGeometry.badgeRight - headerGeometry.actionsRight) < 1, JSON.stringify(headerGeometry));
+        assert.equal(await page.locator('[data-toronto-clock] time').count(), 1);
+        const headerBounds = await page.locator('header > div > a, [data-toronto-clock], header [class*="rightContainer"]').evaluateAll(nodes => nodes.map(node => {
+          const r = node.getBoundingClientRect(); return { left: r.left, right: r.right };
+        }));
+        assert.equal(headerBounds.length, 3);
+        assert.ok(headerBounds[0].right <= headerBounds[1].left && headerBounds[1].right <= headerBounds[2].left, JSON.stringify(headerBounds));
         const boxes = await page.locator(nav + ' a').evaluateAll((links) => links.map((link) => {
           const box = link.getBoundingClientRect();
           return { text: link.textContent, x: box.x, right: box.right, width: box.width, height: box.height, font: parseFloat(getComputedStyle(link).fontSize) };
@@ -179,6 +197,71 @@ try {
       assert.ok(await opener.evaluate((el) => el === document.activeElement), 'dialog did not return focus');
     }, { viewport: { width, height: width > 500 ? 1024 : 844 } });
   }
+
+  await check('Toronto clock and native credits on full and compact footers', async (page) => {
+    await page.clock.setFixedTime(new Date('2026-10-23T16:00:00Z'));
+    for (const route of ['cen100/', 'courses/']) {
+      await page.goto(url + route);
+      await ready(page);
+      assert.equal(await page.locator('[data-toronto-clock] time').innerText(), '12:00');
+      assert.equal(await page.locator('footer time').count(), 0);
+      const credit = page.locator('[data-design-credit]');
+      assert.equal(await credit.count(), 1);
+      const summary = credit.locator('summary');
+      const link = credit.locator('a');
+      assert.equal(await link.isVisible(), false);
+      await summary.focus();
+      await page.keyboard.press('Enter');
+      assert.equal(await credit.evaluate(el => el.open), true);
+      assert.equal(await link.getAttribute('href'), 'https://giats.me');
+      assert.match(await credit.innerText(), /Evangelos Giatsidis/);
+      assert.ok(!(await credit.innerText()).includes('—'));
+      await page.keyboard.press('Tab');
+      assert.ok(await link.evaluate(el => el === document.activeElement));
+      await summary.focus();
+      await page.keyboard.press('Space');
+      assert.equal(await credit.evaluate(el => el.open), false);
+      await summary.tap();
+      assert.equal(await credit.evaluate(el => el.open), true);
+      await page.screenshot({ path: path.join(report, 'credit-' + route.replace('/', '') + '.png') });
+    }
+    // Visibility return must correct the clock, including the DST repeated hour.
+    await page.clock.setFixedTime(new Date('2026-11-01T06:30:00Z'));
+    await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
+    await page.waitForFunction(() => document.querySelector('[data-toronto-clock] time')?.textContent === '01:30');
+  }, { reducedMotion: 'reduce' });
+
+  await check('navigation reflows at 320px with doubled text', async (page) => {
+    await page.goto(url + 'cen100/');
+    await ready(page);
+    await page.locator('header .h4, header .p-x').evaluateAll(nodes => nodes.forEach(node => {
+      node.style.fontSize = `${parseFloat(getComputedStyle(node).fontSize) * 2}px`;
+    }));
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    const boxes = await page.locator('header > div > a, [data-toronto-clock], header [class*="rightContainer"]').evaluateAll(nodes => nodes.map(node => {
+      const r = node.getBoundingClientRect();
+      return { left: r.left, right: r.right, top: r.top, bottom: r.bottom };
+    }));
+    assert.equal(boxes.length, 3);
+    assert.ok(boxes.every(box => box.left >= 0 && box.right <= 320), JSON.stringify(boxes));
+    for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
+      const a = boxes[i], b = boxes[j];
+      assert.ok(a.right <= b.left + 1 || b.right <= a.left + 1 || a.bottom <= b.top + 1 || b.bottom <= a.top + 1, JSON.stringify(boxes));
+    }
+    await page.waitForFunction(() => document.querySelector('main h1').getBoundingClientRect().top >= document.querySelector('header').getBoundingClientRect().bottom);
+    await page.screenshot({ path: path.join(report, 'navigation-320-double-text.png') });
+    await page.getByRole('button', { name: 'Open menu', exact: true }).click();
+    await page.locator('#menu').waitFor();
+  }, { viewport: { width: 320, height: 844 }, reducedMotion: 'reduce' });
+
+  await check('credit remains usable without JavaScript', async (page) => {
+    await page.goto(url + 'mth141/');
+    const credit = page.locator('[data-design-credit]');
+    await credit.locator('summary').click();
+    assert.equal(await credit.evaluate(el => el.open), true);
+    assert.ok(await credit.locator('a').isVisible());
+    assert.equal(await page.locator('[data-toronto-clock] time').count(), 0);
+  }, { javaScriptEnabled: false });
 
   await check('selection follows rapid taps and history without moving the page', async (page) => {
     await page.goto(url + 'mth140/');
