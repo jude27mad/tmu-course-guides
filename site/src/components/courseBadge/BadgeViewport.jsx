@@ -25,7 +25,9 @@ function DrawBadge({ element }) {
     const height = bounds.height * scaleY;
     const left = (bounds.left - canvas.left) * scaleX;
     const bottom = (canvas.bottom - bounds.bottom) * scaleY;
-    const aspect = width / height;
+    // Keep the visible card's proportions while a toolbar resize is ahead of
+    // the canvas drawing-buffer resize (the two scale factors can differ).
+    const aspect = bounds.width / bounds.height;
     if (camera.aspect !== aspect) {
       camera.aspect = aspect;
       camera.updateProjectionMatrix();
