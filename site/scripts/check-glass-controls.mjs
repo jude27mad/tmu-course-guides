@@ -119,14 +119,33 @@ try {
     const section = page.locator('[aria-labelledby="desk-next-heading"]');
     const deadline = section.locator('[data-desk-deadline="reflection-1"]');
     const link = section.getByRole('link', { name: 'Open CEN100 course guide', exact: true });
+    const settleBadge = async () => {
+      // An instant test scroll can fling the original lanyard outside its window.
+      // Capture its settled pose, not two frames of that deliberately preserved swing.
+      await page.waitForFunction(() => {
+        const element = document.querySelector('[data-badge-instance="desk-next"]');
+        if (element?.dataset.badgeRendered !== 'true') return false;
+        let fiber = element[Object.keys(element).find(key => key.startsWith('__reactFiber$'))];
+        while (fiber && !fiber.memoizedProps?.value?.register) fiber = fiber.return;
+        const entry = fiber?.memoizedProps.value.getState().entries.find(item => item.id === 'desk-next');
+        const card = entry?.body.card.current;
+        const anchor = entry?.body.fixed.current;
+        if (!card || !anchor) return false;
+        const velocity = card.linvel();
+        return anchor.translation().y - card.translation().y > 3 && Math.hypot(velocity.x, velocity.y, velocity.z) < 0.1;
+      });
+      await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    };
     await deadline.waitFor();
     assert.equal(await section.getByRole('link', { name: /VIEW IN/ }).count(), 0);
     assert.equal(await deadline.locator('time').getAttribute('datetime'), '2026-10-28');
     assert.match(await deadline.innerText(), /Wed Oct 28[\s\S]*Due by end of day.*11:59 PM Toronto/);
     assert.doesNotMatch(await section.innerText(), /No section saved|Two individual reflections/);
     assert.match(await section.innerText(), /Email Reflection 1 directly/);
+    await link.scrollIntoViewIfNeeded();
+    await settleBadge();
     await deadline.scrollIntoViewIfNeeded();
-    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    await settleBadge();
     await page.screenshot({ path: path.join(report, 'desk-integrated-timer-390.png') });
     await link.scrollIntoViewIfNeeded();
     await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
@@ -143,6 +162,7 @@ try {
     assert.equal(await link.evaluate(element => document.activeElement === element), true);
     assert.equal(await link.evaluate(element => element.matches(':focus-visible')), true);
     assert.notEqual(await link.evaluate(element => getComputedStyle(element).outlineStyle), 'none');
+    await settleBadge();
     await page.screenshot({ path: path.join(report, 'desk-card-keyboard-focus.png') });
     await page.keyboard.press('Enter');
     await page.waitForURL(url + 'cen100/');
