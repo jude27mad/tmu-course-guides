@@ -12,8 +12,10 @@ implementation and its contained, synchronized scroller in place of native
 iOS document scrolling. This branch integrates both production changes.
 
 The final patch preserves every file in `site/src/components/canvas/fluid/`
-exactly as it appears in PR #79. It also preserves that PR's Canvas, composer,
-input, Lenis, and stable 100svh configuration. The earlier experimental native
+exactly as it appears in PR #79. It also preserves that PR's fluid Canvas,
+composer, pointer input, contained synchronized scrolling, and stable 100svh
+layout. Outside the fluid code, Lenis leaves pinch gestures to the browser and
+the existing keyboard/no-JavaScript fallbacks remain usable. The earlier experimental native
 document anchoring and fluid-material changes have been removed from this PR.
 No additional canvas, physics world, dependency, or workflow is introduced.
 
@@ -37,6 +39,13 @@ The remaining changes are:
 - The existing keyboard-scroll handler also handles focus inside the restored
   hidden scroller. Form controls, native disclosures, and editable content keep
   their own key behavior; the touch/fluid input path is unchanged.
+- A small Lenis `virtualScroll` filter in `utils/touch-scroll.mjs` leaves a
+  complete pinch gesture, including both releases, to the browser. Ordinary
+  one-finger scrolling and the original fluid's multi-pointer listener retain
+  their behavior. CSS permits native contained scrolling without JavaScript.
+- Phone page transitions keep the existing full-width fade independently of
+  the active scroll owner. They must not select the desktop loading-card
+  animation merely because the scroller is contained again.
 
 The original Giats card drop, damping, forces, and offscreen simulation remain
 unchanged. Course content, typography, spacing, deadlines, saved records, the
@@ -57,8 +66,8 @@ reviewed for badges, directory clipping, statement motion, fluid response, and
 slicing together. That run still failed a Chromium credit tap in the full
 footer; keyboard activation, the compact footer, and WebKit passed. Waiting for
 native activation confirmed that this was a missed tap rather than merely an
-immediate assertion. The subsequent reduced-motion footer change is pending
-browser verification.
+immediate assertion. The subsequent reduced-motion footer change passed in
+both Chromium and WebKit on the PR #79 base.
 
 Those results do **not** verify the final PR #79-based implementation. The
 production restoration changed several existing test contracts. In
@@ -73,8 +82,9 @@ the data-test stage stopped before build/browser checks with nine failures:
 The checks now follow PR #79's active contract: real pointer sequences, shader
 colour/texture values, the restored black base, and the stable contained
 viewport. They no longer require the removed allocation optimization or native
-touch adapter. The orphaned unit test importing the gesture filter deleted by
-PR #79 has also been removed; the real browser pinch check remains. The original fluid source is unchanged. Pinch zoom, keyboard
+touch adapter. The real browser pinch check caught Lenis intercepting zoom
+after PR #79; its filter and unit tests now live outside the original fluid
+folder. The original fluid source is unchanged. Pinch zoom, keyboard
 scrolling, reduced motion, saved work, navigation, and control checks remain.
 
 The dedicated iOS document-scrolling workflow and script were retired with that
@@ -90,6 +100,14 @@ actual 100svh layout, then verifies retained background state, no footer reset,
 and no position-only game-canvas update. It no longer asserts an altered fluid
 resource lifecycle. The earlier native-document canvas-alignment check was
 removed together with that implementation.
+
+On `ca12573a`, all 261 data tests and all CI jobs passed. Pages verified the
+first returning badge frame (one draw), zero footer resets, retained background
+material, and zero position-only game-canvas updates. It exposed remaining
+phone transition, pinch, and no-JavaScript regressions; this revision repairs
+those without weakening their assertions. The iPhone slicing check now sends
+the pointer input used by the restored scene, still requiring its real raycaster
+to register a slice. Final results belong in the pull request after verification.
 
 Linux WebKit has no animated iOS Safari toolbar. CI recordings can verify the
 application's layout and drawing behavior, but cannot certify frame pacing,
@@ -113,3 +131,6 @@ review is needed after deployment.
 - [GSAP ScrollTrigger configuration](https://gsap.com/docs/v3/Plugins/ScrollTrigger/static.config()/):
   mobile height refreshes can jump as start/end values are recalculated.
   Application-owned context teardown must also be avoided when layout is stable.
+- [Lenis settings](https://github.com/darkroomengineering/lenis#settings):
+  `virtualScroll` can return false to leave an input event unsmoothed. The
+  existing dependency supports this without modifying its source or the fluid.

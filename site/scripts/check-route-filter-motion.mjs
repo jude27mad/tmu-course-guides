@@ -688,13 +688,14 @@ try {
         await page.screenshot({ path: path.join(report, `${label}-companion-and-game.png`) });
         // Interact with centre-launched discs on their actual shared DOM surface.
         // A software-rendered frame can outlast a flight. On iPhone, sample the
-        // touch path within each painted frame so native pointer cancellation
-        // and a rapid mouse sweep cannot make this mobile check miss every disc.
+        // input path within each painted frame so a rapid mouse sweep cannot
+        // make this mobile check miss every disc under software rendering.
         // This dispatches input only: the real scene raycaster must slice a disc.
         if (label === 'iphone') {
           await page.evaluate(async () => {
             const stage = document.querySelector('[data-game-discs]');
             const deadline = performance.now() + 12000;
+            const nativeTouch = document.documentElement.dataset.scrollMode === 'document';
             // Linux WebKit cannot construct Touch/TouchEvent. Dispatch the same
             // touch-list fields on a DOM event; do not call scene callbacks.
             const dispatchTouch = (type, touches, changedTouches) => {
@@ -707,13 +708,17 @@ try {
               const bounds = stage.getBoundingClientRect();
               const clientX = bounds.left + bounds.width / 2;
               let lastTouch;
-              for (let clientY = Math.max(1, bounds.top + 1); clientY < Math.min(innerHeight - 1, bounds.bottom); clientY += 8) {
-                const touch = { identifier: 1, target: stage, clientX, clientY, pageX: clientX + scrollX, pageY: clientY + scrollY };
-                lastTouch = touch;
-                const type = clientY === Math.max(1, bounds.top + 1) ? 'touchstart' : 'touchmove';
-                dispatchTouch(type, [touch], [touch]);
+              for (let clientY = Math.max(1, bounds.top + 1); clientY < Math.min(innerHeight - 1, bounds.bottom); clientY += 32) {
+                if (nativeTouch) {
+                  const touch = { identifier: 1, target: stage, clientX, clientY, pageX: clientX + scrollX, pageY: clientY + scrollY };
+                  lastTouch = touch;
+                  const type = clientY === Math.max(1, bounds.top + 1) ? 'touchstart' : 'touchmove';
+                  dispatchTouch(type, [touch], [touch]);
+                } else {
+                  stage.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, pointerType: 'touch', pointerId: 1, isPrimary: true, clientX, clientY }));
+                }
               }
-              dispatchTouch('touchend', [], lastTouch ? [lastTouch] : []);
+              if (nativeTouch) dispatchTouch('touchend', [], lastTouch ? [lastTouch] : []);
             }
           });
         } else {
