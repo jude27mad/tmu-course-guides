@@ -220,7 +220,7 @@ try {
       const a = boxes[i], b = boxes[j];
       assert.ok(a.right <= b.left + 1 || b.right <= a.left + 1 || a.bottom <= b.top + 1 || b.bottom <= a.top + 1, JSON.stringify(boxes));
     }
-    assert.ok(await page.evaluate(() => document.querySelector('main h1').getBoundingClientRect().top >= document.querySelector('header').getBoundingClientRect().bottom));
+    await page.waitForFunction(() => document.querySelector('main h1').getBoundingClientRect().top >= document.querySelector('header').getBoundingClientRect().bottom);
     await page.screenshot({ path: path.join(report, 'navigation-320-double-text.png') });
     await page.getByRole('button', { name: 'Open menu', exact: true }).click();
     await page.locator('#menu').waitFor();

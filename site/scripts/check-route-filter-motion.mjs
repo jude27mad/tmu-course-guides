@@ -323,7 +323,7 @@ try {
         }, fraction);
         if (label === 'iphone-still') {
           await position(0);
-          assert.ok(await page.locator('[data-companion-statement]').evaluate(el => el.offsetHeight < innerHeight));
+          await page.waitForFunction(() => document.documentElement.dataset.motion === 'off' && document.querySelector('[data-companion-statement]')?.offsetHeight < innerHeight);
           assert.equal(await page.locator('[data-companion-game] canvas').count(), 0);
           assert.equal(await page.locator('[data-companion-statement] .word').count(), 0);
           await page.screenshot({ path: path.join(report, `${label}-companion.png`) });
