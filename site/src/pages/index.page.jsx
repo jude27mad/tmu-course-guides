@@ -1,10 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import About from '@src/pages/components/about/Index';
-import Clients from '@src/pages/components/clients/Index';
 import CustomHead from '@src/components/dom/CustomHead';
 import { DESK_TEXT } from '@src/lib';
 import Home from '@src/pages/components/home/Index';
-import Projects from '@src/pages/components/projects/Index';
 import Quote from '@src/pages/components/quote/Index';
 import useDesk from '@src/pages/components/useDesk';
 import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
@@ -12,8 +10,7 @@ import { useStore } from '@src/store';
 import { withBasePath } from '@src/utils/basePath';
 
 // The Desk (old index.html) on the original Home: masthead (hero), the next item
-// across the courses (About), the course directory (Clients), one sentence
-// (Quote) and the course cards (Projects).
+// across the courses (About) and the animated companion statement (Quote).
 const seo = {
   title: DESK_TEXT.title,
   description: DESK_TEXT.description,
@@ -49,9 +46,7 @@ function Page() {
       <CustomHead {...seo} />
       <Home />
       <About desk={desk} />
-      <Clients desk={desk} />
       <Quote />
-      <Projects desk={desk} />
     </>
   );
 }

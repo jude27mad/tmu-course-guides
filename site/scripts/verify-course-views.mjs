@@ -57,7 +57,9 @@ try {
     await page.getByRole('navigation', { name: 'Course views' }).waitFor();
     const box = await page.locator('[data-assignment-link]').first().boundingBox();
     assert.ok(box && box.y + box.height < 844, JSON.stringify(box));
-    assert.equal(await page.locator('[data-course-artwork] img').count(), 1);
+    assert.equal(await page.locator('[data-course-badge="cen100"]').count(), 1);
+    assert.equal(await page.locator('[data-course-artwork], img[src*="images/courses"]').count(), 0);
+    await page.locator('[data-badge-instance="header-cen100"][data-badge-rendered="true"]').waitFor();
     await page.screenshot({ path: path.join(report, 'cen100-work-390.png') });
     return { firstAssignmentBottom: box.y + box.height };
   });
@@ -533,6 +535,8 @@ try {
     await check(`layout and readable detail at ${width}px`, async () => {
       await page.setViewportSize({ width, height: 900 });
       await ready(page, 'mth141/');
+      assert.equal(await page.locator('[data-course-badge="mth141"]').count(), 1);
+      await page.locator('[data-badge-instance="header-mth141"][data-badge-rendered="true"]').waitFor();
       const overflow = await page.evaluate(() => document.querySelector('main').scrollWidth > innerWidth + 1);
       assert.equal(overflow, false);
       const box = await page.locator('[data-assignment-link]').first().boundingBox();
