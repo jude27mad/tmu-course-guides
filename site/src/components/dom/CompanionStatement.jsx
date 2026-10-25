@@ -49,6 +49,7 @@ function CompanionStatement() {
           {/* plain until the page is in (and without JS); then the original scroll fly-in */}
           {isLoading ? <span>{QUOTE}</span> : <TextOpacity trigger={rootRef.current}>{QUOTE}</TextOpacity>}
         </blockquote>
+        <p className={clsx(styles.progress, 'h6')} data-companion-progress>Progress stays in this browser.</p>
         <div className={styles.canvas} aria-hidden="true" data-companion-game data-active={active}>
           {mounted && <FruitNinja active={active} eventSource={stageRef} />}
         </div>

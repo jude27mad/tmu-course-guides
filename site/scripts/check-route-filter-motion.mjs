@@ -313,6 +313,8 @@ try {
         await page.goto(base);
         await ready(page);
         assert.equal(await page.locator('[data-companion-statement]').count(), 1);
+        assert.equal(await page.locator('[data-companion-statement] [data-companion-progress]').count(), 1);
+        assert.equal(await page.locator('[data-companion-progress]').innerText(), 'Progress stays in this browser.');
         assert.equal(await page.getByText('Open a course guide below', { exact: true }).count(), 0);
         const position = async (fraction) => page.evaluate((fraction) => {
           const section = document.querySelector('[data-companion-statement]');
@@ -332,6 +334,10 @@ try {
         await position(0.35);
         await page.waitForFunction(() => Number(document.querySelector('[data-game-discs]')?.dataset.gameDiscs) > 0);
         assert.equal(await page.locator('[data-companion-game] canvas').count(), 1);
+        const caption = await page.locator('[data-companion-progress]').boundingBox();
+        const statement = await page.locator('[data-companion-statement] blockquote').boundingBox();
+        assert.ok(caption.y >= statement.y + statement.height, 'the progress note stays beneath the statement');
+        assert.ok(caption.y + caption.height <= await page.evaluate(() => innerHeight), 'the progress note fits in the game stage');
         const beforeStorage = await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort()));
         const words = await page.locator('[data-companion-statement] .word').count();
         assert.ok(words > 15);
