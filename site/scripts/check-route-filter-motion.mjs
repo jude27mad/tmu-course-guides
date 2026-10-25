@@ -331,6 +331,24 @@ try {
           await page.screenshot({ path: path.join(report, `${label}-companion.png`) });
           return { reducedMotion: true };
         }
+        // Reproduce the blank panel in the reported screenshots: the scene is
+        // half way into view while the preceding Desk controls are still above.
+        await page.evaluate(() => {
+          const section = document.querySelector('[data-companion-statement]');
+          const scroller = document.documentElement.dataset.scrollMode === 'document' ? window : document.querySelector('main');
+          const top = scroller === window ? scrollY : scroller.scrollTop;
+          scroller.scrollTo(0, top + section.getBoundingClientRect().top - innerHeight * 0.5);
+        });
+        await page.waitForFunction(() => {
+          const words = [...document.querySelectorAll('[data-companion-statement] .word')];
+          return words.length > 15 && words.filter(word => {
+            const box = word.getBoundingClientRect();
+            return Number(getComputedStyle(word).opacity) > 0.3 && box.bottom > 0 && box.top < innerHeight && box.right > 0 && box.left < innerWidth;
+          }).length >= 3;
+        }, null, { timeout: 8000 });
+        await page.screenshot({ path: path.join(report, `${label}-companion-entry.png`) });
+        const sceneRatio = await page.locator('[data-companion-statement]').evaluate(el => el.offsetHeight / innerHeight);
+        assert.ok(sceneRatio <= (label === 'iphone' ? 1.3 : 1.55), `the closing scene reserves ${sceneRatio} viewport heights`);
         await position(0.35);
         await page.waitForFunction(() => Number(document.querySelector('[data-game-discs]')?.dataset.gameDiscs) > 0);
         assert.equal(await page.locator('[data-companion-game] canvas').count(), 1);
