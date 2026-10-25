@@ -30,7 +30,7 @@ export default function CourseBadge({ instanceId, courseId, next, ready = true, 
   );
 
   useEffect(() => {
-    registry.register(instanceId, { courseId, element: root.current });
+    registry.register(instanceId, { element: root.current });
     return () => registry.unregister(instanceId);
   }, [registry, instanceId]);
 

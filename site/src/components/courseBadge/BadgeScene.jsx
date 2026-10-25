@@ -105,15 +105,7 @@ export function BadgeWorld({ registry }) {
   return (
     <Physics paused={paused} interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
       {entries.map((entry) => (
-        <Lanyard
-          key={`${entry.id}-${rest}`}
-          body={entry.body}
-          x={entry.slot * SPACING}
-          rest={rest}
-          paused={paused || !entry.visible}
-          enabled={entry.visible || rest}
-          swinging={() => entry.swing}
-        />
+        <Lanyard key={`${entry.id}-${rest}`} body={entry.body} x={entry.slot * SPACING} rest={rest} paused={paused || !entry.visible} enabled={entry.visible || rest} swinging={() => entry.swing} />
       ))}
     </Physics>
   );
@@ -188,7 +180,7 @@ function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed
 
   useFrame((_, delta) => {
     // the world is paused (off screen or motion off): nothing moves after the first pose
-    if (textures && started.current && element) element.dataset.badgeRendered = 'true';
+    if (textures && started.current && element?.dataset.badgeRendered !== 'true') element.dataset.badgeRendered = 'true';
     if (idle && started.current) return;
     const { fixed, j1, j2, j3, cardObject } = body;
     const object = cardObject.current?.parent;

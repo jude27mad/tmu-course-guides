@@ -118,7 +118,12 @@ function CourseCards({ desk }) {
                   </div>
                 </div>
               </div>
-              <div ref={(el) => (cardRefs.current[index] = el)} className={clsx(styles.canvas, index === 0 && styles.firstCard, index === last && styles.lastCard)} data-surface="dark" data-badge-backing />
+              <div
+                ref={(el) => (cardRefs.current[index] = el)}
+                className={clsx(styles.canvas, index === 0 && styles.firstCard, index === last && styles.lastCard)}
+                data-surface="dark"
+                data-badge-backing
+              />
             </Link>
           );
         })}
