@@ -336,6 +336,16 @@ try {
         await page.waitForTimeout(400);
         await page.evaluate(() => {
           window.resizeEvidence = { footerResets: 0, gamePositionUpdates: 0 };
+          const fluid = [...window.canvasStores].find(store => store.getState().gl?.domElement.closest('#fluidCanvas'))?.getState().gl;
+          if (!fluid) throw new Error('Find the actual fluid renderer');
+          window.fluidMaterials = new Set();
+          const render = fluid.render;
+          fluid.render = function (scene, camera) {
+            scene.traverse(object => {
+              if (object.material?.uniforms?.texelSize) window.fluidMaterials.add(object.material);
+            });
+            return render.call(this, scene, camera);
+          };
           const footer = document.querySelector('footer > [data-surface="dark"]');
           if (!footer?.matches('[data-surface="dark"]')) throw new Error('Find the actual footer');
           window.footerResizeObserver = new MutationObserver(records => {
@@ -353,6 +363,8 @@ try {
           window.backgroundBeforeResize = backgroundMaterial();
           if (!window.backgroundBeforeResize) throw new Error('Find the actual animated background');
         });
+        await page.waitForFunction(() => window.fluidMaterials.size >= 7);
+        await page.evaluate(() => { window.fluidMaterialsBeforeResize = window.fluidMaterials.size; });
         // A toolbar-sized height change must not reset an already running
         // animation or replace its GPU material. Width stays unchanged.
         for (const height of [914, 844, 914, 844]) {
@@ -362,6 +374,7 @@ try {
         await page.evaluate(() => {
           window.footerResizeObserver.disconnect();
           window.resizeEvidence.backgroundRetained = window.backgroundMaterial() === window.backgroundBeforeResize;
+          window.resizeEvidence.newFluidMaterials = window.fluidMaterials.size - window.fluidMaterialsBeforeResize;
           const store = [...window.canvasStores].find(item => item.getState().gl?.domElement.closest('[data-companion-game]'));
           window.stopGameSizeWatch = store.subscribe((state, previous) => {
             if (state.size.width === previous.size.width && state.size.height === previous.size.height &&
@@ -382,7 +395,7 @@ try {
         });
         await writeFile(path.join(report, 'iphone-scroll-resize-continuity.json'), JSON.stringify(evidence, null, 2));
         await page.screenshot({ path: path.join(report, 'iphone-scroll-resize-continuity.png') });
-        assert.deepEqual(evidence, { footerResets: 0, gamePositionUpdates: 0, backgroundRetained: true },
+        assert.deepEqual(evidence, { footerResets: 0, gamePositionUpdates: 0, backgroundRetained: true, newFluidMaterials: 0 },
           'scrolling and toolbar resizing retain animation state without position-only canvas updates');
         return evidence;
       });
