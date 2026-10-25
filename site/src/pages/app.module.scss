@@ -24,13 +24,13 @@
 .root {
   display: flex;
   align-items: center;
-  height: var(--app-viewport-height);
+  height: 100svh;
   width: 100vw;
 }
 .layout {
   background-color: transparent;
   opacity: 1;
-  height: 100%;
+  height: 100svh;
 
   display: flex;
   flex-direction: column;
@@ -45,16 +45,11 @@
     position: fixed;
     transition: 0.35s ease-in-out color;
     color: var(--black);
-    // `main` is the scroller. The original had overflow: hidden (Lenis only); a real
-    // scroll container restores keyboard scrolling, find-in-page, focus
-    // scrolling and native touch panning when motion is paused. Lenis smooths
-    // wheel/touch input while motion is enabled and adds .lenis-stopped
-    // (overflow hidden) while the loader or a panel is up.
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    max-height: var(--app-viewport-height);
-    height: var(--app-viewport-height) !important;
+    // Original Giats viewport and scroll ownership. Native panning must not
+    // take a gesture away from Lenis and the fluid's pointermove listener.
+    overflow: hidden;
+    max-height: 100svh;
+    height: 100svh !important;
     width: 100%;
     outline: none;
 
@@ -95,6 +90,11 @@
       }
     }
   }
+}
+
+// The guide's explicit Pause motion setting keeps ordinary scrolling usable.
+:global(html[data-motion='off']) .layout .main:not(:global(.lenis-stopped)) {
+  overflow-y: auto;
 }
 
 // The pages' paper behind `main` during a page change: a fading page shows it

@@ -1,4 +1,3 @@
-import { nativeIOSScroll } from '@src/utils/scrollRoot';
 import { useEffect, useRef } from 'react';
 
 import { Vector2 } from 'three';
@@ -41,23 +40,10 @@ const usePointerEvents = (mainRef, size, force) => {
       });
     };
 
-    // The calculation above is copied unchanged from Giats. Safari document
-    // scrolling cancels touch pointermove, so only adapt its event transport:
-    // each changed finger supplies the same coordinates to the original brush.
-    // Do not synthesize contacts/releases, reset the shared pointer or add dye.
-    const ios = nativeIOSScroll();
-    const pointerMove = (event) => {
-      if (!ios || event.pointerType !== 'touch') handlePointerMove(event);
-    };
-    const touchMove = (event) => {
-      Array.from(event.changedTouches || event.touches).forEach(handlePointerMove);
-    };
-    element.addEventListener('pointermove', pointerMove, { passive: true });
-    if (ios) element.addEventListener('touchmove', touchMove, { passive: true });
+    element.addEventListener('pointermove', handlePointerMove, { passive: true });
 
     return () => {
-      element.removeEventListener('pointermove', pointerMove);
-      if (ios) element.removeEventListener('touchmove', touchMove);
+      element.removeEventListener('pointermove', handlePointerMove);
     };
   }, [mainRef, size, force]);
 

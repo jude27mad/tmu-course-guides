@@ -65,12 +65,18 @@ main.lenis-stopped {
 }
 
 body {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   background-color: var(--white);
   min-height: var(--app-viewport-height);
   max-height: 100%;
   overflow: hidden;
-  // Long-press link previews and copying deadline text, rooms and sections
-  // stay available (the original switched both off for the whole page).
+  // Original Giats touch behavior: selection and long-press callouts must not
+  // replace the continuous pointer gesture consumed by the fluid.
 
   > canvas {
     position: fixed;
