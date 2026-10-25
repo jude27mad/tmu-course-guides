@@ -5,7 +5,6 @@ import CustomHead from '@src/components/dom/CustomHead';
 import { DESK_TEXT } from '@src/lib';
 import Home from '@src/pages/components/home/Index';
 import Projects from '@src/pages/components/projects/Index';
-import Quote from '@src/pages/components/quote/Index';
 import useDesk from '@src/pages/components/useDesk';
 import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
 import { useStore } from '@src/store';
@@ -50,7 +49,6 @@ function Page() {
       <Home />
       <About desk={desk} />
       <Clients desk={desk} />
-      <Quote />
       <Projects desk={desk} />
     </>
   );

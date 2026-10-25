@@ -5,7 +5,7 @@ import { courseIdFromPath, pathKey, wantsSRGB } from '@src/utils/routes';
 
 import Footer from '@src/components/dom/Footer';
 import CompactFooter from '@src/pages/course/components/workspace/CompactFooter';
-import PreFooter from '@src/components/dom/PreFooter';
+import CompanionStatement from '@src/components/dom/CompanionStatement';
 import gsap from 'gsap';
 import { isMobileNow } from '@src/hooks/useIsMobile';
 import { scrollToHash } from '@src/utils/scrollToHash';
@@ -454,7 +454,7 @@ function Layout({ children, layoutRef, mainRef, router }) {
         <CompactFooter />
       ) : (
         <>
-          <PreFooter />
+          <CompanionStatement />
           <footer className={styles.footer}>
             <Footer />
           </footer>

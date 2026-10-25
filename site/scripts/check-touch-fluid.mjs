@@ -317,6 +317,21 @@ try {
         assertFluidSwipe(trace);
         return trace;
       });
+      if (route === '') {
+        await check('the hidden game and animated statement share input with the liquid trail', async () => {
+          await page.evaluate(() => {
+            const section = document.querySelector('[data-companion-statement]');
+            const main = document.querySelector('main');
+            main.scrollTo(0, main.scrollTop + section.getBoundingClientRect().top + innerHeight * 0.3);
+          });
+          await waitOnPage(page, () => Number(document.querySelector('[data-game-discs]')?.dataset.gameDiscs) > 0);
+          assert.equal(await page.locator('[data-companion-game] canvas').count(), 1);
+          const trace = await swipe(context, page, 'companion-game-fluid.png');
+          assertFluidSwipe(trace);
+          assert.equal(await page.locator('[data-companion-statement]').count(), 1);
+          return trace;
+        });
+      }
       if (route === 'cen100/') {
         await check('Pause / Play Motion changes touch mode without a reload', async () => {
           await toggleMotion(page, 'Pause motion');

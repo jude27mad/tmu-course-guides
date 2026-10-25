@@ -12,7 +12,7 @@ function TextOpacity({ children, trigger }) {
 
   const createTextOpacityAnimation = (element, scrollTrigger) => {
     const splitted = new SplitType(element, { types: 'words' });
-    splitted.words.forEach((word) => gsap.set(word, { opacity: 0 }));
+    gsap.set(splitted.words, { opacity: 0 });
 
     gsap.fromTo(
       splitted.words,
@@ -33,6 +33,7 @@ function TextOpacity({ children, trigger }) {
         yPercent: 0,
         z: 0,
         scrollTrigger: {
+          id: 'companion-statement',
           trigger: scrollTrigger,
           start: 'top top',
           end: 'bottom bottom',
@@ -46,18 +47,21 @@ function TextOpacity({ children, trigger }) {
         },
       },
     );
+    return splitted;
   };
 
   useIsomorphicLayoutEffect(() => {
     // Motion off: the sentence is simply shown (no scroll-driven fly-in).
     if (still) return undefined;
     const element = containerRef.current;
+    let split;
     const ctx = gsap.context(() => {
-      createTextOpacityAnimation(element, trigger);
+      split = createTextOpacityAnimation(element, trigger);
     }, element);
 
     return () => {
       ctx.revert();
+      split?.revert();
     };
   }, [trigger, still]);
 

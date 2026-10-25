@@ -1,4 +1,4 @@
-import { Canvas } from '@react-three/fiber';
+import { Canvas, events } from '@react-three/fiber';
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { useCoarsePointer } from '@src/hooks/useMediaQuery';
@@ -9,11 +9,22 @@ const FruitNinja = dynamic(() => import('@src/components/dom/prefooter/FruitNinj
 // and the text, while the shared View.Port canvas draws under the paper (only
 // through windows), so it cannot be folded in without changing the look.
 // It renders only while `active` (on screen and motion on).
-function Index({ active }) {
+function Index({ active, eventSource }) {
   const coarse = useCoarsePointer();
 
   return (
     <Canvas
+      eventSource={eventSource}
+      events={(state) => ({
+        ...events(state),
+        compute: (event, current) => {
+          const bounds = eventSource.current?.getBoundingClientRect();
+          if (!bounds?.width || !bounds.height) return;
+          current.pointer.set(((event.clientX - bounds.left) / bounds.width) * 2 - 1, -((event.clientY - bounds.top) / bounds.height) * 2 + 1);
+          current.raycaster.setFromCamera(current.pointer, current.camera);
+        },
+      })}
+      fallback={<span aria-hidden="true" />}
       frameloop={active ? 'always' : 'never'}
       dpr={1}
       gl={{
@@ -28,12 +39,12 @@ function Index({ active }) {
         borderRadius: '1.3888888889vw',
         height: '100%',
         width: '100%',
-        touchAction: 'pan-y',
+        pointerEvents: 'none',
       }}
     >
       {/* keeps a loading scene (the physics chunk, the disc font) inside the canvas */}
       <Suspense fallback={null}>
-        <FruitNinja active={active} />
+        <FruitNinja active={active} eventSource={eventSource} />
       </Suspense>
     </Canvas>
   );
