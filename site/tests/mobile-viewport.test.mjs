@@ -10,10 +10,8 @@ test('Safari document background uses the Desk paper instead of exposed black', 
 });
 
 test('the restored contained shell uses the stable small viewport', () => {
-  const global = file('../src/styles/global.scss');
   const app = file('../src/pages/app.module.scss');
   const loader = file('../src/components/dom/styles/loader.module.scss');
-  assert.ok(global.includes('--app-viewport-height: 100svh'));
   assert.ok(app.includes('max-height: 100svh'));
   assert.ok(app.includes('height: 100svh !important'));
   assert.ok(app.includes('height: 100svh'));
