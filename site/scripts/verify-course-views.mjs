@@ -92,7 +92,12 @@ try {
       assert.deepEqual(await page.evaluate(() => window.badgeBodies[4].translation()), before, 'paused pose stays fixed');
       await page.screenshot({ path: path.join(report, `${course}-singleton-paused.png`) });
       await page.evaluate(() => window.badgeRegistry.unregister(window.badgeRegistry.getState().entries[0].id));
-      await page.waitForFunction(() => window.badgeRegistry.getState().entries.length === 0 && window.badgeBodies.every(body => !body.isValid()));
+      await page.waitForFunction(() => window.badgeRegistry.getState().entries.length === 0 && window.badgeBodies.every(body => {
+        // The final View also frees the WASM world: Rapier then throws instead
+        // of returning false from an old body's isValid(). Both mean disposed.
+        try { return !body.isValid(); }
+        catch (error) { if (error.message === 'null pointer passed to rust') return true; throw error; }
+      }));
       await page.locator('[data-badge-fallback]').waitFor({ state: 'visible' });
       await page.screenshot({ path: path.join(report, `${course}-last-view-removed.png`) });
     }
@@ -166,7 +171,7 @@ try {
       emptyProgress.dispose?.();
       await desk.clock.setFixedTime(new Date('2099-01-01T12:00:00Z'));
       await desk.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
-      await desk.getByText('No upcoming deadlines', { exact: true }).first().waitFor();
+      await desk.locator('[aria-labelledby="desk-next-heading"]').getByText('No upcoming deadlines', { exact: true }).waitFor();
       assert.equal(await badge.count(), 0);
       assert.equal(await desk.locator('[class*="about_imageContainer"]').count(), 0);
       await desk.screenshot({ path: path.join(report, 'desk-no-upcoming.png') });

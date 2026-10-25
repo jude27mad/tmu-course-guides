@@ -3,7 +3,7 @@
 .root {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
+  overflow: clip;
   background: transparent;
   color: var(--black);
   padding: clamp(90px, 9vw, 134px) clamp(18px, 4vw, 64px) 32px;

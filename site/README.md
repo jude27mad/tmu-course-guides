@@ -77,11 +77,19 @@ No analytics and no requests to other hosts. Each exported page carries a Conten
 Giats's layout, moving window masks, typography, transitions and scrolling remain
 the application shell. The home windows contain one continuous signal field
 adapted from Pixels71's Kairo (`97426fdfa1f3bd812cf0acc364273c28a89f871e`).
-Next Up and course artwork use locally stored photographs of a steel bridge
-mechanism (CEN100), a worked integral (MTH140) and a system of linear equations
-(MTH141), with the canvas pixel-to-sharp reveal from Kaisei Sadatoki's Atelier North for Codrops
-(`6703fc3f15ec92979964070814a99855d0baa38f`). Both respect the existing Pause
-motion and reduced-motion preferences.
+Next Up and the individual course headers reuse the original physics lanyard
+badges. Each position mounts only its relevant course: the Desk derives it from
+its live next deadline, and each course header uses its own course ID. The
+separate `/courses/` directory remains the place to browse all three courses.
+
+`src/components/courseBadge/` owns the shared registry, original textures and
+lanyards. `BadgeWorld` is mounted once beside `View.Port` in the existing shared
+canvas, independently of any first View. Stable instance slots keep bodies
+separate; changing the Desk course changes its face without replacing its
+lanyard. Pausing retains the current pose, while initially reduced motion uses
+an upright resting pose. Offscreen bodies stop stepping, and unmounting a badge
+removes its bodies and disposes its textures. No second badge physics engine or
+carousel is introduced.
 
 See [animation code provenance and notices](public/licenses/README.md) and
 [individual artwork sources and permissions](public/licenses/ARTWORK-CREDITS.md). Kairo's
@@ -91,7 +99,7 @@ so the included notice comes from Codrops' official licensing page. Neither
 template's photographs are reused.
 
 
-The artwork is published on the [website](https://jude27mad.github.io/tmu-course-guides/). See the [QA record](../docs/qa/giats-artwork/README.md) and [subject-image screenshot gallery](../docs/qa/giats-artwork/subject-imagery/README.md).
+The historical [QA record](../docs/qa/giats-artwork/README.md) and [subject-image screenshot gallery](../docs/qa/giats-artwork/subject-imagery/README.md) document the earlier photograph implementation.
 
-Implementation lives in `src/components/artwork/` (signal field) and `src/components/courseArtwork/` (image mapping and reveal). Update `artworks.mjs` and the individual asset credits together when changing photographs. The engineering image is the unresolved/empty Next Up fallback. Source images are local 800/1600-pixel WebPs; no image host is contacted at runtime.
+The signal field remains in `src/components/artwork/`. The inactive legacy photograph components and their asset notices are retained for provenance; active Desk, directory and course headers do not render them. Badge loading/error states use a local HTML course label, and an empty Next Up has no image window.
 

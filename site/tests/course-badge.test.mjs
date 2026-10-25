@@ -55,4 +55,3 @@ test('registry notifications stop after unsubscribe and unmount releases all ent
   assert.equal(registry.getState().entries.length, 0);
   assert.equal(createBadgeRegistry().getState().entries.length, 0);
 });
-
