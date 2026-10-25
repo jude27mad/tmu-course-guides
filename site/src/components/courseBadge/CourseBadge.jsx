@@ -36,10 +36,10 @@ export default function CourseBadge({ instanceId, courseId, next, ready = true, 
     const observer = new IntersectionObserver(
       ([item]) => {
         intersecting = item.isIntersecting;
-        swing = item.intersectionRatio >= 0.7;
+        swing = item.isIntersecting; // Giats uses isIntersecting, not a ratio cutoff.
         update();
       },
-      { threshold: [0, 0.7] },
+      { threshold: 0.7 },
     );
     observer.observe(root.current);
     document.addEventListener('visibilitychange', update);

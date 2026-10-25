@@ -10,6 +10,11 @@ rendering.
 
 Production baseline: `629ee8e505aded320a155f65577b243258aee9c4`.
 
+PR #78 subsequently merged as `5ffe30c9`, restoring Giats's original card forces,
+drop, damping, offscreen simulation, and fluid input. This branch integrates that
+production update and retains all of those motion calculations and its provenance
+tests. The changes below affect drawing alignment and resource lifetimes.
+
 ## Investigation
 
 - `Footer.jsx` rebuilds its GSAP context on every window-height change, temporarily

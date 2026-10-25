@@ -1,6 +1,6 @@
 // Checks the site palette (src/lib/palette.mjs) in what GitHub Pages publishes (.github/workflows/pages.yml),
 // after `pages-site.mjs build`:
-//   1. Only the two restored Giats fluid colours may survive from the old palette. Black with alpha
+//   1. Only the original Giats fluid colours and its unused default may survive from the old palette. Black with alpha
 //      is allowed only in Schedule-X's own
 //      calendar theme (its dialog shadows and --sx-* shadow variables); those third-party hits are listed in
 //      the report, not failed.
@@ -27,9 +27,11 @@ if (!folder) {
 // The previous palette, as authored and as a build can write it.
 const OLD = ['#F0F4F1', '#28282B', '#F2FFBD', '#D7D7D4', '#292928', '#0B0C0B', '#020002', '#09050C', '#070410', '#F9F9F9'];
 const OLD_TEXT = new RegExp(`(?:#|0x)(?:${OLD.map((hex) => hex.slice(1)).join('|')})(?![0-9a-f])|rgba?\\(\\s*40\\s*,\\s*40\\s*,\\s*43\\b`, 'gi');
-// Source tests permit these only in the fluid module and token. Next's bundle
-// combines sources, so the export scan must preserve that narrow exception.
-const ORIGINAL_GIATS_FLUID = new Set(['#D7D7D4', '#070410']);
+// Source tests permit these only in the fluid module and token. The verbatim
+// upstream options include #F0F4F1, but Fluid uses its supplied #D7D7D4 prop.
+// Next's bundle combines sources, so preserve those source-scoped exceptions
+// here; the browser sweep below still rejects old colours in the visible UI.
+const ORIGINAL_GIATS_FLUID = new Set(['#D7D7D4', '#070410', '#F0F4F1']);
 const BLACK_ALPHA = /rgba?\(\s*0\s*,\s*0\s*,\s*0\s*[,/]|#000000[0-9a-f]{2}(?![0-9a-f])|#000[0-9a-f](?![0-9a-f])/gi;
 const TEXT = new Set(['.html', '.js', '.css', '.json', '.txt', '.webmanifest', '.svg', '.xml']);
 
