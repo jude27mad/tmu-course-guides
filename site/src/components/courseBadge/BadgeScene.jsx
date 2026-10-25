@@ -293,7 +293,11 @@ function ClipToCard({ element }) {
 
 export function BadgeView({ entry, look, rest }) {
   return (
-    <View visible={entry.visible} style={{ position: 'relative', display: 'block', backgroundColor: 'transparent', height: '100%', width: '100%' }}>
+    // View tracks its DOM rectangle every frame and culls it offscreen. The
+    // asynchronous observer pauses physics only: gating drawing on it too can
+    // leave a blank window during a quick return into view. Draw the last pose
+    // while that observer catches up and the same lanyard resumes.
+    <View style={{ position: 'relative', display: 'block', backgroundColor: 'transparent', height: '100%', width: '100%' }}>
       <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={25} />
       <ambientLight intensity={Math.PI} />
       <BadgeCard key={entry.id} body={entry.body} offsetX={entry.slot * SPACING} look={look} idle={!entry.visible || rest} element={entry.element} />

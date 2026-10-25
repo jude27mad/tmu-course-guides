@@ -357,6 +357,41 @@ try {
           await writeFile(path.join(report, `${name}.json`), JSON.stringify(samples));
           await page.waitForTimeout(400);
           await page.screenshot({ path: path.join(report, `${name}.png`) });
+          if (!route) {
+            // Model a delayed visibility observer after re-entry. Keeping the
+            // physics asleep must not blank the already mounted View. The
+            // regression was visible in the rapid-scroll recording even though
+            // the body identity/finite-pose checks passed.
+            await badge.evaluate(element => {
+              let fiber = element[Object.keys(element).find(key => key.startsWith('__reactFiber$'))];
+              while (fiber && !fiber.memoizedProps?.value?.register) fiber = fiber.return;
+              window.delayedBadgeRegistry = fiber.memoizedProps.value;
+              window.delayedBadgeEntry = window.delayedBadgeRegistry.getState().entries.find(item => item.element === element);
+              window.delayedBadgeRegistry.update(window.delayedBadgeEntry.id, { visible: false, swing: false });
+            });
+            await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+            const pausedPose = await page.evaluate(() => window.delayedBadgeEntry.body.card.current.translation());
+            const png = await badge.screenshot({ path: path.join(report, `${label}-badge-delayed-observer.png`) });
+            const printedPixels = await page.evaluate(async base64 => {
+              const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+              const bitmap = await createImageBitmap(new Blob([bytes], { type: 'image/png' }));
+              const canvas = document.createElement('canvas'); canvas.width = bitmap.width; canvas.height = bitmap.height;
+              const ctx = canvas.getContext('2d'); ctx.drawImage(bitmap, 0, 0);
+              const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+              let count = 0;
+              for (let y = Math.ceil(canvas.height * 0.1); y < canvas.height * 0.9; y++) {
+                for (let x = Math.ceil(canvas.width * 0.1); x < canvas.width * 0.9; x++) {
+                  const i = (y * canvas.width + x) * 4;
+                  if (Math.min(data[i], data[i + 1], data[i + 2]) > 150) count++;
+                }
+              }
+              bitmap.close(); return count;
+            }, png.toString('base64'));
+            assert.ok(printedPixels > 30, `the badge face remains drawn while visibility is delayed: ${printedPixels} printed pixels`);
+            assert.deepEqual(await page.evaluate(() => window.delayedBadgeEntry.body.card.current.translation()), pausedPose, 'the retained pose stays paused');
+            assert.equal(await page.evaluate(() => window.delayedBadgeRegistry.getState().entries.find(item => item.id === window.delayedBadgeEntry.id).visible), false);
+            await page.evaluate(() => window.delayedBadgeRegistry.update(window.delayedBadgeEntry.id, { visible: true, swing: true }));
+          }
           routes.push({ route, span, samples: samples.length });
         }
         return routes;
