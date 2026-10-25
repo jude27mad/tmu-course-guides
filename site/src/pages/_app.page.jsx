@@ -42,6 +42,7 @@ import { useMotionPaused } from '@src/lib/react';
 import useScroll from '@src/hooks/useScroll';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
+import { nativeIOSScroll } from '@src/utils/scrollRoot';
 
 if (typeof window !== 'undefined') {
   gsap.defaults({ ease: 'none' });
@@ -134,17 +135,19 @@ function MyApp({ Component, pageProps, router }) {
   useScroll(() => ScrollTrigger.update());
 
   useIsomorphicLayoutEffect(() => {
-    // Keep the original contained single-finger input on every device. Only
-    // leave pinch gestures to the browser; the fluid's separate pointermove
-    // listener on this same main element remains unchanged.
+    // Safari needs the document layout for content to continue behind its bars.
+    // Keep Giats's synchronized touch input in that layout: Lenis handles the
+    // gesture and the unchanged fluid hook still listens to pointermove on main.
+    // Document layout must not switch syncTouch off and hand the swipe to Safari.
+    const ios = nativeIOSScroll();
     // eslint-disable-next-line no-shadow
     const lenis = new Lenis({
       smoothWheel: true,
       smoothTouch: true,
       syncTouch: true,
       virtualScroll: createTouchScrollFilter(),
-      wrapper: mainRef.current || undefined,
-      content: mainContainerRef.current || undefined,
+      wrapper: ios ? window : mainRef.current || undefined,
+      content: ios ? document.documentElement : mainContainerRef.current || undefined,
     });
 
     setLenis(lenis);
@@ -260,7 +263,10 @@ function MyApp({ Component, pageProps, router }) {
                 depth: false,
                 pixelRatio: 0.1,
               }}
-              style={{ mixBlendMode: 'difference', background: 'black' }}
+              // Keep the wrapper transparent on iOS before hydration as well.
+              // global.scss supplies the original black base in contained mode;
+              // an inline background would override Safari's document styling.
+              style={{ mixBlendMode: 'difference', pointerEvents: 'none' }}
               linear
               className={styles.canvasContainer}
               eventSource={mainRef.current}

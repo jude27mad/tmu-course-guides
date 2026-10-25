@@ -133,7 +133,7 @@ function instrumentTouch() {
         fluid: Boolean(canvas),
         colours: canvas ? colours.get(canvas) || {} : {},
         visibility: wrapper ? getComputedStyle(wrapper).visibility : null,
-        scrollTop: document.querySelector('main')?.scrollTop || 0,
+        scrollTop: document.documentElement.dataset.scrollMode === 'document' ? window.scrollY : document.querySelector('main')?.scrollTop || 0,
         overflowY: document.querySelector('main') ? getComputedStyle(document.querySelector('main')).overflowY : null,
         key: keys.length ? { key: keys.at(-1).key, prevented: keys.at(-1).defaultPrevented } : null,
         mainScroll: { ...mainScroll },
@@ -280,7 +280,10 @@ function assertFluidSwipe(trace) {
 
 async function toggleMotion(page, label) {
   // Menu belongs to the header and leaves with the page instead of covering it.
-  await page.locator('main').evaluate(main => { main.scrollTop = 0; });
+  await page.evaluate(() => {
+    const scroller = document.documentElement.dataset.scrollMode === 'document' ? window : document.querySelector('main');
+    scroller.scrollTo(0, 0);
+  });
   await waitOnPage(page, () => getComputedStyle(document.querySelector('#menu-button')).visibility === 'visible');
   await page.getByRole('button', { name: 'Open menu', exact: true }).tap();
   await page.getByRole('button', { name: label, exact: true }).tap();
@@ -303,7 +306,7 @@ async function swipe(context, page, screenshotName) {
     }
     if (screenshotName) await page.screenshot({ path: path.join(reports, screenshotName) });
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
-    await waitOnPage(page, top => document.querySelector('main').scrollTop > top + 30, start.scrollTop);
+    await waitOnPage(page, top => window.__touchFluidQA.snapshot().scrollTop > top + 30, start.scrollTop);
     return { before: start, after: await snapshot(page) };
   } finally {
     await cdp.detach();
@@ -317,13 +320,15 @@ try {
     args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'],
   });
 
-  await check('restored iPhone pointer input feeds fluid through four rapid reversals', async () => {
+  await check('iPhone document scrolling keeps Giats fluid input through four rapid reversals', async () => {
     const { context, page, errors } = await open({ ios: true });
     const cdp = await context.newCDPSession(page);
     try {
       await ready(page);
-      await waitOnPage(page, () => document.documentElement.dataset.scrollMode === 'contained');
-      await page.evaluate(() => { document.querySelector('main').scrollTo(0, 200); window.__touchFluidQA.reset(); });
+      await waitOnPage(page, () => document.documentElement.dataset.scrollMode === 'document');
+      await page.evaluate(() => { window.scrollTo(0, 200); window.__touchFluidQA.reset(); });
+      await waitOnPage(page, () => window.scrollY >= 199 && document.querySelector('main').scrollTop === 0);
+      const start = await snapshot(page);
       await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 195, y: 620, radiusX: 5, radiusY: 5 }] });
       const directions = [];
       for (let leg = 0; leg < 4; leg++) {
@@ -337,15 +342,29 @@ try {
         const state = await snapshot(page);
         const painted = state.splats.filter(splat => splat.phase === leg);
         assert.ok(painted.length > 0, `direction ${leg} received no shader input: ${JSON.stringify(state)}`);
-        directions.push({ leg, splats: painted.length, minY: Math.min(...painted.map(p => p.y)), maxY: Math.max(...painted.map(p => p.y)) });
+        const previousTop = directions.at(-1)?.scrollTop ?? start.scrollTop;
+        assert.ok((state.scrollTop - previousTop) * (leg % 2 ? -1 : 1) > 20,
+          `direction ${leg} must move the document as well as feed fluid: ${previousTop} -> ${state.scrollTop}`);
+        directions.push({ leg, scrollTop: state.scrollTop, splats: painted.length, minY: Math.min(...painted.map(p => p.y)), maxY: Math.max(...painted.map(p => p.y)) });
       }
       await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
       await page.screenshot({ path: path.join(reports, 'fluid-rapid-reversals-ios.png') });
       const state = await snapshot(page);
       assert.ok(state.events.some(event => event.type === 'pointermove'), 'synchronized scrolling must retain pointer movement');
       assert.equal(state.events.some(event => event.type === 'pointercancel'), false, 'scrolling must not cancel the original fluid input');
+      assert.ok(state.events.some(event => event.type === 'pointerup'), 'the original pointer gesture ends normally');
+      await toggleMotion(page, 'Pause motion');
+      assert.equal(await page.locator('html').getAttribute('data-motion'), 'off');
+      assert.equal(await page.locator('#fluidCanvas').count(), 0);
+      const paused = await swipe(context, page);
+      assert.ok(paused.after.events.some(event => event.type === 'pointercancel'), 'paused iOS motion keeps native document panning');
+      await toggleMotion(page, 'Play motion');
+      assert.equal(await page.locator('html').getAttribute('data-motion'), 'on');
+      assert.equal(await page.locator('html').getAttribute('data-scroll-mode'), 'document', 'Pause / Play must preserve the Safari shell');
+      const resumed = await swipe(context, page);
+      assertFluidSwipe(resumed);
       assert.deepEqual(errors, []);
-      return { directions, pointerCancelled: state.events.some(event => event.type === 'pointercancel'), draws: state.draws };
+      return { directions, pointerCancelled: state.events.some(event => event.type === 'pointercancel'), draws: state.draws, paused, resumed };
     } finally {
       await cdp.detach();
       await context.close();
@@ -504,3 +523,4 @@ try {
 }
 
 if (results.some(result => !result.pass)) process.exitCode = 1;
+
