@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { assignmentList, groups, sections } from '@src/lib';
-import CourseArtwork from '@src/components/courseArtwork/CourseArtwork';
+import CourseBadge from '@src/components/courseBadge/CourseBadge';
 import GuideTools from '@src/pages/course/components/tools/GuideTools';
 // eslint-disable-next-line import/extensions
 import { openGuideTools } from '@src/pages/course/components/tools/dialog.mjs';
@@ -41,7 +41,7 @@ export default function CourseWorkspace() {
           <p className={styles.headerNote}>Your course, at a glance.</p>
         </div>
         <div className={styles.artwork}>
-          <CourseArtwork courseId={courseId} priority sizes="(max-width: 600px) 104px, 300px" />
+          <CourseBadge instanceId={`header-${courseId}`} courseId={courseId} next={next} ready={!!live} />
         </div>
       </div>
       <CourseNavigation courseId={courseId} views={views} selectedView={navigation.selectedView} acknowledge={navigation.acknowledge} />

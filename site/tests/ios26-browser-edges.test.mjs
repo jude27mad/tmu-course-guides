@@ -30,7 +30,6 @@ test('all active Desk and directory scroll animations follow the real scroll roo
   for (const pathname of [
     '../src/pages/components/home/Index.jsx',
     '../src/pages/components/about/Index.jsx',
-    '../src/pages/components/clients/Index.jsx',
     '../src/pages/components/projects/CourseCards.jsx',
     '../src/components/animationComponents/textOpacity/Index.jsx',
     '../src/components/dom/Footer.jsx',

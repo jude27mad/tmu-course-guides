@@ -23,7 +23,7 @@ function Page() {
       <section className={clsx(styles.titleContainer, 'layout-block-inner')}>
         <h1 className={clsx(styles.title, 'h1')}>All Courses</h1>
       </section>
-      <CourseCards desk={desk} variant="index" />
+      <CourseCards desk={desk} />
     </>
   );
 }

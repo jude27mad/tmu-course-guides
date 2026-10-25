@@ -47,15 +47,15 @@
   pointer-events: none;
   scale: 1;
   .innerHeader {
-    height: 3.1vw;
-    min-height: 44px;
+    min-height: max(3.1vw, 44px);
     @include mobile {
       // 44 px tap targets for the pills on phones
-      height: max(6.5vw, 44px);
+      min-height: max(6.5vw, 44px);
     }
 
     position: relative;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     width: 100%;
@@ -71,7 +71,22 @@
       align-items: center;
       min-height: 44px;
     }
+    .clock {
+      display: flex;
+      align-items: center;
+      margin-inline: auto;
+      gap: 0.5em;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      line-height: 1.2;
+      time { min-width: 5ch; }
+      @include mobile {
+        flex-direction: column;
+        gap: 0;
+      }
+    }
     .rightContainer {
+      margin-left: auto;
       pointer-events: all;
 
       display: flex;

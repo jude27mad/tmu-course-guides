@@ -3,6 +3,7 @@ import { buildShellTimeline } from '@src/components/dom/navbar/panelShell';
 import { setBrowserSurfaces, setEdgeBleed } from '@src/utils/theme';
 import ButtonLink from '@src/components/animationComponents/buttonLink/Index';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import MenuButton from '@src/components/dom/navbar/components/MenuButton';
 import MenuLinks from '@src/components/dom/navbar/components/MenuLinks';
 import SearchPanel from '@src/components/dom/navbar/components/SearchPanel';
@@ -14,6 +15,8 @@ import useScroll from '@src/hooks/useScroll';
 import { useRouter } from 'next/router';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
+
+const Time = dynamic(() => import('@src/components/dom/Time'), { ssr: false, loading: () => <span aria-hidden="true">--:--</span> });
 
 // Safari 26's bottom bar covers about 56px of an iPhone's screen when collapsed
 // and 98px when expanded; the footer counts as under it from about half of that.
@@ -51,12 +54,19 @@ function Navbar() {
     if (!header) return undefined;
     const measure = () => {
       headerHeight.current = header.offsetHeight;
+      const controls = controlsRef.current;
+      const baseline = parseFloat(getComputedStyle(controls).minHeight);
+      const extra = Math.max(0, controls.offsetHeight - baseline);
+      document.documentElement.style.setProperty('--navigation-extra-height', `${extra}px`);
       scrollHeader({ scroll: scrollTop() });
     };
     const observer = new ResizeObserver(measure);
     observer.observe(header);
     measure();
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.removeProperty('--navigation-extra-height');
+    };
   }, [scrollHeader]);
 
   const scrollToPosition = useCallback(
@@ -226,6 +236,10 @@ function Navbar() {
             <span className={clsx('bold', 'h4')}>GUIDES</span>
           </Link>
 
+          <div className={clsx(styles.clock, 'p-x')} data-toronto-clock>
+            <span>Toronto</span>
+            <Time />
+          </div>
           <div className={styles.rightContainer}>
             {!isMobile && <ButtonLink glass onClick={openSearch} label="SEARCH" ariaLabel="Search the guide. Shortcut: Command K" ariaHaspopup="dialog" ariaControls="search" />}
             <MenuButton />
