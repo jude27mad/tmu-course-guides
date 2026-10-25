@@ -386,6 +386,18 @@ try {
           assert.ok(!['hidden', 'scroll', 'auto'].includes(initial.overflow), JSON.stringify(initial));
           assert.ok(!['hidden', 'scroll', 'auto'].includes(initial.layoutOverflow), JSON.stringify(initial));
           assert.ok(initial.docHeight > initial.viewport + 100, JSON.stringify(initial));
+          // A diagonal swipe must not expose the artwork beside a shifted page.
+          // Native scrollTo also exercises focus/history scrolling into overflow
+          // that overflow-x:hidden alone can leave programmatically reachable.
+          await page.evaluate(() => window.scrollTo({ left: innerWidth * 0.6, top: 0, behavior: 'instant' }));
+          await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+          const horizontal = await page.evaluate(() => {
+            const main = document.querySelector('main').getBoundingClientRect();
+            return { x: scrollX, width: innerWidth, contentWidth: document.scrollingElement.scrollWidth, left: main.left, right: main.right };
+          });
+          await page.screenshot({ path: path.join(report, `${motion}-${route.replaceAll('/', '') || 'desk'}-horizontal.png`) });
+          assert.ok(horizontal.contentWidth <= horizontal.width + 1 && Math.abs(horizontal.x) < 1 && Math.abs(horizontal.left) < 1 && Math.abs(horizontal.right - horizontal.width) < 1,
+            `the document stays full width without a sideways scroll range: ${JSON.stringify(horizontal)}`);
           const edgesAtTop = await verifyTransparencyGuards(page);
           await page.evaluate(() => window.scrollTo(0, 300));
           await page.waitForFunction(() => scrollY > 150, null, { timeout: 3000 });

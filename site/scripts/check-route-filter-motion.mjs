@@ -399,7 +399,19 @@ try {
         }, before);
         const after = await page.locator('[data-companion-statement] .word').evaluateAll(nodes => nodes.reduce((sum, node) => sum + Number(getComputedStyle(node).opacity), 0) / nodes.length);
         assert.ok(after > before, `word reveal follows scrolling: ${before} -> ${after}`);
-        await position(0.35);
+        // The scene must still be visibly assembling once its stage reaches
+        // the viewport top; an opacity-only entry check missed this regression.
+        await position(0);
+        await page.waitForTimeout(450);
+        const assembling = await page.locator('[data-companion-statement] .word').evaluateAll(nodes => nodes.map(node => {
+          const css = getComputedStyle(node);
+          const box = node.getBoundingClientRect();
+          return { z: new DOMMatrixReadOnly(css.transform).m43, opacity: Number(css.opacity), visible: box.bottom > 0 && box.top < innerHeight };
+        }));
+        await page.screenshot({ path: path.join(report, `${label}-companion-mid-reveal.png`) });
+        assert.ok(assembling.filter(word => word.visible && word.opacity > 0.3 && word.z > 10).length >= 3,
+          `the visible statement retains its 3D reveal: ${JSON.stringify(assembling)}`);
+        await position(1);
         await page.waitForFunction(() => [...document.querySelectorAll('[data-companion-statement] .word')].every(word => Number(getComputedStyle(word).opacity) > 0.99));
         await page.waitForFunction(() => Number(document.querySelector('[data-game-discs]')?.dataset.gameDiscs) > 0);
         await page.screenshot({ path: path.join(report, `${label}-companion-and-game.png`) });
