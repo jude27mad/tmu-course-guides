@@ -314,6 +314,78 @@ try {
   ]) {
     const browser = await engine.launch({ headless: true });
     try {
+      if (label === 'iphone') await check(browser, options, 'iphone-scroll-resize-continuity', async (page) => {
+        // Observe the real renderers through React's instrumentation hook. No
+        // production debug globals or replacement animation/physics objects.
+        await page.addInitScript(() => {
+          window.canvasStores = new Set();
+          window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = {
+            supportsFiber: true,
+            inject: () => 1,
+            onCommitFiberRoot: (_, root) => {
+              if (root.containerInfo?.getState) window.canvasStores.add(root.containerInfo);
+            },
+            onCommitFiberUnmount: () => {},
+          };
+        });
+        await page.goto(base);
+        await ready(page);
+        await page.locator('[data-companion-statement]').scrollIntoViewIfNeeded();
+        await page.locator('[data-companion-game] canvas').waitFor();
+        await page.waitForFunction(() => [...window.canvasStores].some(store => store.getState().gl?.domElement.closest('[data-companion-game]')));
+        await page.waitForTimeout(400);
+        await page.evaluate(() => {
+          window.resizeEvidence = { footerResets: 0, gamePositionUpdates: 0 };
+          const footer = document.querySelector('footer > [data-surface="dark"]');
+          if (!footer?.matches('[data-surface="dark"]')) throw new Error('Find the actual footer');
+          window.footerResizeObserver = new MutationObserver(records => {
+            window.resizeEvidence.footerResets += records.filter(record => /height:\s*auto/.test(record.oldValue || '')).length;
+          });
+          window.footerResizeObserver.observe(footer, { attributes: true, attributeFilter: ['style'], attributeOldValue: true });
+          const backgroundMaterial = () => {
+            let found;
+            for (const store of window.canvasStores) store.getState().scene.traverse(object => {
+              if (object.material?.uniforms?.uOffsetX) found = object.material;
+            });
+            return found;
+          };
+          window.backgroundMaterial = backgroundMaterial;
+          window.backgroundBeforeResize = backgroundMaterial();
+          if (!window.backgroundBeforeResize) throw new Error('Find the actual animated background');
+        });
+        // A toolbar-sized height change must not reset an already running
+        // animation or replace its GPU material. Width stays unchanged.
+        for (const height of [914, 844, 914, 844]) {
+          await page.setViewportSize({ width: 390, height });
+          await page.waitForTimeout(240);
+        }
+        await page.evaluate(() => {
+          window.footerResizeObserver.disconnect();
+          window.resizeEvidence.backgroundRetained = window.backgroundMaterial() === window.backgroundBeforeResize;
+          const store = [...window.canvasStores].find(item => item.getState().gl?.domElement.closest('[data-companion-game]'));
+          window.stopGameSizeWatch = store.subscribe((state, previous) => {
+            if (state.size.width === previous.size.width && state.size.height === previous.size.height &&
+              (state.size.top !== previous.size.top || state.size.left !== previous.size.left)) window.resizeEvidence.gamePositionUpdates++;
+          });
+        });
+        for (let step = 0; step < 6; step++) {
+          await page.evaluate(offset => {
+            const section = document.querySelector('[data-companion-statement]');
+            window.scrollTo(0, scrollY + section.getBoundingClientRect().top + offset);
+          }, step % 2 ? 230 : 110);
+          await page.waitForTimeout(110);
+        }
+        await page.waitForTimeout(150);
+        const evidence = await page.evaluate(() => {
+          window.stopGameSizeWatch();
+          return window.resizeEvidence;
+        });
+        await writeFile(path.join(report, 'iphone-scroll-resize-continuity.json'), JSON.stringify(evidence, null, 2));
+        await page.screenshot({ path: path.join(report, 'iphone-scroll-resize-continuity.png') });
+        assert.deepEqual(evidence, { footerResets: 0, gamePositionUpdates: 0, backgroundRetained: true },
+          'scrolling and toolbar resizing retain animation state without position-only canvas updates');
+        return evidence;
+      });
       if (label === 'iphone' || label === 'desktop') await check(browser, options, `${label}-badge-rapid-scroll`, async (page) => {
         const routes = [];
         for (const route of ['', 'cen100/', 'mth140/', 'mth141/', 'courses/']) {
