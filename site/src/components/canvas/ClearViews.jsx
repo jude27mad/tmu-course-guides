@@ -10,7 +10,7 @@ function ClearViews({ registry }) {
   useFrame(({ gl }) => {
     if (nativeIOSScroll()) {
       const surface = gl.domElement.closest('#viewCanvas');
-      const entries = registry.getState().entries;
+      const { entries } = registry.getState();
       if (surface && entries.length) {
         const bounds = surface.getBoundingClientRect();
         const offset = parseFloat(surface.style.getPropertyValue('--badge-scroll-offset')) || 0;
