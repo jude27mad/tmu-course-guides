@@ -92,7 +92,7 @@ async function check(browser, options, name, run) {
     results.push({ name, pass: true, detail });
     console.log('PASS', name);
   } catch (error) {
-    results.push({ name, pass: false, error: error.message, errors });
+    results.push({ name, pass: false, error: error.stack || error.message, errors });
     console.error(`::error::${name}: ${error.message}`);
     await page.screenshot({ path: path.join(report, `${name}-failure.png`) }).catch(() => {});
   } finally {
@@ -106,11 +106,17 @@ async function checkMobileMenu(page, name) {
   const firstLink = page.locator('#menu').getByRole('link', { name: 'Desk', exact: true });
   // A small real scroll keeps the header reachable while making scroll
   // preservation meaningful on both document and contained scroll layouts.
-  await page.evaluate(() => {
+  // Reduced-motion entry can queue its final native scroll reset after the
+  // page becomes visible. Establish the test's small scroll across two frames
+  // before measuring menu preservation, rather than racing that initial reset.
+  await page.evaluate(() => { window.menuScrollReadyFrames = 0; });
+  await page.waitForFunction(() => {
     const scroller = document.documentElement.dataset.scrollMode === 'document' ? window : document.querySelector('main');
-    scroller.scrollTo(0, 12);
+    const top = scroller === window ? scrollY : scroller.scrollTop;
+    window.menuScrollReadyFrames = top > 0 ? window.menuScrollReadyFrames + 1 : 0;
+    if (!top) scroller.scrollTo(0, 12);
+    return window.menuScrollReadyFrames >= 2;
   });
-  await page.waitForFunction(() => (document.documentElement.dataset.scrollMode === 'document' ? scrollY : document.querySelector('main').scrollTop) > 0);
   await opener.focus();
   const before = await page.evaluate(() => {
     window.menuFrames = [];
@@ -499,7 +505,9 @@ try {
         await page.screenshot({ path: path.join(report, `${label}-companion-mid-reveal.png`) });
         assert.ok(assembling.filter(word => word.visible && word.opacity > 0.3 && word.z > 10).length >= 3,
           `the visible statement retains its 3D reveal: ${JSON.stringify(assembling)}`);
-        await position(1);
+        // Cross the endpoint by a few pixels: native scroll coordinates can
+        // round down a fractional section top before its final transform is 0.
+        await position(1.02);
         await page.waitForFunction(() => [...document.querySelectorAll('[data-companion-statement] .word')].every(word => {
           const css = getComputedStyle(word);
           return Number(css.opacity) > 0.99 && (css.transform === 'none' || new DOMMatrixReadOnly(css.transform).isIdentity);
