@@ -42,7 +42,9 @@ The remaining changes are:
 - A small Lenis `virtualScroll` filter in `utils/touch-scroll.mjs` leaves a
   complete pinch gesture, including both releases, to the browser. Ordinary
   one-finger scrolling and the original fluid's multi-pointer listener retain
-  their behavior. CSS permits native contained scrolling without JavaScript.
+  their behavior. CSS permits native contained scrolling without JavaScript
+  and hides the nonfunctional canvas overlays. R3F's pre-hydration inline
+  `pointer-events:auto` otherwise intercepts native links and disclosures.
 - Phone page transitions keep the existing full-width fade independently of
   the active scroll owner. They must not select the desktop loading-card
   animation merely because the scroller is contained again.
@@ -108,6 +110,12 @@ phone transition, pinch, and no-JavaScript regressions; this revision repairs
 those without weakening their assertions. The iPhone slicing check now sends
 the pointer input used by the restored scene, still requiring its real raycaster
 to register a slice. Final results belong in the pull request after verification.
+
+On `941b52f3`, all 264 data tests, 15 CI jobs, 18 route/animation cases, and the
+touch/pinch suite passed. Visual review covered the corresponding phone and
+desktop recordings. The only failures were no-JavaScript links and credit
+disclosures: browser logs identified the dormant `fluidCanvas` intercepting
+clicks. The final CSS fallback hides those canvases without touching live input.
 
 Linux WebKit has no animated iOS Safari toolbar. CI recordings can verify the
 application's layout and drawing behavior, but cannot certify frame pacing,

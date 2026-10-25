@@ -98,6 +98,13 @@
   overflow-y: auto;
 }
 
+// Before hydration, R3F cannot resolve mainRef as the event source and gives
+// its canvas inline pointer-events:auto. Without JS that empty overlay never
+// connects, so keep it from blocking the native links and credit disclosure.
+:global(html:not(.js)) .layout .canvasContainer {
+  display: none;
+}
+
 // The pages' paper behind `main` during a page change: a fading page shows it
 // rather than the dark artwork (.background) beneath. It is in the page's flow,
 // never fixed or sticky, so Safari 26 never takes it for the colour of its bars,
