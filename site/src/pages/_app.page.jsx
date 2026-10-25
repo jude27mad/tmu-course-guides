@@ -1,4 +1,3 @@
-import { nativeIOSScroll } from '@src/utils/scrollRoot';
 /* eslint-disable react/jsx-props-no-spreading */
 
 import '@src/styles/global.scss';
@@ -19,7 +18,6 @@ import Background from '@src/components/canvas/background/Index';
 import DemandDriver from '@src/components/canvas/DemandDriver';
 import ClearViews from '@src/components/canvas/ClearViews';
 import { Canvas } from '@react-three/fiber';
-import { createTouchScrollFilter } from '@src/components/canvas/fluid/touch-scroll.mjs';
 import { EffectComposer } from '@react-three/postprocessing';
 import Fluid from '@src/components/canvas/fluid/Fluid';
 import Head from 'next/head';
@@ -131,17 +129,16 @@ function MyApp({ Component, pageProps, router }) {
   useScroll(() => ScrollTrigger.update());
 
   useIsomorphicLayoutEffect(() => {
-    // Giats's synchronized touch scrolling keeps pointer moves flowing to the
-    // fluid during a swipe. Native panning otherwise cancels that input stream.
-    // Keep pinch zoom native and `main` scrollable for keys and find-in-page.
-    const ios = nativeIOSScroll();
+    // The original Giats input path on every device, including iPhone/iPad.
+    // Do not replace it with native document scrolling or filter its gestures:
+    // the original fluid listens to pointermove on this same main element.
     // eslint-disable-next-line no-shadow
     const lenis = new Lenis({
       smoothWheel: true,
-      syncTouch: !ios && !useStore.getState().still,
-      virtualScroll: createTouchScrollFilter(),
-      wrapper: ios ? window : mainRef.current || undefined,
-      content: ios ? document.documentElement : mainContainerRef.current || undefined,
+      smoothTouch: true,
+      syncTouch: true,
+      wrapper: mainRef.current || undefined,
+      content: mainContainerRef.current || undefined,
     });
 
     setLenis(lenis);
@@ -157,7 +154,7 @@ function MyApp({ Component, pageProps, router }) {
   useEffect(() => {
     // Pause Motion and reduced motion restore native touch scrolling without
     // recreating Lenis or resetting the reader's position.
-    if (lenis) lenis.options.syncTouch = !nativeIOSScroll() && !still;
+    if (lenis) lenis.options.syncTouch = !still;
   }, [lenis, still]);
 
   useIsomorphicLayoutEffect(() => {
@@ -204,7 +201,7 @@ function MyApp({ Component, pageProps, router }) {
         aria-hidden="true"
       >
         {still && <DemandDriver />}
-        <ClearViews registry={badgeRegistry} />
+        <ClearViews />
         <PerformanceMonitor flipflops={3} onDecline={() => setDpr(1)} onIncline={() => setDpr(null)} onFallback={() => setDpr(1)} />
         {/* A view that is loading (or never loads) must stay inside the canvas: without
             this boundary R3F suspends the <Canvas> DOM component itself, and its next
@@ -246,29 +243,25 @@ function MyApp({ Component, pageProps, router }) {
         <div ref={layoutRef} id="layout" className={styles.layout}>
           {/* The paper a page fades into during a page change (Layout). */}
           <div id="routePaper" className={styles.routePaper} aria-hidden="true" />
-          <div className={styles.badgeSurface}>{canvasElements}</div>
+          {canvasElements}
           {!still && (
             <Canvas
               id="fluidCanvas"
               flat
-              frameloop="always"
               gl={{
                 antialias: false,
                 stencil: false,
                 depth: false,
+                pixelRatio: 0.1,
               }}
-              // R3F's wrapper takes pointer events unless told otherwise; the
-              // fluid reads pointer moves from <main> itself. Its black base lives in
-              // global.scss, keyed on the scroll mode: a value chosen here from the
-              // client-only scroll mode never reaches the page, because hydration keeps
-              // the exported server style (see docs/qa/safari-toolbar-transparency.md).
-              style={{ mixBlendMode: 'difference', pointerEvents: 'none' }}
+              style={{ mixBlendMode: 'difference', background: 'black' }}
               linear
               className={styles.canvasContainer}
+              eventSource={mainRef.current}
               dpr={[0.1, 0.5]}
               aria-hidden="true"
             >
-              <EffectComposer multisampling={0}>
+              <EffectComposer>
                 <Fluid fluidColor={fluidColor} mainRef={mainRef} />
               </EffectComposer>
             </Canvas>

@@ -1,4 +1,4 @@
-import { nativeIOSScroll, scrollRoot } from '@src/utils/scrollRoot';
+import { scrollRoot } from '@src/utils/scrollRoot';
 import { useMemo, useRef, useState } from 'react';
 
 import DesignCredit from '@src/components/dom/DesignCredit';
@@ -15,6 +15,7 @@ import gsap from 'gsap';
 import menuLinks from '@src/components/dom/navbar/constants/menuLinks';
 import styles from '@src/components/dom/styles/footer.module.scss';
 import useIsMobile from '@src/hooks/useIsMobile';
+import useStill from '@src/hooks/useStill';
 import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
 import { useRouter } from 'next/router';
 import { useShallow } from 'zustand/react/shallow';
@@ -38,20 +39,23 @@ function useCourseLinks(courseId) {
 
 function Footer() {
   const isMobile = useIsMobile();
+  const still = useStill();
   const footerRef = useRef();
   const router = useRouter();
   const [isLoading] = useStore(useShallow((state) => [state.isLoading]));
   const windowSize = useWindowSize();
-  // The native Safari toolbar changes innerHeight during a swipe, while the
-  // footer's svh layout stays put. Rebuilding here resets its uncover transform
-  // and temporarily changes document height. Width/orientation and credit
-  // changes still rebuild; desktop window-height changes still do as well.
-  const resizeHeight = nativeIOSScroll() ? 0 : windowSize.height;
+  // The restored contained scroller uses a stable small viewport. Safari's
+  // toolbar can change innerHeight without changing that layout; rebuilding
+  // then would reset the reveal and temporarily collapse the scroll range.
+  const resizeHeight = scrollRoot()?.clientHeight || windowSize.height;
   const courseId = courseIdFromPath(router.asPath);
   const courseLinks = useCourseLinks(courseId);
   const [creditOpen, setCreditOpen] = useState(false);
 
   useIsomorphicLayoutEffect(() => {
+    // Native credit disclosure must not rebuild an uncover transform or
+    // temporarily collapse the scroller when motion is disabled.
+    if (still) return undefined;
     const context = gsap.context(() => {
       if (!isLoading) {
         const setupFooterAnimation = () => {
@@ -59,7 +63,7 @@ function Footer() {
           const allSections = document.querySelectorAll('#mainContainer section');
           if (allSections.length > 1) {
             const lastSection = allSections[allSections.length - 2];
-            if (footerRef.current.offsetHeight <= window.innerHeight) {
+            if (footerRef.current.offsetHeight <= (resizeHeight || window.innerHeight)) {
               gsap.set(footerRef.current, { yPercent: -50 });
               const uncover = gsap.timeline({ paused: true });
               gsap.set(footerRef.current, { height: '100.5svh' });
@@ -86,7 +90,7 @@ function Footer() {
       }
     });
     return () => context.revert();
-  }, [isLoading, windowSize.width, resizeHeight, creditOpen]);
+  }, [isLoading, windowSize.width, resizeHeight, creditOpen, still]);
 
   return (
     <section ref={footerRef} className={clsx(styles.root, 'layout-grid-inner')} data-surface="dark">

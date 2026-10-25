@@ -14,8 +14,7 @@ function DrawBadge({ element }) {
     const bounds = element?.getBoundingClientRect();
     const canvas = gl.domElement.getBoundingClientRect();
     if (!bounds?.width || !bounds.height || !canvas.width || !canvas.height) return;
-    // A document-anchored surface can be entirely off screen. Keep its last
-    // pixels there for compositor-driven re-entry, without spending GPU work.
+    // A hidden or transitioning shared surface needs no badge draw.
     if (canvas.bottom <= 0 || canvas.top >= window.innerHeight) return;
     if (bounds.bottom <= canvas.top || bounds.top >= canvas.bottom || bounds.right <= canvas.left || bounds.left >= canvas.right) return;
 

@@ -44,7 +44,7 @@ const useMaterials = () => {
           value: new Texture(),
         },
         uClearValue: {
-          value: 0,
+          value: OPTS.pressure,
         },
         texelSize: {
           value: new Vector2(),
@@ -113,7 +113,7 @@ const useMaterials = () => {
           value: new Texture(),
         },
         aspectRatio: {
-          value: 1,
+          value: size.width / size.height,
         },
         uColor: {
           value: new Vector3(),
@@ -122,7 +122,7 @@ const useMaterials = () => {
           value: new Vector2(),
         },
         uRadius: {
-          value: 0,
+          value: OPTS.radius / 100.0,
         },
         texelSize: {
           value: new Vector2(),
@@ -140,7 +140,7 @@ const useMaterials = () => {
           value: new Texture(),
         },
         uCurlValue: {
-          value: 0,
+          value: OPTS.curl,
         },
         dt: {
           value: 0.016,
@@ -152,7 +152,7 @@ const useMaterials = () => {
       fragmentShader: vorticityFrag,
     });
 
-    const materials = {
+    return {
       splat,
       curl,
       clear,
@@ -162,35 +162,24 @@ const useMaterials = () => {
       advection,
       vorticity,
     };
-    Object.values(materials).forEach((material) => {
+  }, [OPTS.curl, OPTS.pressure, OPTS.radius, size.height, size.width]);
+
+  useIsomorphicLayoutEffect(() => {
+    Object.values(shaderMaterials).forEach((material) => {
+      const aspectRatio = size.width / (size.height + 400);
+
+      material.uniforms.texelSize.value.set(1 / (OPTS.simRes * aspectRatio), 1 / OPTS.simRes);
       material.vertexShader = baseVertex;
       material.depthTest = false;
       material.depthWrite = false;
     });
-    return materials;
-  }, []);
 
-  // Toolbar resizing changes uniforms, not shader programs. Keep the same
-  // materials alive throughout a gesture and release them only on unmount.
-  useIsomorphicLayoutEffect(() => {
-    const aspectRatio = size.width / (size.height + 400);
-    Object.values(shaderMaterials).forEach((material) => {
-      material.uniforms.texelSize.value.set(1 / (OPTS.simRes * aspectRatio), 1 / OPTS.simRes);
-    });
-    shaderMaterials.splat.uniforms.aspectRatio.value = size.width / size.height;
-    shaderMaterials.splat.uniforms.uRadius.value = OPTS.radius / 100.0;
-    shaderMaterials.clear.uniforms.uClearValue.value = OPTS.pressure;
-    shaderMaterials.vorticity.uniforms.uCurlValue.value = OPTS.curl;
-  }, [shaderMaterials, size.width, size.height, OPTS.simRes, OPTS.radius, OPTS.pressure, OPTS.curl]);
-
-  useIsomorphicLayoutEffect(
-    () => () => {
+    return () => {
       Object.values(shaderMaterials).forEach((material) => {
         material.dispose();
       });
-    },
-    [shaderMaterials],
-  );
+    };
+  }, [shaderMaterials, size]);
 
   return shaderMaterials;
 };
