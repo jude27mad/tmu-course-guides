@@ -92,7 +92,7 @@ async function check(browser, options, name, run) {
     results.push({ name, pass: true, detail });
     console.log('PASS', name);
   } catch (error) {
-    results.push({ name, pass: false, error: error.message, errors });
+    results.push({ name, pass: false, error: error.stack || error.message, errors });
     console.error(`::error::${name}: ${error.message}`);
     await page.screenshot({ path: path.join(report, `${name}-failure.png`) }).catch(() => {});
   } finally {
@@ -106,11 +106,17 @@ async function checkMobileMenu(page, name) {
   const firstLink = page.locator('#menu').getByRole('link', { name: 'Desk', exact: true });
   // A small real scroll keeps the header reachable while making scroll
   // preservation meaningful on both document and contained scroll layouts.
-  await page.evaluate(() => {
+  // Reduced-motion entry can queue its final native scroll reset after the
+  // page becomes visible. Establish the test's small scroll across two frames
+  // before measuring menu preservation, rather than racing that initial reset.
+  await page.evaluate(() => { window.menuScrollReadyFrames = 0; });
+  await page.waitForFunction(() => {
     const scroller = document.documentElement.dataset.scrollMode === 'document' ? window : document.querySelector('main');
-    scroller.scrollTo(0, 12);
+    const top = scroller === window ? scrollY : scroller.scrollTop;
+    window.menuScrollReadyFrames = top > 0 ? window.menuScrollReadyFrames + 1 : 0;
+    if (!top) scroller.scrollTo(0, 12);
+    return window.menuScrollReadyFrames >= 2;
   });
-  await page.waitForFunction(() => (document.documentElement.dataset.scrollMode === 'document' ? scrollY : document.querySelector('main').scrollTop) > 0);
   await opener.focus();
   const before = await page.evaluate(() => {
     window.menuFrames = [];
@@ -308,6 +314,94 @@ try {
   ]) {
     const browser = await engine.launch({ headless: true });
     try {
+      if (label === 'iphone' || label === 'desktop') await check(browser, options, `${label}-badge-rapid-scroll`, async (page) => {
+        const routes = [];
+        for (const route of ['', 'cen100/', 'mth140/', 'mth141/', 'courses/']) {
+          await page.goto(base + route);
+          await ready(page);
+          const badge = page.locator('[data-course-badge]').first();
+          await badge.scrollIntoViewIfNeeded();
+          await page.locator('[data-course-badge][data-badge-rendered="true"]').first().waitFor();
+          // Read the existing world through its provider. This check does not
+          // inject forces or expose a production debug API.
+          const samples = await page.evaluate(async () => {
+            const element = document.querySelector('[data-course-badge]');
+            let fiber = element[Object.keys(element).find(key => key.startsWith('__reactFiber$'))];
+            while (fiber && !fiber.memoizedProps?.value?.register) fiber = fiber.return;
+            const registry = fiber.memoizedProps.value;
+            const entry = registry.getState().entries.find(item => item.element === element);
+            const keys = ['fixed', 'j1', 'j2', 'j3', 'card'];
+            const bodies = keys.map(key => entry.body[key].current);
+            const scroller = document.documentElement.dataset.scrollMode === 'document' ? window : document.querySelector('main');
+            const scrollTop = () => scroller === window ? scrollY : scroller.scrollTop;
+            const centre = Math.max(0, scrollTop() + element.getBoundingClientRect().top - (innerHeight - element.offsetHeight) / 2);
+            const records = [];
+            // Alternate small visible nudges with full exits/re-entries. The
+            // offscreen world must resume rather than remount or jump apart.
+            for (let step = 0; step < 120; step++) {
+              if (step % 3 === 0) {
+                const excursion = step >= 48 && step < 84 ? innerHeight * 1.2 : 44;
+                scroller.scrollTo(0, Math.max(0, centre + (step % 6 === 0 ? excursion : 0)));
+              }
+              await new Promise(requestAnimationFrame);
+              const current = registry.getState().entries.find(item => item.id === entry.id);
+              const anchor = bodies[0].translation();
+              const card = bodies[4].translation();
+              const rotation = bodies[4].rotation();
+              records.push({ x: card.x - anchor.x, y: card.y - anchor.y, z: card.z - anchor.z,
+                rotation: [rotation.x, rotation.y, rotation.z, rotation.w], visible: current.visible,
+                same: keys.every((key, i) => current.body[key].current === bodies[i] && bodies[i].isValid()) });
+            }
+            scroller.scrollTo(0, centre);
+            return records;
+          });
+          assert.ok(samples.every(sample => sample.same && [sample.x, sample.y, sample.z, ...sample.rotation].every(Number.isFinite)), 'rapid scrolling retains the same live, finite bodies');
+          assert.ok(samples.some(sample => !sample.visible) && samples.some(sample => sample.visible), 'the stress scroll crosses the visibility boundary');
+          const span = Math.max(...samples.map(sample => sample.x)) - Math.min(...samples.map(sample => sample.x));
+          assert.ok(span > 0.01 && Math.max(...samples.map(sample => Math.abs(sample.x))) < 1.5, `the badge responds with a bounded natural swing: ${span}`);
+          const name = `${label}-${route.replaceAll('/', '') || 'desk'}-rapid-scroll`;
+          await writeFile(path.join(report, `${name}.json`), JSON.stringify(samples));
+          await page.waitForTimeout(400);
+          await page.screenshot({ path: path.join(report, `${name}.png`) });
+          if (!route) {
+            // Model a delayed visibility observer after re-entry. Keeping the
+            // physics asleep must not blank the already mounted View. The
+            // regression was visible in the rapid-scroll recording even though
+            // the body identity/finite-pose checks passed.
+            await badge.evaluate(element => {
+              let fiber = element[Object.keys(element).find(key => key.startsWith('__reactFiber$'))];
+              while (fiber && !fiber.memoizedProps?.value?.register) fiber = fiber.return;
+              window.delayedBadgeRegistry = fiber.memoizedProps.value;
+              window.delayedBadgeEntry = window.delayedBadgeRegistry.getState().entries.find(item => item.element === element);
+              window.delayedBadgeRegistry.update(window.delayedBadgeEntry.id, { visible: false, swing: false });
+            });
+            await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+            const pausedPose = await page.evaluate(() => window.delayedBadgeEntry.body.card.current.translation());
+            const png = await badge.screenshot({ path: path.join(report, `${label}-badge-delayed-observer.png`) });
+            const printedPixels = await page.evaluate(async base64 => {
+              const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+              const bitmap = await createImageBitmap(new Blob([bytes], { type: 'image/png' }));
+              const canvas = document.createElement('canvas'); canvas.width = bitmap.width; canvas.height = bitmap.height;
+              const ctx = canvas.getContext('2d'); ctx.drawImage(bitmap, 0, 0);
+              const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+              let count = 0;
+              for (let y = Math.ceil(canvas.height * 0.1); y < canvas.height * 0.9; y++) {
+                for (let x = Math.ceil(canvas.width * 0.1); x < canvas.width * 0.9; x++) {
+                  const i = (y * canvas.width + x) * 4;
+                  if (Math.min(data[i], data[i + 1], data[i + 2]) > 150) count++;
+                }
+              }
+              bitmap.close(); return count;
+            }, png.toString('base64'));
+            assert.ok(printedPixels > 30, `the badge face remains drawn while visibility is delayed: ${printedPixels} printed pixels`);
+            assert.deepEqual(await page.evaluate(() => window.delayedBadgeEntry.body.card.current.translation()), pausedPose, 'the retained pose stays paused');
+            assert.equal(await page.evaluate(() => window.delayedBadgeRegistry.getState().entries.find(item => item.id === window.delayedBadgeEntry.id).visible), false);
+            await page.evaluate(() => window.delayedBadgeRegistry.update(window.delayedBadgeEntry.id, { visible: true, swing: true }));
+          }
+          routes.push({ route, span, samples: samples.length });
+        }
+        return routes;
+      });
       if (label !== 'tablet') await check(browser, options, `${label}-companion-scene`, async (page) => {
         await page.addInitScript(() => { Math.random = () => 0.5; });
         await page.goto(base);
@@ -399,8 +493,25 @@ try {
         }, before);
         const after = await page.locator('[data-companion-statement] .word').evaluateAll(nodes => nodes.reduce((sum, node) => sum + Number(getComputedStyle(node).opacity), 0) / nodes.length);
         assert.ok(after > before, `word reveal follows scrolling: ${before} -> ${after}`);
-        await position(0.35);
-        await page.waitForFunction(() => [...document.querySelectorAll('[data-companion-statement] .word')].every(word => Number(getComputedStyle(word).opacity) > 0.99));
+        // The scene must still be visibly assembling once its stage reaches
+        // the viewport top; an opacity-only entry check missed this regression.
+        await position(0);
+        await page.waitForTimeout(450);
+        const assembling = await page.locator('[data-companion-statement] .word').evaluateAll(nodes => nodes.map(node => {
+          const css = getComputedStyle(node);
+          const box = node.getBoundingClientRect();
+          return { z: new DOMMatrixReadOnly(css.transform).m43, opacity: Number(css.opacity), visible: box.bottom > 0 && box.top < innerHeight };
+        }));
+        await page.screenshot({ path: path.join(report, `${label}-companion-mid-reveal.png`) });
+        assert.ok(assembling.filter(word => word.visible && word.opacity > 0.3 && word.z > 10).length >= 3,
+          `the visible statement retains its 3D reveal: ${JSON.stringify(assembling)}`);
+        // Cross the endpoint by a few pixels: native scroll coordinates can
+        // round down a fractional section top before its final transform is 0.
+        await position(1.02);
+        await page.waitForFunction(() => [...document.querySelectorAll('[data-companion-statement] .word')].every(word => {
+          const css = getComputedStyle(word);
+          return Number(css.opacity) > 0.99 && (css.transform === 'none' || new DOMMatrixReadOnly(css.transform).isIdentity);
+        }));
         await page.waitForFunction(() => Number(document.querySelector('[data-game-discs]')?.dataset.gameDiscs) > 0);
         await page.screenshot({ path: path.join(report, `${label}-companion-and-game.png`) });
         // Interact with centre-launched discs on their actual shared DOM surface.

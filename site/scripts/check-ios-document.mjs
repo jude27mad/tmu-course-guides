@@ -386,6 +386,36 @@ try {
           assert.ok(!['hidden', 'scroll', 'auto'].includes(initial.overflow), JSON.stringify(initial));
           assert.ok(!['hidden', 'scroll', 'auto'].includes(initial.layoutOverflow), JSON.stringify(initial));
           assert.ok(initial.docHeight > initial.viewport + 100, JSON.stringify(initial));
+          // A diagonal swipe must not expose the artwork beside a shifted page.
+          // Native scrollTo also exercises focus/history scrolling into overflow
+          // that overflow-x:hidden alone can leave programmatically reachable.
+          await page.evaluate(() => window.scrollTo({ left: innerWidth * 0.6, top: 0, behavior: 'instant' }));
+          await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+          const horizontal = await page.evaluate(() => {
+            const main = document.querySelector('main').getBoundingClientRect();
+            return { x: scrollX, width: innerWidth, contentWidth: document.scrollingElement.scrollWidth, left: main.left, right: main.right };
+          });
+          await page.screenshot({ path: path.join(report, `${motion}-${route.replaceAll('/', '') || 'desk'}-horizontal.png`) });
+          assert.ok(horizontal.contentWidth <= horizontal.width + 1 && Math.abs(horizontal.x) < 1 && Math.abs(horizontal.left) < 1 && Math.abs(horizontal.right - horizontal.width) < 1,
+            `the document stays full width without a sideways scroll range: ${JSON.stringify(horizontal)}`);
+          if (motion === 'no-preference' && await page.locator('[data-companion-statement]').count()) {
+            for (const fraction of [0.15, 0.65, 1, 0.35, 0.85]) {
+              await page.evaluate(fraction => {
+                const section = document.querySelector('[data-companion-statement]');
+                const top = scrollY + section.getBoundingClientRect().top - innerHeight + section.offsetHeight * fraction;
+                window.scrollTo({ left: innerWidth * 0.6, top, behavior: 'instant' });
+              }, fraction);
+              await page.waitForTimeout(250);
+              const duringReveal = await page.evaluate(() => ({ x: scrollX, width: innerWidth, contentWidth: document.scrollingElement.scrollWidth, left: document.querySelector('main').getBoundingClientRect().left }));
+              assert.ok(duringReveal.contentWidth <= duringReveal.width + 1 && Math.abs(duringReveal.x) < 1 && Math.abs(duringReveal.left) < 1,
+                `the animated statement cannot shift the page sideways at ${fraction}: ${JSON.stringify(duringReveal)}`);
+            }
+            await page.screenshot({ path: path.join(report, `${route.replaceAll('/', '') || 'desk'}-reveal-width.png`) });
+            await page.evaluate(() => window.scrollTo(0, 0));
+            // The edge caps follow the next scroll/paint frame, after native
+            // scrollY itself has already reached zero.
+            await page.waitForFunction(() => scrollY === 0 && document.documentElement.dataset.edgeTop === 'closed');
+          }
           const edgesAtTop = await verifyTransparencyGuards(page);
           await page.evaluate(() => window.scrollTo(0, 300));
           await page.waitForFunction(() => scrollY > 150, null, { timeout: 3000 });

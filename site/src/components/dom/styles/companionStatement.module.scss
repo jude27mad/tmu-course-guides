@@ -4,6 +4,9 @@
   position: relative;
   background-color: var(--white);
   width: 100%;
+  // Projected words can extend far outside their layout boxes. Contain the
+  // visual locally without changing the sticky stage's scrolling ancestor.
+  overflow: clip;
   height: 150svh;
   @include mobile {
     height: 125svh;
