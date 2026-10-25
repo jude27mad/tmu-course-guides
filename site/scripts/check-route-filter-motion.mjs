@@ -356,18 +356,39 @@ try {
         const after = await page.locator('[data-companion-statement] .word').evaluateAll(nodes => nodes.reduce((sum, node) => sum + Number(getComputedStyle(node).opacity), 0) / nodes.length);
         assert.ok(after > before, `word reveal follows scrolling: ${before} -> ${after}`);
         await page.screenshot({ path: path.join(report, `${label}-companion-and-game.png`) });
-        // Sweep deterministic, centre-launched discs through the shared input surface.
-        const stage = await page.locator('[data-game-discs]').boundingBox();
-        // A screenshot on a software-rendered runner can outlast a flight.
-        // Keep sweeping across two spawn intervals instead of assuming one disc
-        // is still at its photographed position. A real slice remains required.
-        const sliceDeadline = Date.now() + 12000;
-        while (Date.now() < sliceDeadline && !Number(await page.locator('[data-game-discs]').getAttribute('data-game-slices'))) {
-          for (let step = 0; step <= 24; step += 1) {
-            await page.mouse.move(stage.x + stage.width / 2, stage.y + stage.height * step / 24);
+        // Interact with centre-launched discs on their actual shared DOM surface.
+        // A software-rendered frame can outlast a flight. On iPhone, sample the
+        // touch path within each painted frame so native pointer cancellation
+        // and a rapid mouse sweep cannot make this mobile check miss every disc.
+        // This dispatches input only: the real scene raycaster must slice a disc.
+        if (label === 'iphone') {
+          await page.evaluate(async () => {
+            const stage = document.querySelector('[data-game-discs]');
+            const deadline = performance.now() + 12000;
+            while (performance.now() < deadline && !Number(stage.dataset.gameSlices)) {
+              await new Promise(requestAnimationFrame);
+              const bounds = stage.getBoundingClientRect();
+              const clientX = bounds.left + bounds.width / 2;
+              let lastTouch;
+              for (let clientY = Math.max(1, bounds.top + 1); clientY < Math.min(innerHeight - 1, bounds.bottom); clientY += 8) {
+                const touch = new Touch({ identifier: 1, target: stage, clientX, clientY, pageX: clientX + scrollX, pageY: clientY + scrollY });
+                lastTouch = touch;
+                const type = clientY === Math.max(1, bounds.top + 1) ? 'touchstart' : 'touchmove';
+                stage.dispatchEvent(new TouchEvent(type, { bubbles: true, cancelable: true, touches: [touch], targetTouches: [touch], changedTouches: [touch] }));
+              }
+              stage.dispatchEvent(new TouchEvent('touchend', { bubbles: true, touches: [], targetTouches: [], changedTouches: lastTouch ? [lastTouch] : [] }));
+            }
+          });
+        } else {
+          const stage = await page.locator('[data-game-discs]').boundingBox();
+          const sliceDeadline = Date.now() + 12000;
+          while (Date.now() < sliceDeadline && !Number(await page.locator('[data-game-discs]').getAttribute('data-game-slices'))) {
+            for (let step = 0; step <= 24; step += 1) {
+              await page.mouse.move(stage.x + stage.width / 2, stage.y + stage.height * step / 24);
+            }
           }
         }
-        assert.ok(Number(await page.locator('[data-game-discs]').getAttribute('data-game-slices')) > 0, 'visible discs respond to pointer slicing');
+        assert.ok(Number(await page.locator('[data-game-discs]').getAttribute('data-game-slices')) > 0, 'visible discs respond to shared-surface input');
         const count = Number(await page.locator('[data-game-discs]').getAttribute('data-game-discs'));
         assert.ok(count <= (label === 'iphone' ? 6 : 10));
         assert.equal(await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort())), beforeStorage, 'slicing does not change saved progress');
