@@ -7,10 +7,10 @@ name: Pages
 # source the deploy is skipped, so switching the source back to the main branch is a full rollback.
 # Changing the source does not start a run: after switching to GitHub Actions, run this workflow on
 # main once (Actions -> Pages -> Run workflow) unless a push to site/ follows.
-# A push to main whose code is exactly what a merged pull request's run already checked (same tree)
-# skips the long browser checks: the data tests, the build and the basic browser check still run,
-# and so does the live check after the deploy. Anything else (main moved after the pull request was
-# checked, a direct push, a manual run) runs every check.
+# A push to main whose code is exactly what a merged pull request's run checked and passed (the
+# tree that run recorded, within 12 hours) skips the long browser checks: the data tests, the build
+# and the basic browser check still run, and so does the live check after the deploy. Anything else
+# (main changed after the pull request was checked, a direct push, a manual run) runs every check.
 
 on:
   push:
@@ -54,6 +54,7 @@ jobs:
     permissions:
       contents: read
       pages: read
+      actions: read
       checks: read
       pull-requests: read
     outputs:
@@ -69,19 +70,31 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # The pull request's run checked its head merged into main at that time. If the pushed
-          # tree equals the head's tree, main added nothing since, so that run checked this code.
-          # Any API failure or doubt runs every check.
+          # A pull request's run checks its head merged into main as main was then, and records
+          # that tree when every check passed ("Record the checked tree", the job's last step).
+          # Skip the long checks only if the newest such run of the merged pull request succeeded
+          # within 12 hours (the site's content follows the clock) and recorded exactly the pushed
+          # tree. Any API failure or doubt runs every check.
           tree="$(git rev-parse 'HEAD^{tree}')"
+          now="$(date +%s)"
           tested=false
-          for head in $(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls" --jq '.[] | select(.merged_at != null) | .head.sha' || true); do
-            head_tree="$(gh api "repos/$GITHUB_REPOSITORY/commits/$head" --jq .commit.tree.sha || true)"
-            [[ "$head_tree" == "$tree" ]] || continue
-            result="$(gh api "repos/$GITHUB_REPOSITORY/commits/$head/check-runs?check_name=Build%20and%20check%20the%20site&filter=latest" \
-              --jq '[.check_runs[] | select(.app.slug == "github-actions")] | sort_by(.completed_at) | last | .conclusion' || true)"
-            if [[ "$result" == success ]]; then
+          heads="$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls" --jq '.[] | select(.merged_at != null) | .head.sha')" || heads=''
+          for head in $heads; do
+            [[ "$head" =~ ^[0-9a-f]{40}$ ]] || continue
+            run="$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/pages.yml/runs?event=pull_request&head_sha=$head" \
+              --jq '.workflow_runs | sort_by(.created_at) | last | select(.conclusion == "success") | .id')" || run=''
+            [[ "$run" =~ ^[0-9]+$ ]] || continue
+            job="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run/jobs" \
+              --jq '.jobs[] | select(.name == "Build and check the site" and .conclusion == "success") | "\(.id) \(.completed_at)"')" || job=''
+            read -r job_id completed <<< "$job"
+            [[ "$job_id" =~ ^[0-9]+$ ]] || continue
+            finished="$(date -d "$completed" +%s 2>/dev/null)" || continue
+            (( now - finished <= 43200 )) || continue
+            checked="$(gh api "repos/$GITHUB_REPOSITORY/check-runs/$job_id/annotations" \
+              --jq '.[] | select(.title == "Checked tree") | .message')" || checked=''
+            if [[ "$checked" == "$tree" ]]; then
               tested=true
-              echo "::notice::Pull request head $head checked this exact code; the long browser checks are skipped."
+              echo "::notice::Pull request run $run checked this exact tree; the long browser checks are skipped."
               break
             fi
           done
@@ -240,6 +253,12 @@ jobs:
         uses: actions/upload-pages-artifact@v5
         with:
           path: ${{ runner.temp }}/pages
+      - name: Record the checked tree
+        # Runs only when every step above succeeded, so every check passed on this tree: the pull
+        # request's head merged into main as main is now. A push of exactly this tree to main
+        # trusts it (see the first step) and skips the long browser checks.
+        if: github.event_name == 'pull_request'
+        run: echo "::notice title=Checked tree::$(git rev-parse 'HEAD^{tree}')"
 
   deploy:
     name: Deploy to GitHub Pages
