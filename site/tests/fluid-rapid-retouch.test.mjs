@@ -93,3 +93,48 @@ test('contact ink is forwarded into both shader passes for the visible touch blo
   assert.match(renderer, /velocityX,\s*velocityY,\s*dye\s*=\s*10/);
   assert.match(renderer, /\.set\(velocityX,\s*velocityY,\s*dye\)/);
 });
+
+test('a fast iOS release forwards the final movement before forgetting the finger', () => {
+  const h = mount();
+  try {
+    gesture(h, 'touchstart', [finger(1, 120, 650)]);
+    gesture(h, 'touchmove', [finger(1, 120, 300)]);
+    h.take();
+    // The last up/down movement may arrive on touchend, without another move.
+    gesture(h, 'touchend', [], [finger(1, 120, 620)]);
+    const release = h.take();
+    assert.equal(release.length, 1, 'the released finger final movement must reach the fluid');
+    assert.equal(release[0].mouseY, 1 - 620 / 800);
+    assert.equal(release[0].velocityY, -320);
+    gesture(h, 'touchstart', [finger(1, 120, 620)]);
+    assert.equal(h.take()[0].dye, 32, 'the released identity must still be reset for retouch');
+  } finally { h.cleanup(); }
+});
+
+test('successive fast gestures alternate direction even when only start/end arrive', () => {
+  const h = mount();
+  try {
+    for (let i = 0; i < 8; i++) {
+      const from = i % 2 ? 300 : 650;
+      const to = i % 2 ? 650 : 300;
+      gesture(h, 'touchstart', [finger(1, 195, from)]);
+      h.take();
+      gesture(h, 'touchend', [], [finger(1, 195, to)]);
+      assert.equal(h.take()[0]?.velocityY, from - to, `gesture ${i} loses its final motion`);
+    }
+  } finally { h.cleanup(); }
+});
+
+test('pointer-mode release includes its final movement and cancellation adds no jump', () => {
+  const h = mount(false);
+  try {
+    h.emit('pointerdown', { pointerId: 7, pointerType: 'touch', clientX: 120, clientY: 650 });
+    h.take();
+    h.emit('pointerup', { pointerId: 7, pointerType: 'touch', clientX: 120, clientY: 300 });
+    assert.equal(h.take()[0]?.velocityY, 350);
+    h.emit('pointerdown', { pointerId: 8, pointerType: 'touch', clientX: 120, clientY: 300 });
+    h.take();
+    h.emit('pointercancel', { pointerId: 8, pointerType: 'touch', clientX: 0, clientY: 0 });
+    assert.equal(h.take().length, 0, 'cancellation coordinates must not create a spurious stroke');
+  } finally { h.cleanup(); }
+});

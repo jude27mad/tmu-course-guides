@@ -27,6 +27,8 @@ let browser;
 
 function instrumentTouch() {
   const draws = new WeakMap();
+  const splats = new WeakMap();
+  let phase = null;
   const locations = new WeakMap();
   const colours = new WeakMap();
   for (const Context of [window.WebGLRenderingContext, window.WebGL2RenderingContext]) {
@@ -37,6 +39,18 @@ function instrumentTouch() {
       if (location) locations.set(location, name);
       return location;
     };
+    for (const method of ['uniform2f', 'uniform2fv']) {
+      const original = Context.prototype[method];
+      Context.prototype[method] = function (location, ...args) {
+        if (locations.get(location) === 'uPointer') {
+          const list = splats.get(this.canvas) || [];
+          const point = method === 'uniform2f' ? args : Array.from(args[0]);
+          list.push({ x: point[0], y: point[1], phase });
+          splats.set(this.canvas, list);
+        }
+        return original.call(this, location, ...args);
+      };
+    }
     for (const method of ['uniform3f', 'uniform3fv']) {
       const original = Context.prototype[method];
       Context.prototype[method] = function (location, ...args) {
@@ -102,12 +116,18 @@ function instrumentTouch() {
     }, { passive: true });
   }
   window.__touchFluidQA = {
-    reset: () => { events.length = 0; touches.length = 0; },
+    setPhase: value => { phase = value; },
+    reset: () => {
+      events.length = 0; touches.length = 0;
+      const canvas = document.querySelector('#fluidCanvas canvas');
+      if (canvas) splats.set(canvas, []);
+    },
     snapshot: () => {
       const wrapper = document.querySelector('#fluidCanvas');
       const canvas = wrapper?.querySelector('canvas');
       return {
         events: [...events],
+        splats: canvas ? [...(splats.get(canvas) || [])] : [],
         touches: [...touches],
         draws: canvas ? draws.get(canvas) || 0 : 0,
         fluid: Boolean(canvas),
@@ -133,9 +153,10 @@ async function check(name, run) {
   }
 }
 
-async function open({ reducedMotion = 'no-preference', paused = false, mobile = true } = {}) {
+async function open({ reducedMotion = 'no-preference', paused = false, mobile = true, ios = false } = {}) {
   const context = await browser.newContext({
     viewport: { width: mobile ? 390 : 1440, height: mobile ? 844 : 900 },
+    ...(ios ? { userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1' } : {}),
     hasTouch: mobile,
     isMobile: mobile,
     deviceScaleFactor: 1,
@@ -294,6 +315,41 @@ try {
     headless: true,
     ...(process.env.QA_CHROMIUM_PATH ? { executablePath: process.env.QA_CHROMIUM_PATH } : {}),
     args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'],
+  });
+
+  await check('native iOS-style panning keeps feeding fluid through four rapid reversals', async () => {
+    const { context, page, errors } = await open({ ios: true });
+    const cdp = await context.newCDPSession(page);
+    try {
+      await ready(page);
+      await waitOnPage(page, () => document.documentElement.dataset.scrollMode === 'document');
+      await page.evaluate(() => { window.scrollTo(0, 200); window.__touchFluidQA.reset(); });
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 195, y: 620, radiusX: 5, radiusY: 5 }] });
+      const directions = [];
+      for (let leg = 0; leg < 4; leg++) {
+        const from = leg % 2 ? 260 : 620;
+        const to = leg % 2 ? 620 : 260;
+        await page.evaluate(phase => window.__touchFluidQA.setPhase(phase), leg);
+        for (let step = 1; step <= 6; step++) {
+          await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: 195, y: from + (to - from) * step / 6, radiusX: 5, radiusY: 5 }] });
+        }
+        await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+        const state = await snapshot(page);
+        const painted = state.splats.filter(splat => splat.phase === leg);
+        assert.ok(painted.length > 0, `direction ${leg} received no shader input: ${JSON.stringify(state)}`);
+        directions.push({ leg, splats: painted.length, minY: Math.min(...painted.map(p => p.y)), maxY: Math.max(...painted.map(p => p.y)) });
+      }
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+      await page.screenshot({ path: path.join(reports, 'fluid-rapid-reversals-ios.png') });
+      const state = await snapshot(page);
+      assert.ok(state.touches.some(event => event.type === 'touchmove'), 'native panning must deliver the touch stream');
+      assert.ok(state.touches.every(event => !event.prevented), 'fluid must not block native panning');
+      assert.deepEqual(errors, []);
+      return { directions, pointerCancelled: state.events.some(event => event.type === 'pointercancel'), draws: state.draws };
+    } finally {
+      await cdp.detach();
+      await context.close();
+    }
   });
 
   for (const route of ['', 'cen100/', 'mth140/', 'mth141/', 'courses/', 'privacy/']) {

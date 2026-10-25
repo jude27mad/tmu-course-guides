@@ -74,7 +74,13 @@ const usePointerEvents = (mainRef, size, force) => {
       // Do not inject the same movement twice when both streams are delivered.
       if (!ios || event.pointerType !== 'touch') sample(pointerKey(event), event.clientX, event.clientY);
     };
-    const pointerEnd = (event) => forget(pointerKey(event));
+    const pointerEnd = (event) => {
+      const key = pointerKey(event);
+      // A quick gesture can end between move events. Preserve that last delta
+      // before releasing its identity, but never use cancellation coordinates.
+      if (event.type === 'pointerup' && (!ios || event.pointerType !== 'touch') && positions.has(key)) sample(key, event.clientX, event.clientY);
+      forget(key);
+    };
     const touchStart = (event) => {
       Array.from(event.changedTouches || event.touches).forEach((touch) => {
         sample(`touch:${touch.identifier}`, touch.clientX, touch.clientY, true);
@@ -88,7 +94,11 @@ const usePointerEvents = (mainRef, size, force) => {
     };
     const touchEnd = (event) => {
       // Remove only the released/cancelled identities, never other fingers.
-      Array.from(event.changedTouches || []).forEach((touch) => forget(`touch:${touch.identifier}`));
+      Array.from(event.changedTouches || []).forEach((touch) => {
+        const key = `touch:${touch.identifier}`;
+        if (event.type === 'touchend' && positions.has(key)) sample(key, touch.clientX, touch.clientY);
+        forget(key);
+      });
     };
 
     const listeners = [
