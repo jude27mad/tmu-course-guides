@@ -41,21 +41,33 @@ function Footer() {
   const isMobile = useIsMobile();
   const still = useStill();
   const footerRef = useRef();
+  const viewportRef = useRef();
   const router = useRouter();
   const [isLoading] = useStore(useShallow((state) => [state.isLoading]));
   const windowSize = useWindowSize();
-  // The restored contained scroller uses a stable small viewport. Safari's
-  // toolbar can change innerHeight without changing that layout; rebuilding
-  // then would reset the reveal and temporarily collapse the scroll range.
-  const resizeHeight = scrollRoot()?.clientHeight || windowSize.height;
+  // Measure the same stable 100svh used by the contained shell, including when
+  // Safari scrolls the document. Toolbar-only changes to innerHeight must not
+  // rebuild the reveal or temporarily collapse the page's scroll range.
+  const [resizeHeight, setResizeHeight] = useState(0);
   const courseId = courseIdFromPath(router.asPath);
   const courseLinks = useCourseLinks(courseId);
   const [creditOpen, setCreditOpen] = useState(false);
 
   useIsomorphicLayoutEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return undefined;
+    // clientHeight excludes transforms applied during menu/page transitions.
+    const measure = () => setResizeHeight(viewport.clientHeight);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(viewport);
+    return () => observer.disconnect();
+  }, []);
+
+  useIsomorphicLayoutEffect(() => {
     // Native credit disclosure must not rebuild an uncover transform or
     // temporarily collapse the scroller when motion is disabled.
-    if (still) return undefined;
+    if (still || !resizeHeight) return undefined;
     const context = gsap.context(() => {
       if (!isLoading) {
         const setupFooterAnimation = () => {
@@ -63,7 +75,7 @@ function Footer() {
           const allSections = document.querySelectorAll('#mainContainer section');
           if (allSections.length > 1) {
             const lastSection = allSections[allSections.length - 2];
-            if (footerRef.current.offsetHeight <= (resizeHeight || window.innerHeight)) {
+            if (footerRef.current.offsetHeight <= resizeHeight) {
               gsap.set(footerRef.current, { yPercent: -50 });
               const uncover = gsap.timeline({ paused: true });
               gsap.set(footerRef.current, { height: '100.5svh' });
@@ -94,6 +106,7 @@ function Footer() {
 
   return (
     <section ref={footerRef} className={clsx(styles.root, 'layout-grid-inner')} data-surface="dark">
+      <span ref={viewportRef} className={styles.viewportMeasure} data-footer-viewport aria-hidden="true" />
       <div style={{ gridColumn: isMobile ? '1 / 3' : '1 / 5' }} className={styles.linksContainer}>
         <AppearTitle isFooter>
           <h2 className={clsx(styles.title, 'h6')}>Sitemap</h2>

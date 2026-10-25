@@ -1,5 +1,19 @@
 @import '@src/styles/functions';
 
+// This does not paint or take part in the grid. Unlike innerHeight, 100svh
+// stays constant while Safari's toolbar expands or collapses, and it still
+// follows real viewport changes such as rotation and iPad split view.
+.viewportMeasure {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 0;
+  height: 100svh;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .root {
   --focus: var(--onDark); // the footer sits on the dark background
   height: auto;

@@ -94,7 +94,7 @@
 
 // Native scrolling must work before JavaScript as well as with motion paused.
 :global(html:not(.js)) .layout .main,
-:global(html[data-motion='off']) .layout .main:not(:global(.lenis-stopped)) {
+:global(html[data-motion='off']:not([data-scroll-mode='document'])) .layout .main:not(:global(.lenis-stopped)) {
   overflow-y: auto;
 }
 
