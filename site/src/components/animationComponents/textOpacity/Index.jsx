@@ -12,42 +12,32 @@ function TextOpacity({ children, trigger }) {
 
   const createTextOpacityAnimation = (element, scrollTrigger) => {
     const splitted = new SplitType(element, { types: 'words' });
-    gsap.set(splitted.words, { opacity: 0 });
+    const words = gsap.utils.shuffle([...splitted.words]);
+    // Sample the original scattered poses once. Toolbar/viewport refreshes
+    // should update the scroll range, not send each word to a new random pose.
+    gsap.set(words, {
+      willChange: 'opacity, transform',
+      z: () => gsap.utils.random(500, 950),
+      opacity: 0,
+      xPercent: () => gsap.utils.random(-100, 100),
+      yPercent: () => gsap.utils.random(-10, 10),
+      rotationX: () => gsap.utils.random(-90, 90),
+    });
 
-    gsap.fromTo(
-      splitted.words,
-      {
-        'will-change': 'opacity, transform',
-        z: () => gsap.utils.random(500, 950),
-        opacity: 0,
-        xPercent: () => gsap.utils.random(-100, 100),
-        yPercent: () => gsap.utils.random(-10, 10),
-        rotationX: () => gsap.utils.random(-90, 90),
+    const timeline = gsap.timeline({
+      scrollTrigger: {
+        id: 'companion-statement',
+        trigger: scrollTrigger,
+        start: 'top bottom',
+        end: 'bottom bottom',
+        scrub: 0.2,
+        scroller: scrollRoot(),
       },
-      {
-        ease: 'expo',
-        opacity: 1,
-        rotationX: 0,
-        rotationY: 0,
-        xPercent: 0,
-        yPercent: 0,
-        z: 0,
-        scrollTrigger: {
-          id: 'companion-statement',
-          trigger: scrollTrigger,
-          // Reveal during entry, so the game never leads a blank pinned panel.
-          start: 'top bottom',
-          end: 'top top',
-          scrub: 0.18,
-          scroller: scrollRoot(),
-          invalidateOnRefresh: true,
-        },
-        stagger: {
-          each: 0.006,
-          from: 'random',
-        },
-      },
-    );
+    });
+    // Show the words early, but let their 3D movement continue while the
+    // statement is centred beside the game, across the existing short stage.
+    timeline.to(words, { opacity: 1, duration: 0.25, ease: 'expo.out', stagger: 0.006 }, 0);
+    timeline.to(words, { rotationX: 0, rotationY: 0, xPercent: 0, yPercent: 0, z: 0, duration: 1, ease: 'none', stagger: 0.006 }, 0);
     return splitted;
   };
 

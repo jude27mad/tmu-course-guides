@@ -23,10 +23,10 @@ const JOINT = 1.45; // card anchor above the card centre
 // With motion off the lanyard starts (and stays) hanging at rest.
 const SWING_START = [
   [0, 0],
-  [0.1, -0.995],
-  [0.2, -1.99],
-  [0.3, -2.985],
-  [0.3, -2.985 - JOINT],
+  [0.2, -0.98],
+  [0.4, -1.96],
+  [0.6, -2.94],
+  [0.6, -2.94 - JOINT],
 ];
 const REST_START = [
   [0, 0],
@@ -35,10 +35,12 @@ const REST_START = [
   [0, -3],
   [0, -3 - JOINT],
 ];
-const segmentProps = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 8, linearDamping: 5 };
+const segmentProps = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 3, linearDamping: 2.5 };
+const IMPULSE_RESPONSE = 1 - Math.exp(-1 / (60 * 0.09));
 
 function Lanyard({ body, x, rest, swinging, paused, enabled }) {
-  const scroll = useRef({ direction: 0, isScrolling: false, velocity: 0 });
+  const scroll = useRef({ impulse: 0, updated: 0 });
+  const impulse = useRef(0);
   const ang = useMemo(() => new THREE.Vector3(), []);
   const rot = useMemo(() => new THREE.Vector3(), []);
   const [start] = useState(() => (rest ? REST_START : SWING_START));
@@ -51,21 +53,33 @@ function Lanyard({ body, x, rest, swinging, paused, enabled }) {
     [0, JOINT, 0],
   ]);
 
-  useScroll(({ direction, isScrolling, velocity }) => {
-    scroll.current.direction = direction;
-    scroll.current.isScrolling = isScrolling;
-    scroll.current.velocity = velocity;
+  useScroll(({ isScrolling, velocity }) => {
+    // Keep the sign through reversals; do not turn a zero direction into a
+    // leftward kick. A scroll sample expires instead of being replayed forever.
+    scroll.current.impulse = isScrolling && Number.isFinite(velocity) ? THREE.MathUtils.clamp(velocity * 0.0015, -0.012, 0.012) : 0;
+    scroll.current.updated = performance.now();
   });
+
+  useEffect(() => {
+    if (paused) {
+      impulse.current = 0;
+      scroll.current.impulse = 0;
+    }
+  }, [paused]);
 
   // Apply a bounded nudge once per fixed 60 Hz physics step, so a fast swipe
   // or a high-refresh display cannot keep adding excessive swing energy.
   useBeforePhysicsStep(() => {
     const card = body.card.current;
     if (paused || !card) return;
-    if (scroll.current.isScrolling && swinging()) {
-      const moveDistance = Math.min(Math.abs(scroll.current.velocity) * 0.001, 0.008);
-      const directionVector = scroll.current.direction === 1 ? 1 : -1;
-      card.applyImpulse({ x: directionVector * moveDistance, y: 0, z: 0 }, true);
+    if (swinging()) {
+      const target = performance.now() - scroll.current.updated < 120 ? scroll.current.impulse : 0;
+      // A short, fixed-step response softens rapid up/down reversals without
+      // slowing the physics world or making the lanyard feel rigid.
+      impulse.current += (target - impulse.current) * IMPULSE_RESPONSE;
+      if (Math.abs(impulse.current) > 0.00001) card.applyImpulse({ x: impulse.current, y: 0, z: 0 }, true);
+    } else {
+      impulse.current = 0;
     }
     ang.copy(card.angvel());
     rot.copy(card.rotation());

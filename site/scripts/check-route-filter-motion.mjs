@@ -308,6 +308,59 @@ try {
   ]) {
     const browser = await engine.launch({ headless: true });
     try {
+      if (label === 'iphone' || label === 'desktop') await check(browser, options, `${label}-badge-rapid-scroll`, async (page) => {
+        const routes = [];
+        for (const route of ['', 'cen100/', 'mth140/', 'mth141/', 'courses/']) {
+          await page.goto(base + route);
+          await ready(page);
+          const badge = page.locator('[data-course-badge]').first();
+          await badge.scrollIntoViewIfNeeded();
+          await page.locator('[data-course-badge][data-badge-rendered="true"]').first().waitFor();
+          // Read the existing world through its provider. This check does not
+          // inject forces or expose a production debug API.
+          const samples = await page.evaluate(async () => {
+            const element = document.querySelector('[data-course-badge]');
+            let fiber = element[Object.keys(element).find(key => key.startsWith('__reactFiber$'))];
+            while (fiber && !fiber.memoizedProps?.value?.register) fiber = fiber.return;
+            const registry = fiber.memoizedProps.value;
+            const entry = registry.getState().entries.find(item => item.element === element);
+            const keys = ['fixed', 'j1', 'j2', 'j3', 'card'];
+            const bodies = keys.map(key => entry.body[key].current);
+            const scroller = document.documentElement.dataset.scrollMode === 'document' ? window : document.querySelector('main');
+            const scrollTop = () => scroller === window ? scrollY : scroller.scrollTop;
+            const centre = Math.max(0, scrollTop() + element.getBoundingClientRect().top - (innerHeight - element.offsetHeight) / 2);
+            const records = [];
+            // Alternate small visible nudges with full exits/re-entries. The
+            // offscreen world must resume rather than remount or jump apart.
+            for (let step = 0; step < 120; step++) {
+              if (step % 3 === 0) {
+                const excursion = step >= 48 && step < 84 ? innerHeight * 1.2 : 44;
+                scroller.scrollTo(0, Math.max(0, centre + (step % 6 === 0 ? excursion : 0)));
+              }
+              await new Promise(requestAnimationFrame);
+              const current = registry.getState().entries.find(item => item.id === entry.id);
+              const anchor = bodies[0].translation();
+              const card = bodies[4].translation();
+              const rotation = bodies[4].rotation();
+              records.push({ x: card.x - anchor.x, y: card.y - anchor.y, z: card.z - anchor.z,
+                rotation: [rotation.x, rotation.y, rotation.z, rotation.w], visible: current.visible,
+                same: keys.every((key, i) => current.body[key].current === bodies[i] && bodies[i].isValid()) });
+            }
+            scroller.scrollTo(0, centre);
+            return records;
+          });
+          assert.ok(samples.every(sample => sample.same && [sample.x, sample.y, sample.z, ...sample.rotation].every(Number.isFinite)), 'rapid scrolling retains the same live, finite bodies');
+          assert.ok(samples.some(sample => !sample.visible) && samples.some(sample => sample.visible), 'the stress scroll crosses the visibility boundary');
+          const span = Math.max(...samples.map(sample => sample.x)) - Math.min(...samples.map(sample => sample.x));
+          assert.ok(span > 0.01 && Math.max(...samples.map(sample => Math.abs(sample.x))) < 1.5, `the badge responds with a bounded natural swing: ${span}`);
+          const name = `${label}-${route.replaceAll('/', '') || 'desk'}-rapid-scroll`;
+          await writeFile(path.join(report, `${name}.json`), JSON.stringify(samples));
+          await page.waitForTimeout(400);
+          await page.screenshot({ path: path.join(report, `${name}.png`) });
+          routes.push({ route, span, samples: samples.length });
+        }
+        return routes;
+      });
       if (label !== 'tablet') await check(browser, options, `${label}-companion-scene`, async (page) => {
         await page.addInitScript(() => { Math.random = () => 0.5; });
         await page.goto(base);
