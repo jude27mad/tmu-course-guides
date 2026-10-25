@@ -18,7 +18,7 @@ test('the fixed artwork, cards and grain continue under both bars on iPhone', ()
   assert.match(global, /--edge-bleed-top:\s*\d+px;/);
   assert.match(global, /--edge-bleed-bottom:\s*\d+px;/);
   const documentMode = global.slice(global.indexOf("html[data-scroll-mode='document'] {\n  overflow-x"));
-  // The grain is part of the page: Safari paints the page under its bottom bar, but no fixed layer.
+  // The grain is part of the page: Safari cuts a fixed element's own painting at the layout viewport.
   assert.match(documentMode.slice(0, documentMode.indexOf('\n}')), /#layout::before \{ position: absolute; top: 0; width: 100%; height: 100%; \}/);
   // Background artwork and the shared scene, not the fluid (it maps touches from the viewport top).
   assert.match(app, /\.canvasContainer:not\(:global\(#fluidCanvas\)\)\s*\{[^}]*top:\s*calc\(-1 \* var\(--edge-bleed-top\)\)/);
@@ -72,6 +72,24 @@ test('the paper steps aside for a dark panel near either end, and otherwise 480p
   assert.deepEqual(edges({ scrollTop: 173, maxScroll: 3000, endsDark: true, darkFromStart: 173 }), ['open', 'open']);
   assert.deepEqual(edges({ scrollTop: 2850, maxScroll: 3000, endsDark: false, darkFromEnd: 150 }), ['open', 'open']);
   assert.deepEqual(edges({ scrollTop: 2851, maxScroll: 3000, endsDark: false, darkFromEnd: 150 }), ['open', 'closed']);
+});
+
+test('the artwork fades into the ink at the bottom bar only while a dark end is at the bar', () => {
+  const theme = read('../src/utils/theme.js');
+  const source = theme.slice(theme.indexOf('const EDGE_SWITCH'), theme.indexOf('// Compatibility for callers')).replace('export function', 'function');
+  const dataset = {};
+  const setEdgeBleed = new Function('document', `${source}\nreturn setEdgeBleed;`)({ documentElement: { dataset } });
+  const end = (state) => {
+    setEdgeBleed(state);
+    return dataset.edgeEnd;
+  };
+  assert.equal(end({ scrollTop: 0, maxScroll: 3000, endsDark: true }), 'none');
+  assert.equal(end({ scrollTop: 2998.5, maxScroll: 3000, endsDark: true }), 'none');
+  assert.equal(end({ scrollTop: 2999.5, maxScroll: 3000, endsDark: true }), 'dark');
+  // Bouncing past the end.
+  assert.equal(end({ scrollTop: 3060, maxScroll: 3000, endsDark: true }), 'dark');
+  // A page that ends light has paper past its end (the root's #f1f1f1, and the cap).
+  assert.equal(end({ scrollTop: 3000, maxScroll: 3000, endsDark: false }), 'none');
 });
 
 test('the open menu panel continues under the bars, highlight included', () => {
@@ -171,12 +189,21 @@ test('Safari\'s flat fill past the page and under its bottom bar is the page as 
   assert.match(theme, /meta\.setAttribute\('content', topDark \? TOKENS\.ink : lightEdge\(DEFAULT_PALETTE\.secondary\)\)/);
 });
 
-test('under the bottom bar a dark panel shows the body\'s ink, and the artwork fades into it above the bar', () => {
+test('the artwork runs on unchanged under the bottom bar, and fades into the ink only past a dark end', () => {
   const global = read('../src/styles/global.scss');
   assert.match(global, /html\[data-scroll-mode='document'\] body \{\s*background-color: var\(--black\);\s*\}/);
+  // Safari shows the artwork's reach under its bottom bar. A layer that shades it
+  // at the layout viewport's bottom edge (#67 faded it to ink there) ends in a
+  // line where the bar begins, so the fade is invisible...
   const app = read('../src/pages/app.module.scss');
   const background = app.slice(app.indexOf("  .background {\n    background-color: transparent;"));
-  assert.match(background, /&::after \{[^}]*position: fixed;[^}]*bottom: 0;[^}]*height: 96px;[^}]*linear-gradient\(to bottom, rgba\(var\(--inkRgb\), 0\), var\(--black\)\)/);
+  const fade = background.slice(background.indexOf('&::after {'), background.indexOf('}', background.indexOf('&::after {')));
+  assert.match(fade, /position: fixed;[^}]*bottom: 0;[^}]*height: 96px;[^}]*linear-gradient\(to bottom, rgba\(var\(--inkRgb\), 0\), var\(--black\)\)/);
+  assert.match(fade, /opacity: 0;/);
+  // ...except while the end of a page that ends dark is at the bar, where Safari
+  // shows the root's flat ink under the bar instead.
+  assert.match(app, /:global\(html\[data-scroll-mode='document'\]\[data-edge-end='dark'\]\) \.background::after \{\s*opacity: 1;\s*\}/);
+  assert.equal((app.match(/\.background::after/g) || []).length, 1);
   // The footer no longer fades to flat ink itself: when the page bounces past its
   // end, the artwork under it would meet that ink in a hard edge.
   const footer = read('../src/components/dom/styles/footer.module.scss');

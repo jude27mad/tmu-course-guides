@@ -83,6 +83,18 @@ Safari 26 paints the page under its bottom bar, but no fixed layer. So the fixed
 - The artwork fades into the ink over the 96px above the bar (a fixed gradient at the layout viewport's bottom, which is where the bar begins), so a panel crossing the bar has no edge.
 - The footer's own fade to ink from #66 is gone: while the page bounces, its artwork now runs on into the artwork below it.
 
+## The line at the bottom bar in dark panels (24 October 2026, fifth report)
+
+With #67 live, the paper ran under the bottom bar without a line (241 above it, 241 with Safari's slight blue below), but every dark panel had one: flat ink (24) just above the bar, lighter artwork (31 to 64) below it.
+
+The fourth report's premise was wrong for the artwork. The values under the bar follow the artwork, not Safari's bar. At the same screen position they grew lighter downward in one screenshot and darker in another. Where the faded artwork above the line can be traced back, it matches the value under the bar: at one point the fade read 27 at 39px above the bar, which puts the artwork at 31, and the bar showed 31. So Safari does show the artwork's reach (`--edge-bleed-bottom`) under its bottom bar. #67's fade to ink over the 96px above the bar therefore darkened the artwork only down to the bar and drew the line there. The body stays ink, as the fallback inside a dark panel wherever the artwork is not painted.
+
+Two independent readings of the screenshots confirmed this; one matched the shader's own per-pixel noise under the bar to the rows of the canvas reaching past the layout viewport. A reading of WebKit's source explains the fourth report: WebKit cuts what a fixed element paints itself (the grain's CSS background) at the layout viewport, but a WebGL canvas inside a fixed element keeps its reach. Past the ends of the document, WebKit clips all content and Safari shows only the root's flat colour.
+
+That last case is where #67's fade was right: at the end of a page that ends in the dark footer, Safari stops the page's end at the bar, and under the bar it shows the root's flat ink, not the artwork. The fade therefore stays, but only there: the navbar sets `html[data-edge-end='dark']` while the end of a dark-ending page is at the bar (at rest or bouncing past it), and only then the fixed fade above the bar is shown (opacity 0 otherwise, 0.2s transition).
+
+Under the bar Safari still shifts the colour a little (green about 2 levels below red, blue about 5 above). That is the bar's own material; on the paper it is invisible.
+
 ## Automated checks
 
 - `site/tests/fluid-edge-colour.test.mjs`: no inline background on the fluid canvas, the CSS rule that gives it black only outside document mode, guard height, width and offsets, and the ink rule. It fails on the old source.

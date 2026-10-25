@@ -36,10 +36,10 @@ html {
 html[data-scroll-mode='document'] {
   background-color: var(--pageUnderGrain);
 }
-// Safari 26 does not paint fixed layers under its bottom bar, but it does paint
-// the page there. Through the dark panels (the footer, the course cards, the
-// Desk's windows), which show the fixed artwork, the page then shows the body:
-// the ink, so a panel stays dark under the bar. Only those panels show it.
+// The dark panels (the footer, the course cards, the Desk's windows) show the
+// fixed artwork, which reaches under Safari's bars. Wherever it is not painted,
+// a panel shows the body instead: the ink, so it is never paper inside a dark
+// panel. Only those panels show it.
 html[data-scroll-mode='document'] body {
   background-color: var(--black);
 }
@@ -235,17 +235,18 @@ html[data-motion='off'] {
 
 html[data-scroll-mode='document'] {
   overflow-x: clip; overflow-y: auto;
-  // Safari 26 shows the page under its translucent status bar and toolbar, but
-  // fixed layers stop at the layout viewport, so the dark artwork and the course
-  // cards ended in a hard line at the status bar. They reach this far past each
-  // edge instead (more than either bar, in either toolbar layout). Under the
-  // bottom bar Safari paints no fixed layer at all; see the body and the
-  // artwork's fade below.
+  // Safari 26 shows the page under its translucent status bar and toolbar. The
+  // dark artwork and the course cards, fixed canvases sized to the layout
+  // viewport, ended in a hard line at both bars; they reach this far past each
+  // edge instead (more than either bar, in either toolbar layout), and Safari
+  // shows that reach. Past the ends of the document it shows only the root's
+  // flat colour (see the artwork's fade at a dark end, app.module.scss).
   --edge-bleed-top: 160px;
   --edge-bleed-bottom: 160px;
   body { overflow: visible; max-height: none; }
-  // Part of the page, not fixed: Safari 26 paints the page under its bottom bar
-  // but no fixed layer, and a fixed grain ended in a line where the bar began.
+  // Part of the page, not fixed: Safari cuts what a fixed element paints itself
+  // (a CSS background) at the layout viewport, so a fixed grain ended in a line
+  // where the bottom bar began.
   #layout::before { position: absolute; top: 0; width: 100%; height: 100%; }
   // Above the start of a page, and below the end of one that ends light, there
   // is no page for the dark artwork to show through: paper covers its reach

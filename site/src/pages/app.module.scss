@@ -149,10 +149,12 @@
     // The dark artwork continues under Safari's bars as well.
     top: calc(-1 * var(--edge-bleed-top));
     height: calc(var(--app-viewport-height) + var(--edge-bleed-top) + var(--edge-bleed-bottom));
-    // Safari 26 paints no fixed layer under its bottom bar, which sits on the
-    // layout viewport's bottom edge: a dark panel shows the body's ink there
-    // (global.scss). The artwork fades into that ink above the bar, so the
-    // panel has no edge where the bar begins.
+    // Safari shows this reach under its bottom bar, so nothing may shade the
+    // artwork at the layout viewport's bottom edge: it would end in a line where
+    // the bar begins (#67's fade to ink did). Only past the end of a page that
+    // ends dark, where Safari shows the root's flat ink under the bar instead,
+    // does the artwork fade into that ink above the bar (data-edge-end, set by
+    // the navbar while the page's end is at the bar).
     &::after {
       content: '';
       position: fixed;
@@ -162,6 +164,12 @@
       height: 96px;
       background-image: linear-gradient(to bottom, rgba(var(--inkRgb), 0), var(--black));
       pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease-out;
     }
   }
+}
+
+:global(html[data-scroll-mode='document'][data-edge-end='dark']) .background::after {
+  opacity: 1;
 }
