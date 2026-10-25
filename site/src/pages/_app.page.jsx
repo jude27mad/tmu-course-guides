@@ -85,16 +85,19 @@ function MotionSync() {
   return null;
 }
 
-// Keyboard scrolling while nothing has focus yet (focus on <body>): `main` is the
-// scroller, not the document, so the browser's own key scrolling would do
-// nothing. Inside main (or after the skip link) the browser handles keys itself.
+// The original contained scroller uses overflow:hidden during motion. Preserve
+// keyboard scrolling there as well as from body, without intercepting keys
+// belonging to form controls, native disclosures, or editable content.
 const SCROLL_KEYS = { ArrowDown: 1, ArrowUp: -1, PageDown: 2, PageUp: -2, ' ': 2, Home: -3, End: 3 };
 function useBodyKeyScroll() {
   useEffect(() => {
     const onKeyDown = (event) => {
       if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
       const active = document.activeElement;
-      if (active && active !== document.body && active !== document.documentElement) return;
+      const main = document.querySelector('main');
+      const containedFocus = main?.contains(active) && getComputedStyle(main).overflowY === 'hidden';
+      const control = active?.closest('input, textarea, select, button, summary, [contenteditable], [role="slider"], [role="spinbutton"], [role="combobox"], [role="listbox"]');
+      if (active && active !== document.body && active !== document.documentElement && (!containedFocus || control)) return;
       let step = SCROLL_KEYS[event.key];
       if (!step) return;
       const { lenis, isLoading, isMenuOpen, isSearchOpen, still } = useStore.getState();

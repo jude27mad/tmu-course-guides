@@ -34,6 +34,9 @@ The remaining changes are:
   its reveal must be rebuilt. Toolbar-only changes to `innerHeight` should not
   reset a layout based on stable 100svh. The footer stays in normal document
   flow when motion is disabled, including while its native credit expands.
+- The existing keyboard-scroll handler also handles focus inside the restored
+  hidden scroller. Form controls, native disclosures, and editable content keep
+  their own key behavior; the touch/fluid input path is unchanged.
 
 The original Giats card drop, damping, forces, and offscreen simulation remain
 unchanged. Course content, typography, spacing, deadlines, saved records, the
@@ -70,7 +73,8 @@ the data-test stage stopped before build/browser checks with nine failures:
 The checks now follow PR #79's active contract: real pointer sequences, shader
 colour/texture values, the restored black base, and the stable contained
 viewport. They no longer require the removed allocation optimization or native
-touch adapter. The original fluid source is unchanged. Pinch zoom, keyboard
+touch adapter. The orphaned unit test importing the gesture filter deleted by
+PR #79 has also been removed; the real browser pinch check remains. The original fluid source is unchanged. Pinch zoom, keyboard
 scrolling, reduced motion, saved work, navigation, and control checks remain.
 
 The dedicated iOS document-scrolling workflow and script were retired with that
