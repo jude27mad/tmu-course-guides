@@ -128,23 +128,24 @@ test('the paper caps stand down while a panel shell shrinks the page (iPad, land
   assert.ok(shown !== -1 && hidden > shown, 'the stand-down rule follows the rule that shows the caps (same specificity)');
 });
 
-test('the shared canvas drops a View\'s last frame once nothing draws', () => {
+test('the fixed desktop canvas drops a badge\'s last frame once nothing draws', () => {
   const app = read('../src/pages/_app.page.jsx');
-  assert.match(app, /<ClearViews \/>[\s\S]*<View\.Port \/>/);
+  assert.match(app, /<ClearViews registry=\{badgeRegistry\} \/>[\s\S]*<View\.Port \/>/);
   // The production component, evaluated from its source against a stub renderer.
   const source = read('../src/components/canvas/ClearViews.jsx')
     .replace(/^import[\s\S]*?from ['"][^'"]+['"];?\s*$/gm, '')
     .replace('export default ClearViews;', 'return ClearViews;');
   let frame;
   let priority;
-  const ClearViews = new Function('useRef', 'useFrame', source)(
+  const ClearViews = new Function('useRef', 'useFrame', 'nativeIOSScroll', source)(
     (value) => ({ current: value }),
     (callback, order) => {
       frame = callback;
       priority = order;
     },
+    () => false,
   );
-  ClearViews();
+  ClearViews({});
   // drei Views draw at priority 1 and up, after this.
   assert.equal(priority, 0);
   const gl = { info: { render: { frame: 0 } }, clears: 0, setScissorTest() {}, clear() { this.clears += 1; } };
