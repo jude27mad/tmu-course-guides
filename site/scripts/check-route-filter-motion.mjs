@@ -266,6 +266,17 @@ try {
           const canvasMoved = state.gl.domElement.getBoundingClientRect().top - canvasBefore;
           const badgeMoved = element.getBoundingClientRect().top - badgeBefore;
           const scrollAlignmentError = Math.abs(canvasMoved - badgeMoved);
+          // Leave the active drawing region while part of the retained surface
+          // is still on screen. No new pose may overpaint that retained frame.
+          const surface = state.gl.domElement.closest('#viewCanvas');
+          const offset = parseFloat(surface.style.getPropertyValue('--badge-scroll-offset')) || 0;
+          const activeTop = state.gl.domElement.getBoundingClientRect().top + scrollY - offset;
+          window.scrollBy(0, element.getBoundingClientRect().bottom - activeTop + 2);
+          draws = 0;
+          frame();
+          const retainedSurfaceVisible = state.gl.domElement.getBoundingClientRect().bottom > 0;
+          const outsideActiveRegion = element.getBoundingClientRect().bottom < activeTop;
+          const offscreenDraws = draws;
           window.scrollTo(0, centre + innerHeight * 2);
           frame();
           await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
@@ -277,7 +288,7 @@ try {
           // One real renderer frame after re-entry. Waiting for another React
           // visibility commit is precisely the blank-frame regression.
           frame();
-          return { outside, returned: bounds.top >= 0 && bounds.bottom <= innerHeight + 1, draws, canvasMoved, badgeMoved, scrollAlignmentError };
+          return { outside, returned: bounds.top >= 0 && bounds.bottom <= innerHeight + 1, draws, canvasMoved, badgeMoved, scrollAlignmentError, retainedSurfaceVisible, outsideActiveRegion, offscreenDraws };
         } finally {
           state.gl.render = render;
           state.setFrameloop('always');
@@ -288,6 +299,9 @@ try {
       assert.equal(evidence.returned, true, 'the badge really returned');
       assert.ok(evidence.draws > 0, `the first returning frame draws the badge: ${JSON.stringify(evidence)}`);
       assert.ok(evidence.scrollAlignmentError < 1, `painted badges follow native scrolling between renderer frames: ${JSON.stringify(evidence)}`);
+      assert.equal(evidence.retainedSurfaceVisible, true, 'part of the retained surface remains on screen');
+      assert.equal(evidence.outsideActiveRegion, true, 'the badge left the active drawing region');
+      assert.equal(evidence.offscreenDraws, 0, 'offscreen poses must not overpaint the retained frame');
       return evidence;
     });
     // Fail fast on this drawing regression; avoid spending the entire browser
