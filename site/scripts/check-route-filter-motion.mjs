@@ -465,7 +465,10 @@ try {
         assert.ok(assembling.filter(word => word.visible && word.opacity > 0.3 && word.z > 10).length >= 3,
           `the visible statement retains its 3D reveal: ${JSON.stringify(assembling)}`);
         await position(1);
-        await page.waitForFunction(() => [...document.querySelectorAll('[data-companion-statement] .word')].every(word => Number(getComputedStyle(word).opacity) > 0.99));
+        await page.waitForFunction(() => [...document.querySelectorAll('[data-companion-statement] .word')].every(word => {
+          const css = getComputedStyle(word);
+          return Number(css.opacity) > 0.99 && (css.transform === 'none' || new DOMMatrixReadOnly(css.transform).isIdentity);
+        }));
         await page.waitForFunction(() => Number(document.querySelector('[data-game-discs]')?.dataset.gameDiscs) > 0);
         await page.screenshot({ path: path.join(report, `${label}-companion-and-game.png`) });
         // Interact with centre-launched discs on their actual shared DOM surface.

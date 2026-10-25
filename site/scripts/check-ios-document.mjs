@@ -412,7 +412,9 @@ try {
             }
             await page.screenshot({ path: path.join(report, `${route.replaceAll('/', '') || 'desk'}-reveal-width.png`) });
             await page.evaluate(() => window.scrollTo(0, 0));
-            await page.waitForFunction(() => scrollY === 0);
+            // The edge caps follow the next scroll/paint frame, after native
+            // scrollY itself has already reached zero.
+            await page.waitForFunction(() => scrollY === 0 && document.documentElement.dataset.edgeTop === 'closed');
           }
           const edgesAtTop = await verifyTransparencyGuards(page);
           await page.evaluate(() => window.scrollTo(0, 300));
