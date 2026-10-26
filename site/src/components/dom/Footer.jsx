@@ -51,7 +51,7 @@ function Footer() {
   const [resizeHeight, setResizeHeight] = useState(0);
   const courseId = courseIdFromPath(router.asPath);
   const courseLinks = useCourseLinks(courseId);
-  const showCourseLinks = !['/', '/courses/', '/privacy/', '/updates/'].includes(pathKey(router.asPath));
+  const showCourseLinks = !['/', '/courses/', '/privacy/', '/updates/'].includes(pathKey(router.pathname));
   const [creditOpen, setCreditOpen] = useState(false);
 
   useIsomorphicLayoutEffect(() => {
