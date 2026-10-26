@@ -289,14 +289,14 @@ export function BadgeView({ entry, look, rest }) {
 }
 
 export function BadgeWorld({ registry }) {
-  const { entries } = useSyncExternalStore(registry.subscribe, registry.getState, registry.getState);
+  const { entries, rigs } = useSyncExternalStore(registry.subscribe, registry.getState, registry.getState);
   const rest = useStill();
   if (!entries.length) return null;
   return (
     <>
       <Physics paused={rest} interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
-        {entries.map((entry) => (
-          <Lanyard key={entry.id} body={entry.body} x={entry.slot * SPACING} rest={rest} intersected={entry.swing} />
+        {rigs.map((rig) => (
+          <Lanyard key={rig.id} body={rig.body} x={rig.slot * SPACING} rest={rest} intersected={rig.swing} />
         ))}
       </Physics>
       {entries.map((entry) => entry.look && <BadgeView key={entry.id} entry={entry} look={entry.look} rest={rest} />)}

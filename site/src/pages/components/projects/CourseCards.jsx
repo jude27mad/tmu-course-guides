@@ -114,7 +114,7 @@ function CourseCards({ desk }) {
                     <p className={clsx('p-l', styles.summary)}>{course.summary}</p>
                   </div>
                   <div className={styles.imageContainer} aria-hidden="true">
-                    <CourseBadge instanceId={`directory-${course.id}`} courseId={course.id} next={entryFor(desk, course.id)?.next} ready={desk?.ready} />
+                    <CourseBadge instanceId={`directory-${course.id}`} courseId={course.id} motionGroup="course-directory" next={entryFor(desk, course.id)?.next} ready={desk?.ready} />
                   </div>
                 </div>
               </div>

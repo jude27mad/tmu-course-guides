@@ -548,6 +548,52 @@ try {
           'scrolling and toolbar resizing retain animation state without position-only canvas updates');
         return evidence;
       });
+      if (label === 'iphone' || label === 'desktop') await check(browser, options, `${label}-directory-continuous-swing`, async (page) => {
+        await page.goto(base + 'courses/');
+        await ready(page);
+        await page.locator('[data-badge-rendered="true"]').first().waitFor();
+        const samples = await page.evaluate(async () => {
+          const element = document.querySelector('[data-badge-instance="directory-cen100"]');
+          let fiber = element[Object.keys(element).find(key => key.startsWith('__reactFiber$'))];
+          while (fiber && !fiber.memoizedProps?.value?.register) fiber = fiber.return;
+          const registry = fiber.memoizedProps.value;
+          const entries = registry.getState().entries.filter(entry => entry.id.startsWith('directory-'));
+          const keys = ['fixed', 'j1', 'j2', 'j3', 'card'];
+          const bodies = keys.map(key => entries[0].body[key].current);
+          const scroller = document.documentElement.dataset.scrollMode === 'document' ? window : document.querySelector('main');
+          const scrollTop = scroller === window ? scrollY : scroller.scrollTop;
+          const centres = entries.map(entry => {
+            const clip = entry.element.closest('[data-badge-clip]').getBoundingClientRect();
+            return Math.max(0, scrollTop + clip.top + clip.height / 2 - innerHeight / 2);
+          });
+          const records = [];
+          for (let frame = 0; frame <= 120; frame++) {
+            const progress = frame <= 60 ? frame / 60 : (120 - frame) / 60;
+            scroller.scrollTo(0, centres[0] + (centres.at(-1) - centres[0]) * progress);
+            await new Promise(requestAnimationFrame);
+            const current = registry.getState().entries.filter(entry => entry.id.startsWith('directory-'));
+            const anchor = bodies[0].translation();
+            const card = bodies[4].translation();
+            const velocity = bodies[4].linvel();
+            records.push({ frame, x: card.x - anchor.x, velocity: [velocity.x, velocity.y, velocity.z],
+              same: current.every(entry => keys.every((key, i) => entry.body[key].current === bodies[i] && bodies[i].isValid())),
+              shown: current.filter(entry => {
+                const clip = entry.element.closest('[data-badge-clip]').getBoundingClientRect();
+                return clip.top < innerHeight / 2 && clip.bottom > innerHeight / 2;
+              }).map(entry => entry.courseId) });
+          }
+          return records;
+        });
+        await writeFile(path.join(report, `${label}-directory-continuous-swing.json`), JSON.stringify(samples));
+        assert.ok(samples.every(sample => sample.same), 'every directory window reads the same live bodies through both scroll directions');
+        assert.ok(samples.every(sample => [sample.x, ...sample.velocity].every(Number.isFinite)), 'the shared pose and momentum remain finite');
+        for (const frames of [samples.slice(0, 61), samples.slice(60)]) {
+          assert.deepEqual([...new Set(frames.flatMap(sample => sample.shown))].sort(), ['cen100', 'mth140', 'mth141'], 'cross every course in each direction');
+        }
+        assert.ok(Math.max(...samples.map(sample => sample.x)) - Math.min(...samples.map(sample => sample.x)) > 0.01, 'the continuous rig is swinging');
+        await assertPageWidth(page);
+        return { frames: samples.length, courses: 3, directions: 2 };
+      });
       if (label === 'iphone' || label === 'desktop') await check(browser, options, `${label}-badge-rapid-scroll`, async (page) => {
         const routes = [];
         for (const route of ['', 'cen100/', 'mth140/', 'mth141/', 'courses/']) {
