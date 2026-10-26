@@ -69,11 +69,20 @@ function Navbar() {
       document.documentElement.style.setProperty('--navigation-extra-height', `${extra}px`);
       scrollHeader({ scroll: scrollTop() });
     };
-    const observer = new ResizeObserver(measure);
+    let measureFrame = 0;
+    // Reflow outside ResizeObserver delivery so observed children can resize safely.
+    const observer = new ResizeObserver(() => {
+      if (measureFrame) return;
+      measureFrame = requestAnimationFrame(() => {
+        measureFrame = 0;
+        measure();
+      });
+    });
     [header, wordmark, clock, actions].filter(Boolean).forEach((node) => observer.observe(node));
     measure();
     return () => {
       observer.disconnect();
+      cancelAnimationFrame(measureFrame);
       document.documentElement.style.removeProperty('--navigation-extra-height');
     };
   }, [scrollHeader]);
