@@ -10,6 +10,8 @@ import {readFile} from 'node:fs/promises';
 const require=createRequire(new URL('../tools/ui-build/package.json',import.meta.url));
 const {JSDOM,VirtualConsole}=require('jsdom'),{build}=require('esbuild');
 const root=new URL('..',import.meta.url).pathname;
+// Match the production URL so esbuild shares the header's state module with the fixture.
+const BOOK_STATE='./assets/book/book-state.mjs'+((await readFile(new URL('../assets/course-header.mjs',import.meta.url),'utf8')).match(/book\/book-state\.mjs(\?v=[^'"]+)/)?.[1]||'');
 const turn=()=>new Promise(resolve=>setTimeout(resolve,0));
 const flush=async()=>{for(let i=0;i<6;i++)await Promise.resolve();};
 
@@ -29,7 +31,7 @@ const sceneStub=`
 let bundle;
 async function script(){
  bundle??=(await build({stdin:{contents:`import * as header from './assets/course-header.mjs';
-   import {currentBookHost,currentBookState} from './assets/book/book-state.mjs';
+   import {currentBookHost,currentBookState} from '${BOOK_STATE}';
    window.t={header,currentBookHost,currentBookState};`,resolveDir:root},
   bundle:true,format:'iife',write:false,logLevel:'silent',
   plugins:[{name:'book-engine-fixture',setup(b){

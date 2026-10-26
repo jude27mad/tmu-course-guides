@@ -1,9 +1,9 @@
 /* Night Shift runtime: shared state for the layer that sits on top of the existing guide modules.
    Services start once; view-bound effects register disposers and are rebuilt per view. */
 export {timestamp,clock,dateLabel,dayLabel,today,addDays,resolveAssessment,timing} from '../schedule.mjs';
-import {loadData} from './targets.mjs?v=20261014-book1';
+import {loadData} from './targets.mjs?v=20261026-cen100';
 
-export const VERSION='20261014-book1';
+export const VERSION='20261026-cen100';
 /* Resolve paths against this file. Dynamic imports built this way share module instances with the guide
    (gsap-3.15.0.mjs resolves to the same URL guide-motion.mjs imports), so there is only one GSAP core. */
 export const asset=path=>new URL(path,import.meta.url).href;

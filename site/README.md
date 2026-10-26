@@ -44,7 +44,7 @@ The repository root keeps its `.nojekyll` file for the case where Pages is switc
 
 - Course navigation resolves old and new hashes through `workspace/location.mjs`. All assignment entry points use the same detail renderer. History snapshots retain list filters, scroll and focus without adding progress storage keys.
 - Notes save on every edit, including immediately before navigation. Checklist preparation and submission records remain separate.
-- Course controls become available after hydration and a brief entrance, independently of fonts, photographs and 3D downloads. Tabs acknowledge navigation immediately and accept input during the new view's entrance. Page navigation shows status while Next fetches a route; failed navigation offers a normal-link retry. `scripts/check-interaction-feedback.mjs` exercises these cases with delayed image and route downloads in Pages CI.
+- Course controls become available after hydration and a brief entrance, independently of fonts, photographs and 3D downloads. Tabs acknowledge navigation immediately and accept input during the new view's entrance. Loading feedback for course views, page requests and the lazy calendar waits 250 ms: fast work stays quiet, while a pending request still gets a status. Feedback disappears as soon as the content is ready, without holding up content or waiting for a cosmetic entrance to finish. Replaced requests and unmounted views cancel their timers; failed page navigation still offers an immediate normal-link retry. `scripts/check-interaction-feedback.mjs` and `scripts/check-delayed-feedback.mjs` exercise these cases in Pages CI, including Chromium and iPhone WebKit.
 - Course tabs and filters change content in place. Detail links still scroll to their target, and Back restores the saved position. The header and Menu leave with page scroll; offscreen controls are inert. Scroll snapshots stay in memory and are persisted on navigation/page exit instead of rewriting history every frame. Pages CI covers these behaviours with motion enabled and reduced motion.
 - Schedule-X is loaded only when the calendar is displayed. The independent deadline list stays usable if its chunk fails. React 18 compatibility, date precision, Toronto time and the pinned MIT dependencies are documented in [the redesign QA record](../docs/qa/shorter-course-views/README.md).
 
@@ -77,11 +77,19 @@ No analytics and no requests to other hosts. Each exported page carries a Conten
 Giats's layout, moving window masks, typography, transitions and scrolling remain
 the application shell. The home windows contain one continuous signal field
 adapted from Pixels71's Kairo (`97426fdfa1f3bd812cf0acc364273c28a89f871e`).
-Next Up and course artwork use locally stored photographs of a steel bridge
-mechanism (CEN100), a worked integral (MTH140) and a system of linear equations
-(MTH141), with the canvas pixel-to-sharp reveal from Kaisei Sadatoki's Atelier North for Codrops
-(`6703fc3f15ec92979964070814a99855d0baa38f`). Both respect the existing Pause
-motion and reduced-motion preferences.
+Next Up and the individual course headers reuse the original physics lanyard
+badges. Each position mounts only its relevant course: the Desk derives it from
+its live next deadline, and each course header uses its own course ID. The
+separate `/courses/` directory remains the place to browse all three courses.
+
+`src/components/courseBadge/` owns the shared registry, original textures and
+lanyards. `BadgeWorld` is mounted once beside `View.Port` in the existing shared
+canvas, independently of any first View. Stable instance slots keep bodies
+separate; changing the Desk course changes its face without replacing its
+lanyard. Pausing retains the current pose, while initially reduced motion uses
+an upright resting pose. Offscreen bodies stop stepping, and unmounting a badge
+removes its bodies and disposes its textures. No second badge physics engine or
+carousel is introduced.
 
 See [animation code provenance and notices](public/licenses/README.md) and
 [individual artwork sources and permissions](public/licenses/ARTWORK-CREDITS.md). Kairo's
@@ -91,6 +99,7 @@ so the included notice comes from Codrops' official licensing page. Neither
 template's photographs are reused.
 
 
-The artwork is published on the [website](https://jude27mad.github.io/tmu-course-guides/). See the [QA record](../docs/qa/giats-artwork/README.md) and [subject-image screenshot gallery](../docs/qa/giats-artwork/subject-imagery/README.md).
+The historical [QA record](../docs/qa/giats-artwork/README.md) and [subject-image screenshot gallery](../docs/qa/giats-artwork/subject-imagery/README.md) document the earlier photograph implementation.
 
-Implementation lives in `src/components/artwork/` (signal field) and `src/components/courseArtwork/` (image mapping and reveal). Update `artworks.mjs` and the individual asset credits together when changing photographs. The engineering image is the unresolved/empty Next Up fallback. Source images are local 800/1600-pixel WebPs; no image host is contacted at runtime.
+The signal field remains in `src/components/artwork/`. The inactive legacy photograph components and their asset notices are retained for provenance; active Desk, directory and course headers do not render them. Badge loading/error states use a local HTML course label, and an empty Next Up has no image window.
+

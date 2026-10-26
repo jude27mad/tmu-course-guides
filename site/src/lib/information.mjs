@@ -5,6 +5,8 @@ const MATH_RULES = [
   ['missed-assessment', 'Missed an assessment?'],
   ['regrade', 'Request a regrade'],
   ['unconfirmed', 'Dates awaiting confirmation'],
+  ['quiz-accommodations', 'Quiz timing & accommodations'],
+  ['lecture-practice', 'Lecture notes & lab practice'],
 ];
 const CEN_RULES = [
   'headers',
@@ -27,6 +29,10 @@ const CEN_CONFIRMED = [
   'attendance',
   'reflection',
   'matlab',
+  'fmea-environmental',
+  'upcoming-labs',
+  'course-materials',
+  'genai',
 ];
 
 export function informationEntries(courseId, info) {
@@ -48,7 +54,7 @@ export function informationEntries(courseId, info) {
     for (const [rows, ids, prefix, group] of [
       [info.rules, CEN_RULES, 'policy', 'Rules'],
       [info.confirmed, CEN_CONFIRMED, 'confirmed', 'Confirmed details'],
-      [info.open, ['fmea-environmental'], 'pending', 'Awaiting clarification'],
+      [info.open, ['final-exam', 'assignment-instructions'], 'pending', 'Awaiting clarification'],
     ]) {
       rows.forEach((row, i) =>
         entries.push({

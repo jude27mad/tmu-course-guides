@@ -162,12 +162,13 @@ test('cen100 hide filter and release badge use the old JSON values', () => {
   assert.equal(storage.data.get('cen100-hide-completed-v1'), 'false');
   assert.equal(hasUnseenUpdates('cen100', storage), true);
   markUpdatesSeen('cen100', storage);
-  assert.equal(storage.data.get('cen100-last-seen-update-v1'), '"2026-09-30-grading-by-working-arrangement"');
+  assert.equal(storage.data.get('cen100-last-seen-update-v1'), '"2026-10-23-cen100-source-review"');
   assert.equal(hasUnseenUpdates('cen100', storage), false);
   assert.equal(hasUnseenUpdates('cen100', memoryStorage({ 'cen100-last-seen-update-v1': '"2026-09-26-deadline-links"' })), true);
   assert.equal(hasUnseenUpdates('cen100', memoryStorage({ 'cen100-last-seen-update-v1': '"garbage"' })), true);
-  // Students who opened the last release's notes see no badge: their saved id is dated after the newest course update.
-  const opened = memoryStorage({ 'cen100-last-seen-update-v1': '"2026-10-16-course-artwork"' });
+  // A previous release is now unread; a future saved id must never move backwards.
+  assert.equal(hasUnseenUpdates('cen100', memoryStorage({ 'cen100-last-seen-update-v1': '"2026-10-16-course-artwork"' })), true);
+  const opened = memoryStorage({ 'cen100-last-seen-update-v1': '"2026-12-01-future-course-update"' });
   assert.equal(hasUnseenUpdates('cen100', opened), false);
   markUpdatesSeen('cen100', opened);
   assert.deepEqual(opened.writes(), [], 'a newer saved value is never replaced by an older one');
@@ -230,10 +231,10 @@ for (const courseId of ['mth140', 'mth141']) {
     }
     const seen = memoryStorage();
     markUpdatesSeen(courseId, seen);
-    const latest = courseId === 'mth140' ? '"2026-10-12-confirmed-quiz-2-coverage-and-monday-make-up"' : '"2026-10-12-midterm-scope-and-public-privacy"';
+    const latest = courseId === 'mth140' ? '"2026-10-23-mth140-midterm-scope-and-format"' : '"2026-10-23-mth141-source-review"';
     assert.equal(seen.data.get(`${courseId}-last-seen-update-v1`), latest);
     assert.equal(hasUnseenUpdates(courseId, seen), false);
-    assert.equal(hasUnseenUpdates(courseId, memoryStorage({ [`${courseId}-last-seen-update-v1`]: '"2026-10-16-course-artwork"' })), false);
+    assert.equal(hasUnseenUpdates(courseId, memoryStorage({ [`${courseId}-last-seen-update-v1`]: '"2026-10-16-course-artwork"' })), true);
   });
 }
 
@@ -321,14 +322,14 @@ test('backups: export the old file formats and import them back with the old mer
   assert.equal(fresh.data.get('mth140-progress-v1'), saved);
 });
 
-test('calendar files are the old pages’ .ics files', async () => {
+test('calendar files retain legacy event identity and timing with current MTH140 descriptions', async () => {
   const schedule = await oldModule('schedule.mjs');
   const { COURSES } = await oldModule('course-data.mjs');
   const stamp = NOW.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
   const cen = calendarFile('cen100', { now: NOW, item: 'all', upcomingOnly: false, reminderDays: 2 });
   assert.equal(cen.name, 'cen100-deadlines-2026.ics');
   assert.equal(cen.text, old.buildCalendar(old.CALENDAR_DATES.slice().sort(old.sortEvents), 2, stamp));
-  assert.equal(cen.count, 22);
+  assert.equal(cen.count, 23);
   assert.equal(calendarFile('cen100', { now: new Date(toronto('2026-12-10', '12:00')), item: 'all' }).message, 'No upcoming dates in this selection. Uncheck ‘Upcoming dates only’ to include past deadlines.');
   const one = calendarFile('cen100', { now: NOW, item: 'y4', upcomingOnly: false });
   assert.equal(one.name, 'cen100-y4-2026.ics');
@@ -336,7 +337,17 @@ test('calendar files are the old pages’ .ics files', async () => {
   for (const id of ['mth140', 'mth141']) {
     const file = calendarFile(id, { now: NOW, includeTentative: true, section: 3 });
     assert.equal(file.name, `${id}-fall-2026.ics`);
-    assert.equal(file.text, schedule.calendar(COURSES[id], 3, { includeTentative: true, onlyUpcoming: true, now: NOW }).text);
+    const previous = schedule.calendar(COURSES[id], 3, { includeTentative: true, onlyUpcoming: true, now: NOW }).text;
+    if (id === 'mth140') {
+      const unfold = (text) => text.replace(/\r?\n[ \t]/g, '');
+      const withoutDescriptions = (text) => unfold(text).split(/\r?\n/).filter((line) => !line.startsWith('DESCRIPTION:')).join('\n');
+      assert.equal(withoutDescriptions(file.text), withoutDescriptions(previous));
+      assert.match(unfold(file.text), /Chapter 1: Sections 1\.1–1\.5/);
+      assert.match(unfold(file.text), /Midterm Exam Content/);
+      assert.doesNotMatch(unfold(file.text), /Exact midterm coverage awaits/);
+    } else {
+      assert.equal(file.text, previous);
+    }
     assert.equal(calendarFile(id, { now: NOW, includeTentative: true, section: 0 }).message, 'Choose your section first to include lab quiz dates.');
   }
 });

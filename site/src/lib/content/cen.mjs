@@ -108,7 +108,7 @@ export function sectionContent(profile){
   const attendanceWhat=section===29?"Section 29: a D2L quiz opens 5:45 to 6:00 PM in every Wednesday tutorial. One attempt, and you have to be in the room.":section?`Attend your assigned Section ${section} tutorial in person. Check D2L for your section's quiz day, time and attempt rules.`:"Attendance quizzes take place during your assigned tutorial. Select your section above. The confirmed Section 29 window is Wednesday, 5:45 to 6:00 PM; other sections should check D2L.";
   const attendanceFact=section===29?"Section 29: Wednesday, 5:45 to 6:00 PM":"Check your assigned tutorial's quiz schedule on D2L";
   const staff=STAFFING.find(s=>s.sections.includes(section)),pm=staff?.groups.find(g=>g[0]===profile?.group);
-  const reflectionsWhat=pm?`Your own writing about the project, two pieces. Email each Personal Reflection directly to your assigned Project Manager for Group ${pm[0]}; find their current contact details on D2L. There is no D2L submission box.`:byId.get("y5").what;
+  const reflectionsWhat=pm?byId.get("y5").what.replace("your assigned Project Manager",`${pm[1]}, your assigned Project Manager for Group ${pm[0]}`):byId.get("y5").what;
   return {y7:{what:attendanceWhat,fact:attendanceFact},y5:{what:reflectionsWhat}};
 }
 

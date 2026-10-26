@@ -372,7 +372,7 @@ test('each dated record gets its own unique event and several events share one a
   }
   assert.deepEqual(sorted(events.filter((item) => item.anchor === 'assignment-y6').map((item) => item.rowId)), ['notebook-1', 'notebook-2']);
   assert.equal(events.filter((item) => item.anchor === 'assignment-y1').length, 4);
-  assert.equal(events.filter((item) => item.anchor === 'assignment-m3').length, 2, 'the reminder and record both link to m3');
+  assert.equal(events.filter((item) => item.anchor === 'assignment-m3').length, 3, 'the reminder and both submission records link to m3');
 });
 
 test('done style overrides due, day, week, lab-window and reminder styles without changing dates', () => {
@@ -421,7 +421,8 @@ test('FMEA remains actionable after a saved Part 1 completion', () => {
   assert.equal(failure.lead.id, 'failure-2');
   assert.equal(failure.lead.date, '2026-10-28');
   assert.equal(failure.lead.weight, 4);
-  assert.equal(failure.lead.precision, 'day');
+  assert.equal(failure.lead.precision, 'exact');
+  assert.equal(failure.lead.target.endOfDay, true);
   assert.equal(items.find(row => row.id === 'failure').weight, 2);
   const assessment = lib.assessments('cen100').find(row => row.item === 'm3');
   assert.equal(assessment.weight, 6);

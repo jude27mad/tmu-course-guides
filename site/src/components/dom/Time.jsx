@@ -28,7 +28,7 @@ function Time() {
     };
   }, []);
 
-  return <time>{time}</time>;
+  return <time aria-label={`Toronto time ${time}`}>{time}</time>;
 }
 
 export default Time;

@@ -5,7 +5,7 @@ import { useMemo, useRef } from 'react';
 
 import { TOKENS, rgbOf } from '@src/lib/palette.mjs';
 import fragmentShader from '@src/components/canvas/background/shaders/fragmentShader';
-import { useWindowSize } from '@darkroom.engineering/hamo';
+import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
 import vertexShader from '@src/components/canvas/background/shaders/vertexShader';
 
 // The original moved the offsets 0.00005 per frame at 60 fps; the canvas now renders
@@ -32,8 +32,10 @@ function updateOffset(uniform, isIncreasing, step, min, max) {
 
 function Background({ still = false }) {
   const ref = useRef();
-  const windowSize = useWindowSize();
-  const { viewport } = useThree();
+  const viewport = useThree((state) => state.viewport);
+  const canvasWidth = useThree((state) => state.size.width);
+  const canvasHeight = useThree((state) => state.size.height);
+  const invalidate = useThree((state) => state.invalidate);
 
   const isOffsetXIncreasing = useRef(true);
   const isOffsetYIncreasing = useRef(true);
@@ -50,12 +52,29 @@ function Background({ still = false }) {
       uOffsetX: { value: 0.34 },
       uOffsetY: { value: 0.0 },
       uLinesAmount: { value: 5.0 },
-      uPlaneRes: { value: new THREE.Vector2(windowSize.width, windowSize.height) },
+      uPlaneRes: { value: new THREE.Vector2(1, 1) },
       uMouse2D: { value: new THREE.Vector2(1.0, 1.0) },
       uBackgroundScale: { value: 3.0 },
+      uUvScaleY: { value: 1 },
+      uUvOffsetY: { value: 0 },
     }),
-    [windowSize],
+    [],
   );
+
+  // On iPhone the canvas reaches --edge-bleed-* past the layout viewport (see
+  // global.scss). Draw the viewport band exactly as before; the reach continues it.
+  useIsomorphicLayoutEffect(() => {
+    const style = getComputedStyle(document.documentElement);
+    const top = parseFloat(style.getPropertyValue('--edge-bleed-top')) || 0;
+    const bottom = parseFloat(style.getPropertyValue('--edge-bleed-bottom')) || 0;
+    const band = canvasHeight - top - bottom;
+    if (!(band > 0)) return;
+    // Resize the existing shader's viewport, retaining its drift and material.
+    uniforms.uPlaneRes.value.set(canvasWidth, band);
+    uniforms.uUvScaleY.value = canvasHeight / band;
+    uniforms.uUvOffsetY.value = -bottom / band;
+    invalidate();
+  }, [canvasWidth, canvasHeight, uniforms, invalidate]);
 
   useFrame((state, delta) => {
     if (still) return;
@@ -71,18 +90,9 @@ function Background({ still = false }) {
   });
 
   return (
-    <mesh ref={ref}>
-      <planeGeometry args={[viewport.width, viewport.height, 1, 1]} />
-      <shaderMaterial
-        attach="material"
-        args={[
-          {
-            uniforms,
-            vertexShader,
-            fragmentShader,
-          },
-        ]}
-      />
+    <mesh ref={ref} scale={[viewport.width, viewport.height, 1]}>
+      <planeGeometry args={[1, 1, 1, 1]} />
+      <shaderMaterial attach="material" uniforms={uniforms} vertexShader={vertexShader} fragmentShader={fragmentShader} />
     </mesh>
   );
 }

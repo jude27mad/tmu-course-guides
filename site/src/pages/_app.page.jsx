@@ -1,4 +1,3 @@
-import { nativeIOSScroll } from '@src/utils/scrollRoot';
 /* eslint-disable react/jsx-props-no-spreading */
 
 import '@src/styles/global.scss';
@@ -9,10 +8,18 @@ import * as THREE from 'three';
 import { PerformanceMonitor, View } from '@react-three/drei';
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 
+import dynamic from 'next/dynamic';
+import BadgeBoundary from '@src/components/courseBadge/BadgeBoundary';
+import { BadgeProvider } from '@src/components/courseBadge/BadgeProvider';
+// eslint-disable-next-line import/extensions
+import { createBadgeRegistry } from '@src/components/courseBadge/badgeRegistry.mjs';
+// eslint-disable-next-line import/extensions
+import { createTouchScrollFilter } from '@src/utils/touch-scroll.mjs';
+
 import Background from '@src/components/canvas/background/Index';
 import DemandDriver from '@src/components/canvas/DemandDriver';
+import ClearViews from '@src/components/canvas/ClearViews';
 import { Canvas } from '@react-three/fiber';
-import { createTouchScrollFilter } from '@src/components/canvas/fluid/touch-scroll.mjs';
 import { EffectComposer } from '@react-three/postprocessing';
 import Fluid from '@src/components/canvas/fluid/Fluid';
 import Head from 'next/head';
@@ -35,6 +42,7 @@ import { useMotionPaused } from '@src/lib/react';
 import useScroll from '@src/hooks/useScroll';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
+import { nativeIOSScroll } from '@src/utils/scrollRoot';
 
 if (typeof window !== 'undefined') {
   gsap.defaults({ ease: 'none' });
@@ -49,6 +57,8 @@ if (typeof window !== 'undefined') {
   window.history.scrollRestoration = 'manual';
   ScrollTrigger.clearScrollMemory(window.history.scrollRestoration);
 }
+
+const BadgeWorld = dynamic(() => import('@src/components/courseBadge/BadgeScene').then((module) => module.BadgeWorld), { ssr: false });
 
 // The stats.js FPS panel is a development aid: show it only with ?stats in the URL.
 const SHOW_STATS = typeof window !== 'undefined' && /[?&]stats\b/.test(window.location.search);
@@ -78,16 +88,19 @@ function MotionSync() {
   return null;
 }
 
-// Keyboard scrolling while nothing has focus yet (focus on <body>): `main` is the
-// scroller, not the document, so the browser's own key scrolling would do
-// nothing. Inside main (or after the skip link) the browser handles keys itself.
+// The original contained scroller uses overflow:hidden during motion. Preserve
+// keyboard scrolling there as well as from body, without intercepting keys
+// belonging to form controls, native disclosures, or editable content.
 const SCROLL_KEYS = { ArrowDown: 1, ArrowUp: -1, PageDown: 2, PageUp: -2, ' ': 2, Home: -3, End: 3 };
 function useBodyKeyScroll() {
   useEffect(() => {
     const onKeyDown = (event) => {
       if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
       const active = document.activeElement;
-      if (active && active !== document.body && active !== document.documentElement) return;
+      const main = document.querySelector('main');
+      const containedFocus = main?.contains(active) && getComputedStyle(main).overflowY === 'hidden';
+      const control = active?.closest('input, textarea, select, button, summary, [contenteditable], [role="slider"], [role="spinbutton"], [role="combobox"], [role="listbox"]');
+      if (active && active !== document.body && active !== document.documentElement && (!containedFocus || control)) return;
       let step = SCROLL_KEYS[event.key];
       if (!step) return;
       const { lenis, isLoading, isMenuOpen, isSearchOpen, still } = useStore.getState();
@@ -106,7 +119,9 @@ function useBodyKeyScroll() {
 }
 
 function MyApp({ Component, pageProps, router }) {
-  const [lenis, setLenis, fluidColor, isAbout, still] = useStore(useShallow((state) => [state.lenis, state.setLenis, state.fluidColor, state.isAbout, state.still]));
+  const [lenis, setLenis, fluidColor, still] = useStore(useShallow((state) => [state.lenis, state.setLenis, state.fluidColor, state.still]));
+  const [badgeRegistry] = useState(createBadgeRegistry);
+  const badgeRoute = router.asPath.split(/[?#]/)[0];
   const coarse = useCoarsePointer();
   const maxDpr = coarse ? MAX_DPR_TOUCH : MAX_DPR_DESKTOP;
   const [dpr, setDpr] = useState(null);
@@ -120,14 +135,16 @@ function MyApp({ Component, pageProps, router }) {
   useScroll(() => ScrollTrigger.update());
 
   useIsomorphicLayoutEffect(() => {
-    // Giats's synchronized touch scrolling keeps pointer moves flowing to the
-    // fluid during a swipe. Native panning otherwise cancels that input stream.
-    // Keep pinch zoom native and `main` scrollable for keys and find-in-page.
+    // Safari needs the document layout for content to continue behind its bars.
+    // Keep Giats's synchronized touch input in that layout: Lenis handles the
+    // gesture and the unchanged fluid hook still listens to pointermove on main.
+    // Document layout must not switch syncTouch off and hand the swipe to Safari.
     const ios = nativeIOSScroll();
     // eslint-disable-next-line no-shadow
     const lenis = new Lenis({
       smoothWheel: true,
-      syncTouch: !ios && !useStore.getState().still,
+      smoothTouch: true,
+      syncTouch: true,
       virtualScroll: createTouchScrollFilter(),
       wrapper: ios ? window : mainRef.current || undefined,
       content: ios ? document.documentElement : mainContainerRef.current || undefined,
@@ -146,7 +163,7 @@ function MyApp({ Component, pageProps, router }) {
   useEffect(() => {
     // Pause Motion and reduced motion restore native touch scrolling without
     // recreating Lenis or resetting the reader's position.
-    if (lenis) lenis.options.syncTouch = !nativeIOSScroll() && !still;
+    if (lenis) lenis.options.syncTouch = !still;
   }, [lenis, still]);
 
   useIsomorphicLayoutEffect(() => {
@@ -178,12 +195,14 @@ function MyApp({ Component, pageProps, router }) {
   const canvasElements = useMemo(
     () => (
       <Canvas
+        id="viewCanvas"
+        fallback={<span aria-hidden="true" />}
         gl={{
-          outputColorSpace: isAbout === false ? THREE.LinearSRGBColorSpace : THREE.SRGBColorSpace,
+          outputColorSpace: THREE.LinearSRGBColorSpace,
           powerPreference: 'high-performance',
         }}
         style={{ zIndex: 0 }}
-        resize={{ debounce: { resize: 0, scroll: 0 }, polyfill: undefined }}
+        resize={{ scroll: false, debounce: { resize: 0, scroll: 0 }, polyfill: undefined }}
         className={styles.canvasContainer}
         dpr={dpr ?? [1, maxDpr]}
         // motion off: draw only when something moves (scroll, resize, panels, curtain)
@@ -191,27 +210,30 @@ function MyApp({ Component, pageProps, router }) {
         aria-hidden="true"
       >
         {still && <DemandDriver />}
+        <ClearViews />
         <PerformanceMonitor flipflops={3} onDecline={() => setDpr(1)} onIncline={() => setDpr(null)} onFallback={() => setDpr(1)} />
         {/* A view that is loading (or never loads) must stay inside the canvas: without
             this boundary R3F suspends the <Canvas> DOM component itself, and its next
             re-render (dpr, colour space) would hold every update of the page. */}
-        <Suspense fallback={null}>
-          <View.Port />
-        </Suspense>
+        <BadgeBoundary registry={badgeRegistry} route={badgeRoute}>
+          <Suspense fallback={null}>
+            <BadgeWorld registry={badgeRegistry} />
+            <View.Port />
+          </Suspense>
+        </BadgeBoundary>
       </Canvas>
     ),
-    [isAbout, dpr, maxDpr, still],
+    [badgeRegistry, badgeRoute, dpr, maxDpr, still],
   );
 
   return (
-    <>
+    <BadgeProvider value={badgeRegistry}>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </Head>
-      {/* Safari samples the computed background of these invisible fixed edge boxes.
-          Empty text clipping paints no visible strip over the real content. */}
-      <div aria-hidden="true" data-safari-edge="top" className="safari-chrome-edge" />
-      <div aria-hidden="true" data-safari-edge="bottom" className="safari-chrome-edge" />
+      {/* Transparent, non-interactive guards. No opaque browser-bar colour is
+          supplied; page content, rather than a sampled solid strip, stays behind it. */}
+      <div aria-hidden="true" data-safari-blend="top" className="safari-toolbar-blend" />
       <MotionSync />
       <NavigationFeedback />
       {SHOW_STATS && <Stats />}
@@ -228,26 +250,30 @@ function MyApp({ Component, pageProps, router }) {
       <div className={styles.root}>
         {domElements}
         <div ref={layoutRef} id="layout" className={styles.layout}>
+          {/* The paper a page fades into during a page change (Layout). */}
+          <div id="routePaper" className={styles.routePaper} aria-hidden="true" />
           {canvasElements}
           {!still && (
             <Canvas
               id="fluidCanvas"
               flat
-              frameloop="always"
               gl={{
                 antialias: false,
                 stencil: false,
                 depth: false,
+                pixelRatio: 0.1,
               }}
-              // R3F's wrapper takes pointer events unless told otherwise; the
-              // fluid reads pointer moves from <main> itself.
-              style={{ mixBlendMode: 'difference', background: nativeIOSScroll() ? 'transparent' : 'black', pointerEvents: 'none' }}
+              // Keep the wrapper transparent on iOS before hydration as well.
+              // global.scss supplies the original black base in contained mode;
+              // an inline background would override Safari's document styling.
+              style={{ mixBlendMode: 'difference', pointerEvents: 'none' }}
               linear
               className={styles.canvasContainer}
+              eventSource={mainRef.current}
               dpr={[0.1, 0.5]}
               aria-hidden="true"
             >
-              <EffectComposer multisampling={0}>
+              <EffectComposer>
                 <Fluid fluidColor={fluidColor} mainRef={mainRef} />
               </EffectComposer>
             </Canvas>
@@ -261,7 +287,9 @@ function MyApp({ Component, pageProps, router }) {
           </main>
         </div>
       </div>
-    </>
+      {/* Must follow the entire document, outside clipped/transformed scene roots. */}
+      <div aria-hidden="true" data-safari-blend="bottom" className="safari-toolbar-blend" />
+    </BadgeProvider>
   );
 }
 

@@ -1,4 +1,6 @@
-// iOS WebKit requires document scrolling to allow Safari's edge-to-edge browser chrome.
+// Select the document scroll root used for Safari's edge-to-edge layout.
+// The historical name describes the root, not who handles touch gestures:
+// _app keeps Lenis syncTouch enabled while motion is on in either layout.
 // Decide before hydration; do not collect or transmit device information.
 export function nativeIOSScroll() {
   return typeof document !== 'undefined' && document.documentElement?.dataset?.scrollMode === 'document';

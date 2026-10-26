@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { calendarEvents } from '@src/lib';
 import { useCourse } from '@src/pages/course/hooks/useCourseState';
+import useDelayedFeedback from '@src/hooks/useDelayedFeedback';
 import styles from './workspace.module.scss';
 import calendarStyles from './calendar.module.scss';
 
@@ -22,12 +23,15 @@ class CalendarBoundary extends Component {
     return failed ? <p role="status">Calendar unavailable — every date is in the list below.</p> : children;
   }
 }
+function CalendarLoading({ error }) {
+  const showLoading = useDelayedFeedback(error ? null : 'calendar');
+  if (error) throw error;
+  return showLoading ? <p role="status">Loading calendar… Dates are available below.</p> : null;
+}
+
 const Calendar = dynamic(() => import('./Calendar'), {
   ssr: false,
-  loading: ({ error }) => {
-    if (error) throw error;
-    return <p role="status">Loading calendar… Dates are available below.</p>;
-  },
+  loading: CalendarLoading,
 });
 
 export default function Schedule({ navigate, state, setState }) {

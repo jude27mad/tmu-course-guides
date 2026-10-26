@@ -2,13 +2,13 @@ import {sceneMotionAllowed as motionAllowed,setScenePaused as setPaused,preferen
 import {posterPaths} from './scenes/framing.mjs?v=20261012-subject1';
 import {scope,rememberDOM} from './route-lifecycle.mjs';
 import {BOOK_COURSES,bookPosterPaths,currentTheme,onTheme} from './book/course-styles.mjs?v=20261013-book1';
-import {createBookState,attachBookState,detachBookState,describeSpread,setBookHost} from './book/book-state.mjs';
-import {recordsForCourse,semesterWeeks,currentWeekIndex} from './book/weeks.mjs';
-import {COURSES} from './course-data.mjs?v=20261012-assessments2';
-import {held,openItem,today as torontoToday,addDays,timestamp} from './night/core.mjs?v=20261014-book1';
-import {readSaved} from './night/targets.mjs?v=20261014-book1';
-import {currentTarget} from './night/deadline.mjs?v=20261014-book1';
-import {mountRail} from './night/timeline.mjs?v=20261014-book1';
+import {createBookState,attachBookState,detachBookState,describeSpread,setBookHost} from './book/book-state.mjs?v=20261026-cen100';
+import {recordsForCourse,semesterWeeks,currentWeekIndex} from './book/weeks.mjs?v=20261023-mth141';
+import {COURSES} from './course-data.mjs?v=20261023-mth141';
+import {held,openItem,today as torontoToday,addDays,timestamp} from './night/core.mjs?v=20261026-cen100';
+import {readSaved} from './night/targets.mjs?v=20261026-cen100';
+import {currentTarget} from './night/deadline.mjs?v=20261026-cen100';
+import {mountRail} from './night/timeline.mjs?v=20261026-cen100';
 let live;
 export function mount(ctx={}){
  unmount();
@@ -199,11 +199,11 @@ function mountBook(ctx,life,header,course){
   const ticket=++attempt;
   header.dataset.bookView='pending';
   try{
-   const stage=await import('./app/stage.mjs?v=20261013-stage1').catch(unloaded);
+   const stage=await import('./app/stage.mjs?v=20261026-cen100').catch(unloaded);
    if(ticket!==attempt||life.signal.aborted)return;
    const status=stage.probe();
    if(!status.ok){showFallback(status.reason);return;}
-   const scene=await import('./book/book-scene.mjs').catch(unloaded);
+   const scene=await import('./book/book-scene.mjs?v=20261026-cen100').catch(unloaded);
    if(ticket!==attempt||life.signal.aborted)return;
    const controller=await scene.mountBook(art,{course,state:book,getView:i=>book.view(i),signal:life.signal,arrival,
     onOpen:open=>openItem(open),onFallback:reason=>showFallback(reason),

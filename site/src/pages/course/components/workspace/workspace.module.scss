@@ -1,9 +1,13 @@
 @use '@src/styles/glass';
 
 .root {
-  background: var(--white);
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  background: transparent;
   color: var(--black);
-  padding: clamp(90px, 9vw, 134px) clamp(18px, 4vw, 64px) 32px;
+  --workspace-side-padding: clamp(18px, 4vw, 64px);
+  padding: clamp(90px, 9vw, 134px) var(--workspace-side-padding) 32px;
   font-size: 16px;
   line-height: 1.5;
   font-weight: 550;
@@ -77,9 +81,23 @@
     margin-bottom: 8px;
   }
 }
+// The reading surface must cover the full content height, independently of
+// the header badge opening and without moving during course-view transitions.
+.body {
+  position: relative;
+  z-index: 0;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 calc(-1 * var(--workspace-side-padding)) -32px;
+    z-index: -1;
+    background: var(--white);
+    pointer-events: none;
+  }
+}
 .courseHeader {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 32px;
   padding-bottom: 24px;
@@ -113,15 +131,19 @@
   overflow: hidden;
   border-radius: 12px;
   position: relative;
-  background: var(--black);
+  background: transparent;
+  z-index: -1;
+  box-shadow: 0 0 0 300vw var(--white);
 }
 .navigation {
   @include glass.surface(light, 12px);
   position: relative;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   width: fit-content;
   max-width: 100%;
+  margin-inline: auto;
   padding: 4px;
   border-radius: 30px;
   gap: 2px;
@@ -201,6 +223,7 @@
 }
 .utilities {
   display: flex;
+  // Wrap whole groups at their real width; retain the existing spacing.
   align-items: center;
   justify-content: space-between;
   gap: 12px 20px;
@@ -234,9 +257,10 @@
   }
 }
 .actions {
+  margin-left: auto;
   display: flex;
   gap: 12px 20px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   button,
   a {
@@ -337,6 +361,81 @@
     background: var(--black);
     color: var(--white);
     border-color: var(--black);
+  }
+}
+.workFilters {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  background: var(--card);
+  button {
+    position: relative;
+    z-index: 1;
+    min-height: 44px;
+    padding: 8px 12px;
+    border-radius: 24px;
+    font-size: 16px;
+    white-space: nowrap;
+    background: transparent;
+  }
+  button[aria-pressed='true'] {
+    color: var(--accent);
+    background: var(--accentTint);
+    box-shadow: inset 0 0 0 1px var(--accent);
+  }
+  &[data-selection-ready='true'] button[aria-pressed='true'] {
+    background: transparent;
+    box-shadow: none;
+  }
+  button:focus-visible {
+    outline-offset: 1px;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    button:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+  @media (forced-colors: active) {
+    button[aria-pressed='true'] {
+      color: LinkText;
+      text-decoration: underline;
+    }
+  }
+}
+.workSummary {
+  margin-top: -8px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.workResults {
+  min-height: 230px;
+}
+.workEmpty {
+  padding: 24px 0;
+  h3 {
+    font-size: 22px;
+    line-height: 1.3;
+  }
+  p {
+    margin: 8px 0 16px;
+    max-width: 42ch;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  button {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    color: var(--accent);
+    border-bottom: 1px solid currentColor;
+    font-size: 16px;
   }
 }
 .workGroup {

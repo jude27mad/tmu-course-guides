@@ -12,6 +12,8 @@ import {readFileSync,existsSync} from 'node:fs';
 const require=createRequire(new URL('../tools/ui-build/package.json',import.meta.url));
 const {JSDOM}=require('jsdom'),{build}=require('esbuild');
 const root=new URL('..',import.meta.url).pathname;
+// Match the production URL so the fixture observes the rail's state module.
+const BOOK_STATE='./assets/book/book-state.mjs'+((await readFile(new URL('../assets/night/timeline.mjs',import.meta.url),'utf8')).match(/book\/book-state\.mjs(\?v=[^'"]+)/)?.[1]||'');
 const css=file=>readFileSync(new URL(`../assets/${file}`,import.meta.url),'utf8');
 
 const deadlineStub=`const listeners=new Set();
@@ -21,7 +23,7 @@ const deadlineStub=`const listeners=new Set();
 let bundle;
 async function script(){
  bundle??=(await build({stdin:{contents:`import {targetWeek,mountRail,mount,unmount} from './assets/night/timeline.mjs';
-   import {createBookState,attachBookState,detachBookState,describeSpread} from './assets/book/book-state.mjs';
+   import {createBookState,attachBookState,detachBookState,describeSpread} from '${BOOK_STATE}';
    import {recordsForCourse,semesterWeeks,currentWeekIndex} from './assets/book/weeks.mjs';
    import {resolveTarget} from './assets/night/targets.mjs';
    import {COURSES} from './assets/course-data.mjs';

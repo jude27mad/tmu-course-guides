@@ -42,19 +42,32 @@ async function ready(page, route) {
 }
 
 try {
-  for (const width of [390, 834, 1440]) {
+  for (const width of [320, 390, 834, 1440]) {
     await check(`shared text and actions remain readable at ${width}px`, async () => {
       const { context, page } = await open(width);
       try {
         await ready(page, '');
-        const text = await page.locator('main .p-l').evaluateAll((nodes) => nodes.filter((e) => e.textContent.trim() && e.getClientRects().length).map((e) => ({ text: e.textContent.trim().slice(0, 70), size: parseFloat(getComputedStyle(e).fontSize) })));
-        assert.ok(text.length > 5, 'inspect the actual Desk deadline and course text');
+        const deadline = page.locator('[data-desk-deadline]');
+        await deadline.waitFor();
+        const text = await deadline.locator('.p-l').evaluateAll((nodes) => nodes.map((e) => ({ text: e.textContent.trim(), size: parseFloat(getComputedStyle(e).fontSize) })));
+        assert.equal(text.length, 1, 'one date heading belongs to the countdown');
         assert.deepEqual(text.filter((e) => e.size < 16), [], 'body copy must not shrink on tablets');
-        const actions = await page.locator('main a, main button').evaluateAll((nodes) => nodes.filter((e) => /^(MARK DONE|VIEW IN|OPEN GUIDE|ALL COURSES)/.test(e.textContent.trim())).map((e) => ({ label: e.textContent.trim(), height: e.getBoundingClientRect().height, size: parseFloat(getComputedStyle(e.querySelector('span') || e).fontSize) })));
-        assert.ok(actions.length >= 3);
+        const actions = await page.locator('main a, main button').evaluateAll((nodes) => nodes.filter((e) => /^(MARK DONE|OPEN GUIDE|ALL COURSES)/.test(e.textContent.trim())).map((e) => ({ label: e.textContent.trim(), height: e.getBoundingClientRect().height, size: parseFloat(getComputedStyle(e.querySelector('span') || e).fontSize) })));
+        assert.ok(actions.length >= 2);
         assert.deepEqual(actions.filter((e) => e.height < 43.5 || e.size < 16), [], 'readable action labels and 44px touch targets');
         assert.equal(await page.locator('main').evaluate((e) => e.scrollWidth > e.clientWidth + 1), false);
-        await page.screenshot({ path: path.join(report, `desk-${width}.png`) });
+        const card = page.locator('[data-desk-course-link]');
+        await card.scrollIntoViewIfNeeded();
+        await page.waitForTimeout(250);
+        await page.screenshot({ path: path.join(report, `desk-card-${width}.png`) });
+        await deadline.scrollIntoViewIfNeeded();
+        const cardBox = await card.boundingBox();
+        const timerBox = await deadline.boundingBox();
+        assert.ok(cardBox && timerBox);
+        assert.ok(timerBox.x >= 0 && timerBox.x + timerBox.width <= width + 1, 'timer stays inside the viewport');
+        if (width <= 812) assert.ok(timerBox.y >= cardBox.y + cardBox.height, 'mobile timer follows the linked badge');
+        else assert.ok(timerBox.x + timerBox.width <= cardBox.x, 'desktop timer sits beside the badge');
+        await page.screenshot({ path: path.join(report, `desk-timer-${width}.png`) });
         return { textCount: text.length, actions };
       } finally { await context.close(); }
     });
@@ -210,15 +223,28 @@ try {
     } finally { await context.close(); }
   });
   await check('information answers use the course motion and keep direct links usable', async () => {
-    const { context, page } = await open(834, 'no-preference');
+    // The 120ms exit can finish before a busy CI runner starts polling it.
+    // Own the animation clock so the same intermediate-state assertion cannot
+    // miss its observation window; no production timing is changed.
+    const context = await browser.newContext({ viewport: { width: 834, height: 900 }, reducedMotion: 'no-preference' });
+    const page = await context.newPage();
+    page.setDefaultTimeout(15000);
+    page.on('pageerror', (error) => errors.push(error.message));
+    await page.clock.install({ time: new Date('2026-10-23T16:00:00Z') });
     try {
       await ready(page, 'mth141/#course-info');
+      await page.getByRole('link', { name: /Missed an assessment/ }).waitFor();
+      await page.clock.pauseAt(new Date(await page.evaluate(() => Date.now() + 1000)));
       await page.getByRole('link', { name: /Missed an assessment/ }).evaluate((e) => e.click());
-      await page.waitForFunction(() => {
+      await page.clock.runFor(48);
+      const leaving = await page.evaluate(() => {
         const content = document.getElementById('course-content');
-        const opacity = Number(getComputedStyle(content).opacity);
-        return content.inert && opacity > 0 && opacity < 1;
+        return { inert: content.inert, opacity: Number(getComputedStyle(content).opacity) };
       });
+      assert.equal(leaving.inert, true, 'outgoing information stays inert during its exit');
+      assert.ok(leaving.opacity > 0 && leaving.opacity < 1, `information fades before replacement: ${JSON.stringify(leaving)}`);
+      await page.clock.runFor(500);
+      await page.clock.resume();
       await page.locator('#course-view-policy-missed-assessment[data-info-detail]').waitFor();
       await page.waitForFunction(() => !document.getElementById('course-content').inert);
       assert.match(await page.locator('[data-info-detail]').innerText(), /within 3 business days/);
@@ -228,7 +254,7 @@ try {
       await page.getByRole('link', { name: /Missed an assessment/ }).waitFor();
       await ready(page, 'mth141/#sources');
       await page.locator('#course-view-sources[data-info-detail]').waitFor();
-      assert.match(await page.locator('[data-info-detail]').innerText(), /Reviewed October 12, 2026/);
+      assert.match(await page.locator('[data-info-detail]').innerText(), /Reviewed October 23, 2026/);
       await page.screenshot({ path: path.join(report, 'sources-834.png') });
     } finally { await context.close(); }
   });
@@ -237,3 +263,4 @@ try {
   await writeFile(path.join(report, 'results.json'), JSON.stringify({ results, errors }, null, 2));
 }
 process.exitCode = results.some((r) => !r.pass) || errors.length ? 1 : 0;
+

@@ -1,0 +1,50 @@
+@import '@src/styles/functions';
+
+.root {
+  position: relative;
+  background-color: var(--white);
+  width: 100%;
+  // Projected words can extend far outside their layout boxes. Contain the
+  // visual locally without changing the sticky stage's scrolling ancestor.
+  overflow: clip;
+  height: 150svh;
+  @include mobile {
+    height: 125svh;
+  }
+  .stage {
+    position: sticky;
+    top: 0;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: calc(var(--layout-columns-gap) * 2);
+  }
+  .text {
+    text-align: center;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 0;
+    > div {
+      perspective: 1000px;
+    }
+  }
+  .canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    > div { width: 100% !important; height: 100% !important; }
+  }
+  &.still {
+    height: auto;
+    padding-top: calc(var(--layout-columns-gap) * 4);
+    padding-bottom: calc(var(--layout-columns-gap) * 4);
+    .stage, .text { position: relative; min-height: 0; }
+    .canvas { display: none; }
+  }
+}

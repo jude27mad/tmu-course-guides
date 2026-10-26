@@ -21,9 +21,13 @@ const VARIABLES = [
   ['--accent', 'accent'],
 ];
 
+// The page's light colour as Safari shows it beside the page. On iPhone and iPad
+// it is painted flat, without the film grain the page is seen through (global.scss).
+const lightEdge = (paper) => (document.documentElement.dataset.scrollMode === 'document' ? TOKENS.pageUnderGrain : paper);
+
 function setThemeColor(color) {
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta && color && document.documentElement.dataset.browserSurface !== 'dark') meta.setAttribute('content', color);
+  if (meta && color && document.documentElement.dataset.browserSurface !== 'dark') meta.setAttribute('content', lightEdge(color));
 }
 
 // Safari 26 samples real fixed-edge computed colors rather than theme-color.
@@ -42,7 +46,7 @@ export function setBrowserSurfaces(topMode, bottomMode = topMode) {
   root.style.setProperty('--safari-edge-top', topDark ? TOKENS.ink : DEFAULT_PALETTE.secondary);
   root.style.setProperty('--safari-edge-bottom', bottomDark ? TOKENS.ink : DEFAULT_PALETTE.secondary);
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', topDark ? TOKENS.ink : DEFAULT_PALETTE.secondary);
+  if (meta) meta.setAttribute('content', topDark ? TOKENS.ink : lightEdge(DEFAULT_PALETTE.secondary));
   if (changed && root.dataset.scrollMode === 'document') {
     if (sampleRefreshFrame) cancelAnimationFrame(sampleRefreshFrame);
     root.setAttribute('data-safari-edge-refresh', '');
@@ -53,6 +57,30 @@ export function setBrowserSurfaces(topMode, bottomMode = topMode) {
       });
     });
   }
+}
+
+// The fixed artwork reaches under Safari's bars (--edge-bleed-* in global.scss),
+// and paper covers that reach above the start of a page and below the end of a
+// page that ends light. The paper stays until the page is 480px from its start
+// or end, so a fast fling, scrolled by Safari ahead of this script, still finds
+// it in place. It steps aside sooner where a dark panel is that close (the
+// cards start 173px into /courses/): the panel shows the artwork through its
+// ink, and would turn grey over the paper under the bar. The rest of every page
+// is opaque, so the paper is never seen inside a page.
+const EDGE_SWITCH = 480;
+export function setEdgeBleed({ scrollTop, maxScroll, endsDark, darkFromStart = Infinity, darkFromEnd = Infinity }) {
+  if (typeof document === 'undefined') return;
+  const root = document.documentElement;
+  const top = scrollTop >= Math.min(EDGE_SWITCH, darkFromStart) ? 'open' : 'closed';
+  const bottom = endsDark || maxScroll - scrollTop >= Math.min(EDGE_SWITCH, darkFromEnd) ? 'open' : 'closed';
+  if (root.dataset.edgeTop !== top) root.dataset.edgeTop = top;
+  if (root.dataset.edgeBottom !== bottom) root.dataset.edgeBottom = bottom;
+  // Safari stops a page's end at its bottom bar. Past the end it shows the root's
+  // flat colour under the bar, not the artwork: the ink, on a page that ends dark.
+  // While the end is at the bar, at rest or bouncing past it, the artwork fades
+  // into that ink above the bar (app.module.scss).
+  const end = endsDark && maxScroll - scrollTop < 1 ? 'dark' : 'none';
+  if (root.dataset.edgeEnd !== end) root.dataset.edgeEnd = end;
 }
 
 // Compatibility for callers requiring the same color at both ends.

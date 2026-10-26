@@ -24,13 +24,13 @@
 .root {
   display: flex;
   align-items: center;
-  height: var(--app-viewport-height);
+  height: 100svh;
   width: 100vw;
 }
 .layout {
   background-color: transparent;
   opacity: 1;
-  height: 100%;
+  height: 100svh;
 
   display: flex;
   flex-direction: column;
@@ -45,16 +45,11 @@
     position: fixed;
     transition: 0.35s ease-in-out color;
     color: var(--black);
-    // `main` is the scroller. The original had overflow: hidden (Lenis only); a real
-    // scroll container restores keyboard scrolling, find-in-page, focus
-    // scrolling and native touch panning when motion is paused. Lenis smooths
-    // wheel/touch input while motion is enabled and adds .lenis-stopped
-    // (overflow hidden) while the loader or a panel is up.
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    max-height: var(--app-viewport-height);
-    height: var(--app-viewport-height) !important;
+    // Original Giats viewport and scroll ownership. Native panning must not
+    // take a gesture away from Lenis and the fluid's pointermove listener.
+    overflow: hidden;
+    max-height: 100svh;
+    height: 100svh !important;
     width: 100%;
     outline: none;
 
@@ -67,6 +62,10 @@
 
     .mainContainer {
       height: auto;
+      padding-top: var(--navigation-extra-height, 0px);
+      // Only the extra header clearance is paper; course badge windows below
+      // must remain transparent to the shared canvas.
+      background-image: linear-gradient(to bottom, var(--white) 0 var(--navigation-extra-height, 0px), transparent var(--navigation-extra-height, 0px));
 
       width: 100%;
     }
@@ -93,6 +92,32 @@
   }
 }
 
+// Native scrolling must work before JavaScript as well as with motion paused.
+:global(html:not(.js)) .layout .main,
+:global(html[data-motion='off']:not([data-scroll-mode='document'])) .layout .main:not(:global(.lenis-stopped)) {
+  overflow-y: auto;
+}
+
+// Before hydration, R3F cannot resolve mainRef as the event source and gives
+// its canvas inline pointer-events:auto. Without JS that empty overlay never
+// connects, so keep it from blocking the native links and credit disclosure.
+:global(html:not(.js)) .layout .canvasContainer {
+  display: none;
+}
+
+// The pages' paper behind `main` during a page change: a fading page shows it
+// rather than the dark artwork (.background) beneath. It is in the page's flow,
+// never fixed or sticky, so Safari 26 never takes it for the colour of its bars,
+// and it is displayed only while a page changes. On iPhone its paper also
+// covers the reach under Safari's bars (below).
+.routePaper {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background-color: var(--white);
+  pointer-events: none;
+}
+
 // Hidden until the loader reveals it, only when JS runs (see global.scss).
 :global(html.js) .layout .main {
   opacity: 0;
@@ -105,8 +130,65 @@
     .main {
       position: relative; height: auto !important; max-height: none;
       min-height: var(--app-viewport-height); overflow: visible; overscroll-behavior: auto;
+      .mainContainer {
+        // Clip animated content at the page edge without creating a second
+        // scroller. Keeping y visible preserves sticky stages and native iOS
+        // scrolling; the Safari paper caps remain outside this boundary.
+        overflow-x: clip;
+        overflow-y: visible;
+      }
     }
     .canvasContainer { position: fixed !important; height: var(--app-viewport-height) !important; }
+    // The shared scene (course cards, badges) continues under Safari's bars; see
+    // --edge-bleed-* in global.scss. The fluid maps touches from the viewport
+    // top, so it keeps the viewport's size.
+    .canvasContainer:not(:global(#fluidCanvas)) {
+      top: calc(-1 * var(--edge-bleed-top));
+      height: calc(var(--app-viewport-height) + var(--edge-bleed-top) + var(--edge-bleed-bottom)) !important;
+    }
   }
-  .background { background-color: transparent; pointer-events: none; }
+  // The artwork reaches under Safari's bars (--edge-bleed-* in global.scss), and
+  // the paper caps that cover that reach belong to `main`, which fades during a
+  // page change. The page's paper covers the reach meanwhile: two strips outside
+  // the layout viewport, never where Safari samples the colour of its bars.
+  .routePaper::before,
+  .routePaper::after {
+    content: '';
+    position: fixed;
+    left: 0;
+    width: 100%;
+    background-color: var(--white);
+    pointer-events: none;
+  }
+  .routePaper::before { top: calc(-1 * var(--edge-bleed-top)); height: var(--edge-bleed-top); }
+  .routePaper::after { bottom: calc(-1 * var(--edge-bleed-bottom)); height: var(--edge-bleed-bottom); }
+  .background {
+    background-color: transparent;
+    pointer-events: none;
+    // The dark artwork continues under Safari's bars as well.
+    top: calc(-1 * var(--edge-bleed-top));
+    height: calc(var(--app-viewport-height) + var(--edge-bleed-top) + var(--edge-bleed-bottom));
+    // Safari shows this reach under its bottom bar, so nothing may shade the
+    // artwork at the layout viewport's bottom edge: it would end in a line where
+    // the bar begins (#67's fade to ink did). Only past the end of a page that
+    // ends dark, where Safari shows the root's flat ink under the bar instead,
+    // does the artwork fade into that ink above the bar (data-edge-end, set by
+    // the navbar while the page's end is at the bar).
+    &::after {
+      content: '';
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 96px;
+      background-image: linear-gradient(to bottom, rgba(var(--inkRgb), 0), var(--black));
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease-out;
+    }
+  }
+}
+
+:global(html[data-scroll-mode='document'][data-edge-end='dark']) .background::after {
+  opacity: 1;
 }

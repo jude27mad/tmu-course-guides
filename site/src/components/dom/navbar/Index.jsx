@@ -1,25 +1,32 @@
-import { scrollRoot, scrollTop, scrollViewport } from '@src/utils/scrollRoot';
+import { nativeIOSScroll, scrollRoot, scrollTop, scrollViewport } from '@src/utils/scrollRoot';
 import { buildShellTimeline } from '@src/components/dom/navbar/panelShell';
-import { setBrowserSurfaces } from '@src/utils/theme';
+import { setBrowserSurfaces, setEdgeBleed } from '@src/utils/theme';
 import ButtonLink from '@src/components/animationComponents/buttonLink/Index';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import MenuButton from '@src/components/dom/navbar/components/MenuButton';
 import MenuLinks from '@src/components/dom/navbar/components/MenuLinks';
 import SearchPanel from '@src/components/dom/navbar/components/SearchPanel';
 import clsx from 'clsx';
 import styles from '@src/components/dom/navbar/styles/index.module.scss';
 import { useCallback, useEffect, useRef } from 'react';
-import useIsMobile from '@src/hooks/useIsMobile';
+import useIsMobile, { isMobileNow } from '@src/hooks/useIsMobile';
 import useScroll from '@src/hooks/useScroll';
 import { useRouter } from 'next/router';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
 
+const Time = dynamic(() => import('@src/components/dom/Time'), { ssr: false, loading: () => <span aria-hidden="true">--:--</span> });
+
+// Safari 26's bottom bar covers about 56px of an iPhone's screen when collapsed
+// and 98px when expanded; the footer counts as under it from about half of that.
+const FOOTER_UNDER_BAR = 40;
+
 function Navbar() {
   const isMobile = useIsMobile();
   const router = useRouter();
-  const [lenis, isLoading, isMenuOpen, isSearchOpen, setIsSearchOpen, still] = useStore(
-    useShallow((state) => [state.lenis, state.isLoading, state.isMenuOpen, state.isSearchOpen, state.setIsSearchOpen, state.still]),
+  const [lenis, isLoading, isMenuOpen, isSearchOpen, setIsSearchOpen, still, isTransitioning] = useStore(
+    useShallow((state) => [state.lenis, state.isLoading, state.isMenuOpen, state.isSearchOpen, state.setIsSearchOpen, state.still, state.isTransitioning]),
   );
   const shellRef = useRef(null);
   const headerRef = useRef(null);
@@ -44,15 +51,40 @@ function Navbar() {
   useScroll(scrollHeader);
   useEffect(() => {
     const header = headerRef.current;
-    if (!header) return undefined;
+    const controls = controlsRef.current;
+    if (!header || !controls) return undefined;
+    const wordmark = controls.querySelector(`.${styles.wordmark}`);
+    const clock = controls.querySelector('[data-toronto-clock]');
+    const actions = controls.querySelector(`.${styles.rightContainer}`);
     const measure = () => {
+      if (wordmark && clock && actions) {
+        // Reserve equal space on both sides; stack only when it cannot fit.
+        const requiredWidth = 2 * Math.max(wordmark.offsetWidth, actions.offsetWidth) + clock.offsetWidth;
+        const stacked = String(requiredWidth > controls.clientWidth);
+        if (controls.dataset.headerStacked !== stacked) controls.dataset.headerStacked = stacked;
+      }
       headerHeight.current = header.offsetHeight;
+      const baseline = parseFloat(getComputedStyle(controls).minHeight);
+      const extra = Math.max(0, controls.offsetHeight - baseline);
+      document.documentElement.style.setProperty('--navigation-extra-height', `${extra}px`);
       scrollHeader({ scroll: scrollTop() });
     };
-    const observer = new ResizeObserver(measure);
-    observer.observe(header);
+    let measureFrame = 0;
+    // Reflow outside ResizeObserver delivery so observed children can resize safely.
+    const observer = new ResizeObserver(() => {
+      if (measureFrame) return;
+      measureFrame = requestAnimationFrame(() => {
+        measureFrame = 0;
+        measure();
+      });
+    });
+    [header, wordmark, clock, actions].filter(Boolean).forEach((node) => observer.observe(node));
     measure();
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(measureFrame);
+      document.documentElement.style.removeProperty('--navigation-extra-height');
+    };
   }, [scrollHeader]);
 
   const scrollToPosition = useCallback(
@@ -95,10 +127,33 @@ function Navbar() {
       const footerRect = footer?.getBoundingClientRect();
       // Sample what reaches the BOTTOM of the real scroll viewport, rather
       // than the route or menu state. This works across all course pages.
-      const darkFooter = !!footerRect && footerRect.top < scrollerRect.bottom - 1 && footerRect.bottom >= scrollerRect.bottom - 1;
+      // On iPhone and iPad the footer ends the document, and Safari stops the
+      // document's end above its bottom bar, inside the viewport: the bottom is
+      // dark as soon as the footer fills most of the area under that bar.
+      const darkFooter = nativeIOSScroll()
+        ? !!footerRect && footerRect.top < scrollerRect.bottom - FOOTER_UNDER_BAR
+        : !!footerRect && footerRect.top < scrollerRect.bottom - 1 && footerRect.bottom >= scrollerRect.bottom - 1;
       setBrowserSurfaces(overlay ? 'dark' : 'light', overlay || darkFooter ? 'dark' : 'light');
     };
+    // Pages that end in the dark footer continue it below their end; course
+    // pages end light. The top of every page is light, but a dark panel can
+    // start close to it (the cards on /courses/). Also run straight from the
+    // scroll event, so a route change's reset to the top paints with its paper.
+    // Only the document scroll mode (iPhone, iPad) reaches under browser bars.
+    const edges = () => {
+      if (!nativeIOSScroll()) return;
+      const scrolled = window.scrollY;
+      const viewport = window.innerHeight;
+      const scrollable = document.scrollingElement.scrollHeight - viewport;
+      const panels = Array.from(main.querySelectorAll('[data-surface="dark"]'))
+        .map((panel) => panel.getBoundingClientRect())
+        .filter((rect) => rect.height);
+      const darkFromStart = Math.min(Infinity, ...panels.map((rect) => scrolled + rect.top));
+      const darkFromEnd = Math.min(Infinity, ...panels.map((rect) => scrollable - scrolled + viewport - rect.bottom));
+      setEdgeBleed({ scrollTop: scrolled, maxScroll: scrollable, endsDark: !!main.querySelector('footer [data-surface="dark"]'), darkFromStart, darkFromEnd });
+    };
     const schedule = () => {
+      edges();
       if (!frame) frame = requestAnimationFrame(update);
     };
     scroller.addEventListener('scroll', schedule, { passive: true });
@@ -122,12 +177,15 @@ function Navbar() {
     };
   }, [isOpen, isLoading, router.asPath]);
 
-  // The shared "main slides left" animation for the menu and the search panel.
+  // Shared panel shell: desktop moves the page, mobile leaves it stationary.
   useEffect(() => {
     const tl = buildShellTimeline({ isMobile });
     shellRef.current = tl;
     if (useStore.getState().isMenuOpen || useStore.getState().isSearchOpen) tl.progress(1);
     return () => {
+      // Restore the previous presentation before crossing a breakpoint. Route
+      // transitions keep owning main/header when only isLoading changes.
+      if (isMobile !== isMobileNow() && tl.progress() > 0) tl.progress(0);
       tl.kill();
     };
   }, [isLoading, isMobile]);
@@ -136,7 +194,11 @@ function Navbar() {
     const tl = shellRef.current;
     if (!tl) return;
     tl.timeScale(still ? 30 : 1);
-    if (isOpen) {
+    if (isTransitioning && nativeIOSScroll()) {
+      // Route entry owns the document's opacity/geometry until it settles.
+      // Reversing the menu shell here would reveal the outgoing page again.
+      tl.pause();
+    } else if (isOpen) {
       tl.play();
     } else {
       tl.reverse();
@@ -151,12 +213,12 @@ function Navbar() {
       else node.removeAttribute('inert');
     });
 
-    const { lenis: currentLenis, isLoading: loading, isTransitioning } = useStore.getState();
-    if (currentLenis && !loading && !isTransitioning) {
+    const { lenis: currentLenis, isLoading: loading, isTransitioning: transitioning } = useStore.getState();
+    if (currentLenis && !loading && !transitioning) {
       if (isOpen) currentLenis.stop();
       else currentLenis.start();
     }
-  }, [isOpen, still]);
+  }, [isOpen, still, isTransitioning]);
 
   // Cmd/Ctrl-K toggles the search panel (the old palette's shortcut).
   useEffect(() => {
@@ -182,6 +244,7 @@ function Navbar() {
 
   return (
     <>
+      <div aria-hidden="true" className={styles.panelBackdrop} data-open={isOpen} />
       <MenuLinks />
       <SearchPanel />
 
@@ -191,6 +254,10 @@ function Navbar() {
             <span className={clsx('bold', 'h4')}>GUIDES</span>
           </Link>
 
+          <div className={clsx(styles.clock, 'p-x')} data-toronto-clock>
+            <span>Toronto</span>
+            <Time />
+          </div>
           <div className={styles.rightContainer}>
             {!isMobile && <ButtonLink glass onClick={openSearch} label="SEARCH" ariaLabel="Search the guide. Shortcut: Command K" ariaHaspopup="dialog" ariaControls="search" />}
             <MenuButton />

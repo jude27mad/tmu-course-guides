@@ -138,7 +138,7 @@ function cenItem(row, ctx, kinds = cenKinds(ctx)) {
     when: t.when,
     label: t.label,
     cta: null,
-    requirement: item.preview,
+    requirement: item.requirements?.[row.id] || item.preview,
     detail: row.note || item.what,
     who: CEN.WHO[row.who || item.who][1],
     item: item.id,

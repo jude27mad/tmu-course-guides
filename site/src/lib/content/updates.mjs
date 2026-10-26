@@ -51,6 +51,18 @@ export const COURSE_UPDATES = {
  ],
  "mth140": [
   {
+    "id": "2026-10-23-mth140-midterm-scope-and-format",
+    "date": "October 23, 2026",
+    "title": "Midterm coverage and marking confirmed",
+    "text": "Updated from the October 13 Midterm Exam Content announcement.",
+    "items": [
+      "The October 23 midterm runs 6:30–8:30 PM Toronto time and is worth 40%. It covers Sections 1.1–1.5, 2.1–2.4 and 3.1–3.6, including 3.3–3.4. Antiderivatives and integration are outside the announced scope.",
+      "Questions 1–10 are multiple choice worth 5 marks each: the correct choice must agree with a correct written solution, with no partial credit. Questions 11–13 are long answer with working required for partial or full credit.",
+      "Marked the three covered topic groups in Study, refreshed the preparation checklist and removed the outdated scope-pending notice. Quiz 2 is one question from Sections 3.1–3.5.",
+      "Reviewed the course weights, quiz weeks, quiz-drop rule and all 37 recommended exercise lists. Quiz 3–4 scope, the final schedule and room notices still require D2L confirmation."
+    ]
+  },
+  {
    "id": "2026-10-12-confirmed-quiz-2-coverage-and-monday-make-up",
    "date": "October 12, 2026",
    "title": "Confirmed Quiz 2 coverage and Monday make-up",
@@ -77,6 +89,17 @@ export const COURSE_UPDATES = {
   }
  ],
  "mth141": [
+  {
+   "id": "2026-10-23-mth141-source-review",
+   "date": "October 23, 2026",
+   "title": "MTH141 source review",
+   "text": "Rechecked the V3 outline, FAQ, all 34 lab timetables and all 40 recommended-practice rows against the supplied files.",
+   "items": [
+     "Made the midterm exclusions explicit: section 3.1.4 and Chapter 4.",
+     "Added Chapter 4 note and Lab 1–4 practice guidance, quiz timing and accommodation details, and term-test grade-return guidance.",
+     "Updated the notice to the remaining quiz weeks and final exam. Later quiz scopes and the exact final schedule still need D2L announcements."
+   ]
+  },
   {
    "id": "2026-10-12-midterm-scope-and-public-privacy",
    "date": "October 12, 2026",
@@ -105,6 +128,20 @@ export const COURSE_UPDATES = {
 };
 
 export const WEBSITE_UPDATES = [
+ {
+  "id": "2026-10-24-smoother-page-changes",
+  "date": "October 24, 2026",
+  "title": "Smoother page changes",
+  "text": "Changing pages on iPhone and iPad no longer shows the dark background. The page fades into the paper and the next one rises in, while the top bar stays put. Switching between courses is a quicker fade, and the card slide on computers is shorter. A tap or key press finishes a page change at once, and Pause motion still changes pages instantly.",
+  "items": []
+ },
+ {
+  "id": "2026-10-23-all-courses-navigation",
+  "date": "October 23, 2026",
+  "title": "All courses opens at the top",
+  "text": "The All courses button on the Desk opens the course list at the top, with the heading and first course visible.",
+  "items": []
+ },
  {
   "id": "2026-10-23-glass-controls",
   "date": "October 23, 2026",

@@ -27,6 +27,8 @@ let browser;
 
 function instrumentTouch() {
   const draws = new WeakMap();
+  const splats = new WeakMap();
+  let phase = null;
   const locations = new WeakMap();
   const colours = new WeakMap();
   for (const Context of [window.WebGLRenderingContext, window.WebGL2RenderingContext]) {
@@ -37,6 +39,18 @@ function instrumentTouch() {
       if (location) locations.set(location, name);
       return location;
     };
+    for (const method of ['uniform2f', 'uniform2fv']) {
+      const original = Context.prototype[method];
+      Context.prototype[method] = function (location, ...args) {
+        if (locations.get(location) === 'uPointer') {
+          const list = splats.get(this.canvas) || [];
+          const point = method === 'uniform2f' ? args : Array.from(args[0]);
+          list.push({ x: point[0], y: point[1], phase });
+          splats.set(this.canvas, list);
+        }
+        return original.call(this, location, ...args);
+      };
+    }
     for (const method of ['uniform3f', 'uniform3fv']) {
       const original = Context.prototype[method];
       Context.prototype[method] = function (location, ...args) {
@@ -57,6 +71,36 @@ function instrumentTouch() {
       };
     }
   }
+  // What a PageDown led to on `main`: the key (read after dispatch, so any page
+  // handler's preventDefault shows), its scroll events, and page scripts moving it.
+  const keys = [];
+  const mainScroll = { events: 0, writes: 0, lastWrite: '' };
+  addEventListener('keydown', event => keys.push(event));
+  document.addEventListener('scroll', event => {
+    if (event.target instanceof Element && event.target.matches('main')) mainScroll.events += 1;
+  }, { capture: true, passive: true });
+  const wrote = (element, what) => {
+    if (element.tagName !== 'MAIN') return;
+    mainScroll.writes += 1;
+    mainScroll.lastWrite = what;
+  };
+  for (const property of ['scrollTop', 'scrollLeft']) {
+    const descriptor = Object.getOwnPropertyDescriptor(Element.prototype, property);
+    Object.defineProperty(Element.prototype, property, {
+      ...descriptor,
+      set(value) {
+        wrote(this, `${property}=${value}`);
+        descriptor.set.call(this, value);
+      },
+    });
+  }
+  for (const method of ['scroll', 'scrollTo', 'scrollBy']) {
+    const original = Element.prototype[method];
+    Element.prototype[method] = function (...args) {
+      wrote(this, method);
+      return original.apply(this, args);
+    };
+  }
   const events = [];
   const touches = [];
   for (const type of ['pointerdown', 'pointermove', 'pointercancel', 'pointerup']) {
@@ -72,18 +116,27 @@ function instrumentTouch() {
     }, { passive: true });
   }
   window.__touchFluidQA = {
-    reset: () => { events.length = 0; touches.length = 0; },
+    setPhase: value => { phase = value; },
+    reset: () => {
+      events.length = 0; touches.length = 0;
+      const canvas = document.querySelector('#fluidCanvas canvas');
+      if (canvas) splats.set(canvas, []);
+    },
     snapshot: () => {
       const wrapper = document.querySelector('#fluidCanvas');
       const canvas = wrapper?.querySelector('canvas');
       return {
         events: [...events],
+        splats: canvas ? [...(splats.get(canvas) || [])] : [],
         touches: [...touches],
         draws: canvas ? draws.get(canvas) || 0 : 0,
         fluid: Boolean(canvas),
         colours: canvas ? colours.get(canvas) || {} : {},
         visibility: wrapper ? getComputedStyle(wrapper).visibility : null,
-        scrollTop: document.querySelector('main')?.scrollTop || 0,
+        scrollTop: document.documentElement.dataset.scrollMode === 'document' ? window.scrollY : document.querySelector('main')?.scrollTop || 0,
+        overflowY: document.querySelector('main') ? getComputedStyle(document.querySelector('main')).overflowY : null,
+        key: keys.length ? { key: keys.at(-1).key, prevented: keys.at(-1).defaultPrevented } : null,
+        mainScroll: { ...mainScroll },
       };
     },
   };
@@ -100,9 +153,10 @@ async function check(name, run) {
   }
 }
 
-async function open({ reducedMotion = 'no-preference', paused = false, mobile = true } = {}) {
+async function open({ reducedMotion = 'no-preference', paused = false, mobile = true, ios = false } = {}) {
   const context = await browser.newContext({
     viewport: { width: mobile ? 390 : 1440, height: mobile ? 844 : 900 },
+    ...(ios ? { userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1' } : {}),
     hasTouch: mobile,
     isMobile: mobile,
     deviceScaleFactor: 1,
@@ -127,25 +181,29 @@ async function waitForMain(page) {
   await waitOnPage(page, () => {
     const main = document.querySelector('main');
     const overlay = document.querySelector('#loader');
-    const loader = overlay?.getBoundingClientRect();
+    // Moving offscreen precedes the loader's completion callback that unlocks scrolling.
     return main && getComputedStyle(main).pointerEvents !== 'none'
       && !document.querySelector('#layout')?.hasAttribute('inert')
       && Number(getComputedStyle(main).opacity) > 0.99
       && Math.abs(main.getBoundingClientRect().x) < 1
-      && (!loader || getComputedStyle(overlay).visibility === 'hidden'
-        || loader.right <= 1 || loader.left >= innerWidth - 1);
+      && (!overlay || getComputedStyle(overlay).visibility === 'hidden'
+        || getComputedStyle(overlay).display === 'none');
   });
 }
 
 // Poll from Node instead of page.waitForFunction, whose in-page eval is blocked
 // by this site's CSP in older Chromium. Keep the production CSP enabled.
-async function waitOnPage(page, predicate, argument) {
-  const deadline = Date.now() + 20000;
+async function pollOnPage(page, predicate, argument, timeout) {
+  const deadline = Date.now() + timeout;
   while (Date.now() < deadline) {
-    if (await page.evaluate(predicate, argument)) return;
+    if (await page.evaluate(predicate, argument)) return true;
     await page.waitForTimeout(100);
   }
-  throw new Error(`Page condition timed out: ${predicate.toString()}`);
+  return false;
+}
+
+async function waitOnPage(page, predicate, argument) {
+  if (!(await pollOnPage(page, predicate, argument, 20000))) throw new Error(`Page condition timed out: ${predicate.toString()}`);
 }
 
 const snapshot = page => page.evaluate(() => window.__touchFluidQA.snapshot());
@@ -196,7 +254,7 @@ async function assertDeskPalette(page) {
   for (const panel of shown.panels) assert.deepEqual(panel, { ink: '#18181b', menu: '#18181b', fill: '#ffffff' });
   assert.equal(shown.blend, 'difference');
   assert.equal(shown.fluidBackground, 'rgb(0, 0, 0)');
-  // The palette's #E4E4E7 dye over a black base (the difference blend leaves the page as it is),
+  // Giats's original #D7D7D4 dye and deep-violet shader base, rendered with difference blending,
   // converted from sRGB to linear RGB by Three.Color before upload to the shader.
   const linear = bytes => bytes.map(byte => {
     const channel = byte / 255;
@@ -204,7 +262,7 @@ async function assertDeskPalette(page) {
   });
   await waitOnPage(page, () => Object.keys(window.__touchFluidQA.snapshot().colours).some(name => /uColor$/i.test(name)));
   const { colours } = await snapshot(page);
-  for (const [suffix, bytes] of [['uColor', [228, 228, 231]], ['uBackgroundColor', [0, 0, 0]]]) {
+  for (const [suffix, bytes] of [['uColor', [215, 215, 212]], ['uBackgroundColor', [7, 4, 16]]]) {
     const value = Object.entries(colours).find(([name]) => name.toLowerCase().endsWith(suffix.toLowerCase()))?.[1];
     assert.ok(value, `missing fluid shader uniform: ${suffix}`);
     linear(bytes).forEach((channel, i) => assert.ok(Math.abs(channel - value[i]) < 0.000001, `${suffix}[${i}] differs from the palette: ${value[i]} vs ${channel}`));
@@ -222,7 +280,10 @@ function assertFluidSwipe(trace) {
 
 async function toggleMotion(page, label) {
   // Menu belongs to the header and leaves with the page instead of covering it.
-  await page.locator('main').evaluate(main => { main.scrollTop = 0; });
+  await page.evaluate(() => {
+    const scroller = document.documentElement.dataset.scrollMode === 'document' ? window : document.querySelector('main');
+    scroller.scrollTo(0, 0);
+  });
   await waitOnPage(page, () => getComputedStyle(document.querySelector('#menu-button')).visibility === 'visible');
   await page.getByRole('button', { name: 'Open menu', exact: true }).tap();
   await page.getByRole('button', { name: label, exact: true }).tap();
@@ -245,7 +306,7 @@ async function swipe(context, page, screenshotName) {
     }
     if (screenshotName) await page.screenshot({ path: path.join(reports, screenshotName) });
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
-    await waitOnPage(page, top => document.querySelector('main').scrollTop > top + 30, start.scrollTop);
+    await waitOnPage(page, top => window.__touchFluidQA.snapshot().scrollTop > top + 30, start.scrollTop);
     return { before: start, after: await snapshot(page) };
   } finally {
     await cdp.detach();
@@ -257,6 +318,57 @@ try {
     headless: true,
     ...(process.env.QA_CHROMIUM_PATH ? { executablePath: process.env.QA_CHROMIUM_PATH } : {}),
     args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'],
+  });
+
+  await check('iPhone document scrolling keeps Giats fluid input through four rapid reversals', async () => {
+    const { context, page, errors } = await open({ ios: true });
+    const cdp = await context.newCDPSession(page);
+    try {
+      await ready(page);
+      await waitOnPage(page, () => document.documentElement.dataset.scrollMode === 'document');
+      await page.evaluate(() => { window.scrollTo(0, 200); window.__touchFluidQA.reset(); });
+      await waitOnPage(page, () => window.scrollY >= 199 && document.querySelector('main').scrollTop === 0);
+      const start = await snapshot(page);
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 195, y: 620, radiusX: 5, radiusY: 5 }] });
+      const directions = [];
+      for (let leg = 0; leg < 4; leg++) {
+        const from = leg % 2 ? 260 : 620;
+        const to = leg % 2 ? 620 : 260;
+        await page.evaluate(phase => window.__touchFluidQA.setPhase(phase), leg);
+        for (let step = 1; step <= 6; step++) {
+          await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: 195, y: from + (to - from) * step / 6, radiusX: 5, radiusY: 5 }] });
+        }
+        await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+        const state = await snapshot(page);
+        const painted = state.splats.filter(splat => splat.phase === leg);
+        assert.ok(painted.length > 0, `direction ${leg} received no shader input: ${JSON.stringify(state)}`);
+        const previousTop = directions.at(-1)?.scrollTop ?? start.scrollTop;
+        assert.ok((state.scrollTop - previousTop) * (leg % 2 ? -1 : 1) > 20,
+          `direction ${leg} must move the document as well as feed fluid: ${previousTop} -> ${state.scrollTop}`);
+        directions.push({ leg, scrollTop: state.scrollTop, splats: painted.length, minY: Math.min(...painted.map(p => p.y)), maxY: Math.max(...painted.map(p => p.y)) });
+      }
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+      await page.screenshot({ path: path.join(reports, 'fluid-rapid-reversals-ios.png') });
+      const state = await snapshot(page);
+      assert.ok(state.events.some(event => event.type === 'pointermove'), 'synchronized scrolling must retain pointer movement');
+      assert.equal(state.events.some(event => event.type === 'pointercancel'), false, 'scrolling must not cancel the original fluid input');
+      assert.ok(state.events.some(event => event.type === 'pointerup'), 'the original pointer gesture ends normally');
+      await toggleMotion(page, 'Pause motion');
+      assert.equal(await page.locator('html').getAttribute('data-motion'), 'off');
+      assert.equal(await page.locator('#fluidCanvas').count(), 0);
+      const paused = await swipe(context, page);
+      assert.ok(paused.after.events.some(event => event.type === 'pointercancel'), 'paused iOS motion keeps native document panning');
+      await toggleMotion(page, 'Play motion');
+      assert.equal(await page.locator('html').getAttribute('data-motion'), 'on');
+      assert.equal(await page.locator('html').getAttribute('data-scroll-mode'), 'document', 'Pause / Play must preserve the Safari shell');
+      const resumed = await swipe(context, page);
+      assertFluidSwipe(resumed);
+      assert.deepEqual(errors, []);
+      return { directions, pointerCancelled: state.events.some(event => event.type === 'pointercancel'), draws: state.draws, paused, resumed };
+    } finally {
+      await cdp.detach();
+      await context.close();
+    }
   });
 
   for (const route of ['', 'cen100/', 'mth140/', 'mth141/', 'courses/', 'privacy/']) {
@@ -280,6 +392,21 @@ try {
         assertFluidSwipe(trace);
         return trace;
       });
+      if (route === '') {
+        await check('the hidden game and animated statement share input with the liquid trail', async () => {
+          await page.evaluate(() => {
+            const section = document.querySelector('[data-companion-statement]');
+            const main = document.querySelector('main');
+            main.scrollTo(0, main.scrollTop + section.getBoundingClientRect().top + innerHeight * 0.3);
+          });
+          await waitOnPage(page, () => Number(document.querySelector('[data-game-discs]')?.dataset.gameDiscs) > 0);
+          assert.equal(await page.locator('[data-companion-game] canvas').count(), 1);
+          const trace = await swipe(context, page, 'companion-game-fluid.png');
+          assertFluidSwipe(trace);
+          assert.equal(await page.locator('[data-companion-statement]').count(), 1);
+          return trace;
+        });
+      }
       if (route === 'cen100/') {
         await check('Pause / Play Motion changes touch mode without a reload', async () => {
           await toggleMotion(page, 'Pause motion');
@@ -358,10 +485,29 @@ try {
     await check('keyboard PageDown still scrolls the course', async () => {
       await page.locator('main').focus();
       const before = await snapshot(page);
-      await page.keyboard.press('PageDown');
-      await waitOnPage(page, top => document.querySelector('main').scrollTop > top + 30, before.scrollTop);
+      // Chromium can drop a key's smooth scroll when a long frame (the scene's first
+      // WebGL renders under SwiftShader) delays its commit: it ends the scroll without
+      // applying it, with no scroll event (about 1 run in 10, on main too). Only such a
+      // press is pressed again, as a reader would. A key the page prevents, a main that
+      // cannot scroll, or a scroll the page moves or undoes fails at once.
+      let presses = 0;
+      let scrolled = false;
+      while (presses < 3) {
+        const pressed = await snapshot(page);
+        await page.keyboard.press('PageDown');
+        presses += 1;
+        scrolled = await pollOnPage(page, top => document.querySelector('main').scrollTop > top + 30, before.scrollTop, 5000);
+        if (scrolled) break;
+        const dropped = await snapshot(page);
+        const detail = JSON.stringify({ presses, overflowY: pressed.overflowY, key: dropped.key, scrollTop: dropped.scrollTop, before: pressed.mainScroll, after: dropped.mainScroll });
+        assert.ok(['auto', 'scroll'].includes(pressed.overflowY), `main could not scroll when PageDown was pressed: ${detail}`);
+        assert.equal(dropped.key?.prevented, false, `the page prevented PageDown: ${detail}`);
+        assert.equal(dropped.mainScroll.writes, pressed.mainScroll.writes, `a page script moved main after PageDown: ${detail}`);
+        assert.equal(dropped.mainScroll.events, pressed.mainScroll.events, `PageDown scrolled the course and something moved it back: ${detail}`);
+      }
+      assert.ok(scrolled, `PageDown did not scroll the course in ${presses} presses`);
       assert.deepEqual(errors, []);
-      return { before, after: await snapshot(page) };
+      return { before, presses, after: await snapshot(page) };
     });
   } finally {
     await context.close();
@@ -377,3 +523,4 @@ try {
 }
 
 if (results.some(result => !result.pass)) process.exitCode = 1;
+

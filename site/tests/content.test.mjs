@@ -9,15 +9,17 @@ import { cenOracle, mathOracle, htmlText, blocksText, toronto } from './helpers.
 
 const old = await cenOracle();
 
-test('CEN100 content is the old closure’s literals, word for word and in order', () => {
-  for (const name of ['I', 'WHO', 'TEAM', 'YOU', 'RULES', 'CONFIRMED', 'OPEN', 'STAFFING', 'SOURCE_INFO', 'PROFILE_KEY', 'FILTER_KEY', 'PLAN_KEY', 'SEEN_KEY']) {
+test('CEN100 content outside the source-verified reflection clarification matches the old closure', () => {
+  for (const name of ['I', 'WHO', 'TEAM', 'RULES', 'CONFIRMED', 'OPEN', 'STAFFING', 'PROFILE_KEY', 'FILTER_KEY', 'PLAN_KEY', 'SEEN_KEY']) {
     assert.deepEqual(CEN[name], old[name], name);
   }
+  assert.deepEqual(CEN.YOU.filter(item => item.id !== 'y5'), old.YOU.filter(item => item.id !== 'y5'));
+  assert.deepEqual(Object.fromEntries(Object.entries(CEN.SOURCE_INFO).filter(([id]) => id !== 'y5')), Object.fromEntries(Object.entries(old.SOURCE_INFO).filter(([id]) => id !== 'y5')));
   // The last release version of the old badge. The badge now follows the newest course update (content/updates.mjs).
   assert.equal(CEN.GUIDE_VERSION, '2026-10-16-course-artwork');
   assert.notEqual(CEN.GUIDE_VERSION, old.GUIDE_VERSION);
   assert.equal(CEN.KEY, 'cen100-g9-ticks');
-  for (const item of old.allItems) assert.deepEqual(CEN.sourceFor(item), old.sourceFor(item), item.id);
+  for (const item of old.allItems.filter(item => item.id !== 'y5')) assert.deepEqual(CEN.sourceFor(item), old.sourceFor(item), item.id);
   assert.deepEqual(
     CEN.allItems.map((item) => item.id),
     old.allItems.map((item) => item.id),
@@ -34,6 +36,15 @@ test('CEN100 checklist keys and completion keys keep the old id schemes', () => 
   assert.equal(CEN.completionKeys.size, 25);
   assert.ok(CEN.completionKeys.has('item:y7') && CEN.completionKeys.has('item:y9'));
   assert.ok(!CEN.completionKeys.has('failure-lab') && !CEN.completionKeys.has('showcase-signup'));
+});
+
+test('reflection details separate the October and December submissions without changing saved checklist keys', () => {
+  const item = CEN.byId.get('y5');
+  const previous = old.allItems.find(candidate => candidate.id === 'y5');
+  for (const field of ['id', 'date', 'date2', 'name', 'who', 'pct', 'groups', 'traps']) assert.deepEqual(item[field], previous[field], field);
+  assert.match(item.facts[0][1], /Reflection 1:.*Oct 28.*end of day/);
+  assert.match(item.facts[1][1], /Reflection 2:.*Dec 2.*end of day/);
+  assert.match(CEN.sourceFor(item)[1], /Personal_Reflection_1_F26.docx, pp. 1 and 3/);
 });
 
 test('CEN100 helpers return what the old closure returned', () => {
@@ -63,7 +74,8 @@ test('CEN100 helpers return what the old closure returned', () => {
     const mine = CEN.sectionContent(profile);
     assert.equal(mine.y7.what, page['b-y7 .what']);
     assert.equal(mine.y7.fact, page['b-y7 .fact span']);
-    assert.equal(mine.y5.what, page['b-y5 .what']);
+    const pm = CEN.contactLookup(profile?.section, profile?.group).pm;
+    assert.equal(mine.y5.what, pm ? CEN.byId.get('y5').what.replace('your assigned Project Manager', `${pm.name}, your assigned Project Manager for Group ${profile.group}`) : CEN.byId.get('y5').what);
   }
   for (const n of [0, 1, 2, 6, 7, 30]) {
     assert.equal(CEN.cd(n), old.cd(n));
@@ -108,13 +120,20 @@ test('CEN100 calendar, backup parsing and work list match the old closure', () =
 });
 
 for (const courseId of ['mth140', 'mth141']) {
-  test(`${courseId} content is the old closure’s, word for word`, async () => {
+  test(`${courseId} unchanged content and saved keys match the old closure`, async () => {
     const course = DATA[courseId];
     for (const section of [0, 2, 3, 31]) {
       const page = await mathOracle(courseId, section);
       for (const a of course.assessments) {
-        assert.deepEqual(MATH.prep(a, courseId), page.prep(a), a.id);
-        assert.deepEqual(MATH.rulesForAssessment(a, courseId), page.rulesForAssessment(a), a.id);
+        if (courseId === 'mth140' && a.kind === 'midterm') {
+          // The October 13 announcement replaces the archived scope-pending copy.
+          assert.equal(MATH.prep(a, courseId).length, page.prep(a).length);
+          assert.match(MATH.prep(a, courseId)[0], /1\.1–1\.5.*2\.1–2\.4.*3\.1–3\.6/);
+          assert.match(MATH.rulesForAssessment(a, courseId).join(' '), /no partial credit.*written solution.*0 out of 5.*11–13.*partial or full credit/);
+        } else {
+          assert.deepEqual(MATH.prep(a, courseId), page.prep(a), a.id);
+          assert.deepEqual(MATH.rulesForAssessment(a, courseId), page.rulesForAssessment(a), a.id);
+        }
         assert.equal(MATH.weight(a, course), page.weight(a));
         const e = resolveAssessment(course, a, section);
         assert.equal(MATH.certainty(e), page.certainty(e));
@@ -125,8 +144,8 @@ for (const courseId of ['mth140', 'mth141']) {
       assert.equal(MATH.GUIDE_VERSION, '2026-10-16-course-artwork');
       assert.notEqual(MATH.GUIDE_VERSION, page.GUIDE_VERSION);
       assert.deepEqual(
-        MATH.ruleCards(course, courseId).map((card) => [card.title, blocksText(card.blocks)]),
-        page.cards.map(([title, body]) => [title, htmlText(body)]),
+        MATH.ruleCards(course, courseId).slice(0, courseId === 'mth140' ? 2 : undefined).map((card) => [card.title, blocksText(card.blocks)]),
+        page.cards.slice(0, courseId === 'mth140' ? 2 : undefined).map(([title, body]) => [title, htmlText(body)]),
       );
       const notice = MATH.courseNotice(courseId);
       assert.equal(`${notice.title} ${blocksText(notice.blocks)}`, htmlText(page.notice));
@@ -144,3 +163,19 @@ for (const courseId of ['mth140', 'mth141']) {
   });
 }
 
+// Guard the current announcement at the public data boundary, including the Study labels.
+test('MTH140 midterm announcement reaches Work, Study and Course info without stale scope', async () => {
+  const { courseInfo } = await import('../src/lib/info.mjs');
+  const info = courseInfo('mth140');
+  const midterm = info.assessments.find((a) => a.id === 'midterm');
+  assert.match(midterm.scope, /1\.1–1\.5.*2\.1–2\.4.*3\.1–3\.6/);
+  assert.equal(midterm.unconfirmed, '');
+  assert.match(midterm.source, /October 13, 2026, 2:56 PM/);
+  assert.match(midterm.rules.join(' '), /50 marks total/);
+  assert.deepEqual(info.topics.filter((t) => t.midterm).map((t) => t.id), ['functions', 'limits', 'derivatives-1']);
+  assert.equal(info.topics.filter((t) => t.midterm).flatMap((t) => t.practice).length, 15);
+  const rules = MATH.ruleCards(DATA.mth140, 'mth140');
+  assert.doesNotMatch(JSON.stringify(rules), /exact midterm coverage|reviewed October 12/);
+  assert.match(JSON.stringify(rules), /Quiz 3–4 scope.*final-exam.*room assignments/);
+  assert.match(JSON.stringify(rules), /full week for a remarking email/);
+});

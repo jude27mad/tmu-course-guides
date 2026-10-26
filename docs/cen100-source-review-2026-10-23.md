@@ -4,7 +4,7 @@ Only CEN100 course content and its regression expectations change. The math cour
 
 | Finding | Evidence used | Guide action |
 | --- | --- | --- |
-| M3 Part 1 stays October 21; Part 2 moves to October 28 | Course-team deadline adjustment shared October 13: Part 1 due October 21; Part 2 submission due October 28; MATLAB 4 starts October 28 | Keep `failure` as Part 1 and add `failure-2`. Preserve old completion without marking Part 2 submitted. Dates have day precision because no submission time was provided. Attribute the update and direct other sections to D2L. |
+| M3 Part 1 stays October 21; Part 2 moves to October 28 | Course-team deadline adjustment shared October 13: Part 1 due October 21; Part 2 submission due October 28; MATLAB 4 starts October 28 | Keep `failure` as Part 1 and add `failure-2`. Preserve old completion without marking Part 2 submitted. Source records have no published time; the existing end-of-day submission countdown is retained. Attribute the update and direct other sections to D2L. |
 | M3 is 2% historical review + 4% FMEA | Outline p. 9; Failure Analysis Lab Handout pp. 1–3 | Display the split on deadline rows while retaining one 6% assessment category. |
 | FMEA template changed the usable checklist | Supplied Predictive FMEA Template F26, Instructions / FMEA Worksheet / Ranked Summary / Scoring Guide | At least ten failure modes; five categories; 1–5 L/S/D; top five risks; Change/Test/Verify/Monitor actions; one example row; protect automatic formulas; design insight on top 2–3 risks. |
 | Environmental means real-world operating conditions | Failure Analysis Handout p. 1; Research Methods & Failure Analysis lecture p. 18 | Replace the pending clarification with heat, moisture, loads and contamination. |

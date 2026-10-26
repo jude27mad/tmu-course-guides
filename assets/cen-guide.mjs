@@ -1,4 +1,4 @@
-import {SCHEDULE} from './cen-schedule.mjs?v=20261013-shift1';
+import {SCHEDULE} from './cen-schedule.mjs?v=20261026-cen100';
 
 // The router mounts this before workspace, editorial, header and Night Shift views.
 // All state belongs to one mount; importing this module only defines its contract.
