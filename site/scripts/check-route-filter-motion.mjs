@@ -831,7 +831,7 @@ try {
           };
           while (performance.now() < deadline) {
             await new Promise(requestAnimationFrame);
-            const bounds = stage.getBoundingClientRect();
+            const bounds = state.gl.domElement.getBoundingClientRect();
             const points = [];
             state.scene.traverse(mesh => {
               if (!mesh.userData.slice) return;
@@ -919,6 +919,41 @@ try {
         await page.waitForFunction(best => document.querySelector('[data-game-best]')?.textContent === `Best ${best}`, expectedBest);
         assert.equal(await page.evaluate(() => window.gameCelebrations), 0, 'the first slice after reload never replays the celebration');
         return { words, discs: count, flight, slices, scoreHistory, reveal: { before, after }, frameP95Ms: frames[Math.floor(frames.length * 0.95)], note: 'CI diagnostics; not physical-device performance.' };
+      });
+      if (label === 'iphone' || label === 'desktop') await check(browser, options, `${label}-game-screen-edge`, async (page) => {
+        const evidence = [];
+        for (const route of ['', 'courses/', 'privacy/', 'updates/']) {
+          await page.goto(base + route);
+          await ready(page);
+          for (const offset of [-0.15, 0.7, 0.25]) {
+            await page.evaluate(offset => {
+              const section = document.querySelector('[data-companion-statement]');
+              const documentMode = document.documentElement.dataset.scrollMode === 'document';
+              const scroller = documentMode ? window : document.querySelector('main');
+              const top = documentMode ? scrollY : scroller.scrollTop;
+              scroller.scrollTo(0, top + section.getBoundingClientRect().top + innerHeight * offset);
+            }, offset);
+            await page.locator('[data-companion-game][data-active="true"] canvas').waitFor();
+            await page.waitForFunction(() => {
+              const box = document.querySelector('[data-companion-game] canvas')?.getBoundingClientRect();
+              return box && Math.abs(box.top) < 1 && Math.abs(box.bottom - innerHeight) < 1;
+            });
+            const geometry = await page.evaluate(() => {
+              const game = document.querySelector('[data-companion-game]');
+              const box = game.querySelector('canvas').getBoundingClientRect();
+              const stage = document.querySelector('[data-companion-statement]').firstElementChild.getBoundingClientRect();
+              return { top: box.top, bottom: box.bottom, stageBottom: stage.bottom, viewport: innerHeight, left: box.left, stageLeft: stage.left, width: box.width, stageWidth: stage.width, clippedByPage: !!game.closest('main') };
+            });
+            assert.equal(geometry.clippedByPage, false, 'the white section cannot clip the fixed game');
+            assert.ok(Math.abs(geometry.left - geometry.stageLeft) < 1 && Math.abs(geometry.width - geometry.stageWidth) < 1, 'the existing horizontal game area is preserved');
+            if (offset === 0.7) assert.ok(geometry.stageBottom < geometry.bottom - 20, 'the canvas continues to the screen edge after the statement starts leaving');
+            evidence.push({ route, offset, ...geometry });
+          }
+          await page.evaluate(() => (document.documentElement.dataset.scrollMode === 'document' ? window : document.querySelector('main')).scrollTo(0, 0));
+          await page.locator('[data-companion-game][data-active="false"]').waitFor({ state: 'attached' });
+          assert.equal(await page.locator('[data-companion-game]').isVisible(), false, 'the fixed game is hidden when its section is offscreen');
+        }
+        return evidence;
       });
       await check(browser, options, `${label}-work-filters`, async (page) => {
         // Install before application timers, then advance animation frames explicitly.

@@ -35,14 +35,14 @@ function Index({ active, eventSource }) {
   return (
     <>
       <Canvas
-        // Input already uses the stage's live bounds below. Scrolling changes
-        // its position, not its drawing size; only actual resizes need a commit.
+        // The game is fixed to the viewport. Scroll must not resize its canvas;
+        // real viewport resizes still follow the browser's bottom edge.
         resize={{ scroll: false, debounce: { resize: 0, scroll: 0 } }}
-        eventSource={eventSource}
+        eventSource={eventSource.current?.closest('main') || eventSource}
         events={(state) => ({
           ...events(state),
           compute: (event, current) => {
-            const bounds = eventSource.current?.getBoundingClientRect();
+            const bounds = current.gl.domElement.getBoundingClientRect();
             if (!bounds?.width || !bounds.height) return;
             current.pointer.set(((event.clientX - bounds.left) / bounds.width) * 2 - 1, -((event.clientY - bounds.top) / bounds.height) * 2 + 1);
             current.raycaster.setFromCamera(current.pointer, current.camera);
@@ -60,7 +60,6 @@ function Index({ active, eventSource }) {
           position: 'relative',
           display: 'block',
           backgroundColor: 'transparent',
-          borderRadius: '1.3888888889vw',
           height: '100%',
           width: '100%',
           pointerEvents: 'none',
