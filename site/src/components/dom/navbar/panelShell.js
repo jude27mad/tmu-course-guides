@@ -55,7 +55,8 @@ export function buildShellTimeline({ isMobile }) {
     return tl;
   }
   tl.to(main, { borderRadius: '1.3888888889vw', border: PAGE_EDGE, scale: 0.9, pointerEvents: 'none', left: '-40vw' }, 0);
-  tl.to(layout, { opacity: 0.3, ...(ios ? {} : { height: '90svh' }) }, 0);
+  // Keep the canvas/grain shell full-height so it cannot expose bands above and below the page.
+  tl.to(layout, { opacity: 0.3 }, 0);
   if (scrollbar) tl.to(scrollbar, { opacity: 0, right: '46vw', scale: 0.9 }, 0);
   // This timeline is also prepared during route entry. Eager overwrite would
   // cancel the route's header reveal even while this menu timeline is paused.
