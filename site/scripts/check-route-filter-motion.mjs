@@ -396,7 +396,9 @@ try {
           const incoming = frames.filter((frame) => frame.title?.startsWith(title) && frame.opacity > 0.05);
           assert.ok(incoming.length, `${label}: sample the visible destination: ${JSON.stringify([...new Set(frames.map((frame) => `${frame.title}@${frame.opacity}`))].slice(-6))}`);
           assert.ok(incoming.every((frame) => Math.abs(frame.left) < 2 && Math.abs(frame.width - frame.viewport) < 2 && frame.loader === 'none'), `${label}: the arriving page stays full width with no loading card`);
-          const fading = frames.filter((frame) => frame.opacity > 0.05 && frame.opacity < 0.95);
+          // A slow runner can sample only the end of a fade. Any intermediate
+          // opacity proves it ran; a 5% cutoff discarded real transition frames.
+          const fading = frames.filter((frame) => frame.opacity > 0.001 && frame.opacity < 0.999);
           if (reducedMotion === 'reduce') {
             assert.deepEqual(fading.slice(0, 4), [], `${label}: with reduced motion the page changes without a fade`);
             assert.ok(frames.every((frame) => !frame.paper), `${label}: with reduced motion the paper never shows`);
