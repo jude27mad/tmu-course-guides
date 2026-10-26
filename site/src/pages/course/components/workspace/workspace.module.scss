@@ -140,8 +140,10 @@
   position: relative;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   width: fit-content;
   max-width: 100%;
+  margin-inline: auto;
   padding: 4px;
   border-radius: 30px;
   gap: 2px;
