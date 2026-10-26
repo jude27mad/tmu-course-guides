@@ -33,18 +33,24 @@
       perspective: 1000px;
     }
   }
-  .canvas {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    > div { width: 100% !important; height: 100% !important; }
-  }
   &.still {
     height: auto;
     padding-top: calc(var(--layout-columns-gap) * 4);
     padding-bottom: calc(var(--layout-columns-gap) * 4);
     .stage, .text { position: relative; min-height: 0; }
-    .canvas { display: none; }
   }
+}
+
+// Outside the clipped statement and scrolling main: the screen's bottom is
+// the game's entry/exit edge, even as the sticky statement leaves the screen.
+.canvas {
+  position: fixed;
+  top: 0;
+  left: var(--layout-margin);
+  width: var(--layout-width);
+  height: var(--app-viewport-height);
+  z-index: 1;
+  pointer-events: none;
+  &[data-active='false'] { visibility: hidden; }
+  > div { width: 100% !important; height: 100% !important; }
 }

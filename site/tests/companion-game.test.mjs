@@ -77,15 +77,25 @@ test('discs launch below the stage, peak visibly, then fall back under the same 
 });
 
 test('score is hidden until the first slice and stays visible at zero after every miss', () => {
-  const initial = { started: false, score: 0 };
+  const initial = { started: false, score: 0, best: 0 };
   assert.equal(scoreAfterEvent(initial, 'miss'), initial);
   const first = scoreAfterEvent(initial, 'slice');
-  assert.deepEqual(first, { started: true, score: 1 });
+  assert.deepEqual(first, { started: true, score: 1, best: 1 });
   const second = scoreAfterEvent(first, 'slice');
-  assert.deepEqual(second, { started: true, score: 2 });
+  assert.deepEqual(second, { started: true, score: 2, best: 2 });
   const missed = scoreAfterEvent(second, 'miss');
-  assert.deepEqual(missed, { started: true, score: 0 });
+  assert.deepEqual(missed, { started: true, score: 0, best: 2 });
   assert.equal(scoreAfterEvent(missed, 'miss'), missed);
-  assert.deepEqual(scoreAfterEvent(missed, 'slice'), first);
-  assert.deepEqual(initial, { started: false, score: 0 }, 'no other state is mutated');
+  assert.deepEqual(scoreAfterEvent(missed, 'slice'), { started: true, score: 1, best: 2 });
+  assert.deepEqual(initial, { started: false, score: 0, best: 0 }, 'no other state is mutated');
+});
+
+test('restoring a best never reveals the game early or loses slices already dispatched', () => {
+  const initial = { started: false, score: 0, best: 0 };
+  const restored = scoreAfterEvent(initial, { type: 'restore', best: 8 });
+  assert.deepEqual(restored, { started: false, score: 0, best: 8 });
+  const events = ['slice', 'slice', 'miss', 'slice'];
+  assert.deepEqual(events.reduce(scoreAfterEvent, restored), { started: true, score: 1, best: 8 });
+  const scored = events.reduce(scoreAfterEvent, initial);
+  assert.deepEqual(scoreAfterEvent(scored, { type: 'restore', best: 0 }), { started: true, score: 1, best: 2 });
 });

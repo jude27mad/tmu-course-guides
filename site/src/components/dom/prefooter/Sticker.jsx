@@ -38,7 +38,7 @@ function Sticker({ id, positionX, image, imageSliced, isMobile, viewportHeight, 
     setFruitSliced(true);
   }, [eventSource, active, onSlice]);
 
-  const mobileConfig = isMobile ? { position: [positionX, flight.startY, 0], scale: 0.8 } : { position: [positionX, flight.startY, 0], scale: 1 };
+  const mobileConfig = { position: [positionX, flight.startY, 0], scale: flight.radius * 2 };
   const map = fruitSliced ? imageSliced : image;
 
   return (
