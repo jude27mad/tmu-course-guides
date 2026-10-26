@@ -5,7 +5,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import MenuButton from '@src/components/dom/navbar/components/MenuButton';
 import MenuLinks from '@src/components/dom/navbar/components/MenuLinks';
-import SearchPanel from '@src/components/dom/navbar/components/SearchPanel';
+import SearchPanel, { openSearchPanel } from '@src/components/dom/navbar/components/SearchPanel';
 import clsx from 'clsx';
 import styles from '@src/components/dom/navbar/styles/index.module.scss';
 import { useCallback, useEffect, useRef } from 'react';
@@ -227,9 +227,8 @@ function Navbar() {
         const state = useStore.getState();
         if (state.isSearchOpen) {
           state.setIsSearchOpen(false);
-        } else if (!state.isLoading) {
-          if (state.isMenuOpen) state.setIsMenuOpen(false);
-          state.setIsSearchOpen(true);
+        } else {
+          openSearchPanel();
         }
       }
     };

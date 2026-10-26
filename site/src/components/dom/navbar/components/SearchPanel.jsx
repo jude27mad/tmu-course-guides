@@ -4,6 +4,7 @@ import { courseIdFromPath, pathKey } from '@src/utils/routes';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import clsx from 'clsx';
+import { flushSync } from 'react-dom';
 import menuStyles from '@src/components/dom/navbar/styles/menuLinks.module.scss';
 import styles from '@src/components/dom/navbar/styles/searchPanel.module.scss';
 import useIsMobile from '@src/hooks/useIsMobile';
@@ -15,6 +16,22 @@ import { useStore } from '@src/store';
 // same index, groups, ranking, copy and keyboard model (combobox + listbox,
 // Arrow keys, Home/End, Enter, Escape, Cmd/Ctrl-K), plus its last row,
 // 'Search the guide for "…"', which lists the guides' full-text matches here.
+
+// Keep focus inside the tap/key event. iPhone WebKit can reject focus scheduled
+// after an animation frame, even though the Search panel is then visible.
+export function openSearchPanel() {
+  const state = useStore.getState();
+  if (state.isLoading) return;
+  flushSync(() => {
+    state.setIsMenuOpen(false);
+    state.setIsSearchOpen(true);
+  });
+  const panel = document.getElementById('search');
+  if (!panel) return;
+  panel.inert = false;
+  panel.style.visibility = 'visible';
+  panel.querySelector('#search-input')?.focus({ preventScroll: true });
+}
 
 const isMotionEntry = (entry) => entry.action === 'motion';
 
@@ -156,7 +173,18 @@ function SearchPanel() {
     option?.scrollIntoView({ block: 'nearest' });
   }, [active]);
 
-  const close = useCallback(() => setIsSearchOpen(false), [setIsSearchOpen]);
+  const close = useCallback(() => {
+    if (isMobile) {
+      const header = document.querySelector('header');
+      if (header) {
+        header.inert = false;
+        header.style.visibility = 'visible';
+      }
+      const opener = openerRef.current || document.getElementById('menu-button');
+      if (opener?.isConnected) opener.focus({ preventScroll: true });
+    }
+    setIsSearchOpen(false);
+  }, [isMobile, setIsSearchOpen]);
 
   const run = useCallback(
     (position) => {
@@ -290,7 +318,17 @@ function SearchPanel() {
             </p>
           )}
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-          <div id="search-results" role="listbox" aria-labelledby="search-title" ref={listRef} onPointerDown={(event) => event.preventDefault()}>
+          <div
+            id="search-results"
+            role="listbox"
+            aria-labelledby="search-title"
+            ref={listRef}
+            onPointerDown={(event) => {
+              // Mouse selection keeps the input focused; touch must retain
+              // WebKit's native tap/click sequence.
+              if (event.pointerType === 'mouse') event.preventDefault();
+            }}
+          >
             {grouped.map((group) => (
               <div
                 key={`${group.key}-${group.items[0].index}`}
@@ -321,8 +359,8 @@ function SearchPanel() {
                       entry.disabled && styles.disabled,
                       entry.type === 'guide-search' && styles.suggestion,
                     )}
-                    onPointerMove={() => {
-                      if (!entry.disabled && active !== index) setActive(index);
+                    onPointerMove={(event) => {
+                      if (event.pointerType === 'mouse' && !entry.disabled && active !== index) setActive(index);
                     }}
                     onClick={() => run(index)}
                   >

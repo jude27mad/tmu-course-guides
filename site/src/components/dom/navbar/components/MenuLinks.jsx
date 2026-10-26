@@ -5,6 +5,7 @@ import Link from 'next/link';
 import clsx from 'clsx';
 import footerLinks from '@src/components/dom/navbar/constants/footerLinks';
 import menuLinks from '@src/components/dom/navbar/constants/menuLinks';
+import { openSearchPanel } from '@src/components/dom/navbar/components/SearchPanel';
 import { pathKey } from '@src/utils/routes';
 import styles from '@src/components/dom/navbar/styles/menuLinks.module.scss';
 import { upcomingAcrossCourses } from '@src/utils/upcoming';
@@ -18,8 +19,8 @@ const UPCOMING_SLOTS = 3;
 function MenuLinks() {
   const timeline = useRef(null);
   const isMobile = useIsMobile();
-  const [isMenuOpen, setIsMenuOpen, setIsSearchOpen, isLoading, still, motionSaved, motionReduced, toggleMotion] = useStore(
-    useShallow((state) => [state.isMenuOpen, state.setIsMenuOpen, state.setIsSearchOpen, state.isLoading, state.still, state.motionSaved, state.motionReduced, state.toggleMotion]),
+  const [isMenuOpen, setIsMenuOpen, isLoading, still, motionSaved, motionReduced, toggleMotion] = useStore(
+    useShallow((state) => [state.isMenuOpen, state.setIsMenuOpen, state.isLoading, state.still, state.motionSaved, state.motionReduced, state.toggleMotion]),
   );
   const menuRef = useRef();
   const scrollRef = useRef(null);
@@ -137,11 +138,6 @@ function MenuLinks() {
     if (pathKey(href) === current) close();
   };
 
-  const openSearch = () => {
-    setIsMenuOpen(false);
-    setIsSearchOpen(true);
-  };
-
   const renderRow = (key, content, { active = false, className } = {}) => (
     <div key={key} data-menu-anim="" className={clsx(styles.menuListItem, active && styles.menuListItemActive, className)}>
       {content}
@@ -156,7 +152,7 @@ function MenuLinks() {
       <nav ref={scrollRef} className={clsx(styles.menuWrapper, 'layout-block-inner')} data-lenis-prevent="" aria-label="Site navigation">
         {renderRow(
           'search',
-          <button type="button" onClick={openSearch} aria-label="Search the guide. Shortcut: Command K" aria-haspopup="dialog" aria-controls="search">
+          <button type="button" onClick={openSearchPanel} aria-label="Search the guide. Shortcut: Command K" aria-haspopup="dialog" aria-controls="search">
             <span>SEARCH</span>
           </button>,
         )}

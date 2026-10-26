@@ -150,6 +150,14 @@ jobs:
           PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
           QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/search
         run: node site/scripts/check-search-site.mjs
+      - name: Upload Search check reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: search-qa
+          path: ${{ runner.temp }}/pages-qa/search/
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Check route transitions and Work filters
         if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' && steps.tested.outputs.tested != 'true' }}
         env:
