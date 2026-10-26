@@ -93,7 +93,7 @@ function useFruitSpawner({ viewport, textures, isMobile, active }) {
   return [fruits, remove];
 }
 
-function FruitNinja({ active = true, eventSource }) {
+function FruitNinja({ active = true, eventSource, onSlice, onMiss }) {
   const viewport = useThree((state) => state.viewport);
   const isMobile = useIsMobile();
   const textures = useDiscTextures();
@@ -150,6 +150,8 @@ function FruitNinja({ active = true, eventSource }) {
               isMobile={isMobile}
               viewportHeight={viewport.height}
               onDone={remove}
+              onSlice={onSlice}
+              onMiss={onMiss}
               eventSource={eventSource}
               active={active}
             />

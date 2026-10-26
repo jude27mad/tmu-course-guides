@@ -396,7 +396,9 @@ try {
           const incoming = frames.filter((frame) => frame.title?.startsWith(title) && frame.opacity > 0.05);
           assert.ok(incoming.length, `${label}: sample the visible destination: ${JSON.stringify([...new Set(frames.map((frame) => `${frame.title}@${frame.opacity}`))].slice(-6))}`);
           assert.ok(incoming.every((frame) => Math.abs(frame.left) < 2 && Math.abs(frame.width - frame.viewport) < 2 && frame.loader === 'none'), `${label}: the arriving page stays full width with no loading card`);
-          const fading = frames.filter((frame) => frame.opacity > 0.05 && frame.opacity < 0.95);
+          // A slow runner can sample only the end of a fade. Any intermediate
+          // opacity proves it ran; a 5% cutoff discarded real transition frames.
+          const fading = frames.filter((frame) => frame.opacity > 0.001 && frame.opacity < 0.999);
           if (reducedMotion === 'reduce') {
             assert.deepEqual(fading.slice(0, 4), [], `${label}: with reduced motion the page changes without a fade`);
             assert.ok(frames.every((frame) => !frame.paper), `${label}: with reduced motion the paper never shows`);
@@ -650,6 +652,7 @@ try {
         return routes;
       });
       if (label !== 'tablet') await check(browser, options, `${label}-companion-scene`, async (page) => {
+        await observeCanvasStores(page);
         await page.addInitScript(() => { Math.random = () => 0.5; });
         await page.goto(base);
         await ready(page);
@@ -761,52 +764,116 @@ try {
           return Number(css.opacity) > 0.99 && (css.transform === 'none' || new DOMMatrixReadOnly(css.transform).isIdentity);
         }));
         await page.waitForFunction(() => Number(document.querySelector('[data-game-discs]')?.dataset.gameDiscs) > 0);
+        assert.equal(await page.locator('[data-game-score]').isVisible(), false, 'the scoreboard does not reveal the easter egg');
+        const flight = await page.evaluate(async () => {
+          const state = [...window.canvasStores].map(store => store.getState()).find(item => item.gl.domElement.closest('[data-companion-game]'));
+          const tracks = new Map();
+          const deadline = performance.now() + 18000;
+          while (performance.now() < deadline) {
+            await new Promise(requestAnimationFrame);
+            let completed;
+            state.scene.traverse(mesh => {
+              if (!mesh.userData.slice) return;
+              const point = mesh.getWorldPosition(mesh.position.clone());
+              const track = tracks.get(mesh.uuid) || { previous: point.y, rose: false, fell: false, peak: -Infinity };
+              track.rose ||= point.y > track.previous + 0.01;
+              track.fell ||= track.rose && point.y < track.previous - 0.01;
+              track.previous = point.y;
+              track.peak = Math.max(track.peak, point.clone().project(state.camera).y);
+              tracks.set(mesh.uuid, track);
+              if (track.rose && track.fell) completed = track;
+            });
+            if (completed) return completed;
+          }
+          throw new Error('No disc completed a visible upward and downward arc');
+        });
+        assert.ok(flight.peak > 0 && flight.peak < 0.9, `disc turns around inside the stage: ${JSON.stringify(flight)}`);
         await page.screenshot({ path: path.join(report, `${label}-companion-and-game.png`) });
-        // Interact with centre-launched discs on their actual shared DOM surface.
-        // A software-rendered frame can outlast a flight. On iPhone, sample the
-        // input path within each painted frame so a rapid mouse sweep cannot
-        // make this mobile check miss every disc under software rendering.
-        // This dispatches input only: the real scene raycaster must slice a disc.
-        if (label === 'iphone') {
-          await page.evaluate(async () => {
-            const stage = document.querySelector('[data-game-discs]');
-            const deadline = performance.now() + 12000;
-            const nativeTouch = document.documentElement.dataset.scrollMode === 'document';
-            // Linux WebKit cannot construct Touch/TouchEvent. Dispatch the same
-            // touch-list fields on a DOM event; do not call scene callbacks.
-            const dispatchTouch = (type, touches, changedTouches) => {
+        // Record score commits in the browser: a missed disc can reset the score
+        // between Playwright calls, so lifetime slices are not the current score.
+        await page.evaluate(() => {
+          const stage = document.querySelector('[data-game-discs]');
+          const score = document.querySelector('[data-game-score]');
+          window.gameScoreHistory = [];
+          const record = () => {
+            window.gameScoreHistory.push({
+              score: score.textContent,
+              slices: Number(stage.dataset.gameSlices || 0),
+              visible: !score.hidden && getComputedStyle(score).display !== 'none',
+            });
+          };
+          window.gameScoreObserver = new MutationObserver(record);
+          window.gameScoreObserver.observe(score, { childList: true, characterData: true, subtree: true, attributes: true });
+          record();
+        });
+        // Aim at actual visible discs within a painted frame. On a slow runner,
+        // separate mouse calls can span an entire flight. Dispatch DOM input;
+        // the real scene raycaster and slice guards must still handle every hit.
+        const hit = await page.evaluate(async (touchInput) => {
+          const stage = document.querySelector('[data-game-discs]');
+          const state = [...window.canvasStores].map(store => store.getState()).find(item => item.gl.domElement.closest('[data-companion-game]'));
+          const deadline = performance.now() + 18000;
+          const nativeTouch = touchInput && document.documentElement.dataset.scrollMode === 'document';
+          const dispatch = (type, point) => {
+            if (nativeTouch) {
+              // Linux WebKit cannot construct Touch/TouchEvent.
+              const touch = { identifier: 1, target: stage, ...point, pageX: point.clientX + scrollX, pageY: point.clientY + scrollY };
               const event = new Event(type, { bubbles: true, cancelable: true });
-              Object.assign(event, { touches, targetTouches: touches, changedTouches });
+              const touches = type === 'touchend' ? [] : [touch];
+              Object.assign(event, { touches, targetTouches: touches, changedTouches: [touch] });
               stage.dispatchEvent(event);
-            };
-            while (performance.now() < deadline && !Number(stage.dataset.gameSlices)) {
-              await new Promise(requestAnimationFrame);
-              const bounds = stage.getBoundingClientRect();
-              const clientX = bounds.left + bounds.width / 2;
-              let lastTouch;
-              for (let clientY = Math.max(1, bounds.top + 1); clientY < Math.min(innerHeight - 1, bounds.bottom); clientY += 32) {
-                if (nativeTouch) {
-                  const touch = { identifier: 1, target: stage, clientX, clientY, pageX: clientX + scrollX, pageY: clientY + scrollY };
-                  lastTouch = touch;
-                  const type = clientY === Math.max(1, bounds.top + 1) ? 'touchstart' : 'touchmove';
-                  dispatchTouch(type, [touch], [touch]);
-                } else {
-                  stage.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, pointerType: 'touch', pointerId: 1, isPrimary: true, clientX, clientY }));
-                }
-              }
-              if (nativeTouch) dispatchTouch('touchend', [], lastTouch ? [lastTouch] : []);
+            } else {
+              stage.dispatchEvent(new PointerEvent(type, { bubbles: true, pointerType: touchInput ? 'touch' : 'mouse', pointerId: 1, isPrimary: true, ...point }));
             }
-          });
-        } else {
-          const stage = await page.locator('[data-game-discs]').boundingBox();
-          const sliceDeadline = Date.now() + 12000;
-          while (Date.now() < sliceDeadline && !Number(await page.locator('[data-game-discs]').getAttribute('data-game-slices'))) {
-            for (let step = 0; step <= 24; step += 1) {
-              await page.mouse.move(stage.x + stage.width / 2, stage.y + stage.height * step / 24);
+          };
+          while (performance.now() < deadline) {
+            await new Promise(requestAnimationFrame);
+            const bounds = stage.getBoundingClientRect();
+            const points = [];
+            state.scene.traverse(mesh => {
+              if (!mesh.userData.slice) return;
+              const point = mesh.getWorldPosition(mesh.position.clone()).project(state.camera);
+              const clientX = bounds.left + (point.x + 1) * bounds.width / 2;
+              const clientY = bounds.top + (1 - point.y) * bounds.height / 2;
+              if (Math.abs(point.x) < 0.9 && Math.abs(point.y) < 0.8 && clientX > 1 && clientX < innerWidth - 1 && clientY > 1 && clientY < innerHeight - 1) points.push({ clientX, clientY });
+            });
+            const before = Number(stage.dataset.gameSlices || 0);
+            const sample = () => points.forEach(point => {
+              dispatch(nativeTouch ? 'touchstart' : 'pointerdown', point);
+              dispatch(nativeTouch ? 'touchmove' : 'pointermove', point);
+              if (nativeTouch) dispatch('touchend', point);
+            });
+            sample();
+            const first = Number(stage.dataset.gameSlices || 0);
+            if (first > before) {
+              sample();
+              sample();
+              return { before, first, repeated: Number(stage.dataset.gameSlices || 0) };
             }
           }
-        }
-        assert.ok(Number(await page.locator('[data-game-discs]').getAttribute('data-game-slices')) > 0, 'visible discs respond to shared-surface input');
+          throw new Error('Visible discs did not respond to shared-surface input');
+        }, label === 'iphone');
+        assert.ok(hit.first > hit.before, 'visible discs respond to shared-surface input');
+        assert.equal(hit.repeated, hit.first, 'repeated input on the same discs cannot score twice');
+        await page.waitForFunction(() => window.gameScoreHistory.some(entry => entry.visible && entry.score === `Score ${entry.slices}` && entry.slices > 0));
+        const score = page.locator('[data-game-score]');
+        assert.equal(await score.isVisible(), true);
+        assert.equal(await score.getAttribute('role'), 'status');
+        const slices = hit.first;
+        await page.screenshot({ path: path.join(report, `${label}-game-score.png`) });
+        // Stop slicing. Require a recorded positive score followed by zero,
+        // even if a legitimate miss already happened during the screenshot.
+        await page.mouse.move(0, 0);
+        await page.waitForFunction(() => {
+          const first = window.gameScoreHistory.findIndex(entry => entry.visible && entry.slices > 0 && entry.score === `Score ${entry.slices}`);
+          return first >= 0 && window.gameScoreHistory.slice(first + 1).some(entry => entry.visible && entry.score === 'Score 0');
+        }, null, { timeout: 18000 });
+        const scoreHistory = await page.evaluate(() => {
+          window.gameScoreObserver.disconnect();
+          return window.gameScoreHistory;
+        });
+        assert.equal(await score.isVisible(), true, 'a miss resets the value without hiding the score');
+        await page.screenshot({ path: path.join(report, `${label}-game-missed.png`) });
         const count = Number(await page.locator('[data-game-discs]').getAttribute('data-game-discs'));
         assert.ok(count <= (label === 'iphone' ? 6 : 10));
         assert.equal(await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort())), beforeStorage, 'slicing does not change saved progress');
@@ -821,7 +888,7 @@ try {
           assert.equal(await page.locator('[data-companion-statement] .word .word').count(), 0);
         }
         frames.sort((a, b) => a - b);
-        return { words, discs: count, reveal: { before, after }, frameP95Ms: frames[Math.floor(frames.length * 0.95)], note: 'CI diagnostics; not physical-device performance.' };
+        return { words, discs: count, flight, slices, scoreHistory, reveal: { before, after }, frameP95Ms: frames[Math.floor(frames.length * 0.95)], note: 'CI diagnostics; not physical-device performance.' };
       });
       await check(browser, options, `${label}-work-filters`, async (page) => {
         // Install before application timers, then advance animation frames explicitly.
