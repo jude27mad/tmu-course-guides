@@ -650,6 +650,7 @@ try {
         return routes;
       });
       if (label !== 'tablet') await check(browser, options, `${label}-companion-scene`, async (page) => {
+        await observeCanvasStores(page);
         await page.addInitScript(() => { Math.random = () => 0.5; });
         await page.goto(base);
         await ready(page);
@@ -761,6 +762,30 @@ try {
           return Number(css.opacity) > 0.99 && (css.transform === 'none' || new DOMMatrixReadOnly(css.transform).isIdentity);
         }));
         await page.waitForFunction(() => Number(document.querySelector('[data-game-discs]')?.dataset.gameDiscs) > 0);
+        assert.equal(await page.locator('[data-game-score]').isVisible(), false, 'the scoreboard does not reveal the easter egg');
+        const flight = await page.evaluate(async () => {
+          const state = [...window.canvasStores].map(store => store.getState()).find(item => item.gl.domElement.closest('[data-companion-game]'));
+          const tracks = new Map();
+          const deadline = performance.now() + 18000;
+          while (performance.now() < deadline) {
+            await new Promise(requestAnimationFrame);
+            let completed;
+            state.scene.traverse(mesh => {
+              if (!mesh.userData.slice) return;
+              const point = mesh.getWorldPosition(mesh.position.clone());
+              const track = tracks.get(mesh.uuid) || { previous: point.y, rose: false, fell: false, peak: -Infinity };
+              track.rose ||= point.y > track.previous + 0.01;
+              track.fell ||= track.rose && point.y < track.previous - 0.01;
+              track.previous = point.y;
+              track.peak = Math.max(track.peak, point.clone().project(state.camera).y);
+              tracks.set(mesh.uuid, track);
+              if (track.rose && track.fell) completed = track;
+            });
+            if (completed) return completed;
+          }
+          throw new Error('No disc completed a visible upward and downward arc');
+        });
+        assert.ok(flight.peak > 0 && flight.peak < 0.9, `disc turns around inside the stage: ${JSON.stringify(flight)}`);
         await page.screenshot({ path: path.join(report, `${label}-companion-and-game.png`) });
         // Interact with centre-launched discs on their actual shared DOM surface.
         // A software-rendered frame can outlast a flight. On iPhone, sample the
@@ -807,6 +832,17 @@ try {
           }
         }
         assert.ok(Number(await page.locator('[data-game-discs]').getAttribute('data-game-slices')) > 0, 'visible discs respond to shared-surface input');
+        const score = page.locator('[data-game-score]');
+        assert.equal(await score.isVisible(), true);
+        assert.equal(await score.getAttribute('role'), 'status');
+        const slices = Number(await page.locator('[data-game-discs]').getAttribute('data-game-slices'));
+        assert.equal(await score.textContent(), `Score ${slices}`, 'each disc counts once despite repeated input samples');
+        await page.screenshot({ path: path.join(report, `${label}-game-score.png`) });
+        // Stop slicing and let the next intact disc fall below the stage.
+        await page.mouse.move(0, 0);
+        await page.waitForFunction(() => document.querySelector('[data-game-score]')?.textContent === 'Score 0', null, { timeout: 18000 });
+        assert.equal(await score.isVisible(), true, 'a miss resets the value without hiding the score');
+        await page.screenshot({ path: path.join(report, `${label}-game-missed.png`) });
         const count = Number(await page.locator('[data-game-discs]').getAttribute('data-game-discs'));
         assert.ok(count <= (label === 'iphone' ? 6 : 10));
         assert.equal(await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort())), beforeStorage, 'slicing does not change saved progress');
@@ -821,7 +857,7 @@ try {
           assert.equal(await page.locator('[data-companion-statement] .word .word').count(), 0);
         }
         frames.sort((a, b) => a - b);
-        return { words, discs: count, reveal: { before, after }, frameP95Ms: frames[Math.floor(frames.length * 0.95)], note: 'CI diagnostics; not physical-device performance.' };
+        return { words, discs: count, flight, slices, reveal: { before, after }, frameP95Ms: frames[Math.floor(frames.length * 0.95)], note: 'CI diagnostics; not physical-device performance.' };
       });
       await check(browser, options, `${label}-work-filters`, async (page) => {
         // Install before application timers, then advance animation frames explicitly.

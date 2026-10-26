@@ -1,0 +1,14 @@
+.score {
+  position: absolute;
+  top: calc(var(--layout-columns-gap) * 2);
+  right: 0;
+  z-index: 2;
+  pointer-events: none;
+  color: var(--black);
+  background: var(--white);
+  border: 1px solid currentColor;
+  border-radius: 100px;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
