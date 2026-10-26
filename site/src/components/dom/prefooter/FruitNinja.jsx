@@ -6,10 +6,10 @@ import { PerspectiveCamera } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import Sticker from '@src/components/dom/prefooter/Sticker';
 import useIsMobile from '@src/hooks/useIsMobile';
-import { useThree } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { nativeIOSScroll } from '@src/utils/scrollRoot';
 // eslint-disable-next-line import/extensions
-import { createSpawnSchedule, GAME_GRAVITY } from './gameTiming.mjs';
+import { createSpawnSchedule, GAME_GRAVITY, scoreBoundary } from './gameTiming.mjs';
 
 // The original spawner added 1-6 stickers every 3 s (phone 5 s) and never removed
 // any: after ten minutes about 400 physical bodies. Stickers now leave once
@@ -57,7 +57,7 @@ function useDiscTextures() {
 
 const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-function useFruitSpawner({ viewport, textures, isMobile, active }) {
+function useFruitSpawner({ viewport, textures, isMobile, active, getCeiling }) {
   const [fruits, setFruits] = useState([]);
   const nextId = useRef(0);
   const viewportRef = useRef(viewport);
@@ -71,6 +71,10 @@ function useFruitSpawner({ viewport, textures, isMobile, active }) {
   const intervalRef = useRef();
   intervalRef.current = isMobile ? 5000 : 3000;
   spawnRef.current = () => {
+    const ceilingY = getCeiling();
+    const radius = (isMobile ? 0.4 : 0.5) * 1.05;
+    // Wait for enough space for a whole disc beneath the score.
+    if (ceilingY < -viewportRef.current.height / 2 + radius * 2) return;
     const cap = isMobile ? MAX_ALIVE_PHONE : MAX_ALIVE;
     const width = Math.max(0, viewportRef.current.width / 2 - 1);
     setFruits((previous) => {
@@ -79,7 +83,7 @@ function useFruitSpawner({ viewport, textures, isMobile, active }) {
       const added = Array.from({ length: Math.min(room, randomInt(1, 6)) }, () => {
         nextId.current += 1;
         const index = randomInt(0, textures.length - 1);
-        return { id: nextId.current, x: randomInt(Math.ceil(-width), Math.floor(width)), index };
+        return { id: nextId.current, x: randomInt(Math.ceil(-width), Math.floor(width)), index, ceilingY };
       });
       return [...previous, ...added];
     });
@@ -93,12 +97,31 @@ function useFruitSpawner({ viewport, textures, isMobile, active }) {
   return [fruits, remove];
 }
 
-function FruitNinja({ active = true, eventSource, onSlice, onMiss }) {
+function FruitNinja({ active = true, eventSource, scoreRef, onSlice, onMiss }) {
   const viewport = useThree((state) => state.viewport);
   const isMobile = useIsMobile();
   const textures = useDiscTextures();
-  const [fruits, remove] = useFruitSpawner({ viewport, textures, isMobile, active });
   const { scene, camera, raycaster, pointer, setEvents, gl } = useThree();
+  const ceilingRef = useRef(-Infinity);
+  const insetRef = useRef(null);
+  const getCeiling = useCallback(() => {
+    const bounds = gl.domElement.getBoundingClientRect();
+    const score = scoreRef.current?.getBoundingClientRect();
+    if (!score || !bounds.height) return -Infinity;
+    const { inset, ceilingY } = scoreBoundary({ scoreBottom: score.bottom, canvasTop: bounds.top, canvasHeight: bounds.height, viewportHeight: viewport.height });
+    ceilingRef.current = ceilingY;
+    // Scroll can move the score past an already airborne disc. Clip only the
+    // upper edge; the fixed canvas and its screen-bottom launch point stay put.
+    if (inset !== insetRef.current) {
+      gl.domElement.style.clipPath = `inset(${inset}px 0 0 0)`;
+      insetRef.current = inset;
+    }
+    return ceilingY;
+  }, [gl, scoreRef, viewport.height]);
+  useFrame(() => {
+    if (active) getCeiling();
+  }, -100);
+  const [fruits, remove] = useFruitSpawner({ viewport, textures, isMobile, active, getCeiling });
 
   useEffect(() => {
     setEvents({ enabled: active });
@@ -113,6 +136,7 @@ function FruitNinja({ active = true, eventSource, onSlice, onMiss }) {
       const bounds = gl.domElement.getBoundingClientRect();
       if (!bounds.width || !bounds.height) return;
       Array.from(event.changedTouches || []).forEach((touch) => {
+        if (touch.clientY < bounds.top + (insetRef.current ?? bounds.height)) return;
         pointer.set(((touch.clientX - bounds.left) / bounds.width) * 2 - 1, -((touch.clientY - bounds.top) / bounds.height) * 2 + 1);
         raycaster.setFromCamera(pointer, camera);
         raycaster.intersectObjects(scene.children, true).forEach((hit) => hit.object.userData.slice?.());
@@ -149,6 +173,8 @@ function FruitNinja({ active = true, eventSource, onSlice, onMiss }) {
               imageSliced={textures[fruit.index].sliced}
               isMobile={isMobile}
               viewportHeight={viewport.height}
+              ceilingY={fruit.ceilingY}
+              ceilingRef={ceilingRef}
               onDone={remove}
               onSlice={onSlice}
               onMiss={onMiss}

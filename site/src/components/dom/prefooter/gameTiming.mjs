@@ -5,16 +5,23 @@ export const GAME_MAX_AGE = 7 / GAME_SPEED;
 
 // Start just below the stage and choose an on-screen apex. Setting velocity
 // avoids collider mass changing the flight; Rapier supplies all downward motion.
-export function createDiscFlight({ viewportHeight, isMobile, random = Math.random }) {
+export function createDiscFlight({ viewportHeight, isMobile, ceilingY = viewportHeight / 2, random = Math.random }) {
   const radius = (isMobile ? 0.4 : 0.5) * 1.05;
   const startY = -viewportHeight / 2 - radius - 0.1;
-  const apexY = viewportHeight * (0.1 + random() * 0.18);
+  const apexY = Math.min(viewportHeight * (0.1 + random() * 0.18), ceilingY - radius);
   return {
     startY,
     radius,
-    velocityY: Math.sqrt(2 * -GAME_GRAVITY * (apexY - startY)),
+    velocityY: Math.sqrt(2 * -GAME_GRAVITY * Math.max(0, apexY - startY)),
     spin: (random() < 0.5 ? -1 : 1) * (1 + random()) * GAME_SPEED,
   };
+}
+
+// DOM y grows down, while the game world's y grows up. Reserve a small gap
+// below the entire score pill, including while it is hidden before first play.
+export function scoreBoundary({ scoreBottom, canvasTop, canvasHeight, viewportHeight }) {
+  const inset = Math.max(0, Math.min(canvasHeight, scoreBottom + 8 - canvasTop));
+  return { inset, ceilingY: viewportHeight * (0.5 - inset / canvasHeight) };
 }
 
 // Current streak resets on a miss; the browser's best survives it.

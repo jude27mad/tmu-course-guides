@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-let createSpawnSchedule, createDiscFlight, GAME_GRAVITY, scoreAfterEvent;
-try { ({ createSpawnSchedule, createDiscFlight, GAME_GRAVITY, scoreAfterEvent } = await import('../src/components/dom/prefooter/gameTiming.mjs')); }
+let createSpawnSchedule, createDiscFlight, GAME_GRAVITY, scoreAfterEvent, scoreBoundary;
+try { ({ createSpawnSchedule, createDiscFlight, GAME_GRAVITY, scoreAfterEvent, scoreBoundary } = await import('../src/components/dom/prefooter/gameTiming.mjs')); }
 catch (error) { if (error.code !== 'ERR_MODULE_NOT_FOUND') throw error; }
 
 function clock() {
@@ -98,4 +98,45 @@ test('restoring a best never reveals the game early or loses slices already disp
   assert.deepEqual(events.reduce(scoreAfterEvent, restored), { started: true, score: 1, best: 8 });
   const scored = events.reduce(scoreAfterEvent, initial);
   assert.deepEqual(scoreAfterEvent(scored, { type: 'restore', best: 0 }), { started: true, score: 1, best: 2 });
+});
+
+test('the score boundary follows scrolling and resizing without moving the screen bottom', () => {
+  for (const canvasTop of [0, 24, -40]) {
+    for (const canvasHeight of [390, 844, 1080]) {
+      const viewportHeight = 12;
+      for (const scoreBottom of [-200, 80, canvasHeight * 0.7, canvasHeight + 200]) {
+        const { inset, ceilingY } = scoreBoundary({ scoreBottom, canvasTop, canvasHeight, viewportHeight });
+        assert.ok(inset >= 0 && inset <= canvasHeight);
+        const screenY = canvasTop + (0.5 - ceilingY / viewportHeight) * canvasHeight;
+        assert.ok(Math.abs(screenY - (canvasTop + inset)) < 1e-9);
+        if (scoreBottom + 8 >= canvasTop && scoreBottom + 8 <= canvasTop + canvasHeight) {
+          assert.ok(Math.abs(screenY - scoreBottom - 8) < 1e-9, 'the limit stays eight pixels below the score');
+        }
+      }
+    }
+  }
+});
+
+test('a launched disc turns below the score with room for its full radius', () => {
+  for (const viewportHeight of [5, 9, 14, 20]) {
+    for (const isMobile of [false, true]) {
+      const radius = (isMobile ? 0.4 : 0.5) * 1.05;
+      for (const ceilingY of [-viewportHeight / 2 + radius * 2, 0, viewportHeight * 0.3]) {
+        for (const seed of [0, 0.5, 0.999]) {
+          const flight = createDiscFlight({ viewportHeight, isMobile, ceilingY, random: () => seed });
+          const apex = flight.startY + flight.velocityY ** 2 / (-2 * GAME_GRAVITY);
+          assert.ok(apex + flight.radius <= ceilingY + 1e-10, 'even the top of the disc stays below the score');
+          assert.ok(flight.velocityY > 0);
+          assert.ok(flight.startY + flight.radius < -viewportHeight / 2, 'the launch stays below the screen bottom');
+        }
+      }
+    }
+  }
+});
+
+test('lowering the score does not change flights already below it', () => {
+  for (const isMobile of [false, true]) {
+    const options = { viewportHeight: 12, isMobile, random: () => 0.5 };
+    assert.deepEqual(createDiscFlight(options), createDiscFlight({ ...options, ceilingY: 4 }));
+  }
 });

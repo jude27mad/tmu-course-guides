@@ -1,5 +1,5 @@
 import { Canvas, events } from '@react-three/fiber';
-import { Suspense, useCallback, useEffect, useReducer } from 'react';
+import { Suspense, useCallback, useEffect, useReducer, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import dynamic from 'next/dynamic';
 import { useCoarsePointer } from '@src/hooks/useMediaQuery';
@@ -19,6 +19,7 @@ const FruitNinja = dynamic(() => import('@src/components/dom/prefooter/FruitNinj
 // It renders only while `active` (on screen and motion on).
 function Index({ active, eventSource }) {
   const coarse = useCoarsePointer();
+  const scoreRef = useRef();
   const [game, dispatch] = useReducer(scoreAfterEvent, { started: false, score: 0, best: 0 });
   useEffect(() => {
     dispatch({ type: 'restore', best: gameRecords.read().best });
@@ -67,15 +68,15 @@ function Index({ active, eventSource }) {
       >
         {/* keeps a loading scene (the physics chunk, the disc font) inside the canvas */}
         <Suspense fallback={null}>
-          <FruitNinja active={active} eventSource={eventSource} onSlice={onSlice} onMiss={onMiss} />
+          <FruitNinja active={active} eventSource={eventSource} scoreRef={scoreRef} onSlice={onSlice} onMiss={onMiss} />
         </Suspense>
       </Canvas>
       {eventSource.current &&
         createPortal(
-          <span className={styles.score} role="status" data-game-score hidden={!game.started}>
-            <span data-game-current>{game.started ? `Score ${game.score}` : ''}</span>
+          <span ref={scoreRef} className={styles.score} role="status" data-game-score hidden={!game.started}>
+            <span data-game-current>{`Score ${game.score}`}</span>
             <span className={styles.best} data-game-best>
-              {game.started ? `Best ${game.best}` : ''}
+              {`Best ${game.best}`}
             </span>
           </span>,
           eventSource.current,
