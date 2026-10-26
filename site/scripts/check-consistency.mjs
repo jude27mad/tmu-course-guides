@@ -155,11 +155,9 @@ try {
         const search = page.locator('#menu button[aria-controls="search"]:visible');
         assert.equal(await search.count(), 1);
         assert.equal(await page.locator('header [aria-controls="search"]').count(), 0);
-        if (width >= 812) {
-          const searchBox = await search.boundingBox();
-          const sitemapBox = await page.locator('#menu').getByRole('heading', { name: 'Sitemap', exact: true }).boundingBox();
-          assert.ok(searchBox.y + searchBox.height <= sitemapBox.y, 'desktop Search belongs above Sitemap');
-        }
+        const searchBox = await search.boundingBox();
+        const sitemapBox = await page.locator('#menu').getByRole('heading', { name: 'Sitemap', exact: true }).boundingBox();
+        assert.ok(searchBox.y + searchBox.height <= sitemapBox.y, 'Search belongs above Sitemap at every width');
         await search.click();
         await page.locator('#search-input').fill('regrade');
         const option = page.getByRole('option').filter({ hasText: 'MTH140' }).first();

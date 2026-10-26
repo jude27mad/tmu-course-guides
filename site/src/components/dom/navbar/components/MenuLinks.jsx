@@ -22,6 +22,7 @@ function MenuLinks() {
     useShallow((state) => [state.isMenuOpen, state.setIsMenuOpen, state.setIsSearchOpen, state.isLoading, state.still, state.motionSaved, state.motionReduced, state.toggleMotion]),
   );
   const menuRef = useRef();
+  const scrollRef = useRef(null);
   const openerRef = useRef(null);
   const router = useRouter();
   const current = pathKey(router.asPath);
@@ -47,6 +48,7 @@ function MenuLinks() {
     menuRef.current.inert = !isMenuOpen;
     tl.timeScale(still ? 30 : 1);
     if (isMenuOpen) {
+      if (scrollRef.current) scrollRef.current.scrollTop = 0;
       const focused = document.activeElement;
       // Safari taps need not focus the button. Always have a reachable opener
       // to restore after Close or Escape, including a quick close/reopen.
@@ -151,14 +153,13 @@ function MenuLinks() {
 
   return (
     <div id="menu" ref={menuRef} className={styles.menu} role="dialog" aria-modal="true" aria-label="Menu" aria-hidden={!isMenuOpen}>
-      <nav className={clsx(styles.menuWrapper, 'layout-block-inner')} data-lenis-prevent="" aria-label="Site navigation">
-        {!isMobile &&
-          renderRow(
-            'search-desktop',
-            <button type="button" onClick={openSearch} aria-label="Search the guide. Shortcut: Command K" aria-haspopup="dialog" aria-controls="search">
-              <span>SEARCH</span>
-            </button>,
-          )}
+      <nav ref={scrollRef} className={clsx(styles.menuWrapper, 'layout-block-inner')} data-lenis-prevent="" aria-label="Site navigation">
+        {renderRow(
+          'search',
+          <button type="button" onClick={openSearch} aria-label="Search the guide. Shortcut: Command K" aria-haspopup="dialog" aria-controls="search">
+            <span>SEARCH</span>
+          </button>,
+        )}
         <div data-menu-anim="" className={styles.menuList}>
           <h2 className={styles.menuHeading}>Sitemap</h2>
           {menuLinks.map((link) =>
@@ -198,13 +199,6 @@ function MenuLinks() {
         </div>
 
         <div data-menu-anim="" className={styles.menuList}>
-          {renderRow(
-            'search',
-            <button type="button" onClick={openSearch} aria-haspopup="dialog" aria-controls="search">
-              <span>SEARCH</span>
-            </button>,
-            { className: styles.mobileOnly },
-          )}
           {renderRow(
             'motion',
             <button type="button" onClick={toggleMotion} disabled={motionReduced} aria-label={motionLabel} aria-pressed={motionSaved} aria-describedby="menu-motion-note">

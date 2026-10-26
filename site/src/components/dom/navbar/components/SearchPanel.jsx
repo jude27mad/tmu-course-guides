@@ -44,6 +44,7 @@ function SearchPanel() {
     useShallow((state) => [state.isSearchOpen, state.setIsSearchOpen, state.isLoading, state.still, state.motionSaved, state.motionReduced, state.toggleMotion]),
   );
   const panelRef = useRef(null);
+  const scrollRef = useRef(null);
   const inputRef = useRef(null);
   const listRef = useRef(null);
   const timeline = useRef(null);
@@ -102,8 +103,9 @@ function SearchPanel() {
     panelRef.current.inert = !isSearchOpen;
     tl.timeScale(still ? 30 : 1);
     if (isSearchOpen) {
+      if (scrollRef.current) scrollRef.current.scrollTop = 0;
       const focused = document.activeElement;
-      // Opened from the phone menu: focus goes back to the menu pill afterwards.
+      // Opened from the menu: focus goes back to the menu pill afterwards.
       openerRef.current = focused && !focused.closest?.('#menu') && focused !== document.body ? focused : document.getElementById('menu-button');
       setQuery('');
       setGuideQuery(null);
@@ -232,7 +234,7 @@ function SearchPanel() {
     // The dialog handles its own keys (Escape; the combobox model on the input).
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
     <div id="search" ref={panelRef} role="dialog" aria-modal="true" aria-labelledby="search-title" aria-hidden={!isSearchOpen} className={clsx(menuStyles.menu, styles.root)} onKeyDown={onKeyDown}>
-      <div className={clsx(menuStyles.menuWrapper, styles.wrapper, 'layout-block-inner')} data-lenis-prevent="">
+      <div ref={scrollRef} className={clsx(menuStyles.menuWrapper, styles.wrapper, 'layout-block-inner')} data-lenis-prevent="">
         <div data-menu-anim="" className={styles.field}>
           <h2 id="search-title" className={menuStyles.menuHeading}>
             {COPY.title}

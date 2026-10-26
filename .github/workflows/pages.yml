@@ -144,6 +144,12 @@ jobs:
           PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
           QA_REPORT_DIR: ${{ runner.temp }}/pages-qa
         run: node site/scripts/check-pages-site.mjs --local "$RUNNER_TEMP/pages"
+      - name: Check Search on every page
+        if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' && steps.tested.outputs.tested != 'true' }}
+        env:
+          PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
+          QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/search
+        run: node site/scripts/check-search-site.mjs
       - name: Check route transitions and Work filters
         if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' && steps.tested.outputs.tested != 'true' }}
         env:
