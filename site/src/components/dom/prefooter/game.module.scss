@@ -1,6 +1,9 @@
 .score {
+  // The site's reset overrides the browser's default [hidden] display rule.
+  &[hidden] { display: none; }
+
   position: absolute;
-  top: calc(var(--layout-columns-gap) * 2);
+  top: max(1rem, calc(var(--layout-columns-gap) * 2));
   right: 0;
   z-index: 2;
   pointer-events: none;
