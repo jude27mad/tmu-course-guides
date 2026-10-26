@@ -103,8 +103,9 @@ function SearchPanel() {
     };
   }, [isLoading, isMobile]);
 
-  // The index is rebuilt on open (fresh time and saved progress) and when motion changes.
-  useEffect(() => {
+  // Refresh before the panel accepts input, including a quick reopen after Back.
+  // Keeping the prior index until a passive effect runs can target the wrong course.
+  useIsomorphicLayoutEffect(() => {
     if (!isSearchOpen) return;
     try {
       setEntries(searchIndex({ now: new Date(), course: courseId, motionForced: motionReduced }));
@@ -167,8 +168,8 @@ function SearchPanel() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSearchOpen]);
 
-  // The first enabled result is active after every new search.
-  useEffect(() => {
+  // Keyboard Enter must use this query's selection in the same commit.
+  useIsomorphicLayoutEffect(() => {
     setActive(results.findIndex((entry) => !entry.disabled));
   }, [results]);
 

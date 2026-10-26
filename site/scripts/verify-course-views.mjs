@@ -29,7 +29,7 @@ async function check(name, run) {
     results.push({ name, pass: true, detail });
     console.log(`PASS ${name}`);
   } catch (error) {
-    results.push({ name, pass: false, error: error.message });
+    results.push({ name, pass: false, error: error.message, url: page.url() });
     console.error(`FAIL ${name}: ${error.message}`);
     await page.screenshot({ path: path.join(report, `failure-${name.replace(/[^a-z0-9]+/gi, '-')}.png`) }).catch(() => {});
   }
@@ -578,21 +578,25 @@ try {
   });
   await check('keyboard search opens the same detail across courses, then returns', async () => {
     await ready(page, 'mth140/#study');
-    await page.keyboard.press('Control+k');
-    await page.locator('#search-input').fill('Project Outline');
-    await page.getByRole('option').first().waitFor();
-    await page.keyboard.press('Enter');
-    await page.locator('#course-view-assignment-m2[data-assignment-detail]').waitFor();
-    await page.goBack();
-    await page.getByRole('heading', { name: 'Study', exact: true }).waitFor();
-    await page.keyboard.press('Control+k');
-    await page.locator('#search-input').fill('Contacts');
-    await page.keyboard.press('Enter');
-    await page.locator('#course-view-contacts[data-info-detail]').waitFor();
-    const back = page.getByRole('button', { name: '← Back to Study', exact: true }).first();
-    await back.focus();
-    await page.keyboard.press('Enter');
-    await page.getByRole('heading', { name: 'Study', exact: true }).waitFor();
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      await page.keyboard.press('Control+k');
+      await page.locator('#search-input').fill('Project Outline');
+      await page.getByRole('option').first().waitFor();
+      await page.keyboard.press('Enter');
+      await page.locator('#course-view-assignment-m2[data-assignment-detail]').waitFor();
+      await page.goBack();
+      await page.getByRole('heading', { name: 'Study', exact: true }).waitFor();
+      // Reopen as soon as Study is visible: the index must already use MTH140.
+      await page.keyboard.press('Control+k');
+      await page.locator('#search-input').fill('Contacts');
+      await page.keyboard.press('Enter');
+      await page.waitForURL(target => target.pathname === basePath + '/mth140/' && target.hash === '#contacts');
+      await page.locator('#course-view-contacts[data-info-detail]').waitFor();
+      const back = page.getByRole('button', { name: '← Back to Study', exact: true }).first();
+      await back.focus();
+      await page.keyboard.press('Enter');
+      await page.getByRole('heading', { name: 'Study', exact: true }).waitFor();
+    }
   });
   await check('navigation does not steal focus chosen inside the newly opened view', async () => {
     await ready(page, 'mth140/#work');
