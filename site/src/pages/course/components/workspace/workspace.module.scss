@@ -125,8 +125,8 @@
   font-size: 16px;
 }
 .artwork {
-  width: clamp(140px, 23vw, 300px);
-  height: clamp(112px, 12vw, 170px);
+  width: clamp(156px, 26vw, 336px);
+  height: clamp(126px, 13.5vw, 190px);
   flex: 0 0 auto;
   overflow: hidden;
   border-radius: 12px;
@@ -709,8 +709,8 @@
     }
   }
   .artwork {
-    width: 100px;
-    height: 100px;
+    width: 112px;
+    height: 112px;
     border-radius: 10px;
   }
   .headerNote {
@@ -721,6 +721,10 @@
       font-size: 16px;
       padding: 8px;
     }
+  }
+  .sectionControls {
+    width: 100%;
+    justify-content: center;
   }
   .summary {
     padding: 14px;
@@ -788,8 +792,8 @@
 }
 @media (max-width: 374px) {
   .artwork {
-    width: 76px;
-    height: 88px;
+    width: 84px;
+    height: 98px;
   }
   .rowStatus .meta {
     max-width: 90px;
