@@ -1,11 +1,15 @@
 import { Canvas, events } from '@react-three/fiber';
-import { Suspense, useCallback, useReducer } from 'react';
+import { Suspense, useCallback, useEffect, useReducer } from 'react';
 import { createPortal } from 'react-dom';
 import dynamic from 'next/dynamic';
 import { useCoarsePointer } from '@src/hooks/useMediaQuery';
 import styles from './game.module.scss';
 // eslint-disable-next-line import/extensions
 import { scoreAfterEvent } from './gameTiming.mjs';
+// eslint-disable-next-line import/extensions
+import { gameRecords } from './gameRecords.mjs';
+// eslint-disable-next-line import/extensions
+import { GAME_CELEBRATION_EVENT } from '../../canvas/fluid/gameCelebration.mjs';
 
 const FruitNinja = dynamic(() => import('@src/components/dom/prefooter/FruitNinja'), { ssr: false });
 
@@ -15,8 +19,17 @@ const FruitNinja = dynamic(() => import('@src/components/dom/prefooter/FruitNinj
 // It renders only while `active` (on screen and motion on).
 function Index({ active, eventSource }) {
   const coarse = useCoarsePointer();
-  const [game, dispatch] = useReducer(scoreAfterEvent, { started: false, score: 0 });
-  const onSlice = useCallback(() => dispatch('slice'), []);
+  const [game, dispatch] = useReducer(scoreAfterEvent, { started: false, score: 0, best: 0 });
+  useEffect(() => {
+    dispatch({ type: 'restore', best: gameRecords.read().best });
+  }, []);
+  useEffect(() => {
+    gameRecords.saveBest(game.best);
+  }, [game.best]);
+  const onSlice = useCallback(() => {
+    dispatch('slice');
+    if (gameRecords.claimCelebration()) window.dispatchEvent(new Event(GAME_CELEBRATION_EVENT));
+  }, []);
   const onMiss = useCallback(() => dispatch('miss'), []);
 
   return (
@@ -62,6 +75,9 @@ function Index({ active, eventSource }) {
         createPortal(
           <span className={styles.score} role="status" data-game-score hidden={!game.started}>
             {game.started ? `Score ${game.score}` : ''}
+            <span className={styles.best} data-game-best>
+              {game.started ? `Best ${game.best}` : ''}
+            </span>
           </span>,
           eventSource.current,
         )}
