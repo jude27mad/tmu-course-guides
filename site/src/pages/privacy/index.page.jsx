@@ -20,6 +20,7 @@ function Paragraph({ paragraph, className }) {
       {paragraph.text}
       {paragraph.link && (
         <>
+          <br className={styles.linkBreak} />
           {' '}
           <a href={paragraph.link.href} rel="noopener noreferrer" className={styles.link}>
             {paragraph.link.label}
