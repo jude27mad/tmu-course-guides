@@ -162,12 +162,13 @@ test('cen100 hide filter and release badge use the old JSON values', () => {
   assert.equal(storage.data.get('cen100-hide-completed-v1'), 'false');
   assert.equal(hasUnseenUpdates('cen100', storage), true);
   markUpdatesSeen('cen100', storage);
-  assert.equal(storage.data.get('cen100-last-seen-update-v1'), '"2026-09-30-grading-by-working-arrangement"');
+  assert.equal(storage.data.get('cen100-last-seen-update-v1'), '"2026-10-23-cen100-source-review"');
   assert.equal(hasUnseenUpdates('cen100', storage), false);
   assert.equal(hasUnseenUpdates('cen100', memoryStorage({ 'cen100-last-seen-update-v1': '"2026-09-26-deadline-links"' })), true);
   assert.equal(hasUnseenUpdates('cen100', memoryStorage({ 'cen100-last-seen-update-v1': '"garbage"' })), true);
-  // Students who opened the last release's notes see no badge: their saved id is dated after the newest course update.
-  const opened = memoryStorage({ 'cen100-last-seen-update-v1': '"2026-10-16-course-artwork"' });
+  // A previous release is now unread; a future saved id must never move backwards.
+  assert.equal(hasUnseenUpdates('cen100', memoryStorage({ 'cen100-last-seen-update-v1': '"2026-10-16-course-artwork"' })), true);
+  const opened = memoryStorage({ 'cen100-last-seen-update-v1': '"2026-12-01-future-course-update"' });
   assert.equal(hasUnseenUpdates('cen100', opened), false);
   markUpdatesSeen('cen100', opened);
   assert.deepEqual(opened.writes(), [], 'a newer saved value is never replaced by an older one');
@@ -328,7 +329,7 @@ test('calendar files retain legacy event identity and timing with current MTH140
   const cen = calendarFile('cen100', { now: NOW, item: 'all', upcomingOnly: false, reminderDays: 2 });
   assert.equal(cen.name, 'cen100-deadlines-2026.ics');
   assert.equal(cen.text, old.buildCalendar(old.CALENDAR_DATES.slice().sort(old.sortEvents), 2, stamp));
-  assert.equal(cen.count, 22);
+  assert.equal(cen.count, 23);
   assert.equal(calendarFile('cen100', { now: new Date(toronto('2026-12-10', '12:00')), item: 'all' }).message, 'No upcoming dates in this selection. Uncheck ‘Upcoming dates only’ to include past deadlines.');
   const one = calendarFile('cen100', { now: NOW, item: 'y4', upcomingOnly: false });
   assert.equal(one.name, 'cen100-y4-2026.ics');

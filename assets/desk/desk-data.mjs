@@ -1,8 +1,8 @@
 /* Drawing inputs for the Desk, independent of the DOM and renderer. Course data
    and saved state remain the guides' own; this adapter never writes storage. */
 import {COURSES} from '../course-data.mjs';
-import {SCHEDULE} from '../cen-schedule.mjs';
-import {COURSE_IDS,readSaved,resolveTarget,overall,parts,status,compact,targetDate,cenUpcoming} from '../night/targets.mjs';
+import {SCHEDULE} from '../cen-schedule.mjs?v=20261026-cen100';
+import {COURSE_IDS,readSaved,resolveTarget,overall,parts,status,compact,targetDate,cenUpcoming} from '../night/targets.mjs?v=20261026-cen100';
 import {recordsForCourse,semesterWeeks,currentWeekIndex,termWeek,popupRank} from '../book/weeks.mjs';
 import {DAY_NAMES,clock,today,upcoming} from '../schedule.mjs';
 

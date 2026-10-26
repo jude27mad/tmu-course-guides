@@ -13,17 +13,45 @@ const ORIGINAL_SHA256='cfde80dad03cbe04e62e652cea0363ee91cb4c63cc725fbfa3f7c407e
 const read=file=>readFileSync(new URL('../'+file,import.meta.url),'utf8');
 const plain=value=>JSON.parse(JSON.stringify(value));
 
-test('extracted records are byte-for-byte the original records',()=>{
-  assert.equal(SCHEDULE.length,24);
-  assert.equal(createHash('sha256').update(JSON.stringify(SCHEDULE)).digest('hex'),ORIGINAL_SHA256);
+// Explicit course updates are projected back only for the historical extraction check.
+// Everything outside these amended records and the new Part 2 record must stay unchanged.
+function originalRecords() {
+  return SCHEDULE.filter(row => row.id !== 'failure-2').map(row => {
+    const copy = {...row};
+    if (['intro', 'email', 'matlab-1'].includes(copy.id)) delete copy.time;
+    if (copy.id === 'failure') {
+      copy.title = 'Failure Analysis Labs: both parts due';
+      delete copy.who; delete copy.weight; delete copy.note;
+    }
+    if (copy.id === 'prototype') return {id:'prototype',item:'m5',date:'2026-11-25',time:'15:00',title:'Low-Fidelity Prototype due'};
+    if (copy.id === 'presentation-1') { copy.title = 'First Final Presentation'; copy.note = 'Confirm your assigned presentation time on D2L.'; }
+    if (copy.id === 'presentation-2') { copy.title = 'Final Presentation and Innovation Showcase'; copy.note = 'Confirm your assigned presentation time on D2L.'; }
+    return copy;
+  });
+}
+
+test('the source review preserves every unrelated historical schedule record',()=>{
+  assert.equal(SCHEDULE.length,25);
+  assert.equal(createHash('sha256').update(JSON.stringify(originalRecords())).digest('hex'),ORIGINAL_SHA256);
 });
 
-test('extracted records deep-equal the array in the pre-move root guide',t=>{
+test('unamended records deep-equal the pre-move root guide',t=>{
   let html;
   try{html=execFileSync('git',['show',BASELINE+':index.html'],{cwd:new URL('..',import.meta.url),encoding:'utf8',stdio:['ignore','pipe','ignore']});}
   catch{t.skip('baseline commit not in this checkout; the sha256 test still covers the records');return;}
   const literal=html.match(/\nconst SCHEDULE=(\[[\s\S]*?\n\]);\n/)[1];
-  assert.deepEqual(plain(SCHEDULE),plain(vm.runInNewContext('('+literal+')')));
+  assert.deepEqual(plain(originalRecords()),plain(vm.runInNewContext('('+literal+')')));
+});
+
+test('October 13 update separates the 2% review and 4% FMEA without inventing times',()=>{
+  const first=SCHEDULE.find(row=>row.id==='failure');
+  const second=SCHEDULE.find(row=>row.id==='failure-2');
+  assert.equal(first.item,'m3'); assert.equal(second.item,'m3');
+  assert.equal(first.date,'2026-10-21'); assert.equal(second.date,'2026-10-28');
+  assert.equal(first.weight,2); assert.equal(second.weight,4);
+  assert.equal(first.who,'sub');
+  assert.equal(first.time,undefined); assert.equal(second.time,undefined);
+  for(const id of ['intro','email','matlab-1']) assert.equal(SCHEDULE.find(row=>row.id===id).time,'15:00');
 });
 
 test('one copy: pure module records also feed the asynchronous classic compatibility script',async()=>{
@@ -50,3 +78,4 @@ test('the CEN page mounts its guide first and keeps schedule/calendar code in th
   assert.match(guide,/URL:https:\/\/jude27mad\.github\.io\/tmu-course-guides\/cen100\//,'calendar URL points at /cen100/');
   assert.match(html,/<body[^>]*data-course="cen100"/,'storage keys stay course-derived');
 });
+

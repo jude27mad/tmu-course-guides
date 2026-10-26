@@ -91,7 +91,7 @@ export function cleanPlan(value,strict=false){
   return out;
 }
 // cen-guide.mjs:650-659 (completionSummary takes the plan's completed map instead of the closure's plan)
-export function completionVerb(event){return event.id.startsWith("reflection-")?"Emailed":/^(intro|email|contract|outline|matlab-1|matlab-2|failure|notebook-1|notebook-2|report|peer|exit)$/.test(event.id)?"Submitted":"Completed"}
+export function completionVerb(event){return (event.id==="email"||event.id.startsWith("reflection-"))?"Emailed":/^(intro|email|contract|outline|matlab-1|matlab-2|failure|failure-2|notebook-1|notebook-2|report|peer|exit)$/.test(event.id)?"Submitted":"Completed"}
 export function completionText(event){
   const name=event.title.replace(/ due$/,""),verb=completionVerb(event);
   return `${verb}: ${name}${event.date?` (${mon(event.date)} ${D(event.date).getUTCDate()}${event.time?`, ${clockLabel(event.time)} Toronto`:""})`:""}`;
@@ -269,3 +269,4 @@ export function workEntries(range,completed={},targets={},now=new Date()){
 export function workDates({item,visible,target},now=new Date()){
   return visible.length?visible.map(e=>`${eventPassed(e,now)?"Date passed: ":""}${mon(e.date)} ${D(e.date).getUTCDate()}${e.time?` at ${clockLabel(e.time)} Toronto`:""} — ${e.title}`).join("; "):item.id==="y7"?"During your assigned tutorial; confirm your section's schedule on D2L.":target?"No official deadline in this view.":"Official date pending. Check D2L.";
 }
+
