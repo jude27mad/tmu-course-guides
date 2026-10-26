@@ -43,7 +43,14 @@ async function check(name, page, run) {
     results.push({ name, pass: true });
     console.log(`PASS ${name}`);
   } catch (error) {
-    results.push({ name, pass: false, error: error.stack || error.message });
+    results.push({
+      name, pass: false, error: error.stack || error.message,
+      diagnostics: await page.evaluate(() => ({
+        active: window.__describeSearchNode?.(document.activeElement),
+        nodes: ['#menu', '#search', '#search-input', '#menu-button', 'header'].map(selector => window.__describeSearchNode?.(document.querySelector(selector))),
+        events: window.__searchEvents,
+      })).catch(() => null),
+    });
     console.error(`FAIL ${name}: ${error.stack || error.message}`);
     await page.screenshot({ path: path.join(report, `${name}.png`) }).catch(() => {});
   }
@@ -76,6 +83,33 @@ try {
       ? { args: ['--no-sandbox', '--enable-unsafe-swiftshader'] } : {});
     try {
       const context = await browser.newContext({ ...config.options, reducedMotion: 'reduce' });
+      await context.addInitScript(() => {
+        const describe = (node) => {
+          if (!node) return null;
+          const style = getComputedStyle(node);
+          return {
+            tag: node.tagName, id: node.id, label: node.getAttribute('aria-label'),
+            hidden: node.getAttribute('aria-hidden'), inert: node.closest('[inert]')?.id,
+            visibility: style.visibility, display: style.display, opacity: style.opacity,
+          };
+        };
+        window.__describeSearchNode = describe;
+        window.__searchEvents = [];
+        const record = (type, target) => {
+          window.__searchEvents.push({ type, time: performance.now(), target: describe(target), active: describe(document.activeElement) });
+          if (window.__searchEvents.length > 100) window.__searchEvents.shift();
+        };
+        for (const type of ['focusin', 'focusout', 'pointerdown', 'pointerup', 'click']) {
+          document.addEventListener(type, event => record(type, event.target), true);
+        }
+        const focus = HTMLElement.prototype.focus;
+        HTMLElement.prototype.focus = function (...args) {
+          record('focus-before', this);
+          const result = focus.apply(this, args);
+          record('focus-after', this);
+          return result;
+        };
+      });
       const page = await context.newPage();
       const touch = !!config.options.hasTouch;
       const errors = [];
