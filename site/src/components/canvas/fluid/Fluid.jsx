@@ -26,7 +26,7 @@ function Fluid({ mainRef, fluidColor }) {
   const materials = useMaterials();
   const splatStack = usePointerEvents(mainRef, size, force);
 
-  useEffect(() => listenForGameCelebration(window, splatStack), [splatStack]);
+  useEffect(() => listenForGameCelebration(window, splatStack, size), [splatStack, size]);
 
   const setShaderMaterial = useCallback(
     (name) => {

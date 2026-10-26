@@ -841,7 +841,11 @@ try {
           const stage = document.querySelector('[data-game-discs]');
           const score = document.querySelector('[data-game-score]');
           window.gameCelebrations = 0;
-          window.addEventListener('tmu-guide:disc-game-first-slice', () => { window.gameCelebrations += 1; });
+          window.gameDiscoveries = 0;
+          window.addEventListener('tmu-guide:disc-game-first-slice', (event) => {
+            window.gameCelebrations += 1;
+            if (event.detail?.discovery) window.gameDiscoveries += 1;
+          });
           window.gameScoreHistory = [];
           const record = () => {
             window.gameScoreHistory.push({
@@ -939,6 +943,7 @@ try {
         assert.equal(savedRecord.best, Math.max(...scoreHistory.map(entry => Number(entry.score.replace('Score ', '')))));
         assert.equal(savedRecord.celebrated, true);
         assert.equal(await page.evaluate(() => window.gameCelebrations), 1, 'the first successful slice celebrates once');
+        assert.equal(await page.evaluate(() => window.gameDiscoveries), 1, 'first discovery includes the huge full-screen burst');
         assert.equal(await page.locator('[data-game-best]').textContent(), `Best ${savedRecord.best}`, 'a miss preserves the displayed best');
         for (let repeat = 0; repeat < 2; repeat += 1) {
           await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -958,12 +963,22 @@ try {
         assert.equal(await page.locator('[data-game-score]').isVisible(), false, 'a saved best does not reveal the game early');
         await page.evaluate(() => {
           window.gameCelebrations = 0;
-          window.addEventListener('tmu-guide:disc-game-first-slice', () => { window.gameCelebrations += 1; });
+          window.gameDiscoveries = 0;
+          window.addEventListener('tmu-guide:disc-game-first-slice', (event) => {
+            window.gameCelebrations += 1;
+            if (event.detail?.discovery) window.gameDiscoveries += 1;
+          });
         });
         const reloadedHit = await page.evaluate(sliceVisibleDisc, label === 'iphone');
         const expectedBest = Math.max(savedRecord.best, reloadedHit.first);
         await page.waitForFunction(best => document.querySelector('[data-game-best]')?.textContent === `Best ${best}`, expectedBest);
-        assert.equal(await page.evaluate(() => window.gameCelebrations), 0, 'the first slice after reload never replays the celebration');
+        assert.equal(await page.evaluate(() => window.gameCelebrations), 1, 'the first slice after reload replays the regular score-one bloom');
+        assert.equal(await page.evaluate(() => window.gameDiscoveries), 0, 'reload never repeats the huge discovery burst');
+        await page.mouse.move(0, 0);
+        await page.waitForFunction(() => document.querySelector('[data-game-current]')?.textContent === 'Score 0', null, { timeout: 18000 });
+        await page.evaluate(sliceVisibleDisc, label === 'iphone');
+        assert.equal(await page.evaluate(() => window.gameCelebrations), 2, 'a new streak after a miss replays the regular bloom');
+        assert.equal(await page.evaluate(() => window.gameDiscoveries), 0, 'a new streak never repeats the huge discovery burst');
         return { words, discs: count, flight, slices, scoreHistory, reveal: { before, after }, frameP95Ms: frames[Math.floor(frames.length * 0.95)], note: 'CI diagnostics; not physical-device performance.' };
       });
       if (label === 'iphone' || label === 'desktop') await check(browser, options, `${label}-game-screen-edge`, async (page) => {
