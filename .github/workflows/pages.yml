@@ -144,6 +144,34 @@ jobs:
           PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
           QA_REPORT_DIR: ${{ runner.temp }}/pages-qa
         run: node site/scripts/check-pages-site.mjs --local "$RUNNER_TEMP/pages"
+      - name: Check course views and saved work
+        if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' && steps.tested.outputs.tested != 'true' }}
+        env:
+          PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
+          QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/course-views
+        run: node site/scripts/verify-course-views.mjs
+      - name: Upload course-view check reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: course-views-qa
+          path: ${{ runner.temp }}/pages-qa/course-views/
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Check Search on every page
+        if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' && steps.tested.outputs.tested != 'true' }}
+        env:
+          PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
+          QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/search
+        run: node site/scripts/check-search-site.mjs
+      - name: Upload Search check reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: search-qa
+          path: ${{ runner.temp }}/pages-qa/search/
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Check route transitions and Work filters
         if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' && steps.tested.outputs.tested != 'true' }}
         env:
@@ -165,12 +193,6 @@ jobs:
           PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
           QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/touch
         run: npm run test:touch
-      - name: Check course views and saved work
-        if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' && steps.tested.outputs.tested != 'true' }}
-        env:
-          PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
-          QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/course-views
-        run: node site/scripts/verify-course-views.mjs
       - name: Check tap feedback and slow downloads
         if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' && steps.tested.outputs.tested != 'true' }}
         env:

@@ -418,9 +418,14 @@ function Layout({ children, layoutRef, mainRef, router }) {
   useEffect(() => {
     let pending;
     const cancel = () => clearTimeout(pending);
-    const onHash = (url) => {
+    // Close the panel that initiated navigation, before the destination mounts.
+    // A completion event must not dismiss a Search opened on the new view.
+    const onHashStart = () => {
       cancel();
       closePanels();
+    };
+    const onHash = (url) => {
+      cancel();
       runRef.current.swipe = null;
       const hash = String(url).split('#')[1];
       if (hash) {
@@ -433,12 +438,12 @@ function Layout({ children, layoutRef, mainRef, router }) {
         );
       }
     };
-    router.events.on('hashChangeStart', cancel);
+    router.events.on('hashChangeStart', onHashStart);
     router.events.on('routeChangeStart', cancel);
     router.events.on('hashChangeComplete', onHash);
     return () => {
       cancel();
-      router.events.off('hashChangeStart', cancel);
+      router.events.off('hashChangeStart', onHashStart);
       router.events.off('routeChangeStart', cancel);
       router.events.off('hashChangeComplete', onHash);
     };

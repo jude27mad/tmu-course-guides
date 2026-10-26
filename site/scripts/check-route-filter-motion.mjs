@@ -174,7 +174,7 @@ async function check(browser, options, name, run) {
 async function checkMobileMenu(page, name) {
   const opener = page.getByRole('button', { name: 'Open menu', exact: true });
   const close = page.getByRole('button', { name: 'Close menu', exact: true });
-  const firstLink = page.locator('#menu').getByRole('link', { name: 'Desk', exact: true });
+  const firstControl = page.locator('#menu button[aria-controls="search"]');
   // A small real scroll keeps the header reachable while making scroll
   // preservation meaningful on both document and contained scroll layouts.
   // Reduced-motion entry can queue its final native scroll reset after the
@@ -236,8 +236,8 @@ async function checkMobileMenu(page, name) {
       // Reduced-motion iPhone Safari can leave focus on body after a touch
       // gesture. Keyboard entry must still move directly into the modal.
       await page.waitForTimeout(220);
-      if (!(await firstLink.evaluate((link) => link === document.activeElement))) await page.keyboard.press('Tab');
-      assert.equal(await firstLink.evaluate((link) => link === document.activeElement), true, 'phone menu receives focus automatically or on first Tab');
+      if (!(await firstControl.evaluate((link) => link === document.activeElement))) await page.keyboard.press('Tab');
+      assert.equal(await firstControl.evaluate((link) => link === document.activeElement), true, 'phone menu receives focus automatically or on first Tab');
       const coverage = await page.evaluate(() => {
         const panel = document.querySelector('#menu');
         // Resolve any CSS color syntax through the browser; the regression is
@@ -259,9 +259,9 @@ async function checkMobileMenu(page, name) {
         await page.screenshot({ path: path.join(report, `${name}-open.png`) });
         await close.focus();
         await page.keyboard.press('Tab');
-        assert.equal(await firstLink.evaluate((link) => link === document.activeElement), true, 'Tab from the final control wraps to the first menu link');
+        assert.equal(await firstControl.evaluate((link) => link === document.activeElement), true, 'Tab from the final control wraps to the first menu action');
         await page.keyboard.press('Shift+Tab');
-        assert.equal(await close.evaluate((button) => button === document.activeElement), true, 'Shift+Tab from the first link wraps to Close menu');
+        assert.equal(await close.evaluate((button) => button === document.activeElement), true, 'Shift+Tab from the first action wraps to Close menu');
       }
       await page.evaluate((escape) => { window.menuPhase = escape ? 'closing-with-escape' : 'closing-with-button'; }, closeWithEscape);
       if (closeWithEscape) await page.keyboard.press('Escape');

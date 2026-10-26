@@ -29,7 +29,17 @@ async function check(name, run) {
     results.push({ name, pass: true, detail });
     console.log(`PASS ${name}`);
   } catch (error) {
-    results.push({ name, pass: false, error: error.message });
+    const search = await page.evaluate(() => {
+      const panel = document.getElementById('search');
+      if (!panel) return null;
+      return {
+        hidden: panel.getAttribute('aria-hidden'),
+        visibility: getComputedStyle(panel).visibility,
+        inert: panel.inert,
+        inputActive: document.activeElement?.id === 'search-input',
+      };
+    }).catch(() => null);
+    results.push({ name, pass: false, error: error.message, url: page.url(), search });
     console.error(`FAIL ${name}: ${error.message}`);
     await page.screenshot({ path: path.join(report, `failure-${name.replace(/[^a-z0-9]+/gi, '-')}.png`) }).catch(() => {});
   }
@@ -578,21 +588,30 @@ try {
   });
   await check('keyboard search opens the same detail across courses, then returns', async () => {
     await ready(page, 'mth140/#study');
-    await page.keyboard.press('Control+k');
-    await page.locator('#search-input').fill('Project Outline');
-    await page.getByRole('option').first().waitFor();
-    await page.keyboard.press('Enter');
-    await page.locator('#course-view-assignment-m2[data-assignment-detail]').waitFor();
-    await page.goBack();
-    await page.getByRole('heading', { name: 'Study', exact: true }).waitFor();
-    await page.keyboard.press('Control+k');
-    await page.locator('#search-input').fill('Contacts');
-    await page.keyboard.press('Enter');
-    await page.locator('#course-view-contacts[data-info-detail]').waitFor();
-    const back = page.getByRole('button', { name: '← Back to Study', exact: true }).first();
-    await back.focus();
-    await page.keyboard.press('Enter');
-    await page.getByRole('heading', { name: 'Study', exact: true }).waitFor();
+    let attempt = 0;
+    try {
+      for (; attempt < 3; attempt += 1) {
+        await page.keyboard.press('Control+k');
+        await page.locator('#search-input').fill('Project Outline');
+        await page.getByRole('option').first().waitFor();
+        await page.keyboard.press('Enter');
+        await page.locator('#course-view-assignment-m2[data-assignment-detail]').waitFor();
+        await page.goBack();
+        await page.getByRole('heading', { name: 'Study', exact: true }).waitFor();
+        // Reopen as soon as Study is visible: the index must already use MTH140.
+        await page.keyboard.press('Control+k');
+        await page.locator('#search-input').fill('Contacts');
+        await page.keyboard.press('Enter');
+        await page.waitForURL(target => target.pathname === basePath + '/mth140/' && target.hash === '#contacts');
+        await page.locator('#course-view-contacts[data-info-detail]').waitFor();
+        const back = page.getByRole('button', { name: '← Back to Study', exact: true }).first();
+        await back.focus();
+        await page.keyboard.press('Enter');
+        await page.getByRole('heading', { name: 'Study', exact: true }).waitFor();
+      }
+    } catch (error) {
+      throw new Error(`Search/Back cycle ${attempt + 1}: ${error.message}`);
+    }
   });
   await check('navigation does not steal focus chosen inside the newly opened view', async () => {
     await ready(page, 'mth140/#work');
@@ -679,7 +698,7 @@ try {
   await check('tablet header controls remain readable and easy to activate', async () => {
     await page.setViewportSize({ width: 834, height: 900 });
     await ready(page, 'mth141/');
-    for (const name of ['Open menu', 'Search the guide. Shortcut: Command K']) {
+    for (const name of ['Open menu']) {
       const control = page.getByRole('button', { name, exact: true });
       const box = await control.boundingBox();
       assert.ok(box.height >= 44, `${name}: ${box.height}px`);

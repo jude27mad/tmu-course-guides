@@ -1,12 +1,11 @@
 import { nativeIOSScroll, scrollRoot, scrollTop, scrollViewport } from '@src/utils/scrollRoot';
 import { buildShellTimeline } from '@src/components/dom/navbar/panelShell';
 import { setBrowserSurfaces, setEdgeBleed } from '@src/utils/theme';
-import ButtonLink from '@src/components/animationComponents/buttonLink/Index';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import MenuButton from '@src/components/dom/navbar/components/MenuButton';
 import MenuLinks from '@src/components/dom/navbar/components/MenuLinks';
-import SearchPanel from '@src/components/dom/navbar/components/SearchPanel';
+import SearchPanel, { openSearchPanel } from '@src/components/dom/navbar/components/SearchPanel';
 import clsx from 'clsx';
 import styles from '@src/components/dom/navbar/styles/index.module.scss';
 import { useCallback, useEffect, useRef } from 'react';
@@ -25,8 +24,8 @@ const FOOTER_UNDER_BAR = 40;
 function Navbar() {
   const isMobile = useIsMobile();
   const router = useRouter();
-  const [lenis, isLoading, isMenuOpen, isSearchOpen, setIsSearchOpen, still, isTransitioning] = useStore(
-    useShallow((state) => [state.lenis, state.isLoading, state.isMenuOpen, state.isSearchOpen, state.setIsSearchOpen, state.still, state.isTransitioning]),
+  const [lenis, isLoading, isMenuOpen, isSearchOpen, still, isTransitioning] = useStore(
+    useShallow((state) => [state.lenis, state.isLoading, state.isMenuOpen, state.isSearchOpen, state.still, state.isTransitioning]),
   );
   const shellRef = useRef(null);
   const headerRef = useRef(null);
@@ -228,19 +227,14 @@ function Navbar() {
         const state = useStore.getState();
         if (state.isSearchOpen) {
           state.setIsSearchOpen(false);
-        } else if (!state.isLoading) {
-          if (state.isMenuOpen) state.setIsMenuOpen(false);
-          state.setIsSearchOpen(true);
+        } else {
+          openSearchPanel();
         }
       }
     };
     document.addEventListener('keydown', onKeyDown, true);
     return () => document.removeEventListener('keydown', onKeyDown, true);
   }, []);
-
-  const openSearch = useCallback(() => {
-    if (!useStore.getState().isLoading) setIsSearchOpen(true);
-  }, [setIsSearchOpen]);
 
   return (
     <>
@@ -259,7 +253,6 @@ function Navbar() {
             <Time />
           </div>
           <div className={styles.rightContainer}>
-            {!isMobile && <ButtonLink glass onClick={openSearch} label="SEARCH" ariaLabel="Search the guide. Shortcut: Command K" ariaHaspopup="dialog" ariaControls="search" />}
             <MenuButton />
           </div>
         </div>
