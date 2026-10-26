@@ -29,16 +29,19 @@ function Sticker({ id, positionX, image, imageSliced, isMobile, viewportHeight, 
     }
   });
 
-  const handleFruitSliced = useCallback((event) => {
-    if (!active || sliced.current || gone.current) return;
-    // Raycasting still sees clipped meshes. Never score an invisible hit.
-    if ((event?.point?.y ?? bodyRef.current?.translation().y ?? Infinity) > ceilingRef.current) return;
-    sliced.current = true;
-    const element = eventSource.current;
-    if (element) element.dataset.gameSlices = String(Number(element.dataset.gameSlices || 0) + 1);
-    onSlice();
-    setFruitSliced(true);
-  }, [eventSource, active, onSlice, ceilingRef]);
+  const handleFruitSliced = useCallback(
+    (event) => {
+      if (!active || sliced.current || gone.current) return;
+      // Raycasting still sees clipped meshes. Never score an invisible hit.
+      if ((event?.point?.y ?? bodyRef.current?.translation().y ?? Infinity) > ceilingRef.current) return;
+      sliced.current = true;
+      const element = eventSource.current;
+      if (element) element.dataset.gameSlices = String(Number(element.dataset.gameSlices || 0) + 1);
+      onSlice();
+      setFruitSliced(true);
+    },
+    [eventSource, active, onSlice, ceilingRef],
+  );
 
   const mobileConfig = { position: [positionX, flight.startY, 0], scale: flight.radius * 2 };
   const map = fruitSliced ? imageSliced : image;
