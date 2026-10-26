@@ -2,13 +2,15 @@
 
 import { Camera, Scene, Texture, Vector2, Vector3 } from 'three';
 import { createPortal, useFrame, useThree } from '@react-three/fiber';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import Effect from '@src/components/canvas/fluid/effect/Fluid';
 import useFBOs from '@src/components/canvas/fluid/hooks/useFBOs';
 import useMaterials from '@src/components/canvas/fluid/hooks/useMaterials';
 import useOpts from '@src/components/canvas/fluid/hooks/useOpts';
 import usePointerEvents from '@src/components/canvas/fluid/hooks/usePointerEvents';
+// eslint-disable-next-line import/extensions
+import { listenForGameCelebration } from './gameCelebration.mjs';
 
 function Fluid({ mainRef, fluidColor }) {
   const OPTS = useOpts();
@@ -23,6 +25,8 @@ function Fluid({ mainRef, fluidColor }) {
   const FBOs = useFBOs();
   const materials = useMaterials();
   const splatStack = usePointerEvents(mainRef, size, force);
+
+  useEffect(() => listenForGameCelebration(window, splatStack), [splatStack]);
 
   const setShaderMaterial = useCallback(
     (name) => {
@@ -64,13 +68,13 @@ function Fluid({ mainRef, fluidColor }) {
     if (!meshRef.current || !postRef.current) return;
 
     while (splatStack.current.length > 0) {
-      const { mouseX, mouseY, velocityX, velocityY } = splatStack.current.pop();
+      const { mouseX, mouseY, velocityX, velocityY, radiusScale = 1 } = splatStack.current.pop();
 
       setShaderMaterial('splat');
       setUniforms('splat', 'uTarget', FBOs.velocity.read.texture);
       setUniforms('splat', 'uPointer', new Vector2(mouseX, mouseY));
       setUniforms('splat', 'uColor', new Vector3(velocityX, velocityY, 10.0));
-      setUniforms('splat', 'uRadius', radius / 100.0);
+      setUniforms('splat', 'uRadius', (radius * radiusScale) / 100.0);
       setRenderTarget('velocity');
       setUniforms('splat', 'uTarget', FBOs.density.read.texture);
       setRenderTarget('density');

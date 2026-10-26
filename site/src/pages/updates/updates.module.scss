@@ -70,3 +70,16 @@
   padding-left: 1.25em;
   list-style: disc;
 }
+
+@media (min-width: #{$mobile-breakpoint + 1px}) {
+  // Keep both full-width surfaces while centring their shared reading column.
+  section.titleContainer,
+  section.root {
+    padding-inline: max(var(--layout-margin), calc((100% - 800px) / 2));
+  }
+
+  .titleContainer .lede,
+  .list {
+    max-width: none;
+  }
+}

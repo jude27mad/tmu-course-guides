@@ -548,6 +548,52 @@ try {
           'scrolling and toolbar resizing retain animation state without position-only canvas updates');
         return evidence;
       });
+      if (label === 'iphone' || label === 'desktop') await check(browser, options, `${label}-directory-continuous-swing`, async (page) => {
+        await page.goto(base + 'courses/');
+        await ready(page);
+        await page.locator('[data-badge-rendered="true"]').first().waitFor();
+        const samples = await page.evaluate(async () => {
+          const element = document.querySelector('[data-badge-instance="directory-cen100"]');
+          let fiber = element[Object.keys(element).find(key => key.startsWith('__reactFiber$'))];
+          while (fiber && !fiber.memoizedProps?.value?.register) fiber = fiber.return;
+          const registry = fiber.memoizedProps.value;
+          const entries = registry.getState().entries.filter(entry => entry.id.startsWith('directory-'));
+          const keys = ['fixed', 'j1', 'j2', 'j3', 'card'];
+          const bodies = keys.map(key => entries[0].body[key].current);
+          const scroller = document.documentElement.dataset.scrollMode === 'document' ? window : document.querySelector('main');
+          const scrollTop = scroller === window ? scrollY : scroller.scrollTop;
+          const centres = entries.map(entry => {
+            const clip = entry.element.closest('[data-badge-clip]').getBoundingClientRect();
+            return Math.max(0, scrollTop + clip.top + clip.height / 2 - innerHeight / 2);
+          });
+          const records = [];
+          for (let frame = 0; frame <= 120; frame++) {
+            const progress = frame <= 60 ? frame / 60 : (120 - frame) / 60;
+            scroller.scrollTo(0, centres[0] + (centres.at(-1) - centres[0]) * progress);
+            await new Promise(requestAnimationFrame);
+            const current = registry.getState().entries.filter(entry => entry.id.startsWith('directory-'));
+            const anchor = bodies[0].translation();
+            const card = bodies[4].translation();
+            const velocity = bodies[4].linvel();
+            records.push({ frame, x: card.x - anchor.x, velocity: [velocity.x, velocity.y, velocity.z],
+              same: current.every(entry => keys.every((key, i) => entry.body[key].current === bodies[i] && bodies[i].isValid())),
+              shown: current.filter(entry => {
+                const clip = entry.element.closest('[data-badge-clip]').getBoundingClientRect();
+                return clip.top < innerHeight / 2 && clip.bottom > innerHeight / 2;
+              }).map(entry => entry.courseId) });
+          }
+          return records;
+        });
+        await writeFile(path.join(report, `${label}-directory-continuous-swing.json`), JSON.stringify(samples));
+        assert.ok(samples.every(sample => sample.same), 'every directory window reads the same live bodies through both scroll directions');
+        assert.ok(samples.every(sample => [sample.x, ...sample.velocity].every(Number.isFinite)), 'the shared pose and momentum remain finite');
+        for (const frames of [samples.slice(0, 61), samples.slice(60)]) {
+          assert.deepEqual([...new Set(frames.flatMap(sample => sample.shown))].sort(), ['cen100', 'mth140', 'mth141'], 'cross every course in each direction');
+        }
+        assert.ok(Math.max(...samples.map(sample => sample.x)) - Math.min(...samples.map(sample => sample.x)) > 0.01, 'the continuous rig is swinging');
+        await assertPageWidth(page);
+        return { frames: samples.length, courses: 3, directions: 2 };
+      });
       if (label === 'iphone' || label === 'desktop') await check(browser, options, `${label}-badge-rapid-scroll`, async (page) => {
         const routes = [];
         for (const route of ['', 'cen100/', 'mth140/', 'mth141/', 'courses/']) {
@@ -719,7 +765,7 @@ try {
         });
         await page.locator('[data-companion-game] canvas').waitFor();
         assert.equal(await page.locator('[data-companion-game] canvas').count(), 1);
-        const beforeStorage = await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort()));
+        const beforeStorage = await page.evaluate(() => JSON.stringify(Object.entries(localStorage).filter(([key]) => key !== 'tmu-guide:disc-game:v1').sort()));
         const words = await page.locator('[data-companion-statement] .word').count();
         assert.ok(words > 15);
         const before = await page.locator('[data-companion-statement] .word').evaluateAll(nodes => nodes.reduce((sum, node) => sum + Number(getComputedStyle(node).opacity), 0) / nodes.length);
@@ -794,10 +840,13 @@ try {
         await page.evaluate(() => {
           const stage = document.querySelector('[data-game-discs]');
           const score = document.querySelector('[data-game-score]');
+          window.gameCelebrations = 0;
+          window.addEventListener('tmu-guide:disc-game-first-slice', () => { window.gameCelebrations += 1; });
           window.gameScoreHistory = [];
           const record = () => {
             window.gameScoreHistory.push({
-              score: score.textContent,
+              score: score.querySelector('[data-game-current]').textContent,
+              best: score.querySelector('[data-game-best]').textContent,
               slices: Number(stage.dataset.gameSlices || 0),
               visible: !score.hidden && getComputedStyle(score).display !== 'none',
             });
@@ -809,7 +858,7 @@ try {
         // Aim at actual visible discs within a painted frame. On a slow runner,
         // separate mouse calls can span an entire flight. Dispatch DOM input;
         // the real scene raycaster and slice guards must still handle every hit.
-        const hit = await page.evaluate(async (touchInput) => {
+        const sliceVisibleDisc = async (touchInput) => {
           const stage = document.querySelector('[data-game-discs]');
           const state = [...window.canvasStores].map(store => store.getState()).find(item => item.gl.domElement.closest('[data-companion-game]'));
           const deadline = performance.now() + 18000;
@@ -828,7 +877,7 @@ try {
           };
           while (performance.now() < deadline) {
             await new Promise(requestAnimationFrame);
-            const bounds = stage.getBoundingClientRect();
+            const bounds = state.gl.domElement.getBoundingClientRect();
             const points = [];
             state.scene.traverse(mesh => {
               if (!mesh.userData.slice) return;
@@ -852,13 +901,22 @@ try {
             }
           }
           throw new Error('Visible discs did not respond to shared-surface input');
-        }, label === 'iphone');
+        };
+        const hit = await page.evaluate(sliceVisibleDisc, label === 'iphone');
         assert.ok(hit.first > hit.before, 'visible discs respond to shared-surface input');
         assert.equal(hit.repeated, hit.first, 'repeated input on the same discs cannot score twice');
         await page.waitForFunction(() => window.gameScoreHistory.some(entry => entry.visible && entry.score === `Score ${entry.slices}` && entry.slices > 0));
         const score = page.locator('[data-game-score]');
         assert.equal(await score.isVisible(), true);
         assert.equal(await score.getAttribute('role'), 'status');
+        const scoreLayout = await score.evaluate(el => {
+          const box = el.getBoundingClientRect();
+          const stage = el.parentElement.getBoundingClientRect();
+          return { center: box.left + box.width / 2, viewportCenter: innerWidth / 2, top: box.top - stage.top, height: stage.height, fontSize: parseFloat(getComputedStyle(el).fontSize) };
+        });
+        assert.ok(Math.abs(scoreLayout.center - scoreLayout.viewportCenter) < 2, 'score is horizontally centered');
+        assert.ok(scoreLayout.top >= 0 && scoreLayout.top < scoreLayout.height / 4, 'score stays at the top of the stage');
+        assert.ok(scoreLayout.fontSize >= 24, 'score text is larger');
         const slices = hit.first;
         await page.screenshot({ path: path.join(report, `${label}-game-score.png`) });
         // Stop slicing. Require a recorded positive score followed by zero,
@@ -876,7 +934,12 @@ try {
         await page.screenshot({ path: path.join(report, `${label}-game-missed.png`) });
         const count = Number(await page.locator('[data-game-discs]').getAttribute('data-game-discs'));
         assert.ok(count <= (label === 'iphone' ? 6 : 10));
-        assert.equal(await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort())), beforeStorage, 'slicing does not change saved progress');
+        assert.equal(await page.evaluate(() => JSON.stringify(Object.entries(localStorage).filter(([key]) => key !== 'tmu-guide:disc-game:v1').sort())), beforeStorage, 'slicing does not change saved course progress');
+        const savedRecord = await page.evaluate(() => JSON.parse(localStorage.getItem('tmu-guide:disc-game:v1')));
+        assert.equal(savedRecord.best, Math.max(...scoreHistory.map(entry => Number(entry.score.replace('Score ', '')))));
+        assert.equal(savedRecord.celebrated, true);
+        assert.equal(await page.evaluate(() => window.gameCelebrations), 1, 'the first successful slice celebrates once');
+        assert.equal(await page.locator('[data-game-best]').textContent(), `Best ${savedRecord.best}`, 'a miss preserves the displayed best');
         for (let repeat = 0; repeat < 2; repeat += 1) {
           await page.emulateMedia({ reducedMotion: 'reduce' });
           await page.waitForFunction(() => document.documentElement.dataset.motion === 'off');
@@ -888,7 +951,55 @@ try {
           assert.equal(await page.locator('[data-companion-statement] .word .word').count(), 0);
         }
         frames.sort((a, b) => a - b);
+        await page.reload();
+        await ready(page);
+        await position(1.02);
+        await page.waitForFunction(() => Number(document.querySelector('[data-game-discs]')?.dataset.gameDiscs) > 0);
+        assert.equal(await page.locator('[data-game-score]').isVisible(), false, 'a saved best does not reveal the game early');
+        await page.evaluate(() => {
+          window.gameCelebrations = 0;
+          window.addEventListener('tmu-guide:disc-game-first-slice', () => { window.gameCelebrations += 1; });
+        });
+        const reloadedHit = await page.evaluate(sliceVisibleDisc, label === 'iphone');
+        const expectedBest = Math.max(savedRecord.best, reloadedHit.first);
+        await page.waitForFunction(best => document.querySelector('[data-game-best]')?.textContent === `Best ${best}`, expectedBest);
+        assert.equal(await page.evaluate(() => window.gameCelebrations), 0, 'the first slice after reload never replays the celebration');
         return { words, discs: count, flight, slices, scoreHistory, reveal: { before, after }, frameP95Ms: frames[Math.floor(frames.length * 0.95)], note: 'CI diagnostics; not physical-device performance.' };
+      });
+      if (label === 'iphone' || label === 'desktop') await check(browser, options, `${label}-game-screen-edge`, async (page) => {
+        const evidence = [];
+        for (const route of ['', 'courses/', 'privacy/', 'updates/']) {
+          await page.goto(base + route);
+          await ready(page);
+          for (const offset of [-0.15, 0.7, 0.25]) {
+            await page.evaluate(offset => {
+              const section = document.querySelector('[data-companion-statement]');
+              const documentMode = document.documentElement.dataset.scrollMode === 'document';
+              const scroller = documentMode ? window : document.querySelector('main');
+              const top = documentMode ? scrollY : scroller.scrollTop;
+              scroller.scrollTo(0, top + section.getBoundingClientRect().top + innerHeight * offset);
+            }, offset);
+            await page.locator('[data-companion-game][data-active="true"] canvas').waitFor();
+            await page.waitForFunction(() => {
+              const box = document.querySelector('[data-companion-game] canvas')?.getBoundingClientRect();
+              return box && Math.abs(box.top) < 1 && Math.abs(box.bottom - innerHeight) < 1;
+            });
+            const geometry = await page.evaluate(() => {
+              const game = document.querySelector('[data-companion-game]');
+              const box = game.querySelector('canvas').getBoundingClientRect();
+              const stage = document.querySelector('[data-companion-statement]').firstElementChild.getBoundingClientRect();
+              return { top: box.top, bottom: box.bottom, stageBottom: stage.bottom, viewport: innerHeight, left: box.left, stageLeft: stage.left, width: box.width, stageWidth: stage.width, clippedByPage: !!game.closest('main') };
+            });
+            assert.equal(geometry.clippedByPage, false, 'the white section cannot clip the fixed game');
+            assert.ok(Math.abs(geometry.left - geometry.stageLeft) < 1 && Math.abs(geometry.width - geometry.stageWidth) < 1, 'the existing horizontal game area is preserved');
+            if (offset === 0.7) assert.ok(geometry.stageBottom < geometry.bottom - 20, 'the canvas continues to the screen edge after the statement starts leaving');
+            evidence.push({ route, offset, ...geometry });
+          }
+          await page.evaluate(() => (document.documentElement.dataset.scrollMode === 'document' ? window : document.querySelector('main')).scrollTo(0, 0));
+          await page.locator('[data-companion-game][data-active="false"]').waitFor({ state: 'attached' });
+          assert.equal(await page.locator('[data-companion-game]').isVisible(), false, 'the fixed game is hidden when its section is offscreen');
+        }
+        return evidence;
       });
       await check(browser, options, `${label}-work-filters`, async (page) => {
         // Install before application timers, then advance animation frames explicitly.
@@ -1003,5 +1114,3 @@ try {
   await new Promise((resolve) => server.close(resolve));
 }
 if (results.some((result) => !result.pass)) process.exitCode = 1;
-
-

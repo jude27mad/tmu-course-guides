@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { useBadgeRegistry } from './BadgeProvider';
 import styles from './badge.module.scss';
 
-export default function CourseBadge({ instanceId, courseId, next, ready = true, className }) {
+export default function CourseBadge({ instanceId, courseId, motionGroup, next, ready = true, className }) {
   const registry = useBadgeRegistry();
   const root = useRef();
   const course = getCourse(courseId);
@@ -23,11 +23,11 @@ export default function CourseBadge({ instanceId, courseId, next, ready = true, 
   );
 
   useEffect(() => {
-    registry.register(instanceId, { element: root.current });
+    registry.register(instanceId, { element: root.current, motionGroup });
     return () => registry.unregister(instanceId);
-  }, [registry, instanceId]);
+  }, [registry, instanceId, motionGroup]);
 
-  useEffect(() => registry.update(instanceId, { courseId, look }), [registry, instanceId, courseId, look]);
+  useEffect(() => registry.update(instanceId, { courseId, look }), [registry, instanceId, motionGroup, courseId, look]);
 
   useEffect(() => {
     let intersecting = false;
@@ -47,7 +47,7 @@ export default function CourseBadge({ instanceId, courseId, next, ready = true, 
       observer.disconnect();
       document.removeEventListener('visibilitychange', update);
     };
-  }, [registry, instanceId]);
+  }, [registry, instanceId, motionGroup]);
 
   return (
     <div ref={root} className={clsx(styles.root, className)} data-course-badge={courseId} data-badge-instance={instanceId} aria-hidden="true">

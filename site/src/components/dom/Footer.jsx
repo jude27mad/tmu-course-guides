@@ -1,4 +1,4 @@
-import { scrollRoot } from '@src/utils/scrollRoot';
+import { nativeIOSScroll, scrollRoot, scrollTop } from '@src/utils/scrollRoot';
 import { useMemo, useRef, useState } from 'react';
 
 import DesignCredit from '@src/components/dom/DesignCredit';
@@ -52,6 +52,13 @@ function Footer() {
   const courseId = courseIdFromPath(router.asPath);
   const courseLinks = useCourseLinks(courseId);
   const [creditOpen, setCreditOpen] = useState(false);
+  const creditScrollRef = useRef(null);
+
+  const toggleCredit = (open) => {
+    if (open === creditOpen) return;
+    if (!isMobile && !nativeIOSScroll() && !still) creditScrollRef.current = scrollTop();
+    setCreditOpen(open);
+  };
 
   useIsomorphicLayoutEffect(() => {
     const viewport = viewportRef.current;
@@ -65,6 +72,8 @@ function Footer() {
   }, []);
 
   useIsomorphicLayoutEffect(() => {
+    const creditScroll = creditScrollRef.current;
+    creditScrollRef.current = null;
     // Native credit disclosure must not rebuild an uncover transform or
     // temporarily collapse the scroller when motion is disabled.
     if (still || !resizeHeight) return undefined;
@@ -101,6 +110,19 @@ function Footer() {
         setupFooterAnimation();
       }
     });
+    if (creditScroll !== null) {
+      // Reverting the reveal and measuring height:auto can clamp desktop scroll
+      // at the end of the page. Restore it before paint, with Lenis in sync.
+      ScrollTrigger.refresh();
+      const { lenis } = useStore.getState();
+      if (lenis) {
+        lenis.resize();
+        lenis.scrollTo(creditScroll, { immediate: true, force: true });
+      } else {
+        scrollRoot()?.scrollTo(0, creditScroll);
+      }
+      ScrollTrigger.update();
+    }
     return () => context.revert();
   }, [isLoading, windowSize.width, resizeHeight, creditOpen, still]);
 
@@ -138,7 +160,7 @@ function Footer() {
             Privacy
           </Link>
         </p>
-        <DesignCredit tone="dark" onToggle={setCreditOpen} />
+        <DesignCredit tone="dark" onToggle={toggleCredit} />
       </div>
 
       <div className={styles.wordmark} aria-hidden="true">

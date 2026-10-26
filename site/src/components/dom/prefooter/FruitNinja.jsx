@@ -98,19 +98,19 @@ function FruitNinja({ active = true, eventSource, onSlice, onMiss }) {
   const isMobile = useIsMobile();
   const textures = useDiscTextures();
   const [fruits, remove] = useFruitSpawner({ viewport, textures, isMobile, active });
-  const { scene, camera, raycaster, pointer, setEvents } = useThree();
+  const { scene, camera, raycaster, pointer, setEvents, gl } = useThree();
 
   useEffect(() => {
     setEvents({ enabled: active });
   }, [active, setEvents]);
 
   useEffect(() => {
-    const element = eventSource.current;
+    const element = eventSource.current?.closest('main');
     if (!element || !active || !nativeIOSScroll()) return undefined;
     // Native scrolling can cancel pointermove on iOS; passive touches continue.
     // No gesture state, capture or preventDefault: the fluid observes these too.
     const sample = (event) => {
-      const bounds = element.getBoundingClientRect();
+      const bounds = gl.domElement.getBoundingClientRect();
       if (!bounds.width || !bounds.height) return;
       Array.from(event.changedTouches || []).forEach((touch) => {
         pointer.set(((touch.clientX - bounds.left) / bounds.width) * 2 - 1, -((touch.clientY - bounds.top) / bounds.height) * 2 + 1);
@@ -124,7 +124,7 @@ function FruitNinja({ active = true, eventSource, onSlice, onMiss }) {
       element.removeEventListener('touchstart', sample);
       element.removeEventListener('touchmove', sample);
     };
-  }, [active, eventSource, scene, camera, raycaster, pointer]);
+  }, [active, eventSource, scene, camera, raycaster, pointer, gl]);
 
   useEffect(() => {
     const element = eventSource.current;

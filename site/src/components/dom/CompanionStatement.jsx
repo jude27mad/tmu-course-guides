@@ -5,6 +5,7 @@ import FruitNinja from '@src/components/dom/prefooter/Index';
 import useInView from '@src/hooks/useInView';
 import useStill from '@src/hooks/useStill';
 import { memo, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
 
@@ -49,9 +50,13 @@ function CompanionStatement() {
           {/* plain until the page is in (and without JS); then the original scroll fly-in */}
           {isLoading ? <span>{QUOTE}</span> : <TextOpacity trigger={rootRef.current}>{QUOTE}</TextOpacity>}
         </blockquote>
-        <div className={styles.canvas} aria-hidden="true" data-companion-game data-active={active}>
-          {mounted && <FruitNinja active={active} eventSource={stageRef} />}
-        </div>
+        {mounted &&
+          createPortal(
+            <div className={styles.canvas} aria-hidden="true" data-companion-game data-active={active}>
+              <FruitNinja active={active} eventSource={stageRef} />
+            </div>,
+            document.getElementById('layout'),
+          )}
       </div>
     </section>
   );
