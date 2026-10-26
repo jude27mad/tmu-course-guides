@@ -342,7 +342,9 @@ function SearchPanel() {
         </p>
 
         <button type="button" onClick={close} className={menuStyles.menuClose} aria-label={COPY.closeLabel}>
-          <span aria-hidden="true">&#10005;</span>
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true" focusable="false">
+            <path d="M3 3 17 17M17 3 3 17" />
+          </svg>
         </button>
       </div>
     </div>
