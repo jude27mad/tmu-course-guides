@@ -99,6 +99,69 @@ async function checkLocal(folder) {
   };
 
   try {
+
+    for (const viewport of [{ width: 1440, height: 900 }, { width: 1366, height: 768 }]) {
+      for (const route of ['', 'updates/']) {
+        await check(`${viewport.width}px /${route} Design credit keeps the desktop page still`, async () => {
+          const { context, page, errors } = await open({ viewport, reducedMotion: 'no-preference' });
+          try {
+            await page.goto(`${site}${route}`, { waitUntil: 'networkidle' });
+            await page.waitForFunction(() => {
+              const main = document.querySelector('main');
+              return main && getComputedStyle(main).opacity === '1' &&
+                !document.querySelector('.lenis-stopped') &&
+                getComputedStyle(document.querySelector('#loader')).display === 'none';
+            });
+            await page.evaluate(() => document.fonts.ready);
+            await page.locator('main').evaluate((main) => main.scrollTo(0, main.scrollHeight));
+            await page.waitForTimeout(500);
+            const credit = page.locator('footer [data-design-credit]');
+            const summary = credit.locator('summary');
+            const before = await page.evaluate(() => ({
+              scroll: document.querySelector('main').scrollTop,
+              footer: document.querySelector('footer > [data-surface="dark"]').getBoundingClientRect().top,
+            }));
+            assert.ok(before.scroll > 0, 'exercise the bottom of the page');
+            for (const [index, open] of [true, false, true, false].entries()) {
+              await page.evaluate(() => {
+                window.creditFrames = [];
+                const sample = () => {
+                  window.creditFrames.push({
+                    scroll: document.querySelector('main').scrollTop,
+                    footer: document.querySelector('footer > [data-surface="dark"]').getBoundingClientRect().top,
+                  });
+                  window.creditFrameRequest = requestAnimationFrame(sample);
+                };
+                sample();
+              });
+              if (index === 1) {
+                // The first click has focused the native summary.
+                await page.keyboard.press('Enter');
+              } else {
+                const box = await summary.boundingBox();
+                assert.ok(box && box.y >= 0 && box.y + box.height <= viewport.height, 'credit is already visible');
+                await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+              }
+              await page.waitForFunction((expected) => document.querySelector('footer [data-design-credit]').open === expected, open);
+              await page.waitForTimeout(350);
+              const frames = await page.evaluate(() => {
+                cancelAnimationFrame(window.creditFrameRequest);
+                return window.creditFrames;
+              });
+              assert.ok(frames.every((frame) => Math.abs(frame.scroll - before.scroll) <= 2),
+                `scroll stays put when credit is ${open ? 'opened' : 'closed'}: ${JSON.stringify({ before, frames })}`);
+              assert.ok(frames.every((frame) => Math.abs(frame.footer - before.footer) <= 2),
+                'the footer reveal stays put throughout the toggle');
+              if (open) await page.screenshot({ path: join(reports, `design-credit-${route ? 'updates' : 'desk'}-${viewport.width}.png`) });
+            }
+            assert.deepEqual(errors, [], 'page errors');
+          } finally {
+            await context.close();
+          }
+        });
+      }
+    }
+
     for (const width of [390, 1440]) {
       for (const [path, title] of PAGES) {
         await check(`${width}px /${path} renders the new design`, async () => {
