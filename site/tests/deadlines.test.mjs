@@ -28,7 +28,8 @@ const math = (course, now, section = 0, completed = {}) => nextDeadline({ now, c
 
 test('reflections keep separate source-verified deadlines, instructions and completion records', () => {
   const now = toronto('2026-10-25', '12:00');
-  const storage = cenStore({ section: 29, group: 9 });
+  // Complete the separate FMEA deadline so this test isolates reflection undo behavior.
+  const storage = cenStore({ section: 29, group: 9 }, { 'failure-2': 1 });
   const progress = createProgress(storage, { events: null });
   try {
     const first = deadlineItem('cen100', 'reflection-1', { now, storage });

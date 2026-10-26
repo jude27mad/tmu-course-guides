@@ -184,7 +184,7 @@ test('workList: "What should I work on?" in the old wording', () => {
   assert.equal(cen.items[0].dates, 'No official deadline in this view.');
   assert.equal(cen.items[0].target, 'My target: 2026-10-18 (personal plan)');
   assert.equal(cen.items[1].dates, 'Oct 21 — Failure Analysis Part 1: historical review due');
-  assert.equal(cen.items[1].progress, '17/17 checklist items still unchecked · 1 completion record unmarked.');
+  assert.equal(cen.items[1].progress, '17/17 checklist items still unchecked · 2 completion records unmarked.');
   const math = lib.workList('mth141', { now: NOW, storage: memoryStorage({ 'mth141-section-v1': '3' }) });
   assert.deepEqual(
     math.items.map((i) => i.itemId),
