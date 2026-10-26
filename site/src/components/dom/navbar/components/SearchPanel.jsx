@@ -8,6 +8,7 @@ import { flushSync } from 'react-dom';
 import menuStyles from '@src/components/dom/navbar/styles/menuLinks.module.scss';
 import styles from '@src/components/dom/navbar/styles/searchPanel.module.scss';
 import useIsMobile from '@src/hooks/useIsMobile';
+import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
 import { useRouter } from 'next/router';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
@@ -112,7 +113,7 @@ function SearchPanel() {
     }
   }, [isSearchOpen, motionSaved, motionReduced, courseId]);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const tl = timeline.current;
     if (!tl) return undefined;
     let focusFrame = 0;
@@ -142,10 +143,14 @@ function SearchPanel() {
       const opener = openerRef.current;
       openerRef.current = null;
       const panel = panelRef.current;
+      const focusDeadline = performance.now() + 1000;
       const restoreFocus = () => {
+        cancelAnimationFrame(focusFrame);
         const state = useStore.getState();
         if (!state.isSearchOpen && !state.isMenuOpen && !state.isTransitioning && opener?.isConnected && (panel?.contains(document.activeElement) || document.activeElement === document.body)) {
           opener.focus({ preventScroll: true });
+          // The desktop header also has to finish revealing its descendants.
+          if (document.activeElement !== opener && performance.now() < focusDeadline) focusFrame = requestAnimationFrame(restoreFocus);
         }
       };
       tl.eventCallback('onReverseComplete', restoreFocus);
