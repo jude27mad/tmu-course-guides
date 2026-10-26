@@ -74,7 +74,7 @@ function Index({ active, eventSource }) {
       {eventSource.current &&
         createPortal(
           <span className={styles.score} role="status" data-game-score hidden={!game.started}>
-            {game.started ? `Score ${game.score}` : ''}
+            <span data-game-current>{game.started ? `Score ${game.score}` : ''}</span>
             <span className={styles.best} data-game-best>
               {game.started ? `Best ${game.best}` : ''}
             </span>

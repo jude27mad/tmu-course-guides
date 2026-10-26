@@ -719,7 +719,7 @@ try {
         });
         await page.locator('[data-companion-game] canvas').waitFor();
         assert.equal(await page.locator('[data-companion-game] canvas').count(), 1);
-        const beforeStorage = await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort()));
+        const beforeStorage = await page.evaluate(() => JSON.stringify(Object.entries(localStorage).filter(([key]) => key !== 'tmu-guide:disc-game:v1').sort()));
         const words = await page.locator('[data-companion-statement] .word').count();
         assert.ok(words > 15);
         const before = await page.locator('[data-companion-statement] .word').evaluateAll(nodes => nodes.reduce((sum, node) => sum + Number(getComputedStyle(node).opacity), 0) / nodes.length);
@@ -794,10 +794,13 @@ try {
         await page.evaluate(() => {
           const stage = document.querySelector('[data-game-discs]');
           const score = document.querySelector('[data-game-score]');
+          window.gameCelebrations = 0;
+          window.addEventListener('tmu-guide:disc-game-first-slice', () => { window.gameCelebrations += 1; });
           window.gameScoreHistory = [];
           const record = () => {
             window.gameScoreHistory.push({
-              score: score.textContent,
+              score: score.querySelector('[data-game-current]').textContent,
+              best: score.querySelector('[data-game-best]').textContent,
               slices: Number(stage.dataset.gameSlices || 0),
               visible: !score.hidden && getComputedStyle(score).display !== 'none',
             });
@@ -809,7 +812,7 @@ try {
         // Aim at actual visible discs within a painted frame. On a slow runner,
         // separate mouse calls can span an entire flight. Dispatch DOM input;
         // the real scene raycaster and slice guards must still handle every hit.
-        const hit = await page.evaluate(async (touchInput) => {
+        const sliceVisibleDisc = async (touchInput) => {
           const stage = document.querySelector('[data-game-discs]');
           const state = [...window.canvasStores].map(store => store.getState()).find(item => item.gl.domElement.closest('[data-companion-game]'));
           const deadline = performance.now() + 18000;
@@ -852,13 +855,22 @@ try {
             }
           }
           throw new Error('Visible discs did not respond to shared-surface input');
-        }, label === 'iphone');
+        };
+        const hit = await page.evaluate(sliceVisibleDisc, label === 'iphone');
         assert.ok(hit.first > hit.before, 'visible discs respond to shared-surface input');
         assert.equal(hit.repeated, hit.first, 'repeated input on the same discs cannot score twice');
         await page.waitForFunction(() => window.gameScoreHistory.some(entry => entry.visible && entry.score === `Score ${entry.slices}` && entry.slices > 0));
         const score = page.locator('[data-game-score]');
         assert.equal(await score.isVisible(), true);
         assert.equal(await score.getAttribute('role'), 'status');
+        const scoreLayout = await score.evaluate(el => {
+          const box = el.getBoundingClientRect();
+          const stage = el.parentElement.getBoundingClientRect();
+          return { center: box.left + box.width / 2, viewportCenter: innerWidth / 2, top: box.top - stage.top, height: stage.height, fontSize: parseFloat(getComputedStyle(el).fontSize) };
+        });
+        assert.ok(Math.abs(scoreLayout.center - scoreLayout.viewportCenter) < 2, 'score is horizontally centered');
+        assert.ok(scoreLayout.top >= 0 && scoreLayout.top < scoreLayout.height / 4, 'score stays at the top of the stage');
+        assert.ok(scoreLayout.fontSize >= 24, 'score text is larger');
         const slices = hit.first;
         await page.screenshot({ path: path.join(report, `${label}-game-score.png`) });
         // Stop slicing. Require a recorded positive score followed by zero,
@@ -876,7 +888,12 @@ try {
         await page.screenshot({ path: path.join(report, `${label}-game-missed.png`) });
         const count = Number(await page.locator('[data-game-discs]').getAttribute('data-game-discs'));
         assert.ok(count <= (label === 'iphone' ? 6 : 10));
-        assert.equal(await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort())), beforeStorage, 'slicing does not change saved progress');
+        assert.equal(await page.evaluate(() => JSON.stringify(Object.entries(localStorage).filter(([key]) => key !== 'tmu-guide:disc-game:v1').sort())), beforeStorage, 'slicing does not change saved course progress');
+        const savedRecord = await page.evaluate(() => JSON.parse(localStorage.getItem('tmu-guide:disc-game:v1')));
+        assert.equal(savedRecord.best, Math.max(...scoreHistory.map(entry => Number(entry.score.replace('Score ', '')))));
+        assert.equal(savedRecord.celebrated, true);
+        assert.equal(await page.evaluate(() => window.gameCelebrations), 1, 'the first successful slice celebrates once');
+        assert.equal(await page.locator('[data-game-best]').textContent(), `Best ${savedRecord.best}`, 'a miss preserves the displayed best');
         for (let repeat = 0; repeat < 2; repeat += 1) {
           await page.emulateMedia({ reducedMotion: 'reduce' });
           await page.waitForFunction(() => document.documentElement.dataset.motion === 'off');
@@ -888,6 +905,19 @@ try {
           assert.equal(await page.locator('[data-companion-statement] .word .word').count(), 0);
         }
         frames.sort((a, b) => a - b);
+        await page.reload();
+        await ready(page);
+        await position(1.02);
+        await page.waitForFunction(() => Number(document.querySelector('[data-game-discs]')?.dataset.gameDiscs) > 0);
+        assert.equal(await page.locator('[data-game-score]').isVisible(), false, 'a saved best does not reveal the game early');
+        await page.evaluate(() => {
+          window.gameCelebrations = 0;
+          window.addEventListener('tmu-guide:disc-game-first-slice', () => { window.gameCelebrations += 1; });
+        });
+        const reloadedHit = await page.evaluate(sliceVisibleDisc, label === 'iphone');
+        const expectedBest = Math.max(savedRecord.best, reloadedHit.first);
+        await page.waitForFunction(best => document.querySelector('[data-game-best]')?.textContent === `Best ${best}`, expectedBest);
+        assert.equal(await page.evaluate(() => window.gameCelebrations), 0, 'the first slice after reload never replays the celebration');
         return { words, discs: count, flight, slices, scoreHistory, reveal: { before, after }, frameP95Ms: frames[Math.floor(frames.length * 0.95)], note: 'CI diagnostics; not physical-device performance.' };
       });
       await check(browser, options, `${label}-work-filters`, async (page) => {
@@ -1003,5 +1033,3 @@ try {
   await new Promise((resolve) => server.close(resolve));
 }
 if (results.some((result) => !result.pass)) process.exitCode = 1;
-
-
