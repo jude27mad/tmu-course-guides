@@ -209,9 +209,9 @@ try {
           const navigation = box('nav[aria-label="Course views"]');
           const selectors = box('[class*="workspace_sectionControls"]');
           const actions = box('[class*="workspace_actions"]');
-          return { titleLeft: title.left, navLeft: navigation.left, selectorsLeft: selectors.left, badgeRight: badge.right, actionsRight: actions.right };
+          return { titleLeft: title.left, navCenter: (navigation.left + navigation.right) / 2, viewportCenter: innerWidth / 2, selectorsLeft: selectors.left, badgeRight: badge.right, actionsRight: actions.right };
         });
-        assert.ok(Math.abs(headerGeometry.titleLeft - headerGeometry.navLeft) < 1);
+        assert.ok(Math.abs(headerGeometry.navCenter - headerGeometry.viewportCenter) < 1, JSON.stringify(headerGeometry));
         assert.ok(Math.abs(headerGeometry.titleLeft - headerGeometry.selectorsLeft) < 1);
         assert.ok(Math.abs(headerGeometry.badgeRight - headerGeometry.actionsRight) < 1, JSON.stringify(headerGeometry));
         assert.equal(await page.locator('[data-toronto-clock] time').count(), 1);
@@ -219,6 +219,7 @@ try {
           const r = node.getBoundingClientRect(); return { left: r.left, right: r.right };
         }));
         assert.equal(headerBounds.length, 3);
+        assert.ok(Math.abs((headerBounds[1].left + headerBounds[1].right) / 2 - width / 2) < 1, JSON.stringify(headerBounds));
         assert.ok(headerBounds[0].right <= headerBounds[1].left && headerBounds[1].right <= headerBounds[2].left, JSON.stringify(headerBounds));
         const boxes = await page.locator(nav + ' a').evaluateAll((links) => links.map((link) => {
           const box = link.getBoundingClientRect();
@@ -310,6 +311,7 @@ try {
       return { left: r.left, right: r.right, top: r.top, bottom: r.bottom };
     }));
     assert.equal(boxes.length, 3);
+    assert.ok(Math.abs((boxes[1].left + boxes[1].right) / 2 - 160) < 1, JSON.stringify(boxes));
     assert.ok(boxes.every(box => box.left >= 0 && box.right <= 320), JSON.stringify(boxes));
     for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
       const a = boxes[i], b = boxes[j];

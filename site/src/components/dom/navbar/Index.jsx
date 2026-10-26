@@ -51,20 +51,38 @@ function Navbar() {
   useScroll(scrollHeader);
   useEffect(() => {
     const header = headerRef.current;
-    if (!header) return undefined;
+    const controls = controlsRef.current;
+    if (!header || !controls) return undefined;
+    const wordmark = controls.querySelector(`.${styles.wordmark}`);
+    const clock = controls.querySelector('[data-toronto-clock]');
+    const actions = controls.querySelector(`.${styles.rightContainer}`);
     const measure = () => {
+      if (wordmark && clock && actions) {
+        // Reserve equal space on both sides; stack only when it cannot fit.
+        const requiredWidth = 2 * Math.max(wordmark.offsetWidth, actions.offsetWidth) + clock.offsetWidth;
+        const stacked = String(requiredWidth > controls.clientWidth);
+        if (controls.dataset.headerStacked !== stacked) controls.dataset.headerStacked = stacked;
+      }
       headerHeight.current = header.offsetHeight;
-      const controls = controlsRef.current;
       const baseline = parseFloat(getComputedStyle(controls).minHeight);
       const extra = Math.max(0, controls.offsetHeight - baseline);
       document.documentElement.style.setProperty('--navigation-extra-height', `${extra}px`);
       scrollHeader({ scroll: scrollTop() });
     };
-    const observer = new ResizeObserver(measure);
-    observer.observe(header);
+    let measureFrame = 0;
+    // Reflow outside ResizeObserver delivery so observed children can resize safely.
+    const observer = new ResizeObserver(() => {
+      if (measureFrame) return;
+      measureFrame = requestAnimationFrame(() => {
+        measureFrame = 0;
+        measure();
+      });
+    });
+    [header, wordmark, clock, actions].filter(Boolean).forEach((node) => observer.observe(node));
     measure();
     return () => {
       observer.disconnect();
+      cancelAnimationFrame(measureFrame);
       document.documentElement.style.removeProperty('--navigation-extra-height');
     };
   }, [scrollHeader]);

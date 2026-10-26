@@ -54,19 +54,28 @@
     }
 
     position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    // Equal outer columns keep the clock on the viewport's centre line.
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     align-items: center;
     width: 100%;
     &[data-scrolled-away='true'] {
       visibility: hidden;
     }
 
+    // Reflow enlarged text without moving the clock off the centre line.
+    &[data-header-stacked='true'] {
+      grid-template-columns: minmax(0, 1fr);
+      .clock {
+        justify-self: center;
+      }
+    }
+
     > a {
       pointer-events: all;
     }
     .wordmark {
+      justify-self: start;
       display: flex;
       align-items: center;
       min-height: 44px;
@@ -74,7 +83,7 @@
     .clock {
       display: flex;
       align-items: center;
-      margin-inline: auto;
+      text-align: center;
       gap: 0.5em;
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
@@ -86,7 +95,7 @@
       }
     }
     .rightContainer {
-      margin-left: auto;
+      justify-self: end;
       pointer-events: all;
 
       display: flex;
