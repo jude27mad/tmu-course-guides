@@ -1,5 +1,5 @@
 import { Canvas, events } from '@react-three/fiber';
-import { Suspense, useCallback, useEffect, useReducer } from 'react';
+import { Suspense, useCallback, useEffect, useReducer, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import dynamic from 'next/dynamic';
 import { useCoarsePointer } from '@src/hooks/useMediaQuery';
@@ -26,11 +26,20 @@ function Index({ active, eventSource }) {
   useEffect(() => {
     gameRecords.saveBest(game.best);
   }, [game.best]);
+  // Track the transition synchronously: one swipe can slice multiple discs
+  // before React renders, and each new streak must celebrate exactly once.
+  const streakScore = useRef(0);
   const onSlice = useCallback(() => {
+    streakScore.current += 1;
     dispatch('slice');
-    if (gameRecords.claimCelebration()) window.dispatchEvent(new Event(GAME_CELEBRATION_EVENT));
+    if (streakScore.current === 1) {
+      window.dispatchEvent(new CustomEvent(GAME_CELEBRATION_EVENT, { detail: { discovery: gameRecords.claimCelebration() } }));
+    }
   }, []);
-  const onMiss = useCallback(() => dispatch('miss'), []);
+  const onMiss = useCallback(() => {
+    streakScore.current = 0;
+    dispatch('miss');
+  }, []);
 
   return (
     <>
