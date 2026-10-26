@@ -1,5 +1,5 @@
 import { buildPanelTimeline, firstFocusable, trapPanelFocus } from '@src/components/dom/navbar/panelShell';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import Link from 'next/link';
 import clsx from 'clsx';
@@ -7,13 +7,10 @@ import footerLinks from '@src/components/dom/navbar/constants/footerLinks';
 import menuLinks from '@src/components/dom/navbar/constants/menuLinks';
 import { pathKey } from '@src/utils/routes';
 import styles from '@src/components/dom/navbar/styles/menuLinks.module.scss';
-import { upcomingAcrossCourses } from '@src/utils/upcoming';
 import useIsMobile from '@src/hooks/useIsMobile';
 import { useRouter } from 'next/router';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
-
-const UPCOMING_SLOTS = 3;
 
 function MenuLinks() {
   const timeline = useRef(null);
@@ -25,9 +22,8 @@ function MenuLinks() {
   const openerRef = useRef(null);
   const router = useRouter();
   const current = pathKey(router.asPath);
-  const [thisWeek, setThisWeek] = useState([]);
 
-  // Rows are fixed (three upcoming slots), so the timeline is built once per layout.
+  // Menu rows are fixed, so the timeline is built once per layout.
   useEffect(() => {
     const menu = menuRef.current;
     const items = menu.querySelectorAll('[data-menu-anim]');
@@ -51,7 +47,6 @@ function MenuLinks() {
       // Safari taps need not focus the button. Always have a reachable opener
       // to restore after Close or Escape, including a quick close/reopen.
       openerRef.current = focused && focused !== document.body && !menuRef.current.contains(focused) ? focused : document.getElementById('menu-button');
-      setThisWeek(upcomingAcrossCourses({ now: new Date(), count: UPCOMING_SLOTS }));
       // Finish immediately when motion is paused. A 30x tween can finish in
       // the same frame as the tap, before Safari accepts focus in the panel.
       if (still) tl.progress(1).pause();
@@ -163,31 +158,6 @@ function MenuLinks() {
               { active: current === link.href },
             ),
           )}
-        </div>
-
-        <div data-menu-anim="" className={clsx(styles.menuList, styles.upcomingList)}>
-          <h2 className={styles.menuHeading}>Coming up</h2>
-          {Array.from({ length: UPCOMING_SLOTS }, (_, index) => {
-            const item = thisWeek[index];
-            if (!item) {
-              return renderRow(
-                `slot-${index}`,
-                index === 0 && thisWeek.length === 0 ? (
-                  <p>
-                    <span>No upcoming deadlines</span>
-                  </p>
-                ) : null,
-                { className: styles.menuListItemEmpty },
-              );
-            }
-            return renderRow(
-              `slot-${index}`,
-              <Link scroll={false} href={item.href} onClick={onLinkClick(item.href)} aria-label={`${item.title}, ${item.code}, ${item.when}`}>
-                <span>{item.title}</span>
-                <small className={clsx('p-x', styles.menuListItemMeta)}>{[item.code, item.when].filter(Boolean).join(' · ')}</small>
-              </Link>,
-            );
-          })}
         </div>
 
         <div data-menu-anim="" className={styles.menuList}>
