@@ -181,13 +181,13 @@ async function waitForMain(page) {
   await waitOnPage(page, () => {
     const main = document.querySelector('main');
     const overlay = document.querySelector('#loader');
-    const loader = overlay?.getBoundingClientRect();
+    // Moving offscreen precedes the loader's completion callback that unlocks scrolling.
     return main && getComputedStyle(main).pointerEvents !== 'none'
       && !document.querySelector('#layout')?.hasAttribute('inert')
       && Number(getComputedStyle(main).opacity) > 0.99
       && Math.abs(main.getBoundingClientRect().x) < 1
-      && (!loader || getComputedStyle(overlay).visibility === 'hidden'
-        || loader.right <= 1 || loader.left >= innerWidth - 1);
+      && (!overlay || getComputedStyle(overlay).visibility === 'hidden'
+        || getComputedStyle(overlay).display === 'none');
   });
 }
 
