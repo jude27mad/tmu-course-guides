@@ -1,7 +1,6 @@
 import { nativeIOSScroll, scrollRoot, scrollTop, scrollViewport } from '@src/utils/scrollRoot';
 import { buildShellTimeline } from '@src/components/dom/navbar/panelShell';
 import { setBrowserSurfaces, setEdgeBleed } from '@src/utils/theme';
-import ButtonLink from '@src/components/animationComponents/buttonLink/Index';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import MenuButton from '@src/components/dom/navbar/components/MenuButton';
@@ -25,8 +24,8 @@ const FOOTER_UNDER_BAR = 40;
 function Navbar() {
   const isMobile = useIsMobile();
   const router = useRouter();
-  const [lenis, isLoading, isMenuOpen, isSearchOpen, setIsSearchOpen, still, isTransitioning] = useStore(
-    useShallow((state) => [state.lenis, state.isLoading, state.isMenuOpen, state.isSearchOpen, state.setIsSearchOpen, state.still, state.isTransitioning]),
+  const [lenis, isLoading, isMenuOpen, isSearchOpen, still, isTransitioning] = useStore(
+    useShallow((state) => [state.lenis, state.isLoading, state.isMenuOpen, state.isSearchOpen, state.still, state.isTransitioning]),
   );
   const shellRef = useRef(null);
   const headerRef = useRef(null);
@@ -238,10 +237,6 @@ function Navbar() {
     return () => document.removeEventListener('keydown', onKeyDown, true);
   }, []);
 
-  const openSearch = useCallback(() => {
-    if (!useStore.getState().isLoading) setIsSearchOpen(true);
-  }, [setIsSearchOpen]);
-
   return (
     <>
       <div aria-hidden="true" className={styles.panelBackdrop} data-open={isOpen} />
@@ -259,7 +254,6 @@ function Navbar() {
             <Time />
           </div>
           <div className={styles.rightContainer}>
-            {!isMobile && <ButtonLink glass onClick={openSearch} label="SEARCH" ariaLabel="Search the guide. Shortcut: Command K" ariaHaspopup="dialog" ariaControls="search" />}
             <MenuButton />
           </div>
         </div>

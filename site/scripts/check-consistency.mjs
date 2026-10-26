@@ -152,8 +152,15 @@ try {
         assert.deepEqual(controls.filter((e) => e.height < 43.5 || e.font < 16), []);
         await page.getByRole('heading', { name: 'Coming up', exact: true }).waitFor();
         await page.screenshot({ path: path.join(report, `menu-${width}.png`) });
-        await page.getByRole('button', { name: 'Close menu', exact: true }).click();
-        await page.keyboard.press('Control+k');
+        const search = page.locator('#menu button[aria-controls="search"]:visible');
+        assert.equal(await search.count(), 1);
+        assert.equal(await page.locator('header [aria-controls="search"]').count(), 0);
+        if (width >= 812) {
+          const searchBox = await search.boundingBox();
+          const sitemapBox = await page.locator('#menu').getByRole('heading', { name: 'Sitemap', exact: true }).boundingBox();
+          assert.ok(searchBox.y + searchBox.height <= sitemapBox.y, 'desktop Search belongs above Sitemap');
+        }
+        await search.click();
         await page.locator('#search-input').fill('regrade');
         const option = page.getByRole('option').filter({ hasText: 'MTH140' }).first();
         await option.waitFor();

@@ -679,7 +679,7 @@ try {
   await check('tablet header controls remain readable and easy to activate', async () => {
     await page.setViewportSize({ width: 834, height: 900 });
     await ready(page, 'mth141/');
-    for (const name of ['Open menu', 'Search the guide. Shortcut: Command K']) {
+    for (const name of ['Open menu']) {
       const control = page.getByRole('button', { name, exact: true });
       const box = await control.boundingBox();
       assert.ok(box.height >= 44, `${name}: ${box.height}px`);

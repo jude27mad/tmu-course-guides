@@ -152,6 +152,13 @@ function MenuLinks() {
   return (
     <div id="menu" ref={menuRef} className={styles.menu} role="dialog" aria-modal="true" aria-label="Menu" aria-hidden={!isMenuOpen}>
       <nav className={clsx(styles.menuWrapper, 'layout-block-inner')} data-lenis-prevent="" aria-label="Site navigation">
+        {!isMobile &&
+          renderRow(
+            'search-desktop',
+            <button type="button" onClick={openSearch} aria-label="Search the guide. Shortcut: Command K" aria-haspopup="dialog" aria-controls="search">
+              <span>SEARCH</span>
+            </button>,
+          )}
         <div data-menu-anim="" className={styles.menuList}>
           <h2 className={styles.menuHeading}>Sitemap</h2>
           {menuLinks.map((link) =>

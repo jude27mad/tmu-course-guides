@@ -7,7 +7,7 @@ import Link from 'next/link';
 import LinkText from '@src/components/animationComponents/linkText/Index';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import clsx from 'clsx';
-import { courseIdFromPath } from '@src/utils/routes';
+import { courseIdFromPath, pathKey } from '@src/utils/routes';
 import dynamic from 'next/dynamic';
 import footerLinks from '@src/components/dom/navbar/constants/footerLinks';
 import { getCourse } from '@src/lib';
@@ -51,6 +51,7 @@ function Footer() {
   const [resizeHeight, setResizeHeight] = useState(0);
   const courseId = courseIdFromPath(router.asPath);
   const courseLinks = useCourseLinks(courseId);
+  const showCourseLinks = !['/', '/privacy/', '/updates/'].includes(pathKey(router.asPath));
   const [creditOpen, setCreditOpen] = useState(false);
 
   useIsomorphicLayoutEffect(() => {
@@ -119,18 +120,20 @@ function Footer() {
           ))}
         </AppearTitle>
       </div>
-      <div style={{ gridColumn: isMobile ? '3 / 7' : '5 / 9' }} className={styles.linksContainer}>
-        <AppearTitle isFooter>
-          <h2 className={clsx(styles.title, 'h6')}>Course links</h2>
-          {courseLinks.map((link) => (
-            <div key={link.href} className={styles.linkTextContainer}>
-              <LinkText target={link.external} className={styles.linkText} title={link.title} href={link.href}>
-                <span className="footer">{link.title}</span>
-              </LinkText>
-            </div>
-          ))}
-        </AppearTitle>
-      </div>
+      {showCourseLinks && (
+        <div style={{ gridColumn: isMobile ? '3 / 7' : '5 / 9' }} className={styles.linksContainer}>
+          <AppearTitle isFooter>
+            <h2 className={clsx(styles.title, 'h6')}>Course links</h2>
+            {courseLinks.map((link) => (
+              <div key={link.href} className={styles.linkTextContainer}>
+                <LinkText target={link.external} className={styles.linkText} title={link.title} href={link.href}>
+                  <span className="footer">{link.title}</span>
+                </LinkText>
+              </div>
+            ))}
+          </AppearTitle>
+        </div>
+      )}
       <div className={clsx(styles.metaContainer, 'p-x')}>
         <p>
           Unofficial TMU course companion · Fall 2026 ·{' '}
