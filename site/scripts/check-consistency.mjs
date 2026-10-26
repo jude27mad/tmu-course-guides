@@ -150,7 +150,8 @@ try {
         const controls = await page.locator('#menu a, #menu button').evaluateAll((nodes) => nodes.filter((e) => e.getClientRects().length && getComputedStyle(e).visibility !== 'hidden').map((e) => ({ text: e.textContent.trim(), height: e.getBoundingClientRect().height, font: parseFloat(getComputedStyle(e.querySelector('span') || e).fontSize) })));
         assert.ok(controls.length > 3);
         assert.deepEqual(controls.filter((e) => e.height < 43.5 || e.font < 16), []);
-        await page.getByRole('heading', { name: 'Coming up', exact: true }).waitFor();
+        assert.equal(await page.locator('#menu').getByRole('heading', { name: 'Coming up', exact: true, includeHidden: true }).count(), 0, 'Coming up is removed from the menu');
+        assert.equal(await page.locator('#menu [class*="upcomingList"]').count(), 0, 'the removed section leaves no empty wrapper or deadline slots');
         await page.screenshot({ path: path.join(report, `menu-${width}.png`) });
         const search = page.locator('#menu button[aria-controls="search"]:visible');
         assert.equal(await search.count(), 1);
