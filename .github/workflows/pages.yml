@@ -50,7 +50,9 @@ jobs:
   build:
     name: Build and check the site
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    # The existing browser checks take about 19 minutes; leave room for genuine
+    # physics settling in review captures and normal runner variation.
+    timeout-minutes: 25
     permissions:
       contents: read
       pages: read

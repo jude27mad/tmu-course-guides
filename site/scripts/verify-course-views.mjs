@@ -136,6 +136,13 @@ try {
       }, fixture.initial);
       await desk.goto(url);
       const badge = desk.locator('[data-badge-instance="desk-next"]');
+      const courseLink = desk.locator('[data-desk-course-link]');
+      const assertCourseLink = async (courseId) => {
+        assert.equal(await courseLink.count(), 1);
+        assert.equal(await courseLink.getAttribute('href'), `${basePath}/${courseId}/`);
+        assert.equal(await courseLink.getAttribute('aria-label'), `Open ${courseId.toUpperCase()} course guide`);
+        assert.equal(await courseLink.locator('[data-course-badge]').getAttribute('data-course-badge'), courseId);
+      };
       const captureBadge = async (name) => {
         await badge.scrollIntoViewIfNeeded();
         let light = 0;
@@ -175,10 +182,12 @@ try {
       await badge.scrollIntoViewIfNeeded();
       await badge.locator('[data-badge-fallback]').waitFor({ state: 'hidden' });
       assert.equal(await badge.getAttribute('data-course-badge'), fixture.from.courseId);
+      await assertCourseLink(fixture.from.courseId);
       await desk.evaluate(() => { window.holdBadgeFonts = new Promise(resolve => { window.releaseBadgeFonts = resolve; }); });
       await desk.locator('[aria-labelledby="desk-next-heading"]').getByRole('button', { name: /Mark.*done/i }).click();
       await desk.waitForFunction(course => document.querySelector('[data-badge-instance="desk-next"]')?.dataset.courseBadge === course, fixture.to.courseId);
       assert.equal(await badge.count(), 1);
+      await assertCourseLink(fixture.to.courseId);
       await badge.locator('[data-badge-fallback]').waitFor({ state: 'visible' });
       assert.match(await badge.textContent(), new RegExp(fixture.to.courseId, 'i'));
       await desk.screenshot({ path: path.join(report, 'desk-next-course-texture-loading.png') });
@@ -189,6 +198,7 @@ try {
       await desk.waitForFunction(course => document.querySelector('[data-badge-instance="desk-next"]')?.dataset.courseBadge === course, fixture.from.courseId);
       await badge.locator('[data-badge-fallback]').waitFor({ state: 'hidden' });
       await captureBadge('desk-next-course-after-undo');
+      await assertCourseLink(fixture.from.courseId);
       const emptyStorage = memoryStorage(fixture.initial);
       const emptyProgress = createProgress(emptyStorage, { events: null });
       for (const course of ['cen100', 'mth140', 'mth141']) {
