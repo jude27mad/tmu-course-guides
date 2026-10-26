@@ -312,7 +312,11 @@ try {
     await page.locator('header .h4, header .p-x').evaluateAll(nodes => nodes.forEach(node => {
       node.style.fontSize = `${parseFloat(getComputedStyle(node).fontSize) * 2}px`;
     }));
-    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    // Navbar measures in a frame scheduled by ResizeObserver. Two animation
+    // frames can finish before that callback in Chromium; the failure capture
+    // already shows the correctly stacked header. Wait for the actual reflow,
+    // then retain every centring, bounds, overlap and content-clearance check.
+    await page.waitForFunction(() => document.querySelector('header > div')?.dataset.headerStacked === 'true', null, { timeout: 1000 });
     const boxes = await page.locator('header > div > a, [data-toronto-clock], header [class*="rightContainer"]').evaluateAll(nodes => nodes.map(node => {
       const r = node.getBoundingClientRect();
       return { left: r.left, right: r.right, top: r.top, bottom: r.bottom };

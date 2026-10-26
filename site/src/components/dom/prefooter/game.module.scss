@@ -1,9 +1,9 @@
 .score {
-  // The site's reset overrides the browser's default [hidden] display rule.
-  &[hidden] { display: none; }
+  // Keep its bounds measurable before the first slice, without showing it.
+  &[hidden] { display: block; visibility: hidden; }
 
   position: absolute;
-  top: max(1rem, calc(var(--layout-columns-gap) * 2));
+  top: calc(max(1rem, var(--layout-columns-gap) * 2) + 1rem);
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
