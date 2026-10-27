@@ -7,9 +7,10 @@ import { Physics } from '@react-three/rapier';
 import Sticker from '@src/components/dom/prefooter/Sticker';
 import useIsMobile from '@src/hooks/useIsMobile';
 import { useFrame, useThree } from '@react-three/fiber';
-import { nativeIOSScroll } from '@src/utils/scrollRoot';
 // eslint-disable-next-line import/extensions
 import { createSpawnSchedule, GAME_GRAVITY, scoreBoundary } from './gameTiming.mjs';
+// eslint-disable-next-line import/extensions
+import { bindGameTouch } from './gameTouch.mjs';
 
 // The original spawner added 1-6 stickers every 3 s (phone 5 s) and never removed
 // any: after ten minutes about 400 physical bodies. Stickers now leave once
@@ -129,26 +130,28 @@ function FruitNinja({ active = true, eventSource, scoreRef, onSlice, onMiss }) {
 
   useEffect(() => {
     const element = eventSource.current?.closest('main');
-    if (!element || !active || !nativeIOSScroll()) return undefined;
-    // Native scrolling can cancel pointermove on iOS; passive touches continue.
-    // No gesture state, capture or preventDefault: the fluid observes these too.
-    const sample = (event) => {
+    if (!element || !active) return undefined;
+    const sample = (touches) => {
       const bounds = gl.domElement.getBoundingClientRect();
       if (!bounds.width || !bounds.height) return;
-      Array.from(event.changedTouches || []).forEach((touch) => {
+      Array.from(touches).forEach((touch) => {
         if (touch.clientY < bounds.top + (insetRef.current ?? bounds.height)) return;
         pointer.set(((touch.clientX - bounds.left) / bounds.width) * 2 - 1, -((touch.clientY - bounds.top) / bounds.height) * 2 + 1);
         raycaster.setFromCamera(pointer, camera);
         raycaster.intersectObjects(scene.children, true).forEach((hit) => hit.object.userData.slice?.());
       });
     };
-    element.addEventListener('touchstart', sample, { passive: true });
-    element.addEventListener('touchmove', sample, { passive: true });
-    return () => {
-      element.removeEventListener('touchstart', sample);
-      element.removeEventListener('touchmove', sample);
-    };
-  }, [active, eventSource, scene, camera, raycaster, pointer, gl]);
+    return bindGameTouch(element, {
+      canStart: (touch, event) => {
+        if (event.target?.closest('a, button, input, textarea, select, summary, [contenteditable], [role="button"], [data-lenis-prevent]')) return false;
+        getCeiling();
+        const bounds = gl.domElement.getBoundingClientRect();
+        const insideX = touch.clientX >= bounds.left && touch.clientX <= bounds.right;
+        return insideX && touch.clientY >= bounds.top + (insetRef.current ?? bounds.height) && touch.clientY <= bounds.bottom;
+      },
+      sample,
+    });
+  }, [active, eventSource, scene, camera, raycaster, pointer, gl, getCeiling]);
 
   useEffect(() => {
     const element = eventSource.current;
