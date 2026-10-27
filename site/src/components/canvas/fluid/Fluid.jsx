@@ -86,18 +86,21 @@ function Fluid({ mainRef, fluidColor }) {
       setRenderTarget('density');
     }
 
+    // Preserve the original shaderUpdates snapshot across the vorticity swap.
+    const velocityTexture = FBOs.velocity.read.texture;
+
     setShaderMaterial('curl');
-    setUniforms('curl', 'uVelocity', FBOs.velocity.read.texture);
+    setUniforms('curl', 'uVelocity', velocityTexture);
     setRenderTarget('curl');
 
     setShaderMaterial('vorticity');
-    setUniforms('vorticity', 'uVelocity', FBOs.velocity.read.texture);
+    setUniforms('vorticity', 'uVelocity', velocityTexture);
     setUniforms('vorticity', 'uCurl', FBOs.curl.texture);
     setUniforms('vorticity', 'uCurlValue', curl);
     setRenderTarget('velocity');
 
     setShaderMaterial('divergence');
-    setUniforms('divergence', 'uVelocity', FBOs.velocity.read.texture);
+    setUniforms('divergence', 'uVelocity', velocityTexture);
     setRenderTarget('divergence');
 
     setShaderMaterial('clear');
