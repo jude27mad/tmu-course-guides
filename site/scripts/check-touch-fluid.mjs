@@ -371,6 +371,50 @@ try {
     }
   });
 
+  for (const ios of [false, true]) {
+    await check(`game arcs stay still between finger lifts; vertical swipes scroll (${ios ? 'document' : 'contained'})`, async () => {
+      const { context, page, errors } = await open({ ios });
+      const cdp = await context.newCDPSession(page);
+      try {
+        await ready(page);
+        await page.evaluate(() => {
+          const section = document.querySelector('[data-companion-statement]');
+          const documentMode = document.documentElement.dataset.scrollMode === 'document';
+          const scroller = documentMode ? window : document.querySelector('main');
+          const top = documentMode ? window.scrollY : scroller.scrollTop;
+          scroller.scrollTo(0, top + section.getBoundingClientRect().top + innerHeight * 0.3);
+        });
+        await waitOnPage(page, () => document.querySelector('[data-companion-game]')?.dataset.active === 'true'
+          && Number(document.querySelector('[data-game-discs]')?.dataset.gameDiscs) > 0);
+        const arcs = [];
+        for (let gesture = 0; gesture < 3; gesture += 1) {
+          await page.evaluate(() => window.__touchFluidQA.reset());
+          await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 90, y: 550 }] });
+          const before = await snapshot(page);
+          for (const [x, y] of [[130, 552], [200, 560], [290, 580], [300, 620], [260, 650], [180, 630], [100, 590], [80, 500]]) {
+            await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x, y }] });
+            await page.waitForTimeout(25);
+            const during = await snapshot(page);
+            assert.ok(Math.abs(during.scrollTop - before.scrollTop) <= 1, `slicing moved the page: ${before.scrollTop} → ${during.scrollTop}`);
+          }
+          await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+          await page.waitForTimeout(150);
+          const after = await snapshot(page);
+          assert.ok(Math.abs(after.scrollTop - before.scrollTop) <= 1, 'lifting after a slice must not fling the page');
+          assertFluidSwipe({ before, after });
+          arcs.push({ before: before.scrollTop, after: after.scrollTop });
+        }
+        const scroll = await swipe(context, page);
+        assertFluidSwipe(scroll);
+        assert.deepEqual(errors, []);
+        return { arcs, scroll };
+      } finally {
+        await cdp.detach();
+        await context.close();
+      }
+    });
+  }
+
   for (const route of ['', 'cen100/', 'mth140/', 'mth141/', 'courses/', 'privacy/']) {
     const { context, page, errors } = await open();
     const label = route || 'home';
