@@ -13,3 +13,7 @@
 ## 2026-10-23 - React Canvas useMemo Prop Serialization
 **Learning:** Using `JSON.stringify` on props in a React `useMemo` dependency array (like in `Fluid.jsx`) forces an expensive serialization operation on every render, and is incredibly dangerous when props contain complex WebGL objects (like a Three.js Texture). This will severely block the UI thread and degrade frame times.
 **Action:** When memoizing WebGL effects based on React props, destructure the specific primitives (`intensity`, `fluidColor`, etc.) and the exact object references (`tFluid`) to be used in the dependency array. Never stringify whole prop objects or WebGL textures.
+
+## 2026-10-27 - Object Allocation and Unrolling arrays in render loops
+**Learning:** In Three.js and React Three Fiber render loops, allocating array objects (e.g. `const shaderUpdates = [...]` in `Fluid.jsx`) and looping through them, or passing newly created payload objects inside hot path physics engines (`card.current.applyImpulse({x, y, z})` in `BadgeScene.jsx`), causes silent memory leaking per-frame and severe GC stutters.
+**Action:** Always unroll arrays manually in WebGL implementations instead of using closures like `forEach` or `map`. Allocate object parameters inside refs (`useRef({x:0, y:0, z:0})`) or direct `.set()` mutations for vectors inside `useFrame`.

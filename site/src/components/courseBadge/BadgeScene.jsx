@@ -46,6 +46,7 @@ function Lanyard({ body, x, rest, intersected }) {
   const speed = useRef(0);
   const ang = useMemo(() => new THREE.Vector3(), []);
   const rot = useMemo(() => new THREE.Vector3(), []);
+  const impulseVector = useRef({ x: 0, y: 0, z: 0 });
   const [start] = useState(() => (rest ? REST_START : SWING_START));
 
   useRopeJoint(body.fixed, body.j1, [[0, 0, 0], [0, 0, 0], 1]);
@@ -69,7 +70,10 @@ function Lanyard({ body, x, rest, intersected }) {
     if (isScrolling.current && intersected) {
       const moveDistance = Math.abs(speed.current) * 0.005;
       const directionVector = scrollDirection.current === 1 ? 1 : -1;
-      card.current.applyImpulse({ x: directionVector * moveDistance, y: 0, z: 0 }, true);
+      impulseVector.current.x = directionVector * moveDistance;
+      impulseVector.current.y = 0;
+      impulseVector.current.z = 0;
+      card.current.applyImpulse(impulseVector.current, true);
     }
     if (fixed.current) {
       ang.copy(card.current.angvel());
@@ -180,22 +184,27 @@ function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed
     card.current.position.set(object.position.x - offsetX, object.position.y, object.position.z);
     card.current.quaternion.copy(object.quaternion);
 
-    [j1, j2].forEach((ref, k) => {
-      const t = ref.current.translation();
-      if (!started.current) lerped[k].copy(t);
-      const clampedDistance = Math.max(0.1, Math.min(1, lerped[k].distanceTo(t)));
-      // Display only: a delayed render must not extrapolate the ribbon to
-      // infinity. This never changes the Rapier bodies or original impulses.
-      lerped[k].lerp(t, Math.min(1, delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed))));
-    });
+    const t1 = j1.current.translation();
+    if (!started.current) lerped[0].copy(t1);
+    const clampedDistance1 = Math.max(0.1, Math.min(1, lerped[0].distanceTo(t1)));
+    lerped[0].lerp(t1, Math.min(1, delta * (minSpeed + clampedDistance1 * (maxSpeed - minSpeed))));
+
+    const t2 = j2.current.translation();
+    if (!started.current) lerped[1].copy(t2);
+    const clampedDistance2 = Math.max(0.1, Math.min(1, lerped[1].distanceTo(t2)));
+    lerped[1].lerp(t2, Math.min(1, delta * (minSpeed + clampedDistance2 * (maxSpeed - minSpeed))));
+
     started.current = true;
     curve.points[0].copy(j3.current.translation());
     curve.points[1].copy(lerped[1]);
     curve.points[2].copy(lerped[0]);
     curve.points[3].copy(fixed.current.translation());
-    curve.points.forEach((point) => {
-      point.x -= offsetX;
-    });
+
+    curve.points[0].x -= offsetX;
+    curve.points[1].x -= offsetX;
+    curve.points[2].x -= offsetX;
+    curve.points[3].x -= offsetX;
+
     band.current.geometry.setPoints(curve.getPoints(32));
   });
 
