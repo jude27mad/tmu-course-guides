@@ -1,3 +1,5 @@
+import { isGameTouch } from '../components/dom/prefooter/gameTouch.mjs';
+
 // A fresh filter belongs to each Lenis instance.
 export function createTouchScrollFilter() {
   let multiTouch = false;
@@ -7,6 +9,6 @@ export function createTouchScrollFilter() {
     // reuses its last movement delta on touchend. Reset only on a new gesture.
     if (event.type === 'touchstart' && event.touches.length === 1) multiTouch = false;
     if (event.touches.length > 1) multiTouch = true;
-    return !multiTouch;
+    return !multiTouch && !isGameTouch(event);
   };
 }

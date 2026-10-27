@@ -31,6 +31,9 @@ function Sticker({ id, positionX, image, imageSliced, isMobile, viewportHeight, 
 
   const handleFruitSliced = useCallback(
     (event) => {
+      // Touches are sampled after their direction is known. Pointer events
+      // arrive first and would otherwise score while the user is scrolling.
+      if (event?.pointerType === 'touch') return;
       if (!active || sliced.current || gone.current) return;
       // Raycasting still sees clipped meshes. Never score an invisible hit.
       if ((event?.point?.y ?? bodyRef.current?.translation().y ?? Infinity) > ceilingRef.current) return;
