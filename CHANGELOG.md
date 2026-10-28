@@ -2,6 +2,13 @@
 
 Latest first. Students see course changes under **Course updates** in each guide's Guide tools, and website changes on the **Website updates** page. Older entries record the behaviour at the time; later releases supersede them.
 
+## Unreleased — Opens without a connection
+
+- After one visit, the Desk, Courses, all three guides, Privacy and Website updates open without a connection. `site/public/sw.js` saves this site's own pages and files in the browser; nothing comes from or goes to another host.
+- Pages and their data are always fetched from the network first, so an online visit gets the latest dates; the saved copy is used only when the network fails. Build files, whose names change with their content, are served from the copy, so a repeat visit to a course page skips about fifteen revalidation requests once the browser's ten-minute cache has expired.
+- An address that was never saved shows a short "You're offline" page with a link to the Desk instead of the browser's error page.
+- `site/scripts/check-offline.mjs` registers the copy, goes offline, opens every course, an assignment, a link between courses and an unsaved address, and checks that a changed page wins over the saved one once back online. It runs in Pages CI. Other browser checks run without the copy.
+
 ## Unreleased — Smoother page changes
 
 - **iPhone and iPad.** A page change no longer fades the page out over the dark background artwork. A paper layer sits behind the page during the change (`#routePaper`, in the page's flow and never fixed, so Safari's bars are unaffected). The page fades into it in 0.18 s and the next page rises 14 px out of it in 0.34 s. The header stays put while it is on screen. Leaving from an open Menu or Search, the swap happens under the panel, which dissolves into the new page.

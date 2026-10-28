@@ -62,6 +62,12 @@ After building, run `PLAYWRIGHT_PATH=/path/to/playwright node scripts/verify-cou
 - `prefers-reduced-motion` and the saved Pause motion setting (`guide-motion-paused`) turn off the loader curtain, route transitions, appear animations, background drift, fluid effect, pre-footer physics and marquee, and render the 3D scenes on demand so they hold still. Lenis wheel smoothing stays on.
 - Pinch zoom, text selection, keyboard scrolling, visible focus, a skip link and 44 px tap targets for buttons and controls on phones. Without JavaScript the static course content renders; deadlines, checklists, card details and What's changed? need JavaScript.
 
+## Offline copy
+
+`public/sw.js` keeps the website usable without a connection. `_document.page.jsx` registers it after the first page has loaded, in production builds only. Pages and `_next/data` are network first (the copy is used only when the network fails, so online visits always get the latest dates). Hashed build files are served from the copy, and fonts and images are refreshed in the background. After a visit it saves every route, the build files their HTML names, the fonts and images their styles name, and the files the first visit loaded before it was in control, at most every six hours and not with Save-Data on. An address never saved gets a short offline page.
+
+Browser checks run without it, because `navigator.webdriver` skips the registration and request interception keeps seeing every request; `scripts/check-offline.mjs <pages folder>` opts in with `?offline-check` and runs in Pages CI. To retire the copy, replace `sw.js` with a worker that deletes its `guides-*` caches and calls `self.registration.unregister()`; keep the file at the same address so every browser picks it up.
+
 ## Privacy
 
 No analytics and no requests to other hosts. Each exported page carries a Content Security Policy (`script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'`; `connect-src 'self'`; `font-src 'self'`; `worker-src 'self' blob:`).

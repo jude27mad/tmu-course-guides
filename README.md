@@ -57,6 +57,10 @@ To move to another browser or device, export a backup from each guide, import it
 
 Progress saved by earlier versions of the website carries over automatically.
 
+## Without a connection
+
+After one visit, the website keeps a copy of its own pages in your browser, so the Desk, Courses and every guide open with no signal. With a connection you always get the latest version; the copy is used only when the network is unavailable, and it never includes anything from another website. Clearing your browser data removes it.
+
 ## Motion and accessibility
 
 - Course tabs and utility controls use a subtle glass finish; instructions and notes have solid backgrounds. **Pause motion** makes these controls solid, stops animations, shows finished photographs, removes the pointer effect and skips page transitions. The preference stays on in this browser. Mouse-wheel scrolling is still smoothed. Your device's reduced-motion setting has the same effect; reduced transparency and increased contrast also make the controls solid where supported.

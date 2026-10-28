@@ -32,6 +32,13 @@ const FAVICON =
 // _app keeps Giats's syncTouch input enabled in either scroll container.
 const BOOT = `(function(d){const r=d.documentElement;r.classList.add('js');r.dataset.scrollMode=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)?'document':'contained';try{const q=new URLSearchParams(location.search).get('motion'),p=localStorage.getItem('guide-motion-paused')==='true',m=!!window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;if(q==='off'||p||(m&&q!=='full'))r.setAttribute('data-motion','off');}catch(e){}})(document);`;
 
+// The offline copy (public/sw.js): registered after the page has loaded, in published builds only, so
+// it never competes with a first visit. Browser checks run without it (navigator.webdriver) so request
+// interception sees every request, unless the address carries ?offline-check. It passes the worker the
+// files this first visit loaded before the worker was in control. With Save-Data on, pages are saved
+// as they are visited but no others are fetched ahead.
+const OFFLINE = `(function(n){if(!('serviceWorker' in n)||(n.webdriver&&!/[?&]offline-check\\b/.test(location.search)))return;addEventListener('load',function(){n.serviceWorker.register('${BASE_PATH}/sw.js',{scope:'${BASE_PATH}/'}).then(function(){return n.serviceWorker.ready}).then(function(r){if(n.connection&&n.connection.saveData)return;setTimeout(function(){if(r.active)r.active.postMessage({type:'save-offline-copy',loaded:performance.getEntriesByType('resource').map(function(e){return e.name})})},3000)}).catch(function(){})})})(navigator);`;
+
 export default class MyDocument extends Document {
   render() {
     return (
@@ -41,6 +48,8 @@ export default class MyDocument extends Document {
           <meta name="referrer" content="no-referrer" />
           {/* eslint-disable-next-line react/no-danger */}
           <script dangerouslySetInnerHTML={{ __html: BOOT }} />
+          {/* eslint-disable-next-line react/no-danger */}
+          {process.env.NODE_ENV === 'production' ? <script dangerouslySetInnerHTML={{ __html: OFFLINE }} /> : null}
           {/* Light only, and no automatic dark mode: forced darkening inverts the design (see global.scss). */}
           <meta name="color-scheme" content="only light" />
           <meta name="theme-color" content={TOKENS.page} />
