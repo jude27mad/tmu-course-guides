@@ -123,7 +123,7 @@ export default function CourseWorkspace() {
               ) : null}
             </span>
             {next ? (
-              <Link href={`/${courseId}/#${next.anchor}`} scroll={false}>
+              <Link id="course-next-link" href={`/${courseId}/#${next.anchor}`} scroll={false}>
                 <strong>{next.title} ↗</strong>
                 <span>{[next.dateLabel, timeWithRoom(next, room) || next.cta].filter(Boolean).join(' · ')}</span>
               </Link>

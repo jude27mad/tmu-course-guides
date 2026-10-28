@@ -108,7 +108,8 @@ export default function useCourseNavigation(courseId, info) {
         else if (!(from.item && target.item && !previous.returnTo)) returnTo = { hash: previous.hash, view: from.view, depth: 1 };
       }
       const next = validSaved
-        ? { ...saved, key, restore: true }
+        ? // `initial` describes this page view: Back to the first entry is not a fresh load, so focus returns.
+          { ...saved, key, restore: true, initial: !previous }
         : {
             courseId,
             hash,
@@ -247,7 +248,7 @@ export default function useCourseNavigation(courseId, info) {
     // Back to a list whose opener row has moved (marked done, it now sits under Done): bring the row
     // into view instead of restoring a position that shows a different row, with focus far off screen.
     const opener = entry.restore && entry.focus && document.getElementById(entry.focus);
-    const view = opener && scrollViewport();
+    const view = opener && content.contains(opener) && scrollViewport();
     if (view) {
       const box = opener.getBoundingClientRect();
       if (box.bottom < view.top || box.top > view.bottom) scrollToTop(Math.max(0, scrollTop() + box.top - view.top - (view.bottom - view.top) / 3));
@@ -263,7 +264,9 @@ export default function useCourseNavigation(courseId, info) {
     const focusMoved = document.activeElement !== focusAtNavigation.current && document.activeElement !== content && content.contains(document.activeElement);
     const filterHasFocus = location.view === 'work' && entry.inPlace && !entry.restore && focusAtNavigation.current?.closest('[data-work-filters]');
     if ((!entry.initial || entry.hash) && !focusMoved && !filterHasFocus) {
-      const focus = (entry.restore && document.getElementById(entry.focus)) || target || content;
+      // The remembered control, when it is still shown in the page (not, say, a closed Search panel's input).
+      const remembered = entry.restore && document.getElementById(entry.focus);
+      const focus = (remembered && main.contains(remembered) && remembered.getClientRects().length && remembered) || target || content;
       focus.focus({ preventScroll: true });
     }
     restoring.current = false;

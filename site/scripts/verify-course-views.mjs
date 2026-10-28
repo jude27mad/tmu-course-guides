@@ -323,6 +323,16 @@ try {
     await page.locator('[data-work-results]').waitFor();
     assert.equal(await page.locator('[data-assignment-detail]').count(), 0);
   });
+  await check('browser Back to the first, hash-less entry returns focus to the opener', async () => {
+    await ready(page, 'cen100/');
+    await page.locator('#course-next-link').focus();
+    await page.keyboard.press('Enter');
+    await page.locator('[data-assignment-detail]').waitFor();
+    await page.goBack();
+    await page.locator('[data-work-results]').waitFor();
+    await page.waitForFunction(() => document.activeElement && document.activeElement !== document.body);
+    assert.equal(await page.evaluate(() => document.activeElement.id), 'course-next-link');
+  });
   await check('rapid view changes with motion never replay stale navigation', async () => {
     const rapidContext = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, reducedMotion: 'no-preference' });
     try {
