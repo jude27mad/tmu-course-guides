@@ -7,11 +7,13 @@ import useStill from '@src/hooks/useStill';
 import useSelectionMotion from './useSelectionMotion';
 import styles from './workspace.module.scss';
 
+// Upcoming work first, so the list opens on what is due next; past-due records
+// not yet marked done follow, then everything already marked.
 const groups = [
-  ['pastDue', 'Past due · not marked done'],
   ['thisWeek', 'This week'],
   ['nextWeek', 'Next week'],
   ['later', 'Later & undated'],
+  ['pastDue', 'Past due · not marked done'],
   ['done', 'Marked done by you'],
 ];
 const matches = (filter, key) => filter === 'all' || (filter === 'done' ? key === 'done' : key !== 'done');
