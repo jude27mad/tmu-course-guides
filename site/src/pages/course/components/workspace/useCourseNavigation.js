@@ -103,7 +103,9 @@ export default function useCourseNavigation(courseId, info) {
             ...previous.returnTo,
             depth: (previous.returnTo.depth || 1) + 1,
           };
-        else returnTo = { hash: previous.hash, view: from.view, depth: 1 };
+        // A detail opened from another detail that was itself opened directly (a link, search, reload)
+        // has nowhere better to return than its view: "Back to Work" must not land on the other detail.
+        else if (!(from.item && target.item && !previous.returnTo)) returnTo = { hash: previous.hash, view: from.view, depth: 1 };
       }
       const next = validSaved
         ? { ...saved, key, restore: true }
