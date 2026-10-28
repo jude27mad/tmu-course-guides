@@ -191,13 +191,7 @@ function About({ desk }) {
           <div className={clsx(styles.buttonContainer)}>
             {ready && next?.cta && <ButtonLink href={`/${next.courseId}/#course-info`} label={next.cta.toUpperCase()} />}
             {ready && next?.markable && !next.done && (
-              <ButtonLink
-                ref={markRef}
-                primary
-                onClick={onMarkDone}
-                label={(copy.markDone || copy.next?.markDone || 'Mark done').toUpperCase()}
-                ariaLabel={markLabel ? markLabel(next.title) : undefined}
-              />
+              <ButtonLink ref={markRef} primary onClick={onMarkDone} label={(copy.markDone || copy.next?.markDone || 'Mark done').toUpperCase()} ariaLabel={markLabel ? markLabel(next) : undefined} />
             )}
             {canUndo && <ButtonLink ref={undoRef} onClick={onUndo} label="UNDO" />}
             <ButtonLink href="/courses/" label="ALL COURSES" />

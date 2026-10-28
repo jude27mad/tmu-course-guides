@@ -1,6 +1,7 @@
 import { Canvas, events } from '@react-three/fiber';
 import { Suspense, useCallback, useEffect, useReducer, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import WebGLGate from '@src/components/canvas/WebGLGate';
 import dynamic from 'next/dynamic';
 import { useCoarsePointer } from '@src/hooks/useMediaQuery';
 import styles from './game.module.scss';
@@ -44,42 +45,45 @@ function Index({ active, eventSource }) {
 
   return (
     <>
-      <Canvas
-        // The game is fixed to the viewport. Scroll must not resize its canvas;
-        // real viewport resizes still follow the browser's bottom edge.
-        resize={{ scroll: false, debounce: { resize: 0, scroll: 0 } }}
-        eventSource={eventSource.current?.closest('main') || eventSource}
-        events={(state) => ({
-          ...events(state),
-          compute: (event, current) => {
-            const bounds = current.gl.domElement.getBoundingClientRect();
-            if (!bounds?.width || !bounds.height) return;
-            current.pointer.set(((event.clientX - bounds.left) / bounds.width) * 2 - 1, -((event.clientY - bounds.top) / bounds.height) * 2 + 1);
-            current.raycaster.setFromCamera(current.pointer, current.camera);
-          },
-        })}
-        fallback={<span aria-hidden="true" />}
-        frameloop={active ? 'always' : 'never'}
-        dpr={1}
-        gl={{
-          antialias: !coarse,
-          powerPreference: 'low-power',
-        }}
-        flat
-        style={{
-          position: 'relative',
-          display: 'block',
-          backgroundColor: 'transparent',
-          height: '100%',
-          width: '100%',
-          pointerEvents: 'none',
-        }}
-      >
-        {/* keeps a loading scene (the physics chunk, the disc font) inside the canvas */}
-        <Suspense fallback={null}>
-          <FruitNinja active={active} eventSource={eventSource} scoreRef={scoreRef} onSlice={onSlice} onMiss={onMiss} />
-        </Suspense>
-      </Canvas>
+      {/* Without WebGL the section is its heading and line of text; the game is decoration. */}
+      <WebGLGate>
+        <Canvas
+          // The game is fixed to the viewport. Scroll must not resize its canvas;
+          // real viewport resizes still follow the browser's bottom edge.
+          resize={{ scroll: false, debounce: { resize: 0, scroll: 0 } }}
+          eventSource={eventSource.current?.closest('main') || eventSource}
+          events={(state) => ({
+            ...events(state),
+            compute: (event, current) => {
+              const bounds = current.gl.domElement.getBoundingClientRect();
+              if (!bounds?.width || !bounds.height) return;
+              current.pointer.set(((event.clientX - bounds.left) / bounds.width) * 2 - 1, -((event.clientY - bounds.top) / bounds.height) * 2 + 1);
+              current.raycaster.setFromCamera(current.pointer, current.camera);
+            },
+          })}
+          fallback={<span aria-hidden="true" />}
+          frameloop={active ? 'always' : 'never'}
+          dpr={1}
+          gl={{
+            antialias: !coarse,
+            powerPreference: 'low-power',
+          }}
+          flat
+          style={{
+            position: 'relative',
+            display: 'block',
+            backgroundColor: 'transparent',
+            height: '100%',
+            width: '100%',
+            pointerEvents: 'none',
+          }}
+        >
+          {/* keeps a loading scene (the physics chunk, the disc font) inside the canvas */}
+          <Suspense fallback={null}>
+            <FruitNinja active={active} eventSource={eventSource} scoreRef={scoreRef} onSlice={onSlice} onMiss={onMiss} />
+          </Suspense>
+        </Canvas>
+      </WebGLGate>
       {eventSource.current &&
         createPortal(
           <span ref={scoreRef} className={styles.score} role="status" data-game-score hidden={!game.started}>

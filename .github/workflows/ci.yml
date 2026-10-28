@@ -77,6 +77,61 @@ jobs:
       - name: Build the static export
         run: npm run build
 
+  no-webgl:
+    # Its own job, in parallel with the rest: the Pages build job already runs every other browser check in turn.
+    name: Site without WebGL (Chromium and WebKit)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      SITE_BASE_PATH: /tmu-course-guides
+      NEXT_TELEMETRY_DISABLED: 1
+      PLAYWRIGHT_VERSION: '1.64.0'
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - name: Install dependencies and build the static export
+        working-directory: site
+        run: |
+          npm ci
+          npm run build
+      - name: Install Playwright, Chromium and WebKit
+        run: |
+          # Keep runner setup off the Azure HTTP mirror, which has exhausted the job timeout.
+          for apt_source in /etc/apt/apt-mirrors.txt /etc/apt/sources.list /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d/*.sources; do
+            if [[ -f "$apt_source" ]]; then
+              sudo sed -i 's|http://azure.archive.ubuntu.com/ubuntu|https://archive.ubuntu.com/ubuntu|g' "$apt_source"
+            fi
+          done
+          # Keep QA-only dependencies outside the checkout and site manifests.
+          npm install --prefix "$RUNNER_TEMP/qa-playwright" --no-save --package-lock=false "playwright@$PLAYWRIGHT_VERSION"
+          node "$RUNNER_TEMP/qa-playwright/node_modules/playwright/cli.js" install --with-deps chromium webkit
+      - name: Check the site without WebGL in Chromium
+        env:
+          PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
+          QA_REPORT_DIR: ${{ runner.temp }}/no-webgl
+        run: node site/scripts/check-no-webgl.mjs
+      - name: Check the site without WebGL in WebKit
+        if: ${{ !cancelled() }}
+        env:
+          PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
+          QA_REPORT_DIR: ${{ runner.temp }}/no-webgl
+          QA_BROWSER: webkit
+        run: node site/scripts/check-no-webgl.mjs
+      - name: Upload the no-WebGL reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: no-webgl
+          path: ${{ runner.temp }}/no-webgl/
+          if-no-files-found: ignore
+          retention-days: 7
+
   ui-build:
     name: UI build and tests
     runs-on: ubuntu-24.04
