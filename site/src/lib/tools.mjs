@@ -101,7 +101,8 @@ export function importBackup(courseId, raw, { storage } = {}) {
   try {
     if (typeof raw !== 'string' || raw.length > 300000) throw new Error(MATH.COPY.backupTooLarge);
     const data = JSON.parse(raw);
-    if (data.format !== 'tmu-math-guide' || data.version !== 1 || data.course !== courseId || !data.progress || typeof data.progress !== 'object') throw new Error(MATH.COPY.backupInvalid(DATA[courseId].code));
+    // A file holding JSON null (or a number or string) is a wrong file too, not a TypeError.
+    if (!data || typeof data !== 'object' || data.format !== 'tmu-math-guide' || data.version !== 1 || data.course !== courseId || !data.progress || typeof data.progress !== 'object') throw new Error(MATH.COPY.backupInvalid(DATA[courseId].code));
     const imported = MATH.cleanProgress(data.progress, DATA[courseId], courseId);
     const progress = readMath(courseId, store);
     let conflicts = 0;

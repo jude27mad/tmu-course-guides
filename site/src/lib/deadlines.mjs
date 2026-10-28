@@ -1,13 +1,14 @@
 /* Deadlines, countdowns, the weekly checklist, assessments and the Desk snapshot.
 
    Every rule comes from the vendored modules (targets.mjs + schedule.mjs: Toronto time, the end-of-day rule,
-   precision levels, grace, the overall winner); this file only shapes their results for the pages.
+   precision levels, grace, the overall winner); this file only shapes their results for the pages, except that a
+   finished exact target leaves "next" after its grace (currentTarget()).
    Every time-dependent function takes `now` (a Date or epoch ms; omitted = the current time). */
 import { fast } from './perf.mjs';
 import { COURSES as DATA } from './vendor/course-data.mjs';
 import { SCHEDULE } from './vendor/cen-schedule.mjs';
 import { today, addDays, dateLabel, dayLabel, timestamp, resolveAssessment, assessmentPassed, timing } from './vendor/schedule.mjs';
-import { resolveTarget, overall, parts, compact, status, targetDate, sentence } from './vendor/night/targets.mjs';
+import { resolveTarget, overall, parts, compact, status, targetDate, sentence, readSaved, GRACE } from './vendor/night/targets.mjs';
 import { recordsForCourse, termWeek, semesterWeeks } from './vendor/book/weeks.mjs';
 import { deskSummary } from './vendor/desk/desk-data.mjs';
 import { weekCopy } from './vendor/night/palette.mjs';
@@ -291,11 +292,25 @@ function bucketsNow(items, now) {
   return out;
 }
 
+/* resolveTarget(), except that an exact target stops being "next" GRACE after it ends. schedule.mjs passes a math
+   lab quiz only at the end of its Toronto day (the quiz has no published time), so once a section gave it its lab
+   window, the course header and the Desk said "Due time passed" for the rest of that day. A timed CEN row already
+   leaves at its time, and the Desk's overall winner already yields after GRACE (targets.mjs dueKey). */
+function currentTarget({ completed, now, ...rest }) {
+  let target = resolveTarget({ ...rest, completed, now });
+  let skipped = completed;
+  for (let i = 0; i < 8 && target?.precision === 'exact' && (target.end ?? target.at) + GRACE < now; i += 1) {
+    skipped = { ...skipped, [target.id]: true };
+    target = resolveTarget({ ...rest, completed: skipped, now });
+  }
+  return target;
+}
+
 /** The next deadline of one course, or across all three (targets.mjs overall(): exact first by start, grace, ties in course order). */
 function nextDeadlineNow({ now, courseId, storage } = {}) {
   const ids = courseId ? [courseId].filter((id) => getCourse(id)) : COURSE_IDS;
   const contexts = ids.map((id) => context(id, { now, storage }));
-  const targets = contexts.map((ctx) => resolveTarget({ course: ctx.courseId, data: dataFor(ctx.courseId), section: ctx.section, completed: ctx.completed, now: ctx.ms }));
+  const targets = contexts.map((ctx) => currentTarget({ course: ctx.courseId, data: dataFor(ctx.courseId), section: ctx.section, completed: ctx.completed, now: ctx.ms }));
   const winner = courseId ? targets[0] : overall(targets, toMs(now));
   if (!winner || winner.precision === 'empty') return null;
   return deadlineItem(winner.course, winner.id, { now, storage });
@@ -449,6 +464,13 @@ function assessmentsNow(courseId, { section } = {}) {
   });
 }
 
+// A course's Desk target under currentTarget()'s rule (deskSummary() resolves with the vendored one).
+function deskTarget(id, next, store, ms) {
+  if (next?.precision !== 'exact' || (next.end ?? next.at) + GRACE >= ms) return next;
+  const target = currentTarget({ course: id, data: dataFor(id), ...readSaved(id, dataFor(id), view(store)), now: ms });
+  return target ? { ...target, status: status(target, ms), compact: compact(target, ms), targetDate: targetDate(target) } : null;
+}
+
 /**
  * The Desk: one entry per course, in course order, from the vendored deskSummary(): the next deadline (as a
  * deadlines() item, null when nothing is left), progress {completed, total, ratio, thisWeek}, urgency, the saved
@@ -458,19 +480,22 @@ function deskSnapshotNow({ now, storage } = {}) {
   const store = resolveStorage(storage);
   const ms = toMs(now);
   const summary = deskSummary({ now: ms, storage: view(store) });
+  const shown = Object.fromEntries(COURSE_IDS.map((id) => [id, deskTarget(id, summary[id].next, store, ms)]));
+  const winner = overall(COURSE_IDS.map((id) => shown[id]).filter(Boolean), ms);
   return COURSE_IDS.map((id) => {
     const course = summary[id];
-    const next = course.next && course.next.precision !== 'empty' ? deadlineItem(id, course.next.id, { now: ms, storage: store }) : null;
+    const target = shown[id];
+    const next = target && target.precision !== 'empty' ? deadlineItem(id, target.id, { now: ms, storage: store }) : null;
     return {
       course: getCourse(id),
       next,
-      target: course.next,
+      target,
       progress: course.progress,
-      urgency: course.urgency,
+      urgency: target === course.next ? course.urgency : (parts(target, ms)?.state ?? 'empty'),
       kinds: course.kinds,
       week: course.week,
       section: course.section,
-      isOverall: course.isOverall,
+      isOverall: winner !== null && target === winner,
     };
   });
 }

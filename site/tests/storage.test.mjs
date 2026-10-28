@@ -318,6 +318,9 @@ test('backups: export the old file formats and import them back with the old mer
   assert.equal(broken.saved, false);
   assert.match(broken.message, /JSON/);
   assert.deepEqual(importBackup('mth140', '{}', { storage: fresh }), { ok: false, saved: false, message: 'Choose a valid progress backup for MTH140.' });
+  for (const value of ['null', '0', '"backup"', 'true']) {
+    assert.deepEqual(importBackup('mth140', value, { storage: fresh }), { ok: false, saved: false, message: 'Choose a valid progress backup for MTH140.' }, value);
+  }
   assert.deepEqual(importBackup('mth140', 'x'.repeat(300001), { storage: fresh }), { ok: false, saved: false, message: 'This file is too large for a course-progress backup.' });
   assert.equal(fresh.data.get('mth140-progress-v1'), saved);
 });
