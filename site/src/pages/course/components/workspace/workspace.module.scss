@@ -622,6 +622,18 @@
     text-decoration: underline;
   }
 }
+.inlineAction {
+  align-self: flex-start;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  border-bottom: 1px solid currentColor;
+  font-size: 16px;
+  color: var(--accent);
+  .information & {
+    text-decoration: none;
+  }
+}
 .infoRow {
   display: flex;
   justify-content: space-between;
@@ -666,6 +678,10 @@
   }
 }
 .infoInactive {
+  display: none;
+}
+// The calculator needs JavaScript; without it the Grading answer stays plain reading.
+:global(html:not(.js)) .inlineAction {
   display: none;
 }
 :global(html:not(.js)) .infoInactive {
@@ -721,6 +737,30 @@
     a {
       font-size: 16px;
       padding: 8px;
+    }
+    // With Grades, the tabs stay on one row: five (math) down to 360 px, four (CEN100) down to 320 px. Every tab
+    // keeps a 44 px target.
+    &[data-views='5'] {
+      gap: 0;
+      padding: 3px;
+      a {
+        padding: 8px 6px;
+      }
+      @media (max-width: 380px) {
+        padding: 2px;
+        a {
+          padding: 8px 5px;
+        }
+      }
+    }
+    &[data-views='4'] {
+      @media (max-width: 359px) {
+        gap: 0;
+        padding: 3px;
+        a {
+          padding: 8px 6px;
+        }
+      }
     }
   }
   .sectionControls {

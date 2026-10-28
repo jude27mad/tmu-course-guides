@@ -12,6 +12,9 @@ function Answer({ entry, info, courseId, rows }) {
   if (entry.kind === 'grading')
     return (
       <>
+        <Link className={styles.inlineAction} href={`/${courseId}/#grades`} scroll={false}>
+          Calculate your grade with these weights ↗
+        </Link>
         {grading.pass ? <p>{grading.pass}</p> : null}
 
         {rows.categories ? (
@@ -192,6 +195,7 @@ export default function CourseInformation({ panel, back, returnView = 'info' }) 
     work: 'Work',
     study: 'Study',
     schedule: 'Schedule',
+    grades: 'Grades',
   }[returnView];
   const backButton = (
     <button type="button" className={styles.back} onClick={back}>

@@ -7,7 +7,7 @@
  */
 import React from 'react';
 
-import { STORAGE_KEYS, getSection, motionPaused, setMotionPaused, setSection as saveSection, sharedProgress } from './index.js';
+import { STORAGE_KEYS, getSection, gradesSavable, motionPaused, readGrades, setMotionPaused, setSection as saveSection, sharedProgress, subscribeGrades, writeGrades } from './index.js';
 
 const { useCallback, useEffect, useMemo, useState } = React;
 
@@ -110,6 +110,37 @@ export const useSection = (courseId) => {
   );
 
   return [section, update];
+};
+
+const NO_GRADES = { marks: {}, target: null };
+
+/**
+ * [grades, update] for a course's grade calculator: `grades` = { marks, target, ready, saved } (empty until
+ * mounted; `saved` is false when the browser refuses storage); `update({ marks?, target? })` merges the change, writes the whole record to `<course>-grades-v1` and
+ * returns whether storage accepted it. Changes from another tab arrive automatically.
+ */
+export const useGrades = (courseId) => {
+  const [state, setState] = useState({ ...NO_GRADES, ready: false, saved: true });
+
+  useEffect(() => {
+    const read = () => setState((previous) => ({ ...readGrades(courseId), ready: true, saved: previous.saved }));
+    // Know from the start whether this browser keeps the marks, not only after the first edit.
+    setState({ ...readGrades(courseId), ready: true, saved: gradesSavable() });
+    return subscribeGrades(courseId, undefined, read);
+  }, [courseId]);
+
+  const update = useCallback(
+    (change) => {
+      const current = readGrades(courseId);
+      const next = { marks: change.marks ?? current.marks, target: change.target !== undefined ? change.target : current.target };
+      const saved = writeGrades(courseId, undefined, next);
+      setState({ ...readGrades(courseId), ready: true, saved });
+      return saved;
+    },
+    [courseId],
+  );
+
+  return [state, update];
 };
 
 function readMotion() {

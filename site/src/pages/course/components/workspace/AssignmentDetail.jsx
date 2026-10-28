@@ -9,6 +9,7 @@ export default function AssignmentDetail({ item, kind, assignments, back, return
     work: 'Work',
     schedule: 'Schedule',
     study: 'Study',
+    grades: 'Grades',
     info: 'Course info',
   }[returnView];
   return (

@@ -129,6 +129,17 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-10-28-grade-calculator",
+  "date": "October 28, 2026",
+  "title": "Grade calculator",
+  "text": "Each course has a new Grades tab with a grade calculator that uses the course's own weights. Enter a mark as a percentage or a score such as 17 out of 20 to see your current average and letter, what you have already secured and the best grade still possible.",
+  "items": [
+    "What do I need? shows, for every letter from A+ to D-, the average you need on everything still to be marked, and whether it is already secured or out of reach.",
+    "MTH140 and MTH141 drop your lowest lab quiz, as the course policies state. Letters follow TMU's undergraduate scale, including its rounding to a whole percentage.",
+    "Marks are saved in this browser only and are not part of progress backups."
+  ]
+ },
+ {
   "id": "2026-10-24-smoother-page-changes",
   "date": "October 24, 2026",
   "title": "Smoother page changes",
