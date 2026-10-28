@@ -178,19 +178,6 @@ jobs:
           PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
           QA_REPORT_DIR: ${{ runner.temp }}/route-filter-qa
         run: node site/scripts/check-route-filter-motion.mjs
-      - name: Check the site without WebGL
-        if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' }}
-        env:
-          PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
-          QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/no-webgl
-        run: node site/scripts/check-no-webgl.mjs
-      - name: Check the site without WebGL in WebKit
-        if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' }}
-        env:
-          PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
-          QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/no-webgl
-          QA_BROWSER: webkit
-        run: node site/scripts/check-no-webgl.mjs
       - name: Upload route transition and filter recordings
         if: always()
         uses: actions/upload-artifact@v4

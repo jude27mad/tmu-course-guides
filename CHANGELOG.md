@@ -8,7 +8,7 @@ Latest first. Students see course changes under **Course updates** in each guide
 - Each course badge shows its HTML card with the course code and name, the badges' own fallback, which now also returns when the 3D layer is taken down. Everything else is unchanged, and browsers with WebGL get the same page as before.
 - If WebGL goes away after the page has loaded (a GPU reset or crash), the page keeps working: contexts that come back within a few seconds carry on, a canvas that failed meanwhile tries again, and a context that stays lost turns the 3D layer off and shows the flat badges.
 - The Desk's **Mark done** button is announced with the assessment's name again; screen readers had read it as "Mark undefined done".
-- Pages CI loads every route (including the 404 page) with WebGL disabled, blocked and failing after the capability probe passes or after the first canvas is built, loses the GPU after load, resets it, and works with WebGL as a control that also checks the 3D badges paint and the pre-footer game appear; Chromium and WebKit. The new `tests/webgl.test.mjs` fails on a 3D canvas that is not in the gate.
+- CI (its own `no-webgl` job) loads every route (including the 404 page) with WebGL disabled, blocked and failing after the capability probe passes or after the first canvas is built, loses the GPU after load, resets it, and works with WebGL as a control that also checks the 3D badges paint and the pre-footer game appear; Chromium and WebKit. The new `tests/webgl.test.mjs` fails on a 3D canvas that is not in the gate.
 
 ## Unreleased — Smoother page changes
 
