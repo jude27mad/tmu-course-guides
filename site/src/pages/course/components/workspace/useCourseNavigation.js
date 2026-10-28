@@ -236,9 +236,20 @@ export default function useCourseNavigation(courseId, info) {
     if (entry.restore) top = entry.scroll;
     const { lenis } = useStore.getState();
     lenis?.resize();
-    if (lenis) lenis.scrollTo(top, { immediate: true, force: true });
-    else if (scrollRoot() === window) window.scrollTo(0, top);
-    else main.scrollTop = top;
+    const scrollToTop = (value) => {
+      if (lenis) lenis.scrollTo(value, { immediate: true, force: true });
+      else if (scrollRoot() === window) window.scrollTo(0, value);
+      else main.scrollTop = value;
+    };
+    scrollToTop(top);
+    // Back to a list whose opener row has moved (marked done, it now sits under Done): bring the row
+    // into view instead of restoring a position that shows a different row, with focus far off screen.
+    const opener = entry.restore && entry.focus && document.getElementById(entry.focus);
+    const view = opener && scrollViewport();
+    if (view) {
+      const box = opener.getBoundingClientRect();
+      if (box.bottom < view.top || box.top > view.bottom) scrollToTop(Math.max(0, scrollTop() + box.top - view.top - (view.bottom - view.top) / 3));
+    }
     // Only the outgoing view is inert. Newly mounted controls must accept
     // the first tap, even while their entrance animation is still running.
     content.inert = false;
