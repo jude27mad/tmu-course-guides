@@ -7,6 +7,7 @@
  * driven by Giats's existing Tempus clock, visibility and motion preferences.
  */
 import { TOKENS, rgbOf } from '../../lib/palette.mjs';
+import { easeFor, frameSteps } from '../../utils/frameStep.mjs';
 
 const BONE = rgbOf(TOKENS.mutedOnDark);
 const SIGNAL = rgbOf(TOKENS.onDark);
@@ -51,11 +52,14 @@ export function mountSignalField(canvas, { subscribe, host = canvas.parentElemen
     if (pulses.length > 4) pulses.shift();
   };
 
-  const draw = () => {
+  // `steps` is the time since the last draw in 60 Hz frames, the rate Kairo's
+  // pointer easing was written for: 0.5 at 120 Hz, 0 for a redraw in place.
+  const draw = (steps) => {
     const t = clock;
-    mouse.x += (mouse.tx - mouse.x) * 0.12;
-    mouse.y += (mouse.ty - mouse.y) * 0.12;
-    mouse.power += (mouse.target - mouse.power) * 0.08;
+    const follow = easeFor(0.12, steps);
+    mouse.x += (mouse.tx - mouse.x) * follow;
+    mouse.y += (mouse.ty - mouse.y) * follow;
+    mouse.power += (mouse.target - mouse.power) * easeFor(0.08, steps);
     ctx.clearRect(0, 0, width, height);
     ctx.globalAlpha = 1;
     ctx.fillStyle = TOKENS.ink;
@@ -150,7 +154,7 @@ export function mountSignalField(canvas, { subscribe, host = canvas.parentElemen
     spawn(width * 0.72, height * 0.32);
     clock = 0.9;
     nextPulse = 1.2;
-    draw();
+    draw(0);
   };
 
   const resize = () => {
@@ -167,7 +171,7 @@ export function mountSignalField(canvas, { subscribe, host = canvas.parentElemen
     offsetX = (width - (cols - 1) * gap) / 2;
     offsetY = (height - (rows - 1) * gap) / 2;
     if (paused || !unsubscribe) staticFrame();
-    else draw();
+    else draw(0);
   };
 
   const loop = (now) => {
@@ -179,7 +183,7 @@ export function mountSignalField(canvas, { subscribe, host = canvas.parentElemen
       spawn();
       nextPulse = clock + 2.4 + Math.random() * 1.4;
     }
-    draw();
+    draw(frameSteps(delta));
   };
 
   const sync = () => {

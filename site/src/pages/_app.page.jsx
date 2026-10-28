@@ -15,6 +15,8 @@ import { BadgeProvider } from '@src/components/courseBadge/BadgeProvider';
 import { createBadgeRegistry } from '@src/components/courseBadge/badgeRegistry.mjs';
 // eslint-disable-next-line import/extensions
 import { createTouchScrollFilter } from '@src/utils/touch-scroll.mjs';
+// eslint-disable-next-line import/extensions
+import { frameSteps } from '@src/utils/frameStep.mjs';
 
 import Background from '@src/components/canvas/background/Index';
 import DemandDriver from '@src/components/canvas/DemandDriver';
@@ -67,6 +69,11 @@ const SHOW_STATS = typeof window !== 'undefined' && /[?&]stats\b/.test(window.lo
 // and stepped down to 1 by PerformanceMonitor when frames drop.
 const MAX_DPR_DESKTOP = 1.5;
 const MAX_DPR_TOUCH = 1.25;
+
+// Lenis turns a touch release into inertia: its last per-frame velocity times
+// this multiplier. Per-frame velocity halves at 120 Hz, so the multiplier is
+// rescaled every frame to keep the fling distance of a 60 Hz display.
+const TOUCH_INERTIA = 35;
 
 // Skip link copy from docs/copy/interface-copy.md.
 const skipLabel = (pathname) => (pathname === '/' ? 'Skip to courses' : 'Skip to coursework');
@@ -145,6 +152,7 @@ function MyApp({ Component, pageProps, router }) {
       smoothWheel: true,
       smoothTouch: true,
       syncTouch: true,
+      touchInertiaMultiplier: TOUCH_INERTIA,
       virtualScroll: createTouchScrollFilter(),
       wrapper: ios ? window : mainRef.current || undefined,
       content: ios ? document.documentElement : mainContainerRef.current || undefined,
@@ -172,9 +180,12 @@ function MyApp({ Component, pageProps, router }) {
     }
   }, [lenis]);
 
-  useFrame((time) => {
+  useFrame((time, deltaTime) => {
     if (lenis) {
       lenis.raf(time);
+      // unclamped: the velocity this frame covers the whole frame, however long
+      const steps = frameSteps(deltaTime / 1000, Infinity);
+      if (steps) lenis.options.touchInertiaMultiplier = TOUCH_INERTIA / steps;
     }
   }, 0);
 
