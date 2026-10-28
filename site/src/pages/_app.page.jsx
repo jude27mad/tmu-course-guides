@@ -93,17 +93,25 @@ function MotionSync() {
 // keyboard scrolling there as well as from body, without intercepting keys
 // belonging to form controls, native disclosures, or editable content.
 const SCROLL_KEYS = { ArrowDown: 1, ArrowUp: -1, PageDown: 2, PageUp: -2, ' ': 2, Home: -3, End: 3 };
+// Controls that use these keys themselves (typing, choosing, moving between options).
+const OWNS_KEYS =
+  'input, textarea, select, [contenteditable], [role="slider"], [role="spinbutton"], [role="combobox"], [role="listbox"], [role="tablist"], [role="radiogroup"], [role="grid"], [role="menu"], dialog';
+// Controls that Space activates; the other keys still scroll from them, as they do natively.
+const ACTIVATED_BY_SPACE = 'button, summary, [role="button"], [role="checkbox"], [role="switch"], [role="tab"]';
 function useBodyKeyScroll() {
   useEffect(() => {
     const onKeyDown = (event) => {
       if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
-      const active = document.activeElement;
-      const main = document.querySelector('main');
-      const containedFocus = main?.contains(active) && getComputedStyle(main).overflowY === 'hidden';
-      const control = active?.closest('input, textarea, select, button, summary, [contenteditable], [role="slider"], [role="spinbutton"], [role="combobox"], [role="listbox"]');
-      if (active && active !== document.body && active !== document.documentElement && (!containedFocus || control)) return;
       let step = SCROLL_KEYS[event.key];
       if (!step) return;
+      const active = document.activeElement;
+      const focused = active && active !== document.body && active !== document.documentElement ? active : null;
+      const main = document.querySelector('main');
+      if (focused?.closest(OWNS_KEYS) || (event.key === ' ' && focused?.closest(ACTIVATED_BY_SPACE))) return;
+      // A main that scrolls natively (Pause motion, reduced motion) is scrolled by the browser from focus inside
+      // it. Focus anywhere else (a button in the overflow:hidden main, the header after a panel closes) has
+      // nothing the browser can scroll, so those keys did nothing.
+      if (focused && main?.contains(focused) && getComputedStyle(main).overflowY !== 'hidden') return;
       const { lenis, isLoading, isMenuOpen, isSearchOpen, still } = useStore.getState();
       if (!lenis || isLoading || isMenuOpen || isSearchOpen) return;
       if (event.key === ' ' && event.shiftKey) step = -2;
