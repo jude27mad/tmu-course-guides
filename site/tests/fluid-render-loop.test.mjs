@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import * as THREE from 'three';
+import { decayFor, frameSteps } from '../src/utils/frameStep.mjs';
 
 const read = path => readFileSync(new URL(path, import.meta.url), 'utf8');
 const fluidSource = read('../src/components/canvas/fluid/Fluid.jsx');
@@ -59,15 +60,19 @@ function mount() {
     ...scope, useThree: select => select({ size, gl }), useCallback: callback => callback,
     useEffect: () => {}, useFrame: callback => { frame = callback; },
     useFBOs: () => FBOs, useMaterials: () => materials, usePointerEvents: () => splatStack,
+    decayFor, frameSteps,
   };
-  const component = fluidSource.slice(fluidSource.indexOf('function Fluid('), fluidSource.indexOf('\n  return ('));
+  // The module's own constants, then the component body up to its JSX.
+  const constants = fluidSource.match(/^const [A-Z_]+ = [^;]+;$/gm).join('\n');
+  const component = constants + '\n' + fluidSource.slice(fluidSource.indexOf('function Fluid('), fluidSource.indexOf('\n  return ('));
   refs = new Function(...Object.keys(componentScope),
     component + '\n  return { meshRef, postRef };\n}\nreturn Fluid({ mainRef: {} });')(...Object.values(componentScope));
   refs.meshRef.current = {};
-  refs.postRef.current = {};
+  const shown = [];
+  refs.postRef.current = { updateUniform: (name, value) => { if (name === 'tFluid') shown.push(value); } };
   return {
-    FBOs, splatStack, draws,
-    frame() { draws.length = 0; frame(); },
+    FBOs, splatStack, draws, shown,
+    frame(delta = 1 / 60) { draws.length = 0; frame({}, delta); },
     dispose() {
       targets.forEach(target => target.dispose());
       Object.values(materials).forEach(material => material.dispose());
@@ -114,5 +119,67 @@ test('reused splat vectors preserve each input and celebration radius at draw ti
       { pointer: [0.2, 0.4], color: [3, -2, 10], radius: 0.0011 },
       { pointer: [0.2, 0.4], color: [3, -2, 10], radius: 0.0011 },
     ]);
+  } finally { h.dispose(); }
+});
+
+// The simulation was tuned per 60 Hz frame. Two 120 Hz frames must advance it
+// as far as one 60 Hz frame: the same total time step and the same total
+// dissipation, with a pointer stroke's dye spread across both frames.
+const stepUniforms = (h, material) => h.draws.filter(draw => draw.material === material).map(draw => draw.uniforms);
+
+test('one 60 Hz frame keeps the original step, dissipation and dye', () => {
+  const h = mount();
+  try {
+    h.splatStack.current.push({ mouseX: 0.2, mouseY: 0.4, velocityX: 3, velocityY: -2 });
+    h.frame(1 / 60);
+    const [velocity, density] = stepUniforms(h, 'advection');
+    assert.deepEqual([velocity.dt, velocity.uDissipation, density.uDissipation], [0.016, 0.93, 0.96]);
+    assert.equal(stepUniforms(h, 'vorticity')[0].dt, 0.016);
+    assert.deepEqual(stepUniforms(h, 'splat')[0].uColor, [3, -2, 10]);
+  } finally { h.dispose(); }
+});
+
+test('two 120 Hz frames advance and fade the fluid as much as one 60 Hz frame', () => {
+  const h = mount();
+  try {
+    let dt = 0; let vorticity = 0; let velocityFade = 1; let densityFade = 1; let dye = 0;
+    for (let frame = 0; frame < 2; frame += 1) {
+      h.splatStack.current.push({ mouseX: 0.2, mouseY: 0.4, velocityX: 1.5, velocityY: -1 });
+      h.frame(1 / 120);
+      const [velocity, density] = stepUniforms(h, 'advection');
+      dt += velocity.dt;
+      vorticity += stepUniforms(h, 'vorticity')[0].dt;
+      velocityFade *= velocity.uDissipation;
+      densityFade *= density.uDissipation;
+      dye += stepUniforms(h, 'splat')[0].uColor[2];
+    }
+    assert.ok(Math.abs(dt - 0.016) < 1e-12);
+    assert.ok(Math.abs(vorticity - 0.016) < 1e-12);
+    assert.ok(Math.abs(velocityFade - 0.93) < 1e-12);
+    assert.ok(Math.abs(densityFade - 0.96) < 1e-12);
+    assert.ok(Math.abs(dye - 10) < 1e-12);
+  } finally { h.dispose(); }
+});
+
+test('a burst keeps its full dye at any frame rate', () => {
+  const h = mount();
+  try {
+    h.splatStack.current.push({ mouseX: 0.5, mouseY: 0.5, velocityX: 90, velocityY: 0, radiusScale: 36, burst: true });
+    h.frame(1 / 120);
+    assert.deepEqual(stepUniforms(h, 'splat')[0].uColor, [90, 0, 10]);
+  } finally { h.dispose(); }
+});
+
+// Each pass swaps the density buffers; the effect must show the one holding
+// this frame's dye, whether the frame had no splat, one or two.
+test('the effect shows the density each frame produced', () => {
+  const h = mount();
+  try {
+    for (const splats of [0, 1, 2, 0, 0]) {
+      for (let i = 0; i < splats; i += 1) h.splatStack.current.push({ mouseX: 0.2, mouseY: 0.4, velocityX: 1, velocityY: 1 });
+      h.shown.length = 0;
+      h.frame(1 / 120);
+      assert.deepEqual(h.shown, [h.FBOs.density.read.texture]);
+    }
   } finally { h.dispose(); }
 });

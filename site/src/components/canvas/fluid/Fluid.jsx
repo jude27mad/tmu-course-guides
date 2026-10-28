@@ -10,7 +10,16 @@ import useMaterials from '@src/components/canvas/fluid/hooks/useMaterials';
 import useOpts from '@src/components/canvas/fluid/hooks/useOpts';
 import usePointerEvents from '@src/components/canvas/fluid/hooks/usePointerEvents';
 // eslint-disable-next-line import/extensions
+import { decayFor, frameSteps } from '@src/utils/frameStep.mjs';
+// eslint-disable-next-line import/extensions
 import { listenForGameCelebration } from './gameCelebration.mjs';
+
+// The original advanced the simulation 0.016 s, dissipated once and added a
+// full dye splat for every rendered frame, so at 120 Hz the fluid moved twice
+// as fast and faded far sooner. Each frame now covers its share of a 60 Hz
+// frame. A burst (the game celebration) is a one-off and keeps its full dye.
+const STEP_DT = 0.016;
+const SPLAT_DYE = 10.0;
 
 function Fluid({ mainRef, fluidColor }) {
   const OPTS = useOpts();
@@ -67,14 +76,16 @@ function Fluid({ mainRef, fluidColor }) {
     [materials],
   );
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (!meshRef.current || !postRef.current) return;
+    const steps = frameSteps(delta);
+    if (!steps) return;
 
     while (splatStack.current.length > 0) {
-      const { mouseX, mouseY, velocityX, velocityY, radiusScale = 1 } = splatStack.current.pop();
+      const { mouseX, mouseY, velocityX, velocityY, radiusScale = 1, burst = false } = splatStack.current.pop();
 
       pointerRef.current.set(mouseX, mouseY);
-      colorRef.current.set(velocityX, velocityY, 10.0);
+      colorRef.current.set(velocityX, velocityY, burst ? SPLAT_DYE : SPLAT_DYE * steps);
 
       setShaderMaterial('splat');
       setUniforms('splat', 'uTarget', FBOs.velocity.read.texture);
@@ -97,6 +108,7 @@ function Fluid({ mainRef, fluidColor }) {
     setUniforms('vorticity', 'uVelocity', velocityTexture);
     setUniforms('vorticity', 'uCurl', FBOs.curl.texture);
     setUniforms('vorticity', 'uCurlValue', curl);
+    setUniforms('vorticity', 'dt', STEP_DT * steps);
     setRenderTarget('velocity');
 
     setShaderMaterial('divergence');
@@ -123,12 +135,18 @@ function Fluid({ mainRef, fluidColor }) {
     setShaderMaterial('advection');
     setUniforms('advection', 'uVelocity', FBOs.velocity.read.texture);
     setUniforms('advection', 'uSource', FBOs.velocity.read.texture);
-    setUniforms('advection', 'uDissipation', velocityDissipation);
+    setUniforms('advection', 'dt', STEP_DT * steps);
+    setUniforms('advection', 'uDissipation', decayFor(velocityDissipation, steps));
     setRenderTarget('velocity');
 
     setUniforms('advection', 'uSource', FBOs.density.read.texture);
-    setUniforms('advection', 'uDissipation', densityDissipation);
+    setUniforms('advection', 'uDissipation', decayFor(densityDissipation, steps));
     setRenderTarget('density');
+
+    // Every pass swaps the density buffers, so the texture captured when the
+    // effect was created held this frame's dye only every other frame: an
+    // idle trail refreshed at half the display rate. Show the current one.
+    postRef.current.updateUniform('tFluid', FBOs.density.read.texture);
 
     gl.setRenderTarget(null);
     gl.clear();
