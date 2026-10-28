@@ -1,9 +1,16 @@
 import { AssessmentBody, CenBody, TopicBody } from '@src/pages/course/components/cards/ItemCards';
+import { useState } from 'react';
 import { useCourse } from '@src/pages/course/hooks/useCourseState';
 import styles from './workspace.module.scss';
 
 export default function AssignmentDetail({ item, kind, assignments, back, returnView }) {
-  const { info, courseId } = useCourse();
+  const { info, courseId, progress } = useCourse();
+  // Records can also be marked beside their dates; the completion boxes further down stay in step.
+  const [recorded, setRecorded] = useState({ id: null, text: '' });
+  const record = (row) => {
+    const result = progress.setDone(courseId, row.id, !row.done);
+    setRecorded({ id: item.id, text: result.message || '' });
+  };
   const entry = assignments?.entries.find((row) => row.id === item.id);
   const returnLabel = {
     work: 'Work',
@@ -36,12 +43,27 @@ export default function AssignmentDetail({ item, kind, assignments, back, return
                   {row.target?.note ? <span>{row.target.note}</span> : null}
                   {row.cta ? <span>{row.cta}</span> : null}
                   {row.markable ? <span className={styles.meta}>{row.done ? 'Marked done by you' : [row.overdue && 'Past due', 'not marked done'].filter(Boolean).join(' · ')}</span> : null}
+                  {row.markable ? (
+                    <button
+                      type="button"
+                      className={styles.markRow}
+                      disabled={!progress.ready}
+                      onClick={() => record(row)}
+                      aria-label={`${row.done ? 'Mark not done' : 'Mark done'}: ${row.title}`}
+                      data-mark-row={row.id}
+                    >
+                      {row.done ? 'Mark not done' : 'Mark done'}
+                    </button>
+                  ) : null}
                 </li>
               ))}
             </ul>
           ) : (
             <p>{item.timing || 'Date pending · check D2L'}</p>
           )}
+          <p className={styles.meta} role="status">
+            {recorded.id === item.id ? recorded.text : ''}
+          </p>
         </div>
       ) : null}
       <div className={styles.detailBody} key={`${courseId}-${item.id}`}>

@@ -310,6 +310,32 @@
     }
   }
 }
+// The label row: "Next deadline" with the time left beside it, in the Desk's status
+// colours (lib/palette.mjs). Same line height as the label, so the card keeps its size.
+.nextHeading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  column-gap: 12px;
+}
+.timeLeft {
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--status, var(--black));
+  &[data-status='onTrack'] {
+    --status: var(--statusOnTrack);
+  }
+  &[data-status='soon'] {
+    --status: var(--statusSoon);
+  }
+  &[data-status='urgent'] {
+    --status: var(--statusUrgent);
+  }
+}
 .progress {
   min-width: 160px;
   font-size: 14px;
@@ -547,6 +573,22 @@
   }
   strong {
     font-weight: 650;
+  }
+  // The same underlined accent action as Back, at the 44px tap height.
+  .markRow {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    border-bottom: 1px solid currentColor;
+    font-size: 16px;
+    color: var(--accent);
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+  // The confirmation line takes no space until it has something to say.
+  > .meta:empty {
+    margin: 0;
   }
 }
 .detailBody {

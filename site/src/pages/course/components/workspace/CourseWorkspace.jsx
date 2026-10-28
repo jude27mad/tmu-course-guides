@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
-import { assignmentList, groups, sections } from '@src/lib';
+import { assignmentList, countdown, countdownStatus, groups, sections } from '@src/lib';
 import CourseBadge from '@src/components/courseBadge/CourseBadge';
 import GuideTools from '@src/pages/course/components/tools/GuideTools';
 // eslint-disable-next-line import/extensions
@@ -16,6 +16,18 @@ import CourseInformation from './CourseInformation';
 import Schedule from './Schedule';
 import styles from './workspace.module.scss';
 
+// Time left, in the Desk's countdown wording and status colours: "23h 47m left" for a
+// confirmed time, "Today" / "Tomorrow" / "In 3 days" for a date without one. Nothing
+// for quiz weeks, pending dates or passed times, which the date line already words.
+function timeLeft(next, now) {
+  if (!next || !now) return null;
+  const left = countdown(next, now);
+  const status = countdownStatus({ ms: left.ms, done: next.done });
+  if (status && status !== 'done') return { label: `${left.label} left`, status };
+  if (/^(Today|Tomorrow|In \d+ days)$/.test(left.label)) return { label: left.label, status: null };
+  return null;
+}
+
 export default function CourseWorkspace() {
   const { courseId, course, info, live, section, setSection, group, setGroup, progress } = useCourse();
   const navigation = useCourseNavigation(courseId, info);
@@ -28,6 +40,7 @@ export default function CourseWorkspace() {
   const assignments = useMemo(() => (live ? assignmentList(courseId, { now: live.now, items: live.items }) : null), [live, courseId]);
   const views = [['work', 'Work'], ['schedule', 'Schedule'], ...(courseId === 'cen100' ? [] : [['study', 'Study']]), ['info', 'Course info']];
   const next = live?.next;
+  const left = timeLeft(next, live?.now);
   const completed = live?.progress?.completed || 0;
   const total = live?.progress?.total || 0;
   return (
@@ -91,7 +104,14 @@ export default function CourseWorkspace() {
         </div>
         <div className={styles.summary}>
           <div className={styles.next}>
-            <span className={styles.eyebrow}>Next deadline</span>
+            <span className={styles.nextHeading}>
+              <span className={styles.eyebrow}>Next deadline</span>
+              {next && left ? (
+                <span className={styles.timeLeft} data-status={left.status || undefined} data-course-time-left>
+                  {left.label}
+                </span>
+              ) : null}
+            </span>
             {next ? (
               <Link href={`/${courseId}/#${next.anchor}`} scroll={false}>
                 <strong>{next.title} ↗</strong>
