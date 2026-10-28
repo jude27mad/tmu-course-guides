@@ -30,7 +30,10 @@ const FAVICON =
 // Select Safari's document layout before first paint so its edge artwork,
 // grain and toolbar blending are active immediately. This selects layout only:
 // _app keeps Giats's syncTouch input enabled in either scroll container.
-const BOOT = `(function(d){const r=d.documentElement;r.classList.add('js');r.dataset.scrollMode=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)?'document':'contained';try{const q=new URLSearchParams(location.search).get('motion'),p=localStorage.getItem('guide-motion-paused')==='true',m=!!window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;if(q==='off'||p||(m&&q!=='full'))r.setAttribute('data-motion','off');}catch(e){}})(document);`;
+// Failsafe: if one of the page's own start-up scripts fails to load, or the app has not started
+// (Loader marks data-hydrated) after 20 s, drop `js` so the readable no-JavaScript layout shows instead
+// of an endless curtain. data-failsafe tells Loader to reveal without the curtain if the app arrives late.
+const BOOT = `(function(d){const r=d.documentElement;r.classList.add('js');const f=function(){if(!r.hasAttribute('data-hydrated')){r.classList.remove('js');r.setAttribute('data-failsafe','');}};addEventListener('error',function(e){const t=e.target;if(t&&t.tagName==='SCRIPT'&&/\\/_next\\/static\\/(chunks\\/(pages\\/|framework|main|webpack|polyfills)|[^/]+\\/_(build|ssg)Manifest)/.test(t.src))f();},true);setTimeout(f,20000);r.dataset.scrollMode=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)?'document':'contained';try{const q=new URLSearchParams(location.search).get('motion'),p=localStorage.getItem('guide-motion-paused')==='true',m=!!window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;if(q==='off'||p||(m&&q!=='full'))r.setAttribute('data-motion','off');}catch(e){}})(document);`;
 
 // The offline copy (public/sw.js): registered after the page has loaded, in published builds only, so
 // it never competes with a first visit. Browser checks run without it (navigator.webdriver) so request

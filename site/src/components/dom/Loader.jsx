@@ -16,12 +16,20 @@ function Loader() {
   const root = useRef(null);
   const router = useRouter();
 
+  // The app has started: the boot failsafe (_document) stands down, even while a background tab
+  // holds the curtain's animation.
+  useEffect(() => {
+    document.documentElement.setAttribute('data-hydrated', '');
+  }, []);
+
   useEffect(() => {
     if (introOut || !lenis) return undefined;
     setIsAbout(wantsSRGB(router.pathname));
     const main = document.querySelector('main');
     const layout = document.getElementById('layout');
     const reveal = () => {
+      // Restores `js` if the boot failsafe (_document) dropped it before the app started.
+      document.documentElement.classList.add('js');
       gsap.set(root.current, { autoAlpha: 0, display: 'none' });
       gsap.set(main, { willChange: 'auto', pointerEvents: 'auto' });
       if (nativeIOSScroll()) gsap.set(main, { clearProps: 'transform,transformOrigin' });
@@ -35,7 +43,8 @@ function Loader() {
     lenis.scrollTo(0, { force: true, immediate: true });
     gsap.set(layout, { height: '100%' });
     gsap.set(main, { height: 'auto', border: 'none', borderRadius: 0, scale: 1 });
-    if (still) {
+    // After the failsafe has shown the page without JavaScript, arrive without the curtain.
+    if (still || document.documentElement.hasAttribute('data-failsafe')) {
       gsap.set(main, { x: 0, opacity: 1 });
       gsap.set('header', { autoAlpha: 1 });
       reveal();

@@ -1,4 +1,4 @@
-// Browser check for the offline copy (public/sw.js), after `pages-site.mjs build`:
+// Browser check for the offline copy (public/sw.js) and the start-up failsafe, after `pages-site.mjs build`:
 //   PLAYWRIGHT_PATH=/path/to/node_modules/playwright node scripts/check-offline.mjs <folder>
 // Serves the folder as GitHub Pages would, visits the Desk once with ?offline-check (browser automation
 // otherwise skips the registration), waits until every route is saved, then goes offline and opens each
@@ -120,6 +120,33 @@ await check('online: a changed page wins over the saved copy, and the copy follo
 
 await check('no page errors', async () => {
   assert.deepEqual(errors, []);
+});
+
+// Start-up failsafe (_document BOOT): a start-up script that fails shows the readable page, not the curtain.
+await check('a failed app script shows the readable page instead of the curtain', async () => {
+  const failed = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const tab = await failed.newPage();
+  await tab.route(/\/_next\/static\/chunks\/pages\/_app-[^/]+\.js$/, (route) => route.abort());
+  await tab.goto(`${site}cen100/`, { waitUntil: 'load' });
+  await tab.waitForFunction(() => document.documentElement.hasAttribute('data-failsafe'), null, { timeout: 5000 });
+  assert.equal(await tab.locator('#loader').isVisible(), false);
+  assert.equal(await tab.locator('h1').first().innerText(), 'Intro to Engineering');
+  assert.equal(await tab.evaluate(() => getComputedStyle(document.querySelector('main')).opacity), '1');
+  await failed.close();
+});
+
+await check('a slow app script still gets the normal arrival', async () => {
+  const slow = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const tab = await slow.newPage();
+  await tab.route(/\/_next\/static\/chunks\/pages\/_app-[^/]+\.js$/, async (route) => {
+    await new Promise((done) => setTimeout(done, 3000));
+    await route.continue();
+  });
+  await tab.goto(`${site}cen100/`, { waitUntil: 'load' });
+  await tab.locator('[data-assignment-link]').first().waitFor({ timeout: 20000 });
+  assert.equal(await tab.evaluate(() => document.documentElement.hasAttribute('data-failsafe')), false);
+  assert.equal(await tab.evaluate(() => document.documentElement.classList.contains('js')), true);
+  await slow.close();
 });
 
 await browser.close();
