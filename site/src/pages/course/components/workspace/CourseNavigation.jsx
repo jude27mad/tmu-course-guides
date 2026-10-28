@@ -10,7 +10,7 @@ export default function CourseNavigation({ courseId, views, selectedView, acknow
   useSelectionMotion(navRef, selectionRef, selectedView, '[aria-current="page"]');
 
   return (
-    <nav ref={navRef} className={styles.navigation} aria-label="Course views" data-glass="light">
+    <nav ref={navRef} className={styles.navigation} aria-label="Course views" data-glass="light" data-views={views.length}>
       <span ref={selectionRef} className={styles.selection} aria-hidden="true" data-course-selection />
       {views.map(([view, label]) => (
         <Link

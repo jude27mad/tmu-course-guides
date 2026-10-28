@@ -14,6 +14,7 @@ import AssignmentDetail from './AssignmentDetail';
 import Study from './Study';
 import CourseInformation from './CourseInformation';
 import Schedule from './Schedule';
+import Grades from './Grades';
 import styles from './workspace.module.scss';
 
 export default function CourseWorkspace() {
@@ -26,7 +27,7 @@ export default function CourseWorkspace() {
     selectedDate: null,
   });
   const assignments = useMemo(() => (live ? assignmentList(courseId, { now: live.now, items: live.items }) : null), [live, courseId]);
-  const views = [['work', 'Work'], ['schedule', 'Schedule'], ...(courseId === 'cen100' ? [] : [['study', 'Study']]), ['info', 'Course info']];
+  const views = [['work', 'Work'], ['schedule', 'Schedule'], ...(courseId === 'cen100' ? [] : [['study', 'Study']]), ['grades', 'Grades'], ['info', 'Course info']];
   const next = live?.next;
   const completed = live?.progress?.completed || 0;
   const total = live?.progress?.total || 0;
@@ -113,6 +114,7 @@ export default function CourseWorkspace() {
           {!navigation.item && navigation.view === 'work' ? <Work assignments={assignments} filter={navigation.filter} navigate={navigation.navigate} /> : null}
           {!navigation.item && navigation.view === 'schedule' ? <Schedule navigate={navigation.navigate} state={schedule} setState={setSchedule} /> : null}
           {!navigation.item && navigation.view === 'study' ? <Study /> : null}
+          {!navigation.item && navigation.view === 'grades' ? <Grades /> : null}
           <div className={navigation.item || navigation.view !== 'info' ? styles.infoInactive : undefined}>
             <CourseInformation panel={navigation.panel} back={navigation.back} returnView={navigation.returnView} />
           </div>
