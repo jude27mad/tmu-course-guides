@@ -13,6 +13,14 @@ Latest first. Students see course changes under **Course updates** in each guide
 - Marks and the chosen target are saved per course in this browser only (`cen100-grades-v1`, `mth140-grades-v1`, `mth141-grades-v1`); they are separate from progress records and not part of backups. Course info → Grading links to the calculator, and Search lists it on course pages.
 - On phones the tabs use slightly tighter spacing so they stay on one row: five (math) down to 360 px and four (CEN100) down to 320 px, each still at least 44 px wide. The Privacy page now mentions calculator marks. `tests/grades.test.mjs` covers weights, drop-lowest, rounding, required marks and saved values; `scripts/verify-course-views.mjs` checks entry, results, the target answer and saving in a browser.
 
+## Unreleased — The website opens without WebGL
+
+- **The Desk no longer crashes in browsers with WebGL turned off.** Chrome with WebGL disabled (a browser setting or policy, or no usable graphics) showed "Application error: a client-side exception has occurred" on the home page, and on every other page, because the 3D layer could not create its WebGL context. Every 3D canvas is now mounted only where WebGL works and sits inside an error boundary, so a browser without it gets the page without the background's slow drift, the pointer effect and the pre-footer game.
+- Each course badge shows its HTML card with the course code and name, the badges' own fallback, which now also returns when the 3D layer is taken down. Everything else is unchanged, and browsers with WebGL get the same page as before.
+- If WebGL goes away after the page has loaded (a GPU reset or crash), the page keeps working: contexts that come back within a few seconds carry on, a canvas that failed meanwhile tries again, and a context that stays lost turns the 3D layer off and shows the flat badges.
+- The Desk's **Mark done** button is announced with the assessment's name again; screen readers had read it as "Mark undefined done".
+- CI (its own `no-webgl` job) loads every route (including the 404 page) with WebGL disabled, blocked and failing after the capability probe passes or after the first canvas is built, loses the GPU after load, resets it, and works with WebGL as a control that also checks the 3D badges paint and the pre-footer game appear; Chromium and WebKit. The new `tests/webgl.test.mjs` fails on a 3D canvas that is not in the gate.
+
 ## Unreleased — Smoother page changes
 
 - **iPhone and iPad.** A page change no longer fades the page out over the dark background artwork. A paper layer sits behind the page during the change (`#routePaper`, in the page's flow and never fixed, so Safari's bars are unaffected). The page fades into it in 0.18 s and the next page rises 14 px out of it in 0.34 s. The header stays put while it is on screen. Leaving from an open Menu or Search, the swap happens under the panel, which dissolves into the new page.
