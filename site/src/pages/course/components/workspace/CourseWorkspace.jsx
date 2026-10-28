@@ -40,7 +40,9 @@ export default function CourseWorkspace() {
   });
   const assignments = useMemo(() => (live ? assignmentList(courseId, { now: live.now, items: live.items }) : null), [live, courseId]);
   const views = [['work', 'Work'], ['schedule', 'Schedule'], ...(courseId === 'cen100' ? [] : [['study', 'Study']]), ['info', 'Course info']];
-  const next = live?.next;
+  // After the last dated deadline, a final exam whose date is still pending is what comes next (CEN100's
+  // has no date in the course data), not "No upcoming deadlines".
+  const next = live?.next || live?.items.find((item) => item.kind === 'final' && item.precision === 'pending' && !item.done) || null;
   const left = timeLeft(next, live?.now);
   const room = labRoom(courseId, section);
   const completed = live?.progress?.completed || 0;
