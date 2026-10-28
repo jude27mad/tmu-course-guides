@@ -1,13 +1,16 @@
 import TextOpacity from '@src/components/animationComponents/textOpacity/Index';
 import clsx from 'clsx';
 import styles from '@src/components/dom/styles/companionStatement.module.scss';
-import FruitNinja from '@src/components/dom/prefooter/Index';
 import useInView from '@src/hooks/useInView';
 import useStill from '@src/hooks/useStill';
 import { memo, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
+import dynamic from 'next/dynamic';
+
+// The game's canvas (and R3F with it) loads only when the statement comes near, never in the first bundle.
+const FruitNinja = dynamic(() => import('@src/components/dom/prefooter/Index'), { ssr: false });
 
 // One existing sentence, word for word (the site README's disclaimer).
 const QUOTE = 'This is an unofficial student-built companion, not a replacement for D2L or announcements from the teaching team.';

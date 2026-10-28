@@ -3,9 +3,6 @@
 import '@src/styles/global.scss';
 import '@src/styles/global.css';
 
-import * as THREE from 'three';
-
-import { PerformanceMonitor, View } from '@react-three/drei';
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 
 import dynamic from 'next/dynamic';
@@ -16,12 +13,6 @@ import { createBadgeRegistry } from '@src/components/courseBadge/badgeRegistry.m
 // eslint-disable-next-line import/extensions
 import { createTouchScrollFilter } from '@src/utils/touch-scroll.mjs';
 
-import Background from '@src/components/canvas/background/Index';
-import DemandDriver from '@src/components/canvas/DemandDriver';
-import ClearViews from '@src/components/canvas/ClearViews';
-import { Canvas } from '@react-three/fiber';
-import { EffectComposer } from '@react-three/postprocessing';
-import Fluid from '@src/components/canvas/fluid/Fluid';
 import Head from 'next/head';
 import Layout from '@src/components/dom/Layout';
 import Lenis from 'lenis';
@@ -60,6 +51,17 @@ if (typeof window !== 'undefined') {
 }
 
 const BadgeWorld = dynamic(() => import('@src/components/courseBadge/BadgeScene').then((module) => module.BadgeWorld), { ssr: false });
+
+// The 3D layer (three, R3F, drei, postprocessing) loads after the page is usable instead of in the first
+// bundle every route downloads and runs. Each canvas already mounts after hydration (WebGLGate), and what
+// it draws is unchanged; it arrives once these chunks are in. The composer and the fluid load as one.
+const Canvas = dynamic(() => import('@react-three/fiber').then((module) => module.Canvas), { ssr: false });
+const PerformanceMonitor = dynamic(() => import('@react-three/drei/core/PerformanceMonitor').then((module) => module.PerformanceMonitor), { ssr: false });
+const View = { Port: dynamic(() => import('@react-three/drei/web/View').then((module) => module.View.Port), { ssr: false }) };
+const Background = dynamic(() => import('@src/components/canvas/background/Index'), { ssr: false });
+const DemandDriver = dynamic(() => import('@src/components/canvas/DemandDriver'), { ssr: false });
+const ClearViews = dynamic(() => import('@src/components/canvas/ClearViews'), { ssr: false });
+const FluidLayer = dynamic(() => import('@src/components/canvas/FluidLayer'), { ssr: false });
 
 // The stats.js FPS panel is a development aid: show it only with ?stats in the URL.
 const SHOW_STATS = typeof window !== 'undefined' && /[?&]stats\b/.test(window.location.search);
@@ -202,7 +204,7 @@ function MyApp({ Component, pageProps, router }) {
           id="viewCanvas"
           fallback={<span aria-hidden="true" />}
           gl={{
-            outputColorSpace: THREE.LinearSRGBColorSpace,
+            outputColorSpace: 'srgb-linear', // THREE.LinearSRGBColorSpace
             powerPreference: 'high-performance',
           }}
           style={{ zIndex: 0 }}
@@ -279,9 +281,7 @@ function MyApp({ Component, pageProps, router }) {
                 dpr={[0.1, 0.5]}
                 aria-hidden="true"
               >
-                <EffectComposer>
-                  <Fluid fluidColor={fluidColor} mainRef={mainRef} />
-                </EffectComposer>
+                <FluidLayer fluidColor={fluidColor} mainRef={mainRef} />
               </Canvas>
             </WebGLGate>
           )}
