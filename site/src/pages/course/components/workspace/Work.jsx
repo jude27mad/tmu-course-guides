@@ -18,6 +18,8 @@ const groups = [
   ['pastDue', 'Past due · not marked done'],
   ['done', 'Marked done by you'],
 ];
+// "2026-11-01" -> "Nov 1" for a personal target date (a calendar date, so no time zone shift).
+const targetLabel = (date) => new Date(`${date}T12:00:00Z`).toLocaleDateString('en-CA', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 const matches = (filter, key) => filter === 'all' || (filter === 'done' ? key === 'done' : key !== 'done');
 const resultKey = (assignments, filter) =>
   groups
@@ -136,12 +138,13 @@ export default function Work({ assignments, filter, navigate }) {
                       if (entry.missed && key !== 'pastDue') status = entry.recorded ? `${status} · ${entry.missed} past due` : `${entry.missed} ${entry.missed === 1 ? 'part' : 'parts'} past due`;
                       if (entry.done) status = 'Marked done';
                       const ticks = progress.tickCount(courseId, entry.id);
+                      const target = !entry.done && progress.ready ? progress.getTarget(courseId, entry.id) : '';
                       return (
                         <li key={entry.id}>
                           <Link id={`open-${entry.anchor}`} href={`/${courseId}/#${entry.anchor}`} scroll={false} className={styles.workRow} data-assignment-link>
                             <span className={styles.rowMain}>
                               <span className={styles.rowTitle}>{entry.title}</span>
-                              <span className={styles.meta}>{[item.who, item.weightLabel].filter(Boolean).join(' · ')}</span>
+                              <span className={styles.meta}>{[item.who, item.weightLabel, target && `My target: ${targetLabel(target)}`].filter(Boolean).join(' · ')}</span>
                             </span>
                             <span className={styles.rowDate}>
                               {lead?.dateLabel || 'Date pending'}
