@@ -4,10 +4,13 @@ How to use the website is in the [main README](../README.md). How to build it is
 
 ## Plans
 
-| Document | What it covers |
-|---|---|
-| [plans/remove-repetition.md](plans/remove-repetition.md) | The staged plan to remove repeated content and photos from the course pages, add a deadline calendar and a collapsible course-info section, and raise minimum text sizes. Not started. |
-| [codex/remove-repetition/](codex/remove-repetition/README.md) | Codex briefs for the code-only parts of that plan (R1–R5). |
+| Document | What it covers | Status |
+|---|---|---|
+| [plans/2026-10-23-course-site-review.md](plans/2026-10-23-course-site-review.md) | Six phases from the October 23 design review: current course data, first-load weight, a clearer Work view, a shorter Desk, calendar feeds and moving progress between devices. | Mostly open. The update lists (1.6) are done, the iPhone history fix (2.1) landed another way, and the Desk took a different shape (Next up card, badges, the companion game). |
+| [plans/2026-10-23-shorter-course-views.md](plans/2026-10-23-shorter-course-views.md) | Focused Work, Schedule, Study and Course info views with one shared assignment detail. | Done in #36. |
+| [plans/2026-10-23-ui-consistency.md](plans/2026-10-23-ui-consistency.md) | Readable minimum sizes, Guide tools motion and direct Course info answers. | Done in #45. The sticky course bar was later dropped (#46). |
+| [superpowers/plans/2026-10-23-delayed-navigation-feedback.md](superpowers/plans/2026-10-23-delayed-navigation-feedback.md) | Loading feedback only after a 250 ms wait. | Done in #57. |
+| [plans/remove-repetition.md](plans/remove-repetition.md) and [codex/remove-repetition/](codex/remove-repetition/README.md) | The earlier staged plan to remove repeated content, with Codex briefs R1–R5. | Superseded by the shorter course views (#36), which took over its layout goals. |
 
 ## Current reference
 

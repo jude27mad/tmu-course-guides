@@ -10,8 +10,8 @@ No account, installation or download is needed.
 
 ## Getting started
 
-1. **Start at the Desk.** The home page shows the next deadline across all your courses, with a live countdown, and a card for each course.
-2. **Open a guide.** Choose **Open guide** next to a course in the Courses list, tap a course card, or use the **Menu**.
+1. **Start at the Desk.** The home page shows the next deadline across all your courses, with a live countdown, **Mark done** and **Undo**.
+2. **Open a guide.** Tap the Desk's next deadline, tap a course card on **Courses**, or use the **Menu**.
 3. **Set your section at the top.** Choose your section (and your Innovation Challenge group in CEN100). Quiz dates, lab times, rooms and contacts then match your section. The choice is remembered in this browser.
 4. **Open your work.** Each guide starts with a compact **Work** list. Use **Open**, **All** or **Done**, then open an assignment for its dates, requirements, checklist and notes. **Back** restores your filter and place in the list. Past-due and undated work stay visible.
 5. **Check the schedule.** **Schedule** has an agenda for phones and a calendar on wider screens. Both open the same assignment details. **All dates** includes earlier deadlines. Times are in Toronto; a quiz week or unconfirmed date is labelled as such.
@@ -21,15 +21,15 @@ No account, installation or download is needed.
 
 | Page | What it shows |
 |---|---|
-| **Desk** | Your next deadline across all courses, a card for each course, and links to every guide. |
-| **Courses** | All three course guides in one list. |
+| **Desk** | Your next deadline across all courses, with a live countdown and Mark done. |
+| **Courses** | All three course guides in one list, each with its next date. |
 | **CEN100, MTH140, MTH141** | Work, Schedule and Course info, with Study in the math courses. One detail view per assignment, plus section selection and guide tools at the top. |
 | **Privacy** | What the website stores and what it never collects. |
 
 ## Finding things
 
-- **Search** finds courses, assessments, weeks, topics and actions. It is in the top bar on larger screens and in the **Menu** on phones. On a keyboard, press **Ctrl K** (or **⌘ K** on a Mac).
-- The **Menu** has every page, the next few deadlines across your courses, **Pause motion** and links to official sources such as D2L.
+- **Search** finds courses, assessments, weeks, topics and actions. Open it from the **Menu**, or press **Ctrl K** (**⌘ K** on a Mac).
+- The **Menu** has every page, Search, **Pause motion** and links to official sources: D2L, learning support and academic consideration.
 - Links to a single item, such as those in the Menu and in search results, open that item's details directly.
 
 ## Checklists, records and notes
@@ -59,7 +59,7 @@ Progress saved by earlier versions of the website carries over automatically.
 
 ## Motion and accessibility
 
-- Course tabs and utility controls use a subtle glass finish; instructions and notes have solid backgrounds. **Pause motion** makes these controls solid, stops animations, shows finished photographs, removes the pointer effect and skips page transitions. The preference stays on in this browser. Mouse-wheel scrolling is still smoothed. Your device's reduced-motion setting has the same effect; reduced transparency and increased contrast also make the controls solid where supported.
+- Course tabs and utility controls use a subtle glass finish; instructions and notes have solid backgrounds. **Pause motion** makes these controls solid, stops animations, holds the course badges still, removes the pointer effect and skips page transitions. The preference stays on in this browser. Mouse-wheel scrolling is still smoothed. Your device's reduced-motion setting has the same effect; reduced transparency and increased contrast also make the controls solid where supported.
 - If the effects feel slow on an older phone, turn on **Pause motion**.
 - Pinch zoom, text selection, keyboard navigation and visible focus all work.
 - Without JavaScript, course information, rules, grading and contacts are still readable; deadlines, countdowns, checklists and item details need JavaScript.
