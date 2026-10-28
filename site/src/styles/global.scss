@@ -36,12 +36,11 @@ html {
 html[data-scroll-mode='document'] {
   background-color: var(--pageUnderGrain);
 }
-// The dark panels (the footer, the course cards, the Desk's windows) show the
-// fixed artwork, which reaches under Safari's bars. Wherever it is not painted,
-// a panel shows the body instead: the ink, so it is never paper inside a dark
-// panel. Only those panels show it.
+// That colour is the root's and the body's blended (WebKit's
+// documentBackgroundColor): an opaque body would win, so the body stays clear.
+// An ink body (#67) put a black box past the end of every page that ends light.
 html[data-scroll-mode='document'] body {
-  background-color: var(--black);
+  background-color: transparent;
 }
 
 // Match the surrounding Safari chrome to the visible dark menu/search overlay.
@@ -254,6 +253,32 @@ html[data-scroll-mode='document'] {
   // (a CSS background) at the layout viewport, so a fixed grain ended in a line
   // where the bottom bar began.
   #layout::before { position: absolute; top: 0; width: 100%; height: 100%; }
+  // The same cut stops the open phone menu and search panel, and their backdrop,
+  // where the bottom bar begins: the page showed under the bar. While a panel is
+  // open the whole page is covered in its ink instead, as part of the page, so
+  // Safari shows it under its bars. Above the page and its canvases, under the
+  // backdrop (z-index 3) and the panels (4); it fades with the backdrop.
+  @include mobile {
+    #layout::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      background-color: var(--black);
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.38s ease, visibility 0s 0.38s;
+    }
+    &[data-browser-surface='dark'] #layout::after {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.28s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+  }
   // Above the start of a page, and below the end of one that ends light, there
   // is no page for the dark artwork to show through: paper covers its reach
   // there (data-edge-top/-bottom, set by the navbar). Part of main, behind its

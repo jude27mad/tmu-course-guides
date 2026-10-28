@@ -189,9 +189,36 @@ test('Safari\'s flat fill past the page and under its bottom bar is the page as 
   assert.match(theme, /meta\.setAttribute\('content', topDark \? TOKENS\.ink : lightEdge\(DEFAULT_PALETTE\.secondary\)\)/);
 });
 
-test('the artwork runs on unchanged under the bottom bar, and fades into the ink only past a dark end', () => {
+test('past the ends of the page Safari shows the root colour, so the body stays clear', () => {
   const global = read('../src/styles/global.scss');
-  assert.match(global, /html\[data-scroll-mode='document'\] body \{\s*background-color: var\(--black\);\s*\}/);
+  // WebKit blends the body's background over the root's for the colour past the
+  // page's ends (documentBackgroundColor): an ink body showed a black box past the
+  // end of every page that ends light.
+  assert.match(global, /html\[data-scroll-mode='document'\] body \{\s*background-color: transparent;\s*\}/);
+  // The open menu and a dark end colour both, later in the file.
+  const clear = global.indexOf("html[data-scroll-mode='document'] body {");
+  assert.ok(clear < global.indexOf("html[data-browser-surface='dark'] body {"));
+  assert.ok(clear < global.indexOf("html[data-scroll-mode='document'][data-browser-bottom='dark'] body {"));
+});
+
+test('an open phone panel covers the page in its ink, as part of the page, so it continues under the bars', () => {
+  // Safari cuts what a fixed element paints itself at the layout viewport: the
+  // panels and their backdrop stopped where the bottom bar begins.
+  const global = read('../src/styles/global.scss');
+  const documentMode = global.slice(global.indexOf("html[data-scroll-mode='document'] {\n  overflow-x"));
+  const block = documentMode.slice(0, documentMode.indexOf('\n}'));
+  const sheet = block.slice(block.indexOf('@include mobile {'));
+  assert.match(sheet, /#layout::after \{[^}]*position: absolute;[^}]*height: 100%;[^}]*z-index: 2;[^}]*background-color: var\(--black\);[^}]*pointer-events: none;[^}]*opacity: 0;/);
+  assert.match(sheet, /&\[data-browser-surface='dark'\] #layout::after \{\s*opacity: 1;\s*visibility: visible;/);
+  // Above the page and its canvases (main 1, canvases 2 earlier in #layout), under
+  // the backdrop (3) and the panels (4).
+  const navbar = read('../src/components/dom/navbar/styles/index.module.scss');
+  assert.match(navbar.slice(navbar.indexOf('.panelBackdrop {')), /z-index: 3;/);
+  assert.match(read('../src/components/dom/navbar/styles/menuLinks.module.scss'), /@include mobile \{[^}]*z-index: 4;/);
+  assert.match(read('../src/components/dom/navbar/styles/searchPanel.module.scss'), /@include mobile \{\s*z-index: 4;/);
+});
+
+test('the artwork runs on unchanged under the bottom bar, and fades into the ink only past a dark end', () => {
   // Safari shows the artwork's reach under its bottom bar. A layer that shades it
   // at the layout viewport's bottom edge (#67 faded it to ink there) ends in a
   // line where the bar begins, so the fade is invisible...
