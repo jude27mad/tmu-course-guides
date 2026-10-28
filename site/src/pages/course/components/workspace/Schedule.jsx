@@ -37,7 +37,14 @@ const Calendar = dynamic(() => import('./Calendar'), {
 export default function Schedule({ navigate, state, setState }) {
   const { courseId, live } = useCourse();
   const root = useRef(null);
-  const [wide, setWide] = useState(false);
+  // Known from the first render (Schedule never renders on the server): measured only after mounting, a remount
+  // (Back from an assignment) laid out the agenda alone first, and the restored scroll position was clamped to it.
+  const [wide, setWide] = useState(() => {
+    const content = document.getElementById('course-content');
+    if (!content) return false;
+    const style = getComputedStyle(content);
+    return content.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight) >= 700;
+  });
   const { choice, range, day, selectedDate } = state;
   const events = useMemo(() => calendarEvents(courseId, live?.items || []), [courseId, live]);
   useEffect(() => {

@@ -310,15 +310,11 @@ test('backups: export the old file formats and import them back with the old mer
   const fresh = memoryStorage();
   assert.equal(importBackup('mth140', mathFile.text, { storage: fresh }).message, 'Progress imported.');
   assert.equal(fresh.data.get('mth140-progress-v1'), '{"checks":{"quiz-1-0":true},"completed":{"quiz-1":true},"notes":{},"targets":{},"topics":{}}');
-  // Math: a broken, empty or oversized file is rejected and leaves saved progress untouched. Like the old
-  // math page, an unreadable file reports the JSON parser's own message.
+  // Math: a broken, empty or oversized file is rejected and leaves saved progress untouched. An unreadable
+  // file gets the same message as a wrong one (CEN100 does the same), not the JSON parser's wording.
   const saved = fresh.data.get('mth140-progress-v1');
-  const broken = importBackup('mth140', '{', { storage: fresh });
-  assert.equal(broken.ok, false);
-  assert.equal(broken.saved, false);
-  assert.match(broken.message, /JSON/);
   assert.deepEqual(importBackup('mth140', '{}', { storage: fresh }), { ok: false, saved: false, message: 'Choose a valid progress backup for MTH140.' });
-  for (const value of ['null', '0', '"backup"', 'true']) {
+  for (const value of ['{', '', '{"format":"tmu-math-guide","version":1,', 'a,b,c\n1,2,3', 'null', '0', '"backup"', 'true']) {
     assert.deepEqual(importBackup('mth140', value, { storage: fresh }), { ok: false, saved: false, message: 'Choose a valid progress backup for MTH140.' }, value);
   }
   assert.deepEqual(importBackup('mth140', 'x'.repeat(300001), { storage: fresh }), { ok: false, saved: false, message: 'This file is too large for a course-progress backup.' });
@@ -352,5 +348,11 @@ test('calendar files retain legacy event identity and timing with current MTH140
       assert.equal(file.text, previous);
     }
     assert.equal(calendarFile(id, { now: NOW, includeTentative: true, section: 0 }).message, 'Choose your section first to include lab quiz dates.');
+    // Guide tools asks for tentative dates only with a section. Once the midterm has passed, a student without
+    // one is told to choose it (lab quizzes remain), and only after the last quiz that nothing is left.
+    const guideTools = (iso) => calendarFile(id, { now: new Date(iso), includeTentative: false, section: 0 });
+    assert.equal(guideTools('2026-10-10T16:00:00Z').ok, true);
+    assert.equal(guideTools('2026-10-28T16:00:00Z').message, 'Choose your section first to include lab quiz dates.');
+    assert.equal(guideTools('2026-12-20T16:00:00Z').message, 'No dated assessments match those choices.');
   }
 });

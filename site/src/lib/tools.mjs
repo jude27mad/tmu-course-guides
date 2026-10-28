@@ -35,7 +35,12 @@ function calendarFileNow(courseId, { now, item = 'all', upcomingOnly = true, rem
   const chosen = section === undefined ? readMathSection(courseId, resolveStorage(storage)) : Number(section) || 0;
   if (includeTentative && !chosen) return { ok: false, count: 0, message: MATH.COPY.calendarNeedsSection };
   const result = calendar(DATA[courseId], chosen, { includeTentative, onlyUpcoming: upcomingOnly, now: date });
-  if (!result.count) return { ok: false, count: 0, message: MATH.COPY.calendarNone };
+  if (!result.count) {
+    // Without a section only fixed-time assessments can be exported; once those have passed, a section's lab
+    // quizzes are what is left, so say so instead of "those choices" (Guide tools offers none).
+    const quizzesLeft = !chosen && calendar(DATA[courseId], DATA[courseId].labs[0].section, { includeTentative: true, onlyUpcoming: upcomingOnly, now: date }).count > 0;
+    return { ok: false, count: 0, message: quizzesLeft ? MATH.COPY.calendarNeedsSection : MATH.COPY.calendarNone };
+  }
   return { ok: true, name: `${courseId}-fall-2026.ics`, type: 'text/calendar;charset=utf-8', text: result.text, count: result.count, message: MATH.COPY.calendarReady(result.count) };
 }
 
@@ -100,8 +105,14 @@ export function importBackup(courseId, raw, { storage } = {}) {
   if (!isMath(courseId)) return { ok: false, saved: false, message: '' };
   try {
     if (typeof raw !== 'string' || raw.length > 300000) throw new Error(MATH.COPY.backupTooLarge);
-    const data = JSON.parse(raw);
-    // A file holding JSON null (or a number or string) is a wrong file too, not a TypeError.
+    // An empty, truncated or non-JSON file, or one holding JSON null, is a wrong file too: the same answer as
+    // CEN100's, not the parser's wording or a TypeError.
+    let data = null;
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      // stays null
+    }
     if (!data || typeof data !== 'object' || data.format !== 'tmu-math-guide' || data.version !== 1 || data.course !== courseId || !data.progress || typeof data.progress !== 'object') throw new Error(MATH.COPY.backupInvalid(DATA[courseId].code));
     const imported = MATH.cleanProgress(data.progress, DATA[courseId], courseId);
     const progress = readMath(courseId, store);
