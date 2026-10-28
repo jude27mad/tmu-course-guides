@@ -95,6 +95,23 @@ That last case is where #67's fade was right: at the end of a page that ends in 
 
 Under the bar Safari still shifts the colour a little (green about 2 levels below red, blue about 5 above). That is the bar's own material; on the paper it is invisible.
 
+## A black box past course pages, and a menu cut at the bar (28 October 2026, sixth report)
+
+Two iPhone reports:
+
+- At the end of every course page, the area under the bottom bar was flat ink (24,24,27, measured), under a page that ends in paper.
+- With Menu or Search open, the panel stopped where the bottom bar begins, and the page showed under the bar.
+
+The black box came from #67's ink body. For the colour past the ends of the page, WebKit takes the root's background and blends the body's over it (`LocalFrameView::documentBackgroundColor`), so an opaque body wins over the root's `#f1f1f1`. In document mode the body is transparent again. The open panels and a dark end still set both the root and the body to the ink, later in the stylesheet.
+
+The menu has the same cause as the old fixed grain: Safari cuts what a fixed element paints itself at the layout viewport, so the panel and its backdrop (whose 160px reach never showed) stop at the bar. While a panel is open on a phone, `#layout::after` covers the whole page in the ink. It is part of the page, so Safari shows it under its bars. It sits above the page and its canvases (z-index 2, after them in `#layout`) and under the backdrop (3) and the panels (4), with pointer events off. It fades with the backdrop: 0.28s in, 0.38s out.
+
+In a Chromium iPhone emulation:
+
+- The blended colour past both ends is `#f1f1f1` on CEN100 and MTH140, and the ink at the dark ends of the Desk and /courses/.
+- With the menu open, the sheet covers the full document height, and the menu still receives input at all four corners.
+- On desktop nothing changes.
+
 ## Automated checks
 
 - `site/tests/fluid-edge-colour.test.mjs`: no inline background on the fluid canvas, the CSS rule that gives it black only outside document mode, guard height, width and offsets, and the ink rule. It fails on the old source.
