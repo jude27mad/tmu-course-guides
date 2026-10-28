@@ -162,3 +162,9 @@
     }
   }
 }
+
+// "Also due then": records due at the same instant as Next up, each a link to its assignment.
+.alsoDue a {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}

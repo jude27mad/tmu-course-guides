@@ -1,5 +1,5 @@
 import { DESK_TEXT, STATUS, countdown, countdownStatus, courseCopy, getCourse } from '@src/lib';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 
 import AppearTitle from '@src/components/animationComponents/appearTitle/Index';
 import ButtonLink from '@src/components/animationComponents/buttonLink/Index';
@@ -87,7 +87,7 @@ function Countdown({ item, still }) {
 
 // Keep the date, cutoff and running clock together. Other deadline precisions
 // retain the resolver's wording (including quiz windows and unconfirmed times).
-function Deadline({ item, still }) {
+function Deadline({ item, still, alsoDue = [] }) {
   return (
     <div data-desk-deadline={item.id}>
       <div className={styles.deadlineHeading}>
@@ -102,6 +102,20 @@ function Deadline({ item, still }) {
           )}
         </p>
         {item.target?.note && <p className={clsx('p-x', styles.note)}>{item.target.note}</p>}
+        {alsoDue.length ? (
+          <p className={clsx('p-x', styles.note, styles.alsoDue)} data-desk-also-due>
+            Also due then:{' '}
+            {alsoDue.map((other, index) => (
+              <Fragment key={`${other.courseId}-${other.id}`}>
+                {index ? ', ' : ''}
+                <Link href={other.href} scroll={false}>
+                  {other.title}
+                  {other.courseId === item.courseId ? '' : ` (${getCourse(other.courseId)?.code})`}
+                </Link>
+              </Fragment>
+            ))}
+          </p>
+        ) : null}
       </div>
       <Countdown item={item} still={still} />
     </div>
@@ -181,7 +195,7 @@ function About({ desk }) {
             <div className={styles.imageContainer} aria-hidden="true" />
           ))}
         <div className={clsx(styles.descWrapperBottom)}>
-          {ready && next ? <Deadline item={next} still={still} /> : <p className="p-l">{empty ? EMPTY_TEXT : DESK_TEXT.nextStatic}</p>}
+          {ready && next ? <Deadline item={next} still={still} alsoDue={desk.alsoDue} /> : <p className="p-l">{empty ? EMPTY_TEXT : DESK_TEXT.nextStatic}</p>}
           {ready && next && (
             <AppearTitle isFooter key={`bottom-${next.courseId}-${next.id}`}>
               {next.requirement && <p className="h6">{next.requirement}</p>}
