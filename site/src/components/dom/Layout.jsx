@@ -458,7 +458,7 @@ function Layout({ children, layoutRef, mainRef, router }) {
       </SwitchTransition>
 
       {courseIdFromPath(footerPath) ? (
-        <CompactFooter />
+        <CompactFooter courseId={courseIdFromPath(footerPath)} />
       ) : (
         <>
           <CompanionStatement />
