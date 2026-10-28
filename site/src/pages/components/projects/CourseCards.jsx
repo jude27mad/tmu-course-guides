@@ -27,7 +27,8 @@ function kickerFor(course, entry, ready) {
   const next = entry?.next;
   // "Section 24 · Tue 4:00 PM lab · VIC305" -> "Section 24"
   const section = entry?.section ? String(entry.section).split(' · ')[0] : null;
-  return [section, next ? `Next: ${next.dateLabel || next.when}` : NO_DEADLINES].filter(Boolean).join(' · ');
+  // "Section 29 · Next: Failure Analysis Part 2: FMEA, Wed Oct 28": what is due, not only when.
+  return [section, next ? `Next: ${[next.title, next.dateLabel || next.when].filter(Boolean).join(', ')}` : NO_DEADLINES].filter(Boolean).join(' · ');
 }
 
 function CourseCards({ desk }) {
