@@ -6,6 +6,7 @@ import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect'
 import useStill from '@src/hooks/useStill';
 import useSelectionMotion from './useSelectionMotion';
 import { labRoom, timeWithRoom } from './labRoom';
+import { isSitting } from './sittings';
 import styles from './workspace.module.scss';
 
 // Upcoming work first, so the list opens on what is due next; past-due records
@@ -128,7 +129,8 @@ export default function Work({ assignments, filter, navigate }) {
                     {rows.map((entry) => {
                       const item = content.find((candidate) => candidate.id === entry.id);
                       const { lead } = entry;
-                      let status = 'Open';
+                      // A passed quiz, midterm or presentation took place; "Open" would read as still to come.
+                      let status = key === 'pastDue' && isSitting(courseId, entry.lead) ? 'Took place' : 'Open';
                       if (entry.recorded) status = `${entry.recorded}/${entry.records.length} recorded`;
                       // An earlier part passed unmarked while the row leads with the next one.
                       if (entry.missed && key !== 'pastDue') status = entry.recorded ? `${status} · ${entry.missed} past due` : `${entry.missed} ${entry.missed === 1 ? 'part' : 'parts'} past due`;

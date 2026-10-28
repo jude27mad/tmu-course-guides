@@ -1,6 +1,7 @@
 import { AssessmentBody, CenBody, TopicBody } from '@src/pages/course/components/cards/ItemCards';
 import { useState } from 'react';
 import { useCourse } from '@src/pages/course/hooks/useCourseState';
+import { isSitting, passedWord } from './sittings';
 import styles from './workspace.module.scss';
 
 export default function AssignmentDetail({ item, kind, assignments, back, returnView }) {
@@ -27,7 +28,7 @@ export default function AssignmentDetail({ item, kind, assignments, back, return
         <p className={styles.eyebrow}>{kind === 'topic' ? 'Study' : [item.who, item.weightLabel].filter(Boolean).join(' · ')}</p>
         <h2>{item.name || item.title}</h2>
         {kind === 'topic' ? <p>{item.sub}</p> : null}
-        {entry?.group === 'pastDue' ? <p className={styles.status}>Past due · not marked done</p> : null}
+        {entry?.group === 'pastDue' ? <p className={styles.status}>{passedWord(courseId, entry.lead)} · not marked done</p> : null}
         {entry?.missed && entry.group !== 'pastDue' && !entry.done ? (
           <p className={styles.status}>
             {entry.missed} earlier {entry.missed === 1 ? 'part' : 'parts'} past due · not marked done
@@ -44,10 +45,12 @@ export default function AssignmentDetail({ item, kind, assignments, back, return
                 <li key={row.id}>
                   <strong>{row.title}</strong>
                   <span>{[row.dateLabel || 'Date pending', row.timeLabel].filter(Boolean).join(' · ')}</span>
-                  {row.label ? <span>{row.label}</span> : null}
+                  {row.label && !(row.overdue && isSitting(courseId, row)) ? <span>{row.label}</span> : null}
                   {row.target?.note ? <span>{row.target.note}</span> : null}
                   {row.cta ? <span>{row.cta}</span> : null}
-                  {row.markable ? <span className={styles.meta}>{row.done ? 'Marked done by you' : [row.overdue && 'Past due', 'not marked done'].filter(Boolean).join(' · ')}</span> : null}
+                  {row.markable ? (
+                    <span className={styles.meta}>{row.done ? 'Marked done by you' : [row.overdue && passedWord(courseId, row), 'not marked done'].filter(Boolean).join(' · ')}</span>
+                  ) : null}
                   {row.markable ? (
                     <button
                       type="button"
