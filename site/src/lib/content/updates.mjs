@@ -129,6 +129,13 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-10-28-smooth-on-fast-screens",
+  "date": "October 28, 2026",
+  "title": "Smooth motion on 120 Hz screens",
+  "text": "On screens that refresh 120 times a second or faster, the pointer trail, the dot field on the Desk, the course badges and touch scrolling now move at the screen's full rate and behave as they do on a 60 Hz screen. Before, the trail faded twice as fast, the badges swung back sooner and slow flicks stopped when the finger lifted. The badges also stay sharp instead of softening after a few seconds, and the pointer trail stops drawing once it has faded, which saves battery. Safari shows web pages at up to 60 frames per second unless its “Prefer Page Rendering Updates near 60fps” feature flag is turned off.",
+  "items": []
+ },
+ {
   "id": "2026-10-24-smoother-page-changes",
   "date": "October 24, 2026",
   "title": "Smoother page changes",
