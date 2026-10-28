@@ -312,6 +312,17 @@ try {
     await page.goForward();
     await page.locator('#course-view-assignment-y9[data-assignment-detail]').waitFor();
   });
+  await check('Back to Work goes to Work after a directly opened detail opens another', async () => {
+    await ready(page, 'cen100/#assignment-m2');
+    await page.locator('#course-view-assignment-m2[data-assignment-detail]').waitFor();
+    // The header's Next deadline link opens a second detail from the first.
+    await page.locator('[class*="workspace_summary"] a').first().click();
+    await page.waitForFunction(() => document.querySelector('[data-assignment-detail]') && !document.getElementById('course-view-assignment-m2'));
+    const back = page.getByRole('button', { name: /Back to Work/ }).first();
+    await back.click();
+    await page.locator('[data-work-results]').waitFor();
+    assert.equal(await page.locator('[data-assignment-detail]').count(), 0);
+  });
   await check('rapid view changes with motion never replay stale navigation', async () => {
     const rapidContext = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, reducedMotion: 'no-preference' });
     try {
