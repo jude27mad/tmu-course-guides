@@ -4,12 +4,23 @@ import styles from '@src/pages/components/clients/styles/badgeFallback.module.sc
 // the text. `chars` is how many characters of that line fit the card at full size.
 const fit = (text, chars) => Math.min(1, chars / Math.max(1, String(text).length));
 
+// The badge's printed colours (BADGE in lib/palette.mjs, which arrive in `look`) as the stylesheet's custom properties.
+const colours = (look) => ({
+  '--badge-bg': look.background,
+  '--badge-color': look.color,
+  '--badge-secondary': look.secondary,
+  '--badge-divider': look.divider,
+  '--badge-slot': look.slot,
+  '--badge-strap': look.strap,
+  '--badge-clip': look.clip,
+});
+
 // The course badge as plain HTML, for a browser without WebGL: the card face the 3D lanyard prints (index,
 // term, code, name, next date; textures in Badge's badgeTextures.js) hanging at rest from its band. The
 // window is aria-hidden and the course text beside it says the same thing.
 export default function BadgeFallback({ look }) {
   return (
-    <div className={styles.root} data-badge-fallback>
+    <div className={styles.root} style={colours(look)} data-badge-fallback>
       <div className={styles.strap} />
       <div className={styles.clip} />
       <div className={styles.card}>

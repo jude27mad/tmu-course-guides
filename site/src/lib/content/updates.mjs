@@ -117,6 +117,13 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-10-24-desk-button-label",
+  "date": "October 24, 2026",
+  "title": "Mark done button on the Desk",
+  "text": "Screen readers now announce the Desk's Mark done button with the assessment's name instead of \"Mark undefined done\".",
+  "items": []
+ },
+ {
   "id": "2026-10-24-opens-without-webgl",
   "date": "October 24, 2026",
   "title": "Opens in browsers without WebGL",

@@ -1,9 +1,20 @@
+@import '@src/styles/functions';
+
 // The flat badge for browsers without WebGL (components/BadgeFallback.jsx). It sits in the badge window like
 // the 3D lanyard: the band from the top edge, the clip, then the card, laid out on the 512 x 720 texture
-// grid of badgeTextures.js. --u is one texture pixel; the window is the size container.
+// grid of badgeTextures.js. The colours are the badge's own (BADGE in lib/palette.mjs, passed in as --badge-*).
+// --h is the window's height and --u one texture pixel.
 .root {
-  container-type: size;
-  --u: calc(52cqh / 720);
+  // Where container query units are missing, the window's own height (clients.module.scss: 30vw, 90vw on phones).
+  --h: 30vw;
+  @include mobile {
+    --h: 90vw;
+  }
+  @supports (height: 1cqh) {
+    container-type: size;
+    --h: 100cqh;
+  }
+  --u: calc(var(--h) * 0.52 / 720);
   position: relative;
   width: 100%;
   height: 100%;
@@ -20,34 +31,36 @@
   top: 0;
   left: 50%;
   width: calc(100 * var(--u));
-  height: 33cqh;
+  height: calc(var(--h) * 0.33);
   transform: translateX(-50%);
-  background-color: var(--raised);
-  border-inline: 1px solid var(--borderOnDark);
+  background-color: var(--badge-strap, var(--raised));
+  border-inline: 1px solid var(--badge-divider, var(--borderOnDark));
 }
 
 .clip {
   position: absolute;
-  top: 33cqh;
+  top: calc(var(--h) * 0.33);
   left: 50%;
   width: calc(110 * var(--u));
   height: calc(36 * var(--u));
   transform: translateX(-50%);
   border-radius: calc(8 * var(--u));
-  background-color: var(--mutedOnDark);
+  background-color: var(--badge-clip, var(--mutedOnDark));
 }
 
 .card {
   position: absolute;
-  top: calc(33cqh + 30 * var(--u));
+  top: calc(var(--h) * 0.33 + 30 * var(--u));
   left: 50%;
   width: calc(512 * var(--u));
   height: calc(720 * var(--u));
   transform: translateX(-50%);
-  border: 1px solid var(--borderOnDark);
+  border: 1px solid var(--badge-divider, var(--borderOnDark));
   border-radius: calc(34 * var(--u));
-  background-image: linear-gradient(155deg, var(--raised), var(--black) 55%);
-  color: var(--onDark);
+  // the card is the window's own ink, so a faint sheen and the hairline keep it readable against the panel
+  background-color: var(--badge-bg, var(--black));
+  background-image: linear-gradient(155deg, rgba(var(--onDarkRgb), 0.08), transparent 55%);
+  color: var(--badge-color, var(--onDark));
   overflow: hidden;
 
   // every printed line spans the card's padding (44px of the texture) on its own row
@@ -67,7 +80,7 @@
     right: calc(204 * var(--u));
     height: calc(18 * var(--u));
     border-radius: calc(9 * var(--u));
-    background-color: var(--black);
+    background-color: var(--badge-slot, var(--raised));
   }
 
   .index,
@@ -75,7 +88,7 @@
     top: calc(78 * var(--u));
     font-size: calc(30 * var(--u));
     font-weight: 550;
-    color: var(--mutedOnDark);
+    color: var(--badge-secondary, var(--mutedOnDark));
   }
 
   .term {
@@ -96,20 +109,20 @@
     top: calc(408 * var(--u));
     font-size: calc(50 * var(--u) * var(--fit, 1));
     font-weight: 550;
-    color: var(--mutedOnDark);
+    color: var(--badge-secondary, var(--mutedOnDark));
   }
 
   .divider {
     top: calc(560 * var(--u));
     height: calc(2 * var(--u));
-    background-color: var(--borderOnDark);
+    background-color: var(--badge-divider, var(--borderOnDark));
   }
 
   .nextLabel {
     top: calc(586 * var(--u));
     font-size: calc(28 * var(--u));
     font-weight: 550;
-    color: var(--mutedOnDark);
+    color: var(--badge-secondary, var(--mutedOnDark));
   }
 
   .nextValue {
