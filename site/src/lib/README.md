@@ -17,6 +17,7 @@ The data layer every page uses. Pages import from `@src/lib` (plain functions) a
 | `courses.mjs` | `COURSES`, palettes, links, sections, saved section/group. |
 | `deadlines.mjs` | `deadlines`, `buckets`, `nextDeadline`, `countdown`, `weeklyChecklist`, `assessments`, `deskSnapshot`, `workList`. |
 | `assignments.mjs` | `assignmentList`, `calendarEvents`: one entry per content item and one event per dated deadline row. |
+| `weeks.mjs` | `currentTermWeek`: this Toronto day's term week and its label, or null outside the term. |
 | `info.mjs` | `courseInfo`. |
 | `progress.mjs` | `createProgress` (Mark done, Undo, ticks, notes, targets, subscribe). |
 | `search.mjs` | `searchIndex`, `searchEntries`, `searchGuide`. |

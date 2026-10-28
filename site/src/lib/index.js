@@ -8,6 +8,7 @@ export { COURSES, COURSE_IDS, PALETTES, DEFAULT_PALETTE, getCourse, sections, ge
 export { TOKENS, STATUS, BADGE, DISC, countdownStatus, rgbOf } from './palette.mjs';
 export { deadlines, deadlineItem, buckets, nextDeadline, countdown, weeklyChecklist, assessments, deskSnapshot, workList } from './deadlines.mjs';
 export { assignmentList, calendarEvents } from './assignments.mjs';
+export { currentTermWeek } from './weeks.mjs';
 export { courseInfo, courseCopy } from './info.mjs';
 export { createProgress, sharedProgress } from './progress.mjs';
 export { searchIndex, searchEntries, searchGuide, SEARCH_COPY, SEARCH_GROUPS } from './search.mjs';

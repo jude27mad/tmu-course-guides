@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
-import { assignmentList, countdown, countdownStatus, groups, sections } from '@src/lib';
+import { assignmentList, countdown, countdownStatus, currentTermWeek, groups, sections } from '@src/lib';
 import CourseBadge from '@src/components/courseBadge/CourseBadge';
 import GuideTools from '@src/pages/course/components/tools/GuideTools';
 // eslint-disable-next-line import/extensions
@@ -43,12 +43,20 @@ export default function CourseWorkspace() {
   const left = timeLeft(next, live?.now);
   const completed = live?.progress?.completed || 0;
   const total = live?.progress?.total || 0;
+  // This term week ("Week 8 · Oct 26–Nov 1"), after mount only; nothing outside the term.
+  const week = live ? currentTermWeek(live.now) : null;
   return (
     <div className={styles.root}>
       <div className={styles.courseHeader}>
         <div className={styles.headingCopy}>
           <p className={styles.eyebrow}>
             {course.code} <span> / {course.term}</span>
+            {week?.number ? (
+              <span title={week.label} data-course-week>
+                {' '}
+                · Week {week.number}
+              </span>
+            ) : null}
           </p>
           <h1>{course.name}</h1>
           <p className={styles.headerNote}>Your course, at a glance.</p>
