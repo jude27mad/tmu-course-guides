@@ -34,6 +34,7 @@ import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import Scrollbar from '@src/components/dom/Scrollbar';
 import Stats from '@src/components/stats/Index';
 import Tempus from '@darkroom.engineering/tempus';
+import WebGLGate from '@src/components/canvas/WebGLGate';
 import { gsap } from 'gsap';
 import styles from '@src/pages/app.module.scss';
 import { useCoarsePointer } from '@src/hooks/useMediaQuery';
@@ -219,36 +220,40 @@ function MyApp({ Component, pageProps, router }) {
     [],
   );
 
+  // Every canvas sits in a WebGLGate: a browser without WebGL (turned off, blocked, no GPU) gets the page
+  // without its 3D layer instead of an application error. This one is `critical`: the course badges draw into it.
   const canvasElements = useMemo(
     () => (
-      <Canvas
-        id="viewCanvas"
-        fallback={<span aria-hidden="true" />}
-        gl={{
-          outputColorSpace: THREE.LinearSRGBColorSpace,
-          powerPreference: 'high-performance',
-        }}
-        style={{ zIndex: 0 }}
-        resize={{ scroll: false, debounce: { resize: 0, scroll: 0 }, polyfill: undefined }}
-        className={styles.canvasContainer}
-        dpr={dpr ?? [1, maxDpr]}
-        // motion off: draw only when something moves (scroll, resize, panels, curtain)
-        frameloop={still ? 'demand' : 'always'}
-        aria-hidden="true"
-      >
-        {still && <DemandDriver />}
-        <ClearViews />
-        <PerformanceMonitor bounds={dprBounds} onDecline={() => changeDpr(1)} onIncline={() => changeDpr(null)} />
-        {/* A view that is loading (or never loads) must stay inside the canvas: without
-            this boundary R3F suspends the <Canvas> DOM component itself, and its next
-            re-render (dpr, colour space) would hold every update of the page. */}
-        <BadgeBoundary registry={badgeRegistry} route={badgeRoute}>
-          <Suspense fallback={null}>
-            <BadgeWorld registry={badgeRegistry} />
-            <View.Port />
-          </Suspense>
-        </BadgeBoundary>
-      </Canvas>
+      <WebGLGate critical>
+        <Canvas
+          id="viewCanvas"
+          fallback={<span aria-hidden="true" />}
+          gl={{
+            outputColorSpace: THREE.LinearSRGBColorSpace,
+            powerPreference: 'high-performance',
+          }}
+          style={{ zIndex: 0 }}
+          resize={{ scroll: false, debounce: { resize: 0, scroll: 0 }, polyfill: undefined }}
+          className={styles.canvasContainer}
+          dpr={dpr ?? [1, maxDpr]}
+          // motion off: draw only when something moves (scroll, resize, panels, curtain)
+          frameloop={still ? 'demand' : 'always'}
+          aria-hidden="true"
+        >
+          {still && <DemandDriver />}
+          <ClearViews />
+          <PerformanceMonitor bounds={dprBounds} onDecline={() => changeDpr(1)} onIncline={() => changeDpr(null)} />
+          {/* A view that is loading (or never loads) must stay inside the canvas: without
+              this boundary R3F suspends the <Canvas> DOM component itself, and its next
+              re-render (dpr, colour space) would hold every update of the page. */}
+          <BadgeBoundary registry={badgeRegistry} route={badgeRoute}>
+            <Suspense fallback={null}>
+              <BadgeWorld registry={badgeRegistry} />
+              <View.Port />
+            </Suspense>
+          </BadgeBoundary>
+        </Canvas>
+      </WebGLGate>
     ),
     [badgeRegistry, badgeRoute, changeDpr, dpr, maxDpr, still],
   );
@@ -281,33 +286,35 @@ function MyApp({ Component, pageProps, router }) {
           <div id="routePaper" className={styles.routePaper} aria-hidden="true" />
           {canvasElements}
           {!still && (
-            <Canvas
-              id="fluidCanvas"
-              flat
-              gl={{
-                antialias: false,
-                stencil: false,
-                depth: false,
-                pixelRatio: 0.1,
-              }}
-              // Keep the wrapper transparent on iOS before hydration as well.
-              // global.scss supplies the original black base in contained mode;
-              // an inline background would override Safari's document styling.
-              style={{ mixBlendMode: 'difference', pointerEvents: 'none' }}
-              linear
-              className={styles.canvasContainer}
-              eventSource={mainRef.current}
-              dpr={[0.1, 0.5]}
-              // Fluid keeps frames coming while its trail is moving or fading.
-              frameloop="demand"
-              aria-hidden="true"
-            >
-              {/* The composer's own scene is empty (the fluid draws into its own
-                  buffers), so it needs no multisampling or depth buffer. */}
-              <EffectComposer multisampling={0} depthBuffer={false}>
-                <Fluid fluidColor={fluidColor} mainRef={mainRef} />
-              </EffectComposer>
-            </Canvas>
+            <WebGLGate>
+              <Canvas
+                id="fluidCanvas"
+                flat
+                gl={{
+                  antialias: false,
+                  stencil: false,
+                  depth: false,
+                  pixelRatio: 0.1,
+                }}
+                // Keep the wrapper transparent on iOS before hydration as well.
+                // global.scss supplies the original black base in contained mode;
+                // an inline background would override Safari's document styling.
+                style={{ mixBlendMode: 'difference', pointerEvents: 'none' }}
+                linear
+                className={styles.canvasContainer}
+                eventSource={mainRef.current}
+                dpr={[0.1, 0.5]}
+                // Fluid keeps frames coming while its trail is moving or fading.
+                frameloop="demand"
+                aria-hidden="true"
+              >
+                {/* The composer's own scene is empty (the fluid draws into its own
+                    buffers), so it needs no multisampling or depth buffer. */}
+                <EffectComposer multisampling={0} depthBuffer={false}>
+                  <Fluid fluidColor={fluidColor} mainRef={mainRef} />
+                </EffectComposer>
+              </Canvas>
+            </WebGLGate>
           )}
           <main ref={mainRef} id="main" className={styles.main} tabIndex={-1}>
             <div ref={mainContainerRef} id="mainContainer" className={styles.mainContainer}>
