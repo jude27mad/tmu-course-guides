@@ -2,12 +2,6 @@
 
 Latest first. Students see course changes under **Course updates** in each guide's Guide tools, and website changes on the **Website updates** page. Older entries record the behaviour at the time; later releases supersede them.
 
-## Unreleased — Pages usable sooner
-
-- three.js, React Three Fiber, drei and postprocessing no longer load before a page is usable. `_app` loads them, the background, the fluid (with its composer, `components/canvas/FluidLayer.jsx`) and the view canvas's helpers through `next/dynamic`, and the pre-footer game's canvas loads only when the statement comes near. Every canvas already mounted after hydration (WebGLGate); each now arrives once its chunk is in, and draws exactly as before.
-- First-load JavaScript (gzip): shared by every page 466 KB → 235 KB; a course page 472 KB → 241 KB.
-- Chromium at phone size with 4× CPU throttling and slow 4G, CEN100, median of three runs on a shared machine: usable (a Work filter answers) 14.7 s → 7.8 s, curtain gone 11.9 s → 7.3 s, long tasks 4.2 s → 1.9 s. The relative change is the result to trust; absolute times are inflated.
-
 ## Unreleased — The website opens without WebGL
 
 - **The Desk no longer crashes in browsers with WebGL turned off.** Chrome with WebGL disabled (a browser setting or policy, or no usable graphics) showed "Application error: a client-side exception has occurred" on the home page, and on every other page, because the 3D layer could not create its WebGL context. Every 3D canvas is now mounted only where WebGL works and sits inside an error boundary, so a browser without it gets the page without the background's slow drift, the pointer effect and the pre-footer game.
@@ -15,6 +9,12 @@ Latest first. Students see course changes under **Course updates** in each guide
 - If WebGL goes away after the page has loaded (a GPU reset or crash), the page keeps working: contexts that come back within a few seconds carry on, a canvas that failed meanwhile tries again, and a context that stays lost turns the 3D layer off and shows the flat badges.
 - The Desk's **Mark done** button is announced with the assessment's name again; screen readers had read it as "Mark undefined done".
 - CI (its own `no-webgl` job) loads every route (including the 404 page) with WebGL disabled, blocked and failing after the capability probe passes or after the first canvas is built, loses the GPU after load, resets it, and works with WebGL as a control that also checks the 3D badges paint and the pre-footer game appear; Chromium and WebKit. The new `tests/webgl.test.mjs` fails on a 3D canvas that is not in the gate.
+
+## Unreleased — Pages usable sooner
+
+- three.js, React Three Fiber, drei and postprocessing no longer load before a page is usable. `_app` loads them, the background, the fluid (with its composer, `components/canvas/FluidLayer.jsx`) and the view canvas's helpers through `next/dynamic`, and the pre-footer game's canvas loads only when the statement comes near. Every canvas already mounted after hydration (WebGLGate); each now arrives once its chunk is in, and draws exactly as before.
+- First-load JavaScript (gzip): shared by every page 466 KB → 235 KB; a course page 472 KB → 241 KB.
+- Chromium at phone size with 4× CPU throttling and slow 4G, CEN100, median of three runs on a shared machine: usable (a Work filter answers) 14.7 s → 7.8 s, curtain gone 11.9 s → 7.3 s, long tasks 4.2 s → 1.9 s. The relative change is the result to trust; absolute times are inflated.
 
 ## Unreleased — Smoother page changes
 
