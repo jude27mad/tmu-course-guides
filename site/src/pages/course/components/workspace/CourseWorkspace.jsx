@@ -8,6 +8,7 @@ import GuideTools from '@src/pages/course/components/tools/GuideTools';
 import { openGuideTools } from '@src/pages/course/components/tools/dialog.mjs';
 import { useCourse } from '@src/pages/course/hooks/useCourseState';
 import useCourseNavigation from './useCourseNavigation';
+import { labRoom, timeWithRoom } from './labRoom';
 import CourseNavigation from './CourseNavigation';
 import Work from './Work';
 import AssignmentDetail from './AssignmentDetail';
@@ -41,6 +42,7 @@ export default function CourseWorkspace() {
   const views = [['work', 'Work'], ['schedule', 'Schedule'], ...(courseId === 'cen100' ? [] : [['study', 'Study']]), ['info', 'Course info']];
   const next = live?.next;
   const left = timeLeft(next, live?.now);
+  const room = labRoom(courseId, section);
   const completed = live?.progress?.completed || 0;
   const total = live?.progress?.total || 0;
   // This term week ("Week 8 · Oct 26–Nov 1"), after mount only; nothing outside the term.
@@ -123,7 +125,7 @@ export default function CourseWorkspace() {
             {next ? (
               <Link href={`/${courseId}/#${next.anchor}`} scroll={false}>
                 <strong>{next.title} ↗</strong>
-                <span>{[next.dateLabel, next.timeLabel || next.cta].filter(Boolean).join(' · ')}</span>
+                <span>{[next.dateLabel, timeWithRoom(next, room) || next.cta].filter(Boolean).join(' · ')}</span>
               </Link>
             ) : (
               <span>{live ? 'No upcoming deadlines' : 'Loading deadlines…'}</span>
