@@ -10,9 +10,9 @@ import useMaterials from '@src/components/canvas/fluid/hooks/useMaterials';
 import useOpts from '@src/components/canvas/fluid/hooks/useOpts';
 import usePointerEvents from '@src/components/canvas/fluid/hooks/usePointerEvents';
 // eslint-disable-next-line import/extensions
-import { decayFor, frameSteps } from '@src/utils/frameStep.mjs';
+import { decayFor, frameShare } from '@src/utils/frameStep.mjs';
 // eslint-disable-next-line import/extensions
-import { listenForGameCelebration } from './gameCelebration.mjs';
+import { GAME_CELEBRATION_EVENT, listenForGameCelebration } from './gameCelebration.mjs';
 
 // The original advanced the simulation 0.016 s, dissipated once and added a
 // full dye splat for every rendered frame, so at 120 Hz the fluid moved twice
@@ -20,12 +20,16 @@ import { listenForGameCelebration } from './gameCelebration.mjs';
 // frame. A burst (the game celebration) is a one-off and keeps its full dye.
 const STEP_DT = 0.016;
 const SPLAT_DYE = 10.0;
+// The canvas draws on demand: input wakes it, and it keeps drawing until the
+// last splat has faded for good (the composite no longer changes by then).
+const SETTLE_SECONDS = 10;
 
 function Fluid({ mainRef, fluidColor }) {
   const OPTS = useOpts();
   const { force, radius, curl, swirl, intensity, backgroundColor, showBackground, pressure, densityDissipation, velocityDissipation } = OPTS;
   const size = useThree((three) => three.size);
   const gl = useThree((three) => three.gl);
+  const invalidate = useThree((three) => three.invalidate);
 
   const bufferScene = useRef(new Scene());
   const bufferCamera = useRef(new Camera());
@@ -37,14 +41,25 @@ function Fluid({ mainRef, fluidColor }) {
 
   const pointerRef = useRef(new Vector2());
   const colorRef = useRef(new Vector3());
+  const settling = useRef(0);
 
   useEffect(() => listenForGameCelebration(window, splatStack, size), [splatStack, size]);
+
+  useEffect(() => {
+    const element = mainRef.current;
+    const wake = () => invalidate();
+    element?.addEventListener('pointermove', wake, { passive: true });
+    window.addEventListener(GAME_CELEBRATION_EVENT, wake);
+    return () => {
+      element?.removeEventListener('pointermove', wake);
+      window.removeEventListener(GAME_CELEBRATION_EVENT, wake);
+    };
+  }, [mainRef, invalidate]);
 
   const setShaderMaterial = useCallback(
     (name) => {
       if (!meshRef.current) return;
       meshRef.current.material = materials[name];
-      meshRef.current.material.needsUpdate = true;
     },
     [materials],
   );
@@ -78,14 +93,15 @@ function Fluid({ mainRef, fluidColor }) {
 
   useFrame((_, delta) => {
     if (!meshRef.current || !postRef.current) return;
-    const steps = frameSteps(delta);
-    if (!steps) return;
+    const share = frameShare(delta);
+    settling.current = splatStack.current.length ? SETTLE_SECONDS : settling.current - delta;
+    if (settling.current > 0) invalidate();
 
     while (splatStack.current.length > 0) {
       const { mouseX, mouseY, velocityX, velocityY, radiusScale = 1, burst = false } = splatStack.current.pop();
 
       pointerRef.current.set(mouseX, mouseY);
-      colorRef.current.set(velocityX, velocityY, burst ? SPLAT_DYE : SPLAT_DYE * steps);
+      colorRef.current.set(velocityX, velocityY, burst ? SPLAT_DYE : SPLAT_DYE * share);
 
       setShaderMaterial('splat');
       setUniforms('splat', 'uTarget', FBOs.velocity.read.texture);
@@ -108,7 +124,7 @@ function Fluid({ mainRef, fluidColor }) {
     setUniforms('vorticity', 'uVelocity', velocityTexture);
     setUniforms('vorticity', 'uCurl', FBOs.curl.texture);
     setUniforms('vorticity', 'uCurlValue', curl);
-    setUniforms('vorticity', 'dt', STEP_DT * steps);
+    setUniforms('vorticity', 'dt', STEP_DT * share);
     setRenderTarget('velocity');
 
     setShaderMaterial('divergence');
@@ -135,12 +151,12 @@ function Fluid({ mainRef, fluidColor }) {
     setShaderMaterial('advection');
     setUniforms('advection', 'uVelocity', FBOs.velocity.read.texture);
     setUniforms('advection', 'uSource', FBOs.velocity.read.texture);
-    setUniforms('advection', 'dt', STEP_DT * steps);
-    setUniforms('advection', 'uDissipation', decayFor(velocityDissipation, steps));
+    setUniforms('advection', 'dt', STEP_DT * share);
+    setUniforms('advection', 'uDissipation', decayFor(velocityDissipation, share));
     setRenderTarget('velocity');
 
     setUniforms('advection', 'uSource', FBOs.density.read.texture);
-    setUniforms('advection', 'uDissipation', decayFor(densityDissipation, steps));
+    setUniforms('advection', 'uDissipation', decayFor(densityDissipation, share));
     setRenderTarget('density');
 
     // Every pass swaps the density buffers, so the texture captured when the

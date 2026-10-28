@@ -32,3 +32,21 @@ test('cancelled multitouch does not disable later single-finger or wheel scrolli
   assert.equal(filter(touch('touchstart', 1)), true);
   assert.equal(filter(touch('touchmove', 1)), true);
 });
+
+// Lenis starts touch inertia only when the release reuses a last touchmove of
+// more than 5 px. At 120 Hz that touchmove covers half a 60 Hz frame.
+test('a release measures the last touchmove per 60 Hz frame', () => {
+  const release = () => ({ event: { type: 'touchend', touches: [] }, deltaX: 1, deltaY: -3 });
+  let share = 1;
+  const filter = createTouchScrollFilter(() => share);
+  const atSixty = release();
+  assert.equal(filter(atSixty), true);
+  assert.deepEqual([atSixty.deltaX, atSixty.deltaY], [1, -3]);
+  share = 0.5;
+  const atOneTwenty = release();
+  assert.equal(filter(atOneTwenty), true);
+  assert.deepEqual([atOneTwenty.deltaX, atOneTwenty.deltaY], [2, -6]);
+  const moving = { event: { type: 'touchmove', touches: [{}] }, deltaX: 1, deltaY: -3 };
+  filter(moving);
+  assert.deepEqual([moving.deltaX, moving.deltaY], [1, -3], 'only the release is rescaled');
+});

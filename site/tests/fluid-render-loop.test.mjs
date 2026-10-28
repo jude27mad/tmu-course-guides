@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import * as THREE from 'three';
-import { decayFor, frameSteps } from '../src/utils/frameStep.mjs';
+import { decayFor, frameShare } from '../src/utils/frameStep.mjs';
 
 const read = path => readFileSync(new URL(path, import.meta.url), 'utf8');
 const fluidSource = read('../src/components/canvas/fluid/Fluid.jsx');
@@ -56,11 +56,12 @@ function mount() {
       draws.push({ material: material.name, uniforms });
     },
   };
+  const wakes = { count: 0 };
   const componentScope = {
-    ...scope, useThree: select => select({ size, gl }), useCallback: callback => callback,
+    ...scope, useThree: select => select({ size, gl, invalidate: () => { wakes.count += 1; } }), useCallback: callback => callback,
     useEffect: () => {}, useFrame: callback => { frame = callback; },
     useFBOs: () => FBOs, useMaterials: () => materials, usePointerEvents: () => splatStack,
-    decayFor, frameSteps,
+    decayFor, frameShare,
   };
   // The module's own constants, then the component body up to its JSX.
   const constants = fluidSource.match(/^const [A-Z_]+ = [^;]+;$/gm).join('\n');
@@ -71,7 +72,7 @@ function mount() {
   const shown = [];
   refs.postRef.current = { updateUniform: (name, value) => { if (name === 'tFluid') shown.push(value); } };
   return {
-    FBOs, splatStack, draws, shown,
+    FBOs, splatStack, draws, shown, wakes,
     frame(delta = 1 / 60) { draws.length = 0; frame({}, delta); },
     dispose() {
       targets.forEach(target => target.dispose());
@@ -182,4 +183,24 @@ test('the effect shows the density each frame produced', () => {
       assert.deepEqual(h.shown, [h.FBOs.density.read.texture]);
     }
   } finally { h.dispose(); }
+});
+
+// The canvas draws on demand. A splat keeps frames coming until its trail has
+// faded for good, at any frame rate, and then the canvas rests.
+test('frames keep coming for ten seconds after the last splat, then stop', () => {
+  for (const rate of [60, 120]) {
+    const h = mount();
+    try {
+      h.splatStack.current.push({ mouseX: 0.2, mouseY: 0.4, velocityX: 1, velocityY: 1 });
+      let frames = 0;
+      let before = -1;
+      while (h.wakes.count > before || frames === 0) {
+        before = h.wakes.count;
+        h.frame(1 / rate);
+        frames += 1;
+        assert.ok(frames < rate * 20, 'the canvas never rests');
+      }
+      assert.ok(Math.abs(frames / rate - 10) < 0.05, `${rate} Hz rested after ${frames / rate} s`);
+    } finally { h.dispose(); }
+  }
 });

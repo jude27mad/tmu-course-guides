@@ -135,18 +135,18 @@ test('the shared canvas drops a View\'s last frame once nothing draws', () => {
   const source = read('../src/components/canvas/ClearViews.jsx')
     .replace(/^import[\s\S]*?from ['"][^'"]+['"];?\s*$/gm, '')
     .replace('export default ClearViews;', 'return ClearViews;');
-  let frame;
-  let priority;
+  const subscribers = [];
   const ClearViews = new Function('useRef', 'useFrame', source)(
     (value) => ({ current: value }),
-    (callback, order) => {
-      frame = callback;
-      priority = order;
-    },
+    (callback, order) => subscribers.push([callback, order]),
   );
   ClearViews();
+  const [[frame, priority], ...others] = subscribers;
   // drei Views draw at priority 1 and up, after this.
   assert.equal(priority, 0);
+  // A no-op above priority 0 turns off R3F's automatic render of the empty
+  // default scene, so a route without a view does no canvas work at all.
+  assert.deepEqual(others.map(([, order]) => order), [1]);
   const gl = { info: { render: { frame: 0 } }, clears: 0, setScissorTest() {}, clear() { this.clears += 1; } };
   const tick = (views) => {
     frame({ gl });

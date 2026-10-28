@@ -4,6 +4,7 @@ import test from 'node:test';
 import * as THREE from 'three';
 import { Vector2 } from 'three';
 import RAPIER from '@dimforge/rapier3d-compat';
+import { easeFor, frameShare } from '../src/utils/frameStep.mjs';
 
 const read = path => readFileSync(new URL(path, import.meta.url), 'utf8');
 const originalPointer = read('./fixtures/giats/usePointerEvents.jsx');
@@ -118,12 +119,18 @@ function frameFor(source, { velocity, direction, scrolling = true, intersected =
     curve: new THREE.CatmullRomCurve3(Array.from({ length: 4 }, () => new THREE.Vector3())),
     isScrolling: { current: scrolling }, speed: { current: velocity }, scrollDirection: { current: direction },
     intersected, rest: false, maxSpeed: 50, minSpeed: 10, ang: new THREE.Vector3(), rot: new THREE.Vector3(),
-    impulseVector: { current: { x: 0, y: 0, z: 0 } },
+    impulseVector: { current: { x: 0, y: 0, z: 0 } }, fresh: { current: false }, frameShare, easeFor,
     useFrame: callback => callback({}, 1 / 60),
+    useBeforePhysicsStep: callback => callback(),
   };
-  const start = source.indexOf('useFrame(');
-  const end = source.indexOf('\n  });', start) + 6;
-  new Function(...Object.keys(scope), source.slice(start, end))(...Object.values(scope));
+  // The first frame callback, then (where the correction runs before each
+  // physics step) that callback: at one step per frame, the same sequence.
+  for (const hook of ['useFrame(', 'useBeforePhysicsStep(']) {
+    const start = source.indexOf(hook);
+    if (start < 0) continue;
+    const end = source.indexOf('\n  });', start) + 6;
+    new Function(...Object.keys(scope), source.slice(start, end))(...Object.values(scope));
+  }
   return calls;
 }
 

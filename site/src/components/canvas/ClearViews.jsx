@@ -14,6 +14,10 @@ function ClearViews() {
     gl.clear(true, true, true);
     cleared.current = gl.info.render.frame;
   }, 0);
+  // Views draw themselves, so R3F's automatic render of the (empty) default
+  // scene is never needed. A subscriber above priority 0 turns it off; on a
+  // route without a view the canvas then does no work at all.
+  useFrame(() => {}, 1);
   return null;
 }
 
