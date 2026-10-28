@@ -5,6 +5,8 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createPreview } from '../../tools/preview-server.mjs';
+import { createProgress, deadlines, nextDeadline, setSection } from '../src/lib/index.js';
+import { memoryStorage } from '../tests/helpers.mjs';
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.PLAYWRIGHT_PATH || 'playwright');
 const site = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -27,7 +29,17 @@ async function check(name, run) {
     results.push({ name, pass: true, detail });
     console.log(`PASS ${name}`);
   } catch (error) {
-    results.push({ name, pass: false, error: error.message });
+    const search = await page.evaluate(() => {
+      const panel = document.getElementById('search');
+      if (!panel) return null;
+      return {
+        hidden: panel.getAttribute('aria-hidden'),
+        visibility: getComputedStyle(panel).visibility,
+        inert: panel.inert,
+        inputActive: document.activeElement?.id === 'search-input',
+      };
+    }).catch(() => null);
+    results.push({ name, pass: false, error: error.message, url: page.url(), search });
     console.error(`FAIL ${name}: ${error.message}`);
     await page.screenshot({ path: path.join(report, `failure-${name.replace(/[^a-z0-9]+/gi, '-')}.png`) }).catch(() => {});
   }
@@ -57,9 +69,168 @@ try {
     await page.getByRole('navigation', { name: 'Course views' }).waitFor();
     const box = await page.locator('[data-assignment-link]').first().boundingBox();
     assert.ok(box && box.y + box.height < 844, JSON.stringify(box));
-    assert.equal(await page.locator('[data-course-artwork] img').count(), 1);
+    assert.equal(await page.locator('[data-course-badge="cen100"]').count(), 1);
+    assert.equal(await page.locator('[data-course-artwork], img[src*="images/courses"]').count(), 0);
+    await page.locator('[data-badge-instance="header-cen100"][data-badge-rendered="true"]').waitFor();
     await page.screenshot({ path: path.join(report, 'cen100-work-390.png') });
     return { firstAssignmentBottom: box.y + box.height };
+  });
+  await check('singleton badges retain real bodies when motion pauses and resumes', async () => {
+    for (const course of ['mth140', 'mth141']) {
+      await ready(page, `${course}/`);
+      await page.locator(`[data-badge-instance="header-${course}"][data-badge-rendered="true"]`).waitFor();
+      // Inspect the existing provider from this isolated test page, without a
+      // production debug global or a separate demo world.
+      await page.evaluate(() => {
+        const element = document.querySelector('[data-course-badge]');
+        let fiber = element[Object.keys(element).find(key => key.startsWith('__reactFiber$'))];
+        while (fiber && !fiber.memoizedProps?.value?.register) fiber = fiber.return;
+        window.badgeRegistry = fiber?.memoizedProps.value;
+        if (!window.badgeRegistry) throw new Error('Badge provider not found');
+        const entries = window.badgeRegistry.getState().entries;
+        if (entries.length !== 1) throw new Error(`Expected one badge, saw ${entries.length}`);
+        window.badgeBodies = ['fixed', 'j1', 'j2', 'j3', 'card'].map(key => entries[0].body[key].current);
+        if (new Set(window.badgeBodies).size !== 5 || window.badgeBodies.some(body => !body?.isValid())) throw new Error('Expected five live Rapier bodies');
+      });
+      await page.emulateMedia({ reducedMotion: 'no-preference' });
+      await page.waitForFunction(() => document.documentElement.dataset.motion === 'on');
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await page.waitForFunction(() => document.documentElement.dataset.motion === 'off');
+      assert.ok(await page.evaluate(() => ['fixed', 'j1', 'j2', 'j3', 'card'].every((key, i) => window.badgeRegistry.getState().entries[0].body[key].current === window.badgeBodies[i])), 'Pause must not replace the bodies');
+      const before = await page.evaluate(() => window.badgeBodies[4].translation());
+      await page.waitForTimeout(150);
+      assert.deepEqual(await page.evaluate(() => window.badgeBodies[4].translation()), before, 'paused pose stays fixed');
+      await page.screenshot({ path: path.join(report, `${course}-singleton-paused.png`) });
+      await page.evaluate(() => window.badgeRegistry.unregister(window.badgeRegistry.getState().entries[0].id));
+      await page.waitForFunction(() => window.badgeRegistry.getState().entries.length === 0 && window.badgeBodies.every(body => {
+        // The final View also frees the WASM world: Rapier then throws instead
+        // of returning false from an old body's isValid(). Both mean disposed.
+        try { return !body.isValid(); }
+        catch (error) { if (error.message === 'null pointer passed to rust') return true; throw error; }
+      }));
+      await page.locator('[data-badge-fallback]').waitFor({ state: 'visible' });
+      await page.screenshot({ path: path.join(report, `${course}-last-view-removed.png`) });
+    }
+  });
+  await check('Desk badge follows cross-course Mark done and Undo with slow textures', async () => {
+    let fixture;
+    for (let day = 0; day < 90 && !fixture; day++) {
+      const now = new Date(Date.UTC(2026, 8, 1 + day, 16));
+      const storage = memoryStorage();
+      ['cen100', 'mth140', 'mth141'].forEach(course => setSection(course, 3, storage));
+      const progress = createProgress(storage, { events: null });
+      for (let step = 0; step < 100; step++) {
+        const from = nextDeadline({ now, storage });
+        if (!from?.markable) break;
+        const initial = Object.fromEntries(storage.data);
+        progress.markDone(from.courseId, from.id);
+        const to = nextDeadline({ now, storage });
+        if (to && to.courseId !== from.courseId) { fixture = { now: now.toISOString(), initial, from, to }; break; }
+      }
+      progress.dispose?.();
+    }
+    assert.ok(fixture, 'the published dates supply a cross-course completion transition');
+    const deskContext = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
+    try {
+      const desk = await deskContext.newPage();
+      desk.on('pageerror', error => errors.push(error.message));
+      await desk.clock.setFixedTime(new Date(fixture.now));
+      await desk.addInitScript(initial => {
+        for (const [key, value] of Object.entries(initial)) localStorage.setItem(key, value);
+        const load = document.fonts.load.bind(document.fonts);
+        document.fonts.load = async (...args) => {
+          const result = await load(...args);
+          if (window.holdBadgeFonts) await window.holdBadgeFonts;
+          return result;
+        };
+      }, fixture.initial);
+      await desk.goto(url);
+      const badge = desk.locator('[data-badge-instance="desk-next"]');
+      const courseLink = desk.locator('[data-desk-course-link]');
+      const assertCourseLink = async (courseId) => {
+        assert.equal(await courseLink.count(), 1);
+        assert.equal(await courseLink.getAttribute('href'), `${basePath}/${courseId}/`);
+        assert.equal(await courseLink.getAttribute('aria-label'), `Open ${courseId.toUpperCase()} course guide`);
+        assert.equal(await courseLink.locator('[data-course-badge]').getAttribute('data-course-badge'), courseId);
+      };
+      const captureBadge = async (name) => {
+        await badge.scrollIntoViewIfNeeded();
+        let light = 0;
+        for (let attempt = 0; attempt < 12; attempt++) {
+          // Scrolling the DOM window and drawing the shared canvas are separate
+          // frames. Require actual printed badge pixels before capturing it.
+          await desk.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+          const png = await badge.screenshot({ path: path.join(report, `${name}-badge.png`) });
+          light = await desk.evaluate(async base64 => {
+            const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+            const bitmap = await createImageBitmap(new Blob([bytes], { type: 'image/png' }));
+            const canvas = document.createElement('canvas'); canvas.width = bitmap.width; canvas.height = bitmap.height;
+            const ctx = canvas.getContext('2d'); ctx.drawImage(bitmap, 0, 0);
+            const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+            let count = 0;
+            for (let y = Math.ceil(canvas.height * 0.1); y < canvas.height * 0.9; y++) {
+              for (let x = Math.ceil(canvas.width * 0.1); x < canvas.width * 0.9; x++) {
+                const i = (y * canvas.width + x) * 4;
+                if (Math.min(data[i], data[i + 1], data[i + 2]) > 150) count++;
+              }
+            }
+            bitmap.close(); return count;
+          }, png.toString('base64'));
+          if (light > 30) break;
+          await desk.waitForTimeout(150);
+        }
+        const pose = await badge.evaluate(element => {
+          let fiber = element[Object.keys(element).find(key => key.startsWith('__reactFiber$'))];
+          while (fiber && !fiber.memoizedProps?.value?.register) fiber = fiber.return;
+          const entry = fiber?.memoizedProps.value.getState().entries.find(entry => entry.id === 'desk-next');
+          return { visible: entry?.visible, position: entry?.body.card.current?.translation(), rendered: element.dataset.badgeRendered };
+        });
+        assert.ok(light > 30, `badge face must be drawn, not just flagged ready: ${JSON.stringify({ light, pose })}`);
+        await desk.screenshot({ path: path.join(report, `${name}.png`) });
+      };
+
+      await badge.scrollIntoViewIfNeeded();
+      await badge.locator('[data-badge-fallback]').waitFor({ state: 'hidden' });
+      assert.equal(await badge.getAttribute('data-course-badge'), fixture.from.courseId);
+      await assertCourseLink(fixture.from.courseId);
+      await desk.evaluate(() => { window.holdBadgeFonts = new Promise(resolve => { window.releaseBadgeFonts = resolve; }); });
+      await desk.locator('[aria-labelledby="desk-next-heading"]').getByRole('button', { name: /Mark.*done/i }).click();
+      await desk.waitForFunction(course => document.querySelector('[data-badge-instance="desk-next"]')?.dataset.courseBadge === course, fixture.to.courseId);
+      assert.equal(await badge.count(), 1);
+      await assertCourseLink(fixture.to.courseId);
+      await badge.locator('[data-badge-fallback]').waitFor({ state: 'visible' });
+      assert.match(await badge.textContent(), new RegExp(fixture.to.courseId, 'i'));
+      await desk.screenshot({ path: path.join(report, 'desk-next-course-texture-loading.png') });
+      await desk.evaluate(() => { window.releaseBadgeFonts(); window.holdBadgeFonts = null; });
+      await badge.locator('[data-badge-fallback]').waitFor({ state: 'hidden' });
+      await captureBadge('desk-next-course-after-done');
+      await desk.getByRole('button', { name: 'UNDO', exact: true }).click();
+      await desk.waitForFunction(course => document.querySelector('[data-badge-instance="desk-next"]')?.dataset.courseBadge === course, fixture.from.courseId);
+      await badge.locator('[data-badge-fallback]').waitFor({ state: 'hidden' });
+      await captureBadge('desk-next-course-after-undo');
+      await assertCourseLink(fixture.from.courseId);
+      const emptyStorage = memoryStorage(fixture.initial);
+      const emptyProgress = createProgress(emptyStorage, { events: null });
+      for (const course of ['cen100', 'mth140', 'mth141']) {
+        for (const item of deadlines(course, { now: new Date('2099-01-01T12:00:00Z'), storage: emptyStorage })) {
+          if (item.markable) emptyProgress.markDone(course, item.id);
+        }
+      }
+      await desk.evaluate(values => {
+        for (const [key, value] of Object.entries(values)) {
+          localStorage.setItem(key, value);
+          window.dispatchEvent(new StorageEvent('storage', { key, newValue: value, storageArea: localStorage }));
+        }
+      }, Object.fromEntries(emptyStorage.data));
+      emptyProgress.dispose?.();
+      await desk.clock.setFixedTime(new Date('2099-01-01T12:00:00Z'));
+      await desk.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
+      await desk.locator('[aria-labelledby="desk-next-heading"]').getByText('No upcoming deadlines', { exact: true }).waitFor();
+      assert.equal(await badge.count(), 0);
+      assert.equal(await desk.locator('[class*="about_imageContainer"]').count(), 0);
+      await desk.screenshot({ path: path.join(report, 'desk-no-upcoming.png') });
+    } finally { await deskContext.close(); }
+    return { from: fixture.from.courseId, to: fixture.to.courseId, date: fixture.now };
   });
   await check('assignment is a single detail, Back restores filter', async () => {
     await page.getByRole('button', { name: /^All \(/ }).click();
@@ -171,7 +342,27 @@ try {
     try {
       const motion = await motionContext.newPage();
       motion.on('pageerror', (error) => errors.push(error.message));
+      // The clock runs timer and frame callbacks itself and reports what they throw
+      // to the console rather than as a page error: those must still fail the run.
+      motion.on('console', (message) => {
+        if (message.type() === 'error' && message.text().includes('ClockController')) errors.push(message.text());
+      });
+      // Install before application timers, then advance animation frames explicitly,
+      // as the Work filter check does: the outgoing fade lasts 120 ms, which one
+      // frame of a loaded CI runner can cover entirely.
+      await motion.clock.install();
       await ready(motion, 'mth140/');
+      const sample = () =>
+        motion.evaluate(() => {
+          const content = document.getElementById('course-content');
+          const style = getComputedStyle(content);
+          return {
+            time: performance.now(),
+            heading: content.querySelector('h2')?.textContent,
+            opacity: Number(style.opacity),
+            transform: style.transform,
+          };
+        });
       const changes = [];
       for (const [width, from, to] of [
         [390, 'Work', 'Study'],
@@ -182,30 +373,18 @@ try {
         await motion.setViewportSize({ width, height: 900 });
         // Let responsive canvas/layout work settle before sampling this transition.
         await motion.waitForTimeout(300);
-        await motion.evaluate(() => {
-          window.viewMotionSamples = [];
-          const sample = () => {
-            const content = document.getElementById('course-content');
-            const style = getComputedStyle(content);
-            window.viewMotionSamples.push({
-              time: performance.now(),
-              heading: content.querySelector('h2')?.textContent,
-              opacity: Number(style.opacity),
-              transform: style.transform,
-            });
-            window.viewMotionFrame = requestAnimationFrame(sample);
-          };
-          sample();
-        });
+        await motion.clock.pauseAt(new Date(await motion.evaluate(() => Date.now() + 1000)));
+        const samples = [await sample()];
         const link = motion.getByRole('navigation', { name: 'Course views' }).getByRole('link', { name: to, exact: true });
         await link.focus();
         await motion.keyboard.press('Enter');
+        // One 16 ms frame at a time, through both fades and well past them.
+        for (let elapsed = 0; elapsed < 1200; elapsed += 16) {
+          await motion.clock.runFor(16);
+          samples.push(await sample());
+        }
+        await motion.clock.resume();
         await motion.getByRole('heading', { name: to, exact: true }).waitFor();
-        await motion.waitForTimeout(800);
-        const samples = await motion.evaluate(() => {
-          cancelAnimationFrame(window.viewMotionFrame);
-          return window.viewMotionSamples;
-        });
         const moving = (heading) => samples.filter((sample) => sample.heading === heading && sample.opacity > 0 && sample.opacity < 1 && sample.transform !== 'none');
         await writeFile(path.join(report, `motion-${width}-${to}.json`), JSON.stringify(samples, null, 2));
         assert.ok(moving(from).length > 0, `${from} disappeared without an outgoing transition`);
@@ -409,21 +588,30 @@ try {
   });
   await check('keyboard search opens the same detail across courses, then returns', async () => {
     await ready(page, 'mth140/#study');
-    await page.keyboard.press('Control+k');
-    await page.locator('#search-input').fill('Project Outline');
-    await page.getByRole('option').first().waitFor();
-    await page.keyboard.press('Enter');
-    await page.locator('#course-view-assignment-m2[data-assignment-detail]').waitFor();
-    await page.goBack();
-    await page.getByRole('heading', { name: 'Study', exact: true }).waitFor();
-    await page.keyboard.press('Control+k');
-    await page.locator('#search-input').fill('Contacts');
-    await page.keyboard.press('Enter');
-    await page.locator('#course-view-contacts[data-info-detail]').waitFor();
-    const back = page.getByRole('button', { name: '← Back to Study', exact: true }).first();
-    await back.focus();
-    await page.keyboard.press('Enter');
-    await page.getByRole('heading', { name: 'Study', exact: true }).waitFor();
+    let attempt = 0;
+    try {
+      for (; attempt < 3; attempt += 1) {
+        await page.keyboard.press('Control+k');
+        await page.locator('#search-input').fill('Project Outline');
+        await page.getByRole('option').first().waitFor();
+        await page.keyboard.press('Enter');
+        await page.locator('#course-view-assignment-m2[data-assignment-detail]').waitFor();
+        await page.goBack();
+        await page.getByRole('heading', { name: 'Study', exact: true }).waitFor();
+        // Reopen as soon as Study is visible: the index must already use MTH140.
+        await page.keyboard.press('Control+k');
+        await page.locator('#search-input').fill('Contacts');
+        await page.keyboard.press('Enter');
+        await page.waitForURL(target => target.pathname === basePath + '/mth140/' && target.hash === '#contacts');
+        await page.locator('#course-view-contacts[data-info-detail]').waitFor();
+        const back = page.getByRole('button', { name: '← Back to Study', exact: true }).first();
+        await back.focus();
+        await page.keyboard.press('Enter');
+        await page.getByRole('heading', { name: 'Study', exact: true }).waitFor();
+      }
+    } catch (error) {
+      throw new Error(`Search/Back cycle ${attempt + 1}: ${error.message}`);
+    }
   });
   await check('navigation does not steal focus chosen inside the newly opened view', async () => {
     await ready(page, 'mth140/#work');
@@ -510,7 +698,7 @@ try {
   await check('tablet header controls remain readable and easy to activate', async () => {
     await page.setViewportSize({ width: 834, height: 900 });
     await ready(page, 'mth141/');
-    for (const name of ['Open menu', 'Search the guide. Shortcut: Command K']) {
+    for (const name of ['Open menu']) {
       const control = page.getByRole('button', { name, exact: true });
       const box = await control.boundingBox();
       assert.ok(box.height >= 44, `${name}: ${box.height}px`);
@@ -525,6 +713,8 @@ try {
     await check(`layout and readable detail at ${width}px`, async () => {
       await page.setViewportSize({ width, height: 900 });
       await ready(page, 'mth141/');
+      assert.equal(await page.locator('[data-course-badge="mth141"]').count(), 1);
+      await page.locator('[data-badge-instance="header-mth141"][data-badge-rendered="true"]').waitFor();
       const overflow = await page.evaluate(() => document.querySelector('main').scrollWidth > innerWidth + 1);
       assert.equal(overflow, false);
       const box = await page.locator('[data-assignment-link]').first().boundingBox();

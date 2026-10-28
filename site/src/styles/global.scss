@@ -29,10 +29,34 @@ html {
   }
 }
 
+// On iPhone and iPad Safari paints one flat colour, the document's background,
+// past the ends of the page. The page itself is seen through the film grain
+// (#layout::before), which never reaches there, so that colour is the grained
+// page's: #f4f4f5 under the grain shows as #f1f1f1.
+html[data-scroll-mode='document'] {
+  background-color: var(--pageUnderGrain);
+}
+// The dark panels (the footer, the course cards, the Desk's windows) show the
+// fixed artwork, which reaches under Safari's bars. Wherever it is not painted,
+// a panel shows the body instead: the ink, so it is never paper inside a dark
+// panel. Only those panels show it.
+html[data-scroll-mode='document'] body {
+  background-color: var(--black);
+}
+
 // Match the surrounding Safari chrome to the visible dark menu/search overlay.
 // The page stays on the Desk's light colour when those panels are closed.
 html[data-browser-surface='dark'],
 html[data-browser-surface='dark'] body {
+  background-color: var(--black);
+}
+
+// On iPhone, Safari fills the area under its bottom bar with the document's
+// own background once the page ends there and no fixed layer supplies a colour.
+// With the dark footer at the bottom edge that must be the footer's ink, not
+// the paper. Document mode only: on desktop `main` covers the page.
+html[data-scroll-mode='document'][data-browser-bottom='dark'],
+html[data-scroll-mode='document'][data-browser-bottom='dark'] body {
   background-color: var(--black);
 }
 
@@ -41,12 +65,18 @@ main.lenis-stopped {
 }
 
 body {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   background-color: var(--white);
   min-height: var(--app-viewport-height);
   max-height: 100%;
   overflow: hidden;
-  // Long-press link previews and copying deadline text, rooms and sections
-  // stay available (the original switched both off for the whole page).
+  // Original Giats touch behavior: selection and long-press callouts must not
+  // replace the continuous pointer gesture consumed by the fluid.
 
   > canvas {
     position: fixed;
@@ -160,12 +190,16 @@ main > div > section:nth-last-child(1) {
   background-color: var(--menuColor);
   color: var(--menuFontColor);
   transform: translateY(-200%);
+  // Safari 26 shows the area above the page under its status bar, where the
+  // parked link appeared as a dark smudge. It stays focusable while invisible.
+  opacity: 0;
   @include mobile {
     padding: 0 4vw;
   }
   &:focus,
   &:focus-visible {
     transform: none;
+    opacity: 1;
   }
 }
 
@@ -207,13 +241,66 @@ html[data-motion='off'] {
 
 html[data-scroll-mode='document'] {
   overflow-x: clip; overflow-y: auto;
+  // Safari 26 shows the page under its translucent status bar and toolbar. The
+  // dark artwork and the course cards, fixed canvases sized to the layout
+  // viewport, ended in a hard line at both bars; they reach this far past each
+  // edge instead (more than either bar, in either toolbar layout), and Safari
+  // shows that reach. Past the ends of the document it shows only the root's
+  // flat colour (see the artwork's fade at a dark end, app.module.scss).
+  --edge-bleed-top: 160px;
+  --edge-bleed-bottom: 160px;
   body { overflow: visible; max-height: none; }
-  #layout::before { position: absolute; width: 100%; height: 100%; }
+  // Part of the page, not fixed: Safari cuts what a fixed element paints itself
+  // (a CSS background) at the layout viewport, so a fixed grain ended in a line
+  // where the bottom bar began.
+  #layout::before { position: absolute; top: 0; width: 100%; height: 100%; }
+  // Above the start of a page, and below the end of one that ends light, there
+  // is no page for the dark artwork to show through: paper covers its reach
+  // there (data-edge-top/-bottom, set by the navbar). Part of main, behind its
+  // content, so it fades with the page during route changes.
+  #main::before,
+  #main::after {
+    content: '';
+    display: none;
+    position: fixed;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+    background-color: var(--white);
+    pointer-events: none;
+  }
+  #main::before { top: calc(-1 * var(--edge-bleed-top)); height: var(--edge-bleed-top); }
+  #main::after { bottom: calc(-1 * var(--edge-bleed-bottom)); height: var(--edge-bleed-bottom); }
+  &:not([data-edge-top='open']) #main::before,
+  &[data-edge-bottom='closed'] #main::after {
+    display: block;
+  }
+  // A panel shell that shrinks the page (iPad, landscape iPhone) transforms
+  // main, which then holds the caps: they would frame the page, not the reach.
+  &[data-page-shrunk] #main::before,
+  &[data-page-shrunk] #main::after {
+    display: none;
+  }
+}
+
+// The fluid's black base is invisible (it blends with `difference`), but it is a
+// full-viewport fixed layer with a solid background-color, which Safari 26.1+
+// reads as the colour of its status-bar and toolbar bands. Only the contained
+// shell needs it; in document mode (iPhone, iPad) the fluid has no background.
+html:not([data-scroll-mode='document']) #fluidCanvas {
+  background-color: black;
 }
 
 // Transparent sticky sampling, not opaque colours disguised with text clipping.
 // The bottom guard follows the complete document; neither guard paints a band,
-// affects document height, captures taps or changes the fluid canvas.
+// affects document height or changes the fluid canvas.
+// Safari 26 chooses an edge's colour from one hit-test point 4px inside the
+// layout viewport at the middle of the top and bottom edges. A guard that covers
+// that point ends the search for the edge with no colour, so the bar stays
+// transparent. They must not use `pointer-events: none`: WebKit then repeats the
+// search with the guard skipped and can pick up whatever sits underneath. They
+// are 8px tall to reach the sampled row, and only span the middle half, where
+// the row is sampled, so the corners and the outer quarters stay open to taps.
 // Evidence/limits: docs/qa/safari-toolbar-transparency.md.
 .safari-toolbar-blend {
   display: none;
@@ -226,21 +313,21 @@ html[data-scroll-mode='document'] {
     position: sticky;
     background-color: transparent;
     background-image: none;
-    height: 6px;
-    width: 100%;
-    left: 0;
+    height: 8px;
+    width: 50%;
+    margin-left: 25%;
     z-index: 2147483647;
-    pointer-events: none;
+    pointer-events: auto;
     border: 0;
     padding: 0;
     box-shadow: none;
   }
   html[data-scroll-mode='document'] [data-safari-blend='top'] {
     top: -2px;
-    margin-bottom: -6px;
+    margin-bottom: -8px;
   }
   html[data-scroll-mode='document'] [data-safari-blend='bottom'] {
     bottom: -2px;
-    margin-top: -6px;
+    margin-top: -8px;
   }
 }

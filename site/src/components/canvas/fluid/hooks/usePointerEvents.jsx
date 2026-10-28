@@ -1,82 +1,51 @@
-import { nativeIOSScroll } from '@src/utils/scrollRoot';
 import { useEffect, useRef } from 'react';
+
 import { Vector2 } from 'three';
 
 const usePointerEvents = (mainRef, size, force) => {
   const splatStack = useRef([]);
-  // Toolbar resizing must not tear down listeners or forget fingers mid-gesture.
-  const input = useRef({ size, force });
-  input.current = { size, force };
+  const lastMouse = useRef(new Vector2());
+  const hasMoved = useRef(false);
 
   useEffect(() => {
+    if (!mainRef.current) {
+      console.error('Main reference is not initialized');
+      return undefined;
+    }
+
     const element = mainRef.current;
-    if (!element) return undefined;
-    const ios = nativeIOSScroll();
-    // Identity, not TouchList order, owns each finger's previous coordinates.
-    const positions = new Map();
-    const sample = (key, clientX, clientY, start = false) => {
-      if (!Number.isFinite(clientX) || !Number.isFinite(clientY)) return;
-      const previous = positions.get(key);
-      if (!previous) {
-        positions.set(key, new Vector2(clientX, clientY));
+
+    const handlePointerMove = (event) => {
+      const clientX = event.clientX || event.touches?.[0]?.clientX;
+      const clientY = event.clientY || event.touches?.[0]?.clientY;
+
+      if (clientX === undefined || clientY === undefined) return;
+
+      const deltaX = clientX - lastMouse.current.x;
+      const deltaY = clientY - lastMouse.current.y;
+
+      if (!hasMoved.current) {
+        hasMoved.current = true;
+        lastMouse.current.set(clientX, clientY);
         return;
       }
-      const deltaX = clientX - previous.x;
-      const deltaY = clientY - previous.y;
-      previous.set(clientX, clientY);
-      if (start || (!deltaX && !deltaY)) return;
-      const { size: viewport, force: strength } = input.current;
-      if (!(viewport.width > 0 && viewport.height > 0)) return;
+
+      lastMouse.current.set(clientX, clientY);
+
       splatStack.current.push({
-        mouseX: clientX / viewport.width,
-        mouseY: 1 - clientY / viewport.height,
-        velocityX: deltaX * strength,
-        velocityY: -deltaY * strength,
+        mouseX: clientX / size.width,
+        mouseY: 1.0 - clientY / size.height,
+        velocityX: deltaX * force,
+        velocityY: -deltaY * force,
       });
     };
 
-    const pointerKey = (event) => `pointer:${event.pointerId ?? 'mouse'}`;
-    const pointerStart = (event) => {
-      if (!ios || event.pointerType !== 'touch') sample(pointerKey(event), event.clientX, event.clientY, true);
-    };
-    const pointerMove = (event) => {
-      // iOS still supplies touchmove after native scrolling cancels pointermove.
-      // Do not inject the same movement twice when both streams are delivered.
-      if (!ios || event.pointerType !== 'touch') sample(pointerKey(event), event.clientX, event.clientY);
-    };
-    const pointerEnd = (event) => positions.delete(pointerKey(event));
-    const touchStart = (event) => {
-      Array.from(event.changedTouches || event.touches).forEach((touch) => {
-        sample(`touch:${touch.identifier}`, touch.clientX, touch.clientY, true);
-      });
-    };
-    const touchMove = (event) => {
-      // targetTouches excludes fingers that began on different child elements.
-      Array.from(event.changedTouches || event.touches).forEach((touch) => {
-        sample(`touch:${touch.identifier}`, touch.clientX, touch.clientY);
-      });
-    };
-    const touchEnd = (event) => {
-      // Remove only the released/cancelled identities, never other fingers.
-      Array.from(event.changedTouches || []).forEach((touch) => positions.delete(`touch:${touch.identifier}`));
-    };
+    element.addEventListener('pointermove', handlePointerMove, { passive: true });
 
-    const listeners = [
-      ['pointerdown', pointerStart],
-      ['pointermove', pointerMove],
-      ['pointerup', pointerEnd],
-      ['pointercancel', pointerEnd],
-      ['pointerleave', pointerEnd],
-    ];
-    if (ios) listeners.push(['touchstart', touchStart], ['touchmove', touchMove], ['touchend', touchEnd], ['touchcancel', touchEnd]);
-    // Visual feedback never prevents scrolling, pinch zoom or browser gestures.
-    listeners.forEach(([type, listener]) => element.addEventListener(type, listener, { passive: true }));
     return () => {
-      listeners.forEach(([type, listener]) => element.removeEventListener(type, listener));
-      positions.clear();
-      splatStack.current.length = 0;
+      element.removeEventListener('pointermove', handlePointerMove);
     };
-  }, [mainRef]);
+  }, [mainRef, size, force]);
 
   return splatStack;
 };

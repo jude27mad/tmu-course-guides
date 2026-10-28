@@ -27,6 +27,9 @@ const FAVICON =
 // Runs before first paint: marks JS as available (so the original "hidden until the
 // loader reveals it" styles apply only with JS) and applies the motion setting
 // early (prefers-reduced-motion or the saved 'guide-motion-paused' = 'true').
+// Select Safari's document layout before first paint so its edge artwork,
+// grain and toolbar blending are active immediately. This selects layout only:
+// _app keeps Giats's syncTouch input enabled in either scroll container.
 const BOOT = `(function(d){const r=d.documentElement;r.classList.add('js');r.dataset.scrollMode=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)?'document':'contained';try{const q=new URLSearchParams(location.search).get('motion'),p=localStorage.getItem('guide-motion-paused')==='true',m=!!window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;if(q==='off'||p||(m&&q!=='full'))r.setAttribute('data-motion','off');}catch(e){}})(document);`;
 
 export default class MyDocument extends Document {

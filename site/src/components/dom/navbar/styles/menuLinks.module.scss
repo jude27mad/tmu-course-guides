@@ -2,6 +2,14 @@
 
 // Shared by the menu (#menu) and the search panel (#search).
 
+// GSAP owns these elements' transitions. The global reduced-motion duration
+// otherwise creates an inherited visibility transition on every descendant;
+// WebKit can keep inputs unfocusable after the panel itself is visible.
+.menu,
+.menu * {
+  transition: none !important;
+}
+
 .menu {
   --focus: var(--onDark); // the panel sits on the dark background
   position: fixed;
@@ -63,8 +71,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    > span {
-      line-height: 0.4;
+    > svg {
+      display: block;
+      width: 1em;
+      height: 1em;
       font-size: max(20px, 1.2vw);
     }
     @include mobile {
@@ -75,8 +85,7 @@
       // 44 px tap target
       height: max(6vw, 44px);
       width: max(6vw, 44px);
-      > span {
-        line-height: 0.4;
+      > svg {
         font-size: max(3.8vw, 16px);
       }
     }

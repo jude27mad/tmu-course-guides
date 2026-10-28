@@ -91,7 +91,7 @@ export function cleanPlan(value,strict=false){
   return out;
 }
 // cen-guide.mjs:650-659 (completionSummary takes the plan's completed map instead of the closure's plan)
-export function completionVerb(event){return event.id.startsWith("reflection-")?"Emailed":/^(intro|email|contract|outline|matlab-1|matlab-2|failure|notebook-1|notebook-2|report|peer|exit)$/.test(event.id)?"Submitted":"Completed"}
+export function completionVerb(event){return (event.id==="email"||event.id.startsWith("reflection-"))?"Emailed":/^(intro|email|contract|outline|matlab-1|matlab-2|failure|failure-2|notebook-1|notebook-2|report|peer|exit)$/.test(event.id)?"Submitted":"Completed"}
 export function completionText(event){
   const name=event.title.replace(/ due$/,""),verb=completionVerb(event);
   return `${verb}: ${name}${event.date?` (${mon(event.date)} ${D(event.date).getUTCDate()}${event.time?`, ${clockLabel(event.time)} Toronto`:""})`:""}`;
@@ -108,7 +108,7 @@ export function sectionContent(profile){
   const attendanceWhat=section===29?"Section 29: a D2L quiz opens 5:45 to 6:00 PM in every Wednesday tutorial. One attempt, and you have to be in the room.":section?`Attend your assigned Section ${section} tutorial in person. Check D2L for your section's quiz day, time and attempt rules.`:"Attendance quizzes take place during your assigned tutorial. Select your section above. The confirmed Section 29 window is Wednesday, 5:45 to 6:00 PM; other sections should check D2L.";
   const attendanceFact=section===29?"Section 29: Wednesday, 5:45 to 6:00 PM":"Check your assigned tutorial's quiz schedule on D2L";
   const staff=STAFFING.find(s=>s.sections.includes(section)),pm=staff?.groups.find(g=>g[0]===profile?.group);
-  const reflectionsWhat=pm?`Your own writing about the project, two pieces. Email each Personal Reflection directly to ${pm[1]}, your assigned Project Manager for Group ${pm[0]}. There is no D2L submission box.`:byId.get("y5").what;
+  const reflectionsWhat=pm?byId.get("y5").what.replace("your assigned Project Manager",`${pm[1]}, your assigned Project Manager for Group ${pm[0]}`):byId.get("y5").what;
   return {y7:{what:attendanceWhat,fact:attendanceFact},y5:{what:reflectionsWhat}};
 }
 
@@ -269,3 +269,4 @@ export function workEntries(range,completed={},targets={},now=new Date()){
 export function workDates({item,visible,target},now=new Date()){
   return visible.length?visible.map(e=>`${eventPassed(e,now)?"Date passed: ":""}${mon(e.date)} ${D(e.date).getUTCDate()}${e.time?` at ${clockLabel(e.time)} Toronto`:""} — ${e.title}`).join("; "):item.id==="y7"?"During your assigned tutorial; confirm your section's schedule on D2L.":target?"No official deadline in this view.":"Official date pending. Check D2L.";
 }
+

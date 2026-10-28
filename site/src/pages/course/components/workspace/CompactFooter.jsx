@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import DesignCredit from '@src/components/dom/DesignCredit';
 import styles from './workspace.module.scss';
 
 export default function CompactFooter() {
@@ -19,13 +20,7 @@ export default function CompactFooter() {
         </Link>
       </div>
       <p>Unofficial TMU course companion · Check D2L for updates.</p>
-      <p>Progress stays in this browser. Back up with Guide tools.</p>
-      <p>
-        Original portfolio design and development by Evangelos Giatsidis ·{' '}
-        <a href="https://giats.me" target="_blank" rel="noopener noreferrer">
-          giats.me ↗
-        </a>
-      </p>
+      <DesignCredit />
     </footer>
   );
 }

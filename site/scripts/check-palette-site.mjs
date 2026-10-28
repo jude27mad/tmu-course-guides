@@ -1,6 +1,7 @@
 // Checks the site palette (src/lib/palette.mjs) in what GitHub Pages publishes (.github/workflows/pages.yml),
 // after `pages-site.mjs build`:
-//   1. No old colour is left in any published file. Black with alpha is allowed only in Schedule-X's own
+//   1. Only the original Giats fluid colours and its unused default may survive from the old palette. Black with alpha
+//      is allowed only in Schedule-X's own
 //      calendar theme (its dialog shadows and --sx-* shadow variables); those third-party hits are listed in
 //      the report, not failed.
 //   2. In Chromium as a 390 px phone: the three course cards are identical, the pills, round button and
@@ -26,6 +27,11 @@ if (!folder) {
 // The previous palette, as authored and as a build can write it.
 const OLD = ['#F0F4F1', '#28282B', '#F2FFBD', '#D7D7D4', '#292928', '#0B0C0B', '#020002', '#09050C', '#070410', '#F9F9F9'];
 const OLD_TEXT = new RegExp(`(?:#|0x)(?:${OLD.map((hex) => hex.slice(1)).join('|')})(?![0-9a-f])|rgba?\\(\\s*40\\s*,\\s*40\\s*,\\s*43\\b`, 'gi');
+// Source tests permit these only in the fluid module and token. The verbatim
+// upstream options include #F0F4F1, but Fluid uses its supplied #D7D7D4 prop.
+// Next's bundle combines sources, so preserve those source-scoped exceptions
+// here; the browser sweep below still rejects old colours in the visible UI.
+const ORIGINAL_GIATS_FLUID = new Set(['#D7D7D4', '#070410', '#F0F4F1']);
 const BLACK_ALPHA = /rgba?\(\s*0\s*,\s*0\s*,\s*0\s*[,/]|#000000[0-9a-f]{2}(?![0-9a-f])|#000[0-9a-f](?![0-9a-f])/gi;
 const TEXT = new Set(['.html', '.js', '.css', '.json', '.txt', '.webmanifest', '.svg', '.xml']);
 
@@ -87,7 +93,11 @@ async function scanFiles() {
   for await (const path of files(folder)) {
     const text = await readFile(path, 'utf8');
     const name = relative(folder, path);
-    for (const match of text.matchAll(OLD_TEXT)) old.push(`${name}: ${match[0]} … ${text.slice(Math.max(0, match.index - 40), match.index + 40)}`);
+    for (const match of text.matchAll(OLD_TEXT)) {
+      const colour = `#${match[0].replace(/^(?:#|0x)/i, '').toUpperCase()}`;
+      if (ORIGINAL_GIATS_FLUID.has(colour)) continue;
+      old.push(`${name}: ${match[0]} … ${text.slice(Math.max(0, match.index - 40), match.index + 40)}`);
+    }
     for (const match of text.matchAll(BLACK_ALPHA)) {
       // Zero alpha is no colour at all: the minifier writes `transparent` as rgba(0,0,0,0).
       if (alphaAt(text, match) === 0) continue;
@@ -183,29 +193,20 @@ async function checkBrowser(site) {
 
   const courseCards = async () => {
     const cards = await page.evaluate(() =>
-      Array.from(document.querySelectorAll('[class*="projects_imageContainer"]'), (card) => {
-        const style = getComputedStyle(card);
-        const panel = card.closest('a')?.querySelector('[data-surface="dark"]');
-        return {
-          text: card.textContent,
-          background: style.backgroundColor,
-          code: getComputedStyle(card.firstElementChild).color,
-          subtitle: getComputedStyle(card.lastElementChild).color,
-          shadow: style.boxShadow,
-          radius: style.borderRadius,
-          panel: panel ? getComputedStyle(panel).backgroundColor : null,
-        };
+      Array.from(document.querySelectorAll('[data-badge-instance^="directory-"]'), (badge) => {
+        const fallback = badge.querySelector('[data-badge-fallback]');
+        const panel = badge.closest('a').querySelector('[data-badge-backing]');
+        return { course: badge.dataset.courseBadge, background: getComputedStyle(badge.parentElement).backgroundColor,
+          fallback: getComputedStyle(fallback).backgroundColor, ink: getComputedStyle(fallback).color, panel: getComputedStyle(panel).backgroundColor };
       }),
     );
-    assert.equal(cards.length, 3, 'three course cards');
-    const strip = ({ text, ...look }) => look;
+    assert.deepEqual(cards.map(card => card.course), ['cen100', 'mth140', 'mth141']);
     for (const card of cards) {
-      assert.deepEqual(
-        { background: card.background, code: card.code, subtitle: card.subtitle, panel: card.panel },
-        { background: CARD, code: INK, subtitle: MUTED, panel: INK },
-        `course card ${card.text}`,
-      );
-      assert.deepEqual(strip(card), strip(cards[0]), `${card.text} looks like ${cards[0].text}`);
+      assert.deepEqual({ background: card.background, fallback: card.fallback, ink: card.ink, panel: card.panel },
+        { background: 'rgba(0, 0, 0, 0)', fallback: CARD, ink: INK, panel: INK }, `course badge ${card.course}`);
+      await scrollTo(`[data-badge-instance="directory-${card.course}"]`, -160);
+      await page.locator(`[data-badge-instance="directory-${card.course}"][data-badge-rendered="true"]`).waitFor();
+      await shot(`directory-badge-${card.course}`);
     }
   };
 
@@ -286,20 +287,19 @@ async function checkBrowser(site) {
     for (const [name, selector, offset] of [
       ['01-desk-top', null, 0],
       ['02-desk-next-up', '[class*="about_container"]', -70],
-      ['03-desk-badge-cen100', '[class*="clients_first"]', -70],
-      ['04-desk-badge-mth140', '[class*="clients_second"]', -70],
-      ['05-desk-badge-mth141', '[class*="clients_third"]', -70],
-      ['06-desk-course-cards-1', '[class*="projects_innerContainer"]', -70],
-      ['07-desk-course-cards-2', '[class*="projects_card"]:nth-child(3)', -380],
+      ['03-desk-course-badge', '[class*="about_imageContainer"]', -70],
     ]) {
       await scrollTo(selector, offset);
       await shot(name);
     }
     await check('Desk: the MENU pill is ink on the light page', menuOnLight);
-    await check('Desk: MENU does not cover the badge window', () => menuLeavesContent('[class*="clients_first"]'));
-    await check('Desk: MENU does not cover a course card panel', () => menuLeavesContent('[class*="projects_canvas"]'));
+    await check('Desk: MENU does not cover the badge window', () => menuLeavesContent('[class*="about_imageContainer"]'));
     await check('Desk: the MENU pill is ink again back on the light page', menuOnLight);
-    await check('Desk: the three course cards are identical apart from their text', courseCards);
+    await check('Desk: no duplicated course directories or photographs', async () => {
+      assert.equal(await page.locator('[data-badge-instance^="directory-"], [data-course-artwork]').count(), 0);
+      assert.ok(await page.locator('[data-badge-instance="desk-next"]').count() <= 1);
+      assert.ok(await page.getByRole('link', { name: 'ALL COURSES', exact: true }).count());
+    });
     await check('Desk: secondary and primary pills', async () => {
       assert.ok((await pills()).length > 0, 'pills on the Desk');
     });

@@ -1,6 +1,7 @@
 /* eslint-disable no-return-assign */
 import { COURSES } from '@src/lib';
 import Link from 'next/link';
+import CourseBadge from '@src/components/courseBadge/CourseBadge';
 import clsx from 'clsx';
 import { entryFor } from '@src/pages/components/useDesk';
 import { gsap } from 'gsap';
@@ -29,13 +30,11 @@ function kickerFor(course, entry, ready) {
   return [section, next ? `Next: ${next.dateLabel || next.when}` : NO_DEADLINES].filter(Boolean).join(' · ');
 }
 
-function CourseCards({ desk, variant = 'desk', children }) {
+function CourseCards({ desk }) {
   const isMobile = useIsMobile();
   const still = useStill();
   const windowSize = useWindowSize();
   const [isLoading] = useStore(useShallow((state) => [state.isLoading]));
-  const isIndex = variant === 'index';
-  const CardTitle = isIndex ? 'h2' : 'h3';
 
   const rootRef = useRef();
   const cardRefs = useRef([]);
@@ -50,7 +49,7 @@ function CourseCards({ desk, variant = 'desk', children }) {
           gsap
             .timeline({
               scrollTrigger: {
-                id: `courseCard-${variant}-${index}`,
+                id: `courseCard-index-${index}`,
                 trigger: rootRef.current,
                 start: `top+=${windowSize.height * index}`,
                 end: () => `+=${(cardRefs.current.length - 1) * windowSize.height}`,
@@ -78,12 +77,13 @@ function CourseCards({ desk, variant = 'desk', children }) {
   const last = COURSES.length - 1;
 
   return (
-    <section ref={rootRef} className={clsx(styles.root, isIndex && styles.rootIndex, 'layout-block-inner')}>
+    <section ref={rootRef} className={clsx(styles.root, styles.rootIndex, 'layout-block-inner')}>
       <div className={styles.innerContainer}>
         {COURSES.map((course, index) => {
           const { palette } = course;
           return (
             <Link
+              data-badge-clip
               aria-label={course.ariaLabel}
               key={course.id}
               scroll={false}
@@ -108,23 +108,26 @@ function CourseCards({ desk, variant = 'desk', children }) {
                 <div className={clsx(styles.container, 'layout-grid-inner')}>
                   <div className={styles.projectsDetails}>
                     <p className="h6">{kickerFor(course, entryFor(desk, course.id), desk?.ready)}</p>
-                    <CardTitle className="h3">
+                    <h2 className="h3">
                       {course.code} — {course.name}
-                    </CardTitle>
-                    {isIndex && <p className={clsx('p-l', styles.summary)}>{course.summary}</p>}
+                    </h2>
+                    <p className={clsx('p-l', styles.summary)}>{course.summary}</p>
                   </div>
                   <div className={styles.imageContainer} aria-hidden="true">
-                    <span className={clsx('h1', 'bold')}>{course.code}</span>
-                    <span className="h6">{course.name}</span>
+                    <CourseBadge instanceId={`directory-${course.id}`} courseId={course.id} motionGroup="course-directory" next={entryFor(desk, course.id)?.next} ready={desk?.ready} />
                   </div>
                 </div>
               </div>
-              <div ref={(el) => (cardRefs.current[index] = el)} className={clsx(styles.canvas, index === 0 && styles.firstCard, index === last && styles.lastCard)} data-surface="dark" />
+              <div
+                ref={(el) => (cardRefs.current[index] = el)}
+                className={clsx(styles.canvas, index === 0 && styles.firstCard, index === last && styles.lastCard)}
+                data-surface="dark"
+                data-badge-backing
+              />
             </Link>
           );
         })}
       </div>
-      {children}
     </section>
   );
 }

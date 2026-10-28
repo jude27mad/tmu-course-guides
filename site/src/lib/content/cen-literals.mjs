@@ -52,35 +52,35 @@ export const TEAM = [
   ],
   traps:["Fewer than 5 people","Made-up or AI-written participants: zero, plus an integrity case","One idea presented as decided: zero for that part","Work division that only names 2 or 3 people"]},
  {id:"m3", date:"2026-10-21", name:"Failure Analysis Labs", who:"team", pct:"6%",
-  preview:"Part 1: disaster review + fishbone. Part 2: FMEA + design insight.",
-  what:"Part 1: study a real engineering disaster. Part 2: predict how our own project could fail, score each risk, and say what we'll change.",
-  facts:[["cal","Both parts due Wed Oct 21"],["pin","Part 1 worked on in the Oct 14 lab"],["up","D2L"]],
+  preview:"Part 1: historical review (Oct 21). Part 2: FMEA + design insight (Oct 28).",
+  what:"Part 1 (2%): review a documented engineering failure in a sub-team of 4–5. Part 2 (4%): the full team predicts risks in its own project. The Oct 13 course-team update keeps Part 1 on Oct 21 and moves Part 2 to Oct 28; check D2L for your section and exact submission time.",
+  facts:[["cal","Part 1: Oct 21; Part 2/FMEA: Oct 28"],["pin","Part 1 worked on in the Oct 14 lab"],["up","D2L"]],
   groups:[
-   ["Part 1 (2%), sub-teams of 4 to 5",["A real, documented disaster from any field","1 to 2 pages answering only 4 questions: what happened, why it failed, lessons learned, how to prevent it","Fishbone diagram grouping the causes","2 to 3 credible sources from the TMU library"]],
-   ["Part 2 (4%), full team",["Failure modes in all 5 groups: technical, human, environmental, ethical, business","Every failure mode is specific to our project","Example rows 1 to 3 cleared, rows kept","Likelihood, severity, detectability scored 1 to 5","Detectability: 1 = easy to spot, 5 = hard","Nothing typed in the grey columns","A fix for every risk scoring 50 or more","Sorted by risk"]],
-   ["Design insight",["One paragraph: top 2 to 3 risks and a specific change","Presented briefly in the lab, no full presentation","Explain why those risks rank highest","Several people speak, inside the time limit","Everyone ready for GA questions"]]
+   ["Part 1 (2%), sub-teams of 4 to 5",["A real, documented engineering failure from any field","1 to 2 pages answering only 4 questions: what happened, why it failed, lessons learned, how to prevent it","Include the fishbone required by the handout; the lecture calls it optional, so confirm with your GA before omitting it","2 to 3 credible technical or peer-reviewed sources, cited in the review"]],
+   ["Part 2 (4%), full team",["At least 10 failure modes across technical, human, environmental, ethical and business categories","Every failure mode is specific to our project","Replace the example battery-overheating row with our own project risk; keep the formulas","Likelihood, severity and detectability each scored 1 to 5; risk score = L × S × D","Detectability: 1 = easy to spot, 5 = hard","Enter yellow cells only; leave Risk Score and Ranking Key formulas intact","A specific mitigation for each top-five risk, labelled Change, Test, Verify or Monitor","Top five risks reviewed on the automatically ranked summary; high severity still needs action"]],
+   ["Design insight",["One short paragraph on the top 2 to 3 risks and what we will change, test, verify or monitor","Presented briefly in the lab, no full presentation","Explain why those risks rank highest; carry the insight into the notebook and Midterm Design Review","Several people speak, inside the time limit","Everyone ready for GA questions"]]
   ],
-  traps:["Failure modes that could fit any project","Detectability scored backwards","Deleting the example rows and breaking the formulas","One or two people doing all the talking"]},
+  traps:["Failure modes that could fit any project","Detectability scored backwards","Overwriting automatic formulas or leaving the template example in the submission","One or two people doing all the talking"]},
  {id:"m4", date:"2026-11-04", name:"Midterm Design Review", who:"team", pct:"8%",
-  preview:"Live in your lab: 5-minute presentation + 3-minute Q&A.",
-  what:"A live 5-minute presentation to a panel, then 3 minutes of questions. It judges how we got to our idea.",
-  facts:[["pin","Live, Week 9 lab"],["clock","5 min talk + 3 min Q&A"],["doc","5 parts, 20 points each"]],
+  preview:"Live in your lab: suggested 5-minute presentation + 3-minute Q&A; GA confirms slots.",
+  what:"A live design review of how the team framed the problem and chose its concept. Suggested format: 5-minute presentation + 3-minute panel Q&A; your GA confirms exact slots. Bring all five design artifacts and the notebook.",
+  facts:[["pin","Live, Week 9 lab"],["clock","Suggested 5 min talk + 3 min Q&A; confirm with GA"],["doc","5 parts, 20 points each"]],
   groups:[
    ["Bring all five",["Needs tree","Problem statement + boundary diagram","Decision matrix, weights add to 100%","Assumption log: top 2 to 3 guesses","FMEA top risks + what we changed"]],
    ["The five minutes",["Min 1: problem and who has it","Min 2: boundary diagram","Min 3: why this concept won","Min 4: top risks and what we changed","Min 5: prototype plan","Speakers and a timekeeper assigned","Practised out loud as a full team"]],
    ["Every member",["Can explain the problem and the concept","Has a dated notebook entry and can talk about it","Notebook open on a device","Dressed professionally"]]
   ],
-  traps:["Quietly skipping an unfinished piece: say it and give the plan","Starting with the solution instead of the problem","Running over time","Any member without a notebook entry: 20 points ride on this"]},
+  traps:["Quietly skipping an unfinished piece: say it and give the plan","Starting with the solution instead of the problem","Running over time","Notebook and individual accountability form one 20-point rubric criterion; every member should be ready"]},
  {id:"y6", date:"2026-11-04", date2:"Dec 2", name:"Team design notebook", who:"team", pct:"4%",
   preview:"PDF at both checkpoints. Every member needs a dated entry.",
-  what:"One team notebook, but if even one member has no entry since the last checkpoint, the whole team loses marks.",
+  what:"One shared notebook maintained during or immediately after project work. Every member needs substantive, dated entries with their name or initials at both checkpoints. Missing contributions prevent full checkpoint marks, even if the rest of the notebook is strong.",
   facts:[["cal","PDF export due Nov 4 and Dec 2, 3:00 PM"]],
   groups:[["",["My entry before Nov 4","I can talk about my entry","My entry before Dec 2"]]],
   traps:["Writing everything at the end instead of as you go"]},
- {id:"m5", date:"2026-11-25", name:"Low-Fidelity Prototype", who:"team", pct:"4%",
+ {id:"m5", date:"2026-11-25", date2:"Dec 2", name:"Low-Fidelity Prototype", who:"team", pct:"4%",
   preview:"Build and test the core idea. Record your test results.",
-  what:"A rough version that tests the core idea: a physical item, 3D model, CAD model or simulation. It doesn't have to work perfectly.",
-  facts:[["cal","Due Nov 25, 3:00 PM"],["pin","Plan Nov 11 lab, build Nov 18 lab"],["warn","WHMIS needed for the makerspace"]],
+  what:"A rough physical or digital prototype that tests the core idea. Graded once for 4% alongside the Nov 25 / Dec 2 presentations, with build and test evidence included in the Final Report. Planning and building are not separate graded submissions.",
+  facts:[["cal","Nov 25 / Dec 2 presentation window; confirm your team’s slot with the GA"],["pin","Plan Nov 11 lab, build Nov 18 lab"],["warn","WHMIS needed for the makerspace"]],
   groups:[
    ["The plan",["Concept in 1 to 2 sentences, tied to panel feedback","Materials and rough cost","Build steps, roles, timeline","Success criteria you can check (never \u201cit works\u201d)"]],
    ["While building",["Photos at every stage","Changes from the plan, with the reason","Every member has a notebook entry"]],
@@ -89,8 +89,8 @@ export const TEAM = [
   ],
   traps:["\u201cIt works\u201d as a success criterion","Only photos of the finished product","No test at all: an honest failed test scores higher"]},
  {id:"m6", date:"2026-11-25", date2:"Dec 2", name:"Final Presentations", who:"team", pct:"6%",
-  preview:"Two live pitches with a prototype demo: 5 minutes + 2-minute Q&A.",
-  what:"Pitch the project and demo the prototype live, twice. Use the Nov 25 feedback to make Dec 2 better.",
+  preview:"Live pitch and prototype demo: 5 minutes + 2-minute Q&A; check your GA’s schedule.",
+  what:"Pitch the project and demo the prototype live. Your GA assigns tutorial presentation slots across Nov 25 and Dec 2. Teams selected for the Dec 2 Showcase Competition give their tutorial presentation on Nov 25. Confirm which sessions apply to your team.",
   facts:[["clock","5 min + 2 min Q&A, each time"],["cal","Nov 25 and Dec 2"],["warn","Competition sign-up two weeks before Dec 2"]],
   groups:[
    ["The five minutes",["Min 1: problem and key need","Min 2\u20133: what we built and why","Min 4: live demo against our criteria","Min 5: what worked, what we'd change"]],
@@ -100,12 +100,12 @@ export const TEAM = [
   traps:["One or two speakers carrying it","Hiding a failed demo: explain it instead","Missing the competition sign-up"]},
  {id:"m7", date:"2026-12-02", name:"Final Report", who:"team", pct:"8%",
   preview:"8–12 pages connecting the project, including MATLAB analysis.",
-  what:"The whole project in one 8 to 12 page document. Rewrite and connect the earlier milestones, don't paste them.",
+  what:"One coherent report of approximately 8–12 pages, excluding references and appendices. Revise and connect earlier milestones. At least two MATLAB analyses must inform design decisions; this is assessed within the report’s 8%, separately from the 10% MATLAB assignments.",
   facts:[["cal","Dec 2, 11:59 PM"],["up","D2L, one upload"],["doc","MATLAB 20 pts, writing 20 pts"]],
   groups:[
-   ["The ten sections",["1 Executive summary","2 Problem, stakeholders, needs tree","3 User research","4 Existing product comparison","5 Boundary diagram, matrix, why this concept","6 MATLAB analysis","7 Failure Analysis (titled exactly that)","8 Prototype and test results","9 Reflection","10 References"]],
-   ["MATLAB",["2+ analyses that each changed a decision","Only skills taught in CEN100","Figures in Section 6, referenced from 5 and 8","Code runs, submitted with a README"]],
-   ["Finishing",["Figures inside the sections","IEEE citations throughout","Name the tool behind each decision","Header with team number and section"]]
+   ["The ten sections",["1 Executive summary","2 Problem, stakeholders, needs tree","3 User research","4 Existing product comparison","5 Boundary diagram, matrix, why this concept","6 MATLAB analysis","7 Failure Analysis & Risk Analysis (clearly labelled)","8 Prototype and test results","9 Reflection","10 References"]],
+   ["MATLAB",["2+ analyses that each changed a decision","Only skills taught in CEN100","Figures in Section 6, referenced from 5 and 8","Working .mlx or .m files submitted alongside the report with a short README"]],
+   ["Finishing",["Figures inside the sections","Consistent citations throughout; confirm IEEE or APA with your GA","Name the tool behind each decision","Header with team number and section"]]
   ],
   traps:["MATLAB plots that don't decide anything","Code that doesn't run","\u201cOurs is better\u201d with no comparison","Hiding failed tests"]}
 ];
@@ -115,12 +115,12 @@ export const YOU = [
  {id:"y1", date:"2026-09-23", big:"SEP", small:"Orientation", name:"September items", who:"you", pct:"6%",
   preview:"Introduction, entry survey, syllabus quiz and professional email.",
   what:"Personal Introduction (1%), entry survey (1%), Course Syllabus Quiz (2%) and Professional Email Assignment (2%): 6% in total. All were due in September.",
-  facts:[["eye","Check D2L that each shows as submitted"]],
+  facts:[["cal","Introduction: Sept 16, 3 PM; professional email: Sept 23, 3 PM"],["up","Introduction and syllabus quiz: D2L; entry survey: Google Form; professional email: email your PM"],["doc","Professional email: send the draft, choice paragraph and reflection from your TMU account; one revision allowed after an on-time first attempt"]],
   groups:[["",["Personal introduction","Entry survey","Syllabus quiz","Email assignment"]]], traps:[]},
  {id:"y2", date:"2026-10-07", date2:"Nov 4", name:"MATLAB assignments", who:"pair", pct:"10%",
   preview:"Two lab assignments, normally completed in pairs.",
   what:"Two assignments from the MATLAB labs. Normally completed in pairs; if the class has an odd number of students, the unpaired student may work solo or join a group of 3.",
-  facts:[["cal","Oct 7 and Nov 4"],["warn","If the class size is odd, the unpaired student may work solo or join a group of 3."]],
+  facts:[["cal","Assignment 1: Oct 7, 3 PM; Assignment 2: Nov 4, time on D2L"],["doc","Assignment 1: one .m script showing both students’ names, IDs and section; follow the separate instructions for Assignment 2"],["warn","If the class size is odd, the unpaired student may work solo or join a group of 3."]],
   groups:[["",["Working arrangement confirmed","Assignment 1 submitted","Assignment 2 submitted"]]], traps:[]},
  {id:"y3", date:"2026-10-14", name:"WHMIS certification", who:"you", pct:"2%",
   preview:"80%+ on all 3 quizzes, then generate and save your certificate.",
@@ -133,9 +133,13 @@ export const YOU = [
   facts:[["cal","Due Oct 14, 3:00 PM"],["warn","Missing it can make your whole course INCOMPLETE"]],
   groups:[["",["Completed"]]], traps:[]},
  {id:"y5", date:"2026-10-28", date2:"Dec 2", name:"Personal Reflections", who:"you", pct:"4%",
-  preview:"Two individual reflections, emailed to your Project Manager.",
-  what:"Your own writing about the project, two pieces. Email each Personal Reflection directly to your assigned Project Manager.",
-  facts:[["cal","Oct 28 and Dec 2"],["warn","Email directly to your Project Manager — no D2L submission box"]],
+  preview:"Reflection 1: Oct 28. Reflection 2: Dec 2. Email each to your Project Manager.",
+  requirements:{
+   "reflection-1":"Your individual reflection on engineering thinking, teamwork and course tools near the end of Phase 2. Email Reflection 1 directly to your Project Manager.",
+   "reflection-2":"Your individual reflection on the semester, peer evaluation and how your project developed. Email Reflection 2 directly to your Project Manager."
+  },
+  what:"Reflection 1 covers your progress near the end of Phase 2; Reflection 2 looks back over the semester. Complete and email each separately to your assigned Project Manager.",
+  facts:[["cal","Reflection 1: Wednesday, Oct 28, by end of day"],["cal","Reflection 2: Wednesday, Dec 2, by end of day"],["warn","Email directly to your Project Manager; follow the reflection handout's deadline headings"]],
   groups:[["",["Project Manager confirmed","Reflection 1 emailed to PM","Reflection 2 emailed to PM"]]], traps:[]},
  {id:"y7", date:"2026-12-02", big:"LAB", small:"Weekly", name:"Tutorial attendance quizzes", who:"you", pct:"5%",
   preview:"In-person quiz during your assigned tutorial. Check D2L for timing.",
@@ -148,7 +152,7 @@ export const YOU = [
   what:"A short Google Form in Week 13.", facts:[], groups:[["",["Submitted"]]], traps:[]},
  {id:"m8", date:"2026-12-02", name:"Peer Evaluation", who:"you", pct:"3%",
   preview:"Private D2L submission. Rate every member, including yourself.",
-  what:"Everyone privately rates every member, including themselves. Nobody sees your answers.",
+  what:"Everyone individually rates every member, including themselves. Submit privately to the teaching team through D2L.",
   facts:[["up","D2L, private"]],
   groups:[
    ["You're rated on",["Attending meetings on time","Contributing to discussions","Finishing assigned tasks on time","Quality of work","Being cooperative","Contributing to the result"]],
@@ -157,7 +161,7 @@ export const YOU = [
   traps:["A vague list of contributions"]},
  {id:"y9", date:"2026-12-09", big:"DEC", small:"Exam period", name:"Final exam", who:"you", pct:"24%",
   preview:"2-hour in-person exam. Exact schedule awaits the Registrar.",
-  what:"2 hours, in person. The date comes from the Registrar.",
+  what:"24% of the course grade; 2 hours, in person. TMU confirms the exam period is Dec 9–20, including weekends. The CEN100 date, room and detailed coverage still need the Registrar schedule and D2L announcement.",
   facts:[["clock","2 hours, in person"]],
   groups:[["",["Exam date noted when it's released"]]],
   traps:["Booking travel before the exam schedule is out"]}
@@ -165,12 +169,12 @@ export const YOU = [
 
 // assets/cen-guide.mjs:200-210
 export const RULES=[
- ["red","doc","Header on every team submission","Team name or number and section. No signature needed every time."],
+ ["red","doc","Identify each team submission","Include team number/name and section. Follow the assignment cover-page and signature instructions; the Team Contract itself must be signed."],
  ["red","x","Late means zero","No late work without valid documentation. Use the submission method listed for each assignment."],
  ["red","book","One missing notebook entry costs the team","Every member needs a dated entry before each checkpoint."],
  ["","book","Write in the notebook as you go","Date it and put your name on it. It's your proof for the peer evaluation."],
  ["","eye","Real people, real data","Log people by role, never by name. AI can't make data or decisions for us."],
- ["","clock","Finish two days early","Reviewers get 48 hours, so a Wednesday deadline means done by Monday."],
+ ["","clock","Plan time for a teammate review","Agree an internal review deadline in your team contract. A 48-hour buffer is a planning suggestion, not a course-wide deadline."],
  ["","loop","Everything gets graded again","The needs tree, FMEA, photos and test results come back at the review and in the report."],
  ["","team","New roles each phase","Phase 2 starts Sept 28, Phase 3 Nov 2, Phase 4 Nov 23."],
  ["","mail","Emailing the GA or instructor","TMU email, F2026CEN100 in the subject, your name and student number."]
@@ -179,19 +183,19 @@ export const RULES=[
 // assets/cen-guide.mjs:211-221
 export const CONFIRMED=[
  ["Notebook checkpoints","Two. Whole notebook as a PDF, Nov 4 and Dec 2, 3:00 PM."],
- ["Failure Analysis","Part 1: lit review + fishbone. Part 2: FMEA + paragraph, presented briefly. Both due Oct 21."],
- ["Headers","Team and section on every team submission. No signature needed."],
- ["Citations","IEEE. Confirm the current guidance with your GA."],
+ ["Failure Analysis","Oct 13 course-team update: Part 1 (2%) due Oct 21; Part 2/FMEA (4%) due Oct 28. Exact times: check D2L. The handout requires a fishbone, while the Oct 13 lecture calls it optional; confirm with your GA before omitting it."],
+ ["Headers and signatures","Team and section on team submissions. Follow each assignment’s cover-page instructions; sign the Team Contract. The project guide allows a cover page or clear header; confirm assignment-specific signature requirements with your GA."],
+ ["Citations","Use a consistent style. The Final Report requirements allow IEEE or APA; confirm your GA’s preference."],
  ["WHMIS","Due Oct 14. 80%+ on all 3 quizzes, then generate the certificate."],
  ["Academic Integrity Quiz","Due Oct 14, 3:00 PM."],
  ["Attendance quizzes","Section 29: Wednesday, 5:45 to 6:00 PM, one attempt. Other sections: check your assigned tutorial on D2L."],
  ["Personal Reflections","No D2L submission box. Email directly to your assigned Project Manager."],
- ["MATLAB assignments","Normally pairs. If the class size is odd, the unpaired student may work solo or join a group of 3."]
+ ["MATLAB assignments","Normally pairs. If the class size is odd, the unpaired student may work solo or join a group of 3."], ["FMEA environmental category","The Oct 13 lecture, p. 18, defines real-world conditions such as heat, moisture, loads and contamination. The template requires at least 10 failure modes and action on the top five risks."], ["Upcoming labs","Oct 28: MATLAB 4 begins; Nov 4: Midterm Design Review; Nov 11/18: prototype planning/build; Nov 25/Dec 2: presentations/showcase. Outline schedule is tentative; follow D2L changes."], ["Course materials","Two lecture hours and one lab hour per week; no required textbook. Use D2L lecture notes and MATLAB. The supplied files cover teamwork, innovation, engineering design, logic/combinatorics, MATLAB, safety, aerospace, research and failure analysis."], ["GenAI in CEN100","Use only where permitted and disclose it when required. Verify outputs; AI cannot replace real user research, engineering analysis, design decisions or prototype testing (outline p. 6)."]
 ];
 
 // assets/cen-guide.mjs:222-224
 export const OPEN=[
- ["FMEA \u201cEnvironmental\u201d","Real-world conditions, or impact on the environment? Escalated to the Head GA. Official clarification pending."]
+ ["Final exam details","The Dec 9–20 period is confirmed; the CEN100 date, time, room and detailed coverage are still pending. Check the Registrar and D2L."], ["Assignment-specific instructions","Use D2L for unposted times and GA-assigned presentation slots. The Part 1 handout requires a fishbone but the Oct 13 lecture calls it optional; confirm with your GA before omitting it."]
 ];
 
 // assets/cen-guide.mjs:226
@@ -219,17 +223,17 @@ export const PROFILE_KEY="cen100-contact-choice-v1", FILTER_KEY="cen100-hide-com
 
 // assets/cen-guide.mjs:416-428
 export const SOURCE_INFO={
-  y1:["Course outline","Course outline, p. 9: assessment weights and individual September dates."],
-  y2:["Outline + clarification","Course outline, pp. 9–10: weight, dates and pair work. Confirmed course-team clarification: the unpaired student in an odd-sized class may work solo or join a group of 3."],
+  y1:["Outline + assignment sheets","Course outline, p. 9; Personal Introduction assignment, pp. 1–2 (Sept 16, 3 PM); Professional Email Assignment F26 (Sept 23, 3 PM, three components emailed to the PM)."],
+  y2:["Outline + assignment clarification","Course outline, pp. 9–10: 10% total, Oct 7/Nov 4, pairs. Oct 2–6 assignment discussion: Assignment 1 .m script and 3 PM deadline. Confirmed odd-class-size exception: the unpaired student may work solo or join a group of 3. Do not assume the same file requirements or time for Assignment 2."],
   y3:["Outline + clarification","Course outline, p. 9: weight, Oct 14 date and mandatory completion. Quiz requirements and certificate steps: course-team clarification recorded in this guide."],
   y4:["Outline + clarification","Course outline, p. 9: weight, Oct 14 date and mandatory completion. The 3 PM deadline and attempt limit: course-team clarification recorded in this guide."],
-  y5:["Outline + clarification","Course outline, p. 9: weight and dates. Confirmed course-team clarification: email your assigned Project Manager; there is no D2L submission box."],
+  y5:["Reflection handout + outline","Personal_Reflection_1_F26.docx, pp. 1 and 3: Reflection 1 is due Oct 28; Reflection 2 is due Dec 2, both by end of day, emailed directly to your PM. Page 1 also contains conflicting D2L-folder wording; the deadline headings and course-team clarification specify email. Course outline, p. 9: combined 4% weight."],
   y6:["Outline + guide summary","Course outline, pp. 9–11: weight, checkpoint dates and shared notebook requirements. The PDF format and 3 PM deadline are recorded in the guide's Confirmed section."],
   y7:["Outline + clarification","Course outline, pp. 9–10: participation weight and in-person attendance. The Wednesday 5:45–6 PM quiz window and one attempt are confirmed for Section 29 only. Check D2L for other sections."],
-  y9:["Course outline","Course outline, pp. 9 and 12: weight, two-hour in-person format and Dec 9–20 exam period. The exact date is pending the Registrar's schedule."],
-  m3:["Outline + guide summary","Course outline, pp. 9–11: weight, date, two-part failure analysis and team sizes. Detailed checklist: this guide's summary of assignment requirements; check the assignment instructions on D2L."],
-  m6:["Outline + guide summary","Course outline, pp. 9 and 12: weight, presentation dates and Innovation Showcase. Detailed checklist: this guide's summary of assignment requirements; check the assignment instructions on D2L."],
-  m5:["Outline + guide summary","Course outline, p. 9: weight and Nov 25 / Dec 2 prototype activities. The Nov 25, 3 PM submission and detailed checklist are this guide's assignment summary; check the assignment instructions on D2L."]
+  y9:["Outline + Registrar","Course outline, pp. 9 and 12: 24%, two hours in person. TMU Current Students / Exams, checked Oct 23, confirms Dec 9–20 and resolves the conflicting Dec 8–19 line on outline p. 8. Exact CEN100 schedule and scope remain pending."],
+  m3:["Course update + lecture + FMEA template","Oct 13 course-team deadline update: Part 1 Oct 21, Part 2 Oct 28 (supersedes outline p. 9). Research Methods & Failure Analysis, pp. 13 and 16–20: optional fishbone, four questions, 1–2 pages, scoring and environmental conditions. Predictive FMEA Template F26: at least 10 modes, top five risks, action types and design insight."],
+  m6:["Outline + presentation rubric","Final Project Presentation Rubric F26, pp. 1–3: 6% total, 5+2-minute structure, GA-assigned tutorial dates, selected showcase teams present in tutorial Nov 25, slides on D2L. The prototype is the separate 4% M5 category."], m4:["Design Review rubric","Midterm Design Review Requirements & Rubric F26, pp. 1–3: Nov 4 live review, suggested 5+3 minutes subject to GA slots, five artifacts, five 20-point criteria."], m7:["Final Report requirements","Final Report Requirements & Template F26, pp. 1–4: Dec 2 at 11:59 PM, 8–12 pages excluding references/appendices, ten sections, consistent IEEE or APA citations, and .mlx/.m plus README. MATLAB analysis is 20 of 100 report rubric points, separate from the 10% MATLAB assignments."],
+  m5:["Outline + prototype rubric","Low-Fidelity Prototype Requirements & Rubric F26, pp. 1–2: graded once (4%) alongside Nov 25/Dec 2 presentations, not a separate plan-and-build submission; no 3 PM deadline stated. Outline p. 9 retains WHMIS Oct 14 and notebook checkpoints Nov 4/Dec 2, superseding the stale Oct 9 / Nov 25 references in the prototype handout."]
 };
 
 // assets/cen-guide.mjs:429

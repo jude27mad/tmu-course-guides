@@ -8,6 +8,13 @@
   height: var(--app-viewport-height);
   color: var(--black);
   background-color: var(--white);
+  // On iPhone the artwork reaches under Safari's bars (--edge-bleed-* in
+  // global.scss), so the loader's paper continues there and leaves with it.
+  :global(html[data-scroll-mode='document']) & {
+    box-shadow:
+      0 calc(-1 * var(--edge-bleed-top)) 0 0 var(--white),
+      0 var(--edge-bleed-bottom) 0 0 var(--white);
+  }
   .innerContainer {
     position: relative;
     width: 100%;

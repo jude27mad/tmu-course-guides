@@ -1,7 +1,7 @@
 // CI browser check: the website still works where WebGL does not. Run after the production export.
 //
 // three.js throws "Error creating WebGL context." when a browser has WebGL turned off, and the site's 3D layer
-// (background, pointer fluid, course badges, pre-footer stickers) is built on it. Each canvas is therefore mounted
+// (background, pointer fluid, course badges, pre-footer game) is built on it. Each canvas is therefore mounted
 // only where WebGL works, inside an error boundary (src/components/canvas/WebGLGate.jsx); this check proves the
 // pages load, read and navigate without it, and that a browser with WebGL still gets the whole 3D layer.
 //
@@ -10,9 +10,9 @@
 //   late-failure    the capability probe succeeds but building the renderer fails, so the error boundary has to
 //                   catch it (three passes context attributes, the probe does not)
 //   second-failure  the first renderer is built and a later one fails: the canvases already drawing are taken down
-//                   with it and the badges swap to their stand-ins
-//   control         WebGL works: every three.js canvas and the fluid are there, no stand-in is drawn, and the 3D
-//                   badges really paint their windows
+//                   with it and the badges show their HTML cards again
+//   control         WebGL works: every three.js canvas and the fluid are there and the 3D badges draw (each course
+//                   badge hides its HTML card once its 3D card is drawn: data-badge-rendered)
 //   gpu-lost        the GPU goes away after load and never comes back: the layer turns itself off
 //   gpu-reset       every context is lost and then restored: the layer stays on
 //
@@ -86,8 +86,6 @@ const wanted = (name) => !only.length || only.some((prefix) => name.startsWith(p
 const ROUTES = ['/', '/courses/', '/cen100/', '/mth140/', '/mth141/', '/privacy/', '/updates/', '/404.html'];
 // the routes that end in the pre-footer, whose own canvas (the stickers) mounts only when the end of the page is near
 const PREFOOTER_ROUTES = ['/', '/courses/', '/privacy/', '/updates/'];
-const COURSE_CODES = ['CEN100', 'MTH140', 'MTH141'];
-const BADGE_WINDOW = 'section[aria-labelledby="desk-courses-heading"] [data-surface="dark"]';
 
 // The page is ready, or Next.js has replaced it with its error screen (reported by the caller, not timed out on).
 const ready = (page) =>
@@ -104,30 +102,20 @@ const pageState = (page) =>
     heading: !!document.querySelector('main h1, main h2'),
     threeCanvases: document.querySelectorAll('canvas[data-engine]').length,
     fluid: !!document.getElementById('fluidCanvas'),
-    standIns: [...document.querySelectorAll('[data-badge-fallback]')].map((element) => element.textContent),
+    badges: [...document.querySelectorAll('[data-course-badge]')].map((badge) => {
+      const card = badge.querySelector('[data-badge-fallback]');
+      return {
+        course: badge.dataset.courseBadge,
+        rendered: badge.dataset.badgeRendered === 'true',
+        card: !!card && card.getClientRects().length > 0 && getComputedStyle(card).visibility === 'visible',
+        text: card ? card.textContent : '',
+      };
+    }),
   }));
-
-// How many light pixels the first badge window holds: the 3D card and band print light text on the dark panel.
-async function lightPixels(page) {
-  const frame = page.locator(BADGE_WINDOW).first();
-  await frame.scrollIntoViewIfNeeded();
-  await page.waitForTimeout(300);
-  const png = await frame.screenshot();
-  return page.evaluate(async (base64) => {
-    const image = new Image();
-    image.src = `data:image/png;base64,${base64}`;
-    await image.decode();
-    const canvas = document.createElement('canvas');
-    canvas.width = image.width;
-    canvas.height = image.height;
-    const context = canvas.getContext('2d');
-    context.drawImage(image, 0, 0);
-    const { data } = context.getImageData(0, 0, canvas.width, canvas.height);
-    let light = 0;
-    for (let i = 0; i < data.length; i += 4) if (data[i] + data[i + 1] + data[i + 2] > 450) light += 1;
-    return light;
-  }, png.toString('base64'));
-}
+const drawn = (state) => state.badges.filter((badge) => badge.rendered);
+// every badge shows its HTML card, naming its course, and none claims a drawn 3D card
+const allCards = (state) => state.badges.every((badge) => !badge.rendered && badge.card && badge.text.toUpperCase().includes(String(badge.course).toUpperCase()));
+const waitForDrawnBadge = (page) => page.waitForFunction(() => document.querySelector('[data-course-badge][data-badge-rendered="true"]'), null, { timeout: 30000 });
 
 async function inspect(page, route, scenario, tracker, motion) {
   const reduced = motion === 'reduce';
@@ -148,25 +136,17 @@ async function inspect(page, route, scenario, tracker, motion) {
     // reduced motion draws the shared and background canvases and leaves the pointer fluid out
     assert.ok(state.threeCanvases >= (reduced ? 2 : 3), `${label}: the three.js canvases are drawn (${state.threeCanvases})`);
     assert.equal(state.fluid, !reduced, `${label}: the pointer fluid is ${reduced ? 'left out' : 'there'}`);
-    assert.deepEqual(state.standIns, [], `${label}: no stand-in badges where WebGL works`);
-    if (where === '/' && !reduced) {
-      // the 3D badges really paint their windows (the stand-ins are not there to do it)
-      let light = 0;
-      for (let attempt = 0; attempt < 40 && light < 150; attempt += 1) {
-        light = await lightPixels(page);
-        if (light < 150) await page.waitForTimeout(750);
-      }
-      assert.ok(light >= 150, `${label}: the 3D badge paints its window (${light} light pixels)`);
+    if (where === '/') {
+      // a badge on screen draws its 3D card and hides its HTML card
+      await waitForDrawnBadge(page);
+      const now = await pageState(page);
+      assert.ok(drawn(now).length >= 1 && drawn(now).every((badge) => !badge.card), `${label}: a 3D badge is drawn in place of its HTML card (${JSON.stringify(now.badges)})`);
     }
   } else {
     assert.equal(state.threeCanvases, 0, `${label}: no three.js canvas without WebGL`);
     assert.ok(!state.fluid, `${label}: no pointer fluid without WebGL`);
-    if (where === '/') {
-      assert.equal(state.standIns.length, COURSE_CODES.length, `${label}: a stand-in badge for each course`);
-      COURSE_CODES.forEach((code, index) => assert.ok(state.standIns[index].includes(code), `${label}: stand-in ${index + 1} shows ${code}`));
-    } else {
-      assert.deepEqual(state.standIns, [], `${label}: no stand-in outside the Desk`);
-    }
+    assert.ok(allCards(state), `${label}: every course badge shows its HTML card (${JSON.stringify(state.badges)})`);
+    if (where === '/') assert.ok(state.badges.length >= 1, `${label}: the Desk shows its next course's badge card`);
   }
 
   if (scenario.rendererFailure) {
@@ -177,11 +157,11 @@ async function inspect(page, route, scenario, tracker, motion) {
     assert.ok(tracker.consoleErrors.length > 0 && tracker.consoleErrors.every((text) => /webgl/i.test(text)), `${label}: only the expected WebGL errors are logged: ${tracker.consoleErrors.join(' | ')}`);
   }
 
-  // The pre-footer's canvas (the stickers) mounts only near the end of the page: go there and look again.
+  // The pre-footer game's canvas mounts only near the end of the page: go there and look again.
   // (it counts as near only while really on screen: the scroller clips it, so scrolling past it is not enough)
   await page.evaluate(() => {
-    const heading = [...document.querySelectorAll('main h2')].find((element) => /Open a course guide below/.test(element.textContent));
-    if (heading) heading.scrollIntoView({ block: 'center' });
+    const statement = document.querySelector('[data-companion-statement]');
+    if (statement) statement.scrollIntoView({ block: 'center' });
     else document.querySelector('main').scrollTop = document.querySelector('main').scrollHeight;
   });
   if (scenario.webgl && !reduced && PREFOOTER_ROUTES.includes(where)) {
@@ -194,9 +174,10 @@ async function inspect(page, route, scenario, tracker, motion) {
   assert.deepEqual(tracker.pageErrors, [], `${label}: uncaught errors at the end of the page`);
   if (!scenario.expectConsoleErrors) assert.deepEqual(tracker.consoleErrors, [], `${label}: console errors at the end of the page`);
   if (scenario.webgl) {
-    if (!reduced && PREFOOTER_ROUTES.includes(where)) assert.ok(end.threeCanvases >= 4, `${label}: the pre-footer canvas joins the others (${end.threeCanvases})`);
+    if (!reduced && PREFOOTER_ROUTES.includes(where)) assert.ok(end.threeCanvases >= 4, `${label}: the pre-footer game's canvas joins the others (${end.threeCanvases})`);
   } else {
     assert.equal(end.threeCanvases, 0, `${label}: no three.js canvas at the end of the page either`);
+    assert.ok(allCards(end), `${label}: every course badge still shows its HTML card at the end of the page`);
   }
 }
 
@@ -206,8 +187,9 @@ async function inspectGpuLoss(page, tracker, { restore }) {
   await page.goto(url('/'), { waitUntil: 'load' });
   await ready(page);
   await page.waitForFunction(() => document.querySelectorAll('canvas[data-engine]').length >= 3, null, { timeout: 15000 });
+  await waitForDrawnBadge(page);
   const before = await pageState(page);
-  assert.equal(before.standIns.length, 0, `${label}: starts with the 3D layer`);
+  assert.ok(drawn(before).length >= 1, `${label}: starts with a 3D badge drawn`);
   // A lost context hands out no extensions, so keep each canvas's WEBGL_lose_context before losing it.
   await page.evaluate(() => {
     window.__gpu = [...document.querySelectorAll('canvas[data-engine]')].map((canvas) => canvas.getContext('webgl2').getExtension('WEBGL_lose_context'));
@@ -225,10 +207,11 @@ async function inspectGpuLoss(page, tracker, { restore }) {
     const after = await pageState(page);
     assert.ok(!ERROR_SCREEN.test(after.text), `${label}: Next.js application error screen`);
     assert.ok(after.threeCanvases >= 3, `${label}: the 3D layer is still there after the contexts came back (${after.threeCanvases})`);
-    assert.deepEqual(after.standIns, [], `${label}: no stand-in after a reset`);
+    await waitForDrawnBadge(page);
   } else {
-    await page.waitForFunction(() => document.querySelectorAll('[data-badge-fallback]').length === 3, null, { timeout: 15000 });
+    await page.waitForFunction(() => !document.querySelector('canvas[data-engine]'), null, { timeout: 15000 });
     const after = await pageState(page);
+    assert.ok(allCards(after), `${label}: every course badge shows its HTML card again (${JSON.stringify(after.badges)})`);
     assert.ok(!ERROR_SCREEN.test(after.text), `${label}: Next.js application error screen`);
     assert.equal(after.threeCanvases, 0, `${label}: the 3D layer is taken down`);
     assert.ok(!after.fluid, `${label}: no pointer fluid`);
@@ -305,10 +288,7 @@ try {
               null,
               { polling: 300, timeout: 10000 },
             );
-            await page
-              .locator('a', { hasText: /open guide/i })
-              .first()
-              .click();
+            await page.locator(`main a[href="${basePath}/cen100/"]`).first().click();
             await page.waitForURL(/\/(cen100|mth140|mth141)\/$/);
             await ready(page);
             await page.waitForSelector('main h1');

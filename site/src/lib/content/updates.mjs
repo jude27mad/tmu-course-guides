@@ -9,6 +9,18 @@
 export const COURSE_UPDATES = {
  "cen100": [
   {
+   "id": "2026-10-23-cen100-source-review",
+   "date": "October 23, 2026",
+   "title": "FMEA deadline and assignment requirements updated",
+   "text": "Reviewed the outline, supplied assignments, lecture slides, FMEA workbook and course-team updates.",
+   "items": [
+    "Failure Analysis Part 1 (2%) stays on Oct 21; Part 2/FMEA (4%) is due Oct 28 under the Oct 13 update. Each now has its own submission record. Earlier Failure Analysis completion is kept for Part 1; record Part 2 separately.",
+    "FMEA: at least 10 failure modes, top-five priority risks and Change/Test/Verify/Monitor actions. The environmental category means real-world conditions. Fishbone instructions conflict between the handout and lecture; confirm with your GA before omitting it.",
+    "Added confirmed 3 PM times for the Personal Introduction, Professional Email and MATLAB Assignment 1. Corrected professional-email submission to the PM and retained reflection submission by PM email.",
+    "Corrected the prototype to a single graded deliverable alongside presentations, removed its unsupported 3 PM deadline, and clarified GA-assigned presentation slots. Final Report guidance now includes IEEE/APA, page-count exclusions and .mlx/.m submission. Grade weights are unchanged. Exact final-exam details and unposted submission times remain pending."
+   ]
+  },
+  {
    "id": "2026-09-30-grading-by-working-arrangement",
    "date": "September 30, 2026",
    "title": "Grading by working arrangement",
@@ -117,6 +129,13 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-10-24-smoother-page-changes",
+  "date": "October 24, 2026",
+  "title": "Smoother page changes",
+  "text": "Changing pages on iPhone and iPad no longer shows the dark background. The page fades into the paper and the next one rises in, while the top bar stays put. Switching between courses is a quicker fade, and the card slide on computers is shorter. A tap or key press finishes a page change at once, and Pause motion still changes pages instantly.",
+  "items": []
+ },
+ {
   "id": "2026-10-24-desk-button-label",
   "date": "October 24, 2026",
   "title": "Mark done button on the Desk",
@@ -127,7 +146,7 @@ export const WEBSITE_UPDATES = [
   "id": "2026-10-24-opens-without-webgl",
   "date": "October 24, 2026",
   "title": "Opens in browsers without WebGL",
-  "text": "The Desk and every other page now open when WebGL is turned off or unavailable, instead of showing an application error. The background's slow drift, the pointer effect and the pre-footer stickers are left out, and each course badge becomes a flat card.",
+  "text": "The Desk and every other page now open when WebGL is turned off or unavailable, instead of showing an application error. The background's slow drift, the pointer effect and the pre-footer game are left out, and each course badge shows its card with the course code and name.",
   "items": []
  },
  {
@@ -579,3 +598,4 @@ export const WEBSITE_UPDATES = [
   ]
  }
 ];
+

@@ -9,15 +9,17 @@ import { cenOracle, mathOracle, htmlText, blocksText, toronto } from './helpers.
 
 const old = await cenOracle();
 
-test('CEN100 content is the old closure’s literals, word for word and in order', () => {
-  for (const name of ['I', 'WHO', 'TEAM', 'YOU', 'RULES', 'CONFIRMED', 'OPEN', 'STAFFING', 'SOURCE_INFO', 'PROFILE_KEY', 'FILTER_KEY', 'PLAN_KEY', 'SEEN_KEY']) {
+test('CEN100 content outside the source-verified reflection clarification matches the old closure', () => {
+  for (const name of ['I', 'WHO', 'TEAM', 'RULES', 'CONFIRMED', 'OPEN', 'STAFFING', 'PROFILE_KEY', 'FILTER_KEY', 'PLAN_KEY', 'SEEN_KEY']) {
     assert.deepEqual(CEN[name], old[name], name);
   }
+  assert.deepEqual(CEN.YOU.filter(item => item.id !== 'y5'), old.YOU.filter(item => item.id !== 'y5'));
+  assert.deepEqual(Object.fromEntries(Object.entries(CEN.SOURCE_INFO).filter(([id]) => id !== 'y5')), Object.fromEntries(Object.entries(old.SOURCE_INFO).filter(([id]) => id !== 'y5')));
   // The last release version of the old badge. The badge now follows the newest course update (content/updates.mjs).
   assert.equal(CEN.GUIDE_VERSION, '2026-10-16-course-artwork');
   assert.notEqual(CEN.GUIDE_VERSION, old.GUIDE_VERSION);
   assert.equal(CEN.KEY, 'cen100-g9-ticks');
-  for (const item of old.allItems) assert.deepEqual(CEN.sourceFor(item), old.sourceFor(item), item.id);
+  for (const item of old.allItems.filter(item => item.id !== 'y5')) assert.deepEqual(CEN.sourceFor(item), old.sourceFor(item), item.id);
   assert.deepEqual(
     CEN.allItems.map((item) => item.id),
     old.allItems.map((item) => item.id),
@@ -29,11 +31,20 @@ test('CEN100 checklist keys and completion keys keep the old id schemes', () => 
   const keys = old.allItems.flatMap((item) => item.groups.flatMap((g, gi) => g[1].map((_, i) => `${item.id}-${gi}-${i}`)));
   assert.equal(keys.length, 126);
   assert.deepEqual([...CEN.TICK_KEYS], keys);
-  // 24 completion keys: 22 dated rows + item:y7 + item:y9.
+  // 25 completion keys: 23 dated rows + item:y7 + item:y9.
   assert.deepEqual([...CEN.completionKeys], [...old.completionKeys]);
-  assert.equal(CEN.completionKeys.size, 24);
+  assert.equal(CEN.completionKeys.size, 25);
   assert.ok(CEN.completionKeys.has('item:y7') && CEN.completionKeys.has('item:y9'));
   assert.ok(!CEN.completionKeys.has('failure-lab') && !CEN.completionKeys.has('showcase-signup'));
+});
+
+test('reflection details separate the October and December submissions without changing saved checklist keys', () => {
+  const item = CEN.byId.get('y5');
+  const previous = old.allItems.find(candidate => candidate.id === 'y5');
+  for (const field of ['id', 'date', 'date2', 'name', 'who', 'pct', 'groups', 'traps']) assert.deepEqual(item[field], previous[field], field);
+  assert.match(item.facts[0][1], /Reflection 1:.*Oct 28.*end of day/);
+  assert.match(item.facts[1][1], /Reflection 2:.*Dec 2.*end of day/);
+  assert.match(CEN.sourceFor(item)[1], /Personal_Reflection_1_F26.docx, pp. 1 and 3/);
 });
 
 test('CEN100 helpers return what the old closure returned', () => {
@@ -63,7 +74,8 @@ test('CEN100 helpers return what the old closure returned', () => {
     const mine = CEN.sectionContent(profile);
     assert.equal(mine.y7.what, page['b-y7 .what']);
     assert.equal(mine.y7.fact, page['b-y7 .fact span']);
-    assert.equal(mine.y5.what, page['b-y5 .what']);
+    const pm = CEN.contactLookup(profile?.section, profile?.group).pm;
+    assert.equal(mine.y5.what, pm ? CEN.byId.get('y5').what.replace('your assigned Project Manager', `${pm.name}, your assigned Project Manager for Group ${profile.group}`) : CEN.byId.get('y5').what);
   }
   for (const n of [0, 1, 2, 6, 7, 30]) {
     assert.equal(CEN.cd(n), old.cd(n));

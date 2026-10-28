@@ -1,0 +1,56 @@
+@import '@src/styles/functions';
+
+.root {
+  position: relative;
+  background-color: var(--white);
+  width: 100%;
+  // Projected words can extend far outside their layout boxes. Contain the
+  // visual locally without changing the sticky stage's scrolling ancestor.
+  overflow: clip;
+  height: 150svh;
+  @include mobile {
+    height: 125svh;
+  }
+  .stage {
+    position: sticky;
+    top: 0;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: calc(var(--layout-columns-gap) * 2);
+  }
+  .text {
+    text-align: center;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 0;
+    > div {
+      perspective: 1000px;
+    }
+  }
+  &.still {
+    height: auto;
+    padding-top: calc(var(--layout-columns-gap) * 4);
+    padding-bottom: calc(var(--layout-columns-gap) * 4);
+    .stage, .text { position: relative; min-height: 0; }
+  }
+}
+
+// Outside the clipped statement and scrolling main: the screen's bottom is
+// the game's entry/exit edge, even as the sticky statement leaves the screen.
+.canvas {
+  position: fixed;
+  top: 0;
+  left: var(--layout-margin);
+  width: var(--layout-width);
+  height: var(--app-viewport-height);
+  z-index: 1;
+  pointer-events: none;
+  &[data-active='false'] { visibility: hidden; }
+  > div { width: 100% !important; height: 100% !important; }
+}

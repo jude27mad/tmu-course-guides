@@ -19,7 +19,7 @@
    margin), the tab is visible, no palette or sheet holds motion, and the controller is busy or a frame was
    requested. There is no idle loop. A gate change requests one frame on wake. */
 import * as T from './three.mjs?v=20261013-stage1';
-import {tier,onTier,held,sceneMotionAllowed,ambientAllowed,downgrade} from '../night/core.mjs?v=20261023-mth141';
+import {tier,onTier,held,sceneMotionAllowed,ambientAllowed,downgrade} from '../night/core.mjs?v=20261026-cen100';
 
 const CONTEXT={alpha:true,antialias:true,powerPreference:'high-performance',failIfMajorPerformanceCaveat:true};
 const DPR_CAP={high:2,mid:1.5};

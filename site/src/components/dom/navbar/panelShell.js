@@ -9,6 +9,14 @@ export const PANEL_DEFAULTS = { duration: 0.45, ease: 'expo.inOut' };
 // The page's edge while it is shrunk behind a panel.
 const PAGE_EDGE = `2px solid ${TOKENS.page}`;
 
+// In document mode a transformed main holds its fixed paper caps (global.scss),
+// which would frame the shrunk page instead of covering the reach under
+// Safari's bars. They stand down until main is restored.
+export function markPageShrunk(shrunk) {
+  if (shrunk) document.documentElement.dataset.pageShrunk = '';
+  else delete document.documentElement.dataset.pageShrunk;
+}
+
 export function buildShellTimeline({ isMobile }) {
   const fluidCanvas = document.getElementById('fluidCanvas');
   const layout = document.getElementById('layout');
@@ -23,11 +31,17 @@ export function buildShellTimeline({ isMobile }) {
     defaults: PANEL_DEFAULTS,
     onStart: () => {
       gsap.set(moving, { willChange: isMobile ? 'opacity' : 'transform, opacity' });
-      if (ios && !isMobile) gsap.set(main, { transformOrigin: `50% ${scrollTop() + window.innerHeight / 2}px` });
+      if (ios && !isMobile) {
+        gsap.set(main, { transformOrigin: `50% ${scrollTop() + window.innerHeight / 2}px` });
+        markPageShrunk(true);
+      }
     },
     onReverseComplete: () => {
       gsap.set(moving, { willChange: 'auto' });
-      if (ios && !isMobile) gsap.set(main, { clearProps: 'transform,transformOrigin,left,border,borderRadius' });
+      if (ios && !isMobile) {
+        gsap.set(main, { clearProps: 'transform,transformOrigin,left,border,borderRadius' });
+        markPageShrunk(false);
+      }
     },
   });
 
@@ -41,7 +55,8 @@ export function buildShellTimeline({ isMobile }) {
     return tl;
   }
   tl.to(main, { borderRadius: '1.3888888889vw', border: PAGE_EDGE, scale: 0.9, pointerEvents: 'none', left: '-40vw' }, 0);
-  tl.to(layout, { opacity: 0.3, ...(ios ? {} : { height: '90svh' }) }, 0);
+  // Keep the canvas/grain shell full-height so it cannot expose bands above and below the page.
+  tl.to(layout, { opacity: 0.3 }, 0);
   if (scrollbar) tl.to(scrollbar, { opacity: 0, right: '46vw', scale: 0.9 }, 0);
   // This timeline is also prepared during route entry. Eager overwrite would
   // cancel the route's header reveal even while this menu timeline is paused.

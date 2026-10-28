@@ -314,13 +314,11 @@ test('the shared canvas that hosts the Views is the critical one', () => {
   assert.match(app, /<WebGLGate critical>\s*<Canvas[^]*?<View\.Port \/>/);
 });
 
-test('every drei <View> window has a stand-in for browsers without WebGL', () => {
-  const views = sources(SRC)
-    .map((path) => [path, code(path)])
-    .filter(([, text]) => /<View[\s>]/.test(text));
-  assert.ok(views.length >= 1, 'the badge windows are found');
-  for (const [path, text] of views) {
-    assert.match(text, /useWebGL\(\)/, `${path.slice(SRC.length)} asks useWebGL`);
-    assert.match(text, /=== false/, `${path.slice(SRC.length)} draws its stand-in only on a real false`);
-  }
+test('every course badge keeps an HTML card that shows whenever its 3D card is not drawn', () => {
+  const badge = code(fileURLToPath(new URL('../src/components/courseBadge/CourseBadge.jsx', import.meta.url)));
+  assert.match(badge, /data-badge-fallback/, 'the badge renders its HTML card');
+  const css = readFileSync(new URL('../src/components/courseBadge/badge.module.scss', import.meta.url), 'utf8');
+  assert.match(css, /\[data-badge-rendered='true'\] \.fallback \{ visibility: hidden; \}/, 'only a drawn 3D card hides it');
+  const scene = code(fileURLToPath(new URL('../src/components/courseBadge/BadgeScene.jsx', import.meta.url)));
+  assert.match(scene, /return \(\) => \{\s*if \(element\) element\.dataset\.badgeRendered = 'false';/, 'a 3D card taken down (no WebGL, a lost GPU) shows the HTML card again');
 });

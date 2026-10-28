@@ -2,9 +2,9 @@
    desk (body[data-page=desk]): mount the Desk directory only. No course identity and no wait for CourseWorkspace.
    course (body[data-course]): static structure mounts with the workspace; motion modules load after first paint.
    Each feature module is independent: one failing to load never affects the guide or the others. */
-import {setRoute,isDesk,course,META,$$,asset,VERSION,loadCSS,tier} from './core.mjs?v=20261023-mth141';
-import * as deadline from './deadline.mjs?v=20261023-mth141';
-import * as timeline from './timeline.mjs?v=20261023-mth141';
+import {setRoute,isDesk,course,META,$$,asset,VERSION,loadCSS,tier} from './core.mjs?v=20261026-cen100';
+import * as deadline from './deadline.mjs?v=20261026-cen100';
+import * as timeline from './timeline.mjs?v=20261026-cen100';
 import {scope} from '../route-lifecycle.mjs';
 
 const FEATURES=['palette','hero','scroll'];
@@ -34,7 +34,7 @@ export async function mount(ctx={}){
  root.dataset.nsTier=tier();
  if(isDesk){
  root.dataset.nsPage='desk';root.classList.remove('night');delete root.dataset.nsCourse;
- try{const module=await import('./desk.mjs?v=20261023-mth141');if(live!==state)return;state.modules.push(module);await module.mount(state.ctx);}catch(error){if(live===state)failed('desk',error);}
+ try{const module=await import('./desk.mjs?v=20261026-cen100');if(live!==state)return;state.modules.push(module);await module.mount(state.ctx);}catch(error){if(live===state)failed('desk',error);}
  }else{
  root.classList.add('night');delete root.dataset.nsPage;root.dataset.nsCourse=course;labelPages();
  await deadline.mount(state.ctx);if(live!==state)return;timeline.mount(state.ctx);

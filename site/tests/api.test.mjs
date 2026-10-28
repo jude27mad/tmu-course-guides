@@ -20,7 +20,7 @@ test('COURSES: the three courses keep their names and links and share the Desk p
   assert.equal(lib.COURSES[1].summary, 'Assessment dates, section labs, announced coverage and practice.');
   for (const course of lib.COURSES) {
     // This record feeds CSS, card panels and generated badge/disc textures.
-    assert.deepEqual(course.palette, { primary: '#18181B', accentColor: '#FFFFFF', secondary: '#F4F4F5', fillColor: '#FFFFFF', menuColor: '#18181B', menuFontColor: '#FAFAFA', fluidColor: '#E4E4E7', accent: '#004C9B' }, course.id);
+    assert.deepEqual(course.palette, { primary: '#18181B', accentColor: '#FFFFFF', secondary: '#F4F4F5', fillColor: '#FFFFFF', menuColor: '#18181B', menuFontColor: '#FAFAFA', fluidColor: '#D7D7D4', accent: '#004C9B' }, course.id);
     assert.ok(course.links.length > 0);
     for (const link of course.links) assert.match(link.href, /^https:\/\//);
     assert.equal(course.links[0].href, 'https://courses.torontomu.ca/');
@@ -104,9 +104,9 @@ test('courseInfo: rules, contacts, topic map and notes as data', async () => {
   const old = await cenOracle();
   const cen = lib.courseInfo('cen100', { section: 29, group: 9 });
   assert.equal(cen.rules.length, 9);
-  assert.deepEqual(cen.rules[0], { severity: 'red', icon: 'doc', title: 'Header on every team submission', text: 'Team name or number and section. No signature needed every time.' });
-  assert.equal(cen.confirmed.length, 9);
-  assert.equal(cen.open[0].title, 'FMEA “Environmental”');
+  assert.deepEqual(cen.rules[0], { severity: 'red', icon: 'doc', title: 'Identify each team submission', text: 'Include team number/name and section. Follow the assignment cover-page and signature instructions; the Team Contract itself must be signed.' });
+  assert.equal(cen.confirmed.length, 13);
+  assert.equal(cen.open[0].title, 'Final exam details');
   assert.equal(cen.contacts.ga.location, 'KHS134');
   assert.equal(cen.contacts.pm.role, 'Project Manager');
   assert.equal(cen.profile.summary, 'Section 29 · Group 9 · Lab: KHS134');
@@ -115,7 +115,7 @@ test('courseInfo: rules, contacts, topic map and notes as data', async () => {
   assert.equal(cen.items.flatMap((item) => item.groups.flatMap((g) => g.checks)).length, 126);
   assert.equal(cen.grading.tables[1].rows.length, 20);
   assert.equal(cen.updates.summary, 'Course updates');
-  assert.equal(cen.updates.entries.length, 4);
+  assert.equal(cen.updates.entries.length, 5);
   assert.equal(cen.updates.version, cen.updates.entries[0].id);
   const none = lib.courseInfo('cen100');
   assert.equal(none.profile.summary, 'Choose your section & group');
@@ -163,9 +163,9 @@ test('searchGuide: the old pages’ full-text search', () => {
   const { results, status } = lib.searchGuide('fishbone');
   assert.deepEqual(
     results.map((r) => r.title),
-    ['Failure Analysis Labs', 'Failure Analysis'],
+    ['Failure Analysis Labs', 'Failure Analysis', 'Assignment-specific instructions'],
   );
-  assert.equal(status, '2 results.');
+  assert.equal(status, '3 results.');
   assert.equal(lib.searchGuide('zzqq').status, 'No matches. Try a shorter term.');
   assert.equal(lib.searchGuide('').results.length, 0);
   assert.equal(lib.searchGuide('quiz', { course: 'mth141' }).results[0].courseId, 'mth141');
@@ -183,8 +183,8 @@ test('workList: "What should I work on?" in the old wording', () => {
   assert.equal(cen.status, '2 items with completion still unrecorded.');
   assert.equal(cen.items[0].dates, 'No official deadline in this view.');
   assert.equal(cen.items[0].target, 'My target: 2026-10-18 (personal plan)');
-  assert.equal(cen.items[1].dates, 'Oct 21 — Failure Analysis Labs: both parts due');
-  assert.equal(cen.items[1].progress, '17/17 checklist items still unchecked · 1 completion record unmarked.');
+  assert.equal(cen.items[1].dates, 'Oct 21 — Failure Analysis Part 1: historical review due');
+  assert.equal(cen.items[1].progress, '17/17 checklist items still unchecked · 2 completion records unmarked.');
   const math = lib.workList('mth141', { now: NOW, storage: memoryStorage({ 'mth141-section-v1': '3' }) });
   assert.deepEqual(
     math.items.map((i) => i.itemId),

@@ -2,13 +2,15 @@
 
 import { Camera, Scene, Texture, Vector2, Vector3 } from 'three';
 import { createPortal, useFrame, useThree } from '@react-three/fiber';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import Effect from '@src/components/canvas/fluid/effect/Fluid';
 import useFBOs from '@src/components/canvas/fluid/hooks/useFBOs';
 import useMaterials from '@src/components/canvas/fluid/hooks/useMaterials';
 import useOpts from '@src/components/canvas/fluid/hooks/useOpts';
 import usePointerEvents from '@src/components/canvas/fluid/hooks/usePointerEvents';
+// eslint-disable-next-line import/extensions
+import { listenForGameCelebration } from './gameCelebration.mjs';
 
 function Fluid({ mainRef, fluidColor }) {
   const OPTS = useOpts();
@@ -23,6 +25,11 @@ function Fluid({ mainRef, fluidColor }) {
   const FBOs = useFBOs();
   const materials = useMaterials();
   const splatStack = usePointerEvents(mainRef, size, force);
+
+  const pointerRef = useRef(new Vector2());
+  const colorRef = useRef(new Vector3());
+
+  useEffect(() => listenForGameCelebration(window, splatStack, size), [splatStack, size]);
 
   const setShaderMaterial = useCallback(
     (name) => {
@@ -64,30 +71,42 @@ function Fluid({ mainRef, fluidColor }) {
     if (!meshRef.current || !postRef.current) return;
 
     while (splatStack.current.length > 0) {
-      const { mouseX, mouseY, velocityX, velocityY } = splatStack.current.pop();
+      const { mouseX, mouseY, velocityX, velocityY, radiusScale = 1 } = splatStack.current.pop();
+
+      pointerRef.current.set(mouseX, mouseY);
+      colorRef.current.set(velocityX, velocityY, 10.0);
 
       setShaderMaterial('splat');
       setUniforms('splat', 'uTarget', FBOs.velocity.read.texture);
-      setUniforms('splat', 'uPointer', new Vector2(mouseX, mouseY));
-      setUniforms('splat', 'uColor', new Vector3(velocityX, velocityY, 10.0));
-      setUniforms('splat', 'uRadius', radius / 100.0);
+      setUniforms('splat', 'uPointer', pointerRef.current);
+      setUniforms('splat', 'uColor', colorRef.current);
+      setUniforms('splat', 'uRadius', (radius * radiusScale) / 100.0);
       setRenderTarget('velocity');
       setUniforms('splat', 'uTarget', FBOs.density.read.texture);
       setRenderTarget('density');
     }
 
-    const shaderUpdates = [
-      { material: 'curl', uniforms: { uVelocity: FBOs.velocity.read.texture }, target: 'curl' },
-      { material: 'vorticity', uniforms: { uVelocity: FBOs.velocity.read.texture, uCurl: FBOs.curl.texture, uCurlValue: curl }, target: 'velocity' },
-      { material: 'divergence', uniforms: { uVelocity: FBOs.velocity.read.texture }, target: 'divergence' },
-      { material: 'clear', uniforms: { uTexture: FBOs.pressure.read.texture, uClearValue: pressure }, target: 'pressure' },
-    ];
+    // Preserve the original shaderUpdates snapshot across the vorticity swap.
+    const velocityTexture = FBOs.velocity.read.texture;
 
-    shaderUpdates.forEach(({ material, uniforms, target }) => {
-      setShaderMaterial(material);
-      Object.entries(uniforms).forEach(([key, value]) => setUniforms(material, key, value));
-      setRenderTarget(target);
-    });
+    setShaderMaterial('curl');
+    setUniforms('curl', 'uVelocity', velocityTexture);
+    setRenderTarget('curl');
+
+    setShaderMaterial('vorticity');
+    setUniforms('vorticity', 'uVelocity', velocityTexture);
+    setUniforms('vorticity', 'uCurl', FBOs.curl.texture);
+    setUniforms('vorticity', 'uCurlValue', curl);
+    setRenderTarget('velocity');
+
+    setShaderMaterial('divergence');
+    setUniforms('divergence', 'uVelocity', velocityTexture);
+    setRenderTarget('divergence');
+
+    setShaderMaterial('clear');
+    setUniforms('clear', 'uTexture', FBOs.pressure.read.texture);
+    setUniforms('clear', 'uClearValue', pressure);
+    setRenderTarget('pressure');
 
     setShaderMaterial('pressure');
     setUniforms('pressure', 'uDivergence', FBOs.divergence.texture);

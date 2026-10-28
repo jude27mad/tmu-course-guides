@@ -59,7 +59,7 @@ test('progress uses strict saved completion records, excludes CEN reminders, and
   'mth141-progress-v1':{completed:{'quiz-1':true,midterm:1},checks:{'quiz-2':true},topics:{'quiz-3':true}}
  });
  const result=summary({storage});
- assert.deepEqual(result.cen100.progress,{completed:2,total:22,ratio:2/22,thisWeek:1});
+ assert.deepEqual(result.cen100.progress,{completed:2,total:23,ratio:2/23,thisWeek:1});
  assert.deepEqual(result.mth140.progress,{completed:2,total:6,ratio:2/6,thisWeek:1});
  assert.deepEqual(result.mth141.progress,{completed:2,total:7,ratio:2/7,thisWeek:1});
  const outside=summary({storage,now:noon('2026-12-22')});
@@ -82,7 +82,7 @@ test('week numbers and book indices use Toronto boundaries, partial weeks, DST a
 test('upcoming landmark kinds use shared rank categories and exclude completed, past and reminder rows',()=>{
  const before=summary({now:noon('2026-09-08')});
  // The shared book mapping counts both the syllabus quiz and integrity quiz.
- assert.deepEqual(before.cen100.kinds,{final:3,midterm:1,quizLab:5,minor:13});
+ assert.deepEqual(before.cen100.kinds,{final:3,midterm:1,quizLab:6,minor:13});
  assert.deepEqual(before.mth140.kinds,{final:1,midterm:1,quizLab:4,minor:0});
  assert.deepEqual(before.mth141.kinds,{final:1,midterm:1,quizLab:5,minor:0});
  const after=summary({now:noon('2026-12-22')});

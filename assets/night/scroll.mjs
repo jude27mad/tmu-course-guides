@@ -9,8 +9,8 @@
    window.NightScroll = {refresh(), scrollTo(target,{immediate,offset}), lenis()}, or dispatch 'night-refresh'.
    The pure scrub plan (scrubPlan, scrubAt, rebase, forward) is exported for tests. */
 import {scope} from '../route-lifecycle.mjs';
-import {vendor,META,TERM,escape,$,$$,motionAllowed,sceneMotionAllowed,ambientAllowed,onAmbient,hold,release,held,finePointer,atLeast,onTier,track,dispose,view,frames} from './core.mjs?v=20261023-mth141';
-import {currentBookHost} from '../book/book-state.mjs?v=20261023-mth141';
+import {vendor,META,TERM,escape,$,$$,motionAllowed,sceneMotionAllowed,ambientAllowed,onAmbient,hold,release,held,finePointer,atLeast,onTier,track,dispose,view,frames} from './core.mjs?v=20261026-cen100';
+import {currentBookHost} from '../book/book-state.mjs?v=20261026-cen100';
 
 const SCOPE='scroll',BOOK='book-scrub',SWIPE='book-swipe';
 const ROWS='#assessment-list>li,#teamlist>.tile,#youlist>.tile';

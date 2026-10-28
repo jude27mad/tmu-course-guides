@@ -50,6 +50,10 @@ uniform float uOffsetY;
 uniform float uLinesAmount;
 uniform float uBackgroundScale;
 uniform float uTime;
+// Maps the layout viewport's band of a canvas that reaches past it (under
+// Safari's bars) to 0..1, so the sweep inside the viewport stays the same.
+uniform float uUvScaleY;
+uniform float uUvOffsetY;
 
 varying vec2 vUv;
 
@@ -90,6 +94,7 @@ void main() {
   vec2 mouse2D = uMouse2D;
 
   vec2 uv = vUv;
+  uv.y = uv.y * uUvScaleY + uUvOffsetY;
   uv.y += uOffsetY;
   uv.x += uOffsetX;
   uv.x *= uPlaneRes.x / uPlaneRes.y;

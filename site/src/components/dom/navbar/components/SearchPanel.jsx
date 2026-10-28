@@ -4,9 +4,11 @@ import { courseIdFromPath, pathKey } from '@src/utils/routes';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import clsx from 'clsx';
+import { flushSync } from 'react-dom';
 import menuStyles from '@src/components/dom/navbar/styles/menuLinks.module.scss';
 import styles from '@src/components/dom/navbar/styles/searchPanel.module.scss';
 import useIsMobile from '@src/hooks/useIsMobile';
+import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
 import { useRouter } from 'next/router';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
@@ -15,6 +17,22 @@ import { useStore } from '@src/store';
 // same index, groups, ranking, copy and keyboard model (combobox + listbox,
 // Arrow keys, Home/End, Enter, Escape, Cmd/Ctrl-K), plus its last row,
 // 'Search the guide for "…"', which lists the guides' full-text matches here.
+
+// Keep focus inside the tap/key event. iPhone WebKit can reject focus scheduled
+// after an animation frame, even though the Search panel is then visible.
+export function openSearchPanel() {
+  const state = useStore.getState();
+  if (state.isLoading) return;
+  flushSync(() => {
+    state.setIsMenuOpen(false);
+    state.setIsSearchOpen(true);
+  });
+  const panel = document.getElementById('search');
+  if (!panel) return;
+  panel.inert = false;
+  panel.style.visibility = 'visible';
+  panel.querySelector('#search-input')?.focus({ preventScroll: true });
+}
 
 const isMotionEntry = (entry) => entry.action === 'motion';
 
@@ -44,6 +62,7 @@ function SearchPanel() {
     useShallow((state) => [state.isSearchOpen, state.setIsSearchOpen, state.isLoading, state.still, state.motionSaved, state.motionReduced, state.toggleMotion]),
   );
   const panelRef = useRef(null);
+  const scrollRef = useRef(null);
   const inputRef = useRef(null);
   const listRef = useRef(null);
   const timeline = useRef(null);
@@ -84,8 +103,9 @@ function SearchPanel() {
     };
   }, [isLoading, isMobile]);
 
-  // The index is rebuilt on open (fresh time and saved progress) and when motion changes.
-  useEffect(() => {
+  // Refresh before the panel accepts input, including a quick reopen after Back.
+  // Keeping the prior index until a passive effect runs can target the wrong course.
+  useIsomorphicLayoutEffect(() => {
     if (!isSearchOpen) return;
     try {
       setEntries(searchIndex({ now: new Date(), course: courseId, motionForced: motionReduced }));
@@ -94,7 +114,7 @@ function SearchPanel() {
     }
   }, [isSearchOpen, motionSaved, motionReduced, courseId]);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const tl = timeline.current;
     if (!tl) return undefined;
     let focusFrame = 0;
@@ -102,8 +122,9 @@ function SearchPanel() {
     panelRef.current.inert = !isSearchOpen;
     tl.timeScale(still ? 30 : 1);
     if (isSearchOpen) {
+      if (scrollRef.current) scrollRef.current.scrollTop = 0;
       const focused = document.activeElement;
-      // Opened from the phone menu: focus goes back to the menu pill afterwards.
+      // Opened from the menu: focus goes back to the menu pill afterwards.
       openerRef.current = focused && !focused.closest?.('#menu') && focused !== document.body ? focused : document.getElementById('menu-button');
       setQuery('');
       setGuideQuery(null);
@@ -123,10 +144,14 @@ function SearchPanel() {
       const opener = openerRef.current;
       openerRef.current = null;
       const panel = panelRef.current;
+      const focusDeadline = performance.now() + 1000;
       const restoreFocus = () => {
+        cancelAnimationFrame(focusFrame);
         const state = useStore.getState();
         if (!state.isSearchOpen && !state.isMenuOpen && !state.isTransitioning && opener?.isConnected && (panel?.contains(document.activeElement) || document.activeElement === document.body)) {
           opener.focus({ preventScroll: true });
+          // The desktop header also has to finish revealing its descendants.
+          if (document.activeElement !== opener && performance.now() < focusDeadline) focusFrame = requestAnimationFrame(restoreFocus);
         }
       };
       tl.eventCallback('onReverseComplete', restoreFocus);
@@ -143,8 +168,8 @@ function SearchPanel() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSearchOpen]);
 
-  // The first enabled result is active after every new search.
-  useEffect(() => {
+  // Keyboard Enter must use this query's selection in the same commit.
+  useIsomorphicLayoutEffect(() => {
     setActive(results.findIndex((entry) => !entry.disabled));
   }, [results]);
 
@@ -154,7 +179,18 @@ function SearchPanel() {
     option?.scrollIntoView({ block: 'nearest' });
   }, [active]);
 
-  const close = useCallback(() => setIsSearchOpen(false), [setIsSearchOpen]);
+  const close = useCallback(() => {
+    if (isMobile) {
+      const header = document.querySelector('header');
+      if (header) {
+        header.inert = false;
+        header.style.visibility = 'visible';
+      }
+      const opener = openerRef.current || document.getElementById('menu-button');
+      if (opener?.isConnected) opener.focus({ preventScroll: true });
+    }
+    setIsSearchOpen(false);
+  }, [isMobile, setIsSearchOpen]);
 
   const run = useCallback(
     (position) => {
@@ -232,7 +268,7 @@ function SearchPanel() {
     // The dialog handles its own keys (Escape; the combobox model on the input).
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
     <div id="search" ref={panelRef} role="dialog" aria-modal="true" aria-labelledby="search-title" aria-hidden={!isSearchOpen} className={clsx(menuStyles.menu, styles.root)} onKeyDown={onKeyDown}>
-      <div className={clsx(menuStyles.menuWrapper, styles.wrapper, 'layout-block-inner')} data-lenis-prevent="">
+      <div ref={scrollRef} className={clsx(menuStyles.menuWrapper, styles.wrapper, 'layout-block-inner')} data-lenis-prevent="">
         <div data-menu-anim="" className={styles.field}>
           <h2 id="search-title" className={menuStyles.menuHeading}>
             {COPY.title}
@@ -288,7 +324,17 @@ function SearchPanel() {
             </p>
           )}
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-          <div id="search-results" role="listbox" aria-labelledby="search-title" ref={listRef} onPointerDown={(event) => event.preventDefault()}>
+          <div
+            id="search-results"
+            role="listbox"
+            aria-labelledby="search-title"
+            ref={listRef}
+            onPointerDown={(event) => {
+              // Mouse selection keeps the input focused; touch must retain
+              // WebKit's native tap/click sequence.
+              if (event.pointerType === 'mouse') event.preventDefault();
+            }}
+          >
             {grouped.map((group) => (
               <div
                 key={`${group.key}-${group.items[0].index}`}
@@ -319,8 +365,8 @@ function SearchPanel() {
                       entry.disabled && styles.disabled,
                       entry.type === 'guide-search' && styles.suggestion,
                     )}
-                    onPointerMove={() => {
-                      if (!entry.disabled && active !== index) setActive(index);
+                    onPointerMove={(event) => {
+                      if (event.pointerType === 'mouse' && !entry.disabled && active !== index) setActive(index);
                     }}
                     onClick={() => run(index)}
                   >
@@ -342,7 +388,9 @@ function SearchPanel() {
         </p>
 
         <button type="button" onClick={close} className={menuStyles.menuClose} aria-label={COPY.closeLabel}>
-          <span aria-hidden="true">&#10005;</span>
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true" focusable="false">
+            <path d="M3 3 17 17M17 3 3 17" />
+          </svg>
         </button>
       </div>
     </div>

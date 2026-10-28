@@ -1,16 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { createRequire } from 'node:module';
-import React from 'react';
-import ReactDOMServer from 'react-dom/server';
 import { Texture } from 'three';
 
-const require = createRequire(import.meta.url);
-const { transformSync } = require('next/dist/build/swc');
 const moduleURL = source => `data:text/javascript;base64,${Buffer.from(`${source}\n//# sourceURL=fluid-test-module.mjs`).toString('base64')}`;
 const threeURL = import.meta.resolve('three');
-const reactURL = import.meta.resolve('react');
 
 // Resolve the existing Next aliases and shader import for Node. The production
 // effect, Three values and React hooks remain real; no WebGL context is needed
@@ -25,26 +19,17 @@ const effectSource = (await readFile(new URL('../src/components/canvas/fluid/eff
   .replace("'@src/components/canvas/fluid/utils'", JSON.stringify(moduleURL(utils)));
 const effectURL = moduleURL(effectSource);
 const { default: FluidEffect } = await import(effectURL);
-const hookSource = (await readFile(new URL('../src/hooks/useIsomorphicLayoutEffect.js', import.meta.url), 'utf8'))
-  .replace("'react'", JSON.stringify(reactURL));
-const wrapperSource = (await readFile(new URL('../src/components/canvas/fluid/effect/Fluid.jsx', import.meta.url), 'utf8'))
-  .replace("'react'", JSON.stringify(reactURL))
-  .replace("'@src/components/canvas/fluid/effect/FluidEffect'", JSON.stringify(effectURL))
-  .replace("'@src/hooks/useIsomorphicLayoutEffect'", JSON.stringify(moduleURL(hookSource)));
-const compiled = transformSync(wrapperSource, {
-  jsc: { parser: { syntax: 'ecmascript', jsx: true }, transform: { react: { runtime: 'automatic' } } },
-  module: { type: 'es6' },
-}).code.replace('"react/jsx-runtime"', JSON.stringify(import.meta.resolve('react/jsx-runtime')));
-const { default: Fluid } = await import(moduleURL(compiled));
 
-test('steady fluid frames reuse the colour values already supplied to the shader', () => {
+// PR 79 restores upstream allocation behavior. Assert the rendered values,
+// rather than the object-identity optimizations that restoration removed.
+test('steady fluid frames keep the same shader colours', () => {
   const effect = new FluidEffect({ fluidColor: '#E4E4E7', backgroundColor: '#000000' });
   try {
-    const dye = effect.uniforms.get('uColor').value;
-    const background = effect.uniforms.get('uBackgroundColor').value;
+    const dye = effect.uniforms.get('uColor').value.toArray();
+    const background = effect.uniforms.get('uBackgroundColor').value.toArray();
     for (let frame = 0; frame < 120; frame += 1) effect.update();
-    assert.equal(effect.uniforms.get('uColor').value, dye, 'unchanged dye must not allocate a replacement on each frame');
-    assert.equal(effect.uniforms.get('uBackgroundColor').value, background, 'unchanged background must not allocate a replacement on each frame');
+    assert.deepEqual(effect.uniforms.get('uColor').value.toArray(), dye);
+    assert.deepEqual(effect.uniforms.get('uBackgroundColor').value.toArray(), background);
   } finally {
     effect.dispose();
   }
@@ -63,19 +48,21 @@ test('changed fluid colours and zero intensity reach the shader and then stay st
     assert.deepEqual(background.toArray(), [0, 0, 1]);
     assert.equal(effect.uniforms.get('uIntensity').value, 0);
     effect.update();
-    assert.equal(effect.uniforms.get('uColor').value, dye);
-    assert.equal(effect.uniforms.get('uBackgroundColor').value, background);
+    assert.deepEqual(effect.uniforms.get('uColor').value.toArray(), dye.toArray());
+    assert.deepEqual(effect.uniforms.get('uBackgroundColor').value.toArray(), background.toArray());
   } finally {
     effect.dispose();
   }
 });
 
-test('rendering a fluid texture never serializes its resource graph', () => {
+test('the effect supplies the original texture to its shader', () => {
   const texture = new Texture();
-  texture.toJSON = () => { throw new Error('Texture resource graph was serialized'); };
+  const effect = new FluidEffect({ tFluid: texture });
   try {
-    assert.doesNotThrow(() => ReactDOMServer.renderToStaticMarkup(React.createElement(Fluid, { tFluid: texture })));
+    effect.update();
+    assert.equal(effect.uniforms.get('tFluid').value, texture);
   } finally {
+    effect.dispose();
     texture.dispose();
   }
 });

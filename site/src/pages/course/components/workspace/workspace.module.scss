@@ -1,9 +1,13 @@
 @use '@src/styles/glass';
 
 .root {
-  background: var(--white);
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  background: transparent;
   color: var(--black);
-  padding: clamp(90px, 9vw, 134px) clamp(18px, 4vw, 64px) 32px;
+  --workspace-side-padding: clamp(18px, 4vw, 64px);
+  padding: clamp(90px, 9vw, 134px) var(--workspace-side-padding) 32px;
   font-size: 16px;
   line-height: 1.5;
   font-weight: 550;
@@ -77,9 +81,23 @@
     margin-bottom: 8px;
   }
 }
+// The reading surface must cover the full content height, independently of
+// the header badge opening and without moving during course-view transitions.
+.body {
+  position: relative;
+  z-index: 0;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 calc(-1 * var(--workspace-side-padding)) -32px;
+    z-index: -1;
+    background: var(--white);
+    pointer-events: none;
+  }
+}
 .courseHeader {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 32px;
   padding-bottom: 24px;
@@ -107,21 +125,25 @@
   font-size: 16px;
 }
 .artwork {
-  width: clamp(140px, 23vw, 300px);
-  height: clamp(112px, 12vw, 170px);
+  width: clamp(156px, 26vw, 336px);
+  height: clamp(126px, 13.5vw, 190px);
   flex: 0 0 auto;
   overflow: hidden;
   border-radius: 12px;
   position: relative;
-  background: var(--black);
+  background: transparent;
+  z-index: -1;
+  box-shadow: 0 0 0 300vw var(--white);
 }
 .navigation {
   @include glass.surface(light, 12px);
   position: relative;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   width: fit-content;
   max-width: 100%;
+  margin-inline: auto;
   padding: 4px;
   border-radius: 30px;
   gap: 2px;
@@ -201,6 +223,7 @@
 }
 .utilities {
   display: flex;
+  // Wrap whole groups at their real width; retain the existing spacing.
   align-items: center;
   justify-content: space-between;
   gap: 12px 20px;
@@ -234,9 +257,10 @@
   }
 }
 .actions {
+  margin-left: auto;
   display: flex;
   gap: 12px 20px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   button,
   a {
@@ -677,7 +701,8 @@
 @media (max-width: 700px) {
   .courseHeader {
     gap: 16px;
-    padding-bottom: 20px;
+    // The 12px larger card uses the existing header space, keeping Work in view.
+    padding-bottom: 8px;
   }
   .headingCopy {
     h1 {
@@ -685,8 +710,8 @@
     }
   }
   .artwork {
-    width: 100px;
-    height: 100px;
+    width: 112px;
+    height: 112px;
     border-radius: 10px;
   }
   .headerNote {
@@ -697,6 +722,10 @@
       font-size: 16px;
       padding: 8px;
     }
+  }
+  .sectionControls {
+    width: 100%;
+    justify-content: center;
   }
   .summary {
     padding: 14px;
@@ -764,8 +793,8 @@
 }
 @media (max-width: 374px) {
   .artwork {
-    width: 76px;
-    height: 88px;
+    width: 84px;
+    height: 98px;
   }
   .rowStatus .meta {
     max-width: 90px;

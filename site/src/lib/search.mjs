@@ -36,8 +36,9 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
     { id: 'courses', title: DESK.coursesHeading, href: '/courses/', detail: '' },
     ...COURSES.map((c) => ({ id: c.id, title: `${c.code} · ${c.name}`, href: c.href, detail: c.summary, keywords: c.title })),
     { id: 'privacy', title: PRIVACY.heading, href: '/privacy/', detail: '' },
+    { id: 'updates', title: 'Website updates', href: '/updates/', detail: '' },
   ];
-  for (const place of places) add('Courses', { id: `place-${place.id}`, type: 'place', default: place.id !== 'privacy', ...place });
+  for (const place of places) add('Courses', { id: `place-${place.id}`, type: 'place', default: place.id !== 'privacy' && place.id !== 'updates', ...place });
   const current = getCourse(course);
   if (current) {
     add('Courses', { id: 'view-assignments', type: 'view', title: 'Work', href: `${current.href}#work`, default: true, courseId: current.id });

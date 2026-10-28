@@ -20,8 +20,8 @@
    motionState, quality, tier, post, sceneFrame, drawCalls, triangles, week, turn, dragging, cursor. Events on
    the slot: book-ready, book-fallback, book-hover {id}, book-turn {phase, from, to}. */
 import * as T from '../app/three.mjs?v=20261013-stage1';
-import {probe,getStage} from '../app/stage.mjs?v=20261023-mth141';
-import {tier as currentTier,onTier,held,preference,sceneMotionAllowed} from '../night/core.mjs?v=20261023-mth141';
+import {probe,getStage} from '../app/stage.mjs?v=20261026-cen100';
+import {tier as currentTier,onTier,held,preference,sceneMotionAllowed} from '../night/core.mjs?v=20261026-cen100';
 import {gsap} from '../vendor/gsap-3.15.0.mjs';
 import {createBookTextures} from './textures.mjs';
 import {createPopupSet,PALETTES,restPose,popupSpec} from './popup.mjs';

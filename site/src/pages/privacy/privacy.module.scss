@@ -54,6 +54,11 @@
       padding-top: var(--layout-columns-gap);
     }
   }
+  .linkBreak {
+    @include mobile {
+      display: none;
+    }
+  }
   .link {
     text-decoration: underline;
     text-underline-offset: 0.2em;

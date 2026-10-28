@@ -1,0 +1,4 @@
+💡 What: Replaced array maps, closures, and object allocations inside `useFrame` callbacks with statically unrolled functions and reference-mutated `useRef` vectors in `Fluid.jsx` and `BadgeScene.jsx`.
+🎯 Why: Render loops allocating new objects or closures on every frame cause extensive memory churn and garbage collection pressure, leading to micro-stutters during 60FPS UI animations in WebGL scenes.
+📊 Impact: Minimizes heap allocations and garbage collection cycles, significantly reducing jitter and rendering delays across Three.js scenes containing badges or fluids.
+🔬 Measurement: Run the tests in `site/tests/giats-motion.test.mjs` to ensure impulses and forces evaluate exactly identically as before. Profile memory usage in browser over 1 minute of rendering the background fluid and badge cards.

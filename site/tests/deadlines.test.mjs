@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { deadlines, deadlineItem, nextDeadline, countdown, deskSnapshot, buckets, weeklyChecklist } from '../src/lib/index.js';
+import { deadlines, deadlineItem, nextDeadline, countdown, deskSnapshot, buckets, weeklyChecklist, createProgress, assignmentList } from '../src/lib/index.js';
 import { oldModule, oldCall, memoryStorage, toronto, termClocks } from './helpers.mjs';
 
 const OLD_TARGETS = await oldModule('night/targets.mjs');
@@ -25,6 +25,43 @@ const mathStore = (course, section, completed = {}) =>
   });
 const cen = (now, section = 0, completed = {}) => nextDeadline({ now, courseId: 'cen100', storage: cenStore(section ? { section, group: null } : null, completed) });
 const math = (course, now, section = 0, completed = {}) => nextDeadline({ now, courseId: course, storage: mathStore(course, section, completed) });
+
+test('reflections keep separate source-verified deadlines, instructions and completion records', () => {
+  const now = toronto('2026-10-25', '12:00');
+  // Complete the separate FMEA deadline so this test isolates reflection undo behavior.
+  const storage = cenStore({ section: 29, group: 9 }, { 'failure-2': 1 });
+  const progress = createProgress(storage, { events: null });
+  try {
+    const first = deadlineItem('cen100', 'reflection-1', { now, storage });
+    const second = deadlineItem('cen100', 'reflection-2', { now, storage });
+    assert.equal(first.date, '2026-10-28');
+    assert.equal(second.date, '2026-12-02');
+    // Toronto changes from daylight to standard time between these deadlines.
+    assert.equal(+first.due, Date.parse('2026-10-29T04:00:00Z'));
+    assert.equal(+second.due, Date.parse('2026-12-03T05:00:00Z'));
+    assert.match(first.requirement, /Phase 2.*Email Reflection 1/);
+    assert.match(second.requirement, /semester.*Email Reflection 2/);
+    for (const item of [first, second]) {
+      assert.equal(item.target.endOfDay, true);
+      assert.equal(item.label, 'Due by end of day');
+      assert.doesNotMatch(item.requirement, /Two individual reflections/);
+      assert.equal(item.weight, null, 'the combined 4% must not become a made-up per-reflection weight');
+    }
+    progress.markDone('cen100', first.id);
+    const items = deadlines('cen100', { now, storage });
+    assert.equal(items.find(item => item.id === first.id).done, true);
+    assert.equal(items.find(item => item.id === second.id).done, false);
+    const reflections = assignmentList('cen100', { now, items }).entries.find(item => item.id === 'y5');
+    assert.equal(reflections.recorded, 1);
+    assert.equal(reflections.lead.id, second.id);
+    assert.equal(reflections.done, false);
+    const next = nextDeadline({ now, courseId: 'cen100', storage });
+    assert.notEqual(next.id, first.id, 'advance to the next real deadline, not straight to December');
+    progress.undo();
+    assert.equal(nextDeadline({ now, courseId: 'cen100', storage }).id, first.id);
+    assert.equal(deadlineItem('cen100', second.id, { now, storage }).done, false);
+  } finally { progress.dispose?.(); }
+});
 
 /* ---- The Toronto cases of the old tests/targets.test.mjs, through the new API ---- */
 
@@ -132,7 +169,7 @@ test('pending and empty: an undated final is next once nothing dated is left; wi
 test('completed items are skipped, including reminders whose item is fully recorded; ticks never count', () => {
   assert.equal(cen(NOON_OCT12, 29).id, 'integrity');
   assert.equal(cen(NOON_OCT12, 29, { integrity: 1 }).id, 'failure-lab');
-  assert.equal(cen(NOON_OCT12, 29, { integrity: 1, failure: 1 }).id, 'whmis');
+  assert.equal(cen(NOON_OCT12, 29, { integrity: 1, failure: 1, 'failure-2': 1 }).id, 'whmis');
   assert.equal(cen(NOON_OCT12, 29, { integrity: 1, 'failure-lab': 1 }).id, 'failure-lab');
   assert.equal(cen(NOON_OCT12, 0, { integrity: 0 }).id, 'integrity');
   assert.equal(math('mth140', NOON_OCT12, 31, { 'quiz-2': 'yes' }).id, 'quiz-2');
@@ -248,7 +285,7 @@ test('deadlines are sorted by due time and flag done and overdue items', () => {
   const storage = cenStore({ section: 29, group: 9 }, { intro: 1, integrity: 1 });
   const now = toronto('2026-10-15', '09:00');
   const items = deadlines('cen100', { now, storage });
-  assert.equal(items.length, 22 + 2 + 2, '22 dated rows + the Section 29 lab reminder and the showcase reminder + 2 undated items');
+  assert.equal(items.length, 23 + 2 + 2, '23 dated rows + the Section 29 lab reminder and the showcase reminder + 2 undated items');
   const keys = items.map((item) => item.sortKey);
   assert.deepEqual(keys, [...keys].sort((a, b) => a - b));
   const byId = Object.fromEntries(items.map((item) => [item.id, item]));
@@ -303,7 +340,7 @@ test('the weekly checklist lists this week’s items with their steps, grouping 
   assert.equal(sept.title, 'September items');
   assert.deepEqual(
     sept.records.map((r) => r.id),
-    ['entry', 'intro', 'syllabus'],
+    ['intro', 'entry', 'syllabus'],
   );
   assert.deepEqual(
     sept.steps.map((s) => s.id),
@@ -349,3 +386,4 @@ test('the Desk snapshot is the old deskSummary(), course by course', () => {
   }
   assert.ok(cases > 200);
 });
+

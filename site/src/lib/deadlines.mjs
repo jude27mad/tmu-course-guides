@@ -38,6 +38,7 @@ const CEN_GRADED = {
   contract: 'Team Contract + Task Outline (M1)',
   outline: 'Project Outline + User Research (M2)',
   failure: 'Failure Analysis Labs (M3)',
+  'failure-2': 'Failure Analysis Labs (M3)',
   review: 'Midterm Design Review (M4)',
   prototype: 'Low-Fidelity Prototype (M5)',
   report: 'Final Report (M7)',
@@ -59,6 +60,11 @@ const GRADE = new Map(CEN_GRADE_TABLE.rows.map((row) => [row.label, parseFloat(r
 export const CEN_GRADE_LABELS = { ...CEN_GRADED, ...CEN_SHARED };
 
 function cenWeight(id) {
+  // M3 is the one multi-date category whose 2% / 4% split is published in the outline.
+  if (id === 'failure' || id === 'failure-2') {
+    const weight = id === 'failure' ? 2 : 4;
+    return { weight, weightLabel: `${weight}%` };
+  }
   if (CEN_GRADED[id]) {
     const weight = GRADE.get(CEN_GRADED[id]) ?? null;
     return { weight, weightLabel: weight == null ? '' : `${weight}%` };
@@ -132,7 +138,7 @@ function cenItem(row, ctx, kinds = cenKinds(ctx)) {
     when: t.when,
     label: t.label,
     cta: null,
-    requirement: item.preview,
+    requirement: item.requirements?.[row.id] || item.preview,
     detail: row.note || item.what,
     who: CEN.WHO[row.who || item.who][1],
     item: item.id,
@@ -518,3 +524,4 @@ export const weeklyChecklist = fast(weeklyChecklistNow);
 export const assessments = fast(assessmentsNow);
 export const deskSnapshot = fast(deskSnapshotNow);
 export const workList = fast(workListNow);
+

@@ -59,7 +59,7 @@ After building, run `PLAYWRIGHT_PATH=/path/to/playwright node scripts/verify-cou
 - Glass is limited to course navigation and small utility controls. `styles/glass.scss` provides the shared material and fallback; the decorative selection in `CourseNavigation.jsx` follows the existing routing state. Phones keep the translucent backing, sheen and rim without backdrop blur after repeated WebKit rendering-cost checks. No new rendering loop or runtime dependency is added. Reading content and the Guide tools body stay solid.
 - The Pages workflow runs `scripts/check-glass-controls.mjs` in Chromium and WebKit, uploads screenshots, interaction traces and paired glass on/off timing diagnostics, and provides a `site-preview` artifact for pull requests. These are browser-emulated checks; physical iPhone/iPad Safari testing is separate. Development for this change uses GitHub CI for tests and builds.
 
-- WebGL is optional. `utils/webgl.mjs` asks the browser once whether it can create a WebGL 2 context, and every three.js `<Canvas>` (four: the shared one that draws the course badge windows, the pointer fluid, the background and the pre-footer stickers) sits in `components/canvas/WebGLGate.jsx`: it mounts the canvas only where WebGL works and catches anything the canvas throws, so a browser with WebGL turned off or blocked gets the page without them instead of Next.js's application-error screen. The background keeps its solid ink panel (on iPhone and iPad's document scrolling the page colour shows instead), the pointer fluid and stickers are left out, and each course badge window shows a flat HTML card (`clients/components/BadgeFallback.jsx`). The server render and the hydration pass see "not asked yet" (`useWebGL()` is `null`), so the static HTML is the same for every browser. Add every new `<Canvas>` inside a `<WebGLGate>`: `tests/webgl.test.mjs` fails on one without it, and `scripts/check-no-webgl.mjs` (Pages CI, Chromium and WebKit) loads every route with WebGL disabled, blocked and failing late, loses and resets the GPU after load, and runs with WebGL working as a control. A lost context is ridden out (three.js and R3F restore it): only one that is still lost, and still on the page, five seconds later turns the layer off, and a canvas that failed meanwhile tries again when a context returns (`utils/webgl.mjs`, `WebGLGate.jsx`).
+- WebGL is optional. `utils/webgl.mjs` asks the browser once whether it can create a WebGL 2 context, and every three.js `<Canvas>` (four: the shared one that draws the course badges, the pointer fluid, the background and the pre-footer game) sits in `components/canvas/WebGLGate.jsx`: it mounts the canvas only where WebGL works and catches anything the canvas throws, so a browser with WebGL turned off or blocked gets the page without them instead of Next.js's application-error screen. The background keeps its solid ink panel (on iPhone and iPad's document scrolling the page colour shows instead), the pointer fluid and the game are left out, and each course badge shows its HTML card (`courseBadge/CourseBadge.jsx`; the 3D card hides it only once drawn, and sets it back when it is taken down). The server render and the hydration pass see "not asked yet" (`useWebGL()` is `null`), so the static HTML is the same for every browser. Add every new `<Canvas>` inside a `<WebGLGate>`: `tests/webgl.test.mjs` fails on one without it, and `scripts/check-no-webgl.mjs` (Pages CI, Chromium and WebKit) loads every route with WebGL disabled, blocked and failing late, loses and resets the GPU after load, and runs with WebGL working as a control. A lost context is ridden out (three.js and R3F restore it): only one that is still lost, and still on the page, five seconds later turns the layer off, and a canvas that failed meanwhile tries again when a context returns (`utils/webgl.mjs`, `WebGLGate.jsx`).
 - `prefers-reduced-motion` and the saved Pause motion setting (`guide-motion-paused`) turn off the loader curtain, route transitions, appear animations, background drift, fluid effect, pre-footer physics and marquee, and render the 3D scenes on demand so they hold still. Lenis wheel smoothing stays on.
 - Pinch zoom, text selection, keyboard scrolling, visible focus, a skip link and 44 px tap targets for buttons and controls on phones. Without JavaScript the static course content renders; deadlines, checklists, card details and What's changed? need JavaScript.
 
@@ -78,11 +78,19 @@ No analytics and no requests to other hosts. Each exported page carries a Conten
 Giats's layout, moving window masks, typography, transitions and scrolling remain
 the application shell. The home windows contain one continuous signal field
 adapted from Pixels71's Kairo (`97426fdfa1f3bd812cf0acc364273c28a89f871e`).
-Next Up and course artwork use locally stored photographs of a steel bridge
-mechanism (CEN100), a worked integral (MTH140) and a system of linear equations
-(MTH141), with the canvas pixel-to-sharp reveal from Kaisei Sadatoki's Atelier North for Codrops
-(`6703fc3f15ec92979964070814a99855d0baa38f`). Both respect the existing Pause
-motion and reduced-motion preferences.
+Next Up and the individual course headers reuse the original physics lanyard
+badges. Each position mounts only its relevant course: the Desk derives it from
+its live next deadline, and each course header uses its own course ID. The
+separate `/courses/` directory remains the place to browse all three courses.
+
+`src/components/courseBadge/` owns the shared registry, original textures and
+lanyards. `BadgeWorld` is mounted once beside `View.Port` in the existing shared
+canvas, independently of any first View. Stable instance slots keep bodies
+separate; changing the Desk course changes its face without replacing its
+lanyard. Pausing retains the current pose, while initially reduced motion uses
+an upright resting pose. Offscreen bodies stop stepping, and unmounting a badge
+removes its bodies and disposes its textures. No second badge physics engine or
+carousel is introduced.
 
 See [animation code provenance and notices](public/licenses/README.md) and
 [individual artwork sources and permissions](public/licenses/ARTWORK-CREDITS.md). Kairo's
@@ -92,7 +100,7 @@ so the included notice comes from Codrops' official licensing page. Neither
 template's photographs are reused.
 
 
-The artwork is published on the [website](https://jude27mad.github.io/tmu-course-guides/). See the [QA record](../docs/qa/giats-artwork/README.md) and [subject-image screenshot gallery](../docs/qa/giats-artwork/subject-imagery/README.md).
+The historical [QA record](../docs/qa/giats-artwork/README.md) and [subject-image screenshot gallery](../docs/qa/giats-artwork/subject-imagery/README.md) document the earlier photograph implementation.
 
-Implementation lives in `src/components/artwork/` (signal field) and `src/components/courseArtwork/` (image mapping and reveal). Update `artworks.mjs` and the individual asset credits together when changing photographs. The engineering image is the unresolved/empty Next Up fallback. Source images are local 800/1600-pixel WebPs; no image host is contacted at runtime.
+The signal field remains in `src/components/artwork/`. The inactive legacy photograph components and their asset notices are retained for provenance; active Desk, directory and course headers do not render them. Badge loading/error states use a local HTML course label, and an empty Next Up has no image window.
 

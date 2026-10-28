@@ -42,19 +42,32 @@ async function ready(page, route) {
 }
 
 try {
-  for (const width of [390, 834, 1440]) {
+  for (const width of [320, 390, 834, 1440]) {
     await check(`shared text and actions remain readable at ${width}px`, async () => {
       const { context, page } = await open(width);
       try {
         await ready(page, '');
-        const text = await page.locator('main .p-l').evaluateAll((nodes) => nodes.filter((e) => e.textContent.trim() && e.getClientRects().length).map((e) => ({ text: e.textContent.trim().slice(0, 70), size: parseFloat(getComputedStyle(e).fontSize) })));
-        assert.ok(text.length > 5, 'inspect the actual Desk deadline and course text');
+        const deadline = page.locator('[data-desk-deadline]');
+        await deadline.waitFor();
+        const text = await deadline.locator('.p-l').evaluateAll((nodes) => nodes.map((e) => ({ text: e.textContent.trim(), size: parseFloat(getComputedStyle(e).fontSize) })));
+        assert.equal(text.length, 1, 'one date heading belongs to the countdown');
         assert.deepEqual(text.filter((e) => e.size < 16), [], 'body copy must not shrink on tablets');
-        const actions = await page.locator('main a, main button').evaluateAll((nodes) => nodes.filter((e) => /^(MARK DONE|VIEW IN|OPEN GUIDE|ALL COURSES)/.test(e.textContent.trim())).map((e) => ({ label: e.textContent.trim(), height: e.getBoundingClientRect().height, size: parseFloat(getComputedStyle(e.querySelector('span') || e).fontSize) })));
-        assert.ok(actions.length >= 3);
+        const actions = await page.locator('main a, main button').evaluateAll((nodes) => nodes.filter((e) => /^(MARK DONE|OPEN GUIDE|ALL COURSES)/.test(e.textContent.trim())).map((e) => ({ label: e.textContent.trim(), height: e.getBoundingClientRect().height, size: parseFloat(getComputedStyle(e.querySelector('span') || e).fontSize) })));
+        assert.ok(actions.length >= 2);
         assert.deepEqual(actions.filter((e) => e.height < 43.5 || e.size < 16), [], 'readable action labels and 44px touch targets');
         assert.equal(await page.locator('main').evaluate((e) => e.scrollWidth > e.clientWidth + 1), false);
-        await page.screenshot({ path: path.join(report, `desk-${width}.png`) });
+        const card = page.locator('[data-desk-course-link]');
+        await card.scrollIntoViewIfNeeded();
+        await page.waitForTimeout(250);
+        await page.screenshot({ path: path.join(report, `desk-card-${width}.png`) });
+        await deadline.scrollIntoViewIfNeeded();
+        const cardBox = await card.boundingBox();
+        const timerBox = await deadline.boundingBox();
+        assert.ok(cardBox && timerBox);
+        assert.ok(timerBox.x >= 0 && timerBox.x + timerBox.width <= width + 1, 'timer stays inside the viewport');
+        if (width <= 812) assert.ok(timerBox.y >= cardBox.y + cardBox.height, 'mobile timer follows the linked badge');
+        else assert.ok(timerBox.x + timerBox.width <= cardBox.x, 'desktop timer sits beside the badge');
+        await page.screenshot({ path: path.join(report, `desk-timer-${width}.png`) });
         return { textCount: text.length, actions };
       } finally { await context.close(); }
     });
@@ -137,10 +150,16 @@ try {
         const controls = await page.locator('#menu a, #menu button').evaluateAll((nodes) => nodes.filter((e) => e.getClientRects().length && getComputedStyle(e).visibility !== 'hidden').map((e) => ({ text: e.textContent.trim(), height: e.getBoundingClientRect().height, font: parseFloat(getComputedStyle(e.querySelector('span') || e).fontSize) })));
         assert.ok(controls.length > 3);
         assert.deepEqual(controls.filter((e) => e.height < 43.5 || e.font < 16), []);
-        await page.getByRole('heading', { name: 'Coming up', exact: true }).waitFor();
+        assert.equal(await page.locator('#menu').getByRole('heading', { name: 'Coming up', exact: true, includeHidden: true }).count(), 0, 'Coming up is removed from the menu');
+        assert.equal(await page.locator('#menu [class*="upcomingList"]').count(), 0, 'the removed section leaves no empty wrapper or deadline slots');
         await page.screenshot({ path: path.join(report, `menu-${width}.png`) });
-        await page.getByRole('button', { name: 'Close menu', exact: true }).click();
-        await page.keyboard.press('Control+k');
+        const search = page.locator('#menu button[aria-controls="search"]:visible');
+        assert.equal(await search.count(), 1);
+        assert.equal(await page.locator('header [aria-controls="search"]').count(), 0);
+        const searchBox = await search.boundingBox();
+        const sitemapBox = await page.locator('#menu').getByRole('heading', { name: 'Sitemap', exact: true }).boundingBox();
+        assert.ok(searchBox.y + searchBox.height <= sitemapBox.y, 'Search belongs above Sitemap at every width');
+        await search.click();
         await page.locator('#search-input').fill('regrade');
         const option = page.getByRole('option').filter({ hasText: 'MTH140' }).first();
         await option.waitFor();

@@ -3,6 +3,7 @@
    two in step. Proportions: page 60%, ink panels 30%, accent 10% (small, meaningful elements only). */
 export const TOKENS = Object.freeze({
   page: '#F4F4F5', // page background
+  pageUnderGrain: '#F1F1F1', // the page as seen through its film grain (an iPhone shows #F4F4F5 under it as this)
   ink: '#18181B', // dark panels and primary text
   raised: '#27272A', // a raised tile on a dark panel
   sheen: '#3F3F46', // the brightest point of a dark panel's sheen
@@ -14,7 +15,7 @@ export const TOKENS = Object.freeze({
   borderOnDark: '#3F3F46', // borders on dark
   accent: '#004C9B', // TMU Blue
   accentTint: '#E6EEF7', // badge background for the accent
-  fluid: '#E4E4E7', // the pointer fluid's dye
+  fluid: '#D7D7D4', // Giats's original pointer-fluid dye, kept separate from the neutral UI
   onTrack: '#004C9B', // countdown: more than 72 hours left
   soon: '#B45309', // countdown: 72 hours or less
   urgent: '#B91C1C', // countdown: 24 hours or less

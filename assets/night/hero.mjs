@@ -7,7 +7,7 @@
    book's hand-off into the dock. This trigger stands down while the pin exists, and the title lift follows
    the hand-off instead (night-handoff). The art never recedes under CSS there; the engine closes the book. */
 import {scope} from '../route-lifecycle.mjs';
-import {$,META,motionAllowed,sceneMotionAllowed,finePointer,atLeast,onTier,held,track,dispose,vendor} from './core.mjs?v=20261023-mth141';
+import {$,META,motionAllowed,sceneMotionAllowed,finePointer,atLeast,onTier,held,track,dispose,vendor} from './core.mjs?v=20261026-cen100';
 
 const SCOPE='hero',DRAGGED='night-dragged';
 const phone=matchMedia('(max-width:760px)');

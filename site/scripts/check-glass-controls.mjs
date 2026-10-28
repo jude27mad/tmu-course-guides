@@ -106,18 +106,128 @@ async function check(name, run, options = {}) {
     results.push({ name, pass: true, detail });
     console.log('PASS ' + name, detail || '');
   } catch (error) {
-    results.push({ name, pass: false, error: error.message });
+    results.push({ name, pass: false, error: error.message, stack: error.stack });
     console.error('FAIL ' + name + ': ' + error.message);
     await page.screenshot({ path: path.join(report, results.length + '-failure.png') }).catch(() => {});
   } finally { await context.close(); }
 }
 try {
+  await check('Desk linked physics window supports touch and keyboard with one integrated deadline', async (page) => {
+    await page.clock.setFixedTime(new Date('2026-10-25T16:00:00Z'));
+    // FMEA Part 2 shares Oct 28 and sorts before Reflection 1. Record it complete
+    // so this reflection-specific UI check still exercises its intended deadline.
+    await page.addInitScript(() => {
+      localStorage.setItem('cen100-personal-plan-v1', JSON.stringify({
+        completed: { 'failure-2': 1 }, notes: {}, targets: {},
+      }));
+    });
+    await page.goto(url);
+    await ready(page);
+    const section = page.locator('[aria-labelledby="desk-next-heading"]');
+    const deadline = section.locator('[data-desk-deadline="reflection-1"]');
+    const link = section.getByRole('link', { name: 'Open CEN100 course guide', exact: true });
+    const settleBadge = async () => {
+      // An instant test scroll can fling the original lanyard outside its window.
+      // Capture its settled pose, not two frames of that deliberately preserved swing.
+      await page.waitForFunction(() => {
+        const element = document.querySelector('[data-badge-instance="desk-next"]');
+        if (element?.dataset.badgeRendered !== 'true') return false;
+        let fiber = element[Object.keys(element).find(key => key.startsWith('__reactFiber$'))];
+        while (fiber && !fiber.memoizedProps?.value?.register) fiber = fiber.return;
+        const entry = fiber?.memoizedProps.value.getState().entries.find(item => item.id === 'desk-next');
+        const card = entry?.body.card.current;
+        const anchor = entry?.body.fixed.current;
+        if (!card || !anchor) return false;
+        const velocity = card.linvel();
+        return anchor.translation().y - card.translation().y > 3 && Math.hypot(velocity.x, velocity.y, velocity.z) < 0.1;
+      });
+      await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    };
+    await deadline.waitFor();
+    assert.equal(await section.getByRole('link', { name: /VIEW IN/ }).count(), 0);
+    assert.equal(await deadline.locator('time').getAttribute('datetime'), '2026-10-28');
+    assert.match(await deadline.innerText(), /Wed Oct 28[\s\S]*Due by end of day.*11:59 PM Toronto/);
+    assert.doesNotMatch(await section.innerText(), /No section saved|Two individual reflections/);
+    assert.match(await section.innerText(), /Email Reflection 1 directly/);
+    await link.scrollIntoViewIfNeeded();
+    await settleBadge();
+    await deadline.scrollIntoViewIfNeeded();
+    await settleBadge();
+    await page.screenshot({ path: path.join(report, 'desk-integrated-timer-390.png') });
+    await link.scrollIntoViewIfNeeded();
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    // Tap the box's corner, outside the moving badge mesh: the whole window links.
+    await link.tap({ position: { x: 12, y: 12 } });
+    await page.waitForURL(url + 'cen100/');
+    await ready(page);
+    await page.goto(url);
+    await ready(page);
+    await link.scrollIntoViewIfNeeded();
+    await link.focus();
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Shift+Tab');
+    assert.equal(await link.evaluate(element => document.activeElement === element), true);
+    assert.equal(await link.evaluate(element => element.matches(':focus-visible')), true);
+    assert.notEqual(await link.evaluate(element => getComputedStyle(element).outlineStyle), 'none');
+    await settleBadge();
+    await page.screenshot({ path: path.join(report, 'desk-card-keyboard-focus.png') });
+    await page.keyboard.press('Enter');
+    await page.waitForURL(url + 'cen100/');
+    await ready(page);
+  });
+  await check('long course pages retain paper behind the final work rows', async (page) => {
+    await page.goto(url + 'cen100/');
+    await ready(page);
+    await settled(page);
+    await page.locator('footer').scrollIntoViewIfNeeded();
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    const screenshot = await page.screenshot({ path: path.join(report, 'course-paper-near-footer.png') });
+    const paper = await page.evaluate(async (base64) => {
+      const content = document.querySelector('#course-content').getBoundingClientRect();
+      const y = Math.floor(content.bottom) - 24;
+      if (y < 0 || y + 8 > innerHeight) throw new Error('Final course rows are outside the viewport');
+      const bytes = Uint8Array.from(atob(base64), char => char.charCodeAt(0));
+      const bitmap = await createImageBitmap(new Blob([bytes], { type: 'image/png' }));
+      const canvas = document.createElement('canvas');
+      canvas.width = bitmap.width;
+      canvas.height = bitmap.height;
+      const context = canvas.getContext('2d');
+      context.drawImage(bitmap, 0, 0);
+      bitmap.close();
+      const scale = canvas.width / innerWidth;
+      const pixels = context.getImageData(Math.floor(8 * scale), Math.floor(y * scale), Math.floor(8 * scale), Math.floor(8 * scale)).data;
+      let sum = 0;
+      for (let i = 0; i < pixels.length; i += 4) sum += (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
+      return sum / (pixels.length / 4);
+    }, screenshot.toString('base64'));
+    assert.ok(paper > 220, 'Dark artwork is exposed behind the final course rows: ' + paper);
+  }, { reducedMotion: 'reduce' });
+
   for (const width of [320, 390, 834, 1440]) {
     await check('compact controls and dialog at ' + width + 'px', async (page) => {
       for (const course of ['cen100', 'mth140', 'mth141']) {
         await page.goto(url + course + '/');
         await ready(page);
         await aligned(page);
+        const headerGeometry = await page.evaluate(() => {
+          const box = (selector) => document.querySelector(selector).getBoundingClientRect();
+          const title = box('[class*="workspace_headingCopy"]');
+          const badge = box('[class*="workspace_artwork"]');
+          const navigation = box('nav[aria-label="Course views"]');
+          const selectors = box('[class*="workspace_sectionControls"]');
+          const actions = box('[class*="workspace_actions"]');
+          return { titleLeft: title.left, navCenter: (navigation.left + navigation.right) / 2, viewportCenter: innerWidth / 2, selectorsLeft: selectors.left, badgeRight: badge.right, actionsRight: actions.right };
+        });
+        assert.ok(Math.abs(headerGeometry.navCenter - headerGeometry.viewportCenter) < 1, JSON.stringify(headerGeometry));
+        assert.ok(Math.abs(headerGeometry.titleLeft - headerGeometry.selectorsLeft) < 1);
+        assert.ok(Math.abs(headerGeometry.badgeRight - headerGeometry.actionsRight) < 1, JSON.stringify(headerGeometry));
+        assert.equal(await page.locator('[data-toronto-clock] time').count(), 1);
+        const headerBounds = await page.locator('header > div > a, [data-toronto-clock], header [class*="rightContainer"]').evaluateAll(nodes => nodes.map(node => {
+          const r = node.getBoundingClientRect(); return { left: r.left, right: r.right };
+        }));
+        assert.equal(headerBounds.length, 3);
+        assert.ok(Math.abs((headerBounds[1].left + headerBounds[1].right) / 2 - width / 2) < 1, JSON.stringify(headerBounds));
+        assert.ok(headerBounds[0].right <= headerBounds[1].left && headerBounds[1].right <= headerBounds[2].left, JSON.stringify(headerBounds));
         const boxes = await page.locator(nav + ' a').evaluateAll((links) => links.map((link) => {
           const box = link.getBoundingClientRect();
           return { text: link.textContent, x: box.x, right: box.right, width: box.width, height: box.height, font: parseFloat(getComputedStyle(link).fontSize) };
@@ -151,6 +261,87 @@ try {
       assert.ok(await opener.evaluate((el) => el === document.activeElement), 'dialog did not return focus');
     }, { viewport: { width, height: width > 500 ? 1024 : 844 } });
   }
+
+  await check('Toronto clock and native credits on full and compact footers', async (page) => {
+    await page.clock.setFixedTime(new Date('2026-10-23T16:00:00Z'));
+    for (const route of ['cen100/', 'courses/']) {
+      await page.goto(url + route);
+      await ready(page);
+      assert.equal(await page.locator('[data-toronto-clock] time').innerText(), '12:00');
+      assert.equal(await page.locator('footer time').count(), 0);
+      const credit = page.locator('[data-design-credit]');
+      assert.equal(await credit.count(), 1);
+      const summary = credit.locator('summary');
+      const link = credit.locator('a');
+      // Touch dispatch can resolve before the browser's synthesized click has
+      // activated the native disclosure. Assert the resulting state, without
+      // retrying the input or adding a fixed delay.
+      const waitForDisclosure = async (open, input) => {
+        await page.waitForFunction((expected) => document.querySelector('[data-design-credit]')?.open === expected, open, { timeout: 1000 }).catch((error) => {
+          throw new Error(`${route} credit did not ${open ? 'open' : 'close'} after ${input}`, { cause: error });
+        });
+      };
+      assert.equal(await link.isVisible(), false);
+      await summary.focus();
+      await page.keyboard.press('Enter');
+      await waitForDisclosure(true, 'Enter');
+      assert.equal(await credit.evaluate(el => el.open), true);
+      assert.equal(await link.getAttribute('href'), 'https://giats.me');
+      assert.match(await credit.innerText(), /Evangelos Giatsidis/);
+      assert.ok(!(await credit.innerText()).includes('—'));
+      await page.keyboard.press('Tab');
+      assert.ok(await link.evaluate(el => el === document.activeElement));
+      await summary.focus();
+      await page.keyboard.press('Space');
+      await waitForDisclosure(false, 'Space');
+      assert.equal(await credit.evaluate(el => el.open), false);
+      await summary.tap();
+      await waitForDisclosure(true, 'tap');
+      assert.equal(await credit.evaluate(el => el.open), true);
+      await page.screenshot({ path: path.join(report, 'credit-' + route.replace('/', '') + '.png') });
+    }
+    // Visibility return must correct the clock, including the DST repeated hour.
+    await page.clock.setFixedTime(new Date('2026-11-01T06:30:00Z'));
+    await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
+    await page.waitForFunction(() => document.querySelector('[data-toronto-clock] time')?.textContent === '01:30');
+  }, { reducedMotion: 'reduce' });
+
+  await check('navigation reflows at 320px with doubled text', async (page) => {
+    await page.goto(url + 'cen100/');
+    await ready(page);
+    await page.locator('header .h4, header .p-x').evaluateAll(nodes => nodes.forEach(node => {
+      node.style.fontSize = `${parseFloat(getComputedStyle(node).fontSize) * 2}px`;
+    }));
+    // Navbar measures in a frame scheduled by ResizeObserver. Two animation
+    // frames can finish before that callback in Chromium; the failure capture
+    // already shows the correctly stacked header. Wait for the actual reflow,
+    // then retain every centring, bounds, overlap and content-clearance check.
+    await page.waitForFunction(() => document.querySelector('header > div')?.dataset.headerStacked === 'true', null, { timeout: 1000 });
+    const boxes = await page.locator('header > div > a, [data-toronto-clock], header [class*="rightContainer"]').evaluateAll(nodes => nodes.map(node => {
+      const r = node.getBoundingClientRect();
+      return { left: r.left, right: r.right, top: r.top, bottom: r.bottom };
+    }));
+    assert.equal(boxes.length, 3);
+    assert.ok(Math.abs((boxes[1].left + boxes[1].right) / 2 - 160) < 1, JSON.stringify(boxes));
+    assert.ok(boxes.every(box => box.left >= 0 && box.right <= 320), JSON.stringify(boxes));
+    for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
+      const a = boxes[i], b = boxes[j];
+      assert.ok(a.right <= b.left + 1 || b.right <= a.left + 1 || a.bottom <= b.top + 1 || b.bottom <= a.top + 1, JSON.stringify(boxes));
+    }
+    await page.waitForFunction(() => document.querySelector('main h1').getBoundingClientRect().top >= document.querySelector('header').getBoundingClientRect().bottom);
+    await page.screenshot({ path: path.join(report, 'navigation-320-double-text.png') });
+    await page.getByRole('button', { name: 'Open menu', exact: true }).click();
+    await page.locator('#menu').waitFor();
+  }, { viewport: { width: 320, height: 844 }, reducedMotion: 'reduce' });
+
+  await check('credit remains usable without JavaScript', async (page) => {
+    await page.goto(url + 'mth141/');
+    const credit = page.locator('[data-design-credit]');
+    await credit.locator('summary').click();
+    assert.equal(await credit.evaluate(el => el.open), true);
+    assert.ok(await credit.locator('a').isVisible());
+    assert.equal(await page.locator('[data-toronto-clock] time').count(), 0);
+  }, { javaScriptEnabled: false });
 
   await check('selection follows rapid taps and history without moving the page', async (page) => {
     await page.goto(url + 'mth140/');

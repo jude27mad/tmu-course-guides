@@ -8,8 +8,19 @@
     display: block;
     position: fixed;
     inset: 0;
+    // On iPhone, continue under Safari's bars (see --edge-bleed-* in global.scss),
+    // including the panel's highlight: the same ellipse as `.menu` in
+    // menuLinks.module.scss (farthest-corner from its top right), placed at the
+    // panel's top right corner.
+    top: calc(-1 * var(--edge-bleed-top, 0px));
+    bottom: calc(-1 * var(--edge-bleed-bottom, 0px));
     z-index: 3;
     background-color: var(--black);
+    background-image: radial-gradient(
+      ellipse calc(100% * 1.41421) calc(var(--app-viewport-height) * 1.41421) at 100% var(--edge-bleed-top, 0px),
+      rgba(var(--onDarkRgb), 0.06),
+      transparent 65%
+    );
     // Continue catching taps during the closing fade after the panel is inert.
     pointer-events: auto;
     opacity: 0;
@@ -19,7 +30,9 @@
     &[data-open='true'] {
       opacity: 1;
       visibility: visible;
-      transition: opacity 0.28s ease;
+      // The panel's own open tween (panelShell.js: 0.28s power3.out), so the
+      // part under Safari's bars darkens with the panel.
+      transition: opacity 0.28s cubic-bezier(0.215, 0.61, 0.355, 1);
     }
   }
 }
@@ -34,31 +47,55 @@
   pointer-events: none;
   scale: 1;
   .innerHeader {
-    height: 3.1vw;
-    min-height: 44px;
+    min-height: max(3.1vw, 44px);
     @include mobile {
       // 44 px tap targets for the pills on phones
-      height: max(6.5vw, 44px);
+      min-height: max(6.5vw, 44px);
     }
 
     position: relative;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    // Equal outer columns keep the clock on the viewport's centre line.
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     align-items: center;
     width: 100%;
     &[data-scrolled-away='true'] {
       visibility: hidden;
     }
 
+    // Reflow enlarged text without moving the clock off the centre line.
+    &[data-header-stacked='true'] {
+      grid-template-columns: minmax(0, 1fr);
+      .clock {
+        justify-self: center;
+      }
+    }
+
     > a {
       pointer-events: all;
     }
     .wordmark {
+      justify-self: start;
       display: flex;
       align-items: center;
       min-height: 44px;
     }
+    .clock {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      gap: 0.5em;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      line-height: 1.2;
+      time { min-width: 5ch; }
+      @include mobile {
+        flex-direction: column;
+        gap: 0;
+      }
+    }
     .rightContainer {
+      justify-self: end;
       pointer-events: all;
 
       display: flex;

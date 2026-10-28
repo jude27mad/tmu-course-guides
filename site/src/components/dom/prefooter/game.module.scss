@@ -1,0 +1,27 @@
+.score {
+  // Keep its bounds measurable before the first slice, without showing it.
+  &[hidden] { display: block; visibility: hidden; }
+
+  position: absolute;
+  top: calc(max(1rem, var(--layout-columns-gap) * 2) + 1rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  pointer-events: none;
+  color: var(--black);
+  background: var(--white);
+  border: 1px solid currentColor;
+  border-radius: 100px;
+  padding: 0.65rem 1.25rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.best {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.875rem;
+}
