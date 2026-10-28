@@ -27,7 +27,12 @@ export default function AssignmentDetail({ item, kind, assignments, back, return
         <p className={styles.eyebrow}>{kind === 'topic' ? 'Study' : [item.who, item.weightLabel].filter(Boolean).join(' · ')}</p>
         <h2>{item.name || item.title}</h2>
         {kind === 'topic' ? <p>{item.sub}</p> : null}
-        {entry?.pastDue && !entry.done ? <p className={styles.status}>Past due · not marked done</p> : null}
+        {entry?.group === 'pastDue' ? <p className={styles.status}>Past due · not marked done</p> : null}
+        {entry?.missed && entry.group !== 'pastDue' && !entry.done ? (
+          <p className={styles.status}>
+            {entry.missed} earlier {entry.missed === 1 ? 'part' : 'parts'} past due · not marked done
+          </p>
+        ) : null}
         {entry?.done ? <p className={styles.status}>Marked done by you</p> : null}
       </div>
       {kind !== 'topic' ? (

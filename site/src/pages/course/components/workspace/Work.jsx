@@ -128,6 +128,8 @@ export default function Work({ assignments, filter, navigate }) {
                       const { lead } = entry;
                       let status = 'Open';
                       if (entry.recorded) status = `${entry.recorded}/${entry.records.length} recorded`;
+                      // An earlier part passed unmarked while the row leads with the next one.
+                      if (entry.missed && key !== 'pastDue') status = entry.recorded ? `${status} · ${entry.missed} past due` : `${entry.missed} ${entry.missed === 1 ? 'part' : 'parts'} past due`;
                       if (entry.done) status = 'Marked done';
                       const ticks = progress.tickCount(courseId, entry.id);
                       return (

@@ -85,10 +85,12 @@ test('every content card appears once, with its canonical anchor, across fixed c
           assert.equal(item.recorded, records.filter((row) => row.done).length, label);
           assert.equal(item.done, records.length > 0 && records.every((row) => row.done), label);
           assert.equal(item.pastDue, records.some((row) => row.overdue), label);
+          assert.equal(item.missed, records.filter((row) => row.overdue).length, label);
           assert.equal(item.group, group, label);
           if (item.done) assert.equal(group, 'done', label);
+          else if (records.some((row) => !row.done && !row.overdue)) assert.notEqual(group, 'pastDue', label);
           else if (item.pastDue) assert.equal(group, 'pastDue', label);
-          assert.deepEqual(item.lead, records.find((row) => !row.done) ?? records.at(-1) ?? null, label);
+          assert.deepEqual(item.lead, records.find((row) => !row.done && !row.overdue) ?? records.find((row) => !row.done) ?? records.at(-1) ?? null, label);
         }
       }
     }
@@ -117,6 +119,33 @@ test('past due wins over this week and every other date group', () => {
   assert.equal(entry(list, 'y4').group, 'pastDue', 'an earlier date in the current week is still past due');
   assert.equal(entry(list, 'm2').group, 'pastDue', 'a past deadline in an earlier week is retained');
   assert.equal(list.thisWeek.some((item) => item.id === 'y4'), false);
+});
+
+test('a part still to come leads its item; an earlier unmarked part no longer hides it in Past due', () => {
+  // Oct 28, nothing marked: FMEA (Part 2) is due tonight and MATLAB Assignment 2 next week.
+  const now = toronto('2026-10-28', '00:16');
+  const list = lib.assignmentList('cen100', { now, items: rowsFor('cen100', { now }) });
+  const failure = entry(list, 'm3');
+  assert.equal(failure.lead.id, 'failure-2');
+  assert.equal(failure.lead.date, '2026-10-28');
+  assert.equal(failure.group, 'thisWeek');
+  assert.equal(failure.pastDue, true, 'Part 1 passed unmarked');
+  assert.equal(failure.missed, 1);
+  const matlab = entry(list, 'y2');
+  assert.equal(matlab.lead.id, 'matlab-2');
+  assert.equal(matlab.group, 'nextWeek');
+  assert.equal(matlab.missed, 1);
+  // Nov 30: checkpoint 2 and Reflection 2 (Dec 2) are this week, not behind their first parts.
+  const late = toronto('2026-11-30', '12:00');
+  const nov30 = lib.assignmentList('cen100', { now: late, items: rowsFor('cen100', { now: late }) });
+  assert.equal(entry(nov30, 'y6').lead.id, 'notebook-2');
+  assert.equal(entry(nov30, 'y6').group, 'thisWeek');
+  assert.equal(entry(nov30, 'y5').lead.id, 'reflection-2');
+  assert.equal(entry(nov30, 'y5').group, 'thisWeek');
+  // Once every open part has passed, the item is Past due, led by its earliest unmarked part.
+  assert.equal(entry(nov30, 'm3').group, 'pastDue');
+  assert.equal(entry(nov30, 'm3').lead.id, 'failure');
+  assert.equal(entry(nov30, 'm3').missed, 2);
 });
 
 test('multi-record items lead with the first unfinished record, then the final record when fully recorded', () => {
