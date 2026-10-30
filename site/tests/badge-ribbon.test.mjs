@@ -28,6 +28,7 @@ test('delayed rendering keeps the ribbon finite without changing the physics pos
     textures: true, started: { current: false }, element: { dataset: {} }, idle: false,
     body, card: { current: new THREE.Object3D() }, band: { current: { geometry } }, offsetX: 0,
     lerped: [new THREE.Vector3(), new THREE.Vector3()], maxSpeed: 50, minSpeed: 10,
+    curvePoints: Array.from({ length: 33 }, () => new THREE.Vector3()),
     curve: Object.assign(new THREE.CatmullRomCurve3(Array.from({ length: 4 }, () => new THREE.Vector3())), { curveType: 'chordal' }),
     useFrame: frame => { callback = frame; },
   };
