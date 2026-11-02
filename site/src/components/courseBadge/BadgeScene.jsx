@@ -47,6 +47,7 @@ function Lanyard({ body, x, rest, intersected }) {
   const ang = useMemo(() => new THREE.Vector3(), []);
   const rot = useMemo(() => new THREE.Vector3(), []);
   const impulseVector = useRef({ x: 0, y: 0, z: 0 });
+  const angvelVector = useRef({ x: 0, y: 0, z: 0 });
   const [start] = useState(() => (rest ? REST_START : SWING_START));
 
   useRopeJoint(body.fixed, body.j1, [[0, 0, 0], [0, 0, 0], 1]);
@@ -78,7 +79,10 @@ function Lanyard({ body, x, rest, intersected }) {
     if (fixed.current) {
       ang.copy(card.current.angvel());
       rot.copy(card.current.rotation());
-      card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
+      angvelVector.current.x = ang.x;
+      angvelVector.current.y = ang.y - rot.y * 0.25;
+      angvelVector.current.z = ang.z;
+      card.current.setAngvel(angvelVector.current);
     }
   });
 
