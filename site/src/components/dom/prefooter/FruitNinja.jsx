@@ -2,6 +2,7 @@ import { discTexture, loadDiscFont, slicedDiscTexture } from '@src/components/do
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { COURSES, DISC } from '@src/lib';
+import { MeshPhysicalMaterial, MeshStandardMaterial } from 'three';
 import { PerspectiveCamera } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import Sticker from '@src/components/dom/prefooter/Sticker';
@@ -56,6 +57,42 @@ function useDiscTextures() {
   return textures;
 }
 
+// One material per disc face, shared by every disc. A disc used to declare its own material, which R3F
+// disposed when the disc left; with no other disc of that kind in the air, three.js then released the
+// compiled shader and the next disc compiled it again, a main-thread stall on almost every spawn while
+// the section was on screen. The settings are the ones each disc declared before.
+const discMaterial = (map, isMobile) =>
+  isMobile
+    ? // phones: no iridescence/clearcoat passes
+      new MeshStandardMaterial({ transparent: true, polygonOffset: true, polygonOffsetFactor: -10, map, roughness: 0.6, metalness: 0.2, toneMapped: false })
+    : new MeshPhysicalMaterial({
+        transparent: true,
+        polygonOffset: true,
+        polygonOffsetFactor: -10,
+        map,
+        iridescence: 2,
+        iridescenceIOR: 1,
+        iridescenceThicknessRange: [0, 1400],
+        roughness: 1,
+        clearcoat: 0.5,
+        // The original used 0.75 for printed logos; the discs carry the course colours, which read muddy that metallic
+        metalness: 0.35,
+        toneMapped: false,
+      });
+
+function useDiscMaterials(textures, isMobile) {
+  const materials = useMemo(() => textures?.map(({ whole, sliced }) => ({ whole: discMaterial(whole, isMobile), sliced: discMaterial(sliced, isMobile) })) || null, [textures, isMobile]);
+  useEffect(
+    () => () =>
+      materials?.forEach(({ whole, sliced }) => {
+        whole.dispose();
+        sliced.dispose();
+      }),
+    [materials],
+  );
+  return materials;
+}
+
 const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 function useFruitSpawner({ viewport, textures, isMobile, active, getCeiling }) {
@@ -102,6 +139,7 @@ function FruitNinja({ active = true, eventSource, scoreRef, onSlice, onMiss }) {
   const viewport = useThree((state) => state.viewport);
   const isMobile = useIsMobile();
   const textures = useDiscTextures();
+  const materials = useDiscMaterials(textures, isMobile);
   const { scene, camera, raycaster, pointer, setEvents, gl } = useThree();
   const ceilingRef = useRef(-Infinity);
   const insetRef = useRef(null);
@@ -166,14 +204,14 @@ function FruitNinja({ active = true, eventSource, scoreRef, onSlice, onMiss }) {
       <PerspectiveCamera makeDefault position={[0, 0, 10]} />
       <Lighting />
       <Physics paused={!active} interpolate timeStep={1 / 60} gravity={[0, GAME_GRAVITY, 0]} colliders={false}>
-        {textures &&
+        {materials &&
           fruits.map((fruit) => (
             <Sticker
               key={fruit.id}
               id={fruit.id}
               positionX={fruit.x}
-              image={textures[fruit.index].whole}
-              imageSliced={textures[fruit.index].sliced}
+              material={materials[fruit.index].whole}
+              materialSliced={materials[fruit.index].sliced}
               isMobile={isMobile}
               viewportHeight={viewport.height}
               ceilingY={fruit.ceilingY}
