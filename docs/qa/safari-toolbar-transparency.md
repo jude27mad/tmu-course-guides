@@ -95,12 +95,39 @@ That last case is where #67's fade was right: at the end of a page that ends in 
 
 Under the bar Safari still shifts the colour a little (green about 2 levels below red, blue about 5 above). That is the bar's own material; on the paper it is invisible.
 
+## A black box past the page, and the Menu cutting the page at the bars (3 November 2026, sixth report)
+
+Two iPhone reports, after Giats's menu (#105):
+
+- At the end of each of the three course pages, the area under the bottom bar was a flat black box under a page that ends in paper. (A fix for this, `claude/blend-safari-bars`, was paused on 28 October and never merged.)
+- A screen recording of the Desk: the moment Menu was pressed, the area under the bottom bar (and under the status bar) turned dark while the page still filled the screen, and it stayed dark until the close had fully finished.
+
+Measured on the recording (30 fps, 440x956pt): under the toolbar the page read 237 until the frame of the tap, then 23 in the very next frame, while the page above it was still full size and 237; on the close it stayed 44 to 52 until the last frame of the animation, then returned to 237 at once. The status bar was 23 throughout, at rest included.
+
+Causes:
+
+- Past the ends of the document Safari paints one flat colour, the root's with the body's blended over it (`LocalFrameView::documentBackgroundColor`), so an opaque body wins. #67 made the body the ink in document mode, so that colour was the ink: under the toolbar past the end of every page that ends light, and under the status bar at the top of every page.
+- The shell marks the page shrunk at its first frame, and from then the shrunk page's clip (`html[data-page-shrunk] #main`) cut it at the layout viewport. Safari shows the page under its bars, so the part under both bars vanished at the tap, while the page was still full size, and the dark artwork behind it showed instead. The clip went only once the close had finished. The navbar also turned the root and the body to the ink at the tap.
+
+Change, document mode only:
+
+- The body is clear, so the root alone decides the colour past the page's ends: `#f1f1f1` at rest, the ink at a dark end or with a panel open, as before. The dark panels keep their ink fallback (no WebGL, or before the artwork's first frame) on the app's root element (`.root`, app.module.scss), which covers the same area as the body but is not blended into that colour.
+- The shell tweens `--panel-cover` on the root from 0 to 1, on the same timeline as the page's shrink (0.92 s, `expo.inOut`), so reversing returns it. At the tap the clip still reaches `--edge-bleed-*` (160px, beyond either bar) past the layout viewport; the reach shrinks to nothing and the corners round as the page shrinks, so the card's edges move in from past the screen's edges, as on Giats's site, and back out on the close. While the page is shrunk, the colour past its ends is `color-mix()` from the page's colour to the ink by the same amount (the ink outright at a dark end).
+
+In a Chromium iPhone emulation (440x796 layout viewport, 62px and 98px bars):
+
+- Under the toolbar at the Desk's top, the page covers the band at the tap and at the end of the close (before: 2% of it). The open card and its colours are unchanged.
+- At the end of CEN100 the colour past the end is `#f1f1f1` at rest (before: the ink). With Search opening it moves from 241 to 24 as the page shrinks, and back on the close; the page fills the band under the status bar until it shrinks.
+
+This assumes Safari repaints the colour past the page's ends when the root's computed colour changes, as it does for the other root colour switches here; if it updated it only lazily, the colour would still end right, a little late. The physical check remains: the Desk at its top and mid-page, the end of a course page, Menu and Search opened and closed, and a page change from the open menu.
+
 ## Automated checks
 
 - `site/tests/fluid-edge-colour.test.mjs`: no inline background on the fluid canvas, the CSS rule that gives it black only outside document mode, guard height, width and offsets, and the ink rule. It fails on the old source.
 - `site/tests/under-safari-bars.test.mjs`: the reach of the artwork, grain and panel backdrop, the shader remap, the paper caps, and the switch itself (evaluated from `setEdgeBleed`'s source): 480px from either end, sooner for a dark panel.
 - `site/scripts/check-ios-document.mjs` (WebKit, iPhone emulation, all six routes, normal and reduced motion): transparent sticky guards with `pointer-events: auto` across the middle half of each edge (WebKit samples the midpoint; the corners stay open to taps), no extra document height, preserved scrolling, no viewport-sized fixed layer with a visible background (the open panels' own ink excepted), `#fluidCanvas` transparent, the artwork reaching at least 100px past both edges, the top cap following the scroll and the first dark panel, and the skip link invisible until focused. On an iPad Pro 11 (both motion settings) it opens and closes the menu and leaves through it, and requires the caps hidden while the page is shrunk and back once it is restored.
-- `check-route-filter-motion.mjs` requires the open phone menu to receive input at all four viewport corners.
+- `check-route-filter-motion.mjs` requires the open phone menu to receive input at all four viewport corners. Its document-shell check requires a clear body, and `iphone-shell-under-bars` samples every frame of a Menu cycle at the Desk's top and a Search cycle at CEN100's end: while the page is still full size, it must reach under both bars (62px and 98px) wherever the document does, and the colour past its ends must stay the page's; open, the card lies between the bars on the ink; closed, the page's colour returns. Both fail on the build before the sixth report's change.
+- `site/tests/under-safari-bars.test.mjs` pins the clear body and the ink on `.root`, the clip's reach and corners, the `--panel-cover` tween beside the page's own, and the colour mix while the page is shrunk.
 - Existing Pages checks exercise touch fluid, saved work, navigation and glass controls; desktop still asserts `#fluidCanvas` is `rgb(0, 0, 0)`.
 
 Linux WebKit does not render iPhone Safari's native browser UI. Passing these tests is evidence of correct page geometry, not proof that the toolbar blending is fixed. Physical acceptance remains: real content is visible behind Safari controls during scrolling, not merely a different solid bar colour; the Desk top, the dark footer, a course page, menu and search open and closed, the Guide tools dialog, expanded and collapsed controls, and route changes all need to be checked after a reload. Known approximations: under the toolbar at the very end of the dark footer Safari shows the flat ink colour, which is a few levels darker than the footer's lit gradient; and on iPad the top bar may read the ink background for about one screen while the footer is being revealed.
