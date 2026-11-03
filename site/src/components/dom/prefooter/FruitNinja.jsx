@@ -8,7 +8,7 @@ import Sticker from '@src/components/dom/prefooter/Sticker';
 import useIsMobile from '@src/hooks/useIsMobile';
 import { useFrame, useThree } from '@react-three/fiber';
 // eslint-disable-next-line import/extensions
-import { createSpawnSchedule, GAME_GRAVITY, scoreBoundary } from './gameTiming.mjs';
+import { createSpawnSchedule, GAME_GRAVITY, scoreBoundary, gameDifficulty } from './gameTiming.mjs';
 // eslint-disable-next-line import/extensions
 import { bindGameTouch } from './gameTouch.mjs';
 
@@ -58,7 +58,7 @@ function useDiscTextures() {
 
 const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-function useFruitSpawner({ viewport, textures, isMobile, active, getCeiling }) {
+function useFruitSpawner({ viewport, textures, isMobile, active, getCeiling, streakRef }) {
   const [fruits, setFruits] = useState([]);
   const nextId = useRef(0);
   const viewportRef = useRef(viewport);
@@ -69,9 +69,10 @@ function useFruitSpawner({ viewport, textures, isMobile, active, getCeiling }) {
   }, []);
 
   const spawnRef = useRef();
-  const intervalRef = useRef();
-  intervalRef.current = isMobile ? 5000 : 3000;
+  const difficultyRef = useRef();
+  difficultyRef.current = () => gameDifficulty({ score: streakRef.current, isMobile });
   spawnRef.current = () => {
+    const { speed } = difficultyRef.current();
     const ceilingY = getCeiling();
     const radius = (isMobile ? 0.4 : 0.5) * 1.05;
     // Wait for enough space for a whole disc beneath the score.
@@ -84,12 +85,12 @@ function useFruitSpawner({ viewport, textures, isMobile, active, getCeiling }) {
       const added = Array.from({ length: Math.min(room, randomInt(1, 6)) }, () => {
         nextId.current += 1;
         const index = randomInt(0, textures.length - 1);
-        return { id: nextId.current, x: randomInt(Math.ceil(-width), Math.floor(width)), index, ceilingY };
+        return { id: nextId.current, x: randomInt(Math.ceil(-width), Math.floor(width)), index, ceilingY, speed };
       });
       return [...previous, ...added];
     });
   };
-  const scheduler = useMemo(() => createSpawnSchedule({ spawn: () => spawnRef.current(), interval: () => intervalRef.current }), []);
+  const scheduler = useMemo(() => createSpawnSchedule({ spawn: () => spawnRef.current(), interval: () => difficultyRef.current().interval }), []);
   useEffect(() => {
     scheduler.setActive(active && !!textures?.length);
   }, [scheduler, active, textures]);
@@ -98,7 +99,7 @@ function useFruitSpawner({ viewport, textures, isMobile, active, getCeiling }) {
   return [fruits, remove];
 }
 
-function FruitNinja({ active = true, eventSource, scoreRef, onSlice, onMiss }) {
+function FruitNinja({ active = true, eventSource, scoreRef, streakRef, onSlice, onMiss }) {
   const viewport = useThree((state) => state.viewport);
   const isMobile = useIsMobile();
   const textures = useDiscTextures();
@@ -133,7 +134,7 @@ function FruitNinja({ active = true, eventSource, scoreRef, onSlice, onMiss }) {
   useFrame(() => {
     if (active) getCeiling();
   }, -100);
-  const [fruits, remove] = useFruitSpawner({ viewport, textures, isMobile, active, getCeiling });
+  const [fruits, remove] = useFruitSpawner({ viewport, textures, isMobile, active, getCeiling, streakRef });
 
   useEffect(() => {
     setEvents({ enabled: active });
@@ -189,6 +190,7 @@ function FruitNinja({ active = true, eventSource, scoreRef, onSlice, onMiss }) {
               isMobile={isMobile}
               viewportHeight={viewport.height}
               ceilingY={fruit.ceilingY}
+              speed={fruit.speed}
               ceilingRef={ceilingRef}
               floorRef={floorRef}
               onDone={remove}
