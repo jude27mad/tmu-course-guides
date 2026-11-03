@@ -63,14 +63,16 @@ html[data-scroll-mode='document'] body {
 }
 
 // While Menu or Search shrinks the page, that colour follows the page: it turns
-// to the panel's ink as the page shrinks and dims (--panel-cover, 0 to 1, set by
+// to the panel's ink as the page shrinks and dims (--panel-ink, 0 to 1, set by
 // the shell's timeline in panelShell.js), not at the tap, when the page still
-// fills the screen. At the end of a page that ends dark it is the ink anyway.
+// fills the screen. Where the dark footer was at the bottom before the tap
+// (data-footer-bottom, kept by the navbar until the page is restored) it was
+// the ink already, and stays so.
 @supports (background-color: color-mix(in srgb, red 50%, blue)) {
   html[data-scroll-mode='document'][data-page-shrunk] {
-    background-color: color-mix(in srgb, var(--black) calc(var(--panel-cover, 1) * 100%), var(--pageUnderGrain));
+    background-color: color-mix(in srgb, var(--black) calc(var(--panel-ink, 1) * 100%), var(--pageUnderGrain));
   }
-  html[data-scroll-mode='document'][data-page-shrunk][data-edge-end='dark'] {
+  html[data-scroll-mode='document'][data-page-shrunk][data-footer-bottom='dark'] {
     background-color: var(--black);
   }
 }
