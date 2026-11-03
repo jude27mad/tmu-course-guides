@@ -92,18 +92,20 @@ test('the artwork fades into the ink at the bottom bar only while a dark end is 
   assert.equal(end({ scrollTop: 3000, maxScroll: 3000, endsDark: false }), 'none');
 });
 
-test('the open menu panel continues under the bars, highlight included', () => {
-  const navbar = read('../src/components/dom/navbar/styles/index.module.scss');
-  const backdrop = navbar.slice(navbar.indexOf('.panelBackdrop {'), navbar.indexOf('.root {'));
-  assert.match(backdrop, /top:\s*calc\(-1 \* var\(--edge-bleed-top, 0px\)\)/);
-  assert.match(backdrop, /bottom:\s*calc\(-1 \* var\(--edge-bleed-bottom, 0px\)\)/);
-  // The same highlight as the panel, placed at the panel's top right corner.
+test('the open phone menu shows the artwork, which continues under the bars', () => {
+  // Giats's menu has no surface of its own: the page shrinks aside and the dark
+  // artwork behind it fills the screen, reaching under Safari's bars (.background).
   const menu = read('../src/components/dom/navbar/styles/menuLinks.module.scss');
-  assert.match(menu, /radial-gradient\(ellipse at top right, rgba\(var\(--onDarkRgb\), 0\.06\), transparent 65%\)/);
-  assert.match(backdrop, /rgba\(var\(--onDarkRgb\), 0\.06\),\s*transparent 65%/);
-  assert.match(backdrop, /at 100% var\(--edge-bleed-top, 0px\)/);
-  // It darkens with the panel's own tween (0.28s power3.out).
-  assert.match(backdrop, /transition: opacity 0\.28s cubic-bezier\(0\.215, 0\.61, 0\.355, 1\);/);
+  const panel = menu.slice(menu.indexOf('.menu {'), menu.indexOf('.menuWrapper {'));
+  assert.doesNotMatch(panel, /^\s*background(-color|-image)?:/m);
+  // Only an invisible guard catches taps on phones while the panel closes.
+  const navbar = read('../src/components/dom/navbar/styles/index.module.scss');
+  const guard = navbar.slice(navbar.indexOf('.panelGuard {'), navbar.indexOf('.root {'));
+  assert.match(guard, /transition: visibility 0s 0\.92s;/);
+  assert.doesNotMatch(guard, /^\s*background(-color|-image)?:/m);
+  const app = read('../src/pages/app.module.scss');
+  assert.match(app, /\.background\s*\{[^}]*top:\s*calc\(-1 \* var\(--edge-bleed-top\)\)/);
+  assert.match(app, /\.background\s*\{[^}]*height:\s*calc\(var\(--app-viewport-height\) \+ var\(--edge-bleed-top\) \+ var\(--edge-bleed-bottom\)\)/);
 });
 
 test('the parked skip link is invisible until it has focus', () => {
@@ -113,12 +115,15 @@ test('the parked skip link is invisible until it has focus', () => {
   assert.match(skip, /&:focus-visible\s*\{[^}]*opacity:\s*1;/);
 });
 
-test('the paper caps stand down while a panel shell shrinks the page (iPad, landscape iPhone)', () => {
+test('the paper caps stand down while a panel shell shrinks the page (iPhone and iPad)', () => {
   // A transformed main holds its fixed caps, which would frame the shrunk page.
   const shell = read('../src/components/dom/navbar/panelShell.js');
   assert.match(shell, /export function markPageShrunk\(shrunk\)/);
-  assert.match(shell, /onStart: \(\) => \{[\s\S]*?if \(ios && !isMobile\) \{[\s\S]*?markPageShrunk\(true\);[\s\S]*?onReverseComplete/);
-  assert.match(shell, /onReverseComplete: \(\) => \{[\s\S]*?if \(ios && !isMobile\) \{[\s\S]*?markPageShrunk\(false\);/);
+  assert.match(shell, /onStart: \(\) => \{[\s\S]*?if \(ios\) markPageShrunk\(true\);[\s\S]*?onReverseComplete/);
+  // The card is refitted while the page is shrunk (scroll during the close, rotation).
+  assert.match(shell, /window\.addEventListener\('scroll', fitShrunkPage, \{ passive: true \}\);/);
+  assert.match(shell, /window\.removeEventListener\('resize', fitShrunkPage\);/);
+  assert.match(shell, /onReverseComplete: \(\) => \{[\s\S]*?if \(ios\) \{[\s\S]*?markPageShrunk\(false\);/);
   // Leaving from an open panel pauses the shell; the route entry restores main instead.
   const layout = read('../src/components/dom/Layout.jsx');
   assert.equal(layout.match(/markPageShrunk\(false\);/g)?.length, 2);
@@ -126,6 +131,10 @@ test('the paper caps stand down while a panel shell shrinks the page (iPad, land
   const shown = global.indexOf("&:not([data-edge-top='open']) #main::before");
   const hidden = global.search(/&\[data-page-shrunk\] #main::before,\s*&\[data-page-shrunk\] #main::after \{\s*display: none;/);
   assert.ok(shown !== -1 && hidden > shown, 'the stand-down rule follows the rule that shows the caps (same specificity)');
+  // The shrunk document is clipped to the part that was on screen: one card, like Giats's.
+  assert.match(global, /&\[data-page-shrunk\] #main \{\s*clip-path: inset\(var\(--page-clip-top, 0px\) 0px var\(--page-clip-bottom, 0px\) 0px round 1\.3888888889vw\);/);
+  assert.match(shell, /root\.style\.setProperty\('--page-clip-top'/);
+  assert.match(shell, /root\.style\.removeProperty\('--page-clip-bottom'\)/);
 });
 
 test('the shared canvas drops a View\'s last frame once nothing draws', () => {

@@ -232,7 +232,7 @@ try {
           const box = link.getBoundingClientRect();
           return { text: link.textContent, x: box.x, right: box.right, width: box.width, height: box.height, font: parseFloat(getComputedStyle(link).fontSize) };
         }));
-        assert.equal(boxes.length, course === 'cen100' ? 3 : 4);
+        assert.equal(boxes.length, course === 'cen100' ? 4 : 5);
         assert.ok(boxes.every((b) => b.x >= 0 && b.right <= width && b.width >= 44 && b.height >= 44 && b.font >= 16), JSON.stringify(boxes));
         assert.equal(await page.locator(nav).evaluate((el) => getComputedStyle(el).position), 'relative');
         assert.equal(await page.locator(nav + ' [data-course-selection]').count(), 1);
@@ -397,7 +397,8 @@ try {
       const s = getComputedStyle(el);
       return { text: el.textContent, width: parseFloat(s.outlineWidth), style: s.outlineStyle };
     });
-    assert.equal(focus.text, 'Course info');
+    // Study is followed by Grades in the math courses.
+    assert.equal(focus.text, 'Grades');
     assert.ok(focus.width >= 2 && focus.style !== 'none');
     await page.keyboard.press('Enter');
     await aligned(page);

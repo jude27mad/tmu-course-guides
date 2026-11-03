@@ -19,9 +19,11 @@ export function createDiscFlight({ viewportHeight, isMobile, ceilingY = viewport
 
 // DOM y grows down, while the game world's y grows up. Reserve a small gap
 // below the entire score pill, including while it is hidden before first play.
-export function scoreBoundary({ scoreBottom, canvasTop, canvasHeight, viewportHeight }) {
+// The paper's lower edge masks the game without changing its launch point.
+export function scoreBoundary({ scoreBottom, canvasTop, canvasHeight, viewportHeight, stageBottom = Infinity }) {
   const inset = Math.max(0, Math.min(canvasHeight, scoreBottom + 8 - canvasTop));
-  return { inset, ceilingY: viewportHeight * (0.5 - inset / canvasHeight) };
+  const bottomInset = Math.max(0, Math.min(canvasHeight - inset, canvasTop + canvasHeight - stageBottom));
+  return { inset, bottomInset, ceilingY: viewportHeight * (0.5 - inset / canvasHeight), floorY: viewportHeight * (bottomInset / canvasHeight - 0.5) };
 }
 
 // Current streak resets on a miss; the browser's best survives it.

@@ -35,6 +35,8 @@ export function resolveCourseLocation(hash, courseId, info) {
     return { ...base, filter: id.split('/')[1] };
   if (['schedule', 'deadlines', 'calendar', 'course-schedule'].includes(id))
     return { ...base, view: 'schedule' };
+  if (['grades', 'grade-calculator', 'calculator', 'marks'].includes(id))
+    return { ...base, view: 'grades' };
   if (
     ['study', 'topics', 'panel-topics', 't-topics'].includes(id) &&
     courseId !== 'cen100'

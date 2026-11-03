@@ -29,7 +29,7 @@ function MenuLinks() {
   useEffect(() => {
     const menu = menuRef.current;
     const items = menu.querySelectorAll('[data-menu-anim]');
-    const tl = buildPanelTimeline(menu, items, { isMobile });
+    const tl = buildPanelTimeline(menu, items);
     timeline.current = tl;
     if (useStore.getState().isMenuOpen) tl.progress(1);
     return () => {

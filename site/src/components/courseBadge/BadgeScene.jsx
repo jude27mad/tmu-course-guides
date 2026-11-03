@@ -47,7 +47,6 @@ function Lanyard({ body, x, rest, intersected }) {
   const ang = useMemo(() => new THREE.Vector3(), []);
   const rot = useMemo(() => new THREE.Vector3(), []);
   const impulseVector = useRef({ x: 0, y: 0, z: 0 });
-  // ⚡ Bolt: Cache angular velocity object to avoid per-frame allocation
   const angvelVector = useRef({ x: 0, y: 0, z: 0 });
   const [start] = useState(() => (rest ? REST_START : SWING_START));
 
@@ -80,7 +79,6 @@ function Lanyard({ body, x, rest, intersected }) {
     if (fixed.current) {
       ang.copy(card.current.angvel());
       rot.copy(card.current.rotation());
-      // ⚡ Bolt: Use cached vector for angular velocity update
       angvelVector.current.x = ang.x;
       angvelVector.current.y = ang.y - rot.y * 0.25;
       angvelVector.current.z = ang.z;
@@ -150,7 +148,6 @@ function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed
   const card = useRef();
   const textures = useBadgeTextures(look);
   const lerped = useMemo(() => [new THREE.Vector3(), new THREE.Vector3()], []);
-  // ⚡ Bolt: Pre-allocate curve points array to avoid per-frame allocations from getPoints()
   const curvePoints = useMemo(() => Array.from({ length: 33 }, () => new THREE.Vector3()), []);
   const started = useRef(false);
   useEffect(() => {
@@ -213,7 +210,7 @@ function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed
     curve.points[2].x -= offsetX;
     curve.points[3].x -= offsetX;
 
-    // ⚡ Bolt: Retrieve points into pre-allocated vectors to prevent array and object GC overhead
+    // Keep the same 32 ribbon segments while reusing their sample vectors.
     for (let i = 0; i <= 32; i += 1) {
       curve.getPoint(i / 32, curvePoints[i]);
     }

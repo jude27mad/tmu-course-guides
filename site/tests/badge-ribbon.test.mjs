@@ -45,3 +45,62 @@ test('delayed rendering keeps the ribbon finite without changing the physics pos
     }
   } finally { geometry.dispose(); }
 });
+
+test('ribbon samples are reused without changing any rendered geometry', () => {
+  for (const offsetX of [0, 30, -60]) {
+    let callback;
+    let frame = 0;
+    let samples;
+    let firstSamples;
+    let firstVectors;
+    const point = (x, y, phase) => ({ current: { translation: () => new THREE.Vector3(
+      offsetX + x + Math.sin(frame * 0.15 + phase) * 0.4,
+      y + Math.cos(frame * 0.09 + phase) * 0.1,
+      Math.sin(frame * 0.07 + phase) * 0.2,
+    ) } });
+    const object = new THREE.Object3D();
+    object.position.set(offsetX + 0.3, -0.45, 0.2);
+    object.quaternion.setFromEuler(new THREE.Euler(0.1, 0.2, -0.3));
+    const body = {
+      fixed: point(0, 4, 0), j1: point(0, 3, 1), j2: point(0, 2, 2), j3: point(0, 1, 3),
+      cardObject: { current: { parent: object } },
+    };
+    const geometry = new MeshLineGeometry();
+    const reference = new MeshLineGeometry();
+    const curve = Object.assign(new THREE.CatmullRomCurve3(Array.from({ length: 4 }, () => new THREE.Vector3())), { curveType: 'chordal' });
+    const renderedCard = new THREE.Object3D();
+    const scope = {
+      textures: true, started: { current: false }, element: { dataset: {} }, idle: false,
+      body, card: { current: renderedCard }, offsetX,
+      band: { current: { geometry: { setPoints(points) { samples = points; geometry.setPoints(points); } } } },
+      lerped: [new THREE.Vector3(), new THREE.Vector3()], maxSpeed: 50, minSpeed: 10,
+      curvePoints: Array.from({ length: 33 }, () => new THREE.Vector3()), curve,
+      useFrame: run => { callback = run; },
+    };
+    new Function(...Object.keys(scope), source.slice(start, end))(...Object.values(scope));
+    try {
+      for (; frame < 120; frame++) {
+        callback({}, frame % 4 ? 1 / 60 : 0.32);
+        // The old renderer sampled with getPoints(32). Compare all GPU inputs,
+        // including joins, UVs and indices, not just the centreline positions.
+        reference.setPoints(curve.getPoints(32));
+        for (const name of Object.keys(reference.attributes)) {
+          assert.deepEqual(geometry.getAttribute(name).array, reference.getAttribute(name).array, `${name}, offset ${offsetX}, frame ${frame}`);
+        }
+        assert.deepEqual(geometry.index.array, reference.index.array);
+        assert.deepEqual(renderedCard.position.toArray(), [object.position.x - offsetX, object.position.y, object.position.z]);
+        assert.deepEqual(renderedCard.quaternion.toArray(), object.quaternion.toArray());
+        if (frame === 0) {
+          firstSamples = samples;
+          firstVectors = [...samples];
+        } else {
+          assert.strictEqual(samples, firstSamples, 'reuse the sample array on every frame');
+          samples.forEach((sample, index) => assert.strictEqual(sample, firstVectors[index], 'reuse every sample vector'));
+        }
+      }
+    } finally {
+      geometry.dispose();
+      reference.dispose();
+    }
+  }
+});
