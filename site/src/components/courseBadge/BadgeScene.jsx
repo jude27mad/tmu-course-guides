@@ -4,10 +4,10 @@ import * as THREE from 'three';
 import { BallCollider, CuboidCollider, Physics, RigidBody, useBeforePhysicsStep, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import { PerspectiveCamera } from '@react-three/drei';
-import BadgeViewport from '@src/components/courseBadge/BadgeViewport';
+import BadgeViewport, { createBadgeLayout } from '@src/components/courseBadge/BadgeViewport';
 import { bandTexture, cardTexture, loadBadgeFonts, redrawCard } from '@src/components/courseBadge/badgeTextures';
 import { extend, useFrame, useThree } from '@react-three/fiber';
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { memo, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import useStill from '@src/hooks/useStill';
@@ -39,6 +39,7 @@ const REST_START = [
   [0, -3 - JOINT],
 ];
 const segmentProps = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 2, linearDamping: 2 };
+const GRAVITY = [0, -40, 0];
 
 // RoundedBox draws six groups (right, left, top, bottom, front, back). The four
 // edges share one material and the two faces another, so draw two groups.
@@ -133,6 +134,10 @@ function Lanyard({ body, x, rest, intersected }) {
   );
 }
 
+// A window's visibility change republishes the registry; only the lanyard whose
+// props changed re-renders.
+const LanyardRig = memo(Lanyard);
+
 function useBadgeTextures(look) {
   const [textures, setTextures] = useState(null);
   const invalidate = useThree((state) => state.invalidate);
@@ -167,7 +172,7 @@ function useBadgeTextures(look) {
 }
 
 // One window's card and band, drawn from its lanyard in the shared world.
-function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed = 10 }) {
+function BadgeCard({ body, offsetX, look, idle, element, layout, maxSpeed = 50, minSpeed = 10 }) {
   const band = useRef();
   const card = useRef();
   const textures = useBadgeTextures(look);
@@ -246,7 +251,10 @@ function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed
     curve.points[2].x -= offsetX;
     curve.points[3].x -= offsetX;
 
-    // Rebuild the strap only when it moved: setPoints reallocates its buffers.
+    // Rebuild the strap only when it moved, and only for a window drawn this
+    // frame: setPoints reallocates its buffers. A window off screen keeps its
+    // last strap, which is rebuilt the frame it is drawn again.
+    if (!layout.draw) return;
     let moved = false;
     for (let i = 0; i < 4; i += 1) {
       const { x, y, z } = curve.points[i];
@@ -287,18 +295,21 @@ function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed
 
 // View's scissor covers its own rectangle. Also clip to the stacked directory
 // card, which may cover part of that rectangle as cards slide past one another.
-function ClipToCard({ element }) {
+// The rectangles come from this frame's measurement (BadgeViewport).
+function ClipToCard({ layout }) {
   const { scene, gl } = useThree();
   const scissor = useMemo(() => new THREE.Vector4(), []);
   const size = useMemo(() => new THREE.Vector2(), []);
+  // The clip-path last written to each backing. The browser keeps the property
+  // to six significant digits, so reading it back missed whenever a rectangle
+  // had a fraction (most frames of a scroll) and every frame rewrote it.
+  const written = useMemo(() => new WeakMap(), []);
   useEffect(() => {
     const previous = scene.onBeforeRender;
     scene.onBeforeRender = (...args) => {
       previous?.apply(scene, args);
-      const clip = element?.closest('[data-badge-clip]');
-      if (!clip) return;
-      const bounds = clip.getBoundingClientRect();
-      const canvas = gl.domElement.getBoundingClientRect();
+      const { clip: bounds, canvas } = layout;
+      if (!bounds || !canvas) return;
       gl.getSize(size);
       const scaleX = size.x / canvas.width;
       const scaleY = size.y / canvas.height;
@@ -312,33 +323,35 @@ function ClipToCard({ element }) {
     return () => {
       scene.onBeforeRender = previous;
     };
-  }, [element, scene, gl, scissor, size]);
+  }, [layout, scene, gl, scissor, size]);
 
+  // After every badge has measured and drawn, so no layout read follows it.
   useFrame(() => {
-    const backing = element?.closest('[data-badge-clip]')?.querySelector('[data-badge-backing]');
-    if (!backing) return;
-    const window = element.getBoundingClientRect();
-    const panel = backing.getBoundingClientRect();
+    const { backing, panel, bounds: window } = layout;
+    if (!backing || !panel || !window) return;
     const left = window.left - panel.left;
     const top = window.top - panel.top;
     const right = left + window.width;
     const bottom = top + window.height;
     // A hole in the original animated panel, so it cannot tint the badge.
     const path = `polygon(evenodd, 0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, ${left}px ${top}px, ${right}px ${top}px, ${right}px ${bottom}px, ${left}px ${bottom}px, ${left}px ${top}px)`;
-    if (backing.style.clipPath !== path) backing.style.clipPath = path;
-  });
+    if (written.get(backing) === path) return;
+    written.set(backing, path);
+    backing.style.clipPath = path;
+  }, 2);
   return null;
 }
 
 export function BadgeView({ entry, look, rest }) {
+  const [layout] = useState(createBadgeLayout);
   return (
     // Drawing follows current bounds; the observer still gates only Giats's
     // original scroll impulse, independently of the continuously running world.
-    <BadgeViewport element={entry.element}>
+    <BadgeViewport element={entry.element} layout={layout}>
       <PerspectiveCamera manual makeDefault position={[0, 0, 10]} fov={25} />
       <ambientLight intensity={Math.PI} />
-      <BadgeCard key={entry.id} body={entry.body} offsetX={entry.slot * SPACING} look={look} idle={rest} element={entry.element} />
-      <ClipToCard element={entry.element} />
+      <BadgeCard key={entry.id} body={entry.body} offsetX={entry.slot * SPACING} look={look} idle={rest} element={entry.element} layout={layout} />
+      <ClipToCard layout={layout} />
       <ambientLight intensity={1.3} />
       <directionalLight position={[5, 5, 5]} intensity={1.5} />
       <directionalLight position={[-5, 5, 5]} intensity={1} />
@@ -347,18 +360,22 @@ export function BadgeView({ entry, look, rest }) {
   );
 }
 
+// Likewise, only the windows whose drawing inputs changed re-render.
+const sameView = (a, b) => a.look === b.look && a.rest === b.rest && a.entry.id === b.entry.id && a.entry.element === b.entry.element && a.entry.body === b.entry.body && a.entry.slot === b.entry.slot;
+const BadgeWindow = memo(BadgeView, sameView);
+
 export function BadgeWorld({ registry }) {
   const { entries, rigs } = useSyncExternalStore(registry.subscribe, registry.getState, registry.getState);
   const rest = useStill();
   if (!entries.length) return null;
   return (
     <>
-      <Physics paused={rest} interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
+      <Physics paused={rest} interpolate gravity={GRAVITY} timeStep={1 / 60}>
         {rigs.map((rig) => (
-          <Lanyard key={rig.id} body={rig.body} x={rig.slot * SPACING} rest={rest} intersected={rig.swing} />
+          <LanyardRig key={rig.id} body={rig.body} x={rig.slot * SPACING} rest={rest} intersected={rig.swing} />
         ))}
       </Physics>
-      {entries.map((entry) => entry.look && <BadgeView key={entry.id} entry={entry} look={entry.look} rest={rest} />)}
+      {entries.map((entry) => entry.look && <BadgeWindow key={entry.id} entry={entry} look={entry.look} rest={rest} />)}
     </>
   );
 }

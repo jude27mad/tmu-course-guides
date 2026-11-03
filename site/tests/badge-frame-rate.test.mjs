@@ -84,7 +84,7 @@ function strap() {
     body: { fixed: { current: { translation: () => new THREE.Vector3(0, 4, 0) } }, j1Object: marker('j1'), j2Object: marker('j2'), j3Object: marker('j3'), cardObject: { current: { parent: object } } },
     card: { current: new THREE.Object3D() }, band: { current: { geometry } }, offsetX: 0,
     lerped: [new THREE.Vector3(), new THREE.Vector3()], maxSpeed: 50, minSpeed: 10,
-    drawn: new Float64Array(12).fill(NaN), frameShare, easeFor,
+    drawn: new Float64Array(12).fill(NaN), layout: { draw: true }, frameShare, easeFor,
     curve: Object.assign(new THREE.CatmullRomCurve3(Array.from({ length: 4 }, () => new THREE.Vector3())), { curveType: 'chordal' }),
     useFrame: (frame) => { callback = frame; },
   };
@@ -115,6 +115,25 @@ test('a strap at rest is not rebuilt every frame', () => {
     rig.joints.j3.set(0.2, 1, 0);
     rig.frame(1 / 60);
     assert.equal(rig.rebuilds(), 2);
+  } finally { rig.dispose(); }
+});
+
+test('a window off screen keeps its strap until it is drawn again', () => {
+  const rig = strap();
+  try {
+    rig.frame(1 / 60);
+    assert.equal(rig.rebuilds(), 1);
+    rig.scope.layout.draw = false;
+    rig.joints.j3.set(0.2, 1, 0);
+    rig.frame(1 / 60);
+    rig.joints.j3.set(0.4, 1, 0);
+    rig.frame(1 / 60);
+    assert.equal(rig.rebuilds(), 1, 'nothing is rebuilt for a window that is not drawn');
+    rig.scope.layout.draw = true;
+    rig.frame(1 / 60);
+    assert.equal(rig.rebuilds(), 2, 'it is rebuilt the frame it is drawn again');
+    const vertices = rig.scope.band.current.geometry.getAttribute('position').array;
+    assert.ok(Math.abs(vertices[0] - 0.4) < 1e-6, `the strap starts at the joint where it is now (${vertices[0]})`);
   } finally { rig.dispose(); }
 });
 
