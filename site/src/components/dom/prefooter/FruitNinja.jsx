@@ -104,21 +104,32 @@ function FruitNinja({ active = true, eventSource, scoreRef, onSlice, onMiss }) {
   const textures = useDiscTextures();
   const { scene, camera, raycaster, pointer, setEvents, gl } = useThree();
   const ceilingRef = useRef(-Infinity);
+  const floorRef = useRef(Infinity);
   const insetRef = useRef(null);
+  const bottomInsetRef = useRef(null);
   const getCeiling = useCallback(() => {
     const bounds = gl.domElement.getBoundingClientRect();
     const score = scoreRef.current?.getBoundingClientRect();
-    if (!score || !bounds.height) return -Infinity;
-    const { inset, ceilingY } = scoreBoundary({ scoreBottom: score.bottom, canvasTop: bounds.top, canvasHeight: bounds.height, viewportHeight: viewport.height });
+    const stage = eventSource.current?.getBoundingClientRect();
+    if (!score || !stage || !bounds.height) return -Infinity;
+    const { inset, bottomInset, ceilingY, floorY } = scoreBoundary({
+      scoreBottom: score.bottom,
+      canvasTop: bounds.top,
+      canvasHeight: bounds.height,
+      viewportHeight: viewport.height,
+      stageBottom: stage.bottom,
+    });
     ceilingRef.current = ceilingY;
-    // Scroll can move the score past an already airborne disc. Clip only the
-    // upper edge; the fixed canvas and its screen-bottom launch point stay put.
-    if (inset !== insetRef.current) {
-      gl.domElement.style.clipPath = `inset(${inset}px 0 0 0)`;
+    floorRef.current = floorY;
+    // Mask airborne discs at both the score and the white/dark boundary.
+    // The fixed canvas and its screen-bottom launch point stay put.
+    if (inset !== insetRef.current || bottomInset !== bottomInsetRef.current) {
+      gl.domElement.style.clipPath = `inset(${inset}px 0 ${bottomInset}px 0)`;
       insetRef.current = inset;
+      bottomInsetRef.current = bottomInset;
     }
     return ceilingY;
-  }, [gl, scoreRef, viewport.height]);
+  }, [gl, scoreRef, eventSource, viewport.height]);
   useFrame(() => {
     if (active) getCeiling();
   }, -100);
@@ -132,13 +143,14 @@ function FruitNinja({ active = true, eventSource, scoreRef, onSlice, onMiss }) {
     const element = eventSource.current?.closest('main');
     if (!element || !active) return undefined;
     const sample = (touches) => {
+      getCeiling();
       const bounds = gl.domElement.getBoundingClientRect();
       if (!bounds.width || !bounds.height) return;
       Array.from(touches).forEach((touch) => {
-        if (touch.clientY < bounds.top + (insetRef.current ?? bounds.height)) return;
+        if (touch.clientY < bounds.top + (insetRef.current ?? bounds.height) || touch.clientY >= bounds.bottom - (bottomInsetRef.current ?? bounds.height)) return;
         pointer.set(((touch.clientX - bounds.left) / bounds.width) * 2 - 1, -((touch.clientY - bounds.top) / bounds.height) * 2 + 1);
         raycaster.setFromCamera(pointer, camera);
-        raycaster.intersectObjects(scene.children, true).forEach((hit) => hit.object.userData.slice?.());
+        raycaster.intersectObjects(scene.children, true).forEach((hit) => hit.object.userData.slice?.(hit));
       });
     };
     return bindGameTouch(element, {
@@ -147,7 +159,7 @@ function FruitNinja({ active = true, eventSource, scoreRef, onSlice, onMiss }) {
         getCeiling();
         const bounds = gl.domElement.getBoundingClientRect();
         const insideX = touch.clientX >= bounds.left && touch.clientX <= bounds.right;
-        return insideX && touch.clientY >= bounds.top + (insetRef.current ?? bounds.height) && touch.clientY <= bounds.bottom;
+        return insideX && touch.clientY >= bounds.top + (insetRef.current ?? bounds.height) && touch.clientY < bounds.bottom - (bottomInsetRef.current ?? bounds.height);
       },
       sample,
     });
@@ -178,6 +190,7 @@ function FruitNinja({ active = true, eventSource, scoreRef, onSlice, onMiss }) {
               viewportHeight={viewport.height}
               ceilingY={fruit.ceilingY}
               ceilingRef={ceilingRef}
+              floorRef={floorRef}
               onDone={remove}
               onSlice={onSlice}
               onMiss={onMiss}

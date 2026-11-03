@@ -134,6 +134,34 @@ test('a launched disc turns below the score with room for its full radius', () =
   }
 });
 
+test('the game clips at the paper edge without moving the score limit or launch point', () => {
+  const canvas = { scoreBottom: 72, canvasTop: 0, canvasHeight: 800, viewportHeight: 12 };
+  // Reversing scroll must expand the visible area again, including while a
+  // disc is airborne; it must not depend on the previous frame's clipping.
+  for (const [stageBottom, expectedBottom, expectedFloor] of [
+    [1000, 0, -6],
+    [500, 300, -1.5],
+    [200, 600, 3],
+    [650, 150, -3.75],
+    [-20, 720, 4.8],
+    [800, 0, -6],
+  ]) {
+    const boundary = scoreBoundary({ ...canvas, stageBottom });
+    assert.equal(boundary.bottomInset, expectedBottom, `paper edge at ${stageBottom}px`);
+    assert.equal(boundary.inset, 80, 'the score keeps its existing eight-pixel gap');
+    assert.ok(Math.abs(boundary.floorY - expectedFloor) < 1e-10);
+    assert.ok(Math.abs(boundary.ceilingY - 4.8) < 1e-10);
+  }
+});
+
+test('paper clipping accounts for canvas offset and viewport resize', () => {
+  const boundary = scoreBoundary({ scoreBottom: 96, canvasTop: 24, canvasHeight: 400, viewportHeight: 12, stageBottom: 224 });
+  assert.equal(boundary.inset, 80);
+  assert.equal(boundary.bottomInset, 200);
+  assert.equal(boundary.floorY, 0);
+  assert.ok(Math.abs(boundary.ceilingY - 3.6) < 1e-10);
+});
+
 test('lowering the score does not change flights already below it', () => {
   for (const isMobile of [false, true]) {
     const options = { viewportHeight: 12, isMobile, random: () => 0.5 };
