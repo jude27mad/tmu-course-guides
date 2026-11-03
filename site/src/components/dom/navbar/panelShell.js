@@ -2,19 +2,52 @@ import { nativeIOSScroll, scrollTop } from '@src/utils/scrollRoot';
 import gsap from 'gsap';
 import { TOKENS } from '@src/lib/palette.mjs';
 
-// Desktop reveals the side panel by moving the page. On phones the panel is a
-// full-screen surface: only its contents animate, and the page stays in place.
-// Menu and Search share the shell so switching between them keeps scroll locked.
-export const PANEL_DEFAULTS = { duration: 0.45, ease: 'expo.inOut' };
+// Giats's menu: the page shrinks, slides left and dims, uncovering the dark
+// artwork behind it, and the panel's rows slide in from the left. Phones and
+// desktop share it; only the page's dimming and the header's lift differ, as in
+// the original. Menu and Search share the shell so switching between them keeps
+// scroll locked.
+export const PANEL_DEFAULTS = { duration: 0.92, ease: 'expo.inOut' };
 // The page's edge while it is shrunk behind a panel.
 const PAGE_EDGE = `2px solid ${TOKENS.page}`;
+const PAGE_RADIUS = '1.3888888889vw';
 
-// In document mode a transformed main holds its fixed paper caps (global.scss),
-// which would frame the shrunk page instead of covering the reach under
-// Safari's bars. They stand down until main is restored.
+// In document mode main is as tall as the page. While it is shrunk it scales
+// about the middle of the screen and is clipped to the part on screen
+// (global.scss), so it reads as Giats's card rather than a strip running past
+// both screen edges.
+function fitShrunkPage() {
+  const root = document.documentElement;
+  const main = document.querySelector('main');
+  if (!main) return;
+  const scrolled = scrollTop();
+  gsap.set(main, { transformOrigin: `50% ${scrolled + window.innerHeight / 2}px` });
+  // Layout geometry, not the box on screen: main may already be transformed.
+  let top = 0;
+  for (let node = main; node; node = node.offsetParent) top += node.offsetTop;
+  root.style.setProperty('--page-clip-top', `${Math.max(0, scrolled - top)}px`);
+  root.style.setProperty('--page-clip-bottom', `${Math.max(0, top + main.offsetHeight - scrolled - window.innerHeight)}px`);
+}
+
+// A transformed main also holds its fixed paper caps (global.scss), which would
+// frame the shrunk page instead of covering the reach under Safari's bars; they
+// stand down until main is restored. The page can scroll while it is shrunk (a
+// swipe during the close, a pick on the current course moving the workspace)
+// and the screen can rotate, so the card is refitted until then.
 export function markPageShrunk(shrunk) {
-  if (shrunk) document.documentElement.dataset.pageShrunk = '';
-  else delete document.documentElement.dataset.pageShrunk;
+  const root = document.documentElement;
+  window.removeEventListener('scroll', fitShrunkPage);
+  window.removeEventListener('resize', fitShrunkPage);
+  if (!shrunk) {
+    delete root.dataset.pageShrunk;
+    root.style.removeProperty('--page-clip-top');
+    root.style.removeProperty('--page-clip-bottom');
+    return;
+  }
+  fitShrunkPage();
+  window.addEventListener('scroll', fitShrunkPage, { passive: true });
+  window.addEventListener('resize', fitShrunkPage, { passive: true });
+  root.dataset.pageShrunk = '';
 }
 
 export function buildShellTimeline({ isMobile }) {
@@ -25,20 +58,17 @@ export function buildShellTimeline({ isMobile }) {
   const main = document.querySelector('main');
 
   const ios = nativeIOSScroll();
-  const moving = isMobile ? [] : [main, header];
+  const moving = [main, header];
   const tl = gsap.timeline({
     paused: true,
     defaults: PANEL_DEFAULTS,
     onStart: () => {
-      gsap.set(moving, { willChange: isMobile ? 'opacity' : 'transform, opacity' });
-      if (ios && !isMobile) {
-        gsap.set(main, { transformOrigin: `50% ${scrollTop() + window.innerHeight / 2}px` });
-        markPageShrunk(true);
-      }
+      gsap.set(moving, { willChange: 'transform, opacity' });
+      if (ios) markPageShrunk(true);
     },
     onReverseComplete: () => {
       gsap.set(moving, { willChange: 'auto' });
-      if (ios && !isMobile) {
+      if (ios) {
         gsap.set(main, { clearProps: 'transform,transformOrigin,left,border,borderRadius' });
         markPageShrunk(false);
       }
@@ -46,39 +76,24 @@ export function buildShellTimeline({ isMobile }) {
   });
 
   if (fluidCanvas) tl.to(fluidCanvas, { duration: 0, opacity: 0 }, 0);
-  if (isMobile) {
-    // Do not transform main or its ancestors: iOS scrolls the whole document,
-    // and moving it exposes a clipped page through the navigation surface.
-    // The full-screen panel covers the header, so leave its visibility alone;
-    // hiding and restoring it can drop keyboard focus on iPhone Safari.
-    if (scrollbar) tl.to(scrollbar, { opacity: 0 }, 0);
-    return tl;
-  }
-  tl.to(main, { borderRadius: '1.3888888889vw', border: PAGE_EDGE, scale: 0.9, pointerEvents: 'none', left: '-40vw' }, 0);
+  tl.to(main, { borderRadius: PAGE_RADIUS, border: PAGE_EDGE, scale: 0.9, pointerEvents: 'none', left: '-40vw' }, 0);
   // Keep the canvas/grain shell full-height so it cannot expose bands above and below the page.
-  tl.to(layout, { opacity: 0.3 }, 0);
-  if (scrollbar) tl.to(scrollbar, { opacity: 0, right: '46vw', scale: 0.9 }, 0);
+  tl.to(layout, { opacity: isMobile ? 0.05 : 0.3 }, 0);
+  if (scrollbar) tl.to(scrollbar, isMobile ? { opacity: 0 } : { opacity: 0, right: '46vw', scale: 0.9 }, 0);
   // This timeline is also prepared during route entry. Eager overwrite would
   // cancel the route's header reveal even while this menu timeline is paused.
-  tl.to(header, { autoAlpha: 0, left: '-40vw', top: '3vw', scale: 0.9, overwrite: 'auto' }, 0);
+  // Phones fade the header without hiding it: the full-screen panel covers it,
+  // and hiding and restoring it can drop keyboard focus on iPhone Safari.
+  tl.to(header, { [isMobile ? 'opacity' : 'autoAlpha']: 0, left: '-40vw', top: isMobile ? '6vw' : '3vw', scale: 0.9, overwrite: 'auto' }, 0);
 
   return tl;
 }
 
-export function buildPanelTimeline(panel, items, { isMobile = false } = {}) {
+// The panel fades in while its lists and rows slide in from the left, each
+// nested row from its own list's slide (Giats's cascade).
+export function buildPanelTimeline(panel, items) {
   gsap.set(panel, { pointerEvents: 'none', autoAlpha: 0 });
-  if (isMobile) {
-    // Animate rows once, rather than sliding both their parent lists and the
-    // rows themselves across the phone. The backdrop covers the full viewport.
-    gsap.set(items, { clearProps: 'transform,opacity,visibility' });
-    const rows = Array.from(items).filter((item) => !item.querySelector('[data-menu-anim]'));
-    gsap.set(rows, { x: 24, opacity: 0 });
-    return gsap
-      .timeline({ paused: true, defaults: { duration: 0.28, ease: 'power3.out' } })
-      .to(panel, { autoAlpha: 1, pointerEvents: 'auto' }, 0)
-      .to(rows, { x: 0, opacity: 1, stagger: { amount: 0.06 } }, 0.04);
-  }
-  gsap.set(items, { clearProps: 'opacity,visibility' });
+  gsap.set(items, { clearProps: 'transform,opacity,visibility' });
   gsap.set(items, { x: '-100%' });
   return gsap.timeline({ paused: true, defaults: PANEL_DEFAULTS }).to(panel, { autoAlpha: 1, pointerEvents: 'auto' }, 0).to(items, { x: 0, stagger: 0.016 }, 0);
 }

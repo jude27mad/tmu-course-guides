@@ -26,10 +26,9 @@
     width: 100%;
     height: var(--app-viewport-height);
     // Above the page canvases and header. Feedback and the route loader keep
-    // their existing layers; a fully open menu never shows page text through it.
+    // their existing layers. Like Giats's, the panel has no surface of its own:
+    // the dark artwork shows through it, with the shrunk page faint beside it.
     z-index: 4;
-    background-color: var(--black);
-    background-image: radial-gradient(ellipse at top right, rgba(var(--onDarkRgb), 0.06), transparent 65%);
   }
 }
 
@@ -81,7 +80,6 @@
       top: calc(var(--layout-columns-gap) + env(safe-area-inset-top, 0px));
       right: max(var(--layout-margin), env(safe-area-inset-right, 0px));
       z-index: 1;
-      background-color: var(--black);
       // 44 px tap target
       height: max(6vw, 44px);
       width: max(6vw, 44px);

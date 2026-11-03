@@ -2,6 +2,13 @@
 
 Latest first. Students see course changes under **Course updates** in each guide's Guide tools, and website changes on the **Website updates** page. Older entries record the behaviour at the time; later releases supersede them.
 
+## Unreleased — Giats's menu on every screen
+
+- **Menu and Search open as on giats.me, phones included.** The shell runs Giats's own timeline (0.92 s, `expo.inOut`, both ways): the page shrinks to 90 %, slides 40vw left with rounded corners and dims (to 5 % on phones, 30 % on wider screens), and the header lifts away with it; the panel's lists and rows slide in from the left in a 0.016 s stagger. Phones previously kept the page in place under an opaque dark panel and backdrop, which hid the background artwork; the panel now has no surface of its own, and the backdrop is replaced by an invisible guard that catches taps until the panel has finished closing, so a second tap on Close cannot reopen the menu.
+- **The background artwork matches the original.** While a panel is open (and while it closes) the background canvas draws every display frame and drifts at Giats's per-frame pace, so its light bands visibly move; behind the page it keeps its 12 fps, time-based drift. It uses Giats's colours again (a 63 grey glow over 38 grey and a near-black violet, 9/5/12) and lets the grain add to the glow as the original does.
+- **iPhone and iPad.** The shrunk page is clipped to the part that was on screen (`html[data-page-shrunk] #main`), so it reads as Giats's card rather than a strip of the whole document; the clip and the scaling origin follow scrolling and rotation while the page is shrunk. Leaving from an open phone panel now uses the paper fade, which brings the dimmed page up to the paper as iPad already did; the separate under-the-panel swap is retired. On computers a page change from an open panel waits for the full 0.92 s close, as does the glide to an in-page anchor picked from a panel.
+- `scripts/check-route-filter-motion.mjs` now checks that the phone menu shrinks the page to Giats's card and returns it exactly, keeps the scroll position, is see-through and covers the viewport, and that a Menu → course change covers the artwork once the paper rises. `tests/under-safari-bars.test.mjs` covers the see-through panel and the clipped page.
+
 ## Unreleased — Grade calculator in every course
 
 - **Grades** is a new tab in each course guide, between the course's other views and Course info. It opens a grade calculator built from the same weights as Course info → Grading: CEN100's 20 graded items in five groups, and the math courses' lab quizzes, midterm and final.

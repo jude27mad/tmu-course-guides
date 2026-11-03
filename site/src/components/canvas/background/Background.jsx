@@ -3,22 +3,25 @@ import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 
-import { TOKENS, rgbOf } from '@src/lib/palette.mjs';
 import fragmentShader from '@src/components/canvas/background/shaders/fragmentShader';
 import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
 import vertexShader from '@src/components/canvas/background/shaders/vertexShader';
 
-// The original moved the offsets 0.00005 per frame at 60 fps; the canvas now renders
-// on demand at a lower rate, so the step is applied per second of real time.
-const OFFSET_STEP_PER_SECOND = 0.00005 * 60;
+// The original moves the offsets 0.00005 every frame it draws (twice as fast on a
+// 120 Hz screen). While a panel is open the canvas draws every display frame and
+// does the same (`live`); behind the page it renders on demand at a lower rate,
+// so the step is applied per second of real time at the 60 fps pace.
+const OFFSET_STEP_PER_FRAME = 0.00005;
+const OFFSET_STEP_PER_SECOND = OFFSET_STEP_PER_FRAME * 60;
 const OFFSET_MAX = 5.0;
 const OFFSET_MIN = 0.1;
 
-// The dark panels' light sweep, built only from the panel greys: ink -> raised -> sheen (the brightest point).
-const unitRgb = (hex) =>
-  rgbOf(hex)
-    .split(', ')
-    .map((channel) => Number(channel) / 255);
+// Giats's light sweep: a grey glow (63) over grey (38) and a near-black violet (9, 5, 12).
+const SWEEP = {
+  glow: [63 / 255, 63 / 255, 63 / 255],
+  mid: [38 / 255, 38 / 255, 38 / 255],
+  deep: [9 / 255, 5 / 255, 12 / 255],
+};
 
 function updateOffset(uniform, isIncreasing, step, min, max) {
   if (uniform.value >= max && isIncreasing.current) {
@@ -30,7 +33,7 @@ function updateOffset(uniform, isIncreasing, step, min, max) {
   uniform.value += isIncreasing.current ? step : -step;
 }
 
-function Background({ still = false }) {
+function Background({ still = false, live = false }) {
   const ref = useRef();
   const viewport = useThree((state) => state.viewport);
   const canvasWidth = useThree((state) => state.size.width);
@@ -43,9 +46,9 @@ function Background({ still = false }) {
   const uniforms = useMemo(
     () => ({
       uTime: { value: 0 },
-      uColor1: { value: unitRgb(TOKENS.sheen) },
-      uColor2: { value: unitRgb(TOKENS.raised) },
-      uColor3: { value: unitRgb(TOKENS.ink) },
+      uColor1: { value: SWEEP.glow },
+      uColor2: { value: SWEEP.mid },
+      uColor3: { value: SWEEP.deep },
       uColorAccent: { value: new THREE.Color(20.0, 20.0, 20.0) },
       uLinesBlur: { value: 0.49 },
       uNoise: { value: 0.02 },
@@ -84,8 +87,9 @@ function Background({ still = false }) {
       const dt = Math.min(delta, 0.25);
       materialUniforms.uTime.value += dt * 0.001;
 
-      updateOffset(materialUniforms.uOffsetX, isOffsetXIncreasing, OFFSET_STEP_PER_SECOND * dt, OFFSET_MIN, OFFSET_MAX);
-      updateOffset(materialUniforms.uOffsetY, isOffsetYIncreasing, OFFSET_STEP_PER_SECOND * dt, OFFSET_MIN, OFFSET_MAX);
+      const step = live ? OFFSET_STEP_PER_FRAME : OFFSET_STEP_PER_SECOND * dt;
+      updateOffset(materialUniforms.uOffsetX, isOffsetXIncreasing, step, OFFSET_MIN, OFFSET_MAX);
+      updateOffset(materialUniforms.uOffsetY, isOffsetYIncreasing, step, OFFSET_MIN, OFFSET_MAX);
     }
   });
 
