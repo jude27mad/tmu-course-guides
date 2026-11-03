@@ -238,6 +238,7 @@ function Navbar() {
 
   return (
     <>
+      <div aria-hidden="true" className={styles.panelGuard} data-open={isOpen} />
       <MenuLinks />
       <SearchPanel />
 

@@ -98,8 +98,11 @@ test('the open phone menu shows the artwork, which continues under the bars', ()
   const menu = read('../src/components/dom/navbar/styles/menuLinks.module.scss');
   const panel = menu.slice(menu.indexOf('.menu {'), menu.indexOf('.menuWrapper {'));
   assert.doesNotMatch(panel, /^\s*background(-color|-image)?:/m);
-  const navbar = read('../src/components/dom/navbar/Index.jsx');
-  assert.doesNotMatch(navbar, /panelBackdrop/);
+  // Only an invisible guard catches taps on phones while the panel closes.
+  const navbar = read('../src/components/dom/navbar/styles/index.module.scss');
+  const guard = navbar.slice(navbar.indexOf('.panelGuard {'), navbar.indexOf('.root {'));
+  assert.match(guard, /transition: visibility 0s 0\.92s;/);
+  assert.doesNotMatch(guard, /^\s*background(-color|-image)?:/m);
   const app = read('../src/pages/app.module.scss');
   assert.match(app, /\.background\s*\{[^}]*top:\s*calc\(-1 \* var\(--edge-bleed-top\)\)/);
   assert.match(app, /\.background\s*\{[^}]*height:\s*calc\(var\(--app-viewport-height\) \+ var\(--edge-bleed-top\) \+ var\(--edge-bleed-bottom\)\)/);
@@ -116,7 +119,10 @@ test('the paper caps stand down while a panel shell shrinks the page (iPhone and
   // A transformed main holds its fixed caps, which would frame the shrunk page.
   const shell = read('../src/components/dom/navbar/panelShell.js');
   assert.match(shell, /export function markPageShrunk\(shrunk\)/);
-  assert.match(shell, /onStart: \(\) => \{[\s\S]*?if \(ios\) \{[\s\S]*?markPageShrunk\(true\);[\s\S]*?onReverseComplete/);
+  assert.match(shell, /onStart: \(\) => \{[\s\S]*?if \(ios\) markPageShrunk\(true\);[\s\S]*?onReverseComplete/);
+  // The card is refitted while the page is shrunk (scroll during the close, rotation).
+  assert.match(shell, /window\.addEventListener\('scroll', fitShrunkPage, \{ passive: true \}\);/);
+  assert.match(shell, /window\.removeEventListener\('resize', fitShrunkPage\);/);
   assert.match(shell, /onReverseComplete: \(\) => \{[\s\S]*?if \(ios\) \{[\s\S]*?markPageShrunk\(false\);/);
   // Leaving from an open panel pauses the shell; the route entry restores main instead.
   const layout = read('../src/components/dom/Layout.jsx');

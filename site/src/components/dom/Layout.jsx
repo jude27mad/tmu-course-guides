@@ -20,6 +20,8 @@ import { PANEL_DEFAULTS, markPageShrunk } from '@src/components/dom/navbar/panel
 const STEP = 0.14;
 // An open panel's shell closes first (Giats's menu timeline, panelShell.js).
 const PANEL_CLOSE = PANEL_DEFAULTS.duration;
+// An in-page anchor glides after its view has switched (ms).
+const ANCHOR_DELAY = 450;
 // The paper fade (iPhone and iPad, and between courses on every screen): the page
 // dissolves into the paper behind it and the next page rises out of it. In ms: `paper`
 // is how fast the paper comes up, `out` the old page's fade, `in` the new page's,
@@ -406,11 +408,15 @@ function Layout({ children, layoutRef, mainRef, router }) {
   // curtain: close any open panel and glide to the item.
   useEffect(() => {
     let pending;
+    // Whether the change closed a panel: the glide then waits for its shell.
+    let closing = false;
     const cancel = () => clearTimeout(pending);
     // Close the panel that initiated navigation, before the destination mounts.
     // A completion event must not dismiss a Search opened on the new view.
     const onHashStart = () => {
       cancel();
+      const state = useStore.getState();
+      closing = state.isMenuOpen || state.isSearchOpen;
       closePanels();
     };
     const onHash = (url) => {
@@ -418,13 +424,12 @@ function Layout({ children, layoutRef, mainRef, router }) {
       runRef.current.swipe = null;
       const hash = String(url).split('#')[1];
       if (hash) {
-        pending = setTimeout(
-          () => {
-            // A later click or browser Back can overtake the panel-close delay.
-            if (window.location.hash.slice(1) === hash) scrollToHash({ hash });
-          },
-          useStore.getState().still ? 0 : PANEL_CLOSE * 1000,
-        );
+        let delay = closing ? PANEL_CLOSE * 1000 : ANCHOR_DELAY;
+        if (useStore.getState().still) delay = 0;
+        pending = setTimeout(() => {
+          // A later click or browser Back can overtake the panel-close delay.
+          if (window.location.hash.slice(1) === hash) scrollToHash({ hash });
+        }, delay);
       }
     };
     router.events.on('hashChangeStart', onHashStart);

@@ -1,5 +1,26 @@
 @import '@src/styles/functions';
 
+// Phones: a closing panel is inert at once but stays drawn over the header,
+// which slides back beneath it, for the shell's whole close (panelShell.js,
+// 0.92 s). This invisible layer catches those taps, so a second tap on Close
+// cannot land on MENU and reopen it. It has no surface: the artwork shows.
+.panelGuard {
+  display: none;
+  @include mobile {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 3; // above the header (2), below the panels (4)
+    pointer-events: auto;
+    visibility: hidden;
+    transition: visibility 0s 0.92s;
+    &[data-open='true'] {
+      visibility: visible;
+      transition: none;
+    }
+  }
+}
+
 .root {
   position: fixed;
   z-index: 2;

@@ -12,30 +12,41 @@ export const PANEL_DEFAULTS = { duration: 0.92, ease: 'expo.inOut' };
 const PAGE_EDGE = `2px solid ${TOKENS.page}`;
 const PAGE_RADIUS = '1.3888888889vw';
 
-// In document mode main is as tall as the page. While it is shrunk it is
-// clipped to the part on screen (global.scss), so it reads as Giats's card
-// rather than a strip running past both screen edges. A transformed main also
-// holds its fixed paper caps (global.scss), which would frame the shrunk page
-// instead of covering the reach under Safari's bars; they stand down until
-// main is restored.
+// In document mode main is as tall as the page. While it is shrunk it scales
+// about the middle of the screen and is clipped to the part on screen
+// (global.scss), so it reads as Giats's card rather than a strip running past
+// both screen edges.
+function fitShrunkPage() {
+  const root = document.documentElement;
+  const main = document.querySelector('main');
+  if (!main) return;
+  const scrolled = scrollTop();
+  gsap.set(main, { transformOrigin: `50% ${scrolled + window.innerHeight / 2}px` });
+  // Layout geometry, not the box on screen: main may already be transformed.
+  let top = 0;
+  for (let node = main; node; node = node.offsetParent) top += node.offsetTop;
+  root.style.setProperty('--page-clip-top', `${Math.max(0, scrolled - top)}px`);
+  root.style.setProperty('--page-clip-bottom', `${Math.max(0, top + main.offsetHeight - scrolled - window.innerHeight)}px`);
+}
+
+// A transformed main also holds its fixed paper caps (global.scss), which would
+// frame the shrunk page instead of covering the reach under Safari's bars; they
+// stand down until main is restored. The page can scroll while it is shrunk (a
+// swipe during the close, a pick on the current course moving the workspace)
+// and the screen can rotate, so the card is refitted until then.
 export function markPageShrunk(shrunk) {
   const root = document.documentElement;
+  window.removeEventListener('scroll', fitShrunkPage);
+  window.removeEventListener('resize', fitShrunkPage);
   if (!shrunk) {
     delete root.dataset.pageShrunk;
     root.style.removeProperty('--page-clip-top');
     root.style.removeProperty('--page-clip-bottom');
     return;
   }
-  const main = document.querySelector('main');
-  if (main) {
-    // Layout geometry, not the box on screen: main may already be transformed.
-    let top = 0;
-    for (let node = main; node; node = node.offsetParent) top += node.offsetTop;
-    const above = Math.max(0, scrollTop() - top);
-    const below = Math.max(0, top + main.offsetHeight - scrollTop() - window.innerHeight);
-    root.style.setProperty('--page-clip-top', `${above}px`);
-    root.style.setProperty('--page-clip-bottom', `${below}px`);
-  }
+  fitShrunkPage();
+  window.addEventListener('scroll', fitShrunkPage, { passive: true });
+  window.addEventListener('resize', fitShrunkPage, { passive: true });
   root.dataset.pageShrunk = '';
 }
 
@@ -53,10 +64,7 @@ export function buildShellTimeline({ isMobile }) {
     defaults: PANEL_DEFAULTS,
     onStart: () => {
       gsap.set(moving, { willChange: 'transform, opacity' });
-      if (ios) {
-        gsap.set(main, { transformOrigin: `50% ${scrollTop() + window.innerHeight / 2}px` });
-        markPageShrunk(true);
-      }
+      if (ios) markPageShrunk(true);
     },
     onReverseComplete: () => {
       gsap.set(moving, { willChange: 'auto' });

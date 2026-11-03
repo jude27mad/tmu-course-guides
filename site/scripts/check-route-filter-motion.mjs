@@ -389,7 +389,9 @@ try {
         await ready(page);
         const menu = await checkMobileMenu(page, `iphone-course-menu-${reducedMotion}`);
         await page.getByRole('button', { name: 'Open menu', exact: true }).click();
-        await page.waitForFunction(() => getComputedStyle(document.querySelector('#menu')).opacity === '1');
+        // Sample from the settled open shell: the panel shown and the page dimmed behind it.
+        await page.waitForFunction(() => getComputedStyle(document.querySelector('#menu')).opacity === '1' &&
+          Math.abs(Number(getComputedStyle(document.querySelector('#layout')).opacity) - 0.05) < 0.01);
         await startRouteFrames(page);
         await page.locator('#menu').getByRole('link', { name: 'CEN100', exact: true }).click();
         await page.waitForURL(`${base}cen100/`);
