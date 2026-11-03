@@ -145,8 +145,13 @@ const stopRouteFrames = (page) => page.evaluate(async () => {
   return window.routeFrames;
 });
 const MAX_EXPOSURE = 0.1;
-function assertPaperFade(frames, label) {
-  const exposed = frames.filter((frame) => frame.exposure > MAX_EXPOSURE);
+// From an open panel the change starts on the dark artwork that the shell
+// uncovered (Giats's menu): from the first frame the paper (or the arriving
+// page) covers it, the artwork must not show through again.
+function assertPaperFade(frames, label, { fromPanel = false } = {}) {
+  const start = fromPanel ? frames.findIndex((frame) => frame.exposure <= MAX_EXPOSURE) : 0;
+  assert.ok(start !== -1, `${label}: the page change covers the artwork`);
+  const exposed = frames.slice(start).filter((frame) => frame.exposure > MAX_EXPOSURE);
   assert.deepEqual(exposed.slice(0, 4), [], `${label}: the dark artwork must not show through a changing page`);
   assert.ok(frames.every((frame) => !frame.paper || frame.paperCovers), `${label}: the paper covers the screen whenever it is shown`);
 }
@@ -218,20 +223,34 @@ async function checkMobileMenu(page, name) {
       // focus as well as from the keyboard-focused opener used in the first pass.
       if (closeWithEscape) await opener.evaluate((button) => button.blur());
       await opener.click();
+      // Open: the panel is shown and every list and row has slid in from the left.
       await page.waitForFunction(() => {
         const menu = document.querySelector('#menu');
-        return getComputedStyle(menu).opacity === '1' &&
-          Array.from(menu.querySelectorAll('[data-menu-anim]')).every((item) => getComputedStyle(item).opacity === '1');
+        const settled = (item) => getComputedStyle(item).opacity === '1' && ['none', 'matrix(1, 0, 0, 1, 0, 0)'].includes(getComputedStyle(item).transform);
+        return getComputedStyle(menu).opacity === '1' && Array.from(menu.querySelectorAll('[data-menu-anim]')).every(settled);
       }, null, { timeout: 8000 }).catch(async () => {
         const diagnostic = await page.evaluate(() => ({
           open: document.querySelector('#menu').getAttribute('aria-hidden'),
           opacity: getComputedStyle(document.querySelector('#menu')).opacity,
           incomplete: Array.from(document.querySelectorAll('#menu [data-menu-anim]'))
-            .filter((item) => getComputedStyle(item).opacity !== '1')
+            .filter((item) => getComputedStyle(item).opacity !== '1' || !['none', 'matrix(1, 0, 0, 1, 0, 0)'].includes(getComputedStyle(item).transform))
             .slice(0, 6)
-            .map((item) => ({ text: item.textContent.trim().slice(0, 40), opacity: getComputedStyle(item).opacity })),
+            .map((item) => ({ text: item.textContent.trim().slice(0, 40), opacity: getComputedStyle(item).opacity, transform: getComputedStyle(item).transform })),
         }));
         throw new Error(`Menu did not finish opening: ${JSON.stringify(diagnostic)}`);
+      });
+      // Giats's shell: the page shrinks to 90% and slides 40vw to the left, dimmed to 5%.
+      await page.waitForFunction(({ width }) => {
+        const rect = document.querySelector('main').getBoundingClientRect();
+        return Math.abs(rect.width - width * 0.9) < 2 && Math.abs(rect.left + innerWidth * 0.35) < 2 &&
+          Math.abs(Number(getComputedStyle(document.querySelector('#layout')).opacity) - 0.05) < 0.01;
+      }, before.page, { timeout: 8000 }).catch(async () => {
+        const diagnostic = await page.evaluate(() => ({
+          page: document.querySelector('main').getBoundingClientRect().toJSON(),
+          layout: getComputedStyle(document.querySelector('#layout')).opacity,
+          viewport: innerWidth,
+        }));
+        throw new Error(`The page did not shrink aside behind the open menu: ${JSON.stringify(diagnostic)}`);
       });
       // Reduced-motion iPhone Safari can leave focus on body after a touch
       // gesture. Keyboard entry must still move directly into the modal.
@@ -253,7 +272,7 @@ async function checkMobileMenu(page, name) {
             .every(([x, y]) => panel.contains(document.elementFromPoint(x, y))),
         };
       });
-      assert.equal(coverage.backgroundAlpha, 255, 'the open phone menu has an opaque background');
+      assert.equal(coverage.backgroundAlpha, 0, 'the open phone menu has no surface of its own: the artwork shows through it');
       assert.equal(coverage.coversCorners, true, 'the phone menu covers and receives input at every viewport corner');
       if (!closeWithEscape) {
         await page.screenshot({ path: path.join(report, `${name}-open.png`) });
@@ -267,6 +286,15 @@ async function checkMobileMenu(page, name) {
       if (closeWithEscape) await page.keyboard.press('Escape');
       else await close.click();
       await page.waitForFunction(() => getComputedStyle(document.querySelector('#menu')).visibility === 'hidden');
+      // Closing plays the shell backwards: the page returns exactly where it was.
+      await page.waitForFunction(({ left, top, width }) => {
+        const rect = document.querySelector('main').getBoundingClientRect();
+        return Math.abs(rect.left - left) < 2 && Math.abs(rect.top - top) < 2 && Math.abs(rect.width - width) < 2 &&
+          getComputedStyle(document.querySelector('#layout')).opacity === '1';
+      }, before.page, { timeout: 8000 }).catch(async () => {
+        const diagnostic = await page.evaluate(() => ({ page: document.querySelector('main').getBoundingClientRect().toJSON(), layout: getComputedStyle(document.querySelector('#layout')).opacity }));
+        throw new Error(`The page did not return after the menu closed: ${JSON.stringify(diagnostic)}`);
+      });
       await page.waitForFunction(() => document.querySelector('#menu-button') === document.activeElement, null, { timeout: 8000 }).catch(async () => {
         const diagnostic = await page.evaluate(() => ({
           active: document.activeElement?.outerHTML.slice(0, 200),
@@ -282,8 +310,11 @@ async function checkMobileMenu(page, name) {
     frames = await page.evaluate(() => { cancelAnimationFrame(window.menuFrame); return window.menuFrames; });
     await writeFile(path.join(report, `${name}-frames.json`), JSON.stringify(frames, null, 2));
   }
-  const moved = frames.filter((frame) => ['left', 'top', 'width'].some((key) => Math.abs(frame.page[key] - before.page[key]) >= 2));
-  assert.deepEqual(moved.slice(0, 4), [], 'opening, closing and reopening the phone menu never shifts or shrinks the page');
+  const moved = frames.filter((frame) => frame.phase === 'before' && ['left', 'top', 'width'].some((key) => Math.abs(frame.page[key] - before.page[key]) >= 2));
+  assert.deepEqual(moved.slice(0, 4), [], 'the page stays put until the menu opens');
+  // The page only ever shrinks towards Giats's card and slides left: never wider, never to the right.
+  const stray = frames.filter((frame) => frame.page.width > before.page.width + 2 || frame.page.left > before.page.left + 2);
+  assert.deepEqual(stray.slice(0, 4), [], 'the shrinking page never grows or moves right');
   assert.ok(frames.every((frame) => frame.scrollY === before.scrollY && frame.scrollTop === before.scrollTop), 'the phone menu preserves the page scroll throughout both open/close cycles');
   const visible = frames.filter((frame) => frame.opacity > 0);
   assert.ok(visible.length, 'sample the phone menu while visible');
@@ -365,7 +396,7 @@ try {
         await ready(page);
         const frames = await stopRouteFrames(page);
         await writeFile(path.join(report, `route-${reducedMotion}.json`), JSON.stringify(frames, null, 2));
-        assertPaperFade(frames, 'from the menu');
+        assertPaperFade(frames, 'from the menu', { fromPanel: true });
         const incoming = frames.filter((frame) => frame.title === 'Intro to Engineering' && frame.opacity > 0.05);
         assert.ok(incoming.length, 'sample the visible destination');
         assert.ok(incoming.every((frame) => Math.abs(frame.left) < 2 && Math.abs(frame.width - frame.viewport) < 2),

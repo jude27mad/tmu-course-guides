@@ -129,6 +129,13 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-11-03-menu-transition",
+  "date": "November 3, 2026",
+  "title": "Menu and Search open like the original design",
+  "text": "On every screen, opening the Menu or Search now shrinks the page aside and dims it, the slowly moving light of the dark background fills the screen, and the links slide in. Closing plays it back. On phones the page used to stay put under a plain dark panel. Pause motion still opens and closes them at once.",
+  "items": []
+ },
+ {
   "id": "2026-10-28-grade-calculator",
   "date": "October 28, 2026",
   "title": "Grade calculator",

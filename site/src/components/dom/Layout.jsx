@@ -13,12 +13,13 @@ import styles from '@src/components/dom/styles/layout.module.scss';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
 import { TOKENS } from '@src/lib/palette.mjs';
-import { markPageShrunk } from '@src/components/dom/navbar/panelShell';
+import { PANEL_DEFAULTS, markPageShrunk } from '@src/components/dom/navbar/panelShell';
 
 // Giats's card (desktop and Android, except between courses): shrink, slide, slide, grow.
 // Two steps out and about two in keep a page change within 0.6 s.
 const STEP = 0.14;
-const PANEL_CLOSE = 0.45;
+// An open panel's shell closes first (Giats's menu timeline, panelShell.js).
+const PANEL_CLOSE = PANEL_DEFAULTS.duration;
 // The paper fade (iPhone and iPad, and between courses on every screen): the page
 // dissolves into the paper behind it and the next page rises out of it. In ms: `paper`
 // is how fast the paper comes up, `out` the old page's fade, `in` the new page's,
@@ -26,9 +27,6 @@ const PANEL_CLOSE = 0.45;
 const FADE = {
   page: { paper: 120, out: 180, in: 340, clear: 120, rise: 14 },
   course: { paper: 80, out: 120, in: 220, clear: 80, rise: 0 },
-  // From an open phone menu or search: the swap happens unseen under the panel, which
-  // then dissolves straight into the new page.
-  panel: { hold: 240, in: 260, clear: 100, rise: 0 },
 };
 // GSAP's power2.in, power2.out, expo.out and power1.inOut as CSS curves.
 const EASE = {
@@ -228,14 +226,14 @@ function Layout({ children, layoutRef, mainRef, router }) {
     }
 
     const betweenCourses = !!(courseIdFromPath(from) && courseIdFromPath(to));
-    if (panelOpen && isMobileNow()) run.plan = 'panel';
     // Phone transitions stay full width with either scroll owner. Restoring
     // Giats's contained input must not bring back the desktop loading card.
-    else if (isMobileNow() || ios || (!panelOpen && (betweenCourses || superseding))) run.plan = betweenCourses ? 'course' : 'page';
+    // From an open panel the paper rises over the dark artwork the shell uncovered.
+    if (isMobileNow() || ios || (!panelOpen && (betweenCourses || superseding))) run.plan = betweenCourses ? 'course' : 'page';
     else run.plan = 'card';
     // The header stays put while it is on screen. Once scrolled away, or moved by a
-    // wide panel's shell (iPad), it fades with the page so it cannot pop back in.
-    run.steady = run.plan !== 'card' && scrollTop() < 1 && (!panelOpen || run.plan === 'panel') && Number(getComputedStyle(header).opacity) === 1;
+    // panel's shell, it fades with the page so it cannot pop back in.
+    run.steady = run.plan !== 'card' && scrollTop() < 1 && !panelOpen && Number(getComputedStyle(header).opacity) === 1;
 
     if (run.plan === 'card') {
       const menuTime = panelOpen ? PANEL_CLOSE : 0;
@@ -282,23 +280,14 @@ function Layout({ children, layoutRef, mainRef, router }) {
     if (cardInFlight) paperFrom = 1;
     gsap.set('#loader', { autoAlpha: 0, display: 'none' });
     gsap.set(main, { pointerEvents: 'none', willChange: 'opacity, transform' });
-    let anims;
-    if (run.plan === 'panel') {
-      // The open panel covers the screen: the old page gives way to paper beneath it.
-      gsap.set(paper, { display: 'block', autoAlpha: 1 });
-      const hide = { duration: fade.hold, fill: 'both' };
-      anims = fading.map((el) => el.animate({ opacity: [0, 0] }, hide));
-      if (!run.steady) anims.push(header.animate({ opacity: [0, 0] }, hide));
-    } else {
-      gsap.set(paper, { display: 'block', autoAlpha: 1 });
-      const out = { duration: fade.out, easing: EASE.in, fill: 'both' };
-      anims = [paper.animate({ opacity: [paperFrom, 1] }, { duration: fade.paper, easing: EASE.out, fill: 'both' }), ...fading.map((el) => el.animate({ opacity: 0 }, out))];
-      if (!run.steady) anims.push(header.animate({ opacity: 0 }, out));
-      // A wide panel's shell (iPad) dims the page; bring it up to the paper.
-      if (Number(gsap.getProperty(layoutRef.current, 'opacity')) < 1) anims.push(layoutRef.current.animate({ opacity: 1 }, { duration: fade.paper, easing: EASE.out, fill: 'both' }));
-      const scrollbar = document.getElementById('scrollbar');
-      if (scrollbar) anims.push(scrollbar.animate({ opacity: 0 }, out));
-    }
+    gsap.set(paper, { display: 'block', autoAlpha: 1 });
+    const out = { duration: fade.out, easing: EASE.in, fill: 'both' };
+    const anims = [paper.animate({ opacity: [paperFrom, 1] }, { duration: fade.paper, easing: EASE.out, fill: 'both' }), ...fading.map((el) => el.animate({ opacity: 0 }, out))];
+    if (!run.steady) anims.push(header.animate({ opacity: 0 }, out));
+    // An open panel's shell dims the page; bring it up to the paper.
+    if (Number(gsap.getProperty(layoutRef.current, 'opacity')) < 1) anims.push(layoutRef.current.animate({ opacity: 1 }, { duration: fade.paper, easing: EASE.out, fill: 'both' }));
+    const scrollbar = document.getElementById('scrollbar');
+    if (scrollbar) anims.push(scrollbar.animate({ opacity: 0 }, out));
     playPhase(run, anims, covered);
   };
 
@@ -434,7 +423,7 @@ function Layout({ children, layoutRef, mainRef, router }) {
             // A later click or browser Back can overtake the panel-close delay.
             if (window.location.hash.slice(1) === hash) scrollToHash({ hash });
           },
-          useStore.getState().still ? 0 : 450,
+          useStore.getState().still ? 0 : PANEL_CLOSE * 1000,
         );
       }
     };

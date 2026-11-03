@@ -281,6 +281,13 @@ html[data-scroll-mode='document'] {
   &[data-page-shrunk] #main::after {
     display: none;
   }
+  // The shrunk page is the part that was on screen, a card with rounded
+  // corners like Giats's (whose page is always one screen tall), not a strip
+  // of the whole document. The insets are measured as the shell starts
+  // (panelShell.js markPageShrunk); the clip scales with the page.
+  &[data-page-shrunk] #main {
+    clip-path: inset(var(--page-clip-top, 0px) 0px var(--page-clip-bottom, 0px) 0px round 1.3888888889vw);
+  }
 }
 
 // The fluid's black base is invisible (it blends with `difference`), but it is a

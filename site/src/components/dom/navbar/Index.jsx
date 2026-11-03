@@ -176,7 +176,7 @@ function Navbar() {
     };
   }, [isOpen, isLoading, router.asPath]);
 
-  // Shared panel shell: desktop moves the page, mobile leaves it stationary.
+  // Shared panel shell: the page shrinks and slides aside on every screen.
   useEffect(() => {
     const tl = buildShellTimeline({ isMobile });
     shellRef.current = tl;
@@ -238,7 +238,6 @@ function Navbar() {
 
   return (
     <>
-      <div aria-hidden="true" className={styles.panelBackdrop} data-open={isOpen} />
       <MenuLinks />
       <SearchPanel />
 
