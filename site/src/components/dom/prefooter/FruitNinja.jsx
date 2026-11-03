@@ -110,14 +110,14 @@ function FruitNinja({ active = true, eventSource, scoreRef, onSlice, onMiss }) {
   const getCeiling = useCallback(() => {
     const bounds = gl.domElement.getBoundingClientRect();
     const score = scoreRef.current?.getBoundingClientRect();
-    const stage = eventSource.current?.getBoundingClientRect();
-    if (!score || !stage || !bounds.height) return -Infinity;
+    const paper = eventSource.current?.closest('[data-companion-statement]')?.getBoundingClientRect();
+    if (!score || !paper || !bounds.height) return -Infinity;
     const { inset, bottomInset, ceilingY, floorY } = scoreBoundary({
       scoreBottom: score.bottom,
       canvasTop: bounds.top,
       canvasHeight: bounds.height,
       viewportHeight: viewport.height,
-      stageBottom: stage.bottom,
+      stageBottom: paper.bottom,
     });
     ceilingRef.current = ceilingY;
     floorRef.current = floorY;
