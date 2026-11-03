@@ -86,12 +86,15 @@ function Footer() {
           if (allSections.length > 1) {
             const lastSection = allSections[allSections.length - 2];
             if (footerRef.current.offsetHeight <= resizeHeight) {
-              gsap.set(footerRef.current, { yPercent: -50 });
+              // force3D keeps the footer on one layer: GSAP's default writes a 2D transform at the ends of the
+              // scrub, which dropped and re-created a viewport-sized layer each time a scroll bounced off the end.
+              gsap.set(footerRef.current, { yPercent: -50, force3D: true });
               const uncover = gsap.timeline({ paused: true });
               gsap.set(footerRef.current, { height: '100.5svh' });
               uncover.to(footerRef.current, {
                 yPercent: 0,
                 ease: 'none',
+                force3D: true,
               });
               ScrollTrigger.create({
                 id: 'footerTrigger',
