@@ -17,18 +17,20 @@ function Scrollbar() {
     const maxTopValueInVh = 80 - 6;
     const newTopValueInVh = Math.min(maxTopValueInVh, progress * maxTopValueInVh);
 
-    gsap.to(progressBar.current, { top: `${newTopValueInVh}svh`, duration: 0.3 });
+    // overwrite: each scroll frame starts a new tween and only the newest was ever visible; without it
+    // the superseded ones (about 18 per 0.3 s at 60 Hz) kept running and writing `top` every tick.
+    gsap.to(progressBar.current, { top: `${newTopValueInVh}svh`, duration: 0.3, overwrite: true });
   };
 
   useScroll(({ scroll, limit }) => {
     if (!isLoading && !isMenuOpen && !isSearchOpen && scrollbarRef.current) {
-      gsap.to(scrollbarRef.current, { opacity: 1, duration: 0.3 });
+      gsap.to(scrollbarRef.current, { opacity: 1, duration: 0.3, overwrite: true });
       updateScrollbar(scroll, limit);
 
       clearTimeout(fadeTimeout.current);
       fadeTimeout.current = setTimeout(() => {
         if (scrollbarRef?.current) {
-          gsap.to(scrollbarRef.current, { opacity: 0, duration: 0.5 });
+          gsap.to(scrollbarRef.current, { opacity: 0, duration: 0.5, overwrite: true });
         }
       }, 1500);
     }
