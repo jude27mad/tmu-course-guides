@@ -65,7 +65,10 @@
       padding-top: var(--navigation-extra-height, 0px);
       // Only the extra header clearance is paper; course badge windows below
       // must remain transparent to the shared canvas.
-      background-image: linear-gradient(to bottom, var(--white) 0 var(--navigation-extra-height, 0px), transparent var(--navigation-extra-height, 0px));
+      // The same band as a gradient sized to it, so no full-height fill is painted when it is 0px tall.
+      background-image: linear-gradient(var(--white), var(--white));
+      background-repeat: no-repeat;
+      background-size: 100% var(--navigation-extra-height, 0px);
 
       width: 100%;
     }
