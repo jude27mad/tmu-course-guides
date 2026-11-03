@@ -61,6 +61,7 @@ const assertSafariDocumentShell = async (page, darkEnd = false) => {
       documentHeight: document.scrollingElement.scrollHeight,
       viewport: innerHeight,
       rootBackground: getComputedStyle(root).backgroundColor,
+      bodyBackground: getComputedStyle(document.body).backgroundColor,
       fluidBackground: fluid ? getComputedStyle(fluid).backgroundColor : null,
       view: { top: view.top, bottom: view.bottom },
       guards: [...document.querySelectorAll('[data-safari-blend]')].map(node => {
@@ -76,6 +77,9 @@ const assertSafariDocumentShell = async (page, darkEnd = false) => {
   assert.equal(state.mainScrollTop, 0, 'the document owns iOS scroll position');
   assert.ok(state.documentHeight > state.viewport, 'the document is the scrollable page');
   assert.equal(state.rootBackground, darkEnd ? 'rgb(24, 24, 27)' : 'rgb(241, 241, 241)');
+  // Past the page's ends Safari paints the root's colour with the body's blended
+  // over it: an opaque body put a black box past every light end.
+  assert.equal(state.bodyBackground, 'rgba(0, 0, 0, 0)', 'the body must not tint Safari\'s colour past the page\'s ends');
   assert.ok(state.fluidBackground === null || state.fluidBackground === 'rgba(0, 0, 0, 0)', 'the fluid wrapper must not force a solid Safari band');
   assert.ok(state.view.top < 0 && state.view.bottom > state.viewport, 'the shared artwork reaches beyond both browser edges');
   assert.equal(state.guards.length, 2);
@@ -88,6 +92,98 @@ const assertSafariDocumentShell = async (page, darkEnd = false) => {
   assert.equal(state.edgeEnd, darkEnd ? 'dark' : 'none');
   return state;
 };
+// What Safari shows under its bars while Menu or Search shrinks the page, every
+// frame of an open and a close. Under the status bar and the toolbar it shows the
+// page itself and, past the page's ends, one flat colour: the root's with the
+// body's blended over it. The owner's iPhone showed both bands turn dark at the
+// tap, with the page still full size, and stay dark until a close had finished:
+// the shrunk page's clip cut it at the layout viewport, and the root and body
+// turned to the ink at once. Bars as large as Safari's in either layout.
+const STATUS_BAR = 62;
+const TOOLBAR = 98;
+async function recordShellBands(page, run) {
+  await page.evaluate(() => {
+    window.shellBands = [];
+    const canvas = document.createElement('canvas');
+    canvas.width = canvas.height = 1;
+    const context = canvas.getContext('2d', { willReadFrequently: true });
+    const rgba = (color) => {
+      context.clearRect(0, 0, 1, 1);
+      context.fillStyle = 'rgba(0, 0, 0, 0)';
+      context.fillStyle = color;
+      context.fillRect(0, 0, 1, 1);
+      return [...context.getImageData(0, 0, 1, 1).data];
+    };
+    const px = (value) => parseFloat(value) || 0;
+    const sample = () => {
+      const root = document.documentElement;
+      const main = document.querySelector('main');
+      const rect = main.getBoundingClientRect();
+      const style = getComputedStyle(main);
+      const scale = style.transform === 'none' ? 1 : new DOMMatrix(style.transform).a;
+      const rootStyle = getComputedStyle(root);
+      const shrunk = root.dataset.pageShrunk !== undefined;
+      const cover = shrunk ? Number(rootStyle.getPropertyValue('--panel-cover') || 1) : 0;
+      // The clip in main's own pixels: global.scss's [data-page-shrunk] #main.
+      const insetTop = shrunk ? Math.max(0, px(rootStyle.getPropertyValue('--page-clip-top')) - (1 - cover) * px(rootStyle.getPropertyValue('--edge-bleed-top'))) : 0;
+      const insetBottom = shrunk ? Math.max(0, px(rootStyle.getPropertyValue('--page-clip-bottom')) - (1 - cover) * px(rootStyle.getPropertyValue('--edge-bleed-bottom'))) : 0;
+      const [r, g, b] = rgba(rootStyle.backgroundColor);
+      const [R, G, B, A] = rgba(getComputedStyle(document.body).backgroundColor);
+      const a = A / 255;
+      window.shellBands.push({
+        time: performance.now(),
+        phase: window.shellPhase,
+        shrunk,
+        cover,
+        scale,
+        cardTop: rect.top + insetTop * scale,
+        cardBottom: rect.bottom - insetBottom * scale,
+        documentTop: -scrollY,
+        documentBottom: document.scrollingElement.scrollHeight - scrollY,
+        viewport: innerHeight,
+        flat: [r * (1 - a) + R * a, g * (1 - a) + G * a, b * (1 - a) + B * a].map(Math.round),
+      });
+      window.shellBandsFrame = requestAnimationFrame(sample);
+    };
+    window.shellPhase = 'before';
+    sample();
+  });
+  try {
+    await run((phase) => page.evaluate((value) => { window.shellPhase = value; }, phase));
+  } finally {
+    await page.evaluate(() => cancelAnimationFrame(window.shellBandsFrame));
+  }
+  return page.evaluate(() => window.shellBands);
+}
+function assertShellBands(frames, label) {
+  const near = (color, target, tolerance = 12) => color.every((channel, i) => Math.abs(channel - target[i]) <= tolerance);
+  const rest = frames.find((frame) => frame.phase === 'before').flat;
+  const ink = [24, 24, 27];
+  // While the page still fills the screen, both bands show what they showed
+  // before the tap: the page wherever the document reaches under a bar, and the
+  // page's own flat colour past its ends.
+  // The page's own shrink moves its edges by up to (1 - scale) of the viewport.
+  const full = frames.filter((frame) => frame.shrunk && frame.scale > 0.997);
+  for (const phase of ['opening', 'closing']) assert.ok(full.some((frame) => frame.phase === phase), `${label}: sample the full-size page while ${phase}`);
+  const cut = full.filter((frame) => {
+    const shrink = (1 - frame.scale) * frame.viewport + 1;
+    return frame.cardBottom < Math.min(frame.documentBottom, frame.viewport + TOOLBAR) - shrink ||
+      frame.cardTop > Math.max(frame.documentTop, -STATUS_BAR) + shrink;
+  });
+  assert.deepEqual(cut.slice(0, 4), [], `${label}: the full-size page continues under both bars`);
+  const tinted = full.filter((frame) => !near(frame.flat, rest, 8));
+  assert.deepEqual(tinted.slice(0, 4), [], `${label}: the colour past the page's ends stays the page's while it fills the screen (${rest})`);
+  // Open: the card sits inside the layout viewport, and Safari's flat colour is the panel's ink.
+  const open = frames.filter((frame) => frame.phase === 'open');
+  assert.ok(open.length, `${label}: sample the open panel`);
+  assert.ok(open.every((frame) => frame.shrunk && frame.cardTop > -1 && frame.cardBottom < frame.viewport + 1 && near(frame.flat, ink, 2)),
+    `${label}: the open card lies between the bars, on the ink: ${JSON.stringify(open.at(-1))}`);
+  // Closed: back to the page's own colour.
+  const after = frames.filter((frame) => frame.phase === 'closing' && !frame.shrunk);
+  assert.ok(after.length && after.every((frame) => near(frame.flat, rest, 0)), `${label}: the closed page is back on its own colour`);
+  return { rest, frames: frames.length, fullSize: full.length };
+}
+
 const ready = async (page) => {
   await page.waitForFunction(() => {
     const main = document.querySelector('main');
@@ -466,6 +562,44 @@ try {
         return { routes, safariTop, safariEnd };
       });
     }
+    await check(safari, devices['iPhone 13'], 'iphone-shell-under-bars', async (page) => {
+      const cycle = async (label, open, close) => {
+        const frames = await recordShellBands(page, async (phase) => {
+          await phase('opening');
+          await open();
+          await page.waitForFunction(() => {
+            const transform = getComputedStyle(document.querySelector('main')).transform;
+            return transform !== 'none' && Math.abs(new DOMMatrix(transform).a - 0.9) < 0.0005 &&
+              Math.abs(Number(getComputedStyle(document.querySelector('#layout')).opacity) - 0.05) < 0.002;
+          }, null, { timeout: 8000 });
+          await phase('open');
+          await page.waitForTimeout(150);
+          await phase('closing');
+          await close();
+          await page.waitForFunction(() => document.documentElement.dataset.pageShrunk === undefined, null, { timeout: 8000 });
+          await page.waitForTimeout(150);
+        });
+        await writeFile(path.join(report, `shell-under-bars-${label.replace(/\W+/g, '-')}.json`), JSON.stringify(frames, null, 2));
+        return assertShellBands(frames, label);
+      };
+      // The Desk at its top: the page reaches under the toolbar, and past its start
+      // the status bar shows the flat colour.
+      await page.goto(base);
+      await ready(page);
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await page.waitForFunction(() => scrollY === 0);
+      const desk = await cycle('desk-top-menu', () => page.getByRole('button', { name: 'Open menu', exact: true }).click(),
+        () => page.getByRole('button', { name: 'Close menu', exact: true }).click());
+      // A course at its end, where it ends light: the page reaches under the status
+      // bar, and past its end the toolbar shows the flat colour. The header has
+      // scrolled away, so Search opens the same shell.
+      await page.goto(`${base}cen100/`);
+      await ready(page);
+      await page.evaluate(() => window.scrollTo(0, document.scrollingElement.scrollHeight));
+      await page.waitForFunction(() => scrollY > 200 && document.documentElement.dataset.edgeBottom === 'closed');
+      const course = await cycle('course-end-search', () => page.keyboard.press('Control+k'), () => page.keyboard.press('Escape'));
+      return { desk, course };
+    });
   } finally { await safari.close(); }
 
   const chromePhone = await chromium.launch({ headless: true });

@@ -77,6 +77,11 @@ export function buildShellTimeline({ isMobile }) {
 
   if (fluidCanvas) tl.to(fluidCanvas, { duration: 0, opacity: 0 }, 0);
   tl.to(main, { borderRadius: PAGE_RADIUS, border: PAGE_EDGE, scale: 0.9, pointerEvents: 'none', left: '-40vw' }, 0);
+  // How far the page has shrunk, on the page's own ease (0 at the tap, 1 open).
+  // Safari shows the page under its bars and, past the page's ends, one flat
+  // colour; both follow this (global.scss): the card's reach under the bars, and
+  // the flat colour, from the page's to the panel's ink. Reversing returns both.
+  if (ios) tl.fromTo(document.documentElement, { '--panel-cover': 0 }, { '--panel-cover': 1 }, 0);
   // Keep the canvas/grain shell full-height so it cannot expose bands above and below the page.
   tl.to(layout, { opacity: isMobile ? 0.05 : 0.3 }, 0);
   if (scrollbar) tl.to(scrollbar, isMobile ? { opacity: 0 } : { opacity: 0, right: '46vw', scale: 0.9 }, 0);

@@ -132,9 +132,54 @@ test('the paper caps stand down while a panel shell shrinks the page (iPhone and
   const hidden = global.search(/&\[data-page-shrunk\] #main::before,\s*&\[data-page-shrunk\] #main::after \{\s*display: none;/);
   assert.ok(shown !== -1 && hidden > shown, 'the stand-down rule follows the rule that shows the caps (same specificity)');
   // The shrunk document is clipped to the part that was on screen: one card, like Giats's.
-  assert.match(global, /&\[data-page-shrunk\] #main \{\s*clip-path: inset\(var\(--page-clip-top, 0px\) 0px var\(--page-clip-bottom, 0px\) 0px round 1\.3888888889vw\);/);
   assert.match(shell, /root\.style\.setProperty\('--page-clip-top'/);
   assert.match(shell, /root\.style\.removeProperty\('--page-clip-bottom'\)/);
+});
+
+test('the shrinking page keeps what Safari shows under its bars until it has shrunk', () => {
+  // Cut at the layout viewport from the tap, the page under both bars turned dark
+  // while it still filled the screen, and stayed dark until a close had finished.
+  const global = read('../src/styles/global.scss');
+  const clip = global.slice(global.indexOf('&[data-page-shrunk] #main {'));
+  const rule = clip.slice(0, clip.indexOf('}')).replace(/\s+/g, ' ');
+  assert.match(rule, /clip-path: inset\( max\(0px, var\(--page-clip-top, 0px\) - \(1 - var\(--panel-cover, 1\)\) \* var\(--edge-bleed-top\)\) 0px max\(0px, var\(--page-clip-bottom, 0px\) - \(1 - var\(--panel-cover, 1\)\) \* var\(--edge-bleed-bottom\)\) 0px round calc\(var\(--panel-cover, 1\) \* 1\.3888888889vw\) \);/);
+  // --panel-cover runs with the page's own shrink: same timeline, start, duration
+  // and ease, so reversing the shell returns it, and only in document mode.
+  const shell = read('../src/components/dom/navbar/panelShell.js');
+  assert.match(shell, /if \(ios\) tl\.fromTo\(document\.documentElement, \{ '--panel-cover': 0 \}, \{ '--panel-cover': 1 \}, 0\);/);
+  const body = shell.slice(shell.indexOf('export function buildShellTimeline'));
+  assert.ok(body.indexOf("'--panel-cover'") > body.indexOf('tl.to(main, {'), 'added beside the page tween, with the timeline defaults');
+  assert.doesNotMatch(body.slice(body.indexOf("'--panel-cover'"), body.indexOf('\n', body.indexOf("'--panel-cover'"))), /duration|ease/);
+});
+
+test('past the ends of the page Safari shows the root colour, so the body stays clear', () => {
+  // WebKit blends the body's background over the root's for the colour past the
+  // page's ends (documentBackgroundColor): an ink body put a black box under the
+  // status bar at the top of every page and under the toolbar at the end of
+  // every course page.
+  const global = read('../src/styles/global.scss');
+  const clear = global.search(/html\[data-scroll-mode='document'\] body \{\s*background-color: transparent;\s*\}/);
+  assert.ok(clear !== -1);
+  // Same specificity as the open panels' body rule, so it must come after it.
+  assert.ok(clear > global.indexOf("html[data-browser-surface='dark'] body {"));
+  assert.doesNotMatch(global, /html\[data-scroll-mode='document'\] body \{\s*background-color: var\(--black\)/);
+  // The dark panels keep their ink fallback, on the app's root instead.
+  const app = read('../src/pages/app.module.scss');
+  const documentMode = app.slice(app.indexOf(":global(html[data-scroll-mode='document']) {"));
+  assert.match(documentMode, /\.root \{[^}]*background-color: var\(--black\);[^}]*\}/);
+});
+
+test('while a panel shrinks the page, the colour past its ends goes from the page\'s to the ink with it', () => {
+  const global = read('../src/styles/global.scss');
+  const supports = global.slice(global.indexOf('@supports (background-color: color-mix(in srgb, red 50%, blue)) {'));
+  const block = supports.slice(0, supports.indexOf('\n}'));
+  assert.match(block, /html\[data-scroll-mode='document'\]\[data-page-shrunk\] \{\s*background-color: color-mix\(in srgb, var\(--black\) calc\(var\(--panel-cover, 1\) \* 100%\), var\(--pageUnderGrain\)\);\s*\}/);
+  // At the end of a page that ends dark it was the ink before the tap, and stays so.
+  assert.match(block, /html\[data-scroll-mode='document'\]\[data-page-shrunk\]\[data-edge-end='dark'\] \{\s*background-color: var\(--black\);\s*\}/);
+  // After the open panels' and the dark footer's root rules, at equal or higher specificity.
+  const at = global.indexOf('@supports (background-color: color-mix(');
+  assert.ok(at > global.indexOf("html[data-browser-surface='dark'],"));
+  assert.ok(at > global.indexOf("html[data-scroll-mode='document'][data-browser-bottom='dark'] {"));
 });
 
 test('the shared canvas drops a View\'s last frame once nothing draws', () => {
@@ -199,8 +244,10 @@ test('Safari\'s flat fill past the page and under its bottom bar is the page as 
 });
 
 test('the artwork runs on unchanged under the bottom bar, and fades into the ink only past a dark end', () => {
-  const global = read('../src/styles/global.scss');
-  assert.match(global, /html\[data-scroll-mode='document'\] body \{\s*background-color: var\(--black\);\s*\}/);
+  // Inside a dark panel, wherever the artwork is not painted, the ink shows (the
+  // app's root; past the page's ends Safari shows the root colour, see above).
+  const documentMode = read('../src/pages/app.module.scss');
+  assert.match(documentMode.slice(documentMode.indexOf(":global(html[data-scroll-mode='document']) {")), /\.root \{[^}]*background-color: var\(--black\);/);
   // Safari shows the artwork's reach under its bottom bar. A layer that shades it
   // at the layout viewport's bottom edge (#67 faded it to ink there) ends in a
   // line where the bar begins, so the fade is invisible...
