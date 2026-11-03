@@ -80,7 +80,7 @@ function Index({ active, eventSource }) {
         >
           {/* keeps a loading scene (the physics chunk, the disc font) inside the canvas */}
           <Suspense fallback={null}>
-            <FruitNinja active={active} eventSource={eventSource} scoreRef={scoreRef} onSlice={onSlice} onMiss={onMiss} />
+            <FruitNinja active={active} eventSource={eventSource} scoreRef={scoreRef} streakRef={streakScore} onSlice={onSlice} onMiss={onMiss} />
           </Suspense>
         </Canvas>
       </WebGLGate>

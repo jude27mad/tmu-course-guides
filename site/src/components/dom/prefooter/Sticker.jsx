@@ -8,14 +8,14 @@ import { createDiscFlight, GAME_MAX_AGE } from './gameTiming.mjs';
 
 // Slicing swaps the disc for its two halves and scores one point, but never
 // marks anything done (ticks and completion records live on the course pages).
-function Sticker({ id, positionX, image, imageSliced, isMobile, viewportHeight, ceilingY, ceilingRef, floorRef, onDone, onSlice, onMiss, eventSource, active }) {
+function Sticker({ id, positionX, image, imageSliced, isMobile, viewportHeight, ceilingY, speed, ceilingRef, floorRef, onDone, onSlice, onMiss, eventSource, active }) {
   const bodyRef = useRef();
   const age = useRef(0);
   const gone = useRef(false);
   const [fruitSliced, setFruitSliced] = useState(false);
   const sliced = useRef(false);
 
-  const [flight] = useState(() => createDiscFlight({ viewportHeight, isMobile, ceilingY }));
+  const [flight] = useState(() => createDiscFlight({ viewportHeight, isMobile, ceilingY, speed }));
 
   useFrame((_, delta) => {
     if (!active || gone.current) return;
@@ -51,7 +51,15 @@ function Sticker({ id, positionX, image, imageSliced, isMobile, viewportHeight, 
   const map = fruitSliced ? imageSliced : image;
 
   return (
-    <RigidBody ref={bodyRef} collisionGroups={0x00000001} position={mobileConfig.position} linearVelocity={[0, flight.velocityY, 0]} angularVelocity={[0, 0, flight.spin]} colliders="ball">
+    <RigidBody
+      ref={bodyRef}
+      collisionGroups={0x00000001}
+      position={mobileConfig.position}
+      linearVelocity={[0, flight.velocityY, 0]}
+      angularVelocity={[0, 0, flight.spin]}
+      gravityScale={flight.gravityScale}
+      colliders="ball"
+    >
       <Plane scale={mobileConfig.scale} onPointerEnter={handleFruitSliced} onPointerDown={handleFruitSliced} userData={{ slice: handleFruitSliced }}>
         {isMobile ? (
           // phones: no iridescence/clearcoat passes
