@@ -50,9 +50,9 @@ jobs:
   build:
     name: Build and check the site
     runs-on: ubuntu-24.04
-    # The existing browser checks take about 19 minutes; leave room for genuine
-    # physics settling in review captures and normal runner variation.
-    timeout-minutes: 25
+    # The full browser suite can exceed 25 minutes, including physics settling
+    # and WebKit captures. Leave room for runner variation and artifact uploads.
+    timeout-minutes: 40
     permissions:
       contents: read
       pages: read
