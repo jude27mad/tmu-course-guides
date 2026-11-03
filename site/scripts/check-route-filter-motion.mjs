@@ -997,8 +997,11 @@ try {
             }, offset);
             await page.locator('[data-companion-game][data-active="true"] canvas').waitFor();
             await page.waitForFunction(() => {
-              const box = document.querySelector('[data-companion-game] canvas')?.getBoundingClientRect();
-              return box && Math.abs(box.top) < 1 && Math.abs(box.bottom - innerHeight) < 1;
+              const canvas = document.querySelector('[data-companion-game] canvas');
+              const box = canvas?.getBoundingClientRect();
+              // Canvas mounts before the lazy physics scene. Check a rendered
+              // game frame, not the empty loading canvas with clip-path:none.
+              return box && Math.abs(box.top) < 1 && Math.abs(box.bottom - innerHeight) < 1 && getComputedStyle(canvas).clipPath.startsWith('inset(');
             });
             await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
             const geometry = await page.evaluate(() => {
