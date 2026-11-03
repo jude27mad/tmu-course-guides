@@ -8,7 +8,7 @@ import { createDiscFlight, GAME_MAX_AGE } from './gameTiming.mjs';
 
 // Slicing swaps the disc for its two halves and scores one point, but never
 // marks anything done (ticks and completion records live on the course pages).
-function Sticker({ id, positionX, image, imageSliced, isMobile, viewportHeight, ceilingY, ceilingRef, onDone, onSlice, onMiss, eventSource, active }) {
+function Sticker({ id, positionX, image, imageSliced, isMobile, viewportHeight, ceilingY, ceilingRef, floorRef, onDone, onSlice, onMiss, eventSource, active }) {
   const bodyRef = useRef();
   const age = useRef(0);
   const gone = useRef(false);
@@ -36,14 +36,15 @@ function Sticker({ id, positionX, image, imageSliced, isMobile, viewportHeight, 
       if (event?.pointerType === 'touch') return;
       if (!active || sliced.current || gone.current) return;
       // Raycasting still sees clipped meshes. Never score an invisible hit.
-      if ((event?.point?.y ?? bodyRef.current?.translation().y ?? Infinity) > ceilingRef.current) return;
+      const hitY = event?.point?.y ?? bodyRef.current?.translation().y ?? Infinity;
+      if (hitY > ceilingRef.current || hitY <= floorRef.current) return;
       sliced.current = true;
       const element = eventSource.current;
       if (element) element.dataset.gameSlices = String(Number(element.dataset.gameSlices || 0) + 1);
       onSlice();
       setFruitSliced(true);
     },
-    [eventSource, active, onSlice, ceilingRef],
+    [eventSource, active, onSlice, ceilingRef, floorRef],
   );
 
   const mobileConfig = { position: [positionX, flight.startY, 0], scale: flight.radius * 2 };

@@ -982,11 +982,12 @@ try {
         return { words, discs: count, flight, slices, scoreHistory, reveal: { before, after }, frameP95Ms: frames[Math.floor(frames.length * 0.95)], note: 'CI diagnostics; not physical-device performance.' };
       });
       if (label === 'iphone' || label === 'desktop') await check(browser, options, `${label}-game-screen-edge`, async (page) => {
+        await observeCanvasStores(page);
         const evidence = [];
         for (const route of ['', 'courses/', 'privacy/', 'updates/']) {
           await page.goto(base + route);
           await ready(page);
-          for (const offset of [-0.15, 0.7, 0.25]) {
+          for (const offset of [-0.15, 0.7, 0.25, 1.1, 0.6, 0.95]) {
             await page.evaluate(offset => {
               const section = document.querySelector('[data-companion-statement]');
               const documentMode = document.documentElement.dataset.scrollMode === 'document';
@@ -996,18 +997,73 @@ try {
             }, offset);
             await page.locator('[data-companion-game][data-active="true"] canvas').waitFor();
             await page.waitForFunction(() => {
-              const box = document.querySelector('[data-companion-game] canvas')?.getBoundingClientRect();
-              return box && Math.abs(box.top) < 1 && Math.abs(box.bottom - innerHeight) < 1;
+              const canvas = document.querySelector('[data-companion-game] canvas');
+              const box = canvas?.getBoundingClientRect();
+              // Canvas mounts before the lazy physics scene. Check a rendered
+              // game frame, not the empty loading canvas with clip-path:none.
+              return box && Math.abs(box.top) < 1 && Math.abs(box.bottom - innerHeight) < 1 && getComputedStyle(canvas).clipPath.startsWith('inset(');
             });
+            await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
             const geometry = await page.evaluate(() => {
               const game = document.querySelector('[data-companion-game]');
-              const box = game.querySelector('canvas').getBoundingClientRect();
-              const stage = document.querySelector('[data-companion-statement]').firstElementChild.getBoundingClientRect();
-              return { top: box.top, bottom: box.bottom, stageBottom: stage.bottom, viewport: innerHeight, left: box.left, stageLeft: stage.left, width: box.width, stageWidth: stage.width, clippedByPage: !!game.closest('main') };
+              const canvas = game.querySelector('canvas');
+              const box = canvas.getBoundingClientRect();
+              const section = document.querySelector('[data-companion-statement]');
+              const stage = section.firstElementChild.getBoundingClientRect();
+              const clip = getComputedStyle(canvas).clipPath.slice(6, -1).split(/\s+/).map(parseFloat);
+              return { top: box.top, bottom: box.bottom, stageBottom: stage.bottom, paperBottom: section.getBoundingClientRect().bottom, paintedBottom: box.bottom - (clip[2] ?? clip[0]), viewport: innerHeight, left: box.left, stageLeft: stage.left, width: box.width, stageWidth: stage.width, clippedByPage: !!game.closest('main') };
             });
-            assert.equal(geometry.clippedByPage, false, 'the white section cannot clip the fixed game');
+            assert.equal(geometry.clippedByPage, false, 'scrolling does not move the fixed game canvas');
             assert.ok(Math.abs(geometry.left - geometry.stageLeft) < 1 && Math.abs(geometry.width - geometry.stageWidth) < 1, 'the existing horizontal game area is preserved');
             if (offset === 0.7) assert.ok(geometry.stageBottom < geometry.bottom - 20, 'the canvas continues to the screen edge after the statement starts leaving');
+            assert.ok(Math.abs(geometry.paintedBottom - Math.min(geometry.bottom, geometry.paperBottom)) < 1,
+              `the visible game ends exactly at the white/dark boundary: ${JSON.stringify(geometry)}`);
+            // Reverse scroll while a real disc is airborne, not just while an
+            // empty canvas is mounted.
+            if (!route && offset === 0.7) await page.waitForFunction(() => {
+              const state = [...window.canvasStores].map(store => store.getState()).find(item => item.gl.domElement.closest('[data-companion-game]'));
+              let airborne = false;
+              state?.scene.traverse(mesh => {
+                if (!mesh.userData.slice) return;
+                const point = mesh.getWorldPosition(mesh.position.clone()).project(state.camera);
+                airborne ||= Math.abs(point.y) < 0.8;
+              });
+              return airborne;
+            });
+            if (!route && offset === 1.1) {
+              const hiddenHit = await page.evaluate(async touchInput => {
+                const stage = document.querySelector('[data-game-discs]');
+                const state = [...window.canvasStores].map(store => store.getState()).find(item => item.gl.domElement.closest('[data-companion-game]'));
+                const deadline = performance.now() + 18000;
+                while (performance.now() < deadline) {
+                  await new Promise(requestAnimationFrame);
+                  const box = state.gl.domElement.getBoundingClientRect();
+                  const edge = document.querySelector('[data-companion-statement]').getBoundingClientRect().bottom;
+                  let target;
+                  state.scene.traverse(mesh => {
+                    if (!mesh.userData.slice) return;
+                    const point = mesh.getWorldPosition(mesh.position.clone()).project(state.camera);
+                    const clientX = box.left + (point.x + 1) * box.width / 2;
+                    const clientY = box.top + (1 - point.y) * box.height / 2;
+                    if (Math.abs(point.x) < 0.8 && clientY > edge + 10 && clientY < innerHeight - 10) target = { clientX, clientY };
+                  });
+                  if (!target) continue;
+                  const before = Number(stage.dataset.gameSlices || 0);
+                  if (touchInput) {
+                    const touch = { identifier: 1, target: stage, ...target };
+                    for (const type of ['touchstart', 'touchend']) {
+                      const event = new Event(type, { bubbles: true, cancelable: true });
+                      const touches = type === 'touchend' ? [] : [touch];
+                      Object.assign(event, { touches, targetTouches: touches, changedTouches: [touch] });
+                      stage.dispatchEvent(event);
+                    }
+                  } else stage.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerType: 'mouse', ...target }));
+                  return { before, after: Number(stage.dataset.gameSlices || 0) };
+                }
+                throw new Error('No airborne disc crossed behind the footer mask');
+              }, label === 'iphone');
+              assert.equal(hiddenHit.after, hiddenHit.before, 'discs masked by the dark footer cannot score or capture a touch');
+            }
             evidence.push({ route, offset, ...geometry });
           }
           await page.evaluate(() => (document.documentElement.dataset.scrollMode === 'document' ? window : document.querySelector('main')).scrollTo(0, 0));
