@@ -1,14 +1,29 @@
 /* eslint-disable import/extensions */
 import { BADGE, getCourse } from '@src/lib';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
+import useWebGL from '@src/hooks/useWebGL';
 import { useBadgeRegistry } from './BadgeProvider';
 import styles from './badge.module.scss';
+
+// Where the 3D badge can draw, its HTML card waits this long for it (ms) before
+// fading in. The card used to show at once and then vanish when the badge drew,
+// a pale box popping in each window of a page that had just arrived.
+const DRAW_GRACE_MS = 2500;
 
 export default function CourseBadge({ instanceId, courseId, motionGroup, next, ready = true, className }) {
   const registry = useBadgeRegistry();
   const root = useRef();
   const course = getCourse(courseId);
+  // null during the server render and hydration: the card shows, as it must
+  // without JavaScript. false (no WebGL, or the 3D layer failed): it shows at once.
+  const webgl = useWebGL();
+  const [waiting, setWaiting] = useState(true);
+  useEffect(() => {
+    setWaiting(true);
+    const timer = setTimeout(() => setWaiting(false), DRAW_GRACE_MS);
+    return () => clearTimeout(timer);
+  }, [courseId]);
   const look = useMemo(
     () => ({
       ...BADGE,
@@ -50,7 +65,7 @@ export default function CourseBadge({ instanceId, courseId, motionGroup, next, r
   }, [registry, instanceId, motionGroup]);
 
   return (
-    <div ref={root} className={clsx(styles.root, className)} data-course-badge={courseId} data-badge-instance={instanceId} aria-hidden="true">
+    <div ref={root} className={clsx(styles.root, className)} data-course-badge={courseId} data-badge-instance={instanceId} data-badge-pending={webgl && waiting ? '' : undefined} aria-hidden="true">
       <div className={styles.fallback} data-badge-fallback>
         <strong>{course.code}</strong>
         <span>{course.name}</span>

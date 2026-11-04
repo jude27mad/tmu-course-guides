@@ -13,15 +13,17 @@ import styles from '@src/components/dom/styles/layout.module.scss';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
 import { TOKENS } from '@src/lib/palette.mjs';
-import { PANEL_DEFAULTS, fadePanelEdges, markPageShrunk } from '@src/components/dom/navbar/panelShell';
+import { PANEL_DEFAULTS, fadePanelRows, growPageBack, HANDOFF, markPageShrunk } from '@src/components/dom/navbar/panelShell';
 
 // Giats's card (desktop and Android, except between courses): shrink, slide, slide, grow.
 // Two steps out and about two in keep a page change within 0.6 s.
 const STEP = 0.14;
-// An open panel's shell closes first (Giats's menu timeline, panelShell.js).
+// How long an open panel's shell takes to close (Giats's menu timeline, panelShell.js).
 const PANEL_CLOSE = PANEL_DEFAULTS.duration;
 // An in-page anchor glides after its view has switched (ms).
 const ANCHOR_DELAY = 450;
+// A page chosen in Menu or Search, on every screen, is the hand-off instead
+// (panelShell.js): the new page comes forward out of the card the panel made.
 // The paper fade (iPhone and iPad, and between courses on every screen): the page
 // dissolves into the paper behind it and the next page rises out of it. In ms: `paper`
 // is how fast the paper comes up, `out` the old page's fade, `in` the new page's,
@@ -92,7 +94,22 @@ function Layout({ children, layoutRef, mainRef, router }) {
 
   // One page change at a time: its phase ('idle' | 'exit' | 'enter'), plan, card
   // timeline or fade animations, and react-transition-group's done for the phase.
-  const runRef = useRef({ phase: 'idle', plan: null, tl: null, start: null, anims: [], end: null, id: 0, done: null, ready: false, skip: false, steady: true, from: router.asPath, swipe: null });
+  const runRef = useRef({
+    phase: 'idle',
+    plan: null,
+    tl: null,
+    start: null,
+    anims: [],
+    rows: null,
+    end: null,
+    id: 0,
+    done: null,
+    ready: false,
+    skip: false,
+    steady: true,
+    from: router.asPath,
+    swipe: null,
+  });
 
   const animated = introOut && !still;
 
@@ -111,6 +128,13 @@ function Layout({ children, layoutRef, mainRef, router }) {
       run.ready = false;
       done();
     } else run.done = done;
+  };
+
+  // The hand-off fades the chosen panel's rows from the tap; they are shown again
+  // once the panel is hidden, or at once if the page could not be opened.
+  const showPanelRows = (run) => {
+    run.rows?.cancel();
+    run.rows = null;
   };
 
   // Stops whatever is playing. A stopped fade keeps its current look, so the next
@@ -169,11 +193,15 @@ function Layout({ children, layoutRef, mainRef, router }) {
     gsap.set(routePaper(), { display: 'none' });
     gsap.set(siteHeader(), { autoAlpha: 1 });
     if (nativeIOSScroll() || run.plan !== 'card') gsap.set(main, { clearProps: 'transform,transformOrigin,left' });
-    if (nativeIOSScroll()) {
-      markPageShrunk(false);
+    if (run.plan === 'handoff') run.tl?.progress(1).kill();
+    if (nativeIOSScroll()) markPageShrunk(false);
+    // The shell hid the pointer fluid. A shell held through the page change (on
+    // iPhone and iPad, and for the hand-off) never reverses to bring it back.
+    if (nativeIOSScroll() || run.plan === 'handoff') {
       const fluid = document.getElementById('fluidCanvas');
       if (fluid) gsap.set(fluid, { opacity: 1 });
     }
+    showPanelRows(run);
     // The finished fade's end state is already the page's own.
     run.anims.forEach((anim) => anim.cancel());
     run.anims = [];
@@ -207,14 +235,20 @@ function Layout({ children, layoutRef, mainRef, router }) {
     const superseding = run.phase === 'enter';
     // Safari's own swipe-back animation already showed the change.
     const swiped = run.swipe === pathKey(to);
-    const panelOpen = state.isMenuOpen || state.isSearchOpen;
+    // The panel the page was chosen in, if any: the change is then the hand-off.
+    let panel = null;
+    if (state.isSearchOpen) panel = document.getElementById('search');
+    else if (state.isMenuOpen) panel = document.getElementById('menu');
+    const handoff = !!panel && !state.still && !swiped;
 
     stopMotion(run);
     run.phase = 'exit';
     run.ready = false;
     run.skip = false;
     run.swipe = null;
-    state.setIsTransitioning(true);
+    // 'handoff' tells the navbar to hold the panel's shell: the arrival grows the
+    // new page back from it.
+    state.setIsTransitioning(handoff ? 'handoff' : true);
     state.lenis.stop();
     closePanels();
 
@@ -228,21 +262,44 @@ function Layout({ children, layoutRef, mainRef, router }) {
     }
 
     const betweenCourses = !!(courseIdFromPath(from) && courseIdFromPath(to));
-    // Phone transitions stay full width with either scroll owner. Restoring
-    // Giats's contained input must not bring back the desktop loading card.
-    // From an open panel the paper rises over the dark artwork the shell uncovered.
-    if (isMobileNow() || ios || (!panelOpen && (betweenCourses || superseding))) run.plan = betweenCourses ? 'course' : 'page';
+    // Chosen in Menu or Search: the hand-off, on every screen. Otherwise phone
+    // transitions stay full width with either scroll owner; restoring Giats's
+    // contained input must not bring back the desktop loading card.
+    if (handoff) run.plan = 'handoff';
+    else if (isMobileNow() || ios || betweenCourses || superseding) run.plan = betweenCourses ? 'course' : 'page';
     else run.plan = 'card';
     // The header stays put while it is on screen. Once scrolled away, or moved by a
     // panel's shell, it fades with the page so it cannot pop back in.
-    run.steady = run.plan !== 'card' && scrollTop() < 1 && !panelOpen && Number(getComputedStyle(header).opacity) === 1;
+    run.steady = (run.plan === 'page' || run.plan === 'course') && scrollTop() < 1 && Number(getComputedStyle(header).opacity) === 1;
+
+    if (run.plan === 'handoff') {
+      // The hand-off. The panel's rows have been fading since the tap; the page
+      // behind them (the dim card the shell made of it, and the 3D layer) goes
+      // with them, so nothing of it shows again. The shell itself stays as it is.
+      gsap.set('#loader', { autoAlpha: 0, display: 'none' });
+      gsap.set(main, { pointerEvents: 'none', willChange: 'opacity, transform' });
+      if (!run.rows) run.rows = fadePanelRows(panel);
+      const rowsLeft = run.rows ? Math.max(0, HANDOFF.rows - (Number(run.rows.currentTime) || 0)) : 0;
+      // On phones the old page is all but invisible behind the panel: only the rows
+      // need to finish. Beside a desktop panel it fades out where it stands.
+      const hidden = Number(getComputedStyle(layoutRef.current).opacity) <= 0.1;
+      const out = { duration: Math.max(hidden ? 0 : HANDOFF.out, rowsLeft), easing: EASE.in, fill: 'both' };
+      // The scrollbar is held hidden too: a scroll event as the page resets could
+      // otherwise show it beside the fading card.
+      const leaving = [main, viewCanvas(), document.getElementById('scrollbar')].filter(Boolean);
+      playPhase(
+        run,
+        leaving.map((el) => el.animate({ opacity: 0 }, out)),
+        covered,
+      );
+      return;
+    }
 
     if (run.plan === 'card') {
-      const menuTime = panelOpen ? PANEL_CLOSE : 0;
       const scrollbar = document.getElementById('scrollbar');
       const tl = gsap.timeline({ paused: true, onComplete: covered, defaults: { ease: 'power2.inOut', duration: STEP } });
       tl.set(main, { willChange: 'transform', pointerEvents: 'none' }, 0);
-      if (scrollbar) tl.to(scrollbar, { autoAlpha: 0 }, menuTime);
+      if (scrollbar) tl.to(scrollbar, { autoAlpha: 0 }, 0);
       tl.to(
         header,
         {
@@ -259,12 +316,12 @@ function Layout({ children, layoutRef, mainRef, router }) {
           },
           overwrite: true,
         },
-        menuTime,
+        0,
       )
-        .to(layoutRef.current, { height: '90svh', opacity: 1 }, menuTime)
-        .to(main, { scale: 0.9, opacity: 1, border: `2px solid ${TOKENS.page}`, borderRadius: '1.3888888889vw' }, menuTime)
-        .to(main, { x: '-100%' }, STEP + menuTime)
-        .to('#loader', { x: '0px' }, STEP + menuTime)
+        .to(layoutRef.current, { height: '90svh', opacity: 1 }, 0)
+        .to(main, { scale: 0.9, opacity: 1, border: `2px solid ${TOKENS.page}`, borderRadius: '1.3888888889vw' }, 0)
+        .to(main, { x: '-100%' }, STEP)
+        .to('#loader', { x: '0px' }, STEP)
         .set(main, { x: '100%' });
       run.tl = tl;
       startNextTick(run, tl);
@@ -286,10 +343,8 @@ function Layout({ children, layoutRef, mainRef, router }) {
     const out = { duration: fade.out, easing: EASE.in, fill: 'both' };
     const anims = [paper.animate({ opacity: [paperFrom, 1] }, { duration: fade.paper, easing: EASE.out, fill: 'both' }), ...fading.map((el) => el.animate({ opacity: 0 }, out))];
     if (!run.steady) anims.push(header.animate({ opacity: 0 }, out));
-    // An open panel's shell dims the page; bring it up to the paper.
+    // A panel's shell still closing dims the page; bring it up to the paper.
     if (Number(gsap.getProperty(layoutRef.current, 'opacity')) < 1) anims.push(layoutRef.current.animate({ opacity: 1 }, { duration: fade.paper, easing: EASE.out, fill: 'both' }));
-    // On iPhone and iPad Safari's colour past the page's ends rises to the paper with it.
-    if (ios && panelOpen) fadePanelEdges(fade.paper / 1000);
     const scrollbar = document.getElementById('scrollbar');
     if (scrollbar) anims.push(scrollbar.animate({ opacity: 0 }, out));
     playPhase(run, anims, covered);
@@ -321,6 +376,25 @@ function Layout({ children, layoutRef, mainRef, router }) {
       gsap.set(header, { autoAlpha: 1, left: 0, top: 0, scale: 1 });
       run.anims = exitAnims;
       finishEnter();
+      return;
+    }
+
+    if (run.plan === 'handoff') {
+      // The new page comes forward out of the card, opening at its top, as the
+      // dark recedes; the header and the 3D layer follow as it settles.
+      gsap.set('#loader', { autoAlpha: 0, display: 'none' });
+      gsap.set(layoutRef.current, { height: '100%' });
+      lenis.resize();
+      lenis.scrollTo(0, { force: true, immediate: true });
+      const { anims, edges } = growPageBack({ main, layout: layoutRef.current, header, scene: viewCanvas() });
+      exitAnims.forEach((anim) => anim.cancel());
+      if (edges) {
+        // Started with the animations, on the next tick, from its start: the
+        // navbar's shell rebuild for the new page may have reset what it drives.
+        run.tl = edges;
+        run.start = gsap.delayedCall(0, () => edges.play(0));
+      }
+      playPhase(run, anims, finishEnter);
       return;
     }
 
@@ -404,6 +478,36 @@ function Layout({ children, layoutRef, mainRef, router }) {
       return true;
     });
     return () => router.beforePopState(() => true);
+  }, [router]);
+
+  // A page chosen in Menu or Search: its rows start to leave at the tap, while the
+  // next page loads (the hand-off continues in handleExit). A page that cannot be
+  // opened, or a change that does not leave this page, puts them back.
+  useEffect(() => {
+    const onStart = (url) => {
+      const state = useStore.getState();
+      const run = runRef.current;
+      if (run.rows || state.still || !state.introOut || run.phase !== 'idle') return;
+      let panel = null;
+      if (state.isSearchOpen) panel = document.getElementById('search');
+      else if (state.isMenuOpen) panel = document.getElementById('menu');
+      const as = String(url);
+      const path = as.startsWith(router.basePath) ? as.slice(router.basePath.length) : as;
+      if (panel && pathKey(path) !== pathKey(router.asPath)) run.rows = fadePanelRows(panel);
+    };
+    const onSettled = () => {
+      const run = runRef.current;
+      if (run.phase === 'idle') showPanelRows(run);
+    };
+    router.events.on('routeChangeStart', onStart);
+    router.events.on('routeChangeError', onSettled);
+    router.events.on('routeChangeComplete', onSettled);
+    return () => {
+      router.events.off('routeChangeStart', onStart);
+      router.events.off('routeChangeError', onSettled);
+      router.events.off('routeChangeComplete', onSettled);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   // In-page anchors (#assignment-m2 from the menu, search or a link) never run the

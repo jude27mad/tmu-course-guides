@@ -21,7 +21,9 @@ export const useStore = create((set, get) => ({
   isLoading: true,
   setIsLoading: (isLoading) => set({ isLoading }),
   // true from a route's exit until the next page has entered (Layout); panels
-  // closing during it must not restart Lenis.
+  // closing during it must not restart Lenis. 'handoff' (also truthy) when the
+  // page was chosen in Menu or Search: the panel's shell then holds until the
+  // new page has grown back from it.
   isTransitioning: false,
   setIsTransitioning: (isTransitioning) => set({ isTransitioning }),
   fluidColor: DEFAULT_FLUID_COLOR,

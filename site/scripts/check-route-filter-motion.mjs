@@ -249,6 +249,10 @@ const startRouteFrames = (page) => page.evaluate(() => {
       headingTop: heading?.getBoundingClientRect().top, opacity, paper: paperOpacity, paperCovers: covers,
       exposure: 1 - layout * (1 - (1 - opacity) * (1 - (covers ? paperOpacity : 0))),
       menu: Number(getComputedStyle(document.querySelector('#menu')).opacity), viewport: innerWidth,
+      // The menu's rows as shown (the hand-off fades them inside the panel).
+      rows: shown(document.querySelector('#menu')) * shown(document.querySelector('#menu > nav')),
+      // The page as a card behind a panel, clipped to one screen (iPhone and iPad).
+      shrunk: 'pageShrunk' in document.documentElement.dataset, clipped: getComputedStyle(main).clipPath.startsWith('inset('),
       loader: getComputedStyle(document.querySelector('#loader')).display,
     });
     window.routeFrame = requestAnimationFrame(sample);
@@ -519,8 +523,20 @@ try {
         assertPaperFade(frames, 'from the menu', { fromPanel: true });
         const incoming = frames.filter((frame) => frame.title === 'Intro to Engineering' && frame.opacity > 0.05);
         assert.ok(incoming.length, 'sample the visible destination');
-        assert.ok(incoming.every((frame) => Math.abs(frame.left) < 2 && Math.abs(frame.width - frame.viewport) < 2),
-          `the incoming document must stay full width: ${JSON.stringify(incoming.filter((frame) => Math.abs(frame.left) >= 2 || Math.abs(frame.width - frame.viewport) >= 2).slice(0, 4))}`);
+        // The hand-off: the course comes forward out of the card the menu made, the way a
+        // close brings a page back. It only grows, and ends full width.
+        const shrinking = incoming.slice(1).filter((frame, i) => frame.width < incoming[i].width - 1 || frame.left < incoming[i].left - 1);
+        assert.deepEqual(shrinking.slice(0, 4), [], 'the arriving course only grows toward full width');
+        const last = incoming.at(-1);
+        assert.ok(Math.abs(last.left) < 2 && Math.abs(last.width - last.viewport) < 2, `the arriving course ends full width: ${JSON.stringify(last)}`);
+        // Smaller than the screen it is one clipped card, never the document-height page scaled
+        // beside a loading card (the owner's recording before the paper fade).
+        const card = incoming.filter((frame) => frame.width < frame.viewport - 2);
+        assert.ok(card.every((frame) => frame.shrunk && frame.clipped), `the growing course is one clipped card: ${JSON.stringify(card.find((frame) => !frame.shrunk || !frame.clipped))}`);
+        // The menu's rows have gone before the course shows; nothing of the old page comes back.
+        assert.ok(incoming.every((frame) => frame.rows < 0.05), `the menu's rows never sit over the arriving course: ${JSON.stringify(incoming.find((frame) => frame.rows >= 0.05))}`);
+        const first = frames.indexOf(incoming[0]);
+        assert.ok(frames.slice(first).every((frame) => frame.title === 'Intro to Engineering'), 'the old page never shows again once the course is in');
         assert.ok(incoming.every((frame) => frame.loader === 'none'), 'no second loading card beside the arriving course');
         assert.equal(await page.evaluate(() => window.routeDocument), true, 'client-side navigation');
         await page.getByRole('button', { name: /Guide tools/ }).click();

@@ -217,9 +217,11 @@ function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed
     band.current.geometry.setPoints(curvePoints);
   });
 
+  // Nothing of the badge draws before its face can: the ribbon and the clip alone
+  // (in three's default white) would hang in a window whose HTML card waits for it.
   return (
     <>
-      <group ref={card}>
+      <group ref={card} visible={!!textures}>
         {materials && (
           <mesh material={materials}>
             {/* three's RoundedBoxGeometry (as the MagicBall boxes): per-face UVs, so the back reads the right way round */}
@@ -236,7 +238,7 @@ function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed
           <meshStandardMaterial color={look.clip} metalness={0.6} roughness={0.35} />
         </mesh>
       </group>
-      <mesh ref={band}>
+      <mesh ref={band} visible={!!textures}>
         <meshLineGeometry />
         {textures && <meshLineMaterial color="white" resolution={[1, 1]} depthTest={false} useMap map={textures.band} repeat={[-3, 1]} lineWidth={1} />}
       </mesh>
@@ -276,6 +278,12 @@ function ClipToCard({ element }) {
   useFrame(() => {
     const backing = element?.closest('[data-badge-clip]')?.querySelector('[data-badge-backing]');
     if (!backing) return;
+    // The panel stays whole until the badge has drawn, so the window reads as part
+    // of the card rather than an empty hole while the badge loads.
+    if (element.dataset.badgeRendered !== 'true') {
+      if (backing.style.clipPath) backing.style.clipPath = '';
+      return;
+    }
     const window = element.getBoundingClientRect();
     const panel = backing.getBoundingClientRect();
     const left = window.left - panel.left;

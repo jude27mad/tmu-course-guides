@@ -129,6 +129,13 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-11-04-menu-handoff",
+  "date": "November 4, 2026",
+  "title": "Smoother page changes from the Menu",
+  "text": "Choosing a page in the Menu or Search no longer flashes grey and white. The links fade as you tap, and the new page grows smoothly out of the card the Menu made of the page, the way closing the Menu brings a page back. On Courses and the course pages, a course badge no longer shows a pale box first: its window stays dark until the badge drops in.",
+  "items": []
+ },
+ {
   "id": "2026-11-04-fixes",
   "date": "November 4, 2026",
   "title": "Fixes for deadlines, scrolling and backups",
