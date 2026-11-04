@@ -129,6 +129,13 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-11-04-opens-offline",
+  "date": "November 4, 2026",
+  "title": "Opens without a connection",
+  "text": "After one visit, the Desk, Courses and all three guides open even with no signal, using the copy this browser saved. With a connection you always get the latest dates; the saved copy is used only when the network is unavailable.",
+  "items": []
+ },
+ {
   "id": "2026-11-04-fixes",
   "date": "November 4, 2026",
   "title": "Fixes for deadlines, scrolling and backups",

@@ -2,6 +2,13 @@
 
 Latest first. Students see course changes under **Course updates** in each guide's Guide tools, and website changes on the **Website updates** page. Older entries record the behaviour at the time; later releases supersede them.
 
+## Unreleased — Opens without a connection
+
+- After one visit, the Desk, Courses, all three guides, Privacy and Website updates open without a connection. `site/public/sw.js` saves this site's own pages and files in the browser; nothing comes from or goes to another host.
+- Pages and their data are always fetched from the network first, so an online visit gets the latest dates; the saved copy is used only when the network fails. Build files, whose names change with their content, are served from the copy, so a repeat visit to a course page skips about fifteen revalidation requests once the browser's ten-minute cache has expired.
+- An address that was never saved shows a short "You're offline" page with a link to the Desk instead of the browser's error page.
+- `site/scripts/check-offline.mjs` registers the copy, goes offline, opens every course, an assignment, a link between courses and an unsaved address, and checks that a changed page wins over the saved one once back online. It runs in Pages CI. Other browser checks run without the copy.
+
 ## Unreleased — Fixes for deadlines, scrolling, reveals and backups
 
 - **A written lab quiz leaves "next".** Once a math section is chosen, a lab quiz is an exact target in its lab window, but the vendored schedule passes it only at Toronto midnight, so the course header and the Desk tile said "Due time passed" for the rest of quiz day and hid the real next item. An exact target now stops being next two hours (`GRACE`) after it ends, the rule the Desk's overall winner already used (`deadlines.mjs` `currentTarget()`); the parity sweeps in `tests/deadlines.test.mjs` apply the same rule to the old resolver.
