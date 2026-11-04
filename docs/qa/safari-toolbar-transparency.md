@@ -137,9 +137,9 @@ Change, document mode only:
 In a Chromium emulation of Safari's geometry (440x796 layout viewport, a 98px toolbar band below it in which the page and the artwork's reach are drawn, and past the document's end a filler with the root's flat colour that covers everything; SwiftShader WebGL), scrolling each of the four pages from 140px short of its end to the end in 5 to 20px steps, motion on:
 
 - Before: a step of 14 to 15 levels at the document's end (the artwork at 31 to 39 against the ink's 24) at every position while the end was under the toolbar; nothing at rest at the end.
-- After: RESULTS_AFTER
+- After: at most 1.8 levels at every position, the grain's own noise, on all four pages. The page's own fade ends exactly at the document's end (0px apart at every position), and at the end the fixed copy has replaced it.
 
-Pause motion holds the artwork still, darker near the bottom of the screen, so the step there was 2 to 3 levels before. Bounces of 20, 50 and 90px past the end (the page moved up while fixed layers stay) show no step at the page's end or at the bar in either build. This remains an emulation; the physical check is scrolling slowly to the end of the Desk, Courses, Privacy and Website updates, with motion on and with Pause motion, with the toolbar expanded and minimized.
+Pause motion holds the artwork still, darker near the bottom of the screen, so the step there was 2 to 3 levels before and is under 2 after. Bounces of 20, 50 and 90px past the end (the page moved up while fixed layers stay) show no step at the page's end or at the bar in either build (at most 2 levels). This remains an emulation; the physical check is scrolling slowly to the end of the Desk, Courses, Privacy and Website updates, with motion on and with Pause motion, with the toolbar expanded and minimized.
 
 ## Automated checks
 
