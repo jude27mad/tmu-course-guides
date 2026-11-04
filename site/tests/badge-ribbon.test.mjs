@@ -8,6 +8,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const THREE = require('three');
 const { MeshLineGeometry } = require('meshline');
+const { easeFor, frameShare } = await import('../src/utils/frameStep.mjs');
 
 // Exercise the production renderer against a moving, finite physics pose.
 // The original unbounded render lerp lost the ribbon in CI screenshots after
@@ -20,15 +21,18 @@ test('delayed rendering keeps the ribbon finite without changing the physics pos
   let callback;
   let sway = 0;
   const point = (x, y) => ({ current: { translation: () => new THREE.Vector3(x + sway, y, 0) } });
+  // a joint marker whose interpolated parent pose follows the sway
+  const joint = (y) => ({ current: { get parent() { return { position: new THREE.Vector3(sway, y, 0) }; } } });
   const object = new THREE.Object3D();
   object.position.set(0.3, -0.45, 0);
-  const body = { fixed: point(0, 4), j1: point(0, 3), j2: point(0, 2), j3: point(0, 1), cardObject: { current: { parent: object } } };
+  const body = { fixed: point(0, 4), j1Object: joint(3), j2Object: joint(2), j3Object: joint(1), cardObject: { current: { parent: object } } };
   const geometry = new MeshLineGeometry();
   const scope = {
     textures: true, started: { current: false }, element: { dataset: {} }, idle: false,
     body, card: { current: new THREE.Object3D() }, band: { current: { geometry } }, offsetX: 0,
     lerped: [new THREE.Vector3(), new THREE.Vector3()], maxSpeed: 50, minSpeed: 10,
     curvePoints: Array.from({ length: 33 }, () => new THREE.Vector3()),
+    drawn: new Float64Array(12).fill(NaN), layout: { draw: true }, stale: { current: false }, frameShare, easeFor,
     curve: Object.assign(new THREE.CatmullRomCurve3(Array.from({ length: 4 }, () => new THREE.Vector3())), { curveType: 'chordal' }),
     useFrame: frame => { callback = frame; },
   };
@@ -53,16 +57,19 @@ test('ribbon samples are reused without changing any rendered geometry', () => {
     let samples;
     let firstSamples;
     let firstVectors;
-    const point = (x, y, phase) => ({ current: { translation: () => new THREE.Vector3(
+    const at = (x, y, phase) => new THREE.Vector3(
       offsetX + x + Math.sin(frame * 0.15 + phase) * 0.4,
       y + Math.cos(frame * 0.09 + phase) * 0.1,
       Math.sin(frame * 0.07 + phase) * 0.2,
-    ) } });
+    );
+    const point = (x, y, phase) => ({ current: { translation: () => at(x, y, phase) } });
+    // the joints' markers follow their interpolated poses (BadgeCard reads marker.parent.position)
+    const joint = (x, y, phase) => ({ current: { get parent() { return { position: at(x, y, phase) }; } } });
     const object = new THREE.Object3D();
     object.position.set(offsetX + 0.3, -0.45, 0.2);
     object.quaternion.setFromEuler(new THREE.Euler(0.1, 0.2, -0.3));
     const body = {
-      fixed: point(0, 4, 0), j1: point(0, 3, 1), j2: point(0, 2, 2), j3: point(0, 1, 3),
+      fixed: point(0, 4, 0), j1Object: joint(0, 3, 1), j2Object: joint(0, 2, 2), j3Object: joint(0, 1, 3),
       cardObject: { current: { parent: object } },
     };
     const geometry = new MeshLineGeometry();
@@ -75,6 +82,7 @@ test('ribbon samples are reused without changing any rendered geometry', () => {
       band: { current: { geometry: { setPoints(points) { samples = points; geometry.setPoints(points); } } } },
       lerped: [new THREE.Vector3(), new THREE.Vector3()], maxSpeed: 50, minSpeed: 10,
       curvePoints: Array.from({ length: 33 }, () => new THREE.Vector3()), curve,
+      drawn: new Float64Array(12).fill(NaN), layout: { draw: true }, stale: { current: false }, frameShare, easeFor,
       useFrame: run => { callback = run; },
     };
     new Function(...Object.keys(scope), source.slice(start, end))(...Object.values(scope));

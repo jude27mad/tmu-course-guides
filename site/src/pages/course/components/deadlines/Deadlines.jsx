@@ -106,7 +106,7 @@ const Other = memo(({ setPortals, groups, now, courseId, sectionRef }) => {
                 if (index === last) {
                   gsap.set(shapeRef, { yPercent: 0 });
                 } else {
-                  gsap.to(shapeRef, { yPercent: 100, duration, ease: 'power1.out' });
+                  gsap.to(shapeRef, { yPercent: 100, duration, ease: 'power1.out', overwrite: 'auto' });
                 }
               },
               onEnterBack: () => {
@@ -116,7 +116,7 @@ const Other = memo(({ setPortals, groups, now, courseId, sectionRef }) => {
                 }
               },
               onLeaveBack: () => {
-                gsap.to(shapeRef, { yPercent: 100, duration, ease: 'power1.out' });
+                gsap.to(shapeRef, { yPercent: 100, duration, ease: 'power1.out', overwrite: 'auto' });
               },
               invalidateOnRefresh: true,
             },
