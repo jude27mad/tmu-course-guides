@@ -196,11 +196,13 @@ function Layout({ children, layoutRef, mainRef, router }) {
     if (run.plan === 'handoff') run.tl?.progress(1).kill();
     if (nativeIOSScroll()) markPageShrunk(false);
     // The shell hid the pointer fluid. A shell held through the page change (on
-    // iPhone and iPad, and for the hand-off) never reverses to bring it back.
-    if (nativeIOSScroll() || run.plan === 'handoff') {
-      const fluid = document.getElementById('fluidCanvas');
-      if (fluid) gsap.set(fluid, { opacity: 1 });
-    }
+    // iPhone and iPad, and for a hand-off, even one replaced by a second change)
+    // never reverses to bring it back; no panel is open by now.
+    const fluid = document.getElementById('fluidCanvas');
+    if (fluid) gsap.set(fluid, { opacity: 1 });
+    // A replaced phase writes its look into the 3D layer's style (stopMotion), which
+    // could be a hand-off's 0 before the layer came in. Its rest is the stylesheet's.
+    viewCanvas()?.style.removeProperty('opacity');
     showPanelRows(run);
     // The finished fade's end state is already the page's own.
     run.anims.forEach((anim) => anim.cancel());
@@ -243,6 +245,9 @@ function Layout({ children, layoutRef, mainRef, router }) {
 
     stopMotion(run);
     run.phase = 'exit';
+    // react-transition-group has cancelled the callback of a phase this change
+    // replaces; a release now must be kept for the exit's own.
+    run.done = null;
     run.ready = false;
     run.skip = false;
     run.swipe = null;
@@ -362,6 +367,7 @@ function Layout({ children, layoutRef, mainRef, router }) {
     run.tl = null;
     run.anims = [];
     run.phase = 'enter';
+    run.done = null;
     run.ready = false;
     const main = mainRef.current;
     const header = siteHeader();
@@ -495,17 +501,25 @@ function Layout({ children, layoutRef, mainRef, router }) {
       const path = as.startsWith(router.basePath) ? as.slice(router.basePath.length) : as;
       if (panel && pathKey(path) !== pathKey(router.asPath)) run.rows = fadePanelRows(panel);
     };
-    const onSettled = () => {
+    // A change cancelled by a second pick is followed by that pick's start, which
+    // keeps the rows leaving rather than flashing them back.
+    const onSettled = (error) => {
       const run = runRef.current;
-      if (run.phase === 'idle') showPanelRows(run);
+      if (run.phase === 'idle' && !error?.cancelled) showPanelRows(run);
     };
     router.events.on('routeChangeStart', onStart);
     router.events.on('routeChangeError', onSettled);
     router.events.on('routeChangeComplete', onSettled);
+    // A panel closed and opened again while the page loads shows its rows.
+    const stopWatching = useStore.subscribe((state, previous) => {
+      const opened = (state.isMenuOpen && !previous.isMenuOpen) || (state.isSearchOpen && !previous.isSearchOpen);
+      if (opened && runRef.current.phase === 'idle') showPanelRows(runRef.current);
+    });
     return () => {
       router.events.off('routeChangeStart', onStart);
       router.events.off('routeChangeError', onSettled);
       router.events.off('routeChangeComplete', onSettled);
+      stopWatching();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);

@@ -35,12 +35,12 @@ const element = (computed, props = {}) => ({
   ...props,
 });
 
-function withDocument({ ios }, run) {
+function withDocument({ ios, edges }, run) {
   const saved = { document: globalThis.document, window: globalThis.window, getComputedStyle: globalThis.getComputedStyle };
-  const properties = {};
+  const properties = { ...edges };
   const root = {
     dataset: ios ? { scrollMode: 'document', pageShrunk: '', footerBottom: 'dark' } : { scrollMode: 'contained' },
-    style: { setProperty: (name, value) => { properties[name] = value; }, removeProperty: (name) => { delete properties[name]; } },
+    style: { setProperty: (name, value) => { properties[name] = value; }, removeProperty: (name) => { delete properties[name]; }, getPropertyValue: (name) => properties[name] ?? '' },
   };
   // The shell left the page as a card: shifted 40vw left of a 390px screen, scaled 0.9, with rounded corners.
   const main = element({ left: '-156px', borderTopLeftRadius: '5.4px' }, { scaleX: 0.9, offsetTop: 0, offsetHeight: 2400, offsetParent: null });
@@ -120,6 +120,16 @@ test("on iPhone and iPad the card is refitted to the new page and Safari's edges
   });
 });
 
+test('a pick made while the panel was still opening starts its edges from where the shell left them', async () => {
+  const { growPageBack } = await loadShell();
+  withDocument({ ios: true, edges: { '--panel-cover': '0.6', '--panel-ink': '0.6' } }, ({ root, main, layout, header, scene }) => {
+    const { edges } = growPageBack({ main, layout, header, scene });
+    assert.equal(root['--panel-cover'], 0.6);
+    assert.equal(root['--panel-ink'], 0.6);
+    edges.kill();
+  });
+});
+
 test("Safari's edges keep time with the card: the GSAP ease is the card's CSS curve", async () => {
   const { cubicBezier } = await loadShell();
   // CSS's named curves, sampled where their values are known.
@@ -176,5 +186,12 @@ test("Layout hands a page chosen in a panel to the hand-off, and puts the panel'
   const stop = layout.slice(layout.indexOf('const stopMotion = (run) => {'), layout.indexOf('const finishPhase = () => {'));
   assert.doesNotMatch(stop, /rows/);
   // The held shell never reverses to bring the pointer fluid back.
-  assert.match(finish, /if \(nativeIOSScroll\(\) \|\| run\.plan === 'handoff'\) \{\s*const fluid/);
+  assert.match(finish, /const fluid = document\.getElementById\('fluidCanvas'\);\s*if \(fluid\) gsap\.set\(fluid, \{ opacity: 1 \}\);/);
+  // A replaced hand-off cannot leave the 3D layer hidden.
+  assert.match(finish, /viewCanvas\(\)\?\.style\.removeProperty\('opacity'\);/);
+  // A cancelled pick keeps the rows leaving; a panel opened again shows them.
+  assert.match(layout, /if \(run\.phase === 'idle' && !error\?\.cancelled\) showPanelRows\(run\);/);
+  assert.match(layout, /if \(opened && runRef\.current\.phase === 'idle'\) showPanelRows\(runRef\.current\);/);
+  // A synchronous release after a replaced phase is kept for the new phase.
+  assert.equal(layout.match(/run\.done = null;\n\s*run\.ready = false;/g)?.length, 2);
 });

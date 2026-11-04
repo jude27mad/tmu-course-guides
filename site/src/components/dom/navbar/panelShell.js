@@ -208,7 +208,16 @@ export function growPageBack({ main, layout, header, scene }) {
   let edges = null;
   if (ios) {
     root.dataset.footerBottom = 'light';
-    edges = gsap.fromTo(root, { '--panel-cover': 1, '--panel-ink': 1 }, { '--panel-cover': 0, '--panel-ink': 0, duration: HANDOFF.grow / 1000, ease: cubicBezier(...GROW_CURVE), paused: true });
+    // From where the shell left them (part way, for a pick made while it opened).
+    const from = (name) => {
+      const value = parseFloat(root.style.getPropertyValue(name));
+      return Number.isFinite(value) ? value : 1;
+    };
+    edges = gsap.fromTo(
+      root,
+      { '--panel-cover': from('--panel-cover'), '--panel-ink': from('--panel-ink') },
+      { '--panel-cover': 0, '--panel-ink': 0, duration: HANDOFF.grow / 1000, ease: cubicBezier(...GROW_CURVE), paused: true },
+    );
   }
   return { anims, edges };
 }

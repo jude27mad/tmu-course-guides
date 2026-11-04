@@ -291,7 +291,8 @@ test('leaving for another page from an open panel brings the colour past the end
   // The card is refitted to the new page at its top before it grows.
   assert.match(grow, /if \(ios\) markPageShrunk\(true\);/);
   assert.match(grow, /root\.dataset\.footerBottom = 'light';/);
-  assert.match(grow, /gsap\.fromTo\(root, \{ '--panel-cover': 1, '--panel-ink': 1 \}, \{ '--panel-cover': 0, '--panel-ink': 0, duration: HANDOFF\.grow \/ 1000, /);
+  // From where the shell left them (part way, for a pick made while it opened) to the page's.
+  assert.match(grow, /gsap\.fromTo\(\s*root,\s*\{ '--panel-cover': from\('--panel-cover'\), '--panel-ink': from\('--panel-ink'\) \},\s*\{ '--panel-cover': 0, '--panel-ink': 0, duration: HANDOFF\.grow \/ 1000, /);
   const layout = read('../src/components/dom/Layout.jsx');
   const exit = layout.slice(layout.indexOf('const handleExit = () => {'), layout.indexOf('const handleEnter = () => {'));
   assert.match(exit, /if \(handoff\) run\.plan = 'handoff';/);
