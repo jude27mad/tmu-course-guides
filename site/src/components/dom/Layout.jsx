@@ -300,6 +300,9 @@ function Layout({ children, layoutRef, mainRef, router }) {
     run.from = router.asPath;
     setFooterPath(router.asPath);
     if (!useStore.getState().introOut) return;
+    // A change that left during the intro (the 404 page's redirect) chose no
+    // plan, as its exit did not run: the new page is simply there.
+    if (!run.plan) run.plan = 'instant';
     // A skip or the watchdog can mount the page before the exit has played out.
     if (run.phase === 'exit') finishPhase();
     const exitAnims = run.anims;
