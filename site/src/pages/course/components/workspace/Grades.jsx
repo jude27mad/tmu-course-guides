@@ -1,8 +1,15 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { GRADE_SCALE, floorTenth, formatPercent, gradeNeeded, gradePlan, gradeStanding, joinMark, letterFor, parseMark, percentsFrom, roundGrade, splitMark } from '@src/lib';
+import gsap from 'gsap';
+import { GRADE_SCALE, describeMark, floorTenth, formatPercent, gradeIfAverage, gradeNeeded, gradePlan, gradeStanding, letterFor, percentsFrom, roundGrade, scoreFor, suggestOutOf } from '@src/lib';
 import { useGrades } from '@src/lib/react';
+import useStill from '@src/hooks/useStill';
+import { useStore } from '@src/store';
+// eslint-disable-next-line import/extensions
+import { bindModal } from '@src/pages/course/components/tools/dialog.mjs';
 import { useCourse } from '@src/pages/course/hooks/useCourseState';
+import MarkSheet from './MarkSheet';
+import MarkSlider from './MarkSlider';
 import workspace from './workspace.module.scss';
 import styles from './grades.module.scss';
 
@@ -10,7 +17,6 @@ import styles from './grades.module.scss';
 const shown = (value) => formatPercent(floorTenth(value));
 const weight = (value) => formatPercent(Math.round(value * 100) / 100);
 const TARGETS = GRADE_SCALE.filter((row) => row.min > 0);
-const clean = (value) => value.replace(/[^0-9.,/]/g, '').slice(0, 9);
 
 // "an A- (80%)", "a B+ (77%)"; "the Final Exam" but "Lab Quiz 4".
 const grade = (row) => `${/^[AEF]/.test(row.letter) ? 'an' : 'a'} ${row.letter} (${row.min}%)`;
@@ -31,7 +37,7 @@ function needText(row, need, standing) {
 }
 
 function headlineText(standing, current) {
-  if (current === null) return 'Enter a mark to see your average.';
+  if (current === null) return 'Tap an assessment below to add your first mark.';
   if (standing.complete) return 'Every mark is in. This is your calculated final grade.';
   const projected = floorTenth(standing.projected);
   if (projected - current < 0.1) return `Keep this average on the remaining ${weight(standing.remaining)} of the course and it becomes your final grade.`;
@@ -39,10 +45,18 @@ function headlineText(standing, current) {
   return `Keep averaging ${formatPercent(current)} on what’s left and you finish with ${formatPercent(projected)} (${letterFor(projected).letter}), because your lowest quiz is dropped.`;
 }
 
-function Meter({ standing, target }) {
+function Meter({ standing, target, planned }) {
   const secured = Math.min(100, standing.secured);
   const maximum = Math.min(100, standing.maximum);
-  const label = [`Secured ${shown(secured)} of the course.`, `Up to ${shown(maximum)} still possible.`, target ? `Target ${target.letter}, ${target.min}%.` : ''].filter(Boolean).join(' ');
+  const plan = planned === null || planned === undefined ? null : Math.min(100, planned);
+  const label = [
+    `Secured ${shown(secured)} of the course.`,
+    `Up to ${shown(maximum)} still possible.`,
+    target ? `Target ${target.letter}, ${target.min}%.` : '',
+    plan !== null ? `Plan: final ${shown(plan)}, ${letterFor(floorTenth(plan)).letter}.` : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
   return (
     <div className={styles.meter}>
       <div className={styles.track} role="img" aria-label={label}>
@@ -50,9 +64,11 @@ function Meter({ standing, target }) {
           <span className={styles.secured} style={{ width: `${secured}%` }} />
           <span className={styles.possible} style={{ left: `${secured}%`, width: `${maximum - secured}%` }} />
           <span className={styles.lost} style={{ left: `${maximum}%`, width: `${100 - maximum}%` }} />
+          {plan !== null ? <span className={styles.planned} style={{ left: `${secured}%`, width: `${Math.max(0, plan - secured)}%` }} /> : null}
         </div>
         <span className={styles.pass} style={{ left: '50%' }} />
         {target ? <span className={styles.target} style={{ left: `${target.min}%` }} data-label={`${target.letter} ${target.min}%`} data-edge={target.min >= 85 ? 'end' : undefined} /> : null}
+        {plan !== null ? <span className={styles.planPin} style={{ left: `${plan}%` }} /> : null}
       </div>
       <div className={styles.scale} aria-hidden="true">
         <span>0</span>
@@ -63,6 +79,7 @@ function Meter({ standing, target }) {
         <li data-kind="secured">Secured</li>
         <li data-kind="possible">Still possible</li>
         <li data-kind="lost">No longer possible</li>
+        {plan !== null ? <li data-kind="planned">Plan</li> : null}
       </ul>
     </div>
   );
@@ -71,10 +88,27 @@ function Meter({ standing, target }) {
 export default function Grades() {
   const { courseId, course, section } = useCourse();
   const [grades, update] = useGrades(courseId);
+  const still = useStill();
   const baseId = useId();
-  const [typingTotal, setTypingTotal] = useState(null);
   const [announcement, setAnnouncement] = useState('');
+  const [editing, setEditing] = useState(null);
+  const [lastSaved, setLastSaved] = useState(null);
+  // The row the sheet closed on: the Undo banner sits under it, where focus and the student's eyes are.
+  const [bannerAnchor, setBannerAnchor] = useState(null);
+  const editingRef = useRef(null);
+  editingRef.current = editing;
+  const [planX, setPlanX] = useState(null);
   const cleared = useRef(false);
+  const sheetRef = useRef(null);
+  const modalRef = useRef(null);
+  const openerRef = useRef(null);
+  const viaNext = useRef(false);
+  const carried = useRef('');
+  const planStart = useRef(undefined);
+  const planRef = useRef(null);
+  const session = useRef({});
+  const marksRef = useRef(grades.marks);
+  marksRef.current = grades.marks;
   const plan = useMemo(() => gradePlan(courseId, { section: section ?? undefined }), [courseId, section]);
   const percents = useMemo(() => percentsFrom(grades.marks), [grades.marks]);
   const standing = useMemo(() => gradeStanding(plan, percents), [plan, percents]);
@@ -92,11 +126,23 @@ export default function Grades() {
   const letter = letterFor(current);
   const hasMarks = Object.keys(grades.marks).length > 0;
   const answer = chosen ? needText(chosen.row, chosen.need, standing) : 'Choose a grade to see exactly what it takes.';
-  const fieldId = (item, part) => `${baseId}-${item.id.replace(/[^a-z0-9-]/gi, '-')}-${part}`;
   const securedLetter = letterFor(floorTenth(standing.secured));
   const summary = current === null ? 'No marks entered.' : `Current average ${formatPercent(current)}, ${letter.letter}.`;
+  const editingItem = plan.items.find((item) => item.id === editing) || null;
+  const nextItem = editingItem ? plan.items[plan.items.indexOf(editingItem) + 1] || null : null;
+  // The plan shows only while its slider does (there is an average to plan from and marks still to come).
+  const planned = planX === null || current === null || standing.complete ? null : gradeIfAverage(plan, percents, planX);
+  // In the sheet, the target's need treats the item being edited as unmarked, so its flag and marker stay put
+  // while different marks are tried.
+  const sheetNeed = useMemo(() => {
+    if (!target || !editing) return null;
+    const others = Object.fromEntries(Object.entries(grades.marks).filter(([id]) => id !== editing));
+    return gradeNeeded(plan, percentsFrom(others), target.min);
+  }, [target, editing, grades.marks, plan]);
+  const detailsFor = (item, group) =>
+    [group.drop ? `${weight(item.weight)} if kept` : weight(item.weight), item.dateLabel, item.parts > 1 ? `${item.parts} submissions, one combined mark` : ''].filter(Boolean).join(' · ');
 
-  // One polite announcement once typing pauses, instead of every intermediate value (none on opening).
+  // One polite announcement once changes pause, instead of every intermediate value (none on opening).
   const opened = useRef(false);
   useEffect(() => {
     if (!grades.ready) return undefined;
@@ -110,43 +156,183 @@ export default function Grades() {
     return () => clearTimeout(timer);
   }, [grades.ready, summary, answer, chosen, standing.complete]);
 
-  const setField = (item, field, raw) => {
-    const saved = splitMark(grades.marks[item.id]);
-    let next = { ...saved, [field]: clean(raw).replace(/\//g, field === 'outOf' ? '' : '/') };
-    // A slash in the mark field moves to "out of": typing 17/20 or pasting it fills both fields.
-    if (field === 'score' && next.score.includes('/')) {
-      const [score, ...rest] = next.score.split('/');
-      next = { score, outOf: rest.join('') || saved.outOf };
-      const outOf = document.getElementById(fieldId(item, 'out-of'));
-      outOf?.focus();
-      if (!rest.join('')) outOf?.select();
-    }
-    const marks = { ...grades.marks };
-    const text = joinMark(next);
-    if (text) marks[item.id] = text;
-    else delete marks[item.id];
+  // The mark sheet: the shared modal (Guide tools' focus, scroll lock, Escape and backdrop handling).
+  useEffect(() => {
+    const dialog = sheetRef.current;
+    let tween;
+    const modal = bindModal(dialog, {
+      closeSelector: '[data-close-sheet]',
+      getLenis: () => useStore.getState().lenis,
+      // Touch: focus the title, so no keyboard springs up. Mouse and keyboard: the score field, ready to type.
+      initialFocus: (node) => {
+        const field = window.matchMedia?.('(pointer: fine)').matches ? node.querySelector('[data-grade-score]') : null;
+        field?.select();
+        return field || node.querySelector('[data-sheet-title]');
+      },
+      animate: (opening, complete) => {
+        if (useStore.getState().still) {
+          gsap.set(dialog, { clearProps: 'transform,opacity' });
+          complete();
+          return undefined;
+        }
+        if (opening) gsap.set(dialog, { y: 24, opacity: 0 });
+        tween = gsap.to(dialog, {
+          y: opening ? 0 : 16,
+          opacity: opening ? 1 : 0,
+          duration: opening ? 0.3 : 0.16,
+          ease: 'power2.out',
+          onComplete: () => {
+            complete();
+            gsap.set(dialog, { clearProps: 'transform,opacity' });
+          },
+        });
+        return () => tween?.kill();
+      },
+    });
+    modalRef.current = modal;
+    const onClose = () => {
+      // What this visit to the sheet changed and still holds (another tab may have changed a mark since), for Undo.
+      const changes = Object.entries(session.current)
+        .filter(([id, { before, after }]) => before !== after && (marksRef.current[id] || '') === after)
+        .map(([id, { before, after }]) => ({ id, before, after }));
+      session.current = {};
+      setLastSaved(changes.length ? changes : null);
+      setBannerAnchor(editingRef.current);
+      setEditing(null);
+      // Focus is back on the row last shown; bring it into view if the visit ended far down the list.
+      requestAnimationFrame(() => {
+        const row = document.activeElement?.closest?.('[data-grade-row]');
+        if (!row) return;
+        const box = row.getBoundingClientRect();
+        if (box.top < 0 || box.bottom > window.innerHeight) row.scrollIntoView({ block: 'center' });
+      });
+    };
+    dialog?.addEventListener('close', onClose);
+    return () => {
+      dialog?.removeEventListener('close', onClose);
+      modal.unbind();
+      modalRef.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (editing && sheetRef.current && !sheetRef.current.open) modalRef.current?.open(openerRef.current);
+  }, [editing]);
+
+  // Undo only offers marks that still hold what this visit saved (another tab may have changed them since).
+  useEffect(() => {
+    setLastSaved((saved) => {
+      if (!saved) return saved;
+      const holding = saved.filter(({ id, after }) => (grades.marks[id] || '') === after);
+      if (holding.length === saved.length) return saved;
+      return holding.length ? holding : null;
+    });
+  }, [grades.marks]);
+
+  const openSheet = (id, opener) => {
+    openerRef.current = opener;
+    viaNext.current = false;
+    carried.current = '';
+    session.current = {};
+    setLastSaved(null);
+    setEditing(id);
+  };
+  const setMark = (id, text) => {
+    session.current[id] = { before: session.current[id]?.before ?? (marksRef.current[id] || ''), after: text };
+    const marks = { ...marksRef.current };
+    if (text) marks[id] = text;
+    else delete marks[id];
+    marksRef.current = marks;
     update({ marks });
   };
-  // Enter (or the phone keyboard's Next) moves to the next row's mark, from either field.
-  const nextRow = (event) => {
-    if (event.key !== 'Enter') return;
-    event.preventDefault();
-    const fields = [...document.querySelectorAll('[data-grade-score]')];
-    const own = event.currentTarget.closest('li')?.querySelector('[data-grade-score]');
-    const next = fields[fields.indexOf(own) + 1];
-    if (next) next.focus();
-    else event.currentTarget.blur();
+  // From a typed field, Next keeps the keyboard up on the next item's field; from a tap, it focuses the title.
+  const goNext = ({ fromField = false, spoken = '' } = {}) => {
+    if (!nextItem) return;
+    viaNext.current = fromField ? 'field' : 'heading';
+    carried.current = spoken;
+    modalRef.current?.setOpener(document.querySelector(`[data-grade-row="${nextItem.id}"]`));
+    setEditing(nextItem.id);
+  };
+  const undoLast = () => {
+    if (!lastSaved) return;
+    const marks = { ...marksRef.current };
+    lastSaved.forEach(({ id, before }) => {
+      if (before) marks[id] = before;
+      else delete marks[id];
+    });
+    marksRef.current = marks;
+    update({ marks });
+    const [first] = lastSaved;
+    const back = first.before ? describeMark(first.before).short || first.before : 'not marked';
+    setAnnouncement(lastSaved.length === 1 ? `Undone. ${plan.items.find((item) => item.id === first.id)?.title} is back to ${back}.` : 'Undone.');
+    setLastSaved(null);
+    document.querySelector(`[data-grade-row="${first.id}"]`)?.focus();
+  };
+  const dismissBanner = () => {
+    const id = lastSaved?.[0]?.id;
+    setLastSaved(null);
+    document.querySelector(`[data-grade-row="${id}"]`)?.focus();
   };
   const clear = () => {
     // eslint-disable-next-line no-alert
     if (!window.confirm(`Clear every mark you entered for ${course.code}? Your target grade is cleared too.`)) return;
     cleared.current = true;
+    setLastSaved(null);
+    setPlanX(null);
     update({ marks: {}, target: null });
-    document.querySelector('[data-grade-score]')?.focus();
+    document.querySelector('[data-grade-row]')?.focus();
   };
 
+  let bannerText = '';
+  if (lastSaved?.length === 1) {
+    const { id, after } = lastSaved[0];
+    const title = plan.items.find((item) => item.id === id)?.title;
+    if (!after) bannerText = `${title} cleared.`;
+    else if (describeMark(after).error) bannerText = `${title}: check this mark (${after}).`;
+    else if (describeMark(after).percent === null) bannerText = `${title}: out of ${describeMark(after).outOf}, no score yet.`;
+    else bannerText = `${title} saved as ${describeMark(after).short || after}.`;
+  } else if (lastSaved) bannerText = `${lastSaved.length} marks changed.`;
+
+  // Plan the rest: each reachable letter's needed average as a tick. The chosen target is always labelled, and
+  // a neighbour too close to it gives up its label.
+  const reachable = needs
+    .filter(({ need }) => need.status === 'reachable')
+    .map(({ row, need }) => ({ row, value: need.average }))
+    .sort((a, b) => a.value - b.value);
+  const strongValue = reachable.find(({ row }) => row === target)?.value;
+  let lastLabelled = -Infinity;
+  const planTicks = reachable.map(({ row, value }) => {
+    const strong = row === target;
+    const nearStrong = !strong && strongValue !== undefined && Math.abs(value - strongValue) < 9;
+    const label = strong || (!nearStrong && value - lastLabelled >= 9) ? row.letter : null;
+    if (label) lastLabelled = value;
+    return { key: row.letter, value, label, strong };
+  });
+  // Until the slider is moved, the plan is the headline's own: the exact current average and its projection.
+  const planValue = planX ?? (current === null ? 75 : Math.round(current));
+  const planResult = planX === null && standing.projected !== null ? standing.projected : gradeIfAverage(plan, percents, planValue);
+  const planShown = planX === null && current !== null ? formatPercent(current) : `${planValue}%`;
+  useEffect(() => {
+    if (!lastSaved) return undefined;
+    const title = plan.items.find((item) => item.id === bannerAnchor)?.title;
+    const timer = setTimeout(() => setAnnouncement(`${bannerText} Undo is under ${title}.`), 400);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastSaved, bannerAnchor]);
+  const banner = lastSaved ? (
+    <div className={styles.undoBanner}>
+      <span>{bannerText}</span>
+      <button type="button" onClick={undoLast}>
+        Undo
+      </button>
+      <button type="button" className={styles.dismiss} aria-label="Dismiss" onClick={dismissBanner}>
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+  ) : null;
+
   return (
-    <div className={styles.root} data-grades>
+    <div className={styles.root} data-grades data-still={still || undefined}>
       <div className={workspace.viewHeading}>
         <h2>Grade calculator</h2>
         <p className={styles.saved} data-blocked={grades.saved ? undefined : true} role={grades.saved ? undefined : 'status'}>
@@ -154,7 +340,7 @@ export default function Grades() {
         </p>
       </div>
       <p className={styles.lede}>
-        Enter your marks as a percentage or a score, like 17 out of 20. The weights match{' '}
+        Tap an assessment to add its mark: pick the score, slide, or type it. The weights match{' '}
         <Link href={`/${courseId}/#course-grading`} scroll={false}>
           Course info → Grading
         </Link>
@@ -171,16 +357,29 @@ export default function Grades() {
               Clear marks
             </button>
           </div>
-          {/* While the full summary is out of view (phones, short screens), the essentials stay above the marks. */}
-          <div className={styles.quick} aria-hidden="true" data-grade-quick>
+          {lastSaved && !plan.items.some((item) => item.id === bannerAnchor) ? banner : null}
+          {/* While the full summary is out of view (phones, short screens), the essentials stay above the marks,
+              and a tap goes to the summary and Plan the rest. */}
+          <button
+            type="button"
+            className={styles.quick}
+            data-grade-quick
+            aria-label={`${current === null ? 'No marks yet' : `Current average ${formatPercent(current)}, ${letter.letter}`}. Go to the summary and Plan the rest.`}
+            onClick={() => {
+              const card = document.querySelector('[data-grade-summary]');
+              card?.scrollIntoView({ block: 'start' });
+              card?.focus({ preventScroll: true });
+            }}
+          >
             <span className={styles.quickValue}>
               {current === null ? '—' : formatPercent(current)}
               {letter ? <strong>{letter.letter}</strong> : null}
             </span>
             <span className={styles.quickNote}>
               {chosen && !standing.complete && chosen.need.status === 'reachable' ? `${chosen.row.letter} needs ${formatPercent(chosen.need.average)}` : `Best possible ${shown(standing.maximum)}`}
+              <span aria-hidden="true"> · Plan ›</span>
             </span>
-          </div>
+          </button>
           {plan.groups.map((group) => {
             const groupStanding = standing.groups.find((entry) => entry.id === group.id);
             return (
@@ -200,73 +399,72 @@ export default function Grades() {
                 ) : null}
                 <ul>
                   {group.items.map((item) => {
-                    const { score, outOf } = splitMark(grades.marks[item.id]);
-                    const parsed = parseMark(score, outOf);
-                    // While the total is still being typed (8 / 1… on the way to 8 / 10), say nothing yet; a wrong
-                    // total shows once the field is left.
-                    const unfinished = typingTotal === item.id && parsed.field;
-                    const error = unfinished ? null : parsed.error;
+                    const text = grades.marks[item.id] || '';
+                    const mark = describeMark(text);
                     const dropped = standing.dropped.includes(item.id);
-                    const details = [group.drop ? `${weight(item.weight)} if kept` : weight(item.weight), item.dateLabel, item.parts > 1 ? `${item.parts} submissions, one combined mark` : '']
-                      .filter(Boolean)
-                      .join(' · ');
-                    let result = '';
-                    if (error) result = error;
-                    else if (parsed.percent !== null && dropped) result = `${shown(parsed.percent)} · Dropped`;
-                    else if (parsed.percent !== null && outOf) result = shown(parsed.percent);
-                    const resultId = fieldId(item, 'result');
+                    const marked = mark.percent !== null;
+                    const need = chosen && !marked && !standing.complete ? chosen.need : null;
+                    const total = mark.outOf || suggestOutOf(plan, grades.marks, item.id);
+                    let needLabel = '';
+                    if (need?.status === 'reachable') {
+                      const score = scoreFor(need.average, total);
+                      needLabel = `${chosen.row.letter} needs ${formatPercent(need.average)}${score !== null ? ` (${score}/${total})` : ''}`;
+                    } else if (need?.status === 'secured') needLabel = `${chosen.row.letter}: any mark`;
+                    else if (need?.status === 'unreachable') needLabel = `${chosen.row.letter} out of reach`;
+                    const detailsId = `${baseId}-${item.id.replace(/[^a-z0-9-]/gi, '-')}-details`;
+                    const needId = `${detailsId}-need`;
+                    let { spoken } = mark;
+                    if (dropped && marked) spoken = `${mark.spoken}, dropped`;
                     return (
-                      <li key={item.id} className={styles.row} data-dropped={dropped || undefined} data-invalid={error ? true : undefined}>
-                        <div className={styles.rowText}>
-                          <label htmlFor={fieldId(item, 'score')}>{item.title}</label>
-                          <span id={fieldId(item, 'details')} className={workspace.meta}>
-                            {details}
+                      <li key={item.id}>
+                        <button
+                          type="button"
+                          className={styles.rowButton}
+                          aria-haspopup="dialog"
+                          aria-label={`${item.title}: ${spoken}`}
+                          aria-describedby={needLabel ? `${detailsId} ${needId}` : detailsId}
+                          data-grade-row={item.id}
+                          data-dropped={dropped || undefined}
+                          data-has-need={needLabel ? true : undefined}
+                          disabled={!grades.ready}
+                          onClick={(event) => openSheet(item.id, event.currentTarget)}
+                        >
+                          <span className={styles.rowText}>
+                            <span className={styles.rowTitle}>{item.title}</span>
+                            <span id={detailsId} className={workspace.meta}>
+                              {detailsFor(item, group)}
+                            </span>
                           </span>
-                        </div>
-                        <div className={styles.fields}>
-                          <input
-                            id={fieldId(item, 'score')}
-                            data-grade-score
-                            type="text"
-                            inputMode="decimal"
-                            enterKeyHint="next"
-                            autoComplete="off"
-                            spellCheck={false}
-                            placeholder="—"
-                            maxLength={9}
-                            value={score}
-                            disabled={!grades.ready}
-                            aria-invalid={error && parsed.field === 'score' ? true : undefined}
-                            aria-describedby={`${fieldId(item, 'details')} ${resultId}`}
-                            onChange={(event) => setField(item, 'score', event.target.value)}
-                            onKeyDown={nextRow}
-                          />
-                          <span className={styles.slash} aria-hidden="true">
-                            /
+                          <span className={styles.rowValue}>
+                            {mark.error ? <span className={styles.checkPill}>Check this mark</span> : null}
+                            {!mark.error && marked ? (
+                              <>
+                                <strong>{mark.short}</strong>
+                                <span className={styles.letterPill}>{dropped ? 'Dropped' : mark.letter}</span>
+                              </>
+                            ) : null}
+                            {!mark.error && !marked ? (
+                              <>
+                                {mark.short ? <strong className={styles.totalOnly}>{mark.short}</strong> : null}
+                                <span className={styles.addPill}>+ Add</span>
+                              </>
+                            ) : null}
                           </span>
-                          <input
-                            id={fieldId(item, 'out-of')}
-                            type="text"
-                            inputMode="decimal"
-                            enterKeyHint="next"
-                            autoComplete="off"
-                            spellCheck={false}
-                            placeholder="100"
-                            maxLength={7}
-                            value={outOf}
-                            disabled={!grades.ready}
-                            aria-label={`${item.title}: out of`}
-                            aria-invalid={error && parsed.field === 'outOf' ? true : undefined}
-                            aria-describedby={resultId}
-                            onChange={(event) => setField(item, 'outOf', event.target.value)}
-                            onKeyDown={nextRow}
-                            onFocus={() => setTypingTotal(item.id)}
-                            onBlur={() => setTypingTotal(null)}
+                          <span
+                            className={styles.rowBar}
+                            aria-hidden="true"
+                            style={{ '--pct': `${marked ? Math.min(100, mark.percent) : 0}%`, '--need': need?.status === 'reachable' ? `${need.average}%` : undefined }}
+                            data-empty={!marked || undefined}
+                            data-invalid={mark.error ? true : undefined}
+                            data-need={need?.status === 'reachable' || undefined}
                           />
-                        </div>
-                        <span id={resultId} className={styles.result}>
-                          {result}
-                        </span>
+                          {needLabel ? (
+                            <span id={needId} className={styles.needLabel}>
+                              {needLabel}
+                            </span>
+                          ) : null}
+                        </button>
+                        {bannerAnchor === item.id ? banner : null}
                       </li>
                     );
                   })}
@@ -276,7 +474,7 @@ export default function Grades() {
           })}
         </section>
         <div className={styles.side}>
-          <section className={styles.standing} aria-labelledby={`${baseId}-standing`}>
+          <section className={styles.standing} aria-labelledby={`${baseId}-standing`} tabIndex={-1} data-grade-summary>
             <h3 id={`${baseId}-standing`} className={workspace.eyebrow}>
               {standing.complete ? 'Final grade' : 'Current average'}
             </h3>
@@ -290,7 +488,61 @@ export default function Grades() {
               ) : null}
             </div>
             <p className={styles.headlineNote}>{headlineText(standing, current)}</p>
-            <Meter standing={standing} target={target} />
+            <Meter standing={standing} target={target} planned={planned} />
+            {!standing.complete && current !== null ? (
+              <div className={styles.plan} data-grade-plan>
+                <p id={`${baseId}-plan-label`} className={styles.planLabel}>
+                  Plan the rest: if I average <strong>{planShown}</strong> on everything still to be marked
+                </p>
+                <MarkSlider
+                  ref={planRef}
+                  id={`${baseId}-plan`}
+                  min={0}
+                  max={100}
+                  value={planValue}
+                  ticks={planTicks}
+                  labelledBy={`${baseId}-plan-label`}
+                  describedBy={`${baseId}-plan-note`}
+                  disabled={!grades.ready}
+                  compact
+                  valueText={(v) => {
+                    const final = floorTenth(gradeIfAverage(plan, percents, v));
+                    return `${v} percent on the rest gives a final ${final} percent, ${letterFor(final).letter}`;
+                  }}
+                  onDraft={(v) => {
+                    if (planStart.current === undefined) planStart.current = planX;
+                    setPlanX(v);
+                  }}
+                  onCommit={(v) => {
+                    planStart.current = undefined;
+                    setPlanX(v);
+                  }}
+                  // A scroll that started on the slider puts the plan back where it was.
+                  onCancel={() => {
+                    setPlanX(planStart.current ?? null);
+                    planStart.current = undefined;
+                  }}
+                />
+                <p className={styles.planResult} data-grade-plan-result>
+                  Final <strong>{shown(planResult)}</strong> · {letterFor(floorTenth(planResult)).letter}
+                </p>
+                <p id={`${baseId}-plan-note`} className={workspace.meta}>
+                  Planning only. Your marks don’t change.{' '}
+                  {planX !== null ? (
+                    <button
+                      type="button"
+                      className={styles.linkButton}
+                      onClick={() => {
+                        setPlanX(null);
+                        planRef.current?.focus();
+                      }}
+                    >
+                      Reset
+                    </button>
+                  ) : null}
+                </p>
+              </div>
+            ) : null}
             <dl className={styles.stats}>
               <div>
                 <dt>Secured</dt>
@@ -330,7 +582,11 @@ export default function Grades() {
                         data-state={state}
                         aria-pressed={target === row}
                         aria-label={`${row.letter}, ${row.min}% or more: ${state === 'reachable' ? `need ${value} average` : value.toLowerCase()}`}
-                        onClick={() => update({ target: target === row ? null : row.min })}
+                        onClick={() => {
+                          update({ target: target === row ? null : row.min });
+                          // Show the path to the chosen letter on the plan, too.
+                          if (target !== row && need.status === 'reachable') setPlanX(Math.min(100, Math.ceil(need.average)));
+                        }}
                         disabled={!grades.ready}
                       >
                         <span className={styles.chipLetter}>{row.letter}</span>
@@ -358,6 +614,30 @@ export default function Grades() {
           <p>Marks stay in this browser only and are not part of progress backups.</p>
         </div>
       </div>
+      <MarkSheet
+        ref={sheetRef}
+        item={editingItem}
+        nextItem={nextItem}
+        plan={plan}
+        marks={grades.marks}
+        standing={standing}
+        need={sheetNeed}
+        target={target}
+        ready={grades.ready}
+        details={
+          editingItem
+            ? detailsFor(
+                editingItem,
+                plan.groups.find((group) => group.id === editingItem.groupId),
+              )
+            : ''
+        }
+        focusOnMount={viaNext.current}
+        carried={carried.current}
+        onCommit={setMark}
+        onNext={goNext}
+        onDone={() => modalRef.current?.close()}
+      />
     </div>
   );
 }

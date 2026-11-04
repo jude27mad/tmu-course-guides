@@ -1,0 +1,143 @@
+// The mark slider: a native range with an 8 px track filled to the thumb, a 28 px thumb and a 44 px hit area.
+// --ratio (0–1) is set by MarkSlider.jsx for the filled part of the track.
+.root {
+  --thumb: 28px;
+  position: relative;
+  padding-top: 26px;
+  &[data-compact] {
+    padding-top: 22px;
+  }
+}
+.trackArea {
+  position: relative;
+  height: 44px;
+}
+.input {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 44px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  // Vertical swipes keep scrolling the sheet or the page; horizontal drags move the thumb.
+  touch-action: pan-y;
+  &:disabled {
+    cursor: default;
+    opacity: 0.55;
+  }
+  &:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 12px;
+  }
+  &::-webkit-slider-runnable-track {
+    height: 8px;
+    border-radius: 999px;
+    background: linear-gradient(
+      to right,
+      var(--accent) 0
+        calc(var(--thumb) / 2 + var(--ratio) * (100% - var(--thumb))),
+      var(--card) 0
+    );
+    box-shadow: inset 0 0 0 1px var(--muted);
+  }
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: var(--thumb);
+    height: var(--thumb);
+    margin-top: calc((8px - var(--thumb)) / 2);
+    border-radius: 50%;
+    background: var(--card);
+    box-shadow:
+      inset 0 0 0 3px var(--accent),
+      0 2px 6px rgba(var(--inkRgb), 0.18);
+  }
+  &::-moz-range-track {
+    height: 8px;
+    border-radius: 999px;
+    background: var(--card);
+    box-shadow: inset 0 0 0 1px var(--muted);
+  }
+  &::-moz-range-progress {
+    height: 8px;
+    border-radius: 999px;
+    background: var(--accent);
+  }
+  &::-moz-range-thumb {
+    width: var(--thumb);
+    height: var(--thumb);
+    border: 3px solid var(--accent);
+    border-radius: 50%;
+    background: var(--card);
+    box-sizing: border-box;
+  }
+  @media (forced-colors: active) {
+    forced-color-adjust: auto;
+  }
+}
+// Not marked yet: the thumb waits, outlined and dashed, at a suggested starting point, and nothing is filled.
+.root[data-ghost] .input {
+  &::-webkit-slider-runnable-track {
+    background: var(--card);
+  }
+  &::-webkit-slider-thumb {
+    background: var(--white);
+    box-shadow: inset 0 0 0 2px var(--muted);
+  }
+  &::-moz-range-progress {
+    background: transparent;
+  }
+  &::-moz-range-thumb {
+    border-color: var(--muted);
+    border-style: dashed;
+  }
+}
+.ticks {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 26px;
+  pointer-events: none;
+}
+.tick {
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+  height: 6px;
+  background: var(--muted);
+  &[data-labelled] {
+    height: 8px;
+  }
+  span {
+    position: absolute;
+    bottom: 9px;
+    left: 0;
+    transform: translateX(-50%);
+    font-size: 11px;
+    font-weight: 650;
+    line-height: 1.2;
+    white-space: nowrap;
+    color: var(--muted);
+  }
+  &[data-strong] {
+    width: 2px;
+    margin-left: -0.5px;
+    background: var(--black);
+    span {
+      color: var(--black);
+    }
+  }
+}
+.marker {
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--black);
+  pointer-events: none;
+}

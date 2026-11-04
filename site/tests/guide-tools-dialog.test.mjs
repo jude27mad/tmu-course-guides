@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { bindGuideTools, openGuideTools } from '../src/pages/course/components/tools/dialog.mjs';
+import { bindGuideTools, bindModal, openGuideTools } from '../src/pages/course/components/tools/dialog.mjs';
 
 // Small DOM boundary for the controller. Native focus trapping, Escape and
 // touch/desktop geometry are additionally checked in the browser smoke test.
@@ -218,4 +218,35 @@ test('Escape uses the exit transition and route cleanup releases it immediately'
   f.dispose();
   assert.equal(f.dialog.open, false);
   assert.equal(f.lenis.isStopped, false);
+});
+
+test('the shared modal honours a chosen first focus and a moved return target', () => {
+  const doc = new EventTarget();
+  const focusable = (name) => ({ name, isConnected: true, focus: () => { doc.activeElement = focusable[name]; } });
+  const heading = focusable('heading');
+  focusable.heading = heading;
+  const row = focusable('row');
+  focusable.row = row;
+  const nextRow = focusable('nextRow');
+  focusable.nextRow = nextRow;
+  const dialog = new EventTarget();
+  Object.assign(dialog, {
+    ownerDocument: doc,
+    open: false,
+    showModal() { this.open = true; },
+    close() { this.open = false; this.dispatchEvent(new Event('close')); },
+    querySelector: () => null,
+    getBoundingClientRect: () => ({ left: 0, right: 10, top: 0, bottom: 10 }),
+  });
+  doc.querySelector = () => null;
+  doc.activeElement = row;
+  const modal = bindModal(dialog, { closeSelector: '[data-close-sheet]', initialFocus: () => heading });
+  modal.open(row);
+  assert.equal(doc.activeElement, heading, 'initialFocus is focused on opening');
+  modal.setOpener(nextRow);
+  modal.setOpener(null);
+  modal.close();
+  assert.equal(dialog.open, false);
+  assert.equal(doc.activeElement, nextRow, 'focus returns to the item shown last');
+  modal.unbind();
 });

@@ -22,6 +22,17 @@ import {
   splitMark,
   subscribeGrades,
   writeGrades,
+  GRID_MAX,
+  OUT_OF_PICKS,
+  describeMark,
+  formatScore,
+  gradeIfAverage,
+  letterTicks,
+  scoreFor,
+  scoreGrid,
+  seedFor,
+  stepMark,
+  suggestOutOf,
 } from '../src/lib/grades.mjs';
 import { deniedStorage, memoryStorage } from './helpers.mjs';
 
@@ -342,4 +353,123 @@ test('Search finds the calculator without crowding out exam deadlines', () => {
     assert.equal(first.title, 'Final Exam', course);
     assert.equal(first.courseId, course);
   }
+});
+
+test('mark sheet: the total carries over from the item or its group', () => {
+  const plan = gradePlan('mth140');
+  assert.equal(suggestOutOf(plan, { 'quiz-1': '17/20' }, 'quiz-2'), '20');
+  assert.equal(suggestOutOf(plan, { 'quiz-1': '17/20', 'quiz-2': '9/10' }, 'quiz-2'), '10', 'the item’s own total wins');
+  assert.equal(suggestOutOf(plan, { 'quiz-1': '17/20', 'quiz-2': '9/10' }, 'quiz-3'), '10', 'a tie goes to the latest');
+  assert.equal(suggestOutOf(plan, { 'quiz-1': '17/20', 'quiz-2': '21/20', 'quiz-3': '8/10' }, 'quiz-4'), '10', 'invalid marks are ignored');
+  assert.equal(suggestOutOf(plan, { 'quiz-1': '/20' }, 'quiz-2'), '20', 'a total with no score yet counts');
+  assert.equal(suggestOutOf(plan, { 'quiz-1': '17/20' }, 'midterm'), '', 'one-item groups open as a percentage');
+  assert.equal(suggestOutOf(plan, {}, 'quiz-1'), '');
+  assert.equal(suggestOutOf(plan, undefined, 'quiz-1'), '');
+  assert.deepEqual(OUT_OF_PICKS, ['', '5', '10', '20', '25', '30', '40', '50']);
+  // Unrelated deliverables (CEN100's project) suggest a total only when two or more marked items clearly share it.
+  const cen = gradePlan('cen100');
+  assert.equal(suggestOutOf(cen, { outline: '16/20' }, 'review'), '', 'one mark is not a pattern');
+  assert.equal(suggestOutOf(cen, { outline: '16/20', m3: '22/25' }, 'review'), '', 'a tie is not a pattern');
+  assert.equal(suggestOutOf(cen, { outline: '16/20', m3: '22/25', contract: '9/20' }, 'review'), '20', 'two of three share /20');
+  assert.equal(suggestOutOf(cen, { outline: '16/20', contract: '9/20', m3: '22/25', prototype: '20/25' }, 'review'), '', 'no clear majority');
+});
+
+test('mark sheet: score grids for small whole totals', () => {
+  for (const total of ['', '0', '26', '12.5', 'x', '-5']) assert.equal(scoreGrid(total), null, total);
+  const grid = scoreGrid('20');
+  assert.equal(grid.length, 21);
+  assert.deepEqual([grid[16].letter, grid[17].letter, grid[0].letter, grid[20].letter], ['A-', 'A', 'F', 'A+']);
+  assert.equal(scoreGrid(String(GRID_MAX)).length, GRID_MAX + 1);
+  assert.equal(scoreGrid(1).length, 2);
+});
+
+test('mark sheet: steppers move by a point, clamp, and save clean text', () => {
+  assert.equal(stepMark('68.5', 1), '69.5');
+  assert.equal(stepMark('17/20', 0.5), '17.5/20');
+  assert.equal(stepMark('20/20', 1), '20/20');
+  assert.equal(stepMark('0/20', -1), '0/20');
+  assert.equal(stepMark('100', 1), '100');
+  // An empty score's first press lands on the suggested start (the slider's waiting thumb), not a step past it.
+  assert.equal(stepMark('', 1, { seed: 82 }), '82');
+  assert.equal(stepMark('', -1, { seed: 82 }), '82');
+  assert.equal(stepMark('/10', 1, { seed: 82 }), '8/10', '8.2 rounds to a whole 8');
+  assert.equal(stepMark('/20', 0.5, { seed: 85 }), '17/20', 'whole points, not 17.5');
+  assert.equal(stepMark('0.1', 0.2), '0.3', 'no float noise');
+  assert.equal(stepMark('8.5.5', 1, { seed: 60 }), '60', 'an unreadable score restarts from the seed');
+  const storage = memoryStorage();
+  for (const text of ['68.5', '17/20', '20/20', '0/20', '', '/10', '0.1', '9/10']) {
+    const stepped = stepMark(text, 1, { seed: 82 });
+    writeGrades('mth140', storage, { marks: { 'quiz-1': stepped } });
+    assert.equal(readGrades('mth140', storage).marks['quiz-1'], stepped, `${text} → ${stepped} round-trips`);
+  }
+});
+
+test('mark sheet: formatted scores always fit the saved format', () => {
+  for (let i = 0; i < 2000; i += 1) {
+    const value = (i * 7.919357) % 10000;
+    assert.match(formatScore(value), /^\d{1,4}(\.\d{1,3})?$/, `${value}`);
+  }
+  assert.equal(formatScore(0.1 + 0.2), '0.3');
+  assert.equal(formatScore(-3), '0');
+  assert.equal(formatScore(123456), '9999');
+  assert.equal(formatScore(Number.NaN), '0');
+});
+
+test('mark sheet: marks read aloud and in short form', () => {
+  assert.deepEqual([describeMark('17/20').short, describeMark('17/20').spoken], ['17/20', '17 out of 20, 85 percent, A']);
+  assert.deepEqual([describeMark('68.5').short, describeMark('68.5').spoken], ['68.5%', '68.5 percent, C+']);
+  assert.deepEqual([describeMark('/20').short, describeMark('/20').spoken], ['—/20', 'not marked, out of 20']);
+  assert.deepEqual([describeMark('').short, describeMark('').spoken], ['', 'not marked']);
+  assert.deepEqual([describeMark('8/1').short, describeMark('8/1').spoken], ['', 'check this mark']);
+  assert.equal(describeMark('8/1').error, 'More than 1');
+  assert.equal(describeMark(undefined).spoken, 'not marked');
+});
+
+test('mark sheet: the score that reaches a percentage never understates it', () => {
+  assert.equal(scoreFor(80.7, 20), 17);
+  assert.equal(scoreFor(85, 20), 17);
+  assert.equal(scoreFor(100, 20), 20);
+  assert.equal(scoreFor(0, 20), 0);
+  assert.equal(scoreFor(120, 20), 20);
+  assert.equal(scoreFor(50, ''), null);
+  for (let i = 0; i < 500; i += 1) {
+    const percent = (i * 13.37) % 100;
+    const total = 1 + (i % 50);
+    const score = scoreFor(percent, total);
+    assert.ok((score / total) * 100 >= percent - 1e-9, `${percent} of ${total}`);
+    assert.ok(score === 0 || ((score - 1) / total) * 100 < percent, `${percent} of ${total}: the smallest`);
+  }
+});
+
+test('mark sheet: Plan the rest agrees with the projection and the target solver', () => {
+  for (const id of COURSES) {
+    const plan = gradePlan(id);
+    const percents = Object.fromEntries(plan.items.slice(0, 3).map((item, i) => [item.id, 60 + i * 10]));
+    const standing = gradeStanding(plan, percents);
+    close(gradeIfAverage(plan, percents, standing.current), standing.projected, id);
+  }
+  const plan = gradePlan('mth140');
+  const percents = percentsFrom({ 'quiz-1': '17/20', 'quiz-2': '72', 'quiz-3': '9/10', midterm: '68.5' });
+  close(gradeIfAverage(plan, percents, 81), 76.65);
+  close(gradeIfAverage(plan, percents, 80), 76.15);
+  assert.equal(letterFor(floorTenth(gradeIfAverage(plan, percents, 81))).letter, 'B+');
+  assert.equal(letterFor(floorTenth(gradeIfAverage(plan, percents, 80))).letter, 'B');
+  // The same answer the "What do I need?" chip gives for B+.
+  assert.equal(gradeNeeded(plan, percents, 77).average, 80.7);
+  // A drop-lowest case: a 0 that keeping an 88 average drops.
+  close(gradeIfAverage(plan, { 'quiz-1': 0, midterm: 99 }, 88), 92.4);
+});
+
+test('mark sheet: letter ticks and seeds', () => {
+  const ticks = letterTicks(20);
+  assert.equal(ticks.length, 12);
+  close(ticks.find((tick) => tick.letter === 'B+').value, 15.4);
+  assert.deepEqual(
+    ticks.filter((tick) => tick.labelled).map((tick) => tick.min),
+    [90, 80, 70, 60, 50],
+  );
+  const plan = gradePlan('mth140');
+  assert.equal(seedFor(plan, gradeStanding(plan, {}), 'quiz-1'), 75);
+  assert.equal(seedFor(plan, gradeStanding(plan, { midterm: 68 }), 'quiz-1'), 68, 'the course average');
+  assert.equal(seedFor(plan, gradeStanding(plan, { 'quiz-1': 90, midterm: 60 }), 'quiz-2'), 90, 'the group average first');
 });

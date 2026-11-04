@@ -301,6 +301,19 @@ parseMark('17', '20');                           // { percent: 85, error: null }
 - `readGrades(courseId, storage?)` → `{ marks, target }`, keeping only known item ids, typed text (digits, separators, one `/`) and a letter minimum. `writeGrades(courseId, storage, { marks, target })` → saved?, writing the same cleaned record (or removing the key when nothing is left); refused writes stay in memory for the page view, as elsewhere. `subscribeGrades(courseId, storage, callback)` reports changes here and in other tabs. `gradesSavable(storage?)` → whether storage accepts a write, so the page can say from the start that marks won't be kept.
 - `parseMark` also returns `field` (`'score'` or `'outOf'`), the field an error belongs to.
 
+The mark sheet's helpers only build the same mark text and read the same standing, so tapping, sliding and typing save one format:
+
+```js
+suggestOutOf(plan, { 'quiz-1': '17/20' }, 'quiz-2'); // '20': the item's own total, else a total shared by most marked items in its group (always in a drop group), else '' (%)
+scoreGrid('20');           // [{ score: 0, percent: 0, letter: 'F' }, … { score: 17, percent: 85, letter: 'A' }, …]; null above GRID_MAX (25) or for fractions
+stepMark('17/20', 0.5);    // '17.5/20'; clamps to 0 and the total; an unmarked item starts at its seed: '' + 1 with { seed: 82 } → '82', '/10' + 1 with { seed: 90 } → '9/10'
+describeMark('17/20');     // { short: '17/20', spoken: '17 out of 20, 85 percent, A', percent: 85, letter: 'A', error: null, … }
+scoreFor(80.7, 20);        // 17: the smallest whole score reaching a percentage (never understates)
+gradeIfAverage(plan, percents, 81); // course points if every unmarked item scores 81, drop-lowest applied (Plan the rest)
+letterTicks(20);           // each letter's minimum on a 0–20 track; seedFor(plan, standing, id) → a starting percentage
+formatScore(0.1 + 0.2);    // '0.3': numbers as saved text
+```
+
 ### Search
 
 **`searchIndex({ now, storage?, course?, motionForced? })`** → every searchable entry, in the old palette's groups: Courses (places; the page's course views), Assessments (every deadline of every course, hinted `CODE · when · label · cta · note`), Weeks (the semester spreads, each opening its first deadline), Topics (math), Actions (This week's work / Contacts / Export calendar on a course page, Pause/Play motion, Open D2L). `course` is the current page's course: its items lead and its next deadline is a default entry (without `course`, the overall next deadline is). The array carries `.weeks` for week queries.

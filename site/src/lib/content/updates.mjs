@@ -129,6 +129,17 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-11-04-tap-a-mark",
+  "date": "November 4, 2026",
+  "title": "Grades: tap a mark instead of typing it",
+  "text": "In each course's Grades tab, tap an assessment to add its mark. For quizzes and other scores, tap the total and then the score in a grid; the next quiz opens with the same total. For percentages like a midterm, slide, use − and +, or tap a letter. You can still type the exact mark.",
+  "items": [
+    "Next moves to the following assessment, and Undo puts back what a mark was, in the sheet or under the row once it closes.",
+    "Plan the rest: slide \"if I average X% on what's left\" to see where your final grade lands. It never changes your marks.",
+    "When you choose a target in What do I need?, each unmarked assessment shows what it needs, and Plan the rest moves to that average."
+  ]
+ },
+ {
   "id": "2026-11-03-menu-transition",
   "date": "November 3, 2026",
   "title": "Menu and Search open like the original design",

@@ -751,56 +751,94 @@ try {
       await zoomContext.close();
     }
   });
-  await check('grade calculator: marks update the standing, survive reload and stay per course', async () => {
+  await check('grade calculator: tap a row, tap or slide a mark, plan the rest; saved per course', async () => {
     await ready(page, 'mth140/');
     // The calculator reads saved marks when its view opens.
     await page.evaluate(() => ['mth140', 'mth141', 'cen100'].forEach((id) => localStorage.removeItem(`${id}-grades-v1`)));
     await page.getByRole('navigation', { name: 'Course views' }).getByRole('link', { name: 'Grades', exact: true }).click();
     await page.getByRole('heading', { name: 'Grade calculator', exact: true }).waitFor();
-    const current = page.locator('[data-grade-current]');
-    assert.match(await current.innerText(), /—/);
-    // 17 out of 20 typed into the mark field fills both fields; the midterm as a percentage.
-    const quiz = page.getByLabel('Lab Quiz 1', { exact: true });
-    await quiz.fill('17/20');
-    assert.equal(await quiz.inputValue(), '17');
-    assert.equal(await page.getByLabel('Lab Quiz 1: out of').inputValue(), '20');
-    // Typed key by key, the slash moves to the total.
-    const second = page.getByLabel('Lab Quiz 2', { exact: true });
-    await second.pressSequentially('9/10');
-    assert.equal(await second.inputValue(), '9');
-    assert.equal(await page.getByLabel('Lab Quiz 2: out of').inputValue(), '10');
-    await second.fill('');
-    await page.getByLabel('Lab Quiz 2: out of').fill('');
-    // No error flashes on the way to a valid total (8 / 1 before 8 / 10); a wrong total shows on leaving the field.
+    const saved = () => page.evaluate(() => JSON.parse(localStorage.getItem('mth140-grades-v1') || '{"marks":{}}').marks);
+    assert.match(await page.locator('[data-grade-current]').innerText(), /—/);
+    // A row opens the sheet; a total and then a score are single taps.
+    await page.locator('[data-grade-row="quiz-1"]').tap();
+    const quiz1 = page.getByRole('dialog', { name: 'Lab Quiz 1' });
+    await quiz1.waitFor();
+    assert.equal(await page.evaluate(() => document.activeElement?.hasAttribute('data-sheet-title')), true, 'touch opens on the title, with no keyboard');
+    assert.equal(await page.evaluate(() => getComputedStyle(document.querySelector('[data-mark-sheet]')).transform), 'none', 'reduced motion opens without a slide');
+    await quiz1.locator('label[for$="-total-20"]').tap();
+    assert.equal((await saved())['quiz-1'], '/20');
+    await quiz1.locator('label[for$="-score-17"]').tap();
+    assert.equal((await saved())['quiz-1'], '17/20');
+    // Every control in the sheet is a comfortable target, and nothing scrolls sideways.
+    const small = await quiz1.evaluate((sheet) =>
+      [...sheet.querySelectorAll('button, label, input[type="text"]')]
+        .filter((el) => el.getClientRects().length)
+        .map((el) => ({ text: el.textContent.trim() || el.getAttribute('aria-label'), box: el.getBoundingClientRect() }))
+        .filter(({ box }) => box.width < 44 || box.height < 44)
+        .map(({ text, box }) => `${text} ${Math.round(box.width)}x${Math.round(box.height)}`),
+    );
+    assert.deepEqual(small, [], 'controls under 44 px');
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'no sideways scrolling');
+    await page.screenshot({ path: path.join(report, 'grades-sheet-390.png') });
+    // Next keeps the group's total and saves nothing until a mark is chosen.
+    await quiz1.getByRole('button', { name: /^Next: Lab Quiz 2/ }).tap();
+    const quiz2 = page.getByRole('dialog', { name: 'Lab Quiz 2' });
+    await quiz2.waitFor();
+    assert.match(await quiz2.locator('input[type="radio"]:checked').first().getAttribute('id'), /-total-20$/);
+    assert.equal((await saved())['quiz-2'], undefined);
+    // Exact typing stays available: a slash moves to the total, and no error flashes on the way to 8 / 10.
     await page.evaluate(() => {
       window.qaGradeErrors = [];
       new MutationObserver(() => {
-        if (document.querySelector('[data-grades] li[data-invalid], [data-grades] [aria-invalid="true"]')) window.qaGradeErrors.push(document.activeElement?.value);
-      }).observe(document.querySelector('[data-grades]'), { subtree: true, attributes: true, childList: true, characterData: true });
+        if (document.querySelector('[data-mark-sheet] [aria-invalid="true"], [data-mark-sheet] [data-state="error"]')) window.qaGradeErrors.push(document.activeElement?.value);
+      }).observe(document.querySelector('[data-mark-sheet]'), { subtree: true, attributes: true, childList: true, characterData: true });
     });
-    const third = page.getByLabel('Lab Quiz 3', { exact: true });
-    await third.pressSequentially('8/10', { delay: 40 });
-    await page.getByLabel('Lab Quiz 3: out of').pressSequentially('0', { delay: 40 });
-    await page.getByLabel('Lab Quiz 3: out of').press('Backspace');
+    const score2 = quiz2.getByLabel('Lab Quiz 2 score');
+    await score2.fill('');
+    await score2.pressSequentially('8/10', { delay: 40 });
+    assert.equal(await score2.inputValue(), '8');
+    assert.equal(await quiz2.getByLabel('Lab Quiz 2: out of').inputValue(), '10');
     assert.deepEqual(await page.evaluate(() => window.qaGradeErrors), []);
-    await page.getByLabel('Lab Quiz 3: out of').fill('1');
-    await page.getByLabel('Lab Quiz 3: out of').blur();
-    assert.equal(await page.getByLabel('Lab Quiz 3', { exact: true }).getAttribute('aria-invalid'), 'true', '8 out of 1 is flagged after leaving the field');
-    await third.fill('');
-    await page.getByLabel('Lab Quiz 3: out of').fill('');
-    await page.getByLabel('Midterm Test', { exact: true }).fill('70');
-    // (85 × 5 + 70 × 40) / 45 = 71.66… → shown rounded down as 71.6%, a B- (72 after TMU rounding).
-    await page.waitForFunction(() => /71\.6%/.test(document.querySelector('[data-grade-current]').textContent));
-    assert.match(await current.innerText(), /B-/);
+    assert.equal((await saved())['quiz-2'], '8/10');
+    // A percentage item: tap the track, step it, or pick a letter.
+    await quiz2.getByRole('button', { name: /^Next: Lab Quiz 3/ }).tap();
+    for (const next of ['Lab Quiz 4', 'Midterm Test']) await page.getByRole('dialog').getByRole('button', { name: new RegExp(`^Next: ${next}`) }).tap();
+    const midterm = page.getByRole('dialog', { name: 'Midterm Test' });
+    await midterm.waitFor();
+    const track = await midterm.locator('input[type="range"]').boundingBox();
+    await page.touchscreen.tap(track.x + 14 + (track.width - 28) * 0.7, track.y + track.height / 2);
+    const tapped = Number((await saved()).midterm);
+    assert.ok(tapped >= 69 && tapped <= 71, `a tap at 70% of the track sets about 70 (${tapped})`);
+    await midterm.getByRole('button', { name: 'Midterm Test: one point more' }).tap();
+    assert.equal(Number((await saved()).midterm), tapped + 1);
+    await midterm.getByRole('button', { name: 'Set to B+, 77 percent' }).tap();
+    assert.equal((await saved()).midterm, '77');
+    await midterm.getByRole('button', { name: 'Undo: back to not marked' }).tap();
+    assert.equal((await saved()).midterm, undefined, 'Undo restores the mark the row had when the sheet opened');
+    await midterm.getByLabel('Midterm Test score').fill('70');
+    // Escape closes, focus returns to the row last shown, and the banner offers Undo for the visit.
+    await page.keyboard.press('Escape');
+    await page.waitForFunction(() => !document.querySelector('[data-mark-sheet]').open);
+    assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('data-grade-row')), 'midterm');
+    assert.match(await page.locator('[class*="undoBanner"]').innerText(), /marks changed/);
+    assert.match(await page.locator('[data-grade-row="quiz-1"]').innerText(), /17\/20/);
+    // (85 × 5 + 80 × 5 + 70 × 40) / 50 = 72.5 → shown as 72.5%, a B (73 after TMU rounding).
+    await page.waitForFunction(() => /72\.5%/.test(document.querySelector('[data-grade-current]').textContent));
+    assert.match(await page.locator('[data-grade-current]').innerText(), /\bB\b/);
     await page.getByRole('button', { name: /^B\+, 77% or more/ }).click();
     assert.match(await page.locator('[data-grade-answer]').innerText(), /For a B\+ \(77%\), you need an average of at least/);
-    const field = await page.getByLabel('Midterm Test', { exact: true }).boundingBox();
-    assert.ok(field.height >= 44 && field.width >= 44, JSON.stringify(field));
-    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'no sideways scrolling');
+    assert.match(await page.locator('[data-grade-row="final"]').innerText(), /B\+ needs/);
+    // Plan the rest moves the projected final and never touches the saved marks.
+    const before = await page.evaluate(() => localStorage.getItem('mth140-grades-v1'));
+    const planResult = await page.locator('[data-grade-plan-result]').innerText();
+    await page.locator('[data-grade-plan] input[type="range"]').focus();
+    for (let i = 0; i < 5; i += 1) await page.keyboard.press('ArrowRight');
+    await page.waitForFunction((was) => document.querySelector('[data-grade-plan-result]').textContent.replace(/\s+/g, ' ') !== was.replace(/\s+/g, ' '), planResult);
+    assert.equal(await page.evaluate(() => localStorage.getItem('mth140-grades-v1')), before, 'planning saves nothing');
     await page.screenshot({ path: path.join(report, 'grades-mth140-390.png') });
     await page.reload();
     await page.getByRole('heading', { name: 'Grade calculator', exact: true }).waitFor();
-    await page.waitForFunction(() => /71\.6%/.test(document.querySelector('[data-grade-current]')?.textContent || ''));
+    await page.waitForFunction(() => /72\.5%/.test(document.querySelector('[data-grade-current]')?.textContent || ''));
     assert.equal(await page.getByRole('button', { name: /^B\+, 77% or more/ }).getAttribute('aria-pressed'), 'true');
     // Each course keeps its own marks.
     await ready(page, 'mth141/#grades');

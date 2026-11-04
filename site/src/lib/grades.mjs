@@ -7,8 +7,12 @@
 
    Marks are saved per course in this browser only, under `<course>-grades-v1`:
      {"marks":{"quiz-1":"17/20","midterm":"74.5"},"target":80}
-   A mark is the text typed: "74.5" is a percentage, "17/20" a score out of a total. Nothing else reads or writes
-   these keys, and they are not part of progress backups. Pure: no DOM or storage access at import. */
+   A mark is the text typed: "74.5" is a percentage, "17/20" a score out of a total, "/20" a total with no score
+   yet. Nothing else reads or writes these keys, and they are not part of progress backups. Pure: no DOM or
+   storage access at import.
+
+   The mark sheet's helpers (scoreGrid, stepMark, suggestOutOf, describeMark, scoreFor, gradeIfAverage, …) only
+   build those same strings and read the same standing, so tapping, sliding and typing all save one format. */
 import { assessments } from './deadlines.mjs';
 import { forget, onLocalChange, readJSON, resolveStorage, writeJSON, writeRaw } from './storage.mjs';
 
@@ -393,3 +397,127 @@ export function percentsFrom(marks = {}) {
       .filter(([, percent]) => percent !== null),
   );
 }
+
+// ---- Mark sheet: tap, slide or step a mark instead of typing it ----
+
+/** The "Out of" choices the sheet offers ('' is a percentage); any other total is typed after "Other". */
+export const OUT_OF_PICKS = ['', '5', '10', '20', '25', '30', '40', '50'];
+export const GRID_MAX = 25;
+
+const totalOf = (outOf) => {
+  if (!NUMBER.test(String(outOf ?? ''))) return null;
+  const total = toNumber(String(outOf ?? ''));
+  return total && total > 0 ? total : null;
+};
+
+/** A number as saved mark text: at most three decimals, no trailing zeros, within 0–9999 ("0.3", not "0.30000000000000004"). */
+export function formatScore(value) {
+  const clamped = Math.min(9999, Math.max(0, Number.isFinite(value) ? value : 0));
+  return String(Math.round(clamped * 1000) / 1000);
+}
+
+/**
+ * The total an item's sheet should open on: its own saved total; else, in a drop-lowest series (Lab Quiz 1–4),
+ * the commonest total among its marked siblings (a tie goes to the latest), so Lab Quiz 1 at 17/20 opens Lab
+ * Quiz 2 at /20; else, among unrelated deliverables, only a total that at least two marked siblings share as a
+ * clear majority; otherwise '' (a percentage).
+ */
+export function suggestOutOf(plan, marks, itemId) {
+  const own = splitMark(marks?.[itemId]).outOf;
+  if (own) return own;
+  const item = plan.items.find((entry) => entry.id === itemId);
+  const group = plan.groups.find((entry) => entry.id === item?.groupId);
+  const counts = new Map();
+  let best = '';
+  let bestCount = 0;
+  let marked = 0;
+  (group?.items || [])
+    .filter((entry) => entry.id !== itemId && marks?.[entry.id])
+    .forEach((entry) => {
+      const { score, outOf } = splitMark(marks[entry.id]);
+      if (parseMark(score, outOf).error) return;
+      marked += 1;
+      const count = (counts.get(outOf) || 0) + 1;
+      counts.set(outOf, count);
+      // Later siblings win ties, so a total changed partway through the term carries forward.
+      if (count >= bestCount) [best, bestCount] = [outOf, count];
+    });
+  if (group?.drop) return best;
+  return bestCount >= 2 && bestCount > marked / 2 ? best : '';
+}
+
+/** Every score from 0 to a whole total up to GRID_MAX, with its percentage and letter; null for other totals. */
+export function scoreGrid(outOf) {
+  const total = totalOf(outOf);
+  if (!total || !Number.isInteger(total) || total > GRID_MAX) return null;
+  return Array.from({ length: total + 1 }, (_, score) => {
+    const percent = (score / total) * 100;
+    return { score, percent, letter: letterFor(floorTenth(percent)).letter };
+  });
+}
+
+/** Where each letter's minimum falls on a 0–`max` track; labels only at D- 50, C- 60, B- 70, A- 80 and A+ 90. */
+export function letterTicks(max) {
+  return GRADE_SCALE.filter((row) => row.min > 0).map((row) => ({
+    letter: row.letter,
+    min: row.min,
+    value: (row.min * max) / 100,
+    labelled: [50, 60, 70, 80, 90].includes(row.min),
+  }));
+}
+
+/** A starting percentage for an unmarked item: its group's average, else the course average, else 75. */
+export function seedFor(plan, standing, itemId) {
+  const item = plan.items.find((entry) => entry.id === itemId);
+  const group = standing.groups.find((entry) => entry.id === item?.groupId);
+  if (group?.average !== null && group?.average !== undefined) return Math.round(group.average);
+  if (standing.current !== null) return Math.round(standing.current);
+  return 75;
+}
+
+/**
+ * The mark text after a stepper press: `delta` points (or percent), clamped to 0 and the total. An empty or
+ * unreadable score first takes the suggested starting point itself, `seed` percent in whole points
+ * ('/10' with seed 82 → '8/10'; '' → '82'), the value the slider's waiting thumb shows.
+ */
+export function stepMark(text, delta, { seed = 75 } = {}) {
+  const { score, outOf } = splitMark(text);
+  const total = totalOf(outOf);
+  const max = total ?? 100;
+  const value = NUMBER.test(score) ? toNumber(score) : null;
+  const next = value === null || value > max ? Math.round((seed * max) / 100) : value + delta;
+  const clamped = Math.min(max, Math.max(0, Math.round(next * 1000) / 1000));
+  return joinMark({ score: formatScore(clamped), outOf: total ? outOf : '' });
+}
+
+/**
+ * A saved mark for display: { score, outOf, percent, letter, error, short, spoken }. `short` is '17/20', '68.5%',
+ * '—/20' or ''; `spoken` reads '17 out of 20, 85 percent, A', 'not marked, out of 20' or 'check this mark'.
+ */
+export function describeMark(text) {
+  const { score, outOf } = splitMark(text);
+  const { percent, error } = parseMark(score, outOf);
+  const shownPercent = percent === null ? null : floorTenth(percent);
+  const letter = shownPercent === null ? null : letterFor(shownPercent).letter;
+  let short = '';
+  let spoken = outOf ? `not marked, out of ${outOf}` : 'not marked';
+  if (error) spoken = 'check this mark';
+  else if (percent !== null && outOf) {
+    short = `${score}/${outOf}`;
+    spoken = `${score} out of ${outOf}, ${shownPercent} percent, ${letter}`;
+  } else if (percent !== null) {
+    short = formatPercent(shownPercent);
+    spoken = `${shownPercent} percent, ${letter}`;
+  } else if (outOf) short = `—/${outOf}`;
+  return { score, outOf, percent, letter, error, short, spoken };
+}
+
+/** The smallest whole score out of `outOf` that reaches `percent` (80.7% of 20 → 17), so it never understates. */
+export function scoreFor(percent, outOf) {
+  const total = totalOf(outOf);
+  if (!total) return null;
+  return Math.min(total, Math.max(0, Math.ceil((percent * total) / 100 - EPSILON)));
+}
+
+/** Course points if every unmarked item scores `average` (drop-lowest applied): the "Plan the rest" result. */
+export const gradeIfAverage = (plan, percents, average) => pointsWith(plan, percents, average);
