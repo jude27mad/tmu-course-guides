@@ -6,7 +6,7 @@ import { useFrame } from '@react-three/fiber';
 // eslint-disable-next-line import/extensions
 import { createDiscFlight, GAME_MAX_AGE } from './gameTiming.mjs';
 
-// Slicing swaps the disc for its two halves and scores one point, but never
+// Slicing swaps the emoji for its two halves and scores one point, but never
 // marks anything done (ticks and completion records live on the course pages).
 function Sticker({ id, positionX, material, materialSliced, isMobile, viewportHeight, ceilingY, speed, ceilingRef, floorRef, onDone, onSlice, onMiss, eventSource, active }) {
   const bodyRef = useRef();
@@ -59,7 +59,7 @@ function Sticker({ id, positionX, material, materialSliced, isMobile, viewportHe
       gravityScale={flight.gravityScale}
       colliders="ball"
     >
-      {/* The shared material of this disc's face (FruitNinja): whole, then its halves once sliced. */}
+      {/* The shared material of this emoji's face (FruitNinja): whole, then its halves once sliced. */}
       <Plane
         scale={mobileConfig.scale}
         material={fruitSliced ? materialSliced : material}

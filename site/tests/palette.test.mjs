@@ -4,7 +4,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { BADGE, DISC, STATUS, TOKENS, countdownStatus, rgbOf } from '../src/lib/palette.mjs';
+import { BADGE, STATUS, TOKENS, countdownStatus, rgbOf } from '../src/lib/palette.mjs';
 import { DEFAULT_PALETTE, PALETTES } from '../src/lib/courses.mjs';
 
 const HOUR = 3600000;
@@ -57,9 +57,9 @@ test('every course shares one palette with the single accent', () => {
   for (const palette of Object.values(PALETTES)) assert.equal(palette, DEFAULT_PALETTE);
 });
 
-test('badge and disc textures are drawn only from tokens', () => {
+test('badge textures are drawn only from tokens', () => {
   const values = new Set(Object.values(TOKENS));
-  for (const look of [BADGE, DISC]) for (const [key, value] of Object.entries(look)) assert.ok(values.has(value), `${key}: ${value}`);
+  for (const [key, value] of Object.entries(BADGE)) assert.ok(values.has(value), `${key}: ${value}`);
 });
 
 test('countdown status follows the time left', () => {

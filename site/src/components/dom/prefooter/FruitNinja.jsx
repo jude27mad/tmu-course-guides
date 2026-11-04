@@ -1,8 +1,7 @@
-import { discTexture, loadDiscFont, slicedDiscTexture } from '@src/components/dom/prefooter/discTextures';
+import { emojiTextures, loadEmojiImages } from '@src/components/dom/prefooter/emojiTextures';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { COURSES, DISC } from '@src/lib';
-import { MeshPhysicalMaterial, MeshStandardMaterial } from 'three';
+import { MeshBasicMaterial } from 'three';
 import { PerspectiveCamera } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import Sticker from '@src/components/dom/prefooter/Sticker';
@@ -20,29 +19,15 @@ import { bindGameTouch } from './gameTouch.mjs';
 const MAX_ALIVE = 10;
 const MAX_ALIVE_PHONE = 6;
 
-function Lighting() {
-  return (
-    <>
-      <ambientLight intensity={1.3} />
-      <directionalLight position={[5, 5, 5]} intensity={1.5} />
-      <directionalLight position={[-5, 5, 5]} intensity={1} />
-      <directionalLight position={[0, 5, -5]} intensity={1} />
-    </>
-  );
-}
-
-function useDiscTextures() {
+function useEmojiTextures() {
   const [textures, setTextures] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
     let made = null;
-    loadDiscFont().then(() => {
+    loadEmojiImages().then((images) => {
       if (cancelled) return;
-      made = COURSES.map((course) => {
-        const look = { code: course.code, ...DISC };
-        return { whole: discTexture(look), sliced: slicedDiscTexture(look) };
-      });
+      made = images.map(emojiTextures);
       setTextures(made);
     });
     return () => {
@@ -57,31 +42,15 @@ function useDiscTextures() {
   return textures;
 }
 
-// One material per disc face, shared by every disc. A disc used to declare its own material, which R3F
-// disposed when the disc left; with no other disc of that kind in the air, three.js then released the
-// compiled shader and the next disc compiled it again, a main-thread stall on almost every spawn while
-// the section was on screen. The settings are the ones each disc declared before.
-const discMaterial = (map, isMobile) =>
-  isMobile
-    ? // phones: no iridescence/clearcoat passes
-      new MeshStandardMaterial({ transparent: true, polygonOffset: true, polygonOffsetFactor: -10, map, roughness: 0.6, metalness: 0.2, toneMapped: false })
-    : new MeshPhysicalMaterial({
-        transparent: true,
-        polygonOffset: true,
-        polygonOffsetFactor: -10,
-        map,
-        iridescence: 2,
-        iridescenceIOR: 1,
-        iridescenceThicknessRange: [0, 1400],
-        roughness: 1,
-        clearcoat: 0.5,
-        // The original used 0.75 for printed logos; the discs carry the course colours, which read muddy that metallic
-        metalness: 0.35,
-        toneMapped: false,
-      });
+// One material per emoji face, shared by every target. A target used to declare its own material, which
+// R3F disposed when it left; with no other target of that kind in the air, three.js then released the
+// compiled shader and the next one compiled it again, a main-thread stall on spawns while the section was
+// on screen. The settings are the ones each target declared: the artwork already contains its shading,
+// so it keeps its original colours.
+const emojiMaterial = (map) => new MeshBasicMaterial({ transparent: true, polygonOffset: true, polygonOffsetFactor: -10, map, toneMapped: false });
 
-function useDiscMaterials(textures, isMobile) {
-  const materials = useMemo(() => textures?.map(({ whole, sliced }) => ({ whole: discMaterial(whole, isMobile), sliced: discMaterial(sliced, isMobile) })) || null, [textures, isMobile]);
+function useEmojiMaterials(textures) {
+  const materials = useMemo(() => textures?.map(({ whole, sliced }) => ({ whole: emojiMaterial(whole), sliced: emojiMaterial(sliced) })) || null, [textures]);
   useEffect(
     () => () =>
       materials?.forEach(({ whole, sliced }) => {
@@ -139,8 +108,8 @@ function useFruitSpawner({ viewport, textures, isMobile, active, getCeiling, str
 function FruitNinja({ active = true, eventSource, scoreRef, streakRef, onSlice, onMiss }) {
   const viewport = useThree((state) => state.viewport);
   const isMobile = useIsMobile();
-  const textures = useDiscTextures();
-  const materials = useDiscMaterials(textures, isMobile);
+  const textures = useEmojiTextures();
+  const materials = useEmojiMaterials(textures);
   const { scene, camera, raycaster, pointer, setEvents, gl } = useThree();
   const ceilingRef = useRef(-Infinity);
   const floorRef = useRef(Infinity);
@@ -215,7 +184,6 @@ function FruitNinja({ active = true, eventSource, scoreRef, streakRef, onSlice, 
   return (
     <>
       <PerspectiveCamera makeDefault position={[0, 0, 10]} />
-      <Lighting />
       <Physics paused={!active} interpolate timeStep={1 / 60} gravity={[0, GAME_GRAVITY, 0]} colliders={false}>
         {materials &&
           fruits.map((fruit) => (

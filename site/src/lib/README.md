@@ -78,7 +78,7 @@ getCourse('nope'); // null
 
 **`PALETTES`**, **`DEFAULT_PALETTE`**: every course shares one palette, built from **`TOKENS`** in `palette.mjs` (neutral zinc with one TMU Blue accent; `styles/colors.scss` mirrors it as CSS variables and `tests/palette.test.mjs` keeps the two equal). The same values colour page CSS, course cards and generated 3D textures. Apply them with the original `updateCSSVariables` mapping (`--black` = `primary`, `--white` = `secondary`, `--accent` = `accent`, …) and `setFluidColor(palette.fluidColor)`. The fluid dye is `#E4E4E7` on every route over a black difference-blend base, so the page colour shows unchanged.
 
-**`BADGE`**, **`DISC`**: the printed colours of the lanyard ID badge and the prefooter discs, identical for every course. **`countdownStatus({ ms, done })`** → `'onTrack' | 'soon' | 'urgent' | 'done' | null` (more than 72 h, 72 h or less, 24 h or less, completed); **`STATUS[key]`** gives its colour and badge label. Only the Desk countdown uses these colours.
+**`BADGE`**: the printed colours of the lanyard ID badge, identical for every course. The prefooter game uses locally hosted Fluent Emoji images in their original colours. **`countdownStatus({ ms, done })`** → `'onTrack' | 'soon' | 'urgent' | 'done' | null` (more than 72 h, 72 h or less, 24 h or less, completed); **`STATUS[key]`** gives its colour and badge label. Only the Desk countdown uses these colours.
 
 ### Sections and groups
 
