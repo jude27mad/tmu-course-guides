@@ -1,5 +1,27 @@
 # Code provenance and licences
 
+## Fluent Emoji game artwork
+
+The slicing game's rocket, brain, laptop, books, hot beverage and gear are the
+original 256 × 256 transparent 3D PNGs from
+[Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji), revision
+`1ffb34c752ecf5d402f04cfb4b392c77f57c54bc`, fetched on November 4, 2026.
+The upstream MIT notice is reproduced in [Fluent-Emoji-MIT.txt](Fluent-Emoji-MIT.txt).
+
+| Local file under `images/game/` | Upstream path under `assets/` |
+| --- | --- |
+| `rocket.png` | `Rocket/3D/rocket_3d.png` |
+| `brain.png` | `Brain/3D/brain_3d.png` |
+| `laptop.png` | `Laptop/3D/laptop_3d.png` |
+| `books.png` | `Books/3D/books_3d.png` |
+| `hot_beverage.png` | `Hot beverage/3D/hot_beverage_3d.png` |
+| `gear.png` | `Gear/3D/gear_3d.png` |
+
+Files are bundled unchanged and served locally. The game clips and separates
+each image into two halves when sliced; no third-party runtime request is made.
+
+## Existing code
+
 The existing Giats licence and attribution remain in effect; the complete
 notice is included in [`Giats-MIT.txt`](Giats-MIT.txt). The following upstream source
 was fetched and its current terms checked on 2026-10-15.

@@ -22,8 +22,8 @@ export const TOKENS = Object.freeze({
   done: '#15803D', // countdown: completed
 });
 
-/* The printed colours of the generated 3D artwork: the lanyard ID badge (card, clip slot, strap, metal clip)
-   and the prefooter's course discs. Identical for every course; only the text differs. */
+/* The printed colours of the lanyard ID badge (card, clip slot, strap, metal clip).
+   Identical for every course; only the text differs. The game uses original emoji artwork. */
 export const BADGE = Object.freeze({
   background: TOKENS.ink, // the badge card and its edge
   color: TOKENS.onDark, // course code and next date
@@ -34,7 +34,6 @@ export const BADGE = Object.freeze({
   strapColor: TOKENS.mutedOnDark, // the course code printed on the band
   clip: TOKENS.mutedOnDark, // the metal clip
 });
-export const DISC = Object.freeze({ background: TOKENS.ink, color: TOKENS.onDark, ring: TOKENS.borderOnDark });
 
 /* "r, g, b" for canvases and translucent CSS (rgba(var(--inkRgb), 0.2)). */
 export function rgbOf(hex) {
