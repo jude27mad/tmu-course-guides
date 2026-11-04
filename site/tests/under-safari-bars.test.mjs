@@ -325,6 +325,11 @@ test('a page that ends dark fades into the ink over its own last stretch, so its
   assert.doesNotMatch(after, /position: fixed/);
   // While the page bounces past its end the fixed copy (above) takes over, in the same frame.
   assert.match(layout, /:global\(html\[data-scroll-mode='document'\]\[data-edge-past='end'\]\) \.footer::after \{\s*visibility: hidden;\s*\}/);
+  // Leaving from an open panel the paper rises behind the shrunk page (#routePaper,
+  // below main): the page's own fade would stay over it as an ink band.
+  assert.match(layout, /:global\(html\[data-scroll-mode='document'\]\[data-page-shrunk\]\[data-footer-bottom='light'\]\) \.footer::after \{\s*visibility: hidden;\s*\}/);
+  const shell = read('../src/components/dom/navbar/panelShell.js');
+  assert.match(shell.slice(shell.indexOf('export function fadePanelEdges')), /root\.dataset\.footerBottom = 'light';/);
   assert.doesNotMatch(layout, /transition/);
   // Document mode only: on computers `main` scrolls and no browser bar is involved.
   assert.doesNotMatch(layout.replace(/\/\/.*$/gm, '').slice(0, layout.replace(/\/\/.*$/gm, '').indexOf(':global(')), /::after/);

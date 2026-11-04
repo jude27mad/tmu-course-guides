@@ -37,3 +37,12 @@
 :global(html[data-scroll-mode='document'][data-edge-past='end']) .footer::after {
   visibility: hidden;
 }
+
+// Leaving for another page from an open Menu or Search, the paper rises behind
+// the shrunk page and fadePanelEdges turns the colour past its ends to the
+// paper (data-footer-bottom='light', panelShell.js). This fade belongs to the
+// page, above that paper, and would stay at the card's bottom as an ink band.
+// The page is dimmed to 5% at that moment, so it goes at once.
+:global(html[data-scroll-mode='document'][data-page-shrunk][data-footer-bottom='light']) .footer::after {
+  visibility: hidden;
+}
