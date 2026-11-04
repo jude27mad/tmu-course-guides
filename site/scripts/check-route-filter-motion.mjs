@@ -145,8 +145,13 @@ const stopRouteFrames = (page) => page.evaluate(async () => {
   return window.routeFrames;
 });
 const MAX_EXPOSURE = 0.1;
-function assertPaperFade(frames, label) {
-  const exposed = frames.filter((frame) => frame.exposure > MAX_EXPOSURE);
+// From an open panel the change starts on the dark artwork that the shell
+// uncovered (Giats's menu): from the first frame the paper (or the arriving
+// page) covers it, the artwork must not show through again.
+function assertPaperFade(frames, label, { fromPanel = false } = {}) {
+  const start = fromPanel ? frames.findIndex((frame) => frame.exposure <= MAX_EXPOSURE) : 0;
+  assert.ok(start !== -1, `${label}: the page change covers the artwork`);
+  const exposed = frames.slice(start).filter((frame) => frame.exposure > MAX_EXPOSURE);
   assert.deepEqual(exposed.slice(0, 4), [], `${label}: the dark artwork must not show through a changing page`);
   assert.ok(frames.every((frame) => !frame.paper || frame.paperCovers), `${label}: the paper covers the screen whenever it is shown`);
 }
@@ -218,20 +223,34 @@ async function checkMobileMenu(page, name) {
       // focus as well as from the keyboard-focused opener used in the first pass.
       if (closeWithEscape) await opener.evaluate((button) => button.blur());
       await opener.click();
+      // Open: the panel is shown and every list and row has slid in from the left.
       await page.waitForFunction(() => {
         const menu = document.querySelector('#menu');
-        return getComputedStyle(menu).opacity === '1' &&
-          Array.from(menu.querySelectorAll('[data-menu-anim]')).every((item) => getComputedStyle(item).opacity === '1');
+        const settled = (item) => getComputedStyle(item).opacity === '1' && ['none', 'matrix(1, 0, 0, 1, 0, 0)'].includes(getComputedStyle(item).transform);
+        return getComputedStyle(menu).opacity === '1' && Array.from(menu.querySelectorAll('[data-menu-anim]')).every(settled);
       }, null, { timeout: 8000 }).catch(async () => {
         const diagnostic = await page.evaluate(() => ({
           open: document.querySelector('#menu').getAttribute('aria-hidden'),
           opacity: getComputedStyle(document.querySelector('#menu')).opacity,
           incomplete: Array.from(document.querySelectorAll('#menu [data-menu-anim]'))
-            .filter((item) => getComputedStyle(item).opacity !== '1')
+            .filter((item) => getComputedStyle(item).opacity !== '1' || !['none', 'matrix(1, 0, 0, 1, 0, 0)'].includes(getComputedStyle(item).transform))
             .slice(0, 6)
-            .map((item) => ({ text: item.textContent.trim().slice(0, 40), opacity: getComputedStyle(item).opacity })),
+            .map((item) => ({ text: item.textContent.trim().slice(0, 40), opacity: getComputedStyle(item).opacity, transform: getComputedStyle(item).transform })),
         }));
         throw new Error(`Menu did not finish opening: ${JSON.stringify(diagnostic)}`);
+      });
+      // Giats's shell: the page shrinks to 90% and slides 40vw to the left, dimmed to 5%.
+      await page.waitForFunction(({ width }) => {
+        const rect = document.querySelector('main').getBoundingClientRect();
+        return Math.abs(rect.width - width * 0.9) < 2 && Math.abs(rect.left + innerWidth * 0.35) < 2 &&
+          Math.abs(Number(getComputedStyle(document.querySelector('#layout')).opacity) - 0.05) < 0.01;
+      }, before.page, { timeout: 8000 }).catch(async () => {
+        const diagnostic = await page.evaluate(() => ({
+          page: document.querySelector('main').getBoundingClientRect().toJSON(),
+          layout: getComputedStyle(document.querySelector('#layout')).opacity,
+          viewport: innerWidth,
+        }));
+        throw new Error(`The page did not shrink aside behind the open menu: ${JSON.stringify(diagnostic)}`);
       });
       // Reduced-motion iPhone Safari can leave focus on body after a touch
       // gesture. Keyboard entry must still move directly into the modal.
@@ -253,7 +272,7 @@ async function checkMobileMenu(page, name) {
             .every(([x, y]) => panel.contains(document.elementFromPoint(x, y))),
         };
       });
-      assert.equal(coverage.backgroundAlpha, 255, 'the open phone menu has an opaque background');
+      assert.equal(coverage.backgroundAlpha, 0, 'the open phone menu has no surface of its own: the artwork shows through it');
       assert.equal(coverage.coversCorners, true, 'the phone menu covers and receives input at every viewport corner');
       if (!closeWithEscape) {
         await page.screenshot({ path: path.join(report, `${name}-open.png`) });
@@ -267,6 +286,15 @@ async function checkMobileMenu(page, name) {
       if (closeWithEscape) await page.keyboard.press('Escape');
       else await close.click();
       await page.waitForFunction(() => getComputedStyle(document.querySelector('#menu')).visibility === 'hidden');
+      // Closing plays the shell backwards: the page returns exactly where it was.
+      await page.waitForFunction(({ left, top, width }) => {
+        const rect = document.querySelector('main').getBoundingClientRect();
+        return Math.abs(rect.left - left) < 2 && Math.abs(rect.top - top) < 2 && Math.abs(rect.width - width) < 2 &&
+          getComputedStyle(document.querySelector('#layout')).opacity === '1';
+      }, before.page, { timeout: 8000 }).catch(async () => {
+        const diagnostic = await page.evaluate(() => ({ page: document.querySelector('main').getBoundingClientRect().toJSON(), layout: getComputedStyle(document.querySelector('#layout')).opacity }));
+        throw new Error(`The page did not return after the menu closed: ${JSON.stringify(diagnostic)}`);
+      });
       await page.waitForFunction(() => document.querySelector('#menu-button') === document.activeElement, null, { timeout: 8000 }).catch(async () => {
         const diagnostic = await page.evaluate(() => ({
           active: document.activeElement?.outerHTML.slice(0, 200),
@@ -282,8 +310,11 @@ async function checkMobileMenu(page, name) {
     frames = await page.evaluate(() => { cancelAnimationFrame(window.menuFrame); return window.menuFrames; });
     await writeFile(path.join(report, `${name}-frames.json`), JSON.stringify(frames, null, 2));
   }
-  const moved = frames.filter((frame) => ['left', 'top', 'width'].some((key) => Math.abs(frame.page[key] - before.page[key]) >= 2));
-  assert.deepEqual(moved.slice(0, 4), [], 'opening, closing and reopening the phone menu never shifts or shrinks the page');
+  const moved = frames.filter((frame) => frame.phase === 'before' && ['left', 'top', 'width'].some((key) => Math.abs(frame.page[key] - before.page[key]) >= 2));
+  assert.deepEqual(moved.slice(0, 4), [], 'the page stays put until the menu opens');
+  // The page only ever shrinks towards Giats's card and slides left: never wider, never to the right.
+  const stray = frames.filter((frame) => frame.page.width > before.page.width + 2 || frame.page.left > before.page.left + 2);
+  assert.deepEqual(stray.slice(0, 4), [], 'the shrinking page never grows or moves right');
   assert.ok(frames.every((frame) => frame.scrollY === before.scrollY && frame.scrollTop === before.scrollTop), 'the phone menu preserves the page scroll throughout both open/close cycles');
   const visible = frames.filter((frame) => frame.opacity > 0);
   assert.ok(visible.length, 'sample the phone menu while visible');
@@ -358,14 +389,16 @@ try {
         await ready(page);
         const menu = await checkMobileMenu(page, `iphone-course-menu-${reducedMotion}`);
         await page.getByRole('button', { name: 'Open menu', exact: true }).click();
-        await page.waitForFunction(() => getComputedStyle(document.querySelector('#menu')).opacity === '1');
+        // Sample from the settled open shell: the panel shown and the page dimmed behind it.
+        await page.waitForFunction(() => getComputedStyle(document.querySelector('#menu')).opacity === '1' &&
+          Math.abs(Number(getComputedStyle(document.querySelector('#layout')).opacity) - 0.05) < 0.01);
         await startRouteFrames(page);
         await page.locator('#menu').getByRole('link', { name: 'CEN100', exact: true }).click();
         await page.waitForURL(`${base}cen100/`);
         await ready(page);
         const frames = await stopRouteFrames(page);
         await writeFile(path.join(report, `route-${reducedMotion}.json`), JSON.stringify(frames, null, 2));
-        assertPaperFade(frames, 'from the menu');
+        assertPaperFade(frames, 'from the menu', { fromPanel: true });
         const incoming = frames.filter((frame) => frame.title === 'Intro to Engineering' && frame.opacity > 0.05);
         assert.ok(incoming.length, 'sample the visible destination');
         assert.ok(incoming.every((frame) => Math.abs(frame.left) < 2 && Math.abs(frame.width - frame.viewport) < 2),
@@ -982,11 +1015,12 @@ try {
         return { words, discs: count, flight, slices, scoreHistory, reveal: { before, after }, frameP95Ms: frames[Math.floor(frames.length * 0.95)], note: 'CI diagnostics; not physical-device performance.' };
       });
       if (label === 'iphone' || label === 'desktop') await check(browser, options, `${label}-game-screen-edge`, async (page) => {
+        await observeCanvasStores(page);
         const evidence = [];
         for (const route of ['', 'courses/', 'privacy/', 'updates/']) {
           await page.goto(base + route);
           await ready(page);
-          for (const offset of [-0.15, 0.7, 0.25]) {
+          for (const offset of [-0.15, 0.7, 0.25, 1.1, 0.6, 0.95]) {
             await page.evaluate(offset => {
               const section = document.querySelector('[data-companion-statement]');
               const documentMode = document.documentElement.dataset.scrollMode === 'document';
@@ -996,18 +1030,73 @@ try {
             }, offset);
             await page.locator('[data-companion-game][data-active="true"] canvas').waitFor();
             await page.waitForFunction(() => {
-              const box = document.querySelector('[data-companion-game] canvas')?.getBoundingClientRect();
-              return box && Math.abs(box.top) < 1 && Math.abs(box.bottom - innerHeight) < 1;
+              const canvas = document.querySelector('[data-companion-game] canvas');
+              const box = canvas?.getBoundingClientRect();
+              // Canvas mounts before the lazy physics scene. Check a rendered
+              // game frame, not the empty loading canvas with clip-path:none.
+              return box && Math.abs(box.top) < 1 && Math.abs(box.bottom - innerHeight) < 1 && getComputedStyle(canvas).clipPath.startsWith('inset(');
             });
+            await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
             const geometry = await page.evaluate(() => {
               const game = document.querySelector('[data-companion-game]');
-              const box = game.querySelector('canvas').getBoundingClientRect();
-              const stage = document.querySelector('[data-companion-statement]').firstElementChild.getBoundingClientRect();
-              return { top: box.top, bottom: box.bottom, stageBottom: stage.bottom, viewport: innerHeight, left: box.left, stageLeft: stage.left, width: box.width, stageWidth: stage.width, clippedByPage: !!game.closest('main') };
+              const canvas = game.querySelector('canvas');
+              const box = canvas.getBoundingClientRect();
+              const section = document.querySelector('[data-companion-statement]');
+              const stage = section.firstElementChild.getBoundingClientRect();
+              const clip = getComputedStyle(canvas).clipPath.slice(6, -1).split(/\s+/).map(parseFloat);
+              return { top: box.top, bottom: box.bottom, stageBottom: stage.bottom, paperBottom: section.getBoundingClientRect().bottom, paintedBottom: box.bottom - (clip[2] ?? clip[0]), viewport: innerHeight, left: box.left, stageLeft: stage.left, width: box.width, stageWidth: stage.width, clippedByPage: !!game.closest('main') };
             });
-            assert.equal(geometry.clippedByPage, false, 'the white section cannot clip the fixed game');
+            assert.equal(geometry.clippedByPage, false, 'scrolling does not move the fixed game canvas');
             assert.ok(Math.abs(geometry.left - geometry.stageLeft) < 1 && Math.abs(geometry.width - geometry.stageWidth) < 1, 'the existing horizontal game area is preserved');
             if (offset === 0.7) assert.ok(geometry.stageBottom < geometry.bottom - 20, 'the canvas continues to the screen edge after the statement starts leaving');
+            assert.ok(Math.abs(geometry.paintedBottom - Math.min(geometry.bottom, geometry.paperBottom)) < 1,
+              `the visible game ends exactly at the white/dark boundary: ${JSON.stringify(geometry)}`);
+            // Reverse scroll while a real disc is airborne, not just while an
+            // empty canvas is mounted.
+            if (!route && offset === 0.7) await page.waitForFunction(() => {
+              const state = [...window.canvasStores].map(store => store.getState()).find(item => item.gl.domElement.closest('[data-companion-game]'));
+              let airborne = false;
+              state?.scene.traverse(mesh => {
+                if (!mesh.userData.slice) return;
+                const point = mesh.getWorldPosition(mesh.position.clone()).project(state.camera);
+                airborne ||= Math.abs(point.y) < 0.8;
+              });
+              return airborne;
+            });
+            if (!route && offset === 1.1) {
+              const hiddenHit = await page.evaluate(async touchInput => {
+                const stage = document.querySelector('[data-game-discs]');
+                const state = [...window.canvasStores].map(store => store.getState()).find(item => item.gl.domElement.closest('[data-companion-game]'));
+                const deadline = performance.now() + 18000;
+                while (performance.now() < deadline) {
+                  await new Promise(requestAnimationFrame);
+                  const box = state.gl.domElement.getBoundingClientRect();
+                  const edge = document.querySelector('[data-companion-statement]').getBoundingClientRect().bottom;
+                  let target;
+                  state.scene.traverse(mesh => {
+                    if (!mesh.userData.slice) return;
+                    const point = mesh.getWorldPosition(mesh.position.clone()).project(state.camera);
+                    const clientX = box.left + (point.x + 1) * box.width / 2;
+                    const clientY = box.top + (1 - point.y) * box.height / 2;
+                    if (Math.abs(point.x) < 0.8 && clientY > edge + 10 && clientY < innerHeight - 10) target = { clientX, clientY };
+                  });
+                  if (!target) continue;
+                  const before = Number(stage.dataset.gameSlices || 0);
+                  if (touchInput) {
+                    const touch = { identifier: 1, target: stage, ...target };
+                    for (const type of ['touchstart', 'touchend']) {
+                      const event = new Event(type, { bubbles: true, cancelable: true });
+                      const touches = type === 'touchend' ? [] : [touch];
+                      Object.assign(event, { touches, targetTouches: touches, changedTouches: [touch] });
+                      stage.dispatchEvent(event);
+                    }
+                  } else stage.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerType: 'mouse', ...target }));
+                  return { before, after: Number(stage.dataset.gameSlices || 0) };
+                }
+                throw new Error('No airborne disc crossed behind the footer mask');
+              }, label === 'iphone');
+              assert.equal(hiddenHit.after, hiddenHit.before, 'discs masked by the dark footer cannot score or capture a touch');
+            }
             evidence.push({ route, offset, ...geometry });
           }
           await page.evaluate(() => (document.documentElement.dataset.scrollMode === 'document' ? window : document.querySelector('main')).scrollTo(0, 0));

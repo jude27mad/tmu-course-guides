@@ -9,6 +9,27 @@ export { TOKENS, STATUS, BADGE, DISC, countdownStatus, rgbOf } from './palette.m
 export { deadlines, deadlineItem, buckets, nextDeadline, countdown, weeklyChecklist, assessments, deskSnapshot, workList } from './deadlines.mjs';
 export { assignmentList, calendarEvents } from './assignments.mjs';
 export { courseInfo, courseCopy } from './info.mjs';
+export {
+  GRADE_KEYS,
+  GRADE_SCALE,
+  PASS_MARK,
+  gradePlan,
+  gradeStanding,
+  gradeNeeded,
+  letterFor,
+  roundGrade,
+  parseMark,
+  splitMark,
+  joinMark,
+  percentsFrom,
+  readGrades,
+  writeGrades,
+  gradesSavable,
+  subscribeGrades,
+  floorTenth,
+  ceilTenth,
+  formatPercent,
+} from './grades.mjs';
 export { createProgress, sharedProgress } from './progress.mjs';
 export { searchIndex, searchEntries, searchGuide, SEARCH_COPY, SEARCH_GROUPS } from './search.mjs';
 export { calendarFile, exportBackup, importBackup, hasUnseenUpdates, markUpdatesSeen, getHideCompleted, setHideCompleted, motionPaused, setMotionPaused } from './tools.mjs';

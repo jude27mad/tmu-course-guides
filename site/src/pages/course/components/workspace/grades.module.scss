@@ -1,0 +1,598 @@
+// Grade calculator. Solid reading surfaces only (no glass), the site palette and the workspace type scale.
+.root {
+  padding-bottom: 24px;
+  font-variant-numeric: tabular-nums;
+  a {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+}
+.saved {
+  font-size: 14px;
+  opacity: 0.8;
+  &[data-blocked] {
+    max-width: 36ch;
+    opacity: 1;
+    color: var(--statusUrgent);
+    font-weight: 650;
+  }
+}
+.lede {
+  max-width: 62ch;
+  margin: -6px 0 24px;
+}
+.layout {
+  display: grid;
+  gap: 24px;
+}
+.side {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+  min-width: 0;
+}
+.standing,
+.targets {
+  padding: 20px;
+  border-radius: 16px;
+  background: var(--card);
+  box-shadow: inset 0 0 0 1px var(--border);
+  min-width: 0;
+}
+.headline {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+}
+// The percentage never breaks ("79.5" / "%"); the letter and its note give way instead.
+.big {
+  flex: none;
+  font-size: clamp(48px, 5.4vw, 76px);
+  line-height: 0.95;
+  font-weight: 550;
+  letter-spacing: -0.055em;
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+.letter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  min-width: 0;
+  text-align: right;
+  strong {
+    min-width: 56px;
+    letter-spacing: -0.02em;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--accentTint);
+    color: var(--accent);
+    box-shadow: inset 0 0 0 1px var(--accent);
+    font-size: 22px;
+    font-weight: 650;
+    line-height: 1.2;
+    text-align: center;
+  }
+  span {
+    font-size: 14px;
+    opacity: 0.8;
+  }
+}
+.headlineNote {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 1.45;
+  max-width: 44ch;
+}
+
+// Course points out of 100: secured, still possible, no longer possible.
+.meter {
+  margin-top: 28px;
+}
+.track {
+  position: relative;
+  height: 14px;
+  span {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    transition:
+      width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      left 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+// The segments are clipped to the pill; the pass and target markers overhang it.
+.fill {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--white);
+}
+.secured {
+  left: 0;
+  background: var(--accent);
+}
+.possible {
+  background: var(--accentTint);
+  box-shadow:
+    inset 0 1px 0 rgba(0, 76, 155, 0.25),
+    inset 0 -1px 0 rgba(0, 76, 155, 0.25);
+}
+.lost {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--border) 0 4px,
+    var(--white) 4px 8px
+  );
+}
+.pass,
+.target {
+  width: 0;
+  top: -5px !important;
+  bottom: -5px !important;
+}
+.pass {
+  border-left: 1px dashed var(--muted);
+}
+.target {
+  margin-left: -1px;
+  border-left: 2px solid var(--black);
+  &::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: calc(100% + 4px);
+    left: 0;
+    transform: translateX(-50%);
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--black);
+    color: var(--onDark);
+    font-size: 12px;
+    font-weight: 650;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+  // Near 100 the label sits to the left of the line, inside the card.
+  &[data-edge='end']::after {
+    left: auto;
+    right: -2px;
+    transform: none;
+  }
+}
+.scale {
+  position: relative;
+  height: 20px;
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: 0.8;
+  span {
+    position: absolute;
+    top: 0;
+  }
+  span:first-child {
+    left: 0;
+  }
+  span:nth-child(2) {
+    transform: translateX(-50%);
+  }
+  span:last-child {
+    right: 0;
+  }
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-top: 6px;
+  font-size: 13px;
+  li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  li::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+  }
+  [data-kind='secured']::before {
+    background: var(--accent);
+  }
+  [data-kind='possible']::before {
+    background: var(--accentTint);
+    box-shadow: inset 0 0 0 1px rgba(0, 76, 155, 0.35);
+  }
+  [data-kind='lost']::before {
+    background: repeating-linear-gradient(
+      135deg,
+      var(--muted) 0 2px,
+      var(--white) 2px 4px
+    );
+  }
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  // Label, value and note line up across the three stats even when a label wraps.
+  grid-template-rows: auto auto auto;
+  > div {
+    display: grid;
+    grid-row: span 3;
+    grid-template-rows: subgrid;
+    align-content: start;
+  }
+  gap: 0 12px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  dt {
+    align-self: end;
+    font-size: 13px;
+    font-weight: 650;
+    letter-spacing: 0.02em;
+  }
+  dd:nth-of-type(1) {
+    margin-top: 2px;
+    font-size: clamp(20px, 2vw, 26px);
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+  }
+  dd:nth-of-type(2) {
+    margin-top: 0;
+    font-size: 13px;
+  }
+}
+
+// What do I need? One chip per letter grade, showing the average needed on the rest.
+// Three columns where the card is narrow (phones, the side column on small laptops), four where it is wide.
+.targets {
+  container-type: inline-size;
+  h3 {
+    margin-bottom: 4px;
+  }
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 14px;
+}
+@container (min-width: 420px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.chip {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 2px 4px;
+  min-height: 56px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--border);
+  text-align: left;
+  transition:
+    background-color 0.2s,
+    box-shadow 0.2s;
+  &[aria-pressed='true'] {
+    background: var(--accentTint);
+    box-shadow: inset 0 0 0 2px var(--accent);
+    color: var(--accent);
+  }
+  // Out of reach: muted text that still meets 4.5:1, and a dashed outline as the second cue.
+  &[data-state='unreachable'] {
+    background: var(--card);
+    box-shadow: none;
+    outline: 1px dashed var(--muted);
+    outline-offset: -1px;
+    color: var(--muted);
+  }
+  // The small threshold label keeps 4.5:1 on the selected and out-of-reach chips too.
+  &[aria-pressed='true'] .chipMin,
+  &[data-state='unreachable'] .chipMin {
+    opacity: 1;
+  }
+  &[data-state='secured'] .chipNeed {
+    color: var(--accent);
+    font-weight: 650;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    &:hover:not(:disabled) {
+      box-shadow: inset 0 0 0 1px var(--black);
+    }
+    &[aria-pressed='true']:hover {
+      box-shadow: inset 0 0 0 2px var(--accent);
+    }
+  }
+  @media (forced-colors: active) {
+    border: 1px solid ButtonText;
+    &[aria-pressed='true'] {
+      outline: 2px solid Highlight;
+    }
+  }
+}
+.chipLetter {
+  font-size: 18px;
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.chipMin {
+  font-size: 12px;
+  opacity: 0.7;
+}
+.chipNeed {
+  grid-column: 1 / -1;
+  font-size: 14px;
+  line-height: 1.3;
+}
+.answer {
+  margin-top: 14px;
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 3em;
+}
+
+// Your marks. (Sections carry page padding globally; this one sits in the workspace grid.)
+.entries {
+  min-width: 0;
+  padding: 0;
+  box-shadow: none;
+}
+// The live essentials, kept in view above the marks while the full summary is elsewhere on screen.
+.quick {
+  position: sticky;
+  top: 8px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px 0 4px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow:
+    inset 0 0 0 1px var(--border),
+    0 6px 18px rgba(var(--inkRgb), 0.06);
+}
+.quickValue {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+  font-weight: 550;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  strong {
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--accentTint);
+    color: var(--accent);
+    font-size: 16px;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+  }
+}
+.quickNote {
+  font-size: 14px;
+  text-align: right;
+}
+.entriesHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 4px;
+  h3 {
+    font-size: clamp(22px, 2vw, 28px);
+    font-weight: 550;
+    letter-spacing: -0.03em;
+  }
+}
+.clear {
+  min-height: 44px;
+  border-bottom: 1px solid currentColor;
+  font-size: 16px;
+  color: var(--accent);
+}
+.group {
+  margin-top: 20px;
+  border-top: 1px solid var(--black);
+  > p {
+    margin: -4px 0 4px;
+  }
+}
+.groupHeading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0 8px;
+  h4 {
+    font-size: 18px;
+    font-weight: 650;
+    line-height: 1.35;
+  }
+  > span {
+    flex: none;
+    font-size: 15px;
+    font-weight: 650;
+  }
+}
+.groupAverage {
+  font-weight: 550;
+  opacity: 0.8;
+}
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'text fields'
+    'text result';
+  align-items: center;
+  column-gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  &[data-dropped] .rowText label {
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+    opacity: 0.7;
+  }
+}
+.rowText {
+  grid-area: text;
+  min-width: 0;
+  label {
+    display: block;
+    font-size: 17px;
+    font-weight: 550;
+    line-height: 1.3;
+  }
+}
+.fields {
+  grid-area: fields;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  input {
+    width: 76px;
+    height: 44px;
+    padding: 0 8px;
+    border-radius: 10px;
+    background: var(--white);
+    box-shadow: inset 0 0 0 1px var(--border);
+    font-size: 18px;
+    font-weight: 550;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    transition: box-shadow 0.2s;
+    &::placeholder {
+      color: var(--muted);
+      opacity: 1;
+    }
+    &:focus {
+      background: var(--card);
+      box-shadow: inset 0 0 0 2px var(--accent);
+    }
+    &:focus-visible {
+      outline-offset: 2px !important;
+    }
+    &[aria-invalid='true'] {
+      box-shadow: inset 0 0 0 2px var(--statusUrgent);
+    }
+    &:disabled {
+      opacity: 0.55;
+    }
+    @media (forced-colors: active) {
+      border: 1px solid FieldText;
+    }
+  }
+  input + .slash + input {
+    width: 64px;
+    font-size: 16px;
+  }
+}
+.slash {
+  font-size: 18px;
+  opacity: 0.6;
+}
+.result {
+  grid-area: result;
+  justify-self: end;
+  min-height: 0;
+  font-size: 13px;
+  line-height: 1.3;
+  &:not(:empty) {
+    margin-top: 4px;
+  }
+  .row[data-invalid] & {
+    color: var(--statusUrgent);
+    font-weight: 650;
+  }
+}
+.notes {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  opacity: 0.85;
+  p {
+    max-width: 70ch;
+  }
+}
+
+// Wide screens: marks on the left, the summary beside them. The summary follows the scroll only when the whole
+// of it fits the screen; otherwise the compact summary above the marks stays in view instead.
+@media (min-width: 960px) {
+  .layout {
+    grid-template-columns: minmax(0, 1.35fr) minmax(360px, 1fr);
+    align-items: start;
+    gap: 24px 40px;
+  }
+  .notes {
+    grid-column: 1;
+  }
+  .standing,
+  .targets {
+    padding: 24px;
+  }
+}
+@media (min-width: 960px) and (min-height: 860px) {
+  .side {
+    position: sticky;
+    top: 24px;
+  }
+  .quick {
+    display: none;
+  }
+}
+@media (max-width: 700px) {
+  .lede {
+    font-size: 16px;
+  }
+  .standing,
+  .targets {
+    padding: 16px;
+  }
+  .stats {
+    column-gap: 8px;
+  }
+  .chip {
+    padding: 8px;
+  }
+  .chipNeed {
+    font-size: 13px;
+  }
+  .rowText label {
+    font-size: 16px;
+  }
+  .fields input {
+    width: 74px;
+  }
+  .fields input + .slash + input {
+    width: 58px;
+  }
+}
+@media (max-width: 374px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'text'
+      'fields'
+      'result';
+    row-gap: 8px;
+  }
+  .fields,
+  .result {
+    justify-self: start;
+  }
+}

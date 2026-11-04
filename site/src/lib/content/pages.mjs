@@ -563,7 +563,7 @@ export const PRIVACY={
    "text": "No site analytics, tracking cookies or session recording. Fonts, scripts and artwork load from this site."
   },
   {
-   "text": "Your section, group, notes and progress stay in your browser. Exporting a backup creates a local file containing your notes and progress; keep it private. Clearing browser data can erase saved records."
+   "text": "Your section, group, notes, progress and grade calculator marks stay in your browser. Exporting a backup creates a local file containing your notes and progress, but not calculator marks; keep it private. Clearing browser data can erase saved records."
   },
   {
    "text": "Staff names and contact details from course-only documents are omitted. Check D2L for current contacts."
@@ -577,6 +577,6 @@ export const PRIVACY={
    "after": "."
   }
  ],
- "updated": "Updated October 12, 2026."
+ "updated": "Updated October 28, 2026."
 };
 

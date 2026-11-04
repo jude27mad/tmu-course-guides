@@ -8,7 +8,7 @@ import Sticker from '@src/components/dom/prefooter/Sticker';
 import useIsMobile from '@src/hooks/useIsMobile';
 import { useFrame, useThree } from '@react-three/fiber';
 // eslint-disable-next-line import/extensions
-import { createSpawnSchedule, GAME_GRAVITY, scoreBoundary } from './gameTiming.mjs';
+import { createSpawnSchedule, GAME_GRAVITY, scoreBoundary, gameDifficulty } from './gameTiming.mjs';
 // eslint-disable-next-line import/extensions
 import { bindGameTouch } from './gameTouch.mjs';
 
@@ -58,7 +58,7 @@ function useDiscTextures() {
 
 const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-function useFruitSpawner({ viewport, textures, isMobile, active, getCeiling }) {
+function useFruitSpawner({ viewport, textures, isMobile, active, getCeiling, streakRef }) {
   const [fruits, setFruits] = useState([]);
   const nextId = useRef(0);
   const viewportRef = useRef(viewport);
@@ -69,9 +69,10 @@ function useFruitSpawner({ viewport, textures, isMobile, active, getCeiling }) {
   }, []);
 
   const spawnRef = useRef();
-  const intervalRef = useRef();
-  intervalRef.current = isMobile ? 5000 : 3000;
+  const difficultyRef = useRef();
+  difficultyRef.current = () => gameDifficulty({ score: streakRef.current, isMobile });
   spawnRef.current = () => {
+    const { speed } = difficultyRef.current();
     const ceilingY = getCeiling();
     const radius = (isMobile ? 0.4 : 0.5) * 1.05;
     // Wait for enough space for a whole disc beneath the score.
@@ -84,12 +85,12 @@ function useFruitSpawner({ viewport, textures, isMobile, active, getCeiling }) {
       const added = Array.from({ length: Math.min(room, randomInt(1, 6)) }, () => {
         nextId.current += 1;
         const index = randomInt(0, textures.length - 1);
-        return { id: nextId.current, x: randomInt(Math.ceil(-width), Math.floor(width)), index, ceilingY };
+        return { id: nextId.current, x: randomInt(Math.ceil(-width), Math.floor(width)), index, ceilingY, speed };
       });
       return [...previous, ...added];
     });
   };
-  const scheduler = useMemo(() => createSpawnSchedule({ spawn: () => spawnRef.current(), interval: () => intervalRef.current }), []);
+  const scheduler = useMemo(() => createSpawnSchedule({ spawn: () => spawnRef.current(), interval: () => difficultyRef.current().interval }), []);
   useEffect(() => {
     scheduler.setActive(active && !!textures?.length);
   }, [scheduler, active, textures]);
@@ -98,31 +99,42 @@ function useFruitSpawner({ viewport, textures, isMobile, active, getCeiling }) {
   return [fruits, remove];
 }
 
-function FruitNinja({ active = true, eventSource, scoreRef, onSlice, onMiss }) {
+function FruitNinja({ active = true, eventSource, scoreRef, streakRef, onSlice, onMiss }) {
   const viewport = useThree((state) => state.viewport);
   const isMobile = useIsMobile();
   const textures = useDiscTextures();
   const { scene, camera, raycaster, pointer, setEvents, gl } = useThree();
   const ceilingRef = useRef(-Infinity);
+  const floorRef = useRef(Infinity);
   const insetRef = useRef(null);
+  const bottomInsetRef = useRef(null);
   const getCeiling = useCallback(() => {
     const bounds = gl.domElement.getBoundingClientRect();
     const score = scoreRef.current?.getBoundingClientRect();
-    if (!score || !bounds.height) return -Infinity;
-    const { inset, ceilingY } = scoreBoundary({ scoreBottom: score.bottom, canvasTop: bounds.top, canvasHeight: bounds.height, viewportHeight: viewport.height });
+    const paper = eventSource.current?.closest('[data-companion-statement]')?.getBoundingClientRect();
+    if (!score || !paper || !bounds.height) return -Infinity;
+    const { inset, bottomInset, ceilingY, floorY } = scoreBoundary({
+      scoreBottom: score.bottom,
+      canvasTop: bounds.top,
+      canvasHeight: bounds.height,
+      viewportHeight: viewport.height,
+      stageBottom: paper.bottom,
+    });
     ceilingRef.current = ceilingY;
-    // Scroll can move the score past an already airborne disc. Clip only the
-    // upper edge; the fixed canvas and its screen-bottom launch point stay put.
-    if (inset !== insetRef.current) {
-      gl.domElement.style.clipPath = `inset(${inset}px 0 0 0)`;
+    floorRef.current = floorY;
+    // Mask airborne discs at both the score and the white/dark boundary.
+    // The fixed canvas and its screen-bottom launch point stay put.
+    if (inset !== insetRef.current || bottomInset !== bottomInsetRef.current) {
+      gl.domElement.style.clipPath = `inset(${inset}px 0 ${bottomInset}px 0)`;
       insetRef.current = inset;
+      bottomInsetRef.current = bottomInset;
     }
     return ceilingY;
-  }, [gl, scoreRef, viewport.height]);
+  }, [gl, scoreRef, eventSource, viewport.height]);
   useFrame(() => {
     if (active) getCeiling();
   }, -100);
-  const [fruits, remove] = useFruitSpawner({ viewport, textures, isMobile, active, getCeiling });
+  const [fruits, remove] = useFruitSpawner({ viewport, textures, isMobile, active, getCeiling, streakRef });
 
   useEffect(() => {
     setEvents({ enabled: active });
@@ -132,13 +144,14 @@ function FruitNinja({ active = true, eventSource, scoreRef, onSlice, onMiss }) {
     const element = eventSource.current?.closest('main');
     if (!element || !active) return undefined;
     const sample = (touches) => {
+      getCeiling();
       const bounds = gl.domElement.getBoundingClientRect();
       if (!bounds.width || !bounds.height) return;
       Array.from(touches).forEach((touch) => {
-        if (touch.clientY < bounds.top + (insetRef.current ?? bounds.height)) return;
+        if (touch.clientY < bounds.top + (insetRef.current ?? bounds.height) || touch.clientY >= bounds.bottom - (bottomInsetRef.current ?? bounds.height)) return;
         pointer.set(((touch.clientX - bounds.left) / bounds.width) * 2 - 1, -((touch.clientY - bounds.top) / bounds.height) * 2 + 1);
         raycaster.setFromCamera(pointer, camera);
-        raycaster.intersectObjects(scene.children, true).forEach((hit) => hit.object.userData.slice?.());
+        raycaster.intersectObjects(scene.children, true).forEach((hit) => hit.object.userData.slice?.(hit));
       });
     };
     return bindGameTouch(element, {
@@ -147,7 +160,7 @@ function FruitNinja({ active = true, eventSource, scoreRef, onSlice, onMiss }) {
         getCeiling();
         const bounds = gl.domElement.getBoundingClientRect();
         const insideX = touch.clientX >= bounds.left && touch.clientX <= bounds.right;
-        return insideX && touch.clientY >= bounds.top + (insetRef.current ?? bounds.height) && touch.clientY <= bounds.bottom;
+        return insideX && touch.clientY >= bounds.top + (insetRef.current ?? bounds.height) && touch.clientY < bounds.bottom - (bottomInsetRef.current ?? bounds.height);
       },
       sample,
     });
@@ -177,7 +190,9 @@ function FruitNinja({ active = true, eventSource, scoreRef, onSlice, onMiss }) {
               isMobile={isMobile}
               viewportHeight={viewport.height}
               ceilingY={fruit.ceilingY}
+              speed={fruit.speed}
               ceilingRef={ceilingRef}
+              floorRef={floorRef}
               onDone={remove}
               onSlice={onSlice}
               onMiss={onMiss}

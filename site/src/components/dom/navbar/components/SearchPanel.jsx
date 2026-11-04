@@ -95,7 +95,7 @@ function SearchPanel() {
 
   useEffect(() => {
     const panel = panelRef.current;
-    const tl = buildPanelTimeline(panel, panel.querySelectorAll('[data-menu-anim]'), { isMobile });
+    const tl = buildPanelTimeline(panel, panel.querySelectorAll('[data-menu-anim]'));
     timeline.current = tl;
     if (useStore.getState().isSearchOpen) tl.progress(1);
     return () => {
