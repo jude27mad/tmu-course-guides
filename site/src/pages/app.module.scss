@@ -178,11 +178,11 @@
     // the artwork at the layout viewport's bottom edge: it would end in a line
     // where the bar begins (#67's fade to ink did). A page that ends dark fades
     // into the ink over its own last stretch (the footer's wrapper,
-    // layout.module.scss). While that end is at the bar (data-edge-end, set by
-    // the navbar), this fixed copy of the same fade replaces it, in the same
-    // place and in the same frame, without a transition. If the page then
-    // bounces past its end, the artwork shows between the end and the bar, and
-    // this copy keeps it shaded into the ink at the bar.
+    // layout.module.scss). While the page bounces past that end (native
+    // scrolling; data-edge-past, set by the navbar), the artwork shows between
+    // the end and the bar, and this fixed copy of the same fade replaces the
+    // page's own in the same frame, without a transition, to keep it shaded
+    // into the ink at the bar. Back at rest both lie in the same place.
     &::after {
       content: '';
       position: fixed;
@@ -197,6 +197,6 @@
   }
 }
 
-:global(html[data-scroll-mode='document'][data-edge-end='dark']) .background::after {
+:global(html[data-scroll-mode='document'][data-edge-past='end']) .background::after {
   opacity: 1;
 }

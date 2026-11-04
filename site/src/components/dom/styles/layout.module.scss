@@ -14,10 +14,11 @@
 // it. The artwork met that flat ink in a hard line, a dark box that rose from
 // the bottom of the screen. The page now fades into the ink over its last
 // stretch, behind the footer's content, so the end crosses the bar without an
-// edge. While the end is at the bar the fixed copy of this fade takes over
-// (app.module.scss, data-edge-end): at that point both lie in the same place,
-// and if the page bounces past its end, the copy keeps shading the artwork
-// that shows between the page's end and the bar.
+// edge, and it stays at rest at the end. Only while the page bounces past its
+// end (data-edge-past, native scrolling) does the fixed copy of this fade take
+// over (app.module.scss), to keep shading the artwork that shows between the
+// page's end and the bar; when the end is back at the bar both lie in the
+// same place.
 :global(html[data-scroll-mode='document']) .footer {
   position: relative;
   &::after {
@@ -33,6 +34,6 @@
   }
 }
 
-:global(html[data-scroll-mode='document'][data-edge-end='dark']) .footer::after {
+:global(html[data-scroll-mode='document'][data-edge-past='end']) .footer::after {
   visibility: hidden;
 }

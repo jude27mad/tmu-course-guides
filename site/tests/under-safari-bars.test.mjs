@@ -92,6 +92,29 @@ test('the artwork fades into the ink at the bottom bar only while a dark end is 
   assert.equal(end({ scrollTop: 3000, maxScroll: 3000, endsDark: false }), 'none');
 });
 
+test('the fixed copy of the dark end\'s fade replaces the page\'s own only while the page bounces past its end', () => {
+  // At rest at the end the page's own fade stays: this runs a frame or more after
+  // the page moves, and hiding it there showed a lit strip under the toolbar when
+  // scrolling up from the end.
+  const theme = read('../src/utils/theme.js');
+  const source = theme.slice(theme.indexOf('const EDGE_SWITCH'), theme.indexOf('// Compatibility for callers')).replace('export function', 'function');
+  const dataset = {};
+  const setEdgeBleed = new Function('document', `${source}\nreturn setEdgeBleed;`)({ documentElement: { dataset } });
+  const past = (state) => {
+    setEdgeBleed(state);
+    return dataset.edgePast;
+  };
+  assert.equal(past({ scrollTop: 2990, maxScroll: 3000, endsDark: true }), 'none');
+  assert.equal(past({ scrollTop: 3000, maxScroll: 3000, endsDark: true }), 'none');
+  assert.equal(past({ scrollTop: 3000.6, maxScroll: 3000, endsDark: true }), 'none');
+  assert.equal(past({ scrollTop: 3001, maxScroll: 3000, endsDark: true }), 'end');
+  assert.equal(past({ scrollTop: 3060, maxScroll: 3000, endsDark: true }), 'end');
+  assert.equal(past({ scrollTop: 3060, maxScroll: 3000, endsDark: false }), 'none');
+  const app = read('../src/pages/app.module.scss');
+  const layout = read('../src/components/dom/styles/layout.module.scss');
+  assert.doesNotMatch(app + layout, /data-edge-end/);
+});
+
 test('the open phone menu shows the artwork, which continues under the bars', () => {
   // Giats's menu has no surface of its own: the page shrinks aside and the dark
   // artwork behind it fills the screen, reaching under Safari's bars (.background).
@@ -261,9 +284,9 @@ test('the artwork runs on unchanged under the bottom bar, and fades into the ink
   assert.match(fade, /opacity: 0;/);
   // It replaces the page's own fade in the same frame, so it must not fade in.
   assert.doesNotMatch(fade, /transition/);
-  // ...except while the end of a page that ends dark is at the bar, where Safari
-  // shows the root's flat ink under the bar instead.
-  assert.match(app, /:global\(html\[data-scroll-mode='document'\]\[data-edge-end='dark'\]\) \.background::after \{\s*opacity: 1;\s*\}/);
+  // ...except while a page that ends dark bounces past its end, where the artwork
+  // shows between the end and the bar, and Safari's flat ink under the bar.
+  assert.match(app, /:global\(html\[data-scroll-mode='document'\]\[data-edge-past='end'\]\) \.background::after \{\s*opacity: 1;\s*\}/);
   assert.equal((app.match(/\.background::after/g) || []).length, 1);
   // The moving footer (its reveal translates it) does not fade to ink itself:
   // when the page bounces past its end, the artwork under it would meet that ink
@@ -300,8 +323,8 @@ test('a page that ends dark fades into the ink over its own last stretch, so its
   const after = own.slice(own.indexOf('&::after {'), own.indexOf('}', own.indexOf('&::after {')));
   assert.match(after, /position: absolute;[^}]*bottom: 0;[^}]*height: var\(--dark-end-fade-height\);[^}]*z-index: -1;[^}]*background-image: var\(--dark-end-fade\);/);
   assert.doesNotMatch(after, /position: fixed/);
-  // While the end is at the bar the fixed copy (above) takes over, in the same frame.
-  assert.match(layout, /:global\(html\[data-scroll-mode='document'\]\[data-edge-end='dark'\]\) \.footer::after \{\s*visibility: hidden;\s*\}/);
+  // While the page bounces past its end the fixed copy (above) takes over, in the same frame.
+  assert.match(layout, /:global\(html\[data-scroll-mode='document'\]\[data-edge-past='end'\]\) \.footer::after \{\s*visibility: hidden;\s*\}/);
   assert.doesNotMatch(layout, /transition/);
   // Document mode only: on computers `main` scrolls and no browser bar is involved.
   assert.doesNotMatch(layout.replace(/\/\/.*$/gm, '').slice(0, layout.replace(/\/\/.*$/gm, '').indexOf(':global(')), /::after/);
