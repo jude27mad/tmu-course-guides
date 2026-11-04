@@ -6,10 +6,11 @@ import { usePalette } from '@src/utils/theme';
 
 function Page({ id }) {
   const state = useCourseState(id);
-  const { course, info } = state;
+  const { course, info, term } = state;
   usePalette(course.palette);
   useScrollRefresh();
-  const title = (id === 'cen100' ? info.profile?.value && info.profile?.title : info.section?.value && info.section?.title) || info.page?.title;
+  // An archived course has no saved section, so its title is always the page's own.
+  const title = (!term?.archived && (id === 'cen100' ? info.profile?.value && info.profile?.title : info.section?.value && info.section?.title)) || info.page?.title;
   return (
     <CourseContext.Provider value={state}>
       <CustomHead title={title} description={course.description} />

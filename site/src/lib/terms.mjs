@@ -57,23 +57,25 @@ function resolve(base, override) {
 }
 
 const RESOLVED = resolve(COURSE_TERMS, readOverride());
+// Own entries only, so ids such as 'toString' are unknown rather than read from Object.prototype.
+const entryOf = (courseId) => (typeof courseId === 'string' && Object.hasOwn(RESOLVED, courseId) ? RESOLVED[courseId] : null);
 
 /**
  * A course's term and status as plain JSON, or null for an unknown course:
  * { id, label, short, start, end, status, archived, gradesOpen }. A current course always has gradesOpen true.
  */
 export function courseTerm(courseId) {
-  const entry = RESOLVED[courseId];
+  const entry = entryOf(courseId);
   if (!entry) return null;
   const term = TERMS[entry.term];
   return { ...term, status: entry.status, archived: entry.status === 'archived', gradesOpen: entry.gradesOpen };
 }
 
 /** True when a course has been archived: its term details are hidden and only its lasting content is shown. */
-export const isArchived = (courseId) => RESOLVED[courseId]?.status === 'archived';
+export const isArchived = (courseId) => entryOf(courseId)?.status === 'archived';
 
 /** True while a course's grade calculator is offered: always for a current course, and for an archived one until final grades are out. */
-export const gradesOpen = (courseId) => !!RESOLVED[courseId] && RESOLVED[courseId].gradesOpen;
+export const gradesOpen = (courseId) => entryOf(courseId)?.gradesOpen === true;
 
 /** The term the site is in now, as in TERMS. */
 export const currentTerm = () => TERMS[CURRENT_TERM];

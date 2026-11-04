@@ -430,7 +430,15 @@ function assessmentsNow(courseId, { section } = {}) {
       if (!label) label = undated === 'item:y7' ? CEN.byId.get('y7').small : 'Date pending';
       const item = CEN.byId.get(dated[0]?.item || undated?.slice(5));
       // An archived course keeps every row, id and weight (the grade calculator uses them) without its dates.
-      return { title: row.label, dateLabel: archived ? '' : label, weight: parseFloat(row.weight), weightLabel: row.weight, ids, item: item?.id || null, anchor: item ? `assignment-${item.id}` : null };
+      return {
+        title: row.label,
+        dateLabel: archived ? '' : label,
+        weight: parseFloat(row.weight),
+        weightLabel: row.weight,
+        ids,
+        item: item?.id || null,
+        anchor: item ? `assignment-${item.id}` : null,
+      };
     });
     const total = CEN_GRADE_TABLE.total.length ? parseFloat(CEN_GRADE_TABLE.total[1]) : rows.reduce((sum, row) => sum + row.weight, 0);
     return Object.assign(rows, { totalWeight: total, count: rows.length, table: CEN_PAGE.grading.tables[0], notes: CEN_PAGE.grading.notes, summary: CEN_PAGE.grading.summary });

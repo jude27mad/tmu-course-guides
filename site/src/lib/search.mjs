@@ -13,7 +13,7 @@ import { resolveStorage } from './storage.mjs';
 import { isMath, readMotionPaused } from './saved.mjs';
 import { COURSE_IDS, COURSES, dataFor, getCourse } from './courses.mjs';
 import { context, deadlines, nextDeadline, toMs } from './deadlines.mjs';
-import { gradesOpen, isArchived } from './terms.mjs';
+import { currentTerm, gradesOpen, isArchived } from './terms.mjs';
 
 export { COPY as SEARCH_COPY, GROUPS as SEARCH_GROUPS };
 const D2L = 'https://courses.torontomu.ca/';
@@ -46,7 +46,9 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
     // An archived course has no schedule, and its calculator closes once final grades are out.
     if (!current.archived) add('Courses', { id: 'view-schedule', type: 'view', title: 'Schedule', href: `${current.href}#schedule`, courseId: current.id });
     if (isMath(current.id)) add('Courses', { id: 'view-study', type: 'view', title: 'Study', href: `${current.href}#study`, default: true, courseId: current.id });
-    if (gradesOpen(current.id)) add('Courses', { id: 'view-grades', type: 'view', title: 'Grade calculator', href: `${current.href}#grades`, keywords: 'grades marks gpa letter average calculate what do i need', courseId: current.id });
+    if (gradesOpen(current.id)) {
+      add('Courses', { id: 'view-grades', type: 'view', title: 'Grade calculator', href: `${current.href}#grades`, keywords: 'grades marks gpa letter average calculate what do i need', courseId: current.id });
+    }
     add('Courses', { id: 'view-info', type: 'view', title: 'Course info', href: `${current.href}#course-info`, default: true, courseId: current.id });
   }
 
@@ -80,8 +82,10 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
   }
 
   // Weeks: the semester spreads, each opening the first deadline due that week.
-  const records = COURSE_IDS.filter((id) => !isArchived(id)).flatMap((id) => recordsForCourse(id, { cenSchedule: id === 'cen100' ? SCHEDULE : [], courseData: id === 'cen100' ? undefined : DATA[id] }));
-  const weeks = semesterWeeks({ records });
+  const records = COURSE_IDS.filter((id) => !isArchived(id)).flatMap((id) =>
+    recordsForCourse(id, { cenSchedule: id === 'cen100' ? SCHEDULE : [], courseData: id === 'cen100' ? undefined : DATA[id] }),
+  );
+  const weeks = semesterWeeks({ start: currentTerm().start, end: currentTerm().end, records });
   for (const week of weeks) {
     const copy = weekCopy(week);
     const due = week.start ? allDeadlines.filter((item) => (item.date || item.week) && (item.date || item.week) >= week.start && (item.date || item.week) <= week.end) : allDeadlines.filter((item) => item.kind === 'final' && item.precision === 'pending');
@@ -145,8 +149,15 @@ function searchEntriesNow(entries, query) {
 const normalise = (text) => String(text).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 const GUIDE_ENTRIES = (() => {
   const out = [];
+  // An archived CEN100 is searched as its page shows it: without the dates, places and preview lines it no longer has.
+  const cenText = isArchived('cen100')
+    ? (item) => {
+        const shown = REFERENCE.cen100.items.find((entry) => entry.id === item.id);
+        return [shown.name, shown.what, ...shown.facts.map((fact) => fact.text), JSON.stringify(item.groups), JSON.stringify(item.traps), shown.source.label, shown.source.note].join(' ');
+      }
+    : (item) => [item.name, item.preview, item.what, JSON.stringify(item.facts), JSON.stringify(item.groups), JSON.stringify(item.traps), ...CEN.sourceFor(item)].join(' ');
   for (const item of CEN.allItems) {
-    out.push({ courseId: 'cen100', title: item.name, tab: CEN.COPY.tabs[CEN.listOf(item)], href: `/cen100/#assignment-${item.id}`, text: [item.name, item.preview, item.what, JSON.stringify(item.facts), JSON.stringify(item.groups), JSON.stringify(item.traps), ...CEN.sourceFor(item)].join(' ') });
+    out.push({ courseId: 'cen100', title: item.name, tab: CEN.COPY.tabs[CEN.listOf(item)], href: `/cen100/#assignment-${item.id}`, text: cenText(item) });
   }
   for (const id of COURSE_IDS) {
     const info = REFERENCE[id];

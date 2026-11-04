@@ -1,5 +1,5 @@
 import { scrollRoot, scrollTop, scrollViewport } from '@src/utils/scrollRoot';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import gsap from 'gsap';
 import { useStore } from '@src/store';
@@ -8,9 +8,12 @@ import useDelayedFeedback from '@src/hooks/useDelayedFeedback';
 // eslint-disable-next-line import/extensions
 import { openGuideTools } from '@src/pages/course/components/tools/dialog.mjs';
 // eslint-disable-next-line import/extensions
-import { resolveCourseLocation } from './location.mjs';
+import { courseViews, resolveCourseLocation } from './location.mjs';
 
 const hashOf = () => window.location.hash.replace(/^#/, '');
+// Every lookup passes the views this course offers, so a link to one it does not offer (an archived course's
+// Schedule, or Grades once they close) opens Work for the animation, focus and the rendered view alike.
+const locate = (hash, courseId, info) => resolveCourseLocation(hash, courseId, info, { views: courseViews(courseId, info).map(([view]) => view) });
 // Match the shell's power2 slide easing, at a shorter pace for in-course moves.
 const VIEW_MOTION = { duration: 0.26, ease: 'power2.inOut' };
 const viewKey = (location) => location.item?.anchor || (location.infoDetail && location.panel) || location.view;
@@ -54,7 +57,8 @@ export default function useCourseNavigation(courseId, info) {
   const pending = useRef(null);
   const reveal = useRef(false);
   const focusAtNavigation = useRef(null);
-  const location = resolveCourseLocation(entry.hash, courseId, info);
+  const location = locate(entry.hash, courseId, info);
+  const views = useMemo(() => courseViews(courseId, info), [courseId, info]);
   const showOpening = useDelayedFeedback(requested ? `${courseId}:${viewKey(requested)}` : null);
 
   const remember = useCallback((event) => {
@@ -92,10 +96,10 @@ export default function useCourseNavigation(courseId, info) {
       if (active.current?.key === key && active.current?.hash === hash) return;
       const saved = snapshots.get(key) || window.history.state?.courseWorkspace;
       const previous = active.current;
-      const target = resolveCourseLocation(hash, courseId, info);
+      const target = locate(hash, courseId, info);
       const inPlace = !target.item && (!target.panel || target.panel === 'course-info');
       const validSaved = saved?.courseId === courseId && saved.hash === hash;
-      const from = previous && resolveCourseLocation(previous.hash, courseId, info);
+      const from = previous && locate(previous.hash, courseId, info);
       let returnTo = null;
       if (isDetail(target) && from) {
         if (isDetail(from) && previous.returnTo && !!from.item === !!target.item)
@@ -283,10 +287,11 @@ export default function useCourseNavigation(courseId, info) {
   };
   return {
     ...location,
+    views,
     selectedView: requested?.view || location.view,
     opening: showOpening ? requested : null,
     acknowledge: (hash) => {
-      const target = resolveCourseLocation(hash, courseId, info);
+      const target = locate(hash, courseId, info);
       setRequested(viewKey(target) === viewKey(location) ? null : target);
     },
     navigate,

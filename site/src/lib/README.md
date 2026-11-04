@@ -416,3 +416,5 @@ The vendored date code builds a new `Intl.DateTimeFormat` (or calls `toLocaleDat
 - `progress.test.mjs`: Mark done / Undo, ticks separate from completion, cross-tab events and Undo cancellation.
 - `blocked.test.mjs`: empty, missing, blocked (throwing getter or methods) and full storage.
 - `api.test.mjs`, `react.test.mjs`: shapes, wording, search ranking, hooks rendering on the server.
+- `terms.test.mjs`: the term registry and current-mode no-ops in this process; archived mode in child processes (`tests/helpers/archived-probe.mjs` with `NEXT_PUBLIC_COURSE_STATUS` set), compared with current-mode results: what an archived course loses and keeps, saved progress and grade marks untouched, readers and setters writing nothing, malformed overrides ignored.
+- `course-location.test.mjs`: deep links and views, including the views an archived course no longer offers.

@@ -6,15 +6,21 @@ import { useCourse } from '@src/pages/course/hooks/useCourseState';
 import { informationEntries } from '@src/lib/information.mjs';
 import styles from './workspace.module.scss';
 
-function Answer({ entry, info, courseId, rows }) {
+function Answer({ entry, info, courseId, rows, term }) {
   const cen = courseId === 'cen100';
   const { contacts, grading } = info;
+  // An archived course's grading keeps its weights without dates, and links to the calculator only while it is open.
+  const archived = !!term?.archived;
+  let caption = cen ? 'All graded items' : 'Assessments and dates';
+  if (archived && !cen) caption = 'Assessments';
   if (entry.kind === 'grading')
     return (
       <>
-        <Link className={styles.inlineAction} href={`/${courseId}/#grades`} scroll={false}>
-          Calculate your grade with these weights ↗
-        </Link>
+        {term && !term.gradesOpen ? null : (
+          <Link className={styles.inlineAction} href={`/${courseId}/#grades`} scroll={false}>
+            Calculate your grade with these weights ↗
+          </Link>
+        )}
         {grading.pass ? <p>{grading.pass}</p> : null}
 
         {rows.categories ? (
@@ -38,11 +44,11 @@ function Answer({ entry, info, courseId, rows }) {
         ) : null}
         {grading.quizPolicy ? <p>{grading.quizPolicy}</p> : null}
         <table>
-          <caption>{cen ? 'All graded items' : 'Assessments and dates'}</caption>
+          <caption>{caption}</caption>
           <thead>
             <tr>
               <th scope="col">Assessment</th>
-              <th scope="col">Date</th>
+              {archived ? null : <th scope="col">Date</th>}
               <th scope="col">Weight</th>
             </tr>
           </thead>
@@ -54,14 +60,14 @@ function Answer({ entry, info, courseId, rows }) {
                     {row.title}
                   </Link>
                 </th>
-                <td>{row.dateLabel}</td>
+                {archived ? null : <td>{row.dateLabel}</td>}
                 <td>{row.weightLabel}</td>
               </tr>
             ))}
             {cen ? (
               <tr>
                 <th scope="row">Course total</th>
-                <td />
+                {archived ? null : <td />}
                 <td>100%</td>
               </tr>
             ) : null}
@@ -182,8 +188,9 @@ function Answer({ entry, info, courseId, rows }) {
 }
 
 export default function CourseInformation({ panel, back, returnView = 'info' }) {
-  const { courseId, info, section } = useCourse();
-  const rows = useMemo(() => assessments(courseId, { section }), [courseId, section]);
+  const { courseId, info, section, term } = useCourse();
+  const archived = !!term?.archived;
+  const rows = useMemo(() => assessments(courseId, { section: archived ? undefined : section }), [courseId, section, archived]);
   const entries = informationEntries(courseId, info);
   const selected = entries.find((entry) => entry.id === panel);
   const cen = courseId === 'cen100';
@@ -202,7 +209,7 @@ export default function CourseInformation({ panel, back, returnView = 'info' }) 
       ← Back to {returnLabel}
     </button>
   );
-  const answer = (entry) => <Answer entry={entry} info={info} courseId={courseId} rows={rows} />;
+  const answer = (entry) => <Answer entry={entry} info={info} courseId={courseId} rows={rows} term={term} />;
   return (
     <div className={styles.information}>
       {selected ? (
@@ -220,12 +227,15 @@ export default function CourseInformation({ panel, back, returnView = 'info' }) 
           <div className={styles.viewHeading}>
             <h2>Course info</h2>
           </div>
-          <div id="course-view-section-picker" className={styles.infoBlock} tabIndex={-1}>
-            <h3>Your section</h3>
-            <p>{sectionText}</p>
-            {info.organization ? <p>{info.organization}</p> : null}
-            <p className={styles.meta}>{cen ? info.page.profile.note : 'Change your section using the selector above.'}</p>
-          </div>
+          {/* An archived course has no sections, labs or contacts to choose. */}
+          {archived ? null : (
+            <div id="course-view-section-picker" className={styles.infoBlock} tabIndex={-1}>
+              <h3>Your section</h3>
+              <p>{sectionText}</p>
+              {info.organization ? <p>{info.organization}</p> : null}
+              <p className={styles.meta}>{cen ? info.page.profile.note : 'Change your section using the selector above.'}</p>
+            </div>
+          )}
           {[...new Set(entries.map((entry) => entry.group))].map((group) => (
             <section key={group} className={styles.workGroup}>
               <h3 className={styles.groupTitle}>{group}</h3>

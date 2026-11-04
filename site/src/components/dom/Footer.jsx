@@ -10,7 +10,7 @@ import clsx from 'clsx';
 import { courseIdFromPath, pathKey } from '@src/utils/routes';
 import dynamic from 'next/dynamic';
 import footerLinks from '@src/components/dom/navbar/constants/footerLinks';
-import { getCourse } from '@src/lib';
+import { currentTerm, getCourse } from '@src/lib';
 import gsap from 'gsap';
 import menuLinks from '@src/components/dom/navbar/constants/menuLinks';
 import styles from '@src/components/dom/styles/footer.module.scss';
@@ -23,6 +23,9 @@ import { useStore } from '@src/store';
 import { useWindowSize } from '@darkroom.engineering/hamo';
 
 const GoTop = dynamic(() => import('@src/components/dom/GoTop'), { ssr: false });
+
+// The term the site is in now (lib/terms.mjs), in the footer's one line of meta.
+const COMPANION = `Unofficial TMU course companion · ${currentTerm().label} ·`;
 
 // "Course links": the current course's own links on a course page; elsewhere
 // the three course guides. Falls back to the official sources.
@@ -158,7 +161,7 @@ function Footer() {
       )}
       <div className={clsx(styles.metaContainer, 'p-x')}>
         <p>
-          Unofficial TMU course companion · Fall 2026 ·{' '}
+          {COMPANION}{' '}
           <Link scroll={false} href="/privacy/" className={styles.inlineLink}>
             Privacy
           </Link>

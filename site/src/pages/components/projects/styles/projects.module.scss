@@ -13,6 +13,26 @@
   }
 }
 
+// The heading above the archived courses' stack (only rendered when a course is archived),
+// spaced like the page title above the current courses.
+.groupHeading {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--layout-columns-gap) * 0.5);
+  position: relative;
+  width: 100%;
+  background-color: var(--white);
+  padding-top: calc(var(--layout-columns-gap) * 4);
+  padding-bottom: calc(var(--layout-columns-gap) * 1);
+  > p {
+    max-width: 40em;
+  }
+  // No current courses: it follows the page title directly.
+  &.onlyGroup {
+    padding-top: 0;
+  }
+}
+
 .root {
   // overflow: visible !important;
   // display: unset;

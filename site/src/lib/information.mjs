@@ -37,12 +37,6 @@ const CEN_CONFIRMED = [
   'genai',
 ];
 
-/** The Course info entries of a course. An archived course's info (info.archived) leaves out the entries tied to its term (terms.mjs). */
-export function informationEntries(courseId, info) {
-  const entries = buildEntries(courseId, info);
-  return info?.archived ? entries.filter((entry) => !TERM_INFORMATION.includes(entry.id)) : entries;
-}
-
 function buildEntries(courseId, info) {
   const entries = [
     {
@@ -113,6 +107,12 @@ function buildEntries(courseId, info) {
     );
   }
   return entries;
+}
+
+/** The Course info entries of a course. An archived course's info (info.archived) leaves out the entries tied to its term (terms.mjs). */
+export function informationEntries(courseId, info) {
+  const entries = buildEntries(courseId, info);
+  return info?.archived ? entries.filter((entry) => !TERM_INFORMATION.includes(entry.id)) : entries;
 }
 
 export function informationText(entry, info) {

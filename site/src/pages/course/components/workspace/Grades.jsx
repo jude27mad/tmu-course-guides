@@ -69,13 +69,14 @@ function Meter({ standing, target }) {
 }
 
 export default function Grades() {
-  const { courseId, course, section } = useCourse();
+  const { courseId, course, section, term } = useCourse();
   const [grades, update] = useGrades(courseId);
   const baseId = useId();
   const [typingTotal, setTypingTotal] = useState(null);
   const [announcement, setAnnouncement] = useState('');
   const cleared = useRef(false);
-  const plan = useMemo(() => gradePlan(courseId, { section: section ?? undefined }), [courseId, section]);
+  // An archived course has no section; its rows keep their weights, and their dates are '' (left out below).
+  const plan = useMemo(() => gradePlan(courseId, { section: term?.archived ? undefined : (section ?? undefined) }), [courseId, section, term]);
   const percents = useMemo(() => percentsFrom(grades.marks), [grades.marks]);
   const standing = useMemo(() => gradeStanding(plan, percents), [plan, percents]);
   const needs = useMemo(
@@ -354,7 +355,7 @@ export default function Grades() {
             ({plan.pass}%) is the university’s minimum pass; some programs, including engineering, require more in particular courses.
           </p>
           <p>This is an estimate from the weights in this guide. Your course outline and the grades your instructors post are what count.</p>
-          {courseId === 'cen100' ? <p>Rows with two submissions take one combined mark for both. Weights: CEN100 Course Outline F26, p. 9.</p> : null}
+          {courseId === 'cen100' ? <p>{`Rows with two submissions take one combined mark for both. Weights: CEN100 Course Outline ${term.short}, p. 9.`}</p> : null}
           <p>Marks stay in this browser only and are not part of progress backups.</p>
         </div>
       </div>

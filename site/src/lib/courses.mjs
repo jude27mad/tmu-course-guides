@@ -26,6 +26,7 @@ export const DEFAULT_PALETTE = Object.freeze({
 export const PALETTES = Object.freeze(Object.fromEntries(COURSE_IDS.map((id) => [id, DEFAULT_PALETTE])));
 
 const D2L = 'https://courses.torontomu.ca/';
+const ARCHIVED_SUMMARY = 'Overview, grading, policies and study material.';
 const mathLinks = (id) => [...MATH_PAGE[id].contact.links.map((link) => ({ ...link, external: true })), ...DATA[id].textbooks.map((book) => ({ label: book.title, href: book.url, external: true }))];
 
 export const COURSES = DESK.courses.map((desk) => {
@@ -38,8 +39,9 @@ export const COURSES = DESK.courses.map((desk) => {
     name: desk.name,
     title: math ? DATA[desk.id].name : CEN_PAGE.heading,
     index: desk.index,
-    summary: desk.summary,
-    description: page.description,
+    // An archived course keeps only its lasting parts, so it does not promise dates, sections or contacts.
+    summary: term.archived ? ARCHIVED_SUMMARY : desk.summary,
+    description: term.archived ? `${desk.code} at TMU, archived: overview, grading, policies and study material from ${term.label}.` : page.description,
     // The term the course's details belong to (lib/terms.mjs), and whether it is current or archived.
     term: term.label,
     status: term.status,
@@ -103,7 +105,7 @@ export function setSection(courseId, value, storage) {
 }
 
 /** CEN100 only: the saved group number, or null. */
-export const getGroup = (courseId, storage) => (courseId === 'cen100' && !isArchived('cen100') ? readProfile(resolveStorage(storage))?.group ?? null : null);
+export const getGroup = (courseId, storage) => (courseId === 'cen100' && !isArchived('cen100') ? (readProfile(resolveStorage(storage))?.group ?? null) : null);
 /** CEN100 only: save a group for the saved section ({"section":n,"group":g}); an invalid group saves null. */
 export function setGroup(courseId, value, storage) {
   if (courseId !== 'cen100' || isArchived('cen100')) return false;

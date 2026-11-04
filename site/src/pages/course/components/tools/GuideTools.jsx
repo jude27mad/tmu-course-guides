@@ -26,7 +26,9 @@ function download(file) {
 }
 
 function GuideTools() {
-  const { courseId, info, copy, progress, section, live, version } = useCourse();
+  const { courseId, info, copy, progress, section, live, version, term } = useCourse();
+  // An archived course has no calendar to export and no course updates; backups and Clear my ticks stay.
+  const archived = !!term?.archived;
   const [status, setStatus] = useState({ key: null, message: '' });
   const [updatesOpen, setUpdatesOpen] = useState(false);
   const [unseen, setUnseen] = useState(false);
@@ -40,8 +42,8 @@ function GuideTools() {
   const updateEntries = Array.isArray(updates) ? updates : updates.entries || page.updates || [];
 
   useEffect(() => {
-    if (progress.ready) setUnseen(hasUnseenUpdates(courseId));
-  }, [progress.ready, version, courseId]);
+    if (progress.ready) setUnseen(!archived && hasUnseenUpdates(courseId));
+  }, [progress.ready, version, courseId, archived]);
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -93,30 +95,32 @@ function GuideTools() {
   const say = (key, message) => setStatus({ key, message: message || '' });
 
   const rows = [
-    {
-      key: 'calendar',
-      title: tools.calendar?.download,
-      desc: (tools.calendar?.notes || []).join(' '),
-      run: () => {
-        const file = calendarFile(
-          courseId,
-          cen
-            ? {
-                now: live?.now || new Date(),
-                item: 'all',
-                upcomingOnly: true,
-                reminderDays: 1,
-              }
-            : {
-                now: live?.now || new Date(),
-                includeTentative: !!section,
-                upcomingOnly: true,
-              },
-        );
-        if (file.ok) download(file);
-        say('calendar', file.message);
-      },
-    },
+    archived
+      ? null
+      : {
+          key: 'calendar',
+          title: tools.calendar?.download,
+          desc: (tools.calendar?.notes || []).join(' '),
+          run: () => {
+            const file = calendarFile(
+              courseId,
+              cen
+                ? {
+                    now: live?.now || new Date(),
+                    item: 'all',
+                    upcomingOnly: true,
+                    reminderDays: 1,
+                  }
+                : {
+                    now: live?.now || new Date(),
+                    includeTentative: !!section,
+                    upcomingOnly: true,
+                  },
+            );
+            if (file.ok) download(file);
+            say('calendar', file.message);
+          },
+        },
     {
       key: 'export',
       title: tools.backup?.export,
@@ -148,20 +152,23 @@ function GuideTools() {
           },
         }
       : null,
-    {
-      key: 'updates',
-      title: updates.summary || page.updatesSummary,
-      badge: unseen ? updates.badge || page.updatesBadge : '',
-      desc: updateEntries[0] ? `${updateEntries[0].date} · ${updateEntries[0].title}` : '',
-      expanded: updatesOpen,
-      run: () => {
-        setUpdatesOpen((value) => !value);
-        if (!updatesOpen) {
-          markUpdatesSeen(courseId);
-          setUnseen(false);
-        }
-      },
-    },
+    // Course updates are this term's changes to dates and coverage, so an archived course has none to show.
+    archived
+      ? null
+      : {
+          key: 'updates',
+          title: updates.summary || page.updatesSummary,
+          badge: unseen ? updates.badge || page.updatesBadge : '',
+          desc: updateEntries[0] ? `${updateEntries[0].date} · ${updateEntries[0].title}` : '',
+          expanded: updatesOpen,
+          run: () => {
+            setUpdatesOpen((value) => !value);
+            if (!updatesOpen) {
+              markUpdatesSeen(courseId);
+              setUnseen(false);
+            }
+          },
+        },
   ].filter((row) => row && row.title);
 
   const onFile = async (event) => {

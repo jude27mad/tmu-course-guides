@@ -3,8 +3,10 @@ import { useCourse } from '@src/pages/course/hooks/useCourseState';
 import styles from './workspace.module.scss';
 
 export default function AssignmentDetail({ item, kind, assignments, back, returnView }) {
-  const { info, courseId } = useCourse();
-  const entry = assignments?.entries.find((row) => row.id === item.id);
+  const { info, courseId, term } = useCourse();
+  // An archived course has no dates or completion records: no status lines and no "Dates & submissions".
+  const archived = !!term?.archived;
+  const entry = archived ? null : assignments?.entries.find((row) => row.id === item.id);
   const returnLabel = {
     work: 'Work',
     schedule: 'Schedule',
@@ -24,7 +26,7 @@ export default function AssignmentDetail({ item, kind, assignments, back, return
         {entry?.pastDue && !entry.done ? <p className={styles.status}>Past due · not marked done</p> : null}
         {entry?.done ? <p className={styles.status}>Marked done by you</p> : null}
       </div>
-      {kind !== 'topic' ? (
+      {kind !== 'topic' && !archived ? (
         <div className={styles.dates}>
           <h3>Dates & submissions</h3>
           {entry?.rows.length ? (

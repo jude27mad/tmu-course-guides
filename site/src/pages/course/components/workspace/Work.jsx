@@ -21,6 +21,37 @@ const resultKey = (assignments, filter) =>
     .flatMap(([key]) => assignments?.[key].map((entry) => entry.id) || [])
     .join(',');
 
+// An archived course: its assignments (CEN100) or assessments (math) in course order, each opening its details,
+// without dates, status, counts or filters.
+export function ArchivedWork() {
+  const { courseId, info, term } = useCourse();
+  const cen = courseId === 'cen100';
+  const content = (cen ? info.items : info.assessments) || [];
+  return (
+    <>
+      <div className={styles.viewHeading}>
+        <h2>Work</h2>
+      </div>
+      <p className={styles.workSummary} data-work-summary>{`${cen ? 'Assignments' : 'Assessments'} from ${term.label}`}</p>
+      <div id="work-results" className={styles.workResults} data-work-results>
+        <ul className={styles.workList}>
+          {content.map((item) => (
+            <li key={item.id}>
+              <Link id={`open-${item.anchor}`} href={`/${courseId}/#${item.anchor}`} scroll={false} className={styles.archivedRow} data-assignment-link>
+                <span>
+                  <span className={styles.rowTitle}>{item.name || item.title}</span>
+                  <span className={styles.meta}>{[item.who, item.weightLabel].filter(Boolean).join(' · ')}</span>
+                </span>
+                <span aria-hidden="true">↗</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
+  );
+}
+
 export default function Work({ assignments, filter, navigate }) {
   const { courseId, info, progress } = useCourse();
   const still = useStill();

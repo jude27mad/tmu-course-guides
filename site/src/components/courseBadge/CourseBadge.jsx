@@ -5,6 +5,13 @@ import clsx from 'clsx';
 import { useBadgeRegistry } from './BadgeProvider';
 import styles from './badge.module.scss';
 
+// The bottom line of the card: the next date, or for an archived course (lib/terms.mjs) its status. An archived
+// course has no deadlines, so its card reads the same before and after mount; the term above stays the course's.
+function nextLine(course, date, ready) {
+  if (course.archived) return { nextLabel: 'Status', nextValue: 'Archived' };
+  return { nextLabel: 'Next', nextValue: ready ? date || 'No upcoming deadlines' : 'Open guide' };
+}
+
 export default function CourseBadge({ instanceId, courseId, motionGroup, next, ready = true, className }) {
   const registry = useBadgeRegistry();
   const root = useRef();
@@ -16,8 +23,7 @@ export default function CourseBadge({ instanceId, courseId, motionGroup, next, r
       code: course.code,
       name: course.name,
       term: course.term,
-      nextLabel: 'Next',
-      nextValue: ready ? next?.dateLabel || next?.when || 'No upcoming deadlines' : 'Open guide',
+      ...nextLine(course, next?.dateLabel || next?.when, ready),
     }),
     [course, next?.dateLabel, next?.when, ready],
   );

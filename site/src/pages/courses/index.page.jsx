@@ -8,7 +8,7 @@ import useDesk from '@src/pages/components/useDesk';
 
 // The original /projects index as the course index: the title, then one stacked
 // window card per course (section, next date, code and name, the old Desk
-// description).
+// description). Archived courses follow under their own heading (CourseCards).
 const seo = {
   title: 'Courses | TMU Course Guides',
   description: DESK_TEXT.description,

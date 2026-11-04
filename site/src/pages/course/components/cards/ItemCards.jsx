@@ -64,8 +64,9 @@ function Lines({ items, className = 'p-l' }) {
 }
 
 export function CenBody({ item }) {
-  const { courseId, progress, copy } = useCourse();
-  const records = item.records || [];
+  const { courseId, progress, copy, term } = useCourse();
+  // An archived course keeps the requirements and checklists, without completion records, notes or target dates.
+  const records = term?.archived ? [] : item.records || [];
   const doneCount = records.filter((record) => progress.isDone(courseId, record.id)).length;
   return (
     <>
@@ -128,23 +129,27 @@ export function CenBody({ item }) {
 }
 
 export function AssessmentBody({ item }) {
-  const { courseId, progress } = useCourse();
+  const { courseId, progress, term } = useCourse();
+  // An archived course has no room or completion record; the rest is about the assessment itself.
+  const archived = !!term?.archived;
   return (
     <>
-      <dl className={styles.facts}>
-        {item.room ? (
-          <div>
-            <dt className="p-x">{item.roomLabel}</dt>
-            <dd className="p-l">{item.room}</dd>
-          </div>
-        ) : null}
-        {item.category ? (
-          <div>
-            <dt className="p-x">{item.categoryLabel}</dt>
-            <dd className="p-l">{item.category}</dd>
-          </div>
-        ) : null}
-      </dl>
+      {archived && !item.room && !item.category ? null : (
+        <dl className={styles.facts}>
+          {item.room ? (
+            <div>
+              <dt className="p-x">{item.roomLabel}</dt>
+              <dd className="p-l">{item.room}</dd>
+            </div>
+          ) : null}
+          {item.category ? (
+            <div>
+              <dt className="p-x">{item.categoryLabel}</dt>
+              <dd className="p-l">{item.category}</dd>
+            </div>
+          ) : null}
+        </dl>
+      )}
       {item.dateNote ? <p className={clsx('p-x', styles.muted)}>{item.dateNote}</p> : null}
       <div className={styles.block}>
         <h4 className={clsx('p-x', styles.heading)}>{item.coversHeading}</h4>
@@ -172,16 +177,18 @@ export function AssessmentBody({ item }) {
         <summary className="p-l">{item.sourceLabel}</summary>
         <p className="p-l">{item.source}</p>
       </details>
-      <div className={styles.block}>
-        <h4 className={clsx('p-x', styles.heading)}>{item.personalSummary}</h4>
-        <ul className={styles.checks}>
-          <CheckRow checked={progress.isDone(courseId, item.id)} disabled={!progress.ready} onChange={(value) => progress.setDone(courseId, item.id, value)}>
-            {item.completedLabel}
-          </CheckRow>
-        </ul>
-        <p className={clsx('p-x', styles.muted)}>{item.completedNote}</p>
-        <PlanFields itemId={item.id} notesLabel={item.notesLabel} targetLabel={item.targetLabel} notes={[item.targetNote]} />
-      </div>
+      {archived ? null : (
+        <div className={styles.block}>
+          <h4 className={clsx('p-x', styles.heading)}>{item.personalSummary}</h4>
+          <ul className={styles.checks}>
+            <CheckRow checked={progress.isDone(courseId, item.id)} disabled={!progress.ready} onChange={(value) => progress.setDone(courseId, item.id, value)}>
+              {item.completedLabel}
+            </CheckRow>
+          </ul>
+          <p className={clsx('p-x', styles.muted)}>{item.completedNote}</p>
+          <PlanFields itemId={item.id} notesLabel={item.notesLabel} targetLabel={item.targetLabel} notes={[item.targetNote]} />
+        </div>
+      )}
     </>
   );
 }

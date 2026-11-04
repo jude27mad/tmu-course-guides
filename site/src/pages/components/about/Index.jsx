@@ -1,4 +1,4 @@
-import { DESK_TEXT, STATUS, countdown, countdownStatus, courseCopy, getCourse } from '@src/lib';
+import { COURSES, DESK_TEXT, STATUS, countdown, countdownStatus, courseCopy, getCourse } from '@src/lib';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import AppearTitle from '@src/components/animationComponents/appearTitle/Index';
@@ -17,6 +17,11 @@ import useStill from '@src/hooks/useStill';
 const EMPTY_TITLE = 'No upcoming deadlines';
 const EMPTY_TEXT = 'No course has a dated deadline left in your records.';
 const NEXT_UP = 'Next up';
+// Every course archived (lib/terms.mjs): nothing current to count down to. The
+// status is fixed at build time, so this shows the same before and after mount.
+const NO_CURRENT = COURSES.every((course) => course.archived);
+const NO_CURRENT_TITLE = 'No current courses';
+const NO_CURRENT_TEXT = COURSES.some((course) => course.gradesOpen) ? 'Past courses are under Courses, with their notes and grade calculators.' : 'Past courses are under Courses, with their notes.';
 const pad = (n) => String(n).padStart(2, '0');
 
 function copyFor(courseId) {
@@ -117,7 +122,7 @@ function About({ desk }) {
 
   const { ready, now, next, progress } = desk;
   const course = next ? getCourse(next.courseId) : null;
-  const empty = ready && !next;
+  const empty = NO_CURRENT || (ready && !next);
   const entry = next ? entryFor(desk, next.courseId) : null;
   const copy = useMemo(() => (next ? copyFor(next.courseId) : {}), [next]);
   const canUndo = ready && progress?.canUndo?.();
@@ -144,7 +149,8 @@ function About({ desk }) {
 
   // One polite sentence per minute for screen readers (the digits are hidden).
   const spoken = useMemo(() => {
-    if (!ready) return '';
+    // No current courses: the static title is already on the page, so nothing changes to announce.
+    if (!ready || NO_CURRENT) return '';
     if (!next) return `${EMPTY_TITLE}.`;
     try {
       return `${DESK_TEXT.nextHeading}, ${course?.code}. ${countdown(next, now).sentence || ''}`;
@@ -154,7 +160,9 @@ function About({ desk }) {
   }, [ready, next, course, now]);
 
   let title = DESK_TEXT.nextHeading;
-  if (ready) title = next ? next.title : EMPTY_TITLE;
+  if (NO_CURRENT) title = NO_CURRENT_TITLE;
+  else if (ready) title = next ? next.title : EMPTY_TITLE;
+  const emptyText = NO_CURRENT ? NO_CURRENT_TEXT : EMPTY_TEXT;
 
   const markLabel = next && (copy.markDoneLabel || copy.next?.markDoneLabel);
   const forRecords = copy.forYourRecords;
@@ -162,7 +170,7 @@ function About({ desk }) {
   return (
     <section className={clsx(styles.root, empty && styles.empty)} aria-labelledby="desk-next-heading" data-next-course={course?.id || undefined}>
       <div className={clsx(styles.nameContainer, 'layout-block-inner')}>
-        <AppearTitle isFooter key={ready ? 'ready' : 'static'}>
+        <AppearTitle isFooter key={ready && !NO_CURRENT ? 'ready' : 'static'}>
           <h2 id="desk-next-heading" className={clsx('h1', 'medium')}>
             {NEXT_UP}
           </h2>
@@ -181,7 +189,7 @@ function About({ desk }) {
             <div className={styles.imageContainer} aria-hidden="true" />
           ))}
         <div className={clsx(styles.descWrapperBottom)}>
-          {ready && next ? <Deadline item={next} still={still} /> : <p className="p-l">{empty ? EMPTY_TEXT : DESK_TEXT.nextStatic}</p>}
+          {ready && next ? <Deadline item={next} still={still} /> : <p className="p-l">{empty ? emptyText : DESK_TEXT.nextStatic}</p>}
           {ready && next && (
             <AppearTitle isFooter key={`bottom-${next.courseId}-${next.id}`}>
               {next.requirement && <p className="h6">{next.requirement}</p>}

@@ -125,12 +125,19 @@ function mathInfo(courseId, { section } = {}) {
    rules, grading, topics, textbooks, sources) and loses what belonged to its term: dates, date tiles, rooms,
    completion records, the calendar, contacts and this term's notices. Item ids and anchors stay the same, so old
    links and the grade calculator keep working. `archived` and `term` say which term the rest comes from. */
+// The first sentence of a text: up to a full stop after a word (not an abbreviation such as "pp.") and before a capital.
+const firstSentence = (text) => String(text).split(/(?<=[a-z]{3}\.)\s+(?=[A-Z])/)[0];
 function archiveInfo(courseId, info) {
   const term = courseTerm(courseId);
   const tools = { ...info.tools, calendar: null };
   if (courseId === 'cen100') {
-    const items = info.items.map((item) => ({ ...item, date: null, tile: null, facts: item.facts.filter((fact) => !TERM_FACT_ICONS.includes(fact.icon)), records: [], calendar: false }));
-    return { ...info, archived: true, term, items, contacts: null, tools };
+    const items = info.items.map((item) => {
+      const archived = { ...item, date: null, tile: null, facts: item.facts.filter((fact) => !TERM_FACT_ICONS.includes(fact.icon)), records: [], calendar: false };
+      // Tutorial attendance quizzes: keep the lasting first sentence, without the section prompt and Section 29's window.
+      if (item.id === 'y7') return { ...archived, what: firstSentence(item.what), source: { ...item.source, note: firstSentence(item.source.note) } };
+      return archived;
+    });
+    return { ...info, archived: true, term, items, contacts: null, tools: { ...tools, note: 'Your saved checklist settings stay on this device.' } };
   }
   const assessments = info.assessments.map((a) => ({ ...a, timing: '', tile: null, room: '', roomNote: '', dateNote: '' }));
   const topics = info.topics.map((topic) => ({ ...topic, midterm: false }));

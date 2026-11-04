@@ -1,7 +1,7 @@
 import { scrollRoot } from '@src/utils/scrollRoot';
 import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 
-import { DESK_TEXT } from '@src/lib';
+import { DESK_TEXT, currentTerm } from '@src/lib';
 import SignalField from '@src/components/artwork/SignalField';
 import InfiniteText from '@src/components/animationComponents/infiniteText/Index';
 import clsx from 'clsx';
@@ -14,6 +14,8 @@ import useStill from '@src/hooks/useStill';
 
 // Keep the canonical copy, with the browser-storage sentence on its own line.
 const introduction = DESK_TEXT.lede.replace('. ', '.\n');
+// The term the site is in now (lib/terms.mjs), under the heading.
+const TERM = currentTerm().label;
 
 const moveRect = (rect, direction, gridWidth, gridHeight) => {
   const moveMap = {
@@ -243,7 +245,7 @@ function Home() {
       <div className={clsx(styles.topContainer, 'layout-grid-inner')}>
         <h1 className={styles.leftContainer}>
           <span className="h2">{DESK_TEXT.heading}</span>
-          <span className={clsx('h2', 'bold')}>{DESK_TEXT.headingTerm}</span>
+          <span className={clsx('h2', 'bold')}>{TERM}</span>
         </h1>
         <p className={clsx('h6', styles.rightContainer, styles.introduction)} data-desk-introduction>
           {introduction}
