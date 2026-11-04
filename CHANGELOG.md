@@ -2,6 +2,11 @@
 
 Latest first. Students see course changes under **Course updates** in each guide's Guide tools, and website changes on the **Website updates** page. Older entries record the behaviour at the time; later releases supersede them.
 
+## Unreleased — No dark box rising under Safari's toolbar
+
+- **The end of the Desk, Courses, Privacy and Website updates on iPhone and iPad.** Past the end of the page Safari paints one flat colour, the ink on a page that ends in the dark footer, and during the last stretch of scrolling the page's end crosses the area under the toolbar, where Safari shows the page and the lit artwork through the footer. The artwork met the flat ink in a hard line, so a dark box rose from the bottom of the screen until the end reached the bar; only there did the fixed fade above the bar appear, over 0.2 s. The page now fades into the ink over its own last 120 px, on the footer's wrapper, which ends the document and is not moved by the footer's reveal, so the end crosses the bar without an edge. While the end is at the bar a fixed copy of the same fade replaces it in the same frame; if the page bounces past its end (Pause motion), the copy keeps the artwork between the end and the bar shaded into the ink. The fade is eased at both ends. Course pages, which end light, and computers are unchanged.
+- `tests/under-safari-bars.test.mjs` pins the shared fade, the page's own fade on the wrapper and the fixed copy without a transition; both fail on the previous styles. See `docs/qa/safari-toolbar-transparency.md`, seventh report.
+
 ## Unreleased — Fixes for deadlines, scrolling, reveals and backups
 
 - **A written lab quiz leaves "next".** Once a math section is chosen, a lab quiz is an exact target in its lab window, but the vendored schedule passes it only at Toronto midnight, so the course header and the Desk tile said "Due time passed" for the rest of quiz day and hid the real next item. An exact target now stops being next two hours (`GRACE`) after it ends, the rule the Desk's overall winner already used (`deadlines.mjs` `currentTarget()`); the parity sweeps in `tests/deadlines.test.mjs` apply the same rule to the old resolver.

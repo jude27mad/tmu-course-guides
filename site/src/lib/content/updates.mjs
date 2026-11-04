@@ -129,6 +129,13 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-11-04-safari-dark-end",
+  "date": "November 4, 2026",
+  "title": "No dark box rising under Safari's toolbar",
+  "text": "On iPhone and iPad, scrolling to the end of the Desk, Courses, Privacy and Website updates no longer shows a flat dark box rising from the bottom of the screen under Safari's toolbar. The footer now fades smoothly into the dark colour Safari shows past the end of the page.",
+  "items": []
+ },
+ {
   "id": "2026-11-04-fixes",
   "date": "November 4, 2026",
   "title": "Fixes for deadlines, scrolling and backups",

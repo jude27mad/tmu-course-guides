@@ -5,3 +5,34 @@
   width: 100vw;
   overflow: hidden;
 }
+
+// iPhone and iPad (document mode). This wrapper ends the document on the pages
+// that end in the dark footer, and it is never moved: the footer inside it is
+// (its reveal). Past the document's end Safari paints one flat colour, the ink
+// here, and during the last stretch of scrolling the end crosses the area
+// under the toolbar, where Safari shows the page and the lit artwork behind
+// it. The artwork met that flat ink in a hard line, a dark box that rose from
+// the bottom of the screen. The page now fades into the ink over its last
+// stretch, behind the footer's content, so the end crosses the bar without an
+// edge. While the end is at the bar the fixed copy of this fade takes over
+// (app.module.scss, data-edge-end): at that point both lie in the same place,
+// and if the page bounces past its end, the copy keeps shading the artwork
+// that shows between the page's end and the bar.
+:global(html[data-scroll-mode='document']) .footer {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: var(--dark-end-fade-height);
+    z-index: -1;
+    background-image: var(--dark-end-fade);
+    pointer-events: none;
+  }
+}
+
+:global(html[data-scroll-mode='document'][data-edge-end='dark']) .footer::after {
+  visibility: hidden;
+}
