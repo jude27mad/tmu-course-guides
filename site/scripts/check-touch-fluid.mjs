@@ -421,15 +421,17 @@ try {
     try {
       await ready(page, route);
       await check(`${label}: Desk palette and fluid colours`, () => assertDeskPalette(page));
-      // Deliberately cross the former 2.2 s cutoff: this is the behaviour under test.
+      // Deliberately cross the former 2.2 s cutoff, which also hid the canvas.
+      // The canvas now rests once its trail has faded, still on screen, and
+      // the next touch wakes it: the swipe check below must draw the trail.
       await page.waitForTimeout(2500);
-      await check(`${label}: fluid remains visible and renders after idle`, async () => {
+      await check(`${label}: fluid remains visible after idle`, async () => {
         const before = await snapshot(page);
         await page.waitForTimeout(350);
         const after = await snapshot(page);
+        assert.ok(after.fluid, 'the fluid canvas left the page while motion is enabled');
         assert.equal(after.visibility, 'visible', JSON.stringify(after));
-        assert.ok(after.draws > before.draws, 'fluid canvas stopped drawing while motion is enabled');
-        return { before, after };
+        return { before, after, idleDraws: after.draws - before.draws };
       });
       await check(`${label}: a scrolling swipe keeps feeding the fluid trail`, async () => {
         const trace = await swipe(context, page, `${label.replace('/', '')}-touch.png`);
