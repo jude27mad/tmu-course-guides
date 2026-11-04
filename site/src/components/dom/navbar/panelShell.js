@@ -50,6 +50,18 @@ export function markPageShrunk(shrunk) {
   root.dataset.pageShrunk = '';
 }
 
+// Leaving for another page from an open panel (iPhone, iPad): the paper rises
+// over the shrunk page, and Safari's colour past the page's ends rises to it
+// rather than staying the panel's ink until the next page arrives. The next
+// page opens at its top, which is light on every page. The shell's paused
+// timeline keeps the card itself; it is rebuilt once the paper covers it.
+export function fadePanelEdges(duration) {
+  const root = document.documentElement;
+  if (!('pageShrunk' in root.dataset)) return;
+  root.dataset.footerBottom = 'light';
+  gsap.to(root, { '--panel-ink': 0, duration, ease: 'power2.out' });
+}
+
 export function buildShellTimeline({ isMobile }) {
   const fluidCanvas = document.getElementById('fluidCanvas');
   const layout = document.getElementById('layout');
@@ -77,6 +89,13 @@ export function buildShellTimeline({ isMobile }) {
 
   if (fluidCanvas) tl.to(fluidCanvas, { duration: 0, opacity: 0 }, 0);
   tl.to(main, { borderRadius: PAGE_RADIUS, border: PAGE_EDGE, scale: 0.9, pointerEvents: 'none', left: '-40vw' }, 0);
+  // How far the page has shrunk, on the page's own ease (0 at the tap, 1 open).
+  // Safari shows the page under its bars and, past the page's ends, one flat
+  // colour; both follow it (global.scss): the card's reach under the bars
+  // (--panel-cover), and the flat colour, from the page's to the panel's ink
+  // (--panel-ink, apart so a page change can lift it alone: fadePanelEdges).
+  // Reversing returns both.
+  if (ios) tl.fromTo(document.documentElement, { '--panel-cover': 0, '--panel-ink': 0 }, { '--panel-cover': 1, '--panel-ink': 1 }, 0);
   // Keep the canvas/grain shell full-height so it cannot expose bands above and below the page.
   tl.to(layout, { opacity: isMobile ? 0.05 : 0.3 }, 0);
   if (scrollbar) tl.to(scrollbar, isMobile ? { opacity: 0 } : { opacity: 0, right: '46vw', scale: 0.9 }, 0);

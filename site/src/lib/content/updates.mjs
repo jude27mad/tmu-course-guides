@@ -129,6 +129,13 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-11-03-safari-bars",
+  "date": "November 3, 2026",
+  "title": "No dark boxes under Safari's bars",
+  "text": "On iPhone and iPad, the end of each course page no longer shows a black box under Safari's toolbar, and the top of every page no longer shows one under the status bar. Opening and closing the Menu or Search no longer darkens the page under the bars while it still fills the screen: the area under them now follows the page as it shrinks and returns.",
+  "items": []
+ },
+ {
   "id": "2026-11-03-menu-transition",
   "date": "November 3, 2026",
   "title": "Menu and Search open like the original design",

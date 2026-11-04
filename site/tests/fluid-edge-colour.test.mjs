@@ -73,7 +73,9 @@ test('the guards leave the corners open to taps', () => {
 
 test('the dark footer at the bottom edge gives Safari an ink fallback under the toolbar', () => {
   const css = read('../src/styles/global.scss');
-  assert.match(css, /html\[data-scroll-mode='document'\]\[data-browser-bottom='dark'\] body \{\s*background-color: var\(--black\);/);
+  // The root alone: in document mode the body stays clear (under-safari-bars.test.mjs).
+  assert.match(css, /html\[data-scroll-mode='document'\]\[data-browser-bottom='dark'\] \{\s*background-color: var\(--black\);/);
+  assert.doesNotMatch(css, /\[data-browser-bottom='dark'\] body/);
   // Desktop Safari tints its top bar from html/body, and there `main` already covers the page.
   assert.doesNotMatch(css, /(?<!\])html\[data-browser-bottom='dark'\]/);
 });

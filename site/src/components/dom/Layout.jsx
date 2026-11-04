@@ -13,7 +13,7 @@ import styles from '@src/components/dom/styles/layout.module.scss';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
 import { TOKENS } from '@src/lib/palette.mjs';
-import { PANEL_DEFAULTS, markPageShrunk } from '@src/components/dom/navbar/panelShell';
+import { PANEL_DEFAULTS, fadePanelEdges, markPageShrunk } from '@src/components/dom/navbar/panelShell';
 
 // Giats's card (desktop and Android, except between courses): shrink, slide, slide, grow.
 // Two steps out and about two in keep a page change within 0.6 s.
@@ -288,6 +288,8 @@ function Layout({ children, layoutRef, mainRef, router }) {
     if (!run.steady) anims.push(header.animate({ opacity: 0 }, out));
     // An open panel's shell dims the page; bring it up to the paper.
     if (Number(gsap.getProperty(layoutRef.current, 'opacity')) < 1) anims.push(layoutRef.current.animate({ opacity: 1 }, { duration: fade.paper, easing: EASE.out, fill: 'both' }));
+    // On iPhone and iPad Safari's colour past the page's ends rises to the paper with it.
+    if (ios && panelOpen) fadePanelEdges(fade.paper / 1000);
     const scrollbar = document.getElementById('scrollbar');
     if (scrollbar) anims.push(scrollbar.animate({ opacity: 0 }, out));
     playPhase(run, anims, covered);
