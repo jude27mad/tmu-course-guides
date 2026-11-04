@@ -119,7 +119,7 @@ function frameFor(source, { velocity, direction, scrolling = true, intersected =
     curve: new THREE.CatmullRomCurve3(Array.from({ length: 4 }, () => new THREE.Vector3())),
     isScrolling: { current: scrolling }, speed: { current: velocity }, scrollDirection: { current: direction },
     intersected, rest: false, maxSpeed: 50, minSpeed: 10, ang: new THREE.Vector3(), rot: new THREE.Vector3(),
-    impulseVector: { current: { x: 0, y: 0, z: 0 } }, fresh: { current: false }, frameShare, easeFor,
+    impulseVector: { current: { x: 0, y: 0, z: 0 } }, fresh: { current: false }, frameShare, easeFor, angvelVector: { current: { x: 0, y: 0, z: 0 } },
     useFrame: callback => callback({}, 1 / 60),
     useBeforePhysicsStep: callback => callback(),
   };

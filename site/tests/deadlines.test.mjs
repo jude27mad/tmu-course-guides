@@ -226,17 +226,33 @@ const mathStates = (course) => [
 ];
 const storeFor = (course, [saved, completed]) => (course === 'cen100' ? cenStore(saved, completed) : mathStore(course, saved, completed));
 const oldTarget = (course, storage, now, id = null) => oldCall(() => OLD_TARGETS.resolveTarget({ course, data: DATA[course], ...OLD_TARGETS.readSaved(course, DATA[course], storage), now, id }));
+// The old resolver with deadlines.mjs's one change: an exact target stops being next GRACE after it ends. The old
+// math resolver kept a finished lab quiz (exact once a section is chosen) as next until Toronto midnight.
+let movedOn = 0;
+const currentOld = (course, storage, now) =>
+  oldCall(() => {
+    const saved = OLD_TARGETS.readSaved(course, DATA[course], storage);
+    let { completed } = saved;
+    let target = OLD_TARGETS.resolveTarget({ course, data: DATA[course], ...saved, now });
+    while (target?.precision === 'exact' && (target.end ?? target.at) + OLD_TARGETS.GRACE < now) {
+      completed = { ...completed, [target.id]: true };
+      target = OLD_TARGETS.resolveTarget({ course, data: DATA[course], ...saved, completed, now });
+      movedOn += 1;
+    }
+    return target;
+  });
 const clocks = await termClocks();
 
 test('next deadline per course and overall: same item as the old resolver, at every clock and saved state', () => {
   let cases = 0;
+  movedOn = 0;
   for (const now of clocks) {
     const stores = {};
     for (const course of ['cen100', 'mth140', 'mth141']) {
       const states = course === 'cen100' ? CEN_STATES : mathStates(course);
       states.forEach((state, i) => {
         const storage = storeFor(course, state);
-        const expected = oldTarget(course, storage, now);
+        const expected = currentOld(course, storage, now);
         const mine = nextDeadline({ now, courseId: course, storage });
         if (expected.precision === 'empty') assert.equal(mine, null);
         else {
@@ -254,7 +270,7 @@ test('next deadline per course and overall: same item as the old resolver, at ev
     const combined = memoryStorage(Object.fromEntries(Object.values(stores).flatMap((s) => [...s.data])));
     const expected = oldCall(() =>
       OLD_TARGETS.overall(
-        ['cen100', 'mth140', 'mth141'].map((course) => oldTarget(course, combined, now)),
+        ['cen100', 'mth140', 'mth141'].map((course) => currentOld(course, combined, now)),
         now,
       ),
     );
@@ -262,6 +278,22 @@ test('next deadline per course and overall: same item as the old resolver, at ev
     assert.deepEqual(mine ? [mine.courseId, mine.id] : null, expected ? [expected.course, expected.id] : null, new Date(now).toISOString());
   }
   assert.ok(cases > 3000, `${cases} cases`);
+  assert.ok(movedOn > 0, 'the sweep includes finished lab quizzes');
+});
+
+test('a written lab quiz stops being the next deadline two hours after the lab, not at midnight', () => {
+  // MTH141 Section 1: Thursday 9-10 AM lab, Lab Quiz 3 on Nov 5; Lab Quiz 4 is next.
+  const storage = mathStore('mth141', 1);
+  const course = (time) => nextDeadline({ now: toronto('2026-11-05', time), courseId: 'mth141', storage });
+  const desk = (time) => deskSnapshot({ now: toronto('2026-11-05', time), storage }).find((entry) => entry.course.id === 'mth141');
+  assert.equal(course('09:59').id, 'quiz-3');
+  assert.equal(countdown(course('10:30'), toronto('2026-11-05', '10:30')).label, 'Due time passed');
+  for (const time of ['12:01', '18:00', '23:59']) {
+    assert.equal(course(time).id, 'quiz-4', time);
+    assert.equal(desk(time).next.id, 'quiz-4', time);
+    assert.equal(desk(time).target.id, 'quiz-4', time);
+    assert.equal(desk(time).urgency, 'ahead', time);
+  }
 });
 
 test('every deadline item carries the old resolver’s target for its id, with the old countdown wording', () => {
@@ -367,13 +399,28 @@ test('the Desk snapshot is the old deskSummary(), course by course', () => {
   for (const [n, now] of clocks.filter((_, i) => i % 3 === 0).entries()) {
     const storage = combined(n);
     const old = oldCall(() => OLD_DESK.deskSummary({ now, storage }));
+    // The old summary with currentOld()'s rule applied to each course's target.
+    const shown = {};
+    for (const course of ['cen100', 'mth140', 'mth141']) {
+      const { next, urgency } = old[course];
+      if (next?.precision !== 'exact' || (next.end ?? next.at) + OLD_TARGETS.GRACE >= now) shown[course] = { next, urgency };
+      else {
+        const target = currentOld(course, storage, now);
+        shown[course] = oldCall(() => ({
+          next: target && { ...target, status: OLD_TARGETS.status(target, now), compact: OLD_TARGETS.compact(target, now), targetDate: OLD_TARGETS.targetDate(target) },
+          urgency: OLD_TARGETS.parts(target, now)?.state ?? 'empty',
+        }));
+      }
+    }
+    const winner = oldCall(() => OLD_TARGETS.overall(Object.values(shown).map((entry) => entry.next).filter(Boolean), now));
     const mine = deskSnapshot({ now, storage });
     assert.deepEqual(
       mine.map((entry) => entry.course.id),
       ['cen100', 'mth140', 'mth141'],
     );
     for (const entry of mine) {
-      const expected = old[entry.course.id];
+      const expected = { ...old[entry.course.id], ...shown[entry.course.id] };
+      expected.isOverall = winner !== null && shown[entry.course.id].next === winner;
       assert.deepEqual(entry.progress, expected.progress);
       assert.deepEqual(entry.target, expected.next);
       assert.equal(entry.urgency, expected.urgency);

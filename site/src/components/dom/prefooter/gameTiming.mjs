@@ -3,25 +3,39 @@ export const GAME_SPEED = 0.85;
 export const GAME_GRAVITY = -15 * GAME_SPEED ** 2;
 export const GAME_MAX_AGE = 7 / GAME_SPEED;
 
+// The current streak drives the challenge; a miss starts gently again. The
+// smooth curve keeps increasing without unplayable speeds or bursts at high scores.
+export function gameDifficulty({ score, isMobile }) {
+  const streak = Number.isFinite(score) ? Math.max(0, score) : 0;
+  const progress = streak / (streak + 30);
+  const initialInterval = isMobile ? 5000 : 3000;
+  const shortestInterval = isMobile ? 1400 : 900;
+  return { interval: initialInterval - (initialInterval - shortestInterval) * progress, speed: 1 + 0.65 * progress };
+}
+
 // Start just below the stage and choose an on-screen apex. Setting velocity
 // avoids collider mass changing the flight; Rapier supplies all downward motion.
-export function createDiscFlight({ viewportHeight, isMobile, ceilingY = viewportHeight / 2, random = Math.random }) {
+export function createDiscFlight({ viewportHeight, isMobile, ceilingY = viewportHeight / 2, speed = 1, random = Math.random }) {
   const radius = (isMobile ? 0.4 : 0.5) * 1.05;
   const startY = -viewportHeight / 2 - radius - 0.1;
   const apexY = Math.min(viewportHeight * (0.1 + random() * 0.18), ceilingY - radius);
   return {
     startY,
     radius,
-    velocityY: Math.sqrt(2 * -GAME_GRAVITY * Math.max(0, apexY - startY)),
+    // Scaling gravity with speed squared shortens the flight without raising its apex.
+    velocityY: Math.sqrt(2 * -GAME_GRAVITY * Math.max(0, apexY - startY)) * speed,
+    gravityScale: speed ** 2,
     spin: (random() < 0.5 ? -1 : 1) * (1 + random()) * GAME_SPEED,
   };
 }
 
 // DOM y grows down, while the game world's y grows up. Reserve a small gap
 // below the entire score pill, including while it is hidden before first play.
-export function scoreBoundary({ scoreBottom, canvasTop, canvasHeight, viewportHeight }) {
+// The paper's lower edge masks the game without changing its launch point.
+export function scoreBoundary({ scoreBottom, canvasTop, canvasHeight, viewportHeight, stageBottom = Infinity }) {
   const inset = Math.max(0, Math.min(canvasHeight, scoreBottom + 8 - canvasTop));
-  return { inset, ceilingY: viewportHeight * (0.5 - inset / canvasHeight) };
+  const bottomInset = Math.max(0, Math.min(canvasHeight - inset, canvasTop + canvasHeight - stageBottom));
+  return { inset, bottomInset, ceilingY: viewportHeight * (0.5 - inset / canvasHeight), floorY: viewportHeight * (bottomInset / canvasHeight - 0.5) };
 }
 
 // Current streak resets on a miss; the browser's best survives it.

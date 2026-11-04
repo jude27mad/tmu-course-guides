@@ -44,6 +44,7 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
     add('Courses', { id: 'view-assignments', type: 'view', title: 'Work', href: `${current.href}#work`, default: true, courseId: current.id });
     add('Courses', { id: 'view-schedule', type: 'view', title: 'Schedule', href: `${current.href}#schedule`, courseId: current.id });
     if (isMath(current.id)) add('Courses', { id: 'view-study', type: 'view', title: 'Study', href: `${current.href}#study`, default: true, courseId: current.id });
+    add('Courses', { id: 'view-grades', type: 'view', title: 'Grade calculator', href: `${current.href}#grades`, keywords: 'grades marks gpa letter average calculate what do i need', courseId: current.id });
     add('Courses', { id: 'view-info', type: 'view', title: 'Course info', href: `${current.href}#course-info`, default: true, courseId: current.id });
   }
 

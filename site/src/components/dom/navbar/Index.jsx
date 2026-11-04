@@ -133,6 +133,12 @@ function Navbar() {
         ? !!footerRect && footerRect.top < scrollerRect.bottom - FOOTER_UNDER_BAR
         : !!footerRect && footerRect.top < scrollerRect.bottom - 1 && footerRect.bottom >= scrollerRect.bottom - 1;
       setBrowserSurfaces(overlay ? 'dark' : 'light', overlay || darkFooter ? 'dark' : 'light');
+      // The colour Safari shows past the page's ends before a panel opens: the
+      // footer's ink or the paper. A panel shell mixes from it (global.scss). Its
+      // border and transform move the footer, so it is kept from before the tap
+      // until the page is restored.
+      const root = document.documentElement;
+      if (!('pageShrunk' in root.dataset)) root.dataset.footerBottom = darkFooter ? 'dark' : 'light';
     };
     // Pages that end in the dark footer continue it below their end; course
     // pages end light. The top of every page is light, but a dark panel can
@@ -176,7 +182,7 @@ function Navbar() {
     };
   }, [isOpen, isLoading, router.asPath]);
 
-  // Shared panel shell: desktop moves the page, mobile leaves it stationary.
+  // Shared panel shell: the page shrinks and slides aside on every screen.
   useEffect(() => {
     const tl = buildShellTimeline({ isMobile });
     shellRef.current = tl;
@@ -238,7 +244,7 @@ function Navbar() {
 
   return (
     <>
-      <div aria-hidden="true" className={styles.panelBackdrop} data-open={isOpen} />
+      <div aria-hidden="true" className={styles.panelGuard} data-open={isOpen} />
       <MenuLinks />
       <SearchPanel />
 

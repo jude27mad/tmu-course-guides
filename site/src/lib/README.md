@@ -13,11 +13,12 @@ The data layer every page uses. Pages import from `@src/lib` (plain functions) a
 | Path | What |
 |---|---|
 | `index.js` | The public API (re-exports). |
-| `react.js` | Hooks: `useNow`, `useProgress`, `useSection`, `useMotionPaused`. |
+| `react.js` | Hooks: `useNow`, `useProgress`, `useSection`, `useMotionPaused`, `useGrades`. |
 | `courses.mjs` | `COURSES`, palettes, links, sections, saved section/group. |
 | `deadlines.mjs` | `deadlines`, `buckets`, `nextDeadline`, `countdown`, `weeklyChecklist`, `assessments`, `deskSnapshot`, `workList`. |
 | `assignments.mjs` | `assignmentList`, `calendarEvents`: one entry per content item and one event per dated deadline row. |
 | `info.mjs` | `courseInfo`. |
+| `grades.mjs` | The grade calculator: `gradePlan`, `gradeStanding`, `gradeNeeded`, the TMU letter scale, mark parsing and the calculator's own saved marks. |
 | `progress.mjs` | `createProgress` (Mark done, Undo, ticks, notes, targets, subscribe). |
 | `search.mjs` | `searchIndex`, `searchEntries`, `searchGuide`. |
 | `tools.mjs` | Calendar files, backups, the Course updates badge, hide filter, motion pause. |
@@ -41,6 +42,8 @@ The data layer every page uses. Pages import from `@src/lib` (plain functions) a
 | `mth140-section-v1`, `mth141-section-v1` | `31`; `0` when none | `setSection` |
 | `mth140-last-seen-update-v1`, `mth141-last-seen-update-v1` | `"2026-10-15-new-design"` | `markUpdatesSeen` |
 | `guide-motion-paused` | raw `true` / `false` | `setMotionPaused` |
+| `cen100-grades-v1`, `mth140-grades-v1`, `mth141-grades-v1` | `{"marks":{"quiz-1":"17/20","midterm":"74.5"},"target":80}`: the text typed per item and the chosen letter's minimum; removed when everything is cleared. New with the calculator; not in the old site, `STORAGE_KEYS` or backups | `writeGrades` (via `useGrades`) |
+| `tmu-guides-storage-check` | `"1"`, written and removed at once to learn whether saving works | `gradesSavable` (when Grades opens) |
 | `guide-motion-level` | legacy; removed on load | `useMotionPaused` |
 
 Every write re-reads storage, applies one change and writes the whole cleaned record: exactly what the old page wrote for that action after loading. Readers never write. `mth14x-view-v1`, `tmu-guide-theme-v1` and `tmu-guide-sound-v1` are listed in `STORAGE_KEYS` but nothing here writes them (no tabs, light only, no sound).
@@ -275,6 +278,29 @@ off();
 
 Ticks never mark anything done and Mark done never ticks. A step id may be the full key or its index part under the item (`toggleTick('cen100', 'outline', '1-3')` → `m2-1-3`). CEN notes and targets are per card (`m2`); math per assessment. As on the old pages, a completion change made in another tab cancels a pending Undo for that course.
 
+### Grade calculator
+
+Weights come from `assessments()`, so the calculator always matches Course info → Grading. Pure functions; only `readGrades`, `writeGrades`, `subscribeGrades` and `gradesSavable` touch storage.
+
+```js
+const plan = gradePlan('mth140', { section });   // { groups: [{ id: 'quizzes', title: 'Lab quizzes', weight: 15, drop: 1, keep: 3, note, items }, …], items, total: 100, pass: 50, quizPolicy }
+plan.items[0];   // { id: 'quiz-1', title: 'Lab Quiz 1', weight: 5 (when kept), dateLabel, parts: 1, anchor, groupId: 'quizzes' }
+gradePlan('cen100').groups.map((g) => g.weight); // [12, 5, 18, 41, 24]: orientation & policy, participation, notebooks/reflections/MATLAB, project, final exam
+
+const percents = percentsFrom({ 'quiz-1': '17/20', midterm: '70' }); // { 'quiz-1': 85, midterm: 70 }
+const standing = gradeStanding(plan, percents);
+// { secured: 32.25, maximum: 88 (the 85 is dropped if the other quizzes score 100), current: 71.67, projected: 71.67, marked: 45,
+//   remaining: 60 (three quizzes can still fill all 15%, plus the final), dropped: [], groups, unmarked, complete: false }
+gradeNeeded(plan, percents, 77, standing);       // { status: 'reachable', average: 80.5, item: null }; 'secured' | 'unreachable' | 'complete'
+letterFor(79.5);                                 // { letter: 'A-', min: 80, points: 3.67 } (TMU rounds to a whole percentage first)
+parseMark('17', '20');                           // { percent: 85, error: null }; errors: 'Not a number', 'Over 100%', 'More than 20', 'Total can’t be 0'
+```
+
+- `secured` treats every unmarked item as 0, `maximum` as 100; `current` is the average on the marks that count so far and `projected` the final grade if every unmarked item scores `current` (higher than `current` when a quiz to come would replace a low one that counts now). In a drop-lowest group, unmarked quizzes take part in the drop, so a quiz still to come can replace a low one; `dropped` lists ids only once more quizzes are marked than count (ties drop the earliest). `remaining` is the share still to be marked, counting a drop group's whole weight while enough of its quizzes are still to come.
+- `gradeNeeded` targets a letter's whole-number minimum, which `target − 0.5` reaches under TMU rounding (Senate Policy 170(a), Procedures 1.1). It solves the average needed on every unmarked item by bisection and rounds it up to 0.1. Show standings with `floorTenth` and `formatPercent`: rounding down to 0.1 keeps a shown value and its letter in agreement.
+- `readGrades(courseId, storage?)` → `{ marks, target }`, keeping only known item ids, typed text (digits, separators, one `/`) and a letter minimum. `writeGrades(courseId, storage, { marks, target })` → saved?, writing the same cleaned record (or removing the key when nothing is left); refused writes stay in memory for the page view, as elsewhere. `subscribeGrades(courseId, storage, callback)` reports changes here and in other tabs. `gradesSavable(storage?)` → whether storage accepts a write, so the page can say from the start that marks won't be kept.
+- `parseMark` also returns `field` (`'score'` or `'outOf'`), the field an error belongs to.
+
 ### Search
 
 **`searchIndex({ now, storage?, course?, motionForced? })`** → every searchable entry, in the old palette's groups: Courses (places; the page's course views), Assessments (every deadline of every course, hinted `CODE · when · label · cta · note`), Weeks (the semester spreads, each opening its first deadline), Topics (math), Actions (This week's work / Contacts / Export calendar on a course page, Pause/Play motion, Open D2L). `course` is the current page's course: its items lead and its next deadline is a default entry (without `course`, the overall next deadline is). The array carries `.weeks` for week queries.
@@ -330,6 +356,7 @@ const now = useNow(60000);        // Date, refreshed on each wall-clock minute (
 const progress = useProgress();   // the shared progress API; re-renders on any change here or in another tab; { …api, version, ready }
 const [section, setSection] = useSection('mth140'); // saved section or null (null until mounted); setSection(31) → saved?
 const [still, setPaused, motion] = useMotionPaused();
+const [grades, updateGrades] = useGrades('mth140'); // { marks, target, ready, saved }; updateGrades({ marks }) or ({ target }) saves → saved?
 // still: device reduced motion, ?motion=off, or the saved pause; setPaused(true) saves "true"; motion = { saved, reduced, forced, full }
 ```
 

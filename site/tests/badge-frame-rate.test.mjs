@@ -30,7 +30,7 @@ function lanyard({ fresh }) {
   const scope = {
     card, fixed: { current: {} }, rest: false, intersected: true, ang: new THREE.Vector3(), rot: new THREE.Vector3(),
     isScrolling: { current: true }, speed: { current: 12 }, scrollDirection: { current: 1 },
-    impulseVector: { current: { x: 0, y: 0, z: 0 } }, fresh: { current: fresh }, frameShare,
+    impulseVector: { current: { x: 0, y: 0, z: 0 } }, angvelVector: { current: { x: 0, y: 0, z: 0 } }, fresh: { current: fresh }, frameShare,
   };
   let frame;
   let step;
@@ -85,6 +85,7 @@ function strap() {
     card: { current: new THREE.Object3D() }, band: { current: { geometry } }, offsetX: 0,
     lerped: [new THREE.Vector3(), new THREE.Vector3()], maxSpeed: 50, minSpeed: 10,
     drawn: new Float64Array(12).fill(NaN), frameShare, easeFor,
+    curvePoints: Array.from({ length: 33 }, () => new THREE.Vector3()),
     curve: Object.assign(new THREE.CatmullRomCurve3(Array.from({ length: 4 }, () => new THREE.Vector3())), { curveType: 'chordal' }),
     useFrame: (frame) => { callback = frame; },
   };

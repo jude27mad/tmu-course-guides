@@ -129,11 +129,49 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
-  "id": "2026-10-28-smooth-on-fast-screens",
-  "date": "October 28, 2026",
+  "id": "2026-11-04-smooth-on-fast-screens",
+  "date": "November 4, 2026",
   "title": "Smooth motion on 120 Hz screens",
   "text": "On screens that refresh 120 times a second or faster, the pointer trail, the dot field on the Desk, the course badges and touch scrolling now move at the screen's full rate and behave as they do on a 60 Hz screen. Before, the trail faded twice as fast, the badges swung back sooner and slow flicks stopped when the finger lifted. The badges also stay sharp instead of softening after a few seconds, and the pointer trail stops drawing once it has faded, which saves battery. Safari shows web pages at up to 60 frames per second unless its “Prefer Page Rendering Updates near 60fps” feature flag is turned off.",
   "items": []
+ },
+ {
+  "id": "2026-11-04-fixes",
+  "date": "November 4, 2026",
+  "title": "Fixes for deadlines, scrolling and backups",
+  "text": "A few things that did not work as they should.",
+  "items": [
+    "A math lab quiz you have written no longer stays as the next deadline, marked Due time passed, until midnight. Two hours after your lab, the next item takes its place on the course page and on the Desk.",
+    "The Privacy page could open with its text hidden. It now always shows.",
+    "PageDown, the arrow keys, Home and End scroll the page again while a button or the Menu button has focus, for example right after closing the Menu.",
+    "On wide screens, Back from an assignment returns to the same place in Schedule.",
+    "In MTH140 and MTH141, Import a backup says plainly when a file is wrong or damaged, and Download calendar asks you to choose your section when only lab quizzes are left."
+  ]
+ },
+ {
+  "id": "2026-11-03-safari-bars",
+  "date": "November 3, 2026",
+  "title": "No dark boxes under Safari's bars",
+  "text": "On iPhone and iPad, the end of each course page no longer shows a black box under Safari's toolbar, and the top of every page no longer shows one under the status bar. Opening and closing the Menu or Search no longer darkens the page under the bars while it still fills the screen: the area under them now follows the page as it shrinks and returns.",
+  "items": []
+ },
+ {
+  "id": "2026-11-03-menu-transition",
+  "date": "November 3, 2026",
+  "title": "Menu and Search open like the original design",
+  "text": "On every screen, opening the Menu or Search now shrinks the page aside and dims it, the slowly moving light of the dark background fills the screen, and the links slide in. Closing plays it back. On phones the page used to stay put under a plain dark panel. Pause motion still opens and closes them at once.",
+  "items": []
+ },
+ {
+  "id": "2026-10-28-grade-calculator",
+  "date": "October 28, 2026",
+  "title": "Grade calculator",
+  "text": "Each course has a new Grades tab with a grade calculator that uses the course's own weights. Enter a mark as a percentage or a score such as 17 out of 20 to see your current average and letter, what you have already secured and the best grade still possible.",
+  "items": [
+    "What do I need? shows, for every letter from A+ to D-, the average you need on everything still to be marked, and whether it is already secured or out of reach.",
+    "MTH140 and MTH141 drop your lowest lab quiz, as the course policies state. Letters follow TMU's undergraduate scale, including its rounding to a whole percentage.",
+    "Marks are saved in this browser only and are not part of progress backups."
+  ]
  },
  {
   "id": "2026-10-24-smoother-page-changes",

@@ -59,6 +59,7 @@ function Lanyard({ body, x, rest, intersected }) {
   const rot = useMemo(() => new THREE.Vector3(), []);
   const impulseVector = useRef({ x: 0, y: 0, z: 0 });
   const fresh = useRef(false);
+  const angvelVector = useRef({ x: 0, y: 0, z: 0 });
   const [start] = useState(() => (rest ? REST_START : SWING_START));
 
   useRopeJoint(body.fixed, body.j1, [[0, 0, 0], [0, 0, 0], 1]);
@@ -103,7 +104,10 @@ function Lanyard({ body, x, rest, intersected }) {
     if (rest || !card.current || !fixed.current || card.current.isSleeping?.()) return;
     ang.copy(card.current.angvel());
     rot.copy(card.current.rotation());
-    card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
+    angvelVector.current.x = ang.x;
+    angvelVector.current.y = ang.y - rot.y * 0.25;
+    angvelVector.current.z = ang.z;
+    card.current.setAngvel(angvelVector.current);
   });
 
   const positions = useMemo(() => start.map(([dx, dy]) => [x + dx, ANCHOR_Y + dy, 0]), [x, start]);
@@ -174,6 +178,7 @@ function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed
   const lerped = useMemo(() => [new THREE.Vector3(), new THREE.Vector3()], []);
   // the strap's control points when it was last rebuilt
   const drawn = useMemo(() => new Float64Array(12).fill(NaN), []);
+  const curvePoints = useMemo(() => Array.from({ length: 33 }, () => new THREE.Vector3()), []);
   const started = useRef(false);
   useEffect(() => {
     if (element) element.dataset.badgeRendered = 'false';
@@ -255,7 +260,13 @@ function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed
         moved = true;
       }
     }
-    if (moved) band.current.geometry.setPoints(curve.getPoints(32));
+    if (moved) {
+      // Keep the same 32 ribbon segments while reusing their sample vectors.
+      for (let i = 0; i <= 32; i += 1) {
+        curve.getPoint(i / 32, curvePoints[i]);
+      }
+      band.current.geometry.setPoints(curvePoints);
+    }
   });
 
   return (
