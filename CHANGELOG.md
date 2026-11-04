@@ -2,6 +2,15 @@
 
 Latest first. Students see course changes under **Course updates** in each guide's Guide tools, and website changes on the **Website updates** page. Older entries record the behaviour at the time; later releases supersede them.
 
+## Unreleased — Smoother fast scrolling
+
+- **Repeated fast scrolling up and down does less work per frame.** Nothing on screen changes; each fix removes work the page did and then threw away.
+- **Pre-footer game.** Every disc made its own iridescent material, and disposing it on a slice or miss released the shader, so the next disc compiled it again (a 100–300 ms stall). The discs now share one material per texture, built once.
+- **Scrollbar.** Each scroll frame started two new tweens while the old ones kept running (about 18 at once at 60 Hz), all writing the bar's position. The bar keeps one position chase and replaces only its own fade, so the menu's animation of the bar is untouched.
+- **Layers.** The Desk's Scroll Down marquee pauses while the masthead is off screen. The uncovering footer and the course page's hero artwork stay on their compositor layers; GSAP's default dropped and re-created each viewport-sized layer whenever a scroll reached or left the end or the top. The header's white clearance band is painted at its own height instead of as a full-height gradient.
+- **Crossings.** Appearing titles render once per crossing instead of twice. A course tile already showing its number no longer rewrites the same text every frame for a second each time it scrolls into view, and the Checklist and Deadlines shapes no longer keep a superseded tween running when a fast scroll leaves a section mid-animation.
+- Measured in Chromium with fast repeated phone swipes at a quarter of the CPU speed, the canvases shrunk so the main thread is measured on its own: the Desk went from 34 to 43 frames per second, a course page from 52 to 60 and Courses from 36 to 45, and frames slower than 33 ms fell from 22% to 12% on the Desk, from 4% to none on the course page and from 19% to 11% on Courses. With fast desktop wheel scrolling, long tasks fell from 2.1 s to 0.6 s per run on the Desk and from 2.8 s to 0.9 s on Courses.
+
 ## Unreleased — Opens without a connection
 
 - After one visit, the Desk, Courses, all three guides, Privacy and Website updates open without a connection. `site/public/sw.js` saves this site's own pages and files in the browser; nothing comes from or goes to another host.
