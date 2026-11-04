@@ -156,6 +156,27 @@ await check('with the trial on, the wheel and keys still glide through Lenis, an
     await page.keyboard.press('ArrowDown');
     const fromLink = await settled(page);
     assert.ok(Math.abs(fromLink - fromMain - 80) < 2, `Arrow Down from a link glides 80 px: ${fromMain} -> ${fromLink}`);
+    // the usual path: a click on the page's text focuses main (tabindex -1), then Space and Page Down
+    const text = await page.evaluate(() => {
+      const paragraph = [...document.querySelectorAll('main p')].find((element) => {
+        const box = element.getBoundingClientRect();
+        return box.top > 120 && box.bottom < window.innerHeight - 40 && box.width > 40 && !element.closest('a, button');
+      });
+      if (!paragraph) return null;
+      const box = paragraph.getBoundingClientRect();
+      return { x: box.left + 4, y: box.top + box.height / 2 };
+    });
+    assert.ok(text, 'a paragraph on screen to click');
+    await page.mouse.click(text.x, text.y);
+    assert.equal(await page.evaluate(() => document.activeElement === document.querySelector('main')), true, 'a click on text focuses main');
+    const beforeSpace = await settled(page);
+    await page.keyboard.press('Space');
+    const afterSpace = await settled(page);
+    await page.keyboard.press('PageDown');
+    const afterPage = await settled(page);
+    const page85 = await page.evaluate(() => window.innerHeight * 0.85);
+    assert.ok(Math.abs(afterSpace - beforeSpace - page85) < 2, `Space glides 85% of the window: ${beforeSpace} -> ${afterSpace}`);
+    assert.ok(Math.abs(afterPage - afterSpace - page85) < 2, `Page Down glides 85% of the window: ${afterSpace} -> ${afterPage}`);
     assert.deepEqual(errors, []);
     return { start, samples, afterWheel, afterArrow };
   } finally {

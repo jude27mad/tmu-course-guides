@@ -25,6 +25,7 @@ npm run build               # static export in out/
 - `npm run export:preview` copies a build to `../next` and only replaces a folder it created itself (marked with `.site-export`). The committed `next/` folder is the earlier preview, kept as it was and no longer published.
 - `npm run fonts` rebuilds the Inter Display subsets (needs Python fontTools).
 - Add `?stats` to any page URL for a frame-rate panel.
+- Add `?scroll=fast` to try the browser-scrolled page (a trial, remembered in this browser; `?scroll=classic` turns it off). It applies outside iPhone and iPad, with motion on; see the changelog.
 
 The repository root keeps its `.nojekyll` file for the case where Pages is switched back to publishing the `main` branch. CI runs `npm test` and `npm run build` for this folder on every push to `main`.
 
