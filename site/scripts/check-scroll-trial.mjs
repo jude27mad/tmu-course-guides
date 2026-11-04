@@ -1,7 +1,8 @@
 // Browser check for the opt-in browser-scrolled page (?scroll=fast; see src/pages/_document.page.jsx).
 // Without the link the page is exactly today's (main overflow:hidden). With it, main is a real scroller that
-// Lenis still drives, and input that scrolls nothing today still scrolls nothing: keys on a focused button,
-// Ctrl+End, a wheel over the Schedule calendar, middle-click autoscroll; the menu still locks the page;
+// Lenis still drives: keys on a focused button, in a note or a date field move the page exactly as today,
+// and input that scrolls nothing today still scrolls nothing: Ctrl+Home and Alt+Page Up with main focused,
+// a wheel over the Schedule calendar, middle-click autoscroll, two-finger pans; the menu still locks the page;
 // touch swipes still go to Lenis (no native pan, no pointercancel for the fluid trail).
 //
 // Usage, after the production export in site/out:

@@ -129,6 +129,19 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-11-04-course-at-a-glance",
+  "date": "November 4, 2026",
+  "title": "Your course at a glance",
+  "text": "Each course page now shows how long is left until its next deadline, which term week it is, and the work coming up before anything past due.",
+  "items": [
+    "Next deadline shows the time left, such as 23h 47m left, or Today, Tomorrow or In 3 days.",
+    "Work lists This week, Next week, Later, Past due and Done, in that order, and files each assignment by its next unfinished part.",
+    "Mark done sits beside each record's date, and each lab quiz shows its lab room.",
+    "Back returns you to the same place in Work.",
+    "On the Desk, Next up names anything else due at the same time, and each Courses card says what is due next."
+  ]
+ },
+ {
   "id": "2026-11-04-smooth-on-fast-screens",
   "date": "November 4, 2026",
   "title": "Smooth motion on 120 Hz screens",

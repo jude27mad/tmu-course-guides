@@ -70,7 +70,7 @@ test('a repeated native scroll sample pushes for the time its frame covers', () 
   assert.equal(total(fresh), 12 * 0.005);
 });
 
-function strap() {
+function strap({ idle = false } = {}) {
   let callback;
   const joints = { j1: new THREE.Vector3(0, 3, 0), j2: new THREE.Vector3(0, 2, 0), j3: new THREE.Vector3(0, 1, 0) };
   const marker = (key) => ({ current: { get parent() { return { position: joints[key] }; } } });
@@ -80,12 +80,12 @@ function strap() {
   const setPoints = geometry.setPoints.bind(geometry);
   geometry.setPoints = (points) => { rebuilds += 1; setPoints(points); };
   const scope = {
-    textures: true, started: { current: false }, element: { dataset: {} }, idle: false,
+    textures: true, started: { current: false }, element: { dataset: {} }, idle,
     body: { fixed: { current: { translation: () => new THREE.Vector3(0, 4, 0) } }, j1Object: marker('j1'), j2Object: marker('j2'), j3Object: marker('j3'), cardObject: { current: { parent: object } } },
     card: { current: new THREE.Object3D() }, band: { current: { geometry } }, offsetX: 0,
     lerped: [new THREE.Vector3(), new THREE.Vector3()], maxSpeed: 50, minSpeed: 10,
     curvePoints: Array.from({ length: 33 }, () => new THREE.Vector3()),
-    drawn: new Float64Array(12).fill(NaN), layout: { draw: true }, frameShare, easeFor,
+    drawn: new Float64Array(12).fill(NaN), layout: { draw: true }, stale: { current: false }, frameShare, easeFor,
     curve: Object.assign(new THREE.CatmullRomCurve3(Array.from({ length: 4 }, () => new THREE.Vector3())), { curveType: 'chordal' }),
     useFrame: (frame) => { callback = frame; },
   };
@@ -135,6 +135,19 @@ test('a window off screen keeps its strap until it is drawn again', () => {
     assert.equal(rig.rebuilds(), 2, 'it is rebuilt the frame it is drawn again');
     const vertices = rig.scope.band.current.geometry.getAttribute('position').array;
     assert.ok(Math.abs(vertices[0] - 0.4) < 1e-6, `the strap starts at the joint where it is now (${vertices[0]})`);
+  } finally { rig.dispose(); }
+});
+
+test('with motion off, a window first seen off screen still gets its strap when it is drawn', () => {
+  const rig = strap({ idle: true });
+  try {
+    rig.scope.layout.draw = false;
+    rig.frame(1 / 60);
+    assert.equal(rig.rebuilds(), 0, 'nothing is built off screen');
+    rig.scope.layout.draw = true;
+    for (let frame = 0; frame < 5; frame += 1) rig.frame(1 / 60);
+    assert.equal(rig.rebuilds(), 1, 'built once, the frame it is drawn, then held');
+    assert.ok(rig.scope.band.current.geometry.getAttribute('position').array.length > 0, 'the strap has its vertices');
   } finally { rig.dispose(); }
 });
 

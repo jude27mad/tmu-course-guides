@@ -185,6 +185,8 @@ function BadgeCard({ body, offsetX, look, idle, element, layout, maxSpeed = 50, 
   // the strap's control points when it was last rebuilt
   const drawn = useMemo(() => new Float64Array(12).fill(NaN), []);
   const started = useRef(false);
+  // the strap was skipped (or left behind its control points) while its window was off screen
+  const stale = useRef(false);
   useEffect(() => {
     if (element) element.dataset.badgeRendered = 'false';
     return () => {
@@ -216,51 +218,61 @@ function BadgeCard({ body, offsetX, look, idle, element, layout, maxSpeed = 50, 
     // The explicit Pause motion control retains its pose. Offscreen placement
     // does not stop or restart the original simulation.
     if (textures && started.current && element?.dataset.badgeRendered !== 'true') element.dataset.badgeRendered = 'true';
-    if (idle && started.current) return;
-    // The strap follows the joints' interpolated poses, as the card does: their
-    // raw physics positions move only at each 60 Hz step.
-    const { fixed, j1Object, j2Object, j3Object, cardObject } = body;
-    const object = cardObject.current?.parent;
-    const j1 = j1Object.current?.parent;
-    const j2 = j2Object.current?.parent;
-    const j3 = j3Object.current?.parent;
-    if (!fixed.current || !j1 || !j2 || !j3 || !object || !card.current || !band.current) return;
+    const held = idle && started.current;
+    // A strap left unbuilt, or behind its card, while its window was off screen
+    // is built from the held pose the frame its window is drawn again.
+    if (held && !(stale.current && layout.draw)) return;
+    if (!held) {
+      // The strap follows the joints' interpolated poses, as the card does: their
+      // raw physics positions move only at each 60 Hz step.
+      const { fixed, j1Object, j2Object, j3Object, cardObject } = body;
+      const object = cardObject.current?.parent;
+      const j1 = j1Object.current?.parent;
+      const j2 = j2Object.current?.parent;
+      const j3 = j3Object.current?.parent;
+      if (!fixed.current || !j1 || !j2 || !j3 || !object || !card.current || !band.current) return;
 
-    card.current.position.set(object.position.x - offsetX, object.position.y, object.position.z);
-    card.current.quaternion.copy(object.quaternion);
+      card.current.position.set(object.position.x - offsetX, object.position.y, object.position.z);
+      card.current.quaternion.copy(object.quaternion);
 
-    // Giats's strap follow factor, min(1, delta * speed), applies per 60 Hz
-    // frame; a faster display applies it for its share of one.
-    const share = frameShare(delta);
-    const follow = (distance) => {
-      const speed = minSpeed + Math.max(0.1, Math.min(1, distance)) * (maxSpeed - minSpeed);
-      return share === 1 ? Math.min(1, delta * speed) : easeFor(Math.min(1, speed / 60), share);
-    };
+      // Giats's strap follow factor, min(1, delta * speed), applies per 60 Hz
+      // frame; a faster display applies it for its share of one.
+      const share = frameShare(delta);
+      const follow = (distance) => {
+        const speed = minSpeed + Math.max(0.1, Math.min(1, distance)) * (maxSpeed - minSpeed);
+        return share === 1 ? Math.min(1, delta * speed) : easeFor(Math.min(1, speed / 60), share);
+      };
 
-    const t1 = j1.position;
-    if (!started.current) lerped[0].copy(t1);
-    lerped[0].lerp(t1, follow(lerped[0].distanceTo(t1)));
+      const t1 = j1.position;
+      if (!started.current) lerped[0].copy(t1);
+      lerped[0].lerp(t1, follow(lerped[0].distanceTo(t1)));
 
-    const t2 = j2.position;
-    if (!started.current) lerped[1].copy(t2);
-    lerped[1].lerp(t2, follow(lerped[1].distanceTo(t2)));
+      const t2 = j2.position;
+      if (!started.current) lerped[1].copy(t2);
+      lerped[1].lerp(t2, follow(lerped[1].distanceTo(t2)));
 
-    started.current = true;
-    curve.points[0].copy(j3.position);
-    curve.points[1].copy(lerped[1]);
-    curve.points[2].copy(lerped[0]);
-    curve.points[3].copy(fixed.current.translation());
+      started.current = true;
+      curve.points[0].copy(j3.position);
+      curve.points[1].copy(lerped[1]);
+      curve.points[2].copy(lerped[0]);
+      curve.points[3].copy(fixed.current.translation());
 
-    curve.points[0].x -= offsetX;
-    curve.points[1].x -= offsetX;
-    curve.points[2].x -= offsetX;
-    curve.points[3].x -= offsetX;
+      curve.points[0].x -= offsetX;
+      curve.points[1].x -= offsetX;
+      curve.points[2].x -= offsetX;
+      curve.points[3].x -= offsetX;
+    }
+    if (!band.current) return;
 
     // Rebuild the strap only when it moved, and only for a window drawn this
     // frame: setPoints rewrites its buffers. A window off screen keeps its last
     // strap, which is rebuilt the frame it is drawn again. The same 32 ribbon
     // segments reuse their sample vectors.
-    if (!layout.draw) return;
+    if (!layout.draw) {
+      stale.current = true;
+      return;
+    }
+    stale.current = false;
     let moved = false;
     for (let i = 0; i < 4; i += 1) {
       const { x, y, z } = curve.points[i];

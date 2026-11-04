@@ -32,7 +32,7 @@ test('delayed rendering keeps the ribbon finite without changing the physics pos
     body, card: { current: new THREE.Object3D() }, band: { current: { geometry } }, offsetX: 0,
     lerped: [new THREE.Vector3(), new THREE.Vector3()], maxSpeed: 50, minSpeed: 10,
     curvePoints: Array.from({ length: 33 }, () => new THREE.Vector3()),
-    drawn: new Float64Array(12).fill(NaN), layout: { draw: true }, frameShare, easeFor,
+    drawn: new Float64Array(12).fill(NaN), layout: { draw: true }, stale: { current: false }, frameShare, easeFor,
     curve: Object.assign(new THREE.CatmullRomCurve3(Array.from({ length: 4 }, () => new THREE.Vector3())), { curveType: 'chordal' }),
     useFrame: frame => { callback = frame; },
   };
@@ -82,7 +82,7 @@ test('ribbon samples are reused without changing any rendered geometry', () => {
       band: { current: { geometry: { setPoints(points) { samples = points; geometry.setPoints(points); } } } },
       lerped: [new THREE.Vector3(), new THREE.Vector3()], maxSpeed: 50, minSpeed: 10,
       curvePoints: Array.from({ length: 33 }, () => new THREE.Vector3()), curve,
-      drawn: new Float64Array(12).fill(NaN), layout: { draw: true }, frameShare, easeFor,
+      drawn: new Float64Array(12).fill(NaN), layout: { draw: true }, stale: { current: false }, frameShare, easeFor,
       useFrame: run => { callback = run; },
     };
     new Function(...Object.keys(scope), source.slice(start, end))(...Object.values(scope));

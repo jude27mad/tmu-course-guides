@@ -2,6 +2,20 @@
 
 Latest first. Students see course changes under **Course updates** in each guide's Guide tools, and website changes on the **Website updates** page. Older entries record the behaviour at the time; later releases supersede them.
 
+## Unreleased — The course page at a glance
+
+- **Next deadline says how long is left.** Beside the label: "23h 47m left" for a confirmed time, in the Desk's countdown colours, or "Today", "Tomorrow" or "In 3 days" for a date without one. After the last dated deadline, a final exam whose date is still pending shows as next, instead of "No upcoming deadlines".
+- **The term week** ("Week 8") sits beside the course code; its title gives the week's dates. Nothing shows outside the term.
+- **Work lists what is coming first:** This week, Next week, Later, Past due, then Done. An assignment is filed by its next unfinished part, so work still due this week is never filed as past due. A passed quiz, midterm or presentation says it took place. A personal target date shows in its row.
+- **Mark done sits beside each record's date** in an assignment's details. Each lab quiz time shows its lab room.
+- **Back keeps your place.** Back to Work returns to Work even after one detail opened another, the row you came from is brought into view if it moved, and focus returns to it.
+- Each course footer says when its information last changed. The Schedule calendar opens on today's date in Toronto, as the rest of the guide counts it.
+
+## Unreleased — What is due next, by name
+
+- **The Desk names everything due at the same moment** as Next up: "Also due then: …", with the course code for another course's item.
+- **Each Courses card says what is due next**, not only when: "Section 29 · Next: Failure Analysis Part 2: FMEA, Wed Oct 28".
+
 ## Unreleased — Trial: a browser-scrolled page (opt-in)
 
 - **Opening the site with `?scroll=fast` turns on a trial of faster scrolling in this browser; `?scroll=classic` turns it off.** Nothing changes for anyone who does not use the link, and nothing on screen looks different. iPhone and iPad already scroll this way and are not affected.
