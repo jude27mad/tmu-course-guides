@@ -12,7 +12,10 @@ const useIntersected = (ref, threshold = 0) => {
     const element = ref.current;
     if (!element || typeof IntersectionObserver === 'undefined') return undefined;
     const observer = new IntersectionObserver(
-      ([entry]) => {
+      (entries) => {
+        // One callback can carry a stale entry and then the current one for the same element (a busy
+        // main thread during the intro); the last is the element's state now, as in useInView.
+        const entry = entries[entries.length - 1];
         if (entry.isIntersecting) setIntersected(true);
         else if (entry.boundingClientRect.top > 0) setIntersected(false);
       },
