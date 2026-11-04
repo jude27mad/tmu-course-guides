@@ -43,7 +43,9 @@ import { useMotionPaused } from '@src/lib/react';
 import useScroll from '@src/hooks/useScroll';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
-import { nativeIOSScroll } from '@src/utils/scrollRoot';
+import { nativeIOSScroll, scrollTrial } from '@src/utils/scrollRoot';
+// eslint-disable-next-line import/extensions
+import { blockAutoscroll, blockKey, blockWheel } from '@src/utils/scrollTrialGuards.mjs';
 
 if (typeof window !== 'undefined') {
   gsap.defaults({ ease: 'none' });
@@ -99,7 +101,8 @@ function useBodyKeyScroll() {
       if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
       const active = document.activeElement;
       const main = document.querySelector('main');
-      const containedFocus = main?.contains(active) && getComputedStyle(main).overflowY === 'hidden';
+      // The opt-in browser-scrolled page (?scroll=fast) is a real scroller but still scrolled by Lenis.
+      const containedFocus = main?.contains(active) && (getComputedStyle(main).overflowY === 'hidden' || scrollTrial());
       const control = active?.closest('input, textarea, select, button, summary, [contenteditable], [role="slider"], [role="spinbutton"], [role="combobox"], [role="listbox"]');
       if (active && active !== document.body && active !== document.documentElement && (!containedFocus || control)) return;
       let step = SCROLL_KEYS[event.key];
@@ -119,6 +122,43 @@ function useBodyKeyScroll() {
   }, []);
 }
 
+// With the opt-in browser-scrolled page (?scroll=fast), keep input that scrolls nothing today (main is
+// not user-scrollable) from scrolling main natively past Lenis: keys that neither Lenis nor the focused
+// element takes, a wheel in the Schedule calendar that it cannot scroll, middle-click autoscroll, and a
+// two-finger pan (main is marked for the gesture, which locks it; a pinch still zooms).
+// While main is locked (overflow hidden) nothing can scroll it anyway.
+function useScrollTrialGuards(mainRef) {
+  useEffect(() => {
+    const main = mainRef.current;
+    if (!main) return undefined;
+    const open = () => scrollTrial() && getComputedStyle(main).overflowY !== 'hidden';
+    const onKeyDown = (event) => {
+      if (open() && blockKey(event, main, document.activeElement)) event.preventDefault();
+    };
+    const onWheel = (event) => {
+      if (open() && blockWheel(event, main)) event.preventDefault();
+    };
+    const onMouseDown = (event) => {
+      if (open() && blockAutoscroll(event, navigator.platform)) event.preventDefault();
+    };
+    const onTouch = (event) => {
+      if (event.touches.length > 1 && scrollTrial()) main.setAttribute('data-multitouch', '');
+      else if (event.touches.length === 0) main.removeAttribute('data-multitouch');
+    };
+    const touch = { capture: true, passive: true };
+    document.addEventListener('keydown', onKeyDown);
+    main.addEventListener('wheel', onWheel, { passive: false });
+    main.addEventListener('mousedown', onMouseDown);
+    ['touchstart', 'touchend', 'touchcancel'].forEach((type) => main.addEventListener(type, onTouch, touch));
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      main.removeEventListener('wheel', onWheel);
+      main.removeEventListener('mousedown', onMouseDown);
+      ['touchstart', 'touchend', 'touchcancel'].forEach((type) => main.removeEventListener(type, onTouch, touch));
+    };
+  }, [mainRef]);
+}
+
 function MyApp({ Component, pageProps, router }) {
   const [lenis, setLenis, fluidColor, still] = useStore(useShallow((state) => [state.lenis, state.setLenis, state.fluidColor, state.still]));
   const [badgeRegistry] = useState(createBadgeRegistry);
@@ -133,6 +173,7 @@ function MyApp({ Component, pageProps, router }) {
 
   useFoucFix();
   useBodyKeyScroll();
+  useScrollTrialGuards(mainRef);
   useScroll(() => ScrollTrigger.update());
 
   useIsomorphicLayoutEffect(() => {

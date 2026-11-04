@@ -30,7 +30,10 @@ const FAVICON =
 // Select Safari's document layout before first paint so its edge artwork,
 // grain and toolbar blending are active immediately. This selects layout only:
 // _app keeps Giats's syncTouch input enabled in either scroll container.
-const BOOT = `(function(d){const r=d.documentElement;r.classList.add('js');r.dataset.scrollMode=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)?'document':'contained';try{const q=new URLSearchParams(location.search).get('motion'),p=localStorage.getItem('guide-motion-paused')==='true',m=!!window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;if(q==='off'||p||(m&&q!=='full'))r.setAttribute('data-motion','off');}catch(e){}})(document);`;
+// A trial of the browser-scrolled page (app.module.scss) is opt-in by link: ?scroll=fast turns it on and
+// remembers it in this browser ('guide-scroll-trial'), ?scroll=classic turns it off. Nothing changes for
+// anyone else.
+const BOOT = `(function(d){const r=d.documentElement;r.classList.add('js');r.dataset.scrollMode=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)?'document':'contained';try{const q=new URLSearchParams(location.search).get('motion'),p=localStorage.getItem('guide-motion-paused')==='true',m=!!window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;if(q==='off'||p||(m&&q!=='full'))r.setAttribute('data-motion','off');}catch(e){}try{const t=new URLSearchParams(location.search).get('scroll'),k='guide-scroll-trial';let on=t==='fast';try{if(on)localStorage.setItem(k,'fast');else if(t==='classic')localStorage.removeItem(k);else on=localStorage.getItem(k)==='fast';}catch(e){}if(on&&r.dataset.scrollMode==='contained')r.setAttribute('data-scroll-trial','fast');}catch(e){}})(document);`;
 
 export default class MyDocument extends Document {
   render() {

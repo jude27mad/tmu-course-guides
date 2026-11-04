@@ -2,6 +2,7 @@
  * Regression checks for Giats's fluid trail and touch scrolling.
  * Build site/ first, then run from site/: npm run test:touch
  * PLAYWRIGHT_PATH and QA_CHROMIUM_PATH may select a QA-only browser installation.
+ * QA_SCROLL_TRIAL=1 runs the same checks with the opt-in browser-scrolled page (?scroll=fast).
  * Uses real Chromium touch input, not synthetic PointerEvents. This is browser
  * emulation, not a physical iPhone Safari or hardware-performance test.
  */
@@ -164,6 +165,8 @@ async function open({ reducedMotion = 'no-preference', paused = false, mobile = 
   });
   await context.addInitScript(instrumentTouch);
   if (paused) await context.addInitScript(() => localStorage.setItem('guide-motion-paused', 'true'));
+  // QA_SCROLL_TRIAL=1 runs every check with the opt-in browser-scrolled page (?scroll=fast).
+  if (process.env.QA_SCROLL_TRIAL) await context.addInitScript(() => localStorage.setItem('guide-scroll-trial', 'fast'));
   const page = await context.newPage();
   page.setDefaultTimeout(20000);
   const errors = [];
