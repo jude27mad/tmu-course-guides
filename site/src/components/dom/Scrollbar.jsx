@@ -20,13 +20,15 @@ function Scrollbar() {
   const [isLoading, isMenuOpen, isSearchOpen, introOut] = useStore(useShallow((state) => [state.isLoading, state.isMenuOpen, state.isSearchOpen, state.introOut]));
 
   // One position chase per mounted bar (it remounts after each page change). The value is in svh and
-  // written directly, so no unit conversion (and its measurement) happens per frame.
+  // written directly, so no unit conversion (and its measurement) happens per frame. It moves the bar with
+  // a transform from its place at the top of the track (.inner sets no top), the same pixels as a top
+  // offset, so a scroll frame no longer lays out the page or repaints the bar.
   useEffect(() => {
     const state = { value: 0 };
     const toTop = gsap.quickTo(state, 'value', {
       duration: 0.3,
       onUpdate: () => {
-        if (progressBar.current) progressBar.current.style.top = `${state.value}svh`;
+        if (progressBar.current) progressBar.current.style.transform = `translateY(${state.value}svh)`;
       },
     });
     top.current = toTop;
