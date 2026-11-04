@@ -2,27 +2,8 @@
 // wheel and touch it handles today; these decide the input it leaves alone, which today goes nowhere
 // because main is not user-scrollable, so that it still goes nowhere instead of moving main natively.
 
-// Vertical scrolling keys and the direction each one moves.
-const DIRECTION = { ArrowDown: 1, ArrowUp: -1, PageDown: 1, PageUp: -1, Home: -1, End: 1 };
-
-// Elements whose native default action uses these keys (caret, value, radio choice): never touched.
-// Scripted widgets (tabs, sliders, menus) are not listed: their handlers run either way, and a key
-// they leave unhandled scrolls nothing today.
-export const OWN_KEYS =
-  'input:not([type="button"]):not([type="checkbox"]):not([type="submit"]):not([type="reset"]):not([type="image"]):not([type="color"]):not([type="file"]), textarea, select, [contenteditable]:not([contenteditable="false"])';
-
-// Single-line fields use the arrows, Home and End for the caret or value, but not Page Up/Down.
-const SINGLE_LINE = 'input:not([type]), input[type="text"], input[type="search"], input[type="email"], input[type="url"], input[type="tel"], input[type="password"], input[type="number"]';
-
-// Shortcuts that scroll to an end or by a page. Others with a modifier belong to the browser
-// (Ctrl+Page Up/Down switch tabs, Alt+Home opens the home page) and are never touched.
-function scrollShortcut({ key, ctrlKey, metaKey, altKey }) {
-  if (!ctrlKey && !metaKey && !altKey) return true;
-  if (ctrlKey && !metaKey && !altKey) return key === 'Home' || key === 'End';
-  if (metaKey && !ctrlKey && !altKey) return key === 'ArrowUp' || key === 'ArrowDown';
-  if (altKey && !ctrlKey && !metaKey) return key === 'ArrowUp' || key === 'ArrowDown' || key === 'PageUp' || key === 'PageDown';
-  return false;
-}
+// Keys whose default action can scroll the nearest user-scrollable box.
+const SCROLL_KEYS = new Set(['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End']);
 
 // Whether a box the user can scroll still has room in this direction.
 export function canScroll(element, delta, axis = 'y') {
@@ -45,20 +26,15 @@ function innerScroller(from, stop, delta, axis) {
   return null;
 }
 
-// A key that today scrolls nothing: Lenis did not take it (the key handler in _app takes plain keys from
-// the page, links and main), focus is not in something that uses the key, and no inner box scrolls.
-export function blockKey(event, main, active) {
-  if (event.defaultPrevented || !main) return false;
-  const delta = DIRECTION[event.key];
-  if (!delta || !scrollShortcut(event)) return false;
+// A scroll key Lenis did not take (the key handler in _app takes plain keys from the page, links and main),
+// pressed with focus on the page or inside main. _app locks main for that key's own default action, as
+// main is locked today: a field or control still does what the key does there (caret, value, picker, an
+// inner list), and anything left over scrolls nothing, instead of moving main natively.
+export function lockKey(event, main, active) {
+  if (event.defaultPrevented || !main || !SCROLL_KEYS.has(event.key)) return false;
   const doc = main.ownerDocument;
-  const start = active && active !== doc.body && active !== doc.documentElement && active !== main ? active : null;
-  if (start && !main.contains(start)) return false;
-  if (start?.closest?.(OWN_KEYS)) {
-    const paging = (event.key === 'PageUp' || event.key === 'PageDown') && !event.ctrlKey && !event.metaKey;
-    if (!paging || !start.matches?.(SINGLE_LINE)) return false;
-  }
-  return !innerScroller(start, main, delta, 'y');
+  if (!active || active === doc.body || active === doc.documentElement) return true;
+  return main.contains(active);
 }
 
 // A wheel inside a region Lenis leaves alone ([data-lenis-prevent], the Schedule calendar) that no box
@@ -72,11 +48,19 @@ export function blockWheel(event, main) {
   return !innerScroller(target, region.parentElement, event.deltaY, 'y');
 }
 
-// A middle-button press that would start the browser's autoscroll. Links still open in a new tab, and on
-// Linux, where a middle click pastes into a text field (and Chrome has no autoscroll), fields keep it.
-export function blockAutoscroll(event, platform = '') {
+// A middle-button press that would start the browser's autoscroll on main. Links still open in a new tab,
+// a box inside main that can scroll (a long note) still autoscrolls, as today, and on Linux, where a middle
+// click pastes into a text field (and Chrome has no autoscroll), fields keep it.
+export function blockAutoscroll(event, platform = '', main = null) {
   if (event.button !== 1 || event.defaultPrevented) return false;
   const target = event.target?.nodeType === 1 ? event.target : event.target?.parentElement;
   if (target?.closest?.('a[href]')) return false;
+  const ways = [
+    [1, 'y'],
+    [-1, 'y'],
+    [1, 'x'],
+    [-1, 'x'],
+  ];
+  if (ways.some(([delta, axis]) => innerScroller(target, main, delta, axis))) return false;
   return !(/^Linux/.test(platform) && target?.closest?.('input, textarea, [contenteditable]:not([contenteditable="false"])'));
 }

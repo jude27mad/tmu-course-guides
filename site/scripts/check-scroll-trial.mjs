@@ -195,9 +195,12 @@ await check('with the trial on, keys and middle-click that scroll nothing today 
       await page.keyboard.press(key);
       assert.equal(await settled(page), before, `${key} on a focused button`);
     }
-    await page.evaluate(() => document.activeElement?.blur());
-    await page.keyboard.press('Control+End');
-    assert.equal(await settled(page), before, 'Ctrl+End');
+    // with main focused (a click on the page's text focuses it), where the browser's own Ctrl+End would start
+    await page.evaluate(() => document.querySelector('main').focus({ preventScroll: true }));
+    for (const key of ['Control+End', 'Alt+PageDown']) {
+      await page.keyboard.press(key);
+      assert.equal(await settled(page), before, `${key} with main focused`);
+    }
     assert.deepEqual(errors, []);
     return { before };
   } finally {
@@ -224,6 +227,63 @@ await check('with the trial on, Page Down in a text field scrolls nothing, as to
   } finally {
     await context.close();
   }
+});
+
+// Keys in a note or a date field: the same page positions as without the trial, key by key (a caret moved
+// out of view is revealed in both), and main unlocked again after each key.
+async function fieldKeys(route) {
+  const { context, page, errors } = await open();
+  try {
+    await ready(page, route);
+    const seen = [];
+    for (const selector of ['main textarea', 'main input[type="date"]']) {
+      const field = page.locator(selector).first();
+      await field.waitFor();
+      await field.scrollIntoViewIfNeeded();
+      await page.mouse.move(1300, 450);
+      for (let i = 0; i < 20; i += 1) {
+        const y = await field.evaluate((element) => element.getBoundingClientRect().top);
+        if (y > 300 && y < 600) break;
+        await page.mouse.wheel(0, y > 600 ? 200 : -200);
+        await settled(page);
+      }
+      const box = await field.boundingBox();
+      await page.mouse.click(box.x + 12, box.y + box.height / 2);
+      // (Alt+Down on the date field opens its picker, which would then take the keys meant for the note)
+      const keys = selector.includes('date') ? ['PageDown', 'PageUp', 'Home', 'End'] : ['PageDown', 'PageUp', 'Home', 'End', 'Alt+ArrowDown'];
+      for (const key of keys) {
+        await page.keyboard.press(key);
+        const at = Math.round(await settled(page));
+        const overflowY = await page.evaluate(() => getComputedStyle(document.querySelector('main')).overflowY);
+        seen.push({ selector, key, at, overflowY });
+      }
+    }
+    const note = page.locator('main textarea').first();
+    await note.fill('');
+    await note.evaluate((element) => element.focus({ preventScroll: true }));
+    await page.keyboard.type('line one');
+    await page.keyboard.press('Enter');
+    await page.keyboard.type('line two');
+    await page.keyboard.press('ArrowUp');
+    await page.keyboard.type('!');
+    return { seen, value: await note.inputValue(), errors };
+  } finally {
+    await context.close();
+  }
+}
+
+await check('with the trial on, keys in a note or a date field move the page exactly as today, and the fields still work', async () => {
+  const today = await fieldKeys('mth140/#assessment-midterm');
+  const trial = await fieldKeys('mth140/?scroll=fast#assessment-midterm');
+  trial.seen.forEach((step, index) => {
+    const before = today.seen[index];
+    assert.ok(Math.abs(step.at - before.at) <= 2, `${step.key} in ${step.selector}: ${before.at} today, ${step.at} with the trial`);
+    assert.equal(step.overflowY, 'auto', `main unlocked again after ${step.key}`);
+  });
+  assert.equal(trial.value, 'line one!\nline two', 'Up still moves the caret in a note');
+  assert.equal(trial.value, today.value);
+  assert.deepEqual([...today.errors, ...trial.errors], []);
+  return { today: today.seen, trial: trial.seen };
 });
 
 await check('with the trial on, middle-click does not start the browser\'s autoscroll', async () => {
@@ -312,6 +372,14 @@ await check('with the trial on, a wheel over the Schedule calendar does not scro
         assert.equal(after, before, `wheel ${delta} at ${x},${y} moved the page ${before} -> ${after}: ${JSON.stringify(where)}`);
       }
     }
+    // the wheel guard itself (Chromium's overscroll containment alone already holds the points above)
+    const wired = await page.evaluate(() => {
+      const target = document.querySelector('[data-course-calendar] button') || document.querySelector('[data-course-calendar]');
+      const event = new WheelEvent('wheel', { deltaY: 120, bubbles: true, cancelable: true });
+      target.dispatchEvent(event);
+      return { prevented: event.defaultPrevented, tag: target.tagName };
+    });
+    assert.equal(wired.prevented, true, `a wheel the calendar cannot take is cancelled: ${JSON.stringify(wired)}`);
     await page.screenshot({ path: path.join(report, 'calendar-wheel.png') });
     assert.deepEqual(errors, []);
     return seen;
@@ -381,6 +449,45 @@ await check('with the trial on, a two-finger pan does not scroll the page native
     assert.ok(afterOne > afterTwo + 300, `one finger still scrolls: ${afterTwo} -> ${afterOne}`);
     assert.deepEqual(errors, []);
     return { before, afterTwo, afterOne };
+  } finally {
+    await context.close();
+  }
+});
+
+await check('with the trial on, a two-finger gesture that starts or ends on the header locks and then frees the page', async () => {
+  const { context, page, errors } = await open({ mobile: true });
+  try {
+    await ready(page, '?scroll=fast');
+    const cdp = await context.newCDPSession(page);
+    const header = await page.evaluate(() => { const element = document.elementFromPoint(30, 40); return !!element && !element.closest('main'); });
+    assert.ok(header, 'the point 30,40 is outside main (the header)');
+    const page0 = (dy) => ({ id: 0, x: 195, y: 500 + dy, radiusX: 5, radiusY: 5 });
+    const head1 = (dy) => ({ id: 1, x: 30, y: 40 + dy, radiusX: 5, radiusY: 5 });
+    const seen = [];
+    for (const order of ['page-first', 'header-first']) {
+      const before = await settled(page);
+      const first = order === 'page-first' ? page0 : head1;
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [first(0)] });
+      await page.waitForTimeout(30);
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [head1(0), page0(0)] });
+      const locked = await page.evaluate(() => document.querySelector('main').hasAttribute('data-multitouch'));
+      for (let k = 1; k <= 7; k += 1) {
+        await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [head1(-k * 5), page0(-k * 5)] });
+        await page.waitForTimeout(20);
+      }
+      // lift the page finger first, then the header finger
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [head1(-35)] });
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+      const after = await settled(page);
+      const end = await page.evaluate(() => ({ flag: document.querySelector('main').hasAttribute('data-multitouch'), overflowY: getComputedStyle(document.querySelector('main')).overflowY }));
+      await cdp.send('Emulation.setPageScaleFactor', { pageScaleFactor: 1 });
+      seen.push({ order, locked, before, after, end });
+      assert.equal(locked, true, `${order}: locked while two fingers are down`);
+      assert.equal(after, before, `${order}: two fingers moved main ${before} -> ${after}`);
+      assert.deepEqual(end, { flag: false, overflowY: 'auto' }, `${order}: freed when the last finger lifts`);
+    }
+    assert.deepEqual(errors, []);
+    return seen;
   } finally {
     await context.close();
   }

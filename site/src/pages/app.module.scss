@@ -102,13 +102,14 @@
 // painted page instead of repainting it on every frame Lenis scrolls an overflow:hidden box. Lenis still
 // handles every wheel and touch. touch-action keeps a pan from turning into native panning (the reason
 // main is overflow:hidden above), so the fluid's pointermove listener keeps the whole gesture. While
-// Lenis is stopped (loader, page changes, the menu) main stays locked as before, and during a
-// two-finger gesture, which touch-action: pinch-zoom would otherwise let pan main (_app marks it).
+// Lenis is stopped (loader, page changes, the menu) main stays locked as before; _app also locks it
+// for a two-finger gesture (which touch-action: pinch-zoom would otherwise let pan main) and for a
+// scroll key Lenis does not take, so those scroll nothing, as today.
 // It applies once _app has confirmed motion is on, so the page before hydration is today's.
 // Overscroll stays contained vertically only, so a horizontal swipe still reaches the back gesture.
 :global(html[data-scroll-trial='fast'][data-motion='on']:not([data-scroll-mode='document'])) .layout .main {
   touch-action: pinch-zoom;
-  &:not(:global(.lenis-stopped)):not([data-multitouch]) {
+  &:not(:global(.lenis-stopped)):not([data-multitouch]):not([data-keylock]) {
     overflow-y: auto;
     overscroll-behavior-y: contain;
   }

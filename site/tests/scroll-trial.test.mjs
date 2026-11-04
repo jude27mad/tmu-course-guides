@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { runInNewContext } from 'node:vm';
-import { blockAutoscroll, blockKey, blockWheel, canScroll } from '../src/utils/scrollTrialGuards.mjs';
+import { blockAutoscroll, blockWheel, canScroll, lockKey } from '../src/utils/scrollTrialGuards.mjs';
 
 // The browser-scrolled page is an opt-in trial (?scroll=fast). Without the link nothing changes; with it,
 // input that scrolls nothing today must still scroll nothing.
@@ -70,7 +70,7 @@ test('only the opted-in, motion-on, contained page becomes a scroller, and never
   assert.notEqual(start, -1, 'the trial rule is scoped to the opt-in, motion on and the contained layout');
   const block = css.slice(start, css.indexOf('\n}\n', start));
   assert.match(block, /touch-action: pinch-zoom;/, 'a pan never becomes native panning');
-  assert.match(block, /&:not\(:global\(\.lenis-stopped\)\):not\(\[data-multitouch\]\) \{\s*overflow-y: auto;\s*overscroll-behavior-y: contain;\s*\}/, 'locked while Lenis is stopped and during a two-finger gesture');
+  assert.match(block, /&:not\(:global\(\.lenis-stopped\)\):not\(\[data-multitouch\]\):not\(\[data-keylock\]\) \{\s*overflow-y: auto;\s*overscroll-behavior-y: contain;\s*\}/, 'locked while Lenis is stopped, during a two-finger gesture and for a key Lenis does not take');
   assert.doesNotMatch(block, /overscroll-behavior: contain|overscroll-behavior-x/, 'horizontal overscroll still reaches the back gesture');
   assert.match(block, /:global\(\[data-lenis-prevent\] \*\) \{\s*overscroll-behavior-y: contain;/, 'calendar scrollers keep their overscroll');
   const source = read('../src/utils/scrollRoot.js');
@@ -116,37 +116,22 @@ function dom() {
 
 const key = (name, extra = {}) => ({ key: name, defaultPrevented: false, ctrlKey: false, metaKey: false, altKey: false, ...extra });
 
-test('keys that scroll nothing today still scroll nothing', () => {
+test('a scroll key Lenis did not take locks main for its own default action', () => {
   const { doc, make } = dom();
   const main = make('main', { parent: doc.body, overflowY: 'auto', scroll: { scrollHeight: 5000 } });
-  const button = make('button', { parent: main });
-  assert.equal(blockKey(key('PageDown'), main, button), true, 'Page Down on a focused button');
-  assert.equal(blockKey(key('End', { ctrlKey: true }), main, doc.body), true, 'Ctrl+End');
-  assert.equal(blockKey(key('ArrowDown', { metaKey: true }), main, doc.body), true, 'Cmd+Down');
-  assert.equal(blockKey(key('ArrowDown', { defaultPrevented: true }), main, doc.body), false, 'Lenis already scrolled it');
-  assert.equal(blockKey(key(' '), main, button), false, 'Space presses the button');
-  assert.equal(blockKey(key('PageDown', { ctrlKey: true }), main, doc.body), false, 'Ctrl+Page Down switches tabs');
-  assert.equal(blockKey(key('Home', { altKey: true }), main, doc.body), false, 'Alt+Home is the browser\'s');
-  assert.equal(blockKey(key('ArrowLeft'), main, button), false, 'not a vertical scroll key');
-  for (const [tag, attrs] of [['input', {}], ['input', { type: 'radio' }], ['input', { type: 'range' }], ['input', { type: 'number' }], ['textarea', {}], ['select', {}], ['div', { contenteditable: '' }]]) {
-    assert.equal(blockKey(key('End'), main, make(tag, { parent: main, attrs })), false, `${tag} ${JSON.stringify(attrs)} uses End itself`);
-    assert.equal(blockKey(key('ArrowDown'), main, make(tag, { parent: main, attrs })), false, `${tag} ${JSON.stringify(attrs)} uses Down itself`);
+  const inside = (tag, attrs) => make(tag, { parent: main, attrs });
+  for (const name of ['PageDown', 'PageUp', 'Home', 'End', 'ArrowDown', 'ArrowUp']) {
+    assert.equal(lockKey(key(name), main, inside('button', {})), true, `${name} on a focused button`);
+    assert.equal(lockKey(key(name), main, inside('textarea', {})), true, `${name} in a note: the caret still moves, nothing else scrolls`);
+    assert.equal(lockKey(key(name), main, inside('input', { type: 'date' })), true, `${name} in a date field`);
   }
-  for (const attrs of [{}, { type: 'text' }, { type: 'number' }, { type: 'search' }]) {
-    assert.equal(blockKey(key('PageDown'), main, make('input', { parent: main, attrs })), true, `a single-line field ${JSON.stringify(attrs)} has no use for Page Down`);
-  }
-  for (const [tag, attrs] of [['textarea', {}], ['select', {}], ['input', { type: 'range' }]]) {
-    assert.equal(blockKey(key('PageDown'), main, make(tag, { parent: main, attrs })), false, `${tag} ${JSON.stringify(attrs)} uses Page Down itself`);
-  }
-  assert.equal(blockKey(key('ArrowDown'), main, make('input', { parent: main, attrs: { type: 'checkbox' } })), true, 'a checkbox has no use for Down');
-  const outside = make('button', { parent: doc.body });
-  assert.equal(blockKey(key('PageDown'), main, outside), false, 'focus outside main: the menu and dialogs keep their keys');
-  const list = make('div', { parent: main, overflowY: 'auto', scroll: { scrollHeight: 400, clientHeight: 100 } });
-  const inList = make('button', { parent: list });
-  assert.equal(blockKey(key('PageDown'), main, inList), false, 'an inner list scrolls, as today');
-  list.scrollTop = 300;
-  assert.equal(blockKey(key('PageDown'), main, inList), true, 'at its end the key goes no further');
-  assert.equal(blockKey(key('PageUp'), main, inList), false);
+  assert.equal(lockKey(key('End', { ctrlKey: true }), main, doc.body), true, 'Ctrl+End with the page focused');
+  assert.equal(lockKey(key('ArrowDown', { metaKey: true }), main, main), true, 'Cmd+Down with main focused');
+  assert.equal(lockKey(key('ArrowDown', { defaultPrevented: true }), main, doc.body), false, 'Lenis already glided');
+  assert.equal(lockKey(key(' '), main, inside('button', {})), false, 'Space presses a button or types a space');
+  assert.equal(lockKey(key('ArrowLeft'), main, inside('input', {})), false, 'not a vertical scroll key');
+  assert.equal(lockKey(key('a'), main, inside('textarea', {})), false, 'typing');
+  assert.equal(lockKey(key('PageDown'), main, make('button', { parent: doc.body })), false, 'focus outside main: the menu and dialogs keep their keys');
 });
 
 test('a wheel in the calendar that it cannot scroll stays put, and other wheels are Lenis\'s', () => {
@@ -178,4 +163,6 @@ test('a middle-button press outside links does not start the browser\'s autoscro
   assert.equal(blockAutoscroll({ button: 0, target: main }), false);
   assert.equal(blockAutoscroll({ button: 1, target: make('textarea', { parent: main }) }, 'Win32'), true, 'a text field that cannot scroll would start it on main');
   assert.equal(blockAutoscroll({ button: 1, target: make('textarea', { parent: main }) }, 'Linux x86_64'), false, 'Linux pastes there');
+  const longNote = make('textarea', { parent: main, overflowY: 'auto', scroll: { scrollHeight: 754, clientHeight: 84, scrollTop: 300 } });
+  assert.equal(blockAutoscroll({ button: 1, target: longNote }, 'Win32', main), false, 'a long note still autoscrolls itself, as today');
 });
