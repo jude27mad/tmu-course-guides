@@ -1,7 +1,6 @@
-import { discTexture, loadDiscFont, slicedDiscTexture } from '@src/components/dom/prefooter/discTextures';
+import { emojiTextures, loadEmojiImages } from '@src/components/dom/prefooter/emojiTextures';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { COURSES, DISC } from '@src/lib';
 import { PerspectiveCamera } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import Sticker from '@src/components/dom/prefooter/Sticker';
@@ -19,29 +18,15 @@ import { bindGameTouch } from './gameTouch.mjs';
 const MAX_ALIVE = 10;
 const MAX_ALIVE_PHONE = 6;
 
-function Lighting() {
-  return (
-    <>
-      <ambientLight intensity={1.3} />
-      <directionalLight position={[5, 5, 5]} intensity={1.5} />
-      <directionalLight position={[-5, 5, 5]} intensity={1} />
-      <directionalLight position={[0, 5, -5]} intensity={1} />
-    </>
-  );
-}
-
-function useDiscTextures() {
+function useEmojiTextures() {
   const [textures, setTextures] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
     let made = null;
-    loadDiscFont().then(() => {
+    loadEmojiImages().then((images) => {
       if (cancelled) return;
-      made = COURSES.map((course) => {
-        const look = { code: course.code, ...DISC };
-        return { whole: discTexture(look), sliced: slicedDiscTexture(look) };
-      });
+      made = images.map(emojiTextures);
       setTextures(made);
     });
     return () => {
@@ -102,7 +87,7 @@ function useFruitSpawner({ viewport, textures, isMobile, active, getCeiling, str
 function FruitNinja({ active = true, eventSource, scoreRef, streakRef, onSlice, onMiss }) {
   const viewport = useThree((state) => state.viewport);
   const isMobile = useIsMobile();
-  const textures = useDiscTextures();
+  const textures = useEmojiTextures();
   const { scene, camera, raycaster, pointer, setEvents, gl } = useThree();
   const ceilingRef = useRef(-Infinity);
   const floorRef = useRef(Infinity);
@@ -177,7 +162,6 @@ function FruitNinja({ active = true, eventSource, scoreRef, streakRef, onSlice, 
   return (
     <>
       <PerspectiveCamera makeDefault position={[0, 0, 10]} />
-      <Lighting />
       <Physics paused={!active} interpolate timeStep={1 / 60} gravity={[0, GAME_GRAVITY, 0]} colliders={false}>
         {textures &&
           fruits.map((fruit) => (
