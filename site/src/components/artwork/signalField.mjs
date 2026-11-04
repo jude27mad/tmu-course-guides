@@ -7,6 +7,7 @@
  * driven by Giats's existing Tempus clock, visibility and motion preferences.
  */
 import { TOKENS, rgbOf } from '../../lib/palette.mjs';
+import { easeFor, frameShare } from '../../utils/frameStep.mjs';
 
 const BONE = rgbOf(TOKENS.mutedOnDark);
 const SIGNAL = rgbOf(TOKENS.onDark);
@@ -26,6 +27,10 @@ export function mountSignalField(canvas, { subscribe, host = canvas.parentElemen
   const doc = canvas.ownerDocument;
   const win = doc.defaultView;
   const pulses = [];
+  // Per-frame values of each live pulse, so the point loop does not recompute
+  // them for every point: x, y, ring radius, ring fade, core fade.
+  const live = new Float64Array(4 * 5);
+  const hot = [];
   const mouse = { x: 0, y: 0, tx: 0, ty: 0, power: 0, target: 0 };
   let width = 0;
   let height = 0;
@@ -51,17 +56,29 @@ export function mountSignalField(canvas, { subscribe, host = canvas.parentElemen
     if (pulses.length > 4) pulses.shift();
   };
 
-  const draw = () => {
+  // Kairo's pointer easing is per 60 Hz frame; `share` is the part of one
+  // that this frame covers (0.5 at 120 Hz).
+  const draw = (share = 1) => {
     const t = clock;
-    mouse.x += (mouse.tx - mouse.x) * 0.12;
-    mouse.y += (mouse.ty - mouse.y) * 0.12;
-    mouse.power += (mouse.target - mouse.power) * 0.08;
+    const follow = easeFor(0.12, share);
+    mouse.x += (mouse.tx - mouse.x) * follow;
+    mouse.y += (mouse.ty - mouse.y) * follow;
+    mouse.power += (mouse.target - mouse.power) * easeFor(0.08, share);
     ctx.clearRect(0, 0, width, height);
     ctx.globalAlpha = 1;
     ctx.fillStyle = TOKENS.ink;
     ctx.fillRect(0, 0, width, height);
 
-    const hot = [];
+    let liveCount = 0;
+    for (const pulse of pulses) {
+      const age = t - pulse.born;
+      if (age < 0 || age > PULSE_LIFE) continue;
+      live.set([pulse.x, pulse.y, age * PULSE_SPEED, 1 - age / PULSE_LIFE, Math.max(0, 1 - age / 1.2)], liveCount * 5);
+      liveCount++;
+    }
+    const repel = mouse.power > 0.01;
+
+    hot.length = 0;
     ctx.fillStyle = `rgb(${BONE})`;
 
     for (let i = 0; i < cols; i++) {
@@ -75,26 +92,27 @@ export function mountSignalField(canvas, { subscribe, host = canvas.parentElemen
         let y = by + wave * 5;
         let lift = 0;
 
-        const mx = bx - mouse.x;
-        const my = by - mouse.y;
-        const distance = Math.hypot(mx, my);
-        if (distance < REPEL && mouse.power > 0.01) {
-          const force = (1 - distance / REPEL) ** 2 * mouse.power;
-          const nx = distance ? mx / distance : 0;
-          const ny = distance ? my / distance : 0;
-          x += nx * force * 30;
-          y += ny * force * 30;
-          lift = force;
+        if (repel) {
+          const mx = bx - mouse.x;
+          const my = by - mouse.y;
+          const distance = Math.sqrt(mx * mx + my * my);
+          if (distance < REPEL) {
+            const force = (1 - distance / REPEL) ** 2 * mouse.power;
+            const nx = distance ? mx / distance : 0;
+            const ny = distance ? my / distance : 0;
+            x += nx * force * 30;
+            y += ny * force * 30;
+            lift = force;
+          }
         }
 
         let heat = 0;
-        for (const pulse of pulses) {
-          const age = t - pulse.born;
-          if (age < 0 || age > PULSE_LIFE) continue;
-          const ring = age * PULSE_SPEED;
-          const d = Math.hypot(x - pulse.x, y - pulse.y);
-          const band = Math.exp(-((d - ring) ** 2) / 1400) * (1 - age / PULSE_LIFE);
-          const core = Math.exp(-(d * d) / 900) * Math.max(0, 1 - age / 1.2);
+        for (let k = 0; k < liveCount * 5; k += 5) {
+          const dx = x - live[k];
+          const dy = y - live[k + 1];
+          const d = Math.sqrt(dx * dx + dy * dy);
+          const band = Math.exp(-((d - live[k + 2]) ** 2) / 1400) * live[k + 3];
+          const core = Math.exp(-(d * d) / 900) * live[k + 4];
           heat = Math.max(heat, band, core);
         }
 
@@ -179,7 +197,7 @@ export function mountSignalField(canvas, { subscribe, host = canvas.parentElemen
       spawn();
       nextPulse = clock + 2.4 + Math.random() * 1.4;
     }
-    draw();
+    draw(frameShare(delta));
   };
 
   const sync = () => {

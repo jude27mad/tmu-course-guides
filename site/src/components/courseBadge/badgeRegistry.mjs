@@ -28,7 +28,7 @@ export function createBadgeRegistry() {
       let slot = 0;
       while (state.entries.some((entry) => entry.slot === slot)) slot += 1;
       if (shared) slot = shared.slot;
-      const body = shared?.body ?? Object.fromEntries(['fixed', 'j1', 'j2', 'j3', 'card', 'cardObject'].map((key) => [key, { current: null }]));
+      const body = shared?.body ?? Object.fromEntries(['fixed', 'j1', 'j2', 'j3', 'card', 'cardObject', 'j1Object', 'j2Object', 'j3Object'].map((key) => [key, { current: null }]));
       const entry = { ...descriptor, id, motionId, slot, body, visible: false, swing: false };
       publish([...state.entries, entry]);
       return entry;

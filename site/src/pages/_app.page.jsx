@@ -3,7 +3,7 @@
 import '@src/styles/global.scss';
 import '@src/styles/global.css';
 
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import dynamic from 'next/dynamic';
 import BadgeBoundary from '@src/components/courseBadge/BadgeBoundary';
@@ -12,6 +12,8 @@ import { BadgeProvider } from '@src/components/courseBadge/BadgeProvider';
 import { createBadgeRegistry } from '@src/components/courseBadge/badgeRegistry.mjs';
 // eslint-disable-next-line import/extensions
 import { createTouchScrollFilter } from '@src/utils/touch-scroll.mjs';
+// eslint-disable-next-line import/extensions
+import { frameShare } from '@src/utils/frameStep.mjs';
 
 import Head from 'next/head';
 import Layout from '@src/components/dom/Layout';
@@ -70,6 +72,19 @@ const SHOW_STATS = typeof window !== 'undefined' && /[?&]stats\b/.test(window.lo
 // and stepped down to 1 by PerformanceMonitor when frames drop.
 const MAX_DPR_DESKTOP = 1.5;
 const MAX_DPR_TOUCH = 1.25;
+// drei counts every incline as a flip-flop, even one that changes nothing, so a
+// smooth device reached its fallback (DPR 1) about 10 s after load. Only real
+// changes count here; after more than three the canvas stays at DPR 1. On a
+// 120 Hz display frames "drop" below 90 fps rather than 60.
+const DPR_FLIPFLOPS = 3;
+const dprBounds = (refreshrate) => (refreshrate > 100 ? [90, 110] : [40, 60]);
+
+// Lenis turns a touch release into inertia: its last per-frame velocity times
+// this multiplier, if the last touchmove travelled more than 5 px. Both are per
+// frame, so at 120 Hz flings went half as far and slow ones did not start.
+// Each frame records its share of a 60 Hz frame to rescale both.
+const TOUCH_INERTIA = 35;
+const touchFrame = { share: 1 };
 
 // Skip link copy from docs/copy/interface-copy.md.
 const skipLabel = (pathname) => (pathname === '/' ? 'Skip to courses' : 'Skip to coursework');
@@ -156,7 +171,8 @@ function MyApp({ Component, pageProps, router }) {
       smoothWheel: true,
       smoothTouch: true,
       syncTouch: true,
-      virtualScroll: createTouchScrollFilter(),
+      touchInertiaMultiplier: TOUCH_INERTIA,
+      virtualScroll: createTouchScrollFilter(() => touchFrame.share),
       wrapper: ios ? window : mainRef.current || undefined,
       content: ios ? document.documentElement : mainContainerRef.current || undefined,
     });
@@ -183,11 +199,22 @@ function MyApp({ Component, pageProps, router }) {
     }
   }, [lenis]);
 
-  useFrame((time) => {
+  useFrame((time, deltaTime) => {
     if (lenis) {
       lenis.raf(time);
+      touchFrame.share = frameShare(deltaTime / 1000);
+      lenis.options.touchInertiaMultiplier = TOUCH_INERTIA / touchFrame.share;
     }
   }, 0);
+
+  const dprRef = useRef(null);
+  const dprChanges = useRef(0);
+  const changeDpr = useCallback((next) => {
+    if (dprRef.current === next) return;
+    dprChanges.current += 1;
+    dprRef.current = dprChanges.current > DPR_FLIPFLOPS ? 1 : next;
+    setDpr(dprRef.current);
+  }, []);
 
   const domElements = useMemo(
     () => (
@@ -225,7 +252,7 @@ function MyApp({ Component, pageProps, router }) {
         >
           {still && <DemandDriver />}
           <ClearViews />
-          <PerformanceMonitor flipflops={3} onDecline={() => setDpr(1)} onIncline={() => setDpr(null)} onFallback={() => setDpr(1)} />
+          <PerformanceMonitor bounds={dprBounds} onDecline={() => changeDpr(1)} onIncline={() => changeDpr(null)} />
           {/* A view that is loading (or never loads) must stay inside the canvas: without
               this boundary R3F suspends the <Canvas> DOM component itself, and its next
               re-render (dpr, colour space) would hold every update of the page. */}
@@ -238,7 +265,7 @@ function MyApp({ Component, pageProps, router }) {
         </Canvas>
       </WebGLGate>
     ),
-    [badgeRegistry, badgeRoute, dpr, maxDpr, still],
+    [badgeRegistry, badgeRoute, changeDpr, dpr, maxDpr, still],
   );
 
   return (
@@ -287,6 +314,8 @@ function MyApp({ Component, pageProps, router }) {
                 className={styles.canvasContainer}
                 eventSource={mainRef.current}
                 dpr={[0.1, 0.5]}
+                // Fluid keeps frames coming while its trail is moving or fading.
+                frameloop="demand"
                 aria-hidden="true"
               >
                 <FluidLayer fluidColor={fluidColor} mainRef={mainRef} />

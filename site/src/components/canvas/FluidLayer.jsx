@@ -5,7 +5,9 @@ import Fluid from '@src/components/canvas/fluid/Fluid';
 // collects its effects when it mounts, so the fluid has to arrive with it, not a moment later.
 export default function FluidLayer({ fluidColor, mainRef }) {
   return (
-    <EffectComposer>
+    // The composer's own scene is empty (the fluid draws into its own buffers), so it needs no
+    // multisampling or depth buffer.
+    <EffectComposer multisampling={0} depthBuffer={false}>
       <Fluid fluidColor={fluidColor} mainRef={mainRef} />
     </EffectComposer>
   );
