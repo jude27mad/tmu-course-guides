@@ -1,13 +1,14 @@
 import { useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
-import { assignmentList, groups, sections } from '@src/lib';
+import { assignmentList, countdown, countdownStatus, currentTermWeek, groups, sections } from '@src/lib';
 import CourseBadge from '@src/components/courseBadge/CourseBadge';
 import GuideTools from '@src/pages/course/components/tools/GuideTools';
 // eslint-disable-next-line import/extensions
 import { openGuideTools } from '@src/pages/course/components/tools/dialog.mjs';
 import { useCourse } from '@src/pages/course/hooks/useCourseState';
 import useCourseNavigation from './useCourseNavigation';
+import { labRoom, timeWithRoom } from './labRoom';
 import CourseNavigation from './CourseNavigation';
 import Work from './Work';
 import AssignmentDetail from './AssignmentDetail';
@@ -16,6 +17,18 @@ import CourseInformation from './CourseInformation';
 import Schedule from './Schedule';
 import Grades from './Grades';
 import styles from './workspace.module.scss';
+
+// Time left, in the Desk's countdown wording and status colours: "23h 47m left" for a
+// confirmed time, "Today" / "Tomorrow" / "In 3 days" for a date without one. Nothing
+// for quiz weeks, pending dates or passed times, which the date line already words.
+function timeLeft(next, now) {
+  if (!next || !now) return null;
+  const left = countdown(next, now);
+  const status = countdownStatus({ ms: left.ms, done: next.done });
+  if (status && status !== 'done') return { label: `${left.label} left`, status };
+  if (/^(Today|Tomorrow|In \d+ days)$/.test(left.label)) return { label: left.label, status: null };
+  return null;
+}
 
 export default function CourseWorkspace() {
   const { courseId, course, info, live, section, setSection, group, setGroup, progress } = useCourse();
@@ -28,15 +41,27 @@ export default function CourseWorkspace() {
   });
   const assignments = useMemo(() => (live ? assignmentList(courseId, { now: live.now, items: live.items }) : null), [live, courseId]);
   const views = [['work', 'Work'], ['schedule', 'Schedule'], ...(courseId === 'cen100' ? [] : [['study', 'Study']]), ['grades', 'Grades'], ['info', 'Course info']];
-  const next = live?.next;
+  // After the last dated deadline, a final exam whose date is still pending is what comes next (CEN100's
+  // has no date in the course data), not "No upcoming deadlines".
+  const next = live?.next || live?.items.find((item) => item.kind === 'final' && item.precision === 'pending' && !item.done) || null;
+  const left = timeLeft(next, live?.now);
+  const room = labRoom(courseId, section);
   const completed = live?.progress?.completed || 0;
   const total = live?.progress?.total || 0;
+  // This term week ("Week 8 · Oct 26–Nov 1"), after mount only; nothing outside the term.
+  const week = live ? currentTermWeek(live.now) : null;
   return (
     <div className={styles.root}>
       <div className={styles.courseHeader}>
         <div className={styles.headingCopy}>
           <p className={styles.eyebrow}>
             {course.code} <span> / {course.term}</span>
+            {week?.number ? (
+              <span title={week.label} data-course-week>
+                {' '}
+                · Week {week.number}
+              </span>
+            ) : null}
           </p>
           <h1>{course.name}</h1>
           <p className={styles.headerNote}>Your course, at a glance.</p>
@@ -92,11 +117,18 @@ export default function CourseWorkspace() {
         </div>
         <div className={styles.summary}>
           <div className={styles.next}>
-            <span className={styles.eyebrow}>Next deadline</span>
+            <span className={styles.nextHeading}>
+              <span className={styles.eyebrow}>Next deadline</span>
+              {next && left ? (
+                <span className={styles.timeLeft} data-status={left.status || undefined} data-course-time-left>
+                  {left.label}
+                </span>
+              ) : null}
+            </span>
             {next ? (
-              <Link href={`/${courseId}/#${next.anchor}`} scroll={false}>
+              <Link id="course-next-link" href={`/${courseId}/#${next.anchor}`} scroll={false}>
                 <strong>{next.title} ↗</strong>
-                <span>{[next.dateLabel, next.timeLabel || next.cta].filter(Boolean).join(' · ')}</span>
+                <span>{[next.dateLabel, timeWithRoom(next, room) || next.cta].filter(Boolean).join(' · ')}</span>
               </Link>
             ) : (
               <span>{live ? 'No upcoming deadlines' : 'Loading deadlines…'}</span>

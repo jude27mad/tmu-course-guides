@@ -6,6 +6,7 @@ import { useCourse } from '@src/pages/course/hooks/useCourseState';
 import useDelayedFeedback from '@src/hooks/useDelayedFeedback';
 import styles from './workspace.module.scss';
 import calendarStyles from './calendar.module.scss';
+import { labRoom, timeWithRoom } from './labRoom';
 
 class CalendarBoundary extends Component {
   constructor(props) {
@@ -35,7 +36,8 @@ const Calendar = dynamic(() => import('./Calendar'), {
 });
 
 export default function Schedule({ navigate, state, setState }) {
-  const { courseId, live } = useCourse();
+  const { courseId, live, section } = useCourse();
+  const room = labRoom(courseId, section);
   const root = useRef(null);
   // Known from the first render (Schedule never renders on the server): measured only after mounting, a remount
   // (Back from an assignment) laid out the agenda alone first, and the restored scroll position was clamped to it.
@@ -116,7 +118,7 @@ export default function Schedule({ navigate, state, setState }) {
                   </span>
                   <span>
                     {item.dateLabel || 'Date pending'}
-                    <span className={styles.meta}>{item.timeLabel || (item.precision === 'pending' ? 'Check D2L' : item.label)}</span>
+                    <span className={styles.meta}>{timeWithRoom(item, room) || (item.precision === 'pending' ? 'Check D2L' : item.label)}</span>
                     <span className={styles.meta}>{item.done ? 'Marked done by you' : [item.overdue && 'Past due · not marked done'].filter(Boolean).join('')}</span>
                   </span>
                   <span aria-hidden="true">↗</span>

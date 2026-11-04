@@ -103,10 +103,13 @@ export default function useCourseNavigation(courseId, info) {
             ...previous.returnTo,
             depth: (previous.returnTo.depth || 1) + 1,
           };
-        else returnTo = { hash: previous.hash, view: from.view, depth: 1 };
+        // A detail opened from another detail that was itself opened directly (a link, search, reload)
+        // has nowhere better to return than its view: "Back to Work" must not land on the other detail.
+        else if (!(from.item && target.item && !previous.returnTo)) returnTo = { hash: previous.hash, view: from.view, depth: 1 };
       }
       const next = validSaved
-        ? { ...saved, key, restore: true }
+        ? // `initial` describes this page view: Back to the first entry is not a fresh load, so focus returns.
+          { ...saved, key, restore: true, initial: !previous }
         : {
             courseId,
             hash,
@@ -236,9 +239,20 @@ export default function useCourseNavigation(courseId, info) {
     if (entry.restore) top = entry.scroll;
     const { lenis } = useStore.getState();
     lenis?.resize();
-    if (lenis) lenis.scrollTo(top, { immediate: true, force: true });
-    else if (scrollRoot() === window) window.scrollTo(0, top);
-    else main.scrollTop = top;
+    const scrollToTop = (value) => {
+      if (lenis) lenis.scrollTo(value, { immediate: true, force: true });
+      else if (scrollRoot() === window) window.scrollTo(0, value);
+      else main.scrollTop = value;
+    };
+    scrollToTop(top);
+    // Back to a list whose opener row has moved (marked done, it now sits under Done): bring the row
+    // into view instead of restoring a position that shows a different row, with focus far off screen.
+    const opener = entry.restore && entry.focus && document.getElementById(entry.focus);
+    const view = opener && content.contains(opener) && scrollViewport();
+    if (view) {
+      const box = opener.getBoundingClientRect();
+      if (box.bottom < view.top || box.top > view.bottom) scrollToTop(Math.max(0, scrollTop() + box.top - view.top - (view.bottom - view.top) / 3));
+    }
     // Only the outgoing view is inert. Newly mounted controls must accept
     // the first tap, even while their entrance animation is still running.
     content.inert = false;
@@ -250,7 +264,9 @@ export default function useCourseNavigation(courseId, info) {
     const focusMoved = document.activeElement !== focusAtNavigation.current && document.activeElement !== content && content.contains(document.activeElement);
     const filterHasFocus = location.view === 'work' && entry.inPlace && !entry.restore && focusAtNavigation.current?.closest('[data-work-filters]');
     if ((!entry.initial || entry.hash) && !focusMoved && !filterHasFocus) {
-      const focus = (entry.restore && document.getElementById(entry.focus)) || target || content;
+      // The remembered control, when it is still shown in the page (not, say, a closed Search panel's input).
+      const remembered = entry.restore && document.getElementById(entry.focus);
+      const focus = (remembered && main.contains(remembered) && remembered.getClientRects().length && remembered) || target || content;
       focus.focus({ preventScroll: true });
     }
     restoring.current = false;

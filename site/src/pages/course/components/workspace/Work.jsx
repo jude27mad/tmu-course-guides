@@ -5,15 +5,21 @@ import { useCourse } from '@src/pages/course/hooks/useCourseState';
 import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
 import useStill from '@src/hooks/useStill';
 import useSelectionMotion from './useSelectionMotion';
+import { labRoom, timeWithRoom } from './labRoom';
+import { isSitting } from './sittings';
 import styles from './workspace.module.scss';
 
+// Upcoming work first, so the list opens on what is due next; past-due records
+// not yet marked done follow, then everything already marked.
 const groups = [
-  ['pastDue', 'Past due · not marked done'],
   ['thisWeek', 'This week'],
   ['nextWeek', 'Next week'],
   ['later', 'Later & undated'],
+  ['pastDue', 'Past due · not marked done'],
   ['done', 'Marked done by you'],
 ];
+// "2026-11-01" -> "Nov 1" for a personal target date (a calendar date, so no time zone shift).
+const targetLabel = (date) => new Date(`${date}T12:00:00Z`).toLocaleDateString('en-CA', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 const matches = (filter, key) => filter === 'all' || (filter === 'done' ? key === 'done' : key !== 'done');
 const resultKey = (assignments, filter) =>
   groups
@@ -22,7 +28,8 @@ const resultKey = (assignments, filter) =>
     .join(',');
 
 export default function Work({ assignments, filter, navigate }) {
-  const { courseId, info, progress } = useCourse();
+  const { courseId, info, progress, section } = useCourse();
+  const room = labRoom(courseId, section);
   const still = useStill();
   const filtersRef = useRef(null);
   const selectionRef = useRef(null);
@@ -124,20 +131,24 @@ export default function Work({ assignments, filter, navigate }) {
                     {rows.map((entry) => {
                       const item = content.find((candidate) => candidate.id === entry.id);
                       const { lead } = entry;
-                      let status = 'Open';
+                      // A passed quiz, midterm or presentation took place; "Open" would read as still to come.
+                      let status = key === 'pastDue' && isSitting(courseId, entry.lead) ? 'Took place' : 'Open';
                       if (entry.recorded) status = `${entry.recorded}/${entry.records.length} recorded`;
+                      // An earlier part passed unmarked while the row leads with the next one.
+                      if (entry.missed && key !== 'pastDue') status = entry.recorded ? `${status} · ${entry.missed} past due` : `${entry.missed} ${entry.missed === 1 ? 'part' : 'parts'} past due`;
                       if (entry.done) status = 'Marked done';
                       const ticks = progress.tickCount(courseId, entry.id);
+                      const target = !entry.done && progress.ready ? progress.getTarget(courseId, entry.id) : '';
                       return (
                         <li key={entry.id}>
                           <Link id={`open-${entry.anchor}`} href={`/${courseId}/#${entry.anchor}`} scroll={false} className={styles.workRow} data-assignment-link>
                             <span className={styles.rowMain}>
                               <span className={styles.rowTitle}>{entry.title}</span>
-                              <span className={styles.meta}>{[item.who, item.weightLabel].filter(Boolean).join(' · ')}</span>
+                              <span className={styles.meta}>{[item.who, item.weightLabel, target && `My target: ${targetLabel(target)}`].filter(Boolean).join(' · ')}</span>
                             </span>
                             <span className={styles.rowDate}>
                               {lead?.dateLabel || 'Date pending'}
-                              <span className={styles.meta}>{lead?.timeLabel || lead?.cta || 'Check D2L'}</span>
+                              <span className={styles.meta}>{timeWithRoom(lead, room) || lead?.cta || 'Check D2L'}</span>
                             </span>
                             <span className={styles.rowStatus}>
                               {status}
