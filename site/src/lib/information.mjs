@@ -1,3 +1,5 @@
+import { TERM_INFORMATION } from './terms.mjs';
+
 // Stable URLs shared by Course info, search and browser history. The source
 // content stays intact; selecting a question changes what is shown, not its facts.
 const MATH_RULES = [
@@ -35,7 +37,13 @@ const CEN_CONFIRMED = [
   'genai',
 ];
 
+/** The Course info entries of a course. An archived course's info (info.archived) leaves out the entries tied to its term (terms.mjs). */
 export function informationEntries(courseId, info) {
+  const entries = buildEntries(courseId, info);
+  return info?.archived ? entries.filter((entry) => !TERM_INFORMATION.includes(entry.id)) : entries;
+}
+
+function buildEntries(courseId, info) {
   const entries = [
     {
       id: 'course-grading',

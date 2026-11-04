@@ -19,6 +19,8 @@ const nextConfig = {
     // Read by src/utils/basePath.js for files in public/ (images, models,
     // HDRs, fonts referenced from JS) that Next does not prefix by itself.
     NEXT_PUBLIC_BASE_PATH: basePath,
+    // Course statuses for a preview build (src/lib/terms.mjs); unset for the published site.
+    NEXT_PUBLIC_COURSE_STATUS: process.env.NEXT_PUBLIC_COURSE_STATUS || '',
   },
   sassOptions: {
     // Lets SCSS reach files in public/ under the basePath: url('#{$base-path}/fonts/x.woff2').

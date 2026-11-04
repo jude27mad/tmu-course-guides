@@ -15,6 +15,7 @@ The data layer every page uses. Pages import from `@src/lib` (plain functions) a
 | `index.js` | The public API (re-exports). |
 | `react.js` | Hooks: `useNow`, `useProgress`, `useSection`, `useMotionPaused`, `useGrades`. |
 | `courses.mjs` | `COURSES`, palettes, links, sections, saved section/group. |
+| `terms.mjs` | The terms, and each course's status (`current` or `archived`) and grade-calculator status. The one place to archive a course (see Terms and archiving). |
 | `deadlines.mjs` | `deadlines`, `buckets`, `nextDeadline`, `countdown`, `weeklyChecklist`, `assessments`, `deskSnapshot`, `workList`. |
 | `assignments.mjs` | `assignmentList`, `calendarEvents`: one entry per content item and one event per dated deadline row. |
 | `info.mjs` | `courseInfo`. |
@@ -67,7 +68,8 @@ COURSES.map((c) => c.id); // ['cen100', 'mth140', 'mth141']
 getCourse('mth141');
 // { id: 'mth141', code: 'MTH141', name: 'Linear Algebra', title: 'Linear Algebra', index: '03',
 //   summary: 'Assessment dates, section labs, announced coverage and practice.', description: '…',
-//   term: 'Fall 2026', organization: '4 hours of lectures + 1 hour of lab each week', href: '/mth141/',
+//   term: 'Fall 2026', status: 'current', archived: false, gradesOpen: true,
+//   organization: '4 hours of lectures + 1 hour of lab each week', href: '/mth141/',
 //   ariaLabel: 'Open MTH141 guide, Linear Algebra',
 //   palette: { primary: '#18181B', accentColor: '#FFFFFF', secondary: '#F4F4F5', fillColor: '#FFFFFF',
 //              menuColor: '#18181B', menuFontColor: '#FAFAFA', fluidColor: '#E4E4E7', accent: '#004C9B' },
@@ -78,6 +80,29 @@ getCourse('nope'); // null
 **`PALETTES`**, **`DEFAULT_PALETTE`**: every course shares one palette, built from **`TOKENS`** in `palette.mjs` (neutral zinc with one TMU Blue accent; `styles/colors.scss` mirrors it as CSS variables and `tests/palette.test.mjs` keeps the two equal). The same values colour page CSS, course cards and generated 3D textures. Apply them with the original `updateCSSVariables` mapping (`--black` = `primary`, `--white` = `secondary`, `--accent` = `accent`, …) and `setFluidColor(palette.fluidColor)`. The fluid dye is `#E4E4E7` on every route over a black difference-blend base, so the page colour shows unchanged.
 
 **`BADGE`**, **`DISC`**: the printed colours of the lanyard ID badge and the prefooter discs, identical for every course. **`countdownStatus({ ms, done })`** → `'onTrack' | 'soon' | 'urgent' | 'done' | null` (more than 72 h, 72 h or less, 24 h or less, completed); **`STATUS[key]`** gives its colour and badge label. Only the Desk countdown uses these colours.
+
+### Terms and archiving
+
+`terms.mjs` says which term each course's details belong to and whether the course is **current** or **archived**. Pages read it through `COURSES` (`term`, `status`, `archived`, `gradesOpen`) and the functions below; nothing else decides it.
+
+**`TERMS`**, **`CURRENT_TERM`**, **`currentTerm()`** → `{ id: 'fall-2026', label: 'Fall 2026', short: 'F26', start: '2026-09-08', end: '2026-12-21' }`: the term the site is in now (the Desk, page titles, the footer and the week labels use it).
+**`courseTerm(id)`** → the course's term plus `{ status, archived, gradesOpen }`, as plain JSON (`null` for an unknown id). **`isArchived(id)`**, **`gradesOpen(id)`** → booleans; a current course always has its calculator open.
+
+An **archived** course keeps its lasting content and loses what belonged to its term:
+
+| Kept | Removed (returns empty, `null` or `false`) |
+|---|---|
+| The course page and every old link (`#assignment-*`, `#assessment-*`, `#topic-*`) | `deadlines`, `deadlineItem`, `weeklyChecklist`, `workList`; `nextDeadline` (per course and overall) and the Desk's next item |
+| Requirements, checklists, rules, grading, topics, textbooks, sources | `sections`, `groups`, `getSection`, `getGroup`, `getProfile`; `setSection` and `setGroup` save nothing |
+| `assessments()` rows, ids, weights and totals (dates blank) and the whole grade calculator while `gradesOpen` | `calendarFile`, `calendarEvents` rows, the course-updates badge (`hasUnseenUpdates`) |
+| `courseInfo()` with `archived: true` and `term` | In `courseInfo()`: contacts, `tools.calendar`, CEN item dates, date tiles, completion records and date/place facts; math timings, rooms and date notes, this term's midterm topics and notice |
+| Search for places, topics, Course info and (while open) the calculator | Course info entries listed in `TERM_INFORMATION` (contacts, awaited clarifications, dated rules), the course's deadlines, weeks, schedule view, contacts and calendar actions, and the CEN contacts lookup |
+
+Saved progress is never touched: an archived course reads nothing it doesn't need and writes nothing, so switching a course back to `current` brings everything back.
+
+**To archive a course** after its exam period, change its entry in `COURSE_TERMS` (`terms.mjs`) to `status: 'archived'`. Leave `gradesOpen: true` until final grades are released, then set it to `false`. **To start a new term**, add it to `TERMS`, point `CURRENT_TERM` at it and give each new course its entry (the course's own dates and sections go in its data, as now).
+
+The status is static: it is decided when the site is built, never from the clock or storage, so the exported pages and the browser always agree. Tests and previews override it with `NEXT_PUBLIC_COURSE_STATUS`, a JSON object such as `{"mth141":{"status":"archived","gradesOpen":false}}` (read at import; `next.config.js` inlines it into builds). Leave it unset for the published site.
 
 ### Sections and groups
 

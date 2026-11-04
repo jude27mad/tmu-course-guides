@@ -6,6 +6,7 @@
  */
 export { COURSES, COURSE_IDS, PALETTES, DEFAULT_PALETTE, getCourse, sections, getSection, setSection, groups, getGroup, setGroup, getProfile } from './courses.mjs';
 export { TOKENS, STATUS, BADGE, DISC, countdownStatus, rgbOf } from './palette.mjs';
+export { TERMS, CURRENT_TERM, courseTerm, currentTerm, isArchived, gradesOpen } from './terms.mjs';
 export { deadlines, deadlineItem, buckets, nextDeadline, countdown, weeklyChecklist, assessments, deskSnapshot, workList } from './deadlines.mjs';
 export { assignmentList, calendarEvents } from './assignments.mjs';
 export { courseInfo, courseCopy } from './info.mjs';

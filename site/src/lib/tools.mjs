@@ -8,6 +8,7 @@ import * as MATH from './content/math.mjs';
 import { KEYS, resolveStorage, readJSON, writeJSON } from './storage.mjs';
 import { COURSE_UPDATES } from './content/updates.mjs';
 import { isMath, readTicks, writeTicks, readPlan, writePlan, readMath, writeMath, readMathSection, readMotionPaused, writeMotionPaused } from './saved.mjs';
+import { courseTerm, isArchived } from './terms.mjs';
 
 const toDate = (now) => (now == null ? new Date() : new Date(+now));
 const stampOf = (date) => date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
@@ -16,8 +17,10 @@ const stampOf = (date) => date.toISOString().replace(/[-:]/g, '').replace(/\.\d{
  * An .ics file. CEN100: { item: 'all' | item id, upcomingOnly = true, reminderDays = 1 } (cen100-deadlines-2026.ics,
  * UIDs cen100-f26-<id>-jude27mad-github-io). Math: { includeTentative = false, upcomingOnly = true, section }
  * (<course>-fall-2026.ics). Returns { ok, name, type, text, count, message }; ok false carries the old message.
+ * An archived course has no calendar: its dates belong to a past term.
  */
 function calendarFileNow(courseId, { now, item = 'all', upcomingOnly = true, reminderDays = 1, includeTentative = false, section, storage } = {}) {
+  if (isArchived(courseId)) return { ok: false, count: 0, message: `This course is archived, so its ${courseTerm(courseId).label} dates are no longer exported.` };
   const date = toDate(now);
   if (courseId === 'cen100') {
     const events = CEN.calendarEvents(item, upcomingOnly, date);
@@ -124,8 +127,9 @@ export function importBackup(courseId, raw, { storage } = {}) {
 const latestUpdate = (courseId) => COURSE_UPDATES[courseId]?.[0]?.id || '';
 const savedDate = (value) => (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value) ? value.slice(0, 10) : '');
 const seenLatest = (saved, latest) => saved === latest || savedDate(saved) > latest.slice(0, 10);
-/** True while the course has a course update the student has not opened (show the "New updates" badge). */
+/** True while the course has a course update the student has not opened (show the "New updates" badge). Never for an archived course. */
 export const hasUnseenUpdates = (courseId, storage) => {
+  if (isArchived(courseId)) return false;
   const latest = latestUpdate(courseId);
   return !!latest && !seenLatest(readJSON(resolveStorage(storage), KEYS[courseId].seen, ''), latest);
 };

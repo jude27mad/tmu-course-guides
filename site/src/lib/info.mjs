@@ -9,6 +9,7 @@ import { CEN as CEN_PAGE, MATH as MATH_PAGE } from './content/pages.mjs';
 import { COURSE_UPDATES } from './content/updates.mjs';
 import { getCourse, sections } from './courses.mjs';
 import { isMath } from './saved.mjs';
+import { courseTerm, isArchived, TERM_FACT_ICONS } from './terms.mjs';
 
 const SEVERITY = { red: 'red', '': 'neutral' };
 
@@ -120,10 +121,28 @@ function mathInfo(courseId, { section } = {}) {
   };
 }
 
+/* An archived course keeps its lasting guidance (items and assessments with their requirements and checklists,
+   rules, grading, topics, textbooks, sources) and loses what belonged to its term: dates, date tiles, rooms,
+   completion records, the calendar, contacts and this term's notices. Item ids and anchors stay the same, so old
+   links and the grade calculator keep working. `archived` and `term` say which term the rest comes from. */
+function archiveInfo(courseId, info) {
+  const term = courseTerm(courseId);
+  const tools = { ...info.tools, calendar: null };
+  if (courseId === 'cen100') {
+    const items = info.items.map((item) => ({ ...item, date: null, tile: null, facts: item.facts.filter((fact) => !TERM_FACT_ICONS.includes(fact.icon)), records: [], calendar: false }));
+    return { ...info, archived: true, term, items, contacts: null, tools };
+  }
+  const assessments = info.assessments.map((a) => ({ ...a, timing: '', tile: null, room: '', roomNote: '', dateNote: '' }));
+  const topics = info.topics.map((topic) => ({ ...topic, midterm: false }));
+  return { ...info, archived: true, term, assessments, topics, notice: null, contacts: null, tools };
+}
+
 /** The old page's static guidance for a course, with section-dependent text resolved for `section` (and CEN `group`).
-    Plain JSON data (safe to pass through getStaticProps). */
+    An archived course has no section, and only its lasting guidance (see archiveInfo). Plain JSON data (safe to
+    pass through getStaticProps). */
 function courseInfoNow(courseId, options = {}) {
   if (!getCourse(courseId)) return null;
+  if (isArchived(courseId)) return archiveInfo(courseId, isMath(courseId) ? mathInfo(courseId) : cenInfo());
   return isMath(courseId) ? mathInfo(courseId, options) : cenInfo(options);
 }
 

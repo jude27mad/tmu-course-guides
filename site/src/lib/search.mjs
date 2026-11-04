@@ -13,6 +13,7 @@ import { resolveStorage } from './storage.mjs';
 import { isMath, readMotionPaused } from './saved.mjs';
 import { COURSE_IDS, COURSES, dataFor, getCourse } from './courses.mjs';
 import { context, deadlines, nextDeadline, toMs } from './deadlines.mjs';
+import { gradesOpen, isArchived } from './terms.mjs';
 
 export { COPY as SEARCH_COPY, GROUPS as SEARCH_GROUPS };
 const D2L = 'https://courses.torontomu.ca/';
@@ -42,9 +43,10 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
   const current = getCourse(course);
   if (current) {
     add('Courses', { id: 'view-assignments', type: 'view', title: 'Work', href: `${current.href}#work`, default: true, courseId: current.id });
-    add('Courses', { id: 'view-schedule', type: 'view', title: 'Schedule', href: `${current.href}#schedule`, courseId: current.id });
+    // An archived course has no schedule, and its calculator closes once final grades are out.
+    if (!current.archived) add('Courses', { id: 'view-schedule', type: 'view', title: 'Schedule', href: `${current.href}#schedule`, courseId: current.id });
     if (isMath(current.id)) add('Courses', { id: 'view-study', type: 'view', title: 'Study', href: `${current.href}#study`, default: true, courseId: current.id });
-    add('Courses', { id: 'view-grades', type: 'view', title: 'Grade calculator', href: `${current.href}#grades`, keywords: 'grades marks gpa letter average calculate what do i need', courseId: current.id });
+    if (gradesOpen(current.id)) add('Courses', { id: 'view-grades', type: 'view', title: 'Grade calculator', href: `${current.href}#grades`, keywords: 'grades marks gpa letter average calculate what do i need', courseId: current.id });
     add('Courses', { id: 'view-info', type: 'view', title: 'Course info', href: `${current.href}#course-info`, default: true, courseId: current.id });
   }
 
@@ -78,7 +80,7 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
   }
 
   // Weeks: the semester spreads, each opening the first deadline due that week.
-  const records = COURSE_IDS.flatMap((id) => recordsForCourse(id, { cenSchedule: id === 'cen100' ? SCHEDULE : [], courseData: id === 'cen100' ? undefined : DATA[id] }));
+  const records = COURSE_IDS.filter((id) => !isArchived(id)).flatMap((id) => recordsForCourse(id, { cenSchedule: id === 'cen100' ? SCHEDULE : [], courseData: id === 'cen100' ? undefined : DATA[id] }));
   const weeks = semesterWeeks({ records });
   for (const week of weeks) {
     const copy = weekCopy(week);
@@ -113,8 +115,10 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
   // Actions.
   if (current) {
     add('Actions', { id: 'action-work', type: 'action', action: 'work', title: 'Work', href: `${current.href}#work`, default: true, courseId: current.id });
-    add('Actions', { id: 'action-contacts', type: 'action', action: 'contacts', title: 'Contacts', href: `${current.href}#contacts`, default: true, courseId: current.id });
-    add('Actions', { id: 'action-calendar', type: 'action', action: 'calendar', title: 'Export calendar', href: `${current.href}#guide-tools`, default: true, courseId: current.id });
+    if (!current.archived) {
+      add('Actions', { id: 'action-contacts', type: 'action', action: 'contacts', title: 'Contacts', href: `${current.href}#contacts`, default: true, courseId: current.id });
+      add('Actions', { id: 'action-calendar', type: 'action', action: 'calendar', title: 'Export calendar', href: `${current.href}#guide-tools`, default: true, courseId: current.id });
+    }
   }
   const paused = readMotionPaused(store);
   const motionHint = paused ? 'Restores animation and glass effects' : 'Stops animation and makes glass controls solid';
@@ -148,13 +152,16 @@ const GUIDE_ENTRIES = (() => {
     const info = REFERENCE[id];
     for (const entry of informationEntries(id, info)) out.push({ courseId: id, title: entry.title, tab: 'Course info', href: `/${id}/#${entry.id}`, text: `${entry.title} ${informationText(entry, info)}` });
   }
-  out.push({
-    courseId: 'cen100',
-    title: CEN.COPY.contactsSearchTitle,
-    tab: CEN.COPY.tabs.rules,
-    href: '/cen100/#contacts',
-    text: `Who to ask contacts section group GA Graduate Assistant Project Manager lab room location ${CEN.STAFFING.map((s) => [s.ga, s.location, ...s.groups.map((g) => g[1])].join(' ')).join(' ')}`,
-  });
+  // The section contacts lookup belongs to the term; an archived CEN100 has none.
+  if (!isArchived('cen100')) {
+    out.push({
+      courseId: 'cen100',
+      title: CEN.COPY.contactsSearchTitle,
+      tab: CEN.COPY.tabs.rules,
+      href: '/cen100/#contacts',
+      text: `Who to ask contacts section group GA Graduate Assistant Project Manager lab room location ${CEN.STAFFING.map((s) => [s.ga, s.location, ...s.groups.map((g) => g[1])].join(' ')).join(' ')}`,
+    });
+  }
   for (const id of COURSE_IDS.filter(isMath)) {
     for (const a of DATA[id].assessments) out.push({ courseId: id, title: a.title, tab: 'Assessment', href: `/${id}/#assessment-${a.id}`, text: `${a.title} ${a.scope} ${a.kind} ${a.source}` });
     for (const t of REFERENCE[id].topics) out.push({ courseId: id, title: t.title, tab: 'Study', href: `/${id}/#${t.anchor}`, text: `${t.title} ${t.sections} ${t.description} ${JSON.stringify(t.skills)} ${JSON.stringify(t.practice)}` });

@@ -7,6 +7,7 @@ import { DESK, CEN as CEN_PAGE, MATH as MATH_PAGE } from './content/pages.mjs';
 import { resolveStorage } from './storage.mjs';
 import { isMath, readProfile, writeProfile, readMathSection, writeMathSection } from './saved.mjs';
 import { TOKENS } from './palette.mjs';
+import { courseTerm, isArchived } from './terms.mjs';
 
 export const COURSE_IDS = ['cen100', 'mth140', 'mth141'];
 
@@ -30,6 +31,7 @@ const mathLinks = (id) => [...MATH_PAGE[id].contact.links.map((link) => ({ ...li
 export const COURSES = DESK.courses.map((desk) => {
   const math = isMath(desk.id);
   const page = math ? MATH_PAGE[desk.id] : CEN_PAGE;
+  const term = courseTerm(desk.id);
   return {
     id: desk.id,
     code: desk.code,
@@ -38,7 +40,11 @@ export const COURSES = DESK.courses.map((desk) => {
     index: desk.index,
     summary: desk.summary,
     description: page.description,
-    term: math ? DATA[desk.id].term : 'Fall 2026',
+    // The term the course's details belong to (lib/terms.mjs), and whether it is current or archived.
+    term: term.label,
+    status: term.status,
+    archived: term.archived,
+    gradesOpen: term.gradesOpen,
     organization: math ? DATA[desk.id].organization : null,
     href: `/${desk.id}/`,
     ariaLabel: desk.ariaLabel,
@@ -48,11 +54,15 @@ export const COURSES = DESK.courses.map((desk) => {
 });
 
 export const getCourse = (id) => COURSES.find((course) => course.id === id) || null;
-/** The course records the vendored resolvers take: CEN's SCHEDULE array or COURSES[mth14x]. */
-export const dataFor = (courseId) => (courseId === 'cen100' ? SCHEDULE : DATA[courseId] || null);
+/** The course records the vendored resolvers take: CEN's SCHEDULE array or COURSES[mth14x]; null for an archived course. */
+export const dataFor = (courseId) => {
+  if (isArchived(courseId)) return null;
+  return courseId === 'cen100' ? SCHEDULE : DATA[courseId] || null;
+};
 
-/** Section choices, in the old select's order. CEN: "Section 1".."Section 39"; math: "Section 24 (241 / 242)". */
+/** Section choices, in the old select's order. CEN: "Section 1".."Section 39"; math: "Section 24 (241 / 242)". None for an archived course. */
 export function sections(courseId) {
+  if (isArchived(courseId)) return [];
   if (courseId === 'cen100') {
     return CEN.STAFFING.flatMap((staff) => staff.sections.map((section) => ({ value: section, label: `Section ${section}`, detail: `Lab: ${staff.location}` }))).sort((a, b) => a.value - b.value);
   }
@@ -60,11 +70,12 @@ export function sections(courseId) {
   return DATA[courseId].labs.map((lab) => ({ value: lab.section, label: MATH.sectionOption(lab), detail: MATH.labSummary(lab) }));
 }
 
-/** CEN100 Innovation Challenge groups for a section ("Group 9"), [] without a valid section. */
-export const groups = (section) => CEN.contactLookup(section, null).groups;
+/** CEN100 Innovation Challenge groups for a section ("Group 9"), [] without a valid section or once CEN100 is archived. */
+export const groups = (section) => (isArchived('cen100') ? [] : CEN.contactLookup(section, null).groups);
 
-/** The saved section number, or null when none is saved (or storage is empty, blocked or holds a stale value). */
+/** The saved section number, or null when none is saved (or storage is empty, blocked or holds a stale value, or the course is archived). */
 export function getSection(courseId, storage) {
+  if (isArchived(courseId)) return null;
   const store = resolveStorage(storage);
   if (courseId === 'cen100') return readProfile(store)?.section ?? null;
   if (!isMath(courseId)) return null;
@@ -77,6 +88,8 @@ export function getSection(courseId, storage) {
  * cleared. Returns true when storage accepted the write.
  */
 export function setSection(courseId, value, storage) {
+  // An archived course has no sections; the saved choice stays as it was.
+  if (isArchived(courseId)) return false;
   const store = resolveStorage(storage);
   const section = Number(value) || 0;
   if (courseId === 'cen100') {
@@ -90,14 +103,14 @@ export function setSection(courseId, value, storage) {
 }
 
 /** CEN100 only: the saved group number, or null. */
-export const getGroup = (courseId, storage) => (courseId === 'cen100' ? readProfile(resolveStorage(storage))?.group ?? null : null);
+export const getGroup = (courseId, storage) => (courseId === 'cen100' && !isArchived('cen100') ? readProfile(resolveStorage(storage))?.group ?? null : null);
 /** CEN100 only: save a group for the saved section ({"section":n,"group":g}); an invalid group saves null. */
 export function setGroup(courseId, value, storage) {
-  if (courseId !== 'cen100') return false;
+  if (courseId !== 'cen100' || isArchived('cen100')) return false;
   const store = resolveStorage(storage);
   const profile = readProfile(store);
   if (!profile) return false;
   return writeProfile(store, { section: profile.section, group: value });
 }
-/** CEN100 only: the saved {section, group} profile, or null. */
-export const getProfile = (storage) => readProfile(resolveStorage(storage));
+/** CEN100 only: the saved {section, group} profile, or null (always null once CEN100 is archived). */
+export const getProfile = (storage) => (isArchived('cen100') ? null : readProfile(resolveStorage(storage)));

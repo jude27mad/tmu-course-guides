@@ -17,6 +17,7 @@ import { CEN as CEN_PAGE } from './content/pages.mjs';
 import { resolveStorage, view } from './storage.mjs';
 import { isMath, readProfile, readSectionNumber, readCompletedMap, readTicks, readMath, readPlan } from './saved.mjs';
 import { COURSE_IDS, dataFor, getCourse } from './courses.mjs';
+import { currentTerm, isArchived, anyArchived } from './terms.mjs';
 
 export const toMs = (now) => (now == null ? Date.now() : +now);
 const short = (date) => `${dayLabel(date).slice(0, 3)} ${dateLabel(date)}`;
@@ -247,7 +248,8 @@ const byDue = (a, b) => a.sortKey - b.sortKey || (Number.isFinite(a.sortKey) ? a
  * Section 29) plus its two undated items; MTH140/MTH141 assessments. `section` overrides the saved section.
  */
 function deadlinesNow(courseId, { now, section, storage } = {}) {
-  if (!getCourse(courseId)) return [];
+  // An archived course has no deadlines: its dates belong to a past term.
+  if (!getCourse(courseId) || isArchived(courseId)) return [];
   const ctx = context(courseId, { now, section, storage });
   if (courseId === 'cen100') {
     const kinds = cenKinds(ctx);
@@ -261,7 +263,7 @@ function deadlinesNow(courseId, { now, section, storage } = {}) {
 
 /** One deadline item by id (as deadlines() shapes it), or null. */
 function deadlineItemNow(courseId, id, options = {}) {
-  if (!getCourse(courseId) || !id) return null;
+  if (!getCourse(courseId) || isArchived(courseId) || !id) return null;
   const ctx = context(courseId, options);
   if (courseId === 'cen100') {
     const row = SCHEDULE.find((record) => record.id === id);
@@ -291,9 +293,10 @@ function bucketsNow(items, now) {
   return out;
 }
 
-/** The next deadline of one course, or across all three (targets.mjs overall(): exact first by start, grace, ties in course order). */
+/** The next deadline of one course, or across the current courses (targets.mjs overall(): exact first by start, grace, ties in course order). Archived courses have none. */
 function nextDeadlineNow({ now, courseId, storage } = {}) {
-  const ids = courseId ? [courseId].filter((id) => getCourse(id)) : COURSE_IDS;
+  const ids = (courseId ? [courseId].filter((id) => getCourse(id)) : COURSE_IDS).filter((id) => !isArchived(id));
+  if (!ids.length) return null;
   const contexts = ids.map((id) => context(id, { now, storage }));
   const targets = contexts.map((ctx) => resolveTarget({ course: ctx.courseId, data: dataFor(ctx.courseId), section: ctx.section, completed: ctx.completed, now: ctx.ms }));
   const winner = courseId ? targets[0] : overall(targets, toMs(now));
@@ -318,8 +321,8 @@ function countdownNow(due, now) {
   return result;
 }
 
-/* The term-week label for a Monday ("Week 6 · Oct 12–18"), from the semester model. */
-const TERM = semesterWeeks();
+/* The term-week label for a Monday ("Week 6 · Oct 12–18"), from the semester model of the current term (lib/terms.mjs). */
+const TERM = semesterWeeks({ start: currentTerm().start, end: currentTerm().end });
 function weekInfo(monday) {
   const sunday = addDays(monday, 6);
   const week = TERM.find((w) => w.start && w.start <= sunday && w.end >= monday);
@@ -347,7 +350,7 @@ function mathSteps(courseId, assessmentId, checks) {
  * used and the array's `upcoming` is true. `.week` = { number, label, start, end }.
  */
 function weeklyChecklistNow(courseId, { now, section, storage } = {}) {
-  if (!getCourse(courseId)) return Object.assign([], { week: null, upcoming: false });
+  if (!getCourse(courseId) || isArchived(courseId)) return Object.assign([], { week: null, upcoming: false });
   const items = deadlines(courseId, { now, section, storage }).filter((item) => item.markable && (item.date || item.week));
   const store = resolveStorage(storage);
   let monday = mondayOf(today(new Date(toMs(now))));
@@ -416,6 +419,7 @@ function weeklyChecklistNow(courseId, { now, section, storage } = {}) {
  * `categories` for math and `table` (the old grouping table) for CEN.
  */
 function assessmentsNow(courseId, { section } = {}) {
+  const archived = isArchived(courseId);
   if (courseId === 'cen100') {
     const idsFor = (label) => Object.keys(CEN_GRADE_LABELS).filter((id) => CEN_GRADE_LABELS[id] === label);
     const rows = CEN_GRADE_TABLE.rows.map((row) => {
@@ -425,20 +429,21 @@ function assessmentsNow(courseId, { section } = {}) {
       let label = dated.map((record) => short(record.date)).join(' · ');
       if (!label) label = undated === 'item:y7' ? CEN.byId.get('y7').small : 'Date pending';
       const item = CEN.byId.get(dated[0]?.item || undated?.slice(5));
-      return { title: row.label, dateLabel: label, weight: parseFloat(row.weight), weightLabel: row.weight, ids, item: item?.id || null, anchor: item ? `assignment-${item.id}` : null };
+      // An archived course keeps every row, id and weight (the grade calculator uses them) without its dates.
+      return { title: row.label, dateLabel: archived ? '' : label, weight: parseFloat(row.weight), weightLabel: row.weight, ids, item: item?.id || null, anchor: item ? `assignment-${item.id}` : null };
     });
     const total = CEN_GRADE_TABLE.total.length ? parseFloat(CEN_GRADE_TABLE.total[1]) : rows.reduce((sum, row) => sum + row.weight, 0);
     return Object.assign(rows, { totalWeight: total, count: rows.length, table: CEN_PAGE.grading.tables[0], notes: CEN_PAGE.grading.notes, summary: CEN_PAGE.grading.summary });
   }
   if (!isMath(courseId)) return Object.assign([], { totalWeight: 0, count: 0 });
   const course = DATA[courseId];
-  const chosen = normaliseSection(courseId, section);
+  const chosen = archived ? 0 : normaliseSection(courseId, section);
   const rows = course.assessments.map((a) => {
     const e = resolveAssessment(course, a, chosen);
     let label = 'Date pending';
     if (e.date) label = short(e.date);
     else if (e.week) label = `Week of ${dateLabel(e.week)}`;
-    return { title: a.title, dateLabel: label, weight: a.kind === 'midterm' ? course.weights[1] : a.kind === 'final' ? course.weights[2] : null, weightLabel: MATH.weight(a, course), ids: [a.id], item: a.id, anchor: `assessment-${a.id}` };
+    return { title: a.title, dateLabel: archived ? '' : label, weight: a.kind === 'midterm' ? course.weights[1] : a.kind === 'final' ? course.weights[2] : null, weightLabel: MATH.weight(a, course), ids: [a.id], item: a.id, anchor: `assessment-${a.id}` };
   });
   const labels = ['Lab quizzes', 'Midterm test', 'Final exam'];
   return Object.assign(rows, {
@@ -457,7 +462,9 @@ function assessmentsNow(courseId, { section } = {}) {
 function deskSnapshotNow({ now, storage } = {}) {
   const store = resolveStorage(storage);
   const ms = toMs(now);
-  const summary = deskSummary({ now: ms, storage: view(store) });
+  // An archived course is passed to deskSummary() without data: no next deadline, no progress and no section.
+  const data = anyArchived() ? Object.fromEntries(COURSE_IDS.map((id) => [id, dataFor(id)])) : undefined;
+  const summary = deskSummary({ now: ms, storage: view(store), data });
   return COURSE_IDS.map((id) => {
     const course = summary[id];
     const next = course.next && course.next.precision !== 'empty' ? deadlineItem(id, course.next.id, { now: ms, storage: store }) : null;
@@ -477,6 +484,7 @@ function deskSnapshotNow({ now, storage } = {}) {
 
 /** "What should I work on?": unrecorded work in the next 7 days (range 'week') or all of it ('all'), as the old tools listed it. */
 function workListNow(courseId, { now, range = 'week', storage, section } = {}) {
+  if (isArchived(courseId)) return { items: [], status: '', empty: '' };
   const store = resolveStorage(storage);
   const date = new Date(toMs(now));
   if (courseId === 'cen100') {
