@@ -129,6 +129,19 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-11-04-fixes",
+  "date": "November 4, 2026",
+  "title": "Fixes for deadlines, scrolling and backups",
+  "text": "A few things that did not work as they should.",
+  "items": [
+    "A math lab quiz you have written no longer stays as the next deadline, marked Due time passed, until midnight. Two hours after your lab, the next item takes its place on the course page and on the Desk.",
+    "The Privacy page could open with its text hidden. It now always shows.",
+    "PageDown, the arrow keys, Home and End scroll the page again while a button or the Menu button has focus, for example right after closing the Menu.",
+    "On wide screens, Back from an assignment returns to the same place in Schedule.",
+    "In MTH140 and MTH141, Import a backup says plainly when a file is wrong or damaged, and Download calendar asks you to choose your section when only lab quizzes are left."
+  ]
+ },
+ {
   "id": "2026-11-03-safari-bars",
   "date": "November 3, 2026",
   "title": "No dark boxes under Safari's bars",
