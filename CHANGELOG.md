@@ -2,6 +2,10 @@
 
 Latest first. Students see course changes under **Course updates** in each guide's Guide tools, and website changes on the **Website updates** page. Older entries record the behaviour at the time; later releases supersede them.
 
+## Unreleased — The 404 page no longer sometimes crashes
+
+- The 404 page sends the reader to the Desk right after loading. When that page change began while the intro was still on screen and the intro finished before the Desk arrived, the change had no plan, and its fade read an undefined entry and showed Next.js's application error screen (about one cold load in 15–30). A change whose exit never ran now simply shows the new page (`Layout.jsx`). `scripts/check-no-webgl.mjs`'s `control-404` hit it intermittently.
+
 ## Unreleased — The course page at a glance
 
 - **Next deadline says how long is left.** Beside the label: "23h 47m left" for a confirmed time, in the Desk's countdown colours, or "Today", "Tomorrow" or "In 3 days" for a date without one. After the last dated deadline, a final exam whose date is still pending shows as next, instead of "No upcoming deadlines".
