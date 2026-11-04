@@ -270,7 +270,7 @@ function Home() {
       </div>
 
       <div ref={infiniteTextRef} className={styles.infiniteContainer} aria-hidden="true">
-        <InfiniteText text="Scroll Down" length={5} />
+        <InfiniteText text="Scroll Down" length={5} paused={!visible} />
       </div>
     </section>
   );

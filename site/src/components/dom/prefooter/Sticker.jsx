@@ -6,9 +6,9 @@ import { useFrame } from '@react-three/fiber';
 // eslint-disable-next-line import/extensions
 import { createDiscFlight, GAME_MAX_AGE } from './gameTiming.mjs';
 
-// Slicing swaps the disc for its two halves and scores one point, but never
+// Slicing swaps the emoji for its two halves and scores one point, but never
 // marks anything done (ticks and completion records live on the course pages).
-function Sticker({ id, positionX, image, imageSliced, isMobile, viewportHeight, ceilingY, speed, ceilingRef, floorRef, onDone, onSlice, onMiss, eventSource, active }) {
+function Sticker({ id, positionX, material, materialSliced, isMobile, viewportHeight, ceilingY, speed, ceilingRef, floorRef, onDone, onSlice, onMiss, eventSource, active }) {
   const bodyRef = useRef();
   const age = useRef(0);
   const gone = useRef(false);
@@ -48,7 +48,6 @@ function Sticker({ id, positionX, image, imageSliced, isMobile, viewportHeight, 
   );
 
   const mobileConfig = { position: [positionX, flight.startY, 0], scale: flight.radius * 2 };
-  const map = fruitSliced ? imageSliced : image;
 
   return (
     <RigidBody
@@ -60,27 +59,14 @@ function Sticker({ id, positionX, image, imageSliced, isMobile, viewportHeight, 
       gravityScale={flight.gravityScale}
       colliders="ball"
     >
-      <Plane scale={mobileConfig.scale} onPointerEnter={handleFruitSliced} onPointerDown={handleFruitSliced} userData={{ slice: handleFruitSliced }}>
-        {isMobile ? (
-          // phones: no iridescence/clearcoat passes
-          <meshStandardMaterial transparent polygonOffset polygonOffsetFactor={-10} map={map} roughness={0.6} metalness={0.2} toneMapped={false} />
-        ) : (
-          <meshPhysicalMaterial
-            transparent
-            polygonOffset
-            polygonOffsetFactor={-10}
-            map={map}
-            iridescence={2}
-            iridescenceIOR={1}
-            iridescenceThicknessRange={[0, 1400]}
-            roughness={1}
-            clearcoat={0.5}
-            // The original used 0.75 for printed logos; the discs carry the course colours, which read muddy that metallic
-            metalness={0.35}
-            toneMapped={false}
-          />
-        )}
-      </Plane>
+      {/* The shared material of this emoji's face (FruitNinja): whole, then its halves once sliced. */}
+      <Plane
+        scale={mobileConfig.scale}
+        material={fruitSliced ? materialSliced : material}
+        onPointerEnter={handleFruitSliced}
+        onPointerDown={handleFruitSliced}
+        userData={{ slice: handleFruitSliced }}
+      />
     </RigidBody>
   );
 }

@@ -26,12 +26,16 @@ function assignmentListNow(courseId, { now, items } = {}) {
     const rows = (rowsByItem.get(item.id) || []).sort((a, b) => a.sortKey - b.sortKey);
     const records = rows.filter((row) => row.markable === true);
     const recorded = records.filter((row) => row.done).length;
-    const lead = records.find((row) => !row.done) || records[records.length - 1] || null;
+    // Lead with the next unfinished record that has not passed, so a part due this week is never shown
+    // under an earlier part's date. Only an item whose open records have all passed is Past due; an
+    // earlier part that passed unmarked still sets pastDue (and `missed`) for its row.
+    const lead = records.find((row) => !row.done && !row.overdue) || records.find((row) => !row.done) || records[records.length - 1] || null;
     const done = records.length > 0 && recorded === records.length;
     const pastDue = records.some((row) => row.overdue);
+    const missed = records.filter((row) => row.overdue).length;
     let group = 'later';
     if (done) group = 'done';
-    else if (pastDue) group = 'pastDue';
+    else if (lead?.overdue) group = 'pastDue';
     else if (lead) {
       const week = buckets([lead], ms);
       if (week.thisWeek.length) group = 'thisWeek';
@@ -46,6 +50,7 @@ function assignmentListNow(courseId, { now, items } = {}) {
       rows,
       records,
       recorded,
+      missed,
       lead,
       done,
       pastDue,

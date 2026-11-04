@@ -31,8 +31,8 @@ test('delayed rendering keeps the ribbon finite without changing the physics pos
     textures: true, started: { current: false }, element: { dataset: {} }, idle: false,
     body, card: { current: new THREE.Object3D() }, band: { current: { geometry } }, offsetX: 0,
     lerped: [new THREE.Vector3(), new THREE.Vector3()], maxSpeed: 50, minSpeed: 10,
-    drawn: new Float64Array(12).fill(NaN), frameShare, easeFor,
     curvePoints: Array.from({ length: 33 }, () => new THREE.Vector3()),
+    drawn: new Float64Array(12).fill(NaN), layout: { draw: true }, stale: { current: false }, frameShare, easeFor,
     curve: Object.assign(new THREE.CatmullRomCurve3(Array.from({ length: 4 }, () => new THREE.Vector3())), { curveType: 'chordal' }),
     useFrame: frame => { callback = frame; },
   };
@@ -57,16 +57,17 @@ test('ribbon samples are reused without changing any rendered geometry', () => {
     let samples;
     let firstSamples;
     let firstVectors;
-    const point = (x, y, phase) => ({ current: { translation: () => new THREE.Vector3(
+    const at = (x, y, phase) => new THREE.Vector3(
       offsetX + x + Math.sin(frame * 0.15 + phase) * 0.4,
       y + Math.cos(frame * 0.09 + phase) * 0.1,
       Math.sin(frame * 0.07 + phase) * 0.2,
-    ) } });
+    );
+    const point = (x, y, phase) => ({ current: { translation: () => at(x, y, phase) } });
+    // the joints' markers follow their interpolated poses (BadgeCard reads marker.parent.position)
+    const joint = (x, y, phase) => ({ current: { get parent() { return { position: at(x, y, phase) }; } } });
     const object = new THREE.Object3D();
     object.position.set(offsetX + 0.3, -0.45, 0.2);
     object.quaternion.setFromEuler(new THREE.Euler(0.1, 0.2, -0.3));
-    // the strap reads each joint's interpolated pose through its marker
-    const joint = (x, y, phase) => ({ current: { get parent() { return { position: point(x, y, phase).current.translation() }; } } });
     const body = {
       fixed: point(0, 4, 0), j1Object: joint(0, 3, 1), j2Object: joint(0, 2, 2), j3Object: joint(0, 1, 3),
       cardObject: { current: { parent: object } },
@@ -81,7 +82,7 @@ test('ribbon samples are reused without changing any rendered geometry', () => {
       band: { current: { geometry: { setPoints(points) { samples = points; geometry.setPoints(points); } } } },
       lerped: [new THREE.Vector3(), new THREE.Vector3()], maxSpeed: 50, minSpeed: 10,
       curvePoints: Array.from({ length: 33 }, () => new THREE.Vector3()), curve,
-      drawn: new Float64Array(12).fill(NaN), frameShare, easeFor,
+      drawn: new Float64Array(12).fill(NaN), layout: { draw: true }, stale: { current: false }, frameShare, easeFor,
       useFrame: run => { callback = run; },
     };
     new Function(...Object.keys(scope), source.slice(start, end))(...Object.values(scope));

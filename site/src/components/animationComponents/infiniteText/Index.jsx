@@ -5,7 +5,7 @@ import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect'
 import { useRef } from 'react';
 import useStill from '@src/hooks/useStill';
 
-function InfiniteText({ text, length, className, hasStroke = true }) {
+function InfiniteText({ text, length, className, hasStroke = true, paused = false }) {
   const containerRef = useRef();
   const tweenRef = useRef(null);
   const still = useStill();
@@ -37,13 +37,14 @@ function InfiniteText({ text, length, className, hasStroke = true }) {
     return () => ctx.kill();
   }, []);
 
-  // Motion off: the marquee stands still.
+  // Motion off: the marquee stands still. Off screen (`paused`), it waits where it is instead of
+  // writing its transform every frame; the loop is seamless, so where it resumes cannot be seen.
   useIsomorphicLayoutEffect(() => {
     const tl = tweenRef.current;
     if (!tl) return;
-    if (still) tl.pause();
+    if (still || paused) tl.pause();
     else tl.play();
-  }, [still]);
+  }, [still, paused]);
 
   return (
     <div ref={containerRef} className={styles.root}>

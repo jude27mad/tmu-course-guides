@@ -103,8 +103,9 @@ function Counter({ value, suffix = '', className }) {
       element.textContent = `${value}${suffix}`;
       return undefined;
     }
-    // count up when the tile comes into view
-    if (!inView) return undefined;
+    // count up when the tile comes into view; a tile already showing its value has nothing to count (each
+    // crossing used to rewrite the same text every frame for a second)
+    if (!inView || shown.current === value) return undefined;
     // The original loader counter: a snapped number tween.
     const counter = { value: shown.current };
     const tween = gsap.to(counter, {

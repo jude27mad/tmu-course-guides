@@ -3,9 +3,6 @@
 import '@src/styles/global.scss';
 import '@src/styles/global.css';
 
-import * as THREE from 'three';
-
-import { PerformanceMonitor, View } from '@react-three/drei';
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import dynamic from 'next/dynamic';
@@ -18,12 +15,6 @@ import { createTouchScrollFilter } from '@src/utils/touch-scroll.mjs';
 // eslint-disable-next-line import/extensions
 import { frameShare } from '@src/utils/frameStep.mjs';
 
-import Background from '@src/components/canvas/background/Index';
-import DemandDriver from '@src/components/canvas/DemandDriver';
-import ClearViews from '@src/components/canvas/ClearViews';
-import { Canvas } from '@react-three/fiber';
-import { EffectComposer } from '@react-three/postprocessing';
-import Fluid from '@src/components/canvas/fluid/Fluid';
 import Head from 'next/head';
 import Layout from '@src/components/dom/Layout';
 import Lenis from 'lenis';
@@ -45,7 +36,9 @@ import { useMotionPaused } from '@src/lib/react';
 import useScroll from '@src/hooks/useScroll';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
-import { nativeIOSScroll } from '@src/utils/scrollRoot';
+import { nativeIOSScroll, scrollTrial } from '@src/utils/scrollRoot';
+// eslint-disable-next-line import/extensions
+import { blockAutoscroll, blockWheel, lockKey } from '@src/utils/scrollTrialGuards.mjs';
 
 if (typeof window !== 'undefined') {
   gsap.defaults({ ease: 'none' });
@@ -62,6 +55,17 @@ if (typeof window !== 'undefined') {
 }
 
 const BadgeWorld = dynamic(() => import('@src/components/courseBadge/BadgeScene').then((module) => module.BadgeWorld), { ssr: false });
+
+// The 3D layer (three, R3F, drei, postprocessing) loads after the page is usable instead of in the first
+// bundle every route downloads and runs. Each canvas already mounts after hydration (WebGLGate), and what
+// it draws is unchanged; it arrives once these chunks are in. The composer and the fluid load as one.
+const Canvas = dynamic(() => import('@react-three/fiber').then((module) => module.Canvas), { ssr: false });
+const PerformanceMonitor = dynamic(() => import('@react-three/drei/core/PerformanceMonitor').then((module) => module.PerformanceMonitor), { ssr: false });
+const View = { Port: dynamic(() => import('@react-three/drei/web/View').then((module) => module.View.Port), { ssr: false }) };
+const Background = dynamic(() => import('@src/components/canvas/background/Index'), { ssr: false });
+const DemandDriver = dynamic(() => import('@src/components/canvas/DemandDriver'), { ssr: false });
+const ClearViews = dynamic(() => import('@src/components/canvas/ClearViews'), { ssr: false });
+const FluidLayer = dynamic(() => import('@src/components/canvas/FluidLayer'), { ssr: false });
 
 // The stats.js FPS panel is a development aid: show it only with ?stats in the URL.
 const SHOW_STATS = typeof window !== 'undefined' && /[?&]stats\b/.test(window.location.search);
@@ -125,8 +129,9 @@ function useBodyKeyScroll() {
       if (focused?.closest(OWNS_KEYS) || (event.key === ' ' && focused?.closest(ACTIVATED_BY_SPACE))) return;
       // A main that scrolls natively (Pause motion, reduced motion) is scrolled by the browser from focus inside
       // it. Focus anywhere else (a button in the overflow:hidden main, the header after a panel closes) has
-      // nothing the browser can scroll, so those keys did nothing.
-      if (focused && main?.contains(focused) && getComputedStyle(main).overflowY !== 'hidden') return;
+      // nothing the browser can scroll, so those keys did nothing. The opt-in browser-scrolled page
+      // (?scroll=fast) is a real scroller that Lenis still scrolls, so its keys stay Lenis's.
+      if (focused && main?.contains(focused) && getComputedStyle(main).overflowY !== 'hidden' && !scrollTrial()) return;
       const { lenis, isLoading, isMenuOpen, isSearchOpen, still } = useStore.getState();
       if (!lenis || isLoading || isMenuOpen || isSearchOpen) return;
       if (event.key === ' ' && event.shiftKey) step = -2;
@@ -140,6 +145,58 @@ function useBodyKeyScroll() {
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
   }, []);
+}
+
+// With the opt-in browser-scrolled page (?scroll=fast), keep input that scrolls nothing today (main is
+// not user-scrollable) from scrolling main natively past Lenis. A scroll key Lenis does not take and a
+// two-finger gesture lock main while they last (data-keylock, data-multitouch), so the focused field or
+// a pinch keeps its own behaviour; a wheel in the Schedule calendar that it cannot scroll and
+// middle-click autoscroll are cancelled. While main is locked nothing can scroll it anyway.
+function useScrollTrialGuards(mainRef) {
+  useEffect(() => {
+    const main = mainRef.current;
+    if (!main) return undefined;
+    const open = () => scrollTrial() && getComputedStyle(main).overflowY !== 'hidden';
+    // The key's default action (and the browser's choice of what to scroll) runs right after keydown, so
+    // the lock lasts two frames: a held key locks again on each repeat, and a key whose keyup goes
+    // elsewhere (Alt+Down opens a date picker) leaves nothing behind.
+    let keyFrame = 0;
+    const unlockKeys = () => {
+      cancelAnimationFrame(keyFrame);
+      main.removeAttribute('data-keylock');
+    };
+    const onKeyDown = (event) => {
+      if (!open() || !lockKey(event, main, document.activeElement)) return;
+      main.setAttribute('data-keylock', '');
+      cancelAnimationFrame(keyFrame);
+      keyFrame = requestAnimationFrame(() => {
+        keyFrame = requestAnimationFrame(unlockKeys);
+      });
+    };
+    const onWheel = (event) => {
+      if (open() && blockWheel(event, main)) event.preventDefault();
+    };
+    const onMouseDown = (event) => {
+      if (open() && blockAutoscroll(event, navigator.platform, main)) event.preventDefault();
+    };
+    // Every finger, wherever it landed (the header is outside main); a one-finger start means the others lifted.
+    const onTouch = (event) => {
+      if (event.touches.length > 1 && scrollTrial()) main.setAttribute('data-multitouch', '');
+      else if (event.touches.length === 0 || (event.type === 'touchstart' && event.touches.length === 1)) main.removeAttribute('data-multitouch');
+    };
+    const touch = { capture: true, passive: true };
+    document.addEventListener('keydown', onKeyDown);
+    main.addEventListener('wheel', onWheel, { passive: false });
+    main.addEventListener('mousedown', onMouseDown);
+    ['touchstart', 'touchend', 'touchcancel'].forEach((type) => document.addEventListener(type, onTouch, touch));
+    return () => {
+      unlockKeys();
+      document.removeEventListener('keydown', onKeyDown);
+      main.removeEventListener('wheel', onWheel);
+      main.removeEventListener('mousedown', onMouseDown);
+      ['touchstart', 'touchend', 'touchcancel'].forEach((type) => document.removeEventListener(type, onTouch, touch));
+    };
+  }, [mainRef]);
 }
 
 function MyApp({ Component, pageProps, router }) {
@@ -156,6 +213,7 @@ function MyApp({ Component, pageProps, router }) {
 
   useFoucFix();
   useBodyKeyScroll();
+  useScrollTrialGuards(mainRef);
   useScroll(() => ScrollTrigger.update());
 
   useIsomorphicLayoutEffect(() => {
@@ -237,7 +295,7 @@ function MyApp({ Component, pageProps, router }) {
           id="viewCanvas"
           fallback={<span aria-hidden="true" />}
           gl={{
-            outputColorSpace: THREE.LinearSRGBColorSpace,
+            outputColorSpace: 'srgb-linear', // THREE.LinearSRGBColorSpace
             powerPreference: 'high-performance',
           }}
           style={{ zIndex: 0 }}
@@ -316,11 +374,7 @@ function MyApp({ Component, pageProps, router }) {
                 frameloop="demand"
                 aria-hidden="true"
               >
-                {/* The composer's own scene is empty (the fluid draws into its own
-                    buffers), so it needs no multisampling or depth buffer. */}
-                <EffectComposer multisampling={0} depthBuffer={false}>
-                  <Fluid fluidColor={fluidColor} mainRef={mainRef} />
-                </EffectComposer>
+                <FluidLayer fluidColor={fluidColor} mainRef={mainRef} />
               </Canvas>
             </WebGLGate>
           )}

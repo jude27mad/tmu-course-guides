@@ -17,7 +17,19 @@ const subscribe = (onChange) => {
   };
 };
 
-export const isMobileNow = () => typeof window !== 'undefined' && window.innerWidth < MOBILE_WIDTH;
+// Read the width once per resize, not on every render: getSnapshot runs on each render of every caller,
+// including during hydration, where reading innerWidth forces style and layout each time. This module's
+// listeners are added at import, before any subscriber's, so the cached value is current when they run.
+let width = typeof window === 'undefined' ? 0 : window.innerWidth;
+if (typeof window !== 'undefined') {
+  const update = () => {
+    width = window.innerWidth;
+  };
+  window.addEventListener('resize', update);
+  window.addEventListener('orientationchange', update);
+}
+
+export const isMobileNow = () => typeof window !== 'undefined' && width < MOBILE_WIDTH;
 
 const getServerSnapshot = () => false;
 
