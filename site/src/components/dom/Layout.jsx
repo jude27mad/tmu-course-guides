@@ -295,6 +295,9 @@ function Layout({ children, layoutRef, mainRef, router }) {
       // The scrollbar is held hidden too: a scroll event as the page resets could
       // otherwise show it beside the fading card.
       const leaving = [main, viewCanvas(), document.getElementById('scrollbar')].filter(Boolean);
+      // A header still showing (a panel opened just before the page was ready)
+      // leaves with them rather than vanishing when the page is covered.
+      if (Number(getComputedStyle(header).opacity) > 0) leaving.push(header);
       playPhase(
         run,
         leaving.map((el) => el.animate({ opacity: 0 }, out)),

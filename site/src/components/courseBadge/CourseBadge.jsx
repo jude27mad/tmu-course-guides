@@ -18,10 +18,12 @@ export default function CourseBadge({ instanceId, courseId, motionGroup, next, r
   // null during the server render and hydration: the card shows, as it must
   // without JavaScript. false (no WebGL, or the 3D layer failed): it shows at once.
   const webgl = useWebGL();
-  const [waiting, setWaiting] = useState(true);
+  // Worked out while rendering, so a badge that changes course (the Desk's next
+  // deadline) waits again from the same commit that brings the new course.
+  const [waitedFor, setWaitedFor] = useState(null);
+  const waiting = waitedFor !== courseId;
   useEffect(() => {
-    setWaiting(true);
-    const timer = setTimeout(() => setWaiting(false), DRAW_GRACE_MS);
+    const timer = setTimeout(() => setWaitedFor(courseId), DRAW_GRACE_MS);
     return () => clearTimeout(timer);
   }, [courseId]);
   const look = useMemo(

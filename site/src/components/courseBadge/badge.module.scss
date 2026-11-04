@@ -26,4 +26,6 @@
     opacity: 0;
     transition: none;
   }
+  // The 3D layer failed (BadgeBoundary): the card shows without waiting.
+  &[data-badge-failed] .fallback { opacity: 1; }
 }

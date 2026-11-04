@@ -159,6 +159,8 @@ test("the panel's rows fade where they stand, and come back when the animation i
   const rows = element({});
   const fade = fadePanelRows({ firstElementChild: rows });
   assert.deepEqual(fade.keyframes.opacity, [1, 0]);
+  // Opacity only: a transform would make the scroller the close button's containing block.
+  assert.deepEqual(Object.keys(fade.keyframes), ['opacity']);
   assert.equal(fade.timing.duration, HANDOFF.rows);
   assert.equal(fade.timing.fill, 'forwards', 'they stay hidden until the panel is');
   assert.equal(fadePanelRows(null), null);
@@ -177,7 +179,9 @@ test("Layout hands a page chosen in a panel to the hand-off, and puts the panel'
   assert.match(exit, /if \(!run\.rows\) run\.rows = fadePanelRows\(panel\);/);
   assert.match(exit, /const out = \{ duration: Math\.max\(hidden \? 0 : HANDOFF\.out, rowsLeft\), easing: EASE\.in, fill: 'both' \};/);
   // The old page, the 3D layer and the scrollbar leave together and stay hidden until it is replaced.
-  assert.match(exit, /const leaving = \[main, viewCanvas\(\), document\.getElementById\('scrollbar'\)\]\.filter\(Boolean\);\s*playPhase\(\s*run,\s*leaving\.map\(\(el\) => el\.animate\(\{ opacity: 0 \}, out\)\),\s*covered,\s*\);/);
+  assert.match(exit, /const leaving = \[main, viewCanvas\(\), document\.getElementById\('scrollbar'\)\]\.filter\(Boolean\);/);
+  // A header still showing leaves with them, rather than vanishing when the page is covered.
+  assert.match(exit, /if \(Number\(getComputedStyle\(header\)\.opacity\) > 0\) leaving\.push\(header\);\s*playPhase\(\s*run,\s*leaving\.map\(\(el\) => el\.animate\(\{ opacity: 0 \}, out\)\),\s*covered,\s*\);/);
   // They come back if the page could not be opened, or once the panel is hidden.
   assert.match(layout, /router\.events\.on\('routeChangeError', onSettled\);/);
   const finish = layout.slice(layout.indexOf('const finishEnter = () => {'), layout.indexOf('const handleExit = () => {'));

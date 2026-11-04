@@ -159,13 +159,14 @@ export function cubicBezier(x1, y1, x2, y2) {
   };
 }
 
-// The rows leave first, at the tap, drifting the way they came in. Cancel the
-// returned animation to show them again (a page that could not open, or once
-// the panel is hidden).
+// The rows leave first, at the tap. Cancel the returned animation to show them
+// again (a page that could not open, or once the panel is hidden). Opacity only:
+// the rows' wrapper is the panel's scroller, and a transform would make it the
+// close button's containing block, moving the button by the scroll.
 export function fadePanelRows(panel) {
   const rows = panel?.firstElementChild;
   if (!rows?.animate) return null;
-  return rows.animate({ opacity: [1, 0], transform: ['none', 'translateX(-1.5rem)'] }, { duration: HANDOFF.rows, easing: HANDOFF_EASE.in, fill: 'forwards' });
+  return rows.animate({ opacity: [1, 0] }, { duration: HANDOFF.rows, easing: HANDOFF_EASE.in, fill: 'forwards' });
 }
 
 // Grows the arriving page from wherever the shell left the card (a pick made

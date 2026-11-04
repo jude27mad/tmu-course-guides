@@ -252,6 +252,14 @@ function ClipToCard({ element }) {
   const { scene, gl } = useThree();
   const scissor = useMemo(() => new THREE.Vector4(), []);
   const size = useMemo(() => new THREE.Vector2(), []);
+  // A badge taken down (a lost GPU, a failed layer) leaves the panel whole.
+  useEffect(
+    () => () => {
+      const backing = element?.closest('[data-badge-clip]')?.querySelector('[data-badge-backing]');
+      if (backing) backing.style.clipPath = '';
+    },
+    [element],
+  );
   useEffect(() => {
     const previous = scene.onBeforeRender;
     scene.onBeforeRender = (...args) => {
