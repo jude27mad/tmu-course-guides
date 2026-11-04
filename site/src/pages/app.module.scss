@@ -124,7 +124,13 @@
 }
 
 :global(html[data-scroll-mode='document']) {
-  .root { display: block; height: auto; min-height: var(--app-viewport-height); }
+  // The dark panels (the footer, the course cards, the Desk's windows) show the
+  // fixed artwork, which reaches under Safari's bars. Wherever it is not painted
+  // (no WebGL, or before its first frame), a panel shows this instead: the ink,
+  // so it is never paper inside a dark panel. Only those panels show it. It is
+  // here, not on the body: Safari blends the body's colour into the one it
+  // paints past the page's ends (global.scss), and that must stay the paper.
+  .root { display: block; height: auto; min-height: var(--app-viewport-height); background-color: var(--black); }
   .layout {
     display: block; height: auto !important; overflow: visible;
     .main {

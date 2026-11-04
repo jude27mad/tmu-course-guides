@@ -36,13 +36,6 @@ html {
 html[data-scroll-mode='document'] {
   background-color: var(--pageUnderGrain);
 }
-// The dark panels (the footer, the course cards, the Desk's windows) show the
-// fixed artwork, which reaches under Safari's bars. Wherever it is not painted,
-// a panel shows the body instead: the ink, so it is never paper inside a dark
-// panel. Only those panels show it.
-html[data-scroll-mode='document'] body {
-  background-color: var(--black);
-}
 
 // Match the surrounding Safari chrome to the visible dark menu/search overlay.
 // The page stays on the Desk's light colour when those panels are closed.
@@ -55,9 +48,33 @@ html[data-browser-surface='dark'] body {
 // own background once the page ends there and no fixed layer supplies a colour.
 // With the dark footer at the bottom edge that must be the footer's ink, not
 // the paper. Document mode only: on desktop `main` covers the page.
-html[data-scroll-mode='document'][data-browser-bottom='dark'],
-html[data-scroll-mode='document'][data-browser-bottom='dark'] body {
+html[data-scroll-mode='document'][data-browser-bottom='dark'] {
   background-color: var(--black);
+}
+
+// That flat colour is the root's with the body's blended over it (WebKit's
+// LocalFrameView::documentBackgroundColor), so an opaque body wins. An ink body
+// put a black box under the status bar at the top of every page and under the
+// toolbar at the end of every course page. In document mode the body stays
+// clear and the root alone decides; the dark panels' ink fallback is `.root`
+// (app.module.scss). After the rules above, which it must override.
+html[data-scroll-mode='document'] body {
+  background-color: transparent;
+}
+
+// While Menu or Search shrinks the page, that colour follows the page: it turns
+// to the panel's ink as the page shrinks and dims (--panel-ink, 0 to 1, set by
+// the shell's timeline in panelShell.js), not at the tap, when the page still
+// fills the screen. Where the dark footer was at the bottom before the tap
+// (data-footer-bottom, kept by the navbar until the page is restored) it was
+// the ink already, and stays so.
+@supports (background-color: color-mix(in srgb, red 50%, blue)) {
+  html[data-scroll-mode='document'][data-page-shrunk] {
+    background-color: color-mix(in srgb, var(--black) calc(var(--panel-ink, 1) * 100%), var(--pageUnderGrain));
+  }
+  html[data-scroll-mode='document'][data-page-shrunk][data-footer-bottom='dark'] {
+    background-color: var(--black);
+  }
 }
 
 main.lenis-stopped {
@@ -285,8 +302,18 @@ html[data-scroll-mode='document'] {
   // corners like Giats's (whose page is always one screen tall), not a strip
   // of the whole document. The insets are measured as the shell starts
   // (panelShell.js markPageShrunk); the clip scales with the page.
+  // Safari shows the page under its bars too, so at the tap the card still
+  // reaches --edge-bleed-* past the layout viewport, beyond both bars: cut at
+  // the bars, the page under them turned dark the moment Menu was pressed and
+  // stayed dark until a close had fully finished. The reach and the corners
+  // follow the shell (--panel-cover, 0 to 1), so the card's edges move in from
+  // past the screen's edges as the page shrinks, and back out as it returns.
   &[data-page-shrunk] #main {
-    clip-path: inset(var(--page-clip-top, 0px) 0px var(--page-clip-bottom, 0px) 0px round 1.3888888889vw);
+    clip-path: inset(
+      max(0px, var(--page-clip-top, 0px) - (1 - var(--panel-cover, 1)) * var(--edge-bleed-top)) 0px
+        max(0px, var(--page-clip-bottom, 0px) - (1 - var(--panel-cover, 1)) * var(--edge-bleed-bottom)) 0px round
+        calc(var(--panel-cover, 1) * 1.3888888889vw)
+    );
   }
 }
 
