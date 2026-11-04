@@ -184,28 +184,42 @@ await check('with the trial on, the wheel and keys still glide through Lenis, an
   }
 });
 
-await check('with the trial on, keys and middle-click that scroll nothing today still scroll nothing', async () => {
+// Keys on a focused button (Lenis glides them) and browser shortcuts with main focused (nothing scrolls them
+// today): the same page positions with the trial as without it, key by key.
+async function buttonKeys(route) {
   const { context, page, errors } = await open();
   try {
-    await ready(page, 'mth140/?scroll=fast');
+    await ready(page, route);
+    const seen = [];
     const button = page.getByRole('button', { name: /Guide tools/ }).first();
     await button.focus();
-    const before = await settled(page);
-    for (const key of ['PageDown', 'End', 'ArrowDown']) {
+    seen.push({ key: 'start', at: Math.round(await settled(page)) });
+    for (const key of ['PageDown', 'ArrowDown', 'End']) {
       await page.keyboard.press(key);
-      assert.equal(await settled(page), before, `${key} on a focused button`);
+      seen.push({ key, at: Math.round(await settled(page)) });
     }
-    // with main focused (a click on the page's text focuses it), where the browser's own Ctrl+End would start
+    // with main focused (a click on the page's text focuses it), where the browser's own Ctrl+Home would start
     await page.evaluate(() => document.querySelector('main').focus({ preventScroll: true }));
-    for (const key of ['Control+End', 'Alt+PageDown']) {
+    for (const key of ['Control+Home', 'Alt+PageUp']) {
       await page.keyboard.press(key);
-      assert.equal(await settled(page), before, `${key} with main focused`);
+      seen.push({ key, at: Math.round(await settled(page)) });
     }
-    assert.deepEqual(errors, []);
-    return { before };
+    return { seen, errors };
   } finally {
     await context.close();
   }
+}
+
+await check('with the trial on, keys on a button and browser shortcuts move the page exactly as today', async () => {
+  const today = await buttonKeys('mth140/');
+  const trial = await buttonKeys('mth140/?scroll=fast');
+  trial.seen.forEach((step, index) => {
+    const before = today.seen[index];
+    assert.ok(Math.abs(step.at - before.at) <= 2, `${step.key}: ${before.at} today, ${step.at} with the trial`);
+  });
+  assert.ok(today.seen.at(-3).at > 0, `the keys reached the page: ${JSON.stringify(today.seen)}`);
+  assert.deepEqual([...today.errors, ...trial.errors], []);
+  return { today: today.seen, trial: trial.seen };
 });
 
 await check('with the trial on, Page Down in a text field scrolls nothing, as today', async () => {
