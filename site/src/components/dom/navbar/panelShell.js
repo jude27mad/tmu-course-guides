@@ -21,7 +21,9 @@ function fitShrunkPage() {
   const main = document.querySelector('main');
   if (!main) return;
   const scrolled = scrollTop();
-  gsap.set(main, { transformOrigin: `50% ${scrolled + window.innerHeight / 2}px` });
+  // Written directly: a gsap.set would also rewrite main's transform from GSAP's
+  // cache, which a hand-off's Web Animation (or one it left behind) does not use.
+  main.style.transformOrigin = `50% ${scrolled + window.innerHeight / 2}px`;
   // Layout geometry, not the box on screen: main may already be transformed.
   let top = 0;
   for (let node = main; node; node = node.offsetParent) top += node.offsetTop;

@@ -141,6 +141,9 @@ function Layout({ children, layoutRef, mainRef, router }) {
   // phase continues from where the page is.
   const stopMotion = (run) => {
     run.start?.kill();
+    // A replaced hand-off's Safari edges go to the page's: the next phase fades
+    // the card into the paper, and they would otherwise stay part ink meanwhile.
+    if (run.plan === 'handoff') run.tl?.progress(1);
     run.tl?.kill();
     run.anims.forEach((anim) => {
       try {

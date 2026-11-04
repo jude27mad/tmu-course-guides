@@ -43,7 +43,7 @@ function withDocument({ ios, edges }, run) {
     style: { setProperty: (name, value) => { properties[name] = value; }, removeProperty: (name) => { delete properties[name]; }, getPropertyValue: (name) => properties[name] ?? '' },
   };
   // The shell left the page as a card: shifted 40vw left of a 390px screen, scaled 0.9, with rounded corners.
-  const main = element({ left: '-156px', borderTopLeftRadius: '5.4px' }, { scaleX: 0.9, offsetTop: 0, offsetHeight: 2400, offsetParent: null });
+  const main = element({ left: '-156px', borderTopLeftRadius: '5.4px' }, { scaleX: 0.9, offsetTop: 0, offsetHeight: 2400, offsetParent: null, style: {} });
   const layout = element({ opacity: '0.05' });
   const header = element({});
   const scene = element({});
@@ -103,7 +103,7 @@ test("on iPhone and iPad the card is refitted to the new page and Safari's edges
     // Refitted at the new page's top: one screen, scaled about its middle.
     assert.equal(properties['--page-clip-top'], '0px');
     assert.equal(properties['--page-clip-bottom'], `${2400 - 844}px`);
-    assert.equal(main.transformOrigin, '50% 422px');
+    assert.equal(main.style.transformOrigin, '50% 422px');
     // The new page opens at its light top, and Safari's colour past its ends and the
     // card's reach under the bars start from the panel's and return to the page's.
     assert.equal(root.dataset.footerBottom, 'light');
