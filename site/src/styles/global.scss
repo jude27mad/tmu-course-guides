@@ -263,9 +263,28 @@ html[data-scroll-mode='document'] {
   // viewport, ended in a hard line at both bars; they reach this far past each
   // edge instead (more than either bar, in either toolbar layout), and Safari
   // shows that reach. Past the ends of the document it shows only the root's
-  // flat colour (see the artwork's fade at a dark end, app.module.scss).
+  // flat colour (see the dark end's fade, --dark-end-fade, below).
   --edge-bleed-top: 160px;
   --edge-bleed-bottom: 160px;
+  // A page that ends in the dark footer fades into the ink over its last
+  // stretch, so it meets the flat ink Safari paints past its end without an
+  // edge, at every scroll position. The page's own fade belongs to the end of
+  // the document (layout.module.scss) and moves with it under the toolbar; a
+  // fixed copy takes over while the end is at the bar (app.module.scss). Eased
+  // (smoothstep), so neither end of the fade draws a line.
+  --dark-end-fade-height: 120px;
+  --dark-end-fade: linear-gradient(
+    to bottom,
+    rgba(var(--inkRgb), 0),
+    rgba(var(--inkRgb), 0.043) 12.5%,
+    rgba(var(--inkRgb), 0.156) 25%,
+    rgba(var(--inkRgb), 0.316) 37.5%,
+    rgba(var(--inkRgb), 0.5) 50%,
+    rgba(var(--inkRgb), 0.684) 62.5%,
+    rgba(var(--inkRgb), 0.844) 75%,
+    rgba(var(--inkRgb), 0.957) 87.5%,
+    var(--black)
+  );
   body { overflow: visible; max-height: none; }
   // Part of the page, not fixed: Safari cuts what a fixed element paints itself
   // (a CSS background) at the layout viewport, so a fixed grain ended in a line
