@@ -1133,11 +1133,22 @@ try {
         const scoreLayout = await score.evaluate(el => {
           const box = el.getBoundingClientRect();
           const stage = el.parentElement.getBoundingClientRect();
-          return { center: box.left + box.width / 2, viewportCenter: innerWidth / 2, top: box.top - stage.top, height: stage.height, fontSize: parseFloat(getComputedStyle(el).fontSize) };
+          const css = getComputedStyle(el);
+          return { right: stage.right - box.right, top: box.top - stage.top, bottom: stage.bottom - box.bottom, height: stage.height, position: css.position, fontSize: parseFloat(css.fontSize) };
         });
-        assert.ok(Math.abs(scoreLayout.center - scoreLayout.viewportCenter) < 2, 'score is horizontally centered');
-        assert.ok(scoreLayout.top >= 0 && scoreLayout.top < scoreLayout.height / 4, 'score stays at the top of the stage');
+        assert.ok(Math.abs(scoreLayout.right) < 2, 'score sits at the right of the stage');
+        assert.ok(scoreLayout.top > scoreLayout.height / 2 && scoreLayout.bottom >= 96, 'score sits near the bottom with room for the menu');
+        assert.equal(scoreLayout.position, 'absolute', 'the score moves with the stage instead of being fixed or sticky');
         assert.ok(scoreLayout.fontSize >= 24, 'score text is larger');
+        const rendering = await page.evaluate(() => {
+          const state = [...window.canvasStores].map(store => store.getState()).find(item => item.gl.domElement.closest('[data-companion-game]'));
+          const canvas = state.gl.domElement.getBoundingClientRect();
+          const anchor = document.querySelector('[data-game-ceiling]').getBoundingClientRect();
+          const score = document.querySelector('[data-game-score]').getBoundingClientRect();
+          return { dpr: state.gl.getPixelRatio(), expectedDpr: Math.min(2, Math.max(1, devicePixelRatio)), inset: parseFloat(state.gl.domElement.style.clipPath.slice(6)), expectedInset: Math.max(0, Math.min(canvas.height, anchor.top + score.height + 8 - canvas.top)) };
+        });
+        assert.equal(rendering.dpr, rendering.expectedDpr, 'existing emoji artwork renders at up to twice the pixel density');
+        assert.ok(Math.abs(rendering.inset - rendering.expectedInset) < 1, 'moving the badge preserves the original flight ceiling');
         const slices = hit.first;
         await page.screenshot({ path: path.join(report, `${label}-game-score.png`) });
         // Stop slicing. Require a recorded positive score followed by zero,

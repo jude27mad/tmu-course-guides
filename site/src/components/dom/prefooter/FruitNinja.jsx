@@ -105,7 +105,7 @@ function useFruitSpawner({ viewport, textures, isMobile, active, getCeiling, str
   return [fruits, remove];
 }
 
-function FruitNinja({ active = true, eventSource, scoreRef, streakRef, onSlice, onMiss }) {
+function FruitNinja({ active = true, eventSource, scoreRef, ceilingAnchorRef, streakRef, onSlice, onMiss }) {
   const viewport = useThree((state) => state.viewport);
   const isMobile = useIsMobile();
   const textures = useEmojiTextures();
@@ -118,10 +118,11 @@ function FruitNinja({ active = true, eventSource, scoreRef, streakRef, onSlice, 
   const getCeiling = useCallback(() => {
     const bounds = gl.domElement.getBoundingClientRect();
     const score = scoreRef.current?.getBoundingClientRect();
+    const anchor = ceilingAnchorRef.current?.getBoundingClientRect();
     const paper = eventSource.current?.closest('[data-companion-statement]')?.getBoundingClientRect();
-    if (!score || !paper || !bounds.height) return -Infinity;
+    if (!score || !anchor || !paper || !bounds.height) return -Infinity;
     const { inset, bottomInset, ceilingY, floorY } = scoreBoundary({
-      scoreBottom: score.bottom,
+      scoreBottom: anchor.top + score.height,
       canvasTop: bounds.top,
       canvasHeight: bounds.height,
       viewportHeight: viewport.height,
@@ -129,7 +130,7 @@ function FruitNinja({ active = true, eventSource, scoreRef, streakRef, onSlice, 
     });
     ceilingRef.current = ceilingY;
     floorRef.current = floorY;
-    // Mask airborne discs at both the score and the white/dark boundary.
+    // Preserve the original upper limit and the white/dark boundary.
     // The fixed canvas and its screen-bottom launch point stay put.
     if (inset !== insetRef.current || bottomInset !== bottomInsetRef.current) {
       gl.domElement.style.clipPath = `inset(${inset}px 0 ${bottomInset}px 0)`;
@@ -137,7 +138,7 @@ function FruitNinja({ active = true, eventSource, scoreRef, streakRef, onSlice, 
       bottomInsetRef.current = bottomInset;
     }
     return ceilingY;
-  }, [gl, scoreRef, eventSource, viewport.height]);
+  }, [gl, scoreRef, ceilingAnchorRef, eventSource, viewport.height]);
   useFrame(() => {
     if (active) getCeiling();
   }, -100);
