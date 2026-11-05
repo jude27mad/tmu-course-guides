@@ -287,9 +287,11 @@ function BadgeCard({ body, offsetX, look, idle, element, layout, maxSpeed = 50, 
     }
   });
 
+  // Nothing of the badge draws before its face can: the ribbon and the clip alone
+  // (in three's default white) would hang in a window whose HTML card waits for it.
   return (
     <>
-      <group ref={card}>
+      <group ref={card} visible={!!textures}>
         {materials && (
           <mesh material={materials}>
             {/* three's RoundedBoxGeometry (as the MagicBall boxes): per-face UVs, so the back reads the right way round */}
@@ -306,7 +308,7 @@ function BadgeCard({ body, offsetX, look, idle, element, layout, maxSpeed = 50, 
           <meshStandardMaterial color={look.clip} metalness={0.6} roughness={0.35} />
         </mesh>
       </group>
-      <mesh ref={band}>
+      <mesh ref={band} visible={!!textures}>
         <meshLineGeometry />
         {textures && <meshLineMaterial color="white" resolution={[1, 1]} depthTest={false} useMap map={textures.band} repeat={[-3, 1]} lineWidth={1} />}
       </mesh>
@@ -317,7 +319,7 @@ function BadgeCard({ body, offsetX, look, idle, element, layout, maxSpeed = 50, 
 // View's scissor covers its own rectangle. Also clip to the stacked directory
 // card, which may cover part of that rectangle as cards slide past one another.
 // The rectangles come from this frame's measurement (BadgeViewport).
-function ClipToCard({ layout }) {
+function ClipToCard({ layout, element }) {
   const { scene, gl } = useThree();
   const scissor = useMemo(() => new THREE.Vector4(), []);
   const size = useMemo(() => new THREE.Vector2(), []);
@@ -325,6 +327,14 @@ function ClipToCard({ layout }) {
   // to six significant digits, so reading it back missed whenever a rectangle
   // had a fraction (most frames of a scroll) and every frame rewrote it.
   const written = useMemo(() => new WeakMap(), []);
+  // A badge taken down (a lost GPU, a failed layer) leaves the panel whole.
+  useEffect(
+    () => () => {
+      const backing = element?.closest('[data-badge-clip]')?.querySelector('[data-badge-backing]');
+      if (backing) backing.style.clipPath = '';
+    },
+    [element],
+  );
   useEffect(() => {
     const previous = scene.onBeforeRender;
     scene.onBeforeRender = (...args) => {
@@ -350,6 +360,15 @@ function ClipToCard({ layout }) {
   useFrame(() => {
     const { backing, panel, bounds: window } = layout;
     if (!backing || !panel || !window) return;
+    // The panel stays whole until the badge has drawn, so the window reads as part
+    // of the card rather than an empty hole while the badge loads.
+    if (element?.dataset.badgeRendered !== 'true') {
+      if (written.has(backing)) {
+        written.delete(backing);
+        backing.style.clipPath = '';
+      }
+      return;
+    }
     const left = window.left - panel.left;
     const top = window.top - panel.top;
     const right = left + window.width;
@@ -372,7 +391,7 @@ export function BadgeView({ entry, look, rest }) {
       <PerspectiveCamera manual makeDefault position={[0, 0, 10]} fov={25} />
       <ambientLight intensity={Math.PI} />
       <BadgeCard key={entry.id} body={entry.body} offsetX={entry.slot * SPACING} look={look} idle={rest} element={entry.element} layout={layout} />
-      <ClipToCard layout={layout} />
+      <ClipToCard layout={layout} element={entry.element} />
       <ambientLight intensity={1.3} />
       <directionalLight position={[5, 5, 5]} intensity={1.5} />
       <directionalLight position={[-5, 5, 5]} intensity={1} />

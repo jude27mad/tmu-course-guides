@@ -17,6 +17,15 @@
     text-align: center;
     strong { font-size: clamp(16px, 3vw, 48px); }
     span { font-size: 12px; }
+    // Fades in only if the 3D badge has not drawn in time (CourseBadge.jsx).
+    transition: opacity 0.4s ease-out;
   }
   &[data-badge-rendered='true'] .fallback { visibility: hidden; }
+  // Waiting for the 3D badge: the window shows its dark backing, not a pale box.
+  &[data-badge-pending] .fallback {
+    opacity: 0;
+    transition: none;
+  }
+  // The 3D layer failed (BadgeBoundary): the card shows without waiting.
+  &[data-badge-failed] .fallback { opacity: 1; }
 }

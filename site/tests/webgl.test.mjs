@@ -322,3 +322,23 @@ test('every course badge keeps an HTML card that shows whenever its 3D card is n
   const scene = code(fileURLToPath(new URL('../src/components/courseBadge/BadgeScene.jsx', import.meta.url)));
   assert.match(scene, /return \(\) => \{\s*if \(element\) element\.dataset\.badgeRendered = 'false';/, 'a 3D card taken down (no WebGL, a lost GPU) shows the HTML card again');
 });
+
+test('where WebGL works the HTML card waits for the 3D card, and only there', () => {
+  // The card used to show at once and vanish when the badge drew: a pale box in each window.
+  const badge = code(fileURLToPath(new URL('../src/components/courseBadge/CourseBadge.jsx', import.meta.url)));
+  assert.match(badge, /data-badge-pending=\{webgl && waiting \? '' : undefined\}/, 'never while WebGL is unknown (no JavaScript, hydration) or unavailable');
+  assert.match(badge, /const waiting = waitedFor !== courseId;/, 'a badge that changes course waits again from the same render');
+  const css = readFileSync(new URL('../src/components/courseBadge/badge.module.scss', import.meta.url), 'utf8');
+  assert.match(css, /&\[data-badge-pending\] \.fallback \{\s*opacity: 0;/);
+  // A failed 3D layer shows the card at once, and leaves the card's panel whole.
+  assert.ok(css.indexOf('&[data-badge-failed] .fallback { opacity: 1; }') > css.indexOf('&[data-badge-pending] .fallback'));
+  const boundary = code(fileURLToPath(new URL('../src/components/courseBadge/BadgeBoundary.jsx', import.meta.url)));
+  assert.match(boundary, /element\.dataset\.badgeFailed = '';/);
+  assert.match(boundary, /backing\.style\.clipPath = '';/);
+  // The badge draws nothing before its face can, and its window opens once it has drawn.
+  const scene = code(fileURLToPath(new URL('../src/components/courseBadge/BadgeScene.jsx', import.meta.url)));
+  assert.match(scene, /<group ref=\{card\} visible=\{!!textures\}>/);
+  assert.match(scene, /<mesh ref=\{band\} visible=\{!!textures\}>/);
+  assert.match(scene, /if \(element\?\.dataset\.badgeRendered !== 'true'\) \{\s*if \(written\.has\(backing\)\) \{\s*written\.delete\(backing\);\s*backing\.style\.clipPath = '';\s*\}\s*return;/);
+  assert.match(scene, /<ClipToCard layout=\{layout\} element=\{entry\.element\} \/>/);
+});

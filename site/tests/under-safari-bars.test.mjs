@@ -278,16 +278,27 @@ test('the footer\'s colour before the tap is kept while the page is shrunk', () 
   assert.doesNotMatch(update.slice(update.indexOf('root.dataset.footerBottom')), /overlay/);
 });
 
-test('leaving for another page from an open panel lifts the colour past the ends with the paper', () => {
+test('leaving for another page from an open panel brings the colour past the ends back with the page', () => {
+  // The hand-off grows the new page back from the card the panel made (Layout and
+  // growPageBack in panelShell.js). The card's reach under Safari's bars and the
+  // colour past the page's ends come back with it, from the panel's (1) to the
+  // page's (0), and the new page opens at its top, which is light on every page.
   const shell = read('../src/components/dom/navbar/panelShell.js');
-  const fade = shell.slice(shell.indexOf('export function fadePanelEdges(duration) {'), shell.indexOf('export function buildShellTimeline'));
-  assert.match(fade, /if \(!\('pageShrunk' in root\.dataset\)\) return;/);
-  assert.match(fade, /root\.dataset\.footerBottom = 'light';/);
-  // Only the colour: --panel-cover would widen the still visible card's clip.
-  assert.match(fade, /gsap\.to\(root, \{ '--panel-ink': 0, duration, ease: 'power2\.out' \}\);/);
-  assert.doesNotMatch(fade, /--panel-cover/);
+  const start = shell.indexOf('export function growPageBack(');
+  assert.ok(start > shell.indexOf('export function buildShellTimeline'), 'after the shell, which keeps its own --panel-cover tween');
+  const grow = shell.slice(start);
+  assert.match(grow, /const ios = nativeIOSScroll\(\) && 'pageShrunk' in root\.dataset;/);
+  // The card is refitted to the new page at its top before it grows.
+  assert.match(grow, /if \(ios\) markPageShrunk\(true\);/);
+  assert.match(grow, /root\.dataset\.footerBottom = 'light';/);
+  // From where the shell left them (part way, for a pick made while it opened) to the page's.
+  assert.match(grow, /gsap\.fromTo\(\s*root,\s*\{ '--panel-cover': from\('--panel-cover'\), '--panel-ink': from\('--panel-ink'\) \},\s*\{ '--panel-cover': 0, '--panel-ink': 0, duration: HANDOFF\.grow \/ 1000, /);
   const layout = read('../src/components/dom/Layout.jsx');
   const exit = layout.slice(layout.indexOf('const handleExit = () => {'), layout.indexOf('const handleEnter = () => {'));
-  const paper = exit.slice(exit.indexOf('// The paper fade.'));
-  assert.match(paper, /if \(ios && panelOpen\) fadePanelEdges\(fade\.paper \/ 1000\);/);
+  assert.match(exit, /if \(handoff\) run\.plan = 'handoff';/);
+  const enter = layout.slice(layout.indexOf('const handleEnter = () => {'));
+  assert.match(enter, /growPageBack\(\{ main, layout: layoutRef\.current, header, scene: viewCanvas\(\) \}\)/);
+  // Meanwhile the navbar holds the shell rather than reversing it under the new page.
+  const navbar = read('../src/components/dom/navbar/Index.jsx');
+  assert.match(navbar, /if \(isTransitioning === 'handoff' \|\| \(isTransitioning && nativeIOSScroll\(\)\)\) \{\s*(\/\/[^\n]*\s*)*tl\.pause\(\);/);
 });

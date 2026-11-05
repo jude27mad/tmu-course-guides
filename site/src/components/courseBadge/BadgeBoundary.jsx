@@ -18,7 +18,13 @@ export default class BadgeBoundary extends Component {
   componentDidCatch() {
     const { registry } = this.props;
     registry.getState().entries.forEach(({ element }) => {
-      if (element) element.dataset.badgeRendered = 'false';
+      if (!element) return;
+      element.dataset.badgeRendered = 'false';
+      // The 3D badge will not come: its card shows now, not after the wait for
+      // it (CourseBadge.jsx), and the card's panel is whole again.
+      element.dataset.badgeFailed = '';
+      const backing = element.closest('[data-badge-clip]')?.querySelector('[data-badge-backing]');
+      if (backing) backing.style.clipPath = '';
     });
   }
 
