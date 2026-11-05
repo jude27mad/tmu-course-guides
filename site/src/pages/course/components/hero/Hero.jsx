@@ -31,9 +31,12 @@ function Hero() {
   useIsomorphicLayoutEffect(() => {
     if (still) return undefined;
     const ctx = gsap.context(() => {
-      gsap.set(heroArtworkRef.current, { yPercent: !isMobile ? -10 : 0 });
+      // force3D keeps the artwork on one layer: GSAP's default writes a 2D transform at the ends of the scrub, so
+      // each scroll that reached or left the top dropped and re-created a viewport-sized layer.
+      gsap.set(heroArtworkRef.current, { yPercent: !isMobile ? -10 : 0, force3D: true });
       gsap.to(heroArtworkRef.current, {
         yPercent: 20,
+        force3D: true,
         scrollTrigger: {
           trigger: rootRef.current,
           start: 'top top',

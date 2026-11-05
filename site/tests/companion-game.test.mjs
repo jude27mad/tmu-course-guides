@@ -222,7 +222,7 @@ test('faster discs follow the same arc and score boundary, with a shorter reacti
 // score events. A swipe can score several discs before React commits the display.
 function spawner(isMobile) {
   const source = readFileSync(new URL('../src/components/dom/prefooter/FruitNinja.jsx', import.meta.url), 'utf8');
-  const limits = source.slice(source.indexOf('const MAX_ALIVE'), source.indexOf('function Lighting'));
+  const limits = source.slice(source.indexOf('const MAX_ALIVE'), source.indexOf('function useEmojiTextures'));
   const hook = source.slice(source.indexOf('function useFruitSpawner('), source.indexOf('function FruitNinja('));
   const timer = clock();
   const streakRef = { current: 0 };

@@ -339,5 +339,6 @@ test('where WebGL works the HTML card waits for the 3D card, and only there', ()
   const scene = code(fileURLToPath(new URL('../src/components/courseBadge/BadgeScene.jsx', import.meta.url)));
   assert.match(scene, /<group ref=\{card\} visible=\{!!textures\}>/);
   assert.match(scene, /<mesh ref=\{band\} visible=\{!!textures\}>/);
-  assert.match(scene, /if \(element\.dataset\.badgeRendered !== 'true'\) \{\s*if \(backing\.style\.clipPath\) backing\.style\.clipPath = '';\s*return;/);
+  assert.match(scene, /if \(element\?\.dataset\.badgeRendered !== 'true'\) \{\s*if \(written\.has\(backing\)\) \{\s*written\.delete\(backing\);\s*backing\.style\.clipPath = '';\s*\}\s*return;/);
+  assert.match(scene, /<ClipToCard layout=\{layout\} element=\{entry\.element\} \/>/);
 });

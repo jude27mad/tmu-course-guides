@@ -2,6 +2,7 @@
  * Regression checks for Giats's fluid trail and touch scrolling.
  * Build site/ first, then run from site/: npm run test:touch
  * PLAYWRIGHT_PATH and QA_CHROMIUM_PATH may select a QA-only browser installation.
+ * QA_SCROLL_TRIAL=1 runs the same checks with the opt-in browser-scrolled page (?scroll=fast).
  * Uses real Chromium touch input, not synthetic PointerEvents. This is browser
  * emulation, not a physical iPhone Safari or hardware-performance test.
  */
@@ -164,6 +165,8 @@ async function open({ reducedMotion = 'no-preference', paused = false, mobile = 
   });
   await context.addInitScript(instrumentTouch);
   if (paused) await context.addInitScript(() => localStorage.setItem('guide-motion-paused', 'true'));
+  // QA_SCROLL_TRIAL=1 runs every check with the opt-in browser-scrolled page (?scroll=fast).
+  if (process.env.QA_SCROLL_TRIAL) await context.addInitScript(() => localStorage.setItem('guide-scroll-trial', 'fast'));
   const page = await context.newPage();
   page.setDefaultTimeout(20000);
   const errors = [];
@@ -423,12 +426,20 @@ try {
       await check(`${label}: Desk palette and fluid colours`, () => assertDeskPalette(page));
       // Deliberately cross the former 2.2 s cutoff: this is the behaviour under test.
       await page.waitForTimeout(2500);
-      await check(`${label}: fluid remains visible and renders after idle`, async () => {
+      // The former cutoff stopped the trail mid-fade and hid the canvas. Now the canvas draws while its trail
+      // moves or fades and then rests (it keeps showing its last frame), so after idle it must still be shown
+      // and must draw again the moment the pointer moves.
+      await check(`${label}: fluid remains visible after idle and draws again on input`, async () => {
         const before = await snapshot(page);
-        await page.waitForTimeout(350);
+        assert.equal(before.visibility, 'visible', JSON.stringify(before));
+        for (let step = 0; step <= 6; step += 1) {
+          await page.mouse.move(120 + step * 25, 420 + step * 10);
+          await page.waitForTimeout(16);
+        }
+        await page.waitForTimeout(300);
         const after = await snapshot(page);
         assert.equal(after.visibility, 'visible', JSON.stringify(after));
-        assert.ok(after.draws > before.draws, 'fluid canvas stopped drawing while motion is enabled');
+        assert.ok(after.draws > before.draws, 'fluid canvas did not draw again after idle while motion is enabled');
         return { before, after };
       });
       await check(`${label}: a scrolling swipe keeps feeding the fluid trail`, async () => {
