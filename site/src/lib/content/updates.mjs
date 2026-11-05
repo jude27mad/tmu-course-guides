@@ -129,10 +129,17 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
-  "id": "2026-11-04-safari-dark-end",
-  "date": "November 4, 2026",
+  "id": "2026-11-05-safari-dark-end",
+  "date": "November 5, 2026",
   "title": "No dark box rising under Safari's toolbar",
   "text": "On iPhone and iPad, scrolling to the end of the Desk, Courses, Privacy and Website updates no longer shows a flat dark box rising from the bottom of the screen under Safari's toolbar. The footer now fades smoothly into the dark colour Safari shows past the end of the page.",
+  "items": []
+ },
+ {
+  "id": "2026-11-05-menu-handoff",
+  "date": "November 5, 2026",
+  "title": "Smoother page changes from the Menu",
+  "text": "Choosing a page in the Menu or Search no longer flashes grey and white. The links fade as you tap, and the new page grows smoothly out of the card the Menu made of the page, the way closing the Menu brings a page back. On Courses and the course pages, a course badge no longer shows a pale box first: its window stays dark until the badge drops in.",
   "items": []
  },
  {

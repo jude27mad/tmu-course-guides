@@ -184,7 +184,15 @@ function Navbar() {
 
   // Shared panel shell: the page shrinks and slides aside on every screen.
   useEffect(() => {
+    // Building the shell sets Safari's edge values to the page's (iPhone and iPad).
+    // While a page chosen in the panel replaces the old one under the held card
+    // (Layout's hand-off), they stay the panel's until the new page grows back.
+    const root = document.documentElement;
+    const held = useStore.getState().isTransitioning === 'handoff' ? ['--panel-cover', '--panel-ink'].map((name) => [name, root.style.getPropertyValue(name)]) : [];
     const tl = buildShellTimeline({ isMobile });
+    held.forEach(([name, value]) => {
+      if (value) root.style.setProperty(name, value);
+    });
     shellRef.current = tl;
     if (useStore.getState().isMenuOpen || useStore.getState().isSearchOpen) tl.progress(1);
     return () => {
@@ -199,9 +207,10 @@ function Navbar() {
     const tl = shellRef.current;
     if (!tl) return;
     tl.timeScale(still ? 30 : 1);
-    if (isTransitioning && nativeIOSScroll()) {
+    if (isTransitioning === 'handoff' || (isTransitioning && nativeIOSScroll())) {
       // Route entry owns the document's opacity/geometry until it settles.
-      // Reversing the menu shell here would reveal the outgoing page again.
+      // Reversing the menu shell here would reveal the outgoing page again; a
+      // page chosen in the panel grows back from the shell itself (Layout's hand-off).
       tl.pause();
     } else if (isOpen) {
       tl.play();
