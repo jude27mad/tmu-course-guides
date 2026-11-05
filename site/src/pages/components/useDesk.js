@@ -1,4 +1,4 @@
-import { deskSnapshot, nextDeadline } from '@src/lib';
+import { COURSE_IDS, deadlines, deskSnapshot, nextDeadline } from '@src/lib';
 import { useNow, useProgress } from '@src/lib/react';
 
 import { useMemo } from 'react';
@@ -14,7 +14,7 @@ export default function useDesk() {
   const progress = useProgress();
 
   return useMemo(() => {
-    if (!now) return { ready: false, now: null, courses: [], next: undefined, progress };
+    if (!now) return { ready: false, now: null, courses: [], next: undefined, alsoDue: [], progress };
     let courses = [];
     let next = null;
     try {
@@ -27,7 +27,19 @@ export default function useDesk() {
     } catch (error) {
       next = null;
     }
-    return { ready: true, now, courses, next, progress };
+    // Other open records due at the very same instant as the next one (FMEA and Personal Reflection 1
+    // both at 11:59 PM): the Desk names them under it rather than hiding them until the first is done.
+    let alsoDue = [];
+    try {
+      if (next?.target?.precision === 'exact') {
+        alsoDue = COURSE_IDS.flatMap((id) => deadlines(id, { now })).filter(
+          (item) => item.markable && !item.done && item.target?.at === next.target.at && !(item.courseId === next.courseId && item.id === next.id),
+        );
+      }
+    } catch (error) {
+      alsoDue = [];
+    }
+    return { ready: true, now, courses, next, alsoDue, progress };
   }, [now, progress]);
 }
 

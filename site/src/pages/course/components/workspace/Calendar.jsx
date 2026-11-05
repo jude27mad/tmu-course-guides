@@ -13,6 +13,10 @@ import styles from './calendar.module.scss';
 // eslint-disable-next-line import/extensions
 import { toScheduleXEvent } from './calendarAdapter.mjs';
 
+// Today in Toronto from Date, as the rest of the guide (and a browser check's fixed clock) counts it. A
+// browser's own Temporal.Now reads the system clock directly and could disagree with both.
+const torontoToday = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+
 export default function Calendar({ events, navigate, onDate, selectedDate, onSelectedDate }) {
   const root = useRef(null);
   const callbacks = useRef({ navigate, onDate, onSelectedDate });
@@ -24,7 +28,7 @@ export default function Calendar({ events, navigate, onDate, selectedDate, onSel
     timezone: 'America/Toronto',
     locale: 'en-US',
     firstDayOfWeek: 1,
-    selectedDate: selectedDate ? Temporal.PlainDate.from(selectedDate) : Temporal.Now.plainDateISO('America/Toronto'),
+    selectedDate: selectedDate ? Temporal.PlainDate.from(selectedDate) : Temporal.PlainDate.from(torontoToday()),
     events: events.map(toScheduleXEvent),
     plugins: [eventsService, controls],
     calendars: {

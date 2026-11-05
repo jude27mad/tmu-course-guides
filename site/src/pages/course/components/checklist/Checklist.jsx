@@ -79,7 +79,7 @@ function Checklist() {
                 if (index === last) {
                   gsap.set(shapeRef, { xPercent: 0 });
                 } else {
-                  gsap.to(shapeRef, { xPercent: 100, duration, ease: 'power1.out' });
+                  gsap.to(shapeRef, { xPercent: 100, duration, ease: 'power1.out', overwrite: 'auto' });
                 }
               },
               onEnterBack: () => {
@@ -89,7 +89,7 @@ function Checklist() {
                 }
               },
               onLeaveBack: () => {
-                if (index !== 0 || count > 1) gsap.to(shapeRef, { xPercent: 100, duration, ease: 'power1.out' });
+                if (index !== 0 || count > 1) gsap.to(shapeRef, { xPercent: 100, duration, ease: 'power1.out', overwrite: 'auto' });
               },
               invalidateOnRefresh: true,
             },

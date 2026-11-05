@@ -25,6 +25,7 @@ npm run build               # static export in out/
 - `npm run export:preview` copies a build to `../next` and only replaces a folder it created itself (marked with `.site-export`). The committed `next/` folder is the earlier preview, kept as it was and no longer published.
 - `npm run fonts` rebuilds the Inter Display subsets (needs Python fontTools).
 - Add `?stats` to any page URL for a frame-rate panel.
+- Add `?scroll=fast` to try the browser-scrolled page (a trial, remembered in this browser; `?scroll=classic` turns it off). It applies outside iPhone and iPad, with motion on; see the changelog.
 
 The repository root keeps its `.nojekyll` file for the case where Pages is switched back to publishing the `main` branch. CI runs `npm test` and `npm run build` for this folder on every push to `main`.
 
@@ -61,7 +62,14 @@ After building, run `PLAYWRIGHT_PATH=/path/to/playwright node scripts/verify-cou
 
 - WebGL is optional. `utils/webgl.mjs` asks the browser once whether it can create a WebGL 2 context, and every three.js `<Canvas>` (four: the shared one that draws the course badges, the pointer fluid, the background and the pre-footer game) sits in `components/canvas/WebGLGate.jsx`: it mounts the canvas only where WebGL works and catches anything the canvas throws, so a browser with WebGL turned off or blocked gets the page without them instead of Next.js's application-error screen. The background keeps its solid ink panel (on iPhone and iPad's document scrolling the page colour shows instead), the pointer fluid and the game are left out, and each course badge shows its HTML card (`courseBadge/CourseBadge.jsx`; the 3D card hides it only once drawn, and sets it back when it is taken down). The server render and the hydration pass see "not asked yet" (`useWebGL()` is `null`), so the static HTML is the same for every browser. Add every new `<Canvas>` inside a `<WebGLGate>`: `tests/webgl.test.mjs` fails on one without it, and `scripts/check-no-webgl.mjs` (CI's own `no-webgl` job, Chromium and WebKit) loads every route with WebGL disabled, blocked and failing late, loses and resets the GPU after load, and runs with WebGL working as a control. A lost context is ridden out (three.js and R3F restore it): only one that is still lost, and still on the page, five seconds later turns the layer off, and a canvas that failed meanwhile tries again when a context returns (`utils/webgl.mjs`, `WebGLGate.jsx`).
 - `prefers-reduced-motion` and the saved Pause motion setting (`guide-motion-paused`) turn off the loader curtain, route transitions, appear animations, background drift, fluid effect, pre-footer physics and marquee, and render the 3D scenes on demand so they hold still. Lenis wheel smoothing stays on.
+- Motion keeps its 60 Hz look at any refresh rate. A constant tuned per drawn frame (an easing factor, a decay, an impulse) is applied through `src/utils/frameStep.mjs` for the share of a 60 Hz frame each frame covers; 60 Hz screens keep the exact original values. The pointer trail's canvas draws only while its trail moves or fades. `?stats` shows the frame rate a device reaches.
 - Pinch zoom, text selection, keyboard scrolling, visible focus, a skip link and 44 px tap targets for buttons and controls on phones. Without JavaScript the static course content renders; deadlines, checklists, card details and What's changed? need JavaScript.
+
+## Offline copy
+
+`public/sw.js` keeps the website usable without a connection. `_document.page.jsx` registers it after the first page has loaded, in production builds only. Pages and `_next/data` are network first (the copy is used only when the network fails, so online visits always get the latest dates). Hashed build files are served from the copy, and fonts and images are refreshed in the background. After a visit it saves every route, the build files their HTML names, the fonts and images their styles name, and the files the first visit loaded before it was in control, at most every six hours and not with Save-Data on. An address never saved gets a short offline page.
+
+Browser checks run without it, because `navigator.webdriver` skips the registration and request interception keeps seeing every request; `scripts/check-offline.mjs <pages folder>` opts in with `?offline-check` and runs in Pages CI. To retire the copy, replace `sw.js` with a worker that deletes its `guides-*` caches and calls `self.registration.unregister()`; keep the file at the same address so every browser picks it up.
 
 ## Privacy
 

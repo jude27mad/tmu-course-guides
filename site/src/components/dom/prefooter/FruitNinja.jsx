@@ -1,7 +1,7 @@
-import { discTexture, loadDiscFont, slicedDiscTexture } from '@src/components/dom/prefooter/discTextures';
+import { emojiTextures, loadEmojiImages } from '@src/components/dom/prefooter/emojiTextures';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { COURSES, DISC } from '@src/lib';
+import { MeshBasicMaterial } from 'three';
 import { PerspectiveCamera } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import Sticker from '@src/components/dom/prefooter/Sticker';
@@ -19,29 +19,15 @@ import { bindGameTouch } from './gameTouch.mjs';
 const MAX_ALIVE = 10;
 const MAX_ALIVE_PHONE = 6;
 
-function Lighting() {
-  return (
-    <>
-      <ambientLight intensity={1.3} />
-      <directionalLight position={[5, 5, 5]} intensity={1.5} />
-      <directionalLight position={[-5, 5, 5]} intensity={1} />
-      <directionalLight position={[0, 5, -5]} intensity={1} />
-    </>
-  );
-}
-
-function useDiscTextures() {
+function useEmojiTextures() {
   const [textures, setTextures] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
     let made = null;
-    loadDiscFont().then(() => {
+    loadEmojiImages().then((images) => {
       if (cancelled) return;
-      made = COURSES.map((course) => {
-        const look = { code: course.code, ...DISC };
-        return { whole: discTexture(look), sliced: slicedDiscTexture(look) };
-      });
+      made = images.map(emojiTextures);
       setTextures(made);
     });
     return () => {
@@ -54,6 +40,26 @@ function useDiscTextures() {
   }, []);
 
   return textures;
+}
+
+// One material per emoji face, shared by every target. A target used to declare its own material, which
+// R3F disposed when it left; with no other target of that kind in the air, three.js then released the
+// compiled shader and the next one compiled it again, a main-thread stall on spawns while the section was
+// on screen. The settings are the ones each target declared: the artwork already contains its shading,
+// so it keeps its original colours.
+const emojiMaterial = (map) => new MeshBasicMaterial({ transparent: true, polygonOffset: true, polygonOffsetFactor: -10, map, toneMapped: false });
+
+function useEmojiMaterials(textures) {
+  const materials = useMemo(() => textures?.map(({ whole, sliced }) => ({ whole: emojiMaterial(whole), sliced: emojiMaterial(sliced) })) || null, [textures]);
+  useEffect(
+    () => () =>
+      materials?.forEach(({ whole, sliced }) => {
+        whole.dispose();
+        sliced.dispose();
+      }),
+    [materials],
+  );
+  return materials;
 }
 
 const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
@@ -102,7 +108,8 @@ function useFruitSpawner({ viewport, textures, isMobile, active, getCeiling, str
 function FruitNinja({ active = true, eventSource, scoreRef, streakRef, onSlice, onMiss }) {
   const viewport = useThree((state) => state.viewport);
   const isMobile = useIsMobile();
-  const textures = useDiscTextures();
+  const textures = useEmojiTextures();
+  const materials = useEmojiMaterials(textures);
   const { scene, camera, raycaster, pointer, setEvents, gl } = useThree();
   const ceilingRef = useRef(-Infinity);
   const floorRef = useRef(Infinity);
@@ -177,16 +184,15 @@ function FruitNinja({ active = true, eventSource, scoreRef, streakRef, onSlice, 
   return (
     <>
       <PerspectiveCamera makeDefault position={[0, 0, 10]} />
-      <Lighting />
       <Physics paused={!active} interpolate timeStep={1 / 60} gravity={[0, GAME_GRAVITY, 0]} colliders={false}>
-        {textures &&
+        {materials &&
           fruits.map((fruit) => (
             <Sticker
               key={fruit.id}
               id={fruit.id}
               positionX={fruit.x}
-              image={textures[fruit.index].whole}
-              imageSliced={textures[fruit.index].sliced}
+              material={materials[fruit.index].whole}
+              materialSliced={materials[fruit.index].sliced}
               isMobile={isMobile}
               viewportHeight={viewport.height}
               ceilingY={fruit.ceilingY}

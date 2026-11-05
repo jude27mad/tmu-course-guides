@@ -1,17 +1,18 @@
 /* eslint-disable react/no-unknown-property, react/jsx-props-no-spreading, import/extensions */
 import * as THREE from 'three';
 
-import { BallCollider, CuboidCollider, Physics, RigidBody, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
+import { BallCollider, CuboidCollider, Physics, RigidBody, useBeforePhysicsStep, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import { PerspectiveCamera } from '@react-three/drei';
-import BadgeViewport from '@src/components/courseBadge/BadgeViewport';
+import BadgeViewport, { createBadgeLayout } from '@src/components/courseBadge/BadgeViewport';
 import { bandTexture, cardTexture, loadBadgeFonts, redrawCard } from '@src/components/courseBadge/badgeTextures';
 import { extend, useFrame, useThree } from '@react-three/fiber';
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { memo, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import useStill from '@src/hooks/useStill';
 import useScroll from '@src/hooks/useScroll';
+import { easeFor, frameShare } from '@src/utils/frameStep.mjs';
 
 extend({ MeshLineGeometry, MeshLineMaterial, RoundedBoxGeometry });
 
@@ -38,6 +39,17 @@ const REST_START = [
   [0, -3 - JOINT],
 ];
 const segmentProps = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 2, linearDamping: 2 };
+const GRAVITY = [0, -40, 0];
+
+// RoundedBox draws six groups (right, left, top, bottom, front, back). The four
+// edges share one material and the two faces another, so draw two groups.
+function mergeFaceGroups(geometry) {
+  if (geometry?.groups.length !== 6) return;
+  const [right, , , bottom, front, back] = geometry.groups;
+  geometry.clearGroups();
+  geometry.addGroup(right.start, bottom.start + bottom.count - right.start, 0);
+  geometry.addGroup(front.start, back.start + back.count - front.start, 1);
+}
 
 function Lanyard({ body, x, rest, intersected }) {
   const { fixed, card } = body;
@@ -48,6 +60,7 @@ function Lanyard({ body, x, rest, intersected }) {
   const rot = useMemo(() => new THREE.Vector3(), []);
   const impulseVector = useRef({ x: 0, y: 0, z: 0 });
   const angvelVector = useRef({ x: 0, y: 0, z: 0 });
+  const fresh = useRef(false);
   const [start] = useState(() => (rest ? REST_START : SWING_START));
 
   useRopeJoint(body.fixed, body.j1, [[0, 0, 0], [0, 0, 0], 1]);
@@ -62,28 +75,40 @@ function Lanyard({ body, x, rest, intersected }) {
     scrollDirection.current = direction;
     isScrolling.current = useScrolling;
     speed.current = velocity;
+    fresh.current = true;
   });
 
-  // Original per-render-frame impulse and angular correction. No cap, smoothing,
-  // timeout, fixed-step substitution or location-dependent strength.
-  useFrame(() => {
+  // Original per-render-frame impulse. No cap, smoothing, timeout, fixed-step
+  // substitution or location-dependent strength. Smooth scrolling reports a
+  // fresh per-frame velocity every frame. A native scroll event's velocity is
+  // repeated until the next event, so a repeat pushes only for its share of a
+  // 60 Hz frame; at 120 Hz it would otherwise push twice as long.
+  useFrame((_, delta) => {
     if (rest || !card.current) return;
     if (isScrolling.current && intersected) {
-      const moveDistance = Math.abs(speed.current) * 0.005;
+      const share = fresh.current ? 1 : frameShare(delta);
+      fresh.current = false;
+      const moveDistance = Math.abs(speed.current) * 0.005 * share;
       const directionVector = scrollDirection.current === 1 ? 1 : -1;
       impulseVector.current.x = directionVector * moveDistance;
       impulseVector.current.y = 0;
       impulseVector.current.z = 0;
       card.current.applyImpulse(impulseVector.current, true);
     }
-    if (fixed.current) {
-      ang.copy(card.current.angvel());
-      rot.copy(card.current.rotation());
-      angvelVector.current.x = ang.x;
-      angvelVector.current.y = ang.y - rot.y * 0.25;
-      angvelVector.current.z = ang.z;
-      card.current.setAngvel(angvelVector.current);
-    }
+  });
+
+  // Original angular correction, once per physics step: once per render frame,
+  // a 120 Hz display applied it twice per step and the card turned back to
+  // face front too quickly. A sleeping card is skipped: it does not integrate,
+  // so the correction would pile up and spin it on the next scroll.
+  useBeforePhysicsStep(() => {
+    if (rest || !card.current || !fixed.current || card.current.isSleeping?.()) return;
+    ang.copy(card.current.angvel());
+    rot.copy(card.current.rotation());
+    angvelVector.current.x = ang.x;
+    angvelVector.current.y = ang.y - rot.y * 0.25;
+    angvelVector.current.z = ang.z;
+    card.current.setAngvel(angvelVector.current);
   });
 
   const positions = useMemo(() => start.map(([dx, dy]) => [x + dx, ANCHOR_Y + dy, 0]), [x, start]);
@@ -91,14 +116,18 @@ function Lanyard({ body, x, rest, intersected }) {
   return (
     <>
       <RigidBody ref={body.fixed} {...segmentProps} type="fixed" position={positions[0]} />
+      {/* each joint's marker follows its interpolated pose, as cardObject does */}
       <RigidBody position={positions[1]} ref={body.j1} {...segmentProps}>
         <BallCollider args={[0.1]} />
+        <object3D ref={body.j1Object} />
       </RigidBody>
       <RigidBody position={positions[2]} ref={body.j2} {...segmentProps}>
         <BallCollider args={[0.1]} />
+        <object3D ref={body.j2Object} />
       </RigidBody>
       <RigidBody position={positions[3]} ref={body.j3} {...segmentProps}>
         <BallCollider args={[0.1]} />
+        <object3D ref={body.j3Object} />
       </RigidBody>
       <RigidBody position={positions[4]} ref={body.card} {...segmentProps} type="dynamic">
         <CuboidCollider args={[0.8, 1.125, 0.01]} />
@@ -108,6 +137,10 @@ function Lanyard({ body, x, rest, intersected }) {
     </>
   );
 }
+
+// A window's visibility change republishes the registry; only the lanyard whose
+// props changed re-renders.
+const LanyardRig = memo(Lanyard);
 
 function useBadgeTextures(look) {
   const [textures, setTextures] = useState(null);
@@ -143,13 +176,17 @@ function useBadgeTextures(look) {
 }
 
 // One window's card and band, drawn from its lanyard in the shared world.
-function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed = 10 }) {
+function BadgeCard({ body, offsetX, look, idle, element, layout, maxSpeed = 50, minSpeed = 10 }) {
   const band = useRef();
   const card = useRef();
   const textures = useBadgeTextures(look);
   const lerped = useMemo(() => [new THREE.Vector3(), new THREE.Vector3()], []);
   const curvePoints = useMemo(() => Array.from({ length: 33 }, () => new THREE.Vector3()), []);
+  // the strap's control points when it was last rebuilt
+  const drawn = useMemo(() => new Float64Array(12).fill(NaN), []);
   const started = useRef(false);
+  // the strap was skipped (or left behind its control points) while its window was off screen
+  const stale = useRef(false);
   useEffect(() => {
     if (element) element.dataset.badgeRendered = 'false';
     return () => {
@@ -164,15 +201,15 @@ function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed
 
   const materials = useMemo(() => {
     if (!textures) return null;
-    // RoundedBox groups: right, left, top, bottom, front, back
+    // the merged RoundedBox groups: edges, then front and back
     const edge = new THREE.MeshStandardMaterial({ color: look.background, roughness: 0.5, metalness: 0.4 });
     const face = new THREE.MeshPhysicalMaterial({ map: textures.card, alphaTest: 0.5, clearcoat: 1, clearcoatRoughness: 0.15, roughness: 0.5, metalness: 0.4 });
-    return [edge, edge, edge, edge, face, face];
+    return [edge, face];
   }, [textures, look.background]);
 
   useEffect(
     () => () => {
-      if (materials) [materials[0], materials[4]].forEach((material) => material.dispose());
+      if (materials) materials.forEach((material) => material.dispose());
     },
     [materials],
   );
@@ -181,40 +218,73 @@ function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed
     // The explicit Pause motion control retains its pose. Offscreen placement
     // does not stop or restart the original simulation.
     if (textures && started.current && element?.dataset.badgeRendered !== 'true') element.dataset.badgeRendered = 'true';
-    if (idle && started.current) return;
-    const { fixed, j1, j2, j3, cardObject } = body;
-    const object = cardObject.current?.parent;
-    if (!fixed.current || !j1.current || !j2.current || !j3.current || !object || !card.current || !band.current) return;
+    const held = idle && started.current;
+    // A strap left unbuilt, or behind its card, while its window was off screen
+    // is built from the held pose the frame its window is drawn again.
+    if (held && !(stale.current && layout.draw)) return;
+    if (!held) {
+      // The strap follows the joints' interpolated poses, as the card does: their
+      // raw physics positions move only at each 60 Hz step.
+      const { fixed, j1Object, j2Object, j3Object, cardObject } = body;
+      const object = cardObject.current?.parent;
+      const j1 = j1Object.current?.parent;
+      const j2 = j2Object.current?.parent;
+      const j3 = j3Object.current?.parent;
+      if (!fixed.current || !j1 || !j2 || !j3 || !object || !card.current || !band.current) return;
 
-    card.current.position.set(object.position.x - offsetX, object.position.y, object.position.z);
-    card.current.quaternion.copy(object.quaternion);
+      card.current.position.set(object.position.x - offsetX, object.position.y, object.position.z);
+      card.current.quaternion.copy(object.quaternion);
 
-    const t1 = j1.current.translation();
-    if (!started.current) lerped[0].copy(t1);
-    const clampedDistance1 = Math.max(0.1, Math.min(1, lerped[0].distanceTo(t1)));
-    lerped[0].lerp(t1, Math.min(1, delta * (minSpeed + clampedDistance1 * (maxSpeed - minSpeed))));
+      // Giats's strap follow factor, min(1, delta * speed), applies per 60 Hz
+      // frame; a faster display applies it for its share of one.
+      const share = frameShare(delta);
+      const follow = (distance) => {
+        const speed = minSpeed + Math.max(0.1, Math.min(1, distance)) * (maxSpeed - minSpeed);
+        return share === 1 ? Math.min(1, delta * speed) : easeFor(Math.min(1, speed / 60), share);
+      };
 
-    const t2 = j2.current.translation();
-    if (!started.current) lerped[1].copy(t2);
-    const clampedDistance2 = Math.max(0.1, Math.min(1, lerped[1].distanceTo(t2)));
-    lerped[1].lerp(t2, Math.min(1, delta * (minSpeed + clampedDistance2 * (maxSpeed - minSpeed))));
+      const t1 = j1.position;
+      if (!started.current) lerped[0].copy(t1);
+      lerped[0].lerp(t1, follow(lerped[0].distanceTo(t1)));
 
-    started.current = true;
-    curve.points[0].copy(j3.current.translation());
-    curve.points[1].copy(lerped[1]);
-    curve.points[2].copy(lerped[0]);
-    curve.points[3].copy(fixed.current.translation());
+      const t2 = j2.position;
+      if (!started.current) lerped[1].copy(t2);
+      lerped[1].lerp(t2, follow(lerped[1].distanceTo(t2)));
 
-    curve.points[0].x -= offsetX;
-    curve.points[1].x -= offsetX;
-    curve.points[2].x -= offsetX;
-    curve.points[3].x -= offsetX;
+      started.current = true;
+      curve.points[0].copy(j3.position);
+      curve.points[1].copy(lerped[1]);
+      curve.points[2].copy(lerped[0]);
+      curve.points[3].copy(fixed.current.translation());
 
-    // Keep the same 32 ribbon segments while reusing their sample vectors.
-    for (let i = 0; i <= 32; i += 1) {
-      curve.getPoint(i / 32, curvePoints[i]);
+      curve.points[0].x -= offsetX;
+      curve.points[1].x -= offsetX;
+      curve.points[2].x -= offsetX;
+      curve.points[3].x -= offsetX;
     }
-    band.current.geometry.setPoints(curvePoints);
+    if (!band.current) return;
+
+    // Rebuild the strap only when it moved, and only for a window drawn this
+    // frame: setPoints rewrites its buffers. A window off screen keeps its last
+    // strap, which is rebuilt the frame it is drawn again. The same 32 ribbon
+    // segments reuse their sample vectors.
+    if (!layout.draw) {
+      stale.current = true;
+      return;
+    }
+    stale.current = false;
+    let moved = false;
+    for (let i = 0; i < 4; i += 1) {
+      const { x, y, z } = curve.points[i];
+      if (drawn[i * 3] !== x || drawn[i * 3 + 1] !== y || drawn[i * 3 + 2] !== z) {
+        drawn.set([x, y, z], i * 3);
+        moved = true;
+      }
+    }
+    if (moved) {
+      for (let i = 0; i <= 32; i += 1) curve.getPoint(i / 32, curvePoints[i]);
+      band.current.geometry.setPoints(curvePoints);
+    }
   });
 
   return (
@@ -223,7 +293,7 @@ function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed
         {materials && (
           <mesh material={materials}>
             {/* three's RoundedBoxGeometry (as the MagicBall boxes): per-face UVs, so the back reads the right way round */}
-            <roundedBoxGeometry args={[1.6, 2.25, 0.02, 2, 0.01]} />
+            <roundedBoxGeometry ref={mergeFaceGroups} args={[1.6, 2.25, 0.02, 2, 0.01]} />
           </mesh>
         )}
         {/* clamp and clip ring */}
@@ -246,18 +316,21 @@ function BadgeCard({ body, offsetX, look, idle, element, maxSpeed = 50, minSpeed
 
 // View's scissor covers its own rectangle. Also clip to the stacked directory
 // card, which may cover part of that rectangle as cards slide past one another.
-function ClipToCard({ element }) {
+// The rectangles come from this frame's measurement (BadgeViewport).
+function ClipToCard({ layout }) {
   const { scene, gl } = useThree();
   const scissor = useMemo(() => new THREE.Vector4(), []);
   const size = useMemo(() => new THREE.Vector2(), []);
+  // The clip-path last written to each backing. The browser keeps the property
+  // to six significant digits, so reading it back missed whenever a rectangle
+  // had a fraction (most frames of a scroll) and every frame rewrote it.
+  const written = useMemo(() => new WeakMap(), []);
   useEffect(() => {
     const previous = scene.onBeforeRender;
     scene.onBeforeRender = (...args) => {
       previous?.apply(scene, args);
-      const clip = element?.closest('[data-badge-clip]');
-      if (!clip) return;
-      const bounds = clip.getBoundingClientRect();
-      const canvas = gl.domElement.getBoundingClientRect();
+      const { clip: bounds, canvas } = layout;
+      if (!bounds || !canvas) return;
       gl.getSize(size);
       const scaleX = size.x / canvas.width;
       const scaleY = size.y / canvas.height;
@@ -271,33 +344,35 @@ function ClipToCard({ element }) {
     return () => {
       scene.onBeforeRender = previous;
     };
-  }, [element, scene, gl, scissor, size]);
+  }, [layout, scene, gl, scissor, size]);
 
+  // After every badge has measured and drawn, so no layout read follows it.
   useFrame(() => {
-    const backing = element?.closest('[data-badge-clip]')?.querySelector('[data-badge-backing]');
-    if (!backing) return;
-    const window = element.getBoundingClientRect();
-    const panel = backing.getBoundingClientRect();
+    const { backing, panel, bounds: window } = layout;
+    if (!backing || !panel || !window) return;
     const left = window.left - panel.left;
     const top = window.top - panel.top;
     const right = left + window.width;
     const bottom = top + window.height;
     // A hole in the original animated panel, so it cannot tint the badge.
     const path = `polygon(evenodd, 0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, ${left}px ${top}px, ${right}px ${top}px, ${right}px ${bottom}px, ${left}px ${bottom}px, ${left}px ${top}px)`;
-    if (backing.style.clipPath !== path) backing.style.clipPath = path;
-  });
+    if (written.get(backing) === path) return;
+    written.set(backing, path);
+    backing.style.clipPath = path;
+  }, 2);
   return null;
 }
 
 export function BadgeView({ entry, look, rest }) {
+  const [layout] = useState(createBadgeLayout);
   return (
     // Drawing follows current bounds; the observer still gates only Giats's
     // original scroll impulse, independently of the continuously running world.
-    <BadgeViewport element={entry.element}>
+    <BadgeViewport element={entry.element} layout={layout}>
       <PerspectiveCamera manual makeDefault position={[0, 0, 10]} fov={25} />
       <ambientLight intensity={Math.PI} />
-      <BadgeCard key={entry.id} body={entry.body} offsetX={entry.slot * SPACING} look={look} idle={rest} element={entry.element} />
-      <ClipToCard element={entry.element} />
+      <BadgeCard key={entry.id} body={entry.body} offsetX={entry.slot * SPACING} look={look} idle={rest} element={entry.element} layout={layout} />
+      <ClipToCard layout={layout} />
       <ambientLight intensity={1.3} />
       <directionalLight position={[5, 5, 5]} intensity={1.5} />
       <directionalLight position={[-5, 5, 5]} intensity={1} />
@@ -306,18 +381,22 @@ export function BadgeView({ entry, look, rest }) {
   );
 }
 
+// Likewise, only the windows whose drawing inputs changed re-render.
+const sameView = (a, b) => a.look === b.look && a.rest === b.rest && a.entry.id === b.entry.id && a.entry.element === b.entry.element && a.entry.body === b.entry.body && a.entry.slot === b.entry.slot;
+const BadgeWindow = memo(BadgeView, sameView);
+
 export function BadgeWorld({ registry }) {
   const { entries, rigs } = useSyncExternalStore(registry.subscribe, registry.getState, registry.getState);
   const rest = useStill();
   if (!entries.length) return null;
   return (
     <>
-      <Physics paused={rest} interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
+      <Physics paused={rest} interpolate gravity={GRAVITY} timeStep={1 / 60}>
         {rigs.map((rig) => (
-          <Lanyard key={rig.id} body={rig.body} x={rig.slot * SPACING} rest={rest} intersected={rig.swing} />
+          <LanyardRig key={rig.id} body={rig.body} x={rig.slot * SPACING} rest={rest} intersected={rig.swing} />
         ))}
       </Physics>
-      {entries.map((entry) => entry.look && <BadgeView key={entry.id} entry={entry} look={entry.look} rest={rest} />)}
+      {entries.map((entry) => entry.look && <BadgeWindow key={entry.id} entry={entry} look={entry.look} rest={rest} />)}
     </>
   );
 }

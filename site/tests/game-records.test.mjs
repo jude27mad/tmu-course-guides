@@ -58,10 +58,10 @@ function mountGame(records, target) {
 }
 
 const regularBloom = [
-  { mouseX: 0.4, mouseY: 0.5, velocityX: -90, velocityY: 0, radiusScale: 36 },
-  { mouseX: 0.6, mouseY: 0.5, velocityX: 90, velocityY: 0, radiusScale: 36 },
-  { mouseX: 0.5, mouseY: 0.4, velocityX: 0, velocityY: -90, radiusScale: 36 },
-  { mouseX: 0.5, mouseY: 0.6, velocityX: 0, velocityY: 90, radiusScale: 36 },
+  { mouseX: 0.4, mouseY: 0.5, velocityX: -90, velocityY: 0, radiusScale: 36, burst: true },
+  { mouseX: 0.6, mouseY: 0.5, velocityX: 90, velocityY: 0, radiusScale: 36, burst: true },
+  { mouseX: 0.5, mouseY: 0.4, velocityX: 0, velocityY: -90, radiusScale: 36, burst: true },
+  { mouseX: 0.5, mouseY: 0.6, velocityX: 0, velocityY: 90, radiusScale: 36, burst: true },
 ];
 
 test('the original bloom recurs on each 0-to-1; full-screen discovery happens once across misses and reloads', () => {

@@ -113,7 +113,7 @@ const useMaterials = () => {
           value: new Texture(),
         },
         aspectRatio: {
-          value: size.width / size.height,
+          value: 1,
         },
         uColor: {
           value: new Vector3(),
@@ -162,16 +162,14 @@ const useMaterials = () => {
       advection,
       vorticity,
     };
-  }, [OPTS.curl, OPTS.pressure, OPTS.radius, size.height, size.width]);
+  }, [OPTS.curl, OPTS.pressure, OPTS.radius]);
 
   useIsomorphicLayoutEffect(() => {
     Object.values(shaderMaterials).forEach((material) => {
-      const aspectRatio = size.width / (size.height + 400);
-
-      material.uniforms.texelSize.value.set(1 / (OPTS.simRes * aspectRatio), 1 / OPTS.simRes);
       material.vertexShader = baseVertex;
       material.depthTest = false;
       material.depthWrite = false;
+      material.needsUpdate = true;
     });
 
     return () => {
@@ -179,7 +177,17 @@ const useMaterials = () => {
         material.dispose();
       });
     };
-  }, [shaderMaterials, size]);
+  }, [shaderMaterials]);
+
+  // A resize changes only these uniforms. Rebuilding the materials instead
+  // relinked their programs on every frame of a page transition's resize.
+  useIsomorphicLayoutEffect(() => {
+    const aspectRatio = size.width / (size.height + 400);
+    Object.values(shaderMaterials).forEach((material) => {
+      material.uniforms.texelSize.value.set(1 / (OPTS.simRes * aspectRatio), 1 / OPTS.simRes);
+    });
+    shaderMaterials.splat.uniforms.aspectRatio.value = size.width / size.height;
+  }, [shaderMaterials, size.width, size.height, OPTS.simRes]);
 
   return shaderMaterials;
 };
