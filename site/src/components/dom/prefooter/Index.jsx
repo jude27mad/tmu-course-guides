@@ -21,6 +21,7 @@ const FruitNinja = dynamic(() => import('@src/components/dom/prefooter/FruitNinj
 function Index({ active, eventSource }) {
   const coarse = useCoarsePointer();
   const scoreRef = useRef();
+  const ceilingAnchorRef = useRef();
   const [game, dispatch] = useReducer(scoreAfterEvent, { started: false, score: 0, best: 0 });
   useEffect(() => {
     dispatch({ type: 'restore', best: gameRecords.read().best });
@@ -63,7 +64,7 @@ function Index({ active, eventSource }) {
           })}
           fallback={<span aria-hidden="true" />}
           frameloop={active ? 'always' : 'never'}
-          dpr={1}
+          dpr={[1, 2]}
           gl={{
             antialias: !coarse,
             powerPreference: 'low-power',
@@ -80,18 +81,21 @@ function Index({ active, eventSource }) {
         >
           {/* keeps the loading physics chunk inside the canvas */}
           <Suspense fallback={null}>
-            <FruitNinja active={active} eventSource={eventSource} scoreRef={scoreRef} streakRef={streakScore} onSlice={onSlice} onMiss={onMiss} />
+            <FruitNinja active={active} eventSource={eventSource} scoreRef={scoreRef} ceilingAnchorRef={ceilingAnchorRef} streakRef={streakScore} onSlice={onSlice} onMiss={onMiss} />
           </Suspense>
         </Canvas>
       </WebGLGate>
       {eventSource.current &&
         createPortal(
-          <span ref={scoreRef} className={styles.score} role="status" data-game-score hidden={!game.started}>
-            <span data-game-current>{`Score ${game.score}`}</span>
-            <span className={styles.best} data-game-best>
-              {`Best ${game.best}`}
+          <>
+            <span ref={ceilingAnchorRef} className={styles.ceilingAnchor} data-game-ceiling aria-hidden="true" />
+            <span ref={scoreRef} className={styles.score} role="status" data-game-score hidden={!game.started}>
+              <span data-game-current>{`Score ${game.score}`}</span>
+              <span className={styles.best} data-game-best>
+                {`Best ${game.best}`}
+              </span>
             </span>
-          </span>,
+          </>,
           eventSource.current,
         )}
     </>
