@@ -355,7 +355,10 @@ test('the pointer fluid fades out before Safari\'s bars instead of stopping in a
   const post = read('../src/components/canvas/fluid/glsl/post.frag');
   assert.match(post, /uniform float uEdge;/);
   assert.match(post, /float edge = uEdge > 0\.0 \? smoothstep\(0\.0, uEdge, uv\.y\) \* smoothstep\(0\.0, uEdge, 1\.0 - uv\.y\) : 1\.0;/);
-  assert.match(post, /float intensity = length\(fluidColor\) \* uIntensity \* edge;/);
+  // The visible colour fades, not the intensity: a strong trail saturates the
+  // intensity until a few pixels from the edge, which still drew a line.
+  assert.match(post, /outputColor = mix\(computedBgColor, clamp\(finalColor, 0\.0, 1\.0\), edge\);/);
+  assert.match(post, /float intensity = length\(fluidColor\) \* uIntensity;/);
   const effect = read('../src/components/canvas/fluid/effect/FluidEffect.jsx');
   assert.match(effect, /uEdge: new Uniform\(edge\)/);
   assert.match(effect, /this\.updateUniform\('uEdge', this\.state\.edge\);/);

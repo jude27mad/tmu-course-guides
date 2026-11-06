@@ -18,11 +18,7 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
 
     vec4 texture = texture2D(inputBuffer, uv);
 
-    // Safari shows the page under its bars, but not this canvas, which ends at the layout viewport: a
-    // trail drawn there was cut in a straight line. It fades out before each bar instead.
-    float edge = uEdge > 0.0 ? smoothstep(0.0, uEdge, uv.y) * smoothstep(0.0, uEdge, 1.0 - uv.y) : 1.0;
-
-    float intensity = length(fluidColor) * uIntensity * edge;
+    float intensity = length(fluidColor) * uIntensity;
 
     vec3 selectedColor = uColor * length(fluidColor);
 
@@ -42,5 +38,11 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
         finalColor = mix(computedFluidColor, computedBgColor, 1.0 - texture.a);
     }
 
-    outputColor = finalColor;
+    // Safari shows the page under its bars, but not this canvas, which ends at the layout viewport: a
+    // trail drawn there was cut in a straight line. The visible result fades out before each bar instead:
+    // the colour as the screen shows it (clamped), not the intensity, which a strong trail saturates
+    // until a few pixels from the edge.
+    float edge = uEdge > 0.0 ? smoothstep(0.0, uEdge, uv.y) * smoothstep(0.0, uEdge, 1.0 - uv.y) : 1.0;
+
+    outputColor = mix(computedBgColor, clamp(finalColor, 0.0, 1.0), edge);
 }
