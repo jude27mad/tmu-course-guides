@@ -8,7 +8,7 @@ import Sticker from '@src/components/dom/prefooter/Sticker';
 import useIsMobile from '@src/hooks/useIsMobile';
 import { useFrame, useThree } from '@react-three/fiber';
 // eslint-disable-next-line import/extensions
-import { createSpawnSchedule, GAME_GRAVITY, scoreBoundary, gameDifficulty } from './gameTiming.mjs';
+import { createSpawnSchedule, GAME_GRAVITY, scoreBoundary, gameDifficulty, gameSpawnDelay } from './gameTiming.mjs';
 // eslint-disable-next-line import/extensions
 import { bindGameTouch } from './gameTouch.mjs';
 
@@ -86,17 +86,13 @@ function useFruitSpawner({ viewport, textures, isMobile, active, getCeiling, str
     const cap = isMobile ? MAX_ALIVE_PHONE : MAX_ALIVE;
     const width = Math.max(0, viewportRef.current.width / 2 - 1);
     setFruits((previous) => {
-      const room = cap - previous.length;
-      if (room <= 0) return previous;
-      const added = Array.from({ length: Math.min(room, randomInt(1, 6)) }, () => {
-        nextId.current += 1;
-        const index = randomInt(0, textures.length - 1);
-        return { id: nextId.current, x: randomInt(Math.ceil(-width), Math.floor(width)), index, ceilingY, speed };
-      });
-      return [...previous, ...added];
+      if (previous.length >= cap) return previous;
+      nextId.current += 1;
+      const index = randomInt(0, textures.length - 1);
+      return [...previous, { id: nextId.current, x: randomInt(Math.ceil(-width), Math.floor(width)), index, ceilingY, speed }];
     });
   };
-  const scheduler = useMemo(() => createSpawnSchedule({ spawn: () => spawnRef.current(), interval: () => difficultyRef.current().interval }), []);
+  const scheduler = useMemo(() => createSpawnSchedule({ spawn: () => spawnRef.current(), interval: () => gameSpawnDelay(difficultyRef.current()) }), []);
   useEffect(() => {
     scheduler.setActive(active && !!textures?.length);
   }, [scheduler, active, textures]);

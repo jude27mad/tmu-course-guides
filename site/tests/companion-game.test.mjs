@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-let createSpawnSchedule, createDiscFlight, GAME_GRAVITY, scoreAfterEvent, scoreBoundary, gameDifficulty;
-try { ({ createSpawnSchedule, createDiscFlight, GAME_GRAVITY, scoreAfterEvent, scoreBoundary, gameDifficulty } = await import('../src/components/dom/prefooter/gameTiming.mjs')); }
+let createSpawnSchedule, createDiscFlight, GAME_GRAVITY, scoreAfterEvent, scoreBoundary, gameDifficulty, gameSpawnDelay;
+try { ({ createSpawnSchedule, createDiscFlight, GAME_GRAVITY, scoreAfterEvent, scoreBoundary, gameDifficulty, gameSpawnDelay } = await import('../src/components/dom/prefooter/gameTiming.mjs')); }
 catch (error) { if (error.code !== 'ERR_MODULE_NOT_FOUND') throw error; }
 
 function clock() {
@@ -187,6 +187,26 @@ test('longer streaks gradually shorten the wave interval and flight time within 
   }
 });
 
+test('individual throw gaps vary more with difficulty while retaining the average target rate', () => {
+  for (const isMobile of [false, true]) {
+    let previous;
+    for (const score of [0, 5, 15, 30, 100, 1000, Number.MAX_SAFE_INTEGER]) {
+      const difficulty = gameDifficulty({ score, isMobile });
+      const gaps = [0, 0.25, 0.5, 0.75, 1].map(seed => gameSpawnDelay(difficulty, () => seed));
+      assert.equal(new Set(gaps).size, 5, 'the launch rhythm is not uniform');
+      assert.ok(gaps[0] >= (isMobile ? 170 : 109), 'even the quickest throws remain separated');
+      const mean = gaps.reduce((sum, gap) => sum + gap, 0) / gaps.length;
+      assert.ok(Math.abs(mean * 3.5 - difficulty.interval) < 1e-9, 'staggering preserves the former average of 3.5 targets per wave');
+      const spread = (gaps.at(-1) - gaps[0]) / mean;
+      if (previous) {
+        gaps.forEach((gap, index) => assert.ok(gap < previous.gaps[index], 'higher streaks shorten every part of the timing range'));
+        assert.ok(spread > previous.spread, 'higher streaks introduce more rhythmic variation');
+      }
+      previous = { gaps, spread };
+    }
+  }
+});
+
 test('faster discs follow the same arc and score boundary, with a shorter reaction window', () => {
   for (const viewportHeight of [5, 9, 14, 20]) {
     for (const isMobile of [false, true]) {
@@ -220,7 +240,7 @@ test('faster discs follow the same arc and score boundary, with a shorter reacti
 
 // Run the production spawner with a controlled clock and no React render between
 // score events. A swipe can score several discs before React commits the display.
-function spawner(isMobile) {
+function spawner(isMobile, { random = () => 0.5, textures = [{}, {}, {}], getCeiling = () => 4 } = {}) {
   const source = readFileSync(new URL('../src/components/dom/prefooter/FruitNinja.jsx', import.meta.url), 'utf8');
   const limits = source.slice(source.indexOf('const MAX_ALIVE'), source.indexOf('function useEmojiTextures'));
   const hook = source.slice(source.indexOf('function useFruitSpawner('), source.indexOf('function FruitNinja('));
@@ -228,46 +248,100 @@ function spawner(isMobile) {
   const streakRef = { current: 0 };
   const times = [];
   const cleanups = [];
+  let scheduler;
   let fruits = [];
-  const useSpawner = new Function('useState', 'useRef', 'useMemo', 'useCallback', 'useEffect', 'createSpawnSchedule', 'gameDifficulty', 'randomInt',
+  const useSpawner = new Function('useState', 'useRef', 'useMemo', 'useCallback', 'useEffect', 'createSpawnSchedule', 'gameDifficulty', 'gameSpawnDelay', 'randomInt',
     `${limits}\n${hook}\nreturn useFruitSpawner;`)(
     initial => [initial, update => { fruits = update(fruits); }],
     value => ({ current: value }), factory => factory(), callback => callback,
     setup => { const cleanup = setup(); if (cleanup) cleanups.push(cleanup); },
-    options => createSpawnSchedule({ ...timer, ...options, spawn: () => { times.push(timer.now()); options.spawn(); } }),
-    gameDifficulty, (min, max) => max,
+    options => (scheduler = createSpawnSchedule({ ...timer, ...options, spawn: () => { times.push(timer.now()); options.spawn(); } })),
+    gameDifficulty, difficulty => gameSpawnDelay(difficulty, random), (min, max) => max,
   );
-  const [, remove] = useSpawner({ viewport: { width: 8, height: 12 }, textures: [{}, {}, {}], isMobile, active: true, getCeiling: () => 4, streakRef });
-  return { timer, streakRef, times, remove, fruits: () => fruits, dispose: () => cleanups.reverse().forEach(cleanup => cleanup()) };
+  const [, remove] = useSpawner({ viewport: { width: 8, height: 12 }, textures, isMobile, active: true, getCeiling, streakRef });
+  return { timer, streakRef, times, remove, fruits: () => fruits, setActive: value => scheduler.setActive(value), dispose: () => cleanups.reverse().forEach(cleanup => cleanup()) };
 }
 
-test('new waves use the current streak, retain airborne speeds and obey the existing body caps', () => {
+test('throws launch individually, use the current streak and retain airborne speeds and body caps', () => {
   for (const isMobile of [false, true]) {
     const game = spawner(isMobile);
     try {
+      const initialGap = gameSpawnDelay(gameDifficulty({ score: 0, isMobile }), () => 0.5);
       game.timer.advance(750);
       const first = game.fruits();
-      assert.equal(first.length, 6);
+      assert.equal(first.length, 1, 'the first launch is a single emoji');
       assert.ok(first.every(fruit => fruit.speed === 1));
-      first.slice(0, 3).forEach(fruit => game.remove(fruit.id));
       game.streakRef.current = 30;
-      game.timer.advance(isMobile ? 5000 : 3000);
+      game.timer.advance(initialGap - 1);
+      assert.equal(game.fruits().length, 1, 'no other target joins the first launch');
+      game.timer.advance(1);
       const harder = gameDifficulty({ score: 30, isMobile });
+      const harderGap = gameSpawnDelay(harder, () => 0.5);
       const next = game.fruits().filter(fruit => !first.includes(fruit));
-      assert.ok(next.length > 0 && next.every(fruit => fruit.speed === harder.speed));
+      assert.equal(next.length, 1, 'each timer launches only one target');
+      assert.equal(next[0].speed, harder.speed);
       assert.ok(first.every(fruit => fruit.speed === 1), 'airborne discs never change speed');
-      game.timer.advance(harder.interval * 5);
+      game.timer.advance(harderGap * 20);
       assert.equal(game.fruits().length, isMobile ? 6 : 10, 'higher difficulty never increases the rendering cap');
+      assert.equal(new Set(game.times).size, game.times.length, 'no launches share a timestamp');
+      assert.equal(game.timer.count(), 1, 'there is only one pending launch, even at the cap');
 
       game.streakRef.current = 0;
       game.fruits().forEach(fruit => game.remove(fruit.id));
-      game.timer.advance(harder.interval);
-      assert.ok(game.fruits().length > 0 && game.fruits().every(fruit => fruit.speed === 1), 'a missed streak resets the next wave');
-      const waves = game.times.length;
-      game.timer.advance((isMobile ? 5000 : 3000) - 1);
-      assert.equal(game.times.length, waves, 'the reset also restores the starting cadence');
-      game.timer.advance(1);
-      assert.equal(game.times.length, waves + 1);
+      game.timer.advance(harderGap + 1);
+      assert.equal(game.fruits().length, 1, 'clearing the stage does not flush a queued batch');
+      assert.equal(game.fruits()[0].speed, 1, 'a miss resets the next throw');
+      const resumed = game.times.at(-1);
+      const count = game.times.length;
+      game.timer.advance(resumed + initialGap - game.timer.now() - 1);
+      assert.equal(game.times.length, count, 'the reset restores the starting cadence');
+      game.timer.advance(2);
+      assert.equal(game.times.length, count + 1);
+    } finally { game.dispose(); }
+  }
+});
+
+test('variable launch gaps survive pausing mid-gap without catch-up bursts or extra timers', () => {
+  for (const isMobile of [false, true]) {
+    const samples = [0, 1, 0.25, 0.75];
+    let sample = 0;
+    const game = spawner(isMobile, { random: () => samples[sample++ % samples.length] });
+    try {
+      game.timer.advance(750);
+      const difficulty = gameDifficulty({ score: 0, isMobile });
+      const shortGap = gameSpawnDelay(difficulty, () => samples[0]);
+      const longGap = gameSpawnDelay(difficulty, () => samples[1]);
+      game.timer.advance(shortGap / 2);
+      game.setActive(false);
+      assert.equal(game.timer.count(), 0);
+      game.timer.advance(30000);
+      assert.deepEqual(game.times, [750], 'hidden time launches nothing');
+      game.setActive(true);
+      game.setActive(true);
+      assert.equal(game.timer.count(), 1);
+      game.timer.advance(shortGap / 2 - 1);
+      assert.equal(game.fruits().length, 1);
+      game.timer.advance(2);
+      assert.equal(game.fruits().length, 2, 'resuming releases one throw after its remaining delay');
+      assert.ok(Math.abs(game.times[1] - (750 + shortGap + 30000)) < 1e-8);
+      game.timer.advance(game.times[1] + longGap - game.timer.now() + 1);
+      assert.equal(game.fruits().length, 3);
+      assert.ok(Math.abs(game.times[2] - game.times[1] - longGap) < 1e-8, 'the next gap uses a new random sample');
+      game.dispose();
+      assert.equal(game.timer.count(), 0);
+      game.timer.advance(30000);
+      assert.equal(game.times.length, 3, 'unmount cancels the next staggered throw');
+    } finally { game.dispose(); }
+  }
+});
+
+test('staggering still waits for artwork and space inside the existing game boundary', () => {
+  for (const options of [{ textures: [] }, { getCeiling: () => -Infinity }]) {
+    const game = spawner(true, options);
+    try {
+      game.timer.advance(15000);
+      assert.deepEqual(game.fruits(), []);
+      assert.ok(game.timer.count() <= 1);
     } finally { game.dispose(); }
   }
 });
