@@ -9,6 +9,7 @@ import useFBOs from '@src/components/canvas/fluid/hooks/useFBOs';
 import useMaterials from '@src/components/canvas/fluid/hooks/useMaterials';
 import useOpts from '@src/components/canvas/fluid/hooks/useOpts';
 import usePointerEvents from '@src/components/canvas/fluid/hooks/usePointerEvents';
+import { nativeIOSScroll } from '@src/utils/scrollRoot';
 // eslint-disable-next-line import/extensions
 import { decayFor, frameShare } from '@src/utils/frameStep.mjs';
 // eslint-disable-next-line import/extensions
@@ -23,6 +24,9 @@ const SPLAT_DYE = 10.0;
 // The canvas draws on demand: input wakes it, and it keeps drawing until the
 // last splat has faded for good (the composite no longer changes by then).
 const SETTLE_SECONDS = 10;
+// On iPhone and iPad this canvas ends where Safari's bars begin, while the page goes on under them, so
+// the effect fades out over this many pixels before each edge rather than stopping in a line.
+const EDGE_FADE = 96;
 
 function Fluid({ mainRef, fluidColor }) {
   const OPTS = useOpts();
@@ -178,6 +182,7 @@ function Fluid({ mainRef, fluidColor }) {
       )}
       <Effect
         intensity={intensity * 0.0001}
+        edge={nativeIOSScroll() && size.height ? Math.min(0.5, EDGE_FADE / size.height) : 0}
         backgroundColor={backgroundColor}
         fluidColor={fluidColor}
         showBackground={showBackground}

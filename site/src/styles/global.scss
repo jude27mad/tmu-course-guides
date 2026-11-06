@@ -268,9 +268,8 @@ html[data-scroll-mode='document'] {
   --edge-bleed-bottom: 160px;
   // A page that ends in the dark footer fades into the ink over its last
   // stretch, so it meets the flat ink Safari paints past its end without an
-  // edge, at every scroll position. The page's own fade belongs to the end of
-  // the document (layout.module.scss) and moves with it under the toolbar; a
-  // fixed copy takes over while the end is at the bar (app.module.scss). Eased
+  // edge, at every scroll position. The fade belongs to the end of the
+  // document (layout.module.scss) and moves with it under the toolbar. Eased
   // (smoothstep), so neither end of the fade draws a line.
   --dark-end-fade-height: 120px;
   --dark-end-fade: linear-gradient(

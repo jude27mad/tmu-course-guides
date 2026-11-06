@@ -129,6 +129,17 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-11-06-safari-bar-edges",
+  "date": "November 6, 2026",
+  "title": "Smoother edges at Safari's toolbar",
+  "text": "Three more fixes for iPhone and iPad.",
+  "items": [
+    "The end of the Desk, Courses, Privacy and Website updates now fades into the dark area under Safari's toolbar on iPhones too; the earlier fix could switch the fade off there.",
+    "The trail your finger leaves on the page fades out before Safari's toolbar and status bar instead of stopping in a straight line.",
+    "The end of the MTH140 and MTH141 guides no longer shows a thin line."
+  ]
+ },
+ {
   "id": "2026-11-05-safari-dark-end",
   "date": "November 5, 2026",
   "title": "No dark box rising under Safari's toolbar",

@@ -156,7 +156,15 @@
   // so it is never paper inside a dark panel. Only those panels show it. It is
   // here, not on the body: Safari blends the body's colour into the one it
   // paints past the page's ends (global.scss), and that must stay the paper.
-  .root { display: block; height: auto; min-height: var(--app-viewport-height); background-color: var(--black); }
+  // It stops 3px short of the document's end: the math guides end on a fraction
+  // of a pixel, and a sliver of it could show below their paper footer as a dark
+  // line. The root's own colour, which Safari continues past the end, shows there.
+  .root {
+    display: block; height: auto; min-height: var(--app-viewport-height);
+    background-image: linear-gradient(var(--black), var(--black));
+    background-repeat: no-repeat;
+    background-size: 100% calc(100% - 3px);
+  }
   .layout {
     display: block; height: auto !important; overflow: visible;
     .main {
@@ -203,26 +211,8 @@
     // Safari shows this reach under its bottom bar, so nothing fixed may shade
     // the artwork at the layout viewport's bottom edge: it would end in a line
     // where the bar begins (#67's fade to ink did). A page that ends dark fades
-    // into the ink over its own last stretch (the footer's wrapper,
-    // layout.module.scss). While the page bounces past that end (native
-    // scrolling; data-edge-past, set by the navbar), the artwork shows between
-    // the end and the bar, and this fixed copy of the same fade replaces the
-    // page's own in the same frame, without a transition, to keep it shaded
-    // into the ink at the bar. Back at rest both lie in the same place.
-    &::after {
-      content: '';
-      position: fixed;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      height: var(--dark-end-fade-height);
-      background-image: var(--dark-end-fade);
-      pointer-events: none;
-      opacity: 0;
-    }
+    // into the ink over its own last stretch instead (the footer's wrapper,
+    // layout.module.scss).
   }
 }
 
-:global(html[data-scroll-mode='document'][data-edge-past='end']) .background::after {
-  opacity: 1;
-}

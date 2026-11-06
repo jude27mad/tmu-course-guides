@@ -4,13 +4,14 @@ import fragmentShader from '@src/components/canvas/fluid/glsl/post.frag';
 import hexToRgb from '@src/components/canvas/fluid/utils';
 
 class FluidEffect extends Effect {
-  constructor({ tFluid, intensity = 1.0, fluidColor = '#ffffff', backgroundColor = '#000000' } = {}) {
+  constructor({ tFluid, intensity = 1.0, fluidColor = '#ffffff', backgroundColor = '#000000', edge = 0 } = {}) {
     const uniforms = new Map(
       Object.entries({
         tFluid: new Uniform(tFluid),
         uIntensity: new Uniform(intensity),
         uColor: new Uniform(hexToRgb(fluidColor)),
         uBackgroundColor: new Uniform(hexToRgb(backgroundColor)),
+        uEdge: new Uniform(edge),
       }),
     );
 
@@ -21,6 +22,7 @@ class FluidEffect extends Effect {
       intensity,
       fluidColor,
       backgroundColor,
+      edge,
       cachedFluidColorString: fluidColor,
       cachedBackgroundColorString: backgroundColor,
     };
@@ -45,6 +47,7 @@ class FluidEffect extends Effect {
     }
 
     this.updateUniform('uIntensity', this.state.intensity);
+    this.updateUniform('uEdge', this.state.edge);
   }
 }
 

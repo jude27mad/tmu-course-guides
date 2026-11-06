@@ -74,7 +74,7 @@ test('the paper steps aside for a dark panel near either end, and otherwise 480p
   assert.deepEqual(edges({ scrollTop: 2851, maxScroll: 3000, endsDark: false, darkFromEnd: 150 }), ['open', 'closed']);
 });
 
-test('the artwork fades into the ink at the bottom bar only while a dark end is at the bar', () => {
+test('the navbar marks a dark end at the bar (read by the browser checks)', () => {
   const theme = read('../src/utils/theme.js');
   const source = theme.slice(theme.indexOf('const EDGE_SWITCH'), theme.indexOf('// Compatibility for callers')).replace('export function', 'function');
   const dataset = {};
@@ -92,27 +92,15 @@ test('the artwork fades into the ink at the bottom bar only while a dark end is 
   assert.equal(end({ scrollTop: 3000, maxScroll: 3000, endsDark: false }), 'none');
 });
 
-test('the fixed copy of the dark end\'s fade replaces the page\'s own only while the page bounces past its end', () => {
-  // At rest at the end the page's own fade stays: this runs a frame or more after
-  // the page moves, and hiding it there showed a lit strip under the toolbar when
-  // scrolling up from the end.
-  const theme = read('../src/utils/theme.js');
-  const source = theme.slice(theme.indexOf('const EDGE_SWITCH'), theme.indexOf('// Compatibility for callers')).replace('export function', 'function');
-  const dataset = {};
-  const setEdgeBleed = new Function('document', `${source}\nreturn setEdgeBleed;`)({ documentElement: { dataset } });
-  const past = (state) => {
-    setEdgeBleed(state);
-    return dataset.edgePast;
-  };
-  assert.equal(past({ scrollTop: 2990, maxScroll: 3000, endsDark: true }), 'none');
-  assert.equal(past({ scrollTop: 3000, maxScroll: 3000, endsDark: true }), 'none');
-  assert.equal(past({ scrollTop: 3000.6, maxScroll: 3000, endsDark: true }), 'none');
-  assert.equal(past({ scrollTop: 3001, maxScroll: 3000, endsDark: true }), 'end');
-  assert.equal(past({ scrollTop: 3060, maxScroll: 3000, endsDark: true }), 'end');
-  assert.equal(past({ scrollTop: 3060, maxScroll: 3000, endsDark: false }), 'none');
-  const app = read('../src/pages/app.module.scss');
+test('nothing measured from the scroll position switches the dark end\'s fade', () => {
+  // On an iPhone the fade was missing at every position while the end crossed the
+  // toolbar: a swap to a fixed copy, decided from innerHeight, which on iOS 26 does
+  // not say where Safari stops the page's end. The fade is now always there.
   const layout = read('../src/components/dom/styles/layout.module.scss');
-  assert.doesNotMatch(app + layout, /data-edge-end/);
+  const app = read('../src/pages/app.module.scss');
+  assert.doesNotMatch(layout + app, /data-edge-end|data-edge-past/);
+  const theme = read('../src/utils/theme.js');
+  assert.doesNotMatch(theme, /edgePast/);
 });
 
 test('the open phone menu shows the artwork, which continues under the bars', () => {
@@ -189,7 +177,12 @@ test('past the ends of the page Safari shows the root colour, so the body stays 
   // The dark panels keep their ink fallback, on the app's root instead.
   const app = read('../src/pages/app.module.scss');
   const documentMode = app.slice(app.indexOf(":global(html[data-scroll-mode='document']) {"));
-  assert.match(documentMode, /\.root \{[^}]*background-color: var\(--black\);[^}]*\}/);
+  const rootRule = documentMode.slice(documentMode.indexOf('.root {'), documentMode.indexOf('}', documentMode.indexOf('.root {')));
+  assert.match(rootRule, /background-image: linear-gradient\(var\(--black\), var\(--black\)\);/);
+  // Short of the document's end: a page that ends on a fraction of a pixel (the
+  // math guides) showed a sliver of it below its paper footer as a dark line.
+  assert.match(rootRule, /background-repeat: no-repeat;[^}]*background-size: 100% calc\(100% - \dpx\);/);
+  assert.doesNotMatch(rootRule, /background-color/);
 });
 
 test('while a panel shrinks the page, the colour past its ends goes from the page\'s to the ink with it', () => {
@@ -269,25 +262,16 @@ test('Safari\'s flat fill past the page and under its bottom bar is the page as 
   assert.match(theme, /meta\.setAttribute\('content', topDark \? TOKENS\.ink : lightEdge\(DEFAULT_PALETTE\.secondary\)\)/);
 });
 
-test('the artwork runs on unchanged under the bottom bar, and fades into the ink only past a dark end', () => {
+test('the artwork runs on unchanged under the bottom bar, with no fixed layer shading it', () => {
   // Inside a dark panel, wherever the artwork is not painted, the ink shows (the
   // app's root; past the page's ends Safari shows the root colour, see above).
   const documentMode = read('../src/pages/app.module.scss');
-  assert.match(documentMode.slice(documentMode.indexOf(":global(html[data-scroll-mode='document']) {")), /\.root \{[^}]*background-color: var\(--black\);/);
+  assert.match(documentMode.slice(documentMode.indexOf(":global(html[data-scroll-mode='document']) {")), /\.root \{[^}]*background-image: linear-gradient\(var\(--black\), var\(--black\)\);/);
   // Safari shows the artwork's reach under its bottom bar. A fixed layer that
   // shades it at the layout viewport's bottom edge (#67 faded it to ink there)
-  // ends in a line where the bar begins, so the fixed fade is invisible...
+  // ends in a line where the bar begins, and is cut there besides: none does.
   const app = read('../src/pages/app.module.scss');
-  const background = app.slice(app.indexOf("  .background {\n    background-color: transparent;"));
-  const fade = background.slice(background.indexOf('&::after {'), background.indexOf('}', background.indexOf('&::after {')));
-  assert.match(fade, /position: fixed;[^}]*bottom: 0;[^}]*height: var\(--dark-end-fade-height\);[^}]*background-image: var\(--dark-end-fade\);/);
-  assert.match(fade, /opacity: 0;/);
-  // It replaces the page's own fade in the same frame, so it must not fade in.
-  assert.doesNotMatch(fade, /transition/);
-  // ...except while a page that ends dark bounces past its end, where the artwork
-  // shows between the end and the bar, and Safari's flat ink under the bar.
-  assert.match(app, /:global\(html\[data-scroll-mode='document'\]\[data-edge-past='end'\]\) \.background::after \{\s*opacity: 1;\s*\}/);
-  assert.equal((app.match(/\.background::after/g) || []).length, 1);
+  assert.doesNotMatch(app, /\.background::after|&::after/);
   // The moving footer (its reveal translates it) does not fade to ink itself:
   // when the page bounces past its end, the artwork under it would meet that ink
   // in a hard edge. The page's own fade is on the wrapper (next test).
@@ -295,7 +279,7 @@ test('the artwork runs on unchanged under the bottom bar, and fades into the ink
   assert.doesNotMatch(footer, /linear-gradient/);
 });
 
-test('a page that ends dark fades into the ink over its own last stretch, so its end crosses the toolbar without an edge', () => {
+test('a page that ends dark always fades into the ink over its own last stretch, so its end crosses the toolbar without an edge', () => {
   // Past the end Safari paints the root's flat ink, and during the last stretch of
   // scrolling the end crosses the area under the toolbar, where Safari shows the
   // page and the lit artwork through the footer: a dark box rose from the bottom
@@ -319,15 +303,16 @@ test('a page that ends dark fades into the ink over its own last stretch, so its
   assert.match(layoutJsx, /<footer className=\{styles\.footer\}>\s*<Footer \/>\s*<\/footer>/);
   const layout = read('../src/components/dom/styles/layout.module.scss');
   const own = layout.slice(layout.indexOf(":global(html[data-scroll-mode='document']) .footer {"));
-  assert.match(own, /^:global\(html\[data-scroll-mode='document'\]\) \.footer \{\s*position: relative;/);
-  const after = own.slice(own.indexOf('&::after {'), own.indexOf('}', own.indexOf('&::after {')));
-  assert.match(after, /position: absolute;[^}]*bottom: 0;[^}]*height: var\(--dark-end-fade-height\);[^}]*z-index: -1;[^}]*background-image: var\(--dark-end-fade\);/);
-  assert.doesNotMatch(after, /position: fixed/);
-  // While the page bounces past its end the fixed copy (above) takes over, in the same frame.
-  assert.match(layout, /:global\(html\[data-scroll-mode='document'\]\[data-edge-past='end'\]\) \.footer::after \{\s*visibility: hidden;\s*\}/);
-  assert.doesNotMatch(layout, /transition/);
+  const rule = own.slice(0, own.indexOf('}'));
+  // The wrapper's own background: painted under the footer's content and above
+  // the fixed artwork, at the wrapper's bottom, which is the document's end.
+  assert.match(rule, /background-image: var\(--dark-end-fade\);/);
+  assert.match(rule, /background-repeat: no-repeat;/);
+  assert.match(rule, /background-position: left bottom;/);
+  assert.match(rule, /background-size: 100% var\(--dark-end-fade-height\);/);
+  assert.doesNotMatch(layout, /::after|visibility|transition|position: fixed/);
   // Document mode only: on computers `main` scrolls and no browser bar is involved.
-  assert.doesNotMatch(layout.replace(/\/\/.*$/gm, '').slice(0, layout.replace(/\/\/.*$/gm, '').indexOf(':global(')), /::after/);
+  assert.doesNotMatch(layout.replace(/\/\/.*$/gm, '').slice(0, layout.replace(/\/\/.*$/gm, '').indexOf(':global(')), /background-image/);
 });
 
 test('the footer\'s colour before the tap is kept while the page is shrunk', () => {
@@ -362,4 +347,22 @@ test('leaving for another page from an open panel brings the colour past the end
   // Meanwhile the navbar holds the shell rather than reversing it under the new page.
   const navbar = read('../src/components/dom/navbar/Index.jsx');
   assert.match(navbar, /if \(isTransitioning === 'handoff' \|\| \(isTransitioning && nativeIOSScroll\(\)\)\) \{\s*(\/\/[^\n]*\s*)*tl\.pause\(\);/);
+});
+
+test('the pointer fluid fades out before Safari\'s bars instead of stopping in a line', () => {
+  // Its canvas ends at the layout viewport while Safari shows the page under the
+  // bars: a trail drawn near the toolbar was cut in a straight line, a box.
+  const post = read('../src/components/canvas/fluid/glsl/post.frag');
+  assert.match(post, /uniform float uEdge;/);
+  assert.match(post, /float edge = uEdge > 0\.0 \? smoothstep\(0\.0, uEdge, uv\.y\) \* smoothstep\(0\.0, uEdge, 1\.0 - uv\.y\) : 1\.0;/);
+  assert.match(post, /float intensity = length\(fluidColor\) \* uIntensity \* edge;/);
+  const effect = read('../src/components/canvas/fluid/effect/FluidEffect.jsx');
+  assert.match(effect, /uEdge: new Uniform\(edge\)/);
+  assert.match(effect, /this\.updateUniform\('uEdge', this\.state\.edge\);/);
+  const wrapper = read('../src/components/canvas/fluid/effect/Fluid.jsx');
+  assert.match(wrapper, /Object\.assign\(effect\.state, \{ intensity, fluidColor, backgroundColor, edge \}\);/);
+  // iPhone and iPad only: on computers the fluid's edges are the screen's.
+  const fluid = read('../src/components/canvas/fluid/Fluid.jsx');
+  assert.match(fluid, /edge=\{nativeIOSScroll\(\) && size\.height \? Math\.min\(0\.5, EDGE_FADE \/ size\.height\) : 0\}/);
+  assert.match(fluid, /const EDGE_FADE = \d+;/);
 });
