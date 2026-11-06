@@ -12,28 +12,16 @@
 // here, and during the last stretch of scrolling the end crosses the area
 // under the toolbar, where Safari shows the page and the lit artwork behind
 // it. The artwork met that flat ink in a hard line, a dark box that rose from
-// the bottom of the screen. The page now fades into the ink over its last
-// stretch, behind the footer's content, so the end crosses the bar without an
-// edge, and it stays at rest at the end. Only while the page bounces past its
-// end (data-edge-past, native scrolling) does the fixed copy of this fade take
-// over (app.module.scss), to keep shading the artwork that shows between the
-// page's end and the bar; when the end is back at the bar both lie in the
-// same place.
+// the bottom of the screen. The page fades into the ink over its last stretch
+// instead, so the end crosses the bar without an edge. It is the wrapper's own
+// background (painted under the footer's content, above the artwork) and it is
+// always there: nothing measured from the scroll position may switch it, since
+// on iOS 26 innerHeight does not say where Safari stops the page's end. A
+// version that swapped it for a fixed copy left the end without any fade on an
+// iPhone.
 :global(html[data-scroll-mode='document']) .footer {
-  position: relative;
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: var(--dark-end-fade-height);
-    z-index: -1;
-    background-image: var(--dark-end-fade);
-    pointer-events: none;
-  }
-}
-
-:global(html[data-scroll-mode='document'][data-edge-past='end']) .footer::after {
-  visibility: hidden;
+  background-image: var(--dark-end-fade);
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 100% var(--dark-end-fade-height);
 }

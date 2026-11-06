@@ -78,16 +78,9 @@ export function setEdgeBleed({ scrollTop, maxScroll, endsDark, darkFromStart = I
   // Safari stops a page's end at its bottom bar. Past the end it shows the root's
   // flat colour under the bar, not the artwork: the ink, on a page that ends dark.
   // Such a page fades into that ink over its last stretch (layout.module.scss).
+  // This flag no longer drives the styles (see there); the browser checks read it.
   const end = endsDark && maxScroll - scrollTop < 1 ? 'dark' : 'none';
   if (root.dataset.edgeEnd !== end) root.dataset.edgeEnd = end;
-  // Only while it bounces past its end (native scrolling: Pause motion; Lenis
-  // never overscrolls) does a fixed copy of that fade replace the page's own
-  // (app.module.scss), to shade the artwork that shows between the end and the
-  // bar. Not at rest: this runs a frame or more after the page moves, and a
-  // hidden page fade while the end was already back under the bar showed a lit
-  // strip there when scrolling up from the end.
-  const past = endsDark && scrollTop - maxScroll >= 1 ? 'end' : 'none';
-  if (root.dataset.edgePast !== past) root.dataset.edgePast = past;
 }
 
 // Compatibility for callers requiring the same color at both ends.

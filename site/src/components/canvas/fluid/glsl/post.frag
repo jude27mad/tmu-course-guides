@@ -4,6 +4,9 @@ uniform vec3 uColor;
 uniform vec3 uBackgroundColor;
 
 uniform float uIntensity;
+// iPhone and iPad: the share of the canvas's height over which the effect fades out at its top and
+// bottom edges, which are where Safari's bars begin (0 elsewhere: no fade).
+uniform float uEdge;
 
 
 
@@ -35,5 +38,11 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
         finalColor = mix(computedFluidColor, computedBgColor, 1.0 - texture.a);
     }
 
-    outputColor = finalColor;
+    // Safari shows the page under its bars, but not this canvas, which ends at the layout viewport: a
+    // trail drawn there was cut in a straight line. The visible result fades out before each bar instead:
+    // the colour as the screen shows it (clamped), not the intensity, which a strong trail saturates
+    // until a few pixels from the edge.
+    float edge = uEdge > 0.0 ? smoothstep(0.0, uEdge, uv.y) * smoothstep(0.0, uEdge, 1.0 - uv.y) : 1.0;
+
+    outputColor = mix(computedBgColor, clamp(finalColor, 0.0, 1.0), edge);
 }
