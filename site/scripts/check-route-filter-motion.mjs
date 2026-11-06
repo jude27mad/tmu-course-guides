@@ -1030,20 +1030,26 @@ try {
         assert.equal(await page.locator('[data-game-score]').isVisible(), false, 'the scoreboard does not reveal the easter egg');
         const flight = await page.evaluate(async () => {
           const state = [...window.canvasStores].map(store => store.getState()).find(item => item.gl.domElement.closest('[data-companion-game]'));
-          const tracks = new Map();
+          // Discs launched during the scroll can have a lower ceiling. Measure a fresh throw.
+          const alreadyAirborne = new WeakSet();
+          state.scene.traverse(mesh => {
+            if (mesh.userData.slice) alreadyAirborne.add(mesh);
+          });
+          // The fixed random value in this check gives Three.js meshes identical UUIDs.
+          const tracks = new WeakMap();
           const deadline = performance.now() + 18000;
           while (performance.now() < deadline) {
             await new Promise(requestAnimationFrame);
             let completed;
             state.scene.traverse(mesh => {
-              if (!mesh.userData.slice) return;
+              if (!mesh.userData.slice || alreadyAirborne.has(mesh)) return;
               const point = mesh.getWorldPosition(mesh.position.clone());
-              const track = tracks.get(mesh.uuid) || { previous: point.y, rose: false, fell: false, peak: -Infinity };
+              const track = tracks.get(mesh) || { previous: point.y, rose: false, fell: false, peak: -Infinity };
               track.rose ||= point.y > track.previous + 0.01;
               track.fell ||= track.rose && point.y < track.previous - 0.01;
               track.previous = point.y;
               track.peak = Math.max(track.peak, point.clone().project(state.camera).y);
-              tracks.set(mesh.uuid, track);
+              tracks.set(mesh, track);
               if (track.rose && track.fell) completed = track;
             });
             if (completed) return completed;
