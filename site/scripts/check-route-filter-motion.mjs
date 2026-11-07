@@ -1167,9 +1167,9 @@ try {
           const box = el.getBoundingClientRect();
           const stage = el.parentElement.getBoundingClientRect();
           const css = getComputedStyle(el);
-          return { left: box.left - stage.left, top: box.top - stage.top, bottom: stage.bottom - box.bottom, height: stage.height, position: css.position, fontSize: parseFloat(css.fontSize) };
+          return { center: box.left + box.width / 2 - stage.left - stage.width / 2, top: box.top - stage.top, bottom: stage.bottom - box.bottom, height: stage.height, position: css.position, fontSize: parseFloat(css.fontSize) };
         });
-        assert.ok(Math.abs(scoreLayout.left) < 2, 'score sits at the left of the stage, clear of the right hand');
+        assert.ok(Math.abs(scoreLayout.center) < 2, 'score sits at the bottom centre of the stage for either hand');
         assert.ok(scoreLayout.top > scoreLayout.height / 2 && scoreLayout.bottom >= 96, 'score sits near the bottom with room for the menu');
         assert.equal(scoreLayout.position, 'absolute', 'the score moves with the stage instead of being fixed or sticky');
         assert.ok(scoreLayout.fontSize >= 24, 'score text is larger');
