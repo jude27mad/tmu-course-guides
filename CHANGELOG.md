@@ -2,6 +2,11 @@
 
 Latest first. Students see course changes under **Course updates** in each guide's Guide tools, and website changes on the **Website updates** page. Older entries record the behaviour at the time; later releases supersede them.
 
+## Unreleased — No line at the end of the math guides
+
+- **The line at the end of MTH140 and MTH141 on iPhone and iPad is gone.** The owner's screenshot measured it: one device row at the page's very end, between the grained paper and Safari's flat colour past the end, about 43 with a spread of 12 across the width and a violet tint. That is the dark background artwork, not the app's flat ink: these pages end on a fraction of a pixel (1912.42 and 2047.77 px tall; CEN100 3333.02), Safari leaves the page's last device row uncovered by the footer's paper, and the fixed artwork behind the page shows through it. The paper footer now continues 2 px past its end in a box-shadow, in the colour Safari paints past the end (`--pageUnderGrain`), and the dark footer's wrapper does the same in the ink. A box-shadow adds no scroll length: the pages' heights are unchanged. The previous attempt (`.root`'s ink stopping 3 px short of the end) could not reach it and is undone.
+- `tests/under-safari-bars.test.mjs` pins both shadows and `.root`'s plain ink again; the new test fails on the previous build.
+
 ## Unreleased — The dark end's fade on iPhones, the fluid at the bars, and the math guides' end
 
 - **The fade at the end of the Desk, Courses, Privacy and Website updates now shows on an iPhone.** On the owner's iPhone the box was still there: the artwork ran at full brightness right up to the page's end, then the flat ink began. The page's own fade had been swapped for a fixed copy whenever the scroll position read as past the end, and that reading uses `innerHeight`, which on iOS 26 does not say where Safari stops the page's end, so the page's fade was hidden while the end crossed the toolbar and the fixed copy was not drawn there. The fade is now the footer wrapper's own background and is always there; nothing measured from the scroll position switches it. The fixed copy and `data-edge-past` are gone.

@@ -737,6 +737,14 @@
   border-top: 1px solid var(--border);
   font-size: 14px;
   line-height: 1.5;
+  // iPhone and iPad: the course pages end on a fraction of a pixel, and Safari
+  // left the page's last device row uncovered by this paper, so the dark artwork
+  // behind the page showed through as a thin line at the end of MTH140 and
+  // MTH141 (1912.42 and 2047.77px tall). The paper continues 2px past the end,
+  // in the colour Safari paints past it (shadows add no scroll length).
+  :global(html[data-scroll-mode='document']) & {
+    box-shadow: 0 2px 0 0 var(--pageUnderGrain);
+  }
   div {
     display: flex;
     flex-wrap: wrap;

@@ -156,15 +156,7 @@
   // so it is never paper inside a dark panel. Only those panels show it. It is
   // here, not on the body: Safari blends the body's colour into the one it
   // paints past the page's ends (global.scss), and that must stay the paper.
-  // It stops 3px short of the document's end: the math guides end on a fraction
-  // of a pixel, and a sliver of it could show below their paper footer as a dark
-  // line. The root's own colour, which Safari continues past the end, shows there.
-  .root {
-    display: block; height: auto; min-height: var(--app-viewport-height);
-    background-image: linear-gradient(var(--black), var(--black));
-    background-repeat: no-repeat;
-    background-size: 100% calc(100% - 3px);
-  }
+  .root { display: block; height: auto; min-height: var(--app-viewport-height); background-color: var(--black); }
   .layout {
     display: block; height: auto !important; overflow: visible;
     .main {
