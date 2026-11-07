@@ -13,11 +13,18 @@ export function gameDifficulty({ score, isMobile }) {
   return { interval: initialInterval - (initialInterval - shortestInterval) * progress, speed: 1 + 0.65 * progress };
 }
 
-// Spread the former 1-6-target waves into individual throws at the same average
-// rate. Higher difficulty widens the timing variation as the average gap shrinks.
+// Random-sized groups arrive at uneven intervals. Higher difficulty widens
+// the timing variation as the average gap between groups shrinks.
 export function gameSpawnDelay({ interval, speed }, random = Math.random) {
   const variation = 0.25 + (speed - 1) * 0.5;
-  return (interval / 3.5) * (1 - variation + random() * variation * 2);
+  return interval * (1 - variation + random() * variation * 2);
+}
+
+// Singles are more common early on; every group size stays possible as the
+// streak shifts the mix toward larger groups.
+export function gameSpawnCount({ speed }, random = Math.random) {
+  const exponent = 1.6 - (speed - 1);
+  return Math.min(6, 1 + Math.floor(random() ** exponent * 6));
 }
 
 // Start just below the stage and choose an on-screen apex. Setting velocity

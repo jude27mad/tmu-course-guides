@@ -8,7 +8,7 @@ import Sticker from '@src/components/dom/prefooter/Sticker';
 import useIsMobile from '@src/hooks/useIsMobile';
 import { useFrame, useThree } from '@react-three/fiber';
 // eslint-disable-next-line import/extensions
-import { createSpawnSchedule, GAME_GRAVITY, scoreBoundary, gameDifficulty, gameSpawnDelay } from './gameTiming.mjs';
+import { createSpawnSchedule, GAME_GRAVITY, scoreBoundary, gameDifficulty, gameSpawnDelay, gameSpawnCount } from './gameTiming.mjs';
 // eslint-disable-next-line import/extensions
 import { bindGameTouch } from './gameTouch.mjs';
 
@@ -87,9 +87,20 @@ function useFruitSpawner({ viewport, textures, isMobile, active, getCeiling, str
     const width = Math.max(0, viewportRef.current.width / 2 - 1);
     setFruits((previous) => {
       if (previous.length >= cap) return previous;
-      nextId.current += 1;
-      const index = randomInt(0, textures.length - 1);
-      return [...previous, { id: nextId.current, x: randomInt(Math.ceil(-width), Math.floor(width)), index, ceilingY, speed }];
+      const count = Math.min(gameSpawnCount({ speed }), cap - previous.length);
+      // Spread the group across the play area so several emojis remain distinct.
+      const lane = (width * 2) / count;
+      const group = Array.from({ length: count }, (_, slot) => {
+        nextId.current += 1;
+        return {
+          id: nextId.current,
+          x: -width + lane * (slot + randomInt(20, 80) / 100),
+          index: randomInt(0, textures.length - 1),
+          ceilingY,
+          speed,
+        };
+      });
+      return [...previous, ...group];
     });
   };
   const scheduler = useMemo(() => createSpawnSchedule({ spawn: () => spawnRef.current(), interval: () => gameSpawnDelay(difficultyRef.current()) }), []);

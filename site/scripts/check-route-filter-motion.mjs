@@ -1065,6 +1065,10 @@ try {
           const score = document.querySelector('[data-game-score]');
           window.gameCelebrations = 0;
           window.gameDiscoveries = 0;
+          window.gameRecordCelebrations = 0;
+          window.addEventListener('tmu-guide:disc-game-new-best', () => {
+            window.gameRecordCelebrations += 1;
+          });
           window.addEventListener('tmu-guide:disc-game-first-slice', (event) => {
             window.gameCelebrations += 1;
             if (event.detail?.discovery) window.gameDiscoveries += 1;
@@ -1133,6 +1137,29 @@ try {
         assert.ok(hit.first > hit.before, 'visible discs respond to shared-surface input');
         assert.equal(hit.repeated, hit.first, 'repeated input on the same discs cannot score twice');
         await page.waitForFunction(() => window.gameScoreHistory.some(entry => entry.visible && entry.score === `Score ${entry.slices}` && entry.slices > 0));
+        assert.equal(await page.evaluate(() => window.gameRecordCelebrations), 1, 'the first record celebrates once even when a swipe slices a group');
+        await page.waitForFunction(() => {
+          const state = [...window.canvasStores].map(store => store.getState()).find(item => item.gl.domElement.closest('#fluidCanvas'));
+          let ready = false;
+          state?.scene.traverse(object => {
+            ready ||= object.__r3f?.objects?.some(effect => effect.name === 'FluidEffect' && effect.uniforms.get('tRecord')?.value?.isCanvasTexture);
+          });
+          return ready;
+        });
+        const recordRendering = await page.evaluate(() => {
+          const state = [...window.canvasStores].map(store => store.getState()).find(item => item.gl.domElement.closest('#fluidCanvas'));
+          let effect;
+          state.scene.traverse(object => {
+            effect ||= object.__r3f?.objects?.find(item => item.name === 'FluidEffect');
+          });
+          const canvas = effect.uniforms.get('tRecord').value.image;
+          const pixels = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data;
+          let ink = 0;
+          for (let index = 3; index < pixels.length; index += 4) if (pixels[index] > 128) ink++;
+          return { ink, shaders: state.gl.info.programs.every(program => program.diagnostics?.runnable !== false) };
+        });
+        assert.ok(recordRendering.ink > 5000 && recordRendering.shaders, 'New Best lettering reaches the working touch-fluid shader');
+        await page.screenshot({ path: path.join(report, `${label}-new-best.png`) });
         const score = page.locator('[data-game-score]');
         assert.equal(await score.isVisible(), true);
         assert.equal(await score.getAttribute('role'), 'status');
@@ -1140,9 +1167,9 @@ try {
           const box = el.getBoundingClientRect();
           const stage = el.parentElement.getBoundingClientRect();
           const css = getComputedStyle(el);
-          return { right: stage.right - box.right, top: box.top - stage.top, bottom: stage.bottom - box.bottom, height: stage.height, position: css.position, fontSize: parseFloat(css.fontSize) };
+          return { left: box.left - stage.left, top: box.top - stage.top, bottom: stage.bottom - box.bottom, height: stage.height, position: css.position, fontSize: parseFloat(css.fontSize) };
         });
-        assert.ok(Math.abs(scoreLayout.right) < 2, 'score sits at the right of the stage');
+        assert.ok(Math.abs(scoreLayout.left) < 2, 'score sits at the left of the stage, clear of the right hand');
         assert.ok(scoreLayout.top > scoreLayout.height / 2 && scoreLayout.bottom >= 96, 'score sits near the bottom with room for the menu');
         assert.equal(scoreLayout.position, 'absolute', 'the score moves with the stage instead of being fixed or sticky');
         assert.ok(scoreLayout.fontSize >= 24, 'score text is larger');

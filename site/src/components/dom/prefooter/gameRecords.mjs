@@ -28,7 +28,9 @@ export function createGameRecords(getStorage) {
       if (Number.isSafeInteger(score) && score > memory.best) {
         memory.best = score;
         write();
+        return true;
       }
+      return false;
     },
     claimCelebration() {
       read();

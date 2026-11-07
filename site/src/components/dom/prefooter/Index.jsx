@@ -10,7 +10,7 @@ import { scoreAfterEvent } from './gameTiming.mjs';
 // eslint-disable-next-line import/extensions
 import { gameRecords } from './gameRecords.mjs';
 // eslint-disable-next-line import/extensions
-import { GAME_CELEBRATION_EVENT } from '../../canvas/fluid/gameCelebration.mjs';
+import { GAME_CELEBRATION_EVENT, GAME_RECORD_EVENT } from '../../canvas/fluid/gameCelebration.mjs';
 
 const FruitNinja = dynamic(() => import('@src/components/dom/prefooter/FruitNinja'), { ssr: false });
 
@@ -26,21 +26,25 @@ function Index({ active, eventSource }) {
   useEffect(() => {
     dispatch({ type: 'restore', best: gameRecords.read().best });
   }, []);
-  useEffect(() => {
-    gameRecords.saveBest(game.best);
-  }, [game.best]);
   // Track the transition synchronously: one swipe can slice multiple discs
   // before React renders, and each new streak must celebrate exactly once.
   const streakScore = useRef(0);
+  const recordCelebrated = useRef(false);
   const onSlice = useCallback(() => {
     streakScore.current += 1;
     dispatch('slice');
+    const newBest = gameRecords.saveBest(streakScore.current);
     if (streakScore.current === 1) {
       window.dispatchEvent(new CustomEvent(GAME_CELEBRATION_EVENT, { detail: { discovery: gameRecords.claimCelebration() } }));
+    }
+    if (newBest && !recordCelebrated.current) {
+      recordCelebrated.current = true;
+      window.dispatchEvent(new CustomEvent(GAME_RECORD_EVENT));
     }
   }, []);
   const onMiss = useCallback(() => {
     streakScore.current = 0;
+    recordCelebrated.current = false;
     dispatch('miss');
   }, []);
 

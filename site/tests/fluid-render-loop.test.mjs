@@ -70,9 +70,13 @@ function mount() {
     component + '\n  return { meshRef, postRef };\n}\nreturn Fluid({ mainRef: {} });')(...Object.values(componentScope));
   refs.meshRef.current = {};
   const shown = [];
-  refs.postRef.current = { updateUniform: (name, value) => { if (name === 'tFluid') shown.push(value); } };
+  const records = [];
+  refs.postRef.current = {
+    updateUniform: (name, value) => { if (name === 'tFluid') shown.push(value); },
+    showRecord: size => records.push(size),
+  };
   return {
-    FBOs, splatStack, draws, shown, wakes,
+    FBOs, splatStack, draws, shown, wakes, records,
     frame(delta = 1 / 60) { draws.length = 0; frame({}, delta); },
     dispose() {
       targets.forEach(target => target.dispose());
@@ -80,6 +84,19 @@ function mount() {
     },
   };
 }
+
+test('a new-best message wakes the existing fluid loop without feeding invalid values into its simulation', () => {
+  const h = mount();
+  try {
+    h.splatStack.current.push({ record: true });
+    h.frame();
+    assert.deepEqual(h.records, [{ width: 400, height: 800 }]);
+    assert.ok(h.wakes.count > 0);
+    assert.equal(h.draws.filter(draw => draw.material === 'splat').length, 0);
+    h.frame();
+    assert.equal(h.records.length, 1);
+  } finally { h.dispose(); }
+});
 
 for (const splatCount of [0, 1, 2]) {
   test('fluid retains the pre-vorticity velocity snapshot after ' + splatCount + ' splats', () => {
