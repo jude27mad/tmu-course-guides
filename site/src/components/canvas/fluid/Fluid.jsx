@@ -13,7 +13,7 @@ import { nativeIOSScroll } from '@src/utils/scrollRoot';
 // eslint-disable-next-line import/extensions
 import { decayFor, frameShare } from '@src/utils/frameStep.mjs';
 // eslint-disable-next-line import/extensions
-import { GAME_CELEBRATION_EVENT, listenForGameCelebration } from './gameCelebration.mjs';
+import { GAME_CELEBRATION_EVENT, GAME_RECORD_EVENT, listenForGameCelebration } from './gameCelebration.mjs';
 
 // The original advanced the simulation 0.016 s, dissipated once and added a
 // full dye splat for every rendered frame, so at 120 Hz the fluid moved twice
@@ -54,9 +54,11 @@ function Fluid({ mainRef, fluidColor }) {
     const wake = () => invalidate();
     element?.addEventListener('pointermove', wake, { passive: true });
     window.addEventListener(GAME_CELEBRATION_EVENT, wake);
+    window.addEventListener(GAME_RECORD_EVENT, wake);
     return () => {
       element?.removeEventListener('pointermove', wake);
       window.removeEventListener(GAME_CELEBRATION_EVENT, wake);
+      window.removeEventListener(GAME_RECORD_EVENT, wake);
     };
   }, [mainRef, invalidate]);
 
@@ -102,19 +104,24 @@ function Fluid({ mainRef, fluidColor }) {
     if (settling.current > 0) invalidate();
 
     while (splatStack.current.length > 0) {
-      const { mouseX, mouseY, velocityX, velocityY, radiusScale = 1, burst = false } = splatStack.current.pop();
+      const splat = splatStack.current.pop();
+      if (splat.record) {
+        postRef.current.showRecord(size);
+      } else {
+        const { mouseX, mouseY, velocityX, velocityY, radiusScale = 1, burst = false } = splat;
 
-      pointerRef.current.set(mouseX, mouseY);
-      colorRef.current.set(velocityX, velocityY, burst ? SPLAT_DYE : SPLAT_DYE * share);
+        pointerRef.current.set(mouseX, mouseY);
+        colorRef.current.set(velocityX, velocityY, burst ? SPLAT_DYE : SPLAT_DYE * share);
 
-      setShaderMaterial('splat');
-      setUniforms('splat', 'uTarget', FBOs.velocity.read.texture);
-      setUniforms('splat', 'uPointer', pointerRef.current);
-      setUniforms('splat', 'uColor', colorRef.current);
-      setUniforms('splat', 'uRadius', (radius * radiusScale) / 100.0);
-      setRenderTarget('velocity');
-      setUniforms('splat', 'uTarget', FBOs.density.read.texture);
-      setRenderTarget('density');
+        setShaderMaterial('splat');
+        setUniforms('splat', 'uTarget', FBOs.velocity.read.texture);
+        setUniforms('splat', 'uPointer', pointerRef.current);
+        setUniforms('splat', 'uColor', colorRef.current);
+        setUniforms('splat', 'uRadius', (radius * radiusScale) / 100.0);
+        setRenderTarget('velocity');
+        setUniforms('splat', 'uTarget', FBOs.density.read.texture);
+        setRenderTarget('density');
+      }
     }
 
     // Preserve the original shaderUpdates snapshot across the vorticity swap.

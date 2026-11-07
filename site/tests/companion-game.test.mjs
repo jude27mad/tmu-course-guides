@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-let createSpawnSchedule, createDiscFlight, GAME_GRAVITY, scoreAfterEvent, scoreBoundary, gameDifficulty, gameSpawnDelay;
-try { ({ createSpawnSchedule, createDiscFlight, GAME_GRAVITY, scoreAfterEvent, scoreBoundary, gameDifficulty, gameSpawnDelay } = await import('../src/components/dom/prefooter/gameTiming.mjs')); }
+let createSpawnSchedule, createDiscFlight, GAME_GRAVITY, scoreAfterEvent, scoreBoundary, gameDifficulty, gameSpawnDelay, gameSpawnCount;
+try { ({ createSpawnSchedule, createDiscFlight, GAME_GRAVITY, scoreAfterEvent, scoreBoundary, gameDifficulty, gameSpawnDelay, gameSpawnCount } = await import('../src/components/dom/prefooter/gameTiming.mjs')); }
 catch (error) { if (error.code !== 'ERR_MODULE_NOT_FOUND') throw error; }
 
 function clock() {
@@ -187,7 +187,19 @@ test('longer streaks gradually shorten the wave interval and flight time within 
   }
 });
 
-test('individual throw gaps vary more with difficulty while retaining the average target rate', () => {
+test('every group size remains possible while longer streaks favour larger throws', () => {
+  const average = [];
+  for (const score of [0, 10, 30, 100, 10000]) {
+    const difficulty = gameDifficulty({ score, isMobile: true });
+    const sizes = Array.from({ length: 1000 }, (_, index) => gameSpawnCount(difficulty, () => index / 1000));
+    assert.deepEqual([...new Set(sizes)].sort(), [1, 2, 3, 4, 5, 6]);
+    average.push(sizes.reduce((sum, size) => sum + size, 0) / sizes.length);
+    assert.equal(gameSpawnCount(difficulty, () => 1), 6);
+  }
+  assert.ok(average.every((mean, index) => !index || mean > average[index - 1]));
+});
+
+test('group gaps become shorter and more varied with difficulty', () => {
   for (const isMobile of [false, true]) {
     let previous;
     for (const score of [0, 5, 15, 30, 100, 1000, Number.MAX_SAFE_INTEGER]) {
@@ -196,7 +208,7 @@ test('individual throw gaps vary more with difficulty while retaining the averag
       assert.equal(new Set(gaps).size, 5, 'the launch rhythm is not uniform');
       assert.ok(gaps[0] >= (isMobile ? 170 : 109), 'even the quickest throws remain separated');
       const mean = gaps.reduce((sum, gap) => sum + gap, 0) / gaps.length;
-      assert.ok(Math.abs(mean * 3.5 - difficulty.interval) < 1e-9, 'staggering preserves the former average of 3.5 targets per wave');
+      assert.ok(Math.abs(mean - difficulty.interval) < 1e-9, 'each random-sized group follows the difficulty interval');
       const spread = (gaps.at(-1) - gaps[0]) / mean;
       if (previous) {
         gaps.forEach((gap, index) => assert.ok(gap < previous.gaps[index], 'higher streaks shorten every part of the timing range'));
@@ -240,7 +252,7 @@ test('faster discs follow the same arc and score boundary, with a shorter reacti
 
 // Run the production spawner with a controlled clock and no React render between
 // score events. A swipe can score several discs before React commits the display.
-function spawner(isMobile, { random = () => 0.5, textures = [{}, {}, {}], getCeiling = () => 4 } = {}) {
+function spawner(isMobile, { random = () => 0.5, sizes = [1], textures = [{}, {}, {}], getCeiling = () => 4 } = {}) {
   const source = readFileSync(new URL('../src/components/dom/prefooter/FruitNinja.jsx', import.meta.url), 'utf8');
   const limits = source.slice(source.indexOf('const MAX_ALIVE'), source.indexOf('function useEmojiTextures'));
   const hook = source.slice(source.indexOf('function useFruitSpawner('), source.indexOf('function FruitNinja('));
@@ -250,19 +262,21 @@ function spawner(isMobile, { random = () => 0.5, textures = [{}, {}, {}], getCei
   const cleanups = [];
   let scheduler;
   let fruits = [];
-  const useSpawner = new Function('useState', 'useRef', 'useMemo', 'useCallback', 'useEffect', 'createSpawnSchedule', 'gameDifficulty', 'gameSpawnDelay', 'randomInt',
+  let group = 0;
+  const useSpawner = new Function('useState', 'useRef', 'useMemo', 'useCallback', 'useEffect', 'createSpawnSchedule', 'gameDifficulty', 'gameSpawnDelay', 'gameSpawnCount', 'randomInt',
     `${limits}\n${hook}\nreturn useFruitSpawner;`)(
     initial => [initial, update => { fruits = update(fruits); }],
     value => ({ current: value }), factory => factory(), callback => callback,
     setup => { const cleanup = setup(); if (cleanup) cleanups.push(cleanup); },
     options => (scheduler = createSpawnSchedule({ ...timer, ...options, spawn: () => { times.push(timer.now()); options.spawn(); } })),
-    gameDifficulty, difficulty => gameSpawnDelay(difficulty, random), (min, max) => max,
+    gameDifficulty, difficulty => gameSpawnDelay(difficulty, random),
+    () => sizes[group++ % sizes.length], (min, max) => max,
   );
   const [, remove] = useSpawner({ viewport: { width: 8, height: 12 }, textures, isMobile, active: true, getCeiling, streakRef });
   return { timer, streakRef, times, remove, fruits: () => fruits, setActive: value => scheduler.setActive(value), dispose: () => cleanups.reverse().forEach(cleanup => cleanup()) };
 }
 
-test('throws launch individually, use the current streak and retain airborne speeds and body caps', () => {
+test('groups use the current streak and retain airborne speeds and body caps', () => {
   for (const isMobile of [false, true]) {
     const game = spawner(isMobile);
     try {
@@ -297,6 +311,28 @@ test('throws launch individually, use the current streak and retain airborne spe
       assert.equal(game.times.length, count, 'the reset restores the starting cadence');
       game.timer.advance(2);
       assert.equal(game.times.length, count + 1);
+    } finally { game.dispose(); }
+  }
+});
+
+test('random-sized groups include singles and larger throws, spread out and obey remaining capacity', () => {
+  for (const isMobile of [false, true]) {
+    const sizes = [1, 3, 5, 2, 6, 4];
+    const game = spawner(isMobile, { sizes });
+    try {
+      const gap = gameSpawnDelay(gameDifficulty({ score: 0, isMobile }), () => 0.5);
+      for (const [index, size] of sizes.entries()) {
+        game.fruits().forEach(fruit => game.remove(fruit.id));
+        game.timer.advance(index === 0 ? 750 : gap);
+        const group = game.fruits();
+        assert.equal(group.length, size);
+        assert.equal(new Set(group.map(fruit => fruit.id)).size, size);
+        assert.equal(new Set(group.map(fruit => fruit.x)).size, size, 'the group occupies separate horizontal positions');
+        assert.ok(group.every(fruit => Math.abs(fruit.x) <= 3));
+      }
+      game.timer.advance(gap * 4);
+      assert.equal(game.fruits().length, isMobile ? 6 : 10, 'a group fills only the remaining slots');
+      assert.equal(game.timer.count(), 1);
     } finally { game.dispose(); }
   }
 });

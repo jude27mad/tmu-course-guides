@@ -66,3 +66,45 @@ test('the effect supplies the original texture to its shader', () => {
     texture.dispose();
   }
 });
+
+test('new-best lettering uses one reusable texture, fits the viewport, expires and is disposed', () => {
+  const originalDocument = globalThis.document;
+  const text = [];
+  let canvases = 0;
+  globalThis.document = {
+    createElement() {
+      canvases++;
+      return { getContext: () => ({ fillText: (...args) => text.push(args) }) };
+    },
+  };
+  const effect = new FluidEffect();
+  try {
+    assert.equal(effect.uniforms.get('uRecordTime').value, -1);
+    assert.equal(canvases, 0, 'idle browsing allocates no lettering texture');
+    effect.showRecord({ width: 390, height: 844 });
+    const texture = effect.uniforms.get('tRecord').value;
+    assert.ok(texture.isCanvasTexture);
+    assert.deepEqual(text, [['New Best', 512, 132]]);
+    assert.deepEqual([texture.image.width, texture.image.height], [1024, 256]);
+    let disposed = 0;
+    texture.addEventListener('dispose', () => { disposed++; });
+    for (const [width, height] of [[390, 844], [844, 390], [1440, 900]]) {
+      effect.showRecord({ width, height });
+      const size = effect.uniforms.get('uRecordSize').value;
+      assert.ok(size.x <= 0.9 && size.y < 0.5);
+      assert.ok(Math.abs(size.x * width / (size.y * height) - 4) < 1e-10);
+      assert.equal(effect.uniforms.get('tRecord').value, texture);
+      effect.update();
+      assert.ok(effect.uniforms.get('uRecordTime').value >= 0);
+      effect.recordStarted -= 2500;
+      effect.update();
+      assert.equal(effect.uniforms.get('uRecordTime').value, -1, 'returning after a pause cannot replay stale text');
+    }
+    assert.equal(canvases, 1);
+    effect.dispose();
+    assert.equal(disposed, 1);
+  } finally {
+    if (originalDocument === undefined) delete globalThis.document;
+    else globalThis.document = originalDocument;
+  }
+});

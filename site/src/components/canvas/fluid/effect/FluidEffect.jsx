@@ -1,5 +1,5 @@
 import { Effect } from 'postprocessing';
-import { Uniform } from 'three';
+import { CanvasTexture, Uniform, Vector2 } from 'three';
 import fragmentShader from '@src/components/canvas/fluid/glsl/post.frag';
 import hexToRgb from '@src/components/canvas/fluid/utils';
 
@@ -12,6 +12,9 @@ class FluidEffect extends Effect {
         uColor: new Uniform(hexToRgb(fluidColor)),
         uBackgroundColor: new Uniform(hexToRgb(backgroundColor)),
         uEdge: new Uniform(edge),
+        tRecord: new Uniform(null),
+        uRecordTime: new Uniform(-1),
+        uRecordSize: new Uniform(new Vector2()),
       }),
     );
 
@@ -35,7 +38,32 @@ class FluidEffect extends Effect {
     }
   }
 
+  showRecord({ width, height }) {
+    if (!this.recordTexture) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1024;
+      canvas.height = 256;
+      const context = canvas.getContext('2d');
+      if (!context) return;
+      context.font = '750 176px "Inter Display", sans-serif';
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+      context.fillStyle = '#fff';
+      context.fillText('New Best', 512, 132);
+      this.recordTexture = new CanvasTexture(canvas);
+      this.updateUniform('tRecord', this.recordTexture);
+    }
+    const messageWidth = Math.min(width * 0.9, 720);
+    this.uniforms.get('uRecordSize').value.set(messageWidth / width, messageWidth / 4 / height);
+    this.recordStarted = performance.now();
+    this.updateUniform('uRecordTime', 0);
+  }
+
   update() {
+    if (this.uniforms.get('uRecordTime').value >= 0) {
+      const age = (performance.now() - this.recordStarted) / 1000;
+      this.updateUniform('uRecordTime', age < 2.4 ? age : -1);
+    }
     if (this.state.fluidColor !== this.state.cachedFluidColorString) {
       this.state.cachedFluidColorString = this.state.fluidColor;
       this.updateUniform('uColor', hexToRgb(this.state.fluidColor));

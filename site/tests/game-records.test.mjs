@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createGameRecords } from '../src/components/dom/prefooter/gameRecords.mjs';
 import { scoreAfterEvent } from '../src/components/dom/prefooter/gameTiming.mjs';
-import { GAME_CELEBRATION_EVENT, listenForGameCelebration } from '../src/components/canvas/fluid/gameCelebration.mjs';
+import { GAME_CELEBRATION_EVENT, GAME_RECORD_EVENT, listenForGameCelebration } from '../src/components/canvas/fluid/gameCelebration.mjs';
 
 function browserStorage() {
   const values = new Map([['course-progress', 'keep this']]);
@@ -49,10 +49,10 @@ function mountGame(records, target) {
   const start = gameSource.indexOf('  const streakScore =');
   const end = gameSource.indexOf('\n  return (', start);
   assert.ok(start >= 0 && end > start, 'game event callbacks are available');
-  const callbacks = new Function('useRef', 'useCallback', 'dispatch', 'gameRecords', 'window', 'GAME_CELEBRATION_EVENT',
+  const callbacks = new Function('useRef', 'useCallback', 'dispatch', 'gameRecords', 'window', 'GAME_CELEBRATION_EVENT', 'GAME_RECORD_EVENT',
     gameSource.slice(start, end) + '\nreturn { onSlice, onMiss };')(
     value => ({ current: value }), callback => callback,
-    event => { game = scoreAfterEvent(game, event); }, records, target, GAME_CELEBRATION_EVENT,
+    event => { game = scoreAfterEvent(game, event); }, records, target, GAME_CELEBRATION_EVENT, GAME_RECORD_EVENT,
   );
   return { ...callbacks, state: () => game };
 }
@@ -66,6 +66,7 @@ const regularBloom = [
 
 test('the original bloom recurs on each 0-to-1; full-screen discovery happens once across misses and reloads', () => {
   const storage = browserStorage();
+  storage.values.set('tmu-guide:disc-game:v1', JSON.stringify({ best: 42 }));
   const target = new EventTarget();
   const queue = { current: [] };
   const ordinary = { mouseX: 0.2, mouseY: 0.3, velocityX: 2, velocityY: 3 };
@@ -107,7 +108,7 @@ test('the original bloom recurs on each 0-to-1; full-screen discovery happens on
 test('existing browser discovery records stay claimed, while a different browser gets the huge burst', () => {
   const storage = browserStorage();
   storage.values.set('tmu-guide:disc-game:v1', JSON.stringify({ best: 42, celebrated: true }));
-  for (const [saved, expected] of [[storage, 4], [browserStorage(), 8]]) {
+  for (const [saved, expected] of [[storage, 4], [browserStorage(), 11]]) {
     const target = new EventTarget();
     const queue = { current: [] };
     const cleanup = listenForGameCelebration(target, queue, { width: 400, height: 800 });
@@ -116,6 +117,38 @@ test('existing browser discovery records stay claimed, while a different browser
     assert.equal(queue.current.length, expected);
     if (saved === storage) assert.equal(game.state().best, 42);
     cleanup();
+  }
+});
+
+test('new best celebrates once per record-breaking streak, including batched hits and blocked storage', () => {
+  for (const storage of [browserStorage(), null]) {
+    const records = createGameRecords(() => storage);
+    records.saveBest(3);
+    const target = new EventTarget();
+    const queue = { current: [] };
+    const cleanup = listenForGameCelebration(target, queue, { width: 400, height: 800 });
+    let celebrations = 0;
+    target.addEventListener(GAME_RECORD_EVENT, () => { celebrations++; });
+    const game = mountGame(records, target);
+    for (let i = 0; i < 3; i++) game.onSlice();
+    assert.equal(celebrations, 0, 'matching the saved best does not celebrate');
+    game.onSlice();
+    game.onSlice();
+    assert.equal(celebrations, 1, 'several hits in one gesture celebrate the crossing once');
+    assert.equal(records.read().best, 5, 'the new best is saved before React renders or unmounts');
+    assert.equal(queue.current.filter(splat => splat.record).length, 1);
+    game.onMiss();
+    for (let i = 0; i < 5; i++) game.onSlice();
+    assert.equal(celebrations, 1);
+    game.onSlice();
+    assert.equal(celebrations, 2, 'beating the next record gets a fresh reaction');
+    const remounted = mountGame(records, target);
+    remounted.onSlice();
+    assert.equal(celebrations, 2, 'remounting keeps the saved target');
+    queue.current.length = 0;
+    cleanup();
+    target.dispatchEvent(new CustomEvent(GAME_RECORD_EVENT));
+    assert.deepEqual(queue.current, [], 'unmount removes the record listener');
   }
 });
 

@@ -1,4 +1,5 @@
 export const GAME_CELEBRATION_EVENT = 'tmu-guide:disc-game-first-slice';
+export const GAME_RECORD_EVENT = 'tmu-guide:disc-game-new-best';
 
 // Every 0-to-1 transition keeps the original four-splat bloom. The browser's
 // first discovery adds four screen-wide splats to the same simulation, with
@@ -26,6 +27,17 @@ export function listenForGameCelebration(target, splatStack, size) {
       );
     }
   };
+  const record = () => {
+    splatStack.current.push(
+      { mouseX: 0.35, mouseY: 0.8, velocityX: -65, velocityY: 12, radiusScale: 12, burst: true },
+      { mouseX: 0.65, mouseY: 0.8, velocityX: 65, velocityY: 12, radiusScale: 12, burst: true },
+      { record: true },
+    );
+  };
   target.addEventListener(GAME_CELEBRATION_EVENT, celebrate);
-  return () => target.removeEventListener(GAME_CELEBRATION_EVENT, celebrate);
+  target.addEventListener(GAME_RECORD_EVENT, record);
+  return () => {
+    target.removeEventListener(GAME_CELEBRATION_EVENT, celebrate);
+    target.removeEventListener(GAME_RECORD_EVENT, record);
+  };
 }
