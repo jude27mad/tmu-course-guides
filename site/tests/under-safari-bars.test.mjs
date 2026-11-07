@@ -177,12 +177,7 @@ test('past the ends of the page Safari shows the root colour, so the body stays 
   // The dark panels keep their ink fallback, on the app's root instead.
   const app = read('../src/pages/app.module.scss');
   const documentMode = app.slice(app.indexOf(":global(html[data-scroll-mode='document']) {"));
-  const rootRule = documentMode.slice(documentMode.indexOf('.root {'), documentMode.indexOf('}', documentMode.indexOf('.root {')));
-  assert.match(rootRule, /background-image: linear-gradient\(var\(--black\), var\(--black\)\);/);
-  // Short of the document's end: a page that ends on a fraction of a pixel (the
-  // math guides) showed a sliver of it below its paper footer as a dark line.
-  assert.match(rootRule, /background-repeat: no-repeat;[^}]*background-size: 100% calc\(100% - \dpx\);/);
-  assert.doesNotMatch(rootRule, /background-color/);
+  assert.match(documentMode, /\.root \{[^}]*background-color: var\(--black\);[^}]*\}/);
 });
 
 test('while a panel shrinks the page, the colour past its ends goes from the page\'s to the ink with it', () => {
@@ -266,7 +261,7 @@ test('the artwork runs on unchanged under the bottom bar, with no fixed layer sh
   // Inside a dark panel, wherever the artwork is not painted, the ink shows (the
   // app's root; past the page's ends Safari shows the root colour, see above).
   const documentMode = read('../src/pages/app.module.scss');
-  assert.match(documentMode.slice(documentMode.indexOf(":global(html[data-scroll-mode='document']) {")), /\.root \{[^}]*background-image: linear-gradient\(var\(--black\), var\(--black\)\);/);
+  assert.match(documentMode.slice(documentMode.indexOf(":global(html[data-scroll-mode='document']) {")), /\.root \{[^}]*background-color: var\(--black\);/);
   // Safari shows the artwork's reach under its bottom bar. A fixed layer that
   // shades it at the layout viewport's bottom edge (#67 faded it to ink there)
   // ends in a line where the bar begins, and is cut there besides: none does.
@@ -368,4 +363,18 @@ test('the pointer fluid fades out before Safari\'s bars instead of stopping in a
   const fluid = read('../src/components/canvas/fluid/Fluid.jsx');
   assert.match(fluid, /edge=\{nativeIOSScroll\(\) && size\.height \? Math\.min\(0\.5, EDGE_FADE \/ size\.height\) : 0\}/);
   assert.match(fluid, /const EDGE_FADE = \d+;/);
+});
+
+test('the page\'s own colour continues 2px past its end, so its last device row is never left uncovered', () => {
+  // The math guides end on a fraction of a pixel (1912.42 and 2047.77px), and on an
+  // iPhone their last device row showed the dark artwork through it: a one-pixel
+  // line between the paper and Safari's flat colour past the end. A box-shadow adds
+  // no scroll length, so it covers that row without moving the end.
+  const workspace = read('../src/pages/course/components/workspace/workspace.module.scss');
+  const footer = workspace.slice(workspace.indexOf('.footer {'), workspace.indexOf('\n}', workspace.indexOf('.footer {')));
+  assert.match(footer, /:global\(html\[data-scroll-mode='document'\]\) & \{\s*box-shadow: 0 2px 0 0 var\(--pageUnderGrain\);\s*\}/);
+  // The dark footer's wrapper: its fade's ink continues the same way.
+  const layout = read('../src/components/dom/styles/layout.module.scss');
+  const wrapper = layout.slice(layout.indexOf(":global(html[data-scroll-mode='document']) .footer {"));
+  assert.match(wrapper.slice(0, wrapper.indexOf('}')), /box-shadow: 0 2px 0 0 var\(--black\);/);
 });

@@ -24,4 +24,9 @@
   background-repeat: no-repeat;
   background-position: left bottom;
   background-size: 100% var(--dark-end-fade-height);
+  // The fade's ink continues 2px past the end (in a box-shadow, which adds no
+  // scroll length): on a page that ends on a fraction of a pixel, Safari leaves
+  // the last device row uncovered, and the lit artwork showed through it as a
+  // line (seen on the paper footer of the math guides).
+  box-shadow: 0 2px 0 0 var(--black);
 }

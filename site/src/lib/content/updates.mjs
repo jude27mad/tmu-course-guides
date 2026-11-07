@@ -129,14 +129,20 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-11-07-math-guides-end",
+  "date": "November 7, 2026",
+  "title": "No line at the end of the math guides",
+  "text": "On iPhone and iPad, the end of the MTH140 and MTH141 guides no longer shows a thin dark line under the last of the page.",
+  "items": []
+ },
+ {
   "id": "2026-11-06-safari-bar-edges",
   "date": "November 6, 2026",
   "title": "Smoother edges at Safari's toolbar",
-  "text": "Three more fixes for iPhone and iPad.",
+  "text": "Two more fixes for iPhone and iPad.",
   "items": [
     "The end of the Desk, Courses, Privacy and Website updates now fades into the dark area under Safari's toolbar on iPhones too; the earlier fix could switch the fade off there.",
-    "The trail your finger leaves on the page fades out before Safari's toolbar and status bar instead of stopping in a straight line.",
-    "The end of the MTH140 and MTH141 guides no longer shows a thin line."
+    "The trail your finger leaves on the page fades out before Safari's toolbar and status bar instead of stopping in a straight line."
   ]
  },
  {
