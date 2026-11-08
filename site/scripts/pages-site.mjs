@@ -10,7 +10,7 @@ import { createHash } from 'node:crypto';
 import { cpSync, existsSync, lstatSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { TOKENS } from '../src/lib/palette.mjs';
+import { DARK, TOKENS } from '../src/lib/palette.mjs';
 
 // The old pages' guide mark, as in src/pages/_document.page.jsx.
 const FAVICON =
@@ -69,11 +69,12 @@ export function forwarderHtml(dest) {
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
 <title>TMU Course Guides</title>
 <link rel="icon" href="${FAVICON}">
 <script>${script}</script>
 <noscript><meta http-equiv="refresh" content="0; url=${dest}"></noscript>
-<style>body{margin:0;padding:2rem 1rem;font:1rem/1.5 system-ui,sans-serif;color:${TOKENS.ink};background:${TOKENS.page}}a{color:inherit}</style>
+<style>body{margin:0;padding:2rem 1rem;font:1rem/1.5 system-ui,sans-serif;color:${TOKENS.ink};background:${TOKENS.page}}a{color:inherit}@media(prefers-color-scheme:dark){body{color:${DARK.text};background:${DARK.page}}}</style>
 </head>
 <body>
 <p>This page has moved. <a href="${dest}">Open TMU Course Guides</a>.</p>

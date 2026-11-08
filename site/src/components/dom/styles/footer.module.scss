@@ -36,7 +36,7 @@
       width: 100%;
     }
     .title {
-      color: var(--white);
+      color: var(--panelText);
       padding-bottom: var(--layout-columns-gap);
     }
 
@@ -61,8 +61,8 @@
           width: 0.75vw;
           top: auto;
           overflow: unset;
-          fill: var(--white);
-          stroke: var(--white);
+          fill: var(--panelText);
+          stroke: var(--panelText);
           @include mobile {
             height: 2vw;
             width: 2vw;
@@ -103,7 +103,7 @@
     }
   }
   .inlineLink {
-    color: var(--white);
+    color: var(--panelText);
     text-decoration: underline;
     text-underline-offset: 0.2em;
     text-decoration-thickness: 1px;
@@ -115,7 +115,7 @@
     }
   }
   div {
-    color: var(--white);
+    color: var(--panelText);
   }
 
   .wordmark {
@@ -131,7 +131,7 @@
     font-size: 15.2vw;
     line-height: 12.628vw;
     transform: translate(-0.3vw, 2.1vw);
-    color: var(--white);
+    color: var(--panelText);
     > span {
       display: inherit;
     }
@@ -180,8 +180,8 @@
     left: 1.25vw;
     height: 1.5vw;
     width: 1.5vw;
-    fill: var(--black);
-    stroke: var(--black);
+    fill: var(--text);
+    stroke: var(--text);
     transform: translateY(0vw) rotate(180deg);
   }
 
@@ -201,6 +201,14 @@
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     z-index: 1;
+  }
+}
+// The button sits on the dark footer, which keeps its colours in dark mode: a white disc with an ink arrow.
+@media screen and (prefers-color-scheme: dark) {
+  .circleButton {
+    --card: #ffffff;
+    --text: #18181b;
+    --border: #e4e4e7;
   }
 }
 @include hover {

@@ -1,6 +1,6 @@
 import { nativeIOSScroll, scrollTop } from '@src/utils/scrollRoot';
 import gsap from 'gsap';
-import { TOKENS } from '@src/lib/palette.mjs';
+import { pageEdgeColor } from '@src/lib/palette.mjs';
 
 // Giats's menu: the page shrinks, slides left and dims, uncovering the dark
 // artwork behind it, and the panel's rows slide in from the left. Phones and
@@ -8,8 +8,7 @@ import { TOKENS } from '@src/lib/palette.mjs';
 // the original. Menu and Search share the shell so switching between them keeps
 // scroll locked.
 export const PANEL_DEFAULTS = { duration: 0.92, ease: 'expo.inOut' };
-// The page's edge while it is shrunk behind a panel.
-const PAGE_EDGE = `2px solid ${TOKENS.page}`;
+// The page's corners while it is shrunk behind a panel (its edge: pageEdgeColor(), lib/palette.mjs).
 const PAGE_RADIUS = '1.3888888889vw';
 
 // In document mode main is as tall as the page. While it is shrunk it scales
@@ -87,7 +86,7 @@ export function buildShellTimeline({ isMobile }) {
   });
 
   if (fluidCanvas) tl.to(fluidCanvas, { duration: 0, opacity: 0 }, 0);
-  tl.to(main, { borderRadius: PAGE_RADIUS, border: PAGE_EDGE, scale: 0.9, pointerEvents: 'none', left: '-40vw' }, 0);
+  tl.to(main, { borderRadius: PAGE_RADIUS, border: `2px solid ${pageEdgeColor(isMobile)}`, scale: 0.9, pointerEvents: 'none', left: '-40vw' }, 0);
   // How far the page has shrunk, on the page's own ease (0 at the tap, 1 open).
   // Safari shows the page under its bars and, past the page's ends, one flat
   // colour; both follow it (global.scss): the card's reach under the bars

@@ -44,7 +44,7 @@
   padding-bottom: calc(var(--layout-columns-gap) * 2);
 
   height: inherit;
-  color: var(--white);
+  color: var(--panelText);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -62,7 +62,7 @@
     top: var(--layout-columns-gap);
     right: var(--layout-margin);
 
-    border: 1px solid var(--white);
+    border: 1px solid var(--panelText);
     height: max(44px, 2.5vw);
     width: max(44px, 2.5vw);
     border-radius: 50%;
@@ -163,7 +163,7 @@
     line-height: 1.4;
     display: block;
     width: fit-content;
-    color: var(--white);
+    color: var(--panelText);
     text-decoration: none;
 
     @include mobile {
@@ -178,7 +178,7 @@
       left: 0;
       width: 100%;
       height: 0.375vw;
-      background: var(--white);
+      background: var(--panelText);
       z-index: -1;
       transform: scale3d(0.001, 1, 1);
       opacity: 0;
@@ -210,7 +210,7 @@
   padding-top: calc(var(--layout-columns-gap) * 0.25);
   font-size: max(16px, 0.85vw);
   line-height: 1.45;
-  color: var(--white);
+  color: var(--panelText);
   opacity: 0.7;
   font-weight: 450;
 }

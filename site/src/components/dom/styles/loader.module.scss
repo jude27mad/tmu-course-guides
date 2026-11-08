@@ -6,7 +6,7 @@
   z-index: 5;
   width: 100vw;
   height: var(--app-viewport-height);
-  color: var(--black);
+  color: var(--text);
   background-color: var(--white);
   // On iPhone the artwork reaches under Safari's bars (--edge-bleed-* in
   // global.scss), so the loader's paper continues there and leaves with it.
@@ -35,7 +35,7 @@
         text-align: center;
         display: inline-block;
         overflow: hidden;
-        color: var(--black);
+        color: var(--text);
         > span {
           position: relative;
           top: 0px;
@@ -56,7 +56,7 @@
         display: inline-block;
         overflow: hidden;
         opacity: 0;
-        color: var(--black);
+        color: var(--text);
         > span {
           position: relative;
           top: 12vw;
@@ -72,7 +72,7 @@
       text-align: center;
       display: inline-block;
       overflow: hidden;
-      color: var(--black);
+      color: var(--text);
       > span {
         position: relative;
         top: 0px;

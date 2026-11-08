@@ -28,7 +28,7 @@
   gap: var(--layout-columns-gap);
   padding: calc(var(--layout-columns-gap) * 2);
   border-radius: calc(var(--layout-columns-gap) * 0.5);
-  color: var(--black);
+  color: var(--text);
   background-color: var(--white);
   min-width: 0;
   overflow-wrap: break-word;
@@ -101,7 +101,7 @@
 }
 
 .soft {
-  background-color: var(--accentColor);
+  background-color: var(--card);
 }
 
 // "medium" (the original: 16/9, full width)

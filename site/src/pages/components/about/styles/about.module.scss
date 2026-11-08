@@ -23,7 +23,7 @@
     flex-direction: column;
 
     > span {
-      color: var(--white);
+      color: var(--panelText);
     }
     .itemTitle {
       max-width: 85%;
@@ -149,7 +149,7 @@
         bottom: calc(var(--layout-columns-gap) * 0.5);
         width: 1.25rem;
         height: 1.25rem;
-        fill: var(--white);
+        fill: var(--panelText);
         transform: rotate(-135deg);
         pointer-events: none;
       }

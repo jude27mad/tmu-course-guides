@@ -1,5 +1,5 @@
 import Document, { Head, Html, Main, NextScript } from 'next/document';
-import { TOKENS } from '@src/lib/palette.mjs';
+import { DARK, TOKENS } from '@src/lib/palette.mjs';
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
@@ -56,9 +56,12 @@ export default class MyDocument extends Document {
           <script dangerouslySetInnerHTML={{ __html: BOOT }} />
           {/* eslint-disable-next-line react/no-danger */}
           {process.env.NODE_ENV === 'production' ? <script dangerouslySetInnerHTML={{ __html: OFFLINE }} /> : null}
-          {/* Light only, and no automatic dark mode: forced darkening inverts the design (see global.scss). */}
-          <meta name="color-scheme" content="only light" />
-          <meta name="theme-color" content={TOKENS.page} />
+          {/* The site has its own dark mode, following the device setting (styles/colors.scss), so browsers
+              do not invert the design with an automatic one (see global.scss). */}
+          <meta name="color-scheme" content="light dark" />
+          {/* One per scheme, light first; utils/theme.js keeps both in step with the page's edges. */}
+          <meta name="theme-color" media="(prefers-color-scheme: light)" content={TOKENS.page} />
+          <meta name="theme-color" media="(prefers-color-scheme: dark)" content={DARK.page} />
           <meta name="format-detection" content="telephone=no" />
           <link rel="icon" href={FAVICON} />
           <link rel="apple-touch-icon" sizes="180x180" href={`${BASE_PATH}/apple-touch-icon.png`} />

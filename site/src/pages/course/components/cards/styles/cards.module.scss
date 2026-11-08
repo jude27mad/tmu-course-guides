@@ -75,7 +75,7 @@
 .cardArrow {
   width: 0.8vw;
   height: 0.8vw;
-  fill: var(--black);
+  fill: var(--text);
   transform: rotate(-90deg);
   transition: transform 0.45s cubic-bezier(0.4, 0, 0.1, 1);
   align-self: center;
@@ -152,7 +152,7 @@
   flex: 0 0 auto;
   width: 0.6vw;
   height: 0.6vw;
-  fill: var(--black);
+  fill: var(--text);
   transform: rotate(-90deg);
   @include mobile {
     width: max(1.6vw, 7px);
@@ -230,9 +230,9 @@
   display: block;
   width: 100%;
   max-width: 36vw;
-  color: var(--black);
+  color: var(--text);
   background: transparent;
-  border-bottom: 1px solid var(--black);
+  border-bottom: 1px solid var(--text);
   padding: 0.3em 0;
   @include mobile {
     max-width: 100%;

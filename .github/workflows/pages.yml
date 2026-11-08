@@ -223,6 +223,12 @@ jobs:
           PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
           QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/palette
         run: node site/scripts/check-palette-site.mjs "$RUNNER_TEMP/pages"
+      - name: Check dark mode and take dark screenshots
+        if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' && steps.tested.outputs.tested != 'true' }}
+        env:
+          PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
+          QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/dark-mode
+        run: node site/scripts/check-dark-mode.mjs "$RUNNER_TEMP/pages"
       - name: Check shared controls, navigation and information answers
         if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' && steps.tested.outputs.tested != 'true' }}
         env:

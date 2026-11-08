@@ -20,7 +20,38 @@ export const TOKENS = Object.freeze({
   soon: '#B45309', // countdown: 72 hours or less
   urgent: '#B91C1C', // countdown: 24 hours or less
   done: '#15803D', // countdown: completed
+  text: '#18181B', // text on the page and on light cards (the ink's colour, not its panels)
+  panelText: '#F4F4F5', // text and icons on the dark panels (menu, search, footer, course cards)
+  onAccent: '#FFFFFF', // a label on an accent fill
 });
+
+/* Dark mode follows the device setting (prefers-color-scheme: dark); there is no toggle. Only the page, and
+   what sits on it, changes: the dark panels, the artwork behind the page, the badges and the signal field
+   keep their colours. styles/colors.scss mirrors these values in its dark block (tests/dark-mode.test.mjs). */
+export const DARK = Object.freeze({
+  page: '#262629', // graphite paper: lighter than the artwork, so the windows onto it still read as recesses
+  pageUnderGrain: '#27272A', // the page as seen through the dark film grain (public/other/grain-dark.png)
+  text: '#F4F4F5',
+  card: '#2F2F33', // cards, pills and light glass, raised above the page
+  muted: '#A1A1AA',
+  border: '#3F3F46',
+  accent: '#66B0FF', // TMU Blue's hue, lifted for a dark page
+  accentTint: '#1C3754',
+  onAccent: '#18181B',
+  onTrack: '#66B0FF',
+  soon: '#FBBF24',
+  urgent: '#F87171',
+  done: '#4ADE80',
+  pageEdge: '#71717A', // the shrunk page's edge beside Menu and Search, and on a sliding page (the paper's own colour would vanish)
+});
+
+export const DARK_QUERY = '(prefers-color-scheme: dark)';
+/* Whether the device asks for dark mode now (false outside a browser). */
+export const prefersDark = () => typeof matchMedia === 'function' && matchMedia(DARK_QUERY).matches;
+/* The edge drawn round the page while Menu or Search shrinks it, or while a page change slides it. On the dark
+   page it is a mid grey, since the page's own colour would vanish against the artwork. Behind a panel on a phone
+   the shrunk page dims to 5%, where only the paper's light edge still shows, so `dimmed` keeps that. */
+export const pageEdgeColor = (dimmed = false) => (prefersDark() && !dimmed ? DARK.pageEdge : TOKENS.page);
 
 /* The printed colours of the lanyard ID badge (card, clip slot, strap, metal clip).
    Identical for every course; only the text differs. The game uses original emoji artwork. */

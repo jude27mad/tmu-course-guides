@@ -47,7 +47,7 @@ The data layer every page uses. Pages import from `@src/lib` (plain functions) a
 | `tmu-guides-storage-check` | `"1"`, written and removed at once to learn whether saving works | `gradesSavable` (when Grades opens) |
 | `guide-motion-level` | legacy; removed on load | `useMotionPaused` |
 
-Every write re-reads storage, applies one change and writes the whole cleaned record: exactly what the old page wrote for that action after loading. Readers never write. `mth14x-view-v1`, `tmu-guide-theme-v1` and `tmu-guide-sound-v1` are listed in `STORAGE_KEYS` but nothing here writes them (no tabs, light only, no sound).
+Every write re-reads storage, applies one change and writes the whole cleaned record: exactly what the old page wrote for that action after loading. Readers never write. `mth14x-view-v1`, `tmu-guide-theme-v1` and `tmu-guide-sound-v1` are listed in `STORAGE_KEYS` but nothing here writes them (no tabs, no theme setting: the appearance follows the device, no sound).
 
 Ids used throughout:
 

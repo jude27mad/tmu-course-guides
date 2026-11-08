@@ -254,7 +254,10 @@ test('Safari\'s flat fill past the page and under its bottom bar is the page as 
   assert.ok(global.indexOf("html[data-scroll-mode='document'] {\n  background-color: var(--pageUnderGrain)") < global.indexOf("html[data-browser-surface='dark'],"));
   const theme = read('../src/utils/theme.js');
   assert.match(theme, /const lightEdge = \(paper\) => \(document\.documentElement\.dataset\.scrollMode === 'document' \? TOKENS\.pageUnderGrain : paper\);/);
-  assert.match(theme, /meta\.setAttribute\('content', topDark \? TOKENS\.ink : lightEdge\(DEFAULT_PALETTE\.secondary\)\)/);
+  assert.match(theme, /meta\.setAttribute\('content', topDark \? TOKENS\.ink : edgeFor\(meta, DEFAULT_PALETTE\.secondary\)\)/);
+  // In dark mode the same holds for the dark page and its grain (tests/dark-mode.test.mjs checks the values).
+  assert.match(theme, /const darkEdge = \(\) => \(document\.documentElement\.dataset\.scrollMode === 'document' \? DARK\.pageUnderGrain : DARK\.page\);/);
+  assert.match(theme, /const edgeFor = \(meta, paper\) => \(\/dark\/\.test\(meta\.getAttribute\('media'\) \|\| ''\) \? darkEdge\(\) : lightEdge\(paper\)\);/);
 });
 
 test('the artwork runs on unchanged under the bottom bar, with no fixed layer shading it', () => {
