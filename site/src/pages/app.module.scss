@@ -44,7 +44,7 @@
     left: 0;
     position: fixed;
     transition: 0.35s ease-in-out color;
-    color: var(--black);
+    color: var(--text);
     // Original Giats viewport and scroll ownership. Native panning must not
     // take a gesture away from Lenis and the fluid's pointermove listener.
     overflow: hidden;

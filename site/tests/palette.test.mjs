@@ -47,6 +47,9 @@ test('colors.scss mirrors the palette tokens', () => {
     statusSoon: TOKENS.soon,
     statusUrgent: TOKENS.urgent,
     statusDone: TOKENS.done,
+    text: TOKENS.text,
+    panelText: TOKENS.panelText,
+    onAccent: TOKENS.onAccent,
   };
   for (const [name, value] of Object.entries(pairs)) assert.equal(scssColor(name), value, `--${name}`);
 });

@@ -92,7 +92,7 @@
   flex: 0 0 auto;
   width: 0.6vw;
   height: 0.6vw;
-  fill: var(--black);
+  fill: var(--text);
   transform: rotate(-90deg);
   @include mobile {
     width: max(1.6vw, 7px);

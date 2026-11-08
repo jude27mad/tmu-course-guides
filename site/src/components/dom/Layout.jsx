@@ -12,7 +12,7 @@ import { scrollToHash } from '@src/utils/scrollToHash';
 import styles from '@src/components/dom/styles/layout.module.scss';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
-import { TOKENS } from '@src/lib/palette.mjs';
+import { pageEdgeColor } from '@src/lib/palette.mjs';
 import { PANEL_DEFAULTS, fadePanelRows, growPageBack, HANDOFF, markPageShrunk } from '@src/components/dom/navbar/panelShell';
 
 // Giats's card (desktop and Android, except between courses): shrink, slide, slide, grow.
@@ -330,7 +330,7 @@ function Layout({ children, layoutRef, mainRef, router }) {
         0,
       )
         .to(layoutRef.current, { height: '90svh', opacity: 1 }, 0)
-        .to(main, { scale: 0.9, opacity: 1, border: `2px solid ${TOKENS.page}`, borderRadius: '1.3888888889vw' }, 0)
+        .to(main, { scale: 0.9, opacity: 1, border: `2px solid ${pageEdgeColor()}`, borderRadius: '1.3888888889vw' }, 0)
         .to(main, { x: '-100%' }, STEP)
         .to('#loader', { x: '0px' }, STEP)
         .set(main, { x: '100%' });

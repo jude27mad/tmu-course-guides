@@ -12,7 +12,7 @@
   border: 1px solid var(--border);
   border-radius: 20px;
   background: var(--white);
-  color: var(--black);
+  color: var(--text);
   box-shadow: 0 24px 80px rgba(var(--inkRgb), 0.25);
   overflow: hidden;
   font-size: 1rem;
@@ -32,6 +32,12 @@
   // Safari 17.4, Chrome 122 and Firefox 120.
   background: rgba(24, 24, 27, 0.48);
   opacity: var(--tools-backdrop-opacity, 1);
+}
+// On the dark page the scrim is deeper, so the dialog still stands out from what is behind it.
+@media screen and (prefers-color-scheme: dark) {
+  .dialog::backdrop {
+    background: rgba(9, 9, 11, 0.66);
+  }
 }
 
 .header {

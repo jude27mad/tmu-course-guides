@@ -17,9 +17,10 @@ html {
 
   font-weight: bolder;
   font-family: var(--font-primary), sans-serif;
-  // 'only' opts out of browsers' automatic dark modes (Chrome's Auto Dark Theme,
-  // Samsung Internet), which invert the light design and leave MENU dark on dark.
-  color-scheme: only light;
+  // The site has its own dark mode (colors.scss, following the device setting), so
+  // browsers keep form controls and scrollbars in step with it, and automatic dark
+  // modes (Chrome's Auto Dark Theme) leave the page alone instead of inverting it.
+  color-scheme: light dark;
   // Match Safari's exposed document/inset area to the Desk paper.
   background-color: var(--white);
 
@@ -381,5 +382,23 @@ html:not([data-scroll-mode='document']) #fluidCanvas {
   html[data-scroll-mode='document'] [data-safari-blend='bottom'] {
     bottom: -2px;
     margin-top: -8px;
+  }
+}
+
+// Dark mode (colors.scss). The film grain is the same texture with its grey
+// inverted, so it shows as light grain on the graphite page, at half its alpha:
+// the ink under it rises by about one level, as under the light grain, so the
+// ink Safari paints past a dark end still meets the grained page without a line.
+// --pageUnderGrain is the dark page as seen through it (tests/dark-mode.test.mjs).
+@media screen and (prefers-color-scheme: dark) {
+  #layout::before {
+    background-image: url('#{$base-path}/other/grain-dark.png');
+  }
+}
+
+// Printing stays light.
+@media print {
+  html {
+    color-scheme: light;
   }
 }

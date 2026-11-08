@@ -9,14 +9,14 @@
 @mixin surface($tone: light, $blur: 8px, $filter: true) {
   --glass-solid: var(--card);
   --glass-backing: rgba(var(--cardRgb), 0.86);
-  --glass-highlight: rgba(var(--cardRgb), 0.65);
-  --glass-edge: rgba(var(--inkRgb), 0.18);
-  color: var(--black);
+  --glass-highlight: var(--glassHighlight);
+  --glass-edge: var(--glassEdge);
+  color: var(--text);
   @if $tone == dark {
     --glass-solid: var(--black);
     --glass-backing: rgba(var(--inkRgb), 0.9);
-    --glass-highlight: rgba(var(--cardRgb), 0.12);
-    --glass-edge: rgba(var(--cardRgb), 0.24);
+    --glass-highlight: rgba(var(--highlightRgb), 0.12);
+    --glass-edge: rgba(var(--highlightRgb), 0.24);
     color: var(--onDark);
   }
   background-color: var(--glass-solid);

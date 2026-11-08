@@ -1,5 +1,5 @@
 import { DEFAULT_PALETTE } from '@src/lib/courses.mjs';
-import { TOKENS } from '@src/lib/palette.mjs';
+import { DARK, DARK_QUERY, TOKENS } from '@src/lib/palette.mjs';
 import { useStore } from '@src/store';
 
 import { useEffect } from 'react';
@@ -24,15 +24,37 @@ const VARIABLES = [
 // The page's light colour as Safari shows it beside the page. On iPhone and iPad
 // it is painted flat, without the film grain the page is seen through (global.scss).
 const lightEdge = (paper) => (document.documentElement.dataset.scrollMode === 'document' ? TOKENS.pageUnderGrain : paper);
+// The same for the dark page (dark mode follows the device setting; styles/colors.scss).
+const darkEdge = () => (document.documentElement.dataset.scrollMode === 'document' ? DARK.pageUnderGrain : DARK.page);
+// _document has one theme-color meta per scheme, and the browser uses the one whose media matches. Both are
+// kept current, so a device switching scheme mid-visit finds the right colour already in place.
+const edgeFor = (meta, paper) => (/dark/.test(meta.getAttribute('media') || '') ? darkEdge() : lightEdge(paper));
+const themeMetas = () => document.querySelectorAll('meta[name="theme-color"]');
 
 function setThemeColor(color) {
-  const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta && color && document.documentElement.dataset.browserSurface !== 'dark') meta.setAttribute('content', lightEdge(color));
+  themeMetas().forEach((meta) => {
+    if (color && document.documentElement.dataset.browserSurface !== 'dark') meta.setAttribute('content', edgeFor(meta, color));
+  });
+}
+
+// Safari samples the colours at its bars again only when something on the page changes; a two-frame attribute
+// change asks it to.
+let sampleRefreshFrame = 0;
+function refreshSafariEdges() {
+  const root = document.documentElement;
+  if (root.dataset.scrollMode !== 'document') return;
+  if (sampleRefreshFrame) cancelAnimationFrame(sampleRefreshFrame);
+  root.setAttribute('data-safari-edge-refresh', '');
+  sampleRefreshFrame = requestAnimationFrame(() => {
+    sampleRefreshFrame = requestAnimationFrame(() => {
+      root.removeAttribute('data-safari-edge-refresh');
+      sampleRefreshFrame = 0;
+    });
+  });
 }
 
 // Safari 26 samples real fixed-edge computed colors rather than theme-color.
 // The menu changes both bars; a dark footer only changes the bottom bar.
-let sampleRefreshFrame = 0;
 export function setBrowserSurfaces(topMode, bottomMode = topMode) {
   if (typeof document === 'undefined') return;
   const root = document.documentElement;
@@ -45,18 +67,26 @@ export function setBrowserSurfaces(topMode, bottomMode = topMode) {
   root.dataset.browserBottom = bottom;
   root.style.setProperty('--safari-edge-top', topDark ? TOKENS.ink : DEFAULT_PALETTE.secondary);
   root.style.setProperty('--safari-edge-bottom', bottomDark ? TOKENS.ink : DEFAULT_PALETTE.secondary);
-  const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', topDark ? TOKENS.ink : lightEdge(DEFAULT_PALETTE.secondary));
-  if (changed && root.dataset.scrollMode === 'document') {
-    if (sampleRefreshFrame) cancelAnimationFrame(sampleRefreshFrame);
-    root.setAttribute('data-safari-edge-refresh', '');
-    sampleRefreshFrame = requestAnimationFrame(() => {
-      sampleRefreshFrame = requestAnimationFrame(() => {
-        root.removeAttribute('data-safari-edge-refresh');
-        sampleRefreshFrame = 0;
-      });
-    });
+  themeMetas().forEach((meta) => meta.setAttribute('content', topDark ? TOKENS.ink : edgeFor(meta, DEFAULT_PALETTE.secondary)));
+  if (changed) refreshSafariEdges();
+}
+
+// The device's scheme can change during a visit (at sunset, say). The styles follow at once and both theme-color
+// metas are already current; Safari is asked to sample its bars' colours again. Returns the unsubscribe.
+export function watchColorScheme() {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return () => {};
+  const query = window.matchMedia(DARK_QUERY);
+  const onChange = () => {
+    const root = document.documentElement;
+    if (root.dataset.browserSurface) setBrowserSurfaces(root.dataset.browserSurface, root.dataset.browserBottom || root.dataset.browserSurface);
+    refreshSafariEdges();
+  };
+  if (typeof query.addEventListener === 'function') {
+    query.addEventListener('change', onChange);
+    return () => query.removeEventListener('change', onChange);
   }
+  query.addListener(onChange);
+  return () => query.removeListener(onChange);
 }
 
 // The fixed artwork reaches under Safari's bars (--edge-bleed-* in global.scss),
@@ -93,7 +123,13 @@ export function applyPalette(palette) {
   if (typeof document === 'undefined' || !palette) return;
   const full = { ...DEFAULT_PALETTE, ...palette };
   const root = document.documentElement;
-  VARIABLES.forEach(([name, key]) => root.style.setProperty(name, full[key]));
+  // Only a colour that differs from the stylesheet's is written inline. An inline value would also hold in dark
+  // mode, where colors.scss redefines the page's colours; every course uses the default palette, so the
+  // stylesheet decides in both.
+  VARIABLES.forEach(([name, key]) => {
+    if (full[key] === DEFAULT_PALETTE[key]) root.style.removeProperty(name);
+    else root.style.setProperty(name, full[key]);
+  });
   setThemeColor(full.secondary);
   useStore.getState().setFluidColor(full.fluidColor);
 }

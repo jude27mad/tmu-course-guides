@@ -10,6 +10,8 @@ import clsx from 'clsx';
 import styles from '@src/components/dom/navbar/styles/index.module.scss';
 import { useCallback, useEffect, useRef } from 'react';
 import useIsMobile, { isMobileNow } from '@src/hooks/useIsMobile';
+import useMediaQuery from '@src/hooks/useMediaQuery';
+import { DARK_QUERY } from '@src/lib/palette.mjs';
 import useScroll from '@src/hooks/useScroll';
 import { useRouter } from 'next/router';
 import { useShallow } from 'zustand/react/shallow';
@@ -182,6 +184,9 @@ function Navbar() {
     };
   }, [isOpen, isLoading, router.asPath]);
 
+  // The shrunk page's edge is drawn in the scheme's colour, so a device switching scheme rebuilds the shell.
+  const dark = useMediaQuery(DARK_QUERY);
+
   // Shared panel shell: the page shrinks and slides aside on every screen.
   useEffect(() => {
     // Building the shell sets Safari's edge values to the page's (iPhone and iPad).
@@ -201,7 +206,7 @@ function Navbar() {
       if (isMobile !== isMobileNow() && tl.progress() > 0) tl.progress(0);
       tl.kill();
     };
-  }, [isLoading, isMobile]);
+  }, [isLoading, isMobile, dark]);
 
   useEffect(() => {
     const tl = shellRef.current;

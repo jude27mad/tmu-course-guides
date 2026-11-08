@@ -37,6 +37,7 @@ import useScroll from '@src/hooks/useScroll';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
 import { nativeIOSScroll, scrollTrial } from '@src/utils/scrollRoot';
+import { watchColorScheme } from '@src/utils/theme';
 // eslint-disable-next-line import/extensions
 import { blockAutoscroll, blockWheel, lockKey } from '@src/utils/scrollTrialGuards.mjs';
 
@@ -105,6 +106,13 @@ function MotionSync() {
     document.documentElement.setAttribute('data-motion', still ? 'off' : 'on');
   }, [still, saved, reduced, setPaused, setMotionState]);
 
+  return null;
+}
+
+// Dark mode follows the device setting, which can change during a visit; the styles follow by themselves,
+// and Safari's bars are refreshed (utils/theme.js).
+function ColorSchemeSync() {
+  useEffect(() => watchColorScheme(), []);
   return null;
 }
 
@@ -333,6 +341,7 @@ function MyApp({ Component, pageProps, router }) {
           supplied; page content, rather than a sampled solid strip, stays behind it. */}
       <div aria-hidden="true" data-safari-blend="top" className="safari-toolbar-blend" />
       <MotionSync />
+      <ColorSchemeSync />
       <NavigationFeedback />
       {SHOW_STATS && <Stats />}
       <a
