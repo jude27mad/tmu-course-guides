@@ -104,11 +104,14 @@
 }
 
 // Dark mode (styles/colors.scss): today's date is a light circle, so its number takes the page's colour, and
-// Schedule-X's own light greys (the Today button's hover and the pressed state, declared on :root) follow the page.
+// Schedule-X's own light greys (the Today button's hover, the pressed state and its lines, declared on :root)
+// follow the page.
 @media screen and (prefers-color-scheme: dark) {
   .calendar {
     --sx-color-on-primary: var(--white);
     --sx-internal-color-light-gray: var(--border);
     --sx-internal-color-gray-ripple-background: rgba(var(--highlightRgb), 0.12);
+    // Its grid lines and outlines: :root composes this from its own light grey, so it is set again here.
+    --sx-border: 1px solid var(--border);
   }
 }

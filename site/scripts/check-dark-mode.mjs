@@ -70,13 +70,21 @@ function readState() {
     bottom: root.dataset.browserBottom || null,
     scrollMode: root.dataset.scrollMode,
     menu: menu ? { background: getComputedStyle(menu).backgroundColor, label: label && getComputedStyle(label).color } : null,
+    // The page as the Menu/Search shell leaves it: restored means no transform, full opacity, a visible header.
+    shell: {
+      main: getComputedStyle(document.querySelector('main')).transform.replace('matrix(1, 0, 0, 1, 0, 0)', 'none'),
+      layout: getComputedStyle(document.querySelector('#layout') || document.body).opacity,
+      header: getComputedStyle(document.querySelector('header')).opacity,
+      headerVisibility: getComputedStyle(document.querySelector('header')).visibility,
+    },
   };
 }
+const RESTORED = { main: 'none', layout: '1', header: '1', headerVisibility: 'visible' };
 
 // Visible text against the colour behind it (the nearest painted ancestor, composited down to the page), and any
 // opaque white surface. Text on the transparent windows onto the artwork is measured against the page: the
 // artwork is darker than the page, so the light text there only gains.
-function sweep() {
+function sweep(scope = 'body') {
   const parse = (value) => {
     const m = String(value).match(/rgba?\(([^)]+)\)/);
     if (!m) return null;
@@ -115,12 +123,13 @@ function sweep() {
   };
   const low = [];
   const white = [];
-  for (const el of document.querySelectorAll('body *')) {
+  for (const el of document.querySelectorAll(`${scope} *`)) {
     const style = getComputedStyle(el);
     const box = el.getBoundingClientRect();
     if (style.visibility !== 'visible' || box.width < 2 || box.height < 2 || box.bottom < 0 || box.top > innerHeight) continue;
     const bg = parse(style.backgroundColor);
-    if (bg && bg.a >= 0.99 && bg.r === 255 && bg.g === 255 && bg.b === 255 && box.width * box.height > 400) white.push(describe(el));
+    // A white surface on the page is a leftover; the dark panels keep their own (the footer's back-to-top disc).
+    if (bg && bg.a >= 0.99 && bg.r === 255 && bg.g === 255 && bg.b === 255 && box.width * box.height > 400 && !el.closest('[data-surface="dark"]')) white.push(describe(el));
     const text = Array.from(el.childNodes).some((node) => node.nodeType === 3 && node.textContent.trim());
     // Disabled controls are exempt (WCAG 1.4.3), and are drawn faded in both schemes.
     if (!text || el.closest('[aria-hidden="true"], #fluidCanvas, canvas, .sr-only, [class*="visuallyHidden"], :disabled, [aria-disabled="true"]')) continue;
@@ -199,6 +208,14 @@ async function main() {
         const state = await page.evaluate(readState);
         darkState(state, name);
         assert.equal(state.html, rgb(DARK.page), `${name}: the page behind everything`);
+        assert.deepEqual(state.shell, RESTORED, `${name}: the page is not shrunk`);
+        if (name === 'cen100-schedule' && label === 'desktop') {
+          const line = await page.evaluate(() => {
+            const node = document.querySelector('.sx__calendar');
+            return node && getComputedStyle(node).borderTopColor;
+          });
+          assert.equal(line, rgb(DARK.border), 'the calendar draws its lines in the page border colour');
+        }
         const { low, white } = await page.evaluate(sweep);
         assert.deepEqual(white, [], `${name}: white surfaces left`);
         assert.deepEqual(low, [], `${name}: text below AA`);
@@ -210,6 +227,13 @@ async function main() {
       await toEnd(page);
       darkState(await page.evaluate(readState), 'desk end');
       assert.deepEqual((await page.evaluate(sweep)).low, [], 'text below AA at the end');
+      // The footer is a dark panel and keeps its colours: a white back-to-top disc with an ink arrow.
+      const button = await page.evaluate(() => {
+        const node = document.querySelector('footer [aria-label="Back to top"]');
+        const arrow = node?.querySelector('svg');
+        return node && { background: getComputedStyle(node).backgroundColor, arrow: arrow && getComputedStyle(arrow).fill };
+      });
+      assert.deepEqual(button, { background: rgb(TOKENS.card), arrow: rgb(TOKENS.ink) }, 'the back-to-top disc');
       await page.screenshot({ path: join(reports, `${label}-desk-end.png`) });
     });
     await check(`${label} cen100: the footer's end`, async () => {
@@ -233,22 +257,30 @@ async function main() {
       await visit(page, 'cen100/');
       await page.keyboard.press('Control+k');
       await page.waitForTimeout(1200);
+      assert.equal(await page.evaluate(() => document.querySelector('#search')?.getAttribute('aria-hidden')), 'false', 'Search opened');
       await page.keyboard.type('quiz');
       await page.waitForTimeout(800);
+      const state = await page.evaluate(readState);
+      assert.equal(state.surface, 'dark', 'Search turns the bars dark');
+      darkState(state, 'search');
+      assert.ok(await page.evaluate(() => document.querySelectorAll('#search-results [id^="search-option-"]').length > 0), 'results for "quiz"');
+      // The page behind the panel is dimmed on purpose; the panel's own text must read.
+      assert.deepEqual((await page.evaluate(sweep, '#search')).low, [], 'text below AA in Search');
       await page.screenshot({ path: join(reports, `${label}-search.png`) });
       await page.keyboard.press('Escape');
       await page.waitForTimeout(1500);
     });
     await check(`${label} cen100: an assignment`, async () => {
       await visit(page, 'cen100/#work/all');
-      const opened = await page.evaluate(() => {
+      const anchor = await page.evaluate(() => {
         const row = document.querySelector('main [data-assignment-link]');
-        if (!row) return false;
+        if (!row) return null;
         row.click();
-        return true;
+        return row.getAttribute('href').split('#')[1];
       });
-      assert.ok(opened, 'a work row to open');
+      assert.ok(anchor, 'a work row to open');
       await page.waitForTimeout(1500);
+      assert.ok(await page.evaluate((id) => location.hash === `#${id}` && !!document.querySelector(`#course-view-${CSS.escape(id)}[data-assignment-detail]`), anchor), `the assignment ${anchor} opened`);
       assert.deepEqual((await page.evaluate(sweep)).low, [], 'text below AA');
       await page.screenshot({ path: join(reports, `${label}-cen100-assignment.png`) });
     });
@@ -281,7 +313,8 @@ async function main() {
     await phone.screenshot({ path: join(reports, 'iphone-desk-top.png') });
     await toEnd(phone);
     const end = await phone.evaluate(readState);
-    if (end.bottom === 'dark') assert.equal(end.html, rgb(TOKENS.ink), 'past a dark end: the ink');
+    assert.equal(end.bottom, 'dark', 'the Desk ends in the dark footer');
+    assert.equal(end.html, rgb(TOKENS.ink), 'past a dark end: the ink');
     await phone.screenshot({ path: join(reports, 'iphone-desk-end.png') });
   });
   await check('iphone cen100: the colour past a light end', async () => {
@@ -312,6 +345,34 @@ async function main() {
       assert.deepEqual(await page.evaluate(readState), before, `${path || 'desk'}: back to light, exactly as before`);
     }
   });
+
+  // The device switches scheme while Menu is open: closing it must bring the page back, in the new scheme.
+  for (const [label, options] of [
+    ['desktop', { viewport: { width: 1440, height: 900 } }],
+    ['phone', { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 }],
+  ]) {
+    await check(`${label}: switching scheme with Menu open`, async () => {
+      // With motion on: the shell's timeline is what a rebuild could leave behind.
+      const page = await open({ ...options, colorScheme: 'light', reducedMotion: 'no-preference' });
+      await visit(page, '');
+      await page.waitForTimeout(2500); // the loader's curtain
+      const before = await page.evaluate(readState);
+      assert.deepEqual(before.shell, RESTORED, 'the page before Menu');
+      await page.click('#menu-button');
+      await page.waitForTimeout(1500);
+      await page.emulateMedia({ colorScheme: 'dark' });
+      await page.waitForTimeout(800);
+      const edge = await page.evaluate(() => getComputedStyle(document.querySelector('main')).borderTopColor);
+      assert.equal(edge, label === 'phone' ? rgb(TOKENS.page) : rgb(DARK.pageEdge), "the shrunk page's edge in the new scheme");
+      await page.screenshot({ path: join(reports, `switch-${label}-menu-open.png`) });
+      await page.keyboard.press('Escape');
+      await page.waitForTimeout(1800);
+      const after = await page.evaluate(readState);
+      assert.deepEqual(after.shell, RESTORED, 'the page comes back once Menu closes');
+      darkState(after, 'after Menu');
+      await page.screenshot({ path: join(reports, `switch-${label}-menu-closed.png`) });
+    });
+  }
 
   await check('no page errors', async () => assert.deepEqual(errors, []));
   await Promise.all(contexts.map((context) => context.close()));

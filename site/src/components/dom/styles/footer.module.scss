@@ -203,6 +203,14 @@
     z-index: 1;
   }
 }
+// The button sits on the dark footer, which keeps its colours in dark mode: a white disc with an ink arrow.
+@media screen and (prefers-color-scheme: dark) {
+  .circleButton {
+    --card: #ffffff;
+    --text: #18181b;
+    --border: #e4e4e7;
+  }
+}
 @include hover {
   .circleButton:hover {
     .ball {

@@ -86,7 +86,7 @@ export function buildShellTimeline({ isMobile }) {
   });
 
   if (fluidCanvas) tl.to(fluidCanvas, { duration: 0, opacity: 0 }, 0);
-  tl.to(main, { borderRadius: PAGE_RADIUS, border: `2px solid ${pageEdgeColor()}`, scale: 0.9, pointerEvents: 'none', left: '-40vw' }, 0);
+  tl.to(main, { borderRadius: PAGE_RADIUS, border: `2px solid ${pageEdgeColor(isMobile)}`, scale: 0.9, pointerEvents: 'none', left: '-40vw' }, 0);
   // How far the page has shrunk, on the page's own ease (0 at the tap, 1 open).
   // Safari shows the page under its bars and, past the page's ends, one flat
   // colour; both follow it (global.scss): the card's reach under the bars

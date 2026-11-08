@@ -155,6 +155,10 @@
             color: var(--card-ink);
             box-shadow: 0 0 0 0.01vw var(--border);
             border-radius: calc(var(--layout-columns-gap) * 0.5);
+            // On the dark card panel, which keeps its colours in dark mode: the light hairline.
+            @media screen and (prefers-color-scheme: dark) {
+              box-shadow: 0 0 0 0.01vw #e4e4e7;
+            }
             @include mobile {
               width: 83%;
 

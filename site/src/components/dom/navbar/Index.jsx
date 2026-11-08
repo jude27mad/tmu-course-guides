@@ -11,7 +11,7 @@ import styles from '@src/components/dom/navbar/styles/index.module.scss';
 import { useCallback, useEffect, useRef } from 'react';
 import useIsMobile, { isMobileNow } from '@src/hooks/useIsMobile';
 import useMediaQuery from '@src/hooks/useMediaQuery';
-import { DARK_QUERY } from '@src/lib/palette.mjs';
+import { DARK_QUERY, prefersDark } from '@src/lib/palette.mjs';
 import useScroll from '@src/hooks/useScroll';
 import { useRouter } from 'next/router';
 import { useShallow } from 'zustand/react/shallow';
@@ -201,9 +201,13 @@ function Navbar() {
     shellRef.current = tl;
     if (useStore.getState().isMenuOpen || useStore.getState().isSearchOpen) tl.progress(1);
     return () => {
-      // Restore the previous presentation before crossing a breakpoint. Route
-      // transitions keep owning main/header when only isLoading changes.
-      if (isMobile !== isMobileNow() && tl.progress() > 0) tl.progress(0);
+      // Restore the previous presentation before crossing a breakpoint or a change
+      // of scheme: the new timeline records its starting values from the page as it
+      // finds it, so a shrunk page would stay shrunk once the panel closed. It is
+      // reopened in the same frame above. Route transitions keep owning main/header
+      // when only isLoading changes, and Layout's hand-off keeps the held card.
+      const schemeChanged = dark !== prefersDark() && useStore.getState().isTransitioning !== 'handoff';
+      if ((isMobile !== isMobileNow() || schemeChanged) && tl.progress() > 0) tl.progress(0);
       tl.kill();
     };
   }, [isLoading, isMobile, dark]);

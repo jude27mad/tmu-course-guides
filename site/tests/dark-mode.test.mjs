@@ -112,6 +112,8 @@ test('dark mode colours meet WCAG AA', () => {
   // Focus rings and the shrunk page's edge are non-text: 3:1.
   assert.ok(contrast(DARK.accent, DARK.page) >= 3);
   assert.ok(contrast(DARK.accent, DARK.card) >= 3);
+  assert.ok(contrast(DARK.pageEdge, TOKENS.ink) >= 3, `page edge on the ink: ${contrast(DARK.pageEdge, TOKENS.ink).toFixed(2)}`);
+  assert.ok(contrast(DARK.pageEdge, DARK.page) >= 3, `page edge on the page: ${contrast(DARK.pageEdge, DARK.page).toFixed(2)}`);
 });
 
 // Each declaration in the site's styles: [file, property, value].
@@ -150,6 +152,19 @@ test('text on the page uses --text, text on the dark panels --panelText', async 
     'pages/course/components/workspace/calendar.module.scss --sx-color-on-primary', // today, dark mode
     'pages/course/components/workspace/workspace.module.scss color', // the pressed Work filter
   ]);
+});
+
+test('controls on the dark panels keep their light colours, and Schedule-X its lines', async () => {
+  // The footer's back-to-top disc and the course cards' badge frame sit on dark panels.
+  const footer = await read('../src/components/dom/styles/footer.module.scss');
+  assert.match(footer, /@media screen and \(prefers-color-scheme: dark\) \{\s*\.circleButton \{\s*--card: #ffffff;\s*--text: #18181b;\s*--border: #e4e4e7;\s*\}\s*\}/);
+  const light = sassMap('colors');
+  assert.deepEqual(['#FFFFFF', '#18181B', '#E4E4E7'], [light.card, light.text, light.border]);
+  const projects = await read('../src/pages/components/projects/styles/projects.module.scss');
+  assert.match(projects, /@media screen and \(prefers-color-scheme: dark\) \{\s*box-shadow: 0 0 0 0\.01vw #e4e4e7;\s*\}/);
+  // Schedule-X composes --sx-border on :root from its own grey, so the dark block sets it again.
+  const calendar = await read('../src/pages/course/components/workspace/calendar.module.scss');
+  assert.match(calendar.slice(calendar.indexOf('@media screen and (prefers-color-scheme: dark)')), /--sx-border: 1px solid var\(--border\);/);
 });
 
 test('the document follows the device scheme', async () => {
@@ -208,12 +223,16 @@ test('colours written from scripts follow the stylesheet in both schemes', async
   assert.doesNotMatch(calendar, /TOKENS\./);
   assert.match(calendar, /lightColors: \{ main: 'var\(--accent\)', container: 'var\(--card\)', onContainer: 'var\(--text\)' \}/);
   assert.doesNotMatch(calendar, /isDark\s*:/);
-  for (const path of ['../src/components/dom/navbar/panelShell.js', '../src/components/dom/Layout.jsx']) {
-    const source = await read(path);
-    assert.match(source, /border: `2px solid \$\{pageEdgeColor\(\)\}`/, path);
-    assert.doesNotMatch(source, /TOKENS\.page/, path);
-  }
+  // Behind a panel on a phone the page dims to 5%, where only the paper's light edge shows.
+  assert.match(await read('../src/components/dom/navbar/panelShell.js'), /border: `2px solid \$\{pageEdgeColor\(isMobile\)\}`/);
+  assert.match(await read('../src/components/dom/Layout.jsx'), /border: `2px solid \$\{pageEdgeColor\(\)\}`/);
+  for (const path of ['../src/components/dom/navbar/panelShell.js', '../src/components/dom/Layout.jsx']) assert.doesNotMatch(await read(path), /TOKENS\.page/, path);
+  assert.equal(pageEdgeColor(true), TOKENS.page);
+  // A change of scheme rebuilds the Menu/Search shell for the new edge colour; it rewinds the old timeline first,
+  // or the new one would record the shrunk page as its start and leave the page shrunk once the panel closed.
   const navbar = await read('../src/components/dom/navbar/Index.jsx');
   assert.match(navbar, /const dark = useMediaQuery\(DARK_QUERY\);/);
   assert.match(navbar, /\}, \[isLoading, isMobile, dark\]\);/);
+  assert.match(navbar, /const schemeChanged = dark !== prefersDark\(\) && useStore\.getState\(\)\.isTransitioning !== 'handoff';/);
+  assert.match(navbar, /if \(\(isMobile !== isMobileNow\(\) \|\| schemeChanged\) && tl\.progress\(\) > 0\) tl\.progress\(0\);/);
 });
