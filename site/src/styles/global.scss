@@ -386,7 +386,7 @@ html:not([data-scroll-mode='document']) #fluidCanvas {
 }
 
 // Dark mode (colors.scss). The film grain is the same texture with its grey
-// inverted, so it shows as light grain on the graphite page, at half its alpha:
+// inverted, so it shows as light grain on the near-black page, at half its alpha:
 // the ink under it rises by about one level, as under the light grain, so the
 // ink Safari paints past a dark end still meets the grained page without a line.
 // --pageUnderGrain is the dark page as seen through it (tests/dark-mode.test.mjs).

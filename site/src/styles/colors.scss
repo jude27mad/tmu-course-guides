@@ -59,13 +59,13 @@ html {
 // menu, the footer, the artwork's windows and Safari's dark ends are unchanged. It must come after the light
 // map: palette.test.mjs reads the first value of each name. Printing stays light.
 $dark: (
-  'white': #262629,
-  'pageUnderGrain': #27272a,
+  'white': #0e0e10,
+  'pageUnderGrain': #0f0f11,
   'text': #f4f4f5,
-  'card': #2f2f33,
-  'fillColor': #2f2f33,
+  'card': #1a1a1d,
+  'fillColor': #1a1a1d,
   'muted': #a1a1aa,
-  'border': #3f3f46,
+  'border': #2c2c31,
   'accent': #66b0ff,
   'accentTint': #1c3754,
   'onAccent': #18181b,
