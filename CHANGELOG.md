@@ -2,6 +2,10 @@
 
 Latest first. Students see course changes under **Course updates** in each guide's Guide tools, and website changes on the **Website updates** page. Older entries record the behaviour at the time; later releases supersede them.
 
+## Unreleased — A darker dark mode
+
+- **The dark page is near-black now** (`#0E0E10`, was the graphite `#262629`), with cards and pills `#1A1A1D` and hairlines `#2C2C31`; text, TMU Blue and the deadline colours are unchanged and read better still (body text 17.5:1). The page is now darker than the dark panels' ink, so the windows onto the artwork, the signal field and the badge read as raised graphite panels instead of recesses. Safari's flat colour past a light end on iPhone and iPad is the new page under the dark grain (`#0F0F11`), and the offline page follows. Light mode is unchanged.
+
 ## Unreleased — Dark mode
 
 - **The website follows the device's light or dark setting.** There is no switch: `prefers-color-scheme: dark` turns the page dark, and a device that changes scheme during a visit (at sunset, say) changes the page at once. Light mode is unchanged: every element's computed colours, the root tokens and screenshots of every page at 390 and 1440 px (and as an iPhone) match the previous build exactly.

@@ -132,7 +132,7 @@ export const WEBSITE_UPDATES = [
   "id": "2026-11-08-dark-mode",
   "date": "November 8, 2026",
   "title": "Dark mode",
-  "text": "The website now follows your device's light or dark setting. With dark mode on, the page turns a dark graphite with light text, a lighter TMU Blue and brighter deadline colours; the menu, the footer and the moving artwork behind the page stay as they are. There is no separate switch: change your device's appearance setting and the page follows straight away.",
+  "text": "The website now follows your device's light or dark setting. With dark mode on, the page turns near-black with light text, a lighter TMU Blue and brighter deadline colours; the menu, the footer and the moving artwork behind the page stay as they are. There is no separate switch: change your device's appearance setting and the page follows straight away.",
   "items": []
  },
  {

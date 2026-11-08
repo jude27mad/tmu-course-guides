@@ -29,12 +29,12 @@ export const TOKENS = Object.freeze({
    what sits on it, changes: the dark panels, the artwork behind the page, the badges and the signal field
    keep their colours. styles/colors.scss mirrors these values in its dark block (tests/dark-mode.test.mjs). */
 export const DARK = Object.freeze({
-  page: '#262629', // graphite paper: lighter than the artwork, so the windows onto it still read as recesses
-  pageUnderGrain: '#27272A', // the page as seen through the dark film grain (public/other/grain-dark.png)
+  page: '#0E0E10', // near-black: darker than the ink, so the windows onto the artwork read as raised graphite
+  pageUnderGrain: '#0F0F11', // the page as seen through the dark film grain (public/other/grain-dark.png)
   text: '#F4F4F5',
-  card: '#2F2F33', // cards, pills and light glass, raised above the page
+  card: '#1A1A1D', // cards, pills and light glass, raised above the page
   muted: '#A1A1AA',
-  border: '#3F3F46',
+  border: '#2C2C31',
   accent: '#66B0FF', // TMU Blue's hue, lifted for a dark page
   accentTint: '#1C3754',
   onAccent: '#18181B',
