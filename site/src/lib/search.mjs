@@ -131,6 +131,7 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
  */
 function searchEntriesNow(entries, query) {
   if (!entries) return [];
+
   const index = { entries: entries.map((entry) => ({ ...entry, label: entry.title })), weeks: entries.weeks || [] };
   return rankEntries(index, query ?? '');
 }
@@ -138,7 +139,17 @@ function searchEntriesNow(entries, query) {
 /* The old pages' own "Search the guide" (inline search): every word must appear (accents ignored) in an item's
    full text. CEN100: assignment cards (name, preview, what, facts, checklists, traps, sources), rule rows and the
    contact lookup (cen-guide.mjs:504-535). Math: assessment and topic cards (math-guide.mjs:128-136). */
-const normalise = (text) => String(text).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+// Cache normalized query inputs to avoid continuous re-computation on every keystroke
+const normaliseCache = new Map();
+const normalise = (text) => {
+  const str = String(text);
+  let res = normaliseCache.get(str);
+  if (res !== undefined) return res;
+  res = str.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  if (normaliseCache.size > 1000) normaliseCache.clear();
+  normaliseCache.set(str, res);
+  return res;
+};
 const GUIDE_ENTRIES = (() => {
   const out = [];
   for (const item of CEN.allItems) {
@@ -169,12 +180,9 @@ const GUIDE_ENTRIES = (() => {
  * Try a shorter term.").
  */
 function searchGuideNow(query, { course = null, limit = 12 } = {}) {
-  const words = normalise(query ?? '')
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean);
-  if (!words.length) return { results: [], status: '' };
-  const q = normalise(query).trim();
+  const q = normalise(query ?? '').trim();
+  if (!q) return { results: [], status: '' };
+  const words = q.split(/\s+/);
   const matches = GUIDE_ENTRIES.filter((entry) => (!course || entry.courseId === course) && words.every((word) => entry.normalisedText.includes(word))).sort(
     (a, b) => Number(b.normalisedTitle.includes(q)) - Number(a.normalisedTitle.includes(q)),
   );

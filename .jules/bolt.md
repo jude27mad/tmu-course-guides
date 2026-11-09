@@ -17,3 +17,7 @@
 ## 2026-10-27 - Object Allocation and Unrolling arrays in render loops
 **Learning:** In Three.js and React Three Fiber render loops, allocating array objects (e.g. `const shaderUpdates = [...]` in `Fluid.jsx`) and looping through them, or passing newly created payload objects inside hot path physics engines (`card.current.applyImpulse({x, y, z})` in `BadgeScene.jsx`), causes silent memory leaking per-frame and severe GC stutters.
 **Action:** Always unroll arrays manually in WebGL implementations instead of using closures like `forEach` or `map`. Allocate object parameters inside refs (`useRef({x:0, y:0, z:0})`) or direct `.set()` mutations for vectors inside `useFrame`.
+
+## 2024-11-09 - Cache text normalization in search queries
+**Learning:** In the full-text search implementation (`site/src/lib/search.mjs`), string `.normalize('NFD')` and regex `.replace(/[̀-ͯ]/g, '')` combined are surprisingly expensive when recalculating them continuously per keystroke. This causes severe CPU usage on low-end devices since `normalise` was recomputing identical string values over and over on keystrokes.
+**Action:** Pre-calculate and cache normalized query inputs using a basic module-level LRU-like Map (`normaliseCache`). Limit the Map size (e.g., `> 1000`) to avoid memory leaks while covering standard keystroke patterns.
