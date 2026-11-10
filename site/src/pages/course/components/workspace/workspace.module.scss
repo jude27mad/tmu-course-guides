@@ -17,8 +17,7 @@
   :global(.p),
   :global(.p-x),
   :global(.p-xs) {
-    font-size: max(16px, 1.05vw);
-    line-height: 1.55;
+    @include type.role(body);
   }
   :global(.h6) {
     font-size: max(18px, 1.3vw);
