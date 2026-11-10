@@ -17,7 +17,9 @@
   :global(.p),
   :global(.p-x),
   :global(.p-xs) {
-    @include type.role(body);
+    // Keep the body scale without overriding .medium/.bold in course content.
+    font-size: type.value(body, size);
+    line-height: type.value(body, leading);
   }
   :global(.h6) {
     font-size: max(18px, 1.3vw);

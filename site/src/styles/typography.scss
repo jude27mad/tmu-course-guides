@@ -12,6 +12,10 @@ $roles: (
   context: (family: primary, size: 0.8125rem, weight: 600, leading: 1.35, tracking: 0.06em),
 );
 
+@function value($name, $property) {
+  @return map.get(map.get($roles, $name), $property);
+}
+
 @mixin role($name) {
   $role: map.get($roles, $name);
   font-family: var(--font-#{map.get($role, family)}), system-ui, sans-serif;
