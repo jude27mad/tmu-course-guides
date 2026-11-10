@@ -66,7 +66,8 @@ export default class MyDocument extends Document {
           <link rel="icon" href={FAVICON} />
           <link rel="apple-touch-icon" sizes="180x180" href={`${BASE_PATH}/apple-touch-icon.png`} />
           <link rel="manifest" href={`${BASE_PATH}/site.webmanifest`} />
-          {/* weight 550 (Regular) sets almost every type class, including the loader */}
+          {/* Preload the regular reading and display faces used above the fold. */}
+          <link rel="preload" href={`${BASE_PATH}/fonts/Inter-Regular.woff2`} as="font" type="font/woff2" crossOrigin="anonymous" />
           <link rel="preload" href={`${BASE_PATH}/fonts/InterDisplay-Regular.woff2`} as="font" type="font/woff2" crossOrigin="anonymous" />
         </Head>
         <body>

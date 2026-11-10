@@ -1,4 +1,5 @@
 @use '@src/styles/glass';
+@use '@src/styles/typography' as type;
 
 .root {
   position: relative;
@@ -8,9 +9,7 @@
   color: var(--text);
   --workspace-side-padding: clamp(18px, 4vw, 64px);
   padding: clamp(90px, 9vw, 134px) var(--workspace-side-padding) 32px;
-  font-size: 16px;
-  line-height: 1.5;
-  font-weight: 550;
+  @include type.role(body);
   min-height: 75svh;
   overflow-wrap: anywhere;
   --workspace-gap: clamp(16px, 2vw, 28px);
@@ -18,8 +17,9 @@
   :global(.p),
   :global(.p-x),
   :global(.p-xs) {
-    font-size: max(16px, 1.05vw);
-    line-height: 1.55;
+    // Keep the body scale without overriding stronger course-content styles.
+    font-size: type.value(body, size);
+    line-height: type.value(body, leading);
   }
   :global(.h6) {
     font-size: max(18px, 1.3vw);
@@ -53,15 +53,10 @@
     outline: none;
   }
   h2 {
-    font-size: clamp(28px, 3.2vw, 48px);
-    line-height: 1.15;
-    font-weight: 550;
-    letter-spacing: -0.04em;
+    @include type.role(section);
   }
   h3 {
-    font-size: 18px;
-    font-weight: 650;
-    line-height: 1.4;
+    @include type.role(title);
   }
   a {
     text-decoration-thickness: 1px;
@@ -105,18 +100,13 @@
 .headingCopy {
   min-width: 0;
   h1 {
-    font-size: clamp(32px, 5vw, 72px);
-    letter-spacing: -0.055em;
-    line-height: 1.04;
+    @include type.role(course);
     max-width: 18ch;
     margin-top: 10px;
-    font-weight: 550;
   }
 }
 .eyebrow {
-  font-size: 13px;
-  font-weight: 650;
-  letter-spacing: 0.07em;
+  @include type.role(context);
   text-transform: uppercase;
   display: block;
 }
@@ -148,9 +138,12 @@
   border-radius: 30px;
   gap: 2px;
   a {
+    @include type.role(label);
     min-height: 44px;
+    min-width: 44px;
     display: flex;
     align-items: center;
+    justify-content: center;
     position: relative;
     z-index: 1;
     padding: 8px 16px;
@@ -301,12 +294,13 @@
     margin-top: 4px;
     color: var(--accent);
     strong {
+      @include type.role(title);
       display: block;
-      font-size: 18px;
     }
     span {
+      @include type.role(meta);
       display: block;
-      font-size: 14px;
+      font-variant-numeric: tabular-nums;
     }
   }
 }
@@ -320,9 +314,7 @@
   column-gap: 12px;
 }
 .timeLeft {
-  font-size: 13px;
-  font-weight: 650;
-  letter-spacing: 0.07em;
+  @include type.role(context);
   text-transform: uppercase;
   font-variant-numeric: tabular-nums;
   color: var(--status, var(--text));
@@ -474,7 +466,7 @@
   padding: 8px 0 12px;
   span {
     font-size: 14px;
-    font-weight: 550;
+    font-weight: 400;
   }
 }
 .workList {
@@ -498,21 +490,19 @@
   min-width: 0;
 }
 .rowTitle {
+  @include type.role(title);
   display: block;
-  font-size: clamp(18px, 1.65vw, 24px);
-  font-weight: 550;
-  line-height: 1.25;
 }
 .meta {
+  @include type.role(meta);
   display: block;
-  font-size: 14px;
-  line-height: 1.45;
   margin-top: 4px;
   opacity: 0.8;
 }
 .rowDate,
 .rowStatus {
   font-size: 16px;
+  font-variant-numeric: tabular-nums;
 }
 .rowArrow {
   font-size: 24px;
@@ -556,6 +546,7 @@
   font-size: 16px;
 }
 .dates {
+  font-variant-numeric: tabular-nums;
   border-top: 1px solid var(--text);
   border-bottom: 1px solid var(--border);
   padding: 20px 0;
@@ -572,7 +563,7 @@
     display: block;
   }
   strong {
-    font-weight: 650;
+    font-weight: 600;
   }
   // The same underlined accent action as Back, at the 44px tap height.
   .markRow {
@@ -601,13 +592,13 @@
   --layout-columns-gap: 24px;
   p,
   li {
-    max-width: 80ch;
+    max-width: 68ch;
   }
   textarea {
     max-width: min(100%, 60rem);
   }
   details {
-    max-width: 80ch;
+    max-width: 68ch;
     border-top: 1px solid var(--border);
   }
   :global(.p-x) {
@@ -625,9 +616,9 @@
     border-bottom: 1px solid var(--border);
   }
   summary {
-    font-weight: 650;
+    font-weight: 600;
     span {
-      font-weight: 550;
+      font-weight: 400;
       font-size: 16px;
       margin-left: 14px;
     }
@@ -639,7 +630,7 @@
   caption {
     text-align: left;
     font-size: 18px;
-    font-weight: 650;
+    font-weight: 600;
     margin-bottom: 12px;
   }
   th,
@@ -655,10 +646,10 @@
   }
   thead th {
     font-size: 14px;
-    font-weight: 650;
+    font-weight: 600;
   }
   tbody th {
-    font-weight: 550;
+    font-weight: 400;
   }
   a {
     text-decoration: underline;
@@ -709,7 +700,7 @@
   gap: 20px;
   p,
   li {
-    max-width: 80ch;
+    max-width: 68ch;
   }
 }
 .bullets {
@@ -772,7 +763,7 @@
   }
   .headingCopy {
     h1 {
-      font-size: clamp(28px, 6.5vw, 42px);
+      font-size: clamp(32px, 7.5vw, 42px);
     }
   }
   .artwork {
@@ -794,12 +785,12 @@
       gap: 0;
       padding: 3px;
       a {
-        padding: 8px 6px;
+        padding: 8px 4px;
       }
       @media (max-width: 380px) {
         padding: 2px;
         a {
-          padding: 8px 5px;
+          padding: 8px 1.5px;
         }
       }
     }
@@ -808,7 +799,7 @@
         gap: 0;
         padding: 3px;
         a {
-          padding: 8px 6px;
+          padding: 8px 2px;
         }
       }
     }

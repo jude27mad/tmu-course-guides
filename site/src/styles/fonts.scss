@@ -1,14 +1,10 @@
-// Inter Display (Inter 4.1, SIL OFL 1.1, public/fonts/OFL.txt) replaces the
-// commercial Neue Haas Grotesk Display Pro faces of the original design.
-// The CSS weights stay the ones the components use (450/550/650/750); each
-// maps to the Inter Display face whose stems match the Neue Haas face that
-// weight used to load. Files are built by scripts/build-fonts.py (Latin +
-// symbols subset, Neue Haas vertical metrics baked in).
-// $base-path is injected by next.config.js (sassOptions.additionalData).
-
-@mixin inter-display($file, $weight, $style: normal) {
+// Inter 4.1, self-hosted under SIL OFL 1.1 (public/fonts/OFL.txt).
+// Reading text keeps native Inter metrics; display faces keep the original
+// reveal animation metrics. Build both with scripts/build-fonts.py.
+// $base-path is injected by next.config.js.
+@mixin inter-face($family, $file, $weight, $style: normal) {
   @font-face {
-    font-family: 'Inter Display';
+    font-family: $family;
     src: url('#{$base-path}/fonts/#{$file}.woff2') format('woff2');
     font-weight: $weight;
     font-style: $style;
@@ -16,42 +12,44 @@
   }
 }
 
-@include inter-display('InterDisplay-Light', 450); // was NeueHaasDisplay Light
-@include inter-display('InterDisplay-LightItalic', 450, italic); // was Light Italic
-@include inter-display('InterDisplay-Regular', 550); // was Roman
-@include inter-display('InterDisplay-Italic', 550, italic); // was Roman Italic
-@include inter-display('InterDisplay-Bold', 650); // was Medium
-@include inter-display('InterDisplay-ExtraBold', 750); // was Bold
+@include inter-face('Inter', 'Inter-Regular', 400);
+@include inter-face('Inter', 'Inter-Italic', 400, italic);
+@include inter-face('Inter', 'Inter-Medium', 500);
+@include inter-face('Inter', 'Inter-SemiBold', 600);
+@include inter-face('Inter', 'Inter-Bold', 700);
+@include inter-face('Inter Display', 'InterDisplay-Regular', 400);
+@include inter-face('Inter Display', 'InterDisplay-Italic', 400, italic);
+@include inter-face('Inter Display', 'InterDisplay-Medium', 500);
+@include inter-face('Inter Display', 'InterDisplay-SemiBold', 600);
+@include inter-face('Inter Display', 'InterDisplay-Bold', 700);
+
+// The book textures and game canvas retain their existing face mappings.
+@include inter-face('Inter Display', 'InterDisplay-Light', 450);
+@include inter-face('Inter Display', 'InterDisplay-LightItalic', 450, italic);
+@include inter-face('Inter Display', 'InterDisplay-Regular', 550);
+@include inter-face('Inter Display', 'InterDisplay-Italic', 550, italic);
+@include inter-face('Inter Display', 'InterDisplay-Bold', 650);
+@include inter-face('Inter Display', 'InterDisplay-ExtraBold', 750);
 
 :root {
-  --font-primary: 'Inter Display';
+  --font-primary: 'Inter';
+  --font-display: 'Inter Display';
 }
 
-body {
-  font-family: var(--font-primary), sans-serif;
+html {
+  letter-spacing: normal;
+  word-spacing: normal;
 }
 
-// Neue Haas Display sets tighter than Inter Display (about 4% narrower in
-// running text, and a much narrower word space: 0.16em against 0.25em).
-// Per-element em values so the correction scales with every vw font size;
-// layouts and split-type line breaks were designed around those widths.
-// `html *` (0,0,1) is needed to come after and beat reset.scss's
-// `*:not(..., svg *) { all: unset }`, which has the same specificity.
-html,
+// Carry each role's spacing through split-type spans, after reset.scss.
 html *,
 html *::before,
 html *::after {
-  letter-spacing: -0.01em;
-  word-spacing: -0.09em;
+  letter-spacing: inherit;
+  word-spacing: inherit;
 }
 
-// The heavy faces (650/750) have narrower spaces of their own (Inter Display
-// Bold/ExtraBold 0.21/0.20em against Neue Haas Medium/Bold 0.17/0.155em) but
-// wider letters. Measured best fit: -0.02em letters, -0.045em words.
-.medium,
-.medium *,
-.bold,
-.bold * {
-  letter-spacing: -0.02em;
-  word-spacing: -0.045em;
+body {
+  font-family: var(--font-primary), system-ui, sans-serif;
+  font-weight: 400;
 }

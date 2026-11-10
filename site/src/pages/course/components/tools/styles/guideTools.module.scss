@@ -16,7 +16,7 @@
   box-shadow: 0 24px 80px rgba(var(--inkRgb), 0.25);
   overflow: hidden;
   font-size: 1rem;
-  font-weight: 550;
+  font-weight: 400;
   line-height: 1.5;
 }
 
@@ -55,7 +55,7 @@
 .title {
   margin: 0;
   font-size: clamp(1.5rem, 5vw, 2rem);
-  font-weight: 550;
+  font-weight: 400;
   line-height: 1.2;
 }
 .close {
@@ -120,7 +120,7 @@
   flex: 1 1 auto;
   min-width: 0;
   overflow-wrap: anywhere;
-  font-weight: 550;
+  font-weight: 400;
 }
 .arrow {
   flex: 0 0 auto;
@@ -171,7 +171,7 @@
 }
 .updateTitle {
   font-size: 1rem;
-  font-weight: 550;
+  font-weight: 400;
 }
 .updatesLink {
   padding: 1rem 0 0 1.35rem;

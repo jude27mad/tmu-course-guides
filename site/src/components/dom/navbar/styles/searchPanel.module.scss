@@ -47,7 +47,7 @@
   min-height: 44px;
   color: var(--panelText);
   caret-color: var(--panelText);
-  font-weight: 550;
+  font-weight: 400;
   &::placeholder {
     color: var(--panelText);
     opacity: 0.45;
@@ -86,7 +86,7 @@
   cursor: pointer;
 
   mark {
-    font-weight: 750;
+    font-weight: 700;
     color: inherit;
   }
 }
