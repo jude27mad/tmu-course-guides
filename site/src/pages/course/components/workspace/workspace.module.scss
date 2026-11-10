@@ -782,12 +782,12 @@
       gap: 0;
       padding: 3px;
       a {
-        padding: 8px 6px;
+        padding: 8px 4px;
       }
       @media (max-width: 380px) {
         padding: 2px;
         a {
-          padding: 8px 5px;
+          padding: 8px 1.5px;
         }
       }
     }
@@ -796,7 +796,7 @@
         gap: 0;
         padding: 3px;
         a {
-          padding: 8px 6px;
+          padding: 8px 2px;
         }
       }
     }
