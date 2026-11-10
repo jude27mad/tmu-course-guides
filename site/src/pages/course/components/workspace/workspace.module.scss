@@ -140,8 +140,10 @@
   a {
     @include type.role(label);
     min-height: 44px;
+    min-width: 44px;
     display: flex;
     align-items: center;
+    justify-content: center;
     position: relative;
     z-index: 1;
     padding: 8px 16px;

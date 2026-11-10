@@ -70,7 +70,7 @@ try {
                     heading: read(title),
                     nav: links.map((e) => {
                       const b = e.getBoundingClientRect();
-                      return { ...read(e), text: e.textContent, x: b.x, y: b.y, right: b.right, height: b.height };
+                      return { ...read(e), text: e.textContent, x: b.x, y: b.y, right: b.right, width: b.width, height: b.height };
                     }),
                     // Context labels and date metadata have their own smaller roles.
                     // The 16px floor belongs to the assignment's reading body.
@@ -82,7 +82,7 @@ try {
                 assert.ok(metrics.heading.size >= 32, 'course titles retain a readable display size');
                 assert.ok(metrics.heading.leading >= metrics.heading.size, 'heading line boxes allow ascenders and descenders');
                 for (const link of metrics.nav) {
-                  assert.ok(link.size >= 16 && link.height >= 43.5, `readable touch tab: ${link.text}`);
+                  assert.ok(link.size >= 16 && link.width >= 44 && link.height >= 44, `readable touch tab: ${link.text}`);
                   assert.ok(link.x >= -1 && link.right <= width + 1, `visible touch tab: ${link.text}`);
                 }
                 if (name === 'math' && width >= 390) {
