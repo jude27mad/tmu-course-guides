@@ -21,6 +21,13 @@
   translate: inherit !important;
   box-shadow: none;
 
+  // Reserve the reveal's layout space in CSS, including during ScrollTrigger
+  // refresh/revert. A minimum lets the native credit grow on small screens
+  // without switching between a fixed height and height:auto in JavaScript.
+  :global(html[data-motion='on']) & {
+    min-height: 100.5svh;
+  }
+
   @include mobile {
     padding-top: var(--layout-columns-gap);
     padding-bottom: var(--layout-columns-gap);

@@ -9,8 +9,8 @@ export default function DesignCredit({ tone = 'light', onToggle }) {
       className={clsx(styles.root, tone === 'dark' && styles.dark)}
       data-design-credit
       onToggle={(event) => {
-        onToggle?.(event.currentTarget.open);
-        ScrollTrigger.refresh();
+        if (onToggle) onToggle(event.currentTarget.open);
+        else ScrollTrigger.refresh();
       }}
     >
       <summary>
