@@ -30,6 +30,12 @@ async function ready(page, route) {
   if (route) await page.locator('#course-section:not(:disabled)').waitFor();
   if (route.includes('#assignment')) await page.locator('[data-assignment-detail]').waitFor();
   await page.evaluate(() => document.fonts.ready);
+  // Course input becomes ready before the shell's entrance has finished.
+  // Capture settled type, including the header, in the slower WebKit runner.
+  await page.waitForFunction(() => {
+    const header = document.querySelector('header');
+    return header && Number(getComputedStyle(header).opacity) > 0.99;
+  });
 }
 
 try {
@@ -66,7 +72,9 @@ try {
                       const b = e.getBoundingClientRect();
                       return { ...read(e), text: e.textContent, x: b.x, y: b.y, right: b.right, height: b.height };
                     }),
-                    body: [...document.querySelectorAll('[data-assignment-detail] p')].filter((e) => e.getBoundingClientRect().height).map(read),
+                    // Context labels and date metadata have their own smaller roles.
+                    // The 16px floor belongs to the assignment's reading body.
+                    body: [...document.querySelectorAll('[data-assignment-detail] [class*="workspace_detailBody"] p')].filter((e) => e.getBoundingClientRect().height).map(read),
                   };
                 });
                 assert.equal(metrics.overflow, false, 'no horizontal page overflow');
@@ -79,7 +87,10 @@ try {
                 if (name === 'math' && width >= 390) {
                   assert.ok(Math.max(...metrics.nav.map((e) => e.y)) - Math.min(...metrics.nav.map((e) => e.y)) < 2, 'five course tabs fit on one row');
                 }
-                assert.ok(metrics.body.every((e) => e.size >= 16 && e.leading >= e.size * 1.4), 'assignment copy remains readable');
+                if (name === 'detail') {
+                  assert.ok(metrics.body.length > 0, 'assignment reading copy is present');
+                  assert.ok(metrics.body.every((e) => e.size >= 16 && e.leading >= e.size * 1.4), 'assignment copy remains readable');
+                }
                 const fonts = await page.evaluate(async () => {
                   const specs = ['400 16px Inter', '500 18px Inter', '600 16px Inter', '400 40px "Inter Display"', '500 40px "Inter Display"'];
                   return Promise.all(specs.map(async (spec) => ({ spec, count: (await document.fonts.load(spec, 'Agjp I1lO0 Δπ∑×÷')).length, ready: document.fonts.check(spec) })));
