@@ -139,6 +139,21 @@ jobs:
           browsers='chromium webkit'
           if [[ "$TESTED" == true ]]; then browsers=chromium; fi
           node "$RUNNER_TEMP/qa-playwright/node_modules/playwright/cli.js" install --with-deps $browsers
+      - name: Check footer stability in Chromium and WebKit
+        id: footer
+        if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' && steps.tested.outputs.tested != 'true' }}
+        env:
+          PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
+          QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/footer
+        run: node site/scripts/check-footer-layout.mjs
+      - name: Upload footer stability reports
+        if: ${{ !cancelled() && steps.footer.outcome != 'skipped' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: footer-layout-qa
+          path: ${{ runner.temp }}/pages-qa/footer/
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Check the site in a browser
         env:
           PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright

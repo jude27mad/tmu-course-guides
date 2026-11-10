@@ -1,5 +1,5 @@
-import { nativeIOSScroll, scrollRoot, scrollTop } from '@src/utils/scrollRoot';
-import { useMemo, useRef, useState } from 'react';
+import { scrollRoot } from '@src/utils/scrollRoot';
+import { useMemo, useRef } from 'react';
 
 import DesignCredit from '@src/components/dom/DesignCredit';
 import AppearTitle from '@src/components/animationComponents/appearTitle/Index';
@@ -20,7 +20,6 @@ import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect'
 import { useRouter } from 'next/router';
 import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
-import { useWindowSize } from '@darkroom.engineering/hamo';
 
 const GoTop = dynamic(() => import('@src/components/dom/GoTop'), { ssr: false });
 
@@ -42,93 +41,48 @@ function Footer() {
   const still = useStill();
   const footerRef = useRef();
   const viewportRef = useRef();
+  const triggerRef = useRef();
   const router = useRouter();
   const [isLoading] = useStore(useShallow((state) => [state.isLoading]));
-  const windowSize = useWindowSize();
-  // Measure the same stable 100svh used by the contained shell, including when
-  // Safari scrolls the document. Toolbar-only changes to innerHeight must not
-  // rebuild the reveal or temporarily collapse the page's scroll range.
-  const [resizeHeight, setResizeHeight] = useState(0);
   const courseId = courseIdFromPath(router.asPath);
   const courseLinks = useCourseLinks(courseId);
   const showCourseLinks = !['/', '/courses/', '/privacy/', '/updates/'].includes(pathKey(router.pathname));
-  const [creditOpen, setCreditOpen] = useState(false);
-  const creditScrollRef = useRef(null);
-
-  const toggleCredit = (open) => {
-    if (open === creditOpen) return;
-    if (!isMobile && !nativeIOSScroll() && !still) creditScrollRef.current = scrollTop();
-    setCreditOpen(open);
-  };
+  const refreshFooter = () => triggerRef.current?.refresh();
 
   useIsomorphicLayoutEffect(() => {
-    const viewport = viewportRef.current;
-    if (!viewport) return undefined;
-    // clientHeight excludes transforms applied during menu/page transitions.
-    const measure = () => setResizeHeight(viewport.clientHeight);
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(viewport);
-    return () => observer.disconnect();
-  }, []);
-
-  useIsomorphicLayoutEffect(() => {
-    const creditScroll = creditScrollRef.current;
-    creditScrollRef.current = null;
-    // Native credit disclosure must not rebuild an uncover transform or
-    // temporarily collapse the scroller when motion is disabled.
-    if (still || !resizeHeight) return undefined;
+    if (still || isLoading) return undefined;
+    const footer = footerRef.current;
+    // CSS owns the footer's height throughout its lifetime. Resetting to auto
+    // while rebuilding the animation used to clamp the scroll position, most
+    // visibly after an iOS overlay or opening the credit on a phone.
     const context = gsap.context(() => {
-      if (!isLoading) {
-        const setupFooterAnimation = () => {
-          gsap.set(footerRef.current, { height: 'auto' });
-          const allSections = document.querySelectorAll('#mainContainer section');
-          if (allSections.length > 1) {
-            const lastSection = allSections[allSections.length - 2];
-            if (footerRef.current.offsetHeight <= resizeHeight) {
-              // force3D keeps the footer on one layer: GSAP's default writes a 2D transform at the ends of the
-              // scrub, which dropped and re-created a viewport-sized layer each time a scroll bounced off the end.
-              gsap.set(footerRef.current, { yPercent: -50, force3D: true });
-              const uncover = gsap.timeline({ paused: true });
-              gsap.set(footerRef.current, { height: '100.5svh' });
-              uncover.to(footerRef.current, {
-                yPercent: 0,
-                ease: 'none',
-                force3D: true,
-              });
-              ScrollTrigger.create({
-                id: 'footerTrigger',
-                trigger: lastSection,
-                start: 'bottom bottom',
-                end: '+=100%',
-                animation: uncover,
-                scrub: true,
-                scroller: scrollRoot(),
-              });
-            } else {
-              gsap.set(footerRef.current, { transform: 'translate(0%, 0%)', height: 'auto' });
-            }
-          }
-        };
-
-        setupFooterAnimation();
-      }
+      const uncover = gsap.fromTo(footer, { yPercent: -50 }, { yPercent: 0, ease: 'none', force3D: true, paused: true });
+      triggerRef.current = ScrollTrigger.create({
+        id: 'footerTrigger',
+        // Measure the unmoving wrapper, not a translated section or a nested
+        // section from the page above. Tall footers finish revealing before
+        // their content scrolls past; short viewports still expose every link.
+        trigger: footer.parentElement,
+        start: 'top bottom',
+        // Safari's visible viewport can be taller than 100svh. The reveal must
+        // finish at the reachable end, including after toolbar/overlay changes.
+        end: 'clamp(top top)',
+        animation: uncover,
+        scrub: true,
+        scroller: scrollRoot(),
+      });
     });
-    if (creditScroll !== null) {
-      // Reverting the reveal and measuring height:auto can clamp desktop scroll
-      // at the end of the page. Restore it before paint, with Lenis in sync.
-      ScrollTrigger.refresh();
-      const { lenis } = useStore.getState();
-      if (lenis) {
-        lenis.resize();
-        lenis.scrollTo(creditScroll, { immediate: true, force: true });
-      } else {
-        scrollRoot()?.scrollTo(0, creditScroll);
-      }
-      ScrollTrigger.update();
-    }
-    return () => context.revert();
-  }, [isLoading, windowSize.width, resizeHeight, creditOpen, still]);
+    // Refresh geometry in place for content, font, and real viewport changes.
+    // Neither this nor a credit toggle tears down the reveal or its layout.
+    const observer = new ResizeObserver(refreshFooter);
+    observer.observe(footer);
+    observer.observe(viewportRef.current);
+    return () => {
+      observer.disconnect();
+      triggerRef.current = null;
+      context.revert();
+    };
+  }, [isLoading, still]);
 
   return (
     <section ref={footerRef} className={clsx(styles.root, 'layout-grid-inner')} data-surface="dark">
@@ -166,7 +120,7 @@ function Footer() {
             Privacy
           </Link>
         </p>
-        <DesignCredit tone="dark" onToggle={toggleCredit} />
+        <DesignCredit tone="dark" onToggle={refreshFooter} />
       </div>
 
       <div className={styles.wordmark} aria-hidden="true">
