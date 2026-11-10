@@ -2,6 +2,7 @@ import { nativeIOSScroll } from '@src/utils/scrollRoot';
 import { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import gsap from 'gsap';
+import { isMobileNow } from '@src/hooks/useIsMobile';
 import { scrollToHash } from '@src/utils/scrollToHash';
 import styles from '@src/components/dom/styles/loader.module.scss';
 import { useRouter } from 'next/router';
@@ -49,6 +50,19 @@ function Loader() {
       gsap.set('header', { autoAlpha: 1 });
       reveal();
       return undefined;
+    }
+    // Sliding a document-height page sideways expands the mobile visual
+    // viewport while it is offscreen. The loader keeps its original height,
+    // exposing a dark band below it until the slide ends. Keep phones and
+    // iPads at their natural width, as Layout does for route changes. Reveal
+    // the already opaque page through the paper so the artwork cannot flash
+    // between two partially transparent layers. No transform also keeps
+    // Safari's fixed paper caps attached to the viewport throughout entry.
+    if (isMobileNow() || nativeIOSScroll()) {
+      gsap.set(main, { clearProps: 'transform,transformOrigin', opacity: 1 });
+      gsap.set('header', { autoAlpha: 1 });
+      const fade = gsap.to(root.current, { autoAlpha: 0, ease: 'power2.out', duration: 0.35, onComplete: reveal });
+      return () => fade.kill();
     }
     const tl = gsap.timeline({ onComplete: reveal });
     tl.set(main, { x: '100%', opacity: 1, willChange: 'transform' })
