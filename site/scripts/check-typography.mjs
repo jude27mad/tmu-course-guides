@@ -75,7 +75,7 @@ try {
                     // Context labels and date metadata have their own smaller roles.
                     // The 16px floor belongs to the assignment's reading body.
                     body: [...document.querySelectorAll('[data-assignment-detail] [class*="workspace_detailBody"] p')].filter((e) => e.getBoundingClientRect().height).map(read),
-                    emphasis: [...document.querySelectorAll('[data-assignment-detail] [class*="workspace_detailBody"] .medium, [data-assignment-detail] [class*="workspace_detailBody"] .bold')].filter((e) => e.getBoundingClientRect().height).map((e) => ({ text: e.textContent.trim(), weight: Number(getComputedStyle(e).fontWeight) })),
+                    emphasis: [...document.querySelectorAll('[data-assignment-detail] [class*="workspace_detailBody"] h5')].filter((e) => e.getBoundingClientRect().height).map((e) => ({ text: e.textContent.trim(), weight: Number(getComputedStyle(e).fontWeight) })),
                   };
                 });
                 assert.equal(metrics.overflow, false, 'no horizontal page overflow');
@@ -91,7 +91,7 @@ try {
                 if (name === 'detail') {
                   assert.ok(metrics.body.length > 0, 'assignment reading copy is present');
                   assert.ok(metrics.body.every((e) => e.size >= 16 && e.leading >= e.size * 1.4), 'assignment copy remains readable');
-                  assert.ok(metrics.emphasis.length > 0 && metrics.emphasis.every((e) => e.weight >= 600), 'assignment emphasis retains its heavier weight');
+                  assert.ok(metrics.emphasis.length > 0 && metrics.emphasis.every((e) => e.weight >= 600), 'assignment group headings retain their heavier weight');
                 }
                 const fonts = await page.evaluate(async () => {
                   const specs = ['400 16px Inter', '500 18px Inter', '600 16px Inter', '400 40px "Inter Display"', '500 40px "Inter Display"'];

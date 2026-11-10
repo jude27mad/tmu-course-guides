@@ -17,7 +17,7 @@
   :global(.p),
   :global(.p-x),
   :global(.p-xs) {
-    // Keep the body scale without overriding .medium/.bold in course content.
+    // Keep the body scale without overriding stronger course-content styles.
     font-size: type.value(body, size);
     line-height: type.value(body, leading);
   }
