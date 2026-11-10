@@ -27,14 +27,21 @@ async function ready(page, route) {
       getComputedStyle(loader).display === 'none' && !document.querySelector('.lenis-stopped');
   });
   await page.evaluate(() => document.fonts.ready);
-  // Use the site's own scroll input, then require the end as a precondition;
-  // assigning scrollTop can race Lenis's pending native-scroll event in WebKit.
-  await page.keyboard.press('End');
+  // Start each case at the browser's actual scroll limit. End can use a stale
+  // smooth-scroll limit while the footer's ResizeObserver finishes initializing.
+  // Repeat native input until both layout and the reveal have settled.
   await page.waitForFunction(() => {
-    const root = document.documentElement.dataset.scrollMode === 'document'
-      ? document.scrollingElement : document.querySelector('main');
-    return root.scrollHeight - root.clientHeight - root.scrollTop <= 2;
-  });
+    const documentMode = document.documentElement.dataset.scrollMode === 'document';
+    const root = documentMode ? document.scrollingElement : document.querySelector('main');
+    const scroller = documentMode ? window : root;
+    const footer = document.querySelector('footer > [data-surface="dark"]');
+    const atEnd = Math.abs(root.scrollHeight - root.clientHeight - root.scrollTop) <= 2;
+    const uncovered = Math.abs(footer.getBoundingClientRect().top - footer.parentElement.getBoundingClientRect().top) <= 2;
+    if (atEnd && uncovered) return true;
+    scroller.scrollTo({ top: root.scrollHeight, behavior: 'instant' });
+    scroller.dispatchEvent(new Event('scroll'));
+    return false;
+  }, null, { polling: 150, timeout: 15000 });
   await page.waitForTimeout(400);
 }
 
@@ -167,7 +174,12 @@ try {
             results.push({ label, pass: true, evidence });
             console.log(`PASS ${label}`);
           } catch (error) {
-            const metrics = await page.evaluate(() => window.readFooter?.()).catch(() => null);
+            const metrics = await page.evaluate(() => {
+              if (window.readFooter) return window.readFooter();
+              const root = document.documentElement.dataset.scrollMode === 'document' ? document.scrollingElement : document.querySelector('main');
+              const footer = document.querySelector('footer > [data-surface="dark"]');
+              return { scroll: root?.scrollTop, max: root?.scrollHeight - root?.clientHeight, transform: footer && getComputedStyle(footer).transform };
+            }).catch(() => null);
             results.push({ label, pass: false, error: error.message, evidence, metrics });
             await page.screenshot({ path: path.join(report, `${label}-failure.png`) }).catch(() => {});
             console.error(`FAIL ${label}: ${error.message}; ${JSON.stringify(metrics)}`);
