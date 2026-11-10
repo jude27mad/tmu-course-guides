@@ -596,3 +596,79 @@
     justify-self: start;
   }
 }
+
+// CHY102's grading schemes (a choice) and PCS211's evaluation option (applied automatically).
+.variants {
+  margin: 4px 0 20px;
+  h3 {
+    margin-bottom: 8px;
+    font-size: 18px;
+    font-weight: 650;
+  }
+  > p {
+    margin-top: 8px;
+  }
+}
+.variantGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  max-width: 520px;
+}
+.variant {
+  display: grid;
+  gap: 2px;
+  min-height: 56px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--border);
+  text-align: left;
+  transition:
+    background-color 0.2s,
+    box-shadow 0.2s;
+  &[aria-pressed='true'] {
+    background: var(--accentTint);
+    box-shadow: inset 0 0 0 2px var(--accent);
+    color: var(--accent);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    &:hover:not(:disabled):not([aria-pressed='true']) {
+      box-shadow: inset 0 0 0 1px var(--text);
+    }
+  }
+}
+.variantTitle {
+  font-weight: 650;
+}
+.variantNote {
+  font-size: 14px;
+}
+.variantApplied {
+  max-width: 62ch;
+}
+.requirements {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0 12px;
+    > :last-child {
+      grid-column: 1 / -1;
+    }
+  }
+  li[data-state='below'] .requirementValue {
+    color: var(--statusUrgent);
+  }
+}
+.requirementTitle {
+  font-weight: 650;
+}
+.requirementValue {
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+}

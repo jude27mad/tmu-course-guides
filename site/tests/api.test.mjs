@@ -7,14 +7,21 @@ import { memoryStorage, oldModule, toronto, htmlText, cenOracle } from './helper
 const NOW = new Date(toronto('2026-10-15', '12:00'));
 const PALETTE = await oldModule('night/palette.mjs');
 
-test('COURSES: the three courses keep their names and links and share the Desk palette', () => {
+test('COURSES: the five courses keep their names and links and share the Desk palette', () => {
   assert.deepEqual(
     lib.COURSES.map((c) => [c.id, c.code, c.name, c.title, c.index]),
     [
       ['cen100', 'CEN100', 'Intro to Engineering', 'Introduction to Engineering', '01'],
       ['mth140', 'MTH140', 'Calculus I', 'Calculus I', '02'],
       ['mth141', 'MTH141', 'Linear Algebra', 'Linear Algebra', '03'],
+      ['chy102', 'CHY102', 'General Chemistry', 'General Chemistry', '04'],
+      ['pcs211', 'PCS211', 'Physics: Mechanics', 'Physics: Mechanics', '05'],
     ],
+  );
+  // CHY102 and PCS211 have no section picker; the others keep theirs.
+  assert.deepEqual(
+    lib.COURSES.map((c) => c.hasSections),
+    [true, true, true, false, false],
   );
   assert.equal(lib.COURSES[0].summary, 'Assignment deadlines, requirements, checklists and section/group contacts.');
   assert.equal(lib.COURSES[1].summary, 'Assessment dates, section labs, announced coverage and practice.');

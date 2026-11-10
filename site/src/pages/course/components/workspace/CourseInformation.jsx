@@ -17,7 +17,31 @@ function Answer({ entry, info, courseId, rows }) {
         </Link>
         {grading.pass ? <p>{grading.pass}</p> : null}
 
-        {rows.categories ? (
+        {rows.variants
+          ? // CHY102's two grading schemes, PCS211's two evaluation options: one table each.
+            rows.variants.map((variant) => (
+              <table key={variant.id}>
+                <caption>
+                  {variant.title} · {variant.note}
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Category</th>
+                    <th scope="col">Weight</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {variant.categories.map((row) => (
+                    <tr key={row.title}>
+                      <th scope="row">{row.title}</th>
+                      <td>{row.weight}%</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ))
+          : null}
+        {!rows.variants && rows.categories ? (
           <table>
             <caption>Course grade</caption>
             <thead>
@@ -36,6 +60,17 @@ function Answer({ entry, info, courseId, rows }) {
             </tbody>
           </table>
         ) : null}
+        {grading.note ? <p>{grading.note}</p> : null}
+        {rows.bonus ? (
+          <p>
+            {rows.bonus.title} (up to {rows.bonus.weight}%): {rows.bonus.note}
+          </p>
+        ) : null}
+        {rows.requirements?.map((requirement) => (
+          <p key={requirement.title}>
+            {requirement.title} must be at least {requirement.min}%: {requirement.note}.
+          </p>
+        ))}
         {grading.quizPolicy ? <p>{grading.quizPolicy}</p> : null}
         <table>
           <caption>{cen ? 'All graded items' : 'Assessments and dates'}</caption>
@@ -182,7 +217,7 @@ function Answer({ entry, info, courseId, rows }) {
 }
 
 export default function CourseInformation({ panel, back, returnView = 'info' }) {
-  const { courseId, info, section } = useCourse();
+  const { courseId, course, info, section } = useCourse();
   const rows = useMemo(() => assessments(courseId, { section }), [courseId, section]);
   const entries = informationEntries(courseId, info);
   const selected = entries.find((entry) => entry.id === panel);
@@ -220,12 +255,24 @@ export default function CourseInformation({ panel, back, returnView = 'info' }) 
           <div className={styles.viewHeading}>
             <h2>Course info</h2>
           </div>
-          <div id="course-view-section-picker" className={styles.infoBlock} tabIndex={-1}>
-            <h3>Your section</h3>
-            <p>{sectionText}</p>
-            {info.organization ? <p>{info.organization}</p> : null}
-            <p className={styles.meta}>{cen ? info.page.profile.note : 'Change your section using the selector above.'}</p>
-          </div>
+          {course.hasSections ? (
+            <div id="course-view-section-picker" className={styles.infoBlock} tabIndex={-1}>
+              <h3>Your section</h3>
+              <p>{sectionText}</p>
+              {info.organization ? <p>{info.organization}</p> : null}
+              <p className={styles.meta}>{cen ? info.page.profile.note : 'Change your section using the selector above.'}</p>
+            </div>
+          ) : (
+            // No section picker: the dates are the same for everyone, so list the course's sessions instead.
+            <div id="course-view-section-picker" className={styles.infoBlock} tabIndex={-1}>
+              <h3>Class times</h3>
+              {info.section.overview.map((line) => (
+                <p key={line}>{line}</p>
+              ))}
+              {info.organization ? <p>{info.organization}</p> : null}
+              <p className={styles.meta}>Every deadline here is the same for every section.</p>
+            </div>
+          )}
           {[...new Set(entries.map((entry) => entry.group))].map((group) => (
             <section key={group} className={styles.workGroup}>
               <h3 className={styles.groupTitle}>{group}</h3>

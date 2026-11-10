@@ -11,7 +11,7 @@ npm run build               # static export in out/
 ```
 
 - **Publishing.** `.github/workflows/pages.yml` publishes the website at https://jude27mad.github.io/tmu-course-guides/ on every push to `main` that changes `site/`. It runs the tests, builds with `SITE_BASE_PATH=/tmu-course-guides`, adds the forwarding pages (`scripts/pages-site.mjs`), checks the result in Chromium (`scripts/check-pages-site.mjs --local`), deploys it, and then checks the live address (`--live`). GitHub Pages must be set to **Source: GitHub Actions**; with any other source the workflow builds and checks but does not deploy. Changing the source does not start a run, so after switching to GitHub Actions run the workflow on `main` once (Actions → Pages → Run workflow) unless a push to `site/` follows.
-- **What is published.** Only this site. The previous version's addresses (`privacy.html`, `colour-preview.html`) and the earlier preview (`/next/` and its pages) forward to the matching page, keeping the query and hash; `cen100/`, `mth140/` and `mth141/` are the same addresses as before. The previous version's files at the repository root, `docs/`, `tests/` and `tools/` are not published.
+- **What is published.** Only this site. The previous version's addresses (`privacy.html`, `colour-preview.html`) and the earlier preview (`/next/` and its pages) forward to the matching page, keeping the query and hash; `cen100/`, `mth140/` and `mth141/` are the same addresses as before; `chy102/` and `pcs211/` are new. The previous version's files at the repository root, `docs/`, `tests/` and `tools/` are not published.
 - **Checking a publish locally:**
   ```sh
   export SITE_BASE_PATH=/tmu-course-guides
@@ -34,7 +34,7 @@ The repository root keeps its `.nojekyll` file for the case where Pages is switc
 | Path | Contents |
 |---|---|
 | `src/lib/` | Course data, deadlines, progress, search index and the motion preference. Pages import only `@src/lib` and `@src/lib/react`. Documented in [`src/lib/README.md`](src/lib/README.md). |
-| `src/pages/` | Routes: the Desk (`index`), `courses`, the course guides (`[course]`, built for `cen100`, `mth140` and `mth141`), `privacy` and `404`. |
+| `src/pages/` | Routes: the Desk (`index`), `courses`, the course guides (`[course]`, built for `cen100`, `mth140`, `mth141`, `chy102` and `pcs211`), `privacy` and `404`. |
 | `src/pages/course/components/workspace/` | Compact Work, Schedule, Study and Course info views; shared assignment details; hash/history restoration. |
 | `src/components/` | The shared shell: loader, navbar, menu, search panel, pre-footer, footer, background and fluid canvases, and the animation components. |
 | `src/utils/theme.js` | Per-course colour schemes: `applyPalette`, `resetPalette` and `usePalette` set the CSS variables and the fluid tint. |
@@ -97,7 +97,7 @@ adapted from Pixels71's Kairo (`97426fdfa1f3bd812cf0acc364273c28a89f871e`).
 Next Up and the individual course headers reuse the original physics lanyard
 badges. Each position mounts only its relevant course: the Desk derives it from
 its live next deadline, and each course header uses its own course ID. The
-separate `/courses/` directory remains the place to browse all three courses.
+separate `/courses/` directory remains the place to browse every course.
 
 `src/components/courseBadge/` owns the shared registry, original textures and
 lanyards. `BadgeWorld` is mounted once beside `View.Port` in the existing shared

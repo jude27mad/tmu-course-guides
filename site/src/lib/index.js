@@ -17,6 +17,7 @@ export {
   gradePlan,
   gradeStanding,
   gradeNeeded,
+  gradeRequirements,
   letterFor,
   roundGrade,
   parseMark,
@@ -35,5 +36,6 @@ export { createProgress, sharedProgress } from './progress.mjs';
 export { searchIndex, searchEntries, searchGuide, SEARCH_COPY, SEARCH_GROUPS } from './search.mjs';
 export { calendarFile, exportBackup, importBackup, hasUnseenUpdates, markUpdatesSeen, getHideCompleted, setHideCompleted, motionPaused, setMotionPaused } from './tools.mjs';
 export { KEYS as STORAGE_KEYS, subscribeKeys } from './storage.mjs';
-export { DESK as DESK_TEXT, PRIVACY as PRIVACY_TEXT } from './content/pages.mjs';
+export { PRIVACY as PRIVACY_TEXT } from './content/pages.mjs';
+export { DESK_TEXT } from './courses.mjs';
 export { WEBSITE_UPDATES } from './content/updates.mjs';

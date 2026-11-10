@@ -418,7 +418,7 @@ try {
     });
   }
 
-  for (const route of ['', 'cen100/', 'mth140/', 'mth141/', 'courses/', 'privacy/']) {
+  for (const route of ['', 'cen100/', 'mth140/', 'mth141/', 'chy102/', 'pcs211/', 'courses/', 'privacy/']) {
     const { context, page, errors } = await open();
     const label = route || 'home';
     try {

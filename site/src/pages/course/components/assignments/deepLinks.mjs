@@ -13,7 +13,7 @@ export function resolveHash(id, { courseId, entries = [], panels = [] } = {}) {
     return { kind: 'section', target: 'assignments', openGroup: null, openPanel: null };
   }
 
-  if (id === 'study' && ['mth140', 'mth141'].includes(courseId)) {
+  if (id === 'study' && ['mth140', 'mth141', 'chy102', 'pcs211'].includes(courseId)) {
     return { kind: 'section', target: 'study', openGroup: null, openPanel: null };
   }
 

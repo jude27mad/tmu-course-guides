@@ -81,17 +81,20 @@ export default function CourseWorkspace() {
           )}
         <div className={styles.utilities}>
           <div className={styles.sectionControls}>
-            <label className={styles.selectLabel} htmlFor="course-section">
-              Section
-              <select id="course-section" aria-label="Course section" value={section || ''} disabled={!progress.ready} onChange={(e) => setSection(e.target.value)}>
-                <option value="">Choose section</option>
-                {sections(courseId).map((row) => (
-                  <option value={row.value} key={row.value}>
-                    {row.label}
-                  </option>
-                ))}
-              </select>
-            </label>
+            {/* CHY102 and PCS211 dates are the same for everyone: no section to choose. */}
+            {course.hasSections ? (
+              <label className={styles.selectLabel} htmlFor="course-section">
+                Section
+                <select id="course-section" aria-label="Course section" value={section || ''} disabled={!progress.ready} onChange={(e) => setSection(e.target.value)}>
+                  <option value="">Choose section</option>
+                  {sections(courseId).map((row) => (
+                    <option value={row.value} key={row.value}>
+                      {row.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ) : null}
             {courseId === 'cen100' && section ? (
               <label className={styles.selectLabel} htmlFor="course-group">
                 Group

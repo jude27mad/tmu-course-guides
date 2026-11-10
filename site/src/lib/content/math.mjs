@@ -10,6 +10,7 @@ export const GUIDE_VERSION='2026-10-16-course-artwork';
 
 // math-guide.mjs:49-54. The order of each list defines the check keys `${assessmentId}-${index}`.
 export function prep(assessment,courseId){
+  if(Array.isArray(assessment.prep))return assessment.prep; // CHY102 / PCS211 records carry their own checklist
   if(assessment.kind==='quiz')return ['Check the announced coverage on D2L.','Review the relevant lecture examples and recommended exercises.','Practise without notes, a calculator or a formula sheet.','Attend my assigned lab with blank paper; write my name, section and student number.','Turn my phone off and put it in my bag.'];
   if(assessment.kind==='midterm'&&courseId==='mth141')return ['Review all four announced chapters and their exact section ranges.','Complete the sample midterm under Course Information → Midterm Test Materials on D2L.','Practise the announced topics under timed, closed-book conditions.','Read the attached cover page and check my assigned test room on D2L.','Bring my physical TMU student ID and know my section number.','Book through the Test Centre by its deadline if using approved AAS accommodations.'];
   if(assessment.kind==='midterm'&&courseId==='mth140')return ['Review Sections 1.1–1.5, 2.1–2.4 and 3.1–3.6, then check D2L for my room and any later changes.','Review the relevant lecture examples and recommended problems, including Sections 3.3–3.4.','Practise the announced topics for two hours without notes, a calculator or a formula sheet.','Read the marking rules, show my work for every question and prepare the required identification and supplies.','Arrange approved accommodations or academic consideration in advance when needed.'];
@@ -17,7 +18,7 @@ export function prep(assessment,courseId){
   return ['Check the official exam schedule for my date, time and room.','Check the final coverage announcement and assessment instructions on D2L.','Review the relevant notes and recommended exercises.','Practise without a calculator, formula sheet or other aids.','Arrange any approved exam accommodations through the required process.'];
 }
 // math-guide.mjs:55-60
-export function weight(assessment,course){return assessment.kind==='quiz'?`${course.weights[0]}% quiz category`:assessment.kind==='midterm'?`${course.weights[1]}% of course`:`${course.weights[2]}% of course`;}
+export function weight(assessment,course){if(assessment.weightLabel)return assessment.weightLabel;return assessment.kind==='quiz'?`${course.weights[0]}% quiz category`:assessment.kind==='midterm'?`${course.weights[1]}% of course`:`${course.weights[2]}% of course`;}
 export function labSummary(lab){return `${DAY_NAMES[lab.day]} ${clock(lab.start)}–${clock(lab.end)} · ${lab.room}`;}
 export function certainty(a){if(a.kind==='final')return 'Date pending';if(a.rescheduled)return 'D2L-confirmed make-up';if(a.holiday)return 'Revised date needed';if(a.kind==='quiz')return a.date?'Lab date from timetable':'Announced week';return a.confirmed?'Announcement confirmed':'Course outline';}
 /** dateTile(): the card's date tile as its three text lines ({top, main, bottom}; main is "DEC"-style when unknown). */

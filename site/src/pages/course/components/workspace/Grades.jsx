@@ -1,6 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { GRADE_SCALE, floorTenth, formatPercent, gradeNeeded, gradePlan, gradeStanding, joinMark, letterFor, parseMark, percentsFrom, roundGrade, splitMark } from '@src/lib';
+import { GRADE_SCALE, floorTenth, formatPercent, gradeNeeded, gradePlan, gradeRequirements, gradeStanding, joinMark, letterFor, parseMark, percentsFrom, roundGrade, splitMark } from '@src/lib';
 import { useGrades } from '@src/lib/react';
 import { useCourse } from '@src/pages/course/hooks/useCourseState';
 import workspace from './workspace.module.scss';
@@ -30,14 +30,18 @@ function needText(row, need, standing) {
   return `For ${goal}, you need an average of at least ${mark} on everything still to be marked (${weight(standing.remaining)} of the course).`;
 }
 
-function headlineText(standing, current) {
+function headlineText(standing, current, plan) {
   if (current === null) return 'Enter a mark to see your average.';
   if (standing.complete) return 'Every mark is in. This is your calculated final grade.';
   const projected = floorTenth(standing.projected);
   if (projected - current < 0.1) return `Keep this average on the remaining ${weight(standing.remaining)} of the course and it becomes your final grade.`;
-  // A low quiz that counts now is dropped once a better one arrives.
-  return `Keep averaging ${formatPercent(current)} on what’s left and you finish with ${formatPercent(projected)} (${letterFor(projected).letter}), because your lowest quiz is dropped.`;
+  // A low quiz (or homework) that counts now is dropped once a better one arrives; a bonus adds on top.
+  const bonus = plan.groups.find((group) => group.bonus);
+  const reason = bonus && !plan.groups.some((group) => group.drop) ? `with the ${bonus.title.toLowerCase()}` : `because your lowest ${plan.courseId === 'chy102' ? 'homework' : 'quiz'} is dropped`;
+  return `Keep averaging ${formatPercent(current)} on what’s left and you finish with ${formatPercent(projected)} (${letterFor(projected).letter}), ${reason}.`;
 }
+
+const REQUIREMENT = { met: 'Met so far', below: 'Below the minimum so far', open: 'No marks yet' };
 
 function Meter({ standing, target }) {
   const secured = Math.min(100, standing.secured);
@@ -75,9 +79,11 @@ export default function Grades() {
   const [typingTotal, setTypingTotal] = useState(null);
   const [announcement, setAnnouncement] = useState('');
   const cleared = useRef(false);
-  const plan = useMemo(() => gradePlan(courseId, { section: section ?? undefined }), [courseId, section]);
   const percents = useMemo(() => percentsFrom(grades.marks), [grades.marks]);
+  // CHY102: the grading scheme the student chose; PCS211: whichever option gives the higher grade on these marks.
+  const plan = useMemo(() => gradePlan(courseId, { section: section ?? undefined, variant: grades.variant ?? undefined, percents }), [courseId, section, grades.variant, percents]);
   const standing = useMemo(() => gradeStanding(plan, percents), [plan, percents]);
+  const requirements = useMemo(() => gradeRequirements(plan, standing), [plan, standing]);
   const needs = useMemo(
     () =>
       TARGETS.map((row) => ({
@@ -163,6 +169,26 @@ export default function Grades() {
       <p className="sr-only" role="status" aria-live="polite">
         {announcement}
       </p>
+      {plan.variants ? (
+        <section className={styles.variants} aria-labelledby={`${baseId}-variants`}>
+          <h3 id={`${baseId}-variants`}>{plan.pick === 'choose' ? 'Your grading scheme' : 'Evaluation option'}</h3>
+          {plan.pick === 'choose' ? (
+            <div className={styles.variantGrid} role="group" aria-label="Grading scheme">
+              {plan.variants.map((variant) => (
+                <button key={variant.id} type="button" className={styles.variant} aria-pressed={plan.variant === variant.id} disabled={!grades.ready} onClick={() => update({ variant: variant.id })}>
+                  <span className={styles.variantTitle}>{variant.title}</span>
+                  <span className={styles.variantNote}>{variant.note}</span>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <p className={styles.variantApplied} data-grade-option>
+              Using <strong>{plan.variantTitle}</strong> ({plan.variantNote}), the higher of the two on your marks so far.
+            </p>
+          )}
+          {plan.notes[0] ? <p className={workspace.meta}>{plan.notes[0]}</p> : null}
+        </section>
+      ) : null}
       <div className={styles.layout}>
         <section className={styles.entries} aria-labelledby={`${baseId}-marks`}>
           <div className={styles.entriesHeading}>
@@ -207,9 +233,10 @@ export default function Grades() {
                     const unfinished = typingTotal === item.id && parsed.field;
                     const error = unfinished ? null : parsed.error;
                     const dropped = standing.dropped.includes(item.id);
-                    const details = [group.drop ? `${weight(item.weight)} if kept` : weight(item.weight), item.dateLabel, item.parts > 1 ? `${item.parts} submissions, one combined mark` : '']
-                      .filter(Boolean)
-                      .join(' · ');
+                    let share = weight(item.weight);
+                    if (group.drop) share = `${weight(item.weight)} if kept`;
+                    if (group.bonus) share = `Bonus, up to ${weight(item.weight)}`;
+                    const details = [share, item.dateLabel, item.parts > 1 ? `${item.parts} submissions, one combined mark` : ''].filter(Boolean).join(' · ');
                     let result = '';
                     if (error) result = error;
                     else if (parsed.percent !== null && dropped) result = `${shown(parsed.percent)} · Dropped`;
@@ -289,7 +316,7 @@ export default function Grades() {
                 </span>
               ) : null}
             </div>
-            <p className={styles.headlineNote}>{headlineText(standing, current)}</p>
+            <p className={styles.headlineNote}>{headlineText(standing, current, plan)}</p>
             <Meter standing={standing} target={target} />
             <dl className={styles.stats}>
               <div>
@@ -308,6 +335,20 @@ export default function Grades() {
                 <dd className={workspace.meta}>of the course</dd>
               </div>
             </dl>
+            {requirements.length ? (
+              // PCS211: passing also needs 50% in THEORY and in LABORATORY.
+              <ul className={styles.requirements} aria-label="Other pass requirements">
+                {requirements.map((row) => (
+                  <li key={row.id} data-state={row.status}>
+                    <span className={styles.requirementTitle}>
+                      {row.title} · at least {row.min}%
+                    </span>
+                    <span className={styles.requirementValue}>{row.average === null ? '—' : shown(row.average)}</span>
+                    <span className={workspace.meta}>{REQUIREMENT[row.status]}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </section>
           <section className={styles.targets} aria-labelledby={`${baseId}-targets`}>
             <h3 id={`${baseId}-targets`}>What do I need?</h3>
@@ -355,6 +396,13 @@ export default function Grades() {
           </p>
           <p>This is an estimate from the weights in this guide. Your course outline and the grades your instructors post are what count.</p>
           {courseId === 'cen100' ? <p>Rows with two submissions take one combined mark for both. Weights: CEN100 Course Outline F26, p. 9.</p> : null}
+          {plan.notes?.slice(1).map((note) => (
+            <p key={note}>{note}</p>
+          ))}
+          {requirements.length ? (
+            <p>THEORY and LABORATORY are shown from the marks entered so far: {requirements.map((row) => `${row.title} = ${row.note}`).join('; ')}. Weights: PCS 211 Course Outline, p. 4.</p>
+          ) : null}
+          {courseId === 'chy102' ? <p>Weights: CHY 102 Course Outline, pp. 8–9.</p> : null}
           <p>Marks stay in this browser only and are not part of progress backups.</p>
         </div>
       </div>

@@ -7,7 +7,7 @@ import Link from 'next/link';
 import LinkText from '@src/components/animationComponents/linkText/Index';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import clsx from 'clsx';
-import { courseIdFromPath, pathKey } from '@src/utils/routes';
+import { COURSE_IDS, courseIdFromPath, pathKey } from '@src/utils/routes';
 import dynamic from 'next/dynamic';
 import footerLinks from '@src/components/dom/navbar/constants/footerLinks';
 import { getCourse } from '@src/lib';
@@ -25,7 +25,7 @@ import { useWindowSize } from '@darkroom.engineering/hamo';
 const GoTop = dynamic(() => import('@src/components/dom/GoTop'), { ssr: false });
 
 // "Course links": the current course's own links on a course page; elsewhere
-// the three course guides. Falls back to the official sources.
+// every course guide. Falls back to the official sources.
 function useCourseLinks(courseId) {
   return useMemo(() => {
     if (courseId) {
@@ -33,7 +33,7 @@ function useCourseLinks(courseId) {
       if (links.length) return links.map((link) => ({ title: link.label, href: link.href, external: /^https?:/.test(link.href) }));
       return footerLinks.map((link) => ({ ...link, external: true }));
     }
-    return menuLinks.filter((link) => ['/cen100/', '/mth140/', '/mth141/'].includes(link.href)).map((link) => ({ ...link, external: false }));
+    return menuLinks.filter((link) => COURSE_IDS.some((id) => link.href === `/${id}/`)).map((link) => ({ ...link, external: false }));
   }, [courseId]);
 }
 

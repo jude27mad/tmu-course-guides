@@ -112,7 +112,7 @@ export const useSection = (courseId) => {
   return [section, update];
 };
 
-const NO_GRADES = { marks: {}, target: null };
+const NO_GRADES = { marks: {}, target: null, variant: null };
 
 /**
  * [grades, update] for a course's grade calculator: `grades` = { marks, target, ready, saved } (empty until
@@ -132,7 +132,11 @@ export const useGrades = (courseId) => {
   const update = useCallback(
     (change) => {
       const current = readGrades(courseId);
-      const next = { marks: change.marks ?? current.marks, target: change.target !== undefined ? change.target : current.target };
+      const next = {
+        marks: change.marks ?? current.marks,
+        target: change.target !== undefined ? change.target : current.target,
+        variant: change.variant !== undefined ? change.variant : current.variant,
+      };
       const saved = writeGrades(courseId, undefined, next);
       setState({ ...readGrades(courseId), ready: true, saved });
       return saved;

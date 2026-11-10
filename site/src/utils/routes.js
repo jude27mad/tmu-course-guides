@@ -8,8 +8,8 @@ export const pathKey = (asPath = '/') => {
   return path.endsWith('/') ? path : `${path}/`;
 };
 
-// Course id for /cen100/, /mth140/, /mth141/ (null elsewhere).
-export const COURSE_IDS = ['cen100', 'mth140', 'mth141'];
+// Course id for /cen100/, /mth140/, /mth141/, /chy102/, /pcs211/ (null elsewhere).
+export const COURSE_IDS = ['cen100', 'mth140', 'mth141', 'chy102', 'pcs211'];
 export const courseIdFromPath = (asPath) => {
   const first = pathKey(asPath).split('/')[1];
   return COURSE_IDS.includes(first) ? first : null;

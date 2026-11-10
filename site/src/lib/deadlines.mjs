@@ -5,7 +5,8 @@
    finished exact target leaves "next" after its grace (currentTarget()).
    Every time-dependent function takes `now` (a Date or epoch ms; omitted = the current time). */
 import { fast } from './perf.mjs';
-import { COURSES as DATA } from './vendor/course-data.mjs';
+import { DATA, isScience } from './data.mjs';
+import { scienceTarget, scienceEvent, sciencePassed, scienceTiming, windowStatus } from './science.mjs';
 import { SCHEDULE } from './vendor/cen-schedule.mjs';
 import { today, addDays, dateLabel, dayLabel, timestamp, resolveAssessment, assessmentPassed, timing } from './vendor/schedule.mjs';
 import { resolveTarget, overall, parts, compact, status, targetDate, sentence, readSaved, GRACE } from './vendor/night/targets.mjs';
@@ -17,6 +18,12 @@ import * as MATH from './content/math.mjs';
 import { CEN as CEN_PAGE } from './content/pages.mjs';
 import { resolveStorage, view } from './storage.mjs';
 import { isMath, readProfile, readSectionNumber, readCompletedMap, readTicks, readMath, readPlan } from './saved.mjs';
+
+/* One resolver per course: CHY102 and PCS211 use science.mjs (same target shape), the others the vendored one. */
+export const resolve = (args) => (isScience(args.course) ? scienceTarget(args) : resolveTarget(args));
+/** compact() and status() with CHY102/PCS211 windows' own wording ("Lab weeks", never a lab-section prompt). */
+export const compactFor = (t, now) => windowStatus(t, now) ?? compact(t, now);
+export const statusFor = (t, now) => windowStatus(t, now) ?? status(t, now);
 import { COURSE_IDS, dataFor, getCourse } from './courses.mjs';
 
 export const toMs = (now) => (now == null ? Date.now() : +now);
@@ -102,6 +109,8 @@ const splitWhen = (when) => {
 /** The order deadlines are listed in: the instant they are due, a date-only item at 23:59 Toronto of its day, a
     quiz week at its Monday, pending last (targets.mjs dueKey without the grace rule). */
 function sortKey(t) {
+  // CHY102 / PCS211 windows list from their first day (their `week` is the last day, for ranking; see science.mjs).
+  if (t.window) return timestamp(t.windowStart, '00:00');
   if (t.precision === 'exact') return t.endOfDay ? t.at - 60e3 : t.at;
   if (t.precision === 'day') return timestamp(t.date, '23:59');
   if (t.precision === 'week' && t.week) return timestamp(t.week, '00:00');
@@ -194,18 +203,30 @@ function cenUndated(item, ctx) {
   };
 }
 
+// CHY102 / PCS211: a single-item grade category (a midterm, the final) has its own weight in the default
+// variant; items that share a category (homework, labs, tutorials) have none of their own, as math quizzes.
+function scienceWeight(course, id) {
+  const category = course.grades.variants[0].categories.find((c) => c.items.length === 1 && c.items[0] === id);
+  return category ? category.weight : null;
+}
+
 function mathItem(courseId, a, ctx) {
   const course = DATA[courseId];
-  const t = resolveTarget({ course: courseId, data: course, section: ctx.section, completed: ctx.completed, now: ctx.ms, id: a.id });
-  const e = resolveAssessment(course, a, ctx.section);
-  const passed = assessmentPassed(e, ctx.date);
+  const science = isScience(courseId);
+  const t = resolve({ course: courseId, data: course, section: ctx.section, completed: ctx.completed, now: ctx.ms, id: a.id });
+  const e = science ? scienceEvent(a) : resolveAssessment(course, a, ctx.section);
+  const passed = science ? sciencePassed(e, ctx.date) : assessmentPassed(e, ctx.date);
   const done = !!ctx.completed[a.id];
-  const sentenceText = timing(e);
+  const sentenceText = science ? scienceTiming(e) : timing(e);
   const [, time] = splitWhen(sentenceText);
   let date = 'Date pending';
   if (t.precision === 'exact' || t.precision === 'day') date = short(e.date);
   else if (t.precision === 'week') date = t.holiday ? `Week of ${dateLabel(e.week)}` : t.range;
-  const weight = a.kind === 'midterm' ? course.weights[1] : a.kind === 'final' ? course.weights[2] : null;
+  else if (t.undated) date = 'No date';
+  let weight = null;
+  if (science) weight = scienceWeight(course, a.id);
+  else if (a.kind === 'midterm') [, weight] = course.weights;
+  else if (a.kind === 'final') [, , weight] = course.weights;
   return {
     id: a.id,
     courseId,
@@ -217,7 +238,8 @@ function mathItem(courseId, a, ctx) {
     due: t.precision === 'exact' ? new Date(t.at) : null,
     precision: t.precision,
     date: targetDate(t),
-    week: e.week || null,
+    // A window is listed from the Monday of its first week, like a quiz week.
+    week: t.window ? mondayOf(e.week) : e.week || null,
     termWeek: termWeek(e.date || e.week || '') ?? null,
     dateLabel: date,
     timeLabel: t.precision === 'pending' ? sentenceText : time,
@@ -226,7 +248,7 @@ function mathItem(courseId, a, ctx) {
     label: t.label,
     cta: t.cta || null,
     requirement: a.scope,
-    detail: MATH.dateNote(a, e, courseId) || t.note || MATH.nextNote(e),
+    detail: science ? a.dateNote || '' : MATH.dateNote(a, e, courseId) || t.note || MATH.nextNote(e),
     who: null,
     item: a.id,
     itemName: a.title,
@@ -297,16 +319,16 @@ function bucketsNow(items, now) {
    window, the course header and the Desk said "Due time passed" for the rest of that day. A timed CEN row already
    leaves at its time, and the Desk's overall winner already yields after GRACE (targets.mjs dueKey). */
 function currentTarget({ completed, now, ...rest }) {
-  let target = resolveTarget({ ...rest, completed, now });
+  let target = resolve({ ...rest, completed, now });
   let skipped = completed;
   for (let i = 0; i < 8 && target?.precision === 'exact' && (target.end ?? target.at) + GRACE < now; i += 1) {
     skipped = { ...skipped, [target.id]: true };
-    target = resolveTarget({ ...rest, completed: skipped, now });
+    target = resolve({ ...rest, completed: skipped, now });
   }
   return target;
 }
 
-/** The next deadline of one course, or across all three (targets.mjs overall(): exact first by start, grace, ties in course order). */
+/** The next deadline of one course, or across all of them (targets.mjs overall(): exact first by start, grace, ties in course order). */
 function nextDeadlineNow({ now, courseId, storage } = {}) {
   const ids = courseId ? [courseId].filter((id) => getCourse(id)) : COURSE_IDS;
   const contexts = ids.map((id) => context(id, { now, storage }));
@@ -327,7 +349,7 @@ function countdownNow(due, now) {
   const t = due instanceof Date || typeof due === 'number' ? { precision: 'exact', at: +due } : due.target || due;
   if (!t || !t.precision || (t.precision === 'exact' && !Number.isFinite(t.at))) return { label: '', ms: null, state: 'none', status: null };
   const p = parts(t, ms) || {};
-  const result = { label: compact(t, ms), ms: p.ms ?? null, state: p.state, status: status(t, ms) };
+  const result = { label: compactFor(t, ms), ms: p.ms ?? null, state: p.state, status: statusFor(t, ms) };
   if (p.ms) Object.assign(result, { days: p.d, hours: p.h, minutes: p.m, seconds: p.s, progress: p.progress });
   if (t.title && t.when) result.sentence = sentence(t, ms);
   return result;
@@ -343,6 +365,7 @@ function weekInfo(monday) {
 const inWeek = (item, monday) => {
   const sunday = addDays(monday, 6);
   if (item.date) return item.date >= monday && item.date <= sunday;
+  if (item.target?.window) return item.target.windowStart <= sunday && item.target.weekEnd >= monday;
   return item.week === monday;
 };
 
@@ -447,6 +470,31 @@ function assessmentsNow(courseId, { section } = {}) {
   }
   if (!isMath(courseId)) return Object.assign([], { totalWeight: 0, count: 0 });
   const course = DATA[courseId];
+  if (isScience(courseId)) {
+    // Graded work only (an item in a grade category), in content order, dated as the deadlines show them.
+    const rows = course.assessments
+      .filter((a) => a.category)
+      .map((a) => {
+        const e = scienceEvent(a);
+        let label = 'Date pending';
+        if (e.date) label = short(e.date);
+        else if (e.window) label = `Weeks of ${dateLabel(e.window.start)}`;
+        else if (a.kind !== 'final') label = 'Dates on D2L';
+        return { title: a.title, dateLabel: label, weight: scienceWeight(course, a.id), weightLabel: a.weightLabel, ids: [a.id], item: a.id, anchor: `assessment-${a.id}` };
+      });
+    const variants = course.grades.variants.map((variant) => ({ id: variant.id, title: variant.title, note: variant.note, categories: variant.categories.filter((c) => c.weight > 0).map((c) => ({ title: c.title, weight: c.weight })) }));
+    return Object.assign(rows, {
+      totalWeight: course.grades.variants[0].categories.reduce((sum, c) => sum + c.weight, 0),
+      count: rows.length,
+      categories: variants[0].categories,
+      variants,
+      pick: course.grades.pick,
+      bonus: course.grades.bonus ? { title: course.grades.bonus.title, weight: course.grades.bonus.weight, note: course.grades.bonus.note } : null,
+      requirements: (course.grades.requirements || []).map((r) => ({ title: r.title, min: r.min, note: r.note })),
+      gradingNote: course.grades.note,
+      quizPolicy: course.quizPolicy,
+    });
+  }
   const chosen = normaliseSection(courseId, section);
   const rows = course.assessments.map((a) => {
     const e = resolveAssessment(course, a, chosen);
@@ -467,8 +515,9 @@ function assessmentsNow(courseId, { section } = {}) {
 // A course's Desk target under currentTarget()'s rule (deskSummary() resolves with the vendored one).
 function deskTarget(id, next, store, ms) {
   if (next?.precision !== 'exact' || (next.end ?? next.at) + GRACE >= ms) return next;
-  const target = currentTarget({ course: id, data: dataFor(id), ...readSaved(id, dataFor(id), view(store)), now: ms });
-  return target ? { ...target, status: status(target, ms), compact: compact(target, ms), targetDate: targetDate(target) } : null;
+  const saved = isScience(id) ? { section: 0, completed: readCompletedMap(id, store) } : readSaved(id, dataFor(id), view(store));
+  const target = currentTarget({ course: id, data: dataFor(id), ...saved, now: ms });
+  return target ? { ...target, status: statusFor(target, ms), compact: compactFor(target, ms), targetDate: targetDate(target) } : null;
 }
 
 /**
@@ -476,10 +525,41 @@ function deskTarget(id, next, store, ms) {
  * deadlines() item, null when nothing is left), progress {completed, total, ratio, thisWeek}, urgency, the saved
  * section text and whether this course holds the overall next deadline.
  */
+/* deskSummary() for CHY102 / PCS211, which the vendored Desk does not know: the same fields from the same rules. */
+const DESK_KIND = { final: 'final', midterm: 'midterm', lab: 'quizLab', tutorial: 'quizLab' };
+function scienceDesk(id, store, ms, week) {
+  const data = DATA[id];
+  const completed = readCompletedMap(id, store);
+  const target = scienceTarget({ course: id, data, completed, now: ms });
+  const date = new Date(ms);
+  const counted = data.assessments.filter((a) => a.category);
+  // Completed records scheduled in this Toronto week (Monday–Sunday), as the vendored Desk counts them.
+  const monday = mondayOf(today(date));
+  const sunday = addDays(monday, 6);
+  const kinds = { final: 0, midterm: 0, quizLab: 0, minor: 0 };
+  for (const a of counted) if (!completed[a.id] && !sciencePassed(scienceEvent(a), date)) kinds[DESK_KIND[a.kind] || 'minor'] += 1;
+  const done = counted.filter((a) => completed[a.id]);
+  const scheduled = (a) => a.date || a.window?.start;
+  return {
+    next: target ? { ...target, status: statusFor(target, ms), compact: compactFor(target, ms), targetDate: targetDate(target) } : null,
+    urgency: parts(target, ms)?.state ?? 'empty',
+    progress: {
+      completed: done.length,
+      total: counted.length,
+      ratio: counted.length ? done.length / counted.length : 0,
+      thisWeek: week.termWeek === null ? 0 : done.filter((a) => scheduled(a) && scheduled(a) >= monday && scheduled(a) <= sunday).length,
+    },
+    kinds,
+    week,
+    section: null,
+  };
+}
+
 function deskSnapshotNow({ now, storage } = {}) {
   const store = resolveStorage(storage);
   const ms = toMs(now);
-  const summary = deskSummary({ now: ms, storage: view(store) });
+  const summary = { ...deskSummary({ now: ms, storage: view(store) }) };
+  for (const id of COURSE_IDS) if (isScience(id)) summary[id] = scienceDesk(id, store, ms, summary.cen100.week);
   const shown = Object.fromEntries(COURSE_IDS.map((id) => [id, deskTarget(id, summary[id].next, store, ms)]));
   const winner = overall(COURSE_IDS.map((id) => shown[id]).filter(Boolean), ms);
   return COURSE_IDS.map((id) => {
@@ -498,6 +578,17 @@ function deskSnapshotNow({ now, storage } = {}) {
       isOverall: winner !== null && target === winner,
     };
   });
+}
+
+/* MATH.workRows() for CHY102 / PCS211: open work dated (or in a window starting) within the next 7 days, or all of it. */
+function scienceWorkRows(course, progress, range, now) {
+  const day = today(now);
+  const end = addDays(day, 6);
+  return course.assessments
+    .filter((a) => !progress.completed[a.id])
+    .map((a) => ({ a, e: scienceEvent(a), target: progress.targets[a.id] }))
+    .filter(({ e, target }) => range === 'all' || (!sciencePassed(e, now) && ((e.date && e.date <= end) || (e.window && e.window.start <= end))) || (target && target >= day && target <= end))
+    .sort((a, b) => (a.target || a.e.sortDate).localeCompare(b.target || b.e.sortDate));
 }
 
 /** "What should I work on?": unrecorded work in the next 7 days (range 'week') or all of it ('all'), as the old tools listed it. */
@@ -526,11 +617,12 @@ function workListNow(courseId, { now, range = 'week', storage, section } = {}) {
   if (!isMath(courseId)) return { items: [], status: '', empty: '' };
   const course = DATA[courseId];
   const chosen = section === undefined ? readSectionNumber(courseId, store) : normaliseSection(courseId, section);
-  const rows = MATH.workRows(course, chosen, readMath(courseId, store), range, date);
+  const science = isScience(courseId);
+  const rows = science ? scienceWorkRows(course, readMath(courseId, store), range, date) : MATH.workRows(course, chosen, readMath(courseId, store), range, date);
   const items = rows.map(({ a, e, target }) => ({
     itemId: a.id,
     title: a.title,
-    dates: `${timing(e)}${target ? MATH.WORK.target(target) : ''}`,
+    dates: `${science ? scienceTiming(e) : timing(e)}${target ? MATH.WORK.target(target) : ''}`,
     progress: '',
     target: target || '',
     anchor: `assessment-${a.id}`,

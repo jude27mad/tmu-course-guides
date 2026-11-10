@@ -16,7 +16,7 @@ const server = createPreview({ root: path.join(site, 'out'), base: basePath });
 await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const base = `http://127.0.0.1:${server.address().port}${basePath}/`;
 const results = [];
-const routes = ['', 'courses/', 'cen100/', 'mth140/', 'mth141/', 'privacy/', 'updates/'];
+const routes = ['', 'courses/', 'cen100/', 'mth140/', 'mth141/', 'chy102/', 'pcs211/', 'privacy/', 'updates/'];
 const configurations = [
   { name: 'desktop-chromium', engine: chromium, options: { viewport: { width: 1440, height: 1000 } } },
   { name: 'android-chromium', engine: chromium, options: devices['Pixel 5'] },

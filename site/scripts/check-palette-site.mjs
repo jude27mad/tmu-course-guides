@@ -200,7 +200,7 @@ async function checkBrowser(site) {
           fallback: getComputedStyle(fallback).backgroundColor, ink: getComputedStyle(fallback).color, panel: getComputedStyle(panel).backgroundColor };
       }),
     );
-    assert.deepEqual(cards.map(card => card.course), ['cen100', 'mth140', 'mth141']);
+    assert.deepEqual(cards.map(card => card.course), ['cen100', 'mth140', 'mth141', 'chy102', 'pcs211']);
     for (const card of cards) {
       assert.deepEqual({ background: card.background, fallback: card.fallback, ink: card.ink, panel: card.panel },
         { background: 'rgba(0, 0, 0, 0)', fallback: CARD, ink: INK, panel: INK }, `course badge ${card.course}`);

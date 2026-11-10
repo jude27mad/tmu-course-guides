@@ -44,6 +44,8 @@ const ROUTES = [
   ['cen100-info', 'cen100/#course-info'],
   ['mth140-work', 'mth140/'],
   ['mth141-study', 'mth141/#study'],
+  ['chy102-grades', 'chy102/#grades'],
+  ['pcs211-work', 'pcs211/'],
   ['privacy', 'privacy/'],
   ['updates', 'updates/'],
   ['not-found', 'no-such-page/'],

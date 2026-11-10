@@ -211,7 +211,7 @@ try {
       await assertCourseLink(fixture.from.courseId);
       const emptyStorage = memoryStorage(fixture.initial);
       const emptyProgress = createProgress(emptyStorage, { events: null });
-      for (const course of ['cen100', 'mth140', 'mth141']) {
+      for (const course of ['cen100', 'mth140', 'mth141', 'chy102', 'pcs211']) {
         for (const item of deadlines(course, { now: new Date('2099-01-01T12:00:00Z'), storage: emptyStorage })) {
           if (item.markable) emptyProgress.markDone(course, item.id);
         }

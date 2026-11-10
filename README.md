@@ -12,7 +12,7 @@ No account, installation or download is needed.
 
 1. **Start at the Desk.** The home page shows the next deadline across all your courses, with a live countdown, **Mark done** and **Undo**.
 2. **Open a guide.** Tap the Desk's next deadline, tap a course card on **Courses**, or use the **Menu**.
-3. **Set your section at the top.** Choose your section (and your Innovation Challenge group in CEN100). Quiz dates, lab times, rooms and contacts then match your section. The choice is remembered in this browser.
+3. **Set your section at the top.** Choose your section (and your Innovation Challenge group in CEN100). Quiz dates, lab times, rooms and contacts then match your section. The choice is remembered in this browser. CHY102 and PCS211 have no section to choose: their dates are the same for everyone, and Course info lists the class times.
 4. **Open your work.** Each guide starts with a compact **Work** list. Use **Open**, **All** or **Done**, then open an assignment for its dates, requirements, checklist and notes. **Back** restores your filter and place in the list. Past-due and undated work stay visible.
 5. **Check the schedule.** **Schedule** has an agenda for phones and a calendar on wider screens. Both open the same assignment details. **All dates** includes earlier deadlines. Times are in Toronto; a quiz week or unconfirmed date is labelled as such.
 6. **Record progress in the details.** Tick preparation steps as you finish them, and mark each submission separately under **My plan & completion**. Math guides also have **Study** for topic material; **Course info** holds grading, contacts and policies.
@@ -23,8 +23,9 @@ No account, installation or download is needed.
 | Page | What it shows |
 |---|---|
 | **Desk** | Your next deadline across all courses, with a live countdown and Mark done. |
-| **Courses** | All three course guides in one list, each with its next date. |
+| **Courses** | All five course guides in one list, each with its next date. |
 | **CEN100, MTH140, MTH141** | Work, Schedule, Grades and Course info, with Study in the math courses. One detail view per assignment, plus section selection and guide tools at the top. |
+| **CHY102, PCS211** | The same views as the math guides, written from the Fall 2026 outlines: CHY102's Mastering Chemistry homework, both midterms and exam wrappers; PCS211's labs and tutorials in their two-week windows and the midterm. Guide tools at the top; no section to choose. |
 | **Privacy** | What the website stores and what it never collects. |
 
 ## Finding things
@@ -46,10 +47,11 @@ These controls are separate on purpose:
 Each guide's **Grades** tab uses the same weights as **Course info → Grading**:
 
 - **Marks.** Type a percentage, or a score and its total (17 / 20). Typing 17/20 in the first box fills both. Leave a box empty for work that isn't marked yet; an empty box is different from 0.
-- **Your standing.** The current average is your grade on the work marked so far; keep it on the rest and it becomes your final grade. (In MTH140 and MTH141 you can finish a little higher, because a low quiz that counts now may be dropped later; the calculator says so when that happens.) **Secured** is what you have already earned even with 0 on everything left, **Best possible** assumes 100 on everything left, and **Still to be marked** is the share of the course not yet decided.
+- **Your standing.** The current average is your grade on the work marked so far; keep it on the rest and it becomes your final grade. (In MTH140 and MTH141 you can finish a little higher, because a low quiz that counts now may be dropped later; the calculator says so when that happens.) **Secured** is what you have already earned even with 0 on everything left, **Best possible** assumes 100 on everything left, and **Still to be marked** is the share of the course not yet decided. In CHY102 the lowest of the 11 graded homework assignments is dropped in the same way.
 - **On phones** the marks come first, with your average and letter kept in view above them as you scroll; the full summary and **What do I need?** follow the marks. On wider screens the summary sits beside the marks.
 - **What do I need?** Each letter shows the average you need on everything still to be marked, or whether it is already secured or out of reach. Choose one for a sentence that names the item when only one is left, such as the final exam.
-- **Dropped quizzes.** In MTH140 and MTH141 the lowest lab quiz is dropped, as the course policies state. A quiz shows as Dropped once more quizzes are entered than count.
+- **Dropped quizzes.** In MTH140 and MTH141 the lowest lab quiz is dropped, as the course policies state, and in CHY102 the lowest homework. An item shows as Dropped once more are entered than count.
+- **Schemes and options.** CHY102 has two grading schemes: choose the one you are enrolled in (Scheme 1 unless you opted into Scheme 2 by September 18). PCS211 applies whichever evaluation option gives you the higher grade, as the course does, and also shows your THEORY and LABORATORY grades against their 50% minimums. PCS211's ClassQuestion bonus adds up to 2% on top.
 - **Letters.** TMU's undergraduate scale, with the university's rounding: the final percentage is rounded to a whole number before it becomes a letter, so 79.5% is an A-. Some programs, including engineering, require more than a D- in particular courses.
 
 The calculator is an estimate from the weights in the guide. Your course outline and the grades your instructors post are what count.
@@ -58,7 +60,7 @@ The calculator is an estimate from the weights in the guide. Your course outline
 
 Use **Guide tools** beside D2L at the top of each guide:
 
-- **Download calendar (.ics):** adds upcoming course dates to your calendar app. In MTH140 and MTH141, lab quiz dates are included once you choose your section. The file is a snapshot; it does not update itself when dates change.
+- **Download calendar (.ics):** adds upcoming course dates to your calendar app. In MTH140 and MTH141, lab quiz dates are included once you choose your section. In PCS211, labs and tutorials are all-day events across their two-week window, and CHY102's exam wrappers across their due week. The file is a snapshot; it does not update itself when dates change.
 - **Export my progress / Import a backup:** saves this course's ticks, completion records, notes and target dates to a file, and adds them to the same course in another browser or on another device. Section and group choices are not included.
 - **Clear my ticks** (CEN100): confirm to remove CEN100's checklist ticks. A confirmation appears when they are cleared; completion records, notes, targets and section choices stay saved. Untick a completion record in its assignment to undo it.
 - **Course updates:** changes to the course's dates, coverage and grading. A badge appears when there is something new. Changes to the website itself are on the **Website updates** page, linked from the menu and the footer.

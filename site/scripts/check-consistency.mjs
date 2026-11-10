@@ -110,7 +110,7 @@ try {
   await check('backup guidance is presented once per course', async () => {
     const { context, page } = await open();
     try {
-      for (const course of ['cen100', 'mth140', 'mth141']) {
+      for (const course of ['cen100', 'mth140', 'mth141', 'chy102', 'pcs211']) {
         await ready(page, `${course}/`);
         await page.getByRole('button', { name: /^Guide tools/ }).click();
         const descriptions = await page.locator('#guide-tools p').allTextContents();

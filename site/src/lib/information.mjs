@@ -72,10 +72,11 @@ export function informationEntries(courseId, info) {
       );
     }
   } else {
+    // CHY102 / PCS211 cards carry their own id and list title; the math cards are matched by position.
     info.rules.forEach((card, i) =>
       entries.push({
-        id: `policy-${MATH_RULES[i][0]}`,
-        title: MATH_RULES[i][1],
+        id: `policy-${card.id || MATH_RULES[i][0]}`,
+        title: card.listTitle || MATH_RULES[i][1],
         kind: 'answer',
         group: 'Rules & help',
         blocks: card.blocks,

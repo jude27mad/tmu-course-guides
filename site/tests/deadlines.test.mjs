@@ -202,8 +202,13 @@ test('the overall next deadline never manufactures a timer from an uncertain tar
   assert.equal(first.due, null);
   storage.setItem('mth140-section-v1', '31');
   const exact = nextDeadline({ now: NOON_OCT12, storage });
-  assert.equal(exact.courseId, 'cen100');
-  assert.equal(exact.id, 'integrity');
+  // CHY102 Homework 4 is due at 11:59 PM that day, before CEN100's quiz on October 14.
+  assert.equal(exact.courseId, 'chy102');
+  assert.equal(exact.id, 'hw-4');
+  storage.setItem('chy102-progress-v1', JSON.stringify({ completed: { 'hw-4': true } }));
+  const after = nextDeadline({ now: NOON_OCT12, storage });
+  assert.equal(after.courseId, 'cen100');
+  assert.equal(after.id, 'integrity');
 });
 
 /* ---- Sweeps: the new API against the old modules, clock by clock ---- */
@@ -266,11 +271,13 @@ test('next deadline per course and overall: same item as the old resolver, at ev
         if (i === 2) stores[course] = storage;
       });
     }
-    // Overall, with one combined storage holding all three courses' saved state.
+    // Overall, with one combined storage holding all three courses' saved state. CHY102 and PCS211 (which the old
+    // resolver never knew) compete with their own targets under the same overall() rule.
     const combined = memoryStorage(Object.fromEntries(Object.values(stores).flatMap((s) => [...s.data])));
+    const science = ['chy102', 'pcs211'].map((course) => nextDeadline({ now, courseId: course, storage: combined })?.target).filter(Boolean);
     const expected = oldCall(() =>
       OLD_TARGETS.overall(
-        ['cen100', 'mth140', 'mth141'].map((course) => currentOld(course, combined, now)),
+        [...['cen100', 'mth140', 'mth141'].map((course) => currentOld(course, combined, now)), ...science],
         now,
       ),
     );
@@ -412,13 +419,16 @@ test('the Desk snapshot is the old deskSummary(), course by course', () => {
         }));
       }
     }
-    const winner = oldCall(() => OLD_TARGETS.overall(Object.values(shown).map((entry) => entry.next).filter(Boolean), now));
     const mine = deskSnapshot({ now, storage });
     assert.deepEqual(
       mine.map((entry) => entry.course.id),
-      ['cen100', 'mth140', 'mth141'],
+      ['cen100', 'mth140', 'mth141', 'chy102', 'pcs211'],
     );
-    for (const entry of mine) {
+    // CHY102 and PCS211 are not in the old summary: they compete for the overall winner with their own targets.
+    const science = mine.filter((entry) => ['chy102', 'pcs211'].includes(entry.course.id));
+    const winner = oldCall(() => OLD_TARGETS.overall([...Object.values(shown).map((entry) => entry.next), ...science.map((entry) => entry.target)].filter(Boolean), now));
+    for (const entry of science) assert.equal(entry.isOverall, winner !== null && entry.target === winner);
+    for (const entry of mine.filter((e) => !science.includes(e))) {
       const expected = { ...old[entry.course.id], ...shown[entry.course.id] };
       expected.isOverall = winner !== null && shown[entry.course.id].next === winner;
       assert.deepEqual(entry.progress, expected.progress);

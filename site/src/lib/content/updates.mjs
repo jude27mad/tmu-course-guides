@@ -124,10 +124,44 @@ export const COURSE_UPDATES = {
     "Published the three-course README and added these release notes with an unread-update badge. Checked phone, desktop and enlarged-text layouts, progress restoration, backups and calendars."
    ]
   }
+ ],
+ "chy102": [
+  {
+   "id": "2026-11-10-chy102-guide",
+   "date": "November 10, 2026",
+   "title": "CHY102 guide added",
+   "text": "Written from the Fall 2026 course outline (all 21 pages).",
+   "items": [
+    "All 11 graded Mastering Chemistry homework deadlines (Mondays, 11:59 PM), the optional Homework 12, both midterms and both exam wrappers.",
+    "Both grading schemes, the best-10-of-11 homework rule and the iClicker participation scale.",
+    "Sections, contacts, missed-assessment rules and the generative-AI policy. Midterm rooms, wrapper due days and the final schedule still need D2L announcements."
+   ]
+  }
+ ],
+ "pcs211": [
+  {
+   "id": "2026-11-10-pcs211-guide",
+   "date": "November 10, 2026",
+   "title": "PCS211 guide added",
+   "text": "Written from the Fall 2026 course information and outline (all 11 pages).",
+   "items": [
+    "Five labs and five tutorials in their two-week windows, the October 30 midterm and the drop deadline. Your session's exact day and room are on D2L.",
+    "Both evaluation options, applied automatically, and the THEORY and LABORATORY minimums.",
+    "Exam rules, missed-work rules and the plagiarism and AI policy. Midterm coverage and the final schedule still need D2L announcements."
+   ]
+  }
  ]
 };
 
 export const WEBSITE_UPDATES = [
+ {
+  "id": "2026-11-10-chy102-pcs211",
+  "date": "November 10, 2026",
+  "title": "CHY102 and PCS211 guides",
+  "text": "Two new course guides: CHY102 General Chemistry and PCS211 Physics: Mechanics. Each has Work, Schedule, Study, Grades and Course info, like the math guides, and their deadlines appear on the Desk and in Search. Neither needs a section: CHY102 lists its three sections in Course info, and PCS211's labs and tutorials show the two-week window your session falls in.",
+  "items": [],
+  "courses": ["chy102", "pcs211"]
+ },
  {
   "id": "2026-11-08-dark-mode",
   "date": "November 8, 2026",

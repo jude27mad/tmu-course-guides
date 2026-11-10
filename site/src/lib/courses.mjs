@@ -1,14 +1,17 @@
-/* The three courses: identity, palette, links, sections and the saved section/group. */
-import { COURSES as DATA } from './vendor/course-data.mjs';
+/* The five courses: identity, palette, links, sections and the saved section/group. */
+import { DATA, isScience } from './data.mjs';
 import { SCHEDULE } from './vendor/cen-schedule.mjs';
 import * as CEN from './content/cen.mjs';
 import * as MATH from './content/math.mjs';
-import { DESK, CEN as CEN_PAGE, MATH as MATH_PAGE } from './content/pages.mjs';
+import { DESK, CEN as CEN_PAGE, MATH as OLD_MATH_PAGE } from './content/pages.mjs';
+import { DESK_COURSES, PAGES as SCIENCE_PAGES } from './content/science.mjs';
 import { resolveStorage } from './storage.mjs';
 import { isMath, readProfile, writeProfile, readMathSection, writeMathSection } from './saved.mjs';
 import { TOKENS } from './palette.mjs';
 
-export const COURSE_IDS = ['cen100', 'mth140', 'mth141'];
+export const COURSE_IDS = ['cen100', 'mth140', 'mth141', 'chy102', 'pcs211'];
+/** The math-style page copy: the old site's MTH140/MTH141 pages and the CHY102/PCS211 pages written here. */
+export const MATH_PAGE = { ...OLD_MATH_PAGE, ...SCIENCE_PAGES };
 
 /** The site palette (lib/palette.mjs) in the original project's keys; `accent` is the one TMU Blue accent. */
 export const DEFAULT_PALETTE = Object.freeze({
@@ -27,7 +30,7 @@ export const PALETTES = Object.freeze(Object.fromEntries(COURSE_IDS.map((id) => 
 const D2L = 'https://courses.torontomu.ca/';
 const mathLinks = (id) => [...MATH_PAGE[id].contact.links.map((link) => ({ ...link, external: true })), ...DATA[id].textbooks.map((book) => ({ label: book.title, href: book.url, external: true }))];
 
-export const COURSES = DESK.courses.map((desk) => {
+export const COURSES = [...DESK.courses, ...DESK_COURSES].map((desk) => {
   const math = isMath(desk.id);
   const page = math ? MATH_PAGE[desk.id] : CEN_PAGE;
   return {
@@ -43,12 +46,17 @@ export const COURSES = DESK.courses.map((desk) => {
     href: `/${desk.id}/`,
     ariaLabel: desk.ariaLabel,
     palette: PALETTES[desk.id],
+    // CHY102 and PCS211 have no section picker: their dates are the same for everyone.
+    hasSections: !isScience(desk.id),
     links: math ? mathLinks(desk.id) : [{ label: 'Open D2L', href: D2L, external: true }],
   };
 });
 
+/** The Desk's page text (the old Desk, generated in content/pages.mjs) with every course in its list and description. */
+export const DESK_TEXT = { ...DESK, description: 'TMU Fall 2026 course guides: CEN100 assignment deadlines, requirements and contacts; MTH140 and MTH141 assessment and section guides; and CHY102 and PCS211 deadline, grading and topic guides.', courses: [...DESK.courses, ...DESK_COURSES] };
+
 export const getCourse = (id) => COURSES.find((course) => course.id === id) || null;
-/** The course records the vendored resolvers take: CEN's SCHEDULE array or COURSES[mth14x]. */
+/** The course record a resolver takes: CEN's SCHEDULE array or the math-style course record. */
 export const dataFor = (courseId) => (courseId === 'cen100' ? SCHEDULE : DATA[courseId] || null);
 
 /** Section choices, in the old select's order. CEN: "Section 1".."Section 39"; math: "Section 24 (241 / 242)". */
@@ -56,7 +64,7 @@ export function sections(courseId) {
   if (courseId === 'cen100') {
     return CEN.STAFFING.flatMap((staff) => staff.sections.map((section) => ({ value: section, label: `Section ${section}`, detail: `Lab: ${staff.location}` }))).sort((a, b) => a.value - b.value);
   }
-  if (!isMath(courseId)) return [];
+  if (!isMath(courseId) || isScience(courseId)) return [];
   return DATA[courseId].labs.map((lab) => ({ value: lab.section, label: MATH.sectionOption(lab), detail: MATH.labSummary(lab) }));
 }
 
@@ -67,7 +75,7 @@ export const groups = (section) => CEN.contactLookup(section, null).groups;
 export function getSection(courseId, storage) {
   const store = resolveStorage(storage);
   if (courseId === 'cen100') return readProfile(store)?.section ?? null;
-  if (!isMath(courseId)) return null;
+  if (!isMath(courseId) || isScience(courseId)) return null;
   return readMathSection(courseId, store) || null;
 }
 
@@ -85,7 +93,7 @@ export function setSection(courseId, value, storage) {
     if (current && current.section === section) return true;
     return writeProfile(store, section ? { section, group: null } : null);
   }
-  if (!isMath(courseId)) return false;
+  if (!isMath(courseId) || isScience(courseId)) return false;
   return writeMathSection(courseId, store, DATA[courseId].labs.some((lab) => lab.section === section) ? section : 0);
 }
 

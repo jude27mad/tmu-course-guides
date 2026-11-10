@@ -21,6 +21,14 @@ const menuLinks = [
     href: '/mth141/',
   },
   {
+    title: 'CHY102',
+    href: '/chy102/',
+  },
+  {
+    title: 'PCS211',
+    href: '/pcs211/',
+  },
+  {
     title: 'Privacy',
     href: '/privacy/',
   },

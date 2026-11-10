@@ -2,7 +2,7 @@
    Dates, completion and section filtering come from deadlines(); nothing here writes storage. */
 import { fast } from './perf.mjs';
 import { deadlines, buckets, mondayOf, toMs } from './deadlines.mjs';
-import { COURSES as DATA } from './vendor/course-data.mjs';
+import { DATA } from './data.mjs';
 import { today, addDays } from './vendor/schedule.mjs';
 import * as CEN from './content/cen.mjs';
 
@@ -105,6 +105,13 @@ function calendarEventsNow(courseId, items = []) {
       end = row.date;
       style = 'day';
       qualifier = 'Time not posted';
+    } else if (row.precision === 'week' && target.window) {
+      // CHY102 / PCS211: the published window, whose exact day is on D2L.
+      allDay = true;
+      start = target.windowStart;
+      end = target.weekEnd;
+      style = 'week';
+      qualifier = `${target.chip} · exact day on D2L`;
     } else if (row.precision === 'week') {
       if (!row.week || !target.weekEnd) continue;
       allDay = true;

@@ -83,7 +83,7 @@ const SCENARIOS = [
 // QA_ONLY=gpu,control runs only the scenarios whose names start with one of these (debugging aid)
 const only = (process.env.QA_ONLY || '').split(',').filter(Boolean);
 const wanted = (name) => !only.length || only.some((prefix) => name.startsWith(prefix));
-const ROUTES = ['/', '/courses/', '/cen100/', '/mth140/', '/mth141/', '/privacy/', '/updates/', '/404.html'];
+const ROUTES = ['/', '/courses/', '/cen100/', '/mth140/', '/mth141/', '/chy102/', '/pcs211/', '/privacy/', '/updates/', '/404.html'];
 // the routes that end in the pre-footer, whose own canvas (the stickers) mounts only when the end of the page is near
 const PREFOOTER_ROUTES = ['/', '/courses/', '/privacy/', '/updates/'];
 
@@ -289,7 +289,7 @@ try {
               { polling: 300, timeout: 10000 },
             );
             await page.locator(`main a[href="${basePath}/cen100/"]`).first().click();
-            await page.waitForURL(/\/(cen100|mth140|mth141)\/$/);
+            await page.waitForURL(/\/(cen100|mth140|mth141|chy102|pcs211)\/$/);
             await ready(page);
             await page.waitForSelector('main h1');
             await page.goBack();

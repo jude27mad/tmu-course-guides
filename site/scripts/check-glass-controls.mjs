@@ -114,11 +114,15 @@ async function check(name, run, options = {}) {
 try {
   await check('Desk linked physics window supports touch and keyboard with one integrated deadline', async (page) => {
     await page.clock.setFixedTime(new Date('2026-10-25T16:00:00Z'));
-    // FMEA Part 2 shares Oct 28 and sorts before Reflection 1. Record it complete
-    // so this reflection-specific UI check still exercises its intended deadline.
+    // FMEA Part 2 shares Oct 28 and sorts before Reflection 1, and CHY102 Homework 6
+    // is due Oct 26. Record both complete so this reflection-specific UI check still
+    // exercises its intended deadline.
     await page.addInitScript(() => {
       localStorage.setItem('cen100-personal-plan-v1', JSON.stringify({
         completed: { 'failure-2': 1 }, notes: {}, targets: {},
+      }));
+      localStorage.setItem('chy102-progress-v1', JSON.stringify({
+        checks: {}, completed: { 'hw-6': true }, notes: {}, targets: {}, topics: {},
       }));
     });
     await page.goto(url);
@@ -205,7 +209,7 @@ try {
 
   for (const width of [320, 390, 834, 1440]) {
     await check('compact controls and dialog at ' + width + 'px', async (page) => {
-      for (const course of ['cen100', 'mth140', 'mth141']) {
+      for (const course of ['cen100', 'mth140', 'mth141', 'chy102', 'pcs211']) {
         await page.goto(url + course + '/');
         await ready(page);
         await aligned(page);

@@ -3,16 +3,15 @@ import { fast } from './perf.mjs';
 import { courseInfo } from './info.mjs';
 import { informationEntries, informationText } from './information.mjs';
 import { SCHEDULE } from './vendor/cen-schedule.mjs';
-import { resolveTarget } from './vendor/night/targets.mjs';
 import { recordsForCourse, semesterWeeks } from './vendor/book/weeks.mjs';
 import { COPY, GROUPS, weekCopy, searchIndex as rankEntries } from './vendor/night/palette.mjs';
-import { COURSES as DATA } from './vendor/course-data.mjs';
+import { DATA } from './data.mjs';
 import * as CEN from './content/cen.mjs';
 import { DESK, PRIVACY } from './content/pages.mjs';
 import { resolveStorage } from './storage.mjs';
 import { isMath, readMotionPaused } from './saved.mjs';
 import { COURSE_IDS, COURSES, dataFor, getCourse } from './courses.mjs';
-import { context, deadlines, nextDeadline, toMs } from './deadlines.mjs';
+import { context, deadlines, nextDeadline, resolve, toMs } from './deadlines.mjs';
 
 export { COPY as SEARCH_COPY, GROUPS as SEARCH_GROUPS };
 const D2L = 'https://courses.torontomu.ca/';
@@ -56,7 +55,7 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
   const order = current ? [current.id, ...COURSE_IDS.filter((id) => id !== current.id)] : COURSE_IDS;
   for (const id of order) {
     const ctx = context(id, { now: ms, storage: store });
-    const next = resolveTarget({ course: id, data: dataFor(id), section: ctx.section, completed: ctx.completed, now: ms });
+    const next = resolve({ course: id, data: dataFor(id), section: ctx.section, completed: ctx.completed, now: ms });
     const code = getCourse(id).code;
     for (const item of deadlines(id, { now: ms, storage: store })) {
       allDeadlines.push(item);
