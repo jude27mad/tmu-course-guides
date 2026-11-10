@@ -15,7 +15,7 @@ html {
     --app-viewport-height: 100dvh;
   }
 
-  font-weight: bolder;
+  font-weight: 400;
   font-family: var(--font-primary), sans-serif;
   // The site has its own dark mode (colors.scss, following the device setting), so
   // browsers keep form controls and scrollbars in step with it, and automatic dark

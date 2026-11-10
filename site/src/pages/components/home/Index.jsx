@@ -242,8 +242,8 @@ function Home() {
     <section ref={rootRef} className={clsx(styles.root)}>
       <div className={clsx(styles.topContainer, 'layout-grid-inner')}>
         <h1 className={styles.leftContainer}>
-          <span className="h2">{DESK_TEXT.heading}</span>
-          <span className={clsx('h2', 'bold')}>{DESK_TEXT.headingTerm}</span>
+          <span className={styles.deskTitle}>{DESK_TEXT.heading}</span>
+          <span className={styles.deskTerm}>{DESK_TEXT.headingTerm}</span>
         </h1>
         <p className={clsx('h6', styles.rightContainer, styles.introduction)} data-desk-introduction>
           {introduction}

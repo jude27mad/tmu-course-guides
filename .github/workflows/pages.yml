@@ -150,6 +150,20 @@ jobs:
           PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
           QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/course-views
         run: node site/scripts/verify-course-views.mjs
+      - name: Check typography in Chromium and WebKit
+        if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.playwright.outcome == 'success' && steps.tested.outputs.tested != 'true' }}
+        env:
+          PLAYWRIGHT_PATH: ${{ runner.temp }}/qa-playwright/node_modules/playwright
+          QA_REPORT_DIR: ${{ runner.temp }}/pages-qa/typography
+        run: node site/scripts/check-typography.mjs
+      - name: Upload typography screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: typography-qa
+          path: ${{ runner.temp }}/pages-qa/typography/
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Upload course-view check reports
         if: always()
         uses: actions/upload-artifact@v4
