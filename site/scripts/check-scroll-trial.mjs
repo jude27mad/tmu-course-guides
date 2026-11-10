@@ -73,16 +73,23 @@ const state = (page) => page.evaluate(() => {
   return { trial: document.documentElement.dataset.scrollTrial || null, stored: localStorage.getItem('guide-scroll-trial'), overflowY: style.overflowY, touchAction: style.touchAction, top: main.scrollTop, width: main.clientWidth, viewport: window.innerWidth };
 });
 const top = (page) => page.evaluate(() => document.querySelector('main').scrollTop);
-// Settled scroll position: no change for 300 ms.
+// Wait for Lenis to finish and for the painted position to stay put for 300 ms.
+// One 150 ms sample can catch an integer-pixel plateau (499 before a target of
+// 500), making the exact modal-restoration assertion compare an unfinished scroll.
 async function settled(page) {
   let last = await top(page);
+  let stable = 0;
   for (let i = 0; i < 40; i += 1) {
     await page.waitForTimeout(150);
-    const now = await top(page);
-    if (Math.abs(now - last) < 0.5) return now;
+    const { now, scrolling } = await page.evaluate(() => {
+      const main = document.querySelector('main');
+      return { now: main.scrollTop, scrolling: main.classList.contains('lenis-scrolling') };
+    });
+    stable = !scrolling && Math.abs(now - last) < 0.5 ? stable + 1 : 0;
+    if (stable >= 2) return now;
     last = now;
   }
-  return last;
+  throw new Error(`Scroll did not settle; last position was ${last}`);
 }
 
 await check('without the link the page is today\'s: main is not user-scrollable', async () => {
