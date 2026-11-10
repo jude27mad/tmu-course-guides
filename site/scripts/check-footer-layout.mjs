@@ -27,10 +27,13 @@ async function ready(page, route) {
       getComputedStyle(loader).display === 'none' && !document.querySelector('.lenis-stopped');
   });
   await page.evaluate(() => document.fonts.ready);
-  await page.evaluate(() => {
-    const documentMode = document.documentElement.dataset.scrollMode === 'document';
-    const root = documentMode ? document.scrollingElement : document.querySelector('main');
-    root.scrollTop = root.scrollHeight;
+  // Use the site's own scroll input, then require the end as a precondition;
+  // assigning scrollTop can race Lenis's pending native-scroll event in WebKit.
+  await page.keyboard.press('End');
+  await page.waitForFunction(() => {
+    const root = document.documentElement.dataset.scrollMode === 'document'
+      ? document.scrollingElement : document.querySelector('main');
+    return root.scrollHeight - root.clientHeight - root.scrollTop <= 2;
   });
   await page.waitForTimeout(400);
 }
@@ -50,6 +53,8 @@ async function monitor(page) {
         width: bounds.width,
         wrapperTop: footer.parentElement.getBoundingClientRect().top,
         max: root.scrollHeight - root.clientHeight,
+        viewport: window.innerHeight,
+        transform: getComputedStyle(footer).transform,
       };
     };
     const sample = () => {
@@ -61,16 +66,20 @@ async function monitor(page) {
   return page.evaluate(() => window.readFooter());
 }
 
-async function stable(page, before, label) {
+async function stable(page, before, label, contentMayGrow = false) {
   await page.waitForTimeout(400);
   const frames = await page.evaluate(() => {
     cancelAnimationFrame(window.footerFrame);
     return window.footerFrames;
   });
+  const final = frames.at(-1);
   for (const frame of frames) {
     assert.ok(Math.abs(frame.scroll - before.scroll) <= 2, `${label}: scroll jumped ${frame.scroll - before.scroll}px`);
     assert.ok(Math.abs(frame.top - before.top) <= 2, `${label}: footer moved ${frame.top - before.top}px`);
-    assert.ok(Math.abs(frame.height - before.height) <= 2, `${label}: footer height changed ${frame.height - before.height}px`);
+    // An expanded native credit can genuinely need more than one screen. The
+    // regression is an intermediate collapse, not that legitimate content size.
+    if (contentMayGrow) assert.ok(frame.height >= Math.min(before.height, final.height) - 2, `${label}: footer temporarily collapsed`);
+    else assert.ok(Math.abs(frame.height - before.height) <= 2, `${label}: footer height changed ${frame.height - before.height}px`);
     assert.ok(Math.abs(frame.width - before.width) <= 2, `${label}: footer width changed`);
   }
   return { label, before, after: frames.at(-1), frames: frames.length };
@@ -102,8 +111,9 @@ try {
             const moving = options.reducedMotion !== 'reduce';
             if (moving) {
               const before = await monitor(page);
+              evidence.push({ label: 'initial', before });
               assert.ok(before.scroll > 0, 'exercise the end of the page');
-              assert.ok(Math.abs(before.top - before.wrapperTop) <= 2, 'footer is fully uncovered at the reachable end');
+              assert.ok(Math.abs(before.top - before.wrapperTop) <= 2, `footer is fully uncovered at the reachable end: ${JSON.stringify(before)}`);
               evidence.push(await stable(page, before, 'idle'));
             }
             for (const [index, open] of [true, false, true, false].entries()) {
@@ -118,7 +128,7 @@ try {
               else if (options.hasTouch) await page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2);
               else await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
               await page.waitForFunction(expected => document.querySelector('footer [data-design-credit]').open === expected, open);
-              if (moving) evidence.push(await stable(page, before, `credit-${open}`));
+              if (moving) evidence.push(await stable(page, before, `credit-${open}`, true));
               else {
                 // A natural-height reduced-motion footer is allowed to grow.
                 await page.evaluate(() => cancelAnimationFrame(window.footerFrame));
@@ -157,9 +167,10 @@ try {
             results.push({ label, pass: true, evidence });
             console.log(`PASS ${label}`);
           } catch (error) {
-            results.push({ label, pass: false, error: error.message, evidence });
+            const metrics = await page.evaluate(() => window.readFooter?.()).catch(() => null);
+            results.push({ label, pass: false, error: error.message, evidence, metrics });
             await page.screenshot({ path: path.join(report, `${label}-failure.png`) }).catch(() => {});
-            console.error(`FAIL ${label}: ${error.message}`);
+            console.error(`FAIL ${label}: ${error.message}; ${JSON.stringify(metrics)}`);
           } finally { await context.close(); }
         }
       }
