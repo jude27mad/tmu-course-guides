@@ -1,0 +1,27 @@
+@use 'sass:map';
+
+// Shared text roles: display headings, readable content, and compact context.
+$roles: (
+  display: (family: display, size: clamp(2.5rem, 5.5vw, 5rem), weight: 500, leading: 1.08, tracking: -0.035em),
+  course: (family: display, size: clamp(2rem, 5vw, 4.5rem), weight: 400, leading: 1.1, tracking: -0.035em),
+  section: (family: display, size: clamp(1.625rem, 2.8vw, 2.5rem), weight: 500, leading: 1.15, tracking: -0.025em),
+  title: (family: primary, size: clamp(1.125rem, 1.5vw, 1.375rem), weight: 500, leading: 1.35, tracking: -0.01em),
+  body: (family: primary, size: clamp(1rem, 1.15vw, 1.0625rem), weight: 400, leading: 1.55, tracking: normal),
+  label: (family: primary, size: 1rem, weight: 500, leading: 1.35, tracking: normal),
+  meta: (family: primary, size: 0.875rem, weight: 400, leading: 1.45, tracking: normal),
+  context: (family: primary, size: 0.8125rem, weight: 600, leading: 1.35, tracking: 0.06em),
+);
+
+@function value($name, $property) {
+  @return map.get(map.get($roles, $name), $property);
+}
+
+@mixin role($name) {
+  $role: map.get($roles, $name);
+  font-family: var(--font-#{map.get($role, family)}), system-ui, sans-serif;
+  font-size: map.get($role, size);
+  font-weight: map.get($role, weight);
+  line-height: map.get($role, leading);
+  letter-spacing: map.get($role, tracking);
+  word-spacing: normal;
+}

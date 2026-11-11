@@ -23,7 +23,7 @@ npm run build               # static export in out/
   ```
 - `SITE_BASE_PATH` (or `NEXT_PUBLIC_BASE_PATH`) sets the base path. Without it, builds use `/tmu-course-guides/next`, which the QA scripts (`check-guide-tools-popup.mjs`, `verify-*.mjs`) expect. Use an empty value for a domain root.
 - `npm run export:preview` copies a build to `../next` and only replaces a folder it created itself (marked with `.site-export`). The committed `next/` folder is the earlier preview, kept as it was and no longer published.
-- `npm run fonts` rebuilds the Inter Display subsets (needs Python fontTools).
+- `npm run fonts` rebuilds the Inter text and display subsets (needs Python `fonttools[woff]`).
 - Add `?stats` to any page URL for a frame-rate panel.
 - Add `?scroll=fast` to try the browser-scrolled page (a trial, remembered in this browser; `?scroll=classic` turns it off). It applies outside iPhone and iPad, with motion on; see the changelog.
 
@@ -86,7 +86,7 @@ No analytics and no requests to other hosts. Each exported page carries a Conten
 ## Credits and licences
 
 - Design based on the open-source portfolio by Evangelos Giatsidis ([giats.me](https://giats.me)), used under the MIT licence in [`LICENSE`](LICENSE). The licence notice must stay with the code, and the credit line stays in the site footer. The original project's README asks for that credit line and for no commercial use without permission.
-- Inter Display (The Inter Project Authors), SIL Open Font License 1.1: `public/fonts/OFL.txt`.
+- Inter and Inter Display (The Inter Project Authors), SIL Open Font License 1.1: `public/fonts/OFL.txt`.
 - `public/other/grain.png` and the icons are generated for this website. Removed marble course-code textures and the unused warehouse HDR are no longer served.
 
 ## Artwork replacements
@@ -120,3 +120,11 @@ The historical [QA record](../docs/qa/giats-artwork/README.md) and [subject-imag
 
 The signal field remains in `src/components/artwork/`. The inactive legacy photograph components and their asset notices are retained for provenance; active Desk, directory and course headers do not render them. Badge loading/error states use a local HTML course label, and an empty Next Up has no image window.
 
+
+### Typography
+
+`src/styles/typography.scss` defines display, course, section, title, body, label, metadata and context roles. Use the role mixin for new reading surfaces rather than introducing unrelated sizes and spacing. Reading text uses Inter; expressive headings use Inter Display. Both are self-hosted subsets of Inter 4.1 (`inter-ui@4.1.1`) with real 400/500/600/700 faces and native word spacing. Body copy stays at 16–17px and metadata at 14px; the course workspace keeps detailed reading text at least 16px.
+
+Display fonts retain the vertical metrics needed by the clipped reveal animations. Text fonts keep their native metrics. The legacy 450/550/650/750 display aliases remain for the canvas artwork and book textures. `scripts/build-fonts.py` preserves Greek, mathematical symbols and tabular-number features in both families.
+
+`scripts/check-typography.mjs` runs in Pages CI and saves Chromium/WebKit light/dark screenshots, checks narrow navigation, font loading and blocked-font fallback, and validates reading sizes and overflow. These checks emulate viewports; they do not replace a physical iPhone/iPad Safari review.
