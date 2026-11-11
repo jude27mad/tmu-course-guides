@@ -1,4 +1,3 @@
-@use '@src/styles/island';
 @import '@src/styles/functions';
 
 // This does not paint or take part in the grid. Unlike innerHeight, 100svh
@@ -171,7 +170,6 @@
   width: 4vw;
   height: 4vw;
   background-color: var(--card);
-  @include island.light;
   border-radius: 50%;
   position: relative;
   overflow: hidden;
@@ -212,12 +210,20 @@
     z-index: 1;
   }
 }
-// The button sits on the dark footer, which keeps its colours in dark mode: a white disc with an ink arrow.
+// Dark mode: an ink disc over the artwork, edged like a window, with a light arrow. On hover the ball fills it with
+// the text colour and the arrow turns to ink.
 @media screen and (prefers-color-scheme: dark) {
   .circleButton {
-    --card: #ffffff;
-    --text: #18181b;
-    --border: #e4e4e7;
+    box-shadow: inset 0 0 0 1px var(--windowEdge);
+    .ball {
+      background-color: var(--text);
+    }
+  }
+  @include hover {
+    .circleButton:hover .arrowClassic {
+      fill: var(--black);
+      stroke: var(--black);
+    }
   }
 }
 @include hover {

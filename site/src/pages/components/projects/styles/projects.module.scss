@@ -46,6 +46,13 @@
 
       box-shadow: 0 0 0 calc(var(--layout-columns-gap) * 0.5) var(--white);
     }
+    // Dark mode: the courses are one window onto the artwork, edged like every window. Phones edge each card
+    // instead (813px is the first width above the phone layout, $mobile-breakpoint).
+    @media screen and (prefers-color-scheme: dark) and (min-width: 813px) {
+      box-shadow:
+        inset 0 0 0 1px var(--windowEdge),
+        0 0 0 calc(var(--layout-columns-gap) * 1) var(--white);
+    }
     width: 100%;
     display: block;
     .card {
@@ -60,6 +67,11 @@
         height: 50svh;
         border-radius: calc(var(--layout-columns-gap) * 0.5);
         box-shadow: 0 0 0 calc(var(--layout-columns-gap) * 1) var(--white);
+        @media screen and (prefers-color-scheme: dark) {
+          box-shadow:
+            inset 0 0 0 1px var(--windowEdge),
+            0 0 0 calc(var(--layout-columns-gap) * 1) var(--white);
+        }
       }
 
       // hover only where there is a real pointer (a tap stayed "hovered")
@@ -155,9 +167,9 @@
             color: var(--card-ink);
             box-shadow: 0 0 0 0.01vw var(--border);
             border-radius: calc(var(--layout-columns-gap) * 0.5);
-            // On the dark card panel, which keeps its colours in dark mode: the light hairline.
+            // Dark mode: the badge's frame inside the window, a strong hairline.
             @media screen and (prefers-color-scheme: dark) {
-              box-shadow: 0 0 0 0.01vw #e4e4e7;
+              box-shadow: inset 0 0 0 1px var(--borderStrong);
             }
             @include mobile {
               width: 83%;
@@ -177,7 +189,7 @@
         transition: opacity 0.6s cubic-bezier(0.4, 0, 0.1, 1);
         opacity: 0.4;
         background-color: var(--card-menu);
-        // Dark mode: the card is the page's moving black, with no tint of its own until it is hovered.
+        // Dark mode: the window shows the artwork as it is, with no tint of its own until it is hovered.
         @media screen and (prefers-color-scheme: dark) {
           opacity: 0;
         }

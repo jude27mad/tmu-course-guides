@@ -1,4 +1,3 @@
-@use '@src/styles/island';
 .calendar {
   height: min(680px, 82svh);
   min-height: 520px;
@@ -79,9 +78,13 @@
   border-bottom: 1px solid var(--border);
   &:hover {
     background: var(--fillColor);
-    // Dark mode: a faint lift on the dark page (the white card fill would hide the row's light text).
-    @media screen and (prefers-color-scheme: dark) {
-      background: rgba(var(--highlightRgb), 0.06);
+  }
+  // Dark mode: the row's fill is the page's ink, so a hovered row underlines its title instead.
+  @media screen and (prefers-color-scheme: dark) {
+    &:hover > :first-child > :first-child {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-thickness: 1px;
     }
   }
 }
@@ -108,17 +111,24 @@
   }
 }
 
-// Dark mode (styles/colors.scss): the calendar is a light card on the dark page, as in light mode. Schedule-X
-// writes the event colours on <html> as palette variables, which resolve there to the page's dark-mode values,
-// so the card sets them again from its own light palette.
-.calendar {
-  @include island.light;
-  @media screen and (prefers-color-scheme: dark) {
-    --sx-color-due: var(--accent);
-    --sx-color-due-container: var(--card);
-    --sx-color-on-due-container: var(--text);
-    --sx-color-done: var(--muted);
-    --sx-color-done-container: var(--border);
-    --sx-color-on-done-container: var(--text);
+// Dark mode (styles/colors.scss): the calendar is drawn on the ink in hairlines. Its lines are the page's dividers
+// (--sx-border: :root composes it from Schedule-X's own light grey, so it is set again here), and its controls (the
+// Today button and the date field) have the stronger field edge. Today's date is a light circle, so its number takes
+// the page's colour; the pressed state is TMU Blue's tint. Events keep the accent's bar, on the ink; done events are
+// muted. Schedule-X's own light greys (the Today button's hover, its ripple) follow the page.
+@media screen and (prefers-color-scheme: dark) {
+  .calendar {
+    --sx-color-on-primary: var(--white);
+    --sx-color-primary-container: var(--accentTint);
+    --sx-color-outline: var(--fieldEdge);
+    --sx-color-done-container: var(--card);
+    --sx-color-on-done-container: var(--muted);
+    --sx-internal-color-light-gray: var(--border);
+    --sx-internal-color-gray-ripple-background: rgba(var(--highlightRgb), 0.12);
+    --sx-border: 1px solid var(--border);
+    // The header's controls (the Today button and the date field) draw their border from it too.
+    :global(.sx__calendar-header) {
+      --sx-border: 1px solid var(--fieldEdge);
+    }
   }
 }

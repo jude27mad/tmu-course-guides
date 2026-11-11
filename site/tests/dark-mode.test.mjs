@@ -1,15 +1,17 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { existsSync } from 'node:fs';
 import { readdir, readFile } from 'node:fs/promises';
 import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 
-import { ARTWORK_GLOW, DARK, DARK_QUERY, FIELD, FIELD_DARK, TOKENS, pageEdgeColor, prefersDark, rgbOf } from '../src/lib/palette.mjs';
+import { ARTWORK_FLOOR, ARTWORK_GLOW, BADGE, BADGE_DARK, DARK, DARK_QUERY, FIELD, FIELD_DARK, TOKENS, pageEdgeColor, prefersDark, rgbOf } from '../src/lib/palette.mjs';
 
-// Dark mode follows the device setting. The page has no colour of its own: it is the moving black artwork behind
-// it, the one black of dark mode, with light text. Cards and pills keep the light palette (styles/island.scss), and
-// the dark panels keep theirs, so the Safari edge rules pinned in under-safari-bars.test.mjs hold in both schemes.
+// Dark mode follows the device setting. It has one black, the ink: the page, the panels, every card and pill, and the
+// floor of the moving artwork. Structure comes from hairlines and type. The windows are holes in the ink, as in light
+// mode, and show the artwork. The dark panels keep the ink they have in light mode, so the Safari edge rules pinned
+// in under-safari-bars.test.mjs hold in both schemes.
 
 const read = (path) => readFile(new URL(path, import.meta.url), 'utf8');
 const scss = await read('../src/styles/colors.scss');
@@ -35,17 +37,29 @@ const sassMap = (name) => {
   return Object.fromEntries([...body.matchAll(/'(\w+)': (rgba\([^)]*\)|#[0-9a-f]{3,8}|[a-z]+)/gi)].map(([, key, value]) => [key, value.toLowerCase()]));
 };
 const darkBlock = scss.slice(scss.indexOf('@media screen and (prefers-color-scheme: dark)'));
+// The hairlines and the brand fill that only dark mode defines.
+const DARK_ONLY = ['borderStrong', 'windowEdge', 'fieldEdge', 'accentFill', 'onAccentFill'];
 
 test('colors.scss mirrors DARK, after the light map, for screens in dark mode only', () => {
   const lower = (value) => value.toLowerCase();
   assert.deepEqual(sassMap('dark'), {
-    white: 'transparent',
+    white: lower(DARK.page),
     pageUnderGrain: lower(DARK.pageUnderGrain),
+    card: lower(DARK.page),
+    fillColor: lower(DARK.page),
     text: lower(DARK.text),
+    onDark: lower(DARK.text),
+    menuFontColor: lower(DARK.text),
     muted: lower(DARK.muted),
+    mutedOnDark: lower(DARK.mutedOnArtwork),
     border: lower(DARK.border),
+    borderStrong: lower(DARK.borderStrong),
+    windowEdge: lower(DARK.windowEdge),
+    fieldEdge: lower(DARK.fieldEdge),
     accent: lower(DARK.accent),
     accentTint: lower(DARK.accentTint),
+    accentFill: lower(DARK.accentFill),
+    onAccentFill: lower(DARK.onAccentFill),
     onAccent: lower(DARK.onAccent),
     statusOnTrack: lower(DARK.onTrack),
     statusSoon: lower(DARK.soon),
@@ -56,32 +70,43 @@ test('colors.scss mirrors DARK, after the light map, for screens in dark mode on
   assert.ok(scss.indexOf('$colors: (') < scss.indexOf('$dark: ('));
   assert.ok(scss.indexOf('$dark: (') < scss.indexOf('@media screen and (prefers-color-scheme: dark)'));
   assert.match(darkBlock, /@each \$name, \$color in \$dark/);
+  assert.match(darkBlock, /\('pageRgb': 'white', 'cardRgb': 'card', 'onDarkRgb': 'onDark', 'mutedOnDarkRgb': 'mutedOnDark', 'textRgb': 'text', 'accentRgb': 'accent'\)/);
   assert.match(darkBlock, /color: var\(--text\);/);
-  // The page's base where the artwork is not drawn, theme-color and the colour Safari paints past the ends: the ink.
-  assert.equal(DARK.page, TOKENS.ink);
-  assert.equal(DARK.pageUnderGrain, TOKENS.ink);
+  // The dark-only tokens have no light value: light mode never draws with them.
+  const light = sassMap('colors');
+  for (const name of DARK_ONLY) assert.ok(!(name in light), `--${name} is dark mode's only`);
 });
 
-test('the dark panels and the cards keep their colours; cards and pills are islands of the light palette', async () => {
+test('dark mode has one black: the page, the panels, the cards, the pills and the artwork are the ink', () => {
+  assert.equal(DARK.page, TOKENS.ink);
+  assert.equal(DARK.pageUnderGrain, TOKENS.ink);
   const dark = sassMap('dark');
-  for (const key of ['black', 'menuColor', 'menuFontColor', 'accentColor', 'raised', 'sheen', 'onDark', 'mutedOnDark', 'borderOnDark', 'panelText', 'card', 'fillColor']) {
+  for (const name of ['white', 'pageUnderGrain', 'card', 'fillColor']) assert.equal(dark[name], TOKENS.ink.toLowerCase(), `--${name}`);
+  // The dark panels keep the ink they have in light mode, which is the same black.
+  for (const key of ['black', 'menuColor', 'raised', 'sheen', 'borderOnDark', 'accentColor', 'panelText']) {
     assert.ok(!(key in dark), `--${key} must not change in dark mode`);
   }
-  for (const name of ['inkRgb', 'pageRgb', 'cardRgb', 'onDarkRgb', 'mutedOnDarkRgb', 'highlightRgb', 'glassHighlight', 'glassEdge']) {
-    assert.ok(!new RegExp(`'${name}'|--${name}:`).test(darkBlock), `--${name} must not change in dark mode`);
+  assert.ok(!/'inkRgb'|--inkRgb:/.test(darkBlock), '--inkRgb must not change in dark mode');
+  // The artwork's troughs are clamped to the same ink, and light mode is not clamped.
+  assert.deepEqual(ARTWORK_FLOOR.light, [0, 0, 0]);
+  assert.deepEqual(
+    ARTWORK_FLOOR.dark.map((channel) => Math.round(channel * 255)),
+    rgbOf(DARK.page).split(', ').map(Number),
+  );
+  // The theme-color and the shrunk page's edge.
+  assert.equal(DARK.pageEdge, DARK.windowEdge);
+});
+
+test('cards and pills follow the page: there is no light island in dark mode', async () => {
+  assert.equal(existsSync(fileURLToPath(new URL('../src/styles/island.scss', import.meta.url))), false, 'styles/island.scss is gone');
+  assert.doesNotMatch(scss, /--light-|\$island/);
+  for await (const [file, text] of styleFiles()) {
+    assert.doesNotMatch(text, /island|--light-/, file);
   }
-  assert.match(darkBlock, /\('textRgb': 'text', 'accentRgb': 'accent'\)/);
-  // The light palette under --light-* names, kept in both schemes, and the island mixin that brings it back.
-  const kept = scss.match(/\$island: \(([^)]*)\);/)[1].match(/'(\w+)'/g).map((name) => name.slice(1, -1));
-  assert.deepEqual(kept, ['white', 'text', 'card', 'fillColor', 'muted', 'border', 'accent', 'accentTint', 'onAccent', 'statusOnTrack', 'statusSoon', 'statusUrgent', 'statusDone']);
-  const light = scss.slice(0, scss.indexOf('$dark: ('));
-  assert.match(light, /@each \$name in \$island \{\s*--light-#\{\$name\}: #\{map\.get\(\$colors, \$name\)\};\s*\}/);
-  assert.match(light, /\('cardRgb': 'card', 'textRgb': 'text', 'accentRgb': 'accent'\) \{\s*--light-#\{\$name\}/);
-  const island = await read('../src/styles/island.scss');
-  const tokens = island.match(/\$tokens: \(([^)]*)\);/)[1].match(/'(\w+)'/g).map((name) => name.slice(1, -1));
-  assert.deepEqual(tokens, [...kept, 'cardRgb', 'textRgb', 'accentRgb']);
-  assert.match(island, /@media screen and \(prefers-color-scheme: dark\) \{\s*@each \$name in \$tokens \{\s*--#\{\$name\}: var\(--light-#\{\$name\}\);/);
-  assert.match(island, /--focus: var\(--light-accent\);\s*color: var\(--light-text\);/);
+  // A card surface (--card, --fillColor) is the ink in dark mode, with its hairline (--border) on it.
+  const dark = sassMap('dark');
+  assert.equal(dark.card, dark.white);
+  assert.equal(dark.fillColor, dark.white);
 });
 
 test('the light values of the role tokens equal the ones they replace', () => {
@@ -95,29 +120,48 @@ test('the light values of the role tokens equal the ones they replace', () => {
   assert.match(scss, /--glassHighlight: rgba\(var\(--cardRgb\), 0\.65\);\s*--glassEdge: rgba\(var\(--inkRgb\), 0\.18\);/);
 });
 
-test("text on the dark page meets WCAG AA over the ink and over the artwork's brightest band", () => {
-  for (const [name, color] of [
+test("text meets WCAG AA over the ink and, where it sits over the artwork, over the artwork's brightest band", () => {
+  const onInk = [
     ['text', DARK.text],
     ['muted', DARK.muted],
+    ['muted over the artwork', DARK.mutedOnArtwork],
+    ['accent (links)', DARK.accent],
+    ['on track', DARK.onTrack],
+    ['soon', DARK.soon],
+    ['urgent', DARK.urgent],
+    ['done', DARK.done],
+  ];
+  for (const [name, color] of onInk) assert.ok(contrast(color, DARK.page) >= 4.5, `${name} on the ink: ${contrast(color, DARK.page).toFixed(2)}`);
+  // Menu, Search, the footer and the Courses window are text over the moving artwork. The still ink's muted grey
+  // is for the still ink only; over the artwork the lighter one is used.
+  for (const [name, color] of [
+    ['text', DARK.text],
+    ['muted over the artwork', DARK.mutedOnArtwork],
     ['accent (links)', DARK.accent],
     ['on track', DARK.onTrack],
     ['soon', DARK.soon],
     ['urgent', DARK.urgent],
     ['done', DARK.done],
   ]) {
-    for (const [under, behind] of [
-      ['the ink', DARK.page],
-      ["the artwork's glow", ARTWORK_GLOW],
-    ]) {
-      assert.ok(contrast(color, behind) >= 4.5, `${name} on ${under}: ${contrast(color, behind).toFixed(2)}`);
-    }
+    assert.ok(contrast(color, ARTWORK_GLOW) >= 4.5, `${name} on the artwork's glow: ${contrast(color, ARTWORK_GLOW).toFixed(2)}`);
   }
-  assert.ok(contrast(DARK.onAccent, DARK.accent) >= 4.5, 'a label on an accent fill');
+  assert.ok(contrast(DARK.muted, ARTWORK_GLOW) < 4.5, 'the still ink keeps its own muted grey');
+  // Selection: TMU Blue's type on its tint, and the primary action's white label on TMU Blue itself.
+  assert.ok(contrast(DARK.accent, DARK.accentTint) >= 4.5, 'a selected tab');
   assert.ok(contrast(DARK.text, DARK.accentTint) >= 4.5, 'text on the accent tint');
-  // Focus rings and the shrunk page's edge are non-text: 3:1.
+  assert.ok(contrast(DARK.onAccentFill, DARK.accentFill) >= 7, 'the primary action');
+  assert.equal(DARK.accentFill, TOKENS.accent, 'the primary action is TMU Blue itself');
+  assert.ok(contrast(DARK.onAccent, DARK.accent) >= 4.5, 'a label on an accent fill');
+  // Focus rings, field edges and the shrunk page's edge are non-text: 3:1.
+  assert.ok(contrast(DARK.accent, DARK.page) >= 3);
   assert.ok(contrast(DARK.accent, ARTWORK_GLOW) >= 3);
-  assert.ok(contrast(DARK.pageEdge, TOKENS.ink) >= 3, `page edge on the ink: ${contrast(DARK.pageEdge, TOKENS.ink).toFixed(2)}`);
-  // Cards keep the light palette (palette.test.mjs checks its pairs), and the panels theirs.
+  assert.ok(contrast(DARK.fieldEdge, DARK.page) >= 3, `field edge on the ink: ${contrast(DARK.fieldEdge, DARK.page).toFixed(2)}`);
+  // The hairlines step up from dividers to fields, each plainly lighter than the ink and than the one before it.
+  const ladder = [DARK.page, DARK.border, DARK.borderStrong, DARK.windowEdge, DARK.fieldEdge];
+  ladder.slice(1).forEach((color, index) => assert.ok(luminance(color) > luminance(ladder[index]), `${color} is lighter than ${ladder[index]}`));
+  assert.ok(contrast(DARK.border, DARK.page) >= 1.6, 'a divider shows on the ink');
+  assert.ok(contrast(DARK.windowEdge, DARK.page) >= 2.8, 'a window edge shows on the ink');
+  // The panels' text.
   assert.ok(contrast(TOKENS.onDark, TOKENS.ink) >= 4.5);
 });
 
@@ -148,13 +192,14 @@ test('text on the page uses --text, text on the dark panels --panelText', async 
     if (value.includes('var(--black)')) ink.push(`${file} ${property}`);
     if (value.includes('var(--white)')) paper.push(`${file} ${property}`);
   }
-  // --black is the ink of the dark panels: as a text colour it would vanish on the dark page.
-  // The one exception is unrendered (the old next-course card, text on its own light gradient).
-  assert.deepEqual(ink, ['pages/course/components/nextCourse/styles/nextCourse.module.scss color']);
-  // --white is the page (clear in dark mode): as text it is only the page's colour on a text-coloured fill.
+  // --black is the ink of the dark panels: as a text colour it would vanish on the dark page. The exceptions: the
+  // back-to-top arrow on its light hover ball in dark mode, and the old next-course card (unrendered).
+  assert.deepEqual(ink.sort(), ['components/dom/styles/footer.module.scss fill', 'components/dom/styles/footer.module.scss stroke', 'pages/course/components/nextCourse/styles/nextCourse.module.scss color']);
+  // --white is the page: as text it is only the page's colour on a text-coloured fill.
   assert.deepEqual(paper.sort(), [
     'pages/components/home/styles/home.module.scss fill', // the Desk mask's paper (.mask2)
-    'pages/course/components/workspace/workspace.module.scss color', // the pressed Schedule toggle
+    'pages/course/components/workspace/calendar.module.scss --sx-color-on-primary', // today's date on its light circle (dark mode)
+    'pages/course/components/workspace/workspace.module.scss color', // the pressed Schedule toggle (light mode)
   ]);
 });
 
@@ -180,72 +225,125 @@ function blocks(text) {
   }
   return found;
 }
-const chain = (block) => [...block.parents.slice(1), block].map((each) => each.selector).join(' ');
-const inHover = (block) => [block, ...block.parents].some((each) => /:hover/.test(each.selector));
-// Pieces that sit inside a card in the page (their own rule is not nested in the card's): the Guide tools close
-// pill (in .dialog), the calendar's header (in .calendar) and the letter-grade chips (in .targets).
-const INSIDE_A_CARD = ['pages/course/components/tools/styles/guideTools.module.scss .close', 'pages/course/components/workspace/calendar.module.scss .calendar :global(.sx__calendar-header)', "pages/course/components/workspace/grades.module.scss .chip &[data-state='unreachable']"];
+const inDark = (block) => [block, ...block.parents].some((each) => /@media[^{]*prefers-color-scheme: dark/.test(each.selector));
 
-test('every card and pill keeps the light palette in dark mode', async () => {
-  const bare = [];
+test('the dark-only tokens are used in dark mode only, so light mode draws exactly as before', async () => {
+  const uses = [];
+  const outside = [];
+  const pattern = new RegExp(`var\\(--(${DARK_ONLY.join('|')})\\)`);
   for await (const [file, text] of styleFiles()) {
-    if (DEAD.test(file) || file === 'styles/glass.scss' || file === 'styles/colors.scss') continue;
-    const all = blocks(text);
-    // The rules (by their nesting) that include the island, here or in another rule for the same selector.
-    const islands = new Set(all.filter((block) => /@include island\.light/.test(block.own)).map(chain));
-    const islanded = (block) => [block, ...block.parents.slice(1)].some((each) => islands.has(chain(each)));
-    for (const block of all) {
-      if (/@media[^{]*prefers-color-scheme: dark/.test(block.selector)) continue;
-      // A card surface: the card or fill colour as a background (a hovered row is handled below).
-      if (/background(-color)?:\s*var\(--(card|fillColor)\)/.test(block.own) && !inHover(block) && !islanded(block) && !INSIDE_A_CARD.includes(`${file} ${chain(block)}`)) bare.push(`${file} ${chain(block)}`);
+    if (file === 'styles/colors.scss') continue;
+    for (const block of blocks(text)) {
+      if (!pattern.test(block.own)) continue;
+      uses.push(file);
+      if (!inDark(block)) outside.push(`${file} ${block.selector}`);
     }
   }
-  assert.deepEqual(bare, []);
-  // Every glass control, whatever its tone, is a light pill in dark mode.
-  const glass = await read('../src/styles/glass.scss');
-  assert.match(glass, /@use '@src\/styles\/island';/);
-  assert.match(glass, /@include island\.light;\s*background-color: var\(--glass-solid\);/);
-  assert.match(glass, /@media screen and \(prefers-color-scheme: dark\) \{\s*--glass-solid: var\(--light-card\);/);
-  // The page-coloured sheets that are cards: the Guide tools dialog and the navigation toast; and the dark
-  // "Opening…" toast, which turns light.
-  const tools = await read('../src/pages/course/components/tools/styles/guideTools.module.scss');
-  assert.match(tools, /background: var\(--white\);\s*color: var\(--text\);\s*@include island\.light;/);
-  const feedback = await read('../src/components/dom/styles/navigationFeedback.module.scss');
-  assert.match(feedback, /background: var\(--white\);\s*color: var\(--text\);\s*@include island\.light;/);
-  const workspace = await read('../src/pages/course/components/workspace/workspace.module.scss');
-  assert.match(workspace, /background: var\(--black\);\s*color: var\(--onDark\);[^}]*@include island\.light;\s*@media screen and \(prefers-color-scheme: dark\) \{\s*background: var\(--light-card\);/);
-  // The calendar is a light card, with the event colours Schedule-X writes on <html> set again inside it.
-  const calendar = await read('../src/pages/course/components/workspace/calendar.module.scss');
-  assert.match(calendar, /\.calendar \{\s*@include island\.light;\s*@media screen and \(prefers-color-scheme: dark\) \{\s*--sx-color-due: var\(--accent\);/);
-});
-
-test('a hovered row takes a faint lift in dark mode, not the white card fill', async () => {
-  for (const path of ['../src/pages/course/components/workspace/workspace.module.scss', '../src/pages/course/components/workspace/calendar.module.scss']) {
-    const text = await read(path);
-    const hovers = text.match(/&:hover \{\s*background: var\(--fillColor\);/g) || [];
-    const lifted = text.match(/&:hover \{\s*background: var\(--fillColor\);[^}]*@media screen and \(prefers-color-scheme: dark\) \{\s*background: rgba\(var\(--highlightRgb\), 0\.06\);/g) || [];
-    assert.ok(hovers.length > 0, path);
-    assert.equal(lifted.length, hovers.length, path);
+  assert.deepEqual(outside, []);
+  // Every window, card and pill that dark mode edges.
+  for (const file of [
+    'styles/glass.scss',
+    'components/artwork/signalField.module.scss',
+    'components/animationComponents/buttonLink/buttonLink.module.scss',
+    'components/dom/styles/footer.module.scss',
+    'components/dom/styles/layout.module.scss',
+    'components/dom/styles/navigationFeedback.module.scss',
+    'components/courseBadge/badge.module.scss',
+    'pages/components/about/styles/about.module.scss',
+    'pages/components/projects/styles/projects.module.scss',
+    'pages/course/components/tools/styles/guideTools.module.scss',
+    'pages/course/components/workspace/calendar.module.scss',
+    'pages/course/components/workspace/grades.module.scss',
+    'pages/course/components/workspace/workspace.module.scss',
+  ]) {
+    assert.ok(uses.includes(file), `${file} edges its surfaces in dark mode`);
   }
 });
 
-test('the page is the moving artwork: see-through surfaces, the Desk field and the course cards', async () => {
-  // Under the see-through page, the root and body are the artwork's ink.
-  assert.match(global, /html:not\(\[data-scroll-mode='document'\]\),\s*html:not\(\[data-scroll-mode='document'\]\) body \{\s*background-color: var\(--black\);\s*\}/);
-  // The Desk's signal field has no panel of its own in dark mode.
+test('glass controls are the ink with a strong hairline in dark mode, with no sheen and no tinted blur', async () => {
+  const glass = await read('../src/styles/glass.scss');
+  const dark = glass.indexOf('@media screen and (prefers-color-scheme: dark)');
+  assert.ok(dark > glass.indexOf('@supports ((backdrop-filter'), 'after the blur, so it turns the blur off');
+  assert.ok(dark < glass.indexOf(":global(html[data-motion='off']) &"), 'before the solid fallbacks, which still apply');
+  assert.ok(dark < glass.indexOf('@media (forced-colors: active)'));
+  assert.match(
+    glass.slice(dark),
+    /^@media screen and \(prefers-color-scheme: dark\) \{\s*--glass-solid: var\(--card\);\s*--glass-backing: var\(--card\);\s*--glass-highlight: transparent;\s*--glass-edge: var\(--borderStrong\);\s*-webkit-backdrop-filter: none;\s*backdrop-filter: none;\s*\}/,
+  );
+});
+
+test('selection is TMU Blue and the primary action its one filled shape', async () => {
+  const workspace = await read('../src/pages/course/components/workspace/workspace.module.scss');
+  // The tabs and the Open/All/Done filter select with the accent tokens in both schemes.
+  assert.match(workspace, /a\[aria-current\] \{\s*color: var\(--accent\);\s*background-color: var\(--accentTint\);\s*box-shadow: inset 0 0 0 1px var\(--accent\);/);
+  // Agenda/Calendar and Upcoming/All dates, filled with the text colour in light mode, select the same way in dark.
+  assert.match(workspace, /@media screen and \(prefers-color-scheme: dark\) \{\s*button \{\s*border-color: var\(--borderStrong\);\s*\}\s*button\[aria-pressed='true'\] \{\s*background: var\(--accentTint\);\s*color: var\(--accent\);\s*border-color: var\(--accent\);/);
+  const button = await read('../src/components/animationComponents/buttonLink/buttonLink.module.scss');
+  assert.match(button, /@media screen and \(prefers-color-scheme: dark\) \{\s*background-color: var\(--accentFill\);\s*color: var\(--onAccentFill\);/);
+});
+
+test('a hovered row underlines its title in dark mode, where its fill is the page', async () => {
+  const workspace = await read('../src/pages/course/components/workspace/workspace.module.scss');
+  assert.match(workspace, /&:hover \{\s*background: var\(--fillColor\);\s*\}\s*(\/\/[^\n]*\s*)?@media screen and \(prefers-color-scheme: dark\) \{\s*&:hover \.rowTitle \{\s*text-decoration: underline;/);
+  const calendar = await read('../src/pages/course/components/workspace/calendar.module.scss');
+  assert.match(calendar, /&:hover \{\s*background: var\(--fillColor\);\s*\}\s*(\/\/[^\n]*\s*)?@media screen and \(prefers-color-scheme: dark\) \{\s*&:hover > :first-child > :first-child \{\s*text-decoration: underline;/);
+  assert.doesNotMatch(`${workspace}${calendar}`, /highlightRgb\), 0\.06/, 'no grey lift');
+});
+
+test('the windows show the artwork, floored at the ink, and each has an edge', async () => {
+  // The artwork's darkest output is the ink in dark mode.
+  const shader = await read('../src/components/canvas/background/shaders/fragmentShader.js');
+  assert.match(shader, /uniform vec3 uFloor;/);
+  assert.match(shader, /finalCol\.rgb \+= random\(uvRandom\) \* uNoise;\s*finalCol = max\(finalCol, uFloor\);/);
+  const background = await read('../src/components/canvas/background/Background.jsx');
+  assert.match(background, /uFloor: \{ value: ARTWORK_FLOOR\.light \}/);
+  assert.match(background, /uniforms\.uFloor\.value = prefersDark\(\) \? ARTWORK_FLOOR\.dark : ARTWORK_FLOOR\.light;/);
+  assert.match(background, /\}, \[dark, uniforms, invalidate\]\);/);
+  // The Desk: the signal field is clear, with white points, and edged where a window shows its border.
   assert.deepEqual(FIELD, { background: TOKENS.ink, point: TOKENS.mutedOnDark, signal: TOKENS.onDark });
-  assert.deepEqual(FIELD_DARK, { background: null, point: TOKENS.mutedOnDark, signal: TOKENS.onDark });
+  assert.deepEqual(FIELD_DARK, { background: null, point: '#FFFFFF', signal: '#FFFFFF' });
   const field = await read('../src/components/artwork/signalField.mjs');
   assert.match(field, /if \(paint\.background\) \{\s*ctx\.fillStyle = paint\.background;\s*ctx\.fillRect\(0, 0, width, height\);/);
-  assert.match(field, /if \(state\.colors\) paint = paintFor\(state\.colors\);/);
   const fieldJsx = await read('../src/components/artwork/SignalField.jsx');
   assert.match(fieldJsx, /colors: prefersDark\(\) \? FIELD_DARK : FIELD,/);
   assert.match(fieldJsx, /update\(\{ colors: prefersDark\(\) \? FIELD_DARK : FIELD \}\)/);
-  assert.match(await read('../src/components/artwork/signalField.module.scss'), /@media screen and \(prefers-color-scheme: dark\) \{\s*\.field \{\s*background-color: transparent;/);
-  // The course cards on Courses take no tint of their own until hovered.
-  assert.match(await read('../src/pages/components/projects/styles/projects.module.scss'), /background-color: var\(--card-menu\);\s*(\/\/[^\n]*\s*)?@media screen and \(prefers-color-scheme: dark\) \{\s*opacity: 0;/);
-  // On iPhone and iPad the course pages end in a fade into the ink Safari paints past the end.
-  assert.match(await read('../src/pages/course/components/workspace/workspace.module.scss'), /@media screen and \(prefers-color-scheme: dark\) \{\s*:global\(html\[data-scroll-mode='document'\]\) & \{\s*background-image: var\(--dark-end-fade\);/);
+  assert.match(
+    await read('../src/components/artwork/signalField.module.scss'),
+    /@media screen and \(prefers-color-scheme: dark\) \{\s*\.field \{\s*background-color: transparent;\s*box-shadow: inset 0 0 0 1px var\(--windowEdge\);/,
+  );
+  // The Desk's windows: in dark mode only, the paper is drawn through a 1px dilation in the window edge's colour.
+  const home = await read('../src/pages/components/home/Index.jsx');
+  assert.match(home, /viewBox=\{dark \? undefined : '0 0 100 100'\}/);
+  assert.match(home, /<g filter="url\(#desk-window-edge\)">/);
+  assert.match(home, /\{dark && \(\s*<filter id="desk-window-edge"/);
+  assert.match(home, /<feMorphology in="SourceAlpha" operator="dilate" radius="1" result="grown" \/>/);
+  assert.match(home, /<feFlood floodColor=\{DARK\.windowEdge\}/);
+  assert.match(home, /const LIGHT_PAPER = \{ x: '0', y: '0', width: '100%', height: '100\.3%' \};/);
+  const homeStyles = await read('../src/pages/components/home/styles/home.module.scss');
+  assert.match(homeStyles, /\.edged mask rect\[data-cell\] \{\s*stroke: #000;\s*stroke-width: 1px;/);
+  assert.match(homeStyles, /inset calc\(var\(--layout-margin\) \* -1\) 0 0 0 var\(--white\)/);
+  // Courses: the window shows the artwork untinted until hovered, and is edged.
+  const projects = await read('../src/pages/components/projects/styles/projects.module.scss');
+  assert.match(projects, /background-color: var\(--card-menu\);\s*(\/\/[^\n]*\s*)?@media screen and \(prefers-color-scheme: dark\) \{\s*opacity: 0;/);
+  assert.match(projects, /inset 0 0 0 1px var\(--windowEdge\),\s*0 0 0 calc\(var\(--layout-columns-gap\) \* 1\) var\(--white\);/);
+  // The badge windows (Desk and course pages) and the footer.
+  for (const path of ['../src/pages/components/about/styles/about.module.scss', '../src/pages/course/components/workspace/workspace.module.scss']) {
+    assert.match(await read(path), /inset 0 0 0 1px var\(--windowEdge\),\s*0 0 0 300vw var\(--white\);/, path);
+  }
+  assert.match(await read('../src/components/dom/styles/layout.module.scss'), /&::before \{[^}]*height: 1px;\s*background: var\(--windowEdge\);/);
+  // The page is opaque again: no see-through special cases are left.
+  assert.doesNotMatch(global, /html:not\(\[data-scroll-mode='document'\]\) body \{\s*background-color: var\(--black\);/);
+  assert.doesNotMatch(await read('../src/pages/course/components/workspace/workspace.module.scss'), /--dark-end-fade/);
+});
+
+test('the 3D badges carry a light rim in dark mode only', async () => {
+  assert.equal(BADGE.rim, undefined);
+  assert.deepEqual(BADGE_DARK, { ...BADGE, rim: TOKENS.mutedOnDark });
+  const textures = await read('../src/components/courseBadge/badgeTextures.js');
+  assert.match(textures, /if \(rim\) \{\s*roundRect\(ctx, 3, 3, w - 6, h - 6, 31\);/);
+  const badge = await read('../src/components/courseBadge/CourseBadge.jsx');
+  assert.match(badge, /\.\.\.\(dark \? BADGE_DARK : BADGE\),/);
+  assert.match(await read('../src/components/courseBadge/BadgeScene.jsx'), /look\.strapColor, look\.rim, invalidate\]/);
 });
 
 test('the document follows the device scheme', async () => {
@@ -256,7 +354,7 @@ test('the document follows the device scheme', async () => {
   assert.ok(light > -1 && dark > light, 'one theme-color per scheme, light first');
   assert.match(global, /color-scheme: light dark;/);
   assert.doesNotMatch(global, /only light/);
-  assert.match(global, /@media screen and \(prefers-color-scheme: dark\) \{\s*#layout::before \{\s*background-image: url\('#\{\$base-path\}\/other\/grain-dark\.png'\);\s*\}/);
+  assert.match(global, /@media screen and \(prefers-color-scheme: dark\) \{\s*#layout::before \{\s*background-image: url\('#\{\$base-path\}\/other\/grain-dark\.png'\);\s*\}\s*\}/);
   assert.match(global, /@media print \{\s*html \{\s*color-scheme: light;\s*\}\s*\}/);
   assert.equal(DARK_QUERY, '(prefers-color-scheme: dark)');
   // Outside a browser there is no device setting: light.
@@ -303,13 +401,17 @@ test('colours written from scripts follow the stylesheet in both schemes', async
   assert.doesNotMatch(calendar, /TOKENS\./);
   assert.match(calendar, /lightColors: \{ main: 'var\(--accent\)', container: 'var\(--card\)', onContainer: 'var\(--text\)' \}/);
   assert.doesNotMatch(calendar, /isDark\s*:/);
-  // Behind a panel on a phone the page dims to 5%, where only the paper's light edge shows.
-  assert.match(await read('../src/components/dom/navbar/panelShell.js'), /border: `2px solid \$\{pageEdgeColor\(isMobile\)\}`/);
+  // The shrunk page's edge; behind a panel on a phone the page dims to 5%, where only the paper's light edge shows.
+  const shell = await read('../src/components/dom/navbar/panelShell.js');
+  assert.match(shell, /border: `2px solid \$\{pageEdgeColor\(isMobile\)\}`/);
   assert.match(await read('../src/components/dom/Layout.jsx'), /border: `2px solid \$\{pageEdgeColor\(\)\}`/);
   for (const path of ['../src/components/dom/navbar/panelShell.js', '../src/components/dom/Layout.jsx']) assert.doesNotMatch(await read(path), /TOKENS\.page/, path);
   assert.equal(pageEdgeColor(true), TOKENS.page);
-  // A change of scheme rebuilds the Menu/Search shell for the new edge colour; it rewinds the old timeline first,
-  // or the new one would record the shrunk page as its start and leave the page shrunk once the panel closed.
+  // Light mode dims the shrunk page to 30%; dark mode keeps it an opaque ink card on wide screens.
+  assert.match(shell, /const shrunkPageOpacity = \(\) => \(prefersDark\(\) \? 1 : 0\.3\);/);
+  assert.match(shell, /tl\.to\(layout, \{ opacity: isMobile \? 0\.05 : shrunkPageOpacity\(\) \}, 0\);/);
+  // A change of scheme rebuilds the Menu/Search shell for the new edge and opacity; it rewinds the old timeline
+  // first, or the new one would record the shrunk page as its start and leave the page shrunk once the panel closed.
   const navbar = await read('../src/components/dom/navbar/Index.jsx');
   assert.match(navbar, /const dark = useMediaQuery\(DARK_QUERY\);/);
   assert.match(navbar, /\}, \[isLoading, isMobile, dark\]\);/);

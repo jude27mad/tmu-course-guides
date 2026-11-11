@@ -10,7 +10,7 @@
 
    Nothing here contacts another host. To remove the copy from every browser, replace this file with one
    that calls self.registration.unregister() and deletes its caches. */
-const VERSION = 'v1';
+const VERSION = 'v2';
 const PAGES = `guides-pages-${VERSION}`;
 const FILES = `guides-files-${VERSION}`;
 const SCOPE = new URL('./', self.location).pathname; // e.g. /tmu-course-guides/

@@ -33,7 +33,7 @@ function fitFont(ctx, text, weight, size, maxWidth) {
 }
 
 // Draws (or redraws) the card face onto `canvas`.
-export function drawCard(canvas, { index, code, name, term, nextLabel, nextValue, background, color, secondary, divider, slot }) {
+export function drawCard(canvas, { index, code, name, term, nextLabel, nextValue, background, color, secondary, divider, slot, rim }) {
   const ctx = canvas.getContext('2d');
   const w = CARD_WIDTH;
   const h = CARD_HEIGHT;
@@ -44,6 +44,16 @@ export function drawCard(canvas, { index, code, name, term, nextLabel, nextValue
   roundRect(ctx, 0, 0, w, h, 34);
   ctx.fillStyle = background;
   ctx.fill();
+
+  // dark mode: a soft light rim just inside the card's edge (about a screen pixel where the badge is shown)
+  if (rim) {
+    roundRect(ctx, 3, 3, w - 6, h - 6, 31);
+    ctx.strokeStyle = rim;
+    ctx.globalAlpha = 0.85;
+    ctx.lineWidth = 6;
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
 
   // the clip slot
   roundRect(ctx, w / 2 - 52, 26, 104, 18, 9);
@@ -97,13 +107,21 @@ export function redrawCard(texture, look) {
 }
 
 // The lanyard print: the course code repeated along the band.
-export function bandTexture({ code, strap, strapColor }) {
+export function bandTexture({ code, strap, strapColor, rim }) {
   const canvas = document.createElement('canvas');
   canvas.width = 1024;
   canvas.height = 256;
   const ctx = canvas.getContext('2d');
   ctx.fillStyle = strap;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // dark mode: the same rim along both edges of the strap
+  if (rim) {
+    ctx.fillStyle = rim;
+    ctx.globalAlpha = 0.85;
+    ctx.fillRect(0, 0, canvas.width, 18);
+    ctx.fillRect(0, canvas.height - 18, canvas.width, 18);
+    ctx.globalAlpha = 1;
+  }
   ctx.fillStyle = strapColor;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';

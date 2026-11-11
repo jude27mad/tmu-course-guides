@@ -30,9 +30,6 @@ $colors: (
   'onAccent': #ffffff,
 );
 
-// What a card or pill keeps from the light palette in dark mode (styles/island.scss).
-$island: ('white', 'text', 'card', 'fillColor', 'muted', 'border', 'accent', 'accentTint', 'onAccent', 'statusOnTrack', 'statusSoon', 'statusUrgent', 'statusDone');
-
 @function channels($c) {
   @return #{color.channel($c, 'red', $space: rgb)}, #{color.channel($c, 'green', $space: rgb)}, #{color.channel($c, 'blue', $space: rgb)};
 }
@@ -47,38 +44,39 @@ html {
   @each $name, $key in ('inkRgb': 'black', 'pageRgb': 'white', 'cardRgb': 'card', 'onDarkRgb': 'onDark', 'mutedOnDarkRgb': 'mutedOnDark', 'textRgb': 'text', 'accentRgb': 'accent') {
     --#{$name}: #{channels(map.get($colors, $key))};
   }
-  // White light on any surface: the sheen and rim of the dark glass, and of the light glass in dark mode.
+  // White light on any surface: the sheen and rim of the dark glass.
   --highlightRgb: 255, 255, 255;
   // The light glass's sheen and rim (styles/glass.scss).
   --glassHighlight: rgba(var(--cardRgb), 0.65);
   --glassEdge: rgba(var(--inkRgb), 0.18);
   // Focus rings: the accent on light surfaces; dark panels set it to --onDark so the ring stays visible.
   --focus: var(--accent);
-  // The light palette under its own names, which dark mode does not change: cards and pills keep it in dark
-  // mode (styles/island.scss).
-  @each $name in $island {
-    --light-#{$name}: #{map.get($colors, $name)};
-  }
-  @each $name, $key in ('cardRgb': 'card', 'textRgb': 'text', 'accentRgb': 'accent') {
-    --light-#{$name}: #{channels(map.get($colors, $key))};
-  }
 }
 
 // Dark mode follows the device setting; there is no toggle. Mirrors DARK in src/lib/palette.mjs
-// (tests/dark-mode.test.mjs). The page has no colour of its own: it is the moving black artwork behind it (the
-// background shader, over the ink), the one black of dark mode, with light text on it. Cards and pills keep the
-// light palette (styles/island.scss), and the dark panels (--black, --menuColor, --raised, --onDark,
-// --borderOnDark and their channels) stay as they are. Text on the page is light enough to read over the
-// artwork's brightest band. It must come after the light map: palette.test.mjs reads the first value of each
-// name. Printing stays light.
+// (tests/dark-mode.test.mjs). It has one black, the ink: the page, the menu and the footer, every panel, card and
+// pill (so --white, --card and --fillColor are all the ink, and --black and --menuColor already are), and the floor
+// of the moving artwork. Structure comes from hairlines (--border, --borderStrong, --windowEdge, --fieldEdge, which
+// only dark mode defines) and type, never from a second black. The windows are holes in the ink, as in light mode.
+// It must come after the light map: palette.test.mjs reads the first value of each name. Printing stays light.
 $dark: (
-  'white': transparent,
+  'white': #18181b,
   'pageUnderGrain': #18181b,
+  'card': #18181b,
+  'fillColor': #18181b,
   'text': #f4f4f5,
-  'muted': #bdbdc4,
-  'border': rgba(244, 244, 245, 0.18),
+  'onDark': #f4f4f5,
+  'menuFontColor': #f4f4f5,
+  'muted': #a1a1aa,
+  'mutedOnDark': #b4b4bb,
+  'border': #3f3f46,
+  'borderStrong': #52525b,
+  'windowEdge': #63636b,
+  'fieldEdge': #71717a,
   'accent': #85c0ff,
   'accentTint': #1c3754,
+  'accentFill': #004c9b,
+  'onAccentFill': #ffffff,
   'onAccent': #18181b,
   'statusOnTrack': #85c0ff,
   'statusSoon': #fbbf24,
@@ -91,7 +89,7 @@ $dark: (
     @each $name, $color in $dark {
       --#{$name}: #{$color};
     }
-    @each $name, $key in ('textRgb': 'text', 'accentRgb': 'accent') {
+    @each $name, $key in ('pageRgb': 'white', 'cardRgb': 'card', 'onDarkRgb': 'onDark', 'mutedOnDarkRgb': 'mutedOnDark', 'textRgb': 'text', 'accentRgb': 'accent') {
       --#{$name}: #{channels(map.get($dark, $key))};
     }
     // The header's wordmark and clock (and anything else without a colour of its own) inherit this.

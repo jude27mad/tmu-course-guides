@@ -132,7 +132,7 @@ export const WEBSITE_UPDATES = [
   "id": "2026-11-11-dark-mode-one-black",
   "date": "November 11, 2026",
   "title": "Dark mode in one black",
-  "text": "Dark mode no longer mixes shades of black. The whole page is now one black with slowly moving light bands, the same artwork that shows behind the menu and the footer, with light text on it. Cards and pills, such as the Next deadline card, the tabs, the calendar, the grade calculator and Guide tools, keep their light look on top of it. Light mode is unchanged.",
+  "text": "Dark mode no longer mixes shades of black. The page, the menu, the footer and every card and button are now the same black, and thin grey lines outline the cards, buttons, fields and calendar. The windows on the Desk, the course badges, the Courses card and the footer look onto the same slowly moving light bands as in light mode, each with a thin edge. The selected tab and filters are blue, as in light mode, and Mark done stays a TMU Blue button. Light mode is unchanged.",
   "items": []
  },
  {

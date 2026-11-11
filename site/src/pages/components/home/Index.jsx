@@ -9,8 +9,17 @@ import { gsap } from 'gsap';
 import styles from '@src/pages/components/home/styles/home.module.scss';
 import useInView from '@src/hooks/useInView';
 import useIsMobile from '@src/hooks/useIsMobile';
+import useMediaQuery from '@src/hooks/useMediaQuery';
+// eslint-disable-next-line import/extensions
+import { DARK, DARK_QUERY } from '@src/lib/palette.mjs';
 import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
 import useStill from '@src/hooks/useStill';
+
+// The paper over the signal field. In dark mode it reaches a little past the field on every side, so it covers the
+// field's own edge (signalField.module.scss) wherever there is no window, and a window on the field's border still
+// has paper beyond it to edge it; the clip on .svgWrapper stops it 1px outside the field.
+const LIGHT_PAPER = { x: '0', y: '0', width: '100%', height: '100.3%' };
+const DARK_PAPER = { x: '-1%', y: '-1%', width: '102%', height: '102.3%' };
 
 // Keep the canonical copy, with the browser-storage sentence on its own line.
 const introduction = DESK_TEXT.lede.replace('. ', '.\n');
@@ -94,6 +103,9 @@ function Home() {
   const infiniteTextRef = useRef();
   const visible = useInView(rootRef);
   const active = visible && !still;
+  // Dark mode edges every window (styles/home.module.scss). Light mode's markup is left exactly as it was.
+  const dark = useMediaQuery(DARK_QUERY);
+  const paper = dark ? DARK_PAPER : LIGHT_PAPER;
 
   const initialPositions = useMemo(
     () =>
@@ -253,12 +265,41 @@ function Home() {
       <div className={styles.bottomContainer} aria-hidden="true">
         <SignalField />
         <div onPointerEnter={onPointerEnter} onPointerLeave={onPointerLeave} className={styles.svgWrapper}>
-          <svg ref={svgRef} width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none" data-surface="cells">
-            <rect x="0" y="0" className={styles.mask2} width="100%" height="100.3%" />
+          {/* In dark mode the paper is the page's ink, and every window in it gets a 1px edge: the paper, holes
+              and all, is drawn through a filter that grows it by 1px in the window-edge colour and lays it under
+              itself, so the edge shows only inside the holes, and touching windows share one outline. Without a
+              viewBox the geometry (all in percentages, so it is the same) is in CSS pixels, and so is the filter. */}
+          <svg
+            ref={svgRef}
+            width="100%"
+            height="100%"
+            viewBox={dark ? undefined : '0 0 100 100'}
+            preserveAspectRatio={dark ? undefined : 'none'}
+            className={dark ? styles.edged : undefined}
+            data-surface="cells"
+          >
+            {dark ? (
+              <g filter="url(#desk-window-edge)">
+                <rect className={styles.mask2} x={DARK_PAPER.x} y={DARK_PAPER.y} width={DARK_PAPER.width} height={DARK_PAPER.height} />
+              </g>
+            ) : (
+              <rect x="0" y="0" className={styles.mask2} width="100%" height="100.3%" />
+            )}
             <mask id="mask" x="0" y="0">
-              <rect className={styles.mask1} x="0" y="0" width="100%" height="100.3%" />
+              <rect className={styles.mask1} x={paper.x} y={paper.y} width={paper.width} height={paper.height} />
               {renderRects}
             </mask>
+            {dark && (
+              <filter id="desk-window-edge" colorInterpolationFilters="sRGB">
+                <feMorphology in="SourceAlpha" operator="dilate" radius="1" result="grown" />
+                <feFlood floodColor={DARK.windowEdge} result="edgeColour" />
+                <feComposite in="edgeColour" in2="grown" operator="in" result="edge" />
+                <feMerge>
+                  <feMergeNode in="edge" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            )}
           </svg>
           <div ref={divWrapper} />
         </div>

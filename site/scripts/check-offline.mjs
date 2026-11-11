@@ -49,7 +49,7 @@ async function check(name, run) {
 const heading = () => page.locator('h1').first().innerText();
 const saved = () =>
   page.evaluate(async (base) => {
-    const cache = await caches.open('guides-pages-v1');
+    const cache = await caches.open('guides-pages-v2');
     return (await cache.keys()).map((request) => new URL(request.url).pathname.slice(base.length));
   }, BASE + '/');
 
@@ -57,7 +57,7 @@ await check('registers and saves every route after the first visit', async () =>
   await page.goto(`${site}?offline-check`, { waitUntil: 'load' });
   await page.waitForFunction(() => navigator.serviceWorker.controller, null, { timeout: 15000 });
   // waitForFunction treats a returned promise as truthy, so poll the Cache API from here.
-  const stamped = () => page.evaluate(async (base) => !!(await (await caches.open('guides-pages-v1')).match(`${base}__offline-saved`)), BASE + '/');
+  const stamped = () => page.evaluate(async (base) => !!(await (await caches.open('guides-pages-v2')).match(`${base}__offline-saved`)), BASE + '/');
   for (let waited = 0; !(await stamped()); waited += 500) {
     if (waited > 30000) throw new Error('the offline copy was not saved within 30 s');
     await page.waitForTimeout(500);

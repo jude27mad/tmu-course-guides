@@ -162,7 +162,7 @@ function useBadgeTextures(look) {
       made?.card.dispose();
       made?.band.dispose();
     };
-  }, [look.code, look.background, look.color, look.strap, look.strapColor, invalidate]);
+  }, [look.code, look.background, look.color, look.strap, look.strapColor, look.rim, invalidate]);
 
   // the next date changes on the card face without a new texture
   useEffect(() => {

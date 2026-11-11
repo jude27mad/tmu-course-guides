@@ -1,6 +1,5 @@
 // One material for navigation and utility controls. Content surfaces stay solid.
 // These mixins are used in CSS modules, hence :global for the shared preference.
-@use '@src/styles/island';
 @mixin solid {
   background-color: var(--glass-solid);
   -webkit-backdrop-filter: none;
@@ -19,17 +18,7 @@
     --glass-highlight: rgba(var(--highlightRgb), 0.12);
     --glass-edge: rgba(var(--highlightRgb), 0.24);
     color: var(--onDark);
-    // Dark mode: every glass control is a light pill on the dark page (styles/island.scss).
-    @media screen and (prefers-color-scheme: dark) {
-      --glass-solid: var(--light-card);
-      --glass-backing: rgba(var(--light-cardRgb), 0.86);
-      --glass-highlight: rgba(var(--light-cardRgb), 0.65);
-      --glass-edge: rgba(var(--inkRgb), 0.18);
-      // The MENU label (PerspectiveText) is set in the menu's own text colour.
-      --menuFontColor: var(--light-text);
-    }
   }
-  @include island.light;
   background-color: var(--glass-solid);
   background-image: linear-gradient(155deg, var(--glass-highlight), transparent 48%);
   border: 1px solid var(--glass-edge);
@@ -50,6 +39,18 @@
         backdrop-filter: none;
       }
     }
+  }
+  // Dark mode: every glass control, whatever its tone, is the page's ink with a strong hairline (--borderStrong),
+  // with no sheen and no tinted blur, so it never shows a second black. Only the material's variables change, so a
+  // control's own border or shadow rules, and the fallbacks below (motion off, reduced transparency, forced
+  // colours), still apply.
+  @media screen and (prefers-color-scheme: dark) {
+    --glass-solid: var(--card);
+    --glass-backing: var(--card);
+    --glass-highlight: transparent;
+    --glass-edge: var(--borderStrong);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
   :global(html[data-motion='off']) & {
     @include solid;

@@ -54,6 +54,9 @@ uniform float uTime;
 // Safari's bars) to 0..1, so the sweep inside the viewport stays the same.
 uniform float uUvScaleY;
 uniform float uUvOffsetY;
+// The darkest colour drawn: black in light mode (no clamp); in dark mode the page's ink, so the troughs of the
+// sweep meet the page in the same black and a window onto the artwork only adds light (lib/palette.mjs).
+uniform vec3 uFloor;
 
 varying vec2 vUv;
 
@@ -106,6 +109,7 @@ void main() {
   vec2 uvRandom = vUv;
   uvRandom.y *= random(vec2(uvRandom.y, 0.5));
   finalCol.rgb += random(uvRandom) * uNoise;
+  finalCol = max(finalCol, uFloor);
 
   gl_FragColor = vec4(finalCol, 1.0);
 }
