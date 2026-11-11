@@ -102,7 +102,7 @@ async function navigate(page, route) {
   await menu(page);
   await page.locator(`#menu a[href="${base}${route}"]`).click();
   await page.waitForURL(origin + base + route);
-  const expected = ({ 'cen100/': 'Introduction to Engineering', 'mth140/': 'Calculus I', 'mth141/': 'Linear Algebra' })[route] || 'TMU Course Guides';
+  const expected = ({ 'cen100/': 'Introduction to Engineering', 'mth140/': 'Calculus I', 'mth141/': 'Linear Algebra' })[route] || 'TMU Course Companion';
   await page.waitForFunction(expected => document.querySelector('main h1')?.textContent.includes(expected), expected);
   if (await page.locator('html').getAttribute('data-motion') === 'off') {
     await page.waitForTimeout(600);
@@ -273,7 +273,7 @@ try {
       await page.waitForFunction(() => document.querySelector('main h1')?.textContent.includes('Introduction to Engineering'));
       await settled(page);
       await page.goBack();
-      await page.waitForFunction(() => document.querySelector('main h1')?.textContent.includes('TMU Course Guides'));
+      await page.waitForFunction(() => document.querySelector('main h1')?.textContent.includes('TMU Course Companion'));
       await settled(page);
     };
     await roundTrip();
