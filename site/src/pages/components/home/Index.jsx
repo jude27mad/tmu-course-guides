@@ -267,8 +267,9 @@ function Home() {
         <div onPointerEnter={onPointerEnter} onPointerLeave={onPointerLeave} className={styles.svgWrapper}>
           {/* In dark mode the paper is the page's ink, and every window in it gets a 1px edge: the paper, holes
               and all, is drawn through a filter that grows it by 1px in the window-edge colour and lays it under
-              itself, so the edge shows only inside the holes, and touching windows share one outline. Without a
-              viewBox the geometry (all in percentages, so it is the same) is in CSS pixels, and so is the filter. */}
+              itself, so the edge shows only inside the holes, and touching windows share one outline. The styles
+              apply the filter, on screen only (home.module.scss). Without a viewBox the geometry (all in
+              percentages, so it is the same) is in CSS pixels, and so is the filter. */}
           <svg
             ref={svgRef}
             width="100%"
@@ -279,7 +280,7 @@ function Home() {
             data-surface="cells"
           >
             {dark ? (
-              <g filter="url(#desk-window-edge)">
+              <g>
                 <rect className={styles.mask2} x={DARK_PAPER.x} y={DARK_PAPER.y} width={DARK_PAPER.width} height={DARK_PAPER.height} />
               </g>
             ) : (

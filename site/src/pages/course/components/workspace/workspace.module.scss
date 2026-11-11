@@ -715,10 +715,10 @@
   &:hover {
     background: var(--fillColor);
   }
-  // Dark mode: the row's fill is the page's ink, so a hovered row underlines its label instead.
+  // Dark mode: the row's fill is the page's ink, so a hovered row underlines its label (not its arrow) instead.
   @media screen and (prefers-color-scheme: dark) {
-    &:hover,
-    .information &:hover {
+    &:hover > :first-child,
+    .information &:hover > :first-child {
       text-decoration: underline;
       text-underline-offset: 4px;
       text-decoration-thickness: 1px;

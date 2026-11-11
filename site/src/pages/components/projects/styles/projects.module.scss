@@ -47,8 +47,8 @@
       box-shadow: 0 0 0 calc(var(--layout-columns-gap) * 0.5) var(--white);
     }
     // Dark mode: the courses are one window onto the artwork, edged like every window. Phones edge each card
-    // instead (813px is the first width above the phone layout, $mobile-breakpoint).
-    @media screen and (prefers-color-scheme: dark) and (min-width: 813px) {
+    // instead (the first width above $mobile-breakpoint is the first above the phone layout).
+    @media screen and (prefers-color-scheme: dark) and (min-width: #{$mobile-breakpoint + 1}) {
       box-shadow:
         inset 0 0 0 1px var(--windowEdge),
         0 0 0 calc(var(--layout-columns-gap) * 1) var(--white);

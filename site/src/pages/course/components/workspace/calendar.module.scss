@@ -81,7 +81,7 @@
   }
   // Dark mode: the row's fill is the page's ink, so a hovered row underlines its title instead.
   @media screen and (prefers-color-scheme: dark) {
-    &:hover > :first-child > :first-child {
+    &:hover [data-row-title] {
       text-decoration: underline;
       text-underline-offset: 4px;
       text-decoration-thickness: 1px;

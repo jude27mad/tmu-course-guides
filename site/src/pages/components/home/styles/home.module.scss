@@ -130,9 +130,13 @@
       .svgWrapper {
         clip-path: inset(-1px calc(0.1% - 1px) -1px -1px round calc(var(--layout-columns-gap) + 1px));
       }
-      // The paper may reach past the svg's own box, up to the clip above.
+      // The paper may reach past the svg's own box, up to the clip above. It is drawn through the edge filter
+      // here rather than in the markup, so a page printed from a dark device leaves it out and prints light.
       .edged {
         overflow: visible;
+      }
+      .edged > g {
+        filter: url(#desk-window-edge);
       }
       // Each hole grows half a pixel on every side, so touching windows overlap and leave no seam of paper
       // between them, which the edge would turn into a line.

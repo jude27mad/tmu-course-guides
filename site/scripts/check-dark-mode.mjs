@@ -11,6 +11,7 @@
 //   3. An iPhone (Safari's document layout): the colour past the page's ends is the ink, and theme-color says
 //      the same.
 //   4. A device switching scheme mid-visit: light, dark, then light again, ending exactly where it started.
+//   5. The Desk's window edges as drawn, with WebGL and without it, and a page printed from a dark device (light).
 // Usage: PLAYWRIGHT_PATH=/path/to/node_modules/playwright QA_REPORT_DIR=<dir> node scripts/check-dark-mode.mjs <folder>
 // With GITHUB_STEP_SUMMARY set, the report is also written to the job summary.
 import assert from 'node:assert/strict';
@@ -167,6 +168,35 @@ function lightBlocks() {
   return found;
 }
 
+// The Desk's window edges as drawn (desktop, reduced motion, so the cells are at their starting places). Cell 0 sits
+// in the lower half of the first column: its right edge must be drawn in the window edge's colour, and the field's
+// top edge, which borders no window there, must stay the bare ink.
+async function deskEdges(page) {
+  const require = createRequire(import.meta.url);
+  const sharp = require('sharp');
+  const [x, y, width, height] = await page.evaluate(() => {
+    const box = document.querySelector('svg[data-surface="cells"]').getBoundingClientRect();
+    return [box.x, box.y, box.width, box.height];
+  });
+  const { data, info } = await sharp(await page.screenshot()).raw().toBuffer({ resolveWithObject: true });
+  const pixel = (px, py) => {
+    const at = (Math.round(py) * info.width + Math.round(px)) * info.channels;
+    return [data[at], data[at + 1], data[at + 2]];
+  };
+  const across = [];
+  for (let dx = -3; dx <= 3; dx += 1) across.push(pixel(x + width / 6 + dx, y + height * 0.75));
+  const top = [];
+  for (let dy = -2; dy <= 2; dy += 1) top.push(pixel(x + width * 0.08, y + dy));
+  const brightest = across.reduce((best, each) => (each[0] + each[1] + each[2] > best[0] + best[1] + best[2] ? each : best));
+  const near = (a, b, tolerance) => a.every((value, i) => Math.abs(value - b[i]) <= tolerance);
+  const ink = rgbOf(DARK.page).split(', ').map(Number);
+  // Antialiased across a pixel boundary, the 1px edge measures about rgb(86, 86, 94); the artwork's light bands
+  // through the window stay well below that.
+  assert.ok(near(brightest, rgbOf(DARK.windowEdge).split(', ').map(Number), 20), `a window's edge is drawn: brightest ${brightest} across cell 0's right edge`);
+  assert.ok(brightest[0] >= ink[0] + 50, `a window's edge stands clear of the ink and the artwork: ${brightest}`);
+  assert.ok(top.every((each) => near(each, ink, 3)), `the field's top edge, where no window is, stays the ink: ${top.map(String).join(' | ')}`);
+}
+
 // The darkest and lightest grey levels (1st and 99th percentile) of an area of a screenshot.
 async function levels(page, clip) {
   const require = createRequire(import.meta.url);
@@ -262,17 +292,19 @@ async function main() {
         }
         if (name === 'desk') {
           // The Desk's signal field draws its points on the artwork, with no panel of its own; the paper's windows are
-          // edged (in dark mode only, the paper is drawn through the edge filter).
+          // edged (in dark mode on screen only, the styles draw the paper through the edge filter).
           const desk = await page.evaluate(() => {
             const canvas = document.querySelector('canvas[data-signal-field]');
             const svg = document.querySelector('svg[data-surface="cells"]');
+            const paper = svg?.querySelector(':scope > g');
             return {
               corner: canvas && canvas.getContext('2d').getImageData(1, 1, 1, 1).data[3],
-              edged: !!svg?.querySelector('g[filter="url(#desk-window-edge)"]') && !!svg?.querySelector('filter#desk-window-edge feMorphology'),
+              edged: !!paper && /desk-window-edge/.test(getComputedStyle(paper).filter) && !!svg?.querySelector('filter#desk-window-edge feMorphology'),
               viewBox: svg?.getAttribute('viewBox'),
             };
           });
           assert.deepEqual(desk, { corner: 0, edged: true, viewBox: null }, 'the Desk field and its edged windows');
+          if (label === 'desktop') await deskEdges(page);
           // Next up's primary action (MARK DONE) is the one filled shape: TMU Blue with a white label.
           const primary = await page.evaluate(() => {
             const node = document.querySelector('main [class*="buttonLink_primary"]');
@@ -386,6 +418,20 @@ async function main() {
     });
   }
 
+  // A dark device prints light: the styles' dark blocks are screen only, and so are the JavaScript branches.
+  await check('desktop desk: printing from a dark device', async () => {
+    const page = await open({ viewport: { width: 1440, height: 900 }, colorScheme: 'dark' });
+    await visit(page, '');
+    await page.emulateMedia({ media: 'print' });
+    await page.waitForTimeout(500);
+    const printed = await page.evaluate(() => {
+      const svg = document.querySelector('svg[data-surface="cells"]');
+      return { white: getComputedStyle(document.documentElement).getPropertyValue('--white').trim().toLowerCase(), viewBox: svg?.getAttribute('viewBox'), filters: svg?.querySelectorAll('filter').length };
+    });
+    assert.deepEqual(printed, { white: TOKENS.page.toLowerCase(), viewBox: '0 0 100 100', filters: 0 }, 'the Desk prints as in light mode');
+    await page.emulateMedia({ media: 'screen' });
+  });
+
   // 3. iPhone: Safari's document layout. Chromium follows the layout, not Safari's painting of its bars.
   const phone = await open({ ...devices['iPhone 13'], colorScheme: 'dark', reducedMotion: 'reduce' });
   await check('iphone desk: the colour past the page', async () => {
@@ -462,6 +508,22 @@ async function main() {
   await check('no page errors', async () => assert.deepEqual(errors, []));
   await Promise.all(contexts.map((context) => context.close()));
   await browser.close();
+
+  // 5. Without WebGL (no artwork, no 3D badges): the Desk's windows are still edged on the ink.
+  const plain = await chromium.launch({ headless: true, executablePath: process.env.QA_CHROMIUM_PATH || undefined, args: ['--disable-webgl', '--disable-3d-apis'] });
+  await check('desktop desk without WebGL: the windows are edged', async () => {
+    const context = await plain.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: 'dark', reducedMotion: 'reduce' });
+    const page = await context.newPage();
+    const plainErrors = [];
+    page.on('pageerror', (error) => plainErrors.push(error.message));
+    await visit(page, '');
+    darkState(await page.evaluate(readState), 'desk without WebGL');
+    await deskEdges(page);
+    await page.screenshot({ path: join(reports, 'desktop-desk-no-webgl.png') });
+    assert.deepEqual(plainErrors, [], 'no page errors');
+    await context.close();
+  });
+  await plain.close();
   server.close();
 
   const report = [`### Dark mode`, '', failures.length ? failures.map((failure) => `- ${failure}`).join('\n') : 'All checks passed.', '', `Screenshots: ${reports}`].join('\n');

@@ -56,8 +56,10 @@ export const DARK = Object.freeze({
    noise): text over the artwork (Menu, Search, the footer, the windows) must read over it as well as over the ink. */
 export const ARTWORK_GLOW = '#444444';
 
-export const DARK_QUERY = '(prefers-color-scheme: dark)';
-/* Whether the device asks for dark mode now (false outside a browser). */
+/* Screen only, as every dark block in the styles is: a page printed from a dark device prints light, and the parts
+   drawn in JavaScript (the Desk's windows, its signal field, the 3D badges) follow the styles there too. */
+export const DARK_QUERY = 'screen and (prefers-color-scheme: dark)';
+/* Whether the device asks for dark mode on screen now (false outside a browser, and while printing). */
 export const prefersDark = () => typeof matchMedia === 'function' && matchMedia(DARK_QUERY).matches;
 /* The edge drawn round the page while Menu or Search shrinks it, or while a page change slides it. The dark page is
    the same ink as the artwork's floor, so it takes the windows' edge. Behind a panel on a phone the shrunk page dims

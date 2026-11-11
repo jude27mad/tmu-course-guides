@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 
 import { ARTWORK_FLOOR, ARTWORK_GLOW, BADGE, BADGE_DARK, DARK, DARK_QUERY, FIELD, FIELD_DARK, TOKENS, pageEdgeColor, prefersDark, rgbOf } from '../src/lib/palette.mjs';
+import { BAND_HEIGHT, CARD_HEIGHT, CARD_SHARE, CARD_WIDTH, STRAP_SHARE, rimTexels } from '../src/components/courseBadge/badgeRim.mjs';
 
 // Dark mode follows the device setting. It has one black, the ink: the page, the panels, every card and pill, and the
 // floor of the moving artwork. Structure comes from hairlines and type. The windows are holes in the ink, as in light
@@ -203,13 +204,21 @@ test('text on the page uses --text, text on the dark panels --panelText', async 
   ]);
 });
 
-// The rule blocks of a style sheet, each with the statements written directly in it and its ancestors.
+// The rule blocks of a style sheet, each with the statements written directly in it and its ancestors. Sass
+// interpolation (#{...}) is text, not a block.
 function blocks(text) {
   const found = [];
   const stack = [{ selector: '', own: '', parents: [] }];
   let buffer = '';
+  let interpolating = false;
   for (const char of stripComments(text)) {
-    if (char === '{') {
+    if (interpolating) {
+      buffer += char;
+      if (char === '}') interpolating = false;
+    } else if (char === '{' && buffer.endsWith('#')) {
+      buffer += char;
+      interpolating = true;
+    } else if (char === '{') {
       const block = { selector: buffer.trim(), own: '', parents: stack.slice() };
       stack.push(block);
       found.push(block);
@@ -286,7 +295,10 @@ test('a hovered row underlines its title in dark mode, where its fill is the pag
   const workspace = await read('../src/pages/course/components/workspace/workspace.module.scss');
   assert.match(workspace, /&:hover \{\s*background: var\(--fillColor\);\s*\}\s*(\/\/[^\n]*\s*)?@media screen and \(prefers-color-scheme: dark\) \{\s*&:hover \.rowTitle \{\s*text-decoration: underline;/);
   const calendar = await read('../src/pages/course/components/workspace/calendar.module.scss');
-  assert.match(calendar, /&:hover \{\s*background: var\(--fillColor\);\s*\}\s*(\/\/[^\n]*\s*)?@media screen and \(prefers-color-scheme: dark\) \{\s*&:hover > :first-child > :first-child \{\s*text-decoration: underline;/);
+  assert.match(calendar, /&:hover \{\s*background: var\(--fillColor\);\s*\}\s*(\/\/[^\n]*\s*)?@media screen and \(prefers-color-scheme: dark\) \{\s*&:hover \[data-row-title\] \{\s*text-decoration: underline;/);
+  assert.match(await read('../src/pages/course/components/workspace/Schedule.jsx'), /<span className=\{styles\.rowTitle\} data-row-title>/);
+  // Course information's rows underline their label, not the arrow beside it.
+  assert.match(workspace, /@media screen and \(prefers-color-scheme: dark\) \{\s*&:hover > :first-child,\s*\.information &:hover > :first-child \{\s*text-decoration: underline;/);
   assert.doesNotMatch(`${workspace}${calendar}`, /highlightRgb\), 0\.06/, 'no grey lift');
 });
 
@@ -314,18 +326,21 @@ test('the windows show the artwork, floored at the ink, and each has an edge', a
   // The Desk's windows: in dark mode only, the paper is drawn through a 1px dilation in the window edge's colour.
   const home = await read('../src/pages/components/home/Index.jsx');
   assert.match(home, /viewBox=\{dark \? undefined : '0 0 100 100'\}/);
-  assert.match(home, /<g filter="url\(#desk-window-edge\)">/);
+  assert.match(home, /\{dark \? \(\s*<g>\s*<rect className=\{styles\.mask2\}/);
+  assert.doesNotMatch(home, /filter="url\(#desk-window-edge\)"/, 'the styles apply the filter, on screen only, so printing leaves it out');
   assert.match(home, /\{dark && \(\s*<filter id="desk-window-edge"/);
   assert.match(home, /<feMorphology in="SourceAlpha" operator="dilate" radius="1" result="grown" \/>/);
   assert.match(home, /<feFlood floodColor=\{DARK\.windowEdge\}/);
   assert.match(home, /const LIGHT_PAPER = \{ x: '0', y: '0', width: '100%', height: '100\.3%' \};/);
   const homeStyles = await read('../src/pages/components/home/styles/home.module.scss');
   assert.match(homeStyles, /\.edged mask rect\[data-cell\] \{\s*stroke: #000;\s*stroke-width: 1px;/);
+  const deskDark = homeStyles.slice(homeStyles.indexOf('@media screen and (prefers-color-scheme: dark) {\n      .svgWrapper'));
+  assert.match(deskDark, /^@media screen and \(prefers-color-scheme: dark\) \{[^@]*\.edged \{\s*overflow: visible;\s*\}\s*\.edged > g \{\s*filter: url\(#desk-window-edge\);\s*\}/);
   assert.match(homeStyles, /inset calc\(var\(--layout-margin\) \* -1\) 0 0 0 var\(--white\)/);
   // Courses: the window shows the artwork untinted until hovered, and is edged.
   const projects = await read('../src/pages/components/projects/styles/projects.module.scss');
   assert.match(projects, /background-color: var\(--card-menu\);\s*(\/\/[^\n]*\s*)?@media screen and \(prefers-color-scheme: dark\) \{\s*opacity: 0;/);
-  assert.match(projects, /inset 0 0 0 1px var\(--windowEdge\),\s*0 0 0 calc\(var\(--layout-columns-gap\) \* 1\) var\(--white\);/);
+  assert.match(projects, /@media screen and \(prefers-color-scheme: dark\) and \(min-width: #\{\$mobile-breakpoint \+ 1\}\) \{\s*box-shadow:\s*inset 0 0 0 1px var\(--windowEdge\),\s*0 0 0 calc\(var\(--layout-columns-gap\) \* 1\) var\(--white\);/);
   // The badge windows (Desk and course pages) and the footer.
   for (const path of ['../src/pages/components/about/styles/about.module.scss', '../src/pages/course/components/workspace/workspace.module.scss']) {
     assert.match(await read(path), /inset 0 0 0 1px var\(--windowEdge\),\s*0 0 0 300vw var\(--white\);/, path);
@@ -340,10 +355,33 @@ test('the 3D badges carry a light rim in dark mode only', async () => {
   assert.equal(BADGE.rim, undefined);
   assert.deepEqual(BADGE_DARK, { ...BADGE, rim: TOKENS.mutedOnDark });
   const textures = await read('../src/components/courseBadge/badgeTextures.js');
-  assert.match(textures, /if \(rim\) \{\s*roundRect\(ctx, 3, 3, w - 6, h - 6, 31\);/);
+  assert.match(textures, /if \(rim\) \{\s*roundRect\(ctx, rimCard \/ 2, rimCard \/ 2, w - rimCard, h - rimCard, 34 - rimCard \/ 2\);\s*ctx\.strokeStyle = rim;\s*ctx\.globalAlpha = 0\.7;\s*ctx\.lineWidth = rimCard;/);
+  assert.match(textures, /ctx\.globalAlpha = 0\.7;\s*ctx\.fillRect\(0, 0, canvas\.width, rimBand\);\s*ctx\.fillRect\(0, canvas\.height - rimBand, canvas\.width, rimBand\);/);
   const badge = await read('../src/components/courseBadge/CourseBadge.jsx');
-  assert.match(badge, /\.\.\.\(dark \? BADGE_DARK : BADGE\),/);
-  assert.match(await read('../src/components/courseBadge/BadgeScene.jsx'), /look\.strapColor, look\.rim, invalidate\]/);
+  assert.match(badge, /\.\.\.\(dark \? \{ \.\.\.BADGE_DARK, rimCard, rimBand \} : BADGE\),/);
+  assert.match(badge, /if \(!dark \|\| !node \|\| typeof ResizeObserver === 'undefined'\) return undefined;/, 'light mode measures nothing');
+  const scene = await read('../src/components/courseBadge/BadgeScene.jsx');
+  assert.match(scene, /look\.strapColor, look\.rim, look\.rimBand, invalidate\]/);
+});
+
+test('the badge rim is about one screen pixel at every size the badge is shown', async () => {
+  // badgeRim.mjs works from how BadgeScene frames a badge; these must stay as it assumes.
+  const scene = await read('../src/components/courseBadge/BadgeScene.jsx');
+  assert.match(scene, /<PerspectiveCamera manual makeDefault position=\{\[0, 0, 10\]\} fov=\{25\} \/>/);
+  assert.match(scene, /<roundedBoxGeometry ref=\{mergeFaceGroups\} args=\{\[1\.6, 2\.25, 0\.02, 2, 0\.01\]\} \/>/);
+  assert.match(scene, /resolution=\{\[1, 1\]\}[^\n]*lineWidth=\{1\}/);
+  assert.equal(CARD_WIDTH / CARD_HEIGHT, 1.6 / 2.25);
+  // The element sizes the badges are shown at: the Desk's Next up, a Courses card and a course page's header, on a
+  // desktop and on a phone. The rim's width on screen stays within about a pixel of 1.25 (clamped at the smallest).
+  for (const [width, height] of [[662, 763], [614, 288], [336, 190], [348, 390], [289, 135]]) {
+    const { card, band } = rimTexels(width, height);
+    const cardPx = (card * CARD_SHARE * height) / CARD_WIDTH;
+    const bandPx = (band * STRAP_SHARE * width) / BAND_HEIGHT;
+    assert.ok(cardPx >= 0.7 && cardPx <= 1.6, `card rim ${cardPx.toFixed(2)}px at ${width}x${height}`);
+    assert.ok(bandPx >= 0.7 && bandPx <= 1.6, `strap rim ${bandPx.toFixed(2)}px at ${width}x${height}`);
+  }
+  assert.deepEqual(rimTexels(662, 763), { card: 2, band: 10 }, 'the large Desk badge gets a thin rim');
+  assert.deepEqual(rimTexels(0, 0), { card: 8, band: 18 }, 'clamped');
 });
 
 test('the document follows the device scheme', async () => {
@@ -356,7 +394,8 @@ test('the document follows the device scheme', async () => {
   assert.doesNotMatch(global, /only light/);
   assert.match(global, /@media screen and \(prefers-color-scheme: dark\) \{\s*#layout::before \{\s*background-image: url\('#\{\$base-path\}\/other\/grain-dark\.png'\);\s*\}\s*\}/);
   assert.match(global, /@media print \{\s*html \{\s*color-scheme: light;\s*\}\s*\}/);
-  assert.equal(DARK_QUERY, '(prefers-color-scheme: dark)');
+  // Screen only, like the styles: a page printed from a dark device prints light, JavaScript-drawn parts included.
+  assert.equal(DARK_QUERY, 'screen and (prefers-color-scheme: dark)');
   // Outside a browser there is no device setting: light.
   assert.equal(prefersDark(), false);
   assert.equal(pageEdgeColor(), TOKENS.page);

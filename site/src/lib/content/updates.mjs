@@ -132,7 +132,7 @@ export const WEBSITE_UPDATES = [
   "id": "2026-11-11-dark-mode-one-black",
   "date": "November 11, 2026",
   "title": "Dark mode in one black",
-  "text": "Dark mode no longer mixes shades of black. The page, the menu, the footer and every card and button are now the same black, and thin grey lines outline the cards, buttons, fields and calendar. The windows on the Desk, the course badges, the Courses card and the footer look onto the same slowly moving light bands as in light mode, each with a thin edge. The selected tab and filters are blue, as in light mode, and Mark done stays a TMU Blue button. Light mode is unchanged.",
+  "text": "Dark mode no longer mixes shades of black. The page, the menu, the footer and every card and button are now the same black, and thin grey lines outline the cards, buttons, fields and calendar. The course badges, the Courses card and the footer look onto the same slowly moving light bands as in light mode, and the windows on the Desk now do too, each with a thin edge. The selected tab and filters are blue, as in light mode, and Mark done stays a TMU Blue button. Light mode is unchanged.",
   "items": []
  },
  {

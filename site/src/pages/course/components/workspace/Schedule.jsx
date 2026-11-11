@@ -113,7 +113,9 @@ export default function Schedule({ navigate, state, setState }) {
               <li key={item.id}>
                 <Link id={`schedule-${courseId}-${item.id}`} href={`/${courseId}/#${item.anchor}`} scroll={false} className={calendarStyles.agendaRow} data-schedule-link>
                   <span>
-                    <span className={styles.rowTitle}>{event?.title || item.title}</span>
+                    <span className={styles.rowTitle} data-row-title>
+                      {event?.title || item.title}
+                    </span>
                     <span className={styles.meta}>{[event?.qualifier, item.target?.note, item.cta].filter(Boolean).join(' · ')}</span>
                   </span>
                   <span>

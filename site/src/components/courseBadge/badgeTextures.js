@@ -1,4 +1,5 @@
 import { CanvasTexture, RepeatWrapping } from 'three';
+import { BAND_HEIGHT, BAND_WIDTH, CARD_HEIGHT, CARD_WIDTH } from './badgeRim.mjs';
 
 // The lanyard badge's printed faces, drawn on 2D canvases from the course
 // palette (the original used client-branded PNGs on a GLB card). The card carries the
@@ -8,8 +9,6 @@ import { CanvasTexture, RepeatWrapping } from 'three';
 // colour on the Desk, so untagged textures show exactly what is drawn (as his
 // PNG textures did).
 const FONT_FAMILY = '"Inter Display", system-ui, sans-serif';
-export const CARD_WIDTH = 512;
-export const CARD_HEIGHT = 720; // 1.6 x 2.25, the card's own proportions
 
 function roundRect(ctx, x, y, width, height, radius) {
   ctx.beginPath();
@@ -33,7 +32,7 @@ function fitFont(ctx, text, weight, size, maxWidth) {
 }
 
 // Draws (or redraws) the card face onto `canvas`.
-export function drawCard(canvas, { index, code, name, term, nextLabel, nextValue, background, color, secondary, divider, slot, rim }) {
+export function drawCard(canvas, { index, code, name, term, nextLabel, nextValue, background, color, secondary, divider, slot, rim, rimCard = 2 }) {
   const ctx = canvas.getContext('2d');
   const w = CARD_WIDTH;
   const h = CARD_HEIGHT;
@@ -45,12 +44,12 @@ export function drawCard(canvas, { index, code, name, term, nextLabel, nextValue
   ctx.fillStyle = background;
   ctx.fill();
 
-  // dark mode: a soft light rim just inside the card's edge (about a screen pixel where the badge is shown)
+  // dark mode: a soft light rim just inside the card's edge, rimCard texels wide (about a screen pixel; badgeRim.mjs)
   if (rim) {
-    roundRect(ctx, 3, 3, w - 6, h - 6, 31);
+    roundRect(ctx, rimCard / 2, rimCard / 2, w - rimCard, h - rimCard, 34 - rimCard / 2);
     ctx.strokeStyle = rim;
-    ctx.globalAlpha = 0.85;
-    ctx.lineWidth = 6;
+    ctx.globalAlpha = 0.7;
+    ctx.lineWidth = rimCard;
     ctx.stroke();
     ctx.globalAlpha = 1;
   }
@@ -107,19 +106,19 @@ export function redrawCard(texture, look) {
 }
 
 // The lanyard print: the course code repeated along the band.
-export function bandTexture({ code, strap, strapColor, rim }) {
+export function bandTexture({ code, strap, strapColor, rim, rimBand = 4 }) {
   const canvas = document.createElement('canvas');
-  canvas.width = 1024;
-  canvas.height = 256;
+  canvas.width = BAND_WIDTH;
+  canvas.height = BAND_HEIGHT;
   const ctx = canvas.getContext('2d');
   ctx.fillStyle = strap;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  // dark mode: the same rim along both edges of the strap
+  // dark mode: the same rim along both edges of the strap, rimBand texels wide
   if (rim) {
     ctx.fillStyle = rim;
-    ctx.globalAlpha = 0.85;
-    ctx.fillRect(0, 0, canvas.width, 18);
-    ctx.fillRect(0, canvas.height - 18, canvas.width, 18);
+    ctx.globalAlpha = 0.7;
+    ctx.fillRect(0, 0, canvas.width, rimBand);
+    ctx.fillRect(0, canvas.height - rimBand, canvas.width, rimBand);
     ctx.globalAlpha = 1;
   }
   ctx.fillStyle = strapColor;
