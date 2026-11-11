@@ -22,6 +22,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { useStore } from '@src/store';
 
 const GoTop = dynamic(() => import('@src/components/dom/GoTop'), { ssr: false });
+const sitemapLinks = menuLinks.filter((link) => link.href !== '/privacy/');
 
 // "Course links": the current course's own links on a course page; elsewhere
 // the three course guides. Falls back to the official sources.
@@ -90,7 +91,7 @@ function Footer() {
       <div style={{ gridColumn: isMobile ? '1 / 3' : '1 / 5' }} className={styles.linksContainer}>
         <AppearTitle isFooter>
           <h2 className={clsx(styles.title, 'h6')}>Sitemap</h2>
-          {menuLinks.map((link) => (
+          {sitemapLinks.map((link) => (
             <div key={link.title} className={styles.linkTextContainer}>
               <LinkText className={styles.linkText} title={link.title} href={link.href}>
                 <span className="footer">{link.title}</span>

@@ -129,6 +129,13 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-11-11-intro-footer-copy",
+  "date": "November 11, 2026",
+  "title": "Clearer intro and footer",
+  "text": "The opening heading now reads TMU Course Companion, so Guides appears only once at the top. The footer keeps its underlined Privacy link and removes the duplicate from the Sitemap list.",
+  "items": []
+ },
+ {
   "id": "2026-11-08-dark-mode",
   "date": "November 8, 2026",
   "title": "Dark mode",

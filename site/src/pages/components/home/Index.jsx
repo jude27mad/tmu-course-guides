@@ -80,8 +80,8 @@ const performMoves = (rectangles, gridWidth, gridHeight) => {
 };
 
 // The Desk masthead: the original hero (headline, lede, the masked hole grid over
-// the continuous signal field, the "Scroll Down" marquee) carrying the old Desk's
-// h1 and lede. The holes shuffle only while the hero is on screen and motion
+// the continuous signal field, the "Scroll Down" marquee) carrying the companion
+// heading and Desk lede. The holes shuffle only while the hero is on screen and motion
 // is on. Kairo's artwork sits beneath the unchanged moving window mask.
 function Home() {
   const isMobile = useIsMobile();
@@ -242,7 +242,7 @@ function Home() {
     <section ref={rootRef} className={clsx(styles.root)}>
       <div className={clsx(styles.topContainer, 'layout-grid-inner')}>
         <h1 className={styles.leftContainer}>
-          <span className={styles.deskTitle}>{DESK_TEXT.heading}</span>
+          <span className={styles.deskTitle}>TMU Course Companion</span>
           <span className={styles.deskTerm}>{DESK_TEXT.headingTerm}</span>
         </h1>
         <p className={clsx('h6', styles.rightContainer, styles.introduction)} data-desk-introduction>
