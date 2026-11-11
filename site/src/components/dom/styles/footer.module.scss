@@ -1,3 +1,4 @@
+@use '@src/styles/island';
 @import '@src/styles/functions';
 
 // This does not paint or take part in the grid. Unlike innerHeight, 100svh
@@ -170,6 +171,7 @@
   width: 4vw;
   height: 4vw;
   background-color: var(--card);
+  @include island.light;
   border-radius: 50%;
   position: relative;
   overflow: hidden;

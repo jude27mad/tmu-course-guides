@@ -25,7 +25,7 @@ const isBuildFile = (url) => url.pathname.startsWith(`${SCOPE}_next/static/`);
 const isPageData = (url) => url.pathname.startsWith(`${SCOPE}_next/data/`);
 const usable = (response) => response && response.ok && response.type === 'basic' && !response.redirected;
 
-const OFFLINE = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><meta name="color-scheme" content="light dark"><title>Offline | TMU Course Guides</title><style>body{margin:0;padding:2rem 1rem;font:1rem/1.5 system-ui,sans-serif;color:#18181b;background:#f4f4f5}a{color:#004c9b}@media(prefers-color-scheme:dark){body{color:#f4f4f5;background:#0e0e10}a{color:#66b0ff}}</style></head><body><h1>You're offline</h1><p>This page hasn't been saved on this device yet. <a href="${SCOPE}">Open the Desk</a>, or try again when you're connected.</p></body></html>`;
+const OFFLINE = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><meta name="color-scheme" content="light dark"><title>Offline | TMU Course Guides</title><style>body{margin:0;padding:2rem 1rem;font:1rem/1.5 system-ui,sans-serif;color:#18181b;background:#f4f4f5}a{color:#004c9b}@media(prefers-color-scheme:dark){body{color:#f4f4f5;background:#18181b}a{color:#85c0ff}}</style></head><body><h1>You're offline</h1><p>This page hasn't been saved on this device yet. <a href="${SCOPE}">Open the Desk</a>, or try again when you're connected.</p></body></html>`;
 
 // Keeps the build-file copy bounded: the oldest saved entries go first.
 async function trim(cache) {

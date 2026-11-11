@@ -1,3 +1,4 @@
+@use '@src/styles/island';
 @use '@src/styles/glass';
 @use '@src/styles/typography' as type;
 
@@ -206,6 +207,11 @@
   pointer-events: none;
   background: var(--black);
   color: var(--onDark);
+  // Dark mode: a light pill on the dark page.
+  @include island.light;
+  @media screen and (prefers-color-scheme: dark) {
+    background: var(--light-card);
+  }
   border-radius: 24px;
   padding: 8px 16px;
   font-size: 14px;
@@ -277,6 +283,7 @@
   }
 }
 .summary {
+  @include island.light;
   padding: 16px 20px;
   border-radius: 12px;
   background: var(--fillColor);
@@ -368,6 +375,7 @@
   gap: 4px;
   flex-wrap: wrap;
   button {
+    @include island.light;
     padding: 9px 16px;
     min-height: 44px;
     border-radius: 999px;
@@ -382,6 +390,7 @@
   }
 }
 .workFilters {
+  @include island.light;
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -482,6 +491,10 @@
   transition: background-color 0.3s;
   &:hover {
     background: var(--fillColor);
+    // Dark mode: a faint lift on the dark page (the white card fill would hide the row's light text).
+    @media screen and (prefers-color-scheme: dark) {
+      background: rgba(var(--highlightRgb), 0.06);
+    }
   }
 }
 .rowMain,
@@ -679,6 +692,10 @@
   transition: background-color 0.3s;
   &:hover {
     background: var(--fillColor);
+    // Dark mode: a faint lift on the dark page (the white card fill would hide the row's light text).
+    @media screen and (prefers-color-scheme: dark) {
+      background: rgba(var(--highlightRgb), 0.06);
+    }
   }
 }
 .information .infoRow {
@@ -735,6 +752,16 @@
   // in the colour Safari paints past it (shadows add no scroll length).
   :global(html[data-scroll-mode='document']) & {
     box-shadow: 0 2px 0 0 var(--pageUnderGrain);
+  }
+  // Dark mode: the page is the moving artwork, so on iPhone and iPad it fades into the ink Safari paints past
+  // the end over the footer's last stretch, as the pages that end in the dark footer do (layout.module.scss).
+  @media screen and (prefers-color-scheme: dark) {
+    :global(html[data-scroll-mode='document']) & {
+      background-image: var(--dark-end-fade);
+      background-repeat: no-repeat;
+      background-position: left bottom;
+      background-size: 100% min(100%, var(--dark-end-fade-height));
+    }
   }
   div {
     display: flex;

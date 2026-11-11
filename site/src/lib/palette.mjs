@@ -25,32 +25,36 @@ export const TOKENS = Object.freeze({
   onAccent: '#FFFFFF', // a label on an accent fill
 });
 
-/* Dark mode follows the device setting (prefers-color-scheme: dark); there is no toggle. Only the page, and
-   what sits on it, changes: the dark panels, the artwork behind the page, the badges and the signal field
-   keep their colours. styles/colors.scss mirrors these values in its dark block (tests/dark-mode.test.mjs). */
+/* Dark mode follows the device setting (prefers-color-scheme: dark); there is no toggle. The page has no colour
+   of its own: it is the moving black artwork behind it (the background shader over the ink), the one black of
+   dark mode. Cards and pills keep the light palette (styles/island.scss), and the dark panels keep theirs.
+   Text on the page is light enough to read over the artwork's brightest band (ARTWORK_GLOW).
+   styles/colors.scss mirrors these values in its dark block (tests/dark-mode.test.mjs). */
 export const DARK = Object.freeze({
-  page: '#0E0E10', // near-black: darker than the ink, so the windows onto the artwork read as raised graphite
-  pageUnderGrain: '#0F0F11', // the page as seen through the dark film grain (public/other/grain-dark.png)
+  page: '#18181B', // the page's base: the artwork's ink, where the artwork is not drawn (and theme-color)
+  pageUnderGrain: '#18181B', // the colour Safari paints past the page's ends: the ink
   text: '#F4F4F5',
-  card: '#1A1A1D', // cards, pills and light glass, raised above the page
-  muted: '#A1A1AA',
-  border: '#2C2C31',
-  accent: '#66B0FF', // TMU Blue's hue, lifted for a dark page
+  muted: '#BDBDC4',
+  border: 'rgba(244, 244, 245, 0.18)', // a light hairline on the artwork
+  accent: '#85C0FF', // TMU Blue's hue, lifted for the dark page
   accentTint: '#1C3754',
   onAccent: '#18181B',
-  onTrack: '#66B0FF',
+  onTrack: '#85C0FF',
   soon: '#FBBF24',
-  urgent: '#F87171',
+  urgent: '#FCA5A5',
   done: '#4ADE80',
-  pageEdge: '#71717A', // the shrunk page's edge beside Menu and Search, and on a sliding page (the paper's own colour would vanish)
+  pageEdge: '#71717A', // the shrunk page's edge beside Menu and Search, and on a sliding page
 });
+/* The brightest band of the background artwork (components/canvas/background/Background.jsx, SWEEP.glow and
+   its noise): page text must read over it as well as over the ink. */
+export const ARTWORK_GLOW = '#444444';
 
 export const DARK_QUERY = '(prefers-color-scheme: dark)';
 /* Whether the device asks for dark mode now (false outside a browser). */
 export const prefersDark = () => typeof matchMedia === 'function' && matchMedia(DARK_QUERY).matches;
-/* The edge drawn round the page while Menu or Search shrinks it, or while a page change slides it. On the dark
-   page it is a mid grey, since the page's own colour would vanish against the artwork. Behind a panel on a phone
-   the shrunk page dims to 5%, where only the paper's light edge still shows, so `dimmed` keeps that. */
+/* The edge drawn round the page while Menu or Search shrinks it, or while a page change slides it. The dark page
+   is see-through, so its edge is a mid grey on the artwork. Behind a panel on a phone the shrunk page dims to 5%,
+   where only the paper's light edge still shows, so `dimmed` keeps that. */
 export const pageEdgeColor = (dimmed = false) => (prefersDark() && !dimmed ? DARK.pageEdge : TOKENS.page);
 
 /* The printed colours of the lanyard ID badge (card, clip slot, strap, metal clip).
@@ -65,6 +69,12 @@ export const BADGE = Object.freeze({
   strapColor: TOKENS.mutedOnDark, // the course code printed on the band
   clip: TOKENS.mutedOnDark, // the metal clip
 });
+
+/* The Desk's signal field (components/artwork/signalField.mjs): its panel, its points and the points a pulse
+   lights. In dark mode the panel is left clear, so the points sit on the moving artwork with the rest of the
+   page. */
+export const FIELD = Object.freeze({ background: TOKENS.ink, point: TOKENS.mutedOnDark, signal: TOKENS.onDark });
+export const FIELD_DARK = Object.freeze({ background: null, point: TOKENS.mutedOnDark, signal: TOKENS.onDark });
 
 /* "r, g, b" for canvases and translucent CSS (rgba(var(--inkRgb), 0.2)). */
 export function rgbOf(hex) {

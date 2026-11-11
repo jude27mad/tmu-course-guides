@@ -1,4 +1,5 @@
 @use '@src/styles/glass';
+@use '@src/styles/island';
 
 .dialog {
   position: fixed;
@@ -13,6 +14,7 @@
   border-radius: 20px;
   background: var(--white);
   color: var(--text);
+  @include island.light;
   box-shadow: 0 24px 80px rgba(var(--inkRgb), 0.25);
   overflow: hidden;
   font-size: 1rem;

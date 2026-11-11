@@ -1,11 +1,14 @@
 // Checks the automatic dark mode (prefers-color-scheme: dark; src/styles/colors.scss) in what GitHub Pages
-// publishes (.github/workflows/pages.yml), after `pages-site.mjs build`. In Chromium, emulating a dark device:
+// publishes (.github/workflows/pages.yml), after `pages-site.mjs build`. In dark mode the page is see-through: the
+// moving black artwork behind it is its one black, with light text, and cards and pills keep the light palette.
+// In Chromium, emulating a dark device:
 //   1. Every page, as a 390 px phone and a 1440 px desktop: the dark tokens apply (no inline palette holds the
-//      light ones), the page, text and theme-color are the dark ones, the dark panels keep the ink, the MENU
-//      label stays readable, no white surface is left, and visible text meets AA against what is behind it.
+//      light ones), the page is clear over the ink, text and theme-color are the dark ones, the dark panels keep
+//      the ink, the MENU pill is a light pill, every white card holds dark text, and visible text meets AA
+//      against what is behind it. The Desk's signal field draws no panel of its own.
 //   2. Menu, Search, Guide tools, an assignment and the footer's end, with screenshots.
-//   3. An iPhone (Safari's document layout): the colour past the page's ends is the dark page under its grain,
-//      or the ink at a dark end, and theme-color says the same.
+//   3. An iPhone (Safari's document layout): the colour past the page's ends is the ink, and theme-color says
+//      the same.
 //   4. A device switching scheme mid-visit: light, dark, then light again, ending exactly where it started.
 // Usage: PLAYWRIGHT_PATH=/path/to/node_modules/playwright QA_REPORT_DIR=<dir> node scripts/check-dark-mode.mjs <folder>
 // With GITHUB_STEP_SUMMARY set, the report is also written to the job summary.
@@ -81,9 +84,9 @@ function readState() {
 }
 const RESTORED = { main: 'none', layout: '1', header: '1', headerVisibility: 'visible' };
 
-// Visible text against the colour behind it (the nearest painted ancestor, composited down to the page), and any
-// opaque white surface. Text on the transparent windows onto the artwork is measured against the page: the
-// artwork is darker than the page, so the light text there only gains.
+// Visible text against the colour behind it: the nearest painted ancestor (a light card), composited down to the
+// page's ink. Text straight on the see-through page is measured against the ink; tests/dark-mode.test.mjs checks
+// the page's text colours against the artwork's brightest band as well.
 function sweep(scope = 'body') {
   const parse = (value) => {
     const m = String(value).match(/rgba?\(([^)]+)\)/);
@@ -122,14 +125,10 @@ function sweep(scope = 'body') {
     return value;
   };
   const low = [];
-  const white = [];
   for (const el of document.querySelectorAll(`${scope} *`)) {
     const style = getComputedStyle(el);
     const box = el.getBoundingClientRect();
     if (style.visibility !== 'visible' || box.width < 2 || box.height < 2 || box.bottom < 0 || box.top > innerHeight) continue;
-    const bg = parse(style.backgroundColor);
-    // A white surface on the page is a leftover; the dark panels keep their own (the footer's back-to-top disc).
-    if (bg && bg.a >= 0.99 && bg.r === 255 && bg.g === 255 && bg.b === 255 && box.width * box.height > 400 && !el.closest('[data-surface="dark"]')) white.push(describe(el));
     const text = Array.from(el.childNodes).some((node) => node.nodeType === 3 && node.textContent.trim());
     // Disabled controls are exempt (WCAG 1.4.3), and are drawn faded in both schemes.
     if (!text || el.closest('[aria-hidden="true"], #fluidCanvas, canvas, .sr-only, [class*="visuallyHidden"], :disabled, [aria-disabled="true"]')) continue;
@@ -144,7 +143,7 @@ function sweep(scope = 'body') {
     const value = ratio(shown, under);
     if (value < (large ? 3 : 4.5)) low.push(`${describe(el)} "${el.textContent.trim().slice(0, 40)}" ${value.toFixed(2)}:1`);
   }
-  return { low: Array.from(new Set(low)), white: Array.from(new Set(white)) };
+  return { low: Array.from(new Set(low)) };
 }
 
 async function main() {
@@ -176,9 +175,9 @@ async function main() {
   };
 
   const darkState = (state, where) => {
-    assert.equal(state.tokens['--white'], DARK.page.toLowerCase(), `${where}: the page`);
+    assert.equal(state.tokens['--white'], 'transparent', `${where}: the page is see-through`);
     assert.equal(state.tokens['--text'], DARK.text.toLowerCase(), `${where}: the text`);
-    assert.equal(state.tokens['--card'], DARK.card.toLowerCase(), `${where}: cards`);
+    assert.equal(state.tokens['--card'], TOKENS.card.toLowerCase(), `${where}: cards stay light`);
     assert.equal(state.tokens['--accent'], DARK.accent.toLowerCase(), `${where}: the accent`);
     assert.equal(state.tokens['--black'], TOKENS.ink.toLowerCase(), `${where}: the dark panels keep the ink`);
     assert.equal(state.tokens['--menuColor'], TOKENS.ink.toLowerCase(), `${where}: the menu keeps the ink`);
@@ -190,9 +189,9 @@ async function main() {
     const page = state.scrollMode === 'document' ? DARK.pageUnderGrain : DARK.page;
     assert.equal(dark, state.surface === 'dark' ? TOKENS.ink.toLowerCase() : page.toLowerCase(), `${where}: dark theme-color`);
     if (state.menu?.label) {
-      const ink = rgb(TOKENS.ink).slice(4, -1);
-      const label = state.menu.label;
-      assert.ok(state.menu.background.includes(ink) ? label === rgb(TOKENS.onDark) : label === rgb(DARK.text), `${where}: MENU label ${label} on ${state.menu.background}`);
+      // The MENU pill is a light pill in dark mode, with an ink label.
+      assert.ok(/^rgba?\(255, 255, 255/.test(state.menu.background), `${where}: MENU pill ${state.menu.background}`);
+      assert.equal(state.menu.label, rgb(TOKENS.ink), `${where}: MENU label`);
     }
   };
 
@@ -214,10 +213,18 @@ async function main() {
             const node = document.querySelector('.sx__calendar');
             return node && getComputedStyle(node).borderTopColor;
           });
-          assert.equal(line, rgb(DARK.border), 'the calendar draws its lines in the page border colour');
+          // The calendar is a light card, drawn as in light mode (Schedule-X's own outline grey).
+          assert.equal(line, 'rgb(196, 199, 197)', 'the calendar keeps its light-mode lines');
         }
-        const { low, white } = await page.evaluate(sweep);
-        assert.deepEqual(white, [], `${name}: white surfaces left`);
+        if (name === 'desk') {
+          // The Desk's signal field draws its points on the moving artwork, with no panel of its own.
+          const corner = await page.evaluate(() => {
+            const canvas = document.querySelector('canvas[data-signal-field]');
+            return canvas && canvas.getContext('2d').getImageData(1, 1, 1, 1).data[3];
+          });
+          assert.equal(corner, 0, 'the signal field leaves its panel clear');
+        }
+        const { low } = await page.evaluate(sweep);
         assert.deepEqual(low, [], `${name}: text below AA`);
         await page.screenshot({ path: join(reports, `${label}-${name}.png`) });
       });
@@ -227,7 +234,7 @@ async function main() {
       await toEnd(page);
       darkState(await page.evaluate(readState), 'desk end');
       assert.deepEqual((await page.evaluate(sweep)).low, [], 'text below AA at the end');
-      // The footer is a dark panel and keeps its colours: a white back-to-top disc with an ink arrow.
+      // The footer keeps its colours, and its back-to-top disc stays a light pill with an ink arrow.
       const button = await page.evaluate(() => {
         const node = document.querySelector('footer [aria-label="Back to top"]');
         const arrow = node?.querySelector('svg');
@@ -297,7 +304,8 @@ async function main() {
         const node = document.querySelector('#guide-tools');
         return node && { open: node.open, background: getComputedStyle(node).backgroundColor, color: getComputedStyle(node).color };
       });
-      assert.deepEqual(dialog, { open: true, background: rgb(DARK.page), color: rgb(DARK.text) });
+      // Guide tools is a light card on the dark page, as in light mode.
+      assert.deepEqual(dialog, { open: true, background: rgb(TOKENS.page), color: rgb(TOKENS.ink) });
       await page.screenshot({ path: join(reports, `${label}-cen100-guide-tools.png`) });
     });
   }
@@ -309,7 +317,7 @@ async function main() {
     const top = await phone.evaluate(readState);
     assert.equal(top.scrollMode, 'document');
     darkState(top, 'iphone top');
-    assert.equal(top.html, rgb(DARK.pageUnderGrain), 'past the top: the dark page as seen through its grain');
+    assert.equal(top.html, rgb(DARK.pageUnderGrain), 'past the top: the ink under the artwork');
     await phone.screenshot({ path: join(reports, 'iphone-desk-top.png') });
     await toEnd(phone);
     const end = await phone.evaluate(readState);
@@ -338,7 +346,8 @@ async function main() {
       darkState(await page.evaluate(readState), `${path || 'desk'} after the switch`);
       const due = await page.evaluate(() => getComputedStyle(document.querySelector('.sx__calendar') || document.documentElement).getPropertyValue('--sx-color-due').trim());
       // Schedule-X's event colours are palette variables, so they resolve to the dark accent.
-      if (path) assert.equal(due.toLowerCase(), DARK.accent.toLowerCase(), 'calendar events follow the scheme');
+      // The calendar is a light card: its events keep the light accent.
+      if (path) assert.equal(due.toLowerCase(), TOKENS.accent.toLowerCase(), 'calendar events keep the light accent');
       await page.screenshot({ path: join(reports, `switch-${path ? 'schedule' : 'desk'}-dark.png`) });
       await page.emulateMedia({ colorScheme: 'light' });
       await page.waitForTimeout(800);

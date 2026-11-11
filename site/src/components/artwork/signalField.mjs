@@ -6,17 +6,17 @@
  * This adapter replaces its global intro/initialization with a disposable controller
  * driven by Giats's existing Tempus clock, visibility and motion preferences.
  */
-import { TOKENS, rgbOf } from '../../lib/palette.mjs';
+import { FIELD, rgbOf } from '../../lib/palette.mjs';
 import { easeFor, frameShare } from '../../utils/frameStep.mjs';
 
-const BONE = rgbOf(TOKENS.mutedOnDark);
-const SIGNAL = rgbOf(TOKENS.onDark);
+// The field's panel (null: left clear), its points and the points a pulse lights (FIELD, or FIELD_DARK).
+const paintFor = (colors) => ({ background: colors.background, point: `rgb(${rgbOf(colors.point)})`, signal: `rgb(${rgbOf(colors.signal)})` });
 const PULSE_LIFE = 2.8;
 const PULSE_SPEED = 240;
 const REPEL = 170;
 const noop = () => {};
 
-export function mountSignalField(canvas, { subscribe, host = canvas.parentElement, visible = false, still = false } = {}) {
+export function mountSignalField(canvas, { subscribe, host = canvas.parentElement, visible = false, still = false, colors = FIELD } = {}) {
   let ctx;
   try {
     ctx = canvas.getContext('2d');
@@ -27,6 +27,7 @@ export function mountSignalField(canvas, { subscribe, host = canvas.parentElemen
   const doc = canvas.ownerDocument;
   const win = doc.defaultView;
   const pulses = [];
+  let paint = paintFor(colors);
   // Per-frame values of each live pulse, so the point loop does not recompute
   // them for every point: x, y, ring radius, ring fade, core fade.
   const live = new Float64Array(4 * 5);
@@ -66,8 +67,10 @@ export function mountSignalField(canvas, { subscribe, host = canvas.parentElemen
     mouse.power += (mouse.target - mouse.power) * easeFor(0.08, share);
     ctx.clearRect(0, 0, width, height);
     ctx.globalAlpha = 1;
-    ctx.fillStyle = TOKENS.ink;
-    ctx.fillRect(0, 0, width, height);
+    if (paint.background) {
+      ctx.fillStyle = paint.background;
+      ctx.fillRect(0, 0, width, height);
+    }
 
     let liveCount = 0;
     for (const pulse of pulses) {
@@ -79,7 +82,7 @@ export function mountSignalField(canvas, { subscribe, host = canvas.parentElemen
     const repel = mouse.power > 0.01;
 
     hot.length = 0;
-    ctx.fillStyle = `rgb(${BONE})`;
+    ctx.fillStyle = paint.point;
 
     for (let i = 0; i < cols; i++) {
       const bx = offsetX + i * gap;
@@ -127,7 +130,7 @@ export function mountSignalField(canvas, { subscribe, host = canvas.parentElemen
       }
     }
 
-    ctx.fillStyle = `rgb(${SIGNAL})`;
+    ctx.fillStyle = paint.signal;
     for (let k = 0; k < hot.length; k += 4) {
       ctx.globalAlpha = hot[k + 3];
       ctx.fillRect(hot[k] - hot[k + 2] / 2, hot[k + 1] - hot[k + 2] / 2, hot[k + 2], hot[k + 2]);
@@ -138,7 +141,7 @@ export function mountSignalField(canvas, { subscribe, host = canvas.parentElemen
       if (age < 0 || age > PULSE_LIFE) continue;
       const fade = 1 - age / PULSE_LIFE;
       ctx.globalAlpha = fade * 0.55;
-      ctx.strokeStyle = `rgb(${SIGNAL})`;
+      ctx.strokeStyle = paint.signal;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.arc(pulse.x, pulse.y, age * PULSE_SPEED, 0, Math.PI * 2);
@@ -146,7 +149,7 @@ export function mountSignalField(canvas, { subscribe, host = canvas.parentElemen
       ctx.globalAlpha = Math.max(0, 1 - age / 1.6);
       ctx.beginPath();
       ctx.arc(pulse.x, pulse.y, 3.5, 0, Math.PI * 2);
-      ctx.fillStyle = `rgb(${SIGNAL})`;
+      ctx.fillStyle = paint.signal;
       ctx.fill();
     }
     ctx.globalAlpha = 1;
@@ -252,8 +255,10 @@ export function mountSignalField(canvas, { subscribe, host = canvas.parentElemen
       const wasPaused = paused;
       if ('visible' in state) inView = state.visible;
       if ('still' in state) paused = state.still;
+      if (state.colors) paint = paintFor(state.colors);
       sync();
-      if (paused && !wasPaused) staticFrame();
+      // A field that is not drawing frames (paused, off screen) shows its held frame in the new colours.
+      if ((paused && !wasPaused) || (state.colors && (paused || !unsubscribe))) staticFrame();
     },
     destroy() {
       if (disposed) return;

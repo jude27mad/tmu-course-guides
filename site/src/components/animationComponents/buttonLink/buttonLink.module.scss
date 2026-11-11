@@ -1,3 +1,4 @@
+@use '@src/styles/island';
 @use '@src/styles/glass';
 @import '@src/styles/functions';
 
@@ -11,6 +12,7 @@
   text-decoration: none;
   background-color: var(--card);
   color: var(--text);
+  @include island.light;
   display: inline-flex;
   gap: calc(var(--layout-columns-gap) / 2);
   align-items: center;

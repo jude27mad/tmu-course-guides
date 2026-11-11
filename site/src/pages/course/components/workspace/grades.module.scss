@@ -1,3 +1,4 @@
+@use '@src/styles/island';
 // Grade calculator. Solid reading surfaces only (no glass), the site palette and the workspace type scale.
 .root {
   padding-bottom: 24px;
@@ -33,6 +34,7 @@
 }
 .standing,
 .targets {
+  @include island.light;
   padding: 20px;
   border-radius: 16px;
   background: var(--card);
@@ -349,6 +351,7 @@
 }
 // The live essentials, kept in view above the marks while the full summary is elsewhere on screen.
 .quick {
+  @include island.light;
   position: sticky;
   top: 8px;
   z-index: 2;
@@ -464,6 +467,8 @@
   align-items: center;
   gap: 6px;
   input {
+    // Dark mode: a light field on the dark page, like the cards (it turns white when focused).
+    @include island.light;
     width: 76px;
     height: 44px;
     padding: 0 8px;

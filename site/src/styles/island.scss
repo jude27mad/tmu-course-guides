@@ -1,0 +1,16 @@
+// Dark mode keeps cards and pills light: each is an island of the light palette on the dark page. The light
+// values come from colors.scss, which keeps them as --light-* in both schemes. Include it on the element that
+// paints the card; everything inside it then uses the light palette, as in light mode.
+$tokens: ('white', 'text', 'card', 'fillColor', 'muted', 'border', 'accent', 'accentTint', 'onAccent', 'statusOnTrack', 'statusSoon', 'statusUrgent', 'statusDone', 'cardRgb', 'textRgb', 'accentRgb');
+
+@mixin light {
+  @media screen and (prefers-color-scheme: dark) {
+    @each $name in $tokens {
+      --#{$name}: var(--light-#{$name});
+    }
+    --glassHighlight: rgba(var(--light-cardRgb), 0.65);
+    --glassEdge: rgba(var(--inkRgb), 0.18);
+    --focus: var(--light-accent);
+    color: var(--light-text);
+  }
+}

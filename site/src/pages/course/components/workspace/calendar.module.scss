@@ -1,3 +1,4 @@
+@use '@src/styles/island';
 .calendar {
   height: min(680px, 82svh);
   min-height: 520px;
@@ -78,6 +79,10 @@
   border-bottom: 1px solid var(--border);
   &:hover {
     background: var(--fillColor);
+    // Dark mode: a faint lift on the dark page (the white card fill would hide the row's light text).
+    @media screen and (prefers-color-scheme: dark) {
+      background: rgba(var(--highlightRgb), 0.06);
+    }
   }
 }
 @media (max-width: 700px) {
@@ -103,15 +108,17 @@
   }
 }
 
-// Dark mode (styles/colors.scss): today's date is a light circle, so its number takes the page's colour, and
-// Schedule-X's own light greys (the Today button's hover, the pressed state and its lines, declared on :root)
-// follow the page.
-@media screen and (prefers-color-scheme: dark) {
-  .calendar {
-    --sx-color-on-primary: var(--white);
-    --sx-internal-color-light-gray: var(--border);
-    --sx-internal-color-gray-ripple-background: rgba(var(--highlightRgb), 0.12);
-    // Its grid lines and outlines: :root composes this from its own light grey, so it is set again here.
-    --sx-border: 1px solid var(--border);
+// Dark mode (styles/colors.scss): the calendar is a light card on the dark page, as in light mode. Schedule-X
+// writes the event colours on <html> as palette variables, which resolve there to the page's dark-mode values,
+// so the card sets them again from its own light palette.
+.calendar {
+  @include island.light;
+  @media screen and (prefers-color-scheme: dark) {
+    --sx-color-due: var(--accent);
+    --sx-color-due-container: var(--card);
+    --sx-color-on-due-container: var(--text);
+    --sx-color-done: var(--muted);
+    --sx-color-done-container: var(--border);
+    --sx-color-on-done-container: var(--text);
   }
 }

@@ -129,6 +129,13 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-11-11-dark-mode-one-black",
+  "date": "November 11, 2026",
+  "title": "Dark mode in one black",
+  "text": "Dark mode no longer mixes shades of black. The whole page is now one black with slowly moving light bands, the same artwork that shows behind the menu and the footer, with light text on it. Cards and pills, such as the Next deadline card, the tabs, the calendar, the grade calculator and Guide tools, keep their light look on top of it. Light mode is unchanged.",
+  "items": []
+ },
+ {
   "id": "2026-11-11-intro-footer-copy",
   "date": "November 11, 2026",
   "title": "Clearer intro and footer",

@@ -1,3 +1,4 @@
+@use '@src/styles/island';
 @import '@src/styles/functions';
 
 .root {
@@ -115,6 +116,7 @@
       --status: var(--statusDone);
     }
     .statusBadge {
+      @include island.light;
       width: fit-content;
       margin-top: calc(var(--layout-columns-gap) * -0.5);
       margin-bottom: var(--layout-columns-gap);

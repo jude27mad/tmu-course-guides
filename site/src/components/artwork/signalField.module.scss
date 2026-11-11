@@ -16,6 +16,13 @@
     var(--black);
 }
 
+// Dark mode: no panel of its own, so the points sit on the moving artwork with the rest of the page.
+@media screen and (prefers-color-scheme: dark) {
+  .field {
+    background-color: transparent;
+  }
+}
+
 .canvas {
   display: block;
   width: 100%;
