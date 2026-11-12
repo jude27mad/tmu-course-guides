@@ -1,6 +1,6 @@
 import { nativeIOSScroll, scrollTop } from '@src/utils/scrollRoot';
 import gsap from 'gsap';
-import { pageEdgeColor } from '@src/lib/palette.mjs';
+import { pageEdgeColor, prefersDark } from '@src/lib/palette.mjs';
 
 // Giats's menu: the page shrinks, slides left and dims, uncovering the dark
 // artwork behind it, and the panel's rows slide in from the left. Phones and
@@ -60,6 +60,9 @@ export function markPageShrunk(shrunk) {
   root.dataset.pageShrunk = '';
 }
 
+// How opaque the page stays while Menu or Search shrinks it on a wide screen (see buildShellTimeline).
+const shrunkPageOpacity = () => (prefersDark() ? 1 : 0.3);
+
 export function buildShellTimeline({ isMobile }) {
   const fluidCanvas = document.getElementById('fluidCanvas');
   const layout = document.getElementById('layout');
@@ -95,7 +98,11 @@ export function buildShellTimeline({ isMobile }) {
   // the panel (growPageBack).
   if (ios) tl.fromTo(document.documentElement, { '--panel-cover': 0, '--panel-ink': 0 }, { '--panel-cover': 1, '--panel-ink': 1 }, 0);
   // Keep the canvas/grain shell full-height so it cannot expose bands above and below the page.
-  tl.to(layout, { opacity: isMobile ? 0.05 : 0.3 }, 0);
+  // Light mode dims the page to 30%, so its paper turns grey over the dark artwork. In dark mode that would leave a
+  // murky ghost of ink over the artwork's light bands: on wide screens the page stays an opaque ink card, edged
+  // (pageEdgeColor), its windows still open onto the artwork. Phones hide it behind the full-screen panel in both
+  // schemes. A change of scheme rebuilds the shell (navbar/Index.jsx), so this follows the device.
+  tl.to(layout, { opacity: isMobile ? 0.05 : shrunkPageOpacity() }, 0);
   if (scrollbar) tl.to(scrollbar, isMobile ? { opacity: 0 } : { opacity: 0, right: '46vw', scale: 0.9 }, 0);
   // This timeline is also prepared during route entry. Eager overwrite would
   // cancel the route's header reveal even while this menu timeline is paused.

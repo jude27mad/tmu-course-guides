@@ -5,7 +5,7 @@
  * The implementation lives in the .mjs modules next to this file (Node runs the tests against them directly).
  */
 export { COURSES, COURSE_IDS, PALETTES, DEFAULT_PALETTE, getCourse, sections, getSection, setSection, groups, getGroup, setGroup, getProfile } from './courses.mjs';
-export { TOKENS, STATUS, BADGE, countdownStatus, rgbOf } from './palette.mjs';
+export { TOKENS, STATUS, BADGE, BADGE_DARK, countdownStatus, rgbOf } from './palette.mjs';
 export { deadlines, deadlineItem, buckets, nextDeadline, countdown, weeklyChecklist, assessments, deskSnapshot, workList } from './deadlines.mjs';
 export { assignmentList, calendarEvents } from './assignments.mjs';
 export { currentTermWeek } from './weeks.mjs';

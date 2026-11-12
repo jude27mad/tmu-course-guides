@@ -82,7 +82,7 @@ After one visit, the website keeps a copy of its own pages in your browser, so t
 - The 3D effects need WebGL. If it is turned off or unavailable in your browser, the website still opens and works: the background's slow drift, the pointer effect and the pre-footer game are left out, and each course badge shows a plain card with the course code and name.
 - Pinch zoom, text selection, keyboard navigation and visible focus all work.
 - Without JavaScript, course information, rules, grading and contacts are still readable; deadlines, countdowns, checklists and item details need JavaScript.
-- The website follows your device's light or dark setting. In dark mode the page turns near-black with light text, a lighter TMU Blue and brighter deadline colours; the menu, the footer and the artwork behind the page look the same in both. There is no separate switch, and printing stays light.
+- The website follows your device's light or dark setting. In dark mode everything is one black, with light text, a lighter TMU Blue and brighter deadline colours; cards, pills and the calendar are outlined with thin grey lines. The course badges, the Courses card and the footer look onto the same slowly moving light bands as in light mode, and the windows on the Desk now do too, each with a thin edge. The selected tab is blue, and the main button (Mark done) stays TMU Blue. There is no separate switch, and printing stays light.
 
 ## Privacy
 

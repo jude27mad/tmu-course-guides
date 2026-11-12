@@ -16,6 +16,16 @@
     var(--black);
 }
 
+// Dark mode: no panel of its own, so the Desk's windows show the moving artwork behind the page, with the points
+// over it. The field's own rounded edge is the window edge: the paper above hides it, except where a window on the
+// field's border (or in its rounded corners) shows it (home.module.scss draws the edges inside the field).
+@media screen and (prefers-color-scheme: dark) {
+  .field {
+    background-color: transparent;
+    box-shadow: inset 0 0 0 1px var(--windowEdge);
+  }
+}
+
 .canvas {
   display: block;
   width: 100%;

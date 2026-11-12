@@ -44,7 +44,7 @@ html {
   @each $name, $key in ('inkRgb': 'black', 'pageRgb': 'white', 'cardRgb': 'card', 'onDarkRgb': 'onDark', 'mutedOnDarkRgb': 'mutedOnDark', 'textRgb': 'text', 'accentRgb': 'accent') {
     --#{$name}: #{channels(map.get($colors, $key))};
   }
-  // White light on any surface: the sheen and rim of the dark glass, and of the light glass in dark mode.
+  // White light on any surface: the sheen and rim of the dark glass.
   --highlightRgb: 255, 255, 255;
   // The light glass's sheen and rim (styles/glass.scss).
   --glassHighlight: rgba(var(--cardRgb), 0.65);
@@ -54,24 +54,33 @@ html {
 }
 
 // Dark mode follows the device setting; there is no toggle. Mirrors DARK in src/lib/palette.mjs
-// (tests/dark-mode.test.mjs). Only the page and what sits on it change: the ink and every dark-panel colour
-// (--black, --menuColor, --raised, --onDark, --borderOnDark and their channels) stay as they are, so the
-// menu, the footer, the artwork's windows and Safari's dark ends are unchanged. It must come after the light
-// map: palette.test.mjs reads the first value of each name. Printing stays light.
+// (tests/dark-mode.test.mjs). It has one black, the ink: the page, the menu and the footer, every panel, card and
+// pill (so --white, --card and --fillColor are all the ink, and --black and --menuColor already are), and the floor
+// of the moving artwork. Structure comes from hairlines (--border, --borderStrong, --windowEdge, --fieldEdge, which
+// only dark mode defines) and type, never from a second black. The windows are holes in the ink, as in light mode.
+// It must come after the light map: palette.test.mjs reads the first value of each name. Printing stays light.
 $dark: (
-  'white': #0e0e10,
-  'pageUnderGrain': #0f0f11,
+  'white': #18181b,
+  'pageUnderGrain': #18181b,
+  'card': #18181b,
+  'fillColor': #18181b,
   'text': #f4f4f5,
-  'card': #1a1a1d,
-  'fillColor': #1a1a1d,
+  'onDark': #f4f4f5,
+  'menuFontColor': #f4f4f5,
   'muted': #a1a1aa,
-  'border': #2c2c31,
-  'accent': #66b0ff,
+  'mutedOnDark': #b4b4bb,
+  'border': #3f3f46,
+  'borderStrong': #52525b,
+  'windowEdge': #63636b,
+  'fieldEdge': #71717a,
+  'accent': #85c0ff,
   'accentTint': #1c3754,
+  'accentFill': #004c9b,
+  'onAccentFill': #ffffff,
   'onAccent': #18181b,
-  'statusOnTrack': #66b0ff,
+  'statusOnTrack': #85c0ff,
   'statusSoon': #fbbf24,
-  'statusUrgent': #f87171,
+  'statusUrgent': #fca5a5,
   'statusDone': #4ade80,
 );
 
@@ -80,11 +89,9 @@ $dark: (
     @each $name, $color in $dark {
       --#{$name}: #{$color};
     }
-    @each $name, $key in ('cardRgb': 'card', 'textRgb': 'text', 'accentRgb': 'accent') {
+    @each $name, $key in ('pageRgb': 'white', 'cardRgb': 'card', 'onDarkRgb': 'onDark', 'mutedOnDarkRgb': 'mutedOnDark', 'textRgb': 'text', 'accentRgb': 'accent') {
       --#{$name}: #{channels(map.get($dark, $key))};
     }
-    --glassHighlight: rgba(var(--highlightRgb), 0.07);
-    --glassEdge: rgba(var(--highlightRgb), 0.12);
     // The header's wordmark and clock (and anything else without a colour of its own) inherit this.
     color: var(--text);
   }

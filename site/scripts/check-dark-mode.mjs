@@ -1,12 +1,17 @@
 // Checks the automatic dark mode (prefers-color-scheme: dark; src/styles/colors.scss) in what GitHub Pages
-// publishes (.github/workflows/pages.yml), after `pages-site.mjs build`. In Chromium, emulating a dark device:
+// publishes (.github/workflows/pages.yml), after `pages-site.mjs build`. Dark mode has one black, the ink: the page,
+// the panels, every card and pill, and the floor of the moving artwork, which shows through the windows in the ink.
+// In Chromium, emulating a dark device:
 //   1. Every page, as a 390 px phone and a 1440 px desktop: the dark tokens apply (no inline palette holds the
-//      light ones), the page, text and theme-color are the dark ones, the dark panels keep the ink, the MENU
-//      label stays readable, no white surface is left, and visible text meets AA against what is behind it.
-//   2. Menu, Search, Guide tools, an assignment and the footer's end, with screenshots.
-//   3. An iPhone (Safari's document layout): the colour past the page's ends is the dark page under its grain,
-//      or the ink at a dark end, and theme-color says the same.
+//      light ones), the page, its cards and the MENU pill are the ink, text and theme-color are the dark ones, no
+//      light block is left on the page, and visible text meets AA against what is behind it. Selected tabs and
+//      filters are TMU Blue; the windows on the Desk and Courses show the artwork, floored at the ink, with an edge.
+//   2. Menu (the shrunk page is an opaque ink card with an edge), Search, Guide tools, an assignment and the
+//      footer's end, with screenshots. The Desk's primary action (MARK DONE) is TMU Blue with a white label.
+//   3. An iPhone (Safari's document layout): the colour past the page's ends is the ink, and theme-color says
+//      the same.
 //   4. A device switching scheme mid-visit: light, dark, then light again, ending exactly where it started.
+//   5. The Desk's window edges as drawn, with WebGL and without it, and a page printed from a dark device (light).
 // Usage: PLAYWRIGHT_PATH=/path/to/node_modules/playwright QA_REPORT_DIR=<dir> node scripts/check-dark-mode.mjs <folder>
 // With GITHUB_STEP_SUMMARY set, the report is also written to the job summary.
 import assert from 'node:assert/strict';
@@ -69,7 +74,7 @@ function readState() {
     surface: root.dataset.browserSurface || null,
     bottom: root.dataset.browserBottom || null,
     scrollMode: root.dataset.scrollMode,
-    menu: menu ? { background: getComputedStyle(menu).backgroundColor, label: label && getComputedStyle(label).color } : null,
+    menu: menu ? { background: getComputedStyle(menu).backgroundColor, border: getComputedStyle(menu).borderTopColor, label: label && getComputedStyle(label).color } : null,
     // The page as the Menu/Search shell leaves it: restored means no transform, full opacity, a visible header.
     shell: {
       main: getComputedStyle(document.querySelector('main')).transform.replace('matrix(1, 0, 0, 1, 0, 0)', 'none'),
@@ -81,9 +86,9 @@ function readState() {
 }
 const RESTORED = { main: 'none', layout: '1', header: '1', headerVisibility: 'visible' };
 
-// Visible text against the colour behind it (the nearest painted ancestor, composited down to the page), and any
-// opaque white surface. Text on the transparent windows onto the artwork is measured against the page: the
-// artwork is darker than the page, so the light text there only gains.
+// Visible text against the colour behind it: the nearest painted ancestor, composited down to the page's ink. Text
+// over the artwork (in a window, Menu, the footer) is measured against the ink; tests/dark-mode.test.mjs checks
+// those text colours against the artwork's brightest band as well.
 function sweep(scope = 'body') {
   const parse = (value) => {
     const m = String(value).match(/rgba?\(([^)]+)\)/);
@@ -122,14 +127,10 @@ function sweep(scope = 'body') {
     return value;
   };
   const low = [];
-  const white = [];
   for (const el of document.querySelectorAll(`${scope} *`)) {
     const style = getComputedStyle(el);
     const box = el.getBoundingClientRect();
     if (style.visibility !== 'visible' || box.width < 2 || box.height < 2 || box.bottom < 0 || box.top > innerHeight) continue;
-    const bg = parse(style.backgroundColor);
-    // A white surface on the page is a leftover; the dark panels keep their own (the footer's back-to-top disc).
-    if (bg && bg.a >= 0.99 && bg.r === 255 && bg.g === 255 && bg.b === 255 && box.width * box.height > 400 && !el.closest('[data-surface="dark"]')) white.push(describe(el));
     const text = Array.from(el.childNodes).some((node) => node.nodeType === 3 && node.textContent.trim());
     // Disabled controls are exempt (WCAG 1.4.3), and are drawn faded in both schemes.
     if (!text || el.closest('[aria-hidden="true"], #fluidCanvas, canvas, .sr-only, [class*="visuallyHidden"], :disabled, [aria-disabled="true"]')) continue;
@@ -144,7 +145,67 @@ function sweep(scope = 'body') {
     const value = ratio(shown, under);
     if (value < (large ? 3 : 4.5)) low.push(`${describe(el)} "${el.textContent.trim().slice(0, 40)}" ${value.toFixed(2)}:1`);
   }
-  return { low: Array.from(new Set(low)), white: Array.from(new Set(white)) };
+  return { low: Array.from(new Set(low)) };
+}
+
+// Painted blocks that are light (a white card or pill left on the ink), larger than a 40 px square, on screen.
+function lightBlocks() {
+  const parse = (value) => {
+    const m = String(value).match(/rgba?\(([^)]+)\)/);
+    if (!m) return null;
+    const [r, g, b, a = 1] = m[1].split(/[\s,/]+/).filter(Boolean).map(Number);
+    return { r, g, b, a };
+  };
+  const found = [];
+  for (const el of document.querySelectorAll('body *')) {
+    const style = getComputedStyle(el);
+    const bg = parse(style.backgroundColor);
+    if (!bg || bg.a < 0.5 || style.visibility !== 'visible' || Number(style.opacity) < 0.2) continue;
+    const box = el.getBoundingClientRect();
+    if (box.width * box.height < 1600 || box.bottom < 0 || box.top > innerHeight || box.right < 0 || box.left > innerWidth) continue;
+    if ((bg.r + bg.g + bg.b) / 3 > 128) found.push(`${el.tagName.toLowerCase()}.${String(el.className).split(' ')[0]} ${style.backgroundColor}`);
+  }
+  return found;
+}
+
+// The Desk's window edges as drawn (desktop, reduced motion, so the cells are at their starting places). Cell 0 sits
+// in the lower half of the first column: its right edge must be drawn in the window edge's colour, and the field's
+// top edge, which borders no window there, must stay the bare ink.
+async function deskEdges(page) {
+  const require = createRequire(import.meta.url);
+  const sharp = require('sharp');
+  const [x, y, width, height] = await page.evaluate(() => {
+    const box = document.querySelector('svg[data-surface="cells"]').getBoundingClientRect();
+    return [box.x, box.y, box.width, box.height];
+  });
+  const { data, info } = await sharp(await page.screenshot()).raw().toBuffer({ resolveWithObject: true });
+  const pixel = (px, py) => {
+    const at = (Math.round(py) * info.width + Math.round(px)) * info.channels;
+    return [data[at], data[at + 1], data[at + 2]];
+  };
+  const across = [];
+  for (let dx = -3; dx <= 3; dx += 1) across.push(pixel(x + width / 6 + dx, y + height * 0.75));
+  const top = [];
+  for (let dy = -2; dy <= 2; dy += 1) top.push(pixel(x + width * 0.08, y + dy));
+  const brightest = across.reduce((best, each) => (each[0] + each[1] + each[2] > best[0] + best[1] + best[2] ? each : best));
+  const near = (a, b, tolerance) => a.every((value, i) => Math.abs(value - b[i]) <= tolerance);
+  const ink = rgbOf(DARK.page).split(', ').map(Number);
+  // Antialiased across a pixel boundary, the 1px edge measures about rgb(86, 86, 94); the artwork's light bands
+  // through the window stay well below that.
+  assert.ok(near(brightest, rgbOf(DARK.windowEdge).split(', ').map(Number), 20), `a window's edge is drawn: brightest ${brightest} across cell 0's right edge`);
+  assert.ok(brightest[0] >= ink[0] + 50, `a window's edge stands clear of the ink and the artwork: ${brightest}`);
+  assert.ok(top.every((each) => near(each, ink, 3)), `the field's top edge, where no window is, stays the ink: ${top.map(String).join(' | ')}`);
+}
+
+// The darkest and lightest grey levels (1st and 99th percentile) of an area of a screenshot.
+async function levels(page, clip) {
+  const require = createRequire(import.meta.url);
+  const sharp = require('sharp');
+  const { data, info } = await sharp(await page.screenshot({ clip })).raw().toBuffer({ resolveWithObject: true });
+  const values = [];
+  for (let i = 0; i < data.length; i += info.channels) values.push((data[i] + data[i + 1] + data[i + 2]) / 3);
+  values.sort((a, b) => a - b);
+  return { low: values[Math.floor(values.length * 0.01)], high: values[Math.floor(values.length * 0.99)] };
 }
 
 async function main() {
@@ -176,9 +237,9 @@ async function main() {
   };
 
   const darkState = (state, where) => {
-    assert.equal(state.tokens['--white'], DARK.page.toLowerCase(), `${where}: the page`);
+    assert.equal(state.tokens['--white'], DARK.page.toLowerCase(), `${where}: the page is the ink`);
     assert.equal(state.tokens['--text'], DARK.text.toLowerCase(), `${where}: the text`);
-    assert.equal(state.tokens['--card'], DARK.card.toLowerCase(), `${where}: cards`);
+    assert.equal(state.tokens['--card'], DARK.page.toLowerCase(), `${where}: cards are the page's ink`);
     assert.equal(state.tokens['--accent'], DARK.accent.toLowerCase(), `${where}: the accent`);
     assert.equal(state.tokens['--black'], TOKENS.ink.toLowerCase(), `${where}: the dark panels keep the ink`);
     assert.equal(state.tokens['--menuColor'], TOKENS.ink.toLowerCase(), `${where}: the menu keeps the ink`);
@@ -190,9 +251,10 @@ async function main() {
     const page = state.scrollMode === 'document' ? DARK.pageUnderGrain : DARK.page;
     assert.equal(dark, state.surface === 'dark' ? TOKENS.ink.toLowerCase() : page.toLowerCase(), `${where}: dark theme-color`);
     if (state.menu?.label) {
-      const ink = rgb(TOKENS.ink).slice(4, -1);
-      const label = state.menu.label;
-      assert.ok(state.menu.background.includes(ink) ? label === rgb(TOKENS.onDark) : label === rgb(DARK.text), `${where}: MENU label ${label} on ${state.menu.background}`);
+      // The MENU pill is the ink with a strong hairline and a light label (reduced motion: the solid glass).
+      assert.equal(state.menu.background, rgb(DARK.page), `${where}: MENU pill`);
+      assert.equal(state.menu.border, rgb(DARK.borderStrong), `${where}: MENU pill's edge`);
+      assert.equal(state.menu.label, rgb(DARK.text), `${where}: MENU label`);
     }
   };
 
@@ -210,14 +272,62 @@ async function main() {
         assert.equal(state.html, rgb(DARK.page), `${name}: the page behind everything`);
         assert.deepEqual(state.shell, RESTORED, `${name}: the page is not shrunk`);
         if (name === 'cen100-schedule' && label === 'desktop') {
-          const line = await page.evaluate(() => {
+          const lines = await page.evaluate(() => {
             const node = document.querySelector('.sx__calendar');
-            return node && getComputedStyle(node).borderTopColor;
+            const today = document.querySelector('.sx__today-button');
+            const pressed = Array.from(document.querySelectorAll('main button[aria-pressed="true"]')).find((button) => /calendar/i.test(button.textContent));
+            return node && { grid: getComputedStyle(node).borderTopColor, today: today && getComputedStyle(today).borderTopColor, pressed: pressed && [getComputedStyle(pressed).backgroundColor, getComputedStyle(pressed).color] };
           });
-          assert.equal(line, rgb(DARK.border), 'the calendar draws its lines in the page border colour');
+          // The calendar is drawn on the ink in hairlines: dividers for its lines, the field edge for its controls.
+          assert.deepEqual(lines, { grid: rgb(DARK.border), today: rgb(DARK.fieldEdge), pressed: [rgb(DARK.accentTint), rgb(DARK.accent)] }, 'the calendar and the pressed Calendar toggle');
         }
-        const { low, white } = await page.evaluate(sweep);
-        assert.deepEqual(white, [], `${name}: white surfaces left`);
+        if (name === 'cen100-work') {
+          // The selected tab and the selected filter are TMU Blue: its tint, its outline and its type.
+          const selected = await page.evaluate(() => {
+            const read = (node) => node && [getComputedStyle(node).backgroundColor, getComputedStyle(node).boxShadow.includes('inset') ? getComputedStyle(node).boxShadow.split(' 0px')[0] : null];
+            const tab = document.querySelector('main [aria-current="page"]');
+            return { tab: tab && getComputedStyle(tab).color, slider: read(document.querySelector('[data-course-selection]')), filter: read(document.querySelector('[data-filter-selection]')) };
+          });
+          assert.deepEqual(selected, { tab: rgb(DARK.accent), slider: [rgb(DARK.accentTint), rgb(DARK.accent)], filter: [rgb(DARK.accentTint), rgb(DARK.accent)] }, 'the selected states');
+        }
+        if (name === 'desk') {
+          // The Desk's signal field draws its points on the artwork, with no panel of its own; the paper's windows are
+          // edged (in dark mode on screen only, the styles draw the paper through the edge filter).
+          const desk = await page.evaluate(() => {
+            const canvas = document.querySelector('canvas[data-signal-field]');
+            const svg = document.querySelector('svg[data-surface="cells"]');
+            const paper = svg?.querySelector(':scope > g');
+            return {
+              corner: canvas && canvas.getContext('2d').getImageData(1, 1, 1, 1).data[3],
+              edged: !!paper && /desk-window-edge/.test(getComputedStyle(paper).filter) && !!svg?.querySelector('filter#desk-window-edge feMorphology'),
+              viewBox: svg?.getAttribute('viewBox'),
+            };
+          });
+          assert.deepEqual(desk, { corner: 0, edged: true, viewBox: null }, 'the Desk field and its edged windows');
+          if (label === 'desktop') await deskEdges(page);
+          // Next up's primary action (MARK DONE) is the one filled shape: TMU Blue with a white label.
+          const primary = await page.evaluate(() => {
+            const node = document.querySelector('main [class*="buttonLink_primary"]');
+            return node && [getComputedStyle(node).backgroundColor, getComputedStyle(node).color];
+          });
+          assert.deepEqual(primary, [rgb(DARK.accentFill), rgb(DARK.onAccentFill)], 'the primary action');
+        }
+        if (name === 'courses' && label === 'desktop') {
+          // The Courses card is a window onto the artwork: its light bands show, and its darkest is the page's ink
+          // (the artwork is floored at it). Measured against a bare stretch of the page beside the title.
+          const card = await page.evaluate(() => {
+            const node = document.querySelector('main [class*="projects_innerContainer"]');
+            const box = node.getBoundingClientRect();
+            return { x: box.x + 8, y: box.y + 8, width: Math.min(box.width - 16, 1200), height: Math.min(innerHeight - box.y - 16, 400), edge: getComputedStyle(node).boxShadow };
+          });
+          assert.ok(card.edge.startsWith(`${rgb(DARK.windowEdge)} 0px 0px 0px 1px inset`), `the Courses window's edge: ${card.edge}`);
+          const inside = await levels(page, { x: card.x, y: card.y, width: card.width, height: card.height });
+          const bare = await levels(page, { x: 700, y: 120, width: 600, height: 60 });
+          assert.ok(Math.abs(inside.low - bare.low) <= 2, `the window's darkest (${inside.low}) is the page's ink (${bare.low})`);
+          assert.ok(inside.high >= bare.high + 12, `the window shows the artwork's light (${inside.high} against ${bare.high})`);
+        }
+        assert.deepEqual(await page.evaluate(lightBlocks), [], `${name}: light blocks on the ink`);
+        const { low } = await page.evaluate(sweep);
         assert.deepEqual(low, [], `${name}: text below AA`);
         await page.screenshot({ path: join(reports, `${label}-${name}.png`) });
       });
@@ -227,13 +337,13 @@ async function main() {
       await toEnd(page);
       darkState(await page.evaluate(readState), 'desk end');
       assert.deepEqual((await page.evaluate(sweep)).low, [], 'text below AA at the end');
-      // The footer is a dark panel and keeps its colours: a white back-to-top disc with an ink arrow.
+      // The back-to-top disc is the ink with a window's edge and a light arrow, over the footer's artwork.
       const button = await page.evaluate(() => {
         const node = document.querySelector('footer [aria-label="Back to top"]');
         const arrow = node?.querySelector('svg');
-        return node && { background: getComputedStyle(node).backgroundColor, arrow: arrow && getComputedStyle(arrow).fill };
+        return node && { background: getComputedStyle(node).backgroundColor, edge: getComputedStyle(node).boxShadow, arrow: arrow && getComputedStyle(arrow).fill };
       });
-      assert.deepEqual(button, { background: rgb(TOKENS.card), arrow: rgb(TOKENS.ink) }, 'the back-to-top disc');
+      assert.deepEqual(button, { background: rgb(DARK.page), edge: `${rgb(DARK.windowEdge)} 0px 0px 0px 1px inset`, arrow: rgb(DARK.text) }, 'the back-to-top disc');
       await page.screenshot({ path: join(reports, `${label}-desk-end.png`) });
     });
     await check(`${label} cen100: the footer's end`, async () => {
@@ -249,6 +359,9 @@ async function main() {
       const state = await page.evaluate(readState);
       assert.equal(state.surface, 'dark', 'the menu turns the bars dark');
       darkState(state, 'menu');
+      // Wide screens keep the shrunk page an opaque ink card, edged like a window; phones hide it behind the panel.
+      const card = await page.evaluate(() => ({ layout: getComputedStyle(document.querySelector('#layout')).opacity, edge: getComputedStyle(document.querySelector('main')).borderTopColor }));
+      assert.deepEqual(card, label === 'phone' ? { layout: '0.05', edge: rgb(TOKENS.page) } : { layout: '1', edge: rgb(DARK.pageEdge) }, 'the shrunk page');
       await page.screenshot({ path: join(reports, `${label}-menu.png`) });
       await page.keyboard.press('Escape');
       await page.waitForTimeout(1500);
@@ -282,6 +395,7 @@ async function main() {
       await page.waitForTimeout(1500);
       assert.ok(await page.evaluate((id) => location.hash === `#${id}` && !!document.querySelector(`#course-view-${CSS.escape(id)}[data-assignment-detail]`), anchor), `the assignment ${anchor} opened`);
       assert.deepEqual((await page.evaluate(sweep)).low, [], 'text below AA');
+      assert.deepEqual(await page.evaluate(lightBlocks), [], 'light blocks on the ink');
       await page.screenshot({ path: join(reports, `${label}-cen100-assignment.png`) });
     });
     await check(`${label} cen100: Guide tools`, async () => {
@@ -295,12 +409,28 @@ async function main() {
       await page.waitForTimeout(1200);
       const dialog = await page.evaluate(() => {
         const node = document.querySelector('#guide-tools');
-        return node && { open: node.open, background: getComputedStyle(node).backgroundColor, color: getComputedStyle(node).color };
+        return node && { open: node.open, background: getComputedStyle(node).backgroundColor, color: getComputedStyle(node).color, edge: getComputedStyle(node).borderTopColor };
       });
-      assert.deepEqual(dialog, { open: true, background: rgb(DARK.page), color: rgb(DARK.text) });
+      // Guide tools is an ink sheet with a strong hairline.
+      assert.deepEqual(dialog, { open: true, background: rgb(DARK.page), color: rgb(DARK.text), edge: rgb(DARK.borderStrong) });
+      assert.deepEqual((await page.evaluate(sweep, '#guide-tools')).low, [], 'text below AA in Guide tools');
       await page.screenshot({ path: join(reports, `${label}-cen100-guide-tools.png`) });
     });
   }
+
+  // A dark device prints light: the styles' dark blocks are screen only, and so are the JavaScript branches.
+  await check('desktop desk: printing from a dark device', async () => {
+    const page = await open({ viewport: { width: 1440, height: 900 }, colorScheme: 'dark' });
+    await visit(page, '');
+    await page.emulateMedia({ media: 'print' });
+    await page.waitForTimeout(500);
+    const printed = await page.evaluate(() => {
+      const svg = document.querySelector('svg[data-surface="cells"]');
+      return { white: getComputedStyle(document.documentElement).getPropertyValue('--white').trim().toLowerCase(), viewBox: svg?.getAttribute('viewBox'), filters: svg?.querySelectorAll('filter').length };
+    });
+    assert.deepEqual(printed, { white: TOKENS.page.toLowerCase(), viewBox: '0 0 100 100', filters: 0 }, 'the Desk prints as in light mode');
+    await page.emulateMedia({ media: 'screen' });
+  });
 
   // 3. iPhone: Safari's document layout. Chromium follows the layout, not Safari's painting of its bars.
   const phone = await open({ ...devices['iPhone 13'], colorScheme: 'dark', reducedMotion: 'reduce' });
@@ -309,7 +439,7 @@ async function main() {
     const top = await phone.evaluate(readState);
     assert.equal(top.scrollMode, 'document');
     darkState(top, 'iphone top');
-    assert.equal(top.html, rgb(DARK.pageUnderGrain), 'past the top: the dark page as seen through its grain');
+    assert.equal(top.html, rgb(DARK.pageUnderGrain), 'past the top: the ink under the artwork');
     await phone.screenshot({ path: join(reports, 'iphone-desk-top.png') });
     await toEnd(phone);
     const end = await phone.evaluate(readState);
@@ -338,7 +468,7 @@ async function main() {
       darkState(await page.evaluate(readState), `${path || 'desk'} after the switch`);
       const due = await page.evaluate(() => getComputedStyle(document.querySelector('.sx__calendar') || document.documentElement).getPropertyValue('--sx-color-due').trim());
       // Schedule-X's event colours are palette variables, so they resolve to the dark accent.
-      if (path) assert.equal(due.toLowerCase(), DARK.accent.toLowerCase(), 'calendar events follow the scheme');
+      if (path) assert.equal(due.toLowerCase(), DARK.accent.toLowerCase(), 'calendar events take the dark accent');
       await page.screenshot({ path: join(reports, `switch-${path ? 'schedule' : 'desk'}-dark.png`) });
       await page.emulateMedia({ colorScheme: 'light' });
       await page.waitForTimeout(800);
@@ -362,8 +492,9 @@ async function main() {
       await page.waitForTimeout(1500);
       await page.emulateMedia({ colorScheme: 'dark' });
       await page.waitForTimeout(800);
-      const edge = await page.evaluate(() => getComputedStyle(document.querySelector('main')).borderTopColor);
-      assert.equal(edge, label === 'phone' ? rgb(TOKENS.page) : rgb(DARK.pageEdge), "the shrunk page's edge in the new scheme");
+      const card = await page.evaluate(() => ({ edge: getComputedStyle(document.querySelector('main')).borderTopColor, layout: getComputedStyle(document.querySelector('#layout')).opacity }));
+      // In the new scheme: wide screens keep the shrunk page an opaque ink card with the window edge.
+      assert.deepEqual(card, label === 'phone' ? { edge: rgb(TOKENS.page), layout: '0.05' } : { edge: rgb(DARK.pageEdge), layout: '1' }, 'the shrunk page in the new scheme');
       await page.screenshot({ path: join(reports, `switch-${label}-menu-open.png`) });
       await page.keyboard.press('Escape');
       await page.waitForTimeout(1800);
@@ -377,6 +508,22 @@ async function main() {
   await check('no page errors', async () => assert.deepEqual(errors, []));
   await Promise.all(contexts.map((context) => context.close()));
   await browser.close();
+
+  // 5. Without WebGL (no artwork, no 3D badges): the Desk's windows are still edged on the ink.
+  const plain = await chromium.launch({ headless: true, executablePath: process.env.QA_CHROMIUM_PATH || undefined, args: ['--disable-webgl', '--disable-3d-apis'] });
+  await check('desktop desk without WebGL: the windows are edged', async () => {
+    const context = await plain.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: 'dark', reducedMotion: 'reduce' });
+    const page = await context.newPage();
+    const plainErrors = [];
+    page.on('pageerror', (error) => plainErrors.push(error.message));
+    await visit(page, '');
+    darkState(await page.evaluate(readState), 'desk without WebGL');
+    await deskEdges(page);
+    await page.screenshot({ path: join(reports, 'desktop-desk-no-webgl.png') });
+    assert.deepEqual(plainErrors, [], 'no page errors');
+    await context.close();
+  });
+  await plain.close();
   server.close();
 
   const report = [`### Dark mode`, '', failures.length ? failures.map((failure) => `- ${failure}`).join('\n') : 'All checks passed.', '', `Screenshots: ${reports}`].join('\n');

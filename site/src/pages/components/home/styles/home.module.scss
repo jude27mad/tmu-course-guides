@@ -27,6 +27,23 @@
       inset 0 calc(var(--layout-columns-gap) * -1.04 * 2) 0 0 var(--white),
       inset calc(var(--layout-margin) * 1.1001) 0 0 0 var(--white);
   }
+  // Dark mode: the field is clear (the artwork shows through its windows), so the paper painted a little into it
+  // by the side margins and the bottom band would show as an ink rim inside every window on the field's edge. The
+  // margins stop exactly at the field.
+  @media screen and (prefers-color-scheme: dark) {
+    box-shadow:
+      inset 0 calc(var(--layout-columns-gap) + 3.2vw) 0 0 var(--white),
+      inset calc(var(--layout-margin) * -1) 0 0 0 var(--white),
+      inset 0 calc(var(--layout-columns-gap) * -2) 0 0 var(--white),
+      inset var(--layout-margin) 0 0 0 var(--white);
+    @include mobile {
+      box-shadow:
+        inset 0 calc(var(--layout-columns-gap) + 6.6vw) 0 0 var(--white),
+        inset calc(var(--layout-margin) * -1) 0 0 0 var(--white),
+        inset 0 calc(var(--layout-columns-gap) * -2) 0 0 var(--white),
+        inset var(--layout-margin) 0 0 0 var(--white);
+    }
+  }
   .introduction {
     @include type.role(body);
     white-space: pre-line;
@@ -104,6 +121,35 @@
 
         -webkit-mask: url(#mask);
         mask: url(#mask);
+      }
+    }
+    // Dark mode: the windows have an edge (Index.jsx draws it with the paper). The paper and its edges stop 1px
+    // outside the field, on a curve concentric with its rounded corners, so the clip's soft edge falls on ink;
+    // where a window meets the field's own border, the field's edge shows instead (signalField.module.scss).
+    @media screen and (prefers-color-scheme: dark) {
+      .svgWrapper {
+        clip-path: inset(-1px calc(0.1% - 1px) -1px -1px round calc(var(--layout-columns-gap) + 1px));
+      }
+      // The paper may reach past the svg's own box, up to the clip above. It is drawn through the edge filter
+      // here rather than in the markup, so a page printed from a dark device leaves it out and prints light.
+      .edged {
+        overflow: visible;
+      }
+      .edged > g {
+        filter: url(#desk-window-edge);
+      }
+      // Each hole grows half a pixel on every side, so touching windows overlap and leave no seam of paper
+      // between them, which the edge would turn into a line.
+      .edged mask rect[data-cell] {
+        stroke: #000;
+        stroke-width: 1px;
+      }
+      @include mobile {
+        // Phones' tighter corners clip to the field's own curve, so the straight edges end cleanly on it.
+        overflow: hidden;
+        .svgWrapper {
+          clip-path: inset(-1px calc(0.1% - 1px) -1px -1px round calc(var(--layout-columns-gap) * 0.5 + 1px));
+        }
       }
     }
   }

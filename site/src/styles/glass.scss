@@ -40,6 +40,18 @@
       }
     }
   }
+  // Dark mode: every glass control, whatever its tone, is the page's ink with a strong hairline (--borderStrong),
+  // with no sheen and no tinted blur, so it never shows a second black. Only the material's variables change, so a
+  // control's own border or shadow rules, and the fallbacks below (motion off, reduced transparency, forced
+  // colours), still apply.
+  @media screen and (prefers-color-scheme: dark) {
+    --glass-solid: var(--card);
+    --glass-backing: var(--card);
+    --glass-highlight: transparent;
+    --glass-edge: var(--borderStrong);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
   :global(html[data-motion='off']) & {
     @include solid;
   }

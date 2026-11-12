@@ -1,9 +1,12 @@
 /* eslint-disable import/extensions */
-import { BADGE, getCourse } from '@src/lib';
+import { BADGE, BADGE_DARK, getCourse } from '@src/lib';
+import { DARK_QUERY } from '@src/lib/palette.mjs';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
+import useMediaQuery from '@src/hooks/useMediaQuery';
 import useWebGL from '@src/hooks/useWebGL';
 import { useBadgeRegistry } from './BadgeProvider';
+import { rimTexels } from './badgeRim.mjs';
 import styles from './badge.module.scss';
 
 // Where the 3D badge can draw, its HTML card waits this long for it (ms) before
@@ -26,9 +29,27 @@ export default function CourseBadge({ instanceId, courseId, motionGroup, next, r
     const timer = setTimeout(() => setWaitedFor(courseId), DRAW_GRACE_MS);
     return () => clearTimeout(timer);
   }, [courseId]);
+  // Dark mode prints a light rim round the card and along the strap (BADGE_DARK), about a screen pixel wide at the
+  // size this badge is shown, so its width in texels follows the element's size (badgeRim.mjs).
+  const dark = useMediaQuery(DARK_QUERY);
+  const [rimCard, setRimCard] = useState();
+  const [rimBand, setRimBand] = useState();
+  useEffect(() => {
+    const node = root.current;
+    if (!dark || !node || typeof ResizeObserver === 'undefined') return undefined;
+    const measure = () => {
+      const { card, band } = rimTexels(node.clientWidth, node.clientHeight);
+      setRimCard(card);
+      setRimBand(band);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [dark]);
   const look = useMemo(
     () => ({
-      ...BADGE,
+      ...(dark ? { ...BADGE_DARK, rimCard, rimBand } : BADGE),
       index: course.index,
       code: course.code,
       name: course.name,
@@ -36,7 +57,7 @@ export default function CourseBadge({ instanceId, courseId, motionGroup, next, r
       nextLabel: 'Next',
       nextValue: ready ? next?.dateLabel || next?.when || 'No upcoming deadlines' : 'Open guide',
     }),
-    [course, next?.dateLabel, next?.when, ready],
+    [course, next?.dateLabel, next?.when, ready, dark, rimCard, rimBand],
   );
 
   useEffect(() => {

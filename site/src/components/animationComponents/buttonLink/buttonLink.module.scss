@@ -20,6 +20,10 @@
     inset 0 0 0 1px var(--border),
     0 0.32vw 0.52vw rgba(var(--inkRgb), 0.04),
     0 0.12vw 0.22vw rgba(var(--inkRgb), 0.04);
+  // Dark mode: an ink pill with a strong hairline.
+  @media screen and (prefers-color-scheme: dark) {
+    box-shadow: inset 0 0 0 1px var(--borderStrong);
+  }
   @include mobile {
     // 44 px tap target on phones (the original: 9vw = 35 px)
     height: max(9vw, 44px);
@@ -125,6 +129,21 @@
 
     .ball {
       background-color: rgba(var(--inkRgb), 0.25);
+    }
+    // Dark mode: still TMU Blue itself with a white label (8.4:1), the one filled shape on the page, not a
+    // pale-blue block.
+    @media screen and (prefers-color-scheme: dark) {
+      background-color: var(--accentFill);
+      color: var(--onAccentFill);
+      box-shadow: none;
+      .arrowClassic,
+      &:hover .arrowClassic {
+        fill: var(--onAccentFill);
+        stroke: var(--onAccentFill);
+      }
+      .ball {
+        background-color: rgba(var(--highlightRgb), 0.2);
+      }
     }
   }
   &.glass {

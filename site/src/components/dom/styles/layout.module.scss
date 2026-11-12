@@ -4,6 +4,21 @@
   height: auto;
   width: 100vw;
   overflow: hidden;
+  // Dark mode: the page's ink ends on a hairline, the window edge, and the footer shows the artwork beneath it.
+  @media screen and (prefers-color-scheme: dark) {
+    position: relative;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--windowEdge);
+      z-index: 3;
+      pointer-events: none;
+    }
+  }
 }
 
 // iPhone and iPad (document mode). This wrapper ends the document on the pages
