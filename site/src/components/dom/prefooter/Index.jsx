@@ -68,12 +68,15 @@ function Index({ active, eventSource }) {
           })}
           fallback={<span aria-hidden="true" />}
           frameloop={active ? 'always' : 'never'}
-          dpr={[1, 2]}
+          // Up to three times the pixel density, so the artwork stays sharp on 3x phones.
+          dpr={[1, 3]}
           gl={{
             antialias: !coarse,
             powerPreference: 'low-power',
           }}
           flat
+          // The emoji textures hold sRGB colours already (emojiTextures): no decode in, no encode out.
+          linear
           style={{
             position: 'relative',
             display: 'block',

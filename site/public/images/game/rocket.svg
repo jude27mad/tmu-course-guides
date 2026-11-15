@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <!-- Drawn upright; the group is turned 45° so local left faces the top-left light. -->
+    <linearGradient id="rk-body" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#D9E1EE"/>
+      <stop offset="0.2" stop-color="#FFFFFF"/>
+      <stop offset="0.52" stop-color="#EEF2F9"/>
+      <stop offset="0.84" stop-color="#A9B5CC"/>
+      <stop offset="1" stop-color="#C4CEDF"/>
+    </linearGradient>
+    <linearGradient id="rk-red" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FF5A6E"/>
+      <stop offset="0.25" stop-color="#FF7A86"/>
+      <stop offset="0.6" stop-color="#F0263F"/>
+      <stop offset="0.9" stop-color="#B0102E"/>
+      <stop offset="1" stop-color="#C92340"/>
+    </linearGradient>
+    <linearGradient id="rk-fin-l" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FF8A94"/>
+      <stop offset="0.55" stop-color="#F2334B"/>
+      <stop offset="1" stop-color="#C0132F"/>
+    </linearGradient>
+    <linearGradient id="rk-fin-r" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E52A43"/>
+      <stop offset="0.6" stop-color="#B10F2D"/>
+      <stop offset="1" stop-color="#8A0A23"/>
+    </linearGradient>
+    <radialGradient id="rk-glass" cx="0.38" cy="0.34" r="0.75">
+      <stop offset="0" stop-color="#B8F2FF"/>
+      <stop offset="0.35" stop-color="#45B8FF"/>
+      <stop offset="0.75" stop-color="#1663E0"/>
+      <stop offset="1" stop-color="#0B2F8A"/>
+    </radialGradient>
+    <linearGradient id="rk-ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F4F7FC"/>
+      <stop offset="0.5" stop-color="#B6C1D6"/>
+      <stop offset="1" stop-color="#6E7B97"/>
+    </linearGradient>
+    <linearGradient id="rk-nozzle" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6B7895"/>
+      <stop offset="0.3" stop-color="#9AA6BF"/>
+      <stop offset="1" stop-color="#3A4560"/>
+    </linearGradient>
+    <radialGradient id="rk-flame" cx="0.5" cy="0.12" r="0.95">
+      <stop offset="0" stop-color="#FFF7C8"/>
+      <stop offset="0.28" stop-color="#FFD43B"/>
+      <stop offset="0.62" stop-color="#FF8A1F"/>
+      <stop offset="1" stop-color="#FF3D2E"/>
+    </radialGradient>
+    <radialGradient id="rk-core" cx="0.5" cy="0.15" r="0.9">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.5" stop-color="#FFF3B0"/>
+      <stop offset="1" stop-color="#FFD43B" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="rk-glow" cx="0.5" cy="0.4" r="0.5">
+      <stop offset="0" stop-color="#FFB13B" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#FF6A2E" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="rk-shine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="rk-clip">
+      <path d="M0 -222 C58 -186 84 -92 80 8 C78 70 70 120 58 158 L-58 158 C-70 120 -78 70 -80 8 C-84 -92 -58 -186 0 -222 Z"/>
+    </clipPath>
+  </defs>
+  <!-- scale 0.98: ~385 px bounding box, contours ~4.9 px at 512; translate re-centres it on (256,256) -->
+  <g transform="translate(269 246) rotate(45) translate(0 -30) scale(0.98)">
+    <!-- flame -->
+    <ellipse cx="0" cy="240" rx="84" ry="100" fill="url(#rk-glow)"/>
+    <path d="M-52 166 C-60 214 -40 268 -4 322 C2 296 18 290 26 270 C44 238 58 206 52 166 Z" fill="url(#rk-flame)"/>
+    <path d="M-27 168 C-30 206 -18 244 0 268 C18 244 30 206 27 168 Z" fill="url(#rk-core)"/>
+    <!-- side fins -->
+    <path d="M-74 40 C-112 64 -140 104 -146 160 C-147 178 -132 186 -118 176 L-62 140 Z" fill="url(#rk-fin-l)" stroke="#9E0E2A" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M74 40 C112 64 140 104 146 160 C147 178 132 186 118 176 L62 140 Z" fill="url(#rk-fin-r)" stroke="#7E0A20" stroke-width="5" stroke-linejoin="round"/>
+    <!-- nozzle -->
+    <path d="M-46 150 L46 150 L54 184 C54 190 50 194 44 194 L-44 194 C-50 194 -54 190 -54 184 Z" fill="url(#rk-nozzle)" stroke="#2F3850" stroke-width="5" stroke-linejoin="round"/>
+    <!-- body -->
+    <path d="M0 -222 C58 -186 84 -92 80 8 C78 70 70 120 58 158 L-58 158 C-70 120 -78 70 -80 8 C-84 -92 -58 -186 0 -222 Z" fill="url(#rk-body)"/>
+    <g clip-path="url(#rk-clip)">
+      <!-- nose cone and tail band -->
+      <path d="M-120 -112 C-60 -132 60 -132 120 -112 L120 -260 L-120 -260 Z" fill="url(#rk-red)"/>
+      <path d="M-120 -112 C-60 -132 60 -132 120 -112" fill="none" stroke="#8E0C26" stroke-opacity="0.35" stroke-width="6"/>
+      <path d="M-120 112 C-60 96 60 96 120 112 L120 200 L-120 200 Z" fill="url(#rk-red)"/>
+      <path d="M-120 112 C-60 96 60 96 120 112" fill="none" stroke="#8E0C26" stroke-opacity="0.35" stroke-width="6"/>
+      <!-- long specular streak on the lit side -->
+      <path d="M-50 -150 C-64 -80 -66 0 -58 90" fill="none" stroke="url(#rk-shine)" stroke-width="14" stroke-linecap="round" opacity="0.9"/>
+    </g>
+    <path d="M0 -222 C58 -186 84 -92 80 8 C78 70 70 120 58 158 L-58 158 C-70 120 -78 70 -80 8 C-84 -92 -58 -186 0 -222 Z" fill="none" stroke="#7D89A6" stroke-width="5" stroke-linejoin="round"/>
+    <!-- porthole -->
+    <circle cx="0" cy="-36" r="44" fill="url(#rk-ring)" stroke="#5F6B86" stroke-width="5"/>
+    <circle cx="0" cy="-36" r="31" fill="url(#rk-glass)"/>
+    <path d="M-20 -50 A24 24 0 0 1 4 -61" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity="0.9"/>
+    <circle cx="11" cy="-20" r="5" fill="#FFFFFF" opacity="0.55"/>
+  </g>
+</svg>

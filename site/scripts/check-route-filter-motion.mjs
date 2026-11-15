@@ -1178,9 +1178,9 @@ try {
           const canvas = state.gl.domElement.getBoundingClientRect();
           const anchor = document.querySelector('[data-game-ceiling]').getBoundingClientRect();
           const score = document.querySelector('[data-game-score]').getBoundingClientRect();
-          return { dpr: state.gl.getPixelRatio(), expectedDpr: Math.min(2, Math.max(1, devicePixelRatio)), inset: parseFloat(state.gl.domElement.style.clipPath.slice(6)), expectedInset: Math.max(0, Math.min(canvas.height, anchor.top + score.height + 8 - canvas.top)) };
+          return { dpr: state.gl.getPixelRatio(), expectedDpr: Math.min(3, Math.max(1, devicePixelRatio)), inset: parseFloat(state.gl.domElement.style.clipPath.slice(6)), expectedInset: Math.max(0, Math.min(canvas.height, anchor.top + score.height + 8 - canvas.top)) };
         });
-        assert.equal(rendering.dpr, rendering.expectedDpr, 'existing emoji artwork renders at up to twice the pixel density');
+        assert.equal(rendering.dpr, rendering.expectedDpr, 'the emoji artwork renders at up to three times the pixel density');
         assert.ok(Math.abs(rendering.inset - rendering.expectedInset) < 1, 'moving the badge preserves the original flight ceiling');
         const slices = hit.first;
         await page.screenshot({ path: path.join(report, `${label}-game-score.png`) });

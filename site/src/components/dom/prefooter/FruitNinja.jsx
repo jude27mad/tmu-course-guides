@@ -1,7 +1,6 @@
-import { emojiTextures, loadEmojiImages } from '@src/components/dom/prefooter/emojiTextures';
+import { emojiMaterial, emojiTextures, loadEmojiImages } from '@src/components/dom/prefooter/emojiTextures';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { MeshBasicMaterial } from 'three';
 import { PerspectiveCamera } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import Sticker from '@src/components/dom/prefooter/Sticker';
@@ -45,9 +44,7 @@ function useEmojiTextures() {
 // One material per emoji face, shared by every target. A target used to declare its own material, which
 // R3F disposed when it left; with no other target of that kind in the air, three.js then released the
 // compiled shader and the next one compiled it again, a main-thread stall on spawns while the section was
-// on screen. The settings are the ones each target declared: the artwork already contains its shading,
-// so it keeps its original colours.
-const emojiMaterial = (map) => new MeshBasicMaterial({ transparent: true, polygonOffset: true, polygonOffsetFactor: -10, map, toneMapped: false });
+// on screen. The artwork already contains its shading, so it keeps its original colours (emojiTextures).
 
 function useEmojiMaterials(textures) {
   const materials = useMemo(() => textures?.map(({ whole, sliced }) => ({ whole: emojiMaterial(whole), sliced: emojiMaterial(sliced) })) || null, [textures]);

@@ -1,0 +1,176 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <!-- light from the top-left: lit top faces, mid fronts, shaded right ends -->
+    <linearGradient id="bk-blue-front" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3F7DF6"/>
+      <stop offset="0.2" stop-color="#5E96FF"/>
+      <stop offset="0.55" stop-color="#2664EC"/>
+      <stop offset="0.88" stop-color="#1641B2"/>
+      <stop offset="1" stop-color="#2353CC"/>
+    </linearGradient>
+    <linearGradient id="bk-blue-top" x1="0" y1="0" x2="1" y2="0.4">
+      <stop offset="0" stop-color="#4E8BFB"/>
+      <stop offset="0.2" stop-color="#76A9FF"/>
+      <stop offset="0.6" stop-color="#3A77F4"/>
+      <stop offset="1" stop-color="#2459DA"/>
+    </linearGradient>
+    <linearGradient id="bk-blue-side" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2052C8"/>
+      <stop offset="1" stop-color="#11308A"/>
+    </linearGradient>
+    <linearGradient id="bk-org-front" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FF9A3C"/>
+      <stop offset="0.2" stop-color="#FFC08A"/>
+      <stop offset="0.55" stop-color="#FF8A1F"/>
+      <stop offset="0.88" stop-color="#D9590A"/>
+      <stop offset="1" stop-color="#E8701A"/>
+    </linearGradient>
+    <linearGradient id="bk-org-top" x1="0" y1="0" x2="1" y2="0.4">
+      <stop offset="0" stop-color="#FFB066"/>
+      <stop offset="0.2" stop-color="#FFC88F"/>
+      <stop offset="0.6" stop-color="#FF9A3C"/>
+      <stop offset="1" stop-color="#F27A12"/>
+    </linearGradient>
+    <linearGradient id="bk-org-side" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E0650A"/>
+      <stop offset="1" stop-color="#A84400"/>
+    </linearGradient>
+    <linearGradient id="bk-grn-front" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1CC878"/>
+      <stop offset="0.2" stop-color="#4DE7A0"/>
+      <stop offset="0.55" stop-color="#11B366"/>
+      <stop offset="0.88" stop-color="#077A44"/>
+      <stop offset="1" stop-color="#0E9255"/>
+    </linearGradient>
+    <linearGradient id="bk-grn-top" x1="0" y1="0" x2="1" y2="0.4">
+      <stop offset="0" stop-color="#32D888"/>
+      <stop offset="0.2" stop-color="#62ECAB"/>
+      <stop offset="0.6" stop-color="#1CC172"/>
+      <stop offset="1" stop-color="#0FA25D"/>
+    </linearGradient>
+    <linearGradient id="bk-grn-side" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0E9A57"/>
+      <stop offset="1" stop-color="#06673A"/>
+    </linearGradient>
+    <!-- horizontal light fall-off along each spine -->
+    <linearGradient id="bk-blue-fall" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.22"/>
+      <stop offset="0.22" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#0B2A86" stop-opacity="0"/>
+      <stop offset="1" stop-color="#0B2A86" stop-opacity="0.32"/>
+    </linearGradient>
+    <linearGradient id="bk-org-fall" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.22"/>
+      <stop offset="0.22" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#A84000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#A84000" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="bk-green-fall" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.22"/>
+      <stop offset="0.22" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#04552F" stop-opacity="0"/>
+      <stop offset="1" stop-color="#04552F" stop-opacity="0.32"/>
+    </linearGradient>
+    <!-- cream page blocks -->
+    <linearGradient id="bk-pages" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFBEF"/>
+      <stop offset="0.5" stop-color="#F5E6C2"/>
+      <stop offset="1" stop-color="#E2C893"/>
+    </linearGradient>
+    <!-- foil bands and the spine label -->
+    <linearGradient id="bk-gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFE38A"/>
+      <stop offset="0.22" stop-color="#FFF4C8"/>
+      <stop offset="0.55" stop-color="#F6C23E"/>
+      <stop offset="0.9" stop-color="#C4840A"/>
+      <stop offset="1" stop-color="#D99E1C"/>
+    </linearGradient>
+    <linearGradient id="bk-label" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFF6E4"/>
+      <stop offset="0.25" stop-color="#FFFCF5"/>
+      <stop offset="0.65" stop-color="#FFF1D6"/>
+      <stop offset="1" stop-color="#F3D7AA"/>
+    </linearGradient>
+    <linearGradient id="bk-gloss" x1="0" y1="1" x2="0.3" y2="0">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.05"/>
+      <stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.15"/>
+    </linearGradient>
+    <linearGradient id="bk-ribbon" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FF5C6C"/>
+      <stop offset="0.3" stop-color="#FF3A52"/>
+      <stop offset="0.75" stop-color="#D4163A"/>
+      <stop offset="1" stop-color="#9E0C2C"/>
+    </linearGradient>
+    <linearGradient id="bk-shine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="0.3" stop-color="#FFFFFF" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <!-- book silhouettes -->
+    <clipPath id="bk-green-clip"><path d="M66.5 381.5 Q66.5 397.5 82.5 397.6 L373.6 400.7 Q379.6 400.8 384.7 397.6 L442.3 361.9 Q449.1 357.6 449.1 349.6 L449.1 281.6 Q449.1 273.6 441.1 273.6 L144.1 270.4 Q136.1 270.3 129.3 274.5 L80.1 305 Q66.5 313.5 66.5 329.5 Z"/></clipPath>
+    <clipPath id="bk-orange-clip"><path d="M108.6 287.5 Q108.6 303.5 124.6 303.7 L372 307.4 Q378 307.5 383.2 304.5 L433.1 275.5 Q440 271.5 440 263.5 L440 205.5 Q440 197.5 432 197.4 L178.6 193.6 Q170.6 193.5 163.7 197.5 L122.4 221.5 Q108.6 229.5 108.6 245.5 Z"/></clipPath>
+    <clipPath id="bk-blue-clip"><path d="M62.9 220.3 Q62.9 236.3 78.8 236.5 L344.8 241.3 Q350.8 241.4 356 238.5 L420.7 202.3 Q427.7 198.4 427.7 190.4 L427.7 124.4 Q427.7 116.4 419.7 116.2 L147.8 111.4 Q139.8 111.2 132.8 115.1 L76.8 146.4 Q62.9 154.3 62.9 170.3 Z"/></clipPath>
+  </defs>
+
+  <!-- scale 0.95 about the centre: ~372 px wide, contours ~4.75 px -->
+  <g transform="translate(256 256) scale(0.95) translate(-256 -256)">
+    <!-- green book: cover, spine, tail with page block -->
+    <g clip-path="url(#bk-green-clip)">
+      <path d="M66.5 313.5 L136.1 270.3 L449.1 273.6 L379.6 316.8 Z" fill="url(#bk-grn-top)"/>
+      <path d="M338 308 L394 307.5 L456 271.5 L400 272 Z" fill="#04552F" opacity="0.28"/>
+      <path d="M66.5 397.5 L379.6 400.8 L379.6 316.8 L66.5 313.5 Z" fill="url(#bk-grn-front)"/>
+      <path d="M66.5 397.5 L379.6 400.8 L379.6 316.8 L66.5 313.5 Z" fill="url(#bk-green-fall)"/>
+      <path d="M379.6 400.8 L449.1 357.6 L449.1 273.6 L379.6 316.8 Z" fill="url(#bk-grn-side)"/>
+      <path d="M387.3 387 L445.7 350.8 Q438.7 322.1 445.7 284.8 L387.3 321 Q380.3 358.4 387.3 387 Z" fill="url(#bk-pages)" stroke="#04552F" stroke-opacity="0.5" stroke-width="4.25" stroke-linejoin="round"/>
+      <path d="M390.7 368.4 L438 339 M390.7 351.9 L438 322.5 M390.7 335.4 L438 306" fill="none" stroke="#C9A468" stroke-width="4.25" stroke-linecap="round" opacity="0.7"/>
+      <!-- one thin foil band near each end, spine gloss -->
+      <path d="M96 397.8 L106 397.9 L106 313.9 L96 313.8 Z M322 400.2 L332 400.3 L332 316.3 L322 316.2 Z" fill="url(#bk-gold)"/>
+      <path d="M102 334 Q102 329.5 106.5 329.5 L287.4 331.5 Q291.9 331.5 291.9 336 Q291.9 340.5 287.4 340.5 L106.5 338.5 Q102 338.5 102 334 Z" fill="url(#bk-shine)"/>
+      <path d="M66.5 313.5 L379.6 316.8 L379.6 400.8" fill="none" stroke="#04552F" stroke-opacity="0.4" stroke-width="4.25" stroke-linejoin="round"/>
+    </g>
+    <path d="M66.5 381.5 Q66.5 397.5 82.5 397.6 L373.6 400.7 Q379.6 400.8 384.7 397.6 L442.3 361.9 Q449.1 357.6 449.1 349.6 L449.1 281.6 Q449.1 273.6 441.1 273.6 L144.1 270.4 Q136.1 270.3 129.3 274.5 L80.1 305 Q66.5 313.5 66.5 329.5 Z" fill="none" stroke="#04552F" stroke-width="5" stroke-linejoin="round"/>
+
+    <!-- orange book: same 30-degree depth as the others -->
+    <g clip-path="url(#bk-orange-clip)">
+      <path d="M108.6 229.5 L170.6 193.5 L440 197.5 L378 233.5 Z" fill="url(#bk-org-top)"/>
+      <path d="M311.9 240.7 L362.8 241.4 L439.7 198.4 L388.8 197.7 Z" fill="#8A3500" opacity="0.26"/>
+      <path d="M108.6 303.5 L378 307.5 L378 233.5 L108.6 229.5 Z" fill="url(#bk-org-front)"/>
+      <path d="M108.6 303.5 L378 307.5 L378 233.5 L108.6 229.5 Z" fill="url(#bk-org-fall)"/>
+      <path d="M378 307.5 L440 271.5 L440 197.5 L378 233.5 Z" fill="url(#bk-org-side)"/>
+      <path d="M385 294 L436.5 265 Q429.5 237 436.5 208 L385 238 Q378.5 266 385 294 Z" fill="url(#bk-pages)" stroke="#9A3F00" stroke-opacity="0.5" stroke-width="4.25" stroke-linejoin="round"/>
+      <path d="M389 277.7 L430 254.4 M389 263.7 L430 240.3 M389 249.7 L430 226.1" fill="none" stroke="#C9A468" stroke-width="4.25" stroke-linecap="round" opacity="0.7"/>
+      <!-- spine gloss and cream title label -->
+      <path d="M165 247.8 Q165 243.3 169.5 243.4 L260.5 244.8 Q265 244.8 265 249.3 Q265 253.8 260.5 253.8 L169.5 252.4 Q165 252.3 165 247.8 Z" fill="url(#bk-shine)"/>
+      <path d="M212.3 255.1 L274.3 255.9 Q278.3 256 278.3 260 L278.3 278 Q278.3 282 274.3 281.9 L212.3 281.1 Q208.3 281 208.3 277 L208.3 259 Q208.3 255 212.3 255.1 Z" fill="url(#bk-label)" stroke="#CC620E" stroke-width="4.25" stroke-linejoin="round"/>
+      <path d="M108.6 229.5 L378 233.5 L378 307.5" fill="none" stroke="#9A3F00" stroke-opacity="0.4" stroke-width="4.25" stroke-linejoin="round"/>
+    </g>
+    <path d="M108.6 287.5 Q108.6 303.5 124.6 303.7 L372 307.4 Q378 307.5 383.2 304.5 L433.1 275.5 Q440 271.5 440 263.5 L440 205.5 Q440 197.5 432 197.4 L178.6 193.6 Q170.6 193.5 163.7 197.5 L122.4 221.5 Q108.6 229.5 108.6 245.5 Z" fill="none" stroke="#9A3F00" stroke-width="5" stroke-linejoin="round"/>
+
+    <!-- ribbon bookmark tucked under the blue book, hanging over the orange spine -->
+    <path d="M344 222 L364 222 C365 256 366 282 366 311 L355.5 298 L345 313 C345 284 344 256 344 222 Z" fill="url(#bk-ribbon)" stroke="#8E0C26" stroke-width="4.75" stroke-linejoin="round"/>
+    <path d="M350 250 C350 268 351 280 351 294" fill="none" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="5" stroke-linecap="round"/>
+
+    <!-- blue book: cover, spine, tail with page block -->
+    <g clip-path="url(#bk-blue-clip)">
+      <path d="M62.9 154.3 L139.8 111.2 L427.7 116.4 L350.8 159.4 Z" fill="url(#bk-blue-top)"/>
+      <path d="M62.9 236.3 L350.8 241.4 L350.8 159.4 L62.9 154.3 Z" fill="url(#bk-blue-front)"/>
+      <path d="M62.9 236.3 L350.8 241.4 L350.8 159.4 L62.9 154.3 Z" fill="url(#bk-blue-fall)"/>
+      <path d="M350.8 241.4 L427.7 198.4 L427.7 116.4 L350.8 159.4 Z" fill="url(#bk-blue-side)"/>
+      <path d="M359.2 227.7 L423.8 191.5 Q416.1 163.8 423.8 127.5 L359.2 163.7 Q351.5 200 359.2 227.7 Z" fill="url(#bk-pages)" stroke="#0B2A86" stroke-opacity="0.5" stroke-width="4.25" stroke-linejoin="round"/>
+      <path d="M363.1 209.5 L415.4 180.3 M363.1 193.5 L415.4 164.3 M363.1 177.5 L415.4 148.3" fill="none" stroke="#C9A468" stroke-width="4.25" stroke-linecap="round" opacity="0.7"/>
+      <!-- two pairs of gold foil bands, spine gloss -->
+      <path d="M88.1 236.7 L100.8 236.9 L100.8 154.9 L88.1 154.7 Z M107.6 237.1 L113.4 237.2 L113.4 155.2 L107.6 155.1 Z M300.2 240.5 L306 240.6 L306 158.6 L300.2 158.5 Z M312.8 240.7 L325.5 241 L325.5 159 L312.8 158.7 Z" fill="url(#bk-gold)"/>
+      <path d="M97.9 174.6 Q97.9 170.1 102.4 170.1 L265.6 173.1 Q270.1 173.1 270.1 177.6 Q270.1 182.1 265.6 182.1 L102.4 179.1 Q97.9 179.1 97.9 174.6 Z" fill="url(#bk-shine)"/>
+      <!-- cover hinge groove -->
+      <path d="M87.6 147.1 L356.1 152" fill="none" stroke="#0B2A86" stroke-opacity="0.45" stroke-width="4.25" stroke-linecap="round"/>
+      <path d="M95.2 144 L361.8 148.8" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="4.25" stroke-linecap="round"/>
+      <!-- cover gloss -->
+      <path d="M121.8 143.8 L160.7 144.5 L242.2 115.7 L203.2 115 Z" fill="url(#bk-gloss)"/>
+      <path d="M176.2 144.7 L189.8 145 L271.3 116.2 L257.7 116 Z" fill="url(#bk-gloss)"/>
+      <path d="M62.9 154.3 L350.8 159.4 L350.8 241.4" fill="none" stroke="#0B2A86" stroke-opacity="0.4" stroke-width="4.25" stroke-linejoin="round"/>
+    </g>
+    <path d="M62.9 220.3 Q62.9 236.3 78.8 236.5 L344.8 241.3 Q350.8 241.4 356 238.5 L420.7 202.3 Q427.7 198.4 427.7 190.4 L427.7 124.4 Q427.7 116.4 419.7 116.2 L147.8 111.4 Q139.8 111.2 132.8 115.1 L76.8 146.4 Q62.9 154.3 62.9 170.3 Z" fill="none" stroke="#0B2A86" stroke-width="5" stroke-linejoin="round"/>
+
+  </g>
+</svg>

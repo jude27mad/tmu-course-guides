@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <!-- Polished gold gear seen slightly from above, so a side wall shows under the lower-right teeth.
+         Light from the top-left: metal gradients run TL -> BR (edge, bright band, mid, deep, bounce). -->
+    <linearGradient id="gr-face" x1="0.12" y1="0.1" x2="0.88" y2="0.9">
+      <stop offset="0" stop-color="#F7B92A"/>
+      <stop offset="0.2" stop-color="#FFE07A"/>
+      <stop offset="0.5" stop-color="#FFBF2E"/>
+      <stop offset="0.84" stop-color="#D88614"/>
+      <stop offset="1" stop-color="#E99C24"/>
+    </linearGradient>
+    <!-- rounded edge around the teeth: a touch brighter on the lit side, deeper on the far side -->
+    <linearGradient id="gr-bevel" x1="0.12" y1="0.1" x2="0.88" y2="0.9">
+      <stop offset="0" stop-color="#FFE48E"/>
+      <stop offset="0.3" stop-color="#FFD45A"/>
+      <stop offset="0.5" stop-color="#FFBC30"/>
+      <stop offset="0.85" stop-color="#DC8C18"/>
+      <stop offset="1" stop-color="#EDA638"/>
+    </linearGradient>
+    <!-- side wall, turned away from the light -->
+    <linearGradient id="gr-side" x1="0" y1="0" x2="1" y2="0.7">
+      <stop offset="0" stop-color="#F0A324"/>
+      <stop offset="0.45" stop-color="#D88210"/>
+      <stop offset="1" stop-color="#B0600A"/>
+    </linearGradient>
+    <linearGradient id="gr-hub" x1="0.15" y1="0.12" x2="0.85" y2="0.88">
+      <stop offset="0" stop-color="#FFD258"/>
+      <stop offset="0.22" stop-color="#FFE68A"/>
+      <stop offset="0.52" stop-color="#FFC236"/>
+      <stop offset="0.86" stop-color="#D2800F"/>
+      <stop offset="1" stop-color="#E5961F"/>
+    </linearGradient>
+    <!-- inner wall of the hole (upper-left side, in shadow) -->
+    <linearGradient id="gr-wall" x1="0.2" y1="0.2" x2="0.8" y2="0.8">
+      <stop offset="0" stop-color="#6E3500"/>
+      <stop offset="0.6" stop-color="#8E4A02"/>
+      <stop offset="1" stop-color="#B8680A"/>
+    </linearGradient>
+    <!-- specular streak, fading out at both ends -->
+    <linearGradient id="gr-shine" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <!-- everything except the see-through part of the centre hole -->
+    <clipPath id="gr-hole">
+      <path clip-rule="evenodd" d="M-200 -200H712V712H-200Z M221.9 280.5A42 42 0 0 0 296.1 243.5A42 42 0 0 0 221.9 280.5Z"/>
+    </clipPath>
+  </defs>
+  <!-- scale 0.95: ~375 px box with ~5 px contours; the translate centres face + side wall on (256,256) -->
+  <g transform="translate(256 256) scale(0.95) translate(-259 -262)">
+    <g clip-path="url(#gr-hole)">
+      <!-- silhouette contour: both outlines stroked at double width, then covered by the fills -->
+      <g fill="none" stroke="#8A4700" stroke-width="10.6" stroke-linejoin="round">
+        <path d="M217 108.9L224.4 79.5A15 15 0 0 1 238.9 68.2L273.1 68.2A15 15 0 0 1 287.6 79.5L295 108.9A12 12 0 0 0 302.1 117L321.7 125.1A12 12 0 0 0 332.4 124.3L358.5 108.8A15 15 0 0 1 376.7 111.1L400.9 135.3A15 15 0 0 1 403.2 153.5L387.7 179.6A12 12 0 0 0 386.9 190.3L395 209.9A12 12 0 0 0 403.1 217L432.5 224.4A15 15 0 0 1 443.8 238.9L443.8 273.1A15 15 0 0 1 432.5 287.6L403.1 295A12 12 0 0 0 395 302.1L386.9 321.7A12 12 0 0 0 387.7 332.4L403.2 358.5A15 15 0 0 1 400.9 376.7L376.7 400.9A15 15 0 0 1 358.5 403.2L332.4 387.7A12 12 0 0 0 321.7 386.9L302.1 395A12 12 0 0 0 295 403.1L287.6 432.5A15 15 0 0 1 273.1 443.8L238.9 443.8A15 15 0 0 1 224.4 432.5L217 403.1A12 12 0 0 0 209.9 395L190.3 386.9A12 12 0 0 0 179.6 387.7L153.5 403.2A15 15 0 0 1 135.3 400.9L111.1 376.7A15 15 0 0 1 108.8 358.5L124.3 332.4A12 12 0 0 0 125.1 321.7L117 302.1A12 12 0 0 0 108.9 295L79.5 287.6A15 15 0 0 1 68.2 273.1L68.2 238.9A15 15 0 0 1 79.5 224.4L108.9 217A12 12 0 0 0 117 209.9L125.1 190.3A12 12 0 0 0 124.3 179.6L108.8 153.5A15 15 0 0 1 111.1 135.3L135.3 111.1A15 15 0 0 1 153.5 108.8L179.6 124.3A12 12 0 0 0 190.3 125.1L209.9 117A12 12 0 0 0 217 108.9Z"/>
+        <path transform="translate(6 12)" d="M217 108.9L224.4 79.5A15 15 0 0 1 238.9 68.2L273.1 68.2A15 15 0 0 1 287.6 79.5L295 108.9A12 12 0 0 0 302.1 117L321.7 125.1A12 12 0 0 0 332.4 124.3L358.5 108.8A15 15 0 0 1 376.7 111.1L400.9 135.3A15 15 0 0 1 403.2 153.5L387.7 179.6A12 12 0 0 0 386.9 190.3L395 209.9A12 12 0 0 0 403.1 217L432.5 224.4A15 15 0 0 1 443.8 238.9L443.8 273.1A15 15 0 0 1 432.5 287.6L403.1 295A12 12 0 0 0 395 302.1L386.9 321.7A12 12 0 0 0 387.7 332.4L403.2 358.5A15 15 0 0 1 400.9 376.7L376.7 400.9A15 15 0 0 1 358.5 403.2L332.4 387.7A12 12 0 0 0 321.7 386.9L302.1 395A12 12 0 0 0 295 403.1L287.6 432.5A15 15 0 0 1 273.1 443.8L238.9 443.8A15 15 0 0 1 224.4 432.5L217 403.1A12 12 0 0 0 209.9 395L190.3 386.9A12 12 0 0 0 179.6 387.7L153.5 403.2A15 15 0 0 1 135.3 400.9L111.1 376.7A15 15 0 0 1 108.8 358.5L124.3 332.4A12 12 0 0 0 125.1 321.7L117 302.1A12 12 0 0 0 108.9 295L79.5 287.6A15 15 0 0 1 68.2 273.1L68.2 238.9A15 15 0 0 1 79.5 224.4L108.9 217A12 12 0 0 0 117 209.9L125.1 190.3A12 12 0 0 0 124.3 179.6L108.8 153.5A15 15 0 0 1 111.1 135.3L135.3 111.1A15 15 0 0 1 153.5 108.8L179.6 124.3A12 12 0 0 0 190.3 125.1L209.9 117A12 12 0 0 0 217 108.9Z"/>
+      </g>
+      <!-- side wall -->
+      <path transform="translate(6 12)" d="M217 108.9L224.4 79.5A15 15 0 0 1 238.9 68.2L273.1 68.2A15 15 0 0 1 287.6 79.5L295 108.9A12 12 0 0 0 302.1 117L321.7 125.1A12 12 0 0 0 332.4 124.3L358.5 108.8A15 15 0 0 1 376.7 111.1L400.9 135.3A15 15 0 0 1 403.2 153.5L387.7 179.6A12 12 0 0 0 386.9 190.3L395 209.9A12 12 0 0 0 403.1 217L432.5 224.4A15 15 0 0 1 443.8 238.9L443.8 273.1A15 15 0 0 1 432.5 287.6L403.1 295A12 12 0 0 0 395 302.1L386.9 321.7A12 12 0 0 0 387.7 332.4L403.2 358.5A15 15 0 0 1 400.9 376.7L376.7 400.9A15 15 0 0 1 358.5 403.2L332.4 387.7A12 12 0 0 0 321.7 386.9L302.1 395A12 12 0 0 0 295 403.1L287.6 432.5A15 15 0 0 1 273.1 443.8L238.9 443.8A15 15 0 0 1 224.4 432.5L217 403.1A12 12 0 0 0 209.9 395L190.3 386.9A12 12 0 0 0 179.6 387.7L153.5 403.2A15 15 0 0 1 135.3 400.9L111.1 376.7A15 15 0 0 1 108.8 358.5L124.3 332.4A12 12 0 0 0 125.1 321.7L117 302.1A12 12 0 0 0 108.9 295L79.5 287.6A15 15 0 0 1 68.2 273.1L68.2 238.9A15 15 0 0 1 79.5 224.4L108.9 217A12 12 0 0 0 117 209.9L125.1 190.3A12 12 0 0 0 124.3 179.6L108.8 153.5A15 15 0 0 1 111.1 135.3L135.3 111.1A15 15 0 0 1 153.5 108.8L179.6 124.3A12 12 0 0 0 190.3 125.1L209.9 117A12 12 0 0 0 217 108.9Z" fill="url(#gr-side)"/>
+      <!-- top of the toothed body: rounded edge, soft inner edge line -->
+      <path d="M217 108.9L224.4 79.5A15 15 0 0 1 238.9 68.2L273.1 68.2A15 15 0 0 1 287.6 79.5L295 108.9A12 12 0 0 0 302.1 117L321.7 125.1A12 12 0 0 0 332.4 124.3L358.5 108.8A15 15 0 0 1 376.7 111.1L400.9 135.3A15 15 0 0 1 403.2 153.5L387.7 179.6A12 12 0 0 0 386.9 190.3L395 209.9A12 12 0 0 0 403.1 217L432.5 224.4A15 15 0 0 1 443.8 238.9L443.8 273.1A15 15 0 0 1 432.5 287.6L403.1 295A12 12 0 0 0 395 302.1L386.9 321.7A12 12 0 0 0 387.7 332.4L403.2 358.5A15 15 0 0 1 400.9 376.7L376.7 400.9A15 15 0 0 1 358.5 403.2L332.4 387.7A12 12 0 0 0 321.7 386.9L302.1 395A12 12 0 0 0 295 403.1L287.6 432.5A15 15 0 0 1 273.1 443.8L238.9 443.8A15 15 0 0 1 224.4 432.5L217 403.1A12 12 0 0 0 209.9 395L190.3 386.9A12 12 0 0 0 179.6 387.7L153.5 403.2A15 15 0 0 1 135.3 400.9L111.1 376.7A15 15 0 0 1 108.8 358.5L124.3 332.4A12 12 0 0 0 125.1 321.7L117 302.1A12 12 0 0 0 108.9 295L79.5 287.6A15 15 0 0 1 68.2 273.1L68.2 238.9A15 15 0 0 1 79.5 224.4L108.9 217A12 12 0 0 0 117 209.9L125.1 190.3A12 12 0 0 0 124.3 179.6L108.8 153.5A15 15 0 0 1 111.1 135.3L135.3 111.1A15 15 0 0 1 153.5 108.8L179.6 124.3A12 12 0 0 0 190.3 125.1L209.9 117A12 12 0 0 0 217 108.9Z" fill="url(#gr-bevel)" stroke="#8A4700" stroke-opacity="0.4" stroke-width="4.4" stroke-linejoin="round"/>
+      <!-- flat face -->
+      <path d="M224.7 110.8L232.1 81.5A7 7 0 0 1 238.9 76.2L273.1 76.2A7 7 0 0 1 279.9 81.5L287.3 110.8A20 20 0 0 0 299 124.4L318.6 132.5A20 20 0 0 0 336.5 131.2L362.5 115.7A7 7 0 0 1 371.1 116.8L395.2 140.9A7 7 0 0 1 396.3 149.5L380.8 175.5A20 20 0 0 0 379.5 193.4L387.6 213A20 20 0 0 0 401.2 224.7L430.5 232.1A7 7 0 0 1 435.8 238.9L435.8 273.1A7 7 0 0 1 430.5 279.9L401.2 287.3A20 20 0 0 0 387.6 299L379.5 318.6A20 20 0 0 0 380.8 336.5L396.3 362.5A7 7 0 0 1 395.2 371.1L371.1 395.2A7 7 0 0 1 362.5 396.3L336.5 380.8A20 20 0 0 0 318.6 379.5L299 387.6A20 20 0 0 0 287.3 401.2L279.9 430.5A7 7 0 0 1 273.1 435.8L238.9 435.8A7 7 0 0 1 232.1 430.5L224.7 401.2A20 20 0 0 0 213 387.6L193.4 379.5A20 20 0 0 0 175.5 380.8L149.5 396.3A7 7 0 0 1 140.9 395.2L116.8 371.1A7 7 0 0 1 115.7 362.5L131.2 336.5A20 20 0 0 0 132.5 318.6L124.4 299A20 20 0 0 0 110.8 287.3L81.5 279.9A7 7 0 0 1 76.2 273.1L76.2 238.9A7 7 0 0 1 81.5 232.1L110.8 224.7A20 20 0 0 0 124.4 213L132.5 193.4A20 20 0 0 0 131.2 175.5L115.7 149.5A7 7 0 0 1 116.8 140.9L140.9 116.8A7 7 0 0 1 149.5 115.7L175.5 131.2A20 20 0 0 0 193.4 132.5L213 124.4A20 20 0 0 0 224.7 110.8Z" fill="url(#gr-face)"/>
+      <!-- catch-lights on the edge of the upper-left teeth -->
+      <g fill="none" stroke="url(#gr-shine)" stroke-width="6" stroke-linecap="round">
+        <path d="M236.8 73.7A183.3 183.3 0 0 1 275.2 73.7"/>
+        <path d="M113.5 140.6A183.3 183.3 0 0 1 140.6 113.5"/>
+        <path d="M73.7 275.2A183.3 183.3 0 0 1 73.7 236.8"/>
+      </g>
+      <!-- raised hub: its side, then its top -->
+      <circle cx="259" cy="262" r="80" fill="url(#gr-side)" stroke="#8A4700" stroke-opacity="0.6" stroke-width="4.4"/>
+      <circle cx="256" cy="256" r="80" fill="url(#gr-hub)" stroke="#9A5200" stroke-opacity="0.6" stroke-width="4.4"/>
+      <!-- inner wall of the hole -->
+      <circle cx="256" cy="256" r="42" fill="url(#gr-wall)"/>
+      <!-- specular streaks on the face and hub, and a glint -->
+      <path d="M142.5 231.9A116 116 0 0 1 231.9 142.5" fill="none" stroke="url(#gr-shine)" stroke-width="13" stroke-linecap="round"/>
+      <path d="M196.4 238.9A62 62 0 0 1 238.9 196.4" fill="none" stroke="url(#gr-shine)" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="200.1" cy="173.1" r="6" fill="#FFFFFF" opacity="0.7"/>
+    </g>
+    <!-- hole contour -->
+    <circle cx="256" cy="256" r="42" fill="none" stroke="#7A3F00" stroke-width="5"/>
+  </g>
+</svg>

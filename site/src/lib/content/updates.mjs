@@ -129,6 +129,13 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-11-15-sharper-game-emoji",
+  "date": "November 15, 2026",
+  "title": "Sharper emoji in the slicing game",
+  "text": "The rocket, brain, laptop, books, coffee and gear in the game above the footer are new, glossier drawings. They stay sharp at any size, including on phones with high-resolution screens, and their edges are no longer grainy. A sliced emoji now shows a thin bright edge along the cut.",
+  "items": []
+ },
+ {
   "id": "2026-11-11-dark-mode-one-black",
   "date": "November 11, 2026",
   "title": "Dark mode in one black",
