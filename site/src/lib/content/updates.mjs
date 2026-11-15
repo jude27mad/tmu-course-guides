@@ -132,7 +132,7 @@ export const WEBSITE_UPDATES = [
   "id": "2026-11-15-sharper-game-emoji",
   "date": "November 15, 2026",
   "title": "Sharper emoji in the slicing game",
-  "text": "The rocket, brain, laptop, books, coffee and gear in the game above the footer are new, glossier drawings. They stay sharp at any size, including on phones with high-resolution screens, and their edges are no longer grainy. A sliced emoji now shows a thin bright edge along the cut.",
+  "text": "The rocket, brain, laptop, books, coffee and gear in the game above the footer are now Google's new 3D emoji, at twice the resolution of the old ones. They stay sharp on phones with high-resolution screens, and their edges are no longer grainy. A sliced emoji now shows a thin bright edge along the cut.",
   "items": []
  },
  {

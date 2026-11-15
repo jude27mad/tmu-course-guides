@@ -1,12 +1,12 @@
 import { CanvasTexture, CustomBlending, MeshBasicMaterial, NoColorSpace, OneFactor, OneMinusSrcAlphaFactor } from 'three';
 import { withBasePath } from '@src/utils/basePath';
 
-// Original vector artwork drawn for this site (public/images/game/*.svg). Images, rather than text
-// glyphs, keep the same shapes and colours on every OS, and vectors stay sharp at any pixel density:
-// each is rasterised once, here, at SIZE.
+// Google's Noto 3D emoji, locally hosted 512 px renders (public/images/game/*.webp); see
+// public/licenses/README.md and Noto-Emoji-OFL.txt. Images, rather than text glyphs, keep the same
+// shapes and colours on every OS.
 export const GAME_EMOJI = ['rocket', 'brain', 'laptop', 'books', 'hot_beverage', 'gear'];
-// A target is about 300 device pixels across at most (a large Retina display), so 512 keeps a texel
-// per pixel or better there; the mipmaps cover phones.
+// A target is about 300 device pixels across at most (a large Retina display), so the 512 px artwork
+// keeps a texel per pixel or better there; the mipmaps cover phones.
 export const EMOJI_TEXTURE_SIZE = 512;
 const SIZE = EMOJI_TEXTURE_SIZE;
 
@@ -18,7 +18,7 @@ export async function loadEmojiImages() {
           const image = new Image();
           image.onload = () => resolve({ name, image });
           image.onerror = reject;
-          image.src = withBasePath(`/images/game/${name}.svg`);
+          image.src = withBasePath(`/images/game/${name}.webp`);
         }),
     ),
   );

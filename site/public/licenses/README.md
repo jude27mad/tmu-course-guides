@@ -1,13 +1,30 @@
 # Code provenance and licences
 
-## Game artwork
+## Noto 3D Emoji game artwork
 
-The slicing game's rocket, brain, laptop, books, hot beverage and gear
-(`images/game/*.svg`) are original vector drawings made for this website in
-November 2026. They are not taken or traced from any emoji set, and no
-third-party licence applies to them. The game rasterises each one in the
-browser and splits it into two halves when sliced; no third-party runtime
-request is made.
+The slicing game's rocket, brain, laptop, books, hot beverage and gear are the
+512 × 512 transparent renders from Google's
+[Noto 3D Emoji](https://github.com/googlefonts/noto-emoji) (`3D/png/512/` on the
+`main` branch, fetched on November 15, 2026). Copyright 2013 Google LLC. The
+repository's licence, the SIL Open Font License 1.1, is reproduced in
+[Noto-Emoji-OFL.txt](Noto-Emoji-OFL.txt); its README also lists image resources
+under the Apache License 2.0. Both permit hosting the artwork here, and Google
+announced the Noto 3D library as open source and free to use.
+
+| Local file under `images/game/` | Upstream file under `3D/png/512/` | SHA-256 of the upstream PNG |
+| --- | --- | --- |
+| `rocket.webp` | `emoji_u1f680.png` | `7b4711ed742e7c872b97e12e3b3d16e42f32fb050d7ae3ba3d52335b4c69bb2d` |
+| `brain.webp` | `emoji_u1f9e0.png` | `beaab83575bfc44c35d6bf4f31d54382f67d68b83748e5bc96de72090a49f994` |
+| `laptop.webp` | `emoji_u1f4bb.png` | `86e8c2831f61ea72a5d7f589b6cf8b5de07733a0ca5aaf646cf3927bdf1cf082` |
+| `books.webp` | `emoji_u1f4da.png` | `f8de12f54699e34ec9cdd189627d95475817aefc4f22619535fa09f096e3115a` |
+| `hot_beverage.webp` | `emoji_u2615.png` | `8dfc51491904004b2b55f26a00070ece252c590a09e3a8cf3293e938d80831b6` |
+| `gear.webp` | `emoji_u2699.png` | `666ea1f1626719d8149588a0209c9ca4517ed76152ca1e4bd18111146b1fd592` |
+
+Modification: each PNG was converted to WebP (quality 90, full-quality alpha;
+about 129 KB for all six instead of 1.6 MB) and is otherwise unchanged. The
+converted files remain under the same licence. They are served locally; the
+game clips and separates each image into two halves when sliced, and no
+third-party runtime request is made.
 
 ## Existing code
 

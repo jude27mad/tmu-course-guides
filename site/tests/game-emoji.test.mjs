@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
 
 const root = new URL('../', import.meta.url);
 const read = (path) => readFileSync(new URL(path, root), 'utf8');
@@ -8,37 +8,32 @@ const textures = read('src/components/dom/prefooter/emojiTextures.js');
 const names = JSON.parse(textures.match(/GAME_EMOJI = (\[[^\]]*\])/)[1].replace(/'/g, '"'));
 const folder = new URL('public/images/game/', root);
 
-test('every game emoji is a vector file, and only those files are in the folder', () => {
+test('every game emoji is a locally hosted WebP, and only those files are in the folder', () => {
   assert.deepEqual(names, ['rocket', 'brain', 'laptop', 'books', 'hot_beverage', 'gear']);
-  for (const name of names) assert.ok(existsSync(new URL(`${name}.svg`, folder)), `${name}.svg`);
-  assert.deepEqual(readdirSync(folder).sort(), names.map((name) => `${name}.svg`).sort(), 'no stale raster artwork is left behind');
-  assert.match(textures, /\/images\/game\/\$\{name\}\.svg/);
+  assert.deepEqual(readdirSync(folder).sort(), names.map((name) => `${name}.webp`).sort(), 'no stale artwork is left behind');
+  assert.match(textures, /\/images\/game\/\$\{name\}\.webp/);
 });
 
-test('each emoji SVG is self-contained, well formed and drawable at 512 px', () => {
+test('each emoji is a 512 px WebP with an alpha channel, small enough to load quickly', () => {
   for (const name of names) {
-    const path = new URL(`${name}.svg`, folder);
-    const svg = readFileSync(path, 'utf8');
-    // An intrinsic size lets every browser rasterise it on the 2D canvas at full resolution.
-    assert.match(svg, /^\s*<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg" width="512" height="512" viewBox="0 0 512 512">/, name);
-    assert.ok(statSync(path).size < 16 * 1024, `${name} stays small`);
-    assert.doesNotMatch(svg, /<(script|image|foreignObject|style|text|filter|use)\b/i, `${name} uses only plain shapes and gradients`);
-    assert.doesNotMatch(svg, /\bon[a-z]+\s*=|javascript:|@import/i, name);
-    const ids = [...svg.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
-    assert.equal(new Set(ids).size, ids.length, `${name} ids are unique`);
-    const references = [...svg.matchAll(/url\(([^)]*)\)|href="([^"]*)"/g)].map((match) => match[1] ?? match[2]);
-    for (const reference of references) {
-      assert.match(reference, /^#/, `${name} refers only to its own definitions`);
-      assert.ok(ids.includes(reference.slice(1)), `${name} defines ${reference}`);
-    }
-    const stack = [];
-    for (const [tag, closing, element, selfClosing] of svg.replace(/<!--[\s\S]*?-->/g, '').matchAll(/<(\/?)([a-zA-Z]+)\b[^>]*?(\/?)>/g)) {
-      if (selfClosing) continue;
-      if (closing) assert.equal(stack.pop(), element, `${name}: ${tag} closes the element it opened`);
-      else stack.push(element);
-    }
-    assert.deepEqual(stack, [], `${name}: every element is closed`);
+    const path = new URL(`${name}.webp`, folder);
+    const bytes = readFileSync(path);
+    assert.equal(bytes.toString('latin1', 0, 4), 'RIFF', name);
+    assert.equal(bytes.toString('latin1', 8, 12), 'WEBP', name);
+    // Extended format: the flags carry the alpha bit, then the canvas size minus one, 24-bit little-endian.
+    assert.equal(bytes.toString('latin1', 12, 16), 'VP8X', `${name} uses the extended format`);
+    assert.ok(bytes[20] & 0x10, `${name} has an alpha channel`);
+    assert.equal(1 + bytes.readUIntLE(24, 3), 512, `${name} width`);
+    assert.equal(1 + bytes.readUIntLE(27, 3), 512, `${name} height`);
+    assert.ok(statSync(path).size < 48 * 1024, `${name} stays small`);
   }
+});
+
+test('the Noto 3D artwork ships with its licence and source notes', () => {
+  const notes = read('public/licenses/README.md');
+  assert.match(read('public/licenses/Noto-Emoji-OFL.txt'), /^Copyright 2013 Google LLC[\s\S]*SIL OPEN FONT LICENSE Version 1\.1/);
+  assert.match(notes, /## Noto 3D Emoji game artwork/);
+  for (const name of names) assert.ok(notes.includes(`\`${name}.webp\``), `${name} has a source row`);
 });
 
 test('emoji textures keep clean edges: premultiplied, undecoded and blended to match', () => {
