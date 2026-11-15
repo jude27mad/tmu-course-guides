@@ -112,6 +112,10 @@
   overflow: hidden;
   border-radius: 999px;
   background: var(--white);
+  // Dark mode: the empty track is the page's ink, so it is edged; secured and still possible keep their meaning.
+  @media screen and (prefers-color-scheme: dark) {
+    box-shadow: inset 0 0 0 1px var(--borderStrong);
+  }
 }
 .secured {
   left: 0;
@@ -156,6 +160,12 @@
     font-weight: 600;
     line-height: 1.4;
     white-space: nowrap;
+    // Dark mode: an outlined tag; an ink one would vanish on the ink card.
+    @media screen and (prefers-color-scheme: dark) {
+      background: var(--card);
+      color: var(--text);
+      box-shadow: inset 0 0 0 1px var(--borderStrong);
+    }
   }
   // Near 100 the label sits to the left of the line, inside the card.
   &[data-edge='end']::after {
@@ -363,6 +373,10 @@
   box-shadow:
     inset 0 0 0 1px var(--border),
     0 6px 18px rgba(var(--inkRgb), 0.06);
+  // Dark mode: it floats over the marks, so it takes the pills' stronger hairline.
+  @media screen and (prefers-color-scheme: dark) {
+    box-shadow: inset 0 0 0 1px var(--borderStrong);
+  }
 }
 .quickValue {
   display: flex;
@@ -475,6 +489,10 @@
     text-align: right;
     font-variant-numeric: tabular-nums;
     transition: box-shadow 0.2s;
+    // Dark mode: a text field on the ink takes the field edge, the strongest hairline.
+    @media screen and (prefers-color-scheme: dark) {
+      box-shadow: inset 0 0 0 1px var(--fieldEdge);
+    }
     &::placeholder {
       color: var(--muted);
       opacity: 1;

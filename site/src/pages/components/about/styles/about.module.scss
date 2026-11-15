@@ -127,6 +127,12 @@
         background-color: var(--accentTint);
         box-shadow: none;
       }
+      // Dark mode: an ink pill, edged like the other pills.
+      @media screen and (prefers-color-scheme: dark) {
+        &:not([data-status='onTrack']) {
+          box-shadow: inset 0 0 0 1px var(--borderStrong);
+        }
+      }
     }
 
     // One linked window onto the existing physics badge, in a stable DOM slot.
@@ -139,6 +145,12 @@
       grid-row: 1;
       border-radius: calc(var(--layout-columns-gap) * 1);
       box-shadow: 0 0 0 300vw var(--white);
+      // Dark mode: the window onto the artwork is edged.
+      @media screen and (prefers-color-scheme: dark) {
+        box-shadow:
+          inset 0 0 0 1px var(--windowEdge),
+          0 0 0 300vw var(--white);
+      }
       &:focus-visible {
         outline: 3px solid var(--accent);
         outline-offset: 4px;

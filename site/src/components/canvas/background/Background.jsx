@@ -1,11 +1,14 @@
 import * as THREE from 'three';
 
 import { useFrame, useThree } from '@react-three/fiber';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 import fragmentShader from '@src/components/canvas/background/shaders/fragmentShader';
 import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
 import vertexShader from '@src/components/canvas/background/shaders/vertexShader';
+import useMediaQuery from '@src/hooks/useMediaQuery';
+// eslint-disable-next-line import/extensions
+import { ARTWORK_FLOOR, DARK_QUERY, prefersDark } from '@src/lib/palette.mjs';
 
 // The original moves the offsets 0.00005 every frame it draws (twice as fast on a
 // 120 Hz screen). While a panel is open the canvas draws every display frame and
@@ -40,6 +43,9 @@ function Background({ still = false, live = false }) {
   const canvasHeight = useThree((state) => state.size.height);
   const invalidate = useThree((state) => state.invalidate);
 
+  // Dark mode floors the sweep at the page's ink (ARTWORK_FLOOR); `dark` only says when to look again, since the
+  // canvas can mount during hydration, while it is still the server's false.
+  const dark = useMediaQuery(DARK_QUERY);
   const isOffsetXIncreasing = useRef(true);
   const isOffsetYIncreasing = useRef(true);
 
@@ -60,9 +66,15 @@ function Background({ still = false, live = false }) {
       uBackgroundScale: { value: 3.0 },
       uUvScaleY: { value: 1 },
       uUvOffsetY: { value: 0 },
+      uFloor: { value: ARTWORK_FLOOR.light },
     }),
     [],
   );
+
+  useEffect(() => {
+    uniforms.uFloor.value = prefersDark() ? ARTWORK_FLOOR.dark : ARTWORK_FLOOR.light;
+    invalidate();
+  }, [dark, uniforms, invalidate]);
 
   // On iPhone the canvas reaches --edge-bleed-* past the layout viewport (see
   // global.scss). Draw the viewport band exactly as before; the reach continues it.

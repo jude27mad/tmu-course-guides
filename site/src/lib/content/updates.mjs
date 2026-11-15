@@ -155,12 +155,26 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
-  "id": "2026-11-10-chy102-pcs211",
-  "date": "November 10, 2026",
+  "id": "2026-11-15-chy102-pcs211",
+  "date": "November 15, 2026",
   "title": "CHY102 and PCS211 guides",
   "text": "Two new course guides: CHY102 General Chemistry and PCS211 Physics: Mechanics. Each has Work, Schedule, Study, Grades and Course info, like the math guides, and their deadlines appear on the Desk and in Search. Neither needs a section: CHY102 lists its three sections in Course info, and PCS211's labs and tutorials show the two-week window your session falls in.",
   "items": [],
   "courses": ["chy102", "pcs211"]
+ },
+ {
+  "id": "2026-11-11-dark-mode-one-black",
+  "date": "November 11, 2026",
+  "title": "Dark mode in one black",
+  "text": "Dark mode no longer mixes shades of black. The page, the menu, the footer and every card and button are now the same black, and thin grey lines outline the cards, buttons, fields and calendar. The course badges, the Courses card and the footer look onto the same slowly moving light bands as in light mode, and the windows on the Desk now do too, each with a thin edge. The selected tab and filters are blue, as in light mode, and Mark done stays a TMU Blue button. Light mode is unchanged.",
+  "items": []
+ },
+ {
+  "id": "2026-11-11-intro-footer-copy",
+  "date": "November 11, 2026",
+  "title": "Clearer intro and footer",
+  "text": "The opening heading now reads TMU Course Companion, so Guides appears only once at the top. The footer keeps its underlined Privacy link and removes the duplicate from the Sitemap list.",
+  "items": []
  },
  {
   "id": "2026-11-08-dark-mode",

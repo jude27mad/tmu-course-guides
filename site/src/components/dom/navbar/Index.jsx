@@ -184,7 +184,7 @@ function Navbar() {
     };
   }, [isOpen, isLoading, router.asPath]);
 
-  // The shrunk page's edge is drawn in the scheme's colour, so a device switching scheme rebuilds the shell.
+  // The shrunk page's edge and how far it dims follow the scheme, so a device switching scheme rebuilds the shell.
   const dark = useMediaQuery(DARK_QUERY);
 
   // Shared panel shell: the page shrinks and slides aside on every screen.

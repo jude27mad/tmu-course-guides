@@ -584,7 +584,7 @@ try {
           scroller.scrollTo(0, documentMode ? document.scrollingElement.scrollHeight : scroller.scrollHeight);
         });
         await page.waitForFunction(() => (document.documentElement.dataset.scrollMode === 'document' ? scrollY : document.querySelector('main').scrollTop) > 200);
-        await follow('footer-to-desk', '', 'TMU Course Guides', () => page.evaluate((desk) => [...document.querySelectorAll('main a[href]')].filter((link) => new URL(link.href).pathname === desk).at(-1).click(), new URL(base).pathname));
+        await follow('footer-to-desk', '', 'TMU Course Companion', () => page.evaluate((desk) => [...document.querySelectorAll('main a[href]')].filter((link) => new URL(link.href).pathname === desk).at(-1).click(), new URL(base).pathname));
         const top = await page.evaluate(() => ({ scrollTop: document.documentElement.dataset.scrollMode === 'document' ? scrollY : document.querySelector('main').scrollTop, header: getComputedStyle(document.querySelector('header')).opacity }));
         assert.ok(top.scrollTop <= 8, 'the Desk opens at its top');
         assert.equal(top.header, '1', 'the header is back after the change');
