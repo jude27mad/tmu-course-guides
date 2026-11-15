@@ -24,7 +24,7 @@ const HOMEWORK_PREP = [
   'Submit before Monday 11:59 PM; late work loses 10% per day.',
 ];
 const HOMEWORK_RULES = [
-  'Due Monday at 11:59 PM Toronto time. Each assignment opens one week before its deadline.',
+  'Due Monday at 11:59 PM Toronto time. Each assignment opens on the date shown on its card, normally one week before the deadline.',
   'No extensions, and no academic consideration for missed homework. Late work loses 10% per day, up to 50%.',
   'Each assignment is worth 1%; bonus marks are available, but an assignment counts at most 100%.',
   'Mastering questions go to your TA in the resource-room hours, not to your instructor by email.',
@@ -47,10 +47,10 @@ const homework = (n, chapters, topics, available, due, extra = {}) => ({
 });
 
 const CHY_MIDTERM_RULES = [
-  'Bring a non-programmable, non-graphing scientific calculator (the outline suggests the Casio fx-991MS) and your TMU student ID.',
+  'Bring a non-programmable, non-graphing scientific calculator (the outline suggests the Casio fx-991MS).',
   'Phones, earbuds, smart watches and smart or AI glasses are not allowed, on or off. Check D2L for exactly which calculator and supplies are permitted.',
   'If you miss the midterm, email your instructor by 5 PM that day and submit an academic consideration request.',
-  'Room assignments and any later instructions are posted on D2L.',
+  'Room assignments and further information are on the D2L course site.',
 ];
 const chyMidterm = (n, date, chapters, topics) => ({
   id: `midterm-${n}`,
@@ -70,29 +70,29 @@ const chyMidterm = (n, date, chapters, topics) => ({
     'Work the D2L practice problems for these chapters; check answers in Appendix III.',
     'Practise full questions under timed conditions with my approved calculator.',
     'Check D2L for my room, the exact coverage and any changes to the date.',
-    'Prepare my TMU ID and calculator, and leave every other device behind.',
+    'Prepare my calculator, check D2L for what is permitted, and leave every other device behind.',
   ],
   rules: CHY_MIDTERM_RULES,
 });
-const wrapper = (n, midterm, start, end, week) => ({
+const wrapper = (n, midterm, start, end, week, page) => ({
   id: `wrapper-${n}`,
   title: `Exam wrapper ${n}`,
   kind: 'wrapper',
   window: { start, end },
   scope: `A reflection on how you prepared for Midterm ${midterm}: how you studied, which questions you struggled with, which you got wrong despite feeling sure, and what you will change. Completed as a Google Form.`,
-  source: `${OUTLINE_CHY}, p. 6–7: due in week ${week}; p. 15: questions and 2.5% value. The exact day is announced on D2L.`,
+  source: `${OUTLINE_CHY}, p. ${page}: due in week ${week} (weeks run Tuesday to Monday, p. 7); p. 15: questions, 2.5% value, and the Google Form opens with a D2L announcement the week before it is due. The outline gives only the due week; check D2L for the exact due day.`,
   confirmed: false,
   weightLabel: '2.5% of course',
   category: 'wrappers',
-  timingText: 'due this week · exact day on D2L',
+  timingText: 'due this week · the outline gives only the week; check D2L for the day',
   prep: [
-    `Look over my marked Midterm ${midterm} once it is returned.`,
+    `Look over my Midterm ${midterm} results and the questions I got wrong (check D2L for how marked midterms are shared).`,
     'Note how I studied, and which questions cost me the most marks.',
     'Find the questions I thought were right but got wrong, and why.',
     'Write the specific study changes I will make for the next test.',
     'Submit the Google Form from the D2L announcement before it closes.',
   ],
-  rules: ['Marked on giving thoughtful, specific answers about your own study approach, not on your midterm score.', 'The form opens on D2L the week before it is due; watch for the announcement.'],
+  rules: ['Evaluation is based on thoughtful, reflective answers to the questions.', 'The form opens with a D2L announcement the week before it is due; watch for it.'],
 });
 
 const chy102 = {
@@ -145,7 +145,7 @@ const chy102 = {
       sections: 'Chapter 1',
       week: 1,
       exam: 'Midterm 1',
-      description: 'Units, measurement and the numbers behind every calculation.',
+      description: 'Units, measurement and the numbers behind every calculation. Lectures cover this only in condensed form in week 1; read the full chapter in the textbook, because the outline says it is on assignments and exams (p. 7).',
       skills: ['Convert between SI units and prefixes.', 'Apply significant figures in calculations.', 'Use dimensional analysis to set up conversions.'],
     },
     {
@@ -154,7 +154,7 @@ const chy102 = {
       sections: 'Chapter 2',
       week: 1,
       exam: 'Midterm 1',
-      description: 'Atomic structure, isotopes and the mole.',
+      description: 'Atomic structure, isotopes and the mole. Lectures cover this only in condensed form in week 1; read the full chapter in the textbook, because the outline says it is on assignments and exams (p. 7).',
       skills: ['Identify protons, neutrons and electrons for an isotope.', 'Calculate average atomic mass.', 'Convert between mass, moles and number of atoms.'],
     },
     {
@@ -307,30 +307,33 @@ const chy102 = {
     homework(3, 'Chapter 4', 'chemical reactions and stoichiometry', 'Sep 28', '2026-10-05'),
     chyMidterm(1, '2026-10-09', '1–4 and 6', 'measurements, atoms and elements, molecules and nomenclature, chemical reactions and stoichiometry, and thermochemistry'),
     homework(4, 'Chapter 6', 'thermochemistry', 'Oct 5', '2026-10-12', {
-      dateNote: 'October 12 is Thanksgiving Monday. The outline keeps the 11:59 PM deadline.',
+      dateNote: 'October 12 is Thanksgiving Monday, with no class (p. 6), but the assignment table (p. 13) still lists October 12 at 11:59 PM as the deadline.',
+      source: `${OUTLINE_CHY}, p. 13: assignment schedule and Monday 11:59 PM deadline; p. 6: no class on October 12 (Thanksgiving Monday).`,
     }),
     homework(5, 'Chapter 5', 'gases', 'Oct 12', '2026-10-19'),
     homework(6, 'Chapter 11', 'liquids, solids and intermolecular forces', 'Oct 19', '2026-10-26'),
     homework(7, 'Chapter 12', 'solutions', 'Oct 26', '2026-11-02'),
-    wrapper(1, 1, '2026-10-27', '2026-11-02', 8),
+    wrapper(1, 1, '2026-10-27', '2026-11-02', 8, 6),
     homework(8, 'Chapter 13', 'chemical kinetics', 'Nov 2', '2026-11-09'),
-    chyMidterm(2, '2026-11-13', '5 and 11–14', 'gases, liquids and solids, solutions, chemical kinetics and chemical equilibrium'),
+    chyMidterm(2, '2026-11-13', '5 and 11–14', 'gases, liquids, solids and intermolecular forces, solutions, chemical kinetics and chemical equilibrium'),
     homework(9, 'Chapter 14', 'chemical equilibrium', 'Nov 9', '2026-11-23', {
-      dateNote: 'Open for two weeks: no homework is due on November 16.',
+      dateNote: 'The assignment table (p. 13) gives Monday, November 23, but the weekly schedule (p. 6) lists the Chapter 14 homework in week 10, which ends Monday, November 16. Check the due date in Mastering Chemistry and on D2L, and finish by November 16 to be safe.',
+      confirmed: false,
+      source: `${OUTLINE_CHY}, p. 13: assignment table (opens Nov 9, deadline Nov 23); pp. 6–7: the weekly schedule lists the Chapter 14 homework in week 10 (Nov 10–16), due on the Monday that ends that week.`,
     }),
-    homework(10, 'Chapter 15', 'acids, bases and buffers', 'Nov 23', '2026-11-30'),
-    wrapper(2, 2, '2026-11-24', '2026-11-30', 12),
+    homework(10, 'Chapter 15', 'acids and bases; buffers and titrations', 'Nov 23', '2026-11-30'),
+    wrapper(2, 2, '2026-11-24', '2026-11-30', 12, 7),
     homework(11, 'Chapter 17', 'Gibbs energy and thermodynamics', 'Nov 30', '2026-12-07'),
     {
       id: 'hw-12',
       title: 'Homework 12 (optional)',
       kind: 'homework',
-      scope: 'Mastering Chemistry: Chapters 16 and 18, for practice. Opens Nov 30. Does not count towards your grade.',
-      source: `${OUTLINE_CHY}, pp. 7 and 13: optional assignment.`,
+      scope: 'Mastering Chemistry: Chapters 16 and 18, for practice. The assignment table opens it on Nov 30 and lists no deadline. The weekly schedule puts the Chapter 16 part in week 12 (Nov 24–30) and the Chapter 18 part in week 13 (Dec 1–7), so check Mastering Chemistry and D2L for its actual dates. Does not count towards your grade.',
+      source: `${OUTLINE_CHY}, p. 13: assignment table (available Nov 30, no deadline listed); p. 7: weekly schedule.`,
       confirmed: true,
       weightLabel: 'Optional · not graded',
-      timingText: 'Opens Nov 30 · no deadline · not graded',
-      prep: ['Use it to practise Chapters 16 and 18 before the final.'],
+      timingText: 'Opens Nov 30 · not graded · the outline gives no deadline; check Mastering Chemistry',
+      prep: ['Use it to practise Chapters 16 and 18 (optional, ungraded).'],
       rules: ['Optional practice; it does not count towards your grade.'],
     },
     {
@@ -339,7 +342,8 @@ const chy102 = {
       kind: 'final',
       date: null,
       scope: 'The outline lists the final for the December 9–20 examination period. Coverage, date, time and room await the official exam schedule and D2L.',
-      source: `${OUTLINE_CHY}, p. 7: examination period; pp. 8–9: 35% in both schemes.`,
+      source: `${OUTLINE_CHY}, p. 7: examination period; pp. 8–9: 35% in both schemes; p. 4: calculators; pp. 17–18: devices and AI glasses.`,
+      tileMonth: 'DEC',
       confirmed: false,
       weightLabel: '35% of course',
       category: 'final',
@@ -347,13 +351,14 @@ const chy102 = {
       prep: [
         'Check the official exam schedule for my date, time and room.',
         'Check D2L for the final’s coverage and instructions.',
-        'Review every chapter’s homework and practice problems.',
+        'Once D2L posts the coverage, review those chapters’ homework and practice problems.',
         'Practise full questions with my approved calculator.',
         'Arrange any approved exam accommodations through the required process.',
       ],
       rules: [
         'A no-documentation academic consideration request cannot be used for the final exam.',
-        'Bring your approved calculator and TMU ID; all other devices, including smart and AI glasses, are prohibited.',
+        'Phones, earbuds, smart watches, smart or AI glasses and other electronic devices are prohibited, on or off.',
+        'The outline requires a non-programmable, non-graphing calculator and bars graphing or text-storing ones from finals (p. 4), but also lists calculators among prohibited devices (p. 17); check D2L for exactly which calculator and supplies are permitted.',
       ],
     },
   ],
@@ -365,7 +370,7 @@ const chy102 = {
       iclicker: {
         title: 'iClicker participation',
         dateLabel: 'Whole term · enter your grade out of 5',
-        note: 'From the share of lectures you answered: 75% or more = 5; 65–74% = 4; 55–64% = 3; 45–54% = 2; 35–44% = 1; 34% or less = 0.',
+        note: 'From the percentage of times you participated in class overall: 75% or more = 5; 65–74% = 4; 55–64% = 3; 45–54% = 2; 35–44% = 1; 34% or less = 0.',
       },
     },
     variants: [
@@ -482,7 +487,7 @@ const chy102 = {
 
 // ---- PCS211 ----
 const LAB_PREP = [
-  'Read the lab procedure posted on D2L.',
+  'Read the lab procedure for this experiment (check D2L for where it is posted).',
   'Complete the pre-lab quiz before my lab session starts.',
   'Attend my scheduled lab session with my lab partner.',
   'Finish and submit the lab report before the session ends.',
@@ -514,11 +519,11 @@ const lab = (n) => ({
   kind: 'lab',
   window: { start: WINDOWS[n - 1][0], end: WINDOWS[n - 1][1] },
   scope: `Experiment: ${LABS[n - 1]}. Pre-lab quiz due when your session starts; report due when it ends.`,
-  source: `${OUTLINE_PCS}, pp. 2–3: lab rules; pp. 6–7: weeks ${WINDOWS[n - 1][2]}; p. 4: 4% each (3.6% report + 0.4% quiz). Your session’s day and room are on D2L.`,
+  source: `${OUTLINE_PCS}, p. 3: lab rules; p. ${n < 5 ? 6 : 7}: weeks ${WINDOWS[n - 1][2]}; p. 4: 4% each (3.6% report + 0.4% quiz). The outline gives only the weeks; check D2L for your session’s day and room.`,
   confirmed: true,
   weightLabel: '4% · 3.6% report + 0.4% pre-lab quiz',
   category: 'labs',
-  timingText: `your session in weeks ${WINDOWS[n - 1][2]} · day and room on D2L`,
+  timingText: `your session in weeks ${WINDOWS[n - 1][2]} · check D2L for the day and room`,
   prep: LAB_PREP,
   rules: LAB_RULES,
 });
@@ -528,11 +533,11 @@ const tutorial = (n) => ({
   kind: 'tutorial',
   window: { start: WINDOWS[n - 1][0], end: WINDOWS[n - 1][1] },
   scope: `${TUTORIALS[n - 1]} (Tentative.) A two-hour problem-solving session with an assessed component.`,
-  source: `${OUTLINE_PCS}, p. 2: tutorial format; p. 7: weeks ${WINDOWS[n - 1][2]} and material; p. 4: 2% each. Your session’s day and room are on D2L.`,
+  source: `${OUTLINE_PCS}, p. 2: tutorial format; p. 7: weeks ${WINDOWS[n - 1][2]} and material; p. 4: 2% each. The outline gives only the weeks; check D2L for your session’s day and room.`,
   confirmed: false,
   weightLabel: '2% of course',
   category: 'tutorials',
-  timingText: `your session in weeks ${WINDOWS[n - 1][2]} · day and room on D2L`,
+  timingText: `your session in weeks ${WINDOWS[n - 1][2]} · check D2L for the day and room`,
   prep: [
     'Review the lectures and textbook sections for this material.',
     'Practise problems on these topics, including WebAssign if I use it.',
@@ -553,17 +558,17 @@ const pcs211 = {
   term: 'Fall 2026',
   updated: '2026-11-10',
   labs: [],
-  lectures: 'Mondays 8:00–10:00 AM in DSQ 7 · Wednesdays 2:00–3:00 PM in ENG103',
+  lectures: 'Mondays 8:00–10:00 AM in DSQ 7 · Wednesdays 2:00–3:00 PM in ENG103 (the times listed for Vladislav Toronov; if you have another instructor, check their D2L shell)',
   instructors: [
     {
       name: 'Vladislav Toronov',
       role: 'Instructor',
       email: 'toronov@torontomu.ca',
-      hours: 'Office hours are posted on D2L.',
+      hours: 'Office hours: not given in the outline; check D2L.',
     },
   ],
-  coordinator: 'Vladislav Toronov',
-  organization: '3 hours of lectures each week + a 2-hour lab or tutorial every other week',
+  coordinator: 'Not named in the outline; check D2L',
+  organization: '3 hours of lectures each week for 13 weeks + five 2-hour labs and five 2-hour tutorials, each every other week (weeks 2–11)',
   quizPolicy: 'Five tutorials (2% each), five labs (4% each) and five optional WebAssign assignments (1% each).',
   topics: [
     {
@@ -696,7 +701,7 @@ const pcs211 = {
     },
   ],
   practice: [],
-  practiceNote: 'WebAssign assignments (optional) are the course’s online practice; tutorials are problem-solving sessions. Hibbeler pages used in the course are posted on D2L.',
+  practiceNote: 'WebAssign assignments (optional) are the course’s online practice; tutorials are problem-solving sessions. The outline says a number of the Hibbeler pages referenced in the course will be posted online for download; check D2L.',
   assessments: [
     {
       id: 'orientation',
@@ -706,7 +711,8 @@ const pcs211 = {
       source: `${OUTLINE_PCS}, pp. 2 and 7: mandatory orientation sessions.`,
       confirmed: true,
       weightLabel: 'Mandatory',
-      timingText: 'First in-person lecture and the online orientation meeting · times on D2L',
+      timingText: 'First in-person lecture (Mondays 8:00–10:00 AM in DSQ 7 or Wednesdays 2:00–3:00 PM in ENG103) and the scheduled online orientation meeting · the outline does not give the meeting time; check D2L',
+      room: 'First lecture: DSQ 7 (Mon) or ENG103 (Wed) · online meeting: not in the outline, check D2L',
       prep: ['Attend the first in-person lecture.', 'Attend the online orientation meeting.', 'If I missed either, meet the instructor in office hours.'],
       rules: ['Students who miss either session must meet the instructor in person during office hours as soon as possible to review course information and rules.'],
     },
@@ -726,7 +732,7 @@ const pcs211 = {
       time: '18:00',
       end: '20:00',
       duration: '2 hours',
-      scope: 'The outline gives the date and length only. Check D2L for the exact coverage and your room.',
+      scope: 'The outline gives the date, 6 PM start and 2-hour length, but not the coverage or room. Check D2L for both.',
       source: `${OUTLINE_PCS}, pp. 4–5: Friday, October 30, 2026, 6 PM, 2 hours; 25%.`,
       confirmed: true,
       weightLabel: '25% of course',
@@ -746,7 +752,8 @@ const pcs211 = {
       title: 'Last day to drop without academic penalty',
       kind: 'task',
       date: '2026-11-20',
-      scope: 'The Fall 2026 deadline to drop a course in good academic standing. At least 20% of your grade is returned before it.',
+      scope: 'The Fall 2026 deadline to drop a course in good academic standing. At least 20% of your grade that is based on individual work is returned before it.',
+      room: 'TMU Significant Dates page',
       source: `${OUTLINE_PCS}, pp. 5 and 7: drop deadline Friday, November 20, 2026.`,
       confirmed: true,
       weightLabel: 'University deadline',
@@ -772,12 +779,12 @@ const pcs211 = {
       kind: 'final',
       date: null,
       duration: '3 hours',
-      scope: 'Cumulative, 3 hours. Date, time and room are set by the university for the December exam period.',
+      scope: 'Cumulative, 3 hours, written during the final examination period. The University sets the date and time; check the official exam schedule and D2L.',
       source: `${OUTLINE_PCS}, pp. 4–5: 40% (45% under Option 2), 3 hours, cumulative.`,
       confirmed: false,
       weightLabel: '40% of course (45% under Option 2)',
       category: 'final',
-      timingText: 'December exam period · date, time and room to be announced',
+      timingText: 'Final examination period · date and time to be set by the University',
       prep: [
         'Check the official exam schedule for my date, time and room.',
         'Review every topic: the final is cumulative.',
@@ -906,12 +913,12 @@ const pcs211 = {
   textbooks: [
     {
       title: 'Physics for Scientists and Engineers, 11th Edition',
-      note: 'Required. Serway & Jewett (Cengage). Hardcopy about $213.95 or e-textbook $88.50 from Cengage; WebAssign multi-term access ($119.95) includes the e-textbook.',
+      note: 'Course textbook. Serway & Jewett (Cengage). Hardcopy (about $213.95) or e-textbook ($88.50), from the TMU Bookstore or directly from Cengage; WebAssign multi-term access ($119.95) includes the e-textbook.',
       url: 'https://www.cengage.ca/',
     },
     {
       title: 'Engineering Mechanics – Statics, 12th Edition',
-      note: 'Reference. Hibbeler (Pearson Prentice Hall, 2010). The pages used in the course (Hibbeler 2.5–4.6) are posted on D2L.',
+      note: 'Reference. Hibbeler (Pearson Prentice Hall, 2010). The outline lists Hibbeler 2.5–2.8, 3.1–3.4 and 4.3–4.6 (weeks 12–13), and says a number of the referenced pages will be posted online for download; check D2L.',
       url: 'https://courses.torontomu.ca/',
     },
   ],
@@ -923,7 +930,7 @@ const pcs211 = {
     },
     {
       title: 'Weeks',
-      detail: 'The outline’s week numbers follow the term calendar: Week 2 begins Monday, September 14. Labs and tutorials run every other week; your session’s exact day and room are on D2L.',
+      detail: 'The outline’s week numbers follow the term calendar: Week 2 begins Monday, September 14. Labs and tutorials run every other week; the outline gives only the weeks, so check D2L for your session’s day and room.',
     },
   ],
 };

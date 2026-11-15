@@ -56,10 +56,10 @@ export const PAGES = {
   chy102: page('CHY102', 'General Chemistry', {
     description: 'CHY102 Fall 2026 at TMU: Mastering Chemistry homework deadlines, both midterms, grading schemes, contacts, course rules and chapter review.',
     placeholder: 'Try equilibrium or homework',
-    note: 'Email from your TMU account with “CHY 102-0xx” (your section) in the subject, and your student number and chosen name in the message. Allow 3 business days for a reply, and check this outline and D2L first.',
+    note: 'Email the instructor for your section from your TMU account, with “CHY 102-0xx” (your section) in the subject and your student number and chosen name in the message. Allow 3 business days, and don’t send follow-ups on the same issue. Check the course outline and D2L first.',
     textbooks: {
       heading: 'Textbook & tools',
-      note: 'Prices are from the TMU bookstore; other sources may differ. A non-programmable, non-graphing calculator is required for exams.',
+      note: 'Prices are from the TMU bookstore; other sources may differ. A non-programmable, non-graphing calculator is required (outline p. 4); check D2L for which calculator is allowed in tests and exams.',
     },
     sources: {
       heading: 'Sources & date checks',
@@ -76,14 +76,14 @@ export const PAGES = {
   pcs211: page('PCS211', 'Physics: Mechanics', {
     description: 'PCS211 Fall 2026 at TMU: lab and tutorial weeks, the midterm, evaluation options, pass rules, exam rules and topic review.',
     placeholder: 'Try momentum or lab',
-    note: 'Emails are answered only when they come from your TMU account and have “PCS 211” in the subject line. Check your TMU email and D2L often for announcements.',
+    note: 'Emails are answered only when they come from your TMU account and have “PCS 211” in the subject line. You have two D2L shells: the common one for all sections and your instructor’s own. Check both, and your TMU email, often for announcements.',
     textbooks: {
       heading: 'Textbooks',
       note: 'Prices are approximate and from Cengage; they may vary. The textbook does not include WebAssign access, which is sold separately or bundled.',
     },
     sources: {
       heading: 'Sources & date checks',
-      note: 'Written November 10, 2026 from the Fall 2026 course information and outline. The course and tutorial schedules are tentative; changes are discussed in class and posted on D2L.',
+      note: 'Written November 10, 2026 from the Fall 2026 course information and outline. The course and tutorial schedules are tentative; changes are discussed in class before they take effect, so check D2L and your TMU email for announcements.',
     },
     grading: {
       pass: '50% overall, plus 50% in THEORY and in LABORATORY',
@@ -108,7 +108,7 @@ const CHY_RULES = [
           'At least 50% overall is required to pass.',
           'You are graded under Scheme 1 unless you opted into Scheme 2 by September 18 at 5 PM. Weights are never shifted, and no make-up is given for a poor result.',
           'Bring a non-programmable, non-graphing scientific calculator; graphing or text-storing calculators are not allowed in final exams.',
-          'Phones, earbuds, smart watches and smart or AI glasses are prohibited in tests and exams, whether on or off.',
+          'Phones, earbuds, smart watches and smart or AI glasses are prohibited in tests and exams, whether on or off. The outline also lists calculators among prohibited devices (p. 17) while requiring one (p. 4), so check D2L for exactly which calculator is permitted.',
         ],
       },
       {
@@ -132,6 +132,10 @@ const CHY_RULES = [
       },
       {
         type: 'p',
+        text: 'Religious observance: submit the Request for Accommodation of Student Religious, Aboriginal and Spiritual Observance and an academic consideration request within the first two weeks of class. For the final exam, submit them within two weeks of the exam schedule being posted. If the absence falls in the first two weeks of classes, or its date is not known well in advance, submit them as early as you can.',
+      },
+      {
+        type: 'p',
         text: 'No ACR for missed homework or iClicker questions. Homework is open for a week, so there are no extensions; the iClicker scale already allows for occasional absences and technical problems.',
       },
       { type: 'source', text: 'Source: CHY 102 Course Outline, pp. 10–12.' },
@@ -147,7 +151,7 @@ const CHY_RULES = [
         items: [
           'Eleven graded Mastering Chemistry assignments, each 1%, due Mondays at 11:59 PM. The lowest is dropped. Homework 12 is optional.',
           'Late homework loses 10% per day, up to 50% per assignment. Bonus marks are available, up to 100% per assignment.',
-          'iClicker (Scheme 1 only): 5% from the share of lectures you answered (75% or more earns all 5).',
+          'iClicker (Scheme 1 only): 5% from the percentage of times you participated in class overall (75% or more earns all 5).',
           'Two exam wrappers, 2.5% each, after each midterm: Google Forms marked on thoughtful reflection.',
         ],
       },
@@ -165,7 +169,7 @@ const CHY_RULES = [
       },
       {
         type: 'p',
-        text: 'Posting an assignment question to a third-party site means 0 on it and up to 15% off the course; viewing one means 0. Posting a final-exam question means an F and a one-term suspension; viewing one means an F.',
+        text: 'Posting an assignment question to a third-party site means 0 on it and up to 15% off the course; viewing assignment or test questions on such a site means 0 on that assignment or test. Posting a final-exam question means an F and a one-term suspension; viewing one means an F.',
       },
       {
         type: 'p',
@@ -205,7 +209,7 @@ const PCS_RULES = [
           'You need at least 50% overall, and at least 50% in THEORY (midterm, final and tutorials) and 50% in LABORATORY.',
           'THEORY = (Final × 0.40 + Midterm × 0.25 + Tutorials × 0.10) ÷ 0.75. LABORATORY is your cumulative grade for the five labs.',
           'Exams are closed book, with a formula sheet provided and posted on D2L beforehand. Only pens, pencils, erasers, a calculator and your TMU ID are allowed.',
-          'Calculators must be non-programmable and non-graphing; the Faculty of Science recommends the Sharp EL-546 or Casio FX-991.',
+          'Only non-programmable, non-graphing calculators are permitted in all assessments. If yours doesn’t qualify, the outline points you to the Faculty of Science common calculator policy, which prescribes the Sharp EL-546 and Casio FX-991 (both sold at the TMU Bookstore).',
         ],
       },
       {
@@ -244,11 +248,11 @@ const PCS_RULES = [
     blocks: [
       {
         type: 'p',
-        text: 'Submit an academic consideration request (ACR) through TMU’s online portal and notify your instructor, in advance where possible or within 3 business days. One ACR per term may be made without documentation, except for final exams.',
+        text: 'Submit an academic consideration request (ACR) through TMU’s online portal and notify your instructor, in advance where possible or within 3 business days. One ACR per term may be made without documentation, for an absence of less than 3 days that is not for a final exam or final assessment. Absences of more than 3 days, and any involving a final exam or final assessment, require documentation; for circumstances lasting longer than three days, contact your program’s Chair/Director.',
       },
       {
         type: 'p',
-        text: 'Missed midterm: an approved make-up is scheduled as soon as possible. Missed final: an approved make-up is normally within two weeks of the end of term. Missed tutorial: you may join another session if one is available; there are no make-up tutorials. Missed lab: you may join another session in the same cycle, or a make-up lab at the end of term.',
+        text: 'Missed midterm: an approved make-up is scheduled as soon as possible. Missed final: an approved make-up is normally within two weeks of the end of term. Missed tutorial: with an approved ACR you may be offered another tutorial session, only if one is available; there are no make-up tutorials. Missed lab: with an approved ACR you may be offered another session in the same lab cycle, only if one is available; if not, you are offered a make-up lab at the end of term. Missing the make-up lab gives 0 for that lab, and lab grades are never re-distributed to other course components, including other labs.',
       },
       {
         type: 'p',
@@ -270,7 +274,7 @@ const PCS_RULES = [
         items: [
           'Grades are posted on D2L, normally within 10 days of each assessment.',
           'Request a regrade within 10 working days of the graded work’s return (Senate Policy 162).',
-          'At least 20% of your grade is returned before Friday, November 20, 2026, the last day to drop without academic penalty.',
+          'At least 20% of your grade that is based on individual work is returned before Friday, November 20, 2026, the last day to drop without academic penalty.',
           'Work handed in after its due date receives zero unless stated otherwise.',
         ],
       },

@@ -72,7 +72,8 @@ export function scienceTile(e) {
       bottom: CHIPS[e.kind] || '',
       unknown: true,
     };
-  if (e.kind === 'final') return { top: 'Final', main: 'DEC', bottom: 'Date pending', unknown: true };
+  // Only a month the outline names (CHY102: December 9–20); otherwise TBA.
+  if (e.kind === 'final') return { top: 'Final', main: e.tileMonth || 'TBA', bottom: 'Date pending', unknown: true };
   return { top: '', main: '—', bottom: 'No date', unknown: true };
 }
 

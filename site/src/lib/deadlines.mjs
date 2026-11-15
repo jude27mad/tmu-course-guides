@@ -304,7 +304,10 @@ function bucketsNow(items, now) {
   const later = addDays(thisWeek, 14);
   const out = { thisWeek: [], nextWeek: [], later: [], earlier: [] };
   for (const item of items || []) {
-    const date = item.date || item.week || null;
+    // A window (CHY102 wrapper, PCS211 lab or tutorial) that is open this week belongs to this week, not to the week
+    // it started in.
+    // eslint-disable-next-line no-use-before-define
+    const date = item.target?.window && inWeek(item, thisWeek) ? thisWeek : item.date || item.week || null;
     if (!date) out.later.push(item);
     else if (date < thisWeek) out.earlier.push(item);
     else if (date < nextWeek) out.thisWeek.push(item);

@@ -147,11 +147,12 @@ export function gradePlan(courseId, { section, variant, percents } = {}) {
   if (isScience(courseId)) {
     const { pick, variants } = DATA[courseId].grades;
     if (pick !== 'best' || !percents) return sciencePlan(courseId, variant);
-    // The course applies whichever option gives the higher grade: compare them on the marks entered so far.
+    // The course applies whichever option gives the higher grade. The plan shown is the higher one at the current
+    // average; `options` lets gradeStanding and gradeNeeded take the better option for each figure on its own.
     const plans = variants.map((v) => sciencePlan(courseId, v.id));
     // eslint-disable-next-line no-use-before-define
-    const score = (plan) => gradeStanding(plan, percents).projected ?? -1;
-    return plans.reduce((best, plan) => (score(plan) > score(best) + EPSILON ? plan : best));
+    const score = (plan) => standingOf(plan, percents).projected ?? -1;
+    return { ...plans.reduce((best, plan) => (score(plan) > score(best) + EPSILON ? plan : best)), options: plans };
   }
   const rows = assessments(courseId, { section });
   let groups = [];
@@ -353,11 +354,12 @@ export function subscribeGrades(courseId, storage, callback, target) {
   };
 }
 
-/** Course points (out of 100) when every unmarked item scores `fill`, applying drop-lowest. */
-function pointsWith(plan, percents, fill) {
+/** Course points (out of 100) when every unmarked item scores `fill`, applying drop-lowest. An optional bonus not
+    entered yet (PCS211's ClassQuestion) scores `bonusFill`: 0 unless asked, since nothing says a student earns it. */
+function pointsWith(plan, percents, fill, bonusFill = 0) {
   return sum(
     plan.groups.map((group) => {
-      const values = group.items.map((item) => percents[item.id] ?? fill);
+      const values = group.items.map((item) => percents[item.id] ?? (group.bonus ? bonusFill : fill));
       if (!group.drop) return sum(values.map((value, i) => (value * group.items[i].weight) / 100));
       const kept = [...values].sort((a, b) => b - a).slice(0, group.keep);
       return (sum(kept) * group.weight) / group.keep / 100;
@@ -380,7 +382,9 @@ function solve(plan, percents, target) {
 /**
  * Where the student stands, from percentages by item id ({ 'quiz-1': 85 }; missing ids are unmarked):
  * - `secured`: course points already earned (every unmarked item at 0).
- * - `maximum`: the highest course grade still possible (every unmarked item at 100).
+ * - `maximum`: the highest course grade still possible (every unmarked item at 100; an optional bonus counts only
+ *   once it is entered).
+ * For a course that applies the better of two options (PCS211), `secured` and `maximum` are the better option's.
  * - `current`: the average on the marks that count so far (in a drop-lowest group, the best `keep` of those marked);
  *   null when nothing is marked.
  * - `projected`: the final grade if every unmarked item scores `current`. It equals `current` unless a quiz still to
@@ -391,9 +395,18 @@ function solve(plan, percents, target) {
  *   15% is still open).
  * - `dropped`: ids of quizzes currently dropped (only once more quizzes are marked than count).
  * - `groups`: per group { id, average, marked, counted }.
- * - `complete`: every item has a mark (then `current` is the calculated final grade).
+ * - `complete`: every item has a mark (then `current` is the calculated final grade, bonus included).
  */
 export function gradeStanding(plan, percents = {}) {
+  const standing = standingOf(plan, percents);
+  if (!plan.options) return standing;
+  const all = plan.options.map((option) => standingOf(option, percents));
+  const best = (key) => Math.max(...all.map((entry) => entry[key]));
+  const secured = best('secured');
+  return { ...standing, secured, maximum: best('maximum'), current: standing.complete ? secured : standing.current };
+}
+
+function standingOf(plan, percents) {
   let earned = 0;
   let marked = 0;
   const dropped = [];
@@ -431,10 +444,12 @@ export function gradeStanding(plan, percents = {}) {
   const secured = cap(pointsWith(plan, percents, 0));
   const maximum = cap(pointsWith(plan, percents, 100));
   const current = marked > EPSILON ? (earned / marked) * 100 : null;
+  const complete = unmarked.length === 0;
   return {
     secured,
     maximum,
-    current,
+    // Once every mark is in, a bonus belongs in the final grade (the average itself leaves it out).
+    current: complete && bonusIds.size && current !== null ? secured : current,
     projected: current === null ? null : cap(pointsWith(plan, percents, current)),
     marked,
     remaining: sum(
@@ -449,7 +464,7 @@ export function gradeStanding(plan, percents = {}) {
     dropped,
     groups,
     unmarked: unmarked.map((item) => item.id),
-    complete: unmarked.length === 0,
+    complete,
   };
 }
 
@@ -461,14 +476,32 @@ export function gradeStanding(plan, percents = {}) {
  *   one item is left.
  * - 'unreachable': not possible even with 100 on everything left.
  * - 'complete': every mark is in; the target was not reached.
+ * Where the course applies the better of two options (PCS211), a grade is secured or reachable if it is under either
+ * option, and the mark needed is the lower of the two; `option` and `remaining` then say which option and how much of
+ * the course is left under it.
  */
 export function gradeNeeded(plan, percents, target, standing = gradeStanding(plan, percents)) {
+  if (!plan.options) return neededOf(plan, percents, target, standing);
+  if (standing.complete) return standing.secured >= target - 0.5 - EPSILON ? { status: 'secured', average: 0, item: null } : { status: 'complete', average: null, item: null };
+  const needs = plan.options.map((option) => {
+    const own = standingOf(option, percents);
+    return { ...neededOf(option, percents, target, own), option: option.variant, optionTitle: option.variantTitle, remaining: own.remaining };
+  });
+  const secured = needs.find((need) => need.status === 'secured');
+  if (secured) return secured;
+  const reachable = needs.filter((need) => need.status === 'reachable').sort((a, b) => a.average - b.average);
+  return reachable[0] || { status: 'unreachable', average: null, item: null };
+}
+
+function neededOf(plan, percents, target, standing) {
   const goal = target - 0.5;
   if (standing.secured >= goal - EPSILON) return { status: 'secured', average: 0, item: null };
   if (standing.complete) return { status: 'complete', average: null, item: null };
   if (standing.maximum < goal - EPSILON) return { status: 'unreachable', average: null, item: null };
   const average = Math.min(100, ceilTenth(solve(plan, percents, goal)));
-  const only = standing.unmarked.length === 1 ? plan.items.find((item) => item.id === standing.unmarked[0]) : null;
+  // Weight-0 items (PCS211's WebAssign under Option 2) don't count towards what is left.
+  const open = standing.unmarked.map((id) => plan.items.find((item) => item.id === id)).filter((item) => !plan.pick || item.weight > EPSILON);
+  const only = open.length === 1 ? open[0] : null;
   return { status: 'reachable', average, item: only };
 }
 
@@ -502,7 +535,8 @@ export function gradeRequirements(plan, standing) {
     }
     const average = weight ? points / weight : null;
     let status = 'open';
-    if (average !== null) status = average >= requirement.min - 0.5 - EPSILON ? 'met' : 'below';
+    // "A pass is considered a 50% or greater": no rounding allowance, unlike the course grade.
+    if (average !== null) status = average >= requirement.min - EPSILON ? 'met' : 'below';
     return { id: requirement.id, title: requirement.title, min: requirement.min, note: requirement.note, average, status };
   });
 }

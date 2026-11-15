@@ -17,8 +17,10 @@ const grade = (row) => `${/^[AEF]/.test(row.letter) ? 'an' : 'a'} ${row.letter} 
 const named = (title) => (/\d$/.test(title) ? title : `the ${title}`);
 const capital = (text) => `${text.charAt(0).toUpperCase()}${text.slice(1)}`;
 
-function needText(row, need, standing) {
+function needText(row, need, standing, plan) {
   const goal = grade(row);
+  // PCS211: the mark needed can come from the other option than the one shown (the course applies the higher one).
+  const under = need.option && need.option !== plan.variant ? `, under ${need.optionTitle}` : '';
   if (need.status === 'secured') return `You’ve already secured ${goal}, even with 0 on everything still to be marked.`;
   if (need.status === 'unreachable') {
     const best = floorTenth(standing.maximum);
@@ -26,8 +28,8 @@ function needText(row, need, standing) {
   }
   if (need.status === 'complete') return `All marks are in, and ${goal} wasn’t reached.`;
   const mark = formatPercent(need.average);
-  if (need.item) return `For ${goal}, you need at least ${mark} on ${named(need.item.title)}.`;
-  return `For ${goal}, you need an average of at least ${mark} on everything still to be marked (${weight(standing.remaining)} of the course).`;
+  if (need.item) return `For ${goal}, you need at least ${mark} on ${named(need.item.title)}${under}.`;
+  return `For ${goal}, you need an average of at least ${mark} on everything still to be marked (${weight(need.remaining ?? standing.remaining)} of the course${under}).`;
 }
 
 function headlineText(standing, current, plan) {
@@ -97,7 +99,9 @@ export default function Grades() {
   const current = standing.current === null ? null : floorTenth(standing.current);
   const letter = letterFor(current);
   const hasMarks = Object.keys(grades.marks).length > 0;
-  const answer = chosen ? needText(chosen.row, chosen.need, standing) : 'Choose a grade to see exactly what it takes.';
+  // An optional bonus (PCS211) counts only once it is entered, in every figure.
+  const unenteredBonus = plan.groups.find((group) => group.bonus && group.items.every((item) => typeof percents[item.id] !== 'number')) || null;
+  const answer = chosen ? needText(chosen.row, chosen.need, standing, plan) : 'Choose a grade to see exactly what it takes.';
   const fieldId = (item, part) => `${baseId}-${item.id.replace(/[^a-z0-9-]/gi, '-')}-${part}`;
   const securedLetter = letterFor(floorTenth(standing.secured));
   const summary = current === null ? 'No marks entered.' : `Current average ${formatPercent(current)}, ${letter.letter}.`;
@@ -183,7 +187,8 @@ export default function Grades() {
             </div>
           ) : (
             <p className={styles.variantApplied} data-grade-option>
-              Using <strong>{plan.variantTitle}</strong> ({plan.variantNote}), the higher of the two on your marks so far.
+              Using <strong>{plan.variantTitle}</strong> ({plan.variantNote}), the higher of the two at your current average. Secured, best possible and the marks needed each use whichever option is
+              higher for them.
             </p>
           )}
           {plan.notes[0] ? <p className={workspace.meta}>{plan.notes[0]}</p> : null}
@@ -327,7 +332,10 @@ export default function Grades() {
               <div>
                 <dt>Best possible</dt>
                 <dd>{shown(standing.maximum)}</dd>
-                <dd className={workspace.meta}>Up to {letterFor(floorTenth(standing.maximum)).letter}</dd>
+                <dd className={workspace.meta}>
+                  Up to {letterFor(floorTenth(standing.maximum)).letter}
+                  {unenteredBonus ? `, without the ${unenteredBonus.title.toLowerCase()} until you enter it` : ''}
+                </dd>
               </div>
               <div>
                 <dt>Still to be marked</dt>

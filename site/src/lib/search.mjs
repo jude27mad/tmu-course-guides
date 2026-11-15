@@ -81,7 +81,9 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
   const weeks = semesterWeeks({ records });
   for (const week of weeks) {
     const copy = weekCopy(week);
-    const due = week.start ? allDeadlines.filter((item) => (item.date || item.week) && (item.date || item.week) >= week.start && (item.date || item.week) <= week.end) : allDeadlines.filter((item) => item.kind === 'final' && item.precision === 'pending');
+    // A window (CHY102 wrapper, PCS211 lab or tutorial) belongs to every week it overlaps.
+    const inSpread = (item) => (item.target?.window ? item.target.windowStart <= week.end && item.target.weekEnd >= week.start : (item.date || item.week) && (item.date || item.week) >= week.start && (item.date || item.week) <= week.end);
+    const due = week.start ? allDeadlines.filter(inSpread) : allDeadlines.filter((item) => item.kind === 'final' && item.precision === 'pending');
     const first = (current && due.find((item) => item.courseId === current.id)) || due[0] || null;
     add('Weeks', {
       id: `week-${week.index}`,

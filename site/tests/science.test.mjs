@@ -13,6 +13,8 @@ import {
   gradePlan,
   gradeStanding,
   gradeRequirements,
+  gradeNeeded,
+  buckets,
   readGrades,
   writeGrades,
   calendarFile,
@@ -194,6 +196,59 @@ test('PCS211: the higher option applies, the bonus adds on top, THEORY and LAB a
   assert.ok(bonus.secured - standing.secured > 1.99 && bonus.secured - standing.secured < 2.01);
   assert.equal(bonus.remaining, standing.remaining, 'the bonus is never "still to be marked"');
   assert.ok(gradeStanding(plan, Object.fromEntries(plan.items.map((item) => [item.id, 100]))).maximum <= 100);
+});
+
+test('PCS211: an unentered ClassQuestion bonus never counts; every figure uses the higher option', () => {
+  const all = gradePlan('pcs211').items.map((item) => item.id);
+  // Everything but the final at 60, no bonus entered: Option 2 needs 33 + 0.45x ≥ 69.5 for a C (70%).
+  const sixty = Object.fromEntries(all.filter((id) => id !== 'final' && id !== 'classquestion').map((id) => [id, 60]));
+  const need = gradeNeeded(gradePlan('pcs211', { percents: sixty }), sixty, 70);
+  assert.equal(need.status, 'reachable');
+  assert.equal(need.average, 81.2);
+  assert.equal(need.item.id, 'final');
+  assert.equal(need.option, 'option-2');
+  const zero = gradeNeeded(gradePlan('pcs211', { percents: { ...sixty, classquestion: 0 } }), { ...sixty, classquestion: 0 }, 70);
+  assert.equal(need.average, zero.average, 'a blank bonus counts as 0');
+  // Every mark in, bonus included: 68 + 2 = 70 is the final grade.
+  const done = Object.fromEntries(all.map((id) => [id, id === 'classquestion' ? 100 : 68]));
+  const final = gradeStanding(gradePlan('pcs211', { percents: done }), done);
+  assert.equal(final.complete, true);
+  assert.ok(Math.abs(final.current - 70) < 1e-9);
+  // WebAssign 80, labs 90, tutorials 85, midterm 60: Option 2 wins at a high final, so it sets the ceiling and the A.
+  const mixed = { midterm: 60, classquestion: 0 };
+  for (let n = 1; n <= 5; n += 1) Object.assign(mixed, { [`webassign-${n}`]: 80, [`lab-${n}`]: 90, [`tutorial-${n}`]: 85 });
+  const plan = gradePlan('pcs211', { percents: mixed });
+  assert.ok(Math.abs(gradeStanding(plan, mixed).maximum - 86.5) < 1e-9);
+  assert.equal(gradeNeeded(plan, mixed, 85).average, 95.6);
+  // "A pass is considered a 50% or greater": 49.9 is below, 50 is met.
+  const theory = (mark) => gradeRequirements(plan, gradeStanding(plan, { final: mark, midterm: mark, 'tutorial-1': mark }))[0].status;
+  assert.equal(theory(49.9), 'below');
+  assert.equal(theory(50), 'met');
+});
+
+test('windows open this week stay in This week through their last week', () => {
+  const at = (courseId, date) => {
+    const now = toronto(date, '10:00');
+    return buckets(deadlines(courseId, { now, storage: null }), now).thisWeek.map((item) => item.id);
+  };
+  assert.ok(['lab-5', 'tutorial-5'].every((id) => at('pcs211', '2026-11-17').includes(id)), 'second week of the Nov 9–20 window');
+  assert.ok(at('chy102', '2026-11-02').includes('wrapper-1'), 'the Monday that ends wrapper 1’s week');
+  assert.ok(!at('pcs211', '2026-11-23').includes('lab-5'), 'gone once the window has passed');
+});
+
+test('outline-only wording: no CHY102 student ID, finals name a month only where the outline does', () => {
+  const chy = courseInfo('chy102');
+  const text = JSON.stringify(chy.assessments);
+  assert.ok(!/TMU (student )?ID/.test(text), 'the CHY102 outline never asks for an ID');
+  assert.equal(chy.assessments.find((a) => a.id === 'final').tile.main, 'DEC');
+  const pcs = courseInfo('pcs211');
+  assert.equal(pcs.assessments.find((a) => a.id === 'final').tile.main, 'TBA');
+  assert.ok(!/December/.test(JSON.stringify(pcs.assessments.find((a) => a.id === 'final'))));
+  assert.equal(pcs.assessments.find((a) => a.id === 'drop-deadline').room, 'TMU Significant Dates page');
+  assert.equal(chy.assessments.find((a) => a.id === 'mastering-registration').room, 'D2L');
+  const hw9 = chy.assessments.find((a) => a.id === 'hw-9');
+  assert.match(hw9.dateNote, /November 16/);
+  assert.equal(hw9.confirmed, false);
 });
 
 test('calendar files: timed work at Toronto time, windows as tentative all-day events, nothing undated', () => {

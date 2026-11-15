@@ -127,8 +127,8 @@ const KIND = {
   homework: { roomLabel: 'Submit in', room: 'Mastering Chemistry', category: 'Online homework' },
   wrapper: { roomLabel: 'Submit in', room: 'Google Form on D2L', category: 'Reflection assignment' },
   webassign: { roomLabel: 'Submit in', room: 'WebAssign', category: 'Online assignments' },
-  lab: { roomLabel: 'Room', room: 'Your session’s room on D2L', category: 'Lab · 2 hours, normally in pairs' },
-  tutorial: { roomLabel: 'Room', room: 'Your session’s room on D2L', category: 'Tutorial · 2 hours' },
+  lab: { roomLabel: 'Room', room: 'Check D2L', category: 'Lab · 2 hours, normally in pairs' },
+  tutorial: { roomLabel: 'Room', room: 'Check D2L', category: 'Tutorial · 2 hours' },
   midterm: { roomLabel: 'Test room', room: 'Check D2L', category: 'Midterm' },
   final: { roomLabel: 'Exam room', room: 'Check the exam schedule', category: 'Final exam' },
   task: { roomLabel: 'Where', room: 'D2L', category: 'Course task' },
@@ -138,7 +138,7 @@ const OUTLINE_PAGES = { chy102: 'pp. 5–7', pcs211: 'pp. 5–6' };
 function scienceContacts(course) {
   const people = course.instructors.map((person) => ({ heading: `${person.name} · ${person.role}`, text: `${person.email} · ${person.hours}`, href: `mailto:${person.email}` }));
   const sessions = course.sections ? course.sections.map((row) => ({ heading: `Section ${row.section}`, text: `${row.times} · ${row.room} · ${row.instructor}` })) : [{ heading: 'Lectures', text: course.lectures }];
-  const help = course.code === 'CHY102' ? [{ heading: 'Mastering Chemistry questions', text: 'Your TA, during the resource-room hours posted on D2L' }] : [];
+  const help = course.code === 'CHY102' ? [{ heading: 'Mastering Chemistry questions', text: 'Your TA, during the resource-room hours. The outline does not list the hours; check D2L.' }] : [];
   return [...people, ...sessions, ...help];
 }
 
@@ -176,16 +176,17 @@ function scienceInfo(courseId) {
         weightLabel: a.weightLabel,
         timing: scienceTiming(e),
         tile: scienceTile(e),
-        room: kind.room,
+        room: a.room ?? kind.room,
         dateNote: a.dateNote || '',
         ...MATH.assessmentCard(a, courseId),
-        roomLabel: kind.roomLabel,
+        roomLabel: a.roomLabel ?? kind.roomLabel,
         // "Before you write" belongs to a test; handed-in work and sessions get their own heading.
         rulesHeading: { homework: 'Before you submit', wrapper: 'Before you submit', webassign: 'Before you submit', task: 'Good to know', lab: 'Before your session', tutorial: 'Before your session' }[a.kind] || 'Before you write',
         categoryLabel: 'Assessment',
         category: a.duration ? `${kind.category} · ${a.duration}` : kind.category,
         rules: a.rules,
-        roomNote: a.kind === 'midterm' ? 'Room assignments and any later instructions are posted on D2L.' : '',
+        // CHY102's midterm rules already say where rooms are (outline p. 7); PCS211's outline gives no room.
+        roomNote: a.kind === 'midterm' && courseId === 'pcs211' ? 'The outline does not give the midterm room; check D2L.' : '',
         checklist: a.prep.map((stepText, i) => ({ id: `${a.id}-${i}`, text: stepText })),
         anchor: `assessment-${a.id}`,
       };
@@ -198,13 +199,13 @@ function scienceInfo(courseId) {
       description: t.description,
       skills: t.skills.map((skill, i) => ({ id: `${t.id}-${i}`, text: skill })),
       index: String(index + 1).padStart(2, '0'),
-      sub: `${t.sections} · Week ${t.week}`,
+      sub: `${t.sections} · ${/[–,-]/.test(String(t.week)) ? 'Weeks' : 'Week'} ${t.week}`,
       midterm: t.exam ? `On ${t.exam}` : '',
       skillsHeading: 'My skill review',
       practiceHeading: 'Practice',
       practiceNote: course.practiceNote,
       practice: [],
-      source: `Topic order, weeks and ${courseId === 'chy102' ? 'chapters' : 'sections'}: ${course.code} course outline, ${OUTLINE_PAGES[courseId]}. Skill checklists are this guide’s study prompts, not an official marking rubric.`,
+      source: `Topic order, weeks and ${courseId === 'chy102' ? 'chapters' : 'sections'}: ${course.code} course outline, ${OUTLINE_PAGES[courseId]}. The outline marks these weeks as tentative; check D2L for changes. Topic descriptions are this guide’s summaries, and skill checklists are its study prompts; neither is an official syllabus or marking rubric.`,
       anchor: `topic-${t.id}`,
     })),
     review: page.review,
