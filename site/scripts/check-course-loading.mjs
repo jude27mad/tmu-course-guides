@@ -33,7 +33,7 @@ try {
         ['desktop', { viewport: { width: 1440, height: 900 } }],
       ];
       for (const [device, options] of cases) {
-        for (const course of ['cen100', 'mth140', 'mth141']) {
+        for (const course of ['cen100', 'mth140', 'mth141', 'chy102', 'pcs211']) {
           const label = `${engine}-${device}-${course}`;
           const context = await browser.newContext({ reducedMotion: 'no-preference', colorScheme: 'light', ...options });
           const page = await context.newPage();

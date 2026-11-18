@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { COURSE_UPDATES, WEBSITE_UPDATES } from '../src/lib/content/updates.mjs';
 
 const ID = /^(\d{4}-\d{2}-\d{2})-[a-z0-9]+(-[a-z0-9]+)*$/;
-const COURSES = ['cen100', 'mth140', 'mth141'];
+const COURSES = ['cen100', 'mth140', 'mth141', 'chy102', 'pcs211'];
 
 function checkList(name, list) {
   assert.ok(list.length > 0, name);

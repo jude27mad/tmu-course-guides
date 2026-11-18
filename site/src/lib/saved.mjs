@@ -6,7 +6,7 @@
      cen100-personal-plan-v1    cleanPlan() output: {"completed":{id:1},"notes":{item:text},"targets":{item:date}}
      cen100-hide-completed-v1   true | false
      cen100-last-seen-update-v1 "2026-10-15-new-design"
-   MTH140 / MTH141 (assets/math-guide.mjs)
+   MTH140 / MTH141 (assets/math-guide.mjs), and CHY102 / PCS211 in the same formats
      <course>-progress-v1       cleanProgress() output: {"checks","completed","notes","targets","topics"}
      <course>-section-v1        a lab section number, 0 when none
      <course>-last-seen-update-v1 "2026-10-15-new-design"
@@ -14,13 +14,14 @@
 
    Every write re-reads storage first, applies one change and writes the whole cleaned record, which is exactly
    what the old page wrote for a single action after loading. Readers never write. */
-import { COURSES as DATA } from './vendor/course-data.mjs';
+import { DATA, isScience } from './data.mjs';
 import * as CEN from './content/cen.mjs';
 import * as MATH from './content/math.mjs';
 import { KEYS, readRaw, readJSON, writeJSON, writeRaw } from './storage.mjs';
 
 const isRecord = (value) => !!value && typeof value === 'object' && !Array.isArray(value);
-export const isMath = (courseId) => courseId === 'mth140' || courseId === 'mth141';
+/** A math-style guide: MTH140 and MTH141, and CHY102 and PCS211, which share their model and saved formats. */
+export const isMath = (courseId) => courseId === 'mth140' || courseId === 'mth141' || isScience(courseId);
 
 // ---- CEN100 ----
 /** cen-guide.mjs:227: the tick map as the page held it (non-objects read as {}). */

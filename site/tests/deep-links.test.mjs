@@ -7,6 +7,8 @@ const panelsByCourse = {
   cen100: ['p-rules', 'p-confirmed', 'p-open'],
   mth140: ['rules-help', 'textbooks', 'sources'],
   mth141: ['rules-help', 'textbooks', 'sources'],
+  chy102: ['rules-help', 'textbooks', 'sources'],
+  pcs211: ['rules-help', 'textbooks', 'sources'],
 };
 const none = { kind: 'none', target: null, openGroup: null, openPanel: null };
 

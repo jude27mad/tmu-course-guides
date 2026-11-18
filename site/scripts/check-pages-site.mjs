@@ -22,6 +22,8 @@ const PAGES = [
   ['cen100/', 'CEN100 | TMU Course Guides'],
   ['mth140/', 'MTH140: Calculus I | TMU Course Guides'],
   ['mth141/', 'MTH141: Linear Algebra | TMU Course Guides'],
+  ['chy102/', 'CHY102: General Chemistry | TMU Course Guides'],
+  ['pcs211/', 'PCS211: Physics: Mechanics | TMU Course Guides'],
   ['privacy/', 'Privacy | TMU Course Guides'],
   ['updates/', 'Website updates | TMU Course Guides'],
 ];

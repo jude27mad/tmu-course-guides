@@ -3,7 +3,7 @@
 
    Ticks and completion records stay separate, as on the old site: a tick never marks anything done and Mark
    done never ticks anything. Every call re-reads storage, so another tab's changes are never overwritten. */
-import { COURSES as DATA } from './vendor/course-data.mjs';
+import { DATA } from './data.mjs';
 import { SCHEDULE } from './vendor/cen-schedule.mjs';
 import * as CEN from './content/cen.mjs';
 import * as MATH from './content/math.mjs';
@@ -12,7 +12,7 @@ import { isMath, readTicks, writeTicks, readPlan, writePlan, readMath, writeMath
 
 const MATH_CHECKS = {};
 const MATH_TOPICS = {};
-for (const id of ['mth140', 'mth141']) {
+for (const id of Object.keys(DATA).filter(isMath)) {
   MATH_CHECKS[id] = new Set(DATA[id].assessments.flatMap((a) => MATH.checkKeys(a, id)));
   MATH_TOPICS[id] = new Set(DATA[id].topics.flatMap(MATH.topicKeys));
 }

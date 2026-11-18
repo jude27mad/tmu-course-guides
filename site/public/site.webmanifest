@@ -1,7 +1,7 @@
 {
   "name": "TMU Course Guides",
   "short_name": "Guides",
-  "description": "TMU Fall 2026 course guides: CEN100 assignment deadlines, requirements and contacts, plus MTH140 and MTH141 assessment and section guides.",
+  "description": "TMU Fall 2026 course guides: CEN100 assignment deadlines, requirements and contacts; MTH140 and MTH141 assessment and section guides; and CHY102 and PCS211 deadline, grading and topic guides.",
   "start_url": "./",
   "scope": "./",
   "display": "browser",

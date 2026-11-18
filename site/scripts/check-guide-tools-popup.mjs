@@ -48,7 +48,7 @@ await mkdir(reports, { recursive: true });
 const browser = await chromium.launch({ headless: true });
 try {
   for (const width of [390, 1440]) {
-    for (const course of ['cen100', 'mth140', 'mth141']) {
+    for (const course of ['cen100', 'mth140', 'mth141', 'chy102', 'pcs211']) {
       const context = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: 'reduce', acceptDownloads: true });
       const page = await context.newPage();
       await page.goto(`${origin}/${course}/`, { waitUntil: 'networkidle' });

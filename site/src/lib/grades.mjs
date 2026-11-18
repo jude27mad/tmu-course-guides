@@ -10,12 +10,15 @@
    A mark is the text typed: "74.5" is a percentage, "17/20" a score out of a total. Nothing else reads or writes
    these keys, and they are not part of progress backups. Pure: no DOM or storage access at import. */
 import { assessments } from './deadlines.mjs';
+import { DATA, isScience } from './data.mjs';
 import { forget, onLocalChange, readJSON, resolveStorage, writeJSON, writeRaw } from './storage.mjs';
 
 export const GRADE_KEYS = {
   cen100: 'cen100-grades-v1',
   mth140: 'mth140-grades-v1',
   mth141: 'mth141-grades-v1',
+  chy102: 'chy102-grades-v1',
+  pcs211: 'pcs211-grades-v1',
 };
 
 // TMU undergraduate grading scale (Senate Policy 170(a), formerly Policy 46; the 2026–2027 calendar's table).
@@ -81,6 +84,61 @@ const CEN_GROUPS = [
 // The lab quiz policy: "The lowest quiz is dropped." Tests keep this in step with each course's quizPolicy.
 export const QUIZ_DROP = { mth140: 1, mth141: 1 };
 
+/* CHY102 / PCS211: the outline's categories for one variant (a grading scheme or evaluation option). A drop group
+   counts its best `keep`; a weight-0 category stays listed only where the course picks the best option itself
+   (PCS211's WebAssign), so marks entered there still count under the option that uses them. A bonus group adds
+   points without being part of the 100%. */
+function sciencePlan(courseId, variantId) {
+  const grades = DATA[courseId].grades;
+  const rows = new Map(assessments(courseId).map((row) => [row.item, row]));
+  const variant = grades.variants.find((v) => v.id === variantId) || grades.variants[0];
+  const itemOf = (id, group) => {
+    const row = rows.get(id);
+    const extra = grades.items?.[id];
+    return {
+      id,
+      title: extra?.title || row.title,
+      weight: group.weight / group.keep,
+      dateLabel: extra?.dateLabel || row.dateLabel,
+      parts: 1,
+      anchor: extra?.anchor || row?.anchor || null,
+      groupId: group.id,
+      // CHY102's iClicker grade is out of 5, not a percentage.
+      ...(extra?.outOf ? { outOf: extra.outOf } : {}),
+    };
+  };
+  const build = (category, bonus = false) => {
+    const drop = category.drop || 0;
+    const group = { id: category.id, title: category.title, note: category.note || null, drop, keep: category.items.length - drop, weight: category.weight, bonus };
+    group.items = category.items.map((id) => itemOf(id, group));
+    return group;
+  };
+  const groups = variant.categories.filter((c) => c.weight > 0 || grades.pick === 'best').map((c) => build(c));
+  if (grades.bonus) groups.push(build(grades.bonus, true));
+  return {
+    courseId,
+    groups,
+    items: groups.flatMap((group) => group.items),
+    pass: PASS_MARK,
+    quizPolicy: null,
+    total: sum(groups.filter((group) => !group.bonus).map((group) => group.weight)),
+    variant: variant.id,
+    variantTitle: variant.title,
+    variantNote: variant.note,
+    variants: grades.variants.map((v) => ({ id: v.id, title: v.title, note: v.note })),
+    pick: grades.pick,
+    requirements: grades.requirements || [],
+    notes: [
+      grades.note,
+      // Only notes for items in this scheme: no iClicker note under CHY102's Scheme 2.
+      ...Object.entries(grades.items || {})
+        .filter(([id]) => groups.some((group) => group.items.some((item) => item.id === id)))
+        .map(([, item]) => item.note)
+        .filter(Boolean),
+    ],
+  };
+}
+
 const keyOf = (row) => (row.ids.length === 1 ? row.ids[0] : row.item);
 const sum = (values) => values.reduce((total, value) => total + value, 0);
 
@@ -89,7 +147,23 @@ const sum = (values) => values.reduce((total, value) => total + value, 0);
  * pass, quizPolicy }. Each item: { id, title, weight, dateLabel, parts, anchor, groupId }. In a drop-lowest
  * group an item's `weight` is what one quiz is worth when it counts. `section` dates the math lab quizzes.
  */
-export function gradePlan(courseId, { section } = {}) {
+export function gradePlan(courseId, { section, variant, percents } = {}) {
+  if (isScience(courseId)) {
+    const { pick, variants } = DATA[courseId].grades;
+    if (pick !== 'best' || !percents) return sciencePlan(courseId, variant);
+    // The course applies whichever option gives the higher grade. The plan shown is the higher one at the current
+    // average; `options` lets gradeStanding and gradeNeeded take the better option for each figure on its own.
+    const plans = variants.map((v) => sciencePlan(courseId, v.id));
+    // Optional work (PCS211's WebAssign, 0% under Option 2) with no mark yet is treated as not done, like the
+    // bonus: the option without it is the one that applies until a mark is entered.
+    const optional = new Set(variants.flatMap((v) => v.categories.filter((c) => c.weight === 0).flatMap((c) => c.items)));
+    const skipped = optional.size && ![...optional].some((id) => typeof percents[id] === 'number');
+    const without = skipped && plans.find((plan) => plan.groups.every((group) => group.weight === 0 || !group.items.some((item) => optional.has(item.id))));
+    if (without) return { ...without, options: plans, optionalSkipped: true };
+    // eslint-disable-next-line no-use-before-define
+    const score = (plan) => standingOf(plan, percents).projected ?? -1;
+    return { ...plans.reduce((best, plan) => (score(plan) > score(best) + EPSILON ? plan : best)), options: plans };
+  }
   const rows = assessments(courseId, { section });
   let groups = [];
   if (courseId === 'cen100') {
@@ -209,7 +283,9 @@ export function parseMark(score, outOf = '') {
 // Known item ids with typed text only (digits, separators and at most one "/").
 function cleanMarks(courseId, marks) {
   if (!marks || typeof marks !== 'object' || Array.isArray(marks)) return {};
-  const ids = new Set(gradePlan(courseId).items.map((item) => item.id));
+  // Every item any variant uses, so a mark survives a change of grading scheme.
+  const plans = isScience(courseId) ? DATA[courseId].grades.variants.map((v) => gradePlan(courseId, { variant: v.id })) : [gradePlan(courseId)];
+  const ids = new Set(plans.flatMap((plan) => plan.items.map((item) => item.id)));
   return Object.fromEntries(Object.entries(marks).filter(([id, text]) => ids.has(id) && typeof text === 'string' && text && TYPED.test(text)));
 }
 
@@ -219,24 +295,38 @@ function cleanMarks(courseId, marks) {
  */
 export function readGrades(courseId, storage) {
   const key = GRADE_KEYS[courseId];
-  const empty = { marks: {}, target: null };
+  // `variant` is part of the record only for a course with a grading scheme to choose (CHY102).
+  const chooses = isScience(courseId) && DATA[courseId].grades.pick === 'choose';
+  const empty = chooses ? { marks: {}, target: null, variant: null } : { marks: {}, target: null };
   if (!key) return empty;
   const saved = readJSON(resolveStorage(storage), key, null);
   if (!saved || typeof saved !== 'object' || Array.isArray(saved)) return empty;
-  return { marks: cleanMarks(courseId, saved.marks), target: TARGETS.has(saved.target) ? saved.target : null };
+  const record = { marks: cleanMarks(courseId, saved.marks), target: TARGETS.has(saved.target) ? saved.target : null };
+  // eslint-disable-next-line no-use-before-define
+  if (chooses) record.variant = cleanVariant(courseId, saved.variant);
+  return record;
 }
 
 /**
  * Writes the whole cleaned record, or removes the key when no mark or target is left (Clear marks leaves nothing
  * behind). Returns true when storage accepted it.
  */
-export function writeGrades(courseId, storage, { marks = {}, target = null } = {}) {
+export function writeGrades(courseId, storage, { marks = {}, target = null, variant = null } = {}) {
   const key = GRADE_KEYS[courseId];
   if (!key) return false;
   const store = resolveStorage(storage);
   const record = { marks: cleanMarks(courseId, marks), target: TARGETS.has(target) ? target : null };
-  if (!Object.keys(record.marks).length && record.target === null) return writeRaw(store, key, null);
+  // eslint-disable-next-line no-use-before-define
+  const chosen = cleanVariant(courseId, variant);
+  if (chosen) record.variant = chosen;
+  if (!Object.keys(record.marks).length && record.target === null && !chosen) return writeRaw(store, key, null);
   return writeJSON(store, key, record);
+}
+
+/** The grading scheme a student chose (CHY102), or null: only a course that lets the student choose saves one. */
+function cleanVariant(courseId, variant) {
+  if (!isScience(courseId) || DATA[courseId].grades.pick !== 'choose') return null;
+  return DATA[courseId].grades.variants.some((v) => v.id === variant) ? variant : null;
 }
 
 /** Whether this browser lets the calculator save (a blocked or full storage keeps marks for this page view only). */
@@ -274,11 +364,12 @@ export function subscribeGrades(courseId, storage, callback, target) {
   };
 }
 
-/** Course points (out of 100) when every unmarked item scores `fill`, applying drop-lowest. */
-function pointsWith(plan, percents, fill) {
+/** Course points (out of 100) when every unmarked item scores `fill`, applying drop-lowest. An optional bonus not
+    entered yet (PCS211's ClassQuestion) scores `bonusFill`: 0 unless asked, since nothing says a student earns it. */
+function pointsWith(plan, percents, fill, bonusFill = 0) {
   return sum(
     plan.groups.map((group) => {
-      const values = group.items.map((item) => percents[item.id] ?? fill);
+      const values = group.items.map((item) => percents[item.id] ?? (group.bonus ? bonusFill : fill));
       if (!group.drop) return sum(values.map((value, i) => (value * group.items[i].weight) / 100));
       const kept = [...values].sort((a, b) => b - a).slice(0, group.keep);
       return (sum(kept) * group.weight) / group.keep / 100;
@@ -301,7 +392,9 @@ function solve(plan, percents, target) {
 /**
  * Where the student stands, from percentages by item id ({ 'quiz-1': 85 }; missing ids are unmarked):
  * - `secured`: course points already earned (every unmarked item at 0).
- * - `maximum`: the highest course grade still possible (every unmarked item at 100).
+ * - `maximum`: the highest course grade still possible (every unmarked item at 100; an optional bonus counts only
+ *   once it is entered).
+ * For a course that applies the better of two options (PCS211), `secured` and `maximum` are the better option's.
  * - `current`: the average on the marks that count so far (in a drop-lowest group, the best `keep` of those marked);
  *   null when nothing is marked.
  * - `projected`: the final grade if every unmarked item scores `current`. It equals `current` unless a quiz still to
@@ -312,14 +405,31 @@ function solve(plan, percents, target) {
  *   15% is still open).
  * - `dropped`: ids of quizzes currently dropped (only once more quizzes are marked than count).
  * - `groups`: per group { id, average, marked, counted }.
- * - `complete`: every item has a mark (then `current` is the calculated final grade).
+ * - `complete`: every item has a mark (then `current` is the calculated final grade, bonus included).
  */
 export function gradeStanding(plan, percents = {}) {
+  const standing = standingOf(plan, percents);
+  if (!plan.options) return standing;
+  const all = plan.options.map((option) => standingOf(option, percents));
+  const best = (key) => Math.max(...all.map((entry) => entry[key]));
+  const secured = best('secured');
+  // Complete once every mark that counts under some option is in (PCS211 without WebAssign: Option 2).
+  const complete = all.some((entry) => entry.complete);
+  return { ...standing, secured, maximum: best('maximum'), complete, current: complete ? secured : standing.current };
+}
+
+function standingOf(plan, percents) {
   let earned = 0;
   let marked = 0;
   const dropped = [];
   const groups = plan.groups.map((group) => {
     const entered = group.items.filter((item) => typeof percents[item.id] === 'number');
+    if (group.bonus) {
+      // A bonus adds points but is not part of the average or of what is still to be marked.
+      const weight = sum(entered.map((item) => item.weight));
+      const points = sum(entered.map((item) => (percents[item.id] * item.weight) / 100));
+      return { id: group.id, average: weight ? (points / weight) * 100 : null, marked: entered.length, counted: entered.length, total: group.items.length };
+    }
     let counted = entered;
     if (group.drop && entered.length > group.keep) {
       // Stable: among equal lowest marks, the earliest quiz is the one dropped.
@@ -339,27 +449,35 @@ export function gradeStanding(plan, percents = {}) {
       total: group.items.length,
     };
   });
-  const unmarked = plan.items.filter((item) => typeof percents[item.id] !== 'number');
-  const secured = pointsWith(plan, percents, 0);
-  const maximum = pointsWith(plan, percents, 100);
+  const bonusIds = new Set(plan.groups.filter((group) => group.bonus).flatMap((group) => group.items.map((item) => item.id)));
+  // Weight-0 items (PCS211's WebAssign under Option 2) are never "still to be marked".
+  const unmarked = plan.items.filter((item) => typeof percents[item.id] !== 'number' && !bonusIds.has(item.id) && (!plan.pick || item.weight > EPSILON));
+  // A bonus (PCS211's ClassQuestion) can lift a grade, but never past 100%.
+  const cap = (value) => (bonusIds.size ? Math.min(100, value) : value);
+  const secured = cap(pointsWith(plan, percents, 0));
+  const maximum = cap(pointsWith(plan, percents, 100));
   const current = marked > EPSILON ? (earned / marked) * 100 : null;
+  const complete = unmarked.length === 0;
   return {
     secured,
     maximum,
-    current,
-    projected: current === null ? null : pointsWith(plan, percents, current),
+    // Once every mark is in, a bonus belongs in the final grade (the average itself leaves it out).
+    current: complete && bonusIds.size && current !== null ? secured : current,
+    projected: current === null ? null : cap(pointsWith(plan, percents, current)),
     marked,
     remaining: sum(
-      plan.groups.map((group) => {
-        const open = group.items.filter((item) => typeof percents[item.id] !== 'number');
-        if (group.drop) return (Math.min(open.length, group.keep) * group.weight) / group.keep;
-        return sum(open.map((item) => item.weight));
-      }),
+      plan.groups
+        .filter((group) => !group.bonus)
+        .map((group) => {
+          const open = group.items.filter((item) => typeof percents[item.id] !== 'number');
+          if (group.drop) return (Math.min(open.length, group.keep) * group.weight) / group.keep;
+          return sum(open.map((item) => item.weight));
+        }),
     ),
     dropped,
     groups,
     unmarked: unmarked.map((item) => item.id),
-    complete: unmarked.length === 0,
+    complete,
   };
 }
 
@@ -371,14 +489,32 @@ export function gradeStanding(plan, percents = {}) {
  *   one item is left.
  * - 'unreachable': not possible even with 100 on everything left.
  * - 'complete': every mark is in; the target was not reached.
+ * Where the course applies the better of two options (PCS211), a grade is secured or reachable if it is under either
+ * option, and the mark needed is the lower of the two; `option` and `remaining` then say which option and how much of
+ * the course is left under it.
  */
 export function gradeNeeded(plan, percents, target, standing = gradeStanding(plan, percents)) {
+  if (!plan.options) return neededOf(plan, percents, target, standing);
+  if (standing.complete) return standing.secured >= target - 0.5 - EPSILON ? { status: 'secured', average: 0, item: null } : { status: 'complete', average: null, item: null };
+  const needs = plan.options.map((option) => {
+    const own = standingOf(option, percents);
+    return { ...neededOf(option, percents, target, own), option: option.variant, optionTitle: option.variantTitle, remaining: own.remaining };
+  });
+  const secured = needs.find((need) => need.status === 'secured');
+  if (secured) return secured;
+  const reachable = needs.filter((need) => need.status === 'reachable').sort((a, b) => a.average - b.average);
+  return reachable[0] || { status: 'unreachable', average: null, item: null };
+}
+
+function neededOf(plan, percents, target, standing) {
   const goal = target - 0.5;
   if (standing.secured >= goal - EPSILON) return { status: 'secured', average: 0, item: null };
   if (standing.complete) return { status: 'complete', average: null, item: null };
   if (standing.maximum < goal - EPSILON) return { status: 'unreachable', average: null, item: null };
   const average = Math.min(100, ceilTenth(solve(plan, percents, goal)));
-  const only = standing.unmarked.length === 1 ? plan.items.find((item) => item.id === standing.unmarked[0]) : null;
+  // Weight-0 items (PCS211's WebAssign under Option 2) don't count towards what is left.
+  const open = standing.unmarked.map((id) => plan.items.find((item) => item.id === id)).filter((item) => !plan.pick || item.weight > EPSILON);
+  const only = open.length === 1 ? open[0] : null;
   return { status: 'reachable', average, item: only };
 }
 
@@ -392,4 +528,28 @@ export function percentsFrom(marks = {}) {
       })
       .filter(([, percent]) => percent !== null),
   );
+}
+
+/**
+ * The course's extra minimums (PCS211: THEORY and LABORATORY at 50% each), from the group averages so far:
+ * [{ id, title, min, note, average, status: 'met' | 'below' | 'open' }]. `average` weighs each marked group by its
+ * share in the requirement's formula; 'open' until one of its groups has a mark.
+ */
+export function gradeRequirements(plan, standing) {
+  return (plan.requirements || []).map((requirement) => {
+    let points = 0;
+    let weight = 0;
+    for (const [groupId, share] of requirement.parts) {
+      const average = standing.groups.find((group) => group.id === groupId)?.average;
+      if (average !== null && average !== undefined) {
+        points += average * share;
+        weight += share;
+      }
+    }
+    const average = weight ? points / weight : null;
+    let status = 'open';
+    // "A pass is considered a 50% or greater": no rounding allowance, unlike the course grade.
+    if (average !== null) status = average >= requirement.min - EPSILON ? 'met' : 'below';
+    return { id: requirement.id, title: requirement.title, min: requirement.min, note: requirement.note, average, status };
+  });
 }

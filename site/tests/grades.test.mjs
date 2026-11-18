@@ -25,7 +25,7 @@ import {
 } from '../src/lib/grades.mjs';
 import { deniedStorage, memoryStorage } from './helpers.mjs';
 
-const COURSES = ['cen100', 'mth140', 'mth141'];
+const COURSES = ['cen100', 'mth140', 'mth141', 'chy102', 'pcs211'];
 const close = (actual, expected, message) => assert.ok(Math.abs(actual - expected) < 1e-6, `${message ?? ''} ${actual} ≠ ${expected}`);
 
 test('every course plan uses the guide’s own weights and totals 100%', () => {

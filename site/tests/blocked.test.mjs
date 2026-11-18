@@ -59,7 +59,7 @@ test('a storage getter that throws (blocked site data) is treated as no storage'
   try {
     assert.equal(lib.getSection('cen100'), null);
     assert.equal(lib.nextDeadline({ now: NOW }).courseId, 'mth140');
-    assert.equal(lib.deskSnapshot({ now: NOW }).length, 3);
+    assert.equal(lib.deskSnapshot({ now: NOW }).length, 5);
     assert.equal(lib.motionPaused(), false);
     for (const course of COURSES) {
       const items = lib.deadlines(course, { now: NOW });

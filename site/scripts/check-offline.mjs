@@ -63,7 +63,7 @@ await check('registers and saves every route after the first visit', async () =>
     await page.waitForTimeout(500);
   }
   const keys = await saved();
-  for (const route of ['', 'courses/', 'cen100/', 'mth140/', 'mth141/', 'privacy/', 'updates/']) assert.ok(keys.includes(route), `missing ${route || 'Desk'} in ${JSON.stringify(keys)}`);
+  for (const route of ['', 'courses/', 'cen100/', 'mth140/', 'mth141/', 'chy102/', 'pcs211/', 'privacy/', 'updates/']) assert.ok(keys.includes(route), `missing ${route || 'Desk'} in ${JSON.stringify(keys)}`);
 });
 
 await context.setOffline(true);
@@ -72,6 +72,8 @@ await check('offline: each course opens with its work list', async () => {
   for (const [route, title] of [
     ['mth140/', 'Calculus I'],
     ['mth141/', 'Linear Algebra'],
+    ['chy102/', 'General Chemistry'],
+    ['pcs211/', 'Physics: Mechanics'],
     ['cen100/', 'Intro to Engineering'],
   ]) {
     await page.goto(`${site}${route}`, { waitUntil: 'load' });

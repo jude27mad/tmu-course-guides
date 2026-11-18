@@ -17,6 +17,10 @@ export const KEYS = {
   },
   mth140: { progress: 'mth140-progress-v1', section: 'mth140-section-v1', view: 'mth140-view-v1', seen: 'mth140-last-seen-update-v1' },
   mth141: { progress: 'mth141-progress-v1', section: 'mth141-section-v1', view: 'mth141-view-v1', seen: 'mth141-last-seen-update-v1' },
+  // CHY102 and PCS211 (new with these guides) use the math guides' formats. They have no section picker, so their
+  // section key is never written.
+  chy102: { progress: 'chy102-progress-v1', section: 'chy102-section-v1', view: 'chy102-view-v1', seen: 'chy102-last-seen-update-v1' },
+  pcs211: { progress: 'pcs211-progress-v1', section: 'pcs211-section-v1', view: 'pcs211-view-v1', seen: 'pcs211-last-seen-update-v1' },
   motion: 'guide-motion-paused',
   legacyMotion: 'guide-motion-level',
   theme: 'tmu-guide-theme-v1',
@@ -24,7 +28,7 @@ export const KEYS = {
 };
 
 const COURSE_OF_KEY = new Map();
-for (const course of ['cen100', 'mth140', 'mth141']) for (const key of Object.values(KEYS[course])) COURSE_OF_KEY.set(key, course);
+for (const course of ['cen100', 'mth140', 'mth141', 'chy102', 'pcs211']) for (const key of Object.values(KEYS[course])) COURSE_OF_KEY.set(key, course);
 /** The course a storage key belongs to, or null (motion, theme, unknown keys). */
 export const courseOfKey = (key) => COURSE_OF_KEY.get(key) ?? null;
 export const KNOWN_KEYS = new Set([...COURSE_OF_KEY.keys(), KEYS.motion]);

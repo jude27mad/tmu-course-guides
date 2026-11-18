@@ -1,7 +1,8 @@
 /* Guide tools: calendar files, progress backups, "What's changed?" and the CEN hide filter, in the old formats.
    These build file contents only; the page offers the download (Blob + <a download>) and the file picker. */
 import { fast } from './perf.mjs';
-import { COURSES as DATA } from './vendor/course-data.mjs';
+import { DATA, isScience } from './data.mjs';
+import { scienceCalendar } from './science.mjs';
 import { today, calendar } from './vendor/schedule.mjs';
 import * as CEN from './content/cen.mjs';
 import * as MATH from './content/math.mjs';
@@ -32,6 +33,12 @@ function calendarFileNow(courseId, { now, item = 'all', upcomingOnly = true, rem
     };
   }
   if (!isMath(courseId)) return { ok: false, count: 0, message: '' };
+  if (isScience(courseId)) {
+    // CHY102 / PCS211: every dated item, with windows as tentative all-day events; no section to choose.
+    const result = scienceCalendar(DATA[courseId], { onlyUpcoming: upcomingOnly, now: date });
+    if (!result.count) return { ok: false, count: 0, message: MATH.COPY.calendarNone };
+    return { ok: true, name: `${courseId}-fall-2026.ics`, type: 'text/calendar;charset=utf-8', text: result.text, count: result.count, message: MATH.COPY.calendarReady(result.count) };
+  }
   const chosen = section === undefined ? readMathSection(courseId, resolveStorage(storage)) : Number(section) || 0;
   if (includeTentative && !chosen) return { ok: false, count: 0, message: MATH.COPY.calendarNeedsSection };
   const result = calendar(DATA[courseId], chosen, { includeTentative, onlyUpcoming: upcomingOnly, now: date });

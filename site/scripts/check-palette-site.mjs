@@ -4,11 +4,11 @@
 //      is allowed only in Schedule-X's own
 //      calendar theme (its dialog shadows and --sx-* shadow variables); those third-party hits are listed in
 //      the report, not failed.
-//   2. In Chromium as a 390 px phone: the three course cards are identical, the pills, round button and
+//   2. In Chromium as a 390 px phone: the five course cards are identical, the pills, round button and
 //      countdown follow the palette, the MENU pill leaves with the header, the accent stays on
 //      small elements, and no page shows an old colour, a yellow or a second accent.
-//   3. Screenshots of the Desk (badges, course cards), the course list and the three course pages, named as the
-//      before set in docs/qa/neutral-palette/before/.
+//   3. Screenshots of the Desk (badges, course cards), the course list and the five course pages; 01–12 are named as
+//      the before set in docs/qa/neutral-palette/before/ (13 and 14, the CHY102 and PCS211 pages, have no before shot).
 // Usage: PLAYWRIGHT_PATH=/path/to/node_modules/playwright QA_REPORT_DIR=<dir> node scripts/check-palette-site.mjs <folder>
 // With GITHUB_STEP_SUMMARY set, the report is also written to the job summary.
 import assert from 'node:assert/strict';
@@ -200,7 +200,7 @@ async function checkBrowser(site) {
           fallback: getComputedStyle(fallback).backgroundColor, ink: getComputedStyle(fallback).color, panel: getComputedStyle(panel).backgroundColor };
       }),
     );
-    assert.deepEqual(cards.map(card => card.course), ['cen100', 'mth140', 'mth141']);
+    assert.deepEqual(cards.map(card => card.course), ['cen100', 'mth140', 'mth141', 'chy102', 'pcs211']);
     for (const card of cards) {
       assert.deepEqual({ background: card.background, fallback: card.fallback, ink: card.ink, panel: card.panel },
         { background: 'rgba(0, 0, 0, 0)', fallback: CARD, ink: INK, panel: INK }, `course badge ${card.course}`);
@@ -343,7 +343,7 @@ async function checkBrowser(site) {
 
     await visit('courses/');
     await shot('08-courses-page');
-    await check('Courses: the three course cards are identical apart from their text', courseCards);
+    await check('Courses: the five course cards are identical apart from their text', courseCards);
     await check('Courses: the MENU pill is ink on the light page', menuOnLight);
     await check('Courses: only palette colours', () => sweep('Courses'));
 
@@ -352,6 +352,8 @@ async function checkBrowser(site) {
       ['09-cen100', 'cen100/'],
       ['10-mth140', 'mth140/'],
       ['11-mth141', 'mth141/'],
+      ['13-chy102', 'chy102/'],
+      ['14-pcs211', 'pcs211/'],
     ]) {
       await visit(path);
       await shot(name);
@@ -377,8 +379,8 @@ async function checkBrowser(site) {
         await shot('12-cen100-work');
       }
     }
-    await check('the three course pages share one next-deadline card', () => {
-      assert.equal(summaries.length, 3);
+    await check('the five course pages share one next-deadline card', () => {
+      assert.equal(summaries.length, 5);
       const look = ({ link, ...rest }) => rest;
       for (const summary of summaries) assert.deepEqual(look(summary), look(summaries[0]));
     });

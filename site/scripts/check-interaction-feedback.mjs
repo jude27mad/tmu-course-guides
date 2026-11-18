@@ -73,7 +73,7 @@ try {
     return snapshots;
   });
   await check('the menu scrolls away with the page and works again at the top', async (page) => {
-    for (const route of ['', 'cen100/', 'mth140/', 'mth141/']) {
+    for (const route of ['', 'cen100/', 'mth140/', 'mth141/', 'chy102/', 'pcs211/']) {
       await page.goto(url + route);
       await page.waitForFunction(() => {
         const main = document.querySelector('main');
