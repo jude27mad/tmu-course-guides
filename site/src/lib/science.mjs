@@ -122,8 +122,9 @@ export function describeScience(course, a) {
       weekEnd: a.window.end,
       range,
       when: `${range} · ${a.timingText}`,
-      label: CHIPS[a.kind] || 'Due this week',
-      chip: CHIPS[a.kind] || 'Due this week',
+      // `label` is read where no date is known (details, Desk, Search, Schedule); `chip` is what windowStatus shows.
+      label: STATIC_CHIPS[a.kind] || 'Due that week',
+      chip: CHIPS[a.kind] || 'Due week ahead',
       note,
     };
   }
@@ -143,7 +144,9 @@ export function describeScience(course, a) {
   };
 }
 
-const orderKey = (a) => (a.date ? timestamp(a.date, a.time || '23:59') : a.window ? timestamp(a.window.end, '00:00') : Infinity);
+// A window ranks by the end of its last day, after any dated work due that day: Homework 10 (Nov 30, 11:59 PM) leads
+// Exam wrapper 2 (due Nov 24–30) on its due day, and PCS211's drop deadline leads the Nov 9–20 lab window.
+const orderKey = (a) => (a.date ? timestamp(a.date, a.time || '23:59') : a.window ? timestamp(a.window.end, '23:59') : Infinity);
 const isDone = (completed, id) => completed?.[id] === true || completed?.[id] === 1;
 
 /** The next target for a course (or the item `id` describes), as targets.mjs resolveTarget() answers for the others. */
@@ -156,7 +159,7 @@ export function scienceTarget({ course, data, completed = {}, now = Date.now(), 
   const date = new Date(+now);
   const next = data.assessments
     .filter((a) => (a.date || a.window) && !isDone(completed, a.id) && !sciencePassed(scienceEvent(a), date))
-    .sort((a, b) => orderKey(a) - orderKey(b) || a.id.localeCompare(b.id))[0];
+    .sort((a, b) => orderKey(a) - orderKey(b) || !!a.window - !!b.window || a.id.localeCompare(b.id))[0];
   const a = next || data.assessments.find((x) => x.kind === 'final' && !x.date && !isDone(completed, x.id));
   if (a) return describeScience(course, a);
   return {

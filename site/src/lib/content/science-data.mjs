@@ -362,7 +362,7 @@ const chy102 = {
         title: 'iClicker participation',
         dateLabel: 'Whole term · your grade out of 5 (e.g. 4 / 5)',
         outOf: 5,
-        note: 'From the percentage of times you participated in class overall: 75% or more = 5; 65–74% = 4; 55–64% = 3; 45–54% = 2; 35–44% = 1; 34% or less = 0.',
+        note: 'iClicker (Scheme 1 only): your grade out of 5 comes from the percentage of times you participated in class overall: 75% or more = 5; 65–74% = 4; 55–64% = 3; 45–54% = 2; 35–44% = 1; 34% or less = 0.',
       },
     },
     variants: [

@@ -111,7 +111,7 @@ function calendarEventsNow(courseId, items = []) {
       start = target.windowStart;
       end = target.weekEnd;
       style = 'week';
-      qualifier = `${target.chip} · exact day on D2L`;
+      qualifier = `${target.label} · exact day on D2L`;
     } else if (row.precision === 'week') {
       if (!row.week || !target.weekEnd) continue;
       allDay = true;

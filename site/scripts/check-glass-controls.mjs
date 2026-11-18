@@ -218,12 +218,14 @@ try {
           const title = box('[class*="workspace_headingCopy"]');
           const badge = box('[class*="workspace_artwork"]');
           const navigation = box('nav[aria-label="Course views"]');
-          const selectors = box('[class*="workspace_sectionControls"]');
+          // CHY102 and PCS211 have no section to choose, so no section controls (and no empty row on phones).
+          const selectors = document.querySelector('[class*="workspace_sectionControls"]')?.getBoundingClientRect() ?? null;
           const actions = box('[class*="workspace_actions"]');
-          return { titleLeft: title.left, navCenter: (navigation.left + navigation.right) / 2, viewportCenter: innerWidth / 2, selectorsLeft: selectors.left, badgeRight: badge.right, actionsRight: actions.right };
+          return { titleLeft: title.left, navCenter: (navigation.left + navigation.right) / 2, viewportCenter: innerWidth / 2, selectorsLeft: selectors?.left ?? null, badgeRight: badge.right, actionsRight: actions.right };
         });
         assert.ok(Math.abs(headerGeometry.navCenter - headerGeometry.viewportCenter) < 1, JSON.stringify(headerGeometry));
-        assert.ok(Math.abs(headerGeometry.titleLeft - headerGeometry.selectorsLeft) < 1);
+        assert.equal(headerGeometry.selectorsLeft === null, ['chy102', 'pcs211'].includes(course), `${course}: section controls only where there are sections`);
+        if (headerGeometry.selectorsLeft !== null) assert.ok(Math.abs(headerGeometry.titleLeft - headerGeometry.selectorsLeft) < 1);
         assert.ok(Math.abs(headerGeometry.badgeRight - headerGeometry.actionsRight) < 1, JSON.stringify(headerGeometry));
         assert.equal(await page.locator('[data-toronto-clock] time').count(), 1);
         const headerBounds = await page.locator('header > div > a, [data-toronto-clock], header [class*="rightContainer"]').evaluateAll(nodes => nodes.map(node => {

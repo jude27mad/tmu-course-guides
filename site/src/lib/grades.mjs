@@ -130,8 +130,10 @@ function sciencePlan(courseId, variantId) {
     requirements: grades.requirements || [],
     notes: [
       grades.note,
-      ...Object.values(grades.items || {})
-        .map((item) => item.note)
+      // Only notes for items in this scheme: no iClicker note under CHY102's Scheme 2.
+      ...Object.entries(grades.items || {})
+        .filter(([id]) => groups.some((group) => group.items.some((item) => item.id === id)))
+        .map(([, item]) => item.note)
         .filter(Boolean),
     ],
   };

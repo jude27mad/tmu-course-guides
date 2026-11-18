@@ -112,15 +112,18 @@ test('PCS211: the midterm is Friday October 30 at 6 PM for 2 hours', () => {
   assert.equal(midterm.weight, 25);
 });
 
-test('a window never hides a dated deadline: it ranks by its last day', () => {
-  // Nov 10: PCS211 Lab 5's window (Nov 9–20) is open; CHY102 Midterm 2 is on Friday Nov 13. The midterm leads.
+test('a window never hides a dated deadline: it ranks by the end of its last day', () => {
+  // Nov 10: PCS211 Lab 5's window (Nov 9–20) is open; CHY102 Midterm 2 is on Friday Nov 13. The midterm leads, and in
+  // PCS211 the November 20 drop deadline leads the window that ends that day.
   const chy = nextDeadline({ now: NOV10, courseId: 'chy102', storage: null });
   const pcs = nextDeadline({ now: NOV10, courseId: 'pcs211', storage: null });
   assert.equal(chy.id, 'midterm-2');
-  assert.equal(pcs.id, 'lab-5');
+  assert.equal(pcs.id, 'drop-deadline');
   assert.equal(overall([pcs.target, chy.target], NOV10), chy.target);
+  // Homework 10 (Nov 30, 11:59 PM) leads Exam wrapper 2 (Nov 24–30) on its due day.
+  assert.equal(nextDeadline({ now: toronto('2026-11-30', '22:00'), courseId: 'chy102', storage: null }).id, 'hw-10');
   // Lists still show the window from its first day.
-  assert.ok(pcs.sortKey < chy.sortKey);
+  assert.ok(byId('pcs211')['lab-5'].sortKey < chy.sortKey);
 });
 
 test('no section picker: no sections, nothing saved, every date the same', () => {

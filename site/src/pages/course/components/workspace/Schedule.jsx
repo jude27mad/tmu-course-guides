@@ -58,7 +58,9 @@ export default function Schedule({ navigate, state, setState }) {
   const mode = choice || (wide ? 'calendar' : 'agenda');
   const items =
     live?.items.filter((item) => {
-      if (day) return item.date === day || (item.week && item.week <= day && item.target?.weekEnd >= day);
+      // A window (CHY102 wrapper, PCS211 lab or tutorial) covers its own dates, not the Monday before a Tuesday start.
+      const from = item.target?.windowStart || item.week;
+      if (day) return item.date === day || (from && from <= day && item.target?.weekEnd >= day);
       return range === 'all' || !item.passed;
     }) || [];
   const selectDay = (value) => {
