@@ -16,8 +16,11 @@ const DUE = new Set(['homework', 'wrapper', 'task', 'webassign']);
 const CHIPS = {
   lab: 'Lab weeks',
   tutorial: 'Tutorial weeks',
-  wrapper: 'Due this week',
+  // An exam wrapper reads "Due this week" only once its week has come (windowStatus).
+  wrapper: 'Due week ahead',
 };
+// The calendar file and the date tile have no "now": a wrapper's event spans its due week.
+const STATIC_CHIPS = { ...CHIPS, wrapper: 'Due that week' };
 
 /** "Sep 14–25", "Oct 26–Nov 6". */
 export function rangeLabel(start, end) {
@@ -67,9 +70,9 @@ export function scienceTile(e) {
   }
   if (e.window)
     return {
-      top: 'Weeks of',
+      top: e.kind === 'wrapper' ? 'Week of' : 'Weeks of',
       main: dateLabel(e.window.start),
-      bottom: CHIPS[e.kind] || '',
+      bottom: STATIC_CHIPS[e.kind] || '',
       unknown: true,
     };
   // Only a month the outline names (CHY102: December 9–20); otherwise TBA.
@@ -173,7 +176,10 @@ export function scienceTarget({ course, data, completed = {}, now = Date.now(), 
 export function windowStatus(t, now = Date.now()) {
   if (t?.undated) return 'No date';
   if (!t?.window) return null;
-  return t.weekEnd < today(new Date(+now)) ? 'Window passed' : t.chip;
+  const day = today(new Date(+now));
+  if (t.weekEnd < day) return 'Window passed';
+  if (t.kind === 'wrapper' && t.windowStart <= day) return 'Due this week';
+  return t.chip;
 }
 
 // ---- Calendar file (.ics) ----
@@ -207,15 +213,17 @@ export function scienceCalendar(course, { onlyUpcoming = true, now = new Date() 
   for (const a of events) {
     lines.push('BEGIN:VEVENT', `UID:${course.code.toLowerCase()}-${a.id}-all-f26@jude27mad.github.io`, `DTSTAMP:${stamp(+now)}`);
     if (a.date && a.time) {
-      const end = a.end && a.end !== a.time ? a.end : a.time;
-      lines.push(`DTSTART:${stamp(timestamp(a.date, a.time))}`, `DTEND:${stamp(timestamp(a.date, end))}`);
+      // A deadline is an instant: RFC 5545 ends a DTSTART with no DTEND at the same moment, and a DTEND equal to
+      // DTSTART is invalid. Only a test with a real end time gets one.
+      lines.push(`DTSTART:${stamp(timestamp(a.date, a.time))}`);
+      if (a.end && a.end !== a.time) lines.push(`DTEND:${stamp(timestamp(a.date, a.end))}`);
     } else {
       const start = a.date || a.window.start;
       const last = a.date || a.window.end;
       lines.push(`DTSTART;VALUE=DATE:${start.replace(/-/g, '')}`, `DTEND;VALUE=DATE:${addDays(last, 1).replace(/-/g, '')}`, 'STATUS:TENTATIVE');
     }
     const note = a.window ? ' Your session’s exact day is on D2L.' : ' Check D2L for rooms and updates.';
-    lines.push(`SUMMARY:${escapeICS(`${course.code} ${a.title}${a.window ? ` (${CHIPS[a.kind] || 'due this week'})` : ''}`)}`);
+    lines.push(`SUMMARY:${escapeICS(`${course.code} ${a.title}${a.window ? ` (${(STATIC_CHIPS[a.kind] || 'due that week').toLowerCase()})` : ''}`)}`);
     lines.push(`DESCRIPTION:${escapeICS(`${a.scope} Source: ${a.source}${note}`)}`);
     lines.push('END:VEVENT');
   }

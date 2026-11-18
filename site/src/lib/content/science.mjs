@@ -124,7 +124,7 @@ const CHY_RULES = [
     blocks: [
       {
         type: 'p',
-        text: 'Missed midterm: email your instructor by 5 PM on the day of the midterm with your name, student number and a brief reason. Then submit an academic consideration request (ACR) to the Faculty of Science Office within 3 business days, with a TMU Student Health Certificate or other valid documentation.',
+        text: 'Missed midterm: email your instructor by 5 PM on the day of the midterm with your name, student number and a brief reason. Then submit an academic consideration request (ACR) to the Faculty of Science Office within 3 business days, with documentation (a TMU Student Health Certificate for illness), unless you use your one no-documentation ACR described below.',
       },
       {
         type: 'p',
@@ -136,14 +136,14 @@ const CHY_RULES = [
       },
       {
         type: 'p',
-        text: 'No ACR for missed homework or iClicker questions. Homework is open for a week, so there are no extensions; the iClicker scale already allows for occasional absences and technical problems.',
+        text: 'No ACR for missed homework or iClicker questions. Homework is open for at least a week, so there are no extensions; the iClicker scale already allows for occasional absences and technical problems.',
       },
       { type: 'source', text: 'Source: CHY 102 Course Outline, pp. 10–12.' },
     ],
   },
   {
     id: 'homework',
-    listTitle: 'Homework & late penalty',
+    listTitle: 'Homework, iClicker & wrappers',
     title: 'Homework, iClicker & exam wrappers',
     blocks: [
       {
@@ -152,7 +152,7 @@ const CHY_RULES = [
           'Eleven graded Mastering Chemistry assignments, each 1%, due Mondays at 11:59 PM. The lowest is dropped. Homework 12 is optional.',
           'Late homework loses 10% per day, up to 50% per assignment. Bonus marks are available, up to 100% per assignment.',
           'iClicker (Scheme 1 only): 5% from the percentage of times you participated in class overall (75% or more earns all 5).',
-          'Two exam wrappers, 2.5% each, after each midterm: Google Forms marked on thoughtful reflection.',
+          'Two exam wrappers, 2.5% each, one after each midterm: Google Forms marked on thoughtful reflection.',
         ],
       },
       { type: 'source', text: 'Source: CHY 102 Course Outline, pp. 13–15.' },
@@ -188,11 +188,16 @@ const CHY_RULES = [
     blocks: [
       {
         type: 'list',
-        items: ['Midterm rooms, and any change to the tentative midterm dates.', 'The exact due day of each exam wrapper.', 'The final exam’s date, time, room and coverage.'],
+        items: [
+          'Homework 9’s deadline: November 23 in the assignment table, but week 10 (ending November 16) in the weekly schedule.',
+          'Midterm rooms, and any change to the tentative midterm dates.',
+          'The exact due day of each exam wrapper.',
+          'The final exam’s date, time, room and coverage.',
+        ],
       },
       {
         type: 'source',
-        text: 'Source: CHY 102 Course Outline, pp. 6–7. Check D2L.',
+        text: 'Source: CHY 102 Course Outline, pp. 6–7 and 13. Check D2L.',
       },
     ],
   },
@@ -225,7 +230,7 @@ const PCS_RULES = [
     blocks: [
       {
         type: 'p',
-        text: 'Five two-hour labs and five two-hour tutorials, each every other week. Your section’s session falls in one week of each pair (weeks 2–3, 4–5, 6–7, 8–9 and 10–11); the day and room are on D2L.',
+        text: 'Five two-hour labs and five two-hour tutorials, each every other week. Your session falls in one week of each pair (weeks 2–3, 4–5, 6–7, 8–9 and 10–11); the day and room are on D2L.',
       },
       {
         type: 'list',

@@ -136,8 +136,9 @@ const KIND = {
 const OUTLINE_PAGES = { chy102: 'pp. 5–7', pcs211: 'pp. 5–6' };
 
 function scienceContacts(course) {
-  const people = course.instructors.map((person) => ({ heading: `${person.name} · ${person.role}`, text: `${person.email} · ${person.hours}`, href: `mailto:${person.email}` }));
-  const sessions = course.sections ? course.sections.map((row) => ({ heading: `Section ${row.section}`, text: `${row.times} · ${row.room} · ${row.instructor}` })) : [{ heading: 'Lectures', text: course.lectures }];
+  // Roles, not names: the site leaves out staff names and contact details from course-only documents.
+  const people = course.instructors.map((person) => ({ heading: person.role, text: person.text }));
+  const sessions = course.sections ? course.sections.map((row) => ({ heading: `Section ${row.section}`, text: `${row.times} · ${row.room}` })) : [{ heading: 'Lectures', text: course.lectures }];
   const help = course.code === 'CHY102' ? [{ heading: 'Mastering Chemistry questions', text: 'Your TA, during the resource-room hours. The outline does not list the hours; check D2L.' }] : [];
   return [...people, ...sessions, ...help];
 }
@@ -182,8 +183,10 @@ function scienceInfo(courseId) {
         roomLabel: a.roomLabel ?? kind.roomLabel,
         // "Before you write" belongs to a test; handed-in work and sessions get their own heading.
         rulesHeading: { homework: 'Before you submit', wrapper: 'Before you submit', webassign: 'Before you submit', task: 'Good to know', lab: 'Before your session', tutorial: 'Before your session' }[a.kind] || 'Before you write',
-        categoryLabel: 'Assessment',
+        categoryLabel: a.kind === 'task' ? 'Type' : 'Assessment',
         category: a.duration ? `${kind.category} · ${a.duration}` : kind.category,
+        // A course task (registration, orientation, the drop deadline) is not an assessment.
+        ...(a.kind === 'task' ? { completedLabel: 'I’ve done this', checklistHeading: 'My checklist' } : {}),
         rules: a.rules,
         // CHY102's midterm rules already say where rooms are (outline p. 7); PCS211's outline gives no room.
         roomNote: a.kind === 'midterm' && courseId === 'pcs211' ? 'The outline does not give the midterm room; check D2L.' : '',
@@ -212,7 +215,8 @@ function scienceInfo(courseId) {
     rules: SCIENCE_RULES[courseId],
     notice: SCIENCE_NOTICES[courseId],
     contacts: { heading: page.contact.heading, coordinatorLabel: page.contact.coordinator, coordinator: course.coordinator, note: page.contact.note, links: page.contact.links, section: contacts, prompt: '' },
-    textbooks: { ...page.textbooks, books: course.textbooks },
+    // Topic cards list these under the course's own heading: not every entry is a book (Mastering, iClicker, D2L).
+    textbooks: { ...page.textbooks, books: course.textbooks, topicHeading: page.textbooks.heading, linkPrefix: '' },
     sources: { ...page.sources, entries: course.sources },
     grading: { ...page.grading, pass: course.grades.pass, weights: course.grades.variants[0].categories.map((c) => c.weight), quizPolicy: course.quizPolicy, note: course.grades.note },
     tools: { work: page.work, calendar: page.calendar, backup: page.backup, note: page.tools.note },

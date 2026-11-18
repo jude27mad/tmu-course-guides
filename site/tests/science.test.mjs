@@ -137,7 +137,11 @@ test('no section picker: no sections, nothing saved, every date the same', () =>
     'Section 21 · Mon 4:00–5:00 PM · Thu 8:00–10:00 AM · TRS1067',
     'Section 31 · Tue 2:00–4:00 PM · Fri 1:00–2:00 PM · TRS1067',
   ]);
-  assert.ok(info.contacts.section.some((row) => row.href === 'mailto:alena.celsie@torontomu.ca'));
+  // Roles only, as the Privacy page promises: no staff names, emails or mailto links from the outlines.
+  for (const id of ['chy102', 'pcs211']) {
+    const text = JSON.stringify(courseInfo(id));
+    assert.ok(!/Celsie|Wylie|Toronov|@torontomu\.ca|mailto:/.test(text), id);
+  }
 });
 
 test('grading: every scheme and option totals 100%, as in Course info', () => {
@@ -226,6 +230,26 @@ test('PCS211: an unentered ClassQuestion bonus never counts; every figure uses t
   assert.equal(theory(50), 'met');
 });
 
+test('PCS211 without WebAssign: Option 2 applies and the grade completes', () => {
+  const all = gradePlan('pcs211').items.map((item) => item.id);
+  const marks = Object.fromEntries(all.filter((id) => !id.startsWith('webassign') && id !== 'classquestion').map((id) => [id, 70]));
+  const plan = gradePlan('pcs211', { percents: marks });
+  assert.equal(plan.variant, 'option-2');
+  const standing = gradeStanding(plan, marks);
+  assert.equal(standing.complete, true);
+  assert.equal(standing.current, 70);
+  assert.equal(gradePlan('pcs211', { percents: {} }).variant, 'option-2', 'no marks yet: WebAssign counts as not done');
+});
+
+test('windows speak their own chip and label their own span', () => {
+  const lab = byId('pcs211')['lab-5'];
+  const spoken = countdown(lab, NOV10).sentence;
+  assert.match(spoken, /Lab weeks/);
+  assert.doesNotMatch(spoken, /Quiz week/);
+  const wrapper = assessments('chy102').find((row) => row.item === 'wrapper-1');
+  assert.equal(wrapper.dateLabel, 'Oct 27–Nov 2');
+});
+
 test('windows open this week stay in This week through their last week', () => {
   const at = (courseId, date) => {
     const now = toronto(date, '10:00');
@@ -245,7 +269,8 @@ test('outline-only wording: no CHY102 student ID, finals name a month only where
   assert.equal(pcs.assessments.find((a) => a.id === 'final').tile.main, 'TBA');
   assert.ok(!/December/.test(JSON.stringify(pcs.assessments.find((a) => a.id === 'final'))));
   assert.equal(pcs.assessments.find((a) => a.id === 'drop-deadline').room, 'TMU Significant Dates page');
-  assert.equal(chy.assessments.find((a) => a.id === 'mastering-registration').room, 'D2L');
+  assert.equal(chy.assessments.find((a) => a.id === 'mastering-registration').room, 'Mastering Chemistry (instructions on D2L)');
+  assert.equal(pcs.assessments.find((a) => a.id === 'drop-deadline').completedLabel, 'I’ve done this');
   const hw9 = chy.assessments.find((a) => a.id === 'hw-9');
   assert.match(hw9.dateNote, /November 16/);
   assert.equal(hw9.confirmed, false);
@@ -258,6 +283,9 @@ test('calendar files: timed work at Toronto time, windows as tentative all-day e
   assert.equal(chy.count, 17);
   assert.match(chy.text, /UID:chy102-hw-1-all-f26@jude27mad\.github\.io/);
   assert.match(chy.text, /DTSTART:20260922T035900Z/);
+  // A deadline is an instant: no DTEND equal to its DTSTART (RFC 5545); a midterm keeps its real end.
+  assert.match(chy.text, /DTSTART:20260922T035900Z\r\nSUMMARY:/);
+  assert.match(chy.text, /DTSTART:20261009T223000Z\r\nDTEND:20261010T003000Z/);
   const pcs = calendarFile('pcs211', { now: toronto('2026-11-10', '12:00'), storage: null });
   assert.equal(pcs.count, 3);
   assert.match(pcs.text, /DTSTART;VALUE=DATE:20261109\r\nDTEND;VALUE=DATE:20261121\r\nSTATUS:TENTATIVE/);

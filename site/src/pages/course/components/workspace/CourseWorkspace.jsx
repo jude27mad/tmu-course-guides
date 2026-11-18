@@ -80,9 +80,9 @@ export default function CourseWorkspace() {
             document.body,
           )}
         <div className={styles.utilities}>
-          <div className={styles.sectionControls}>
-            {/* CHY102 and PCS211 dates are the same for everyone: no section to choose. */}
-            {course.hasSections ? (
+          {/* CHY102 and PCS211 dates are the same for everyone: no section to choose, and no empty row on phones. */}
+          {course.hasSections ? (
+            <div className={styles.sectionControls}>
               <label className={styles.selectLabel} htmlFor="course-section">
                 Section
                 <select id="course-section" aria-label="Course section" value={section || ''} disabled={!progress.ready} onChange={(e) => setSection(e.target.value)}>
@@ -94,21 +94,21 @@ export default function CourseWorkspace() {
                   ))}
                 </select>
               </label>
-            ) : null}
-            {courseId === 'cen100' && section ? (
-              <label className={styles.selectLabel} htmlFor="course-group">
-                Group
-                <select id="course-group" aria-label="Innovation Challenge group" value={group || ''} onChange={(e) => setGroup(e.target.value)}>
-                  <option value="">Choose group</option>
-                  {groups(section).map((row) => (
-                    <option key={row.value} value={row.value}>
-                      {row.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            ) : null}
-          </div>
+              {courseId === 'cen100' && section ? (
+                <label className={styles.selectLabel} htmlFor="course-group">
+                  Group
+                  <select id="course-group" aria-label="Innovation Challenge group" value={group || ''} onChange={(e) => setGroup(e.target.value)}>
+                    <option value="">Choose group</option>
+                    {groups(section).map((row) => (
+                      <option key={row.value} value={row.value}>
+                        {row.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              ) : null}
+            </div>
+          ) : null}
           <div className={styles.actions}>
             <a href="https://courses.torontomu.ca/" target="_blank" rel="noopener noreferrer">
               D2L ↗

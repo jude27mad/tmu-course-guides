@@ -6,7 +6,7 @@
    Every time-dependent function takes `now` (a Date or epoch ms; omitted = the current time). */
 import { fast } from './perf.mjs';
 import { DATA, isScience } from './data.mjs';
-import { scienceTarget, scienceEvent, sciencePassed, scienceTiming, windowStatus } from './science.mjs';
+import { scienceTarget, scienceEvent, sciencePassed, scienceTiming, windowStatus, rangeLabel } from './science.mjs';
 import { SCHEDULE } from './vendor/cen-schedule.mjs';
 import { today, addDays, dateLabel, dayLabel, timestamp, resolveAssessment, assessmentPassed, timing } from './vendor/schedule.mjs';
 import { resolveTarget, overall, parts, compact, status, targetDate, sentence, readSaved, GRACE } from './vendor/night/targets.mjs';
@@ -354,7 +354,13 @@ function countdownNow(due, now) {
   const p = parts(t, ms) || {};
   const result = { label: compactFor(t, ms), ms: p.ms ?? null, state: p.state, status: statusFor(t, ms) };
   if (p.ms) Object.assign(result, { days: p.d, hours: p.h, minutes: p.m, seconds: p.s, progress: p.progress });
-  if (t.title && t.when) result.sentence = sentence(t, ms);
+  // A CHY102/PCS211 window reads its own chip ("Lab weeks"), never the vendored "Quiz week".
+  if (t.title && t.when) {
+    result.sentence = sentence(t, ms);
+    if (t.window) result.sentence = `${t.title}: ${windowStatus(t, ms)}. ${t.when}.`;
+    // An item with no date at all (CHY102 Homework 12) is not "Date pending. No date."
+    else if (t.undated) result.sentence = `${t.title}: ${t.label}.`;
+  }
   return result;
 }
 
@@ -481,7 +487,7 @@ function assessmentsNow(courseId, { section } = {}) {
         const e = scienceEvent(a);
         let label = 'Date pending';
         if (e.date) label = short(e.date);
-        else if (e.window) label = `Weeks of ${dateLabel(e.window.start)}`;
+        else if (e.window) label = rangeLabel(e.window.start, e.window.end);
         else if (a.kind !== 'final') label = 'Dates on D2L';
         return { title: a.title, dateLabel: label, weight: scienceWeight(course, a.id), weightLabel: a.weightLabel, ids: [a.id], item: a.id, anchor: `assessment-${a.id}` };
       });

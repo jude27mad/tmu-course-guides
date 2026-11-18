@@ -63,6 +63,7 @@ const chyMidterm = (n, date, chapters, topics) => ({
   scope: `Chapters ${chapters}: ${topics}.`,
   source: `${OUTLINE_CHY}, pp. 6–7: tentative date, time and chapters; pp. 8–9: weights.`,
   confirmed: false,
+  dateNote: 'The outline lists this date and time as tentative. Check D2L for the confirmed date and your room.',
   weightLabel: '22.5% (Scheme 1) · 25% (Scheme 2)',
   category: `midterm-${n}`,
   prep: [
@@ -84,7 +85,7 @@ const wrapper = (n, midterm, start, end, week, page) => ({
   confirmed: false,
   weightLabel: '2.5% of course',
   category: 'wrappers',
-  timingText: 'due this week · the outline gives only the week; check D2L for the day',
+  timingText: 'due within these dates · the outline gives only the week; check D2L for the day',
   prep: [
     `Look over my Midterm ${midterm} results and the questions I got wrong (check D2L for how marked midterms are shared).`,
     'Note how I studied, and which questions cost me the most marks.',
@@ -106,36 +107,24 @@ const chy102 = {
       section: 11,
       times: 'Thu 2:00–3:00 PM · Fri 8:00–10:00 AM',
       room: 'TRS1067',
-      instructor: 'Dr. Stephen Wylie',
     },
     {
       section: 21,
       times: 'Mon 4:00–5:00 PM · Thu 8:00–10:00 AM',
       room: 'TRS1067',
-      instructor: 'Dr. Alena Celsie',
     },
     {
       section: 31,
       times: 'Tue 2:00–4:00 PM · Fri 1:00–2:00 PM',
       room: 'TRS1067',
-      instructor: 'Dr. Alena Celsie',
     },
   ],
+  // Roles only: like the other guides, no staff names or contact details from course-only documents (Privacy page).
   instructors: [
-    {
-      name: 'Dr. Alena Celsie',
-      role: 'Course coordinator · Sections 21 and 31',
-      email: 'alena.celsie@torontomu.ca',
-      hours: 'Mondays 1:00–3:00 PM, on Google Meet (book through D2L). Email to arrange another time.',
-    },
-    {
-      name: 'Dr. Stephen Wylie',
-      role: 'Section 11',
-      email: 'swylie@torontomu.ca',
-      hours: 'Tuesdays 2:00–4:00 PM, on Google Meet (book through D2L).',
-    },
+    { role: 'Course coordinator · Sections 21 and 31', text: 'Contact details and office-hour booking are on D2L.' },
+    { role: 'Section 11 instructor', text: 'Contact details and office-hour booking are on D2L.' },
   ],
-  coordinator: 'Dr. Alena Celsie',
+  coordinator: 'the coordinator listed on D2L',
   organization: '3 hours of lectures each week + 1–2 hours of Mastering Chemistry homework',
   quizPolicy: 'Eleven graded homework assignments: the lowest is dropped, so the best 10 count, 1% each. Homework 12 is optional and does not count.',
   topics: [
@@ -246,10 +235,10 @@ const chy102 = {
     {
       id: 'buffers',
       title: 'Buffers & Titrations',
-      sections: 'Chapter 15 (outline)',
+      sections: 'Chapter 15',
       week: 11,
       exam: '',
-      description: 'Buffer solutions and titration curves.',
+      description: 'Buffer solutions and titration curves. The outline lists this as Chapter 15; the optional Homework 12 covers Chapter 16.',
       skills: ['Calculate buffer pH with the Henderson–Hasselbalch equation.', 'Work through titration calculations at key points.', 'Interpret a titration curve.'],
     },
     {
@@ -283,6 +272,7 @@ const chy102 = {
       end: '17:00',
       scope: 'Enrol in the CHY 102 Mastering Chemistry course using the instructions on D2L. Use your TMU email and your full name as registered with TMU.',
       source: `${OUTLINE_CHY}, p. 14: registration deadline and account rules.`,
+      room: 'Mastering Chemistry (instructions on D2L)',
       confirmed: true,
       weightLabel: 'Needed for homework',
       prep: ['Get Mastering access (with or without the e-text).', 'Follow the D2L registration instructions.', 'Register with my TMU email and my full registered name.'],
@@ -297,6 +287,7 @@ const chy102 = {
       end: '17:00',
       scope: 'Everyone is in Grading Scheme 1 (with iClicker) by default. To move to Scheme 2 (no iClicker; each midterm 25%), fill in the Google Form on D2L by the deadline.',
       source: `${OUTLINE_CHY}, p. 8: grading schemes and the opt-in deadline; p. 9: weights are final after the deadline.`,
+      room: 'Google Form on D2L',
       confirmed: true,
       weightLabel: 'Optional',
       prep: ['Compare the two grading schemes under Course info → Grading.', 'If I want Scheme 2, submit the D2L Google Form before the deadline.'],
@@ -317,7 +308,7 @@ const chy102 = {
     homework(8, 'Chapter 13', 'chemical kinetics', 'Nov 2', '2026-11-09'),
     chyMidterm(2, '2026-11-13', '5 and 11–14', 'gases, liquids, solids and intermolecular forces, solutions, chemical kinetics and chemical equilibrium'),
     homework(9, 'Chapter 14', 'chemical equilibrium', 'Nov 9', '2026-11-23', {
-      dateNote: 'The assignment table (p. 13) gives Monday, November 23, but the weekly schedule (p. 6) lists the Chapter 14 homework in week 10, which ends Monday, November 16. Check the due date in Mastering Chemistry and on D2L, and finish by November 16 to be safe.',
+      dateNote: 'The assignment table (p. 13) gives Monday, November 23, but the weekly schedule (p. 6) lists the Chapter 14 homework in week 10, which ends Monday, November 16. Check the due date in Mastering Chemistry and on D2L.',
       confirmed: false,
       source: `${OUTLINE_CHY}, p. 13: assignment table (opens Nov 9, deadline Nov 23); pp. 6–7: the weekly schedule lists the Chapter 14 homework in week 10 (Nov 10–16), due on the Monday that ends that week.`,
     }),
@@ -369,7 +360,8 @@ const chy102 = {
     items: {
       iclicker: {
         title: 'iClicker participation',
-        dateLabel: 'Whole term · enter your grade out of 5',
+        dateLabel: 'Whole term · your grade out of 5 (e.g. 4 / 5)',
+        outOf: 5,
         note: 'From the percentage of times you participated in class overall: 75% or more = 5; 65–74% = 4; 55–64% = 3; 45–54% = 2; 35–44% = 1; 34% or less = 0.',
       },
     },
@@ -558,15 +550,9 @@ const pcs211 = {
   term: 'Fall 2026',
   updated: '2026-11-10',
   labs: [],
-  lectures: 'Mondays 8:00–10:00 AM in DSQ 7 · Wednesdays 2:00–3:00 PM in ENG103 (the times listed for Vladislav Toronov; if you have another instructor, check their D2L shell)',
-  instructors: [
-    {
-      name: 'Vladislav Toronov',
-      role: 'Instructor',
-      email: 'toronov@torontomu.ca',
-      hours: 'Office hours: not given in the outline; check D2L.',
-    },
-  ],
+  lectures: 'Mondays 8:00–10:00 AM in DSQ 7 · Wednesdays 2:00–3:00 PM in ENG103 (the times the outline lists for its instructor; if yours differ, check your instructor’s D2L shell)',
+  // Roles only, as in the other guides (Privacy page).
+  instructors: [{ role: 'Instructor', text: 'Contact details and office hours are on D2L.' }],
   coordinator: 'Not named in the outline; check D2L',
   organization: '3 hours of lectures each week for 13 weeks + five 2-hour labs and five 2-hour tutorials, each every other week (weeks 2–11)',
   quizPolicy: 'Five tutorials (2% each), five labs (4% each) and five optional WebAssign assignments (1% each).',
@@ -711,8 +697,8 @@ const pcs211 = {
       source: `${OUTLINE_PCS}, pp. 2 and 7: mandatory orientation sessions.`,
       confirmed: true,
       weightLabel: 'Mandatory',
-      timingText: 'First in-person lecture (Mondays 8:00–10:00 AM in DSQ 7 or Wednesdays 2:00–3:00 PM in ENG103) and the scheduled online orientation meeting · the outline does not give the meeting time; check D2L',
-      room: 'First lecture: DSQ 7 (Mon) or ENG103 (Wed) · online meeting: not in the outline, check D2L',
+      timingText: 'Start of term: the first in-person lecture and the scheduled online orientation meeting · if you missed either, see the instructor in office hours',
+      room: 'First lecture: DSQ 7 (Mon) or ENG103 (Wed) · online meeting: time not in the outline, check D2L',
       prep: ['Attend the first in-person lecture.', 'Attend the online orientation meeting.', 'If I missed either, meet the instructor in office hours.'],
       rules: ['Students who miss either session must meet the instructor in person during office hours as soon as possible to review course information and rules.'],
     },
@@ -771,7 +757,7 @@ const pcs211 = {
       category: 'webassign',
       timingText: 'Five assignments · due dates in WebAssign and on D2L',
       prep: ['Register in WebAssign using the D2L instructions.', 'Complete each assignment before its WebAssign deadline.'],
-      rules: ['Late work receives zero unless stated otherwise.', 'The guide applies whichever evaluation option gives you the higher grade, as the course does.'],
+      rules: ['Late work receives zero unless stated otherwise.', 'The course automatically uses whichever evaluation option gives you the higher grade; this guide’s grade calculator does the same.'],
     },
     {
       id: 'final',
@@ -930,7 +916,7 @@ const pcs211 = {
     },
     {
       title: 'Weeks',
-      detail: 'The outline’s week numbers follow the term calendar: Week 2 begins Monday, September 14. Labs and tutorials run every other week; the outline gives only the weeks, so check D2L for your session’s day and room.',
+      detail: 'The outline gives week numbers but no dates. This guide counts week 1 as Tuesday, September 8 to Sunday, September 13 (the term starts on a Tuesday), so week 2 begins Monday, September 14. Labs and tutorials run every other week; the outline gives only the weeks, so check D2L for your session’s day and room.',
     },
   ],
 };

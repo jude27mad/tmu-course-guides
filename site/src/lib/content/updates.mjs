@@ -147,7 +147,7 @@ export const COURSE_UPDATES = {
    "items": [
     "Five labs and five tutorials in their two-week windows, the October 30 midterm and the drop deadline. Your session's exact day and room are on D2L.",
     "Both evaluation options, applied automatically, and the THEORY and LABORATORY minimums.",
-    "Exam rules, missed-work rules and the plagiarism and AI policy. Midterm coverage and the final schedule still need D2L announcements."
+    "Exam rules, missed-work rules and the plagiarism and AI policy. The final exam schedule still needs a D2L announcement."
    ]
   }
  ]
@@ -158,7 +158,7 @@ export const WEBSITE_UPDATES = [
   "id": "2026-11-15-chy102-pcs211",
   "date": "November 15, 2026",
   "title": "CHY102 and PCS211 guides",
-  "text": "Two new course guides: CHY102 General Chemistry and PCS211 Physics: Mechanics. Each has Work, Schedule, Study, Grades and Course info, like the math guides, and their deadlines appear on the Desk and in Search. Neither needs a section: CHY102 lists its three sections in Course info, and PCS211's labs and tutorials show the two-week window your session falls in.",
+  "text": "Two new course guides: CHY102 General Chemistry and PCS211 Physics: Mechanics. Each has Work, Schedule, Study, Grades and Course info, like the math guides, and their deadlines appear on the Desk and in Search. Neither asks you to choose a section: CHY102 lists its three sections in Course info, and PCS211's labs and tutorials show the two-week window your session falls in.",
   "items": [],
   "courses": ["chy102", "pcs211"]
  },

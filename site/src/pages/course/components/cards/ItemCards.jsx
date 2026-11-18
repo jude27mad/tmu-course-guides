@@ -210,11 +210,12 @@ export function TopicBody({ item, review }) {
         </dl>
       </div>
       <div className={styles.block}>
-        <h4 className={clsx('p-x', styles.heading)}>Open textbook</h4>
+        <h4 className={clsx('p-x', styles.heading)}>{info.textbooks.topicHeading || 'Open textbook'}</h4>
         {info.textbooks.books.map((book) => (
           <div key={book.title} className={styles.group}>
             <a className="p-l" href={book.url} target="_blank" rel="noopener noreferrer">
-              Textbook: {book.title} ↗
+              {info.textbooks.linkPrefix ?? 'Textbook: '}
+              {book.title} ↗
             </a>
             <p className="p-l">{book.note}</p>
           </div>

@@ -103,6 +103,8 @@ function sciencePlan(courseId, variantId) {
       parts: 1,
       anchor: extra?.anchor || row?.anchor || null,
       groupId: group.id,
+      // CHY102's iClicker grade is out of 5, not a percentage.
+      ...(extra?.outOf ? { outOf: extra.outOf } : {}),
     };
   };
   const build = (category, bonus = false) => {
@@ -150,6 +152,12 @@ export function gradePlan(courseId, { section, variant, percents } = {}) {
     // The course applies whichever option gives the higher grade. The plan shown is the higher one at the current
     // average; `options` lets gradeStanding and gradeNeeded take the better option for each figure on its own.
     const plans = variants.map((v) => sciencePlan(courseId, v.id));
+    // Optional work (PCS211's WebAssign, 0% under Option 2) with no mark yet is treated as not done, like the
+    // bonus: the option without it is the one that applies until a mark is entered.
+    const optional = new Set(variants.flatMap((v) => v.categories.filter((c) => c.weight === 0).flatMap((c) => c.items)));
+    const skipped = optional.size && ![...optional].some((id) => typeof percents[id] === 'number');
+    const without = skipped && plans.find((plan) => plan.groups.every((group) => group.weight === 0 || !group.items.some((item) => optional.has(item.id))));
+    if (without) return { ...without, options: plans, optionalSkipped: true };
     // eslint-disable-next-line no-use-before-define
     const score = (plan) => standingOf(plan, percents).projected ?? -1;
     return { ...plans.reduce((best, plan) => (score(plan) > score(best) + EPSILON ? plan : best)), options: plans };
@@ -403,7 +411,9 @@ export function gradeStanding(plan, percents = {}) {
   const all = plan.options.map((option) => standingOf(option, percents));
   const best = (key) => Math.max(...all.map((entry) => entry[key]));
   const secured = best('secured');
-  return { ...standing, secured, maximum: best('maximum'), current: standing.complete ? secured : standing.current };
+  // Complete once every mark that counts under some option is in (PCS211 without WebAssign: Option 2).
+  const complete = all.some((entry) => entry.complete);
+  return { ...standing, secured, maximum: best('maximum'), complete, current: complete ? secured : standing.current };
 }
 
 function standingOf(plan, percents) {
@@ -438,7 +448,8 @@ function standingOf(plan, percents) {
     };
   });
   const bonusIds = new Set(plan.groups.filter((group) => group.bonus).flatMap((group) => group.items.map((item) => item.id)));
-  const unmarked = plan.items.filter((item) => typeof percents[item.id] !== 'number' && !bonusIds.has(item.id));
+  // Weight-0 items (PCS211's WebAssign under Option 2) are never "still to be marked".
+  const unmarked = plan.items.filter((item) => typeof percents[item.id] !== 'number' && !bonusIds.has(item.id) && (!plan.pick || item.weight > EPSILON));
   // A bonus (PCS211's ClassQuestion) can lift a grade, but never past 100%.
   const cap = (value) => (bonusIds.size ? Math.min(100, value) : value);
   const secured = cap(pointsWith(plan, percents, 0));

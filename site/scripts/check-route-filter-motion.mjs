@@ -805,7 +805,7 @@ try {
         assert.ok(samples.every(sample => sample.same), 'every directory window reads the same live bodies through both scroll directions');
         assert.ok(samples.every(sample => [sample.x, ...sample.velocity].every(Number.isFinite)), 'the shared pose and momentum remain finite');
         for (const frames of [samples.slice(0, 61), samples.slice(60)]) {
-          assert.deepEqual([...new Set(frames.flatMap(sample => sample.shown))].sort(), ['chy102', 'cen100', 'mth140', 'mth141', 'pcs211'], 'cross every course in each direction');
+          assert.deepEqual([...new Set(frames.flatMap(sample => sample.shown))].sort(), ['cen100', 'chy102', 'mth140', 'mth141', 'pcs211'], 'cross every course in each direction');
         }
         assert.ok(Math.max(...samples.map(sample => sample.x)) - Math.min(...samples.map(sample => sample.x)) > 0.01, 'the continuous rig is swinging');
         await assertPageWidth(page);

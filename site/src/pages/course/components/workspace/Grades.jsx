@@ -43,6 +43,30 @@ function headlineText(standing, current, plan) {
   return `Keep averaging ${formatPercent(current)} on what’s left and you finish with ${formatPercent(projected)} (${letterFor(projected).letter}), ${reason}.`;
 }
 
+// PCS211: which evaluation option the page shows, and why.
+function optionSentence(plan, standing) {
+  const name = <strong>{plan.variantTitle}</strong>;
+  if (standing.current === null) {
+    return (
+      <>
+        Showing {name} ({plan.variantNote}) until you enter marks. The course applies whichever option gives you the higher grade.
+      </>
+    );
+  }
+  if (plan.optionalSkipped) {
+    return (
+      <>
+        Using {name} ({plan.variantNote}): with no WebAssign mark entered, its 5% moves to the final exam, as the outline says. Enter a WebAssign mark to compare both options.
+      </>
+    );
+  }
+  return (
+    <>
+      Using {name} ({plan.variantNote}), the higher of the two at your current average. Secured, best possible and the marks needed each use whichever option is higher for them.
+    </>
+  );
+}
+
 const REQUIREMENT = { met: 'Met so far', below: 'Below the minimum so far', open: 'No marks yet' };
 
 function Meter({ standing, target }) {
@@ -131,6 +155,8 @@ export default function Grades() {
       outOf?.focus();
       if (!rest.join('')) outOf?.select();
     }
+    // An item graded out of a fixed total (CHY102's iClicker, out of 5) fills that total in.
+    if (field === 'score' && item.outOf && next.score && !next.outOf) next.outOf = String(item.outOf);
     const marks = { ...grades.marks };
     const text = joinMark(next);
     if (text) marks[item.id] = text;
@@ -187,8 +213,7 @@ export default function Grades() {
             </div>
           ) : (
             <p className={styles.variantApplied} data-grade-option>
-              Using <strong>{plan.variantTitle}</strong> ({plan.variantNote}), the higher of the two at your current average. Secured, best possible and the marks needed each use whichever option is
-              higher for them.
+              {optionSentence(plan, standing)}
             </p>
           )}
           {plan.notes[0] ? <p className={workspace.meta}>{plan.notes[0]}</p> : null}
@@ -283,7 +308,7 @@ export default function Grades() {
                             enterKeyHint="next"
                             autoComplete="off"
                             spellCheck={false}
-                            placeholder="100"
+                            placeholder={String(item.outOf ?? 100)}
                             maxLength={7}
                             value={outOf}
                             disabled={!grades.ready}
