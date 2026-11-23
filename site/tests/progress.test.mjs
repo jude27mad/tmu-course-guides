@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { createProgress, nextDeadline, deadlines, weeklyChecklist, deskSnapshot, setSection } from '../src/lib/index.js';
+import { createProgress, nextDeadline, deadlines, weeklyChecklist, deskSnapshot } from '../src/lib/index.js';
 import { memoryStorage, storageEvent, toronto } from './helpers.mjs';
 
 const NOON_OCT12 = new Date(toronto('2026-10-12', '12:00'));
@@ -35,7 +35,7 @@ test('Mark done is a no-op for done or unknown items; math records use true', ()
   const writes = storage.writes().length;
   assert.deepEqual(progress.markDone('mth141', 'midterm'), { changed: false, saved: true, message: '' });
   assert.deepEqual(progress.markDone('mth141', 'quiz-9'), { changed: false, saved: false, message: '' });
-  assert.deepEqual(progress.markDone('cen100', 'failure-lab'), { changed: false, saved: false, message: '' }, 'reminders cannot be marked done');
+  assert.deepEqual(progress.markDone('cen100', 'showcase-signup'), { changed: false, saved: false, message: '' }, 'reminders cannot be marked done');
   assert.equal(storage.writes().length, writes);
   assert.equal(progress.undo().itemId, 'midterm', 'the earlier Mark done is still the one to undo');
 });
@@ -64,7 +64,6 @@ test('checklist ticks and completion records stay separate', () => {
   // Math: preparation checks never complete the assessment, and vice versa.
   const math = memoryStorage();
   const p = createProgress(math, { events: null });
-  setSection('mth141', 3, math);
   for (let i = 0; i < 6; i += 1) p.toggleTick('mth141', 'midterm', `midterm-${i}`);
   assert.equal(p.tickCount('mth141', 'midterm').checked, 6);
   assert.equal(p.isDone('mth141', 'midterm'), false);

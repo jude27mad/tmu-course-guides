@@ -1,14 +1,13 @@
 import { useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
-import { assignmentList, countdown, countdownStatus, currentTermWeek, groups, sections } from '@src/lib';
+import { assignmentList, countdown, countdownStatus, currentTermWeek, groups } from '@src/lib';
 import CourseBadge from '@src/components/courseBadge/CourseBadge';
 import GuideTools from '@src/pages/course/components/tools/GuideTools';
 // eslint-disable-next-line import/extensions
 import { openGuideTools } from '@src/pages/course/components/tools/dialog.mjs';
 import { useCourse } from '@src/pages/course/hooks/useCourseState';
 import useCourseNavigation from './useCourseNavigation';
-import { labRoom, timeWithRoom } from './labRoom';
 import CourseNavigation from './CourseNavigation';
 import Work from './Work';
 import AssignmentDetail from './AssignmentDetail';
@@ -31,7 +30,7 @@ function timeLeft(next, now) {
 }
 
 export default function CourseWorkspace() {
-  const { courseId, course, info, live, section, setSection, group, setGroup, progress } = useCourse();
+  const { courseId, course, info, live, group, setGroup, progress } = useCourse();
   const navigation = useCourseNavigation(courseId, info);
   const [schedule, setSchedule] = useState({
     choice: null,
@@ -45,7 +44,6 @@ export default function CourseWorkspace() {
   // has no date in the course data), not "No upcoming deadlines".
   const next = live?.next || live?.items.find((item) => item.kind === 'final' && item.precision === 'pending' && !item.done) || null;
   const left = timeLeft(next, live?.now);
-  const room = labRoom(courseId, section);
   const completed = live?.progress?.completed || 0;
   const total = live?.progress?.total || 0;
   // This term week ("Week 8 · Oct 26–Nov 1"), after mount only; nothing outside the term.
@@ -80,33 +78,19 @@ export default function CourseWorkspace() {
             document.body,
           )}
         <div className={styles.utilities}>
-          {/* CHY102 and PCS211 dates are the same for everyone: no section to choose, and no empty row on phones. */}
-          {course.hasSections ? (
+          {courseId === 'cen100' ? (
             <div className={styles.sectionControls}>
-              <label className={styles.selectLabel} htmlFor="course-section">
-                Section
-                <select id="course-section" aria-label="Course section" value={section || ''} disabled={!progress.ready} onChange={(e) => setSection(e.target.value)}>
-                  <option value="">Choose section</option>
-                  {sections(courseId).map((row) => (
-                    <option value={row.value} key={row.value}>
+              <label className={styles.selectLabel} htmlFor="course-group">
+                Group
+                <select id="course-group" aria-label="Innovation Challenge group" value={group || ''} disabled={!progress.ready} onChange={(e) => setGroup(e.target.value)}>
+                  <option value="">Choose group</option>
+                  {groups().map((row) => (
+                    <option key={row.value} value={row.value}>
                       {row.label}
                     </option>
                   ))}
                 </select>
               </label>
-              {courseId === 'cen100' && section ? (
-                <label className={styles.selectLabel} htmlFor="course-group">
-                  Group
-                  <select id="course-group" aria-label="Innovation Challenge group" value={group || ''} onChange={(e) => setGroup(e.target.value)}>
-                    <option value="">Choose group</option>
-                    {groups(section).map((row) => (
-                      <option key={row.value} value={row.value}>
-                        {row.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              ) : null}
             </div>
           ) : null}
           <div className={styles.actions}>
@@ -131,7 +115,7 @@ export default function CourseWorkspace() {
             {next ? (
               <Link id="course-next-link" href={`/${courseId}/#${next.anchor}`} scroll={false}>
                 <strong>{next.title} ↗</strong>
-                <span>{[next.dateLabel, timeWithRoom(next, room) || next.cta].filter(Boolean).join(' · ')}</span>
+                <span>{[next.dateLabel, next.timeLabel || next.cta].filter(Boolean).join(' · ')}</span>
               </Link>
             ) : (
               <span>{live ? 'No upcoming deadlines' : 'Loading deadlines…'}</span>

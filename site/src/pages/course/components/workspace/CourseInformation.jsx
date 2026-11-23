@@ -140,8 +140,7 @@ function Answer({ entry, info, courseId, rows }) {
           <>
             <div className={styles.infoBlock}>
               <h3>Graduate Assistant</h3>
-              <p>{contacts.ga?.name || contacts.gaPrompt}</p>
-              {contacts.ga?.locationText ? <p>{contacts.ga.locationText}</p> : null}
+              <p>{contacts.gaPrompt}</p>
             </div>
             <div className={styles.infoBlock}>
               <h3>Project Manager</h3>
@@ -153,16 +152,12 @@ function Answer({ entry, info, courseId, rows }) {
             <p>
               {contacts.coordinatorLabel} {contacts.coordinator}
             </p>
-            {contacts.section ? (
-              contacts.section.map((row) => (
-                <div className={styles.infoBlock} key={row.heading}>
-                  <h3>{row.heading}</h3>
-                  {row.href ? <a href={row.href}>{row.text}</a> : <p>{row.text}</p>}
-                </div>
-              ))
-            ) : (
-              <p>{contacts.prompt}</p>
-            )}
+            {contacts.section?.map((row) => (
+              <div className={styles.infoBlock} key={row.heading}>
+                <h3>{row.heading}</h3>
+                {row.href ? <a href={row.href}>{row.text}</a> : <p>{row.text}</p>}
+              </div>
+            ))}
             {contacts.links.map((link) => (
               <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">
                 {link.label} ↗
@@ -217,14 +212,10 @@ function Answer({ entry, info, courseId, rows }) {
 }
 
 export default function CourseInformation({ panel, back, returnView = 'info' }) {
-  const { courseId, course, info, section } = useCourse();
-  const rows = useMemo(() => assessments(courseId, { section }), [courseId, section]);
+  const { courseId, info } = useCourse();
+  const rows = useMemo(() => assessments(courseId), [courseId]);
   const entries = informationEntries(courseId, info);
   const selected = entries.find((entry) => entry.id === panel);
-  const cen = courseId === 'cen100';
-  let sectionText = 'Choose your section and group above for your lab and contacts.';
-  if (cen && info.profile?.value) sectionText = info.profile.summary;
-  if (!cen) sectionText = info.section?.brief ? `${info.section.brief.section} · ${info.section.brief.detail}` : info.section?.briefPrompt;
   const returnLabel = {
     info: 'Course info',
     work: 'Work',
@@ -255,15 +246,7 @@ export default function CourseInformation({ panel, back, returnView = 'info' }) 
           <div className={styles.viewHeading}>
             <h2>Course info</h2>
           </div>
-          {course.hasSections ? (
-            <div id="course-view-section-picker" className={styles.infoBlock} tabIndex={-1}>
-              <h3>Your section</h3>
-              <p>{sectionText}</p>
-              {info.organization ? <p>{info.organization}</p> : null}
-              <p className={styles.meta}>{cen ? info.page.profile.note : 'Change your section using the selector above.'}</p>
-            </div>
-          ) : (
-            // No section picker: the dates are the same for everyone, so list the course's sessions instead.
+          {info.section?.overview ? (
             <div id="course-view-section-picker" className={styles.infoBlock} tabIndex={-1}>
               <h3>Class times</h3>
               {info.section.overview.map((line) => (
@@ -272,7 +255,8 @@ export default function CourseInformation({ panel, back, returnView = 'info' }) 
               {info.organization ? <p>{info.organization}</p> : null}
               <p className={styles.meta}>Every deadline here is the same for every section.</p>
             </div>
-          )}
+          ) : null}
+          {!info.section?.overview && info.organization ? <p className={styles.infoBlock}>{info.organization}</p> : null}
           {[...new Set(entries.map((entry) => entry.group))].map((group) => (
             <section key={group} className={styles.workGroup}>
               <h3 className={styles.groupTitle}>{group}</h3>

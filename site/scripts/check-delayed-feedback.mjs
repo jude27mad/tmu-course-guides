@@ -19,7 +19,7 @@ const results = [];
 const ready = (page) => page.waitForFunction(() => {
   const main = document.querySelector('main');
   return main && getComputedStyle(main).opacity === '1' && !document.querySelector('.lenis-stopped') &&
-    !document.querySelector('#layout[inert]') && document.querySelector('#course-section:not(:disabled)');
+    !document.querySelector('#layout[inert]') && document.querySelector('nav[data-selection-ready="true"]');
 });
 // Network/React tasks must be allowed to finish while animation time is paused.
 async function realTasks(page, predicate) {

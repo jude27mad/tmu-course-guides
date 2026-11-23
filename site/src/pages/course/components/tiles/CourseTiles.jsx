@@ -1,5 +1,5 @@
 import { countdown, workList } from '@src/lib';
-import { openPicker, useCourse } from '@src/pages/course/hooks/useCourseState';
+import { useCourse } from '@src/pages/course/hooks/useCourseState';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import ButtonLink from '@src/components/animationComponents/buttonLink/Index';
@@ -78,7 +78,6 @@ function NextTile() {
             label="UNDO"
           />
         ) : null}
-        {next?.cta ? <ButtonLink onClick={openPicker} label={next.cta.toUpperCase()} /> : null}
         {next ? <ButtonLink href={`#${next.anchor}`} label="VIEW REQUIREMENTS" ariaLabel={`View requirements for ${next.title}`} /> : null}
       </div>
       <p className={clsx('p-l', styles.status)} role="status">
@@ -172,13 +171,13 @@ function ProgressTile() {
 }
 
 function WorkTile() {
-  const { live, info, courseId, section } = useCourse();
+  const { live, info, courseId } = useCourse();
   const [range, setRange] = useState('week');
   const work = info.tools?.work || info.page?.work || {};
   const list = useMemo(
-    () => (live ? workList(courseId, { now: live.now, range, section: section ?? undefined }) : null),
+    () => (live ? workList(courseId, { now: live.now, range }) : null),
     // live changes with every save, so the list follows completion records
-    [live, courseId, range, section],
+    [live, courseId, range],
   );
 
   return (

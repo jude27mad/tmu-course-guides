@@ -1339,7 +1339,7 @@ try {
         await page.clock.install({ time: new Date('2026-10-23T16:00:00Z') });
         await page.goto(`${base}cen100/`);
         await ready(page);
-        await page.locator('#course-section:not(:disabled)').waitFor();
+        await page.locator('nav[data-selection-ready="true"]').waitFor();
         const rows = await page.locator('[data-assignment-link]').count();
         await page.clock.pauseAt(new Date(await page.evaluate(() => Date.now() + 1000)));
         assert.equal(await page.locator('[data-filter-selection]').count(), 1, 'the selected Work filter has a visible moving indicator');

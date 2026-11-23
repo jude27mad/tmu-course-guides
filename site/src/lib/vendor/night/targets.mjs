@@ -1,5 +1,5 @@
 /* Night Shift deadline resolver, data level. One rule set feeds the course card, dock, HUD and the Desk.
-   Pure functions over the unchanged course records (CEN100 SCHEDULE, COURSES[course]), a saved section,
+   Pure functions over the course-wide records (CEN100 SCHEDULE, COURSES[course]),
    completion records and an explicit clock: no DOM and no storage writes, so the Desk resolves all three
    courses without loading a course page or workspace. Toronto conversion comes from schedule.mjs only. */
 import {timestamp,clock,dateLabel,dayLabel,today,daysUntil,resolveAssessment,upcoming,timing,addDays} from '../schedule.mjs';
@@ -22,22 +22,17 @@ export function loadData(course){
 export const keys=course=>course==='cen100'?{section:'cen100-contact-choice-v1',progress:'cen100-personal-plan-v1'}:{section:course+'-section-v1',progress:course+'-progress-v1'};
 const store=()=>{try{return globalThis.localStorage??null}catch{return null}};
 function readJSON(storage,key){try{const raw=storage?.getItem(key);return raw==null?null:JSON.parse(raw);}catch{return null}}
-// CEN validProfile(): sections 1–39. Math: only a section that has a lab, as math-guide.mjs.
-const cenSection=n=>Number.isInteger(n)&&n>=1&&n<=39?n:0;
-const mathSection=(data,n)=>data.labs.some(l=>l.section===n)?n:0;
 // CEN cleanPlan(): only dated calendar rows are completion records, as 1 or true. (item:<id> records belong to
 // undated items, which never affect a deadline.) Math cleanProgress(): assessment ids, as true or 1.
 export function cenCompleted(schedule,entries){const out={};if(isRecord(entries))for(const e of schedule)if(e.calendar!==false&&(entries[e.id]===1||entries[e.id]===true))out[e.id]=1;return out;}
 export function mathCompleted(data,entries){const out={};if(isRecord(entries))for(const a of data.assessments)if(entries[a.id]===true||entries[a.id]===1)out[a.id]=true;return out;}
-export function readSection(course,data,storage=store()){
- const saved=readJSON(storage,keys(course).section);
- return course==='cen100'?cenSection(saved&&typeof saved==='object'?Number(saved.section):0):mathSection(data,Number(saved??0));
-}
+// Former callers may still supply an old class selection.
+export const readSection = () => 0;
 export function readCompleted(course,data,storage=store()){
  const saved=readJSON(storage,keys(course).progress),entries=isRecord(saved)?saved.completed:null;
  return course==='cen100'?cenCompleted(data,entries):mathCompleted(data,entries);
 }
-export const readSaved=(course,data,storage=store())=>({section:readSection(course,data,storage),completed:readCompleted(course,data,storage)});
+export const readSaved=(course,data,storage=store())=>({section:0,completed:readCompleted(course,data,storage)});
 
 /* ---- CEN100: cen100/index.html eventPassed, sortEvents, itemDeadlines and upcomingSchedule, unchanged ---- */
 // A timed row passes at its Toronto time; a date-only row stays eligible for its whole Toronto day.
@@ -64,23 +59,12 @@ function describeCen(e){
  return {...base,precision:'day',date:e.date,when:short(e.date),label:'Time not posted · check D2L'};
 }
 
-/* ---- Math: schedule.mjs upcoming() over COURSES[course] with the saved lab section ---- */
-function describeMath(course,data,a,section){
- const e=resolveAssessment(data,a,section),base={course,id:a.id,title:a.title,kind:a.kind,open:'assessment-'+a.id};
- // Thanksgiving with no announced make-up: keep the warning; the normal lab slot is not a confirmed quiz time.
- if(e.holiday)return {...base,precision:'week',holiday:true,week:e.week,weekEnd:e.weekEnd,when:timing(e),label:'Quiz date needs confirmation'};
- if(a.kind==='quiz'&&e.date&&e.lab){
-  const note=e.rescheduled?`Monday make-up date confirmed for ${dateLabel(e.date)} on D2L. Check for changes.`:'Quiz day follows your section’s lab timetable. Check D2L for changes.';
-  // The weekday alone is not a start time: without a published lab start the quiz has a day, never a countdown.
-  if(!e.lab.start)return {...base,precision:'day',date:e.date,when:`${short(e.date)}${e.lab.room?` · ${e.lab.room}`:''}`,label:'Time not posted',note};
-  return {...base,precision:'exact',at:timestamp(e.date,e.lab.start),end:e.lab.end?timestamp(e.date,e.lab.end):null,
-   when:`${short(e.date)} · ${clock(e.lab.start)}${e.lab.room?` · ${e.lab.room}`:''}`,
-   // A second-hour quiz counts down to the lab and says so, rather than inventing a quiz start time.
-   label:a.quizSecondHour?'Your lab starts · quiz in its second hour':'Your lab quiz starts',note};
- }
+/* ---- Math: schedule.mjs upcoming() over COURSES[course] over course-wide dates ---- */
+function describeMath(course,data,a){
+ const e=resolveAssessment(data,a),base={course,id:a.id,title:a.title,kind:a.kind,open:'assessment-'+a.id};
  if(a.kind==='quiz'){
   const end=dateLabel(e.weekEnd),sameMonth=e.week.slice(0,7)===e.weekEnd.slice(0,7);
-  return {...base,precision:'week',week:e.week,weekEnd:e.weekEnd,range:`${dateLabel(e.week)}–${sameMonth?end.replace(/^\S+ /,''):end}`,when:`${dateLabel(e.week)}–${end} · during your assigned lab`,label:'Quiz week',cta:'Choose section for quiz date'};
+  return {...base,precision:'week',week:e.week,weekEnd:e.weekEnd,range:`${dateLabel(e.week)}–${sameMonth?end.replace(/^\S+ /,''):end}`,when:`${dateLabel(e.week)}–${end} · during your assigned lab`,label:'Quiz week'};
  }
  if(e.date&&e.time)return {...base,precision:'exact',at:timestamp(e.date,e.time),end:e.end?timestamp(e.date,e.end):null,when:`${short(e.date)} · ${clock(e.time)} Toronto`,label:a.kind==='midterm'?'Test starts':'Starts'};
  if(e.date)return {...base,precision:'day',date:e.date,when:short(e.date),label:'Time not posted'};
@@ -94,18 +78,18 @@ const empty=course=>({course,id:null,title:course==='cen100'?'No upcoming deadli
    {course,id,title,kind,open,precision:'exact'|'day'|'week'|'pending'|'empty',at,end,date,week,weekEnd,range,when,label,cta,note}.
    `id` (optional) describes that record instead of choosing: a course page passes the item its own card shows,
    so the countdown inside the card always names the same assessment. */
-export function resolveTarget({course,data,section=0,completed={},now=Date.now(),id=null}={}){
+export function resolveTarget({course,data,completed={},now=Date.now(),id=null}={}){
  if(!data)return null;
  now=ms(now);
  if(course==='cen100'){
   const done=cenCompleted(data,completed);
-  const e=(id&&data.find(x=>x.id===id))||cenUpcoming(data,done,cenSection(Number(section)),now)[0];
+  const e=(id&&data.find(x=>x.id===id))||cenUpcoming(data,done,0,now)[0];
   return e?describeCen(e):empty(course);
  }
- const done=mathCompleted(data,completed),sec=mathSection(data,Number(section)),find=x=>data.assessments.find(a=>a.id===x);
+ const done=mathCompleted(data,completed),find=x=>data.assessments.find(a=>a.id===x);
  // upcoming() never lists an undated final; once nothing dated is left, an open final is the honest next item.
- const a=(id&&find(id))||find(upcoming(data,sec,done,new Date(now))[0]?.id)||data.assessments.find(x=>x.kind==='final'&&!x.date&&!done[x.id]);
- return a?describeMath(course,data,a,sec):empty(course);
+ const a=(id&&find(id))||find(upcoming(data,0,done,new Date(now))[0]?.id)||data.assessments.find(x=>x.kind==='final'&&!x.date&&!done[x.id]);
+ return a?describeMath(course,data,a):empty(course);
 }
 
 /* ---- Across courses (the Desk) ----
@@ -154,14 +138,13 @@ export function compact(t,now=Date.now()){
 /* The status label for every state without a running countdown, null while one runs. Contract and fixtures:
    docs/qa/toronto-deadline-test-cases.md. Exact: the instant itself is "Happening now", then "Due time passed"
    (a known end keeps it live until then). A date without a time is "Time not posted" through its Toronto day and
-   "Date passed (time not posted)" from the next Toronto midnight; no time is ever invented. A quiz week waits for
-   a lab section, or for a holiday make-up announcement. compact() shows these where a chip has no better words. */
+   "Date passed (time not posted)" from the next Toronto midnight; no time is ever invented. Quiz weeks use their published date range. compact() shows these where a chip has no better words. */
 export function status(t,now=Date.now()){
  if(!t)return null;
  now=ms(now);
  if(t.precision==='exact'){const left=t.at-now;return left>0?null:left===0||(t.end&&now<t.end)?'Happening now':'Due time passed';}
  if(t.precision==='day')return daysUntil(t.date,new Date(now))<0?'Date passed (time not posted)':'Time not posted';
- if(t.precision==='week')return t.holiday?'Holiday schedule unconfirmed':'Select lab section';
+ if(t.precision==='week')return t.holiday?'Holiday schedule unconfirmed':'Quiz week';
  if(t.precision==='empty')return 'Nothing scheduled';
  return 'Date pending';
 }

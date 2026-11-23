@@ -9,7 +9,7 @@ function Page({ id }) {
   const { course, info } = state;
   usePalette(course.palette);
   useScrollRefresh();
-  const title = (id === 'cen100' ? info.profile?.value && info.profile?.title : info.section?.value && info.section?.title) || info.page?.title;
+  const title = (id === 'cen100' && info.profile?.value && info.profile.title) || info.page?.title;
   return (
     <CourseContext.Provider value={state}>
       <CustomHead title={title} description={course.description} />

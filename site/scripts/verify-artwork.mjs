@@ -223,9 +223,7 @@ try {
     before = await page.evaluate(() => window.__artworkDraws()); await page.waitForTimeout(350); after = await page.evaluate(() => window.__artworkDraws());
     check('saved Pause motion survives reload with static field', JSON.stringify(before) === JSON.stringify(after) && before.some(x => x.kind === 'signal' && x.calls > 0), { before, after });
     await navigate(page, 'mth140/');
-    await scrollTo(page, '#section-picker');
-    await page.locator('#section-picker button').first().click();
-    check('section selection persists', await page.evaluate(() => !!localStorage.getItem('mth140-section-v1')));
+    check('course has no section picker', await page.locator('#course-section, #section-picker').count() === 0);
     // Open an actual assessment and use existing controls; no dates or completion fixtures are written.
     const card = page.locator('li[id^="assessment-"]').first();
     const cardId = await card.getAttribute('id');

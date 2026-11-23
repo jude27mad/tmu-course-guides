@@ -93,13 +93,13 @@ test('MTH140 midterm: Oct 23, 6:30 PM Toronto, with its end', () => {
   assert.equal(t.weight, 40);
 });
 
-test('a quiz week without a section: week precision, the section CTA and no timer', () => {
+test('a quiz week has week precision without a section prompt or timer', () => {
   const t = math('mth140', NOON_OCT12);
   assert.equal(t.id, 'quiz-2');
   assert.equal(t.precision, 'week');
-  assert.equal(t.cta, 'Choose section for quiz date');
+  assert.equal(t.cta, null);
   assert.equal(t.label, 'Quiz week');
-  assert.equal(t.dateLabel, 'Oct 12–16');
+  assert.equal(t.dateLabel, 'Oct 12–19');
   assert.equal(t.due, null);
   const c = countdown(t, NOON_OCT12);
   assert.equal(c.label, 'Quiz week');
@@ -108,27 +108,24 @@ test('a quiz week without a section: week precision, the section CTA and no time
   assert.equal(math('mth141', toronto('2026-11-25', '12:00')).dateLabel, 'Nov 30–Dec 4');
 });
 
-test('a quiz week with a saved section: exact lab start, room and the timetable caveat', () => {
-  const t = math('mth141', toronto('2026-10-20', '12:00'), 3);
-  assert.equal(t.id, 'quiz-3');
-  assert.equal(t.precision, 'exact');
-  assert.equal(+t.due, at('2026-11-04T20:00:00Z'));
-  assert.equal(t.when, 'Wed Nov 4 · 3:00 PM · POD367');
-  assert.equal(t.label, 'Your lab quiz starts');
-  assert.match(t.target.note, /lab timetable/);
-  const second = math('mth140', NOON_OCT12, 31);
-  assert.equal(second.id, 'quiz-2');
-  assert.equal(+second.due, toronto('2026-10-15', '16:00'));
-  assert.match(second.label, /lab starts.*second hour/);
-  assert.equal(second.timeLabel, 'second hour of your 4:00 PM–6:00 PM lab');
+test('a saved math section cannot change the published quiz window', () => {
+  for (const id of ['mth140', 'mth141']) {
+    const now = toronto('2026-11-02', '12:00');
+    const expected = math(id, now);
+    assert.equal(expected.precision, 'week');
+    assert.deepEqual(math(id, now, 3), expected);
+    assert.deepEqual(math(id, now, 31), expected);
+  }
 });
 
-test('Thanksgiving: the announced Monday make-up is exact', () => {
-  const makeup = math('mth140', NOON_OCT12, 2);
-  assert.equal(makeup.precision, 'exact');
-  assert.equal(+makeup.due, toronto('2026-10-19', '10:00'));
-  assert.match(makeup.target.note, /make-up date confirmed for Oct 19 on D2L/);
-  assert.match(makeup.detail, /Monday, October 19/);
+test('the MTH140 Quiz 2 window includes the October 19 make-up without an invented start', () => {
+  for (const day of [16, 17, 18, 19]) {
+    const quiz = math('mth140', toronto(`2026-10-${day}`, '12:00'), 2);
+    assert.equal(quiz.id, 'quiz-2');
+    assert.equal(quiz.precision, 'week');
+    assert.equal(quiz.target.weekEnd, '2026-10-19');
+    assert.equal(quiz.due, null);
+  }
 });
 
 test('the end-of-day rule: a dated submission without a time counts down to 11:59 PM Toronto', () => {
@@ -168,9 +165,9 @@ test('pending and empty: an undated final is next once nothing dated is left; wi
 
 test('completed items are skipped, including reminders whose item is fully recorded; ticks never count', () => {
   assert.equal(cen(NOON_OCT12, 29).id, 'integrity');
-  assert.equal(cen(NOON_OCT12, 29, { integrity: 1 }).id, 'failure-lab');
+  assert.equal(cen(NOON_OCT12, 29, { integrity: 1 }).id, 'whmis');
   assert.equal(cen(NOON_OCT12, 29, { integrity: 1, failure: 1, 'failure-2': 1 }).id, 'whmis');
-  assert.equal(cen(NOON_OCT12, 29, { integrity: 1, 'failure-lab': 1 }).id, 'failure-lab');
+  assert.equal(cen(NOON_OCT12, 29, { integrity: 1, 'failure-lab': 1 }).id, 'whmis');
   assert.equal(cen(NOON_OCT12, 0, { integrity: 0 }).id, 'integrity');
   assert.equal(math('mth140', NOON_OCT12, 31, { 'quiz-2': 'yes' }).id, 'quiz-2');
   // Every Academic Integrity checklist tick, but no completion record: still next.
@@ -185,8 +182,8 @@ test('Toronto/UTC boundaries decide eligibility', () => {
   assert.equal(t.id, 'whmis');
   assert.equal(countdown(t, late).label, '30m');
   assert.equal(cen(at('2026-10-15T04:00:00Z')).id, 'failure');
-  assert.equal(math('mth140', at('2026-10-17T03:59:00Z')).id, 'quiz-2');
-  assert.equal(math('mth140', at('2026-10-17T04:00:00Z')).id, 'midterm');
+  assert.equal(math('mth140', at('2026-10-20T03:59:00Z')).id, 'quiz-2');
+  assert.equal(math('mth140', at('2026-10-20T04:00:00Z')).id, 'midterm');
   const review = deadlineItem('cen100', 'review', { now: at('2026-11-02T03:00:00Z'), storage: null });
   assert.equal(review.precision, 'day');
   assert.equal(countdown(review, at('2026-11-02T03:00:00Z')).label, 'In 3 days');
@@ -201,6 +198,8 @@ test('the overall next deadline never manufactures a timer from an uncertain tar
   assert.equal(first.precision, 'week');
   assert.equal(first.due, null);
   storage.setItem('mth140-section-v1', '31');
+  assert.deepEqual(nextDeadline({ now: NOON_OCT12, storage }), first);
+  storage.setItem('mth140-progress-v1', JSON.stringify({ completed: { 'quiz-2': true } }));
   const exact = nextDeadline({ now: NOON_OCT12, storage });
   // CHY102 Homework 4 is due at 11:59 PM that day, before CEN100's quiz on October 14.
   assert.equal(exact.courseId, 'chy102');
@@ -230,27 +229,39 @@ const mathStates = (course) => [
   [99, {}],
 ];
 const storeFor = (course, [saved, completed]) => (course === 'cen100' ? cenStore(saved, completed) : mathStore(course, saved, completed));
-const oldTarget = (course, storage, now, id = null) => oldCall(() => OLD_TARGETS.resolveTarget({ course, data: DATA[course], ...OLD_TARGETS.readSaved(course, DATA[course], storage), now, id }));
-// The old resolver with deadlines.mjs's one change: an exact target stops being next GRACE after it ends. The old
-// math resolver kept a finished lab quiz (exact once a section is chosen) as next until Toronto midnight.
-let movedOn = 0;
-const currentOld = (course, storage, now) =>
-  oldCall(() => {
-    const saved = OLD_TARGETS.readSaved(course, DATA[course], storage);
-    let { completed } = saved;
-    let target = OLD_TARGETS.resolveTarget({ course, data: DATA[course], ...saved, now });
-    while (target?.precision === 'exact' && (target.end ?? target.at) + OLD_TARGETS.GRACE < now) {
-      completed = { ...completed, [target.id]: true };
-      target = OLD_TARGETS.resolveTarget({ course, data: DATA[course], ...saved, completed, now });
-      movedOn += 1;
-    }
-    return target;
-  });
-const clocks = await termClocks();
+// The historical page's no-section schedule is the reference for shared deadlines.
+const progressOnly = (storage) => memoryStorage(Object.fromEntries([...storage.data].filter(([key]) => !key.includes('section') && !key.includes('contact-choice'))));
+const oldTarget = (course, storage, now, id = null) => oldCall(() => OLD_TARGETS.resolveTarget({
+  course, data: DATA[course], ...OLD_TARGETS.readSaved(course, DATA[course], progressOnly(storage)), now, id,
+}));
+const currentOld = (course, storage, now) => oldCall(() => {
+  const saved = OLD_TARGETS.readSaved(course, DATA[course], progressOnly(storage));
+  const completed = { ...saved.completed };
+  let target = OLD_TARGETS.resolveTarget({ course, data: DATA[course], completed, now });
+  while (target.precision === 'exact' && (target.end ?? target.at) + OLD_TARGETS.GRACE < now) {
+    completed[target.id] = true;
+    target = OLD_TARGETS.resolveTarget({ course, data: DATA[course], completed, now });
+  }
+  return target;
+});
+
+// Compare complete targets after accounting for the retired prompt and the October 19 make-up.
+function courseWideTarget(target) {
+  if (target?.precision !== 'week') return target;
+  const { cta, ...expected } = target;
+  if (Object.hasOwn(expected, 'status')) expected.status = 'Quiz week';
+  if (expected.course === 'mth140' && expected.id === 'quiz-2') {
+    expected.weekEnd = '2026-10-19';
+    expected.range = 'Oct 12–19';
+    expected.when = expected.when.replace('Oct 16', 'Oct 19');
+  }
+  return expected;
+}
+// The old page only included Oct 17–19 for specific lab sections; the course-wide exception has its own test above.
+const clocks = (await termClocks()).filter(now => now < toronto('2026-10-17', '00:00') || now >= toronto('2026-10-20', '00:00'));
 
 test('next deadline per course and overall: same item as the old resolver, at every clock and saved state', () => {
   let cases = 0;
-  movedOn = 0;
   for (const now of clocks) {
     const stores = {};
     for (const course of ['cen100', 'mth140', 'mth141']) {
@@ -261,11 +272,11 @@ test('next deadline per course and overall: same item as the old resolver, at ev
         const mine = nextDeadline({ now, courseId: course, storage });
         if (expected.precision === 'empty') assert.equal(mine, null);
         else {
-          assert.deepEqual(mine.target, expected, `${course} ${new Date(now).toISOString()} state ${i}`);
+          assert.deepEqual(mine.target, courseWideTarget(expected), `${course} ${new Date(now).toISOString()} state ${i}`);
           const old = oldCall(() => ({ label: OLD_TARGETS.compact(expected, now), status: OLD_TARGETS.status(expected, now) }));
           const c = countdown(mine, now);
           assert.equal(c.label, old.label);
-          assert.equal(c.status, old.status);
+          assert.equal(c.status, expected.precision === 'week' ? 'Quiz week' : old.status);
         }
         cases += 1;
         if (i === 2) stores[course] = storage;
@@ -285,21 +296,18 @@ test('next deadline per course and overall: same item as the old resolver, at ev
     assert.deepEqual(mine ? [mine.courseId, mine.id] : null, expected ? [expected.course, expected.id] : null, new Date(now).toISOString());
   }
   assert.ok(cases > 3000, `${cases} cases`);
-  assert.ok(movedOn > 0, 'the sweep includes finished lab quizzes');
 });
 
-test('a written lab quiz stops being the next deadline two hours after the lab, not at midnight', () => {
-  // MTH141 Section 1: Thursday 9-10 AM lab, Lab Quiz 3 on Nov 5; Lab Quiz 4 is next.
+test('a quiz with no posted time stays on the Desk until the end of its Toronto date range', () => {
   const storage = mathStore('mth141', 1);
-  const course = (time) => nextDeadline({ now: toronto('2026-11-05', time), courseId: 'mth141', storage });
-  const desk = (time) => deskSnapshot({ now: toronto('2026-11-05', time), storage }).find((entry) => entry.course.id === 'mth141');
-  assert.equal(course('09:59').id, 'quiz-3');
-  assert.equal(countdown(course('10:30'), toronto('2026-11-05', '10:30')).label, 'Due time passed');
-  for (const time of ['12:01', '18:00', '23:59']) {
-    assert.equal(course(time).id, 'quiz-4', time);
-    assert.equal(desk(time).next.id, 'quiz-4', time);
-    assert.equal(desk(time).target.id, 'quiz-4', time);
-    assert.equal(desk(time).urgency, 'ahead', time);
+  for (const [date, time, id] of [['2026-11-05', '18:00', 'quiz-3'], ['2026-11-06', '23:59', 'quiz-3'], ['2026-11-07', '00:00', 'quiz-4']]) {
+    const now = toronto(date, time);
+    const course = nextDeadline({ now, courseId: 'mth141', storage });
+    const desk = deskSnapshot({ now, storage }).find((row) => row.course.id === 'mth141');
+    assert.equal(course.id, id);
+    assert.equal(desk.next.id, id);
+    assert.equal(desk.target.id, id);
+    assert.equal(course.due, null);
   }
 });
 
@@ -311,7 +319,7 @@ test('every deadline item carries the old resolver’s target for its id, with t
       for (const item of deadlines(course, { now, storage })) {
         if (item.id.startsWith('item:')) continue;
         const expected = oldTarget(course, storage, now, item.id);
-        assert.deepEqual(item.target, expected, `${course} ${item.id}`);
+        assert.deepEqual(item.target, courseWideTarget(expected), `${course} ${item.id}`);
         assert.equal(countdown(item, now).label, oldCall(() => OLD_TARGETS.compact(expected, now)));
         cases += 1;
       }
@@ -324,7 +332,7 @@ test('deadlines are sorted by due time and flag done and overdue items', () => {
   const storage = cenStore({ section: 29, group: 9 }, { intro: 1, integrity: 1 });
   const now = toronto('2026-10-15', '09:00');
   const items = deadlines('cen100', { now, storage });
-  assert.equal(items.length, 23 + 2 + 2, '23 dated rows + the Section 29 lab reminder and the showcase reminder + 2 undated items');
+  assert.equal(items.length, 23 + 1 + 2, '23 dated rows, the showcase reminder and 2 undated items');
   const keys = items.map((item) => item.sortKey);
   assert.deepEqual(keys, [...keys].sort((a, b) => a - b));
   const byId = Object.fromEntries(items.map((item) => [item.id, item]));
@@ -334,14 +342,13 @@ test('deadlines are sorted by due time and flag done and overdue items', () => {
   assert.equal(byId.integrity.done, true);
   assert.equal(byId.whmis.overdue, true, 'Oct 14 passed at Toronto midnight');
   assert.equal(byId.failure.overdue, false);
-  assert.equal(byId['failure-lab'].kind, 'reminder');
-  assert.equal(byId['failure-lab'].markable, false);
+  assert.equal(byId['failure-lab'], undefined);
+  assert.equal(byId['showcase-signup'].markable, false);
   assert.deepEqual(
     items.slice(-2).map((item) => item.id),
     ['item:y7', 'item:y9'],
   );
-  assert.equal(byId['item:y7'].timeLabel, 'Section 29: Wednesday, 5:45 to 6:00 PM');
-  assert.equal(deadlines('cen100', { now, section: 5, storage }).some((item) => item.id === 'failure-lab'), false, 'reminder only for Section 29');
+  assert.doesNotMatch(byId['item:y7'].timeLabel, /section|5:45/i);
   assert.equal(deadlines('mth141', { now, storage: null }).length, 7);
 });
 
@@ -351,7 +358,7 @@ test('buckets split by Toronto week, Monday to Sunday', () => {
   const b = buckets(items, now);
   assert.deepEqual(
     b.thisWeek.map((item) => item.id),
-    ['integrity', 'failure-lab', 'whmis'],
+    ['integrity', 'whmis'],
   );
   assert.deepEqual(
     b.nextWeek.map((item) => item.id),
@@ -405,7 +412,7 @@ test('the Desk snapshot is the old deskSummary(), course by course', () => {
   let cases = 0;
   for (const [n, now] of clocks.filter((_, i) => i % 3 === 0).entries()) {
     const storage = combined(n);
-    const old = oldCall(() => OLD_DESK.deskSummary({ now, storage }));
+    const old = oldCall(() => OLD_DESK.deskSummary({ now, storage: progressOnly(storage) }));
     // The old summary with currentOld()'s rule applied to each course's target.
     const shown = {};
     for (const course of ['cen100', 'mth140', 'mth141']) {
@@ -432,9 +439,9 @@ test('the Desk snapshot is the old deskSummary(), course by course', () => {
       const expected = { ...old[entry.course.id], ...shown[entry.course.id] };
       expected.isOverall = winner !== null && shown[entry.course.id].next === winner;
       assert.deepEqual(entry.progress, expected.progress);
-      assert.deepEqual(entry.target, expected.next);
+      assert.deepEqual(entry.target, courseWideTarget(expected.next));
       assert.equal(entry.urgency, expected.urgency);
-      assert.equal(entry.section, expected.section);
+      assert.ok(!entry.section);
       assert.equal(entry.isOverall, expected.isOverall);
       assert.deepEqual(entry.kinds, expected.kinds);
       assert.equal(entry.next ? entry.next.id : null, expected.next.precision === 'empty' ? null : expected.next.id);

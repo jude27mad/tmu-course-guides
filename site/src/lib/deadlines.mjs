@@ -17,7 +17,7 @@ import * as CEN from './content/cen.mjs';
 import * as MATH from './content/math.mjs';
 import { CEN as CEN_PAGE } from './content/pages.mjs';
 import { resolveStorage, view } from './storage.mjs';
-import { isMath, readProfile, readSectionNumber, readCompletedMap, readTicks, readMath, readPlan } from './saved.mjs';
+import { isMath, readProfile, readCompletedMap, readTicks, readMath, readPlan } from './saved.mjs';
 
 /* One resolver per course: CHY102 and PCS211 use science.mjs (same target shape), the others the vendored one. */
 export const resolve = (args) => (isScience(args.course) ? scienceTarget(args) : resolveTarget(args));
@@ -81,23 +81,12 @@ function cenWeight(id) {
   return { weight: null, weightLabel: '' };
 }
 
-const normaliseSection = (courseId, value) => {
-  const section = Number(value) || 0;
-  if (courseId === 'cen100') return CEN.STAFFING.some((staff) => staff.sections.includes(section)) ? section : 0;
-  return DATA[courseId]?.labs.some((lab) => lab.section === section) ? section : 0;
-};
-
-/** Everything a course computation needs, read once: the instant, the section and the completion records. */
-export function context(courseId, { now, section, storage } = {}) {
+/** Read the clock, saved project group and completion records once per computation. */
+export function context(courseId, { now, storage } = {}) {
   const store = resolveStorage(storage);
   const ms = toMs(now);
-  const chosen = section === undefined ? readSectionNumber(courseId, store) : normaliseSection(courseId, section);
-  let profile = null;
-  if (courseId === 'cen100') {
-    const saved = readProfile(store);
-    profile = chosen ? { section: chosen, group: saved?.section === chosen ? saved.group : null } : null;
-  }
-  return { courseId, store, ms, date: new Date(ms), section: chosen, profile, completed: readCompletedMap(courseId, store) };
+  const profile = courseId === 'cen100' ? readProfile(store) : null;
+  return { courseId, store, ms, date: new Date(ms), profile, completed: readCompletedMap(courseId, store) };
 }
 
 /** Split a resolver `when` ("Wed Oct 14 · 3:00 PM Toronto") into its date and time parts. */
@@ -117,7 +106,7 @@ function sortKey(t) {
   return Infinity;
 }
 
-const cenKinds = (ctx) => new Map(recordsForCourse('cen100', { cenSchedule: SCHEDULE, section: ctx.section, completed: ctx.completed }).map((record) => [record.id, record.kind]));
+const cenKinds = (ctx) => new Map(recordsForCourse('cen100', { cenSchedule: SCHEDULE, completed: ctx.completed }).map((record) => [record.id, record.kind]));
 // cenUpcoming(): a calendar:false reminder retires once every dated row of its item is recorded.
 const retired = (row, completed) => {
   const own = SCHEDULE.filter((record) => record.item === row.item && record.calendar !== false);
@@ -125,7 +114,7 @@ const retired = (row, completed) => {
 };
 
 function cenItem(row, ctx, kinds = cenKinds(ctx)) {
-  const t = resolveTarget({ course: 'cen100', data: SCHEDULE, section: ctx.section, completed: ctx.completed, now: ctx.ms, id: row.id });
+  const t = resolveTarget({ course: 'cen100', data: SCHEDULE, completed: ctx.completed, now: ctx.ms, id: row.id });
   const item = CEN.byId.get(row.item);
   const reminder = row.calendar === false;
   const passed = row.time ? timestamp(row.date, row.time) < ctx.ms : row.date < today(ctx.date);
@@ -213,8 +202,8 @@ function scienceWeight(course, id) {
 function mathItem(courseId, a, ctx) {
   const course = DATA[courseId];
   const science = isScience(courseId);
-  const t = resolve({ course: courseId, data: course, section: ctx.section, completed: ctx.completed, now: ctx.ms, id: a.id });
-  const e = science ? scienceEvent(a) : resolveAssessment(course, a, ctx.section);
+  const t = resolve({ course: courseId, data: course, completed: ctx.completed, now: ctx.ms, id: a.id });
+  const e = science ? scienceEvent(a) : resolveAssessment(course, a);
   const passed = science ? sciencePassed(e, ctx.date) : assessmentPassed(e, ctx.date);
   const done = !!ctx.completed[a.id];
   const sentenceText = science ? scienceTiming(e) : timing(e);
@@ -265,16 +254,13 @@ function mathItem(courseId, a, ctx) {
 
 const byDue = (a, b) => a.sortKey - b.sortKey || (Number.isFinite(a.sortKey) ? a.id.localeCompare(b.id) : 0);
 
-/**
- * Every deadline of a course, sorted by due time: CEN100 schedule rows (the Section 29 lab reminder only for
- * Section 29) plus its two undated items; MTH140/MTH141 assessments. `section` overrides the saved section.
- */
-function deadlinesNow(courseId, { now, section, storage } = {}) {
+/** Every course-wide deadline, sorted by due time, followed by undated items. */
+function deadlinesNow(courseId, { now, storage } = {}) {
   if (!getCourse(courseId)) return [];
-  const ctx = context(courseId, { now, section, storage });
+  const ctx = context(courseId, { now, storage });
   if (courseId === 'cen100') {
     const kinds = cenKinds(ctx);
-    const rows = SCHEDULE.filter((row) => !row.section || row.section === ctx.section).map((row) => cenItem(row, ctx, kinds));
+    const rows = SCHEDULE.map((row) => cenItem(row, ctx, kinds));
     const undated = CEN.allItems.filter((item) => !CEN.itemDeadlines(item.id).length).map((item) => cenUndated(item, ctx));
     const order = new Map([...rows, ...undated].map((item, index) => [item, index]));
     return [...rows, ...undated].sort((a, b) => byDue(a, b) || order.get(a) - order.get(b));
@@ -317,10 +303,7 @@ function bucketsNow(items, now) {
   return out;
 }
 
-/* resolveTarget(), except that an exact target stops being "next" GRACE after it ends. schedule.mjs passes a math
-   lab quiz only at the end of its Toronto day (the quiz has no published time), so once a section gave it its lab
-   window, the course header and the Desk said "Due time passed" for the rest of that day. A timed CEN row already
-   leaves at its time, and the Desk's overall winner already yields after GRACE (targets.mjs dueKey). */
+/* An exact target stops being next after its grace period. */
 function currentTarget({ completed, now, ...rest }) {
   let target = resolve({ ...rest, completed, now });
   let skipped = completed;
@@ -335,7 +318,7 @@ function currentTarget({ completed, now, ...rest }) {
 function nextDeadlineNow({ now, courseId, storage } = {}) {
   const ids = courseId ? [courseId].filter((id) => getCourse(id)) : COURSE_IDS;
   const contexts = ids.map((id) => context(id, { now, storage }));
-  const targets = contexts.map((ctx) => currentTarget({ course: ctx.courseId, data: dataFor(ctx.courseId), section: ctx.section, completed: ctx.completed, now: ctx.ms }));
+  const targets = contexts.map((ctx) => currentTarget({ course: ctx.courseId, data: dataFor(ctx.courseId), completed: ctx.completed, now: ctx.ms }));
   const winner = courseId ? targets[0] : overall(targets, toMs(now));
   if (!winner || winner.precision === 'empty') return null;
   return deadlineItem(winner.course, winner.id, { now, storage });
@@ -393,9 +376,9 @@ function mathSteps(courseId, assessmentId, checks) {
  * are one entry with several `records`. When this week has nothing, the next week that has unfinished work is
  * used and the array's `upcoming` is true. `.week` = { number, label, start, end }.
  */
-function weeklyChecklistNow(courseId, { now, section, storage } = {}) {
+function weeklyChecklistNow(courseId, { now, storage } = {}) {
   if (!getCourse(courseId)) return Object.assign([], { week: null, upcoming: false });
-  const items = deadlines(courseId, { now, section, storage }).filter((item) => item.markable && (item.date || item.week));
+  const items = deadlines(courseId, { now, storage }).filter((item) => item.markable && (item.date || item.week));
   const store = resolveStorage(storage);
   let monday = mondayOf(today(new Date(toMs(now))));
   let upcoming = false;
@@ -462,7 +445,7 @@ function weeklyChecklistNow(courseId, { now, section, storage } = {}) {
  * null and `weightLabel` says "15% quiz category"). The array carries `totalWeight` (100) and `count`, plus
  * `categories` for math and `table` (the old grouping table) for CEN.
  */
-function assessmentsNow(courseId, { section } = {}) {
+function assessmentsNow(courseId) {
   if (courseId === 'cen100') {
     const idsFor = (label) => Object.keys(CEN_GRADE_LABELS).filter((id) => CEN_GRADE_LABELS[id] === label);
     const rows = CEN_GRADE_TABLE.rows.map((row) => {
@@ -504,9 +487,8 @@ function assessmentsNow(courseId, { section } = {}) {
       quizPolicy: course.quizPolicy,
     });
   }
-  const chosen = normaliseSection(courseId, section);
   const rows = course.assessments.map((a) => {
-    const e = resolveAssessment(course, a, chosen);
+    const e = resolveAssessment(course, a);
     let label = 'Date pending';
     if (e.date) label = short(e.date);
     else if (e.week) label = `Week of ${dateLabel(e.week)}`;
@@ -531,8 +513,7 @@ function deskTarget(id, next, store, ms) {
 
 /**
  * The Desk: one entry per course, in course order, from the vendored deskSummary(): the next deadline (as a
- * deadlines() item, null when nothing is left), progress {completed, total, ratio, thisWeek}, urgency, the saved
- * section text and whether this course holds the overall next deadline.
+ * deadlines() item, null when nothing is left), progress {completed, total, ratio, thisWeek}, urgency and whether this course holds the overall next deadline.
  */
 /* deskSummary() for CHY102 / PCS211, which the vendored Desk does not know: the same fields from the same rules. */
 const DESK_KIND = { final: 'final', midterm: 'midterm', lab: 'quizLab', tutorial: 'quizLab' };
@@ -601,7 +582,7 @@ function scienceWorkRows(course, progress, range, now) {
 }
 
 /** "What should I work on?": unrecorded work in the next 7 days (range 'week') or all of it ('all'), as the old tools listed it. */
-function workListNow(courseId, { now, range = 'week', storage, section } = {}) {
+function workListNow(courseId, { now, range = 'week', storage } = {}) {
   const store = resolveStorage(storage);
   const date = new Date(toMs(now));
   if (courseId === 'cen100') {
@@ -625,9 +606,8 @@ function workListNow(courseId, { now, range = 'week', storage, section } = {}) {
   }
   if (!isMath(courseId)) return { items: [], status: '', empty: '' };
   const course = DATA[courseId];
-  const chosen = section === undefined ? readSectionNumber(courseId, store) : normaliseSection(courseId, section);
   const science = isScience(courseId);
-  const rows = science ? scienceWorkRows(course, readMath(courseId, store), range, date) : MATH.workRows(course, chosen, readMath(courseId, store), range, date);
+  const rows = science ? scienceWorkRows(course, readMath(courseId, store), range, date) : MATH.workRows(course, 0, readMath(courseId, store), range, date);
   const items = rows.map(({ a, e, target }) => ({
     itemId: a.id,
     title: a.title,

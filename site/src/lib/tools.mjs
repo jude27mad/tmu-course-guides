@@ -8,17 +8,17 @@ import * as CEN from './content/cen.mjs';
 import * as MATH from './content/math.mjs';
 import { KEYS, resolveStorage, readJSON, writeJSON } from './storage.mjs';
 import { COURSE_UPDATES } from './content/updates.mjs';
-import { isMath, readTicks, writeTicks, readPlan, writePlan, readMath, writeMath, readMathSection, readMotionPaused, writeMotionPaused } from './saved.mjs';
+import { isMath, readTicks, writeTicks, readPlan, writePlan, readMath, writeMath, readMotionPaused, writeMotionPaused } from './saved.mjs';
 
 const toDate = (now) => (now == null ? new Date() : new Date(+now));
 const stampOf = (date) => date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
 
 /**
  * An .ics file. CEN100: { item: 'all' | item id, upcomingOnly = true, reminderDays = 1 } (cen100-deadlines-2026.ics,
- * UIDs cen100-f26-<id>-jude27mad-github-io). Math: { includeTentative = false, upcomingOnly = true, section }
+ * UIDs cen100-f26-<id>-jude27mad-github-io). Math: { includeTentative = false, upcomingOnly = true }
  * (<course>-fall-2026.ics). Returns { ok, name, type, text, count, message }; ok false carries the old message.
  */
-function calendarFileNow(courseId, { now, item = 'all', upcomingOnly = true, reminderDays = 1, includeTentative = false, section, storage } = {}) {
+function calendarFileNow(courseId, { now, item = 'all', upcomingOnly = true, reminderDays = 1, includeTentative = false } = {}) {
   const date = toDate(now);
   if (courseId === 'cen100') {
     const events = CEN.calendarEvents(item, upcomingOnly, date);
@@ -39,15 +39,8 @@ function calendarFileNow(courseId, { now, item = 'all', upcomingOnly = true, rem
     if (!result.count) return { ok: false, count: 0, message: MATH.COPY.calendarNone };
     return { ok: true, name: `${courseId}-fall-2026.ics`, type: 'text/calendar;charset=utf-8', text: result.text, count: result.count, message: MATH.COPY.calendarReady(result.count) };
   }
-  const chosen = section === undefined ? readMathSection(courseId, resolveStorage(storage)) : Number(section) || 0;
-  if (includeTentative && !chosen) return { ok: false, count: 0, message: MATH.COPY.calendarNeedsSection };
-  const result = calendar(DATA[courseId], chosen, { includeTentative, onlyUpcoming: upcomingOnly, now: date });
-  if (!result.count) {
-    // Without a section only fixed-time assessments can be exported; once those have passed, a section's lab
-    // quizzes are what is left, so say so instead of "those choices" (Guide tools offers none).
-    const quizzesLeft = !chosen && calendar(DATA[courseId], DATA[courseId].labs[0].section, { includeTentative: true, onlyUpcoming: upcomingOnly, now: date }).count > 0;
-    return { ok: false, count: 0, message: quizzesLeft ? MATH.COPY.calendarNeedsSection : MATH.COPY.calendarNone };
-  }
+  const result = calendar(DATA[courseId], 0, { includeTentative, onlyUpcoming: upcomingOnly, now: date });
+  if (!result.count) return { ok: false, count: 0, message: MATH.COPY.calendarNone };
   return { ok: true, name: `${courseId}-fall-2026.ics`, type: 'text/calendar;charset=utf-8', text: result.text, count: result.count, message: MATH.COPY.calendarReady(result.count) };
 }
 

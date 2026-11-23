@@ -19,7 +19,7 @@ const browser = await chromium.launch({ headless: true, executablePath: process.
 const results = [];
 const ready = (page) => page.waitForFunction(() => {
   const main = document.querySelector('main');
-  return main && getComputedStyle(main).opacity === '1' && !main.classList.contains('lenis-stopped') && document.querySelector('#course-section:not(:disabled)');
+  return main && getComputedStyle(main).opacity === '1' && !main.classList.contains('lenis-stopped') && document.querySelector('nav[data-selection-ready="true"]');
 });
 async function check(name, run) {
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
@@ -123,7 +123,7 @@ try {
     try {
       await page.goto(`${url}cen100/`, { waitUntil: 'domcontentloaded' });
       const start = Date.now();
-      await page.locator('#course-section:not(:disabled)').waitFor();
+      await page.locator('nav[data-selection-ready="true"]').waitFor();
       await ready(page).catch((error) => { throw error; });
       const elapsed = Date.now() - start;
       assert.ok(requested > 0, 'the test must actually hold an image');

@@ -1,5 +1,5 @@
 /* One list entry per content item, and one calendar event per dated deadline row.
-   Dates, completion and section filtering come from deadlines(); nothing here writes storage. */
+   Dates and completion come from deadlines(); nothing here writes storage. */
 import { fast } from './perf.mjs';
 import { deadlines, buckets, mondayOf, toMs } from './deadlines.mjs';
 import { DATA } from './data.mjs';
@@ -119,7 +119,7 @@ function calendarEventsNow(courseId, items = []) {
       end = target.weekEnd;
       style = 'week';
       title = `Quiz week · ${title}`;
-      qualifier = target.holiday ? 'Date needs confirmation' : 'Date depends on your lab section';
+      qualifier = target.holiday ? 'Date needs confirmation' : 'Check D2L for your quiz date';
     } else continue;
     if (row.kind === 'reminder') style = 'reminder';
     if (row.done) style = 'done';

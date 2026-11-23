@@ -99,7 +99,7 @@ function Meter({ standing, target }) {
 }
 
 export default function Grades() {
-  const { courseId, course, section } = useCourse();
+  const { courseId, course } = useCourse();
   const [grades, update] = useGrades(courseId);
   const baseId = useId();
   const [typingTotal, setTypingTotal] = useState(null);
@@ -107,7 +107,7 @@ export default function Grades() {
   const cleared = useRef(false);
   const percents = useMemo(() => percentsFrom(grades.marks), [grades.marks]);
   // CHY102: the grading scheme the student chose; PCS211: whichever option gives the higher grade on these marks.
-  const plan = useMemo(() => gradePlan(courseId, { section: section ?? undefined, variant: grades.variant ?? undefined, percents }), [courseId, section, grades.variant, percents]);
+  const plan = useMemo(() => gradePlan(courseId, { variant: grades.variant ?? undefined, percents }), [courseId, grades.variant, percents]);
   const standing = useMemo(() => gradeStanding(plan, percents), [plan, percents]);
   const requirements = useMemo(() => gradeRequirements(plan, standing), [plan, standing]);
   const needs = useMemo(

@@ -1,6 +1,6 @@
 import { buckets, courseCopy, courseInfo, deadlines, deskSnapshot, getCourse, getGroup, nextDeadline, setGroup as saveGroup, weeklyChecklist } from '@src/lib';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { useNow, useProgress, useSection } from '@src/lib/react';
+import { useNow, useProgress } from '@src/lib/react';
 
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import { scrollToHash } from '@src/utils/scrollToHash';
@@ -12,16 +12,13 @@ import { scrollToHash } from '@src/utils/scrollToHash';
 export const CourseContext = createContext(null);
 export const useCourse = () => useContext(CourseContext);
 
-// The section picker's anchor (Course info); "CHANGE SECTION" and the
-// "Choose section for quiz date" prompts glide to it.
-export const PICKER_ID = 'section-picker';
+export const PICKER_ID = 'group-picker';
 export const openPicker = () => scrollToHash({ hash: PICKER_ID });
 
 export function useCourseState(courseId) {
   const course = getCourse(courseId);
   const now = useNow(60000);
   const progress = useProgress();
-  const [section, setSection] = useSection(courseId);
   const ready = !!now && progress.ready;
   const { version } = progress;
 
@@ -30,7 +27,7 @@ export function useCourseState(courseId) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [ready, version, courseId],
   );
-  const info = useMemo(() => courseInfo(courseId, { section: section ?? undefined, group: group ?? undefined }), [courseId, section, group]);
+  const info = useMemo(() => courseInfo(courseId, { group: group ?? undefined }), [courseId, group]);
   const copy = useMemo(() => courseCopy(courseId), [courseId]);
 
   const live = useMemo(
@@ -48,7 +45,7 @@ export function useCourseState(courseId) {
       };
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [ready, now, version, courseId, section],
+    [ready, now, version, courseId],
   );
 
   // Mark done / Undo, with the old confirmation line ("Marked done: … Saved on this device.").
@@ -77,8 +74,8 @@ export function useCourseState(courseId) {
   const setGroup = useCallback((value) => saveGroup('cen100', value), []);
 
   return useMemo(
-    () => ({ courseId, course, info, copy, live, now, progress, version, section, setSection, group, setGroup, markDone, undo, pendingUndo: pendingHere, status }),
-    [courseId, course, info, copy, live, now, progress, version, section, setSection, group, setGroup, markDone, undo, pendingHere, status],
+    () => ({ courseId, course, info, copy, live, now, progress, version, group, setGroup, markDone, undo, pendingUndo: pendingHere, status }),
+    [courseId, course, info, copy, live, now, progress, version, group, setGroup, markDone, undo, pendingHere, status],
   );
 }
 

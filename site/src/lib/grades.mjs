@@ -145,9 +145,9 @@ const sum = (values) => values.reduce((total, value) => total + value, 0);
 /**
  * The course's graded components: { courseId, groups: [{ id, title, weight, note, drop, keep, items }], items,
  * pass, quizPolicy }. Each item: { id, title, weight, dateLabel, parts, anchor, groupId }. In a drop-lowest
- * group an item's `weight` is what one quiz is worth when it counts. `section` dates the math lab quizzes.
+ * group an item's `weight` is what one quiz is worth when it counts.
  */
-export function gradePlan(courseId, { section, variant, percents } = {}) {
+export function gradePlan(courseId, { variant, percents } = {}) {
   if (isScience(courseId)) {
     const { pick, variants } = DATA[courseId].grades;
     if (pick !== 'best' || !percents) return sciencePlan(courseId, variant);
@@ -164,7 +164,7 @@ export function gradePlan(courseId, { section, variant, percents } = {}) {
     const score = (plan) => standingOf(plan, percents).projected ?? -1;
     return { ...plans.reduce((best, plan) => (score(plan) > score(best) + EPSILON ? plan : best)), options: plans };
   }
-  const rows = assessments(courseId, { section });
+  const rows = assessments(courseId);
   let groups = [];
   if (courseId === 'cen100') {
     groups = CEN_GROUPS.map((group) => {

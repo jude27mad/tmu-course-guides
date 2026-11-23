@@ -24,7 +24,6 @@ export const SCHEDULE=[
  {id:"exit",item:"y8",date:"2026-12-02",title:"Exit Survey due"},
  {id:"peer",item:"m8",date:"2026-12-02",title:"Peer Evaluation due"},
  {id:"report",item:"m7",date:"2026-12-02",time:"23:59",title:"Final Report due"},
- {id:"failure-lab",item:"m3",date:"2026-10-14",title:"Failure Analysis Part 1 in lab (Section 29)",who:"sub",section:29,calendar:false},
  {id:"showcase-signup",item:"m6",date:"2026-11-18",title:"Showcase sign-up (around now; check D2L)",calendar:false}
 ];
 

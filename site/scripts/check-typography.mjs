@@ -27,7 +27,7 @@ async function ready(page, route) {
     const main = document.querySelector('main');
     return getComputedStyle(main).pointerEvents === 'auto' && !main.classList.contains('lenis-stopped');
   });
-  if (route) await page.locator('#course-section:not(:disabled)').waitFor();
+  if (route) await page.locator('nav[data-selection-ready="true"]').waitFor();
   if (route.includes('#assignment')) await page.locator('[data-assignment-detail]').waitFor();
   await page.evaluate(() => document.fonts.ready);
   // Course input becomes ready before the shell's entrance has finished.

@@ -5,7 +5,6 @@ import { useCourse } from '@src/pages/course/hooks/useCourseState';
 import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
 import useStill from '@src/hooks/useStill';
 import useSelectionMotion from './useSelectionMotion';
-import { labRoom, timeWithRoom } from './labRoom';
 import { isSitting } from './sittings';
 import styles from './workspace.module.scss';
 
@@ -28,8 +27,7 @@ const resultKey = (assignments, filter) =>
     .join(',');
 
 export default function Work({ assignments, filter, navigate }) {
-  const { courseId, info, progress, section } = useCourse();
-  const room = labRoom(courseId, section);
+  const { courseId, info, progress } = useCourse();
   const still = useStill();
   const filtersRef = useRef(null);
   const selectionRef = useRef(null);
@@ -148,7 +146,7 @@ export default function Work({ assignments, filter, navigate }) {
                             </span>
                             <span className={styles.rowDate}>
                               {lead?.dateLabel || 'Date pending'}
-                              <span className={styles.meta}>{timeWithRoom(lead, room) || lead?.cta || 'Check D2L'}</span>
+                              <span className={styles.meta}>{lead?.timeLabel || lead?.cta || 'Check D2L'}</span>
                             </span>
                             <span className={styles.rowStatus}>
                               {status}

@@ -244,7 +244,7 @@ async function checkLocal(folder) {
         await page.goto(`${site}${path}`, { waitUntil: 'networkidle' });
         assert.equal(await page.evaluate(() => document.documentElement.getAttribute('data-motion')), 'off', `Pause motion kept on /${path}`);
         if (shown) await page.waitForFunction((source) => new RegExp(source).test(document.body.innerText), shown.source, { timeout: 15000 });
-        if (path === 'mth141/') await page.waitForFunction(() => document.querySelector('#course-section')?.value === '3');
+        if (['cen100/', 'mth140/', 'mth141/'].includes(path)) assert.equal(await page.locator('#course-section').count(), 0);
       }
       const after = await page.evaluate((keys) => Object.fromEntries(keys.map((key) => [key, localStorage.getItem(key)])), Object.keys(PROGRESS));
       assert.deepEqual(after, PROGRESS);
