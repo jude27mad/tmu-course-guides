@@ -1,18 +1,20 @@
 /* eslint-disable react/no-unknown-property, react/jsx-props-no-spreading, import/extensions */
 import * as THREE from 'three';
 
-import { BallCollider, CuboidCollider, Physics, RigidBody, useBeforePhysicsStep, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
+import { BallCollider, CuboidCollider, Physics, RigidBody, useBeforePhysicsStep, useRapier, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import { PerspectiveCamera } from '@react-three/drei';
 import BadgeViewport, { createBadgeLayout } from '@src/components/courseBadge/BadgeViewport';
 import { bandTexture, cardTexture, loadBadgeFonts, redrawCard } from '@src/components/courseBadge/badgeTextures';
 import { extend, useFrame, useThree } from '@react-three/fiber';
-import { memo, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import useStill from '@src/hooks/useStill';
 import useScroll from '@src/hooks/useScroll';
 import { easeFor, frameShare } from '@src/utils/frameStep.mjs';
+import { bindBadgeDrag } from './badgeDrag.mjs';
+import { createBadgeGrab } from './badgeGrab.mjs';
 
 extend({ MeshLineGeometry, MeshLineMaterial, RoundedBoxGeometry });
 
@@ -115,6 +117,7 @@ function Lanyard({ body, x, rest, intersected }) {
 
   return (
     <>
+      <GrabController body={body} rest={rest} />
       <RigidBody ref={body.fixed} {...segmentProps} type="fixed" position={positions[0]} />
       {/* each joint's marker follows its interpolated pose, as cardObject does */}
       <RigidBody position={positions[1]} ref={body.j1} {...segmentProps}>
@@ -136,6 +139,40 @@ function Lanyard({ body, x, rest, intersected }) {
       </RigidBody>
     </>
   );
+}
+
+// The renderer works in per-window coordinates. The constraint and its
+// temporary cursor live alongside the actual card in the shared physics world.
+function GrabController({ body, rest }) {
+  const { world, rapier } = useRapier();
+  const active = useRef(null);
+
+  // Detach before the physics provider disposes its world in passive cleanup.
+  useLayoutEffect(() => {
+    if (rest) return undefined;
+    const begin = (localPoint, start) => {
+      if (active.current || !body.card.current?.isValid() || !body.fixed.current?.isValid()) return null;
+      const reach = 3 + Math.hypot(localPoint.x, localPoint.y - JOINT, localPoint.z);
+      const handle = createBadgeGrab({ world, rapier, card: body.card.current, anchor: body.fixed.current.translation(), localPoint, start, reach });
+      active.current = handle;
+      return {
+        move: handle.move,
+        release() {
+          handle.release();
+          if (active.current === handle) active.current = null;
+        },
+      };
+    };
+    body.beginGrab.current = begin;
+    return () => {
+      body.beginGrab.current = null;
+      active.current?.release();
+      active.current = null;
+    };
+  }, [body, rest, world, rapier]);
+
+  useBeforePhysicsStep((physics) => active.current?.step(physics.timestep));
+  return null;
 }
 
 // A window's visibility change republishes the registry; only the lanyard whose
@@ -180,6 +217,45 @@ function BadgeCard({ body, offsetX, look, idle, element, layout, maxSpeed = 50, 
   const band = useRef();
   const card = useRef();
   const textures = useBadgeTextures(look);
+  const camera = useThree((state) => state.camera);
+  const faceMesh = useRef();
+
+  useEffect(() => {
+    if (idle || !textures || !element) return undefined;
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+    const updateRay = (x, y) => {
+      const bounds = element.getBoundingClientRect();
+      if (!bounds.width || !bounds.height) return false;
+      pointer.set(((x - bounds.left) / bounds.width) * 2 - 1, 1 - ((y - bounds.top) / bounds.height) * 2);
+      raycaster.setFromCamera(pointer, camera);
+      return true;
+    };
+    return bindBadgeDrag(element, {
+      pick(x, y) {
+        if (!layout.draw || !card.current?.visible || !faceMesh.current || !updateRay(x, y)) return null;
+        const hit = raycaster.intersectObject(faceMesh.current, false)[0];
+        if (!hit) return null;
+        return { localPoint: card.current.worldToLocal(hit.point.clone()), z: hit.point.z };
+      },
+      grab(hit) {
+        const { localPoint, z } = hit;
+        const start = card.current.localToWorld(localPoint.clone());
+        start.x += offsetX;
+        const handle = body.beginGrab.current?.(localPoint, start);
+        if (!handle) return null;
+        // Drag on a camera-facing plane through the original contact point.
+        const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), -z);
+        const target = new THREE.Vector3();
+        return {
+          move(x, y) {
+            if (updateRay(x, y) && raycaster.ray.intersectPlane(plane, target)) handle.move(target.x + offsetX, target.y, target.z);
+          },
+          release: handle.release,
+        };
+      },
+    });
+  }, [idle, textures, element, camera, body, layout, offsetX]);
   const lerped = useMemo(() => [new THREE.Vector3(), new THREE.Vector3()], []);
   const curvePoints = useMemo(() => Array.from({ length: 33 }, () => new THREE.Vector3()), []);
   // the strap's control points when it was last rebuilt
@@ -293,7 +369,7 @@ function BadgeCard({ body, offsetX, look, idle, element, layout, maxSpeed = 50, 
     <>
       <group ref={card} visible={!!textures}>
         {materials && (
-          <mesh material={materials}>
+          <mesh ref={faceMesh} material={materials}>
             {/* three's RoundedBoxGeometry (as the MagicBall boxes): per-face UVs, so the back reads the right way round */}
             <roundedBoxGeometry ref={mergeFaceGroups} args={[1.6, 2.25, 0.02, 2, 0.01]} />
           </mesh>
