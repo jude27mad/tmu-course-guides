@@ -779,8 +779,18 @@ try {
     const current = page.locator('[data-grade-current]');
     assert.match(await current.innerText(), /—/);
     assert.equal(await page.locator('[data-grade-score]:visible').count(), 0, 'no mark fields before selecting an assessment');
-    await page.locator('[data-grade-group="quizzes"] [data-grade-toggle]').click();
-    await page.locator('[data-grade-edit="quiz-1"]').click();
+    const picker = page.getByRole('combobox', { name: 'Choose an assessment', exact: true });
+    await picker.selectOption('midterm');
+    const midterm = page.getByLabel('Midterm Test', { exact: true });
+    await page.waitForFunction(() => {
+      const field = document.activeElement;
+      if (!field?.matches('[data-grade-score]')) return false;
+      const bounds = field.getBoundingClientRect();
+      return bounds.top >= 0 && bounds.bottom <= window.innerHeight;
+    });
+    assert.ok(await midterm.evaluate((field) => field === document.activeElement), 'picker opens and focuses the chosen assessment');
+    await picker.selectOption('quiz-1');
+    assert.equal(await page.locator('[data-grade-score]:visible').count(), 1, 'switching categories opens just the chosen editor');
     // A fraction entered in the mark field fills both parts of the one open editor.
     const quiz = page.getByLabel('Lab Quiz 1', { exact: true });
     await quiz.fill('17/20');
@@ -827,6 +837,22 @@ try {
     assert.equal(await page.evaluate(() => localStorage.getItem('mth140-grades-v1')), savedMarks, 'a forecast never overwrites recorded grades');
     await page.locator('[data-grade-target]').selectOption('77');
     assert.match(await page.locator('[data-grade-answer]').innerText(), /For a B\+ \(77%\), you need an average of at least/);
+    const target = page.getByRole('combobox', { name: 'Target grade', exact: true });
+    await target.focus();
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Shift+Tab');
+    const labelClearsRing = await target.evaluate((select) => {
+      const style = getComputedStyle(select);
+      const ring = parseFloat(style.outlineWidth) + parseFloat(style.outlineOffset);
+      const text = Array.from(select.labels[0].childNodes)
+        .find((node) => node.textContent.trim() === 'Target grade');
+      const range = document.createRange();
+      range.selectNodeContents(text);
+      const label = range.getBoundingClientRect();
+      const box = select.getBoundingClientRect();
+      return select.matches(':focus-visible') && ring > 0 && (label.bottom < box.top - ring || label.right < box.left - ring);
+    });
+    assert.ok(labelClearsRing, 'target menu focus outline stays clear of its label text');
     const field = await page.getByLabel('Midterm Test', { exact: true }).boundingBox();
     assert.ok(field.height >= 44 && field.width >= 44, JSON.stringify(field));
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'no sideways scrolling');

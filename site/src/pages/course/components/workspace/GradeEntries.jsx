@@ -1,4 +1,6 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { forwardRef, useEffect, useId, useImperativeHandle, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
+import { useStore } from '@src/store';
 import { floorTenth, formatPercent, joinMark, parseMark, splitMark } from '@src/lib';
 import workspace from './workspace.module.scss';
 import styles from './grades.module.scss';
@@ -7,11 +9,12 @@ const shown = (value) => formatPercent(floorTenth(value));
 const weight = (value) => formatPercent(Math.round(value * 100) / 100);
 const cleanField = (text) => text.replace(/[^0-9.,]/g, '').slice(0, 9);
 
-export default function GradeEntries({ plan, standing, grades, update, onClear, firstGroup }) {
+const GradeEntries = forwardRef(({ plan, standing, grades, update, onClear }, ref) => {
   const baseId = useId();
   const [openGroup, setOpenGroup] = useState(null);
   const [editing, setEditing] = useState(null);
   const [typingTotal, setTypingTotal] = useState(false);
+  const firstGroup = useRef(null);
   const scoreInput = useRef(null);
   const totalInput = useRef(null);
   const returnFocus = useRef(null);
@@ -25,6 +28,33 @@ export default function GradeEntries({ plan, standing, grades, update, onClear, 
       returnFocus.current = null;
     }
   }, [editing]);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      openAssessment(item) {
+        // Mount and focus the field during the native selection gesture, including on iOS.
+        flushSync(() => {
+          setOpenGroup(item.groupId);
+          setEditing(item.id);
+          setTypingTotal(false);
+        });
+        const input = scoreInput.current;
+        if (!input) return;
+        const row = input.closest('li');
+        const { lenis } = useStore.getState();
+        if (lenis) {
+          lenis.resize();
+          lenis.scrollTo(row, { offset: -24, immediate: true, force: true });
+        } else {
+          row.scrollIntoView({ block: 'center', behavior: 'instant' });
+        }
+        input.focus({ preventScroll: true });
+        input.select();
+      },
+    }),
+    [],
+  );
 
   const toggleId = (groupId) => `${baseId}-toggle-${groupId}`;
   const editId = (itemId) => `${baseId}-edit-${itemId}`;
@@ -241,4 +271,6 @@ export default function GradeEntries({ plan, standing, grades, update, onClear, 
       })}
     </section>
   );
-}
+});
+
+export default GradeEntries;
