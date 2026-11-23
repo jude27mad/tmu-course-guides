@@ -53,11 +53,6 @@
     max-width: 13ch;
     text-wrap: balance;
   }
-  .deskTerm {
-    @include type.role(context);
-    margin-top: 12px;
-    text-transform: uppercase;
-  }
   .topContainer {
     padding: var(--layout-columns-gap) 0px;
     flex: 0 1 auto;

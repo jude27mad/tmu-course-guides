@@ -255,7 +255,6 @@ function Home() {
       <div className={clsx(styles.topContainer, 'layout-grid-inner')}>
         <h1 className={styles.leftContainer}>
           <span className={styles.deskTitle}>TMU Course Companion</span>
-          <span className={styles.deskTerm}>{DESK_TEXT.headingTerm}</span>
         </h1>
         <p className={clsx('h6', styles.rightContainer, styles.introduction)} data-desk-introduction>
           {introduction}
