@@ -159,7 +159,7 @@ export function gradePlan(courseId, { variant, percents } = {}) {
     const optional = new Set(variants.flatMap((v) => v.categories.filter((c) => c.weight === 0).flatMap((c) => c.items)));
     const skipped = optional.size && ![...optional].some((id) => typeof percents[id] === 'number');
     const without = skipped && plans.find((plan) => plan.groups.every((group) => group.weight === 0 || !group.items.some((item) => optional.has(item.id))));
-    if (without) return { ...without, options: plans, optionalSkipped: true };
+    if (without) return { ...without, optionalSkipped: true };
     // eslint-disable-next-line no-use-before-define
     const score = (plan) => standingOf(plan, percents).projected ?? -1;
     return { ...plans.reduce((best, plan) => (score(plan) > score(best) + EPSILON ? plan : best)), options: plans };
@@ -364,17 +364,23 @@ export function subscribeGrades(courseId, storage, callback, target) {
   };
 }
 
-/** Course points (out of 100) when every unmarked item scores `fill`, applying drop-lowest. An optional bonus not
-    entered yet (PCS211's ClassQuestion) scores `bonusFill`: 0 unless asked, since nothing says a student earns it. */
-function pointsWith(plan, percents, fill, bonusFill = 0) {
-  return sum(
+/** Final percent under one scheme, applying drop-lowest and counting a bonus only when it has a mark. */
+function pointsWith(plan, percents, fill) {
+  const points = sum(
     plan.groups.map((group) => {
-      const values = group.items.map((item) => percents[item.id] ?? (group.bonus ? bonusFill : fill));
+      const values = group.items.map((item) => percents[item.id] ?? (group.bonus ? 0 : fill));
       if (!group.drop) return sum(values.map((value, i) => (value * group.items[i].weight) / 100));
       const kept = [...values].sort((a, b) => b - a).slice(0, group.keep);
       return (sum(kept) * group.weight) / group.keep / 100;
     }),
   );
+  return Math.min(100, points);
+}
+
+/** Final percent if every remaining assessment earns `mark` (0–100), taking the best eligible scheme. */
+export function gradeProjection(plan, percents, mark) {
+  const options = plan.options ?? [plan];
+  return Math.max(...options.map((option) => pointsWith(option, percents, mark)));
 }
 
 /** The smallest average on every unmarked item that reaches `target` points. Assumes it is reachable. */
@@ -413,9 +419,21 @@ export function gradeStanding(plan, percents = {}) {
   const all = plan.options.map((option) => standingOf(option, percents));
   const best = (key) => Math.max(...all.map((entry) => entry[key]));
   const secured = best('secured');
-  // Complete once every mark that counts under some option is in (PCS211 without WebAssign: Option 2).
-  const complete = all.some((entry) => entry.complete);
-  return { ...standing, secured, maximum: best('maximum'), complete, current: complete ? secured : standing.current };
+  // Entered WebAssign enables both options. Pending assignments can still improve the option that uses them
+  // even when the option that ignores them already has all its marks.
+  const unmarked = [...new Set(all.flatMap((entry) => entry.unmarked))];
+  const complete = unmarked.length === 0;
+  const current = complete ? secured : standing.current;
+  return {
+    ...standing,
+    secured,
+    maximum: best('maximum'),
+    unmarked,
+    complete,
+    current,
+    projected: current === null ? null : gradeProjection(plan, percents, current),
+    remaining: standing.complete ? best('remaining') : standing.remaining,
+  };
 }
 
 function standingOf(plan, percents) {
@@ -452,10 +470,8 @@ function standingOf(plan, percents) {
   const bonusIds = new Set(plan.groups.filter((group) => group.bonus).flatMap((group) => group.items.map((item) => item.id)));
   // Weight-0 items (PCS211's WebAssign under Option 2) are never "still to be marked".
   const unmarked = plan.items.filter((item) => typeof percents[item.id] !== 'number' && !bonusIds.has(item.id) && (!plan.pick || item.weight > EPSILON));
-  // A bonus (PCS211's ClassQuestion) can lift a grade, but never past 100%.
-  const cap = (value) => (bonusIds.size ? Math.min(100, value) : value);
-  const secured = cap(pointsWith(plan, percents, 0));
-  const maximum = cap(pointsWith(plan, percents, 100));
+  const secured = pointsWith(plan, percents, 0);
+  const maximum = pointsWith(plan, percents, 100);
   const current = marked > EPSILON ? (earned / marked) * 100 : null;
   const complete = unmarked.length === 0;
   return {
@@ -463,7 +479,7 @@ function standingOf(plan, percents) {
     maximum,
     // Once every mark is in, a bonus belongs in the final grade (the average itself leaves it out).
     current: complete && bonusIds.size && current !== null ? secured : current,
-    projected: current === null ? null : cap(pointsWith(plan, percents, current)),
+    projected: current === null ? null : pointsWith(plan, percents, current),
     marked,
     remaining: sum(
       plan.groups

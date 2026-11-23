@@ -1,8 +1,9 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { GRADE_SCALE, floorTenth, formatPercent, gradeNeeded, gradePlan, gradeRequirements, gradeStanding, joinMark, letterFor, parseMark, percentsFrom, roundGrade, splitMark } from '@src/lib';
+import { GRADE_SCALE, floorTenth, formatPercent, gradeNeeded, gradePlan, gradeProjection, gradeRequirements, gradeStanding, letterFor, percentsFrom, roundGrade } from '@src/lib';
 import { useGrades } from '@src/lib/react';
 import { useCourse } from '@src/pages/course/hooks/useCourseState';
+import GradeEntries from './GradeEntries';
 import workspace from './workspace.module.scss';
 import styles from './grades.module.scss';
 
@@ -10,8 +11,6 @@ import styles from './grades.module.scss';
 const shown = (value) => formatPercent(floorTenth(value));
 const weight = (value) => formatPercent(Math.round(value * 100) / 100);
 const TARGETS = GRADE_SCALE.filter((row) => row.min > 0);
-const clean = (value) => value.replace(/[^0-9.,/]/g, '').slice(0, 9);
-
 // "an A- (80%)", "a B+ (77%)"; "the Final Exam" but "Lab Quiz 4".
 const grade = (row) => `${/^[AEF]/.test(row.letter) ? 'an' : 'a'} ${row.letter} (${row.min}%)`;
 const named = (title) => (/\d$/.test(title) ? title : `the ${title}`);
@@ -33,9 +32,9 @@ function needText(row, need, standing, plan) {
 }
 
 function headlineText(standing, current, plan) {
-  if (current === null) return 'Enter a mark to see your average.';
   if (standing.complete) return 'Every mark is in. This is your calculated final grade.';
   const projected = floorTenth(standing.projected);
+  if (plan.options) return `At your current pace, the higher evaluation option gives you a projected course grade of ${formatPercent(projected)} (${letterFor(projected).letter}).`;
   if (projected - current < 0.1) return `Keep this average on the remaining ${weight(standing.remaining)} of the course and it becomes your final grade.`;
   // A low quiz (or homework) that counts now is dropped once a better one arrives; a bonus adds on top.
   const bonus = plan.groups.find((group) => group.bonus);
@@ -69,10 +68,17 @@ function optionSentence(plan, standing) {
 
 const REQUIREMENT = { met: 'Met so far', below: 'Below the minimum so far', open: 'No marks yet' };
 
-function Meter({ standing, target }) {
+function Meter({ standing, target, projection }) {
   const secured = Math.min(100, standing.secured);
   const maximum = Math.min(100, standing.maximum);
-  const label = [`Secured ${shown(secured)} of the course.`, `Up to ${shown(maximum)} still possible.`, target ? `Target ${target.letter}, ${target.min}%.` : ''].filter(Boolean).join(' ');
+  const label = [
+    `Secured ${shown(secured)} of the course.`,
+    `Up to ${shown(maximum)} still possible.`,
+    target ? `Target ${target.letter}, ${target.min}%.` : '',
+    projection !== null ? `What-if result ${shown(projection)}.` : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
   return (
     <div className={styles.meter}>
       <div className={styles.track} role="img" aria-label={label}>
@@ -81,6 +87,7 @@ function Meter({ standing, target }) {
           <span className={styles.possible} style={{ left: `${secured}%`, width: `${maximum - secured}%` }} />
           <span className={styles.lost} style={{ left: `${maximum}%`, width: `${100 - maximum}%` }} />
         </div>
+        {projection !== null ? <span className={styles.forecast} style={{ left: `${projection}%` }} data-grade-forecast /> : null}
         <span className={styles.pass} style={{ left: '50%' }} />
         {target ? <span className={styles.target} style={{ left: `${target.min}%` }} data-label={`${target.letter} ${target.min}%`} data-edge={target.min >= 85 ? 'end' : undefined} /> : null}
       </div>
@@ -93,6 +100,7 @@ function Meter({ standing, target }) {
         <li data-kind="secured">Secured</li>
         <li data-kind="possible">Still possible</li>
         <li data-kind="lost">No longer possible</li>
+        {projection !== null ? <li data-kind="forecast">What-if result</li> : null}
       </ul>
     </div>
   );
@@ -100,9 +108,14 @@ function Meter({ standing, target }) {
 
 export default function Grades() {
   const { courseId, course } = useCourse();
+  return <CourseGrades key={courseId} courseId={courseId} course={course} />;
+}
+
+function CourseGrades({ courseId, course }) {
   const [grades, update] = useGrades(courseId);
   const baseId = useId();
-  const [typingTotal, setTypingTotal] = useState(null);
+  const [scenarioMark, setScenarioMark] = useState(null);
+  const firstGroup = useRef(null);
   const [announcement, setAnnouncement] = useState('');
   const cleared = useRef(false);
   const percents = useMemo(() => percentsFrom(grades.marks), [grades.marks]);
@@ -110,23 +123,16 @@ export default function Grades() {
   const plan = useMemo(() => gradePlan(courseId, { variant: grades.variant ?? undefined, percents }), [courseId, grades.variant, percents]);
   const standing = useMemo(() => gradeStanding(plan, percents), [plan, percents]);
   const requirements = useMemo(() => gradeRequirements(plan, standing), [plan, standing]);
-  const needs = useMemo(
-    () =>
-      TARGETS.map((row) => ({
-        row,
-        need: gradeNeeded(plan, percents, row.min, standing),
-      })),
-    [plan, percents, standing],
-  );
   const target = TARGETS.find((row) => row.min === grades.target) || null;
-  const chosen = needs.find((entry) => entry.row === target);
+  const need = useMemo(() => (target ? gradeNeeded(plan, percents, target.min, standing) : null), [target, plan, percents, standing]);
   const current = standing.current === null ? null : floorTenth(standing.current);
   const letter = letterFor(current);
-  const hasMarks = Object.keys(grades.marks).length > 0;
+  const assumedMark = scenarioMark ?? Math.round(current ?? 70);
+  const projection = standing.complete ? null : gradeProjection(plan, percents, assumedMark);
+  const onlyItem = standing.unmarked.length === 1 ? plan.items.find((item) => item.id === standing.unmarked[0]) : null;
   // An optional bonus (PCS211) counts only once it is entered, in every figure.
   const unenteredBonus = plan.groups.find((group) => group.bonus && group.items.every((item) => typeof percents[item.id] !== 'number')) || null;
-  const answer = chosen ? needText(chosen.row, chosen.need, standing, plan) : 'Choose a grade to see exactly what it takes.';
-  const fieldId = (item, part) => `${baseId}-${item.id.replace(/[^a-z0-9-]/gi, '-')}-${part}`;
+  const answer = target ? needText(target, need, standing, plan) : '';
   const securedLetter = letterFor(floorTenth(standing.secured));
   const summary = current === null ? 'No marks entered.' : `Current average ${formatPercent(current)}, ${letter.letter}.`;
 
@@ -138,47 +144,19 @@ export default function Grades() {
       opened.current = true;
       return undefined;
     }
-    const message = cleared.current ? 'Marks cleared.' : [summary, chosen && !standing.complete ? answer : ''].filter(Boolean).join(' ');
+    const message = cleared.current ? 'Marks cleared.' : [summary, target && !standing.complete ? answer : ''].filter(Boolean).join(' ');
     cleared.current = false;
     const timer = setTimeout(() => setAnnouncement(message), 900);
     return () => clearTimeout(timer);
-  }, [grades.ready, summary, answer, chosen, standing.complete]);
+  }, [grades.ready, summary, answer, target, standing.complete]);
 
-  const setField = (item, field, raw) => {
-    const saved = splitMark(grades.marks[item.id]);
-    let next = { ...saved, [field]: clean(raw).replace(/\//g, field === 'outOf' ? '' : '/') };
-    // A slash in the mark field moves to "out of": typing 17/20 or pasting it fills both fields.
-    if (field === 'score' && next.score.includes('/')) {
-      const [score, ...rest] = next.score.split('/');
-      next = { score, outOf: rest.join('') || saved.outOf };
-      const outOf = document.getElementById(fieldId(item, 'out-of'));
-      outOf?.focus();
-      if (!rest.join('')) outOf?.select();
-    }
-    // An item graded out of a fixed total (CHY102's iClicker, out of 5) fills that total in.
-    if (field === 'score' && item.outOf && next.score && !next.outOf) next.outOf = String(item.outOf);
-    const marks = { ...grades.marks };
-    const text = joinMark(next);
-    if (text) marks[item.id] = text;
-    else delete marks[item.id];
-    update({ marks });
-  };
-  // Enter (or the phone keyboard's Next) moves to the next row's mark, from either field.
-  const nextRow = (event) => {
-    if (event.key !== 'Enter') return;
-    event.preventDefault();
-    const fields = [...document.querySelectorAll('[data-grade-score]')];
-    const own = event.currentTarget.closest('li')?.querySelector('[data-grade-score]');
-    const next = fields[fields.indexOf(own) + 1];
-    if (next) next.focus();
-    else event.currentTarget.blur();
-  };
   const clear = () => {
     // eslint-disable-next-line no-alert
-    if (!window.confirm(`Clear every mark you entered for ${course.code}? Your target grade is cleared too.`)) return;
+    if (!window.confirm(`Clear every mark you entered for ${course.code}? Your target grade is cleared too.`)) return false;
     cleared.current = true;
+    setScenarioMark(null);
     update({ marks: {}, target: null });
-    document.querySelector('[data-grade-score]')?.focus();
+    return true;
   };
 
   return (
@@ -190,7 +168,7 @@ export default function Grades() {
         </p>
       </div>
       <p className={styles.lede}>
-        Enter your marks as a percentage or a score, like 17 out of 20. The weights match{' '}
+        Enter a percentage or a score like 17/20. Course weights come from{' '}
         <Link href={`/${courseId}/#course-grading`} scroll={false}>
           Course info → Grading
         </Link>
@@ -199,139 +177,7 @@ export default function Grades() {
       <p className="sr-only" role="status" aria-live="polite">
         {announcement}
       </p>
-      {plan.variants ? (
-        <section className={styles.variants} aria-labelledby={`${baseId}-variants`}>
-          <h3 id={`${baseId}-variants`}>{plan.pick === 'choose' ? 'Your grading scheme' : 'Evaluation option'}</h3>
-          {plan.pick === 'choose' ? (
-            <div className={styles.variantGrid} role="group" aria-label="Grading scheme">
-              {plan.variants.map((variant) => (
-                <button key={variant.id} type="button" className={styles.variant} aria-pressed={plan.variant === variant.id} disabled={!grades.ready} onClick={() => update({ variant: variant.id })}>
-                  <span className={styles.variantTitle}>{variant.title}</span>
-                  <span className={styles.variantNote}>{variant.note}</span>
-                </button>
-              ))}
-            </div>
-          ) : (
-            <p className={styles.variantApplied} data-grade-option>
-              {optionSentence(plan, standing)}
-            </p>
-          )}
-          {plan.notes[0] ? <p className={workspace.meta}>{plan.notes[0]}</p> : null}
-        </section>
-      ) : null}
       <div className={styles.layout}>
-        <section className={styles.entries} aria-labelledby={`${baseId}-marks`}>
-          <div className={styles.entriesHeading}>
-            <h3 id={`${baseId}-marks`}>Your marks</h3>
-            <button type="button" className={styles.clear} onClick={clear} disabled={!hasMarks}>
-              Clear marks
-            </button>
-          </div>
-          {/* While the full summary is out of view (phones, short screens), the essentials stay above the marks. */}
-          <div className={styles.quick} aria-hidden="true" data-grade-quick>
-            <span className={styles.quickValue}>
-              {current === null ? '—' : formatPercent(current)}
-              {letter ? <strong>{letter.letter}</strong> : null}
-            </span>
-            <span className={styles.quickNote}>
-              {chosen && !standing.complete && chosen.need.status === 'reachable' ? `${chosen.row.letter} needs ${formatPercent(chosen.need.average)}` : `Best possible ${shown(standing.maximum)}`}
-            </span>
-          </div>
-          {plan.groups.map((group) => {
-            const groupStanding = standing.groups.find((entry) => entry.id === group.id);
-            return (
-              <div key={group.id} className={styles.group} data-grade-group={group.id}>
-                {/* A one-item group (a midterm, a final) is just its row; its title would repeat the row's. */}
-                {group.items.length > 1 ? (
-                  <>
-                    <div className={styles.groupHeading}>
-                      <h4>{group.title}</h4>
-                      <span>
-                        {groupStanding.average !== null ? <span className={styles.groupAverage}>Average {shown(groupStanding.average)} · </span> : null}
-                        {weight(group.weight)}
-                      </span>
-                    </div>
-                    {group.note ? <p className={workspace.meta}>{group.note}</p> : null}
-                  </>
-                ) : null}
-                <ul>
-                  {group.items.map((item) => {
-                    const { score, outOf } = splitMark(grades.marks[item.id]);
-                    const parsed = parseMark(score, outOf);
-                    // While the total is still being typed (8 / 1… on the way to 8 / 10), say nothing yet; a wrong
-                    // total shows once the field is left.
-                    const unfinished = typingTotal === item.id && parsed.field;
-                    const error = unfinished ? null : parsed.error;
-                    const dropped = standing.dropped.includes(item.id);
-                    let share = weight(item.weight);
-                    if (group.drop) share = `${weight(item.weight)} if kept`;
-                    if (group.bonus) share = `Bonus, up to ${weight(item.weight)}`;
-                    const details = [share, item.dateLabel, item.parts > 1 ? `${item.parts} submissions, one combined mark` : ''].filter(Boolean).join(' · ');
-                    let result = '';
-                    if (error) result = error;
-                    else if (parsed.percent !== null && dropped) result = `${shown(parsed.percent)} · Dropped`;
-                    else if (parsed.percent !== null && outOf) result = shown(parsed.percent);
-                    const resultId = fieldId(item, 'result');
-                    return (
-                      <li key={item.id} className={styles.row} data-dropped={dropped || undefined} data-invalid={error ? true : undefined}>
-                        <div className={styles.rowText}>
-                          <label htmlFor={fieldId(item, 'score')}>{item.title}</label>
-                          <span id={fieldId(item, 'details')} className={workspace.meta}>
-                            {details}
-                          </span>
-                        </div>
-                        <div className={styles.fields}>
-                          <input
-                            id={fieldId(item, 'score')}
-                            data-grade-score
-                            type="text"
-                            inputMode="decimal"
-                            enterKeyHint="next"
-                            autoComplete="off"
-                            spellCheck={false}
-                            placeholder="—"
-                            maxLength={9}
-                            value={score}
-                            disabled={!grades.ready}
-                            aria-invalid={error && parsed.field === 'score' ? true : undefined}
-                            aria-describedby={`${fieldId(item, 'details')} ${resultId}`}
-                            onChange={(event) => setField(item, 'score', event.target.value)}
-                            onKeyDown={nextRow}
-                          />
-                          <span className={styles.slash} aria-hidden="true">
-                            /
-                          </span>
-                          <input
-                            id={fieldId(item, 'out-of')}
-                            type="text"
-                            inputMode="decimal"
-                            enterKeyHint="next"
-                            autoComplete="off"
-                            spellCheck={false}
-                            placeholder={String(item.outOf ?? 100)}
-                            maxLength={7}
-                            value={outOf}
-                            disabled={!grades.ready}
-                            aria-label={`${item.title}: out of`}
-                            aria-invalid={error && parsed.field === 'outOf' ? true : undefined}
-                            aria-describedby={resultId}
-                            onChange={(event) => setField(item, 'outOf', event.target.value)}
-                            onKeyDown={nextRow}
-                            onFocus={() => setTypingTotal(item.id)}
-                            onBlur={() => setTypingTotal(null)}
-                          />
-                        </div>
-                        <span id={resultId} className={styles.result}>
-                          {result}
-                        </span>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            );
-          })}
-        </section>
         <div className={styles.side}>
           <section className={styles.standing} aria-labelledby={`${baseId}-standing`}>
             <h3 id={`${baseId}-standing`} className={workspace.eyebrow}>
@@ -346,8 +192,14 @@ export default function Grades() {
                 </span>
               ) : null}
             </div>
-            <p className={styles.headlineNote}>{headlineText(standing, current, plan)}</p>
-            <Meter standing={standing} target={target} />
+            {current === null ? (
+              <button type="button" className={styles.clear} disabled={!grades.ready} onClick={() => firstGroup.current?.focus()}>
+                Choose an assessment
+              </button>
+            ) : (
+              <p className={styles.headlineNote}>{headlineText(standing, current, plan)}</p>
+            )}
+            <Meter standing={standing} target={target} projection={projection} />
             <dl className={styles.stats}>
               <div>
                 <dt>Secured</dt>
@@ -368,6 +220,32 @@ export default function Grades() {
                 <dd className={workspace.meta}>of the course</dd>
               </div>
             </dl>
+            {projection !== null ? (
+              <div className={styles.simulator}>
+                <div className={styles.simulatorHeading}>
+                  <label htmlFor={`${baseId}-what-if`}>{onlyItem ? `What if I score this on ${named(onlyItem.title)}?` : 'What if I average this on the remaining work?'}</label>
+                  <output htmlFor={`${baseId}-what-if`}>{formatPercent(assumedMark)}</output>
+                </div>
+                <input
+                  id={`${baseId}-what-if`}
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value={assumedMark}
+                  disabled={!grades.ready}
+                  data-grade-slider
+                  aria-valuetext={`${formatPercent(assumedMark)}, projected course grade ${shown(projection)}`}
+                  onChange={(event) => setScenarioMark(Number(event.target.value))}
+                />
+                <div className={styles.projection}>
+                  <span>Projected course grade</span>
+                  <strong data-grade-projection>
+                    {shown(projection)} · {letterFor(projection).letter}
+                  </strong>
+                </div>
+              </div>
+            ) : null}
             {requirements.length ? (
               // PCS211: passing also needs 50% in THEORY and in LABORATORY.
               <ul className={styles.requirements} aria-label="Other pass requirements">
@@ -386,40 +264,65 @@ export default function Grades() {
           <section className={styles.targets} aria-labelledby={`${baseId}-targets`}>
             <h3 id={`${baseId}-targets`}>What do I need?</h3>
             {standing.complete ? (
-              <p className={styles.answer}>All marks are in. Clear a mark to try a different result.</p>
+              <p className={styles.answer}>All marks are in.</p>
             ) : (
               <>
-                <p className={workspace.meta}>Choose a grade. Each one shows the average you need on everything still to be marked.</p>
-                <div className={styles.grid} role="group" aria-label="Target grade">
-                  {needs.map(({ row, need }) => {
-                    let value = formatPercent(need.average ?? 0);
-                    let state = 'reachable';
-                    if (need.status === 'secured') [value, state] = ['Secured', 'secured'];
-                    if (need.status === 'unreachable') [value, state] = ['Out of reach', 'unreachable'];
-                    return (
-                      <button
-                        key={row.letter}
-                        type="button"
-                        className={styles.chip}
-                        data-state={state}
-                        aria-pressed={target === row}
-                        aria-label={`${row.letter}, ${row.min}% or more: ${state === 'reachable' ? `need ${value} average` : value.toLowerCase()}`}
-                        onClick={() => update({ target: target === row ? null : row.min })}
-                        disabled={!grades.ready}
-                      >
-                        <span className={styles.chipLetter}>{row.letter}</span>
-                        <span className={styles.chipMin}>{row.min}+</span>
-                        <span className={styles.chipNeed}>{value}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-                <p className={styles.answer} data-grade-answer>
-                  {answer}
-                </p>
+                <label htmlFor={`${baseId}-target`} className={workspace.meta}>
+                  Target grade
+                  <select
+                    id={`${baseId}-target`}
+                    className={styles.targetSelect}
+                    data-grade-target
+                    value={target?.min ?? ''}
+                    disabled={!grades.ready}
+                    onChange={(event) => update({ target: event.target.value ? Number(event.target.value) : null })}
+                  >
+                    <option value="">Choose a grade</option>
+                    {TARGETS.map((row) => (
+                      <option key={row.min} value={row.min}>
+                        {row.letter} · {row.min}%
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {target ? (
+                  <p className={styles.answer} data-grade-answer>
+                    {answer}
+                  </p>
+                ) : null}
               </>
             )}
           </section>
+        </div>
+        <div className={styles.markColumn}>
+          {plan.variants ? (
+            <section className={styles.variants} aria-labelledby={`${baseId}-variants`}>
+              <h3 id={`${baseId}-variants`}>{plan.pick === 'choose' ? 'Your grading scheme' : 'Evaluation option'}</h3>
+              {plan.pick === 'choose' ? (
+                <div className={styles.variantGrid} role="group" aria-label="Grading scheme">
+                  {plan.variants.map((variant) => (
+                    <button
+                      key={variant.id}
+                      type="button"
+                      className={styles.variant}
+                      aria-pressed={plan.variant === variant.id}
+                      disabled={!grades.ready}
+                      onClick={() => update({ variant: variant.id })}
+                    >
+                      <span className={styles.variantTitle}>{variant.title}</span>
+                      <span className={styles.variantNote}>{variant.note}</span>
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <p className={styles.variantApplied} data-grade-option>
+                  {optionSentence(plan, standing)}
+                </p>
+              )}
+              {plan.notes[0] ? <p className={workspace.meta}>{plan.notes[0]}</p> : null}
+            </section>
+          ) : null}
+          <GradeEntries key={plan.pick === 'choose' ? plan.variant : courseId} plan={plan} standing={standing} grades={grades} update={update} onClear={clear} firstGroup={firstGroup} />
         </div>
         <div className={styles.notes}>
           {plan.quizPolicy ? <p>{plan.quizPolicy}</p> : null}

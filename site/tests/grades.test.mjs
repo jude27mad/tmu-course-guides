@@ -12,6 +12,7 @@ import {
   formatPercent,
   gradeNeeded,
   gradePlan,
+  gradeProjection,
   gradeStanding,
   joinMark,
   letterFor,
@@ -233,6 +234,74 @@ test('needed with a quiz still to come accounts for the dropped quiz', () => {
   assert.ok(roundGrade(at(need.average - 0.1)) < 85);
 });
 
+test('a projected mark affects only ungraded work and can displace a dropped quiz', () => {
+  const plan = gradePlan('mth140');
+  const marks = Object.freeze({ 'quiz-1': 0, 'quiz-2': 80, 'quiz-3': 90, midterm: 70 });
+  // Midterm earns 28 course points. A 60 on quiz 4 displaces the 0 and a 60 on the final earns 27.
+  close(gradeProjection(plan, marks, 60), 28 + (80 + 90 + 60) * 0.05 + 27);
+  const standing = gradeStanding(plan, marks);
+  close(gradeProjection(plan, marks, 0), standing.secured);
+  close(gradeProjection(plan, marks, 100), standing.maximum);
+  const complete = { ...marks, 'quiz-4': 60, final: 0 };
+  close(gradeProjection(plan, complete, 100), gradeStanding(plan, complete).secured);
+});
+
+test('chemistry projections follow the chosen scheme and drop the lowest homework', () => {
+  const marks = { 'hw-1': 0, iclicker: 100 };
+  close(gradeProjection(gradePlan('chy102', { variant: 'scheme-1' }), marks, 60), 62);
+  close(gradeProjection(gradePlan('chy102', { variant: 'scheme-2' }), marks, 60), 60);
+});
+
+test('physics projections choose the higher eligible option at each hypothetical mark', () => {
+  const base = gradePlan('pcs211');
+  const marks = Object.fromEntries(base.items.filter((item) => item.id !== 'final' && item.id !== 'classquestion').map((item) => [item.id, 60]));
+  const plan = gradePlan('pcs211', { percents: marks });
+  // With WebAssign at 60, Option 1 wins below a 60 on the final and Option 2 wins above it.
+  close(gradeProjection(plan, marks, 20), 36 + 20 * 0.4);
+  close(gradeProjection(plan, marks, 80), 33 + 80 * 0.45);
+  const bonus = { ...marks, classquestion: 50 };
+  close(gradeProjection(gradePlan('pcs211', { percents: bonus }), bonus, 80), 70);
+  const perfect = { classquestion: 100 };
+  close(gradeProjection(gradePlan('pcs211', { percents: perfect }), perfect, 100), 100);
+
+  // A recorded final cannot give optional WebAssign a hypothetical mark if the student skipped it.
+  const skipped = { final: 20 };
+  const without = gradePlan('pcs211', { percents: skipped });
+  close(gradeProjection(without, skipped, 80), 20 * 0.45 + 80 * 0.55);
+  close(gradeProjection(without, skipped, 100), 64);
+  close(gradeStanding(without, skipped).maximum, 64);
+  assert.equal(gradeNeeded(without, skipped, 67).status, 'unreachable');
+});
+
+test('partially marked physics WebAssign can improve a completed core-work option', () => {
+  const required = gradePlan('pcs211').items.filter((item) => item.groupId !== 'webassign' && item.id !== 'classquestion');
+  const marks = { ...Object.fromEntries(required.map((item) => [item.id, 65])), 'webassign-1': 100 };
+  const plan = gradePlan('pcs211', { percents: marks });
+  const standing = gradeStanding(plan, marks);
+  assert.equal(standing.complete, false);
+  close(standing.secured, 65);
+  close(standing.maximum, 66.75);
+  close(gradeProjection(plan, marks, 100), 66.75);
+  const target = gradeNeeded(plan, marks, 67, standing);
+  assert.equal(target.status, 'reachable');
+  assert.equal(target.average, 93.8);
+  assert.equal(target.remaining, 4);
+
+  // When Option 2 leads, its own remaining weight is zero, but four optional marks can still change the grade.
+  const lower = { ...marks, 'webassign-1': 0 };
+  const other = gradePlan('pcs211', { percents: lower });
+  const pending = gradeStanding(other, lower);
+  assert.equal(other.variant, 'option-2');
+  assert.equal(pending.complete, false);
+  close(pending.remaining, 4);
+  assert.deepEqual(pending.unmarked, ['webassign-2', 'webassign-3', 'webassign-4', 'webassign-5']);
+  close(pending.projected, gradeProjection(other, lower, pending.current));
+  const finished = { ...lower, ...Object.fromEntries(pending.unmarked.map((id) => [id, 100])) };
+  const final = gradeStanding(gradePlan('pcs211', { percents: finished }), finished);
+  assert.equal(final.complete, true);
+  close(final.current, pending.maximum);
+});
+
 test('CEN100: every target can be checked against the 20 weighted items', () => {
   const plan = gradePlan('cen100');
   const percents = Object.fromEntries(plan.items.filter((item) => item.groupId !== 'exam').map((item) => [item.id, 75]));
@@ -240,6 +309,7 @@ test('CEN100: every target can be checked against the 20 weighted items', () => 
   close(standing.marked, 76);
   close(standing.current, 75);
   close(standing.secured, 57);
+  close(gradeProjection(plan, percents, 70), 73.8);
   const need = gradeNeeded(plan, percents, 80, standing);
   assert.equal(need.item.id, 'item:y9');
   assert.equal(need.average, ceilTenth((22.5 / 24) * 100));

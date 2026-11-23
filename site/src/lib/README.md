@@ -282,6 +282,7 @@ const standing = gradeStanding(plan, percents);
 // { secured: 32.25, maximum: 88 (the 85 is dropped if the other quizzes score 100), current: 71.67, projected: 71.67, marked: 45,
 //   remaining: 60 (three quizzes can still fill all 15%, plus the final), dropped: [], groups, unmarked, complete: false }
 gradeNeeded(plan, percents, 77, standing);       // { status: 'reachable', average: 80.5, item: null }; 'secured' | 'unreachable' | 'complete'
+gradeProjection(plan, percents, 80);            // projected course percentage if each remaining assessment scores 80%
 letterFor(79.5);                                 // { letter: 'A-', min: 80, points: 3.67 } (TMU rounds to a whole percentage first)
 parseMark('17', '20');                           // { percent: 85, error: null }; errors: 'Not a number', 'Over 100%', 'More than 20', 'Total can’t be 0'
 ```

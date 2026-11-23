@@ -234,7 +234,9 @@ await check('with the trial on, Page Down in a text field scrolls nothing, as to
   const { context, page, errors } = await open();
   try {
     await ready(page, 'mth140/?scroll=fast#grades');
-    const field = page.locator('main input[type="text"]').first();
+    await page.locator('[data-grade-group="quizzes"] [data-grade-toggle]').click();
+    await page.locator('[data-grade-edit="quiz-1"]').click();
+    const field = page.locator('[data-grade-score]');
     await field.waitFor();
     await field.evaluate((input) => input.focus({ preventScroll: true }));
     const before = await settled(page);
