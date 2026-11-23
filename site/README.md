@@ -97,12 +97,12 @@ No analytics and no requests to other hosts. Each exported page carries a Conten
 Giats's layout, moving window masks, typography, transitions and scrolling remain
 the application shell. The home windows contain one continuous signal field
 adapted from Pixels71's Kairo (`97426fdfa1f3bd812cf0acc364273c28a89f871e`).
-Next Up and the individual course headers reuse the original physics lanyard
-badges. Each position mounts only its relevant course: the Desk derives it from
-its live next deadline, and each course header uses its own course ID. The
-separate `/courses/` directory remains the place to browse every course.
+The hanging passes use React Bits' portrait Lanyard card and metal fittings,
+with a subject illustration printed for each course. The Desk shows the pass
+for the next deadline. Each course header has its own pass, and `/courses/`
+displays all five.
 
-`src/components/courseBadge/` owns the shared registry, original textures and
+`src/components/courseBadge/` owns the shared registry, course artwork and
 lanyards. `BadgeWorld` is mounted once beside `View.Port` in the existing shared
 canvas, independently of any first View. Stable instance slots keep bodies
 separate; changing the Desk course changes its face without replacing its

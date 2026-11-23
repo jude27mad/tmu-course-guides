@@ -355,7 +355,9 @@ test('the 3D badges carry a light rim in dark mode only', async () => {
   assert.equal(BADGE.rim, undefined);
   assert.deepEqual(BADGE_DARK, { ...BADGE, rim: TOKENS.mutedOnDark });
   const textures = await read('../src/components/courseBadge/badgeTextures.js');
-  assert.match(textures, /if \(rim\) \{\s*roundRect\(ctx, rimCard \/ 2, rimCard \/ 2, w - rimCard, h - rimCard, 34 - rimCard \/ 2\);\s*ctx\.strokeStyle = rim;\s*ctx\.globalAlpha = 0\.7;\s*ctx\.lineWidth = rimCard;/);
+  assert.ok(contrast(BADGE.color, BADGE.background) >= 4.5, 'the subject and course code read against the stock');
+  assert.ok(contrast(BADGE.onAccent, BADGE.accent) >= 4.5, 'the next date reads against its blue strip');
+  assert.match(textures, /if \(rim\) \{[\s\S]*?ctx\.strokeStyle = rim;[\s\S]*?ctx\.lineWidth = rimCard;[\s\S]*?ctx\.stroke\(\);/);
   assert.match(textures, /ctx\.globalAlpha = 0\.7;\s*ctx\.fillRect\(0, 0, canvas\.width, rimBand\);\s*ctx\.fillRect\(0, canvas\.height - rimBand, canvas\.width, rimBand\);/);
   const badge = await read('../src/components/courseBadge/CourseBadge.jsx');
   assert.match(badge, /\.\.\.\(dark \? \{ \.\.\.BADGE_DARK, rimCard, rimBand \} : BADGE\),/);
@@ -368,7 +370,6 @@ test('the badge rim is about one screen pixel at every size the badge is shown',
   // badgeRim.mjs works from how BadgeScene frames a badge; these must stay as it assumes.
   const scene = await read('../src/components/courseBadge/BadgeScene.jsx');
   assert.match(scene, /<PerspectiveCamera manual makeDefault position=\{\[0, 0, 10\]\} fov=\{25\} \/>/);
-  assert.match(scene, /<roundedBoxGeometry ref=\{mergeFaceGroups\} args=\{\[1\.6, 2\.25, 0\.02, 2, 0\.01\]\} \/>/);
   assert.match(scene, /resolution=\{\[1, 1\]\}[^\n]*lineWidth=\{1\}/);
   assert.equal(CARD_WIDTH / CARD_HEIGHT, 1.6 / 2.25);
   // The element sizes the badges are shown at: the Desk's Next up, a Courses card and a course page's header, on a

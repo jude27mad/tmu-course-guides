@@ -8,6 +8,7 @@ export const TOKENS = Object.freeze({
   raised: '#27272A', // a raised tile on a dark panel
   sheen: '#3F3F46', // the brightest point of a dark panel's sheen
   card: '#FFFFFF', // cards on dark panels, light pills
+  badgeStock: '#F7F4E9', // the lanyard's matte printed stock
   onDark: '#FAFAFA', // text on dark
   muted: '#71717A', // muted text on light
   mutedOnDark: '#A1A1AA', // muted text on dark
@@ -66,20 +67,16 @@ export const prefersDark = () => typeof matchMedia === 'function' && matchMedia(
    to 5%, where only the paper's light edge still shows, so `dimmed` keeps that. */
 export const pageEdgeColor = (dimmed = false) => (prefersDark() && !dimmed ? DARK.pageEdge : TOKENS.page);
 
-/* The printed colours of the lanyard ID badge (card, clip slot, strap, metal clip).
-   Identical for every course; only the text differs. The game uses original emoji artwork. */
+/* The physical pass keeps its stock and blue ink in either theme. Only its silhouette uses the dark-mode rim. */
 export const BADGE = Object.freeze({
-  background: TOKENS.ink, // the badge card and its edge
-  color: TOKENS.onDark, // course code and next date
-  secondary: TOKENS.mutedOnDark, // index, term, name, "Next"
-  divider: TOKENS.borderOnDark, // the hairline above the next date
-  slot: TOKENS.raised, // the clip slot
-  strap: TOKENS.raised, // the lanyard band
-  strapColor: TOKENS.mutedOnDark, // the course code printed on the band
-  clip: TOKENS.mutedOnDark, // the metal clip
+  background: TOKENS.badgeStock,
+  color: TOKENS.text,
+  accent: TOKENS.accent,
+  onAccent: TOKENS.onAccent,
+  strap: TOKENS.raised,
+  strapColor: TOKENS.onDark,
+  clip: TOKENS.mutedOnDark,
 });
-/* The badge in dark mode: the same print, with a soft light rim round the card and along the strap, so the lit ink
-   card stands apart from the ink behind it (the edge every other object has in dark mode). */
 export const BADGE_DARK = Object.freeze({ ...BADGE, rim: TOKENS.mutedOnDark });
 
 /* The Desk's signal field (components/artwork/signalField.mjs): its panel, its points and the points a pulse

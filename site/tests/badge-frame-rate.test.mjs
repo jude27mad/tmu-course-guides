@@ -151,16 +151,32 @@ test('with motion off, a window first seen off screen still gets its strap when 
   } finally { rig.dispose(); }
 });
 
-test('the card draws its edges and faces as two groups covering every vertex', async () => {
-  const { RoundedBoxGeometry } = await import('three/examples/jsm/geometries/RoundedBoxGeometry.js');
-  const geometry = new RoundedBoxGeometry(1.6, 2.25, 0.02, 2, 0.01);
-  const before = geometry.groups.map((group) => ({ ...group }));
-  const merge = source.slice(source.indexOf('function mergeFaceGroups('), source.indexOf('\n}\n', source.indexOf('function mergeFaceGroups(')) + 2);
-  new Function(`${merge}\nreturn mergeFaceGroups;`)()(geometry);
-  assert.deepEqual(geometry.groups, [
-    { start: before[0].start, count: before[4].start - before[0].start, materialIndex: 0 },
-    { start: before[4].start, count: before[5].start + before[5].count - before[4].start, materialIndex: 1 },
-  ]);
-  assert.equal(geometry.groups[1].start + geometry.groups[1].count, geometry.getAttribute('position').count);
-  geometry.dispose();
+test('both printed faces pick at their real positions and the hardware slot is open', async () => {
+  const { createPassGeometry } = await import('../src/components/courseBadge/lanyardGeometry.mjs');
+  const { card, hardware } = createPassGeometry(1.45);
+  const material = new THREE.MeshBasicMaterial();
+  const mesh = new THREE.Mesh(card, [material, material]);
+  const pick = (x, y, side) => new THREE.Raycaster(
+    new THREE.Vector3(x, y, side),
+    new THREE.Vector3(0, 0, -side),
+  ).intersectObject(mesh, false)[0];
+  try {
+    card.computeBoundingBox();
+    const dimensions = card.boundingBox.getSize(new THREE.Vector3());
+    assert.ok(Math.abs(dimensions.x - 1.6) < 0.002 && Math.abs(dimensions.y - 2.25) < 0.002,
+      'the printable card fits the existing viewport and dynamic collider');
+    for (const side of [1, -1]) {
+      assert.equal(pick(0, 0.995, side), undefined, 'a pointer can see through the punched slot');
+      const hit = pick(0.4, 0.2, side);
+      assert.ok(hit, 'the printed face receives a drag');
+      assert.ok(Math.abs(hit.uv.x - (0.5 + side * 0.4 / 1.6)) < 0.001, 'the back reads left to right when turned over');
+      assert.ok(Math.abs(hit.uv.y - (0.5 + 0.2 / 2.25)) < 0.001, 'the artwork stays upright');
+    }
+    assert.equal(card.groups.length, 2, 'faces and beveled edge require only two draw calls');
+    assert.ok(hardware.getAttribute('position').count > 0 && hardware.groups.length <= 1, 'ring and clasp share one hardware draw');
+  } finally {
+    material.dispose();
+    card.dispose();
+    hardware.dispose();
+  }
 });
