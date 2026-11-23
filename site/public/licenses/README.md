@@ -1,5 +1,13 @@
 # Code provenance and licences
 
+## React Bits course passes
+
+The rounded pass, hardware, and woven strap surface are adapted from David Haz's
+[Lanyard component](https://github.com/DavidHDev/react-bits/blob/424f86f38cc9581653c6d3c4e241a5fff2b91b16/src/content/Components/Lanyard/Lanyard.jsx).
+The guide supplies its course artwork and runs the pass on its existing physics rig.
+The upstream [MIT + Commons Clause notice](React-Bits-Lanyard.txt) applies to
+the adapted React Bits portions.
+
 ## Fluent Emoji game artwork
 
 The slicing game's rocket, brain, laptop, books, hot beverage and gear are the

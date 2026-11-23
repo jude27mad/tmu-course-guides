@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import useMediaQuery from '@src/hooks/useMediaQuery';
 import useWebGL from '@src/hooks/useWebGL';
 import { useBadgeRegistry } from './BadgeProvider';
+import StaticPass from './StaticPass';
 import { rimTexels } from './badgeRim.mjs';
 import styles from './badge.module.scss';
 
@@ -50,11 +51,9 @@ export default function CourseBadge({ instanceId, courseId, motionGroup, next, r
   const look = useMemo(
     () => ({
       ...(dark ? { ...BADGE_DARK, rimCard, rimBand } : BADGE),
-      index: course.index,
       code: course.code,
       name: course.name,
-      term: course.term,
-      nextLabel: 'Next',
+      nextLabel: ready && (next?.dateLabel || next?.when) ? 'NEXT DEADLINE' : 'COURSE GUIDE',
       nextValue: ready ? next?.dateLabel || next?.when || 'No upcoming deadlines' : 'Open guide',
     }),
     [course, next?.dateLabel, next?.when, ready, dark, rimCard, rimBand],
@@ -90,8 +89,7 @@ export default function CourseBadge({ instanceId, courseId, motionGroup, next, r
   return (
     <div ref={root} className={clsx(styles.root, className)} data-course-badge={courseId} data-badge-instance={instanceId} data-badge-pending={webgl && waiting ? '' : undefined} aria-hidden="true">
       <div className={styles.fallback} data-badge-fallback>
-        <strong>{course.code}</strong>
-        <span>{course.name}</span>
+        <StaticPass look={look} />
       </div>
     </div>
   );

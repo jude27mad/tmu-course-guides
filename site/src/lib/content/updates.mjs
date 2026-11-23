@@ -153,6 +153,13 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-11-23-course-passes",
+  "date": "November 23, 2026",
+  "title": "A pass for each course",
+  "text": "Each hanging pass now has a larger course code and its own subject illustration. Pull the pass and release it to watch it swing. On a phone, start the drag sideways.",
+  "items": []
+ },
+ {
   "id": "2026-11-23-grade-assessment-picker",
   "date": "November 23, 2026",
   "title": "Choose an assessment in Grades",

@@ -5,18 +5,18 @@ import { BallCollider, CuboidCollider, Physics, RigidBody, useBeforePhysicsStep,
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import { PerspectiveCamera } from '@react-three/drei';
 import BadgeViewport, { createBadgeLayout } from '@src/components/courseBadge/BadgeViewport';
-import { bandTexture, cardTexture, loadBadgeFonts, redrawCard } from '@src/components/courseBadge/badgeTextures';
+import { bandTexture, cardTexture, loadBadgeFonts, printScale, redrawCard } from '@src/components/courseBadge/badgeTextures';
 import { extend, useFrame, useThree } from '@react-three/fiber';
 import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 
-import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import useStill from '@src/hooks/useStill';
 import useScroll from '@src/hooks/useScroll';
 import { easeFor, frameShare } from '@src/utils/frameStep.mjs';
 import { bindBadgeDrag } from './badgeDrag.mjs';
 import { createBadgeGrab } from './badgeGrab.mjs';
+import { createPassGeometry } from './lanyardGeometry.mjs';
 
-extend({ MeshLineGeometry, MeshLineMaterial, RoundedBoxGeometry });
+extend({ MeshLineGeometry, MeshLineMaterial });
 
 // Original Giats motion, copied from upstream 1e0b7b0. Page placement only
 // translates each rig; it must never tune the simulation (see giats-motion tests).
@@ -42,16 +42,6 @@ const REST_START = [
 ];
 const segmentProps = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 2, linearDamping: 2 };
 const GRAVITY = [0, -40, 0];
-
-// RoundedBox draws six groups (right, left, top, bottom, front, back). The four
-// edges share one material and the two faces another, so draw two groups.
-function mergeFaceGroups(geometry) {
-  if (geometry?.groups.length !== 6) return;
-  const [right, , , bottom, front, back] = geometry.groups;
-  geometry.clearGroups();
-  geometry.addGroup(right.start, bottom.start + bottom.count - right.start, 0);
-  geometry.addGroup(front.start, back.start + back.count - front.start, 1);
-}
 
 function Lanyard({ body, x, rest, intersected }) {
   const { fixed, card } = body;
@@ -179,27 +169,42 @@ function GrabController({ body, rest }) {
 // props changed re-renders.
 const LanyardRig = memo(Lanyard);
 
-function useBadgeTextures(look) {
+function useBadgeTextures(look, element) {
   const [textures, setTextures] = useState(null);
   const invalidate = useThree((state) => state.invalidate);
   const lookRef = useRef(look);
   lookRef.current = look;
 
   useEffect(() => {
+    if (!element) return undefined;
     let cancelled = false;
     let made = null;
+    let observer;
     loadBadgeFonts().then(() => {
       if (cancelled) return;
-      made = { code: lookRef.current.code, card: cardTexture(lookRef.current), band: bandTexture(lookRef.current) };
-      setTextures(made);
-      invalidate();
+      const band = bandTexture(lookRef.current);
+      const sizePrint = () => {
+        const density = printScale(element.clientHeight);
+        if (cancelled || density === made?.density) return;
+        const previous = made?.card;
+        made = { code: lookRef.current.code, card: cardTexture(lookRef.current, density), band, density };
+        setTextures(made);
+        previous?.dispose();
+        invalidate();
+      };
+      sizePrint();
+      if (typeof ResizeObserver !== 'undefined') {
+        observer = new ResizeObserver(sizePrint);
+        observer.observe(element);
+      }
     });
     return () => {
       cancelled = true;
+      observer?.disconnect();
       made?.card.dispose();
       made?.band.dispose();
     };
-  }, [look.code, look.background, look.color, look.strap, look.strapColor, look.rim, look.rimBand, invalidate]);
+  }, [element, look.code, look.background, look.color, look.strap, look.strapColor, look.rim, look.rimBand, invalidate]);
 
   // the next date changes on the card face without a new texture
   useEffect(() => {
@@ -213,10 +218,10 @@ function useBadgeTextures(look) {
 }
 
 // One window's card and band, drawn from its lanyard in the shared world.
-function BadgeCard({ body, offsetX, look, idle, element, layout, maxSpeed = 50, minSpeed = 10 }) {
+function BadgeCard({ body, offsetX, look, geometry, idle, element, layout, maxSpeed = 50, minSpeed = 10 }) {
   const band = useRef();
   const card = useRef();
-  const textures = useBadgeTextures(look);
+  const textures = useBadgeTextures(look, element);
   const camera = useThree((state) => state.camera);
   const faceMesh = useRef();
 
@@ -274,21 +279,6 @@ function BadgeCard({ body, offsetX, look, idle, element, layout, maxSpeed = 50, 
     c.curveType = 'chordal';
     return c;
   });
-
-  const materials = useMemo(() => {
-    if (!textures) return null;
-    // the merged RoundedBox groups: edges, then front and back
-    const edge = new THREE.MeshStandardMaterial({ color: look.background, roughness: 0.5, metalness: 0.4 });
-    const face = new THREE.MeshPhysicalMaterial({ map: textures.card, alphaTest: 0.5, clearcoat: 1, clearcoatRoughness: 0.15, roughness: 0.5, metalness: 0.4 });
-    return [edge, face];
-  }, [textures, look.background]);
-
-  useEffect(
-    () => () => {
-      if (materials) materials.forEach((material) => material.dispose());
-    },
-    [materials],
-  );
 
   useFrame((_, delta) => {
     // The explicit Pause motion control retains its pose. Offscreen placement
@@ -368,20 +358,14 @@ function BadgeCard({ body, offsetX, look, idle, element, layout, maxSpeed = 50, 
   return (
     <>
       <group ref={card} visible={!!textures}>
-        {materials && (
-          <mesh ref={faceMesh} material={materials}>
-            {/* three's RoundedBoxGeometry (as the MagicBall boxes): per-face UVs, so the back reads the right way round */}
-            <roundedBoxGeometry ref={mergeFaceGroups} args={[1.6, 2.25, 0.02, 2, 0.01]} />
+        {textures && (
+          <mesh ref={faceMesh} geometry={geometry.card}>
+            <meshStandardMaterial attach="material-0" map={textures.card} roughness={0.85} metalness={0} toneMapped={false} />
+            <meshPhysicalMaterial attach="material-1" color={look.background} roughness={0.35} clearcoat={1} clearcoatRoughness={0.08} />
           </mesh>
         )}
-        {/* clamp and clip ring */}
-        <mesh position={[0, 1.2, 0]}>
-          <boxGeometry args={[0.42, 0.16, 0.07]} />
-          <meshStandardMaterial color={look.clip} metalness={0.6} roughness={0.35} />
-        </mesh>
-        <mesh position={[0, 1.36, 0]}>
-          <torusGeometry args={[0.1, 0.028, 12, 24]} />
-          <meshStandardMaterial color={look.clip} metalness={0.6} roughness={0.35} />
+        <mesh geometry={geometry.hardware}>
+          <meshStandardMaterial color={look.clip} metalness={0.45} roughness={0.16} />
         </mesh>
       </group>
       <mesh ref={band} visible={!!textures}>
@@ -458,32 +442,47 @@ function ClipToCard({ layout, element }) {
   return null;
 }
 
-export function BadgeView({ entry, look, rest }) {
+export function BadgeView({ entry, look, geometry, rest }) {
   const [layout] = useState(createBadgeLayout);
   return (
     // Drawing follows current bounds; the observer still gates only Giats's
     // original scroll impulse, independently of the continuously running world.
     <BadgeViewport element={entry.element} layout={layout}>
       <PerspectiveCamera manual makeDefault position={[0, 0, 10]} fov={25} />
-      <ambientLight intensity={Math.PI} />
-      <BadgeCard key={entry.id} body={entry.body} offsetX={entry.slot * SPACING} look={look} idle={rest} element={entry.element} layout={layout} />
+      <ambientLight intensity={2.1} />
+      <BadgeCard key={entry.id} body={entry.body} offsetX={entry.slot * SPACING} look={look} geometry={geometry} idle={rest} element={entry.element} layout={layout} />
       <ClipToCard layout={layout} element={entry.element} />
-      <ambientLight intensity={1.3} />
-      <directionalLight position={[5, 5, 5]} intensity={1.5} />
-      <directionalLight position={[-5, 5, 5]} intensity={1} />
-      <directionalLight position={[0, 5, -5]} intensity={2} />
+      <directionalLight position={[-2.5, 4, 6]} intensity={1.3} />
+      <directionalLight position={[3, -1, -4]} intensity={1.2} />
     </BadgeViewport>
   );
 }
 
 // Likewise, only the windows whose drawing inputs changed re-render.
-const sameView = (a, b) => a.look === b.look && a.rest === b.rest && a.entry.id === b.entry.id && a.entry.element === b.entry.element && a.entry.body === b.entry.body && a.entry.slot === b.entry.slot;
+const sameView = (a, b) =>
+  a.look === b.look &&
+  a.geometry === b.geometry &&
+  a.rest === b.rest &&
+  a.entry.id === b.entry.id &&
+  a.entry.element === b.entry.element &&
+  a.entry.body === b.entry.body &&
+  a.entry.slot === b.entry.slot;
 const BadgeWindow = memo(BadgeView, sameView);
 
 export function BadgeWorld({ registry }) {
   const { entries, rigs } = useSyncExternalStore(registry.subscribe, registry.getState, registry.getState);
   const rest = useStill();
-  if (!entries.length) return null;
+  const hasBadges = entries.length > 0;
+  // All five passes share one set of uploaded vertex buffers across their views.
+  const geometry = useMemo(() => (hasBadges ? createPassGeometry(JOINT) : null), [hasBadges]);
+  useEffect(
+    () => () => {
+      geometry?.card.dispose();
+      geometry?.hardware.dispose();
+    },
+    [geometry],
+  );
+  if (!hasBadges) return null;
   return (
     <>
       <Physics paused={rest} interpolate gravity={GRAVITY} timeStep={1 / 60}>
@@ -491,7 +490,7 @@ export function BadgeWorld({ registry }) {
           <LanyardRig key={rig.id} body={rig.body} x={rig.slot * SPACING} rest={rest} intersected={rig.swing} />
         ))}
       </Physics>
-      {entries.map((entry) => entry.look && <BadgeWindow key={entry.id} entry={entry} look={entry.look} rest={rest} />)}
+      {entries.map((entry) => entry.look && <BadgeWindow key={entry.id} entry={entry} look={entry.look} geometry={geometry} rest={rest} />)}
     </>
   );
 }

@@ -234,7 +234,7 @@ async function checkBrowser(site) {
   // colours, and the accent never on a large surface.
   const sweep = async (label) => {
     const problems = await page.evaluate(
-      ({ old, saturated, accent }) => {
+      ({ old, saturated, accent, badgeStock }) => {
         const found = [];
         const hsl = (r, g, b) => {
           const [R, G, B] = [r / 255, g / 255, b / 255];
@@ -267,6 +267,8 @@ async function checkBrowser(site) {
               const [r, g, b, a = 1] = match[1].split(/[\s,/]+/).filter(Boolean).map(Number);
               if (a === 0) continue;
               const key = `${r}, ${g}, ${b}`;
+              // Only the physical pass's stock may use its warm paper colour.
+              if (property === 'fill' && key === badgeStock && el.matches('[data-badge-fallback] > svg > rect:first-child')) continue;
               const { h, s, l } = hsl(r, g, b);
               if (old.includes(key)) found.push(`${describe(el)} ${property}: old colour rgb(${key})`);
               else if (s > 0.25 && l > 0.08 && l < 0.97 && !saturated.includes(key)) found.push(`${describe(el)} ${property}: rgb(${key}) is not a palette colour${h >= 40 && h <= 100 ? ' (yellow)' : ''}`);
@@ -276,7 +278,7 @@ async function checkBrowser(site) {
         }
         return Array.from(new Set(found));
       },
-      { old: OLD_RGB, saturated: SATURATED, accent: ACCENT },
+      { old: OLD_RGB, saturated: SATURATED, accent: ACCENT, badgeStock: rgbOf(TOKENS.badgeStock) },
     );
     assert.deepEqual(problems.slice(0, 30), [], `${label}: colours outside the palette`);
   };

@@ -17,14 +17,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    gap: 0.5em;
-    padding: 12px;
     background: var(--card);
     color: var(--text);
-    text-align: center;
-    strong { font-size: clamp(16px, 3vw, 48px); }
-    span { font-size: 12px; }
+    svg {
+      display: block;
+      width: auto;
+      height: 85%;
+      max-width: 90%;
+      aspect-ratio: 512 / 720;
+      border-radius: 5% / 3.6%;
+      overflow: hidden;
+      outline: 1px solid var(--border);
+    }
     // Fades in only if the 3D badge has not drawn in time (CourseBadge.jsx).
     transition: opacity 0.4s ease-out;
     // Dark mode: an ink card that fills its window, so it carries the window's edge itself.
