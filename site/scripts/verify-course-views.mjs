@@ -770,7 +770,7 @@ try {
       await zoomContext.close();
     }
   });
-  await check('grade calculator: marks update the standing, survive reload and stay per course', async () => {
+  await check('grade calculator: edit marks, explore projections and restore saved standing per course', async () => {
     await ready(page, 'mth140/');
     // The calculator reads saved marks when its view opens.
     await page.evaluate(() => ['mth140', 'mth141', 'cen100'].forEach((id) => localStorage.removeItem(`${id}-grades-v1`)));
@@ -778,12 +778,17 @@ try {
     await page.getByRole('heading', { name: 'Grade calculator', exact: true }).waitFor();
     const current = page.locator('[data-grade-current]');
     assert.match(await current.innerText(), /—/);
-    // 17 out of 20 typed into the mark field fills both fields; the midterm as a percentage.
+    assert.equal(await page.locator('[data-grade-score]:visible').count(), 0, 'no mark fields before selecting an assessment');
+    await page.locator('[data-grade-group="quizzes"] [data-grade-toggle]').click();
+    await page.locator('[data-grade-edit="quiz-1"]').click();
+    // A fraction entered in the mark field fills both parts of the one open editor.
     const quiz = page.getByLabel('Lab Quiz 1', { exact: true });
     await quiz.fill('17/20');
     assert.equal(await quiz.inputValue(), '17');
     assert.equal(await page.getByLabel('Lab Quiz 1: out of').inputValue(), '20');
     // Typed key by key, the slash moves to the total.
+    await page.locator('[data-grade-edit="quiz-2"]').click();
+    assert.equal(await page.locator('[data-grade-score]:visible').count(), 1);
     const second = page.getByLabel('Lab Quiz 2', { exact: true });
     await second.pressSequentially('9/10');
     assert.equal(await second.inputValue(), '9');
@@ -797,6 +802,7 @@ try {
         if (document.querySelector('[data-grades] li[data-invalid], [data-grades] [aria-invalid="true"]')) window.qaGradeErrors.push(document.activeElement?.value);
       }).observe(document.querySelector('[data-grades]'), { subtree: true, attributes: true, childList: true, characterData: true });
     });
+    await page.locator('[data-grade-edit="quiz-3"]').click();
     const third = page.getByLabel('Lab Quiz 3', { exact: true });
     await third.pressSequentially('8/10', { delay: 40 });
     await page.getByLabel('Lab Quiz 3: out of').pressSequentially('0', { delay: 40 });
@@ -807,11 +813,19 @@ try {
     assert.equal(await page.getByLabel('Lab Quiz 3', { exact: true }).getAttribute('aria-invalid'), 'true', '8 out of 1 is flagged after leaving the field');
     await third.fill('');
     await page.getByLabel('Lab Quiz 3: out of').fill('');
+    await page.locator('[data-grade-group="midterm"] [data-grade-toggle]').click();
     await page.getByLabel('Midterm Test', { exact: true }).fill('70');
     // (85 × 5 + 70 × 40) / 45 = 71.66… → shown rounded down as 71.6%, a B- (72 after TMU rounding).
     await page.waitForFunction(() => /71\.6%/.test(document.querySelector('[data-grade-current]').textContent));
     assert.match(await current.innerText(), /B-/);
-    await page.getByRole('button', { name: /^B\+, 77% or more/ }).click();
+    const savedMarks = await page.evaluate(() => localStorage.getItem('mth140-grades-v1'));
+    const slider = page.locator('[data-grade-slider]');
+    await slider.focus();
+    await slider.press('End');
+    await page.waitForFunction(() => /88%/.test(document.querySelector('[data-grade-projection]')?.textContent || ''));
+    assert.match(await current.innerText(), /71\.6%/);
+    assert.equal(await page.evaluate(() => localStorage.getItem('mth140-grades-v1')), savedMarks, 'a forecast never overwrites recorded grades');
+    await page.locator('[data-grade-target]').selectOption('77');
     assert.match(await page.locator('[data-grade-answer]').innerText(), /For a B\+ \(77%\), you need an average of at least/);
     const field = await page.getByLabel('Midterm Test', { exact: true }).boundingBox();
     assert.ok(field.height >= 44 && field.width >= 44, JSON.stringify(field));
@@ -820,7 +834,8 @@ try {
     await page.reload();
     await page.getByRole('heading', { name: 'Grade calculator', exact: true }).waitFor();
     await page.waitForFunction(() => /71\.6%/.test(document.querySelector('[data-grade-current]')?.textContent || ''));
-    assert.equal(await page.getByRole('button', { name: /^B\+, 77% or more/ }).getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.locator('[data-grade-target]').inputValue(), '77');
+    assert.equal(await page.locator('[data-grade-score]:visible').count(), 0);
     // Each course keeps its own marks.
     await ready(page, 'mth141/#grades');
     await page.getByRole('heading', { name: 'Grade calculator', exact: true }).waitFor();

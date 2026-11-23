@@ -153,6 +153,13 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-11-23-visual-grade-calculator",
+  "date": "November 23, 2026",
+  "title": "Visual grade calculator",
+  "text": "Open Grades to see your standing, move a slider to preview a final grade, or choose a target letter to find the score you need. Tap an assessment to enter its mark. Scores you try on the slider stay separate from your recorded marks.",
+  "items": []
+ },
+ {
   "id": "2026-11-23-course-sections-removed",
   "date": "November 23, 2026",
   "title": "Section details removed from three guides",

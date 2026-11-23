@@ -16,6 +16,7 @@ export {
   PASS_MARK,
   gradePlan,
   gradeStanding,
+  gradeProjection,
   gradeNeeded,
   gradeRequirements,
   letterFor,

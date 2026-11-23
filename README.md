@@ -16,7 +16,7 @@ No account, installation or download is needed.
 4. **Open your work.** Each guide starts with a compact **Work** list. Use **Open**, **All** or **Done**, then open an assignment for its dates, requirements, checklist and notes. **Back** restores your filter and place in the list. Past-due and undated work stay visible.
 5. **Check the schedule.** **Schedule** has an agenda for phones and a calendar on wider screens. Both open the same assignment details. **All dates** includes earlier deadlines. Times are in Toronto; a quiz week or unconfirmed date is labelled as such.
 6. **Record progress in the details.** Tick preparation steps as you finish them, and mark each submission separately under **My plan & completion**. Math guides also have **Study** for topic material; **Course info** holds grading, contacts and policies.
-7. **Calculate your grade.** **Grades** has a grade calculator with the course's own weights. Enter marks as a percentage or a score (17 / 20) to see your current average and letter, what you have secured, the best grade still possible, and the average you need on the rest for each letter.
+7. **Calculate your grade.** Open **Grades** to see your weighted average and how much of the course is still open. Tap an assessment to enter a mark, move the slider to try a future score, or choose a target letter to see what you need.
 
 ## Pages
 
@@ -46,10 +46,10 @@ These controls are separate on purpose:
 
 Each guide's **Grades** tab uses the same weights as **Course info → Grading**:
 
-- **Marks.** Type a percentage, or a score and its total (17 / 20). Typing 17/20 in the first box fills both. Leave a box empty for work that isn't marked yet; an empty box is different from 0.
+- **Marks.** Open an assessment to enter a percentage or a score such as 17/20. Expand a category to reach its individual marks. Leave ungraded work blank. Entering 0 records a graded assessment worth zero points.
 - **Your standing.** The current average is your grade on the work marked so far; keep it on the rest and it becomes your final grade. (In MTH140 and MTH141 you can finish a little higher, because a low quiz that counts now may be dropped later; the calculator says so when that happens.) **Secured** is what you have already earned even with 0 on everything left, **Best possible** assumes 100 on everything left, and **Still to be marked** is the share of the course not yet decided. In CHY102 the lowest of the 11 graded homework assignments is dropped in the same way.
-- **On phones** the marks come first, with your average and letter kept in view above them as you scroll; the full summary and **What do I need?** follow the marks. On wider screens the summary sits beside the marks.
-- **What do I need?** Each letter shows the average you need on everything still to be marked, or whether it is already secured or out of reach. Choose one for a sentence that names the item when only one is left, such as the final exam.
+- **What if?** The slider previews your final grade at different scores on the remaining work. The marker on the course meter moves with the estimate. Your recorded marks stay separate from the preview.
+- **Target grade.** Choose a letter to see the average you need on the remaining work. When only one assessment is left, the calculator names it. It also tells you when a target is already secured or out of reach.
 - **Dropped quizzes.** In MTH140 and MTH141 the lowest lab quiz is dropped, as the course policies state, and in CHY102 the lowest homework. An item shows as Dropped once more are entered than count.
 - **Schemes and options.** CHY102 has two grading schemes: choose the one you are enrolled in (Scheme 1 unless you opted into Scheme 2 by September 18). PCS211 applies whichever evaluation option gives you the higher grade, as the course does, and also shows your THEORY and LABORATORY grades against their 50% minimums. PCS211's ClassQuestion bonus adds up to 2% on top.
 - **Letters.** TMU's undergraduate scale, with the university's rounding: the final percentage is rounded to a whole number before it becomes a letter, so 79.5% is an A-. Some programs, including engineering, require more than a D- in particular courses.
