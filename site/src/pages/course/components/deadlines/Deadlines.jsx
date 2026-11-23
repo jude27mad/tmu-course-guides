@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { openPicker, useCourse } from '@src/pages/course/hooks/useCourseState';
+import { useCourse } from '@src/pages/course/hooks/useCourseState';
 
 import AppearByWords from '@src/components/animationComponents/appearByWords/Index';
 import AppearTitle from '@src/components/animationComponents/appearTitle/Index';
@@ -43,7 +43,6 @@ function Details({ item, now }) {
       {item.requirement ? <p className="p-l">{item.requirement}</p> : null}
       {item.detail && item.detail !== item.requirement ? <p className={clsx('p-x', styles.meta)}>{item.detail}</p> : null}
       <div className={styles.actions}>
-        {item.cta ? <ButtonLink onClick={openPicker} label={item.cta.toUpperCase()} /> : null}
         <ButtonLink href={`#${item.anchor}`} label="VIEW REQUIREMENTS" ariaLabel={`View requirements for ${item.title}`} />
         {item.markable && !item.done && pendingUndo !== item.id ? <ButtonLink primary onClick={() => markDone(item.id)} label="MARK DONE" ariaLabel={`Mark ${item.title} done`} /> : null}
         {pendingUndo === item.id ? <ButtonLink onClick={undo} label="UNDO" /> : null}

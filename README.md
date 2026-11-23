@@ -12,7 +12,7 @@ No account, installation or download is needed.
 
 1. **Start at the Desk.** The home page shows the next deadline across all your courses, with a live countdown, **Mark done** and **Undo**.
 2. **Open a guide.** Tap the Desk's next deadline, tap a course card on **Courses**, or use the **Menu**.
-3. **Set your section at the top.** Choose your section (and your Innovation Challenge group in CEN100). Quiz dates, lab times, rooms and contacts then match your section. The choice is remembered in this browser. CHY102 and PCS211 have no section to choose: their dates are the same for everyone, and Course info lists the class times.
+3. **Find your lab details.** MTH140 and MTH141 show the published quiz weeks. Check D2L for your lab date and room. In CEN100, you can select your Innovation Challenge group for group-specific submission instructions.
 4. **Open your work.** Each guide starts with a compact **Work** list. Use **Open**, **All** or **Done**, then open an assignment for its dates, requirements, checklist and notes. **Back** restores your filter and place in the list. Past-due and undated work stay visible.
 5. **Check the schedule.** **Schedule** has an agenda for phones and a calendar on wider screens. Both open the same assignment details. **All dates** includes earlier deadlines. Times are in Toronto; a quiz week or unconfirmed date is labelled as such.
 6. **Record progress in the details.** Tick preparation steps as you finish them, and mark each submission separately under **My plan & completion**. Math guides also have **Study** for topic material; **Course info** holds grading, contacts and policies.
@@ -24,8 +24,8 @@ No account, installation or download is needed.
 |---|---|
 | **Desk** | Your next deadline across all courses, with a live countdown and Mark done. |
 | **Courses** | All five course guides in one list, each with its next date. |
-| **CEN100, MTH140, MTH141** | Work, Schedule, Grades and Course info, with Study in the math courses. One detail view per assignment, plus section selection and guide tools at the top. |
-| **CHY102, PCS211** | The same views as the math guides, written from the Fall 2026 outlines: CHY102's Mastering Chemistry homework, both midterms and exam wrappers; PCS211's labs and tutorials in their two-week windows and the midterm. Guide tools at the top; no section to choose. |
+| **CEN100, MTH140, MTH141** | Work, Schedule, Grades and Course info, with Study in the math courses. Each assignment has its own detail view. |
+| **CHY102, PCS211** | The same views as the math guides, written from the Fall 2026 outlines: CHY102's Mastering Chemistry homework, both midterms and exam wrappers; PCS211's labs and tutorials in their two-week windows and the midterm. Course info lists the class times. |
 | **Privacy** | What the website stores and what it never collects. |
 
 ## Finding things
@@ -60,16 +60,16 @@ The calculator is an estimate from the weights in the guide. Your course outline
 
 Use **Guide tools** beside D2L at the top of each guide:
 
-- **Download calendar (.ics):** adds upcoming course dates to your calendar app. In MTH140 and MTH141, lab quiz dates are included once you choose your section. In PCS211, labs and tutorials are all-day events across their two-week window, and CHY102's exam wrappers across their due week. The file is a snapshot; it does not update itself when dates change.
-- **Export my progress / Import a backup:** saves this course's ticks, completion records, notes and target dates to a file, and adds them to the same course in another browser or on another device. Section and group choices are not included.
-- **Clear my ticks** (CEN100): confirm to remove CEN100's checklist ticks. A confirmation appears when they are cleared; completion records, notes, targets and section choices stay saved. Untick a completion record in its assignment to undo it.
+- **Download calendar (.ics):** adds upcoming course dates to your calendar app. In MTH140 and MTH141, you can include the published quiz weeks as tentative events. In PCS211, labs and tutorials are all-day events across their two-week window, and CHY102's exam wrappers across their due week. The file is a snapshot; it does not update itself when dates change.
+- **Export my progress / Import a backup:** saves this course's ticks, completion records, notes and target dates to a file, and adds them to the same course in another browser or on another device. Choose your CEN100 group again when moving to another browser.
+- **Clear my ticks** (CEN100): confirm to remove CEN100's checklist ticks. A confirmation appears when they are cleared; completion records, notes, targets and your group choice stay saved. Untick a completion record in its assignment to undo it.
 - **Course updates:** changes to the course's dates, coverage and grading. A badge appears when there is something new. Changes to the website itself are on the **Website updates** page, linked from the menu and the footer.
 
 ## Saving your progress
 
-Your sections, ticks, records, notes, target dates and calculator marks are saved **in the browser you are using**, not in an account. Each course keeps its own progress, and nothing syncs between devices or browsers.
+Your CEN100 group, ticks, records, notes, target dates and calculator marks are saved **in the browser you are using**, not in an account. Each course keeps its own progress, and nothing syncs between devices or browsers.
 
-To move to another browser or device, export a backup from each guide, import it there, and choose your section again. Backups don't include calculator marks. Keep backup files private, as they can contain your notes. Clearing your browser data, or switching devices without a backup, leaves your saved progress behind.
+To move to another browser or device, export a backup from each guide, then import it there. Backups don't include calculator marks. Keep backup files private, as they can contain your notes. Clearing your browser data, or switching devices without a backup, leaves your saved progress behind.
 
 Progress saved by earlier versions of the website carries over automatically.
 

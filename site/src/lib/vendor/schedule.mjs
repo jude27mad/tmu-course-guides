@@ -25,14 +25,15 @@ export function timestamp(date, time) {
   }
   return value;
 }
-export function resolveAssessment(course, assessment, section) {
-  const lab=course.labs.find(x=>x.section===Number(section));
-  if(assessment.kind!=='quiz') return {...assessment,lab:null,sortDate:assessment.date||'9999-12-31'};
-  const timetableDate=lab?addDays(assessment.week,lab.day-1):null;
-  const rescheduled=Boolean(timetableDate==='2026-10-12'&&assessment.mondayMakeupDate);
-  const date=rescheduled?assessment.mondayMakeupDate:timetableDate;
-  const holiday=timetableDate==='2026-10-12'&&!rescheduled;
-  return {...assessment,date:holiday?null:date,lab,holiday,rescheduled,weekEnd:addDays(assessment.week,4),sortDate:date||assessment.week};
+export function resolveAssessment(_course, assessment) {
+  if (assessment.kind !== 'quiz') return { ...assessment, lab: null, sortDate: assessment.date || '9999-12-31' };
+  return {
+    ...assessment,
+    date: null,
+    lab: null,
+    weekEnd: assessment.weekEnd || addDays(assessment.week, 4),
+    sortDate: assessment.week,
+  };
 }
 export function assessmentPassed(event, now = new Date()) {
   if(event.date) return event.time?timestamp(event.date,event.end||event.time)<now.getTime():event.date<today(now);
@@ -45,8 +46,7 @@ export function upcoming(course, section, completed = {}, now = new Date()) {
     .sort((a,b)=>a.sortDate.localeCompare(b.sortDate)||a.id.localeCompare(b.id));
 }
 export function timing(event) {
-  if(event.holiday) return `Week of ${dateLabel(event.week)} · Monday lab falls on Thanksgiving; quiz date needs confirmation`;
-  if(event.date) return `${dayLabel(event.date)}, ${dateLabel(event.date)}${event.time?` · ${clock(event.time)}–${clock(event.end)} Toronto time`:event.lab?` · ${event.quizSecondHour?'second hour of':'in'} your ${clock(event.lab.start)}–${clock(event.lab.end)} lab`:''}`;
+  if(event.date) return `${dayLabel(event.date)}, ${dateLabel(event.date)}${event.time?` · ${clock(event.time)}–${clock(event.end)} Toronto time`:''}`;
   if(event.week) return `${dateLabel(event.week)}–${dateLabel(event.weekEnd)} · during your assigned lab`;
   return 'December · exact date, time and room to be announced';
 }
@@ -59,18 +59,27 @@ function fold(line) {
   }
   rows.push(row);return rows.join('\r\n');
 }
-export function calendar(course, section, {includeTentative=false,onlyUpcoming=true,now=new Date()}={}) {
-  const resolved=course.assessments.map(a=>resolveAssessment(course,a,section));
-  const events=resolved.filter(e=>e.date&&!e.holiday&&(e.kind!=='quiz'||includeTentative)&&(!onlyUpcoming||!assessmentPassed(e,now)));
+export function calendar(course, _section, {includeTentative=false,onlyUpcoming=true,now=new Date()}={}) {
+  const resolved = course.assessments.map((assessment) => resolveAssessment(course, assessment));
+  const events = resolved.filter((event) =>
+    (event.date || (includeTentative && event.week)) && (!onlyUpcoming || !assessmentPassed(event, now))
+  );
   const utc = (date,time) => new Date(timestamp(date,time)).toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
   let lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//TMU Course Guides//Fall 2026//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH'];
-  for(const event of events) {
-    lines.push('BEGIN:VEVENT',`UID:${course.code.toLowerCase()}-${event.id}-${event.kind==='quiz'?section:'all'}-f26@jude27mad.github.io`,`DTSTAMP:${now.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'')}`);
-    if(event.time) lines.push(`DTSTART:${utc(event.date,event.time)}`,`DTEND:${utc(event.date,event.end)}`);
-    else lines.push(`DTSTART;VALUE=DATE:${event.date.replace(/-/g,'')}`,`DTEND;VALUE=DATE:${addDays(event.date,1).replace(/-/g,'')}`,'STATUS:TENTATIVE');
-    lines.push(`SUMMARY:${escapeICS(course.code+' '+event.title+(event.kind==='quiz'?' (lab date; confirm D2L)':''))}`);
-    lines.push(`DESCRIPTION:${escapeICS(event.scope+' Source: '+event.source+(event.kind==='quiz'?' Date derived from the announced week and section timetable; exact quiz time and changes must be confirmed on D2L.':' Check D2L for room assignments and updates.'))}`);
-    if(event.lab) lines.push(`LOCATION:${escapeICS(event.lab.room)}`);
+  for (const event of events) {
+    const quizWeek = event.kind === 'quiz';
+    lines.push('BEGIN:VEVENT', `UID:${course.code.toLowerCase()}-${event.id}-all-f26@jude27mad.github.io`, `DTSTAMP:${now.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'')}`);
+    if (event.time) {
+      lines.push(`DTSTART:${utc(event.date, event.time)}`, `DTEND:${utc(event.date, event.end)}`);
+    } else {
+      const start = event.date || event.week;
+      const exclusiveEnd = addDays(event.weekEnd || start, 1);
+      lines.push(`DTSTART;VALUE=DATE:${start.replace(/-/g,'')}`, `DTEND;VALUE=DATE:${exclusiveEnd.replace(/-/g,'')}`, 'STATUS:TENTATIVE');
+    }
+    const suffix = quizWeek ? ' (quiz window)' : '';
+    const note = quizWeek ? ' Check D2L for the exact quiz date and time.' : ' Check D2L for room assignments and updates.';
+    lines.push(`SUMMARY:${escapeICS(course.code + ' ' + event.title + suffix)}`);
+    lines.push(`DESCRIPTION:${escapeICS(event.scope + ' Source: ' + event.source + note)}`);
     lines.push('END:VEVENT');
   }
   lines.push('END:VCALENDAR');return {text:lines.map(fold).join('\r\n')+'\r\n',count:events.length};

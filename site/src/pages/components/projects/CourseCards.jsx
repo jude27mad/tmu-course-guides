@@ -25,10 +25,7 @@ const NO_DEADLINES = 'No upcoming deadlines';
 function kickerFor(course, entry, ready) {
   if (!ready) return course.term;
   const next = entry?.next;
-  // "Section 24 · Tue 4:00 PM lab · VIC305" -> "Section 24"
-  const section = entry?.section ? String(entry.section).split(' · ')[0] : null;
-  // "Section 29 · Next: Failure Analysis Part 2: FMEA, Wed Oct 28": what is due, not only when.
-  return [section, next ? `Next: ${[next.title, next.dateLabel || next.when].filter(Boolean).join(', ')}` : NO_DEADLINES].filter(Boolean).join(' · ');
+  return next ? `Next: ${[next.title, next.dateLabel || next.when].filter(Boolean).join(', ')}` : NO_DEADLINES;
 }
 
 function CourseCards({ desk }) {

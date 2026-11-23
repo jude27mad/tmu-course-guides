@@ -1,12 +1,9 @@
-/* CEN100 guide logic and interface copy that lived inside the mount() closure of assets/cen-guide.mjs.
-   The data literals are in ./cen-literals.mjs (copied line for line). Below, the closure's helpers are lifted
-   to module scope unchanged except that the closure variables they read (SCHEDULE, STAFFING, the plan) are now
-   module imports or parameters. Every string is the old page's own wording, in the order the closure has it.
-   Pure: no DOM, no storage access at import. */
+/* CEN100 guide logic and interface copy, adapted from assets/cen-guide.mjs.
+   Pure: no DOM or storage access at import. */
 import {SCHEDULE} from '../vendor/cen-schedule.mjs';
-import {TEAM,YOU,RULES,CONFIRMED,OPEN,STAFFING,SOURCE_INFO,sourceFor,WHO,I,KEY,PROFILE_KEY,FILTER_KEY,PLAN_KEY,SEEN_KEY,GUIDE_VERSION} from './cen-literals.mjs';
+import {TEAM,YOU,RULES,CONFIRMED,OPEN,GROUPS,SOURCE_INFO,sourceFor,WHO,I,KEY,PROFILE_KEY,FILTER_KEY,PLAN_KEY,SEEN_KEY,GUIDE_VERSION} from './cen-literals.mjs';
 
-export {TEAM,YOU,RULES,CONFIRMED,OPEN,STAFFING,SOURCE_INFO,sourceFor,WHO,I,KEY,PROFILE_KEY,FILTER_KEY,PLAN_KEY,SEEN_KEY,GUIDE_VERSION};
+export {TEAM,YOU,RULES,CONFIRMED,OPEN,GROUPS,SOURCE_INFO,sourceFor,WHO,I,KEY,PROFILE_KEY,FILTER_KEY,PLAN_KEY,SEEN_KEY,GUIDE_VERSION};
 
 // cen-guide.mjs:229-235
 export const D=s=>new Date(s+"T12:00:00Z");
@@ -38,9 +35,9 @@ export function itemTiming(item,now=new Date()){
   return {past:events.length>0&&!pending.length,date:current?.date||item.date,next:next?.date||null,upcoming:pending.length>0};
 }
 // cen-guide.mjs:266-272
-export function upcomingSchedule(completed={},selected=0,now=new Date()){
+export function upcomingSchedule(completed={},now=new Date()){
   return SCHEDULE.filter(e=>{
-    if(eventPassed(e,now)||(e.section&&e.section!==selected)||completed[e.id])return false;
+    if(eventPassed(e,now)||completed[e.id])return false;
     if(e.calendar===false){const records=itemDeadlines(e.item);if(records.length&&records.every(record=>completed[record.id]))return false}
     return true;
   }).slice().sort(sortEvents);
@@ -57,13 +54,11 @@ export const listOf=item=>TEAM.includes(item)?"team":"you";
 export const checkKeys=item=>item.groups.flatMap((g,gi)=>g[1].map((_,i)=>`${item.id}-${gi}-${i}`));
 export const TICK_KEYS=new Set(allItems.flatMap(checkKeys));
 
-// cen-guide.mjs:433-439
-export function validProfile(value){
-  if(!value||typeof value!=="object")return null;
-  const section=Number(value.section),staff=STAFFING.find(s=>s.sections.includes(section));
-  if(!staff)return null;
-  const group=Number(value.group);
-  return {section,group:staff.groups.some(g=>g[0]===group)?group:null};
+// A previous saved profile may also contain a class section. Only the project group is used.
+export function validProfile(value) {
+  if (typeof value?.group !== "number" && typeof value?.group !== "string") return null;
+  const group = Number(value.group);
+  return GROUPS.includes(group) ? {group} : null;
 }
 // cen-guide.mjs:624-647
 export function recordsFor(item){const dates=itemDeadlines(item.id);return dates.length?dates:[{id:"item:"+item.id,item:item.id,title:item.name}]}
@@ -102,38 +97,33 @@ export function completionSummary(item,completed={}){
   return {done,total,label:!done?"":done<total?`${done} of ${total} recorded`:verbs.size===1?[...verbs][0]:"Completed"};
 }
 
-/* cen-guide.mjs:753-759, updateSectionContent(): the section-specific texts of y7 (attendance) and y5 (reflections). */
-export function sectionContent(profile){
-  const section=profile?.section;
-  const attendanceWhat=section===29?"Section 29: a D2L quiz opens 5:45 to 6:00 PM in every Wednesday tutorial. One attempt, and you have to be in the room.":section?`Attend your assigned Section ${section} tutorial in person. Check D2L for your section's quiz day, time and attempt rules.`:"Attendance quizzes take place during your assigned tutorial. Select your section above. The confirmed Section 29 window is Wednesday, 5:45 to 6:00 PM; other sections should check D2L.";
-  const attendanceFact=section===29?"Section 29: Wednesday, 5:45 to 6:00 PM":"Check your assigned tutorial's quiz schedule on D2L";
-  const staff=STAFFING.find(s=>s.sections.includes(section)),pm=staff?.groups.find(g=>g[0]===profile?.group);
-  const reflectionsWhat=pm?byId.get("y5").what.replace("your assigned Project Manager",`${pm[1]}, your assigned Project Manager for Group ${pm[0]}`):byId.get("y5").what;
-  return {y7:{what:attendanceWhat,fact:attendanceFact},y5:{what:reflectionsWhat}};
-}
-
-/* cen-guide.mjs:443-450, updateCourseContext(): the course label, page title and profile summary for a profile. */
-export function profileText(profile){
-  const staff=profile?STAFFING.find(s=>s.sections.includes(profile.section)):null;
-  const label=profile?`CEN100 Section ${profile.section}${profile.group?`, Group ${profile.group}`:""}`:"CEN100 · Fall 2026";
+export function sectionContent(profile) {
+  const attendance = byId.get("y7");
+  const reflections = byId.get("y5").what;
+  const group = validProfile(profile)?.group;
   return {
-    context:label,
-    title:(profile?label:"CEN100")+" | TMU Course Guides",
-    summary:profile?`Section ${profile.section}${profile.group?` · Group ${profile.group}`:" · Choose your group"}${staff?` · Lab: ${staff.location}`:""}`:"Choose your section & group",
+    y7: {what: attendance.what, fact: attendance.facts[0][1]},
+    y5: {what: group ? reflections.replace("your assigned Project Manager", `the Project Manager for Group ${group}`) : reflections},
   };
 }
 
-/* cen-guide.mjs:386-407, setupContactLookup(): who to ask for a section and group. */
-export function contactLookup(section,group){
-  const staff=STAFFING.find(s=>s.sections.includes(Number(section)));
-  const pm=staff?.groups.find(([number])=>number===Number(group));
+export function profileText(profile) {
+  const group = validProfile(profile)?.group;
+  const label = group ? `CEN100 Group ${group}` : "CEN100";
   return {
-    ga:staff?{name:staff.ga,role:"Graduate Assistant (GA)",location:staff.location,locationText:"Lab/location: "+staff.location}:null,
-    gaPrompt:"Choose your section to see your GA and lab/location.",
-    pm:pm?{name:pm[1],role:"Project Manager"}:null,
-    pmPrompt:"Choose your group to see your Project Manager.",
-    groupPlaceholder:staff?"Choose your group":"Choose your section first",
-    groups:staff?staff.groups.map(([number])=>({value:number,label:"Group "+number})):[],
+    context: group ? label : "CEN100 · Fall 2026",
+    title: label + " | TMU Course Guides",
+    summary: group ? `Group ${group}` : "Choose your group",
+  };
+}
+
+export function contactLookup(group) {
+  return {
+    gaPrompt: "Find your Graduate Assistant on D2L.",
+    pm: validProfile({group}) ? {name: "See your group’s Project Manager on D2L", role: "Project Manager"} : null,
+    pmPrompt: "Choose your group to see your Project Manager.",
+    groupPlaceholder: "Choose your group",
+    groups: GROUPS.map(number => ({value: number, label: "Group " + number})),
   };
 }
 
@@ -159,7 +149,7 @@ export const COPY={
   filterStatus:hiddenCount=>`${hiddenCount} fully checked ${hiddenCount===1?"item":"items"} hidden. Uncheck the filter to show everything.`,
   filterEmpty:"All items in this tab are fully checked. Turn off ‘Hide fully checked items’ to see them.",
   // :515-516 search
-  contactsSearchTitle:"Who to ask: section and group lookup",
+  contactsSearchTitle:"Who to ask: group lookup",
   tabs:{team:"Team",you:"Individual + pairs",rules:"Rules"},
   searchStatus:(count)=>`${count} ${count===1?"result":"results"}${count>12?"; showing the first 12. Refine your search for more.":"."}`,
   searchNone:"No matches. Try a shorter term.",

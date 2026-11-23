@@ -55,7 +55,7 @@ function searchIndexNow({ now, storage, course = null, motionForced = false } = 
   const order = current ? [current.id, ...COURSE_IDS.filter((id) => id !== current.id)] : COURSE_IDS;
   for (const id of order) {
     const ctx = context(id, { now: ms, storage: store });
-    const next = resolve({ course: id, data: dataFor(id), section: ctx.section, completed: ctx.completed, now: ms });
+    const next = resolve({ course: id, data: dataFor(id), completed: ctx.completed, now: ms });
     const code = getCourse(id).code;
     for (const item of deadlines(id, { now: ms, storage: store })) {
       allDeadlines.push(item);
@@ -154,7 +154,7 @@ const GUIDE_ENTRIES = (() => {
     title: CEN.COPY.contactsSearchTitle,
     tab: CEN.COPY.tabs.rules,
     href: '/cen100/#contacts',
-    text: `Who to ask contacts section group GA Graduate Assistant Project Manager lab room location ${CEN.STAFFING.map((s) => [s.ga, s.location, ...s.groups.map((g) => g[1])].join(' ')).join(' ')}`,
+    text: 'Who to ask contacts group GA Graduate Assistant Project Manager',
   });
   for (const id of COURSE_IDS.filter(isMath)) {
     for (const a of DATA[id].assessments) out.push({ courseId: id, title: a.title, tab: 'Assessment', href: `/${id}/#assessment-${a.id}`, text: `${a.title} ${a.scope} ${a.kind} ${a.source}` });

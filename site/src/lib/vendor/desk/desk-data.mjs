@@ -4,18 +4,10 @@ import {COURSES} from '../course-data.mjs';
 import {SCHEDULE} from '../cen-schedule.mjs';
 import {COURSE_IDS,readSaved,resolveTarget,overall,parts,status,compact,targetDate,cenUpcoming} from '../night/targets.mjs';
 import {recordsForCourse,semesterWeeks,currentWeekIndex,termWeek,popupRank} from '../book/weeks.mjs';
-import {DAY_NAMES,clock,today,upcoming} from '../schedule.mjs';
+import {today,upcoming} from '../schedule.mjs';
 
 const DEFAULT_DATA={cen100:SCHEDULE,mth140:COURSES.mth140,mth141:COURSES.mth141};
 const CATEGORIES=['minor','quizLab','midterm','final'];
-
-// Match assets/night/desk.mjs's sectionText without importing its DOM services.
-function sectionLabel(course,data,section){
- if(!section)return null;
- if(course==='cen100')return `Section ${section}`;
- const lab=data.labs.find(row=>row.section===section);
- return lab?`Section ${section} · ${DAY_NAMES[lab.day].slice(0,3)} ${clock(lab.start)} lab · ${lab.room}`:`Section ${section}`;
-}
 
 function upcomingRecords(course,data,saved,records,now){
  const ids=new Set((course==='cen100'
@@ -41,7 +33,7 @@ function upcomingRecords(course,data,saved,records,now){
  * CEN progress counts its real calendar rows; book-only pending finals and
  * calendar:false reminders are not counted by the CEN completion reader.
  * kinds is {final, midterm, quizLab, minor}; week is {termWeek, spreadIndex}.
- * section is the Desk's saved-section text or null.
+ * section is null for compatibility.
  */
 export function deskSummary({now=Date.now(),storage,data=DEFAULT_DATA}={}){
  const instant=+new Date(now),date=new Date(instant),weekNumber=termWeek(today(date));
@@ -65,7 +57,7 @@ export function deskSummary({now=Date.now(),storage,data=DEFAULT_DATA}={}){
    next:target?{...target,status:status(target,instant),compact:compact(target,instant),targetDate:targetDate(target)}:null,
    urgency:parts(target,instant)?.state??'empty',
    progress:{completed,total:counted.length,ratio:counted.length?completed/counted.length:0,thisWeek},
-   kinds,week:{termWeek:weekNumber,spreadIndex:index},section:source?sectionLabel(course,source,saved.section):null,isOverall:false};
+   kinds,week:{termWeek:weekNumber,spreadIndex:index},section:null,isOverall:false};
  }
  const winner=deskOverall(summary,instant);
  for(const course of COURSE_IDS)summary[course].isOverall=winner!==null&&summary[course].next===winner;

@@ -75,39 +75,36 @@ test('cen100-g9-ticks: {"key":1}, unticked keys deleted, other saved keys kept a
   for (const raw of ['{oops', '[1,2]', 'null', '7']) assert.equal(createProgress(memoryStorage({ 'cen100-g9-ticks': raw }), { events: null }).isTicked('cen100', 'm2', 'm2-1-3'), false, raw);
 });
 
-test('cen100-contact-choice-v1: {"section":n,"group":n|null} or null, written as the old selects wrote it', () => {
+test('CEN100 remembers a project group independently and ignores retired section choices', () => {
   const storage = memoryStorage();
   assert.equal(getSection('cen100', storage), null);
-  assert.equal(setGroup('cen100', 9, storage), false, 'cannot set group without a profile');
-  assert.equal(setGroup('mth140', 9, storage), false, 'cannot set group for non-cen100 courses');
-  assert.deepEqual(storage.writes(), [], 'failed setGroup should not write anything');
-  assert.equal(setSection('cen100', 29, storage), true);
-  assert.equal(storage.data.get('cen100-contact-choice-v1'), '{"section":29,"group":null}');
+  assert.equal(setGroup('mth140', 9, storage), false);
+  assert.equal(setSection('cen100', 29, storage), false);
+  assert.deepEqual(storage.writes(), []);
   assert.equal(setGroup('cen100', 9, storage), true);
-  assert.equal(storage.data.get('cen100-contact-choice-v1'), '{"section":29,"group":9}');
-  const writes = storage.writes().length;
-  setSection('cen100', '29', storage);
-  assert.equal(storage.writes().length, writes, 'the same section writes nothing and keeps the group');
   assert.equal(getGroup('cen100', storage), 9);
-  setGroup('cen100', 50, storage);
-  assert.equal(storage.data.get('cen100-contact-choice-v1'), '{"section":29,"group":null}', 'a group outside the section is dropped');
-  setSection('cen100', 5, storage);
-  assert.equal(storage.data.get('cen100-contact-choice-v1'), '{"section":5,"group":null}');
-  setSection('cen100', '', storage);
-  assert.equal(storage.data.get('cen100-contact-choice-v1'), 'null');
-  // Values the old site wrote.
-  for (const [raw, section, group] of [
-    ['{"section":29,"group":9}', 29, 9],
-    ['{"section":"29","group":"9"}', 29, 9],
-    ['{"section":3,"group":null}', 3, null],
-    ['{"section":40}', null, null],
-    ['null', null, null],
-    ['{oops', null, null],
+  assert.deepEqual(getProfile(storage), { group: 9 });
+  assert.deepEqual(JSON.parse(storage.data.get('cen100-contact-choice-v1')), { group: 9 });
+  assert.equal(setGroup('cen100', 50, storage), true);
+  assert.equal(getGroup('cen100', storage), 50);
+  assert.equal(setSection('cen100', '', storage), false);
+  assert.equal(getGroup('cen100', storage), 50);
+  assert.equal(setGroup('cen100', '', storage), true);
+  assert.equal(getProfile(storage), null);
+  for (const [raw, group] of [
+    ['{"section":29,"group":9}', 9],
+    ['{"section":"29","group":"9"}', 9],
+    ['{"group":52}', 52],
+    ['{"section":3,"group":null}', null],
+    ['{"section":40}', null],
+    ['{"group":53}', null],
+    ['null', null],
+    ['{oops', null],
   ]) {
     const saved = memoryStorage({ 'cen100-contact-choice-v1': raw });
-    assert.equal(getSection('cen100', saved), section, raw);
+    assert.equal(getSection('cen100', saved), null, raw);
     assert.equal(getGroup('cen100', saved), group, raw);
-    assert.deepEqual(getProfile(saved), old.validProfile(JSON.parse(raw === '{oops' ? 'null' : raw)), raw);
+    assert.deepEqual(getProfile(saved), group === null ? null : { group }, raw);
     assert.deepEqual(saved.writes(), [], `${raw}: reading never writes`);
   }
 });
@@ -175,7 +172,7 @@ test('cen100 hide filter and release badge use the old JSON values', () => {
 });
 
 for (const courseId of ['mth140', 'mth141']) {
-  test(`${courseId}-progress-v1 and -section-v1: the old math page’s formats`, async () => {
+  test(`${courseId} retains saved progress and ignores legacy section values`, async () => {
     const page = await mathOracle(courseId);
     const key = `${courseId}-progress-v1`;
     const storage = memoryStorage();
@@ -208,26 +205,11 @@ for (const courseId of ['mth140', 'mth141']) {
     const expected = page.cleanProgress(JSON.parse(raw));
     expected.completed['quiz-2'] = true;
     assert.equal(saved.data.get(key), JSON.stringify(expected));
-    // Section: a number, 0 when none.
-    const sections = memoryStorage();
-    assert.equal(getSection(courseId, sections), null);
-    setSection(courseId, 31, sections);
-    assert.equal(sections.data.get(`${courseId}-section-v1`), '31');
-    assert.equal(getSection(courseId, sections), 31);
-    setSection(courseId, 99, sections);
-    assert.equal(sections.data.get(`${courseId}-section-v1`), '0', 'not a lab section');
-    setSection(courseId, null, sections);
-    assert.equal(sections.data.get(`${courseId}-section-v1`), '0');
-    for (const [stored, value] of [
-      ['7', 7],
-      ['"7"', 7],
-      ['0', null],
-      ['99', null],
-      ['oops', null],
-    ]) {
-      const s = memoryStorage({ [`${courseId}-section-v1`]: stored });
-      assert.equal(getSection(courseId, s), value, stored);
-      assert.deepEqual(s.writes(), []);
+    for (const stored of ['7', '"7"', '0', '99', 'oops']) {
+      const saved = memoryStorage({ [`${courseId}-section-v1`]: stored });
+      assert.equal(getSection(courseId, saved), null, stored);
+      assert.equal(setSection(courseId, 31, saved), false);
+      assert.deepEqual(saved.writes(), []);
     }
     const seen = memoryStorage();
     markUpdatesSeen(courseId, seen);
@@ -321,7 +303,7 @@ test('backups: export the old file formats and import them back with the old mer
   assert.equal(fresh.data.get('mth140-progress-v1'), saved);
 });
 
-test('calendar files retain legacy event identity and timing with current MTH140 descriptions', async () => {
+test('calendar files preserve common CEN dates and math midterms and export lab quizzes as tentative windows', async () => {
   const schedule = await oldModule('schedule.mjs');
   const { COURSES } = await oldModule('course-data.mjs');
   const stamp = NOW.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
@@ -334,25 +316,33 @@ test('calendar files retain legacy event identity and timing with current MTH140
   assert.equal(one.name, 'cen100-y4-2026.ics');
   assert.match(one.text, /UID:cen100-f26-integrity-jude27mad-github-io/);
   for (const id of ['mth140', 'mth141']) {
-    const file = calendarFile(id, { now: NOW, includeTentative: true, section: 3 });
+    const options = { now: NOW, includeTentative: true };
+    const file = calendarFile(id, options);
     assert.equal(file.name, `${id}-fall-2026.ics`);
-    const previous = schedule.calendar(COURSES[id], 3, { includeTentative: true, onlyUpcoming: true, now: NOW }).text;
+    assert.deepEqual(calendarFile(id, { ...options, section: 3 }), file);
+    const unfold = (text) => text.replace(/\r?\n[ \t]/g, '');
+    const eventBlocks = (text) => unfold(text).match(/BEGIN:VEVENT[\s\S]*?END:VEVENT/g) || [];
+    const blocks = eventBlocks(file.text);
+    const previous = schedule.calendar(COURSES[id], 0, { onlyUpcoming: true, now: NOW });
+    const midterm = blocks.find((event) => event.includes(`UID:${id}-midterm-all-`));
+    const oldMidterm = eventBlocks(previous.text)[0];
     if (id === 'mth140') {
-      const unfold = (text) => text.replace(/\r?\n[ \t]/g, '');
-      const withoutDescriptions = (text) => unfold(text).split(/\r?\n/).filter((line) => !line.startsWith('DESCRIPTION:')).join('\n');
-      assert.equal(withoutDescriptions(file.text), withoutDescriptions(previous));
-      assert.match(unfold(file.text), /Chapter 1: Sections 1\.1–1\.5/);
-      assert.match(unfold(file.text), /Midterm Exam Content/);
-      assert.doesNotMatch(unfold(file.text), /Exact midterm coverage awaits/);
+      const identityAndTime = (event) => event.split('\r\n').filter((line) => !line.startsWith('DESCRIPTION:'));
+      assert.deepEqual(identityAndTime(midterm), identityAndTime(oldMidterm));
+      assert.match(midterm, /Chapter 1: Sections 1\.1–1\.5/);
+      assert.match(midterm, /Midterm Exam Content/);
     } else {
-      assert.equal(file.text, previous);
+      assert.equal(midterm, oldMidterm);
     }
-    assert.equal(calendarFile(id, { now: NOW, includeTentative: true, section: 0 }).message, 'Choose your section first to include lab quiz dates.');
-    // Guide tools asks for tentative dates only with a section. Once the midterm has passed, a student without
-    // one is told to choose it (lab quizzes remain), and only after the last quiz that nothing is left.
-    const guideTools = (iso) => calendarFile(id, { now: new Date(iso), includeTentative: false, section: 0 });
-    assert.equal(guideTools('2026-10-10T16:00:00Z').ok, true);
-    assert.equal(guideTools('2026-10-28T16:00:00Z').message, 'Choose your section first to include lab quiz dates.');
-    assert.equal(guideTools('2026-12-20T16:00:00Z').message, 'No dated assessments match those choices.');
+    assert.doesNotMatch(file.text, /LOCATION:|section timetable/);
+    const quiz = blocks.find((event) => event.includes(`UID:${id}-quiz-3-all-`));
+    assert.match(quiz, /STATUS:TENTATIVE/);
+    const [start, exclusiveEnd] = id === 'mth140' ? ['20261109', '20261114'] : ['20261102', '20261107'];
+    assert.ok(quiz.includes(`DTSTART;VALUE=DATE:${start}`));
+    assert.ok(quiz.includes(`DTEND;VALUE=DATE:${exclusiveEnd}`));
+    const afterMidterm = new Date('2026-10-28T16:00:00Z');
+    assert.equal(calendarFile(id, { now: afterMidterm, includeTentative: true }).ok, true);
+    assert.equal(calendarFile(id, { now: afterMidterm, includeTentative: false }).message, 'No dated assessments match those choices.');
+    assert.equal(calendarFile(id, { now: new Date('2026-12-20T16:00:00Z'), includeTentative: true }).message, 'No dated assessments match those choices.');
   }
 });

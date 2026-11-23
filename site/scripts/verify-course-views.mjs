@@ -5,7 +5,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createPreview } from '../../tools/preview-server.mjs';
-import { createProgress, deadlines, nextDeadline, setSection } from '../src/lib/index.js';
+import { createProgress, deadlines, nextDeadline } from '../src/lib/index.js';
 import { memoryStorage } from '../tests/helpers.mjs';
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.PLAYWRIGHT_PATH || 'playwright');
@@ -47,7 +47,7 @@ async function check(name, run) {
 async function ready(page, route = 'cen100/') {
   await page.goto(url + route);
   await page.locator('main h1').first().waitFor();
-  await page.locator('#course-section:not(:disabled)').waitFor();
+  await page.locator('nav[data-selection-ready="true"]').waitFor();
   await page.waitForFunction(() => {
     const main = document.querySelector('main');
     return getComputedStyle(main).pointerEvents === 'auto' && (!main.classList.contains('lenis-stopped') || document.querySelector('dialog[open]'));
@@ -117,7 +117,6 @@ try {
     for (let day = 0; day < 90 && !fixture; day++) {
       const now = new Date(Date.UTC(2026, 8, 1 + day, 16));
       const storage = memoryStorage();
-      ['cen100', 'mth140', 'mth141'].forEach(course => setSection(course, 3, storage));
       const progress = createProgress(storage, { events: null });
       for (let step = 0; step < 100; step++) {
         const from = nextDeadline({ now, storage });
@@ -578,7 +577,6 @@ try {
   });
   await check('Schedule agenda and calendar open the same assignment', async () => {
     await ready(page, 'mth140/#schedule');
-    await page.getByLabel('Course section').selectOption('3');
     await page.getByRole('button', { name: 'All dates', exact: true }).click();
     const link = page.locator('[data-schedule-link][href$="#assessment-midterm"]');
     await link.click();
@@ -605,7 +603,7 @@ try {
     await page.screenshot({ path: path.join(report, 'mth140-calendar-1440.png') });
     await page.setViewportSize({ width: 390, height: 844 });
     await page.locator('.sx__month-agenda-wrapper').waitFor();
-    assert.equal(await page.getByLabel('Course section').inputValue(), '3');
+    assert.equal(await page.getByLabel('Course section').count(), 0);
   });
   await check('keyboard search opens the same detail across courses, then returns', async () => {
     await ready(page, 'mth140/#study');

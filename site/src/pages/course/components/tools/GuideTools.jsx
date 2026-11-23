@@ -26,7 +26,7 @@ function download(file) {
 }
 
 function GuideTools() {
-  const { courseId, info, copy, progress, section, live, version } = useCourse();
+  const { courseId, info, copy, progress, live, version } = useCourse();
   const [status, setStatus] = useState({ key: null, message: '' });
   const [updatesOpen, setUpdatesOpen] = useState(false);
   const [unseen, setUnseen] = useState(false);
@@ -109,7 +109,7 @@ function GuideTools() {
               }
             : {
                 now: live?.now || new Date(),
-                includeTentative: !!section,
+                includeTentative: courseId === 'mth140' || courseId === 'mth141',
                 upcomingOnly: true,
               },
         );

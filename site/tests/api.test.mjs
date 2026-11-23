@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import * as lib from '../src/lib/index.js';
-import { memoryStorage, oldModule, toronto, htmlText, cenOracle } from './helpers.mjs';
+import { memoryStorage, oldModule, toronto, htmlText } from './helpers.mjs';
 
 const NOW = new Date(toronto('2026-10-15', '12:00'));
 const PALETTE = await oldModule('night/palette.mjs');
@@ -18,13 +18,9 @@ test('COURSES: the five courses keep their names and links and share the Desk pa
       ['pcs211', 'PCS211', 'Physics: Mechanics', 'Physics: Mechanics', '05'],
     ],
   );
-  // CHY102 and PCS211 have no section picker; the others keep theirs.
-  assert.deepEqual(
-    lib.COURSES.map((c) => c.hasSections),
-    [true, true, true, false, false],
-  );
-  assert.equal(lib.COURSES[0].summary, 'Assignment deadlines, requirements, checklists and section/group contacts.');
-  assert.equal(lib.COURSES[1].summary, 'Assessment dates, section labs, announced coverage and practice.');
+  assert.ok(lib.COURSES.every((course) => !course.hasSections));
+  assert.equal(lib.COURSES[0].summary, 'Assignment deadlines, requirements and checklists.');
+  assert.equal(lib.COURSES[1].summary, 'Assessment dates, quiz weeks, announced coverage and practice.');
   for (const course of lib.COURSES) {
     // This record feeds CSS, card panels and generated badge/disc textures.
     assert.deepEqual(course.palette, { primary: '#18181B', accentColor: '#FFFFFF', secondary: '#F4F4F5', fillColor: '#FFFFFF', menuColor: '#18181B', menuFontColor: '#FAFAFA', fluidColor: '#D7D7D4', accent: '#004C9B' }, course.id);
@@ -35,19 +31,10 @@ test('COURSES: the five courses keep their names and links and share the Desk pa
   assert.ok(lib.getCourse('mth140').links.some((link) => link.label === 'Calculus, Volume I'));
 });
 
-test('sections and groups match the old selects', () => {
-  const cen = lib.sections('cen100');
-  assert.equal(cen.length, 39);
-  assert.deepEqual(cen[28], { value: 29, label: 'Section 29', detail: 'Lab: KHS134' });
-  const math = lib.sections('mth140');
-  assert.equal(math.length, 34);
-  assert.deepEqual(math[23], { value: 24, label: 'Section 24 (241 / 242)', detail: math[23].detail });
-  assert.match(math[0].detail, /^Thursday 4:00 PM–6:00 PM · POD367$/);
-  assert.deepEqual(
-    lib.groups(29).map((g) => g.label),
-    ['Group 9', 'Group 10', 'Group 11', 'Group 12'],
-  );
-  assert.deepEqual(lib.groups(0), []);
+test('the three guides have no class sections and CEN100 has independent Innovation Challenge groups', () => {
+  for (const id of ['cen100', 'mth140', 'mth141']) assert.deepEqual(lib.sections(id), []);
+  const groups = lib.groups();
+  assert.deepEqual(groups.map((row) => row.label), Array.from({ length: 52 }, (_, i) => `Group ${i + 1}`));
 });
 
 test('assessments: CEN100’s 20 graded items total 100%; math lists each assessment with the category weights', () => {
@@ -70,15 +57,15 @@ test('assessments: CEN100’s 20 graded items total 100%; math lists each assess
     assert.equal(rows.find((row) => row.title === 'Midterm Test').weight, id === 'mth140' ? 40 : 35);
     assert.equal(rows.at(-1).dateLabel, 'Date pending');
     assert.equal(rows[0].dateLabel.startsWith('Week of'), true);
-    assert.match(lib.assessments(id, { section: 3 })[0].dateLabel, /^(Mon|Tue|Wed|Thu|Fri) /);
+    assert.deepEqual(lib.assessments(id, { section: 3 }), rows);
   }
 });
 
 test('deadline items carry everything the pages show', () => {
   const [item] = lib.deadlines('mth141', { now: NOW, section: 3, storage: null }).filter((x) => x.id === 'quiz-3');
   for (const field of ['id', 'courseId', 'title', 'kind', 'weight', 'due', 'precision', 'dateLabel', 'timeLabel', 'requirement', 'detail', 'anchor', 'done', 'overdue']) assert.ok(field in item, field);
-  assert.equal(item.dateLabel, 'Wed Nov 4');
-  assert.equal(item.timeLabel, 'in your 3:00 PM–4:00 PM lab');
+  assert.equal(item.dateLabel, 'Nov 2–6');
+  assert.equal(item.precision, 'week');
   assert.equal(item.requirement, 'Exact coverage is not in the supplied announcements. Check D2L before preparing; the FAQ says quizzes generally cover the previous week’s lectures.');
   assert.equal(item.href, '/mth141/#assessment-quiz-3');
   const reflection = lib.deadlineItem('cen100', 'reflection-1', { now: NOW, storage: null });
@@ -108,30 +95,26 @@ test('countdown: the old wording for items and bare dates', () => {
 });
 
 test('courseInfo: rules, contacts, topic map and notes as data', async () => {
-  const old = await cenOracle();
   const cen = lib.courseInfo('cen100', { section: 29, group: 9 });
   assert.equal(cen.rules.length, 9);
   assert.deepEqual(cen.rules[0], { severity: 'red', icon: 'doc', title: 'Identify each team submission', text: 'Include team number/name and section. Follow the assignment cover-page and signature instructions; the Team Contract itself must be signed.' });
   assert.equal(cen.confirmed.length, 13);
   assert.equal(cen.open[0].title, 'Final exam details');
-  assert.equal(cen.contacts.ga.location, 'KHS134');
-  assert.equal(cen.contacts.pm.role, 'Project Manager');
-  assert.equal(cen.profile.summary, 'Section 29 · Group 9 · Lab: KHS134');
+  assert.doesNotMatch(JSON.stringify(cen), /KHS134|Section 29/i);
   assert.equal(cen.items.length, 17);
-  assert.equal(cen.items.find((item) => item.id === 'y7').what, old.sectionContent({ section: 29, group: 9 })['b-y7 .what']);
+  assert.match(cen.items.find((item) => item.id === 'y7').what, /attendance|quiz/i);
   assert.equal(cen.items.flatMap((item) => item.groups.flatMap((g) => g.checks)).length, 126);
   assert.equal(cen.grading.tables[1].rows.length, 20);
   assert.equal(cen.updates.summary, 'Course updates');
   assert.equal(cen.updates.entries.length, 5);
   assert.equal(cen.updates.version, cen.updates.entries[0].id);
   const none = lib.courseInfo('cen100');
-  assert.equal(none.profile.summary, 'Choose your section & group');
-  assert.equal(none.contacts.ga, null);
+  assert.doesNotMatch(JSON.stringify(none), /choose your section/i);
   for (const id of ['mth140', 'mth141']) {
     const info = lib.courseInfo(id, { section: 24 });
     assert.equal(info.topics.length, 8);
     assert.equal(info.rules.length, id === 'mth141' ? 6 : 4);
-    assert.match(info.section.brief.section, /^Section 24$/);
+    assert.equal(info.section, undefined);
     assert.equal(info.contacts.coordinator, 'the coordinator listed on D2L');
     assert.equal(info.assessments[0].checklist.length, 5);
     assert.equal(info.topics.flatMap((t) => t.skills).length, id === 'mth140' ? 30 : 31);
@@ -176,7 +159,7 @@ test('searchGuide: the old pages’ full-text search', () => {
   assert.equal(lib.searchGuide('zzqq').status, 'No matches. Try a shorter term.');
   assert.equal(lib.searchGuide('').results.length, 0);
   assert.equal(lib.searchGuide('quiz', { course: 'mth141' }).results[0].courseId, 'mth141');
-  assert.ok(lib.searchGuide('KHS134').results.some((r) => r.title === 'Who to ask: section and group lookup'));
+  assert.deepEqual(lib.searchGuide('KHS134', { course: 'cen100' }).results, []);
 });
 
 test('workList: "What should I work on?" in the old wording', () => {
@@ -202,7 +185,7 @@ test('workList: "What should I work on?" in the old wording', () => {
 });
 
 test('the static page text is the old pages’ text', async () => {
-  assert.equal(lib.DESK_TEXT.lede, 'Deadlines, requirements, section details and your saved progress for each course. Progress stays in this browser.');
+  assert.equal(lib.DESK_TEXT.lede, 'Deadlines, requirements and your saved progress for each course. Progress stays in this browser.');
   assert.equal(lib.DESK_TEXT.nextHeading, 'Next across your courses');
   assert.equal(lib.PRIVACY_TEXT.paragraphs.length, 4);
   assert.equal(htmlText('<p>No site analytics, tracking cookies or session recording. Fonts, scripts and artwork load from this site.</p>'), lib.PRIVACY_TEXT.paragraphs[0].text);

@@ -167,21 +167,18 @@ test('multi-record items lead with the first unfinished record, then the final r
 });
 
 test('reminders are retained as rows but never lead, count as records, or block done', () => {
-  const items = rowsFor('cen100', { section: 29, completed: { failure: 1, 'failure-2': 1 } });
-  /* Keep a reminder explicitly open: the list must use markable records, independently of reminder retirement. */
-  const reminder = items.find((row) => row.id === 'failure-lab');
+  const items = rowsFor('cen100', { completed: { 'presentation-1': 1, 'presentation-2': 1 } });
+  const reminder = items.find((row) => row.id === 'showcase-signup');
   reminder.done = false;
   reminder.overdue = true;
-  const list = lib.assignmentList('cen100', { now: NOW, items });
-  const failure = entry(list, 'm3');
-  assert.deepEqual(failure.rows.map((row) => row.id), ['failure-lab', 'failure', 'failure-2']);
-  assert.deepEqual(failure.records.map((row) => row.id), ['failure', 'failure-2']);
-  assert.equal(failure.recorded, 2);
-  assert.equal(failure.lead.id, 'failure-2');
-  assert.equal(failure.done, true);
-  assert.equal(failure.pastDue, false);
-  assert.equal(failure.group, 'done');
-  assert.equal(entry(list, 'm6').lead.id, 'presentation-1', 'showcase sign-up is also a reminder');
+  const showcase = entry(lib.assignmentList('cen100', { now: NOW, items }), 'm6');
+  assert.deepEqual(showcase.rows.map((row) => row.id), ['showcase-signup', 'presentation-1', 'presentation-2']);
+  assert.deepEqual(showcase.records.map((row) => row.id), ['presentation-1', 'presentation-2']);
+  assert.equal(showcase.recorded, 2);
+  assert.equal(showcase.lead.id, 'presentation-2');
+  assert.equal(showcase.done, true);
+  assert.equal(showcase.pastDue, false);
+  assert.equal(showcase.group, 'done');
 });
 
 test('Toronto Sunday 23:59 and Monday 00:00 put a quiz week in the correct group', () => {
@@ -287,20 +284,13 @@ test('Toronto timed events retain their correct offsets around the Nov 1 clock c
   }
 });
 
-test('MTH140 Section 3 quiz 2 shows the full make-up lab window and second-hour wording without an invented start', () => {
-  const rows = rowsFor('mth140', { section: 3 });
-  const events = lib.calendarEvents('mth140', rows);
-  const quiz = event(events, 'quiz-2');
-  assert.equal(quiz.title, "Lab Quiz 2 · in your lab's second hour");
-  assert.match(quiz.qualifier, /second hour/i);
-  assert.equal(quiz.style, 'window');
-  assert.equal(quiz.allDay, false);
-  assert.equal(quiz.start, toronto('2026-10-19', '08:00'));
-  assert.equal(quiz.end, toronto('2026-10-19', '10:00'));
-  assert.deepEqual(Object.keys(quiz).sort(), ['id', 'rowId', 'anchor', 'title', 'qualifier', 'style', 'allDay', 'start', 'end'].sort());
-  assert.equal(events.filter((item) => item.rowId === 'quiz-2').length, 1, 'no extra event at an inferred 09:00');
-  assert.equal(event(events, 'quiz-1').style, 'window', 'ordinary lab quizzes are also windows');
-  assert.equal(event(events, 'quiz-1').title, 'Lab Quiz 1');
+test('a legacy saved math section cannot introduce a dated quiz or a timetable into the calendar', () => {
+  for (const course of ['mth140', 'mth141']) {
+    const events = lib.calendarEvents(course, rowsFor(course));
+    for (const section of [3, 31]) {
+      assert.deepEqual(lib.calendarEvents(course, rowsFor(course, { section })), events);
+    }
+  }
 });
 
 test('the MTH140 midterm is a due event running 18:30–20:30 Toronto', () => {
@@ -320,7 +310,7 @@ test('day precision stays all-day with no invented time', () => {
   assert.equal(review.qualifier, 'Time not posted');
 });
 
-test('without a saved section, every quiz is a Monday–Friday week event with the section qualifier', () => {
+test('every math quiz covers its published date range', () => {
   for (const courseId of ['mth140', 'mth141']) {
     const rows = rowsFor(courseId);
     const events = lib.calendarEvents(courseId, rows);
@@ -329,7 +319,7 @@ test('without a saved section, every quiz is a Monday–Friday week event with t
     for (const quiz of quizzes) {
       const result = event(events, quiz.id);
       assert.equal(result.title, `Quiz week · ${quiz.title}`);
-      assert.equal(result.qualifier, 'Date depends on your lab section');
+      assert.equal(result.qualifier, 'Check D2L for your quiz date');
       assert.equal(result.style, 'week');
       assert.equal(result.allDay, true);
       assert.equal(result.start, quiz.week);
@@ -349,7 +339,7 @@ test('an unconfirmed holiday week says its date needs confirmation and keeps wee
   assert.equal(result.style, 'week');
   assert.equal(result.allDay, true);
   assert.equal(result.start, '2026-10-12');
-  assert.equal(result.end, '2026-10-16');
+  assert.equal(result.end, '2026-10-19');
 });
 
 test('pending and empty rows produce no event, even with stale dated fields', () => {
@@ -368,24 +358,12 @@ test('pending and empty rows produce no event, even with stale dated fields', ()
   }
 });
 
-test('section-specific reminders appear only when provided by deadlines, without additional section filtering', () => {
+test('the course calendar keeps the showcase reminder and omits the old section-specific lab reminder', () => {
   for (const section of [0, 5, 29]) {
-    const rows = rowsFor('cen100', { section });
-    const events = lib.calendarEvents('cen100', rows);
-    const lab = event(events, 'failure-lab');
-    assert.equal(Boolean(lab), section === 29, `Section ${section}`);
-    if (lab) {
-      assert.equal(lab.style, 'reminder');
-      assert.equal(lab.anchor, 'assignment-m3');
-      assert.equal(lab.allDay, true);
-      assert.equal(lab.start, '2026-10-14');
-      assert.equal(lab.end, '2026-10-14');
-    }
+    const events = lib.calendarEvents('cen100', rowsFor('cen100', { section }));
+    assert.equal(event(events, 'failure-lab'), undefined);
     assert.equal(event(events, 'showcase-signup').style, 'reminder');
   }
-  const reminder = rowsFor('cen100', { section: 29 }).filter((row) => row.id === 'failure-lab');
-  assert.equal(withStorage(saved('cen100', { section: 5 }), () => lib.calendarEvents('cen100', reminder)).length, 1,
-    'the supplied rows determine membership even if saved section differs');
 });
 
 test('each dated record gets its own unique event and several events share one assignment anchor', () => {
@@ -401,7 +379,7 @@ test('each dated record gets its own unique event and several events share one a
   }
   assert.deepEqual(sorted(events.filter((item) => item.anchor === 'assignment-y6').map((item) => item.rowId)), ['notebook-1', 'notebook-2']);
   assert.equal(events.filter((item) => item.anchor === 'assignment-y1').length, 4);
-  assert.equal(events.filter((item) => item.anchor === 'assignment-m3').length, 3, 'the reminder and both submission records link to m3');
+  assert.equal(events.filter((item) => item.anchor === 'assignment-m3').length, 2, 'both submission records link to m3');
 });
 
 test('done style overrides due, day, week, lab-window and reminder styles without changing dates', () => {
@@ -416,11 +394,11 @@ test('done style overrides due, day, week, lab-window and reminder styles withou
       assert.deepEqual({ ...result, style: original.style }, original);
     }
   }
-  const rows = rowsFor('cen100', { section: 29, completed: { failure: 1, 'failure-2': 1, 'notebook-1': 1 } });
+  const rows = rowsFor('cen100', { section: 29, completed: { 'presentation-1': 1, 'presentation-2': 1, 'notebook-1': 1 } });
   const events = lib.calendarEvents('cen100', rows);
   assert.equal(event(events, 'notebook-1').style, 'done');
   assert.equal(event(events, 'notebook-2').style, 'due');
-  assert.equal(event(events, 'failure-lab').style, 'done', 'a retired reminder is also done');
+  assert.equal(event(events, 'showcase-signup').style, 'done', 'a retired reminder is also done');
 });
 
 test('both functions preserve frozen supplied rows and perform no storage access or writes', () => {

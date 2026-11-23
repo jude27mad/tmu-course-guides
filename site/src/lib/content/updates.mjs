@@ -65,10 +65,10 @@ export const COURSE_UPDATES = {
   {
    "id": "2026-10-12-confirmed-quiz-2-coverage-and-monday-make-up",
    "date": "October 12, 2026",
-   "title": "Confirmed Quiz 2 coverage and Monday make-up",
+   "title": "Confirmed Quiz 2 coverage",
    "text": "",
    "items": [
-    "Quiz 2 covers Chapter 3, Sections 3.1–3.5, in the second hour of the lab. The October 8 announcement confirms Monday sections write October 19; other sections follow their October 13–16 lab.",
+    "Quiz 2 covers Chapter 3, Sections 3.1–3.5, in the second hour of the lab.",
     "Updated quiz and calendar dates. Check D2L for any subsequent changes."
    ]
   },
@@ -78,11 +78,10 @@ export const COURSE_UPDATES = {
    "title": "Three-course guide",
    "text": "",
    "items": [
-    "Added course switching between CEN100, MTH140 and MTH141, independent saved sections and progress, and shared Auto, Dark and Light appearance.",
-    "Added all 34 Calculus I sections, with lab times, rooms, TAs and lecture instructors.",
+    "Added course switching between CEN100, MTH140 and MTH141, independent course progress, and shared Auto, Dark and Light appearance.",
     "Added four quiz weeks, the October 23 midterm, a pending final-exam card, grading weights of 15% / 40% / 45%, and the announced Quiz 1 coverage.",
     "Added eight outline topic blocks and all 37 recommended-practice rows, with skill-review checks and cyan curve/tangent visuals.",
-    "Explained the conflicting FAQ quiz-drop wording. Quiz 2's Monday holiday was originally unresolved but is now confirmed for October 19; Quiz 3–4 coverage, midterm scope and final schedule remain pending.",
+    "Explained the conflicting FAQ quiz-drop wording. Quiz 3–4 coverage, midterm scope and the final schedule were pending.",
     "Added preparation checklists, separate completion records, private notes, study targets, direct assessment links, search, unfinished-work planning, calendar exports and course-specific progress backups.",
     "Published the three-course README and added these release notes with an unread-update badge. Checked phone, desktop and enlarged-text layouts, progress restoration, backups and calendars."
    ]
@@ -93,7 +92,7 @@ export const COURSE_UPDATES = {
    "id": "2026-10-23-mth141-source-review",
    "date": "October 23, 2026",
    "title": "MTH141 source review",
-   "text": "Rechecked the V3 outline, FAQ, all 34 lab timetables and all 40 recommended-practice rows against the supplied files.",
+   "text": "Rechecked the V3 outline, FAQ and all 40 recommended-practice rows against the supplied files.",
    "items": [
      "Made the midterm exclusions explicit: section 3.1.4 and Chapter 4.",
      "Added Chapter 4 note and Lab 1–4 practice guidance, quiz timing and accommodation details, and term-test grade-return guidance.",
@@ -115,8 +114,7 @@ export const COURSE_UPDATES = {
    "title": "Three-course guide",
    "text": "",
    "items": [
-    "Added course switching between CEN100, MTH140 and MTH141, independent saved sections and progress, and shared Auto, Dark and Light appearance.",
-    "Added all 34 Linear Algebra sections, with lab times, rooms, Academic Assistants and lecture instructors.",
+    "Added course switching between CEN100, MTH140 and MTH141, independent course progress, and shared Auto, Dark and Light appearance.",
     "Added five quiz weeks, the October 16 midterm, a pending final-exam card, grading weights of 20% / 35% / 45%, and announced Quiz 1, Quiz 2 and midterm coverage.",
     "Added midterm coverage and preparation guidance, eight outline topic blocks and all 40 recommended-practice rows, with skill-review checks and violet vector-transformation visuals.",
     "Explained the textbook-edition mismatch and the V3 Thanksgiving-week teaching schedule. Later quiz coverage, the midterm room and the final schedule remain pending.",
@@ -154,6 +152,14 @@ export const COURSE_UPDATES = {
 };
 
 export const WEBSITE_UPDATES = [
+ {
+  "id": "2026-11-23-course-sections-removed",
+  "date": "November 23, 2026",
+  "title": "Section details removed from three guides",
+  "text": "CEN100, MTH140 and MTH141 now show course-wide schedules. The math guides list quiz weeks, and CEN100 lets you choose an Innovation Challenge group directly. Check D2L for your lab time, room and teaching team.",
+  "items": [],
+  "courses": ["cen100", "mth140", "mth141"]
+ },
  {
   "id": "2026-11-15-chy102-pcs211",
   "date": "November 15, 2026",
@@ -222,7 +228,7 @@ export const WEBSITE_UPDATES = [
   "items": [
     "Next deadline shows the time left, such as 23h 47m left, or Today, Tomorrow or In 3 days.",
     "Work lists This week, Next week, Later, Past due and Done, in that order, and files each assignment by its next unfinished part.",
-    "Mark done sits beside each record's date, and each lab quiz shows its lab room.",
+    "Mark done sits beside each record's date.",
     "Back returns you to the same place in Work.",
     "On the Desk, Next up names anything else due at the same time, and each Courses card says what is due next."
   ]
@@ -247,11 +253,10 @@ export const WEBSITE_UPDATES = [
   "title": "Fixes for deadlines, scrolling and backups",
   "text": "A few things that did not work as they should.",
   "items": [
-    "A math lab quiz you have written no longer stays as the next deadline, marked Due time passed, until midnight. Two hours after your lab, the next item takes its place on the course page and on the Desk.",
     "The Privacy page could open with its text hidden. It now always shows.",
     "PageDown, the arrow keys, Home and End scroll the page again while a button or the Menu button has focus, for example right after closing the Menu.",
     "On wide screens, Back from an assignment returns to the same place in Schedule.",
-    "In MTH140 and MTH141, Import a backup says plainly when a file is wrong or damaged, and Download calendar asks you to choose your section when only lab quizzes are left."
+    "In MTH140 and MTH141, Import a backup explains when a file is invalid or damaged."
   ]
  },
  {
@@ -322,9 +327,9 @@ export const WEBSITE_UPDATES = [
   "items": [
    "Each course opens on a compact Work list with Open, All and Done filters. Schedule, Course info and, for MTH140 and MTH141, Study have their own views.",
    "Every assignment opens on one full-width page, and Back returns to the same place in the list.",
-   "Schedule shows an agenda on phones and a calendar on wider screens. Section, D2L and Guide tools stay near the top, and notes save as you type.",
+   "Schedule shows an agenda on phones and a calendar on wider screens. D2L and Guide tools stay near the top, and notes save as you type.",
    "Moving between views is smooth again.",
-   "Your sections, ticks, completion records, notes and target dates are unchanged."
+   "Your ticks, completion records, notes and target dates are unchanged."
   ]
  },
  {
@@ -354,7 +359,7 @@ export const WEBSITE_UPDATES = [
    "The home windows now reveal a charcoal signal field with light points and travelling orange pulses.",
    "Course images now reflect the subjects: a steel bridge mechanism for Introduction to Engineering, a worked integral for Calculus I, and linear equations for Linear Algebra.",
    "Next Up and the course windows reveal the photographs from pixels to a sharp image. Pause motion and reduced motion show the finished images immediately.",
-   "Your course dates, sections, checklists, completion records, notes and target dates are unchanged."
+   "Your course dates, checklists, completion records, notes and target dates are unchanged."
   ]
  },
  {
@@ -367,7 +372,7 @@ export const WEBSITE_UPDATES = [
    "Each guide opens with your next deadline, then lists deadlines under This week, Next week and Later, followed by the weekly checklist, assessments and course information.",
    "Search is in the top bar on larger screens and in the menu on phones. Ctrl K or ⌘ K still opens it from a keyboard.",
    "Pause motion is in the menu, and your device’s reduced-motion setting is respected. The new design uses a light appearance only.",
-   "Your saved sections, ticks, completion records, notes and target dates carry over unchanged."
+   "Your saved ticks, completion records, notes and target dates carry over unchanged."
   ]
  },
  {
@@ -542,14 +547,14 @@ export const WEBSITE_UPDATES = [
   "title": "Three-course guide",
   "text": "Added MTH140: Calculus I and MTH141: Linear Algebra alongside CEN100.",
   "items": [
-   "Switch courses in the shared header. Each course remembers its own section and progress; Auto, Dark and Light appearance is shared.",
-   "Both math guides cover all 34 sections, with assigned lab times, rooms and staff. Assessment dashboards and grading bars replace the team/individual split.",
+   "Switch courses in the shared header. Each course remembers its own progress. Auto, Dark and Light appearance is shared.",
+   "Assessment dashboards and grading bars replace the team/individual split.",
    "Added published quiz weeks and midterm dates, announced coverage, preparation checklists, completion records, notes, study targets, direct links, search, calendars and course-specific backups.",
    "Added 16 math topic blocks and 77 recommended-practice rows, with skill-review checks, textbook links and course rules. Calculus uses cyan curve/tangent graphics; Linear Algebra uses violet vector graphics.",
-   "Quiz days derived from lab timetables are labelled. Thanksgiving arrangements, unannounced coverage and final dates remain pending; source conflicts and textbook-edition differences are explained.",
+   "Explained source conflicts and textbook-edition differences. Unannounced coverage and final dates were pending.",
    "Expanded the README for all three courses and added What's changed with unread-update badges above both math footers. Checked phone, desktop and enlarged-text layouts, saved progress, backups and calendar exports."
   ],
-  "after": "Existing CEN100 records, section/group choices and assignment links remain available.",
+  "after": "Existing CEN100 records, group choices and assignment links remain available.",
   "courses": [
    "cen100"
   ]
@@ -592,7 +597,7 @@ export const WEBSITE_UPDATES = [
   "id": "2026-09-28-web-analytics-added",
   "date": "September 28, 2026",
   "title": "Web analytics added",
-  "text": "Added Cloudflare Web Analytics for private usage and performance reporting. Page views and visits are not unique people. Cloudflare uses no analytics cookies or fingerprinting; your section/group, notes, targets, checklists and completion records are not sent to analytics.",
+  "text": "Added Cloudflare Web Analytics for private usage and performance reporting. Page views and visits are not unique people. Cloudflare uses no analytics cookies or fingerprinting; your group, notes, targets, checklists and completion records are not sent to analytics.",
   "items": [],
   "courses": [
    "cen100"
@@ -649,20 +654,10 @@ export const WEBSITE_UPDATES = [
   ]
  },
  {
-  "id": "2026-09-26-lab-location-beside-your-section",
-  "date": "September 26, 2026",
-  "title": "Lab location beside your section",
-  "text": "Your lab location now appears beside your section and group at the top of the guide and updates when you change sections.",
-  "items": [],
-  "courses": [
-   "cen100"
-  ]
- },
- {
   "id": "2026-09-26-unified-deadline-tracking",
   "date": "September 26, 2026",
   "title": "Unified deadline tracking",
-  "text": "Unified deadline tracking, kept repeated deadlines active, clarified date-passed labels, and scoped tutorial times to confirmed sections.",
+  "text": "Unified deadline tracking, kept repeated deadlines active and clarified date-passed labels.",
   "items": [],
   "courses": [
    "cen100"
@@ -701,8 +696,8 @@ export const WEBSITE_UPDATES = [
  {
   "id": "2026-09-25-section-and-group-at-the-top",
   "date": "September 25, 2026",
-  "title": "Section and group at the top",
-  "text": "Moved section/group selection to the top of the guide. Who to ask now shows the matching contact results, with a shortcut to change your selection.",
+  "title": "Group selection at the top",
+  "text": "Moved Innovation Challenge group selection to the top of the guide.",
   "items": [],
   "courses": [
    "cen100"
@@ -711,8 +706,8 @@ export const WEBSITE_UPDATES = [
  {
   "id": "2026-09-25-heading-follows-your-section",
   "date": "September 25, 2026",
-  "title": "Heading follows your section",
-  "text": "The page heading now follows your selected section and group, with a neutral course label before selection.",
+  "title": "Group shown in the heading",
+  "text": "Added the selected Innovation Challenge group to the course heading.",
   "items": [],
   "courses": [
    "cen100"
@@ -722,17 +717,7 @@ export const WEBSITE_UPDATES = [
   "id": "2026-09-25-remembered-choices-calendar-backups-and-search",
   "date": "September 25, 2026",
   "title": "Remembered choices, calendar, backups and search",
-  "text": "Added remembered section/group choices, calendar export, checklist backups, search, source notes and the option to hide fully checked items. Removed the large attendance warning from Rules.",
-  "items": [],
-  "courses": [
-   "cen100"
-  ]
- },
- {
-  "id": "2026-09-25-contact-lookup",
-  "date": "September 25, 2026",
-  "title": "Contact lookup",
-  "text": "Added the contact lookup for all 39 sections and 52 groups, showing names and lab locations.",
+  "text": "Added remembered group choices, calendar export, checklist backups, search, source notes and the option to hide fully checked items. Removed the large attendance warning from Rules.",
   "items": [],
   "courses": [
    "cen100"

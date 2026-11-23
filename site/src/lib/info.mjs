@@ -1,5 +1,5 @@
 /* courseInfo(): the rules, contacts, topic map, help text and notes each old course page showed, as plain data.
-   Static apart from the section/group choice; no clock and no storage. */
+   Static apart from the project group choice; no clock and no storage. */
 import { fast } from './perf.mjs';
 import { DATA, isScience } from './data.mjs';
 import { scienceEvent, scienceTiming, scienceTile } from './science.mjs';
@@ -9,7 +9,7 @@ import * as CEN from './content/cen.mjs';
 import * as MATH from './content/math.mjs';
 import { CEN as CEN_PAGE } from './content/pages.mjs';
 import { COURSE_UPDATES } from './content/updates.mjs';
-import { getCourse, sections, MATH_PAGE } from './courses.mjs';
+import { getCourse, MATH_PAGE } from './courses.mjs';
 import { isMath } from './saved.mjs';
 
 const SEVERITY = { red: 'red', '': 'neutral' };
@@ -17,8 +17,8 @@ const SEVERITY = { red: 'red', '': 'neutral' };
 // Guide tools' "Course updates": this course's information changes, newest first (website changes are on /updates/).
 const courseUpdates = (courseId, page) => ({ summary: 'Course updates', badge: page.updatesBadge, version: COURSE_UPDATES[courseId][0]?.id || '', entries: COURSE_UPDATES[courseId] });
 
-function cenInfo({ section, group } = {}) {
-  const profile = CEN.validProfile(section ? { section, group } : null);
+function cenInfo({ group } = {}) {
+  const profile = CEN.validProfile({ group });
   const texts = CEN.sectionContent(profile);
   const items = CEN.allItems.map((item) => {
     const [label, note] = CEN.sourceFor(item);
@@ -44,7 +44,7 @@ function cenInfo({ section, group } = {}) {
       anchor: `assignment-${item.id}`,
     };
   });
-  const contacts = CEN.contactLookup(profile?.section, profile?.group);
+  const contacts = CEN.contactLookup(profile?.group);
   return {
     courseId: 'cen100',
     code: 'CEN100',
@@ -58,7 +58,7 @@ function cenInfo({ section, group } = {}) {
     open: CEN.OPEN.map(([title, text]) => ({ title, text })),
     openLead: CEN_PAGE.openLead,
     contacts: { ...contacts, heading: CEN_PAGE.rulesHeadings[2], note: CEN_PAGE.contactNote, change: CEN_PAGE.changeProfile },
-    sections: sections('cen100'),
+    sections: [],
     grading: CEN_PAGE.grading,
     tools: { work: CEN_PAGE.work, calendar: { ...CEN_PAGE.calendar, items: CEN.calendarItems() }, backup: CEN_PAGE.backup, note: CEN_PAGE.tools.note, updated: CEN_PAGE.tools.updated },
     updates: courseUpdates('cen100', CEN_PAGE),
@@ -66,21 +66,18 @@ function cenInfo({ section, group } = {}) {
   };
 }
 
-function mathInfo(courseId, { section } = {}) {
+function mathInfo(courseId) {
   const course = DATA[courseId];
   const page = MATH_PAGE[courseId];
-  const chosen = course.labs.some((lab) => lab.section === Number(section)) ? Number(section) : 0;
-  const text = MATH.sectionText(course, chosen);
   return {
     courseId,
     code: course.code,
     title: course.name,
     organization: course.organization,
-    section: { ...text, value: chosen || null },
-    sections: sections(courseId),
+    sections: [],
     page,
     assessments: course.assessments.map((a) => {
-      const e = resolveAssessment(course, a, chosen);
+      const e = resolveAssessment(course, a);
       return {
         id: a.id,
         title: a.title,
@@ -91,7 +88,7 @@ function mathInfo(courseId, { section } = {}) {
         weightLabel: MATH.weight(a, course),
         timing: timing(e),
         tile: MATH.dateTile(e),
-        room: MATH.labLocation(a, e),
+        room: 'Check D2L',
         dateNote: MATH.dateNote(a, e, courseId),
         ...MATH.assessmentCard(a, courseId),
         checklist: MATH.prep(a, courseId).map((stepText, i) => ({ id: `${a.id}-${i}`, text: stepText })),
@@ -112,7 +109,7 @@ function mathInfo(courseId, { section } = {}) {
     review: page.review,
     rules: MATH.ruleCards(course, courseId),
     notice: MATH.courseNotice(courseId),
-    contacts: { heading: page.contact.heading, coordinatorLabel: page.contact.coordinator, coordinator: course.coordinator, note: page.contact.note, links: page.contact.links, section: text.contacts, prompt: text.contactsPrompt },
+    contacts: { heading: page.contact.heading, coordinatorLabel: page.contact.coordinator, coordinator: course.coordinator, note: page.contact.note, links: page.contact.links },
     textbooks: { ...page.textbooks, books: course.textbooks },
     sources: { ...page.sources, entries: course.sources },
     grading: { ...page.grading, weights: course.weights, quizPolicy: course.quizPolicy },
@@ -225,12 +222,12 @@ function scienceInfo(courseId) {
   };
 }
 
-/** The old page's static guidance for a course, with section-dependent text resolved for `section` (and CEN `group`).
+/** The old page's static guidance for a course, including the selected CEN project group.
     Plain JSON data (safe to pass through getStaticProps). */
 function courseInfoNow(courseId, options = {}) {
   if (!getCourse(courseId)) return null;
   if (isScience(courseId)) return scienceInfo(courseId);
-  return isMath(courseId) ? mathInfo(courseId, options) : cenInfo(options);
+  return isMath(courseId) ? mathInfo(courseId) : cenInfo(options);
 }
 
 /** The old pages' interface strings for a course, including the ones that take values (functions), e.g.

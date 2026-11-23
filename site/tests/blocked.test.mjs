@@ -114,7 +114,9 @@ test('blocked writes report saved:false, use the old message, and still show the
     assert.deepEqual(progress.toggleTick('cen100', 'm2', 'm2-1-3'), { checked: true, saved: false });
     assert.equal(progress.isTicked('cen100', 'm2', 'm2-1-3'), true);
     assert.equal(lib.setSection('mth140', 31, storage), false);
-    assert.equal(lib.getSection('mth140', storage), 31);
+    assert.equal(lib.getSection('mth140', storage), null);
+    assert.equal(lib.setGroup('cen100', 9, storage), false);
+    assert.equal(lib.getGroup('cen100', storage), 9);
     assert.equal(lib.setMotionPaused(true, storage), false);
     assert.equal(lib.motionPaused(storage), true);
     const math = progress.markDone('mth141', 'quiz-1');

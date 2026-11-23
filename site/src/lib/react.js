@@ -7,7 +7,7 @@
  */
 import React from 'react';
 
-import { STORAGE_KEYS, getSection, gradesSavable, motionPaused, readGrades, setMotionPaused, setSection as saveSection, sharedProgress, subscribeGrades, writeGrades } from './index.js';
+import { STORAGE_KEYS, gradesSavable, motionPaused, readGrades, setMotionPaused, setSection, sharedProgress, subscribeGrades, writeGrades } from './index.js';
 
 const { useCallback, useEffect, useMemo, useState } = React;
 
@@ -85,32 +85,8 @@ export const useProgress = () => {
   return useMemo(() => ({ ...(api || PRE_MOUNT), version, ready: !!api }), [api, version]);
 };
 
-/**
- * [section, setSection] for a course: the saved section number (null when none or before mount) and a setter
- * that saves it in the old format (see setSection in index.js) and returns whether storage accepted it.
- */
-export const useSection = (courseId) => {
-  const [section, setState] = useState(null);
-
-  useEffect(() => {
-    const read = () => setState(getSection(courseId));
-    read();
-    return sharedProgress().subscribe((detail) => {
-      if (detail.key === null || detail.courseId === courseId) read();
-    });
-  }, [courseId]);
-
-  const update = useCallback(
-    (value) => {
-      const saved = saveSection(courseId, value);
-      setState(getSection(courseId));
-      return saved;
-    },
-    [courseId],
-  );
-
-  return [section, update];
-};
+/** Compatibility with the retired section picker. */
+export const useSection = () => [null, setSection];
 
 const NO_GRADES = { marks: {}, target: null, variant: null };
 

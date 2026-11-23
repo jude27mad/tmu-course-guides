@@ -8,7 +8,13 @@ const VENDOR = new URL('../src/lib/vendor/', import.meta.url);
 const COPIES = ['course-data.mjs', 'cen-schedule.mjs', 'schedule.mjs', 'night/targets.mjs', 'book/weeks.mjs', 'desk/desk-data.mjs'];
 const stripQueries = (text) => text.replace(/(\.mjs)\?v=[^'"]*(['"])/g, '$1$2');
 
-test('vendored modules preserve the archive apart from the documented MTH140 content update', () => {
+const adaptedFunctions = {
+  'schedule.mjs': ['resolveAssessment', 'timing', 'calendar'],
+  'night/targets.mjs': ['readSection', 'readSaved', 'resolveTarget', 'compact', 'status'],
+  'desk/desk-data.mjs': ['deskSummary'],
+};
+
+test('vendored modules preserve course-wide content and helpers beyond the documented updates', async () => {
   for (const file of COPIES) {
     const old = readFileSync(new URL(file, OLD), 'utf8');
     const copy = readFileSync(new URL(file, VENDOR), 'utf8');
@@ -16,9 +22,19 @@ test('vendored modules preserve the archive apart from the documented MTH140 con
       const parse = (text) => JSON.parse(text.replace(/^export const COURSES = /, '').trim().replace(/;$/, ''));
       const previous = parse(old);
       const current = parse(copy);
-      // Only the announcement fields may differ; preserve every other course value.
+      for (const course of Object.values(previous)) {
+        course.labs = [];
+        course.instructors = [];
+        course.sources = course.sources.filter(({ title }) => !['MTH140 TAs F26', 'MTH141 Labs'].includes(title));
+      }
       const before = previous.mth140;
       const after = current.mth140;
+      const quiz = before.assessments.find((item) => item.id === 'quiz-2');
+      quiz.weekEnd = quiz.mondayMakeupDate;
+      delete quiz.mondayMakeupDate;
+      quiz.source = quiz.source.replace('scope, second-hour timing and Monday October 19 make-up.', 'scope and second-hour timing.');
+      const quizSource = before.sources.find(({ title }) => title === 'Lab 5 Questions and Quiz 2');
+      quizSource.detail = quizSource.detail.replace('; Monday sections on October 19, other sections in their October 13–16 labs.', '.');
       after.updated = before.updated;
       for (const topic of after.topics) topic.midterm = before.topics.find((t) => t.id === topic.id).midterm;
       for (const item of after.assessments) {
@@ -29,6 +45,19 @@ test('vendored modules preserve the archive apart from the documented MTH140 con
       assert.equal(after.sources.length, before.sources.length + 1);
       assert.equal(after.sources.pop().title, 'Midterm Exam Content');
       assert.deepEqual(current, previous);
+    } else if (file === 'cen-schedule.mjs') {
+      const archive = await import(new URL(file, OLD));
+      const current = await import(new URL(file, VENDOR));
+      assert.deepEqual(current.SCHEDULE, archive.SCHEDULE.filter((item) => !item.section));
+    } else if (adaptedFunctions[file]) {
+      // The section-related functions are covered by the deadlines, calendar and storage suites.
+      const archive = await import(new URL(file, OLD));
+      const current = await import(new URL(file, VENDOR));
+      for (const [name, value] of Object.entries(archive)) {
+        if (adaptedFunctions[file].includes(name)) continue;
+        if (typeof value === 'function') assert.equal(String(current[name]), stripQueries(String(value)), name);
+        else assert.deepEqual(current[name], value, name);
+      }
     } else {
       assert.equal(copy, stripQueries(old), file);
     }

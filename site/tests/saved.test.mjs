@@ -11,10 +11,7 @@ import {
   writeProfile,
   readMath,
   writeMath,
-  readMathSection,
-  writeMathSection,
   readCompletedMap,
-  readSectionNumber,
   readMotionPaused,
   writeMotionPaused
 } from '../src/lib/saved.mjs';
@@ -61,13 +58,13 @@ test('readProfile and writeProfile', () => {
   assert.equal(readProfile(storage), null);
 
   assert.equal(writeProfile(storage, { section: 29, group: 9 }), true);
-  assert.deepEqual(readProfile(storage), { section: 29, group: 9 });
+  assert.deepEqual(readProfile(storage), { group: 9 });
 
   assert.equal(writeProfile(storage, { section: 29 }), true);
-  assert.deepEqual(readProfile(storage), { section: 29, group: null });
+  assert.equal(readProfile(storage), null);
 
   storage.data.set('cen100-contact-choice-v1', '{"section":"29","group":"9"}');
-  assert.deepEqual(readProfile(storage), { section: 29, group: 9 });
+  assert.deepEqual(readProfile(storage), { group: 9 });
 });
 
 test('readMath and writeMath', () => {
@@ -82,21 +79,6 @@ test('readMath and writeMath', () => {
   assert.deepEqual(readMath('mth140', storage), progress);
 });
 
-test('readMathSection and writeMathSection', () => {
-  const storage = memoryStorage();
-  assert.equal(readMathSection('mth140', storage), 0);
-
-  assert.equal(writeMathSection('mth140', storage, 31), true);
-  assert.equal(readMathSection('mth140', storage), 31);
-
-  // A saved section with no MTH140 lab reads as no section.
-  storage.data.set('mth140-section-v1', '999');
-  assert.equal(readMathSection('mth140', storage), 0);
-
-  storage.data.set('mth140-section-v1', '"31"');
-  assert.equal(readMathSection('mth140', storage), 31);
-});
-
 test('readCompletedMap', () => {
   const storage = memoryStorage();
   writePlan(storage, { completed: { integrity: 1 }, notes: {}, targets: {} });
@@ -104,15 +86,6 @@ test('readCompletedMap', () => {
 
   assert.deepEqual(readCompletedMap('cen100', storage), { integrity: 1 });
   assert.deepEqual(readCompletedMap('mth140', storage), { 'quiz-1': true });
-});
-
-test('readSectionNumber', () => {
-  const storage = memoryStorage();
-  writeProfile(storage, { section: 29, group: 9 });
-  writeMathSection('mth140', storage, 31);
-
-  assert.equal(readSectionNumber('cen100', storage), 29);
-  assert.equal(readSectionNumber('mth140', storage), 31);
 });
 
 test('readMotionPaused and writeMotionPaused', () => {
@@ -138,11 +111,8 @@ test('readers never write to storage', () => {
   readPlan(storage);
   readProfile(storage);
   readMath('mth140', storage);
-  readMathSection('mth140', storage);
   readCompletedMap('cen100', storage);
   readCompletedMap('mth140', storage);
-  readSectionNumber('cen100', storage);
-  readSectionNumber('mth140', storage);
   readMotionPaused(storage);
   assert.deepEqual(storage.writes(), []);
 });

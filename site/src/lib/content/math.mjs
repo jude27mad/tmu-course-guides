@@ -2,7 +2,7 @@
    Extracted word for word and in order. The closure's `courseId` and `course` became parameters; markup that the
    closure built around its text became plain structured data ({type:'p'|'list'|'source', ...}) with the same words.
    Pure: no DOM, no storage access at import. */
-import {DAY_NAMES,today,daysUntil,dateLabel,clock,addDays,resolveAssessment,assessmentPassed} from '../vendor/schedule.mjs';
+import {today,daysUntil,dateLabel,clock,addDays,resolveAssessment,assessmentPassed} from '../vendor/schedule.mjs';
 
 // math-guide.mjs:31-33: the course's storage keys and release version.
 export const keysFor=courseId=>({progress:courseId+'-progress-v1',section:courseId+'-section-v1',view:courseId+'-view-v1',seen:courseId+'-last-seen-update-v1'});
@@ -19,8 +19,7 @@ export function prep(assessment,courseId){
 }
 // math-guide.mjs:55-60
 export function weight(assessment,course){if(assessment.weightLabel)return assessment.weightLabel;return assessment.kind==='quiz'?`${course.weights[0]}% quiz category`:assessment.kind==='midterm'?`${course.weights[1]}% of course`:`${course.weights[2]}% of course`;}
-export function labSummary(lab){return `${DAY_NAMES[lab.day]} ${clock(lab.start)}–${clock(lab.end)} · ${lab.room}`;}
-export function certainty(a){if(a.kind==='final')return 'Date pending';if(a.rescheduled)return 'D2L-confirmed make-up';if(a.holiday)return 'Revised date needed';if(a.kind==='quiz')return a.date?'Lab date from timetable':'Announced week';return a.confirmed?'Announcement confirmed':'Course outline';}
+export function certainty(a){if(a.kind==='final')return 'Date pending';if(a.kind==='quiz')return 'Announced week';return a.confirmed?'Announcement confirmed':'Course outline';}
 /** dateTile(): the card's date tile as its three text lines ({top, main, bottom}; main is "DEC"-style when unknown). */
 export function dateTile(event){if(event.date){const [month,day]=dateLabel(event.date).split(' ');return {top:month,main:day,bottom:event.kind==='quiz'?'lab':'',unknown:false};}return event.week?{top:'Week of',main:dateLabel(event.week),bottom:'',unknown:true}:{top:'Final',main:'DEC',bottom:'Date pending',unknown:true};}
 /** countdown(): "N days away" / "Today" / "This week", as the next-assessment card shows it. */
@@ -41,22 +40,8 @@ export function validDate(value){return /^\d{4}-\d{2}-\d{2}$/.test(value)&&!Numb
 export const checkKeys=(assessment,courseId)=>prep(assessment,courseId).map((_,i)=>assessment.id+'-'+i);
 export const topicKeys=topic=>topic.skills.map((_,i)=>topic.id+'-'+i);
 
-// math-guide.mjs:70-77: the section brief, page title and contacts.
-export function sectionText(course,section){
-  const lab=course.labs.find(x=>x.section===section);
-  return {
-    brief:lab?{section:`Section ${section}`,detail:labSummary(lab)}:null,
-    briefPrompt:'Choose your section to see your lab, instructor and quiz dates.',
-    title:`${course.code}${section?' · Section '+section:''}: ${course.name} | TMU Course Guides`,
-    contacts:lab?[{heading:'Lecture instructor',text:'Current staff and office hours on D2L',href:'https://courses.torontomu.ca/'},{heading:'Lab / tutorial',text:labSummary(lab)}]:null,
-    contactsPrompt:'Choose a section above to see your instructor and Academic Assistant.',
-  };
-}
-// math-guide.mjs:145: the section select's option label.
-export const sectionOption=lab=>`Section ${lab.section} (${String(lab.section).padStart(2,'0')}1 / ${String(lab.section).padStart(2,'0')}2)`;
-
 // math-guide.mjs:87: the next card's eyebrow, note and empty state.
-export function nextNote(event){return event.kind==='quiz'?(event.rescheduled?'Monday make-up date confirmed for October 19 on D2L. Check for changes.':'Quiz day follows your section’s lab timetable. Check D2L for changes.'):event.kind==='midterm'?'Room: check D2L. All times are Toronto time.':'';}
+export function nextNote(event){return event.kind==='quiz'?'Check D2L for the exact quiz date.':event.kind==='midterm'?'Room: check D2L. All times are Toronto time.':'';}
 export const NEXT={
   eyebrow:(event,course)=>`Next assessment · ${weight(event,course)}`,
   viewRequirements:'View requirements',
@@ -68,20 +53,23 @@ export const NEXT={
   emptyText:'Review the final-exam card for its pending schedule. Your completion records are saved on this device.',
   emptyAction:'View final exam',
   // :88 after-that list
-  afterDetail:e=>e.holiday?'Thanksgiving conflict; revised date pending':e.time?`${clock(e.time)}–${clock(e.end)}`:e.lab?e.lab.room:'During your lab',
+  afterDetail:e=>e.time?`${clock(e.time)}–${clock(e.end)}`:'During your lab',
   afterWeek:'week',
   afterEmpty:'No later dated assessments. The final exam is awaiting its schedule.',
 };
 // math-guide.mjs:90: the per-card status, room and date note.
 export function cardStatus(a,e,{completed,passed}){return completed?'Completed in my records':passed?'Date passed':certainty(e);}
-export function labLocation(a,e){return e.lab?e.lab.room:a.kind==='quiz'?'Select a section':'Check D2L';}
-export function dateNote(a,e,courseId){return e.rescheduled?'The October 8 D2L announcement confirms MTH140 Quiz 2 for Monday, October 19, in the second hour of the regular Monday lab.':e.holiday?'Your Monday lab falls on October 12, when the university is closed. Check D2L for revised arrangements.':a.kind==='quiz'&&a.id==='quiz-2'&&courseId==='mth140'?'The October 8 D2L announcement confirms the second hour of your October 13–16 lab. Check D2L for any changes.':a.kind==='quiz'?'The announced week is from the course documents. The displayed day and lab window come from your section timetable; check D2L for quiz time and changes.':'';}
+export function dateNote(a,e,courseId){
+  if(a.kind!=='quiz')return '';
+  if(a.id==='quiz-2'&&courseId==='mth140')return 'The October 8 D2L announcement confirms the second hour of the lab. Check D2L for your quiz date.';
+  return 'The announced week is from the course documents. Check D2L for the exact quiz date and time.';
+}
 
 // math-guide.mjs:94-100
 export function rulesForAssessment(a,courseId){
   if(a.kind==='midterm'&&courseId==='mth140')return ['Questions 1–10: multiple choice, 5 marks each (50 marks total), with no partial credit.','For each multiple-choice question, both the selected answer and the written solution must be correct and agree. Otherwise the question receives 0 out of 5.','Questions 11–13: long answer. Show your work to earn partial or full credit; individual long-answer marks are not specified in this announcement.','Closed book. No calculator, formula sheet or other aids. Check D2L for your assigned room, required identification and permitted supplies.'];
   if(a.kind==='midterm'&&courseId==='mth141')return ['Know your MTH141 section number and bring your physical TMU student ID.','The test is closed-book: no calculators, notes, formula sheets or other aids.','Read the official midterm cover page on D2L for full assessment and marking instructions.','Turn phones off and follow the invigilators’ bag and device instructions.','Follow the pen or pencil guidance in the official announcement.'];
-  if(a.kind==='quiz'&&courseId==='mth140'&&a.id==='quiz-2')return ['Study the Lab 5 questions on D2L covering Chapter 3, Sections 3.1–3.5.','The October 8 announcement places Quiz 2 in the second hour of your lab; Monday sections write on October 19.','Follow your TA’s instructions and confirm any later changes on D2L.'];
+  if(a.kind==='quiz'&&courseId==='mth140'&&a.id==='quiz-2')return ['Study the Lab 5 questions on D2L covering Chapter 3, Sections 3.1–3.5.','The October 8 announcement places Quiz 2 in the second hour of your lab.','Follow your TA’s instructions and confirm any later changes on D2L.'];
   if(a.kind==='quiz'&&courseId==='mth140'&&a.id==='quiz-1')return ['The September 22 announcement places Quiz 1 in the second hour of your lab. The first hour reviews continuity.','Bring blank paper with your name, section and student number. You do not need to copy the question.','No calculator or formula sheet. Turn your phone off and store it in your bag.'];
   if(a.kind==='quiz')return ['Attend your official assigned lab. This is an individual, closed-book assessment without notes, calculators or formula sheets.','Bring blank paper and write your name, section and student number at the top.','Keep phones turned off and stored in your bag.'];
   return ['Closed book. No calculator, formula sheet or other aids.','Check the latest D2L instructions for required identification, permitted supplies and room assignments.'];
@@ -135,7 +123,7 @@ export function ruleCards(course,courseId){
     {title:'Assessment rules',blocks:[{type:'list',items:['At least 50% of total course marks is required to pass.','Quizzes and exams are individual work, closed book, with no calculator, formula sheet or other aids.',course.quizPolicy,'Recommended homework is practice and is not submitted for grading.']},{type:'source',text:'Source: Course Management Form and course FAQ.'}]},
     {title:'If you miss an assessment',blocks:[{type:'p',text:'Your first missed lab quiz is handled by the dropped lowest grade; the course announcements say not to submit an ACR for that first missed quiz.'},{type:'p',text:courseId==='mth141'?'For a second missed lab quiz, email your instructor and submit an Academic Consideration Request within 3 business days. Once approved, the quiz average uses the remaining quizzes.':'For further missed quizzes, contact your instructor or TA and follow the current Academic Consideration procedure. There is no lab-quiz make-up.'},{type:'p',text:'For a missed midterm or final, contact your instructor promptly and follow the official ACR process. Make-ups require a valid, approved reason.'},{type:'source',text:'Source: Course Management Form, missed-evaluation rules, and quiz announcements.'}]},
     {title:'Regrading & communication',blocks:[...(courseId==='mth141'?[{type:'p',text:"The V3 outline allows up to 10 business days for term-test grades, barring unforeseen circumstances. For midterm feedback, start with your AA, then contact your instructor if needed."}]:[]),{type:'p',text:'Request regrading or recalculation within 10 working days after the graded assessment is returned, subject to the current University and course procedure. The whole assessment may be regraded and the mark may increase or decrease.'},{type:'p',text:courseId==='mth140'?'Use your official TMU email and include your name, student number, course and section. The FAQ says to wait at least one business day before escalating to the coordinator, or a full week for a remarking email.':'Use your official TMU email, include your name, student number, course and section. Check D2L first and allow at least one business day for a response.'},{type:'source',text:'Source: Course Management Form and FAQ.'}]},
-    {title:'Dates that still need confirmation',blocks:[{type:'list',items:[courseId==='mth140'?'Quiz 3–4 scope and any later quiz instructions.':'Quiz 3–5 coverage.','Exact final-exam date, time, room and announced topic list.','Any changes to the published section timetable.',courseId==='mth140'?'Midterm room assignments and any later changes to the October 13 instructions.':'Later quiz instructions and the final-exam Test Centre booking deadline.']},{type:'source',text:courseId==='mth141'?"MTH141 sources reviewed October 23: V3 outline, August 26 FAQ, lab timetable, recommended problems and supplied lecture/lab files. Quiz 1–2 and midterm coverage comes from the September 17, October 1 and October 5 announcements. Check D2L for newer announcements.":'MTH140 course documents and supplied announcements through October 13 were reviewed October 23, 2026. Midterm coverage and format are confirmed; check D2L for subsequent changes.'}]},
+    {title:'Dates that still need confirmation',blocks:[{type:'list',items:[courseId==='mth140'?'Quiz 3–4 scope and any later quiz instructions.':'Quiz 3–5 coverage.','Exact final-exam date, time, room and announced topic list.',courseId==='mth140'?'Midterm room assignments and any later changes to the October 13 instructions.':'Later quiz instructions and the final-exam Test Centre booking deadline.']},{type:'source',text:courseId==='mth141'?"MTH141 sources reviewed October 23: V3 outline, August 26 FAQ, recommended problems and supplied lecture/lab files. Quiz 1–2 and midterm coverage comes from the September 17, October 1 and October 5 announcements. Check D2L for newer announcements.":'MTH140 course documents and supplied announcements through October 13 were reviewed October 23, 2026. Midterm coverage and format are confirmed; check D2L for subsequent changes.'}]},
     ...(courseId==='mth141'?[
         {
           "title": "Quiz timing & accommodations",
@@ -204,11 +192,10 @@ export const WORK={
 // math-guide.mjs:47, :139, :170, :178-180: saving, sharing, Mark done, calendar and backups.
 export const COPY={
   blocked:'This browser is blocking local saving. Export a backup to keep your progress.',
-  linkCopied:'Link copied. Your private progress and section choice are not included.',
+  linkCopied:'Link copied. Your private progress is not included.',
   linkCopyLabel:'Copy this link',
   linkFieldLabel:'Assessment link to copy',
   markedDone:(a,saved)=>'Marked done: '+a.title+(saved?'. Saved on this device.':'. Local saving is blocked; export a backup to keep it.'),
-  calendarNeedsSection:'Choose your section first to include lab quiz dates.',
   calendarNone:'No dated assessments match those choices.',
   calendarReady:count=>`${count} assessment${count===1?'':'s'} exported. Imported calendars do not update automatically.`,
   backupExported:'Backup exported for this course.',

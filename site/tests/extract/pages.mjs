@@ -1,5 +1,5 @@
 // Regenerates site/src/lib/content/pages.mjs: the static text of the old pages (index.html, cen100/, mth140/, mth141/,
-// privacy.html), taken from the HTML in document order. Tags are stripped and entities decoded; words are unchanged.
+// privacy.html), with current guide copy applied below.
 // Run from anywhere: node site/tests/extract/pages.mjs
 import {readFileSync,writeFileSync} from 'node:fs';
 const root=new URL('../../../',import.meta.url),out=new URL('../../src/lib/content/pages.mjs',import.meta.url);
@@ -42,8 +42,6 @@ const CEN={
   heading:text(one(cen,/<h1>([\s\S]*?)<\/h1>/)[1]),
   profile:{
     summary:text(one(cen,/id="profile-label">([\s\S]*?)<\/span>/)[1]),
-    sectionLabel:text(one(cen,/<label for="contact-section">([\s\S]*?)<\/label>/)[1]),
-    sectionPlaceholder:text(one(cen,/<select id="contact-section"[^>]*><option value="">([\s\S]*?)<\/option>/)[1]),
     groupLabel:text(one(cen,/<label for="contact-group">([\s\S]*?)<\/label>/)[1]),
     groupPlaceholder:text(one(cen,/<select id="contact-group"[^>]*><option value="">([\s\S]*?)<\/option>/)[1]),
     note:text(one(cen,/id="profile-note">([\s\S]*?)<\/p>/)[1]),
@@ -101,7 +99,6 @@ function math(id){
     description:decode(one(h,/<meta name="description" content="([^"]*)"/)[1]),
     skip:{label:text(one(h,/<a class="skip-link"[^>]*>([\s\S]*?)<\/a>/)[1]),target:one(h,/<a class="skip-link" href="#([^"]+)"/)[1]},
     eyebrowTerm:text(one(h,/<p class="eyebrow"><span id="course-code">[^<]*<\/span>([\s\S]*?)<\/p>/)[1]).replace(/^·\s*/,''),
-    section:{label:text(one(h,/<label for="section-select">([\s\S]*?)<\/label>/)[1]),placeholder:text(one(h,/<select id="section-select"><option value="">([\s\S]*?)<\/option>/)[1])},
     nextLabel:decode(one(h,/<section class="next-layout" aria-label="([^"]*)"/)[1]),
     afterHeading:text(one(h,/<aside class="after-next"><h2>([\s\S]*?)<\/h2>/)[1]),
     undo:text(one(h,/id="undo-complete"[^>]*>([\s\S]*?)<\/button>/)[1]),
@@ -147,9 +144,40 @@ const PRIVACY={
   updated:text(one(privacy,/<small>([\s\S]*?)<\/small>/)[1]),
 };
 
-const banner=`/* Static text of the old pages, generated from their HTML in document order (tags stripped, entities decoded,
-   words unchanged): index.html (DESK), cen100/index.html (CEN), mth140/ and mth141/index.html (MATH),
-   privacy.html (PRIVACY). Regenerate with site/tests/extract/pages.mjs rather than editing. The course and
-   website update lists are in content/updates.mjs. */\n`;
+// Current copy for the published guides. The archived HTML stays available for the old website.
+const MATH = { mth140: math('mth140'), mth141: math('mth141') };
+DESK.description = 'Fall 2026 course guides for CEN100, MTH140 and MTH141 at TMU.';
+DESK.lede = 'Deadlines, requirements and your saved progress for each course. Progress stays in this browser.';
+DESK.footer = 'Notes and completion records are saved only in this browser.';
+for (const course of DESK.courses) {
+  if (course.id === 'cen100') {
+    course.name = 'Intro to Engineering';
+    course.ariaLabel = 'Open CEN100 guide, Intro to Engineering';
+    course.summary = 'Assignment deadlines, requirements and checklists.';
+  } else {
+    course.summary = 'Assessment dates, quiz weeks, announced coverage and practice.';
+  }
+}
+CEN.description = 'CEN100 at TMU, Fall 2026. Find assignment deadlines, requirements, checklists and project milestones.';
+CEN.profile.summary = 'Choose your Innovation Challenge group';
+CEN.profile.groupPlaceholder = 'Choose your group';
+CEN.profile.note = 'Choose a group for project submission instructions.';
+CEN.changeProfile = 'Change group';
+CEN.contactNote = 'Check D2L for course staff contact details.';
+CEN.tools.note = 'Your group and checklist settings stay on this device.';
+CEN.noscriptIntro = 'Published dates are listed below. Check D2L for submission details and lab times. Progress tracking requires JavaScript.';
+for (const [id, course] of Object.entries(MATH)) {
+  course.description = `${id.toUpperCase()} at TMU, Fall 2026. Find assessment dates, quiz weeks, announced coverage, course rules and recommended practice.`;
+  course.contact.note = 'Check D2L for contact details and timetable updates.';
+  course.calendar.labs = 'Include tentative quiz weeks';
+  course.calendar.notes = ['The midterm uses its published Toronto time. Quiz weeks can be added as tentative all-day events. Check D2L for your exact quiz time.'];
+  course.noscriptIntro = 'Published dates and quiz weeks are listed below. Check D2L for your lab day and time. Progress tracking requires JavaScript.';
+}
+MATH.mth140.sources.note = 'Reviewed October 23, 2026, including the October 13 midterm announcement. Course documents and supplied D2L announcements provide the dates and rules. Newer official announcements take precedence.';
+PRIVACY.paragraphs[1].text = 'Your CEN100 group, notes, progress and grade calculator marks stay in your browser. Keep progress backups private because they contain your notes. Calculator marks stay in this browser when you export. Clearing browser data can erase saved records.';
+PRIVACY.updated = 'Updated November 23, 2026.';
+
+const banner = `/* Static guide copy generated by site/tests/extract/pages.mjs from the archived pages and current guide wording.
+   Course and website update lists are in content/updates.mjs. */\n`;
 const lit=v=>JSON.stringify(v,null,1);
-writeFileSync(out,banner+`export const DESK=${lit(DESK)};\n\nexport const CEN=${lit(CEN)};\n\nexport const MATH={mth140:${lit(math('mth140'))},\nmth141:${lit(math('mth141'))}};\n\nexport const PRIVACY=${lit(PRIVACY)};\n`);
+writeFileSync(out,banner+`export const DESK=${lit(DESK)};\n\nexport const CEN=${lit(CEN)};\n\nexport const MATH={mth140:${lit(MATH.mth140)},\nmth141:${lit(MATH.mth141)}};\n\nexport const PRIVACY=${lit(PRIVACY)};\n`);

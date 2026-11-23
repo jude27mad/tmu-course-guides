@@ -38,7 +38,7 @@ async function ready(page, route) {
     const main = document.querySelector('main');
     return getComputedStyle(main).pointerEvents === 'auto' && !main.classList.contains('lenis-stopped');
   });
-  if (route.startsWith('mth') || route.startsWith('cen')) await page.locator('#course-section:not(:disabled)').waitFor();
+  if (route.startsWith('mth') || route.startsWith('cen')) await page.locator('nav[data-selection-ready="true"]').waitFor();
 }
 
 try {

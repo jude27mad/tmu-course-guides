@@ -23,14 +23,13 @@ const nav = 'nav[aria-label="Course views"]';
 const ready = async (page) => {
   await page.waitForFunction(() => {
     const main = document.querySelector('main');
-    const section = document.querySelector('#course-section');
+    const courseNav = document.querySelector('nav[aria-label="Course views"]');
     const loader = document.querySelector('#loader');
     const header = document.getElementById('menu-button')?.closest('header');
     return main && getComputedStyle(main).opacity === '1' && document.documentElement.dataset.motion &&
       header && getComputedStyle(header).opacity === '1' && getComputedStyle(header).visibility === 'visible' &&
       (!loader || getComputedStyle(loader).display === 'none') &&
-      !main.classList.contains('lenis-stopped') && (!section || !section.disabled) &&
-      (!section || document.querySelector('nav[data-selection-ready="true"]'));
+      !main.classList.contains('lenis-stopped') && (!courseNav || courseNav.dataset.selectionReady === 'true');
   });
   // JS-ready is not paint-ready in WebKit: the first capture can precede the
   // header's text paint, while the next capture is correct with no DOM change.
@@ -218,13 +217,13 @@ try {
           const title = box('[class*="workspace_headingCopy"]');
           const badge = box('[class*="workspace_artwork"]');
           const navigation = box('nav[aria-label="Course views"]');
-          // CHY102 and PCS211 have no section to choose, so no section controls (and no empty row on phones).
           const selectors = document.querySelector('[class*="workspace_sectionControls"]')?.getBoundingClientRect() ?? null;
           const actions = box('[class*="workspace_actions"]');
           return { titleLeft: title.left, navCenter: (navigation.left + navigation.right) / 2, viewportCenter: innerWidth / 2, selectorsLeft: selectors?.left ?? null, badgeRight: badge.right, actionsRight: actions.right };
         });
         assert.ok(Math.abs(headerGeometry.navCenter - headerGeometry.viewportCenter) < 1, JSON.stringify(headerGeometry));
-        assert.equal(headerGeometry.selectorsLeft === null, ['chy102', 'pcs211'].includes(course), `${course}: section controls only where there are sections`);
+        assert.equal(headerGeometry.selectorsLeft === null, course !== 'cen100', `${course}: group selection is available for the Innovation Challenge`);
+        assert.equal(await page.locator('#course-section').count(), 0);
         if (headerGeometry.selectorsLeft !== null) assert.ok(Math.abs(headerGeometry.titleLeft - headerGeometry.selectorsLeft) < 1);
         assert.ok(Math.abs(headerGeometry.badgeRight - headerGeometry.actionsRight) < 1, JSON.stringify(headerGeometry));
         assert.equal(await page.locator('[data-toronto-clock] time').count(), 1);

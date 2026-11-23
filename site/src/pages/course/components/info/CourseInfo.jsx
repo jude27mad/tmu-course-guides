@@ -1,15 +1,14 @@
 import AppearTitle from '@src/components/animationComponents/appearTitle/Index';
 import Arrow from '@src/components/imageComponents/Arrow';
 import ButtonLink from '@src/components/animationComponents/buttonLink/Index';
-import SectionPicker from '@src/pages/course/components/info/SectionPicker';
+import GroupPicker from '@src/pages/course/components/info/GroupPicker';
 import clsx from 'clsx';
 import overview from '@src/pages/course/components/overview/styles/overview.module.scss';
 import styles from '@src/pages/course/components/info/styles/courseInfo.module.scss';
 import { PICKER_ID, openPicker, useCourse } from '@src/pages/course/hooks/useCourseState';
 
 // Course info: the original Overview blocks (h3 title, small label, a column of
-// lines) for the section brief, who to ask, the rules and the help, with the
-// section picker as a MenuLinks-style window between them.
+// lines) for contacts, rules and help.
 
 function Block({ id, title, label, children }) {
   return (
@@ -101,16 +100,9 @@ function CenInfo() {
         </p>
         <p className={clsx('p-l', styles.muted)}>{page.profile?.note}</p>
       </Block>
-      <SectionPicker />
+      <GroupPicker />
       <Block id="contacts" title={contacts.heading}>
-        {contacts.ga ? (
-          <>
-            <Pair label={contacts.ga.role} value={contacts.ga.name} />
-            <Pair label={contacts.ga.locationText?.split(':')[0]} value={contacts.ga.location} />
-          </>
-        ) : (
-          <p className="p-l">{contacts.gaPrompt}</p>
-        )}
+        <p className="p-l">{contacts.gaPrompt}</p>
         {contacts.pm ? <Pair label={contacts.pm.role} value={contacts.pm.name} /> : <p className="p-l">{contacts.pmPrompt}</p>}
         <p className={clsx('p-x', styles.muted)}>{contacts.note}</p>
         <div className={styles.buttons}>
@@ -132,19 +124,17 @@ function CenInfo() {
 function MathInfo() {
   const { info } = useCourse();
   const page = info.page || {};
-  const { contacts, section } = info;
+  const { contacts } = info;
   const help = (page.tabs || []).find((tab) => tab.id === 'help')?.label;
   return (
     <>
-      <Block id="course-info" title="Course info" label={page.section?.label}>
-        <p className="h6" aria-live="polite">
-          {section?.brief ? `${section.brief.section} · ${section.brief.detail}` : section?.briefPrompt}
-        </p>
+      <Block id="course-info" title="Course info">
         {info.organization ? <p className={clsx('p-l', styles.muted)}>{info.organization}</p> : null}
       </Block>
-      <SectionPicker />
       <Block id="contacts" title={contacts.heading} label={`${contacts.coordinatorLabel} ${contacts.coordinator}`}>
-        {contacts.section ? contacts.section.map((entry) => <Pair key={entry.heading} label={entry.heading} value={entry.text} href={entry.href} />) : <p className="p-l">{contacts.prompt}</p>}
+        {contacts.section?.map((entry) => (
+          <Pair key={entry.heading} label={entry.heading} value={entry.text} href={entry.href} />
+        ))}
         <p className={clsx('p-x', styles.muted)}>{contacts.note}</p>
         <div className={styles.buttons}>
           {contacts.links.map((link) => (

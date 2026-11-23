@@ -41,7 +41,7 @@ function fixtureTarget(resolver, c) {
   if (d.type === 'date_only') return resolve(course({ kind: 'midterm', date: d.date, time: null }));
   if (d.type === 'pending') return resolve(course({ kind: 'final', date: null, time: null }));
   const lab = d.section ? { section: 1, day: WEEKDAY[d.section.weekday], start: d.postedTime ?? null, end: null, room: '', assistant: '' } : null;
-  return resolve(course({ kind: 'quiz', week: addDays(WEEK_ONE_MONDAY, (d.week - 1) * 7), ...(d.overrideDate ? { mondayMakeupDate: d.overrideDate } : {}) }, lab ? [lab] : []), lab ? 1 : 0);
+  return resolve(course({ kind: 'quiz', week: addDays(WEEK_ONE_MONDAY, (d.week - 1) * 7), ...(d.overrideDate ? { weekEnd: d.overrideDate } : {}) }, lab ? [lab] : []), lab ? 1 : 0);
 }
 
 const zone = process.env.TZ || Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -51,10 +51,22 @@ test(`all ${cases.length} Toronto boundary fixtures [system time zone ${zone}]`,
     const now = Date.parse(c.now);
     const t = fixtureTarget(targets, c);
     const e = c.expected;
+    assert.equal(weeks.termWeek(today(new Date(now))), e.nowWeek, `${c.id} nowWeek`);
+    if (c.deadline.type === 'quiz_week') {
+      const start = addDays(WEEK_ONE_MONDAY, (c.deadline.week - 1) * 7);
+      assert.equal(t.precision, 'week');
+      assert.equal(t.week, start);
+      assert.equal(t.weekEnd, c.deadline.overrideDate || addDays(start, 4));
+      assert.equal(t.cta, undefined);
+      assert.equal(targets.targetDate(t), null);
+      const shown = countdown(t, now);
+      assert.equal(shown.status, 'Quiz week');
+      assert.equal(shown.ms, null);
+      continue;
+    }
     assert.deepEqual(t, fixtureTarget(OLD, c), `${c.id}: same target as the old resolver`);
     if (c.deadline.type === 'exact' && !t.title.startsWith('T')) assert.equal(t.at, Date.parse(c.deadline.at), `${c.id}: Toronto wall clock converts back`);
     const date = targets.targetDate(t);
-    assert.equal(weeks.termWeek(today(new Date(now))), e.nowWeek, `${c.id} nowWeek`);
     assert.equal(date ? weeks.termWeek(date) : null, e.deadlineWeek, `${c.id} deadlineWeek`);
     if ('resolvedDate' in e) assert.equal(date, e.resolvedDate, `${c.id} resolvedDate`);
     const shown = countdown(t, now);

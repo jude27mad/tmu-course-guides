@@ -9,17 +9,32 @@ import { cenOracle, mathOracle, htmlText, blocksText, toronto } from './helpers.
 
 const old = await cenOracle();
 
-test('CEN100 content outside the source-verified reflection clarification matches the old closure', () => {
-  for (const name of ['I', 'WHO', 'TEAM', 'RULES', 'CONFIRMED', 'OPEN', 'STAFFING', 'PROFILE_KEY', 'FILTER_KEY', 'PLAN_KEY', 'SEEN_KEY']) {
+test('CEN100 preserves course-wide content and strips section-specific reminders', () => {
+  for (const name of ['I', 'WHO', 'RULES', 'OPEN', 'PROFILE_KEY', 'FILTER_KEY', 'PLAN_KEY', 'SEEN_KEY']) {
     assert.deepEqual(CEN[name], old[name], name);
   }
-  assert.deepEqual(CEN.YOU.filter(item => item.id !== 'y5'), old.YOU.filter(item => item.id !== 'y5'));
-  assert.deepEqual(Object.fromEntries(Object.entries(CEN.SOURCE_INFO).filter(([id]) => id !== 'y5')), Object.fromEntries(Object.entries(old.SOURCE_INFO).filter(([id]) => id !== 'y5')));
+  for (const item of CEN.TEAM) {
+    const expected = old.TEAM.find(({ id }) => id === item.id);
+    if (item.id === 'm3') {
+      const facts = expected.facts.filter(([, detail]) => detail !== 'Part 1 worked on in the Oct 14 lab');
+      assert.deepEqual(item, { ...expected, facts });
+    } else assert.deepEqual(item, expected);
+  }
+  assert.deepEqual(CEN.YOU.filter(item => !['y5', 'y7'].includes(item.id)), old.YOU.filter(item => !['y5', 'y7'].includes(item.id)));
+  const attendance = CEN.byId.get('y7');
+  const previousAttendance = old.byId.get('y7');
+  for (const key of Object.keys(previousAttendance).filter(key => !['what', 'facts'].includes(key))) {
+    assert.deepEqual(attendance[key], previousAttendance[key], key);
+  }
+  assert.doesNotMatch(JSON.stringify(attendance), /Section 29|5:45/i);
+  assert.deepEqual(CEN.CONFIRMED.filter(([title]) => title !== 'Attendance quizzes'), old.CONFIRMED.filter(([title]) => title !== 'Attendance quizzes'));
+  const commonSources = (sources) => Object.fromEntries(Object.entries(sources).filter(([id]) => !['y5', 'y7'].includes(id)));
+  assert.deepEqual(commonSources(CEN.SOURCE_INFO), commonSources(old.SOURCE_INFO));
   // The last release version of the old badge. The badge now follows the newest course update (content/updates.mjs).
   assert.equal(CEN.GUIDE_VERSION, '2026-10-16-course-artwork');
   assert.notEqual(CEN.GUIDE_VERSION, old.GUIDE_VERSION);
   assert.equal(CEN.KEY, 'cen100-g9-ticks');
-  for (const item of old.allItems.filter(item => item.id !== 'y5')) assert.deepEqual(CEN.sourceFor(item), old.sourceFor(item), item.id);
+  for (const item of old.allItems.filter(item => !['y5', 'y7'].includes(item.id))) assert.deepEqual(CEN.sourceFor(item), old.sourceFor(item), item.id);
   assert.deepEqual(
     CEN.allItems.map((item) => item.id),
     old.allItems.map((item) => item.id),
@@ -58,9 +73,6 @@ test('CEN100 helpers return what the old closure returned', () => {
     { notes: { m7: 'a'.repeat(2001), m6: 'a'.repeat(2000) } },
   ];
   for (const plan of plans) assert.deepEqual(CEN.cleanPlan(plan), old.cleanPlan(plan), JSON.stringify(plan));
-  for (const value of [null, {}, { section: 29 }, { section: '29', group: '9' }, { section: 29, group: 50 }, { section: 40 }, { section: 3, group: 11 }]) {
-    assert.deepEqual(CEN.validProfile(value), old.validProfile(value), JSON.stringify(value));
-  }
   for (const item of old.allItems) {
     for (const event of old.recordsFor(item)) assert.equal(CEN.completionText(event), old.completionText(event), event.id);
     assert.deepEqual(CEN.recordsFor(item), old.recordsFor(item));
@@ -69,17 +81,23 @@ test('CEN100 helpers return what the old closure returned', () => {
       assert.deepEqual(CEN.completionSummary(item, completed), old.completionSummary(item), item.id);
     }
   }
-  for (const profile of [null, { section: 29, group: 9 }, { section: 29, group: null }, { section: 5, group: 18 }, { section: 12, group: null }]) {
-    const page = old.sectionContent(profile);
-    const mine = CEN.sectionContent(profile);
-    assert.equal(mine.y7.what, page['b-y7 .what']);
-    assert.equal(mine.y7.fact, page['b-y7 .fact span']);
-    const pm = CEN.contactLookup(profile?.section, profile?.group).pm;
-    assert.equal(mine.y5.what, pm ? CEN.byId.get('y5').what.replace('your assigned Project Manager', `${pm.name}, your assigned Project Manager for Group ${profile.group}`) : CEN.byId.get('y5').what);
-  }
   for (const n of [0, 1, 2, 6, 7, 30]) {
     assert.equal(CEN.cd(n), old.cd(n));
     assert.equal(CEN.headUrgency(n), old.headUrgency(n));
+  }
+});
+
+test('project groups stay available without a section or section-specific attendance instructions', () => {
+  assert.deepEqual(CEN.GROUPS, Array.from({ length: 52 }, (_, index) => index + 1));
+  const attendance = CEN.byId.get('y7');
+  for (const input of [null, { section: 29 }, { section: 5, group: 9 }, { group: 9 }]) {
+    const group = input?.group;
+    assert.deepEqual(CEN.validProfile(input), group ? { group } : null);
+    const content = CEN.sectionContent(input);
+    assert.equal(content.y7.what, attendance.what);
+    assert.equal(content.y7.fact, attendance.facts[0][1]);
+    if (group) assert.match(content.y5.what, /Project Manager for Group 9/);
+    else assert.equal(content.y5.what, CEN.byId.get('y5').what);
   }
 });
 
@@ -132,7 +150,8 @@ for (const courseId of ['mth140', 'mth141']) {
           assert.match(MATH.rulesForAssessment(a, courseId).join(' '), /no partial credit.*written solution.*0 out of 5.*11–13.*partial or full credit/);
         } else {
           assert.deepEqual(MATH.prep(a, courseId), page.prep(a), a.id);
-          assert.deepEqual(MATH.rulesForAssessment(a, courseId), page.rulesForAssessment(a), a.id);
+          const rules = page.rulesForAssessment(a).map(rule => rule.replace('; Monday sections write on October 19', ''));
+          assert.deepEqual(MATH.rulesForAssessment(a, courseId), rules, a.id);
         }
         assert.equal(MATH.weight(a, course), page.weight(a));
         const e = resolveAssessment(course, a, section);
@@ -140,12 +159,11 @@ for (const courseId of ['mth140', 'mth141']) {
         const tile = MATH.dateTile(e);
         assert.equal([tile.top, tile.main, tile.bottom].filter(Boolean).join(' '), htmlText(page.dateTile(e)));
       }
-      for (const lab of course.labs) assert.equal(MATH.labSummary(lab), page.labSummary(lab));
       assert.equal(MATH.GUIDE_VERSION, '2026-10-16-course-artwork');
       assert.notEqual(MATH.GUIDE_VERSION, page.GUIDE_VERSION);
       assert.deepEqual(
         MATH.ruleCards(course, courseId).slice(0, courseId === 'mth140' ? 2 : undefined).map((card) => [card.title, blocksText(card.blocks)]),
-        page.cards.slice(0, courseId === 'mth140' ? 2 : undefined).map(([title, body]) => [title, htmlText(body)]),
+        page.cards.slice(0, courseId === 'mth140' ? 2 : undefined).map(([title, body]) => [title, htmlText(body).replace('Any changes to the published section timetable. ', '').replace('FAQ, lab timetable, recommended problems', 'FAQ, recommended problems')]),
       );
       const notice = MATH.courseNotice(courseId);
       assert.equal(`${notice.title} ${blocksText(notice.blocks)}`, htmlText(page.notice));
