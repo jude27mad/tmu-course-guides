@@ -91,6 +91,9 @@
   }
 }
 .courseHeader {
+  // Keep the badge's paper shadow behind the heading, and its artwork reachable
+  // by hit testing within the header's own stacking context.
+  isolation: isolate;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
