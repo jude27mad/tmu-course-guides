@@ -115,7 +115,7 @@ function CourseGrades({ courseId, course }) {
   const [grades, update] = useGrades(courseId);
   const baseId = useId();
   const [scenarioMark, setScenarioMark] = useState(null);
-  const firstGroup = useRef(null);
+  const entriesRef = useRef(null);
   const [announcement, setAnnouncement] = useState('');
   const cleared = useRef(false);
   const percents = useMemo(() => percentsFrom(grades.marks), [grades.marks]);
@@ -193,9 +193,34 @@ function CourseGrades({ courseId, course }) {
               ) : null}
             </div>
             {current === null ? (
-              <button type="button" className={styles.clear} disabled={!grades.ready} onClick={() => firstGroup.current?.focus()}>
-                Choose an assessment
-              </button>
+              <select
+                className={`${styles.targetSelect} ${styles.assessmentSelect}`}
+                aria-label="Choose an assessment"
+                disabled={!grades.ready}
+                value=""
+                onChange={(event) => {
+                  const item = plan.items.find((assessment) => assessment.id === event.target.value);
+                  if (item) entriesRef.current?.openAssessment(item);
+                }}
+              >
+                <option value="" disabled>
+                  Choose an assessment
+                </option>
+                {plan.groups.map((group) => {
+                  const options = group.items.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.title}
+                    </option>
+                  ));
+                  return group.items.length === 1 ? (
+                    options[0]
+                  ) : (
+                    <optgroup key={group.id} label={group.title}>
+                      {options}
+                    </optgroup>
+                  );
+                })}
+              </select>
             ) : (
               <p className={styles.headlineNote}>{headlineText(standing, current, plan)}</p>
             )}
@@ -267,8 +292,8 @@ function CourseGrades({ courseId, course }) {
               <p className={styles.answer}>All marks are in.</p>
             ) : (
               <>
-                <label htmlFor={`${baseId}-target`} className={workspace.meta}>
-                  Target grade
+                <label htmlFor={`${baseId}-target`} className={styles.targetField}>
+                  <span className={workspace.meta}>Target grade</span>
                   <select
                     id={`${baseId}-target`}
                     className={styles.targetSelect}
@@ -322,7 +347,7 @@ function CourseGrades({ courseId, course }) {
               {plan.notes[0] ? <p className={workspace.meta}>{plan.notes[0]}</p> : null}
             </section>
           ) : null}
-          <GradeEntries key={plan.pick === 'choose' ? plan.variant : courseId} plan={plan} standing={standing} grades={grades} update={update} onClear={clear} firstGroup={firstGroup} />
+          <GradeEntries key={plan.pick === 'choose' ? plan.variant : courseId} plan={plan} standing={standing} grades={grades} update={update} onClear={clear} ref={entriesRef} />
         </div>
         <div className={styles.notes}>
           {plan.quizPolicy ? <p>{plan.quizPolicy}</p> : null}

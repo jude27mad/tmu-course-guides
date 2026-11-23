@@ -153,6 +153,13 @@ export const COURSE_UPDATES = {
 
 export const WEBSITE_UPDATES = [
  {
+  "id": "2026-11-23-grade-assessment-picker",
+  "date": "November 23, 2026",
+  "title": "Choose an assessment in Grades",
+  "text": "Choose an assessment now opens the course list and takes you directly to the mark field you select. The target-grade menu has more room around its focus outline.",
+  "items": []
+ },
+ {
   "id": "2026-11-23-visual-grade-calculator",
   "date": "November 23, 2026",
   "title": "Visual grade calculator",

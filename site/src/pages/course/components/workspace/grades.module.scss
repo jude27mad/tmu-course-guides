@@ -316,11 +316,18 @@
     letter-spacing: -0.02em;
   }
 }
+.targetField {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
 .targetSelect {
   appearance: auto;
   min-height: 44px;
+  min-width: 0;
   max-width: 100%;
-  margin-top: 8px;
   padding: 8px 12px;
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -333,6 +340,10 @@
     background: var(--white);
     color: var(--text);
   }
+}
+.assessmentSelect {
+  width: 14em;
+  margin-top: 8px;
 }
 .answer {
   margin-top: 10px;
