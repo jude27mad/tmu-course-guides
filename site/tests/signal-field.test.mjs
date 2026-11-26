@@ -126,9 +126,12 @@ test('missing canvas support leaves the static fallback and no subscriptions', a
   assert.equal(f.observers.length, 0);
 });
 
-test('the existing moving mask contains one continuous signal canvas and no sphere/physics mount', () => {
+test('the existing moving mask contains one continuous artwork canvas and no sphere/physics mount', () => {
   const home = readFileSync(new URL('../src/pages/components/home/Index.jsx', import.meta.url), 'utf8');
-  assert.equal((home.match(/<SignalField\b/g) || []).length, 1);
+  // One artwork under the mask: the silk where WebGL 2 works, and this field where it does not (tests/silk-field.test.mjs).
+  assert.equal((home.match(/<HeroArtwork\b/g) || []).length, 1);
+  const artwork = readFileSync(new URL('../src/components/artwork/HeroArtwork.jsx', import.meta.url), 'utf8');
+  assert.equal((artwork.match(/<SignalField\b/g) || []).length, 1);
   assert.match(home, /<mask id="mask"/);
   assert.match(home, /\{renderRects\}/);
   assert.doesNotMatch(home, /FloatingMeshes|FloatRigidBody|<Physics/);

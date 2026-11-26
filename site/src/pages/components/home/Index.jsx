@@ -2,7 +2,7 @@ import { scrollRoot } from '@src/utils/scrollRoot';
 import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { DESK_TEXT } from '@src/lib';
-import SignalField from '@src/components/artwork/SignalField';
+import HeroArtwork from '@src/components/artwork/HeroArtwork';
 import InfiniteText from '@src/components/animationComponents/infiniteText/Index';
 import clsx from 'clsx';
 import { gsap } from 'gsap';
@@ -15,7 +15,7 @@ import { DARK, DARK_QUERY } from '@src/lib/palette.mjs';
 import { useIsomorphicLayoutEffect } from '@src/hooks/useIsomorphicLayoutEffect';
 import useStill from '@src/hooks/useStill';
 
-// The paper over the signal field. In dark mode it reaches a little past the field on every side, so it covers the
+// The paper over the artwork's field. In dark mode it reaches a little past the field on every side, so it covers the
 // field's own edge (signalField.module.scss) wherever there is no window, and a window on the field's border still
 // has paper beyond it to edge it; the clip on .svgWrapper stops it 1px outside the field.
 const LIGHT_PAPER = { x: '0', y: '0', width: '100%', height: '100.3%' };
@@ -89,9 +89,10 @@ const performMoves = (rectangles, gridWidth, gridHeight) => {
 };
 
 // The Desk masthead: the original hero (headline, lede, the masked hole grid over
-// the continuous signal field, the "Scroll Down" marquee) carrying the companion
+// one continuous artwork, the "Scroll Down" marquee) carrying the companion
 // heading and Desk lede. The holes shuffle only while the hero is on screen and motion
-// is on. Kairo's artwork sits beneath the unchanged moving window mask.
+// is on. The artwork (React Bits' silk, or Kairo's field where WebGL 2 is not
+// available) sits beneath the unchanged moving window mask.
 function Home() {
   const isMobile = useIsMobile();
   const still = useStill();
@@ -262,7 +263,7 @@ function Home() {
       </div>
 
       <div className={styles.bottomContainer} aria-hidden="true">
-        <SignalField />
+        <HeroArtwork />
         <div onPointerEnter={onPointerEnter} onPointerLeave={onPointerLeave} className={styles.svgWrapper}>
           {/* In dark mode the paper is the page's ink, and every window in it gets a 1px edge: the paper, holes
               and all, is drawn through a filter that grows it by 1px in the window-edge colour and lays it under

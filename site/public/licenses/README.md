@@ -8,6 +8,29 @@ The guide supplies its course artwork and runs the pass on its existing physics 
 The upstream [MIT + Commons Clause notice](React-Bits-Lanyard.txt) applies to
 the adapted React Bits portions.
 
+## React Bits silk
+
+The cloth under the Desk's windows is adapted from David Haz's
+[Silk background](https://github.com/DavidHDev/react-bits/blob/37f53df7efb61238b0fea9ea8be74e3cce62b959/src/content/Backgrounds/Silk/Silk.jsx),
+fetched and its terms checked on November 26, 2026. The upstream
+[MIT + Commons Clause notice](React-Bits-Silk.txt) applies to the adapted
+React Bits portions (`src/components/artwork/silkField.mjs`).
+
+The adaptation keeps the source's fold function, lighting, sheen, film grain,
+pointer bend, click ripples and unfolding intro. The colours are the guide's
+palette. The guide's own changes: the cloth is screened over a deep blue that
+runs down the panel, so a fold's shadow is blue; a panel wider than it is tall
+shows more cloth instead of the same cloth stretched; and the bloom pass, the
+light-background branch, the edge fade and the variation offset are left out.
+A framework-free controller replaces the React effect. It runs on the site's
+shared clock, follows the Pause motion and reduced-motion preferences, pauses
+off screen and in a hidden tab, bounds the canvas resolution, restores itself
+after a lost GPU context and cleans up completely. Where WebGL 2 is not
+available the Kairo signal field below is shown instead.
+
+No React Bits component is redistributed on its own; the cloth is part of this
+website.
+
 ## Fluent Emoji game artwork
 
 The slicing game's rocket, brain, laptop, books, hot beverage and gear are the

@@ -4,6 +4,8 @@
 // (background, pointer fluid, course badges, pre-footer game) is built on it. Each canvas is therefore mounted
 // only where WebGL works, inside an error boundary (src/components/canvas/WebGLGate.jsx); this check proves the
 // pages load, read and navigate without it, and that a browser with WebGL still gets the whole 3D layer.
+// The Desk's silk draws on a small WebGL 2 canvas of its own (not three.js): wherever the layer is off, or the
+// cloth cannot get a context, the Desk shows the Canvas 2D signal field in its place.
 //
 //   disabled        Chromium started with --disable-webgl --disable-3d-apis --disable-gpu (what the setting does)
 //   blocked         getContext('webgl'|'webgl2') returns null: the same answer in any engine (QA_BROWSER=webkit works)
@@ -13,8 +15,9 @@
 //                   with it and the badges show their HTML cards again
 //   control         WebGL works: every three.js canvas and the fluid are there and the 3D badges draw (each course
 //                   badge hides its HTML card once its 3D card is drawn: data-badge-rendered)
-//   gpu-lost        the GPU goes away after load and never comes back: the layer turns itself off
-//   gpu-reset       every context is lost and then restored: the layer stays on
+//   gpu-lost        the GPU goes away after load and never comes back: the layer turns itself off, and the Desk's
+//                   silk gives way to the signal field
+//   gpu-reset       every context is lost and then restored: the layer stays on, and the silk draws again
 //
 // Usage: PLAYWRIGHT_PATH=/path/to/node_modules/playwright QA_REPORT_DIR=<dir> node scripts/check-no-webgl.mjs
 // QA_BROWSER=chromium (default) | webkit | firefox; QA_CHROMIUM_PATH selects a Chromium binary; QA_ONLY=gpu,control
@@ -55,11 +58,21 @@ const blockWebGL = () => {
 };
 // three.js always passes context attributes; the site's own probe (and its context-loss check) never does. Renderer
 // contexts beyond the first `allow` are refused, and the counts let a scenario prove it reached the error boundary.
+// The Desk's silk also passes attributes but is not a three.js renderer: it is not counted against `allow`, and it
+// is refused only where every renderer is, so `second-failure` still builds one three.js renderer and fails the next.
 const failRenderers = (allow) => {
   const original = HTMLCanvasElement.prototype.getContext;
-  window.__webglContexts = { probes: 0, renderers: 0, refused: 0 };
+  window.__webglContexts = { probes: 0, renderers: 0, refused: 0, cloth: 0, clothRefused: 0 };
   HTMLCanvasElement.prototype.getContext = function getContext(kind, attributes, ...rest) {
     const webgl = /webgl/i.test(kind);
+    if (webgl && attributes !== undefined && this.hasAttribute('data-silk-field')) {
+      if (allow === 0) {
+        window.__webglContexts.clothRefused += 1;
+        return null;
+      }
+      window.__webglContexts.cloth += 1;
+      return original.call(this, kind, attributes, ...rest);
+    }
     if (webgl && attributes !== undefined) {
       if (window.__webglContexts.renderers >= allow) {
         window.__webglContexts.refused += 1;
@@ -102,6 +115,8 @@ const pageState = (page) =>
     heading: !!document.querySelector('main h1, main h2'),
     threeCanvases: document.querySelectorAll('canvas[data-engine]').length,
     fluid: !!document.getElementById('fluidCanvas'),
+    // the artwork under the Desk's windows: 'silk' (WebGL 2), 'signal' (Canvas 2D), or '' off the Desk
+    artwork: [document.querySelector('canvas[data-silk-field]') && 'silk', document.querySelector('canvas[data-signal-field]') && 'signal'].filter(Boolean).join('+'),
     badges: [...document.querySelectorAll('[data-course-badge]')].map((badge) => {
       const card = badge.querySelector('[data-badge-fallback]');
       return {
@@ -141,12 +156,16 @@ async function inspect(page, route, scenario, tracker, motion) {
       await waitForDrawnBadge(page);
       const now = await pageState(page);
       assert.ok(drawn(now).length >= 1 && drawn(now).every((badge) => !badge.card), `${label}: a 3D badge is drawn in place of its HTML card (${JSON.stringify(now.badges)})`);
+      assert.equal(now.artwork, 'silk', `${label}: the Desk's windows show the silk`);
     }
   } else {
     assert.equal(state.threeCanvases, 0, `${label}: no three.js canvas without WebGL`);
     assert.ok(!state.fluid, `${label}: no pointer fluid without WebGL`);
     assert.ok(allCards(state), `${label}: every course badge shows its HTML card (${JSON.stringify(state.badges)})`);
-    if (where === '/') assert.ok(state.badges.length >= 1, `${label}: the Desk shows its next course's badge card`);
+    if (where === '/') {
+      assert.ok(state.badges.length >= 1, `${label}: the Desk shows its next course's badge card`);
+      assert.equal(state.artwork, 'signal', `${label}: the Desk's windows show the signal field in place of the silk`);
+    }
   }
 
   if (scenario.rendererFailure) {
@@ -154,6 +173,9 @@ async function inspect(page, route, scenario, tracker, motion) {
     assert.ok(contexts.probes >= 1, `${label}: the capability probe got a context (${JSON.stringify(contexts)})`);
     assert.ok(contexts.refused >= 1, `${label}: a renderer was refused, so the error boundary was reached (${JSON.stringify(contexts)})`);
     assert.equal(contexts.renderers, scenario.initArg, `${label}: renderers built before the failure (${JSON.stringify(contexts)})`);
+    // On the Desk the silk asked for a context too: refused with every renderer, and otherwise built and then taken
+    // down with the layer (the signal field is asserted above).
+    if (where === '/') assert.ok(scenario.initArg === 0 ? contexts.clothRefused >= 1 && contexts.cloth === 0 : contexts.cloth >= 1, `${label}: the silk's context (${JSON.stringify(contexts)})`);
     assert.ok(tracker.consoleErrors.length > 0 && tracker.consoleErrors.every((text) => /webgl/i.test(text)), `${label}: only the expected WebGL errors are logged: ${tracker.consoleErrors.join(' | ')}`);
   }
 
@@ -190,10 +212,14 @@ async function inspectGpuLoss(page, tracker, { restore }) {
   await waitForDrawnBadge(page);
   const before = await pageState(page);
   assert.ok(drawn(before).length >= 1, `${label}: starts with a 3D badge drawn`);
-  // A lost context hands out no extensions, so keep each canvas's WEBGL_lose_context before losing it.
+  assert.equal(before.artwork, 'silk', `${label}: starts with the silk under the Desk's windows`);
+  // A lost context hands out no extensions, so keep each canvas's WEBGL_lose_context before losing it. The silk's
+  // canvas is lost with the three.js ones.
   await page.evaluate(() => {
-    window.__gpu = [...document.querySelectorAll('canvas[data-engine]')].map((canvas) => canvas.getContext('webgl2').getExtension('WEBGL_lose_context'));
+    window.__gpu = [...document.querySelectorAll('canvas[data-engine], canvas[data-silk-field]')].map((canvas) => canvas.getContext('webgl2').getExtension('WEBGL_lose_context'));
   });
+  // How many frames the silk has drawn (one triangle each).
+  const clothFrames = () => page.evaluate(() => window.__clothFrames || 0);
   const lose = (action) =>
     page.evaluate((what) => {
       window.__gpu.forEach((extension) => (what === 'lose' ? extension.loseContext() : extension.restoreContext()));
@@ -208,12 +234,18 @@ async function inspectGpuLoss(page, tracker, { restore }) {
     assert.ok(!ERROR_SCREEN.test(after.text), `${label}: Next.js application error screen`);
     assert.ok(after.threeCanvases >= 3, `${label}: the 3D layer is still there after the contexts came back (${after.threeCanvases})`);
     await waitForDrawnBadge(page);
+    // The silk rebuilt itself on the restored context and is drawing frames again.
+    assert.equal(after.artwork, 'silk', `${label}: the silk is still under the Desk's windows`);
+    const frames = await clothFrames();
+    await page.waitForTimeout(600);
+    assert.ok((await clothFrames()) > frames, `${label}: the silk draws again after the context came back (${frames} frames, then ${await clothFrames()})`);
   } else {
     await page.waitForFunction(() => !document.querySelector('canvas[data-engine]'), null, { timeout: 15000 });
     const after = await pageState(page);
     assert.ok(allCards(after), `${label}: every course badge shows its HTML card again (${JSON.stringify(after.badges)})`);
     assert.ok(!ERROR_SCREEN.test(after.text), `${label}: Next.js application error screen`);
     assert.equal(after.threeCanvases, 0, `${label}: the 3D layer is taken down`);
+    assert.equal(after.artwork, 'signal', `${label}: the signal field takes the silk's place`);
     assert.ok(!after.fluid, `${label}: no pointer fluid`);
     assert.ok(after.heading, `${label}: the page still reads`);
   }
@@ -315,6 +347,14 @@ try {
     const browser = await launch(SOFTWARE_GL);
     for (const restore of [false, true].filter((value) => wanted(value ? 'gpu-reset' : 'gpu-lost'))) {
       const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+      // Count the silk's frames: it draws one triangle a frame on its own canvas.
+      await context.addInitScript(() => {
+        const original = WebGL2RenderingContext.prototype.drawArrays;
+        WebGL2RenderingContext.prototype.drawArrays = function drawArrays(...args) {
+          if (this.canvas?.hasAttribute?.('data-silk-field')) window.__clothFrames = (window.__clothFrames || 0) + 1;
+          return original.apply(this, args);
+        };
+      });
       const page = await context.newPage();
       const tracker = track(page);
       const name = restore ? 'gpu-reset' : 'gpu-lost';

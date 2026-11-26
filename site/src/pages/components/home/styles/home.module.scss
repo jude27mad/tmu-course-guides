@@ -99,7 +99,11 @@
       border-radius: calc(var(--layout-columns-gap) * 0.5);
     }
     .svgWrapper {
+      // The paper reaches a little past the field's right edge. A tenth of a percent is under half a pixel on a
+      // phone, where the field's last column of pixels then showed beside the paper as a hairline; a whole
+      // pixel covers it.
       width: 100.1%;
+      width: max(100.1%, calc(100% + 1px));
       height: 100%;
       position: absolute;
       top: 0;
@@ -117,12 +121,21 @@
         -webkit-mask: url(#mask);
         mask: url(#mask);
       }
+      // Each hole grows half a pixel on every side, so touching windows overlap and leave no seam of paper
+      // between them. The light paper is drawn in a stretched viewBox, so the stroke is kept in screen pixels.
+      mask rect[data-cell] {
+        stroke: #000;
+        stroke-width: 1px;
+        vector-effect: non-scaling-stroke;
+      }
     }
     // Dark mode: the windows have an edge (Index.jsx draws it with the paper). The paper and its edges stop 1px
     // outside the field, on a curve concentric with its rounded corners, so the clip's soft edge falls on ink;
     // where a window meets the field's own border, the field's edge shows instead (signalField.module.scss).
     @media screen and (prefers-color-scheme: dark) {
       .svgWrapper {
+        // The clip below is measured from a paper a tenth of a percent wider than the field.
+        width: 100.1%;
         clip-path: inset(-1px calc(0.1% - 1px) -1px -1px round calc(var(--layout-columns-gap) + 1px));
       }
       // The paper may reach past the svg's own box, up to the clip above. It is drawn through the edge filter
@@ -138,6 +151,11 @@
       .edged mask rect[data-cell] {
         stroke: #000;
         stroke-width: 1px;
+      }
+      // Under the silk every point of a window is blue, so a window holds its shape against the ink by itself,
+      // as it does on the light paper: the edge is left to the Kairo field, whose windows are clear.
+      &:has(canvas[data-silk-field]) .edged > g {
+        filter: none;
       }
       @include mobile {
         // Phones' tighter corners clip to the field's own curve, so the straight edges end cleanly on it.

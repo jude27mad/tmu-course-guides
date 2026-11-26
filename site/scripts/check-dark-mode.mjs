@@ -5,7 +5,8 @@
 //   1. Every page, as a 390 px phone and a 1440 px desktop: the dark tokens apply (no inline palette holds the
 //      light ones), the page, its cards and the MENU pill are the ink, text and theme-color are the dark ones, no
 //      light block is left on the page, and visible text meets AA against what is behind it. Selected tabs and
-//      filters are TMU Blue; the windows on the Desk and Courses show the artwork, floored at the ink, with an edge.
+//      filters are TMU Blue; the Courses window shows the artwork, floored at the ink, with an edge; the Desk's
+//      windows show its silk (or, without WebGL 2, the signal field over the artwork), each with an edge.
 //   2. Menu (the shrunk page is an opaque ink card with an edge), Search, Guide tools, an assignment and the
 //      footer's end, with screenshots. The Desk's primary action (MARK DONE) is TMU Blue with a white label.
 //   3. An iPhone (Safari's document layout): the colour past the page's ends is the ink, and theme-color says
@@ -18,7 +19,7 @@ import assert from 'node:assert/strict';
 import { appendFile, mkdir } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { join } from 'node:path';
-import { DARK, TOKENS, rgbOf } from '../src/lib/palette.mjs';
+import { DARK, SILK_DARK, TOKENS, rgbOf } from '../src/lib/palette.mjs';
 import { servePages } from './pages-server.mjs';
 
 const folder = process.argv[2];
@@ -172,8 +173,10 @@ function lightBlocks() {
 
 // The Desk's window edges as drawn (desktop, reduced motion, so the cells are at their starting places). Cell 0 sits
 // in the lower half of the first column: its right edge must be drawn in the window edge's colour, and the field's
-// top edge, which borders no window there, must stay the bare ink.
-async function deskEdges(page) {
+// top edge, which borders no window there, must stay the bare ink. Under the silk a window has no edge: the check
+// there is that the window is blue right up to the paper, the paper beside it is the bare ink, and the cloth does
+// not show round the paper at the field's top edge.
+async function deskEdges(page, artwork = 'signal') {
   const require = createRequire(import.meta.url);
   const sharp = require('sharp');
   const [x, y, width, height] = await page.evaluate(() => {
@@ -192,6 +195,15 @@ async function deskEdges(page) {
   const brightest = across.reduce((best, each) => (each[0] + each[1] + each[2] > best[0] + best[1] + best[2] ? each : best));
   const near = (a, b, tolerance) => a.every((value, i) => Math.abs(value - b[i]) <= tolerance);
   const ink = rgbOf(DARK.page).split(', ').map(Number);
+  if (artwork === 'silk') {
+    // Well inside cell 0, and across its lower half: the cloth and its shade are blue everywhere, never a second black.
+    const inside = [0.25, 0.5, 0.75].flatMap((part) => [0.6, 0.75, 0.9].map((down) => pixel(x + (width / 6) * part, y + height * down)));
+    assert.ok(inside.every(([r, , b]) => b >= r + 40 && b >= ink[2] + 25), `the window shows the blue cloth: ${inside.map(String).join(' | ')}`);
+    assert.ok(across.slice(0, 2).every(([r, , b]) => b >= r + 25), `the cloth reaches the window's edge: ${across.map(String).join(' | ')}`);
+    assert.ok(across.slice(-2).every((each) => near(each, ink, 4)), `the paper beside the window is the bare ink: ${across.map(String).join(' | ')}`);
+    assert.ok(top.every((each) => near(each, ink, 4)), `the field's top edge, where no window is, stays the ink: ${top.map(String).join(' | ')}`);
+    return;
+  }
   // Antialiased across a pixel boundary, the 1px edge measures about rgb(86, 86, 94); the artwork's light bands
   // through the window stay well below that.
   assert.ok(near(brightest, rgbOf(DARK.windowEdge).split(', ').map(Number), 20), `a window's edge is drawn: brightest ${brightest} across cell 0's right edge`);
@@ -293,20 +305,33 @@ async function main() {
           assert.deepEqual(selected, { tab: rgb(DARK.accent), slider: [rgb(DARK.accentTint), rgb(DARK.accent)], filter: [rgb(DARK.accentTint), rgb(DARK.accent)] }, 'the selected states');
         }
         if (name === 'desk') {
-          // The Desk's signal field draws its points on the artwork, with no panel of its own; the paper's windows are
-          // edged (in dark mode on screen only, the styles draw the paper through the edge filter).
+          // The Desk's artwork is one canvas under the paper: the silk where WebGL 2 works (an opaque deep-blue
+          // panel with the cloth on it, whose windows need no edge), and otherwise the signal field, which draws
+          // its points on the artwork with no panel of its own, and whose windows are edged (in dark mode on
+          // screen only, the styles draw the paper through the edge filter).
+          await page.waitForSelector('canvas[data-silk-field], canvas[data-signal-field]');
           const desk = await page.evaluate(() => {
+            const silk = document.querySelector('canvas[data-silk-field]');
             const canvas = document.querySelector('canvas[data-signal-field]');
             const svg = document.querySelector('svg[data-surface="cells"]');
             const paper = svg?.querySelector(':scope > g');
             return {
-              corner: canvas && canvas.getContext('2d').getImageData(1, 1, 1, 1).data[3],
-              edged: !!paper && /desk-window-edge/.test(getComputedStyle(paper).filter) && !!svg?.querySelector('filter#desk-window-edge feMorphology'),
+              artwork: [silk && 'silk', canvas && 'signal'].filter(Boolean).join('+'),
+              corner: canvas ? canvas.getContext('2d').getImageData(1, 1, 1, 1).data[3] : 0,
+              panel: silk ? getComputedStyle(silk.parentElement).backgroundImage : null,
+              edged: !!paper && /desk-window-edge/.test(getComputedStyle(paper).filter),
+              filter: !!svg?.querySelector('filter#desk-window-edge feMorphology'),
               viewBox: svg?.getAttribute('viewBox'),
             };
           });
-          assert.deepEqual(desk, { corner: 0, edged: true, viewBox: null }, 'the Desk field and its edged windows');
-          if (label === 'desktop') await deskEdges(page);
+          assert.ok(['silk', 'signal'].includes(desk.artwork), `one artwork canvas under the Desk's windows: ${desk.artwork || 'none'}`);
+          assert.deepEqual({ corner: desk.corner, edged: desk.edged, filter: desk.filter, viewBox: desk.viewBox }, { corner: 0, edged: desk.artwork === 'signal', filter: true, viewBox: null }, `the Desk field and its windows (${desk.artwork})`);
+          if (desk.artwork === 'silk') {
+            // The panel under the cloth is the dark page's shade, top to foot.
+            const shade = SILK_DARK.shade.map(rgb);
+            assert.ok(desk.panel.startsWith('linear-gradient(155deg') && shade.every((stop, index) => desk.panel.indexOf(stop) > (index ? desk.panel.indexOf(shade[index - 1]) : 0)), `the silk's panel: ${desk.panel}`);
+          }
+          if (label === 'desktop') await deskEdges(page, desk.artwork);
           // Next up's primary action (MARK DONE) is the one filled shape: TMU Blue with a white label.
           const primary = await page.evaluate(() => {
             const node = document.querySelector('main [class*="buttonLink_primary"]');
@@ -511,7 +536,8 @@ async function main() {
   await Promise.all(contexts.map((context) => context.close()));
   await browser.close();
 
-  // 5. Without WebGL (no artwork, no 3D badges): the Desk's windows are still edged on the ink.
+  // 5. Without WebGL (no artwork, no silk, no 3D badges): the Desk shows the signal field, and its windows are still
+  //    edged on the ink.
   const plain = await chromium.launch({ headless: true, executablePath: process.env.QA_CHROMIUM_PATH || undefined, args: ['--disable-webgl', '--disable-3d-apis'] });
   await check('desktop desk without WebGL: the windows are edged', async () => {
     const context = await plain.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: 'dark', reducedMotion: 'reduce' });
@@ -520,6 +546,8 @@ async function main() {
     page.on('pageerror', (error) => plainErrors.push(error.message));
     await visit(page, '');
     darkState(await page.evaluate(readState), 'desk without WebGL');
+    await page.waitForSelector('canvas[data-signal-field]');
+    assert.equal(await page.locator('canvas[data-silk-field]').count(), 0, 'no silk without WebGL');
     await deskEdges(page);
     await page.screenshot({ path: join(reports, 'desktop-desk-no-webgl.png') });
     assert.deepEqual(plainErrors, [], 'no page errors');

@@ -198,6 +198,7 @@ test('text on the page uses --text, text on the dark panels --panelText', async 
   assert.deepEqual(ink.sort(), ['components/dom/styles/footer.module.scss fill', 'components/dom/styles/footer.module.scss stroke', 'pages/course/components/nextCourse/styles/nextCourse.module.scss color']);
   // --white is the page: as text it is only the page's colour on a text-coloured fill.
   assert.deepEqual(paper.sort(), [
+    'components/artwork/silkField.module.scss border', // the page-coloured rim round the Desk's silk
     'pages/components/home/styles/home.module.scss fill', // the Desk mask's paper (.mask2)
     'pages/course/components/workspace/calendar.module.scss --sx-color-on-primary', // today's date on its light circle (dark mode)
     'pages/course/components/workspace/workspace.module.scss color', // the pressed Schedule toggle (light mode)

@@ -85,6 +85,15 @@ export const BADGE_DARK = Object.freeze({ ...BADGE, rim: TOKENS.mutedOnDark });
 export const FIELD = Object.freeze({ background: TOKENS.ink, point: TOKENS.mutedOnDark, signal: TOKENS.onDark });
 export const FIELD_DARK = Object.freeze({ background: null, point: '#FFFFFF', signal: '#FFFFFF' });
 
+/* The Desk's silk (components/artwork/silkField.mjs), the artwork under its windows wherever WebGL 2 works: the
+   cloth's colour, the colour of its sheen, and the three deep blues it is screened over, from the top of the panel
+   to its foot. The cloth is TMU Blue's hue, lifted so its folds read through small windows; screened over the shade,
+   a fold's shadow is a deep TMU blue, so every point of a window is plainly blue: on the dark page a window holds its
+   shape against the ink with no outline, and on the light page it reads as blue, not as a near-black tile. Kairo's
+   field above remains where WebGL 2 is not available. */
+export const SILK = Object.freeze({ color: '#0A52C8', sheen: '#FFFFFF', shade: Object.freeze(['#0B3A82', '#09306C', '#072655']) });
+export const SILK_DARK = Object.freeze({ color: '#0A52C8', sheen: '#FFFFFF', shade: Object.freeze(['#0B3478', '#092B63', '#07214D']) });
+
 /* "r, g, b" for canvases and translucent CSS (rgba(var(--inkRgb), 0.2)). */
 export function rgbOf(hex) {
   return [1, 3, 5].map((start) => Number.parseInt(hex.slice(start, start + 2), 16)).join(', ');

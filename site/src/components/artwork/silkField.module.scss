@@ -1,0 +1,23 @@
+// The cloth's panel. SilkField.jsx paints it with the palette's shade, the deep blue the cloth unfolds on; the
+// ink here is what shows if that style is ever missing.
+.field {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  // A 1px rim in the page's own colour, in both schemes. The paper over the field is drawn through a mask, so its
+  // edge is soft for up to a pixel, and on phones the paper and the field are clipped by one curve: a cloth that
+  // reached the field's edge showed there as a hairline beside the paper, and as an arc in each covered corner.
+  border: 1px solid var(--white);
+  background-color: var(--black);
+  background-clip: padding-box;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
